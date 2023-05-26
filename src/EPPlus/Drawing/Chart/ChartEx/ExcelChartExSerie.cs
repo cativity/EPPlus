@@ -355,7 +355,11 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
 
         private static string GetLayoutId(eChartType chartType, bool isPareto)
         {
-            if (isPareto) return "paretoLine";
+            if (isPareto)
+            {
+                return "paretoLine";
+            }
+
             switch(chartType)
             {
                 case eChartType.Histogram:

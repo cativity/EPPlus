@@ -52,7 +52,11 @@ namespace OfficeOpenXml.Style
             }
             set
             {
-                if (value == null) throw new InvalidOperationException("Text can't be null");
+                if (value == null)
+                {
+                    throw new InvalidOperationException("Text can't be null");
+                }
+
                 _collection.ConvertRichtext();
                 SetXmlNodeString(TEXT_PATH, value, false);
                 if (PreserveSpace)
@@ -60,7 +64,10 @@ namespace OfficeOpenXml.Style
                     XmlElement elem = TopNode.SelectSingleNode(TEXT_PATH, NameSpaceManager) as XmlElement;
                     elem.SetAttribute("xml:space", "preserve");
                 }
-                if (_callback != null) _callback();
+                if (_callback != null)
+                {
+                    this._callback();
+                }
             }
         }
         /// <summary>
@@ -114,7 +121,10 @@ namespace OfficeOpenXml.Style
                         elem.RemoveAttribute("xml:space");
                     }
                 }
-                if (_callback != null) _callback();
+                if (_callback != null)
+                {
+                    this._callback();
+                }
             }
         }
         const string BOLD_PATH = "d:rPr/d:b";
@@ -138,7 +148,10 @@ namespace OfficeOpenXml.Style
                 {
                     DeleteNode(BOLD_PATH);
                 }
-                if (_callback != null) _callback();
+                if (_callback != null)
+                {
+                    this._callback();
+                }
             }
         }
         const string ITALIC_PATH = "d:rPr/d:i";
@@ -163,7 +176,10 @@ namespace OfficeOpenXml.Style
                 {
                     DeleteNode(ITALIC_PATH);
                 }
-                if (_callback != null) _callback();
+                if (_callback != null)
+                {
+                    this._callback();
+                }
             }
         }
         const string STRIKE_PATH = "d:rPr/d:strike";
@@ -187,7 +203,10 @@ namespace OfficeOpenXml.Style
                 {
                     DeleteNode(STRIKE_PATH);
                 }
-                if (_callback != null) _callback();
+                if (_callback != null)
+                {
+                    this._callback();
+                }
             }
         }
         const string UNDERLINE_PATH = "d:rPr/d:u";
@@ -211,7 +230,10 @@ namespace OfficeOpenXml.Style
                 {
                     DeleteNode(UNDERLINE_PATH);
                 }
-                if (_callback != null) _callback();
+                if (_callback != null)
+                {
+                    this._callback();
+                }
             }
         }
 
@@ -252,7 +274,10 @@ namespace OfficeOpenXml.Style
                 } else {
                     SetXmlNodeString(VERT_ALIGN_PATH, value.ToString().ToLowerInvariant());
                 }
-                if (_callback != null) _callback();
+                if (_callback != null)
+                {
+                    this._callback();
+                }
             }
         }
         const string SIZE_PATH = "d:rPr/d:sz/@val";
@@ -269,7 +294,10 @@ namespace OfficeOpenXml.Style
             {
                 _collection.ConvertRichtext();
                 SetXmlNodeString(SIZE_PATH, value.ToString(CultureInfo.InvariantCulture));
-                if (_callback != null) _callback();
+                if (_callback != null)
+                {
+                    this._callback();
+                }
             }
         }
         const string FONT_PATH = "d:rPr/d:rFont/@val";
@@ -286,7 +314,10 @@ namespace OfficeOpenXml.Style
             {
                 _collection.ConvertRichtext();
                 SetXmlNodeString(FONT_PATH, value);
-                if (_callback != null) _callback();
+                if (_callback != null)
+                {
+                    this._callback();
+                }
             }
         }
         internal const string COLOR_PATH = "d:rPr/d:color/@rgb";
@@ -339,7 +370,10 @@ namespace OfficeOpenXml.Style
             {
                 _collection.ConvertRichtext();
                 SetXmlNodeString(COLOR_PATH, value.ToArgb().ToString("X")/*.Substring(2, 6)*/);
-                if (_callback != null) _callback();
+                if (_callback != null)
+                {
+                    this._callback();
+                }
             }
         }
 

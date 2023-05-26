@@ -98,7 +98,9 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
                             var fromCol = address._fromCol < range._fromCol ? range._fromCol : address._fromCol;
 
                             if (fromRow != ce.Row || fromCol != ce.Column) //Only add the style for the top-left cell in the merged range.
+                            {
                                 continue;
+                            }
 
                             var mAdr = new ExcelAddressBase(ma);
                             var bottomStyleId = range.Worksheet._values.GetValue(mAdr._toRow, mAdr._fromCol)._styleId;

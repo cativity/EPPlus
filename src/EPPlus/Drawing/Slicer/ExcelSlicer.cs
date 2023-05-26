@@ -92,7 +92,11 @@ namespace OfficeOpenXml.Drawing.Slicer
                         throw new InvalidOperationException("Slicer Name is not unique");
                     }
                 }
-                if (Name != value) Name=value;
+                if (Name != value)
+                {
+                    this.Name=value;
+                }
+
                 _slicerXmlHelper.SetXmlNodeString("@name", value);
             }
         }

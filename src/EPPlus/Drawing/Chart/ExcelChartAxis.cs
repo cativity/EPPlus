@@ -538,7 +538,11 @@ namespace OfficeOpenXml.Drawing.Chart
             TextBody.ParagraphSpacing = true;
             TextBody.Rotation = 0;
 
-            if (Font.Kerning == 0) Font.Kerning = 12;
+            if (Font.Kerning == 0)
+            {
+                this.Font.Kerning = 12;
+            }
+
             Font.Bold = Font.Bold; //Must be set
 
             CreatespPrNode($"{_nsPrefix}:spPr");

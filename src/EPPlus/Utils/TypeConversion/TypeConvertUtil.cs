@@ -57,7 +57,11 @@ namespace OfficeOpenXml.Utils.TypeConversion
         public bool TryGetDateTime(out object returnDate)
         {
             returnDate = default;
-            if (!ReturnType.IsDateTime) return false;
+            if (!ReturnType.IsDateTime)
+            {
+                return false;
+            }
+
             if (Value.Object is double)
             {
                 returnDate = DateTime.FromOADate(Value.ToDouble());
@@ -82,7 +86,11 @@ namespace OfficeOpenXml.Utils.TypeConversion
         public bool TryGetTimeSpan(out object timeSpan)
         {
             timeSpan = default;
-            if (!ReturnType.IsTimeSpan) return false;
+            if (!ReturnType.IsTimeSpan)
+            {
+                return false;
+            }
+
             if (Value.Object is long)
             {
                 timeSpan = new TimeSpan(Convert.ToInt64(Value.Object));

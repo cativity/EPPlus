@@ -305,8 +305,15 @@ namespace EPPlusTest.Table
                 var table1 = ws.Tables["Table1"];
                 var table2 = ws.Tables["Table2"];
                 // Make sure the tables are where we expect them to be
-                if (table1.Address.ToString() != "B2:E3") Assert.Inconclusive();
-                if (table2.Address.ToString() != "B6:C7") Assert.Inconclusive();
+                if (table1.Address.ToString() != "B2:E3")
+                {
+                    Assert.Inconclusive();
+                }
+
+                if (table2.Address.ToString() != "B6:C7")
+                {
+                    Assert.Inconclusive();
+                }
 
                 // Add 10 rows to Table1
                 table1.AddRow(10);
@@ -334,8 +341,15 @@ namespace EPPlusTest.Table
                 var table3 = ws.Tables["Table3"];
                 var table4 = ws.Tables["Table4"];
                 // Make sure the tables are where we expect them to be
-                if (table3.Address.ToString() != "B2:C3") Assert.Inconclusive();
-                if (table4.Address.ToString() != "B6:E7") Assert.Inconclusive();
+                if (table3.Address.ToString() != "B2:C3")
+                {
+                    Assert.Inconclusive();
+                }
+
+                if (table4.Address.ToString() != "B6:E7")
+                {
+                    Assert.Inconclusive();
+                }
 
                 // Add 10 rows to Table3
                 table3.AddRow(10);

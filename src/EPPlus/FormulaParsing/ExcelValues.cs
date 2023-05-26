@@ -112,7 +112,11 @@ namespace OfficeOpenXml
             /// <returns></returns>
             public static bool IsErrorValue(object candidate)
             {
-                if(candidate == null || !(candidate is ExcelErrorValue)) return false;
+                if(candidate == null || !(candidate is ExcelErrorValue))
+                {
+                    return false;
+                }
+
                 var candidateString = candidate.ToString();
                 return (!string.IsNullOrEmpty(candidateString) && _values.ContainsKey(candidateString));
             }
@@ -166,7 +170,11 @@ namespace OfficeOpenXml
             {
                 return new ExcelErrorValue(Values.ToErrorType(val));
             }
-            if(string.IsNullOrEmpty(val)) throw new ArgumentNullException("val");
+            if(string.IsNullOrEmpty(val))
+            {
+                throw new ArgumentNullException("val");
+            }
+
             throw new ArgumentException("Not a valid error value: " + val);
         }
 
@@ -242,7 +250,11 @@ namespace OfficeOpenXml
         /// <returns>True if equals</returns>
         public override bool Equals(object obj)
         {
-            if (!(obj is ExcelErrorValue)) return false;
+            if (!(obj is ExcelErrorValue))
+            {
+                return false;
+            }
+
             return ((ExcelErrorValue) obj).ToString() == this.ToString();
         }
     }

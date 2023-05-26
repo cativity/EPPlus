@@ -29,7 +29,11 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance
         {
             ValidateArguments(arguments, 5);
             var durationResult = base.Execute(arguments, context);
-            if (durationResult.DataType == DataType.ExcelError) return durationResult;
+            if (durationResult.DataType == DataType.ExcelError)
+            {
+                return durationResult;
+            }
+
             var dur = durationResult.ResultNumeric;
             var yield = ArgToDecimal(arguments, 3);
             var frequency = ArgToDecimal(arguments, 4);

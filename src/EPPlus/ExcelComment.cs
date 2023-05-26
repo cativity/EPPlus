@@ -98,7 +98,11 @@ namespace OfficeOpenXml
         {
             get
             {
-                if(!string.IsNullOrEmpty(RichText.Text)) return RichText.Text;
+                if(!string.IsNullOrEmpty(RichText.Text))
+                {
+                    return this.RichText.Text;
+                }
+
                 return _text;
             }
             set

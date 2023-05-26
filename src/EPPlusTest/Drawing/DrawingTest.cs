@@ -62,7 +62,10 @@ namespace EPPlusTest
             var fileName = _pck.File.FullName;
 
             SaveAndCleanup(_pck);
-            if(File.Exists(fileName)) File.Copy(fileName, dirName + "\\DrawingRead.xlsx", true);
+            if(File.Exists(fileName))
+            {
+                File.Copy(fileName, dirName + "\\DrawingRead.xlsx", true);
+            }
         }
         [TestMethod]
         public void ReadDrawing()
@@ -70,10 +73,18 @@ namespace EPPlusTest
             using (ExcelPackage pck = new ExcelPackage(new FileInfo(_worksheetPath + @"DrawingRead.xlsx")))
             {
                 var ws = pck.Workbook.Worksheets["Pyramid"];
-                if (ws == null) Assert.Inconclusive("Pyramid worksheet is missing");
+                if (ws == null)
+                {
+                    Assert.Inconclusive("Pyramid worksheet is missing");
+                }
+
                 Assert.AreEqual(ws.Cells["V24"].Value, 104D);
                 ws = pck.Workbook.Worksheets["Scatter"];
-                if (ws == null) Assert.Inconclusive("Scatter worksheet is missing");
+                if (ws == null)
+                {
+                    Assert.Inconclusive("Scatter worksheet is missing");
+                }
+
                 var cht = ws.Drawings["ScatterChart1"] as ExcelScatterChart;
                 Assert.AreEqual(cht.Title.Text, "Header  Text");
                 cht.Title.Text = "Test";
@@ -707,13 +718,20 @@ namespace EPPlusTest
             using (var pck = OpenPackage("Drawingread.xlsx"))
             {
                 var ws = pck.Workbook.Worksheets["Shapes"];
-                if (ws == null) Assert.Inconclusive("Shapes worksheet is missing");
+                if (ws == null)
+                {
+                    Assert.Inconclusive("Shapes worksheet is missing");
+                }
 
                 var wsShapes = pck.Workbook.Worksheets.Add("Copy Shapes", ws);
                 Assert.AreEqual(187, wsShapes.Drawings.Count);
 
                 ws = pck.Workbook.Worksheets["Scatter"];
-                if (ws == null) Assert.Inconclusive("Scatter worksheet is missing");
+                if (ws == null)
+                {
+                    Assert.Inconclusive("Scatter worksheet is missing");
+                }
+
                 var wsScatterChart = pck.Workbook.Worksheets.Add("Copy Scatter", ws);
                 Assert.AreEqual(2, wsScatterChart.Drawings.Count);
                 var chart1 = wsScatterChart.Drawings[0].As.Chart.ScatterChart;
@@ -721,7 +739,11 @@ namespace EPPlusTest
                 Assert.AreEqual("'Copy Scatter'!V19:V24", chart1.Series[0].Series);
 
                 ws = pck.Workbook.Worksheets["Picture"];
-                if (ws == null) Assert.Inconclusive("Picture worksheet is missing");
+                if (ws == null)
+                {
+                    Assert.Inconclusive("Picture worksheet is missing");
+                }
+
                 var wsPicture = pck.Workbook.Worksheets.Add("Copy Picture", ws);
 
                 pck.SaveAs(new FileInfo(_worksheetPath+"DrawingCopied.xlsx"));
@@ -827,7 +849,10 @@ namespace EPPlusTest
             XmlNamespaceManager ns=new XmlNamespaceManager(new NameTable());
             ns.AddNamespace("c","http://schemas.openxmlformats.org/drawingml/2006/chart");
             var element = chart.ChartXml.SelectSingleNode("//c:plotVisOnly", ns);
-            if (element!=null) element.ParentNode.RemoveChild(element);
+            if (element!=null)
+            {
+                element.ParentNode.RemoveChild(element);
+            }
         }
         [TestMethod]
         public void DeleteDrawing()
@@ -933,7 +958,11 @@ namespace EPPlusTest
             var wsName = "ChartWorksheet";
             var pck = OpenPackage("DrawingRead.xlsx");
             var ws = ((ExcelChartsheet)pck.Workbook.Worksheets[wsName]);
-            if (ws == null) Assert.Inconclusive($"{wsName} worksheet is missing");
+            if (ws == null)
+            {
+                Assert.Inconclusive($"{wsName} worksheet is missing");
+            }
+
             var chart = ws.Chart;
 
             Assert.AreEqual(eChartStyle.Style23, chart.Style);

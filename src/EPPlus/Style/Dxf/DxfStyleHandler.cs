@@ -63,7 +63,10 @@ namespace OfficeOpenXml.Style.Dxf
             XmlNode dxfsNode = wb.Styles.TopNode.SelectSingleNode(ExcelStyles.DxfsPath, wb.NameSpaceManager);
             UpdateTableStyles(wb, wb.Styles, dxfsNode);
             UpdateDxfXmlWorksheet(wb, wb.Styles, dxfsNode);            
-            if (dxfsNode != null) (dxfsNode as XmlElement).SetAttribute("count", wb.Styles.Dxfs.Count.ToString());
+            if (dxfsNode != null)
+            {
+                (dxfsNode as XmlElement).SetAttribute("count", wb.Styles.Dxfs.Count.ToString());
+            }
 
             UpdateSlicerStyles(wb, wb.Styles, dxfsNode);
         }
@@ -115,7 +118,11 @@ namespace OfficeOpenXml.Style.Dxf
         {
             foreach (var ws in wb.Worksheets)
             {
-                if (ws is ExcelChartsheet) continue;
+                if (ws is ExcelChartsheet)
+                {
+                    continue;
+                }
+
                 UpdateConditionalFormatting(ws, styles.Dxfs, dxfsNode);
                 UpdateDxfXmlTables(styles, dxfsNode, ws);
                 UpdateDxfXmlPivotTables(styles, dxfsNode, ws);
@@ -143,7 +150,11 @@ namespace OfficeOpenXml.Style.Dxf
 
         private static void UpdateDxfXmlPivotTables(ExcelStyles styles, XmlNode dxfsNode, ExcelWorksheet ws)
         {
-            if (ws.HasLoadedPivotTables == false) return;
+            if (ws.HasLoadedPivotTables == false)
+            {
+                return;
+            }
+
             foreach (var pt in ws.PivotTables)
             {
                 for(int i= 0; i< pt.Styles.Count;i++)

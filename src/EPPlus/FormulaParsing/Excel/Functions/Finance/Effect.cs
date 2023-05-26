@@ -30,7 +30,10 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance
             var nominalRate = ArgToDecimal(arguments, 0);
             var npery = ArgToInt(arguments, 1);
             if (nominalRate <= 0 || npery < 1)
-                return CreateResult(eErrorType.Num);
+            {
+                return this.CreateResult(eErrorType.Num);
+            }
+
             var result = (System.Math.Pow(nominalRate/npery + 1d, npery) - 1d);
             return CreateResult(result, DataType.Decimal);
         }

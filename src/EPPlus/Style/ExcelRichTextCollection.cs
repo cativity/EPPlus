@@ -57,7 +57,11 @@ namespace OfficeOpenXml.Style
             get
             {
                 var item=_list[Index];
-                if(_cells!=null) item.SetCallback(UpdateCells);
+                if(_cells!=null)
+                {
+                    item.SetCallback(this.UpdateCells);
+                }
+
                 return item;
             }
         }
@@ -79,7 +83,11 @@ namespace OfficeOpenXml.Style
         /// <returns></returns>
         public ExcelRichText Add(string Text, bool NewParagraph = false)
         {
-            if (NewParagraph) Text += "\n";
+            if (NewParagraph)
+            {
+                Text += "\n";
+            }
+
             return Insert(_list.Count, Text);
         }
 
@@ -91,7 +99,11 @@ namespace OfficeOpenXml.Style
         /// <returns></returns>
         public ExcelRichText Insert(int index, string text)
         {
-            if (text==null) throw new ArgumentException("Text can't be null","text");
+            if (text==null)
+            {
+                throw new ArgumentException("Text can't be null","text");
+            }
+
             ConvertRichtext();
             XmlDocument doc;
             if (TopNode is XmlDocument)
@@ -157,7 +169,11 @@ namespace OfficeOpenXml.Style
 
         internal void ConvertRichtext()
         {
-            if (_cells == null) return;
+            if (_cells == null)
+            {
+                return;
+            }
+
             var isRt = _cells.Worksheet._flags.GetFlagValue(_cells._fromRow, _cells._fromCol, CellFlags.RichText);
             if (Count == 1 && isRt == false)
             {
@@ -204,7 +220,10 @@ namespace OfficeOpenXml.Style
         {
             TopNode.RemoveChild(_list[Index].TopNode);
             _list.RemoveAt(Index);
-            if (_cells != null && _list.Count==0) _cells.SetIsRichTextFlag(false);
+            if (_cells != null && _list.Count==0)
+            {
+                this._cells.SetIsRichTextFlag(false);
+            }
         }
         /// <summary>
         /// Removes an item
@@ -215,7 +234,10 @@ namespace OfficeOpenXml.Style
             TopNode.RemoveChild(Item.TopNode);
             _list.Remove(Item);
             UpdateCells();
-            if (_cells != null && _list.Count == 0) _cells.SetIsRichTextFlag(false);
+            if (_cells != null && _list.Count == 0)
+            {
+                this._cells.SetIsRichTextFlag(false);
+            }
         }       
         /// <summary>
         /// The text

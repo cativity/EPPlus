@@ -107,7 +107,11 @@ namespace OfficeOpenXml.Drawing.Vml
                 }
                 else
                 {
-                    if (LineStyle == eVmlLineStyle.NoLine) LineStyle = eVmlLineStyle.Single;
+                    if (LineStyle == eVmlLineStyle.NoLine)
+                    {
+                        this.LineStyle = eVmlLineStyle.Single;
+                    }
+
                     SetXmlNodeString("@strokeweight", _width.GetValueString());
                 }
             }

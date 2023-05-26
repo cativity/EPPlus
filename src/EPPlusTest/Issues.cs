@@ -135,13 +135,15 @@ namespace EPPlusTest
         public void Issue15141()
         {
             using (ExcelPackage package = new ExcelPackage())
-            using (ExcelWorksheet sheet = package.Workbook.Worksheets.Add("Test"))
             {
-                sheet.Cells.Style.Fill.PatternType = ExcelFillStyle.Solid;
-                sheet.Cells.Style.Fill.BackgroundColor.SetColor(Color.White);
-                sheet.Cells[1, 1, 1, 3].Style.Border.BorderAround(ExcelBorderStyle.Thin);
-                sheet.Cells[1, 5, 2, 5].Style.Border.BorderAround(ExcelBorderStyle.Thin);
-                ExcelColumn column = sheet.Column(3); // fails with exception
+                using (ExcelWorksheet sheet = package.Workbook.Worksheets.Add("Test"))
+                {
+                    sheet.Cells.Style.Fill.PatternType = ExcelFillStyle.Solid;
+                    sheet.Cells.Style.Fill.BackgroundColor.SetColor(Color.White);
+                    sheet.Cells[1, 1, 1, 3].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                    sheet.Cells[1, 5, 2, 5].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                    ExcelColumn column = sheet.Column(3); // fails with exception
+                }
             }
         }
         [TestMethod]
@@ -1478,7 +1480,10 @@ namespace EPPlusTest
             {
                 var overviewSheet = package.Workbook.Worksheets["Overview"];
                 if (overviewSheet != null)
+                {
                     package.Workbook.Worksheets.Delete(overviewSheet);
+                }
+
                 overviewSheet = package.Workbook.Worksheets.Add("Overview");
                 var serverSheet = package.Workbook.Worksheets["Servers"];
                 var serverPivot = overviewSheet.PivotTables.Add(overviewSheet.Cells["A4"], serverSheet.Cells[serverSheet.Dimension.Address], "ServerPivot");
@@ -2080,7 +2085,10 @@ namespace EPPlusTest
                 // Header area (along with freezing the header in the view)
                 ws.Cells[1, 1, 1, 8].Style.Font.Bold = true;
                 for (int i = 1; i < 9; ++i)
+                {
                     ws.Cells[1, i].Value = $"Test {i}";
+                }
+
                 ws.View.FreezePanes(2, 1);
 
                 if (onColumns)
@@ -2101,7 +2109,10 @@ namespace EPPlusTest
                 for (int row = 2; row < 30; ++row)
                 {
                     for (int i = 1; i < 9; ++i)
+                    {
                         ws.Cells[row, i].Value = row % 2 == 0 ? (8 * (row - 2) + i).ToString() : $"Test {8 * (row - 2) + i}";
+                    }
+
                     if (!onColumns)
                     {
                         // Set the horizontal alignment on this row's cells
@@ -2837,7 +2848,9 @@ namespace EPPlusTest
             using (var p = OpenTemplatePackage("s277.xlsx"))
             {
                 foreach (var ws in p.Workbook.Worksheets)
+                {
                     ws.Drawings.Clear();
+                }
             }
         }
         [TestMethod]
@@ -3821,15 +3834,27 @@ namespace EPPlusTest
                     {
                         var theme = cell.Style.Font.Color.Theme.ToString();
 
-                        if (theme == "Text1") theme = "Dark1";
-                        else if (theme == "Text2") theme = "Dark2";
-                        else if (theme == "Background1") theme = "Light1";
-                        else if (theme == "Background2") theme = "Light2";
+                        if (theme == "Text1")
+                        {
+                            theme = "Dark1";
+                        }
+                        else if (theme == "Text2")
+                        {
+                            theme = "Dark2";
+                        }
+                        else if (theme == "Background1")
+                        {
+                            theme = "Light1";
+                        }
+                        else if (theme == "Background2")
+                        {
+                            theme = "Light2";
+                        }
 
                         var colorManager = (ExcelDrawingThemeColorManager)p.Workbook.ThemeManager.CurrentTheme.ColorScheme
-                                                        .GetType()
-                                                        .GetProperty(theme)
-                                                        .GetValue(p.Workbook.ThemeManager.CurrentTheme.ColorScheme);
+                                                                           .GetType()
+                                                                           .GetProperty(theme)
+                                                                           .GetValue(p.Workbook.ThemeManager.CurrentTheme.ColorScheme);
 
                         switch (colorManager.ColorType)
                         {
@@ -3898,19 +3923,30 @@ namespace EPPlusTest
             {
                 for (int row = 1; row <= p.Workbook.Worksheets[0].Dimension.End.Row; row++)
                 {
-                    if (p.Workbook.Worksheets[0].Cells[row, 1].Text == "") continue;
+                    if (p.Workbook.Worksheets[0].Cells[row, 1].Text == "")
+                    {
+                        continue;
+                    }
 
                     var cell = p.Workbook.Worksheets[0].Cells[row, 3];
 
                     Debug.WriteLine($"\n--> {p.Workbook.Worksheets[0].Cells[row, 1].Text}");
                     Debug.Write($"Cell Font: [{cell.Style.Font.Name}], Size: [{cell.Style.Font.Size}]");
-                    if (cell.Style.Font.Bold) Console.Write(", Bold");
+                    if (cell.Style.Font.Bold)
+                    {
+                        Console.Write(", Bold");
+                    }
+
                     Debug.WriteLine("");
 
                     foreach (var richText in cell.RichText)
                     {
                         Debug.Write($"RichText {richText.Text} Font: [{richText.FontName}], Size: [{richText.Size}]");
-                        if (richText.Bold) Console.Write(", Bold");
+                        if (richText.Bold)
+                        {
+                            Console.Write(", Bold");
+                        }
+
                         Debug.WriteLine("");
                     }
                 }
@@ -4029,7 +4065,9 @@ namespace EPPlusTest
 
                 var rangeWithPeriod = sheet.Cells["A1:A3,A5,A6,A7,A8,A10,A9,A11"];
                 foreach (var cell in rangeWithPeriod)
+                {
                     cellsInRange = $"{cellsInRange};{cell.Address}";
+                }
 
                 Assert.AreEqual(";A1;A2;A3;A5;A6;A7;A8;A10;A9;A11", cellsInRange);
 
@@ -4742,8 +4780,12 @@ namespace EPPlusTest
             var ws = ep.Workbook.Worksheets.Add("Test");
 
             for (int row = 1; row < 10; ++row)
+            {
                 for (int col = 1; col < 10; ++col)
+                {
                     ws.Cells[row, col].Value = $"{row}:{col}";
+                }
+            }
 
             var wsCol = ws.Column(3);
             wsCol.Style.Border.Left.Style = wsCol.Style.Border.Right.Style = ExcelBorderStyle.Thick;

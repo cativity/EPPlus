@@ -10,11 +10,16 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.Implementations
         {
             if (startPeriod <= 0 || endPeriod < startPeriod || rate <= 0d || endPeriod > nPer ||
                 pv <= 0d)
+            {
                 return new FinanceCalcResult<double>(eErrorType.Num);
+            }
 
-            
             var result = InternalMethods.PMT_Internal(rate, nPer, pv, 0d, type );
-            if (result.HasError) return new FinanceCalcResult<double>(result.ExcelErrorType);
+            if (result.HasError)
+            {
+                return new FinanceCalcResult<double>(result.ExcelErrorType);
+            }
+
             var pmtResult = result.Result;
       
             var retVal = 0d;
@@ -22,7 +27,9 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.Implementations
             if(startPeriod == 1 )
             {
                 if(type == PmtDue.EndOfPeriod )
+                {
                     retVal = -pv;
+                }
 
                 startPeriod++;
             }
@@ -30,7 +37,11 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.Implementations
             for(int i = startPeriod; i <= endPeriod; i++ )
             {
                 var res = FvImpl.Fv(rate, (i - 1 - (int)type), pmtResult, pv, type);
-                if (res.HasError) return new FinanceCalcResult<double>(res.ExcelErrorType);
+                if (res.HasError)
+                {
+                    return new FinanceCalcResult<double>(res.ExcelErrorType);
+                }
+
                 retVal += type == PmtDue.BeginningOfPeriod ? res.Result - pmtResult : res.Result;
             }
       

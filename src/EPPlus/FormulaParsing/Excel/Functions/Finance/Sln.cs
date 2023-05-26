@@ -33,7 +33,9 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance
             var life = ArgToDecimal(arguments, 2);
 
             if (life == 0)
-                return CreateResult(eErrorType.Div0);
+            {
+                return this.CreateResult(eErrorType.Div0);
+            }
 
             return CreateResult((cost - salvage) / life, DataType.Decimal);
         }

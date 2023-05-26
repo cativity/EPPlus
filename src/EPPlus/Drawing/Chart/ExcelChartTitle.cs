@@ -207,7 +207,11 @@ namespace OfficeOpenXml.Drawing.Chart
         private ExcelChartStyleEntry GetStylePart()
         {
             var style = _chart._styleManager?.Style;
-            if (style == null) return null;
+            if (style == null)
+            {
+                return null;
+            }
+
             if (TopNode.ParentNode.LocalName == "chart")
             {
                 return _chart._styleManager.Style.Title;
@@ -335,7 +339,11 @@ namespace OfficeOpenXml.Drawing.Chart
             TextBody.ParagraphSpacing = true;
             TextBody.Rotation = 0;
 
-            if (Font.Kerning == 0) Font.Kerning = 12;
+            if (Font.Kerning == 0)
+            {
+                this.Font.Kerning = 12;
+            }
+
             Font.Bold = Font.Bold; //Must be set
 
             CreatespPrNode($"{_nsPrefix}:spPr");
@@ -366,7 +374,10 @@ namespace OfficeOpenXml.Drawing.Chart
                 var applyStyle = (RichText.Count == 0);
                 LinkedCell = null;
                 RichText.Text = value;
-                if (applyStyle) _chart.ApplyStyleOnPart(this, _chart.StyleManager?.Style?.Title, true);
+                if (applyStyle)
+                {
+                    this._chart.ApplyStyleOnPart(this, this._chart.StyleManager?.Style?.Title, true);
+                }
             }
         }
         /// <summary>
@@ -389,7 +400,11 @@ namespace OfficeOpenXml.Drawing.Chart
                     {
                         ws = _chart.WorkSheet.Workbook.Worksheets[address.WorkSheetName];
                     }
-                    if (ws == null) return null;
+                    if (ws == null)
+                    {
+                        return null;
+                    }
+
                     return ws.Cells[address.LocalAddress];
                 }
                 return null;

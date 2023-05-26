@@ -29,7 +29,11 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
             ValidateArguments(arguments, 2);
             var arrArg = arguments.Take(1);
             var arr = ArgsToDoubleEnumerable(arrArg, context).Select(x => (double)x).ToList();
-            if (!arr.Any()) return CreateResult(eErrorType.Value);
+            if (!arr.Any())
+            {
+                return this.CreateResult(eErrorType.Value);
+            }
+
             var quart = ArgToInt(arguments, 1);
             switch (quart)
             {

@@ -32,14 +32,24 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions
                 var r=((IRangeInfo)obj).FirstOrDefault();
                 return r == null ? 0 : r.ValueDouble;
             }
-            if (obj is double) return obj;
-            if (obj.IsNumeric()) return util.ConvertUtil.GetValueDouble(obj);
+            if (obj is double)
+            {
+                return obj;
+            }
+
+            if (obj.IsNumeric())
+            {
+                return util.ConvertUtil.GetValueDouble(obj);
+            }
+
             var str = obj != null ? obj.ToString() : string.Empty;
             try
             {
                 double d;
                 if (double.TryParse(str, NumberStyles.Any, CultureInfo.InvariantCulture, out d))
+                {
                     return d;
+                }
 
                 return System.DateTime.Parse(str, CultureInfo.CurrentCulture, DateTimeStyles.None).ToOADate();
             }

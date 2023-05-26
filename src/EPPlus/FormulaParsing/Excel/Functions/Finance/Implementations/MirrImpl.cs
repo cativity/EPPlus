@@ -91,7 +91,9 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.Implementations
             dNpvNeg = LDoNPV(FinanceRate, ref ValueArray, -1);
 
             if (dNpvNeg == 0.0)
+            {
                 return new FinanceCalcResult<double>(eErrorType.Div0);
+            }
 
             dNpvPos = LDoNPV(ReinvestRate, ref ValueArray, 1); // npv of +ve values
             dTemp1 = ReinvestRate + 1.0;
@@ -100,7 +102,9 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.Implementations
             dTemp = -dNpvPos * System.Math.Pow(dTemp1, dNTemp2) / (dNpvNeg * (FinanceRate + 1.0));
 
             if (dTemp < 0d)
+            {
                 return new FinanceCalcResult<double>(eErrorType.Value);
+            }
 
             dTemp1 = 1d / (lCVal - 1d);
 

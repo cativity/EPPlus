@@ -60,7 +60,10 @@ namespace OfficeOpenXml.LoadFunctions
             {
                 _range.Worksheet._values.SetValueRow_Value(row++, _range._fromCol, dr.ItemArray);
             }
-            if (row != _range._fromRow) row--;
+            if (row != _range._fromRow)
+            {
+                row--;
+            }
 
             // set table style
             int rows = (_dataTable.Rows.Count == 0 ? 1 : _dataTable.Rows.Count) + (_printHeaders ? 1 : 0);

@@ -46,7 +46,10 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Database
                 var crit = c.Value;
                 if (candidate.IsNumeric() && crit.IsNumeric())
                 {
-                    if(System.Math.Abs(ConvertUtil.GetValueDouble(candidate) - ConvertUtil.GetValueDouble(crit)) > double.Epsilon) return false;
+                    if(System.Math.Abs(ConvertUtil.GetValueDouble(candidate) - ConvertUtil.GetValueDouble(crit)) > double.Epsilon)
+                    {
+                        return false;
+                    }
                 }
                 else
                 {
@@ -62,7 +65,11 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Database
 
         private bool Evaluate(object obj, string expression)
         {
-            if (obj == null) return false;
+            if (obj == null)
+            {
+                return false;
+            }
+
             double? candidate = default(double?);
             if (ConvertUtil.IsNumericOrDate(obj))
             {

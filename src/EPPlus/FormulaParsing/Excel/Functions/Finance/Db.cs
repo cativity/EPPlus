@@ -40,9 +40,14 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance
             }
 
             if (cost < 0 || salvage < 0 || life <= 0 || period <= 0 || month <= 0 || month > 12)
-                return CreateResult(eErrorType.Num);
+            {
+                return this.CreateResult(eErrorType.Num);
+            }
+
             if (period > life && month == 12 || period > (life + 1))
-                return CreateResult(eErrorType.Num);
+            {
+                return this.CreateResult(eErrorType.Num);
+            }
 
             // calculations below as described at https://support.microsoft.com/en-us/office/db-function-354e7d28-5f93-4ff1-8a52-eb4ee549d9d7?ui=en-us&rs=en-us&ad=us
 
@@ -53,7 +58,10 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance
             // calculate first period
             var firstDepr = cost * rate * month / 12;
 
-            if (period == 1) return CreateResult(firstDepr, DataType.Decimal);
+            if (period == 1)
+            {
+                return this.CreateResult(firstDepr, DataType.Decimal);
+            }
 
             // remaining periods
             var total = firstDepr;

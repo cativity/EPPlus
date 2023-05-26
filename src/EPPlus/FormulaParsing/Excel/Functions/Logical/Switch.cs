@@ -51,7 +51,11 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Logical
                     return _compileResultFactory.Create(arguments.ElementAt(x + 1).Value);
                 }
             }
-            if (arguments.Count() % 2 == 0) return _compileResultFactory.Create(arguments.Last().Value);
+            if (arguments.Count() % 2 == 0)
+            {
+                return this._compileResultFactory.Create(arguments.Last().Value);
+            }
+
             return new CompileResult(eErrorType.NA);
         }
 
@@ -67,7 +71,11 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Logical
             {
                 return true;
             }
-            if (right == null) return false;
+            if (right == null)
+            {
+                return false;
+            }
+
             return right.Equals(left);
         }
 

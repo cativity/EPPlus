@@ -245,8 +245,16 @@ namespace OfficeOpenXml.ExternalReferences
                 if(_file==null)
                 {
                     var filePath = Relation?.TargetUri?.OriginalString;
-                    if (string.IsNullOrEmpty(filePath) || HasWebProtocol(filePath)) return null;
-                    if (filePath.StartsWith("file:///")) filePath = filePath.Substring(8);
+                    if (string.IsNullOrEmpty(filePath) || HasWebProtocol(filePath))
+                    {
+                        return null;
+                    }
+
+                    if (filePath.StartsWith("file:///"))
+                    {
+                        filePath = filePath.Substring(8);
+                    }
+
                     try
                     {
                         
@@ -399,7 +407,11 @@ namespace OfficeOpenXml.ExternalReferences
 
         private void SetTarget(FileInfo file)
         {
-            if (file == null) return;
+            if (file == null)
+            {
+                return;
+            }
+
             if (IsPathRelative)
             {
                 Relation.TargetUri = null;
@@ -422,7 +434,11 @@ namespace OfficeOpenXml.ExternalReferences
         public bool IsPathRelative { get; set; } = true;
         private bool SetPackageFromOtherReference(ExcelExternalLinksCollection erCollection, FileInfo file)
         {
-            if (erCollection == null) return false;
+            if (erCollection == null)
+            {
+                return false;
+            }
+
             foreach (var er in erCollection)
             {
                 if (er!=this && er.ExternalLinkType == eExternalLinkType.ExternalWorkbook)
@@ -665,7 +681,11 @@ namespace OfficeOpenXml.ExternalReferences
         }
         private void UpdateCacheForAddress(ExcelAddressBase formulaAddress, string sfAddress)
         {
-            if (formulaAddress==null && formulaAddress._fromRow < 0 || formulaAddress._fromCol < 0) return;
+            if (formulaAddress==null && formulaAddress._fromRow < 0 || formulaAddress._fromCol < 0)
+            {
+                return;
+            }
+
             if (string.IsNullOrEmpty(sfAddress) == false)
             {
                 var a = new ExcelAddress(sfAddress);

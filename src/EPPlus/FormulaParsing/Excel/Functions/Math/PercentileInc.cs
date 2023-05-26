@@ -30,7 +30,11 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
             ValidateArguments(arguments, 2);
             var arr = ArgsToDoubleEnumerable(arguments.Take(1), context).Select(x => (double)x).ToList();
             var percentile = ArgToDecimal(arguments, 1);
-            if (percentile < 0 || percentile > 1) return CreateResult(eErrorType.Num);
+            if (percentile < 0 || percentile > 1)
+            {
+                return this.CreateResult(eErrorType.Num);
+            }
+
             arr.Sort();
             var nElements = arr.Count;
             var dIx = percentile * (nElements - 1);

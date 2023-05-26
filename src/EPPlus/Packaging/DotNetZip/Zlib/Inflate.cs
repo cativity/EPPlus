@@ -136,7 +136,10 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
             readAt = writeAt = 0;
 
             if (checkfn != null)
-                _codec._Adler32 = check = Adler.Adler32(0, null, 0, 0);
+            {
+                this._codec._Adler32 = this.check = Adler.Adler32(0, null, 0, 0);
+            }
+
             return oldCheck;
         }
 
@@ -313,14 +316,23 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
 
                         t = left;
                         if (t > n)
+                        {
                             t = n;
+                        }
+
                         if (t > m)
+                        {
                             t = m;
+                        }
+
                         Array.Copy(_codec.InputBuffer, p, window, q, t);
                         p += t; n -= t;
                         q += t; m -= t;
                         if ((left -= t) != 0)
+                        {
                             break;
+                        }
+
                         mode = last != 0 ? InflateBlockMode.DRY : InflateBlockMode.TYPE;
                         break;
 
@@ -695,15 +707,22 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
                 if (nBytes == 0)
                 {
                     if (r == ZlibConstants.Z_BUF_ERROR)
+                    {
                         r = ZlibConstants.Z_OK;
+                    }
+
                     return r;
                 }
 
                 if (nBytes > _codec.AvailableBytesOut)
-                    nBytes = _codec.AvailableBytesOut;
+                {
+                    nBytes = this._codec.AvailableBytesOut;
+                }
 
                 if (nBytes != 0 && r == ZlibConstants.Z_BUF_ERROR)
+                {
                     r = ZlibConstants.Z_OK;
+                }
 
                 // update counters
                 _codec.AvailableBytesOut -= nBytes;
@@ -711,7 +730,9 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
 
                 // update check information
                 if (checkfn != null)
-                    _codec._Adler32 = check = Adler.Adler32(check, window, readAt, nBytes);
+                {
+                    this._codec._Adler32 = this.check = Adler.Adler32(this.check, this.window, this.readAt, nBytes);
+                }
 
                 // copy as far as end of window
                 Array.Copy(window, readAt, _codec.OutputBuffer, _codec.NextOut, nBytes);
@@ -724,9 +745,14 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
                     // wrap pointers
                     readAt = 0;
                     if (writeAt == end)
-                        writeAt = 0;
+                    {
+                        this.writeAt = 0;
+                    }
                 }
-                else pass++;
+                else
+                {
+                    pass++;
+                }
             }
 
             // done
@@ -863,7 +889,9 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
                         while (k < j)
                         {
                             if (n != 0)
+                            {
                                 r = ZlibConstants.Z_OK;
+                            }
                             else
                             {
                                 blocks.bitb = b; blocks.bitk = k;
@@ -931,7 +959,9 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
                         while (k < j)
                         {
                             if (n != 0)
+                            {
                                 r = ZlibConstants.Z_OK;
+                            }
                             else
                             {
                                 blocks.bitb = b; blocks.bitk = k;
@@ -960,7 +990,9 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
                         while (k < j)
                         {
                             if (n != 0)
+                            {
                                 r = ZlibConstants.Z_OK;
+                            }
                             else
                             {
                                 blocks.bitb = b; blocks.bitk = k;
@@ -1009,7 +1041,9 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
                         while (k < j)
                         {
                             if (n != 0)
+                            {
                                 r = ZlibConstants.Z_OK;
+                            }
                             else
                             {
                                 blocks.bitb = b; blocks.bitk = k;
@@ -1069,7 +1103,10 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
                             blocks.window[q++] = blocks.window[f++]; m--;
 
                             if (f == blocks.end)
+                            {
                                 f = 0;
+                            }
+
                             len--;
                         }
                         mode = START;
@@ -1471,7 +1508,10 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
         internal int End()
         {
             if (blocks != null)
-                blocks.Free();
+            {
+                this.blocks.Free();
+            }
+
             blocks = null;
             return ZlibConstants.Z_OK;
         }
@@ -1515,9 +1555,11 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
             int b;
 
             if (_codec.InputBuffer == null)
+            {
                 throw new ZlibException("InputBuffer is null. ");
+            }
 
-//             int f = (flush == FlushType.Finish)
+            //             int f = (flush == FlushType.Finish)
 //                 ? ZlibConstants.Z_BUF_ERROR
 //                 : ZlibConstants.Z_OK;
 
@@ -1530,7 +1572,11 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
                 switch (mode)
                 {
                     case InflateManagerMode.METHOD:
-                        if (_codec.AvailableBytesIn == 0) return r;
+                        if (_codec.AvailableBytesIn == 0)
+                        {
+                            return r;
+                        }
+
                         r = f;
                         _codec.AvailableBytesIn--;
                         _codec.TotalBytesIn++;
@@ -1553,7 +1599,11 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
 
 
                     case InflateManagerMode.FLAG:
-                        if (_codec.AvailableBytesIn == 0) return r;
+                        if (_codec.AvailableBytesIn == 0)
+                        {
+                            return r;
+                        }
+
                         r = f;
                         _codec.AvailableBytesIn--;
                         _codec.TotalBytesIn++;
@@ -1573,7 +1623,11 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
                         break;
 
                     case InflateManagerMode.DICT4:
-                        if (_codec.AvailableBytesIn == 0) return r;
+                        if (_codec.AvailableBytesIn == 0)
+                        {
+                            return r;
+                        }
+
                         r = f;
                         _codec.AvailableBytesIn--;
                         _codec.TotalBytesIn++;
@@ -1582,7 +1636,11 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
                         break;
 
                     case InflateManagerMode.DICT3:
-                        if (_codec.AvailableBytesIn == 0) return r;
+                        if (_codec.AvailableBytesIn == 0)
+                        {
+                            return r;
+                        }
+
                         r = f;
                         _codec.AvailableBytesIn--;
                         _codec.TotalBytesIn++;
@@ -1592,7 +1650,11 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
 
                     case InflateManagerMode.DICT2:
 
-                        if (_codec.AvailableBytesIn == 0) return r;
+                        if (_codec.AvailableBytesIn == 0)
+                        {
+                            return r;
+                        }
+
                         r = f;
                         _codec.AvailableBytesIn--;
                         _codec.TotalBytesIn++;
@@ -1602,7 +1664,11 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
 
 
                     case InflateManagerMode.DICT1:
-                        if (_codec.AvailableBytesIn == 0) return r;
+                        if (_codec.AvailableBytesIn == 0)
+                        {
+                            return r;
+                        }
+
                         r = f;
                         _codec.AvailableBytesIn--; _codec.TotalBytesIn++;
                         expectedCheck += (uint)(_codec.InputBuffer[_codec.NextIn++] & 0x000000ff);
@@ -1627,10 +1693,15 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
                             break;
                         }
 
-                        if (r == ZlibConstants.Z_OK) r = f;
+                        if (r == ZlibConstants.Z_OK)
+                        {
+                            r = f;
+                        }
 
                         if (r != ZlibConstants.Z_STREAM_END)
+                        {
                             return r;
+                        }
 
                         r = f;
                         computedCheck = blocks.Reset();
@@ -1643,7 +1714,11 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
                         break;
 
                     case InflateManagerMode.CHECK4:
-                        if (_codec.AvailableBytesIn == 0) return r;
+                        if (_codec.AvailableBytesIn == 0)
+                        {
+                            return r;
+                        }
+
                         r = f;
                         _codec.AvailableBytesIn--;
                         _codec.TotalBytesIn++;
@@ -1652,7 +1727,11 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
                         break;
 
                     case InflateManagerMode.CHECK3:
-                        if (_codec.AvailableBytesIn == 0) return r;
+                        if (_codec.AvailableBytesIn == 0)
+                        {
+                            return r;
+                        }
+
                         r = f;
                         _codec.AvailableBytesIn--; _codec.TotalBytesIn++;
                         expectedCheck += (uint)((_codec.InputBuffer[_codec.NextIn++] << 16) & 0x00ff0000);
@@ -1660,7 +1739,11 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
                         break;
 
                     case InflateManagerMode.CHECK2:
-                        if (_codec.AvailableBytesIn == 0) return r;
+                        if (_codec.AvailableBytesIn == 0)
+                        {
+                            return r;
+                        }
+
                         r = f;
                         _codec.AvailableBytesIn--;
                         _codec.TotalBytesIn++;
@@ -1669,7 +1752,11 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
                         break;
 
                     case InflateManagerMode.CHECK1:
-                        if (_codec.AvailableBytesIn == 0) return r;
+                        if (_codec.AvailableBytesIn == 0)
+                        {
+                            return r;
+                        }
+
                         r = f;
                         _codec.AvailableBytesIn--; _codec.TotalBytesIn++;
                         expectedCheck += (uint)(_codec.InputBuffer[_codec.NextIn++] & 0x000000ff);
@@ -1703,7 +1790,9 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
             int index = 0;
             int length = dictionary.Length;
             if (mode != InflateManagerMode.DICT0)
+            {
                 throw new ZlibException("Stream error.");
+            }
 
             if (Adler.Adler32(1, dictionary, 0, dictionary.Length) != _codec._Adler32)
             {
@@ -1739,7 +1828,10 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
                 marker = 0;
             }
             if ((n = _codec.AvailableBytesIn) == 0)
+            {
                 return ZlibConstants.Z_BUF_ERROR;
+            }
+
             p = _codec.NextIn;
             m = marker;
 

@@ -124,7 +124,11 @@ namespace OfficeOpenXml.Style
         {
             get
             {
-                if (_parent.Index < 0) return null;
+                if (_parent.Index < 0)
+                {
+                    return null;
+                }
+
                 return GetSource().Theme;
             }
             internal set
@@ -139,7 +143,11 @@ namespace OfficeOpenXml.Style
         {
             get
             {
-                if (_parent.Index < 0) return 0;
+                if (_parent.Index < 0)
+                {
+                    return 0;
+                }
+
                 return GetSource().Tint;
             }
             set
@@ -158,7 +166,11 @@ namespace OfficeOpenXml.Style
         {
             get
             {
-                if (_parent.Index < 0) return null;
+                if (_parent.Index < 0)
+                {
+                    return null;
+                }
+
                 return GetSource().Rgb;
             }
             internal set
@@ -174,7 +186,11 @@ namespace OfficeOpenXml.Style
         {
             get
             {
-                if (_parent.Index < 0) return -1;
+                if (_parent.Index < 0)
+                {
+                    return -1;
+                }
+
                 return GetSource().Indexed;
             }
             set
@@ -193,7 +209,10 @@ namespace OfficeOpenXml.Style
         {
             get
             {
-                if (_parent.Index < 0) return false;
+                if (_parent.Index < 0)
+                {
+                    return false;
+                }
 
                 return GetSource().Auto;
             }

@@ -96,7 +96,11 @@ namespace OfficeOpenXml.VBA.Signatures
 
         public HashAlgorithm GetHashAlgorithm()
         {
-            if (string.IsNullOrEmpty(AlgorithmIdentifierOId)) return GetHashAlgorithmDefault();
+            if (string.IsNullOrEmpty(AlgorithmIdentifierOId))
+            {
+                return this.GetHashAlgorithmDefault();
+            }
+
             switch(AlgorithmIdentifierOId)
             {
                 case HashAlgorithmOids.MD5:

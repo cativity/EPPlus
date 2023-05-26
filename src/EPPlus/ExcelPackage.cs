@@ -458,7 +458,11 @@ namespace OfficeOpenXml
         /// <returns></returns>
         private void CreateFromTemplate(FileInfo template, string password)
         {
-            if (template != null) template.Refresh();
+            if (template != null)
+            {
+                template.Refresh();
+            }
+
             if (template.Exists)
             {
                 if(template.Length==0)
@@ -466,7 +470,9 @@ namespace OfficeOpenXml
                     throw new IOException($"{template.FullName} cannot be a zero-byte file.");
                 }
                 if (_stream==null)
-                    _stream = RecyclableMemory.GetStream();
+                {
+                    this._stream = RecyclableMemory.GetStream();
+                }
 
                 var ms = RecyclableMemory.GetStream();
                 if (password != null)
@@ -503,14 +509,25 @@ namespace OfficeOpenXml
 				}
             }
             else
+            {
                 throw new Exception("Passed invalid TemplatePath to Excel Template");
+            }
+
             //return newFile;
         }
         private void ConstructNewFile(string password)
         {
             var ms = RecyclableMemory.GetStream();
-            if (_stream == null) _stream = RecyclableMemory.GetStream();
-            if (File != null) File.Refresh();
+            if (_stream == null)
+            {
+                this._stream = RecyclableMemory.GetStream();
+            }
+
+            if (File != null)
+            {
+                this.File.Refresh();
+            }
+
             if (File != null && File.Exists && File.Length > 0)
             {
                 if (password != null)
@@ -688,9 +705,13 @@ namespace OfficeOpenXml
                 }
 
                 if(inEnvironment)
+                {
                     throw new LicenseException("LicenseContext is set to an invalid value in the environment variable 'EPPlusLicenseContext'. Please use Commercial or Noncommercial");
+                }
                 else
+                {
                     throw new LicenseException("LicenseContext is set to an invalid value in the configuration file, Key: ExcelPackage.LicenseContext. Please use Commercial or Noncommercial");
+                }
             }
         }
 		/// <summary>

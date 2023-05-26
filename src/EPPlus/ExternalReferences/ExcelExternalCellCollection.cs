@@ -79,7 +79,11 @@ namespace OfficeOpenXml.ExternalReferences
     {
         get 
         {
-            if (_valuesEnum == null) return null;
+            if (_valuesEnum == null)
+            {
+                return null;
+            }
+
             return new ExcelExternalCellValue()
             {
                 Row = _valuesEnum.Row,
@@ -122,7 +126,11 @@ namespace OfficeOpenXml.ExternalReferences
         /// <returns>true if more items exists</returns>
         public bool MoveNext()
         {
-            if (_valuesEnum == null) Reset();
+            if (_valuesEnum == null)
+            {
+                this.Reset();
+            }
+
             return _valuesEnum.Next();
         }
         /// <summary>

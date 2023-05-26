@@ -934,18 +934,23 @@ namespace OfficeOpenXml.Encryption
 
                 //First XOR hash bytes with 0x36 and fill the rest with 0x36
                 for (int i = 0; i < derivedKey.Length; i++)
+                {
                     derivedKey[i] = (byte)(i < hash.Length ? 0x36 ^ hash[i] : 0x36);
-
+                }
 
                 byte[] X1 = hashProvider.ComputeHash(derivedKey);
 
                 //if verifier size is bigger than the key size we can return X1
                 if ((int)encryptionInfo.Verifier.VerifierHashSize > keySizeBytes)
-                    return FixHashSize(X1, keySizeBytes);
+                {
+                    return this.FixHashSize(X1, keySizeBytes);
+                }
 
                 //Else XOR hash bytes with 0x5C and fill the rest with 0x5C
                 for (int i = 0; i < derivedKey.Length; i++)
+                {
                     derivedKey[i] = (byte)(i < hash.Length ? 0x5C ^ hash[i] : 0x5C);
+                }
 
                 byte[] X2 = hashProvider.ComputeHash(derivedKey);
 
@@ -1033,7 +1038,9 @@ namespace OfficeOpenXml.Encryption
         private byte[] FixHashSize(byte[] hash, int size, byte fill=0)
         {
             if (hash.Length == size)
+            {
                 return hash;
+            }
             else if (hash.Length < size)
             {
                 byte[] buff = new byte[size];

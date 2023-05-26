@@ -41,7 +41,11 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.RefAndLookup
 
         private bool HaveTwoRanges(IEnumerable<FunctionArgument> arguments)
         {
-            if (arguments.Count() < 3) return false;
+            if (arguments.Count() < 3)
+            {
+                return false;
+            }
+
             return (arguments.ElementAt(2).Value is RangeInfo);
         }
 

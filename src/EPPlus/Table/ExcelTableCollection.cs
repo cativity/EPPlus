@@ -85,7 +85,11 @@ namespace OfficeOpenXml.Table
             }
             foreach (var mc in _ws.MergedCells)
             {
-                if (mc == null) continue; // Issue 780: this happens if a merged cell has been removed
+                if (mc == null)
+                {
+                    continue; // Issue 780: this happens if a merged cell has been removed
+                }
+
                 if (new ExcelAddressBase(mc).Collide(Range) != ExcelAddressBase.eAddressCollition.No)
                 {
                     throw (new ArgumentException($"Table range collides with merged range {mc}"));
@@ -156,10 +160,17 @@ namespace OfficeOpenXml.Table
                 _tables.Remove(Table);
                 foreach (var sheet in Table.WorkSheet.Workbook.Worksheets)
                 {
-                    if (sheet is ExcelChartsheet) continue;
+                    if (sheet is ExcelChartsheet)
+                    {
+                        continue;
+                    }
+
                     foreach (var t in sheet.Tables)
                     {
-                        if (t.Id > Table.Id) t.Id--;
+                        if (t.Id > Table.Id)
+                        {
+                            t.Id--;
+                        }
                     }
                     Table.WorkSheet.Workbook._nextTableID--;
                 }

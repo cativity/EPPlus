@@ -91,7 +91,11 @@ namespace OfficeOpenXml.FormulaParsing.LexicalAnalysis
         /// <returns>A <see cref="Token"/> instance or null/default(Token?)</returns>
         public Token? GetToken(string candidate)
         {
-            if (_tokens.ContainsKey(candidate)) return _tokens[candidate];
+            if (_tokens.ContainsKey(candidate))
+            {
+                return _tokens[candidate];
+            }
+
             return default(Token?);
         }
 

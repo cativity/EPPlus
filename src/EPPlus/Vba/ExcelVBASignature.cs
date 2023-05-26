@@ -35,9 +35,20 @@ namespace OfficeOpenXml.VBA
             AgileSignature = new ExcelSignatureVersion(new EPPlusVbaSignatureAgile(vbaPart), VbaSignatureHashAlgorithm.SHA1);
             V3Signature = new ExcelSignatureVersion(new EPPlusVbaSignatureV3(vbaPart), VbaSignatureHashAlgorithm.SHA1);
             
-            if (LegacySignature.Certificate != null) _certificate = LegacySignature.Certificate;
-            if (_certificate == null && AgileSignature.Certificate != null) _certificate = AgileSignature.Certificate;
-            if (_certificate == null && V3Signature.Certificate != null) _certificate = V3Signature.Certificate;
+            if (LegacySignature.Certificate != null)
+            {
+                this._certificate = this.LegacySignature.Certificate;
+            }
+
+            if (_certificate == null && AgileSignature.Certificate != null)
+            {
+                this._certificate = this.AgileSignature.Certificate;
+            }
+
+            if (_certificate == null && V3Signature.Certificate != null)
+            {
+                this._certificate = this.V3Signature.Certificate;
+            }
         }
 
         internal readonly ZipPackagePart _vbaPart = null;
@@ -79,8 +90,11 @@ namespace OfficeOpenXml.VBA
         internal Packaging.ZipPackagePart Part { get; set; }
         internal void Save(ExcelVbaProject proj)
         {
-            if (Certificate == null) return;
-            
+            if (Certificate == null)
+            {
+                return;
+            }
+
             //Legacy signature
             if (LegacySignature.CreateSignatureOnSave)
             {

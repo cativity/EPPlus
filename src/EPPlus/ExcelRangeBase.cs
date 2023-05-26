@@ -76,7 +76,11 @@ namespace OfficeOpenXml
             Init(xlWorksheet);
             _workbook = _worksheet.Workbook;
             base.SetRCFromTable(_worksheet._package, null);
-            if (string.IsNullOrEmpty(_ws)) _ws = _worksheet == null ? "" : _worksheet.Name;
+            if (string.IsNullOrEmpty(_ws))
+            {
+                this._ws = this._worksheet == null ? "" : this._worksheet.Name;
+            }
+
             SetDelegate();
         }
         internal ExcelRangeBase(ExcelWorkbook wb, ExcelWorksheet xlWorksheet, string address, bool isName) :
@@ -85,7 +89,11 @@ namespace OfficeOpenXml
             Init(xlWorksheet);
             SetRCFromTable(wb._package, null);
             _workbook = wb;
-            if (string.IsNullOrEmpty(_ws)) _ws = (xlWorksheet == null ? null : xlWorksheet.Name);
+            if (string.IsNullOrEmpty(_ws))
+            {
+                this._ws = (xlWorksheet == null ? null : xlWorksheet.Name);
+            }
+
             SetDelegate();
         }
         #endregion
@@ -208,7 +216,11 @@ namespace OfficeOpenXml
                 }
                 else
                 {
-                    if (valueMethod != Set_IsRichText) DeleteMe(address, false, false, true, true, false, false, false, false, false);   //Clear the range before overwriting, but not merged cells.
+                    if (valueMethod != Set_IsRichText)
+                    {
+                        this.DeleteMe(address, false, false, true, true, false, false, false, false, false);   //Clear the range before overwriting, but not merged cells.
+                    }
+
                     for (int col = address.Start.Column; col <= address.End.Column; col++)
                     {
                         for (int row = address.Start.Row; row <= address.End.Row; row++)
@@ -245,7 +257,11 @@ namespace OfficeOpenXml
             {
                 range.SplitFormulas(range._worksheet.Cells[row, col]);
             }
-            if (sfi != null) range._worksheet._formulas.SetValue(row, col, string.Empty);
+            if (sfi != null)
+            {
+                range._worksheet._formulas.SetValue(row, col, string.Empty);
+            }
+
             range._worksheet.SetValueInner(row, col, value);
             range._worksheet._flags.Clear(row, col, 1, 1);
             range._worksheet._metadataStore.Clear(row, col, 1, 1);
@@ -253,7 +269,10 @@ namespace OfficeOpenXml
         private static void Set_Formula(ExcelRangeBase range, object value, int row, int col)
         {
             var f = range._worksheet._formulas.GetValue(row, col);
-            if (f is int && (int)f >= 0) range.SplitFormulas(range._worksheet.Cells[row, col]);
+            if (f is int && (int)f >= 0)
+            {
+                range.SplitFormulas(range._worksheet.Cells[row, col]);
+            }
 
             string formula = (value == null ? string.Empty : value.ToString());
             if (formula == string.Empty)
@@ -262,7 +281,11 @@ namespace OfficeOpenXml
             }
             else
             {
-                if (formula[0] == '=') formula = formula.Substring(1, formula.Length - 1); // remove any starting equalsign.
+                if (formula[0] == '=')
+                {
+                    formula = formula.Substring(1, formula.Length - 1); // remove any starting equalsign.
+                }
+
                 range._worksheet._formulas.SetValue(row, col, formula);
                 range._worksheet.SetValueInner(row, col, null);
             }
@@ -713,7 +736,10 @@ namespace OfficeOpenXml
             if (_fromRow == 1 && _fromCol == 1 && _toRow == ExcelPackage.MaxRows && _toCol == ExcelPackage.MaxColumns)
             {
                 addr = _worksheet.Dimension;
-                if (addr == null) return null;
+                if (addr == null)
+                {
+                    return null;
+                }
             }
             else
             {
@@ -921,7 +947,11 @@ namespace OfficeOpenXml
 
         private void Set_Formula_Range(ExcelRangeBase range, string formula)
         {
-            if (formula[0] == '=') formula = formula.Substring(1); // remove any starting equalsign.
+            if (formula[0] == '=')
+            {
+                formula = formula.Substring(1); // remove any starting equalsign.
+            }
+
             range.CheckAndSplitSharedFormula(range);
 
             ExcelWorksheet.Formulas f = new ExcelWorksheet.Formulas(SourceCodeTokenizer.Default);
@@ -993,7 +1023,10 @@ namespace OfficeOpenXml
             set
             {
                 IsRangeValid("FormulaR1C1");
-                if (value.Length > 0 && value[0] == '=') value = value.Substring(1, value.Length - 1); // remove any starting equalsign.
+                if (value.Length > 0 && value[0] == '=')
+                {
+                    value = value.Substring(1, value.Length - 1); // remove any starting equalsign.
+                }
 
                 if (value == null || value.Trim() == "")
                 {
@@ -1183,14 +1216,18 @@ namespace OfficeOpenXml
             {
                 IsRangeValid("autofilter");
                 ExcelAddressBase address = _worksheet.AutoFilterAddress;
-                if (address == null) return false;
+                if (address == null)
+                {
+                    return false;
+                }
+
                 if (_fromRow >= address.Start.Row
-                        &&
-                        _toRow <= address.End.Row
-                        &&
-                        _fromCol >= address.Start.Column
-                        &&
-                        _toCol <= address.End.Column)
+                    &&
+                    _toRow <= address.End.Row
+                    &&
+                    _fromCol >= address.Start.Column
+                    &&
+                    _toCol <= address.End.Column)
                 {
                     return true;
                 }
@@ -1238,7 +1275,11 @@ namespace OfficeOpenXml
             foreach (var tbl in _worksheet.Tables)
             {
                 var c = tbl.Address.Collide(this);
-                if (c == eAddressCollition.Equal) return;   //Autofilter is on a table.
+                if (c == eAddressCollition.Equal)
+                {
+                    return;   //Autofilter is on a table.
+                }
+
                 if (c != eAddressCollition.No)
                 {
                     throw new InvalidOperationException($"Auto filter collides with table {tbl.Name}");
@@ -1453,7 +1494,11 @@ namespace OfficeOpenXml
                     fullAddress = "";
                     foreach (var a in Addresses)
                     {
-                        if (fullAddress != "") fullAddress += ",";
+                        if (fullAddress != "")
+                        {
+                            fullAddress += ",";
+                        }
+
                         if (a.Address == "#REF!")
                         {
                             fullAddress += GetFullAddress(wbwsRef, "#REF!");
@@ -1595,7 +1640,9 @@ namespace OfficeOpenXml
                         fIsSet = true;
                     }
                     if (fRange._fromRow < address._fromRow)
+                    {
                         f.StartRow = address._fromRow;
+                    }
                     else
                     {
                         f.StartRow = fRange._fromRow;
@@ -1629,7 +1676,9 @@ namespace OfficeOpenXml
                     }
                     f.StartCol = address._toCol + 1;
                     if (address._fromRow < fRange._fromRow)
+                    {
                         f.StartRow = fRange._fromRow;
+                    }
                     else
                     {
                         f.StartRow = address._fromRow;
@@ -1737,7 +1786,10 @@ namespace OfficeOpenXml
 
         private object ConvertData(ExcelTextFormat Format, string v, int col, bool isText)
         {
-            if (isText && (Format.DataTypes == null || Format.DataTypes.Length < col)) return string.IsNullOrEmpty(v) ? null : v;
+            if (isText && (Format.DataTypes == null || Format.DataTypes.Length < col))
+            {
+                return string.IsNullOrEmpty(v) ? null : v;
+            }
 
             double d;
             DateTime dt;
@@ -2025,7 +2077,9 @@ namespace OfficeOpenXml
 
 
             if (clearMergedCells)
-                _worksheet.MergedCells.Clear(Range);
+            {
+                this._worksheet.MergedCells.Clear(Range);
+            }
 
             if (clearValues && clearStyles)
             {

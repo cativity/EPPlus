@@ -102,8 +102,16 @@ namespace OfficeOpenXml.FormulaParsing.LexicalAnalysis
 
         private static bool TokenIsNegator(string token, TokenizerContext context)
         {
-            if (token != "-") return false;
-            if (!context.LastToken.HasValue) return true;
+            if (token != "-")
+            {
+                return false;
+            }
+
+            if (!context.LastToken.HasValue)
+            {
+                return true;
+            }
+
             var t = context.LastToken.Value;
             
             return t.TokenTypeIsSet(TokenType.Operator)

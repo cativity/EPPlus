@@ -31,9 +31,14 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
                 }
             }
             if (sortAscending)
+            {
                 numbers.Sort();
+            }
             else
+            {
                 numbers.Sort((x, y) => y.CompareTo(x));
+            }
+
             return numbers;
         }
 
@@ -59,11 +64,17 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
             }
             var fullMatch = AreEqual(number, array[ix]);
             while (ix < array.Length - 1 && AreEqual(number, array[ix]))
+            {
                 ix++;
+            }
+
             var smallestAbove = array[ix];
             var largerThan = AreEqual(number, array[array.Length - 1]) ? 0 : array.Length - ix;
             if (fullMatch)
+            {
                 return smallerThan / (smallerThan + largerThan);
+            }
+
             var percentrankLow = PercentRankIncImpl(array, largestBelow);
             var percentrankHigh = PercentRankIncImpl(array, smallestAbove);
             return percentrankLow + (percentrankHigh - percentrankLow) * ((number - largestBelow) / (smallestAbove - largestBelow));
@@ -83,11 +94,17 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
             smallerThan++;
             var fullMatch = AreEqual(number, array[ix]);
             while (ix < array.Length - 1 && AreEqual(number, array[ix]))
+            {
                 ix++;
+            }
+
             var smallestAbove = array[ix];
             var largerThan = AreEqual(number, array[array.Length - 1]) ? 0 : array.Length - ix + 1;
             if (fullMatch)
+            {
                 return smallerThan / (smallerThan + largerThan);
+            }
+
             var percentrankLow = PercentRankExcImpl(array, largestBelow);
             var percentrankHigh = PercentRankExcImpl(array, smallestAbove);
             return percentrankLow + (percentrankHigh - percentrankLow) * ((number - largestBelow) / (smallestAbove - largestBelow));

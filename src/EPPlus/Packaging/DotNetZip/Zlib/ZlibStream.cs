@@ -333,7 +333,11 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
             get { return (this._baseStream._flushMode); }
             set
             {
-                if (_disposed) throw new ObjectDisposedException("ZlibStream");
+                if (_disposed)
+                {
+                    throw new ObjectDisposedException("ZlibStream");
+                }
+
                 this._baseStream._flushMode = value;
             }
         }
@@ -363,11 +367,21 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
             }
             set
             {
-                if (_disposed) throw new ObjectDisposedException("ZlibStream");
+                if (_disposed)
+                {
+                    throw new ObjectDisposedException("ZlibStream");
+                }
+
                 if (this._baseStream._workingBuffer != null)
+                {
                     throw new ZlibException("The working buffer is already set.");
+                }
+
                 if (value < ZlibConstants.WorkingBufferSizeMin)
+                {
                     throw new ZlibException(String.Format("Don't be silly. {0} bytes?? Use a bigger buffer, at least {1}.", value, ZlibConstants.WorkingBufferSizeMin));
+                }
+
                 this._baseStream._bufferSize = value;
             }
         }
@@ -418,7 +432,10 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
                 if (!_disposed)
                 {
                     if (disposing && (this._baseStream != null))
+                    {
                         this._baseStream.Close();
+                    }
+
                     _disposed = true;
                 }
             }
@@ -439,7 +456,11 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
         {
             get
             {
-                if (_disposed) throw new ObjectDisposedException("ZlibStream");
+                if (_disposed)
+                {
+                    throw new ObjectDisposedException("ZlibStream");
+                }
+
                 return _baseStream._stream.CanRead;
             }
         }
@@ -465,7 +486,11 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
         {
             get
             {
-                if (_disposed) throw new ObjectDisposedException("ZlibStream");
+                if (_disposed)
+                {
+                    throw new ObjectDisposedException("ZlibStream");
+                }
+
                 return _baseStream._stream.CanWrite;
             }
         }
@@ -475,7 +500,11 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
         /// </summary>
         public override void Flush()
         {
-            if (_disposed) throw new ObjectDisposedException("ZlibStream");
+            if (_disposed)
+            {
+                throw new ObjectDisposedException("ZlibStream");
+            }
+
             _baseStream.Flush();
         }
 
@@ -503,9 +532,15 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
             get
             {
                 if (this._baseStream._streamMode == Ionic.Zlib.ZlibBaseStream.StreamMode.Writer)
+                {
                     return this._baseStream._z.TotalBytesOut;
+                }
+
                 if (this._baseStream._streamMode == Ionic.Zlib.ZlibBaseStream.StreamMode.Reader)
+                {
                     return this._baseStream._z.TotalBytesIn;
+                }
+
                 return 0;
             }
 
@@ -547,8 +582,12 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
         /// <returns>the number of bytes read</returns>
         public override int Read(byte[] buffer, int offset, int count)
         {
-                if (_disposed) throw new ObjectDisposedException("ZlibStream");
-            return _baseStream.Read(buffer, offset, count);
+                if (_disposed)
+                {
+                    throw new ObjectDisposedException("ZlibStream");
+                }
+
+                return _baseStream.Read(buffer, offset, count);
         }
 
         /// <summary>
@@ -609,8 +648,12 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
         /// <param name="count">the number of bytes to write.</param>
         public override void Write(byte[] buffer, int offset, int count)
         {
-                if (_disposed) throw new ObjectDisposedException("ZlibStream");
-            _baseStream.Write(buffer, offset, count);
+                if (_disposed)
+                {
+                    throw new ObjectDisposedException("ZlibStream");
+                }
+
+                _baseStream.Write(buffer, offset, count);
         }
         #endregion
 

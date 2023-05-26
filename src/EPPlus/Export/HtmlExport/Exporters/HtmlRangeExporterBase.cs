@@ -203,7 +203,10 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
                         {
                             writer.AddAttribute("rowspan", rowSpan.ToString(CultureInfo.InvariantCulture));
                         }
-                        if (added == false) _mergedCells.Add(ma);
+                        if (added == false)
+                        {
+                            this._mergedCells.Add(ma);
+                        }
                     }
                 }
             }
@@ -238,7 +241,11 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
 
         protected void AddTableAccessibilityAttributes(AccessibilitySettings settings, EpplusHtmlWriter writer)
         {
-            if (!settings.TableSettings.AddAccessibilityAttributes) return;
+            if (!settings.TableSettings.AddAccessibilityAttributes)
+            {
+                return;
+            }
+
             if (!string.IsNullOrEmpty(settings.TableSettings.TableRole))
             {
                 writer.AddAttribute("role", settings.TableSettings.TableRole);
@@ -272,13 +279,21 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
 
         protected List<string> GetAdditionalClassNames(ExcelHtmlOverrideExportSettings overrideSettings)
         {
-            if (overrideSettings == null || overrideSettings.AdditionalTableClassNames == null) return Settings.AdditionalTableClassNames;
+            if (overrideSettings == null || overrideSettings.AdditionalTableClassNames == null)
+            {
+                return this.Settings.AdditionalTableClassNames;
+            }
+
             return overrideSettings.AdditionalTableClassNames;
         }
 
         protected AccessibilitySettings GetAccessibilitySettings(ExcelHtmlOverrideExportSettings overrideSettings)
         {
-            if (overrideSettings == null || overrideSettings.Accessibility == null) return Settings.Accessibility;
+            if (overrideSettings == null || overrideSettings.Accessibility == null)
+            {
+                return this.Settings.Accessibility;
+            }
+
             return overrideSettings.Accessibility;
         }
 

@@ -85,14 +85,41 @@ namespace OfficeOpenXml.Drawing.Style.Coloring
             //Created using formulas here...https://www.rapidtables.com/convert/color/hsl-to-rgb.html
             double r, g, b;
 
-            if (h < 0) h = 0;
-            if (s < 0) s = 0;
-            if (l < 0) l = 0;
-            if (h >= 360) h = 359.99;
-            if (s > 1) s = 1;
-            if (l > 1) l = 1;
+            if (h < 0)
+            {
+                h = 0;
+            }
 
-            if (l == 0) return Color.FromArgb(0, 0, 0);
+            if (s < 0)
+            {
+                s = 0;
+            }
+
+            if (l < 0)
+            {
+                l = 0;
+            }
+
+            if (h >= 360)
+            {
+                h = 359.99;
+            }
+
+            if (s > 1)
+            {
+                s = 1;
+            }
+
+            if (l > 1)
+            {
+                l = 1;
+            }
+
+            if (l == 0)
+            {
+                return Color.FromArgb(0, 0, 0);
+            }
+
             if (s == 0)
             {
                 var c = (int)Math.Round(l * 255,0);

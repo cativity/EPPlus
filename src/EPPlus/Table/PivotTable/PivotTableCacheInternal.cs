@@ -83,7 +83,10 @@ namespace OfficeOpenXml.Table.PivotTable
                         foreach (var w in _wb.Worksheets)
                         {
                             sourceRange = GetRangeByName(w, name);
-                            if (sourceRange != null) break;
+                            if (sourceRange != null)
+                            {
+                                break;
+                            }
                         }
                     }
                     else
@@ -110,7 +113,11 @@ namespace OfficeOpenXml.Table.PivotTable
         }
         private ExcelRangeBase GetRangeByName(ExcelWorksheet w, string name)
         {
-            if (w is ExcelChartsheet) return null;
+            if (w is ExcelChartsheet)
+            {
+                return null;
+            }
+
             if (w.Tables._tableNames.ContainsKey(name))
             {
                 var t = w.Tables[name];
@@ -230,10 +237,17 @@ namespace OfficeOpenXml.Table.PivotTable
                         field=_fields[ix];
                         field.SharedItems.Clear();
 
-                        if (cacheUpdated == false && string.IsNullOrEmpty(name)==false && !field.Name.StartsWith(name, StringComparison.CurrentCultureIgnoreCase)) cacheUpdated=true;
+                        if (cacheUpdated == false && string.IsNullOrEmpty(name)==false && !field.Name.StartsWith(name, StringComparison.CurrentCultureIgnoreCase))
+                        {
+                            cacheUpdated=true;
+                        }
                     }
 
-                    if (!string.IsNullOrEmpty(name) && !field.Name.StartsWith(name)) field.Name = name;
+                    if (!string.IsNullOrEmpty(name) && !field.Name.StartsWith(name))
+                    {
+                        field.Name = name;
+                    }
+
                     //var hs = new HashSet<object>();
                     //var dimensionToRow = ws.Dimension?._toRow ?? r._fromRow + 1;
                     //var toRow = r._toRow < dimensionToRow ? r._toRow : dimensionToRow;
@@ -258,7 +272,10 @@ namespace OfficeOpenXml.Table.PivotTable
                 RemoveDeletedFields(r);
             }
 
-            if (cacheUpdated) UpdateRowColumnPageFields(tableFields);
+            if (cacheUpdated)
+            {
+                this.UpdateRowColumnPageFields(tableFields);
+            }
 
             RefreshPivotTableItems();
         }
@@ -503,7 +520,10 @@ namespace OfficeOpenXml.Table.PivotTable
 
         internal void ResetRecordXml(ZipPackage pck)
         {
-            if (CacheRecordUri == null) return;
+            if (CacheRecordUri == null)
+            {
+                return;
+            }
 
             var cacheRecord = new XmlDocument();
             cacheRecord.LoadXml("<pivotCacheRecords xmlns=\"http://schemas.openxmlformats.org/spreadsheetml/2006/main\" xmlns:r=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships\" count=\"0\" />");            ZipPackagePart recPart;
@@ -615,7 +635,11 @@ namespace OfficeOpenXml.Table.PivotTable
             }
             set
             {
-                if (SaveData == value) return;
+                if (SaveData == value)
+                {
+                    return;
+                }
+
                 SetXmlNodeBool("@saveData", value);
                 if (value)
                 {

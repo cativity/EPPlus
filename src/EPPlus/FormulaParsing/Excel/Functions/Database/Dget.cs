@@ -54,8 +54,16 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Database
             while (db.HasMoreRows)
             {
                 var dataRow = db.Read();
-                if (!RowMatcher.IsMatch(dataRow, criteria)) continue;
-                if(++nHits > 1) return CreateResult(ExcelErrorValue.Values.Num, DataType.ExcelError);
+                if (!RowMatcher.IsMatch(dataRow, criteria))
+                {
+                    continue;
+                }
+
+                if(++nHits > 1)
+                {
+                    return this.CreateResult(ExcelErrorValue.Values.Num, DataType.ExcelError);
+                }
+
                 retVal = dataRow[field];
             }
             return new CompileResultFactory().Create(retVal);

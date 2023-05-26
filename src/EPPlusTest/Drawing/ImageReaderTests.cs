@@ -32,7 +32,10 @@ namespace EPPlusTest.Drawing
             var fileName = _pck.File.FullName;
             
             SaveAndCleanup(_pck);
-            if (File.Exists(fileName)) File.Copy(fileName, dirName + "\\ImageReaderRead.xlsx", true);
+            if (File.Exists(fileName))
+            {
+                File.Copy(fileName, dirName + "\\ImageReaderRead.xlsx", true);
+            }
         }
         [TestMethod]
         public void AddJpgImageVia()

@@ -29,7 +29,11 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
             var arg1 = arguments.ElementAt(0);
             var arg2 = arguments.ElementAt(1);
             CreateSets(arg1, arg2, out double[] set1, out double[] set2);
-            if (set1.Length != set2.Length) return CreateResult(eErrorType.NA);
+            if (set1.Length != set2.Length)
+            {
+                return this.CreateResult(eErrorType.NA);
+            }
+
             var result = Calculate(set1.ToArray(), set2.ToArray());
             return CreateResult(result, DataType.Decimal);
         }

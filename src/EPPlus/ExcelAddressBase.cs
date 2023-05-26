@@ -148,7 +148,10 @@ namespace OfficeOpenXml
         public ExcelAddressBase(string address, ExcelWorkbook wb=null, string wsName=null)
         {
             SetAddress(address, wb, wsName);
-            if (string.IsNullOrEmpty(_ws) && string.IsNullOrEmpty(_wb)) _ws = wsName;
+            if (string.IsNullOrEmpty(_ws) && string.IsNullOrEmpty(_wb))
+            {
+                this._ws = wsName;
+            }
         }
         /// <summary>
         /// Creates an Address object
@@ -169,7 +172,11 @@ namespace OfficeOpenXml
             {
                 foreach (var ws in pck.Workbook.Worksheets)
                 {
-                    if (ws is ExcelChartsheet) continue;
+                    if (ws is ExcelChartsheet)
+                    {
+                        continue;
+                    }
+
                     foreach (var t in ws.Tables)
                     {
                         if (t.Name.Equals(Table.Name, StringComparison.OrdinalIgnoreCase))
@@ -516,7 +523,11 @@ namespace OfficeOpenXml
         }
         internal void ChangeWorksheet(string wsName, string newWs)
         {
-            if (_ws == wsName) _ws = newWs;
+            if (_ws == wsName)
+            {
+                this._ws = newWs;
+            }
+
             var fullAddress = GetAddress();
             
             if (Addresses != null)
@@ -541,9 +552,13 @@ namespace OfficeOpenXml
         {
             string address = GetAddressWorkBookWorkSheet();
             if (IsName)
-                return address + GetAddress(_fromRow, _fromCol, _toRow, _toCol);
+            {
+                return address + GetAddress(this._fromRow, this._fromCol, this._toRow, this._toCol);
+            }
             else
-                return address + GetAddress(_fromRow, _fromCol, _toRow, _toCol, _fromRowFixed, _fromColFixed, _toRowFixed, _toColFixed);
+            {
+                return address + GetAddress(this._fromRow, this._fromCol, this._toRow, this._toCol, this._fromRowFixed, this._fromColFixed, this._toRowFixed, this._toColFixed);
+            }
         }
 
         internal string GetAddressWorkBookWorkSheet()
@@ -879,7 +894,11 @@ namespace OfficeOpenXml
                         }
                         else if (c == ',' && !isText)
                         {
-                            if(_addresses==null) _addresses = new List<ExcelAddressBase>();
+                            if(_addresses==null)
+                            {
+                                this._addresses = new List<ExcelAddressBase>();
+                            }
+
                             if(string.IsNullOrEmpty(ws))
                             {
                                 first = string.IsNullOrEmpty(second) ? first : first + ":" + second;
@@ -1006,7 +1025,9 @@ namespace OfficeOpenXml
                 return eAddressCollition.Inside;
             }
             else
+            {
                 return eAddressCollition.Partly;
+            }
         }
 
         internal bool DoNotCollide(int fromRow, int fromCol, int toRow, int toCol)
@@ -1049,11 +1070,19 @@ namespace OfficeOpenXml
                 return this;
             }
             var toRow = setFixed && _toRowFixed ? _toRow : _toRow + rows;
-            if (toRow < 1) return null;
+            if (toRow < 1)
+            {
+                return null;
+            }
+
             if (row <= _fromRow)
             {
                 var fromRow = setFixed && _fromRowFixed ? _fromRow : _fromRow + rows;
-                if (fromRow > ExcelPackage.MaxRows) return null;
+                if (fromRow > ExcelPackage.MaxRows)
+                {
+                    return null;
+                }
+
                 return new ExcelAddressBase(GetRow(fromRow, setRefOnMinMax), _fromCol, GetRow(toRow, setRefOnMinMax), _toCol, _fromRowFixed, _fromColFixed, _toRowFixed, _toColFixed, WorkSheetName, _address);
             }
             else
@@ -1066,8 +1095,15 @@ namespace OfficeOpenXml
         {
             if (setRefOnMinMax==false)
             {
-                if (row < 1) return 1;
-                if (row > ExcelPackage.MaxRows) return ExcelPackage.MaxRows;
+                if (row < 1)
+                {
+                    return 1;
+                }
+
+                if (row > ExcelPackage.MaxRows)
+                {
+                    return ExcelPackage.MaxRows;
+                }
             }
 
             return row;
@@ -1076,8 +1112,15 @@ namespace OfficeOpenXml
         {
             if (setRefOnMinMax == false)
             {
-                if (column < 1) return 1;
-                if (column > ExcelPackage.MaxColumns) return ExcelPackage.MaxColumns;
+                if (column < 1)
+                {
+                    return 1;
+                }
+
+                if (column > ExcelPackage.MaxColumns)
+                {
+                    return ExcelPackage.MaxColumns;
+                }
             }
 
             return column;
@@ -1313,14 +1356,21 @@ namespace OfficeOpenXml
                         break;
                     case 'R':
                         if (isC)
+                        {
                             return false;
+                        }
+
                         isROrC = true;
                         break;
                     case '[':
                         startBracket = true;
                         break;
                     case ']':
-                        if (startBracket == false) return false;
+                        if (startBracket == false)
+                        {
+                            return false;
+                        }
+
                         isROrC = false;
                         break;
                     case ':':
@@ -1348,7 +1398,11 @@ namespace OfficeOpenXml
 
         private static bool IsAddress(string intAddress, bool allowRef = false)
         {
-            if(string.IsNullOrEmpty(intAddress)) return false;            
+            if(string.IsNullOrEmpty(intAddress))
+            {
+                return false;
+            }
+
             var cells = intAddress.Split(':');
             int fromRow, toRow, fromCol, toCol;
 
@@ -1473,9 +1527,13 @@ namespace OfficeOpenXml
                     isText = !isText;
                 }
                 else if (isText == false && addressChar == '[')
+                {
                     tableNameCount++;
+                }
                 else if (isText == false && addressChar == ']')
+                {
                     tableNameCount--;
+                }
                 else if(tableNameCount==0)
                 {
                     if (isText == false && _tokens.Contains(addressChar))
@@ -1605,7 +1663,11 @@ namespace OfficeOpenXml
         {
             get
             {
-                if (!_address.StartsWith("[")) return _address;
+                if (!_address.StartsWith("["))
+                {
+                    return this._address;
+                }
+
                 var ix = _address.IndexOf("]",1);
                 if (ix >= 0)
                 {
@@ -1639,7 +1701,11 @@ namespace OfficeOpenXml
         }
         internal static string GetWorksheetPart(string address, string defaultWorkSheet, ref int endIx)
         {
-            if(address=="") return defaultWorkSheet;
+            if(address=="")
+            {
+                return defaultWorkSheet;
+            }
+
             var ix = 0;
             if (address[0] == '[' || address.StartsWith("'["))
             {
@@ -1834,12 +1900,20 @@ namespace OfficeOpenXml
             {
                 if (Addresses==null || a.Addresses==null)
                 {
-                    if (Addresses?.Count > 1 || a.Addresses?.Count > 1) return false;
+                    if (Addresses?.Count > 1 || a.Addresses?.Count > 1)
+                    {
+                        return false;
+                    }
+
                     return IsEqual(this, a);
                 }
                 else
                 {
-                    if (Addresses.Count != a.Addresses.Count) return false;
+                    if (Addresses.Count != a.Addresses.Count)
+                    {
+                        return false;
+                    }
+
                     for(int i=0;i<Addresses.Count;i++)
                     {
                         if (IsEqual(Addresses[i], a.Addresses[i]) == false)

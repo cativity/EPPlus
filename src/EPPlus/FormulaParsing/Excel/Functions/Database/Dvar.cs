@@ -42,7 +42,11 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Database
         {
             ValidateArguments(arguments, 3);
             var values = GetMatchingValues(arguments, context);
-            if (!values.Any()) return CreateResult(0d, DataType.Integer);
+            if (!values.Any())
+            {
+                return this.CreateResult(0d, DataType.Integer);
+            }
+
             return CreateResult(VarMethods.Var(values), DataType.Integer);
         }
     }

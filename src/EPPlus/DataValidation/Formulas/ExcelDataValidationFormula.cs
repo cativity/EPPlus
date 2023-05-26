@@ -74,7 +74,11 @@ namespace OfficeOpenXml.DataValidation.Formulas
 
         private int MeasureFormulaLength(string formula)
         {
-            if (string.IsNullOrEmpty(formula)) return 0;
+            if (string.IsNullOrEmpty(formula))
+            {
+                return 0;
+            }
+
             formula = formula.Replace("_xlfn.", string.Empty).Replace("_xlws.", string.Empty);
             return formula.Length;
         }
@@ -125,13 +129,19 @@ namespace OfficeOpenXml.DataValidation.Formulas
             else if (!string.IsNullOrEmpty(address))
             {
                 var tokens = SourceCodeTokenizer.Default.Tokenize(address, _workSheetName);
-                if (!tokens.Any()) return false;
+                if (!tokens.Any())
+                {
+                    return false;
+                }
+
                 var addressTokens = tokens.Where(x => x.TokenTypeIsSet(TokenType.ExcelAddress));
                 foreach (var token in addressTokens)
                 {
                     var adr = new ExcelAddress(token.Value);
                     if (!string.IsNullOrEmpty(adr.WorkSheetName) && adr.WorkSheetName != _workSheetName)
+                    {
                         return true;
+                    }
                 }
 
             }

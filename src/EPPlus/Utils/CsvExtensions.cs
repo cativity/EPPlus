@@ -9,7 +9,11 @@ namespace OfficeOpenXml.Utils
     {
         public static string GetCsvPosition(this string argument, int position) 
         {
-            if (string.IsNullOrEmpty(argument)) return "";
+            if (string.IsNullOrEmpty(argument))
+            {
+                return "";
+            }
+
             var items = argument.Split(',');
             if(items.Length > position)
             {
@@ -19,7 +23,11 @@ namespace OfficeOpenXml.Utils
         }
         public static string SetCsvPosition(this string argument, int position,int size, string value, string defaultValue="0")
         {
-            if (argument == null) return value;
+            if (argument == null)
+            {
+                return value;
+            }
+
             var items = argument.Split(',');
             if(items.Length < size)
             {

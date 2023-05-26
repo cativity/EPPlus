@@ -82,10 +82,14 @@ namespace OfficeOpenXml
                     throw new ArgumentOutOfRangeException("value", "Row cannot be less than 1.");
                 }
                 this._row = value;
-                if(_column>0) 
-                    _address = ExcelCellBase.GetAddress(_row, _column);
+                if(_column>0)
+                {
+                    this._address = ExcelCellBase.GetAddress(this._row, this._column);
+                }
                 else
-                    _address = "#REF!";
+                {
+                    this._address = "#REF!";
+                }
             }
         }
         /// <summary>
@@ -105,9 +109,13 @@ namespace OfficeOpenXml
                 }
                 this._column = value;
                 if (_row > 0)
-                    _address = ExcelCellBase.GetAddress(_row, _column);
+                {
+                    this._address = ExcelCellBase.GetAddress(this._row, this._column);
+                }
                 else
-                    _address = "#REF!";
+                {
+                    this._address = "#REF!";
+                }
             }
         }
         /// <summary>

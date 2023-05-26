@@ -105,7 +105,9 @@ namespace OfficeOpenXml
         {
             XmlDocument xmlDoc;
             if (_package.ZipPackage.PartExists(uri))
-                xmlDoc = _package.GetXmlFromUri(uri);
+            {
+                xmlDoc = this._package.GetXmlFromUri(uri);
+            }
             else
             {
                 xmlDoc = new XmlDocument();

@@ -52,7 +52,11 @@ namespace EPPlusTest.Drawing
             var wsName = "SolidFill";
             var expected = Color.Blue;
             var ws = _pck.Workbook.Worksheets[wsName];
-            if (ws == null) Assert.Inconclusive($"{wsName} worksheet is missing");
+            if (ws == null)
+            {
+                Assert.Inconclusive($"{wsName} worksheet is missing");
+            }
+
             var shape = (ExcelShape)ws.Drawings[0];
 
             //Assert
@@ -67,7 +71,11 @@ namespace EPPlusTest.Drawing
             var wsName = "SolidFillFromSolidFill";
             var expected = Color.Green;
             var ws = _pck.Workbook.Worksheets[wsName];
-            if (ws == null) Assert.Inconclusive($"{wsName} worksheet is missing");
+            if (ws == null)
+            {
+                Assert.Inconclusive($"{wsName} worksheet is missing");
+            }
+
             var shape = (ExcelShape)ws.Drawings[0];
 
             //Assert
@@ -82,7 +90,11 @@ namespace EPPlusTest.Drawing
             var wsName = "SolidFillFromPresetClr";
             var expected = ePresetColor.Red;
             var ws = _pck.Workbook.Worksheets[wsName];
-            if (ws == null) Assert.Inconclusive($"{wsName} worksheet is missing");
+            if (ws == null)
+            {
+                Assert.Inconclusive($"{wsName} worksheet is missing");
+            }
+
             var shape = (ExcelShape)ws.Drawings[0];
 
             //Assert
@@ -97,7 +109,11 @@ namespace EPPlusTest.Drawing
             var wsName = "SolidFillFromSchemeClr";
             var expected = eSchemeColor.Accent6;
             var ws = _pck.Workbook.Worksheets[wsName];
-            if (ws == null) Assert.Inconclusive($"{wsName} worksheet is missing");
+            if (ws == null)
+            {
+                Assert.Inconclusive($"{wsName} worksheet is missing");
+            }
+
             var shape = (ExcelShape)ws.Drawings[0];
 
             //Act
@@ -118,7 +134,11 @@ namespace EPPlusTest.Drawing
             var expectedG = 49;
             var expectedB = 50;
             var ws = _pck.Workbook.Worksheets[wsName];
-            if (ws == null) Assert.Inconclusive($"{wsName} worksheet is missing");
+            if (ws == null)
+            {
+                Assert.Inconclusive($"{wsName} worksheet is missing");
+            }
+
             var shape = (ExcelShape)ws.Drawings[0];
 
             //Assert
@@ -137,7 +157,11 @@ namespace EPPlusTest.Drawing
             var expectedLum = 15;
             var expectedSat = 50;
             var ws = _pck.Workbook.Worksheets[wsName];
-            if (ws == null) Assert.Inconclusive($"{wsName} worksheet is missing");
+            if (ws == null)
+            {
+                Assert.Inconclusive($"{wsName} worksheet is missing");
+            }
+
             var shape = (ExcelShape)ws.Drawings[0];
 
             //Assert
@@ -154,7 +178,11 @@ namespace EPPlusTest.Drawing
             var wsName = "SolidFillFromColorSystem";
             var expected = eSystemColor.Background;
             var ws = _pck.Workbook.Worksheets[wsName];
-            if (ws == null) Assert.Inconclusive($"{wsName} worksheet is missing");
+            if (ws == null)
+            {
+                Assert.Inconclusive($"{wsName} worksheet is missing");
+            }
+
             var shape = (ExcelShape)ws.Drawings[0];
 
             //Assert
@@ -171,7 +199,11 @@ namespace EPPlusTest.Drawing
             var wsName = "Transparancy";
             var expected = 45;
             var ws = _pck.Workbook.Worksheets[wsName];
-            if (ws == null) Assert.Inconclusive($"{wsName} worksheet is missing");
+            if (ws == null)
+            {
+                Assert.Inconclusive($"{wsName} worksheet is missing");
+            }
+
             var shape = (ExcelShape)ws.Drawings[0];
 
             //Assert
@@ -187,7 +219,11 @@ namespace EPPlusTest.Drawing
             var wsName = "Alpha";
             var expected = 45;
             var ws = _pck.Workbook.Worksheets[wsName];
-            if (ws == null) Assert.Inconclusive($"{wsName} worksheet is missing");
+            if (ws == null)
+            {
+                Assert.Inconclusive($"{wsName} worksheet is missing");
+            }
+
             var shape = (ExcelShape)ws.Drawings[0];
 
             //Assert
@@ -203,7 +239,11 @@ namespace EPPlusTest.Drawing
             var wsName = "Tint";
             var expected = 30;
             var ws = _pck.Workbook.Worksheets[wsName];
-            if (ws == null) Assert.Inconclusive($"{wsName} worksheet is missing");
+            if (ws == null)
+            {
+                Assert.Inconclusive($"{wsName} worksheet is missing");
+            }
+
             var shape = (ExcelShape)ws.Drawings[0];
 
             //Assert
@@ -218,7 +258,11 @@ namespace EPPlusTest.Drawing
             var wsName = "Shade";
             var expected = 95;
             var ws = _pck.Workbook.Worksheets[wsName];
-            if (ws == null) Assert.Inconclusive($"{wsName} worksheet is missing");
+            if (ws == null)
+            {
+                Assert.Inconclusive($"{wsName} worksheet is missing");
+            }
+
             var shape = (ExcelShape)ws.Drawings[0];
 
 
@@ -233,7 +277,11 @@ namespace EPPlusTest.Drawing
             //Setup
             var wsName = "Inverse_set";
             var ws = _pck.Workbook.Worksheets[wsName];
-            if (ws == null) Assert.Inconclusive($"{wsName} worksheet is missing");
+            if (ws == null)
+            {
+                Assert.Inconclusive($"{wsName} worksheet is missing");
+            }
+
             var shape = (ExcelShape)ws.Drawings[0];
 
             //Assert
@@ -248,7 +296,11 @@ namespace EPPlusTest.Drawing
             var wsName = "AlphaModulation";
             var expected = 50;
             var ws = _pck.Workbook.Worksheets[wsName];
-            if (ws == null) Assert.Inconclusive($"{wsName} worksheet is missing");
+            if (ws == null)
+            {
+                Assert.Inconclusive($"{wsName} worksheet is missing");
+            }
+
             var shape = (ExcelShape)ws.Drawings[0];
 
             //Assert
@@ -265,7 +317,11 @@ namespace EPPlusTest.Drawing
             var wsName = "AlphaOffset";
             var expected = -10;
             var ws = _pck.Workbook.Worksheets[wsName];
-            if (ws == null) Assert.Inconclusive($"{wsName} worksheet is missing");
+            if (ws == null)
+            {
+                Assert.Inconclusive($"{wsName} worksheet is missing");
+            }
+
             var shape = (ExcelShape)ws.Drawings[0];
 
             //Assert
@@ -284,7 +340,11 @@ namespace EPPlusTest.Drawing
             var expectedG = 60;
             var expectedB = 20;
             var ws = _pck.Workbook.Worksheets[wsName];
-            if (ws == null) Assert.Inconclusive($"{wsName} worksheet is missing");
+            if (ws == null)
+            {
+                Assert.Inconclusive($"{wsName} worksheet is missing");
+            }
+
             var shape = (ExcelShape)ws.Drawings[0];
 
             //Assert
@@ -305,7 +365,11 @@ namespace EPPlusTest.Drawing
             var expectedG = 50;
             var expectedB = 25600;
             var ws = _pck.Workbook.Worksheets[wsName];
-            if (ws == null) Assert.Inconclusive($"{wsName} worksheet is missing");
+            if (ws == null)
+            {
+                Assert.Inconclusive($"{wsName} worksheet is missing");
+            }
+
             var shape = (ExcelShape)ws.Drawings[0];
 
             //Assert
@@ -326,7 +390,11 @@ namespace EPPlusTest.Drawing
             var expectedG = -20;
             var expectedB = 30;
             var ws = _pck.Workbook.Worksheets[wsName];
-            if (ws == null) Assert.Inconclusive($"{wsName} worksheet is missing");
+            if (ws == null)
+            {
+                Assert.Inconclusive($"{wsName} worksheet is missing");
+            }
+
             var shape = (ExcelShape)ws.Drawings[0];
 
             //Assert
@@ -346,7 +414,11 @@ namespace EPPlusTest.Drawing
             var expectedLum = 10;
             var expectedSat = -20;
             var ws = _pck.Workbook.Worksheets[wsName];
-            if (ws == null) Assert.Inconclusive($"{wsName} worksheet is missing");
+            if (ws == null)
+            {
+                Assert.Inconclusive($"{wsName} worksheet is missing");
+            }
+
             var shape = (ExcelShape)ws.Drawings[0];
 
             //Assert
@@ -364,7 +436,11 @@ namespace EPPlusTest.Drawing
             var expectedLum = 50;
             var expectedSat = 200;
             var ws = _pck.Workbook.Worksheets[wsName];
-            if (ws == null) Assert.Inconclusive($"{wsName} worksheet is missing");
+            if (ws == null)
+            {
+                Assert.Inconclusive($"{wsName} worksheet is missing");
+            }
+
             var shape = (ExcelShape)ws.Drawings[0];
             
             //Assert
@@ -383,7 +459,11 @@ namespace EPPlusTest.Drawing
             //Setup
             var wsName = "Gradient";
             var ws = _pck.Workbook.Worksheets[wsName];
-            if (ws == null) Assert.Inconclusive($"{wsName} worksheet is missing");
+            if (ws == null)
+            {
+                Assert.Inconclusive($"{wsName} worksheet is missing");
+            }
+
             var shape = (ExcelShape)ws.Drawings[0];
 
             //Assert
@@ -399,7 +479,11 @@ namespace EPPlusTest.Drawing
             //Setup
             var wsName = "GradientCircular";
             var ws = _pck.Workbook.Worksheets[wsName];
-            if (ws == null) Assert.Inconclusive($"{wsName} worksheet is missing");
+            if (ws == null)
+            {
+                Assert.Inconclusive($"{wsName} worksheet is missing");
+            }
+
             var shape = (ExcelShape)ws.Drawings[0];
 
             //Assert
@@ -418,7 +502,11 @@ namespace EPPlusTest.Drawing
             //Setup
             var wsName = "GradientRect";
             var ws = _pck.Workbook.Worksheets[wsName];
-            if (ws == null) Assert.Inconclusive($"{wsName} worksheet is missing");
+            if (ws == null)
+            {
+                Assert.Inconclusive($"{wsName} worksheet is missing");
+            }
+
             var shape = (ExcelShape)ws.Drawings[0];
 
             //Assert
@@ -436,7 +524,11 @@ namespace EPPlusTest.Drawing
             //Setup
             var wsName = "GradientShape";
             var ws = _pck.Workbook.Worksheets[wsName];
-            if (ws == null) Assert.Inconclusive($"{wsName} worksheet is missing");
+            if (ws == null)
+            {
+                Assert.Inconclusive($"{wsName} worksheet is missing");
+            }
+
             var shape = (ExcelShape)ws.Drawings[0];
 
             //Assert
@@ -461,7 +553,11 @@ namespace EPPlusTest.Drawing
             //Setup
             var wsName = "GradientAddMethods";
             var ws = _pck.Workbook.Worksheets[wsName];
-            if (ws == null) Assert.Inconclusive($"{wsName} worksheet is missing");
+            if (ws == null)
+            {
+                Assert.Inconclusive($"{wsName} worksheet is missing");
+            }
+
             var shape = (ExcelShape)ws.Drawings[0];
 
             //Act
@@ -522,7 +618,11 @@ namespace EPPlusTest.Drawing
             //Setup
             var wsName = "PatternDefault";
             var ws = _pck.Workbook.Worksheets[wsName];
-            if (ws == null) Assert.Inconclusive($"{wsName} worksheet is missing");
+            if (ws == null)
+            {
+                Assert.Inconclusive($"{wsName} worksheet is missing");
+            }
+
             var shape = (ExcelShape)ws.Drawings[0];
 
             //Assert
@@ -537,7 +637,11 @@ namespace EPPlusTest.Drawing
             //Setup
             var wsName = "PatternCross";
             var ws = _pck.Workbook.Worksheets[wsName];
-            if (ws == null) Assert.Inconclusive($"{wsName} worksheet is missing");
+            if (ws == null)
+            {
+                Assert.Inconclusive($"{wsName} worksheet is missing");
+            }
+
             var shape = (ExcelShape)ws.Drawings[0];
 
             //Act
@@ -560,7 +664,11 @@ namespace EPPlusTest.Drawing
             //Setup
             var wsName = "BlipFill";
             var ws = _pck.Workbook.Worksheets[wsName];
-            if (ws == null) Assert.Inconclusive($"{wsName} worksheet is missing");
+            if (ws == null)
+            {
+                Assert.Inconclusive($"{wsName} worksheet is missing");
+            }
+
             var shape = (ExcelShape)ws.Drawings[0]; 
 
             //Assert
@@ -576,7 +684,11 @@ namespace EPPlusTest.Drawing
             //Setup
             var wsName = "BlipFillNoImage";
             var ws = _pck.Workbook.Worksheets[wsName];
-            if (ws == null) Assert.Inconclusive($"{wsName} worksheet is missing");
+            if (ws == null)
+            {
+                Assert.Inconclusive($"{wsName} worksheet is missing");
+            }
+
             var shape = (ExcelShape)ws.Drawings[0];
 
             //Assert
@@ -591,7 +703,11 @@ namespace EPPlusTest.Drawing
             //Setup
             var wsName = "BlipFillStretch";
             var ws = _pck.Workbook.Worksheets[wsName];
-            if (ws == null) Assert.Inconclusive($"{wsName} worksheet is missing");
+            if (ws == null)
+            {
+                Assert.Inconclusive($"{wsName} worksheet is missing");
+            }
+
             var shape = (ExcelShape)ws.Drawings[0];
 
             //Assert
@@ -611,7 +727,11 @@ namespace EPPlusTest.Drawing
             //Setup
             var wsName = "BlipFillSourceRectangle";
             var ws = _pck.Workbook.Worksheets[wsName];
-            if (ws == null) Assert.Inconclusive($"{wsName} worksheet is missing");
+            if (ws == null)
+            {
+                Assert.Inconclusive($"{wsName} worksheet is missing");
+            }
+
             var shape = (ExcelShape)ws.Drawings[0];
 
             //Assert
@@ -631,7 +751,11 @@ namespace EPPlusTest.Drawing
             //Setup
             var wsName = "BlipFillTile";
             var ws = _pck.Workbook.Worksheets[wsName];
-            if (ws == null) Assert.Inconclusive($"{wsName} worksheet is missing");
+            if (ws == null)
+            {
+                Assert.Inconclusive($"{wsName} worksheet is missing");
+            }
+
             var shape = (ExcelShape)ws.Drawings[0];
 
             //Assert
@@ -653,7 +777,11 @@ namespace EPPlusTest.Drawing
             //Setup
             var wsName = "BlipFillPieChart";
             var ws = _pck.Workbook.Worksheets[wsName];
-            if (ws == null)     Assert.Inconclusive($"{wsName} worksheet is missing");
+            if (ws == null)
+            {
+                Assert.Inconclusive($"{wsName} worksheet is missing");
+            }
+
             var chart = ws.Drawings[0].As.Chart.PieChart;
 
             Assert.AreEqual(eFillStyle.BlipFill, chart.Fill.Style);

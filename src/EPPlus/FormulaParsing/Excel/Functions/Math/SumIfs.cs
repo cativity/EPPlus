@@ -45,7 +45,11 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
             var criterias = new List<string>();
             for (var ix = 1; ix < 31; ix += 2)
             {
-                if (functionArguments.Length <= ix) break;
+                if (functionArguments.Length <= ix)
+                {
+                    break;
+                }
+
                 var arg = functionArguments[ix];
                 if(arg.IsExcelRange)
                 {

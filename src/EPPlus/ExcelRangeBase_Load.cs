@@ -108,7 +108,10 @@ namespace OfficeOpenXml
             cancellationToken = cancellationToken ?? CancellationToken.None;
             var r = await LoadFromDataReaderAsync(Reader, PrintHeaders, cancellationToken.Value).ConfigureAwait(false);
 
-            if (cancellationToken.Value.IsCancellationRequested) return r;
+            if (cancellationToken.Value.IsCancellationRequested)
+            {
+                return r;
+            }
 
             int rows = r.Rows - 1;
             if (rows >= 0 && r.Columns > 0)
@@ -243,14 +246,21 @@ namespace OfficeOpenXml
         public ExcelRangeBase LoadFromArrays(IEnumerable<object[]> Data)
         {
             //thanx to Abdullin for the code contribution
-            if (!(Data?.Any() ?? false)) return null;
+            if (!(Data?.Any() ?? false))
+            {
+                return null;
+            }
 
             var maxColumn = 0;
             var row = _fromRow;
             foreach (object[] item in Data)
             {
                 _worksheet._values.SetValueRow_Value(row, _fromCol, item);
-                if (maxColumn < item.Length) maxColumn = item.Length;
+                if (maxColumn < item.Length)
+                {
+                    maxColumn = item.Length;
+                }
+
                 row++;
             }
 
@@ -328,7 +338,10 @@ namespace OfficeOpenXml
             if (Collection is IEnumerable<IDictionary<string, object>>)
             {
                 if (Members == null)
-                    return LoadFromDictionaries(Collection as IEnumerable<IDictionary<string, object>>, PrintHeaders, TableStyle);
+                {
+                    return this.LoadFromDictionaries(Collection as IEnumerable<IDictionary<string, object>>, PrintHeaders, TableStyle);
+                }
+
                 return LoadFromDictionaries(Collection as IEnumerable<IDictionary<string, object>>, PrintHeaders, TableStyle, Members.Select(x => x.Name));
             }
             var param = new LoadFromCollectionParams
@@ -365,7 +378,10 @@ namespace OfficeOpenXml
             if (collection is IEnumerable<IDictionary<string, object>>)
             {
                 if (param.Members == null)
-                    return LoadFromDictionaries(collection as IEnumerable<IDictionary<string, object>>, param.PrintHeaders, param.TableStyle);
+                {
+                    return this.LoadFromDictionaries(collection as IEnumerable<IDictionary<string, object>>, param.PrintHeaders, param.TableStyle);
+                }
+
                 return LoadFromDictionaries(collection as IEnumerable<IDictionary<string, object>>, param.PrintHeaders, param.TableStyle, param.Members.Select(x => x.Name));
             }
             var func = new LoadFromCollection<T>(this, collection, param);

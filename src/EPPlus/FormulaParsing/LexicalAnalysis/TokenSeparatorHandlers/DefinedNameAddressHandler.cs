@@ -38,7 +38,11 @@ namespace OfficeOpenXml.FormulaParsing.LexicalAnalysis.TokenSeparatorHandlers
                     if (!string.IsNullOrEmpty(tokenValue))
                     {
                         var parts = tokenValue.Split(':');
-                        if (parts.Length < 2) return false;
+                        if (parts.Length < 2)
+                        {
+                            return false;
+                        }
+
                         var part1 = parts[0];
                         var name = parts[1];
                         var nameValue = _nameValueProvider.GetNamedValue(name, context.Worksheet);

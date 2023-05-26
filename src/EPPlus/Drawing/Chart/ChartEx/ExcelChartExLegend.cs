@@ -26,7 +26,11 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
             }
             set
             {
-                if (TopNode == null) Add();
+                if (TopNode == null)
+                {
+                    this.Add();
+                }
+
                 SetXmlNodeString("@align", value.ToEnumString().Replace("center", "ctr"));
             }
         }
@@ -52,7 +56,11 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
             }
             set
             {
-                if (TopNode == null) Add();
+                if (TopNode == null)
+                {
+                    this.Add();
+                }
+
                 if (value == eLegendPosition.TopRight)
                 {
                     PositionAlignment = ePositionAlign.Min;
@@ -66,7 +74,10 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
         /// </summary>
         public override void Add()
         {
-            if (TopNode != null) return;
+            if (TopNode != null)
+            {
+                return;
+            }
 
             //XmlHelper xml = new XmlHelper(NameSpaceManager, _chart.ChartXml);
             XmlHelper xml = XmlHelperFactory.Create(NameSpaceManager, _chart.ChartXml);

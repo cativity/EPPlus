@@ -40,13 +40,17 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.Implementations
             double t;
 
             for (t = 1.0; t < fNumOfCoups; t++)
+            {
                 fDur += (t + nDiff) * coupon / System.Math.Pow(yield, t + nDiff);
+            }
 
             fDur += (fNumOfCoups + nDiff) * (coupon + f100) / System.Math.Pow(yield, fNumOfCoups + nDiff);
 
             double p = 0.0;
             for (t = 1.0; t < fNumOfCoups; t++)
+            {
                 p += coupon / System.Math.Pow(yield, t + nDiff);
+            }
 
             p += (coupon + f100) / System.Math.Pow(yield, fNumOfCoups + nDiff);
 

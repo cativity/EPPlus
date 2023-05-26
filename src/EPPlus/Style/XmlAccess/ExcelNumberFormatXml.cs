@@ -483,7 +483,9 @@ namespace OfficeOpenXml.Style.XmlAccess
                                         }
 
                                         if (startPos > 0)  //RemovePart
+                                        {
                                             sb.Remove(sb.Length-(pos-startPos-1),(pos-startPos-1)) ;
+                                        }
 
                                         int endPos = pos + 1;
                                         while (endPos < ExcelFormat.Length &&
@@ -525,8 +527,10 @@ namespace OfficeOpenXml.Style.XmlAccess
                 }
 
                 //Add qoutes
-                if (DataType == eFormatType.DateTime) SetDecimal(lstDec, sb); //Remove?
-
+                if (DataType == eFormatType.DateTime)
+                {
+                    SetDecimal(lstDec, sb); //Remove?
+                }
 
                 //if (format == "")
                 //    format = sb.ToString();
@@ -615,9 +619,15 @@ namespace OfficeOpenXml.Style.XmlAccess
                         }
                         listPos = index;
 
-                        if (result == prevResult) break;
+                        if (result == prevResult)
+                        {
+                            break;
+                        }
 
-                        if (result == d) break;
+                        if (result == d)
+                        {
+                            break;
+                        }
 
                         prevResult = result;
 
@@ -634,7 +644,11 @@ namespace OfficeOpenXml.Style.XmlAccess
                 }
                 if (numerator == denomerator || numerator==0)
                 {
-                    if(numerator == denomerator) intPart++;
+                    if(numerator == denomerator)
+                    {
+                        intPart++;
+                    }
+
                     return sign + intPart.ToString(f.NetFormat).Replace("?", new string(' ', f.FractionFormat.Length));
                 }
                 else if (intPart == 0)

@@ -149,9 +149,17 @@ namespace OfficeOpenXml
         /// <param name="Format">Information how to create the csv text</param>
         public void SaveToText(Stream stream, ExcelOutputTextFormat Format)
         {
-            if (Format == null) Format = new ExcelOutputTextFormat();
+            if (Format == null)
+            {
+                Format = new ExcelOutputTextFormat();
+            }
+
             var sw = new StreamWriter(stream, Format.Encoding);
-            if (!string.IsNullOrEmpty(Format.Header)) sw.Write(Format.Header + Format.EOL);
+            if (!string.IsNullOrEmpty(Format.Header))
+            {
+                sw.Write(Format.Header + Format.EOL);
+            }
+
             int maxFormats = Format.Formats == null ? 0 : Format.Formats.Length;
 
             bool hasTextQ = Format.TextQualifier != '\0';
@@ -186,11 +194,21 @@ namespace OfficeOpenXml
                     {
                         sw.Write(t);
                     }
-                    if (col != _toCol) sw.Write(Format.Delimiter);
+                    if (col != _toCol)
+                    {
+                        sw.Write(Format.Delimiter);
+                    }
                 }
-                if (row != _toRow - Format.SkipLinesEnd) sw.Write(Format.EOL);
+                if (row != _toRow - Format.SkipLinesEnd)
+                {
+                    sw.Write(Format.EOL);
+                }
             }
-            if (!string.IsNullOrEmpty(Format.Footer)) sw.Write(Format.EOL + Format.Footer);
+            if (!string.IsNullOrEmpty(Format.Footer))
+            {
+                sw.Write(Format.EOL + Format.Footer);
+            }
+
             sw.Flush();
         }
         #endregion
@@ -239,9 +257,17 @@ namespace OfficeOpenXml
         /// <param name="Format">Information how to create the csv text</param>
         public async Task SaveToTextAsync(Stream stream, ExcelOutputTextFormat Format)
         {
-            if (Format == null) Format = new ExcelOutputTextFormat();
+            if (Format == null)
+            {
+                Format = new ExcelOutputTextFormat();
+            }
+
             var sw = new StreamWriter(stream, Format.Encoding);
-            if (!string.IsNullOrEmpty(Format.Header)) sw.Write(Format.Header + Format.EOL);
+            if (!string.IsNullOrEmpty(Format.Header))
+            {
+                sw.Write(Format.Header + Format.EOL);
+            }
+
             int maxFormats = Format.Formats == null ? 0 : Format.Formats.Length;
 
             bool hasTextQ = Format.TextQualifier != '\0';
@@ -284,11 +310,21 @@ namespace OfficeOpenXml
                     {
                         await sw.WriteAsync(t).ConfigureAwait(false);
                     }
-                    if (col != _toCol) await sw.WriteAsync(Format.Delimiter).ConfigureAwait(false);
+                    if (col != _toCol)
+                    {
+                        await sw.WriteAsync(Format.Delimiter).ConfigureAwait(false);
+                    }
                 }
-                if (row != _toRow - Format.SkipLinesEnd) await sw.WriteAsync(Format.EOL).ConfigureAwait(false);
+                if (row != _toRow - Format.SkipLinesEnd)
+                {
+                    await sw.WriteAsync(Format.EOL).ConfigureAwait(false);
+                }
             }
-            if (!string.IsNullOrEmpty(Format.Footer)) await sw.WriteAsync(Format.EOL + Format.Footer).ConfigureAwait(false);
+            if (!string.IsNullOrEmpty(Format.Footer))
+            {
+                await sw.WriteAsync(Format.EOL + Format.Footer).ConfigureAwait(false);
+            }
+
             sw.Flush();
         }
 #endif
@@ -411,7 +447,10 @@ namespace OfficeOpenXml
                 if (Format.UseCellFormat)
                 {
                     t = ValueToTextHandler.GetFormattedText(v._value, _workbook, v._styleId, false, ci);
-                    if (!ConvertUtil.IsNumericOrDate(v._value)) isText = true;
+                    if (!ConvertUtil.IsNumericOrDate(v._value))
+                    {
+                        isText = true;
+                    }
                 }
                 else
                 {
@@ -508,9 +547,15 @@ namespace OfficeOpenXml
                 }
 
                 if (col < _toCol)
+                {
                     sb.Append(Format.Delimiter);
+                }
             }
-            if (row != _toRow) sb.Append(Format.EOL);
+            if (row != _toRow)
+            {
+                sb.Append(Format.EOL);
+            }
+
             return sb.ToString();
         }
         /// <summary>

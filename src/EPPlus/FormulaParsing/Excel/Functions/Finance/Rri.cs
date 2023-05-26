@@ -33,7 +33,11 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance
             var nper = ArgToDecimal(arguments, 0);
             var pv = ArgToDecimal(arguments, 1);
             var fv = ArgToDecimal(arguments, 2);
-            if (nper <= 0d || pv <= 0d || fv < 0d) return CreateResult(eErrorType.Num);
+            if (nper <= 0d || pv <= 0d || fv < 0d)
+            {
+                return this.CreateResult(eErrorType.Num);
+            }
+
             var retVal = (System.Math.Pow(fv / pv, 1 / nper)) - 1;
             return CreateResult(retVal, DataType.Decimal);
         }

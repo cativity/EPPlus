@@ -93,11 +93,25 @@ namespace OfficeOpenXml.Drawing
         /// </summary>
         internal protected virtual void LoadFill()
         {
-            if (_fillTypeNode == null) _fillTypeNode = _fillNode.SelectSingleNode("a:solidFill", NameSpaceManager);
-            if (_fillTypeNode == null) _fillTypeNode = _fillNode.SelectSingleNode("a:gradFill", NameSpaceManager);
-            if (_fillTypeNode == null) _fillTypeNode = _fillNode.SelectSingleNode("a:noFill", NameSpaceManager);
             if (_fillTypeNode == null)
+            {
+                this._fillTypeNode = this._fillNode.SelectSingleNode("a:solidFill", this.NameSpaceManager);
+            }
+
+            if (_fillTypeNode == null)
+            {
+                this._fillTypeNode = this._fillNode.SelectSingleNode("a:gradFill", this.NameSpaceManager);
+            }
+
+            if (_fillTypeNode == null)
+            {
+                this._fillTypeNode = this._fillNode.SelectSingleNode("a:noFill", this.NameSpaceManager);
+            }
+
+            if (_fillTypeNode == null)
+            {
                 return;
+            }
 
             switch (_fillTypeNode.LocalName)
             {
@@ -223,7 +237,11 @@ namespace OfficeOpenXml.Drawing
             }
             set
             {
-                if (_style == value) return;
+                if (_style == value)
+                {
+                    return;
+                }
+
                 _initXml?.Invoke();
                 if (value == eFillStyle.GroupFill)
                 {
@@ -248,8 +266,16 @@ namespace OfficeOpenXml.Drawing
         {
             get
             {
-                if (Style != eFillStyle.SolidFill) return Color.Empty;
-                if (SolidFill.Color.ColorType != eDrawingColorType.Rgb) return Color.Empty;
+                if (Style != eFillStyle.SolidFill)
+                {
+                    return Color.Empty;
+                }
+
+                if (SolidFill.Color.ColorType != eDrawingColorType.Rgb)
+                {
+                    return Color.Empty;
+                }
+
                 var col = SolidFill.Color.RgbColor.Color;
                 if(col == Color.Empty)
                 {
@@ -304,12 +330,20 @@ namespace OfficeOpenXml.Drawing
         {
             get
             {
-                if (_solidFill == null) return 0;
+                if (_solidFill == null)
+                {
+                    return 0;
+                }
+
                 return (int)(100-_solidFill.Color.Transforms.FindValue(eColorTransformType.Alpha));
             }
             set
             {
-                if (_solidFill == null) throw new InvalidOperationException("Transparency can only be set when Type is set to SolidFill.");
+                if (_solidFill == null)
+                {
+                    throw new InvalidOperationException("Transparency can only be set when Type is set to SolidFill.");
+                }
+
                 var alphaItem = _solidFill.Color.Transforms.Find(eColorTransformType.Alpha);
                 if(alphaItem==null)
                 {

@@ -32,8 +32,16 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Statistical
             var arg2 = arguments.ElementAt(1);
             var array1 = ArgsToDoubleEnumerable(new FunctionArgument[] { arg1 }, context).Select(x => x.Value).ToArray();
             var array2 = ArgsToDoubleEnumerable(new FunctionArgument[] { arg2 }, context).Select(x => x.Value).ToArray();
-            if (array1.Count() != array2.Count()) return CreateResult(eErrorType.NA);
-            if (!array1.Any()) return CreateResult(eErrorType.NA);
+            if (array1.Count() != array2.Count())
+            {
+                return this.CreateResult(eErrorType.NA);
+            }
+
+            if (!array1.Any())
+            {
+                return this.CreateResult(eErrorType.NA);
+            }
+
             var result = PearsonImpl(array1, array2);
             return CreateResult(result, DataType.Decimal);
         }

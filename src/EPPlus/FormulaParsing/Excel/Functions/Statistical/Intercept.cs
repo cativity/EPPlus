@@ -32,8 +32,16 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Statistical
             var arg2 = arguments.ElementAt(1);
             var knownYs = ArgsToDoubleEnumerable(false, false, new FunctionArgument[] { arg1 }, context).Select(x => x.Value).ToArray();
             var knownXs = ArgsToDoubleEnumerable(false, false, new FunctionArgument[] { arg2 }, context).Select(x => x.Value).ToArray();
-            if (knownYs.Count() != knownXs.Count()) return CreateResult(eErrorType.NA);
-            if (!knownYs.Any()) return CreateResult(eErrorType.NA);
+            if (knownYs.Count() != knownXs.Count())
+            {
+                return this.CreateResult(eErrorType.NA);
+            }
+
+            if (!knownYs.Any())
+            {
+                return this.CreateResult(eErrorType.NA);
+            }
+
             var result = InterceptImpl(0, knownYs, knownXs);
             return CreateResult(result, DataType.Decimal);
         }

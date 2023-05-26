@@ -83,7 +83,11 @@ namespace OfficeOpenXml.FormulaParsing.LexicalAnalysis
         /// <returns>The <see cref="Token"/> at the requested position</returns>
         public Token GetTokenBeforeIndex(int index)
         {
-            if (index < 1 || index > _result.Count - 1) throw new IndexOutOfRangeException("Index was out of range of the token array");
+            if (index < 1 || index > _result.Count - 1)
+            {
+                throw new IndexOutOfRangeException("Index was out of range of the token array");
+            }
+
             return _result[index - 1];
         }
 
@@ -94,7 +98,11 @@ namespace OfficeOpenXml.FormulaParsing.LexicalAnalysis
         /// <returns>The <see cref="Token"/> at the requested position</returns>
         public Token GetNextTokenAfterIndex(int index)
         {
-            if (index < 0 || index > _result.Count - 2) throw new IndexOutOfRangeException("Index was out of range of the token array");
+            if (index < 0 || index > _result.Count - 2)
+            {
+                throw new IndexOutOfRangeException("Index was out of range of the token array");
+            }
+
             return _result[index + 1];
         }
 

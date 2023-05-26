@@ -39,9 +39,17 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance
             {
                 basis = ArgToInt(arguments, 4);
             }
-            if (basis < 0 || basis > 4) return CreateResult(eErrorType.Num);
+            if (basis < 0 || basis > 4)
+            {
+                return this.CreateResult(eErrorType.Num);
+            }
+
             var result = IntRateImpl.Intrate(settlementDate, maturityDate, investment, redemption, (DayCountBasis)basis);
-            if (result.HasError) return CreateResult(result.ExcelErrorType);
+            if (result.HasError)
+            {
+                return this.CreateResult(result.ExcelErrorType);
+            }
+
             return CreateResult(result.Result, result.DataType);
         }
     }

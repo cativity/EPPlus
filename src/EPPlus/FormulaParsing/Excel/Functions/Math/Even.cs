@@ -30,7 +30,11 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
         {
             ValidateArguments(arguments, 1);
             var arg = arguments.ElementAt(0).Value;
-            if (!IsNumeric(arg)) return new CompileResult(eErrorType.Value);
+            if (!IsNumeric(arg))
+            {
+                return new CompileResult(eErrorType.Value);
+            }
+
             var number = ConvertUtil.GetValueDouble(arg);
             if (number % 1 != 0)
             {

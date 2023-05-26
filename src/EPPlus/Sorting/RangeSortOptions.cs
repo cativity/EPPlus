@@ -49,7 +49,10 @@ namespace OfficeOpenXml.Sorting
             get
             {
                 if(_sortLayer == null)
-                    _sortLayer = new RangeSortLayer(this);
+                {
+                    this._sortLayer = new RangeSortLayer(this);
+                }
+
                 return _sortLayer;
             }
         }
@@ -62,7 +65,10 @@ namespace OfficeOpenXml.Sorting
             get
             {
                 if (_sortLayerLeftToRight == null)
-                    _sortLayerLeftToRight = new RangeLeftToRightSortLayer(this);
+                {
+                    this._sortLayerLeftToRight = new RangeLeftToRightSortLayer(this);
+                }
+
                 return _sortLayerLeftToRight;
             }
         }

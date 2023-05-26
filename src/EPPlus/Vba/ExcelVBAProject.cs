@@ -1194,7 +1194,10 @@ namespace OfficeOpenXml.VBA
 
         internal void RemoveMe()
         {
-            if (Part == null) return;
+            if (Part == null)
+            {
+                return;
+            }
 
             foreach (var rel in Part.GetRelationships())
             {

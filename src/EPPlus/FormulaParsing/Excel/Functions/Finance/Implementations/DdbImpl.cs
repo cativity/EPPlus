@@ -32,7 +32,9 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.Implementations
             }
 
             if (Cost <= 0)
+            {
                 return new FinanceCalcResult<double>(0.0d);
+            }
 
             if(Life < 2d)
             {
@@ -54,9 +56,13 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.Implementations
                 dRet = Cost * Factor / Life;
                 dTemp = Cost - Salvage;
                 if (dRet > dTemp)
+                {
                     return new FinanceCalcResult<double>(dTemp);
+                }
                 else
+                {
                     return new FinanceCalcResult<double>(dRet);
+                }
             }
 
             //   Perform the calculation

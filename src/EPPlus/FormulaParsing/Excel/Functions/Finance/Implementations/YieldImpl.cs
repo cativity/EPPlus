@@ -53,11 +53,17 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.Implementations
                     fPriceN = _priceProvider.GetPrice(settlement, maturity, rate, fYieldN, redemption, frequency, basis);
 
                     if (AreEqual(price, fPrice1))
+                    {
                         return fYield1;
+                    }
                     else if (AreEqual(price, fPrice2))
+                    {
                         return fYield2;
+                    }
                     else if (AreEqual(price, fPriceN))
+                    {
                         return fYieldN;
+                    }
                     else if (price < fPrice2)
                     {
                         fYield2 *= 2.0;
@@ -82,7 +88,10 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.Implementations
                     }
                 }
                 if (System.Math.Abs(price - fPriceN) > price / 100d)
+                {
                     throw new Exception("Result not precise enough");
+                }
+
                 return fYieldN;      
             }
         }

@@ -67,7 +67,11 @@ namespace OfficeOpenXml.Core.Worksheet.Fonts.GenericFontMetrics
                     if (sFont.CharMetrics.ContainsKey(c))
                     {
                         var fw = fnt.ClassWidths[sFont.CharMetrics[c]];
-                        if (Char.IsDigit(c)) fw *= FontScaleFactors.DigitsScalingFactor;
+                        if (Char.IsDigit(c))
+                        {
+                            fw *= FontScaleFactors.DigitsScalingFactor;
+                        }
+
                         width += fw;
                     }
                     else
@@ -108,7 +112,11 @@ namespace OfficeOpenXml.Core.Worksheet.Fonts.GenericFontMetrics
                     break;
                 }
             }
-            if (!supported) return uint.MaxValue;
+            if (!supported)
+            {
+                return uint.MaxValue;
+            }
+
             var family = (FontMetricsFamilies)Enum.Parse(typeof(FontMetricsFamilies), enumName);
             var subFamily = FontSubFamilies.Regular;
             switch (fontStyle)

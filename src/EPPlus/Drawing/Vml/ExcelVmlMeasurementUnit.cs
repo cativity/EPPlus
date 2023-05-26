@@ -37,7 +37,11 @@ namespace OfficeOpenXml.Drawing.Vml
 
         private double GetValue(string v)
         {
-            if (string.IsNullOrEmpty(v)) return 0;
+            if (string.IsNullOrEmpty(v))
+            {
+                return 0;
+            }
+
             if (_suffixes.Any(x => v.EndsWith(x)))
             {
                 return ConvertUtil.GetValueDouble(v.Substring(0, v.Length - 2));

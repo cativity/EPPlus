@@ -121,23 +121,35 @@ namespace OfficeOpenXml
         internal XmlNode CreateNode(string path)
         {
             if (path == "")
-                return TopNode;
+            {
+                return this.TopNode;
+            }
             else
-                return CreateNode(path, false);
+            {
+                return this.CreateNode(path, false);
+            }
         }
         internal XmlNode CreateNode(XmlNode node, string path)
         {
             if (path == "")
+            {
                 return node;
+            }
             else
-                return CreateNode(node, path, false, false,"");
+            {
+                return this.CreateNode(node, path, false, false,"");
+            }
         }
         internal XmlNode CreateNode(XmlNode node, string path, bool addNew)
         {
             if (path == "")
+            {
                 return node;
+            }
             else
-                return CreateNode(node, path, false, addNew, "");
+            {
+                return this.CreateNode(node, path, false, addNew, "");
+            }
         }
 
         /// <summary>
@@ -161,7 +173,11 @@ namespace OfficeOpenXml
         {
             XmlNode prependNode = null;
             int lastUsedOrderIndex = 0;
-            if (path.StartsWith("/", StringComparison.OrdinalIgnoreCase)) path = path.Substring(1);
+            if (path.StartsWith("/", StringComparison.OrdinalIgnoreCase))
+            {
+                path = path.Substring(1);
+            }
+
             var subPaths = path.Split(new char[] { '/' }, StringSplitOptions.RemoveEmptyEntries);
             for (int i = 0; i < subPaths.Length; i++)
             {
@@ -184,7 +200,11 @@ namespace OfficeOpenXml
                     if (nameSplit.Length > 1)
                     {
                         nodePrefix = nameSplit[0];
-                        if (nodePrefix[0] == '@') nodePrefix = nodePrefix.Substring(1, nodePrefix.Length - 1);
+                        if (nodePrefix[0] == '@')
+                        {
+                            nodePrefix = nodePrefix.Substring(1, nodePrefix.Length - 1);
+                        }
+
                         nameSpaceURI = NameSpaceManager.LookupNamespace(nodePrefix);
                         nodeName = nameSplit[1];
                     }
@@ -877,8 +897,16 @@ namespace OfficeOpenXml
         {
             if (value.HasValue)
             {
-                if (allowNegative == false && value < 0) throw (new ArgumentException("Negative percentage not allowed"));
-                if (value < -minMaxValue || value > minMaxValue) throw (new ArgumentOutOfRangeException("value", $"Percentage out of range. Ranges from {(allowNegative ? 0 : -minMaxValue)}% to {minMaxValue}%"));
+                if (allowNegative == false && value < 0)
+                {
+                    throw (new ArgumentException("Negative percentage not allowed"));
+                }
+
+                if (value < -minMaxValue || value > minMaxValue)
+                {
+                    throw (new ArgumentOutOfRangeException("value", $"Percentage out of range. Ranges from {(allowNegative ? 0 : -minMaxValue)}% to {minMaxValue}%"));
+                }
+
                 SetXmlNodeString(path, ((int)(value.Value * 1000)).ToString(CultureInfo.InvariantCulture));
             }
             else
@@ -922,11 +950,17 @@ namespace OfficeOpenXml
             {
                 if (AllowNegative)
                 {
-                    if (value < 0 || value > 4000) throw (new ArgumentOutOfRangeException(propertyName, "Fontsize must be between 0 and 4000"));
+                    if (value < 0 || value > 4000)
+                    {
+                        throw (new ArgumentOutOfRangeException(propertyName, "Fontsize must be between 0 and 4000"));
+                    }
                 }
                 else
                 {
-                    if (value < -4000 || value > 4000) throw (new ArgumentOutOfRangeException(propertyName, "Fontsize must be between -4000 and 4000"));
+                    if (value < -4000 || value > 4000)
+                    {
+                        throw (new ArgumentOutOfRangeException(propertyName, "Fontsize must be between -4000 and 4000"));
+                    }
                 }
                 SetXmlNodeString(path, ((double)value * 100).ToString(CultureInfo.InvariantCulture));
             }
@@ -1027,19 +1061,31 @@ namespace OfficeOpenXml
         internal double GetXmlNodeAngel(string path, double defaultValue = 0)
         {
             int a = GetXmlNodeInt(path);
-            if (a < 0) return defaultValue;
+            if (a < 0)
+            {
+                return defaultValue;
+            }
+
             return a / 60000D;
         }
         internal double GetXmlNodeEmuToPt(string path)
         {
             var v = GetXmlNodeLong(path);
-            if (v < 0) return 0;
+            if (v < 0)
+            {
+                return 0;
+            }
+
             return (double)(v / (double)Drawing.ExcelDrawing.EMU_PER_POINT);
         }
         internal double? GetXmlNodeEmuToPtNull(string path)
         {
             var v = GetXmlNodeLongNull(path);
-            if (v == null) return null;
+            if (v == null)
+            {
+                return null;
+            }
+
             return (double)(v / (double)Drawing.ExcelDrawing.EMU_PER_POINT);
         }
         internal int? GetXmlNodeIntNull(string path)
@@ -1211,7 +1257,9 @@ namespace OfficeOpenXml
             if (p.EndsWith("%"))
             {
                 if (double.TryParse(p.Substring(0, p.Length - 1), out d))
+                {
                     return d;
+                }
                 else
                 {
                     return null;
@@ -1220,9 +1268,13 @@ namespace OfficeOpenXml
             else
             {
                 if (double.TryParse(p, out d))
+                {
                     return d / 1000;
+                }
                 else
+                {
                     return null;
+                }
             }
         }
         internal double GetXmlNodeFontSize(string path)
@@ -1237,9 +1289,13 @@ namespace OfficeOpenXml
             while (TopNode.ChildNodes.Count > 0)
             {
                 if (allowedChildren == null || allowedChildren.Contains(TopNode.ChildNodes[0].LocalName))
-                    newNode.AppendChild(TopNode.ChildNodes[0]);
+                {
+                    newNode.AppendChild(this.TopNode.ChildNodes[0]);
+                }
                 else
-                    TopNode.RemoveChild(TopNode.ChildNodes[0]);
+                {
+                    this.TopNode.RemoveChild(this.TopNode.ChildNodes[0]);
+                }
             }
             TopNode.ParentNode.ReplaceChild(newNode, TopNode);
             TopNode = newNode;
@@ -1296,10 +1352,13 @@ namespace OfficeOpenXml
             {
                 var node = CreateNode(nodePath);
                 if (withLine)
+                {
                     node.InnerXml = "<a:noFill/><a:ln><a:noFill/></a:ln><a:effectLst/><a:sp3d/>";
+                }
                 else
+                {
                     node.InnerXml = "<a:noFill/><a:effectLst/><a:sp3d/>";
-
+                }
             }
         }
 

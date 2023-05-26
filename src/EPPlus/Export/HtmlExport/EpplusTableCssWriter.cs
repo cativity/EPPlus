@@ -100,7 +100,11 @@ namespace OfficeOpenXml.Export.HtmlExport
         internal void AddToCss(string name, ExcelTableStyleElement element, string htmlElement)
         {
             var s = element.Style;
-            if (s.HasValue == false) return; //Dont add empty elements
+            if (s.HasValue == false)
+            {
+                return; //Dont add empty elements
+            }
+
             WriteClass($"table.{name}{htmlElement}{{", _settings.Minify);
             WriteFillStyles(s.Fill);
             WriteFontStyles(s.Font);
@@ -118,7 +122,11 @@ namespace OfficeOpenXml.Export.HtmlExport
         internal void AddToCssBorderVH(string name, ExcelTableStyleElement element, string htmlElement)
         {
             var s = element.Style;
-            if (s.Border.Vertical.HasValue == false && s.Border.Horizontal.HasValue==false) return; //Dont add empty elements
+            if (s.Border.Vertical.HasValue == false && s.Border.Horizontal.HasValue==false)
+            {
+                return; //Dont add empty elements
+            }
+
             WriteClass($"table.{name}{htmlElement} td,tr {{", _settings.Minify);
             WriteBorderStylesVerticalHorizontal(s.Border);
             WriteClassEnd(_settings.Minify);
@@ -207,10 +215,25 @@ namespace OfficeOpenXml.Export.HtmlExport
             if (b.HasValue)
             {
                 var flags = _settings.Css.Exclude.TableStyle.Border;
-                if(EnumUtil.HasNotFlag(flags, eBorderExclude.Top)) WriteBorderItem(b.Top, "top");
-                if(EnumUtil.HasNotFlag(flags, eBorderExclude.Bottom)) WriteBorderItem(b.Bottom, "bottom");
-                if(EnumUtil.HasNotFlag(flags, eBorderExclude.Left)) WriteBorderItem(b.Left, "left");
-                if(EnumUtil.HasNotFlag(flags, eBorderExclude.Right)) WriteBorderItem(b.Right, "right");
+                if(EnumUtil.HasNotFlag(flags, eBorderExclude.Top))
+                {
+                    this.WriteBorderItem(b.Top, "top");
+                }
+
+                if(EnumUtil.HasNotFlag(flags, eBorderExclude.Bottom))
+                {
+                    this.WriteBorderItem(b.Bottom, "bottom");
+                }
+
+                if(EnumUtil.HasNotFlag(flags, eBorderExclude.Left))
+                {
+                    this.WriteBorderItem(b.Left, "left");
+                }
+
+                if(EnumUtil.HasNotFlag(flags, eBorderExclude.Right))
+                {
+                    this.WriteBorderItem(b.Right, "right");
+                }
             }
         }
         private void WriteBorderStylesVerticalHorizontal(ExcelDxfBorderBase b)
@@ -218,10 +241,25 @@ namespace OfficeOpenXml.Export.HtmlExport
             if (b.HasValue)
             {
                 var flags = _settings.Css.Exclude.TableStyle.Border;
-                if (EnumUtil.HasNotFlag(flags, eBorderExclude.Top)) WriteBorderItem(b.Horizontal, "top");
-                if (EnumUtil.HasNotFlag(flags, eBorderExclude.Bottom)) WriteBorderItem(b.Horizontal, "bottom");
-                if (EnumUtil.HasNotFlag(flags, eBorderExclude.Left)) WriteBorderItem(b.Vertical, "left");
-                if (EnumUtil.HasNotFlag(flags, eBorderExclude.Right)) WriteBorderItem(b.Vertical, "right");
+                if (EnumUtil.HasNotFlag(flags, eBorderExclude.Top))
+                {
+                    this.WriteBorderItem(b.Horizontal, "top");
+                }
+
+                if (EnumUtil.HasNotFlag(flags, eBorderExclude.Bottom))
+                {
+                    this.WriteBorderItem(b.Horizontal, "bottom");
+                }
+
+                if (EnumUtil.HasNotFlag(flags, eBorderExclude.Left))
+                {
+                    this.WriteBorderItem(b.Vertical, "left");
+                }
+
+                if (EnumUtil.HasNotFlag(flags, eBorderExclude.Right))
+                {
+                    this.WriteBorderItem(b.Vertical, "right");
+                }
             }
         }
 

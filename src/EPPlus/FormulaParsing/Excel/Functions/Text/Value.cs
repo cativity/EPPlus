@@ -50,7 +50,11 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Text
             ValidateArguments(arguments, 1);
             var val = ArgToString(arguments, 0);
             double result = 0d;
-            if (string.IsNullOrEmpty(val)) return CreateResult(result, DataType.Integer);
+            if (string.IsNullOrEmpty(val))
+            {
+                return this.CreateResult(result, DataType.Integer);
+            }
+
             val = val.TrimEnd(' ');
             bool isPercentage = false;
             if(val.EndsWith("%"))

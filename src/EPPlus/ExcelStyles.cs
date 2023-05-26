@@ -88,7 +88,10 @@ namespace OfficeOpenXml
                 {
                     ExcelNumberFormatXml nf = new ExcelNumberFormatXml(_nameSpaceManager, n);
                     NumberFormats.Add(nf.Id, nf);
-                    if (nf.NumFmtId >= NumberFormats.NextId) NumberFormats.NextId = nf.NumFmtId + 1;
+                    if (nf.NumFmtId >= NumberFormats.NextId)
+                    {
+                        this.NumberFormats.NextId = nf.NumFmtId + 1;
+                    }
                 }
             }
 
@@ -255,7 +258,11 @@ namespace OfficeOpenXml
 
         internal ExcelStyle GetStyleObject(int Id, int PositionID, string Address)
         {
-            if (Id < 0) Id = 0;
+            if (Id < 0)
+            {
+                Id = 0;
+            }
+
             return new ExcelStyle(this, PropertyChange, PositionID, Address, Id);
         }
         /// <summary>
@@ -365,7 +372,11 @@ namespace OfficeOpenXml
                                         int r = 0, c = col;
                                         if (ws._values.PrevCell(ref r, ref c))
                                         {
-                                            if (!colCache.ContainsKey(c)) colCache.Add(c, ws._values.GetValue(0, c));
+                                            if (!colCache.ContainsKey(c))
+                                            {
+                                                colCache.Add(c, ws._values.GetValue(0, c));
+                                            }
+
                                             var val = colCache[c];
                                             var colObj = val._value as ExcelColumn;
                                             if (colObj != null && colObj.ColumnMax >= col) //Fixes issue 15174
@@ -425,7 +436,10 @@ namespace OfficeOpenXml
             var c = col;
             while (!colCache.ContainsKey(--c))
             {
-                if (c <= 0) return false;
+                if (c <= 0)
+                {
+                    return false;
+                }
             }
             var colObj = (ExcelColumn)(colCache[c]._value);
             if (colObj != null && colObj.ColumnMax >= col) //Fixes issue 15174
@@ -452,7 +466,11 @@ namespace OfficeOpenXml
                     while (cse.Next())
                     {
                         cs = cse.Value._styleId;
-                        if (cs == 0) continue;
+                        if (cs == 0)
+                        {
+                            continue;
+                        }
+
                         var c = ws.GetValueInner(cse.Row, cse.Column) as ExcelColumn;
                         if (c != null && c.ColumnMax < ExcelPackage.MaxColumns)
                         {
@@ -486,7 +504,11 @@ namespace OfficeOpenXml
             while (cse2.Next())
             {
                 var s = cse2.Value._styleId;
-                if (s == 0) continue;
+                if (s == 0)
+                {
+                    continue;
+                }
+
                 if (styleCashe.ContainsKey(s))
                 {
                     ws.SetStyleInner(cse2.Row, cse2.Column, styleCashe[s]);
@@ -504,7 +526,11 @@ namespace OfficeOpenXml
             cse2 = new CellStoreEnumerator<ExcelValue>(ws._values, 0, 1, 0, address._toCol);
             while (cse2.Next())
             {
-                if (cse2.Value._styleId == 0) continue;
+                if (cse2.Value._styleId == 0)
+                {
+                    continue;
+                }
+
                 for (int r = address._fromRow; r <= address._toRow; r++)
                 {
                     if (!ws.ExistsStyleInner(r, cse2.Column))
@@ -637,7 +663,11 @@ namespace OfficeOpenXml
                 cse = new CellStoreEnumerator<ExcelValue>(ws._values, 1, 0, address._toRow, 0);
                 while (cse.Next())
                 {
-                    if (cse.Value._styleId == 0) continue;
+                    if (cse.Value._styleId == 0)
+                    {
+                        continue;
+                    }
+
                     for (int c = address._fromCol; c <= address._toCol; c++)
                     {
                         if (!ws.ExistsStyleInner(cse.Row, c))
@@ -1394,16 +1424,24 @@ namespace OfficeOpenXml
             styleXfs.XfId = style.StyleXfId;
 
             if (style.XfId >= 0)
-                style.XfId = CellXfs[style.XfId].newID;
+            {
+                style.XfId = this.CellXfs[style.XfId].newID;
+            }
             else
+            {
                 style.XfId = 0;
+            }
         }
         private void RemoveUnusedStyles()
         {
             CellXfs[0].useCnt = 1; //First item is allways used.
             foreach (ExcelWorksheet sheet in _wb.Worksheets)
             {
-                if (sheet is ExcelChartsheet) continue;
+                if (sheet is ExcelChartsheet)
+                {
+                    continue;
+                }
+
                 var cse = new CellStoreEnumerator<ExcelValue>(sheet._values);
                 while(cse.Next())
                 {
@@ -1423,18 +1461,40 @@ namespace OfficeOpenXml
             {
                 if (xf.useCnt > 0)
                 {
-                    if (xf.FontId >= 0) Fonts[xf.FontId].useCnt++;
-                    if (xf.FillId >= 0) Fills[xf.FillId].useCnt++;
-                    if (xf.BorderId >= 0) Borders[xf.BorderId].useCnt++;
+                    if (xf.FontId >= 0)
+                    {
+                        this.Fonts[xf.FontId].useCnt++;
+                    }
+
+                    if (xf.FillId >= 0)
+                    {
+                        this.Fills[xf.FillId].useCnt++;
+                    }
+
+                    if (xf.BorderId >= 0)
+                    {
+                        this.Borders[xf.BorderId].useCnt++;
+                    }
                 }
             }
             foreach (ExcelXfs xf in CellStyleXfs)
             {
                 if (xf.useCnt > 0)
                 {
-                    if (xf.FontId >= 0) Fonts[xf.FontId].useCnt++;
-                    if (xf.FillId >= 0) Fills[xf.FillId].useCnt++;
-                    if (xf.BorderId >= 0) Borders[xf.BorderId].useCnt++;                    
+                    if (xf.FontId >= 0)
+                    {
+                        this.Fonts[xf.FontId].useCnt++;
+                    }
+
+                    if (xf.FillId >= 0)
+                    {
+                        this.Fills[xf.FillId].useCnt++;
+                    }
+
+                    if (xf.BorderId >= 0)
+                    {
+                        this.Borders[xf.BorderId].useCnt++;
+                    }
                 }
             }
         }

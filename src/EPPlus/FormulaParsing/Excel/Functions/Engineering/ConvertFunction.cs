@@ -30,8 +30,16 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Engineering
             var number = ArgToDecimal(arguments, 0);
             var fromUnit = ArgToString(arguments, 1);
             var toUnit = ArgToString(arguments, 2);
-            if (!Conversions.IsValidUnit(fromUnit)) return CreateResult(eErrorType.NA);
-            if (!Conversions.IsValidUnit(toUnit)) return CreateResult(eErrorType.NA);
+            if (!Conversions.IsValidUnit(fromUnit))
+            {
+                return this.CreateResult(eErrorType.NA);
+            }
+
+            if (!Conversions.IsValidUnit(toUnit))
+            {
+                return this.CreateResult(eErrorType.NA);
+            }
+
             var result = Conversions.Convert(number, fromUnit, toUnit);
             if(double.IsNaN(result))
             {

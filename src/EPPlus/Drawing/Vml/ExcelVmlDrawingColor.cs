@@ -53,7 +53,11 @@ namespace OfficeOpenXml.Drawing.Vml
         }
         internal static Color GetColor(string c)
         {
-            if (string.IsNullOrEmpty(c)) return Color.Empty;
+            if (string.IsNullOrEmpty(c))
+            {
+                return Color.Empty;
+            }
+
             try
             {                
                 if (c.IndexOf("[", StringComparison.OrdinalIgnoreCase) > 0)

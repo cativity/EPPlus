@@ -224,7 +224,11 @@ namespace OfficeOpenXml.Style.Dxf
         }
         private static ExcelBorderStyle? GetBorderStyleEnum(string style)
         {
-            if (style == "") return null;
+            if (style == "")
+            {
+                return null;
+            }
+
             string sInStyle = style.Substring(0, 1).ToUpper(CultureInfo.InvariantCulture) + style.Substring(1, style.Length - 1);
             try
             {

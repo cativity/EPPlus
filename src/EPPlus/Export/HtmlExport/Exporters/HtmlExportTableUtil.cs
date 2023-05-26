@@ -32,7 +32,10 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
 
         internal static string GetClassName(string className, string optionalName)
         {
-            if (string.IsNullOrEmpty(optionalName)) return optionalName;
+            if (string.IsNullOrEmpty(optionalName))
+            {
+                return optionalName;
+            }
 
             className = className.Trim().Replace(" ", "-");
             var newClassName = "";
@@ -146,7 +149,11 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
         internal static void RenderTableCss(StreamWriter sw, ExcelTable table, HtmlTableExportSettings settings, Dictionary<string, int> styleCache, List<string> datatypes)
         {
             var styleWriter = new EpplusTableCssWriter(sw, table, settings, styleCache);
-            if (settings.Minify == false) styleWriter.WriteLine();
+            if (settings.Minify == false)
+            {
+                styleWriter.WriteLine();
+            }
+
             ExcelTableNamedStyle tblStyle;
             if (table.TableStyle == TableStyles.Custom)
             {
@@ -203,7 +210,11 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
         internal static async Task RenderTableCssAsync(StreamWriter sw, ExcelTable table, HtmlTableExportSettings settings, Dictionary<string, int> styleCache, List<string> datatypes)
         {
             var styleWriter = new EpplusTableCssWriter(sw, table, settings, styleCache);
-            if (settings.Minify == false) await styleWriter.WriteLineAsync();
+            if (settings.Minify == false)
+            {
+                await styleWriter.WriteLineAsync();
+            }
+
             ExcelTableNamedStyle tblStyle;
             if (table.TableStyle == TableStyles.Custom)
             {

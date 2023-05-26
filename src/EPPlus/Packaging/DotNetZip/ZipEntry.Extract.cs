@@ -544,7 +544,9 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         {
             // workitem 10923
             if (_container.ZipFile == null)
+            {
                 throw new InvalidOperationException("Use OpenReader() only with ZipFile.");
+            }
 
             // use the entry password if it is non-null,
             // else use the zipfile password, which is possibly null
@@ -570,7 +572,9 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         {
             // workitem 10923
             if (_container.ZipFile == null)
+            {
                 throw new InvalidOperationException("Use OpenReader() only with ZipFile.");
+            }
 
             return InternalOpenReader(password);
         }
@@ -585,7 +589,9 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
 
             // workitem 7958
             if (this._Source != ZipEntrySource.ZipFile)
+            {
                 throw new BadStateException("You must call ZipFile.Save before calling OpenReader");
+            }
 
             // LeftToRead is a count of bytes remaining to be read (out)
             // from the stream AFTER decompression and decryption.
@@ -612,7 +618,9 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         private void OnExtractProgress(Int64 bytesWritten, Int64 totalBytesToWrite)
         {
             if (_container.ZipFile != null)
-            _ioOperationCanceled = _container.ZipFile.OnExtractBlock(this, bytesWritten, totalBytesToWrite);
+            {
+                this._ioOperationCanceled = this._container.ZipFile.OnExtractBlock(this, bytesWritten, totalBytesToWrite);
+            }
         }
 
 
@@ -647,7 +655,9 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         private void OnExtractExisting(string path)
         {
             if (_container.ZipFile != null)
-                _ioOperationCanceled = _container.ZipFile.OnExtractExisting(this, path);
+            {
+                this._ioOperationCanceled = this._container.ZipFile.OnExtractExisting(this, path);
+            }
         }
 
         private static void ReallyDelete(string fileName)
@@ -660,7 +670,9 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
 #elif SILVERLIGHT
 #else
             if ((File.GetAttributes(fileName) & FileAttributes.ReadOnly) == FileAttributes.ReadOnly)
+            {
                 File.SetAttributes(fileName, FileAttributes.Normal);
+            }
 #endif
             File.Delete(fileName);
         }
@@ -668,7 +680,10 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
 
         private void WriteStatus(string format, params Object[] args)
         {
-            if (_container.ZipFile != null && _container.ZipFile.Verbose) _container.ZipFile.StatusMessageTextWriter.WriteLine(format, args);
+            if (_container.ZipFile != null && _container.ZipFile.Verbose)
+            {
+                this._container.ZipFile.StatusMessageTextWriter.WriteLine(format, args);
+            }
         }
 
 
@@ -679,16 +694,22 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         {
             // workitem 7958
             if (_container == null)
+            {
                 throw new BadStateException("This entry is an orphan");
+            }
 
             // workitem 10355
             if (_container.ZipFile == null)
+            {
                 throw new InvalidOperationException("Use Extract() only with ZipFile.");
+            }
 
             _container.ZipFile.Reset(false);
 
             if (this._Source != ZipEntrySource.ZipFile)
+            {
                 throw new BadStateException("You must call ZipFile.Save before calling any Extract method");
+            }
 
             OnBeforeExtract(baseDir);
             _ioOperationCanceled = false;
@@ -727,8 +748,15 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
                     {
                         fileExistsBeforeExtraction = true;
                         int rc = CheckExtractExistingFile(baseDir, targetFileName);
-                        if (rc == 2) goto ExitTry; // cancel
-                        if (rc == 1) return; // do not overwrite
+                        if (rc == 2)
+                        {
+                            goto ExitTry; // cancel
+                        }
+
+                        if (rc == 1)
+                        {
+                            return; // do not overwrite
+                        }
                     }
                 }
 
@@ -738,7 +766,10 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
                 if (_Encryption_FromZipFile != EncryptionAlgorithm.None)
                 {
                     if (p == null)
+                    {
                         throw new BadPasswordException();
+                    }
+
                     SetupCryptoForExtract(p);
                 }
 
@@ -762,7 +793,9 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
                     {
                         // workitem 8264
                         if (_container.ZipFile != null)
-                            checkLaterForResetDirTimes = _container.ZipFile._inExtractAll;
+                        {
+                            checkLaterForResetDirTimes = this._container.ZipFile._inExtractAll;
+                        }
                     }
 
                     // File.Create(CreateNew) will overwrite any existing file.
@@ -776,12 +809,16 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
 
 
                 if (_ioOperationCanceled)
+                {
                     goto ExitTry;
+                }
 
                 Int32 ActualCrc32 = ExtractOne(output);
 
                 if (_ioOperationCanceled)
+                {
                     goto ExitTry;
+                }
 
                 VerifyCrcAfterExtract(ActualCrc32);
 
@@ -818,7 +855,9 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
                     _SetTimes(targetFileName, true);
 
                     if (zombie != null && File.Exists(zombie))
+                    {
                         ReallyDelete(zombie);
+                    }
 
                     // workitem 8264
                     if (checkLaterForResetDirTimes)
@@ -856,7 +895,9 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
                     // workitem 7926 - version made by OS can be zero (FAT) or 10
                     // (NTFS)
                     if ((_VersionMadeBy & 0xFF00) == 0x0a00 || (_VersionMadeBy & 0xFF00) == 0x0000)
-                        File.SetAttributes(targetFileName, (FileAttributes)_ExternalFileAttrs);
+                    {
+                        File.SetAttributes(targetFileName, (FileAttributes)this._ExternalFileAttrs);
+                    }
 #endif
                 }
 
@@ -877,7 +918,11 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
                     {
                         try
                         {
-                            if (output != null) output.Close();
+                            if (output != null)
+                            {
+                                output.Close();
+                            }
+
                             // An exception has occurred. If the file exists, check
                             // to see if it existed before we tried extracting.  If
                             // it did not, attempt to remove the target file. There
@@ -888,8 +933,9 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
                             // that case the file will remain, even though some
                             // error occurred.  Nothing to be done about it.
                             if (File.Exists(targetFileName) && !fileExistsBeforeExtraction)
+                            {
                                 File.Delete(targetFileName);
-
+                            }
                         }
                         finally { }
                     }
@@ -952,8 +998,10 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
 
 #else
             if (actualCrc32 != _Crc32)
+            {
                 throw new BadCrcException("CRC error: the file being extracted appears to be corrupted. " +
-                                          String.Format("Expected 0x{0:X8}, Actual 0x{1:X8}", _Crc32, actualCrc32));
+                                          String.Format("Expected 0x{0:X8}, Actual 0x{1:X8}", this._Crc32, actualCrc32));
+            }
 #endif
         }
 
@@ -979,10 +1027,15 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
 
                     case ExtractExistingFileAction.InvokeExtractProgressEvent:
                         if (loop>0)
+                        {
                             throw new ZipException(String.Format("The file {0} already exists.", targetFileName));
+                        }
+
                         OnExtractExisting(baseDir);
                         if (_ioOperationCanceled)
+                        {
                             return 2;
+                        }
 
                         // loop around
                         break;
@@ -1002,8 +1055,10 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         private void _CheckRead(int nbytes)
         {
             if (nbytes == 0)
+            {
                 throw new BadReadException(String.Format("bad read of entry {0} from compressed archive.",
-                             this.FileName));
+                                                         this.FileName));
+            }
         }
 
 
@@ -1114,7 +1169,9 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         {
             Stream input2 = null;
             if (_Encryption_FromZipFile == EncryptionAlgorithm.PkzipWeak)
-                input2 = new ZipCipherStream(input, _zipCrypto_forExtract, CryptoMode.Decrypt);
+            {
+                input2 = new ZipCipherStream(input, this._zipCrypto_forExtract, CryptoMode.Decrypt);
+            }
 
 #if AESCRYPTO
             else if (_Encryption_FromZipFile == EncryptionAlgorithm.WinZipAes128 ||
@@ -1123,7 +1180,9 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
 #endif
 
             else
+            {
                 input2 = input;
+            }
 
             return input2;
         }
@@ -1194,9 +1253,13 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
                     }
 #else
                     if (isFile)
+                    {
                         File.SetLastWriteTime(fileOrDirectory, AdjustedLastModified);
+                    }
                     else
+                    {
                         Directory.SetLastWriteTime(fileOrDirectory, AdjustedLastModified);
+                    }
 #endif
                 }
             }
@@ -1316,11 +1379,15 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
             {
                 // workitem 7968
                 if (_UnsupportedAlgorithmId != 0)
+                {
                     throw new ZipException(String.Format("Cannot extract: Entry {0} is encrypted with an algorithm not supported by DotNetZip: {1}",
-                                                         FileName, UnsupportedAlgorithm));
+                                                         this.FileName, this.UnsupportedAlgorithm));
+                }
                 else
+                {
                     throw new ZipException(String.Format("Cannot extract: Entry {0} uses an unsupported encryption algorithm ({1:X2})",
-                                                         FileName, (int)Encryption));
+                                                         this.FileName, (int)this.Encryption));
+                }
             }
         }
 
@@ -1333,20 +1400,27 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
                 && (_CompressionMethod_FromZipFile != (short)CompressionMethod.BZip2)
 #endif
                 )
+            {
                 throw new ZipException(String.Format("Entry {0} uses an unsupported compression method (0x{1:X2}, {2})",
-                                                          FileName, _CompressionMethod_FromZipFile, UnsupportedCompressionMethod));
+                                                     this.FileName, this._CompressionMethod_FromZipFile, this.UnsupportedCompressionMethod));
+            }
         }
 
 
         private void SetupCryptoForExtract(string password)
         {
             //if (password == null) return;
-            if (_Encryption_FromZipFile == EncryptionAlgorithm.None) return;
+            if (_Encryption_FromZipFile == EncryptionAlgorithm.None)
+            {
+                return;
+            }
 
             if (_Encryption_FromZipFile == EncryptionAlgorithm.PkzipWeak)
             {
                 if (password == null)
+                {
                     throw new ZipException("Missing password.");
+                }
 
                 this.ArchiveStream.Seek(this.FileDataPosition - 12, SeekOrigin.Begin);
                 // workitem 10178
@@ -1400,18 +1474,26 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
 
                 // workitem 11772: remove drive letter with separator
                 if (f.IndexOf(':') == 1)
+                {
                     f= f.Substring(2);
+                }
 
                 if (f.StartsWith("/", StringComparison.OrdinalIgnoreCase))
+                {
                     f= f.Substring(1);
+                }
 
                 // String.Contains is not available on .NET CF 2.0
 
                 if (_container.ZipFile.FlattenFoldersOnExtract)
+                {
                     outFileName = Path.Combine(basedir,
-                                              (f.IndexOf('/') != -1) ? Path.GetFileName(f) : f);
+                                               (f.IndexOf('/') != -1) ? Path.GetFileName(f) : f);
+                }
                 else
+                {
                     outFileName = Path.Combine(basedir, f);
+                }
 
                 // workitem 10639
                 outFileName = outFileName.Replace("/","\\");
@@ -1428,7 +1510,9 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
                     {
                         // the dir exists, maybe we want to overwrite times.
                         if (ExtractExistingFile == ExtractExistingFileAction.OverwriteSilently)
-                            _SetTimes(outFileName, false);
+                        {
+                            this._SetTimes(outFileName, false);
+                        }
                     }
                     return true;  // true == all done, caller will return
                 }

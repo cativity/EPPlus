@@ -329,16 +329,24 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
         public static System.Int32 ReadInput(System.IO.TextReader sourceTextReader, byte[] target, int start, int count)
         {
             // Returns 0 bytes if not enough space in target
-            if (target.Length == 0) return 0;
+            if (target.Length == 0)
+            {
+                return 0;
+            }
 
             char[] charArray = new char[target.Length];
             int bytesRead = sourceTextReader.Read(charArray, start, count);
 
             // Returns -1 if EOF
-            if (bytesRead == 0) return -1;
+            if (bytesRead == 0)
+            {
+                return -1;
+            }
 
             for (int index = start; index < start + bytesRead; index++)
+            {
                 target[index] = (byte)charArray[index];
+            }
 
             return bytesRead;
         }
@@ -494,7 +502,9 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
         public static uint Adler32(uint adler, byte[] buf, int index, int len)
         {
             if (buf == null)
+            {
                 return 1;
+            }
 
             uint s1 = (uint) (adler & 0xffff);
             uint s2 = (uint) ((adler >> 16) & 0xffff);

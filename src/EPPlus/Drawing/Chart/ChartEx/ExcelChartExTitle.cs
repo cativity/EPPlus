@@ -34,7 +34,10 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
             {
                 var applyStyle = (RichText.Count == 0);
                 RichText.Text = value;
-                if (applyStyle) _chart.ApplyStyleOnPart(this, _chart.StyleManager?.Style?.Title, true);
+                if (applyStyle)
+                {
+                    this._chart.ApplyStyleOnPart(this, this._chart.StyleManager?.Style?.Title, true);
+                }
             }
 
         }

@@ -111,12 +111,20 @@ namespace OfficeOpenXml
 
         internal string GetSlicerName(string name)
         {
-            if (_slicerNames == null) LoadSlicerNames();
+            if (_slicerNames == null)
+            {
+                this.LoadSlicerNames();
+            }
+
             return GetUniqueName(name, _slicerNames);
         }
         internal bool CheckSlicerNameIsUnique(string name)
         {
-            if (_slicerNames == null) LoadSlicerNames();
+            if (_slicerNames == null)
+            {
+                this.LoadSlicerNames();
+            }
+
             if (_slicerNames.Contains(name))
             {
                 return false;
@@ -225,11 +233,19 @@ namespace OfficeOpenXml
             }
 
             if (SharedStringsUri == null)
-                SharedStringsUri = new Uri("/xl/sharedStrings.xml", UriKind.Relative);
+            {
+                this.SharedStringsUri = new Uri("/xl/sharedStrings.xml", UriKind.Relative);
+            }
+
             if (StylesUri == null)
-                StylesUri = new Uri("/xl/styles.xml", UriKind.Relative);
+            {
+                this.StylesUri = new Uri("/xl/styles.xml", UriKind.Relative);
+            }
+
             if (PersonsUri == null)
-                PersonsUri = new Uri("/xl/persons/person.xml", UriKind.Relative);
+            {
+                this.PersonsUri = new Uri("/xl/persons/person.xml", UriKind.Relative);
+            }
         }
         #endregion
 
@@ -245,7 +261,10 @@ namespace OfficeOpenXml
         }
         internal void SetNewPivotCacheId(int value)
         {
-            if (value >= _nextPivotCacheId) _nextPivotCacheId = value + 1;
+            if (value >= _nextPivotCacheId)
+            {
+                this._nextPivotCacheId = value + 1;
+            }
         }
         internal int _nextPivotTableID = int.MinValue;
         internal XmlNamespaceManager _namespaceManager;
@@ -363,8 +382,15 @@ namespace OfficeOpenXml
                             }
                         }
                     }
-                    if (elem.GetAttribute("hidden") == "1" && namedRange != null) namedRange.IsNameHidden = true;
-                    if (!string.IsNullOrEmpty(elem.GetAttribute("comment"))) namedRange.NameComment = elem.GetAttribute("comment");
+                    if (elem.GetAttribute("hidden") == "1" && namedRange != null)
+                    {
+                        namedRange.IsNameHidden = true;
+                    }
+
+                    if (!string.IsNullOrEmpty(elem.GetAttribute("comment")))
+                    {
+                        namedRange.NameComment = elem.GetAttribute("comment");
+                    }
                 }
             }
         }
@@ -644,7 +670,11 @@ namespace OfficeOpenXml
                 if (ix >= 0)
                 {
                     var font = Styles.NamedStyles[ix].Style.Font;
-                    if (font.Index == int.MinValue) font.Index = 0;
+                    if (font.Index == int.MinValue)
+                    {
+                        font.Index = 0;
+                    }
+
                     if (_standardFontWidth == decimal.MinValue || _fontID != font.Id)
                     {
                         try
@@ -686,7 +716,11 @@ namespace OfficeOpenXml
                 {
                     if (min < size && size > fontSize)
                     {
-                        if (min == -1) min = size;
+                        if (min == -1)
+                        {
+                            min = size;
+                        }
+
                         break;
                     }
                     min = size;
@@ -863,7 +897,11 @@ namespace OfficeOpenXml
             var ret = true;
             foreach (var ws in Worksheets)
             {
-                if (ws is ExcelChartsheet) continue;
+                if (ws is ExcelChartsheet)
+                {
+                    continue;
+                }
+
                 foreach (var pt in ws.PivotTables)
                 {
                     if (pt.CacheId == cacheID)
@@ -876,7 +914,11 @@ namespace OfficeOpenXml
                     }
                 }
             }
-            if (ret) newID = cacheID;   //Not Found, return same ID
+            if (ret)
+            {
+                newID = cacheID;   //Not Found, return same ID
+            }
+
             return ret;
         }
 
@@ -902,7 +944,11 @@ namespace OfficeOpenXml
                     // Like Excel when the option it's changed update it all cells with Date format
                     foreach (var ws in Worksheets)
                     {
-                        if (ws is ExcelChartsheet) continue;
+                        if (ws is ExcelChartsheet)
+                        {
+                            continue;
+                        }
+
                         ws.UpdateCellsWithDate1904Setting();
                     }
                 }
@@ -918,7 +964,9 @@ namespace OfficeOpenXml
         private void CreateWorkbookXml(XmlNamespaceManager namespaceManager)
         {
             if (_package.ZipPackage.PartExists(WorkbookUri))
-                _workbookXml = _package.GetXmlFromUri(WorkbookUri);
+            {
+                this._workbookXml = this._package.GetXmlFromUri(this.WorkbookUri);
+            }
             else
             {
                 // create a new workbook part and add to the package
@@ -962,7 +1010,9 @@ namespace OfficeOpenXml
                 if (_stylesXml == null)
                 {
                     if (_package.ZipPackage.PartExists(StylesUri))
-                        _stylesXml = _package.GetXmlFromUri(StylesUri);
+                    {
+                        this._stylesXml = this._package.GetXmlFromUri(this.StylesUri);
+                    }
                     else
                     {
                         // create a new styles part and add to the package
@@ -1142,7 +1192,9 @@ namespace OfficeOpenXml
         internal void Save()  // Workbook Save
         {
             if (Worksheets.Count == 0)
+            {
                 throw new InvalidOperationException("The workbook must contain at least one worksheet");
+            }
 
             DeleteCalcChain();
 
@@ -1307,7 +1359,11 @@ namespace OfficeOpenXml
             var sourceRange = cache.SourceRange;
             foreach (XmlElement node in fields)
             {
-                if (ix >= sourceRange.Columns) break;
+                if (ix >= sourceRange.Columns)
+                {
+                    break;
+                }
+
                 var fldName = node.GetAttribute("name");                        //Fixes issue 15295 dup name error
                 if (string.IsNullOrEmpty(fldName))
                 {
@@ -1422,7 +1478,11 @@ namespace OfficeOpenXml
                 XmlNode top = WorkbookXml.SelectSingleNode("//d:definedNames", NameSpaceManager);
                 if (!ExistsNames())
                 {
-                    if (top != null) TopNode.RemoveChild(top);
+                    if (top != null)
+                    {
+                        this.TopNode.RemoveChild(top);
+                    }
+
                     return;
                 }
                 else
@@ -1442,8 +1502,16 @@ namespace OfficeOpenXml
                         XmlElement elem = WorkbookXml.CreateElement("definedName", ExcelPackage.schemaMain);
                         top.AppendChild(elem);
                         elem.SetAttribute("name", name.Name);
-                        if (name.IsNameHidden) elem.SetAttribute("hidden", "1");
-                        if (!string.IsNullOrEmpty(name.NameComment)) elem.SetAttribute("comment", name.NameComment);
+                        if (name.IsNameHidden)
+                        {
+                            elem.SetAttribute("hidden", "1");
+                        }
+
+                        if (!string.IsNullOrEmpty(name.NameComment))
+                        {
+                            elem.SetAttribute("comment", name.NameComment);
+                        }
+
                         SetNameElement(name, elem);
                     }
                 }
@@ -1457,8 +1525,16 @@ namespace OfficeOpenXml
                             top.AppendChild(elem);
                             elem.SetAttribute("name", name.Name);
                             elem.SetAttribute("localSheetId", name.LocalSheetId.ToString());
-                            if (name.IsNameHidden) elem.SetAttribute("hidden", "1");
-                            if (!string.IsNullOrEmpty(name.NameComment)) elem.SetAttribute("comment", name.NameComment);
+                            if (name.IsNameHidden)
+                            {
+                                elem.SetAttribute("hidden", "1");
+                            }
+
+                            if (!string.IsNullOrEmpty(name.NameComment))
+                            {
+                                elem.SetAttribute("comment", name.NameComment);
+                            }
+
                             SetNameElement(name, elem);
                         }
                     }
@@ -1520,7 +1596,11 @@ namespace OfficeOpenXml
             {
                 foreach (ExcelWorksheet ws in Worksheets)
                 {
-                    if (ws is ExcelChartsheet) continue;
+                    if (ws is ExcelChartsheet)
+                    {
+                        continue;
+                    }
+
                     if (ws.Names.Count > 0)
                     {
                         return true;
@@ -1542,7 +1622,11 @@ namespace OfficeOpenXml
         /// </summary>
         public void ClearFormulas()
         {
-            if (Worksheets == null || Worksheets.Count == 0) return;
+            if (Worksheets == null || Worksheets.Count == 0)
+            {
+                return;
+            }
+
             foreach (var worksheet in this.Worksheets)
             {
                 worksheet.ClearFormulas();
@@ -1554,7 +1638,11 @@ namespace OfficeOpenXml
         /// </summary>
         public void ClearFormulaValues()
         {
-            if (Worksheets == null || Worksheets.Count == 0) return;
+            if (Worksheets == null || Worksheets.Count == 0)
+            {
+                return;
+            }
+
             foreach (var worksheet in this.Worksheets)
             {
                 worksheet.ClearFormulaValues();
@@ -1564,7 +1652,11 @@ namespace OfficeOpenXml
         {
             foreach (var ws in Worksheets)
             {
-                if (ws is ExcelChartsheet) continue;
+                if (ws is ExcelChartsheet)
+                {
+                    continue;
+                }
+
                 if (ws.Tables._tableNames.ContainsKey(Name))
                 {
                     return true;
@@ -1576,7 +1668,11 @@ namespace OfficeOpenXml
         {
             foreach (var ws in Worksheets)
             {
-                if (ws is ExcelChartsheet) continue;
+                if (ws is ExcelChartsheet)
+                {
+                    continue;
+                }
+
                 if (ws.PivotTables._pivotTableNames.ContainsKey(Name))
                 {
                     return true;
@@ -1670,7 +1766,11 @@ namespace OfficeOpenXml
         {
             get
             {
-                if (_worksheets == null) return false;
+                if (_worksheets == null)
+                {
+                    return false;
+                }
+
                 foreach (var ws in _worksheets)
                 {
                     if (ws.HasLoadedPivotTables == true)
@@ -1683,7 +1783,11 @@ namespace OfficeOpenXml
         }
         internal void ReadAllPivotTables()
         {
-            if (_nextPivotTableID > 0) return;
+            if (_nextPivotTableID > 0)
+            {
+                return;
+            }
+
             _nextPivotTableID = 1;
             foreach (var ws in Worksheets)
             {
@@ -1701,7 +1805,11 @@ namespace OfficeOpenXml
         }
         internal void ReadAllTables()
         {
-            if (_nextTableID > 0) return;
+            if (_nextTableID > 0)
+            {
+                return;
+            }
+
             _nextTableID = 1;
             foreach (var ws in Worksheets)
             {

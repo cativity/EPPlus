@@ -28,9 +28,21 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions
                 var r = ((IRangeInfo)obj).FirstOrDefault();
                 obj = (r == null ? null : r.Value);
             }
-            if (obj == null) return false;
-            if (obj is bool) return (bool)obj;
-            if (obj.IsNumeric()) return Convert.ToBoolean(obj);
+            if (obj == null)
+            {
+                return false;
+            }
+
+            if (obj is bool)
+            {
+                return (bool)obj;
+            }
+
+            if (obj.IsNumeric())
+            {
+                return Convert.ToBoolean(obj);
+            }
+
             bool result;
             if (bool.TryParse(obj.ToString(), out result))
             {

@@ -35,10 +35,18 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance
             var startPeriod = ArgToInt(arguments, 3);
             var endPeriod = ArgToInt(arguments, 4);
             var t = ArgToInt(arguments, 5);
-            if (t < 0 || t > 1) return CreateResult(eErrorType.Num);
+            if (t < 0 || t > 1)
+            {
+                return this.CreateResult(eErrorType.Num);
+            }
+
             var func = new CumprincImpl(new PmtProvider(), new FvProvider());
             var result = func.GetCumprinc(rate, nPer, presentValue, startPeriod, endPeriod, (PmtDue)t);
-            if (result.HasError) return CreateResult(result.ExcelErrorType);
+            if (result.HasError)
+            {
+                return this.CreateResult(result.ExcelErrorType);
+            }
+
             return CreateResult(result.Result, DataType.Decimal);
         }
 

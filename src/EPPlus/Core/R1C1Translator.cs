@@ -87,7 +87,11 @@ namespace OfficeOpenXml.Core
         /// <returns>The address in A1 notation</returns>        
         public static string FromR1C1(string r1C1Address, int row, int col)
         {
-            if (ExcelAddress.IsTableAddress(r1C1Address)) return r1C1Address;
+            if (ExcelAddress.IsTableAddress(r1C1Address))
+            {
+                return r1C1Address;
+            }
+
             var addresses = ExcelAddressBase.SplitFullAddress(r1C1Address);
             var ret = "";
             foreach(var address in addresses)
@@ -156,9 +160,14 @@ namespace OfficeOpenXml.Core
                         break;
                     default:
                         if ((r1C1Address[i] >= '0' && r1C1Address[i] <= '9') || r1C1Address[i] == '-' || r1C1Address[i] == '+')
+                        {
                             num += r1C1Address[i];
+                        }
                         else
+                        {
                             return r1C1Address; //This is not a R1C1 Address. Return the address without any change.
+                        }
+
                         break;
                 }
             }
@@ -191,9 +200,13 @@ namespace OfficeOpenXml.Core
                 var cell1 = GetCell(firstCell, row, col);
                 var cell2 = GetCell(currentCell, row, col);
                 if (cell1 == cell2)
+                {
                     return cell1;
+                }
                 else
+                {
                     return $"{cell1}:{cell2}";
+                }
             }
         }
 
@@ -281,7 +294,11 @@ namespace OfficeOpenXml.Core
                 }
                 else
                 {
-                    if (refCol + currentCell.ColOffset < 1) return "#REF!";
+                    if (refCol + currentCell.ColOffset < 1)
+                    {
+                        return "#REF!";
+                    }
+
                     ret = ExcelCellBase.GetColumnLetter(refCol + currentCell.ColOffset);
                 }
             }
@@ -294,7 +311,11 @@ namespace OfficeOpenXml.Core
                 }
                 else
                 {
-                    if (refRow + currentCell.RowOffset < 1) return "#REF!";
+                    if (refRow + currentCell.RowOffset < 1)
+                    {
+                        return "#REF!";
+                    }
+
                     ret += (refRow + currentCell.RowOffset).ToString();
                 }
             }

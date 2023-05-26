@@ -44,7 +44,11 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
             if (values.Any())
             {
                 var nValues = values.Count();
-                if(nValues == 1) throw new ExcelErrorValueException(eErrorType.Div0);      
+                if(nValues == 1)
+                {
+                    throw new ExcelErrorValueException(eErrorType.Div0);
+                }
+
                 double avg = values.Average();    
                 double sum = values.Sum(d => MathObj.Pow(d - avg, 2));    
                 ret = MathObj.Sqrt(Divide(sum, (values.Count() - 1)));

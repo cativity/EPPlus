@@ -610,7 +610,11 @@ namespace OfficeOpenXml.Vba.ContentHash
                      **/
                     if(propertyName != "ID" && propertyName != "Document" && propertyName != "CMG" && propertyName != "DPB" && propertyName != "GC")
                     {
-                        if (propertyValue.StartsWith("\"")) propertyValue = propertyValue.Substring(1, propertyValue.Length - 2);   //Remove leading and trailing double-quotes
+                        if (propertyValue.StartsWith("\""))
+                        {
+                            propertyValue = propertyValue.Substring(1, propertyValue.Length - 2);   //Remove leading and trailing double-quotes
+                        }
+
                         bw.Write(encoding.GetBytes(propertyName));
                         bw.Write(encoding.GetBytes(propertyValue));
                     }

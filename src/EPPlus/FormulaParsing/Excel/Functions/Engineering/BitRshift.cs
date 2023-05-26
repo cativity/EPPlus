@@ -29,12 +29,28 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Engineering
         public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
         {
             ValidateArguments(arguments, 2);
-            if (!IsNumeric(arguments.ElementAt(0).Value) || !IsNumeric(arguments.ElementAt(1).Value)) return CreateResult(eErrorType.Value);
-            if (!IsInteger(arguments.ElementAt(0).Value) || !IsInteger(arguments.ElementAt(1).Value)) return CreateResult(eErrorType.Num);
+            if (!IsNumeric(arguments.ElementAt(0).Value) || !IsNumeric(arguments.ElementAt(1).Value))
+            {
+                return this.CreateResult(eErrorType.Value);
+            }
+
+            if (!IsInteger(arguments.ElementAt(0).Value) || !IsInteger(arguments.ElementAt(1).Value))
+            {
+                return this.CreateResult(eErrorType.Num);
+            }
+
             var number = ArgToInt(arguments, 0);
             var shiftAmount = ArgToInt(arguments, 1);
-            if (number < 0 || shiftAmount < 0) return CreateResult(eErrorType.Num);
-            if (number > (System.Math.Pow(2, 48) - 1)) return CreateResult(eErrorType.Num);
+            if (number < 0 || shiftAmount < 0)
+            {
+                return this.CreateResult(eErrorType.Num);
+            }
+
+            if (number > (System.Math.Pow(2, 48) - 1))
+            {
+                return this.CreateResult(eErrorType.Num);
+            }
+
             return CreateResult(number >> shiftAmount, DataType.Integer);
         }
     }

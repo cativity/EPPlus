@@ -51,7 +51,10 @@ namespace OfficeOpenXml.Core.Worksheet
                 if (level < row.OutlineLevel)
                 {
                     row.Hidden = hidden ?? collapsed;
-                    if (collapseChildren && level != -2) row.Collapsed = collapsed;
+                    if (collapseChildren && level != -2)
+                    {
+                        row.Collapsed = collapsed;
+                    }
                 }
                 else
                 {
@@ -62,7 +65,10 @@ namespace OfficeOpenXml.Core.Worksheet
                     else
                     {
                         row.Hidden = hidden ?? !collapsed;
-                        if (level > row.OutlineLevel) row.Collapsed = !collapsed;
+                        if (level > row.OutlineLevel)
+                        {
+                            row.Collapsed = !collapsed;
+                        }
                     }
                 }
                 
@@ -75,7 +81,10 @@ namespace OfficeOpenXml.Core.Worksheet
                     row = GetRow(r++);
                 }
 
-                if (row != null) rowNo = r;
+                if (row != null)
+                {
+                    rowNo = r;
+                }
             }
 
             return rowNo;
@@ -83,7 +92,11 @@ namespace OfficeOpenXml.Core.Worksheet
 
         private RowInternal GetRow(int row)
         {
-            if (row < 1 || row > ExcelPackage.MaxRows) return null;
+            if (row < 1 || row > ExcelPackage.MaxRows)
+            {
+                return null;
+            }
+
             return _worksheet.GetValueInner(row, 0) as RowInternal;
         }
         #endregion
@@ -120,7 +133,10 @@ namespace OfficeOpenXml.Core.Worksheet
                 if (level < col.OutlineLevel)
                 {
                     col.Hidden = hidden??collapsed;
-                    if (collapseChildren && level != -2) col.Collapsed = collapsed;
+                    if (collapseChildren && level != -2)
+                    {
+                        col.Collapsed = collapsed;
+                    }
                 }
                 else
                 {
@@ -131,7 +147,10 @@ namespace OfficeOpenXml.Core.Worksheet
                     else
                     {
                         col.Hidden = hidden??!collapsed;
-                        if(level > col.OutlineLevel) col.Collapsed = !collapsed;
+                        if(level > col.OutlineLevel)
+                        {
+                            col.Collapsed = !collapsed;
+                        }
                     }
                 }
                 if(addValue<0)
@@ -142,14 +161,21 @@ namespace OfficeOpenXml.Core.Worksheet
                 {
                     col = GetColumn(col.ColumnMax + 1);
                 }
-                if (col != null) colNo = col.ColumnMax;
+                if (col != null)
+                {
+                    colNo = col.ColumnMax;
+                }
             }
 
             return colNo;
         }
         private ExcelColumn GetColumn(int col, bool ignoreFromCol = true)
         {
-            if (col < 1) return null;
+            if (col < 1)
+            {
+                return null;
+            }
+
             var currentCol = _worksheet.GetValueInner(0, col) as ExcelColumn;
             if (currentCol == null)
             {

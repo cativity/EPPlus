@@ -72,8 +72,15 @@ namespace OfficeOpenXml.Style.Dxf
         /// <param name="path">The XPath</param>
         internal override void CreateNodes(XmlHelper helper, string path)
         {
-            if (Fill.HasValue) Fill.CreateNodes(helper, "d:fill");
-            if (Border.HasValue) Border.CreateNodes(helper, "d:border");
+            if (Fill.HasValue)
+            {
+                this.Fill.CreateNodes(helper, "d:fill");
+            }
+
+            if (Border.HasValue)
+            {
+                this.Border.CreateNodes(helper, "d:border");
+            }
         }
         internal override void SetStyle()
         {

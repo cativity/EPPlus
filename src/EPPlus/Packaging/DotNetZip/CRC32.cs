@@ -91,7 +91,9 @@ namespace OfficeOpenXml.Packaging.Ionic.Crc
         public Int32 GetCrc32AndCopy(System.IO.Stream input, System.IO.Stream output)
         {
             if (input == null)
+            {
                 throw new Exception("The input stream must not be null.");
+            }
 
             unchecked
             {
@@ -100,13 +102,21 @@ namespace OfficeOpenXml.Packaging.Ionic.Crc
 
                 _TotalBytesRead = 0;
                 int count = input.Read(buffer, 0, readSize);
-                if (output != null) output.Write(buffer, 0, count);
+                if (output != null)
+                {
+                    output.Write(buffer, 0, count);
+                }
+
                 _TotalBytesRead += count;
                 while (count > 0)
                 {
                     SlurpBlock(buffer, 0, count);
                     count = input.Read(buffer, 0, readSize);
-                    if (output != null) output.Write(buffer, 0, count);
+                    if (output != null)
+                    {
+                        output.Write(buffer, 0, count);
+                    }
+
                     _TotalBytesRead += count;
                 }
 
@@ -143,7 +153,9 @@ namespace OfficeOpenXml.Packaging.Ionic.Crc
         public void SlurpBlock(byte[] block, int offset, int count)
         {
             if (block == null)
+            {
                 throw new Exception("The data buffer must not be null.");
+            }
 
             // bzip algorithm
             for (int i = 0; i < count; i++)
@@ -306,7 +318,10 @@ namespace OfficeOpenXml.Packaging.Ionic.Crc
             while (vec != 0)
             {
                 if ((vec & 0x01)== 0x01)
+                {
                     sum ^= matrix[i];
+                }
+
                 vec >>= 1;
                 i++;
             }
@@ -316,7 +331,9 @@ namespace OfficeOpenXml.Packaging.Ionic.Crc
         private void gf2_matrix_square(uint[] square, uint[] mat)
         {
             for (int i = 0; i < 32; i++)
-                square[i] = gf2_matrix_times(mat, mat[i]);
+            {
+                square[i] = this.gf2_matrix_times(mat, mat[i]);
+            }
         }
 
 
@@ -338,7 +355,9 @@ namespace OfficeOpenXml.Packaging.Ionic.Crc
             uint[] odd = new uint[32];      // odd-power-of-two zeros operator
 
             if (length == 0)
+            {
                 return;
+            }
 
             uint crc1= ~_register;
             uint crc2= (uint) crc;
@@ -367,16 +386,24 @@ namespace OfficeOpenXml.Packaging.Ionic.Crc
                 gf2_matrix_square(even, odd);
 
                 if ((len2 & 1)== 1)
-                    crc1 = gf2_matrix_times(even, crc1);
+                {
+                    crc1 = this.gf2_matrix_times(even, crc1);
+                }
+
                 len2 >>= 1;
 
                 if (len2 == 0)
+                {
                     break;
+                }
 
                 // another iteration of the loop with odd and even swapped
                 gf2_matrix_square(odd, even);
                 if ((len2 & 1)==1)
-                    crc1 = gf2_matrix_times(odd, crc1);
+                {
+                    crc1 = this.gf2_matrix_times(odd, crc1);
+                }
+
                 len2 >>= 1;
 
 
@@ -559,7 +586,9 @@ namespace OfficeOpenXml.Packaging.Ionic.Crc
             : this(true, length, stream, null)
         {
             if (length < 0)
+            {
                 throw new ArgumentException("length");
+            }
         }
 
         /// <summary>
@@ -581,7 +610,9 @@ namespace OfficeOpenXml.Packaging.Ionic.Crc
             : this(leaveOpen, length, stream, null)
         {
             if (length < 0)
+            {
                 throw new ArgumentException("length");
+            }
         }
 
         /// <summary>
@@ -605,7 +636,9 @@ namespace OfficeOpenXml.Packaging.Ionic.Crc
             : this(leaveOpen, length, stream, crc32)
         {
             if (length < 0)
+            {
                 throw new ArgumentException("length");
+            }
         }
 
 
@@ -684,12 +717,23 @@ namespace OfficeOpenXml.Packaging.Ionic.Crc
 
             if (_lengthLimit != CrcCalculatorStream.UnsetLengthLimit)
             {
-                if (_Crc32.TotalBytesRead >= _lengthLimit) return 0; // EOF
+                if (_Crc32.TotalBytesRead >= _lengthLimit)
+                {
+                    return 0; // EOF
+                }
+
                 Int64 bytesRemaining = _lengthLimit - _Crc32.TotalBytesRead;
-                if (bytesRemaining < count) bytesToRead = (int)bytesRemaining;
+                if (bytesRemaining < count)
+                {
+                    bytesToRead = (int)bytesRemaining;
+                }
             }
             int n = _innerStream.Read(buffer, offset, bytesToRead);
-            if (n > 0) _Crc32.SlurpBlock(buffer, offset, n);
+            if (n > 0)
+            {
+                this._Crc32.SlurpBlock(buffer, offset, n);
+            }
+
             return n;
         }
 
@@ -701,7 +745,11 @@ namespace OfficeOpenXml.Packaging.Ionic.Crc
         /// <param name="count">the number of bytes to write</param>
         public override void Write(byte[] buffer, int offset, int count)
         {
-            if (count > 0) _Crc32.SlurpBlock(buffer, offset, count);
+            if (count > 0)
+            {
+                this._Crc32.SlurpBlock(buffer, offset, count);
+            }
+
             _innerStream.Write(buffer, offset, count);
         }
 
@@ -750,8 +798,13 @@ namespace OfficeOpenXml.Packaging.Ionic.Crc
             get
             {
                 if (_lengthLimit == CrcCalculatorStream.UnsetLengthLimit)
-                    return _innerStream.Length;
-                else return _lengthLimit;
+                {
+                    return this._innerStream.Length;
+                }
+                else
+                {
+                    return this._lengthLimit;
+                }
             }
         }
 

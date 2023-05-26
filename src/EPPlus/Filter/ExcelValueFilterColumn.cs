@@ -101,7 +101,10 @@ namespace OfficeOpenXml.Filter
                         match = v.Value == valueText;
                     }
                 }
-                if (match) return true;
+                if (match)
+                {
+                    return true;
+                }
             }
             return match;
         }
@@ -109,8 +112,16 @@ namespace OfficeOpenXml.Filter
         {
             var node = (XmlElement)CreateNode("d:filters");
             node.RemoveAll();
-            if (Filters.Blank) (node).SetAttribute("blank", "1");
-            if (Filters.CalendarTyp.HasValue) (node).SetAttribute("calendarType", Filters.CalendarTyp.Value.ToEnumString());
+            if (Filters.Blank)
+            {
+                (node).SetAttribute("blank", "1");
+            }
+
+            if (Filters.CalendarTyp.HasValue)
+            {
+                (node).SetAttribute("calendarType", this.Filters.CalendarTyp.Value.ToEnumString());
+            }
+
             foreach(var f in Filters)
             {
                 if(f is ExcelFilterDateGroupItem d)

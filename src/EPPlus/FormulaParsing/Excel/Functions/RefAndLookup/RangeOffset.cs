@@ -15,8 +15,11 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.RefAndLookup
         public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
         {
 
-            if (StartRange == null || EndRange == null) return CreateResult(eErrorType.Value);
-            
+            if (StartRange == null || EndRange == null)
+            {
+                return this.CreateResult(eErrorType.Value);
+            }
+
             //Build the address from the minimum row and column to the maximum row and column. StartRange and offsetRange are single cells.
             var fromRow = System.Math.Min(StartRange.Address._fromRow, EndRange.Address._fromRow);
             var toRow = System.Math.Max(StartRange.Address._toRow, EndRange.Address._toRow);

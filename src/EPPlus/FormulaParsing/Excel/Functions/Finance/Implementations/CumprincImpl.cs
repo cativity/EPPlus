@@ -32,7 +32,9 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.Implementations
             double fPmt, fPpmt;
 
             if (startPeriod < 1 || endPeriod < startPeriod || rate <= 0.0 || endPeriod > nper || pv <= 0.0)
+            {
                 return new FinanceCalcResult<double>(eErrorType.Num);
+            }
 
             fPmt = _pmtProvider.GetPmt(rate, nper, pv, 0.0, type);
 
@@ -44,9 +46,13 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.Implementations
             if (nStart == 1)
             {
                 if (type == PmtDue.EndOfPeriod)
+                {
                     fPpmt = fPmt + pv * rate;
+                }
                 else
+                {
                     fPpmt = fPmt;
+                }
 
                 nStart++;
             }
@@ -54,9 +60,13 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.Implementations
             for (var i = nStart; i <= nEnd; i++)
             {
                 if (type == PmtDue.BeginningOfPeriod)
-                    fPpmt += fPmt - (_fvProvider.GetFv(rate, i - 2, fPmt, pv, type) - fPmt) * rate;
+                {
+                    fPpmt += fPmt - (this._fvProvider.GetFv(rate, i - 2, fPmt, pv, type) - fPmt) * rate;
+                }
                 else
-                    fPpmt += fPmt - _fvProvider.GetFv(rate, i - 1, fPmt, pv, type) * rate;
+                {
+                    fPpmt += fPmt - this._fvProvider.GetFv(rate, i - 1, fPmt, pv, type) * rate;
+                }
             }
 
             return new FinanceCalcResult<double>(fPpmt);

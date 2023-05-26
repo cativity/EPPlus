@@ -59,7 +59,11 @@ namespace OfficeOpenXml.LoadFunctions
 
         private List<ListType> CopyList<ListType>(List<ListType> source)
         {
-            if (source == null) return null;
+            if (source == null)
+            {
+                return null;
+            }
+
             var copy = new List<ListType>();
             source.ForEach(x => copy.Add(x));
             return copy;
@@ -289,7 +293,11 @@ namespace OfficeOpenXml.LoadFunctions
                     {
                         var aVal = so1[ix];
                         var bVal = so2[ix];
-                        if (aVal.CompareTo(bVal) == 0) continue;
+                        if (aVal.CompareTo(bVal) == 0)
+                        {
+                            continue;
+                        }
+
                         return aVal.CompareTo(bVal);
                     }
                     return a.Index.CompareTo(b.Index);

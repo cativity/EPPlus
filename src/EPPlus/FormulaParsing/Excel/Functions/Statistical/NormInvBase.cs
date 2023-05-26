@@ -113,10 +113,13 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions
             else
             {
                 if (q < 0)
+                {
                     r = p;
+                }
                 else
+                {
                     r = 1 - p;
-
+                }
 
                 r = System.Math.Sqrt(-System.Math.Log(r));
 

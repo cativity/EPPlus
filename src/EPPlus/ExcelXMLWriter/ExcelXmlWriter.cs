@@ -136,8 +136,11 @@ namespace OfficeOpenXml.ExcelXMLWriter
             while (cse.Next())
             {
                 var col = cse.Value._value as ExcelColumn;
-                if (col == null) continue;
-                
+                if (col == null)
+                {
+                    continue;
+                }
+
                 if (first)
                 {
                     sw.Write($"<{prefix}cols>");
@@ -271,7 +274,11 @@ namespace OfficeOpenXml.ExcelXMLWriter
 
         private void WriteRow(StringBuilder cache, ExcelStyleCollection<ExcelXfs> cellXfs, int prevRow, int row, string prefix)
         {
-            if (prevRow != -1) cache.Append($"</{prefix}row>");
+            if (prevRow != -1)
+            {
+                cache.Append($"</{prefix}row>");
+            }
+
             //ulong rowID = ExcelRow.GetRowID(SheetID, row);
             cache.Append($"<{prefix}row r=\"{row}\"");
             RowInternal currRow = _ws.GetValueInner(row, 0) as RowInternal;
@@ -497,9 +504,13 @@ namespace OfficeOpenXml.ExcelXMLWriter
                             {
                                 var e = enumResult.GetEnumerator();
                                 if (e.MoveNext() && e.Current != null)
+                                {
                                     v = e.Current;
+                                }
                                 else
+                                {
                                     v = string.Empty;
+                                }
                             }
                             if ((TypeCompat.IsPrimitive(v) || v is double || v is decimal || v is DateTime || v is TimeSpan) && !(v is char))
                             {
@@ -548,7 +559,11 @@ namespace OfficeOpenXml.ExcelXMLWriter
             }
             columnStyles = null;
 
-            if (row != -1) cache.Append($"</{prefix}row>");
+            if (row != -1)
+            {
+                cache.Append($"</{prefix}row>");
+            }
+
             cache.Append($"</{prefix}sheetData>");
             sw.Write(cache.ToString());
             sw.Flush();

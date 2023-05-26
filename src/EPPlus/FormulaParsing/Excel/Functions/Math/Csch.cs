@@ -29,7 +29,11 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
         {
             ValidateArguments(arguments, 1);
             var number = ArgToDecimal(arguments, 0);
-            if (number == 0) return CreateResult(eErrorType.Div0);
+            if (number == 0)
+            {
+                return this.CreateResult(eErrorType.Div0);
+            }
+
             return CreateResult(MathHelper.HCosec(number), DataType.Decimal);
         }
     }

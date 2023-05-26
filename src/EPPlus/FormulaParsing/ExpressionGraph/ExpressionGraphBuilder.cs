@@ -136,7 +136,11 @@ namespace OfficeOpenXml.FormulaParsing.ExpressionGraph
 
         private void CreateAndAppendExpression(ref Expression parent, ref Token token)
         {
-            if (IsWaste(token)) return;
+            if (IsWaste(token))
+            {
+                return;
+            }
+
             if (parent != null && 
                 (token.TokenTypeIsSet(TokenType.Comma) || token.TokenTypeIsSet(TokenType.SemiColon)))
             {

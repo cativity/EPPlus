@@ -337,9 +337,20 @@ namespace OfficeOpenXml.Drawing
         internal override void CellAnchorChanged()
         {
             base.CellAnchorChanged();
-            if (_fill != null) _fill.SetTopNode(TopNode);
-            if (_border != null) _border.TopNode = TopNode;
-            if (_effect != null) _effect.TopNode = TopNode;
+            if (_fill != null)
+            {
+                this._fill.SetTopNode(this.TopNode);
+            }
+
+            if (_border != null)
+            {
+                this._border.TopNode = this.TopNode;
+            }
+
+            if (_effect != null)
+            {
+                this._effect.TopNode = this.TopNode;
+            }
         }
 
         internal override void DeleteMe()

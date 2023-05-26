@@ -26,7 +26,9 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.Implementations
 
             //       Checking for error conditions
             if (NPer == 0.0)
+            {
                 return new FinanceCalcResult<double>(eErrorType.Value);
+            }
 
             if(Rate == 0.0)
             {
@@ -35,9 +37,14 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.Implementations
             else
             {
                 if (Due != 0)
+                {
                     dTemp = 1.0 + Rate;
+                }
                 else
+                {
                     dTemp = 1.0;
+                }
+
                 dTemp3 = Rate + 1.0;
                 //       WARSI Using the exponent operator for pow(..) in C code of PMT. Still got
                 //       to make sure that they (pow and ^) are same for all conditions
@@ -55,7 +62,10 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.Implementations
 
             //Performing calculation
             if (Rate == 0)
+            {
                 return (-PV - Pmt * NPer);
+            }
+
             if (Due != PmtDue.EndOfPeriod)
             {
                 dTemp = 1.0 + Rate;

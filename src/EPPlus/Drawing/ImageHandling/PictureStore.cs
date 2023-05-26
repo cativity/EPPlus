@@ -46,7 +46,10 @@ namespace OfficeOpenXml.Drawing
         }
         internal ImageInfo AddImage(byte[] image, Uri uri, ePictureType? pictureType)
         {
-            if (pictureType.HasValue == false) pictureType = ePictureType.Jpg;
+            if (pictureType.HasValue == false)
+            {
+                pictureType = ePictureType.Jpg;
+            }
 #if (Core)
             var hashProvider = SHA1.Create();
 #else
@@ -245,7 +248,9 @@ namespace OfficeOpenXml.Drawing
         internal static ePictureType GetPictureType(string extension)
         {
             if (extension.StartsWith(".", StringComparison.OrdinalIgnoreCase))
+            {
                 extension = extension.Substring(1);
+            }
 
             switch (extension.ToLower(CultureInfo.InvariantCulture))
             {
@@ -313,7 +318,9 @@ namespace OfficeOpenXml.Drawing
         internal static string GetContentType(string extension)
         {
             if (extension.StartsWith(".", StringComparison.OrdinalIgnoreCase))
+            {
                 extension = extension.Substring(1);
+            }
 
             switch (extension.ToLower(CultureInfo.InvariantCulture))
             {

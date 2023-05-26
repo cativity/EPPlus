@@ -145,13 +145,19 @@ namespace OfficeOpenXml.Style
                 foreach (var a in addr.Addresses)
                 {
                     SetBorderAroundStyle(Style, a);
-                    if (!Color.IsEmpty) SetBorderColor(Color, a);
+                    if (!Color.IsEmpty)
+                    {
+                        this.SetBorderColor(Color, a);
+                    }
                 }
             }
             else
             {
                 SetBorderAroundStyle(Style, addr);
-                if (!Color.IsEmpty) SetBorderColor(Color, addr);
+                if (!Color.IsEmpty)
+                {
+                    this.SetBorderColor(Color, addr);
+                }
             }
         }
 

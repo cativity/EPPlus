@@ -70,9 +70,15 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Helpers
         public static double Erfcinv(double p)
         {
             if (p >= 2)
+            {
                 return -100;
+            }
+
             if (p <= 0)
+            {
                 return 100;
+            }
+
             var pp = (p < 1) ? p : 2 - p;
             var t = System.Math.Sqrt(-2 * System.Math.Log(pp / 2));
             var x = -0.70711 * ((2.30753 + t * 0.27061) /

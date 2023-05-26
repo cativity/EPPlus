@@ -129,7 +129,11 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Engineering
 
         private static void AddMetricPrefix(string abbrevation)
         {
-            if (!_conversions.ContainsKey(abbrevation)) return;
+            if (!_conversions.ContainsKey(abbrevation))
+            {
+                return;
+            }
+
             var conversion = _conversions[abbrevation];
             foreach(var prefix in _metricPrefixes)
             {
@@ -150,7 +154,11 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Engineering
 
         private static void AddBinaryPrefix(string abbrevation)
         {
-            if (!_conversions.ContainsKey(abbrevation)) return;
+            if (!_conversions.ContainsKey(abbrevation))
+            {
+                return;
+            }
+
             var conversion = _conversions[abbrevation];
             foreach(var prefix in _binaryPrefixes)
             {
@@ -512,7 +520,10 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Engineering
         {
             lock (_syncRoot)
             {
-                if (!_initialized) Init();
+                if (!_initialized)
+                {
+                    Init();
+                }
             }
             if (!_conversions.ContainsKey(unit) && !TemperatureConverter.IsValidUnit(unit))
             {
@@ -525,7 +536,10 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Engineering
         {
             lock (_syncRoot)
             {
-                if (!_initialized) Init();
+                if (!_initialized)
+                {
+                    Init();
+                }
             }
             // special case for temperatures which has to be converted with a function in some cases
             if (TemperatureConverter.IsTempMapping(fromUnit, toUnit))

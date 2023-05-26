@@ -21,7 +21,9 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Engineering.Implementatio
             const int nMaxIteration = 2000;
             double fXHalf = x / 2.0;
             if (n < 0)
+            {
                 return new FinanceCalcResult<double>(eErrorType.Num);
+            }
 
             double fResult = 0.0;
 

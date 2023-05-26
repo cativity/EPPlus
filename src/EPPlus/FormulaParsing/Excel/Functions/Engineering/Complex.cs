@@ -34,7 +34,10 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Engineering
             if(arguments.Count() > 2)
             {
                 suffix = ArgToString(arguments, 2);
-                if (suffix != "i" && suffix != "j") return CreateResult(eErrorType.Value);
+                if (suffix != "i" && suffix != "j")
+                {
+                    return this.CreateResult(eErrorType.Value);
+                }
             }
             var result = real.ToString();
             if(img > 0)

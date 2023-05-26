@@ -31,8 +31,15 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime.Implementations
 
             if (calcType == Days360Calctype.European)
             {
-                if (startDay == 31) startDay = 30;
-                if (endDay == 31) endDay = 30;
+                if (startDay == 31)
+                {
+                    startDay = 30;
+                }
+
+                if (endDay == 31)
+                {
+                    endDay = 30;
+                }
             }
             else
             {

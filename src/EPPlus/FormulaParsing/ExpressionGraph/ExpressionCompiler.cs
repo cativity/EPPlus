@@ -65,13 +65,21 @@ namespace OfficeOpenXml.FormulaParsing.ExpressionGraph
 
         private IEnumerable<Expression> HandleGroupedExpressions()
         {
-            if (!_expressions.Any()) return Enumerable.Empty<Expression>();
+            if (!_expressions.Any())
+            {
+                return Enumerable.Empty<Expression>();
+            }
+
             var first = _expressions.First();
             var groupedExpressions = _expressions.Where(x => x.IsGroupedExpression);
             foreach(var groupedExpression in groupedExpressions)
             {
                 var result = groupedExpression.Compile();
-                if (result == CompileResult.Empty) continue;
+                if (result == CompileResult.Empty)
+                {
+                    continue;
+                }
+
                 var newExp = _expressionConverter.FromCompileResult(result);
                 newExp.Operator = groupedExpression.Operator;
                 newExp.Prev = groupedExpression.Prev;

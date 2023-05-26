@@ -36,7 +36,11 @@ namespace OfficeOpenXml.Style.XmlAccess
         {
             _styles = styles;
             XfId = GetXmlNodeInt("@xfId");
-            if (XfId == 0) isBuildIn = true; //Normal taggen
+            if (XfId == 0)
+            {
+                this.isBuildIn = true; //Normal taggen
+            }
+
             _numFmtId = GetXmlNodeInt("@numFmtId");
             FontId = GetXmlNodeInt("@fontId");
             FillId = GetXmlNodeInt("@fillId");
@@ -75,7 +79,11 @@ namespace OfficeOpenXml.Style.XmlAccess
 
         private ExcelHorizontalAlignment GetHorizontalAlign(string align)
         {
-            if (align == "") return ExcelHorizontalAlignment.General;
+            if (align == "")
+            {
+                return ExcelHorizontalAlignment.General;
+            }
+
             align = align.Substring(0, 1).ToUpper(CultureInfo.InvariantCulture) + align.Substring(1, align.Length - 1);
             try
             {
@@ -89,7 +97,11 @@ namespace OfficeOpenXml.Style.XmlAccess
 
         private ExcelVerticalAlignment GetVerticalAlign(string align)
         {
-            if (align == "") return ExcelVerticalAlignment.Bottom;
+            if (align == "")
+            {
+                return ExcelVerticalAlignment.Bottom;
+            }
+
             align = align.Substring(0, 1).ToUpper(CultureInfo.InvariantCulture) + align.Substring(1, align.Length - 1);
             try
             {
@@ -800,22 +812,65 @@ namespace OfficeOpenXml.Style.XmlAccess
                     SetXmlNodeBool("@applyBorder", ApplyBorder ?? true);
                 }
             }
-            if(HorizontalAlignment != ExcelHorizontalAlignment.General) SetXmlNodeString(horizontalAlignPath, SetAlignString(HorizontalAlignment));
+            if(HorizontalAlignment != ExcelHorizontalAlignment.General)
+            {
+                this.SetXmlNodeString(horizontalAlignPath, this.SetAlignString(this.HorizontalAlignment));
+            }
+
             if (doSetXfId)
             {
                 SetXmlNodeString("@xfId", _styles.CellStyleXfs[XfId].newID.ToString());
             }
 
-            if(VerticalAlignment != ExcelVerticalAlignment.Bottom) SetXmlNodeString(verticalAlignPath, SetAlignString(VerticalAlignment));
-            if(WrapText) SetXmlNodeString(wrapTextPath, "1");
-            if(_readingOrder!=ExcelReadingOrder.ContextDependent) SetXmlNodeString(readingOrderPath, ((int)_readingOrder).ToString());
-            if(ShrinkToFit) SetXmlNodeString(shrinkToFitPath, "1");
-            if(_indent > 0) SetXmlNodeString(indentPath, _indent.ToString());
-            if(_textRotation > 0) SetXmlNodeString(textRotationPath, _textRotation.ToString());
-            if(!Locked) SetXmlNodeString(lockedPath, "0");
-            if(Hidden) SetXmlNodeString(hiddenPath, "1");
-            if(QuotePrefix) SetXmlNodeString(quotePrefixPath, "1");
-            if(JustifyLastLine) SetXmlNodeString(justifyLastLine, "1");
+            if(VerticalAlignment != ExcelVerticalAlignment.Bottom)
+            {
+                this.SetXmlNodeString(verticalAlignPath, this.SetAlignString(this.VerticalAlignment));
+            }
+
+            if(WrapText)
+            {
+                this.SetXmlNodeString(wrapTextPath, "1");
+            }
+
+            if(_readingOrder!=ExcelReadingOrder.ContextDependent)
+            {
+                this.SetXmlNodeString(readingOrderPath, ((int)this._readingOrder).ToString());
+            }
+
+            if(ShrinkToFit)
+            {
+                this.SetXmlNodeString(shrinkToFitPath, "1");
+            }
+
+            if(_indent > 0)
+            {
+                this.SetXmlNodeString(indentPath, this._indent.ToString());
+            }
+
+            if(_textRotation > 0)
+            {
+                this.SetXmlNodeString(this.textRotationPath, this._textRotation.ToString());
+            }
+
+            if(!Locked)
+            {
+                this.SetXmlNodeString(lockedPath, "0");
+            }
+
+            if(Hidden)
+            {
+                this.SetXmlNodeString(hiddenPath, "1");
+            }
+
+            if(QuotePrefix)
+            {
+                this.SetXmlNodeString(quotePrefixPath, "1");
+            }
+
+            if(JustifyLastLine)
+            {
+                this.SetXmlNodeString(justifyLastLine, "1");
+            }
 
             if ((Locked == false || Hidden == true || ApplyProtection.HasValue)) //Not default values, apply protection.
             {

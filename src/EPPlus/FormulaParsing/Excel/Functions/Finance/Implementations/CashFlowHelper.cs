@@ -41,8 +41,15 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.Implementations
         public static double Fv(double rate, double nper, double pmt = 0d, double pv = 0d, PmtDue type = 0)
         {
             if((type == PmtDue.EndOfPeriod && rate == -1d))
+            {
                 return -(pv * System.Math.Pow(1d + rate, nper));
-            if (rate == -1d && type == PmtDue.EndOfPeriod) return -(pv * System.Math.Pow(1d + rate, nper) + pmt);
+            }
+
+            if (rate == -1d && type == PmtDue.EndOfPeriod)
+            {
+                return -(pv * System.Math.Pow(1d + rate, nper) + pmt);
+            }
+
             return FvCalc(rate, nper, pmt, pv, type);
         }
 

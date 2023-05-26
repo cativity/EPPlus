@@ -195,7 +195,11 @@ namespace OfficeOpenXml.ThreadedComments
             get
             {
                 int i = 0;
-                if (_worksheet._threadedCommentsStore.Exists(cellAddress.Row, cellAddress.Column, ref i)) return _threads[i];
+                if (_worksheet._threadedCommentsStore.Exists(cellAddress.Row, cellAddress.Column, ref i))
+                {
+                    return this._threads[i];
+                }
+
                 return null;
             }
         }

@@ -413,15 +413,50 @@ namespace OfficeOpenXml.Drawing
         internal override void CellAnchorChanged()
         {
             base.CellAnchorChanged();
-            if (_fill != null) _fill.SetTopNode(TopNode);
-            if (_border != null) _border.TopNode = TopNode;
-            if (_effect != null) _effect.TopNode = TopNode;
-            if (_font != null) _font.TopNode = TopNode;
-            if (_threeD != null) _threeD.TopNode = TopNode;
-            if (_tailEnd != null) _tailEnd.TopNode = TopNode;
-            if (_headEnd != null) _headEnd.TopNode = TopNode;
-            if (_richText != null) _richText.TopNode = TopNode;
-            if (_textBody != null) _textBody.TopNode = TopNode;
+            if (_fill != null)
+            {
+                this._fill.SetTopNode(this.TopNode);
+            }
+
+            if (_border != null)
+            {
+                this._border.TopNode = this.TopNode;
+            }
+
+            if (_effect != null)
+            {
+                this._effect.TopNode = this.TopNode;
+            }
+
+            if (_font != null)
+            {
+                this._font.TopNode = this.TopNode;
+            }
+
+            if (_threeD != null)
+            {
+                this._threeD.TopNode = this.TopNode;
+            }
+
+            if (_tailEnd != null)
+            {
+                this._tailEnd.TopNode = this.TopNode;
+            }
+
+            if (_headEnd != null)
+            {
+                this._headEnd.TopNode = this.TopNode;
+            }
+
+            if (_richText != null)
+            {
+                this._richText.TopNode = this.TopNode;
+            }
+
+            if (_textBody != null)
+            {
+                this._textBody.TopNode = this.TopNode;
+            }
         }
     }
 }

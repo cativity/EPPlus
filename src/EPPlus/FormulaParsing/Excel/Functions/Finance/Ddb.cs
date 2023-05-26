@@ -40,10 +40,16 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance
             }
 
             if (cost < 0 || salvage < 0 || life <= 0 || period <= 0 || factor <= 0)
-                return CreateResult(eErrorType.Num);
+            {
+                return this.CreateResult(eErrorType.Num);
+            }
 
             var result = DdbImpl.Ddb(cost, salvage, life, period, factor);
-            if (result.HasError) return CreateResult(result.ExcelErrorType);
+            if (result.HasError)
+            {
+                return this.CreateResult(result.ExcelErrorType);
+            }
+
             return CreateResult(result.Result, DataType.Decimal);
         }
     }

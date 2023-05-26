@@ -109,8 +109,10 @@ namespace OfficeOpenXml.Table.PivotTable.Filter
             get
             {
                 if (index < 0 || index >= _filters.Count)
+                {
                     throw (new ArgumentOutOfRangeException());
-                
+                }
+
                 return _filters[index];
             }
         }

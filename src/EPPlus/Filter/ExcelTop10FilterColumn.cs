@@ -67,12 +67,16 @@ namespace OfficeOpenXml.Filter
             if(Top)
             {
                 if (Utils.ConvertUtil.IsNumericOrDate(value))
-                    return Utils.ConvertUtil.GetValueDouble(value) >= FilterValue;
+                {
+                    return Utils.ConvertUtil.GetValueDouble(value) >= this.FilterValue;
+                }
             }
             else
             {
                 if (Utils.ConvertUtil.IsNumericOrDate(value))
-                    return Utils.ConvertUtil.GetValueDouble(value) <= FilterValue;
+                {
+                    return Utils.ConvertUtil.GetValueDouble(value) <= this.FilterValue;
+                }
             }
             return false;
         }
@@ -113,7 +117,11 @@ namespace OfficeOpenXml.Filter
                 {
                     index = items.Count - valueInt;
                 }
-                if (index < 0) index = 0;
+                if (index < 0)
+                {
+                    index = 0;
+                }
+
                 FilterValue = items[index];
             }
             else
@@ -126,7 +134,11 @@ namespace OfficeOpenXml.Filter
                 {
                     index = valueInt-1;
                 }
-                if (index < 0) index = 0;
+                if (index < 0)
+                {
+                    index = 0;
+                }
+
                 FilterValue = index < items.Count ? items[index] : items[items.Count - 1];
             }
         }

@@ -77,7 +77,9 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             XmlElement pointElement;
             if (_dic.Count==0)
-                pointElement = (XmlElement)CreateNode(ExcelChartDataPoint.topNodePath);
+            {
+                pointElement = (XmlElement)this.CreateNode(ExcelChartDataPoint.topNodePath);
+            }
             else
             {
                 pointElement = TopNode.OwnerDocument.CreateElement("c", "dPt", ExcelPackage.schemaChart);

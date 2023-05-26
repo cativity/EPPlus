@@ -33,8 +33,16 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Statistical
             var arg2 = arguments.ElementAt(2);
             var arrayY = ArgsToDoubleEnumerable(false, false, new FunctionArgument[] { arg1 }, context).Select(a => a.Value).ToArray();
             var arrayX = ArgsToDoubleEnumerable(false, false, new FunctionArgument[] { arg2 }, context).Select(b => b.Value).ToArray();
-            if (arrayY.Count() != arrayX.Count()) return CreateResult(eErrorType.NA);
-            if (!arrayY.Any()) return CreateResult(eErrorType.NA);
+            if (arrayY.Count() != arrayX.Count())
+            {
+                return this.CreateResult(eErrorType.NA);
+            }
+
+            if (!arrayY.Any())
+            {
+                return this.CreateResult(eErrorType.NA);
+            }
+
             var result = ForecastImpl(x, arrayY, arrayX);
             return CreateResult(result, DataType.Decimal);
         }

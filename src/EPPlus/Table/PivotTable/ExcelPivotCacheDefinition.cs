@@ -154,7 +154,11 @@ namespace OfficeOpenXml.Table.PivotTable
                     throw (new ArgumentException("Cannot change the number of columns(fields) in the SourceRange"));
                 }
 
-                if (value.FullAddress == SourceRange.FullAddress) return; //Same
+                if (value.FullAddress == SourceRange.FullAddress)
+                {
+                    return; //Same
+                }
+
                 if (_wb.GetPivotCacheFromAddress(value.FullAddress, out PivotTableCacheInternal cache))
                 {
                     _cacheReference._pivotTables.Remove(PivotTable);

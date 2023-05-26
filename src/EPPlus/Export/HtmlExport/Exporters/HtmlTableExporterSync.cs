@@ -66,7 +66,11 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
             }
             var adr = _table.Address;
             var row = adr._fromRow;
-            if (Settings.SetRowHeight) AddRowHeightStyle(writer, _table.Range, row, Settings.StyleClassPrefix, false);
+            if (Settings.SetRowHeight)
+            {
+                this.AddRowHeightStyle(writer, this._table.Range, row, this.Settings.StyleClassPrefix, false);
+            }
+
             writer.RenderBeginTag(HtmlElements.TableRow);
             writer.ApplyFormatIncreaseIndent(Settings.Minify);
             HtmlImage image = null;
@@ -152,7 +156,10 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
                         writer.AddAttribute("scope", "row");
                     }
                 }
-                if (Settings.SetRowHeight) AddRowHeightStyle(writer, _table.Range, row, Settings.StyleClassPrefix, false);
+                if (Settings.SetRowHeight)
+                {
+                    this.AddRowHeightStyle(writer, this._table.Range, row, this.Settings.StyleClassPrefix, false);
+                }
 
                 writer.RenderBeginTag(HtmlElements.TableRow);
                 writer.ApplyFormatIncreaseIndent(Settings.Minify);
@@ -213,7 +220,11 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
                 writer.AddAttribute("role", "row");
                 writer.AddAttribute("scope", "row");
             }
-            if (Settings.SetRowHeight) AddRowHeightStyle(writer, _table.Range, rowIndex, Settings.StyleClassPrefix, false);
+            if (Settings.SetRowHeight)
+            {
+                this.AddRowHeightStyle(writer, this._table.Range, rowIndex, this.Settings.StyleClassPrefix, false);
+            }
+
             writer.RenderBeginTag(HtmlElements.TableRow);
             writer.ApplyFormatIncreaseIndent(Settings.Minify);
             var address = _table.Address;
@@ -303,7 +314,11 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
         /// <returns>The html document</returns>
         public string GetSinglePage(string htmlDocument = "<!DOCTYPE html>\r\n<html>\r\n<head>\r\n<style type=\"text/css\">\r\n{1}</style></head>\r\n<body>\r\n{0}</body>\r\n</html>")
         {
-            if (Settings.Minify) htmlDocument = htmlDocument.Replace("\r\n", "");
+            if (Settings.Minify)
+            {
+                htmlDocument = htmlDocument.Replace("\r\n", "");
+            }
+
             var html = GetHtmlString();
             var cssExporter = HtmlExporterFactory.CreateCssExporterTableSync(_tableExportSettings, _table, _styleCache);
             var css = cssExporter.GetCssString();

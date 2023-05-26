@@ -71,9 +71,16 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.RefAndLookup
                 var matchResult = IsMatch(lookupArgs.SearchedValue, navigator.CurrentValue);
                 if (matchResult != 0)
                 {
-                    if (lastValue != null && navigator.CurrentValue == null) break;
+                    if (lastValue != null && navigator.CurrentValue == null)
+                    {
+                        break;
+                    }
 
-                    if (!lookupArgs.RangeLookup) continue;
+                    if (!lookupArgs.RangeLookup)
+                    {
+                        continue;
+                    }
+
                     if (lastValue == null && matchResult > 0)
                     {
                         return new CompileResult(eErrorType.NA);

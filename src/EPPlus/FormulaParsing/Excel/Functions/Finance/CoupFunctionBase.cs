@@ -40,7 +40,11 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance
             }
             
             var result = ExecuteFunction(FinancialDayFactory.Create(settlementDate, (DayCountBasis)basis), FinancialDayFactory.Create(maturityDate, (DayCountBasis)basis), frequency, (DayCountBasis)basis);
-            if (result.HasError) return CreateResult(result.ExcelErrorType);
+            if (result.HasError)
+            {
+                return this.CreateResult(result.ExcelErrorType);
+            }
+
             if (typeof(T) == typeof(System.DateTime))
             {
                 return CreateResult(Convert.ToDateTime(result.Result).ToOADate(), DataType.Date);

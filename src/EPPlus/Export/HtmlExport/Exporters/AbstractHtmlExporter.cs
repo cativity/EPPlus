@@ -101,7 +101,11 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
 
         protected HtmlImage GetImage(int worksheetId, int row, int col)
         {
-            if (_rangePictures == null) return null;
+            if (_rangePictures == null)
+            {
+                return null;
+            }
+
             foreach (var p in _rangePictures)
             {
                 if (p.FromRow == row - 1 && p.FromColumn == col - 1 && p.WorksheetId == worksheetId)

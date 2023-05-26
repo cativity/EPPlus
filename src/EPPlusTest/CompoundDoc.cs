@@ -147,7 +147,9 @@ namespace EPPlusTest
                 var sheets = Enumerable.Range(1, noSheets)   //460
                     .Select(x => $"Sheet{x}");
                 foreach (var sheet in sheets)
+                {
                     package.Workbook.Worksheets.Add(sheet);
+                }
 
                 package.Workbook.CreateVBAProject();
                 package.Workbook.VbaProject.Modules.AddModule("Module1").Code
@@ -183,12 +185,18 @@ namespace EPPlusTest
         public void Issue131()
         {
             var src = TempFile("report.xlsm");
-            if (src.Exists) src.Delete();
+            if (src.Exists)
+            {
+                src.Delete();
+            }
+
             var package = new ExcelPackage(src);
             var sheets = Enumerable.Range(1, 500)   //460
                 .Select(x => $"Sheet{x}");
             foreach (var sheet in sheets)
+            {
                 package.Workbook.Worksheets.Add(sheet);
+            }
 
             package.Workbook.CreateVBAProject();
             package.Workbook.VbaProject.Modules.AddModule("Module1").Code

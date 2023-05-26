@@ -1053,7 +1053,11 @@ namespace OfficeOpenXml.Table
             {
                 throw new InvalidOperationException("Insert will exceed the maximum number of rows in the worksheet");
             }
-            if(ShowHeader) position++;
+            if(ShowHeader)
+            {
+                position++;
+            }
+
             var address = ExcelCellBase.GetAddress(_address._fromRow + position, _address._fromCol, _address._fromRow + position + rows - 1, _address._toCol);
             var range = new ExcelRangeBase(WorkSheet, address);
 
@@ -1281,7 +1285,11 @@ namespace OfficeOpenXml.Table
                 if (_sortState == null)
                 {
                     var node = TableXml.SelectSingleNode($"//{SortStatePath}", NameSpaceManager);
-                    if (node == null) return null;
+                    if (node == null)
+                    {
+                        return null;
+                    }
+
                     _sortState = new SortState(NameSpaceManager, node);
                 }
                 return _sortState;

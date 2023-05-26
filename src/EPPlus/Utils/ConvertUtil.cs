@@ -34,22 +34,42 @@ namespace OfficeOpenXml.Utils
         }
         internal static bool IsNumericOrDate(object candidate)
         {
-            if (candidate == null) return false;
-            if (TypeCompat.IsPrimitive(candidate)) return true;
+            if (candidate == null)
+            {
+                return false;
+            }
+
+            if (TypeCompat.IsPrimitive(candidate))
+            {
+                return true;
+            }
+
             var t = candidate.GetType();
             return (t == typeof(double) || t == typeof(decimal) || t == typeof(long) || t == typeof(DateTime) || t == typeof(TimeSpan));
         }
         internal static bool IsNumeric(object candidate)
         {
-            if (candidate == null) return false;
-            if (TypeCompat.IsPrimitive(candidate)) return true;
+            if (candidate == null)
+            {
+                return false;
+            }
+
+            if (TypeCompat.IsPrimitive(candidate))
+            {
+                return true;
+            }
+
             var t = candidate.GetType();
             return (t == typeof(double) || t == typeof(decimal) || t == typeof(long));
         }
 
         internal static bool IsPercentageString(string s)
         {
-            if (string.IsNullOrEmpty(s)) return false;
+            if (string.IsNullOrEmpty(s))
+            {
+                return false;
+            }
+
             s = s.Trim();
             if (s.Trim().EndsWith("%"))
             {
@@ -88,7 +108,11 @@ namespace OfficeOpenXml.Utils
         internal static bool TryParsePercentageString(string s, out double numericValue, CultureInfo cultureInfo = null)
         {
             numericValue = 0;
-            if (string.IsNullOrEmpty(s)) return false;
+            if (string.IsNullOrEmpty(s))
+            {
+                return false;
+            }
+
             s = s.Trim();
             if (s.Trim().EndsWith("%"))
             {
@@ -143,7 +167,10 @@ namespace OfficeOpenXml.Utils
         internal static bool TryParseIntString(string candidateString, out int result)
         {
             if (!string.IsNullOrEmpty(candidateString))
+            {
                 return int.TryParse(candidateString, out result);
+            }
+
             result = 0;
             return false;
         }
@@ -338,14 +365,21 @@ namespace OfficeOpenXml.Utils
         internal static string ExcelDecodeString(string t)
         {
             var match = Regex.Match(t, "(_x005F|_x[0-9A-F]{4,4}_)");
-            if (!match.Success) return t;
+            if (!match.Success)
+            {
+                return t;
+            }
 
             var useNextValue = false;
             var ret = new StringBuilder();
             var prevIndex = 0;
             while (match.Success)
             {
-                if (prevIndex < match.Index) ret.Append(t.Substring(prevIndex, match.Index - prevIndex));
+                if (prevIndex < match.Index)
+                {
+                    ret.Append(t.Substring(prevIndex, match.Index - prevIndex));
+                }
+
                 if (!useNextValue && match.Value == "_x005F")
                 {
                     useNextValue = true;
@@ -582,7 +616,11 @@ namespace OfficeOpenXml.Utils
 
         internal static string CropString(string s, int maxLength)
         {
-            if (s == null) return s;
+            if (s == null)
+            {
+                return s;
+            }
+
             return s.Length > maxLength ? s.Substring(0, maxLength) : s;
         }
 

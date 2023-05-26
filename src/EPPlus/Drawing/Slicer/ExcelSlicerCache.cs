@@ -90,7 +90,10 @@ namespace OfficeOpenXml.Drawing.Slicer
         internal void CreateWorkbookReference(ExcelWorkbook wb, string uriGuid)
         {
             wb.Names.AddFormula(Name, "#N/A");
-            if(!wb.SlicerCaches.ContainsKey(Name)) wb.SlicerCaches.Add(Name, this);
+            if(!wb.SlicerCaches.ContainsKey(Name))
+            {
+                wb.SlicerCaches.Add(this.Name, this);
+            }
 
             string prefix;
             if(GetType()==typeof(ExcelPivotTableSlicerCache))

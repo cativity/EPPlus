@@ -22,7 +22,10 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.Implementations
 
         public static FinanceCalcResult<double> GetXirr(IEnumerable<double> aValues, IEnumerable<System.DateTime> aDates, double rGuessRate = 0.1)
         {
-            if (aValues.Count() != aDates.Count()) return new FinanceCalcResult<double>(eErrorType.Value);
+            if (aValues.Count() != aDates.Count())
+            {
+                return new FinanceCalcResult<double>(eErrorType.Value);
+            }
 
             // maximum epsilon for end of iteration
             const double fMaxEps = 1e-10;
@@ -44,7 +47,10 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.Implementations
             do
             {
                 if (nIterScan >= 1)
+                {
                     fResultRate = -0.99 + (nIterScan - 1) * 0.01;
+                }
+
                 do
                 {
                     fResultValue = lcl_sca_XirrResult(aValues, aDates, fResultRate);
@@ -57,7 +63,9 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.Implementations
                 nIter = 0;
                 if (double.IsNaN(fResultRate) || double.IsInfinity(fResultRate)
                     || double.IsNaN(fResultValue) || double.IsInfinity(fResultValue))
+                {
                     bContLoop = true;
+                }
 
                 ++nIterScan;
                 bResultRateScanEnd = (nIterScan >= 200);
@@ -65,7 +73,10 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.Implementations
             while (bContLoop && !bResultRateScanEnd);
 
             if (bContLoop)
+            {
                 return new FinanceCalcResult<double>(OfficeOpenXml.eErrorType.Value);
+            }
+
             return new FinanceCalcResult<double>(fResultRate);
         }
 
@@ -114,7 +125,10 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.Implementations
             double r = fRate + 1.0;
             double fResult = rValues.ElementAt(0);
             for (int i = 1, nCount = rValues.Count(); i < nCount; ++i)
+            {
                 fResult += rValues.ElementAt(i) / System.Math.Pow(r, ((rDates.ElementAt(i).Subtract(D_0).TotalDays) / 365.0));
+            }
+
             return fResult;
         }
     }

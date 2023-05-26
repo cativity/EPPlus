@@ -34,10 +34,21 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance
             var presentValue = ArgToDecimal(arguments, 2);
             var payEndOfPeriod = 0;
             var futureValue = 0d;
-            if (arguments.Count() > 3) futureValue = ArgToDecimal(arguments, 3);
-            if (arguments.Count() > 4) payEndOfPeriod = ArgToInt(arguments, 4);
+            if (arguments.Count() > 3)
+            {
+                futureValue = this.ArgToDecimal(arguments, 3);
+            }
+
+            if (arguments.Count() > 4)
+            {
+                payEndOfPeriod = this.ArgToInt(arguments, 4);
+            }
+
             var result = InternalMethods.PMT_Internal(rate, nPer, presentValue, futureValue, payEndOfPeriod == 0 ? PmtDue.EndOfPeriod : PmtDue.BeginningOfPeriod);
-            if (result.HasError) return CreateResult(result.ExcelErrorType);
+            if (result.HasError)
+            {
+                return this.CreateResult(result.ExcelErrorType);
+            }
 
             return CreateResult(result.Result, DataType.Decimal);
         }

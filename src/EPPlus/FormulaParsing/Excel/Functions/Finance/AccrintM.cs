@@ -40,9 +40,20 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance
                 basis = ArgToInt(arguments, 4);
             }
 
-            if (rate <= 0 || par <= 0) return CreateResult(eErrorType.Num);
-            if (basis < 0 || basis > 4) return CreateResult(eErrorType.Num);
-            if (issueDate >= settlementDate) return CreateResult(eErrorType.Num);
+            if (rate <= 0 || par <= 0)
+            {
+                return this.CreateResult(eErrorType.Num);
+            }
+
+            if (basis < 0 || basis > 4)
+            {
+                return this.CreateResult(eErrorType.Num);
+            }
+
+            if (issueDate >= settlementDate)
+            {
+                return this.CreateResult(eErrorType.Num);
+            }
 
             var dayCountBasis = (DayCountBasis)basis;
             var fd = FinancialDaysFactory.Create(dayCountBasis);

@@ -173,7 +173,11 @@ namespace OfficeOpenXml.Drawing.Theme
 
         private void SetNormalStyle()
         {
-            if (_wb.Styles.NamedStyles.Count == 0) return;
+            if (_wb.Styles.NamedStyles.Count == 0)
+            {
+                return;
+            }
+
             var style = GetNormalStyle();
             foreach(var xfs in _wb.Styles.CellXfs)
             {

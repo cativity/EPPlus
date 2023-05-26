@@ -34,7 +34,11 @@ namespace OfficeOpenXml.Export.HtmlExport
     {
         internal async Task RenderAdditionalAndFontCssAsync(string tableClass)
         {
-            if (_cssSettings.IncludeSharedClasses == false) return;
+            if (_cssSettings.IncludeSharedClasses == false)
+            {
+                return;
+            }
+
             await WriteClassAsync($"table.{tableClass}{{", _settings.Minify);
             if (_cssSettings.IncludeNormalFont)
             {
@@ -114,7 +118,11 @@ namespace OfficeOpenXml.Export.HtmlExport
                 encodedImage = Convert.ToBase64String(img.ImageBytes);
                 type = img.Type.Value;
             }
-            if (type == null) return;
+            if (type == null)
+            {
+                return;
+            }
+
             var pc = (IPictureContainer)p.Picture;
             if (_images.Contains(pc.ImageHash) == false)
             {
@@ -283,10 +291,26 @@ namespace OfficeOpenXml.Export.HtmlExport
 
         private async Task WriteBorderStylesAsync(ExcelBorderItemXml top, ExcelBorderItemXml bottom, ExcelBorderItemXml left, ExcelBorderItemXml right)
         {
-            if (EnumUtil.HasNotFlag(_borderExclude, eBorderExclude.Top)) await WriteBorderItemAsync(top, "top");
-            if (EnumUtil.HasNotFlag(_borderExclude, eBorderExclude.Bottom)) await WriteBorderItemAsync(bottom, "bottom");
-            if (EnumUtil.HasNotFlag(_borderExclude, eBorderExclude.Left)) await WriteBorderItemAsync(left, "left");
-            if (EnumUtil.HasNotFlag(_borderExclude, eBorderExclude.Right)) await WriteBorderItemAsync(right, "right");
+            if (EnumUtil.HasNotFlag(_borderExclude, eBorderExclude.Top))
+            {
+                await this.WriteBorderItemAsync(top, "top");
+            }
+
+            if (EnumUtil.HasNotFlag(_borderExclude, eBorderExclude.Bottom))
+            {
+                await this.WriteBorderItemAsync(bottom, "bottom");
+            }
+
+            if (EnumUtil.HasNotFlag(_borderExclude, eBorderExclude.Left))
+            {
+                await this.WriteBorderItemAsync(left, "left");
+            }
+
+            if (EnumUtil.HasNotFlag(_borderExclude, eBorderExclude.Right))
+            {
+                await this.WriteBorderItemAsync(right, "right");
+            }
+
             //TODO add Diagonal
             //WriteBorderItem(b.DiagonalDown, "right");
             //WriteBorderItem(b.DiagonalUp, "right");
@@ -351,7 +375,11 @@ namespace OfficeOpenXml.Export.HtmlExport
 
         private async Task WriteFillStylesAsync(ExcelFillXml f)
         {
-            if (_cssExclude.Fill) return;
+            if (_cssExclude.Fill)
+            {
+                return;
+            }
+
             if (f is ExcelGradientFillXml gf && gf.Type!=ExcelFillGradientType.None)
             {
                 await WriteGradientAsync(gf);

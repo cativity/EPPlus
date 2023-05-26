@@ -32,8 +32,16 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Statistical
             var x = ArgToDecimal(arguments, 0);
             var lambda = ArgToDecimal(arguments, 1);
             var cumulative = ArgToBool(arguments, 2);
-            if (lambda <= 0d) return CreateResult(eErrorType.Num);
-            if (x < 0d) return CreateResult(eErrorType.Num);
+            if (lambda <= 0d)
+            {
+                return this.CreateResult(eErrorType.Num);
+            }
+
+            if (x < 0d)
+            {
+                return this.CreateResult(eErrorType.Num);
+            }
+
             var result = 0d;
             if (cumulative && x >= 0)
             {

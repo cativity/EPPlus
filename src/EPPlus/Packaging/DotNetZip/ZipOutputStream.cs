@@ -963,7 +963,10 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
             get
             {
                 if (_alternateEncodingUsage == ZipOption.AsNecessary)
-                    return _alternateEncoding;
+                {
+                    return this._alternateEncoding;
+                }
+
                 return null;
             }
             set
@@ -1094,7 +1097,10 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
             set
             {
                 if ((value != 0) && (value != -1) && (value < 64 * 1024))
+                {
                     throw new ArgumentOutOfRangeException("value must be greater than 64k, or 0, or -1");
+                }
+
                 _ParallelDeflateThreshold = value;
             }
             get
@@ -1190,8 +1196,11 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
             set
             {
                 if (value < 4)
+                {
                     throw new ArgumentOutOfRangeException("ParallelDeflateMaxBufferPairs",
-                                                "Value must be 4 or greater.");
+                                                          "Value must be 4 or greater.");
+                }
+
                 _maxBufferPairs = value;
             }
         }
@@ -1283,10 +1292,14 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
             }
 
             if (_needToWriteEntryHeader)
-                _InitiateCurrentEntry(false);
+            {
+                this._InitiateCurrentEntry(false);
+            }
 
             if (count != 0)
-                _entryOutputStream.Write(buffer, offset, count);
+            {
+                this._entryOutputStream.Write(buffer, offset, count);
+            }
         }
         
         /// <summary>
@@ -1372,7 +1385,9 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         public ZipEntry PutNextEntry(String entryName)
         {
             if (String.IsNullOrEmpty(entryName))
+            {
                 throw new ArgumentNullException("entryName");
+            }
 
             if (_disposed)
             {
@@ -1393,7 +1408,10 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
             _currentEntry.AlternateEncoding = this.AlternateEncoding;
             _currentEntry.AlternateEncodingUsage = this.AlternateEncodingUsage;
 
-            if (entryName.EndsWith("/"))  _currentEntry.MarkAsDirectory();
+            if (entryName.EndsWith("/"))
+            {
+                this._currentEntry.MarkAsDirectory();
+            }
 
             _currentEntry.EmitTimesInWindowsFormatWhenSaving = ((_timestamp & ZipEntryTimestamp.Windows) != 0);
             _currentEntry.EmitTimesInUnixFormatWhenSaving = ((_timestamp & ZipEntryTimestamp.Unix) != 0);
@@ -1457,13 +1475,17 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
             if (_currentEntry != null)
             {
                 if (_needToWriteEntryHeader)
-                    _InitiateCurrentEntry(true); // an empty entry - no writes
+                {
+                    this._InitiateCurrentEntry(true); // an empty entry - no writes
+                }
 
                 _currentEntry.FinishOutputStream(_outputStream, _outputCounter, _encryptor, _deflater, _entryOutputStream);
                 _currentEntry.PostProcessOutput(_outputStream);
                 // workitem 12964
                 if (_currentEntry.OutputUsedZip64!=null)
-                    _anyEntriesUsedZip64 |= _currentEntry.OutputUsedZip64.Value;
+                {
+                    this._anyEntriesUsedZip64 |= this._currentEntry.OutputUsedZip64.Value;
+                }
 
                 // reset all the streams
                 _outputCounter = null; _encryptor = _deflater = null; _entryOutputStream = null;
@@ -1492,7 +1514,10 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         /// <param name="disposing">set this to true, always.</param>
         protected override void Dispose(bool disposing)
         {
-            if (_disposed) return;
+            if (_disposed)
+            {
+                return;
+            }
 
             if (disposing) // not called from finalizer
             {
@@ -1685,8 +1710,16 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         {
             get
             {
-                if (_zf != null) return _zf.Name;
-                if (_zis != null) throw new NotSupportedException();
+                if (_zf != null)
+                {
+                    return this._zf.Name;
+                }
+
+                if (_zis != null)
+                {
+                    throw new NotSupportedException();
+                }
+
                 return _zos.Name;
             }
         }
@@ -1695,8 +1728,16 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         {
             get
             {
-                if (_zf != null) return _zf._Password;
-                if (_zis != null) return _zis._Password;
+                if (_zf != null)
+                {
+                    return this._zf._Password;
+                }
+
+                if (_zis != null)
+                {
+                    return this._zis._Password;
+                }
+
                 return _zos._password;
             }
         }
@@ -1705,8 +1746,16 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         {
             get
             {
-                if (_zf != null) return _zf._zip64;
-                if (_zis != null) throw new NotSupportedException();
+                if (_zf != null)
+                {
+                    return this._zf._zip64;
+                }
+
+                if (_zis != null)
+                {
+                    throw new NotSupportedException();
+                }
+
                 return _zos._zip64;
             }
         }
@@ -1715,8 +1764,16 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         {
             get
             {
-                if (_zf != null) return _zf.BufferSize;
-                if (_zis != null) throw new NotSupportedException();
+                if (_zf != null)
+                {
+                    return this._zf.BufferSize;
+                }
+
+                if (_zis != null)
+                {
+                    throw new NotSupportedException();
+                }
+
                 return 0;
             }
         }
@@ -1726,14 +1783,28 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         {
             get
             {
-                if (_zf != null) return _zf.ParallelDeflater;
-                if (_zis != null) return null;
+                if (_zf != null)
+                {
+                    return this._zf.ParallelDeflater;
+                }
+
+                if (_zis != null)
+                {
+                    return null;
+                }
+
                 return _zos.ParallelDeflater;
             }
             set
             {
-                if (_zf != null) _zf.ParallelDeflater = value;
-                else if (_zos != null) _zos.ParallelDeflater = value;
+                if (_zf != null)
+                {
+                    this._zf.ParallelDeflater = value;
+                }
+                else if (_zos != null)
+                {
+                    this._zos.ParallelDeflater = value;
+                }
             }
         }
 
@@ -1741,7 +1812,11 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         {
             get
             {
-                if (_zf != null) return _zf.ParallelDeflateThreshold;
+                if (_zf != null)
+                {
+                    return this._zf.ParallelDeflateThreshold;
+                }
+
                 return _zos.ParallelDeflateThreshold;
             }
         }
@@ -1749,7 +1824,11 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         {
             get
             {
-                if (_zf != null) return _zf.ParallelDeflateMaxBufferPairs;
+                if (_zf != null)
+                {
+                    return this._zf.ParallelDeflateMaxBufferPairs;
+                }
+
                 return _zos.ParallelDeflateMaxBufferPairs;
             }
         }
@@ -1759,8 +1838,16 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         {
             get
             {
-                if (_zf != null) return _zf.CodecBufferSize;
-                if (_zis != null) return _zis.CodecBufferSize;
+                if (_zf != null)
+                {
+                    return this._zf.CodecBufferSize;
+                }
+
+                if (_zis != null)
+                {
+                    return this._zis.CodecBufferSize;
+                }
+
                 return _zos.CodecBufferSize;
             }
         }
@@ -1769,7 +1856,11 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         {
             get
             {
-                if (_zf != null) return _zf.Strategy;
+                if (_zf != null)
+                {
+                    return this._zf.Strategy;
+                }
+
                 return _zos.Strategy;
             }
         }
@@ -1778,7 +1869,11 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         {
             get
             {
-                if (_zf != null) return _zf.UseZip64WhenSaving;
+                if (_zf != null)
+                {
+                    return this._zf.UseZip64WhenSaving;
+                }
+
                 return _zos.EnableZip64;
             }
         }
@@ -1787,8 +1882,16 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         {
             get
             {
-                if (_zf != null) return _zf.AlternateEncoding;
-                if (_zos!=null) return _zos.AlternateEncoding;
+                if (_zf != null)
+                {
+                    return this._zf.AlternateEncoding;
+                }
+
+                if (_zos!=null)
+                {
+                    return this._zos.AlternateEncoding;
+                }
+
                 return null;
             }
         }
@@ -1796,8 +1899,16 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         {
             get
             {
-                if (_zf != null) return ZipFile.DefaultEncoding;
-                if (_zos!=null) return ZipOutputStream.DefaultEncoding;
+                if (_zf != null)
+                {
+                    return ZipFile.DefaultEncoding;
+                }
+
+                if (_zos!=null)
+                {
+                    return ZipOutputStream.DefaultEncoding;
+                }
+
                 return null;
             }
         }
@@ -1805,8 +1916,16 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         {
             get
             {
-                if (_zf != null) return _zf.AlternateEncodingUsage;
-                if (_zos!=null) return _zos.AlternateEncodingUsage;
+                if (_zf != null)
+                {
+                    return this._zf.AlternateEncodingUsage;
+                }
+
+                if (_zos!=null)
+                {
+                    return this._zos.AlternateEncodingUsage;
+                }
+
                 return ZipOption.Never; // n/a
             }
         }
@@ -1815,7 +1934,11 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         {
             get
             {
-                if (_zf != null) return _zf.ReadStream;
+                if (_zf != null)
+                {
+                    return this._zf.ReadStream;
+                }
+
                 return _zis.ReadStream;
             }
         }

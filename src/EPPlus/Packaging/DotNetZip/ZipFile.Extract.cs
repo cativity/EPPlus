@@ -250,17 +250,24 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
                                   e.CompressionRatio,
                                   e.CompressedSize);
                         if (!String.IsNullOrEmpty(e.Comment))
-                            StatusMessageTextWriter.WriteLine("  Comment: {0}", e.Comment);
+                        {
+                            this.StatusMessageTextWriter.WriteLine("  Comment: {0}", e.Comment);
+                        }
                     }
                     e.Password = _Password;  // this may be null
                     OnExtractEntry(n, true, e, path);
                     if (overrideExtractExistingProperty)
+                    {
                         e.ExtractExistingFile = this.ExtractExistingFile;
+                    }
+
                     e.Extract(path);
                     n++;
                     OnExtractEntry(n, false, e, path);
                     if (_extractOperationCanceled)
+                    {
                         break;
+                    }
                 }
 
                 if (!_extractOperationCanceled)

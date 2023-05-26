@@ -58,7 +58,10 @@ namespace OfficeOpenXml.Drawing
             set
             {
                 _x = value;
-                if(_setWidthCallback != null) _setWidthCallback();
+                if(_setWidthCallback != null)
+                {
+                    this._setWidthCallback();
+                }
             }
         }
         const string yPath = "@y";
@@ -79,7 +82,10 @@ namespace OfficeOpenXml.Drawing
             set
             {
                 _y = value;
-                if (_setWidthCallback != null) _setWidthCallback();
+                if (_setWidthCallback != null)
+                {
+                    this._setWidthCallback();
+                }
             }
         }
     }

@@ -100,7 +100,9 @@ namespace OfficeOpenXml.Vba.ContentHash
             }
             var zeros = 1023-(streamLength % 1023);
             for (int i = 0; i < zeros; i++)
+            {
                 bw.Write((byte)0);
+            }
         }
 
         private class SortItem

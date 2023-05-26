@@ -150,14 +150,21 @@ namespace OfficeOpenXml.Core.CellStore
             fromCol = fromCol < minCol ? minCol : fromCol;
             for (int col = fromCol; col<=toCol;col++)
             {
-                if (col > maxCol) break;
+                if (col > maxCol)
+                {
+                    break;
+                }
+
                 if(_addresses.TryGetValue(col, out List<RangeItem> rows))
                 {
                     var ix = rows.BinarySearch(searchItem);
                     if(ix < 0)
                     {
                         ix = ~ix;
-                        if (ix > 0) ix--;
+                        if (ix > 0)
+                        {
+                            ix--;
+                        }
                     }
                     while(ix<rows.Count)
                     {
@@ -225,7 +232,10 @@ namespace OfficeOpenXml.Core.CellStore
                     if (ix < 0)
                     {
                         ix = ~ix;
-                        if (ix > 0) ix--;
+                        if (ix > 0)
+                        {
+                            ix--;
+                        }
                     }
 
                     if (ix < rows.Count)
@@ -265,7 +275,10 @@ namespace OfficeOpenXml.Core.CellStore
                     if (rowStartIndex < 0)
                     {
                         rowStartIndex = ~rowStartIndex;
-                        if (rowStartIndex > 0) rowStartIndex--;
+                        if (rowStartIndex > 0)
+                        {
+                            rowStartIndex--;
+                        }
                     }
 
                     var delete = (noRows << 20) | (noRows);
@@ -348,7 +361,11 @@ namespace OfficeOpenXml.Core.CellStore
                         var ri = toColumn[pos];
                         var fr = (int)(ri.RowSpan >> 20) + 1;
                         var tr = (int)(ri.RowSpan & 0xFFFFF) + 1;
-                        if (tr < fromRow || fr > toRow) break;
+                        if (tr < fromRow || fr > toRow)
+                        {
+                            break;
+                        }
+
                         GetIntersect(item, toColumn[pos], out fr, out tr);
                         if (fr >= 0)
                         {
@@ -607,7 +624,11 @@ namespace OfficeOpenXml.Core.CellStore
             if (ix < 0)
             {
                 ix = ~ix;
-                if (ix > 0) ix--;
+                if (ix > 0)
+                {
+                    ix--;
+                }
+
                 if (ix < rows.Count)
                 {
                     int fr, tr = -1;
@@ -616,7 +637,11 @@ namespace OfficeOpenXml.Core.CellStore
                         var rs = rows[ix];
                         fr = (int)(rs.RowSpan >> 20) + 1;
                         tr = (int)(rs.RowSpan & 0xFFFFF) + 1;
-                        if (fr <= fromRow && tr >= toRow) break; //Inside, exit
+                        if (fr <= fromRow && tr >= toRow)
+                        {
+                            break; //Inside, exit
+                        }
+
                         if (fr > toRow) 
                         {
                             rows.Insert(ix, new RangeItem(rowSpan, value));

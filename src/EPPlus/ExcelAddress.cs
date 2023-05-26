@@ -53,12 +53,18 @@ namespace OfficeOpenXml
         internal ExcelAddress(string ws, string address)
             : base(address)
         {
-            if (string.IsNullOrEmpty(_ws)) _ws = ws;
+            if (string.IsNullOrEmpty(_ws))
+            {
+                this._ws = ws;
+            }
         }
         internal ExcelAddress(string ws, string address, bool isName)
             : base(address, isName)
         {
-            if (string.IsNullOrEmpty(_ws)) _ws = ws;
+            if (string.IsNullOrEmpty(_ws))
+            {
+                this._ws = ws;
+            }
         }
 
         /// <summary>

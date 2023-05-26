@@ -135,7 +135,11 @@ namespace OfficeOpenXml.Export.ToDataTable
                 TransformCellValue = transformCellValueFunc
             };
             mapping.Validate();
-            if (this.Any(x => x.ZeroBasedColumnIndexInRange == zeroBasedIndexInRange)) throw new InvalidOperationException("Duplicate index in range: " + zeroBasedIndexInRange);
+            if (this.Any(x => x.ZeroBasedColumnIndexInRange == zeroBasedIndexInRange))
+            {
+                throw new InvalidOperationException("Duplicate index in range: " + zeroBasedIndexInRange);
+            }
+
             _mappingIndexes[mapping.ZeroBasedColumnIndexInRange] = mapping;
             Add(mapping);
             Sort((x, y) => x.ZeroBasedColumnIndexInRange.CompareTo(y.ZeroBasedColumnIndexInRange));
@@ -143,7 +147,11 @@ namespace OfficeOpenXml.Export.ToDataTable
 
         internal DataColumnMapping GetByRangeIndex(int index)
         {
-            if (!_mappingIndexes.ContainsKey(index)) return null;
+            if (!_mappingIndexes.ContainsKey(index))
+            {
+                return null;
+            }
+
             return _mappingIndexes[index];
         }
 

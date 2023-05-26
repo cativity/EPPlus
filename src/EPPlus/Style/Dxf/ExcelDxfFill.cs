@@ -209,7 +209,11 @@ namespace OfficeOpenXml.Style.Dxf
         }
         internal static ExcelFillStyle? GetPatternTypeEnum(string patternType)
         {
-            if (string.IsNullOrEmpty(patternType)) return null;
+            if (string.IsNullOrEmpty(patternType))
+            {
+                return null;
+            }
+
             patternType = patternType.Substring(0, 1).ToUpper(CultureInfo.InvariantCulture) + patternType.Substring(1, patternType.Length - 1);
             try
             {

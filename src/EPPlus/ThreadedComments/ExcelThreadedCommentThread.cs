@@ -62,7 +62,11 @@ namespace OfficeOpenXml.ThreadedComments
         private void ReplicateThreadToLegacyComment()
         {
             var tc = Comments as IEnumerable<ExcelThreadedComment>;
-            if (!tc.Any()) return;
+            if (!tc.Any())
+            {
+                return;
+            }
+
             var tcIndex = 0;
             var commentText = new StringBuilder();
             var authorId = "tc=" + tc.First().Id;
@@ -134,7 +138,10 @@ namespace OfficeOpenXml.ThreadedComments
             }
             Comments.Add(newComment);
             if(replicateLegacyComment)
-                ReplicateThreadToLegacyComment();
+            {
+                this.ReplicateThreadToLegacyComment();
+            }
+
             return newComment;
         }
 
@@ -180,7 +187,11 @@ namespace OfficeOpenXml.ThreadedComments
         /// </summary>
         public void ResolveThread()
         {
-            if (!Comments.Any()) throw new InvalidOperationException("Cannot resolve an empty thread (it has not comments)");
+            if (!Comments.Any())
+            {
+                throw new InvalidOperationException("Cannot resolve an empty thread (it has not comments)");
+            }
+
             Comments.First().Done = true;
         }
 
@@ -191,7 +202,11 @@ namespace OfficeOpenXml.ThreadedComments
         {
             get
             {
-                if (!Comments.Any()) return false;
+                if (!Comments.Any())
+                {
+                    return false;
+                }
+
                 return Comments.First().Done ?? false;
             }
         }
@@ -201,7 +216,11 @@ namespace OfficeOpenXml.ThreadedComments
         /// </summary>
         public void ReopenThread()
         {
-            if (!Comments.Any()) throw new InvalidOperationException("Cannot re-open an empty thread (it has not comments)");
+            if (!Comments.Any())
+            {
+                throw new InvalidOperationException("Cannot re-open an empty thread (it has not comments)");
+            }
+
             Comments.First().Done = null;
         }
 

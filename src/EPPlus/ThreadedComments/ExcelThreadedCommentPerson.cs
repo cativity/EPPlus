@@ -72,7 +72,11 @@ namespace OfficeOpenXml.ThreadedComments
             get 
             { 
                 var id = GetXmlNodeString("@providerId");
-                if (string.IsNullOrEmpty(UserId) && UserId == "AD") throw new InvalidOperationException("Cannot get ProviderId when UserId is not set");
+                if (string.IsNullOrEmpty(UserId) && UserId == "AD")
+                {
+                    throw new InvalidOperationException("Cannot get ProviderId when UserId is not set");
+                }
+
                 switch(id)
                 {
                     case "Windows Live":
@@ -81,7 +85,10 @@ namespace OfficeOpenXml.ThreadedComments
                         return IdentityProvider.PeoplePicker;
                     case "AD":
                         if (UserId.Contains("::"))
+                        {
                             return IdentityProvider.Office365;
+                        }
+
                         return IdentityProvider.ActiveDirectory;
                     default:
                         return IdentityProvider.NoProvider;
@@ -119,9 +126,21 @@ namespace OfficeOpenXml.ThreadedComments
         /// <returns></returns>
         public bool Equals(ExcelThreadedCommentPerson x, ExcelThreadedCommentPerson y)
         {
-            if (x == null && y == null) return true;
-            if (x == null ^ y == null) return false;
-            if (x.UserId == y.UserId) return true;
+            if (x == null && y == null)
+            {
+                return true;
+            }
+
+            if (x == null ^ y == null)
+            {
+                return false;
+            }
+
+            if (x.UserId == y.UserId)
+            {
+                return true;
+            }
+
             return false;
         }
         /// <summary>

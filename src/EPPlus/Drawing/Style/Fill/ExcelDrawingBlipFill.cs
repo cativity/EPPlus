@@ -116,18 +116,45 @@ namespace OfficeOpenXml.Drawing.Style.Fill
         internal override void SetXml(XmlNamespaceManager nsm, XmlNode node)
         {
             _initXml?.Invoke();
-            if (_xml == null) InitXml(nsm, node.FirstChild, "");
+            if (_xml == null)
+            {
+                this.InitXml(nsm, node.FirstChild, "");
+            }
+
             CheckTypeChange(NodeName);
 
-            if (SourceRectangle.BottomOffset != 0) _xml.SetXmlNodePercentage("a:srcRect/@b", SourceRectangle.BottomOffset);
-            if (SourceRectangle.TopOffset != 0) _xml.SetXmlNodePercentage("a:srcRect/@t", SourceRectangle.TopOffset);
-            if (SourceRectangle.LeftOffset != 0) _xml.SetXmlNodePercentage("a:srcRect/@l", SourceRectangle.LeftOffset);
-            if (SourceRectangle.RightOffset != 0) _xml.SetXmlNodePercentage("a:srcRect/@r", SourceRectangle.RightOffset);
+            if (SourceRectangle.BottomOffset != 0)
+            {
+                this._xml.SetXmlNodePercentage("a:srcRect/@b", this.SourceRectangle.BottomOffset);
+            }
+
+            if (SourceRectangle.TopOffset != 0)
+            {
+                this._xml.SetXmlNodePercentage("a:srcRect/@t", this.SourceRectangle.TopOffset);
+            }
+
+            if (SourceRectangle.LeftOffset != 0)
+            {
+                this._xml.SetXmlNodePercentage("a:srcRect/@l", this.SourceRectangle.LeftOffset);
+            }
+
+            if (SourceRectangle.RightOffset != 0)
+            {
+                this._xml.SetXmlNodePercentage("a:srcRect/@r", this.SourceRectangle.RightOffset);
+            }
 
             if (Tile.Alignment != null && Tile.FlipMode != null)
             {
-                if (Tile.Alignment.HasValue) _xml.SetXmlNodeString("a:tile/@algn", Tile.Alignment.Value.TranslateString());
-                if (Tile.FlipMode.HasValue) _xml.SetXmlNodeString("a:tile/@flip", Tile.FlipMode.Value.ToString().ToLower());
+                if (Tile.Alignment.HasValue)
+                {
+                    this._xml.SetXmlNodeString("a:tile/@algn", this.Tile.Alignment.Value.TranslateString());
+                }
+
+                if (Tile.FlipMode.HasValue)
+                {
+                    this._xml.SetXmlNodeString("a:tile/@flip", this.Tile.FlipMode.Value.ToString().ToLower());
+                }
+
                 _xml.SetXmlNodePercentage("a:tile/@sx", Tile.HorizontalRatio, false);
                 _xml.SetXmlNodePercentage("a:tile/@sy", Tile.VerticalRatio, false);
                 _xml.SetXmlNodeString("a:tile/@tx", (Tile.HorizontalOffset * ExcelDrawing.EMU_PER_PIXEL).ToString(CultureInfo.InvariantCulture));

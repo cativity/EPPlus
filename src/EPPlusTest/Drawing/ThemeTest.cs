@@ -54,10 +54,26 @@ namespace EPPlusTest.Drawing
             foreach (var name in Enum.GetNames(typeof(ePresetColor)))
             {
                 var n = name;
-                if (n.Contains("Grey")) n = n.Replace("Grey", "Gray");
-                if (n.StartsWith("Dk")) n = n.Replace("Dk", "Dark");
-                if (n.StartsWith("Dk")) n = n.Replace("Med", "Medium");
-                if (n.StartsWith("Lt")) n = n.Replace("Lt", "Light");
+                if (n.Contains("Grey"))
+                {
+                    n = n.Replace("Grey", "Gray");
+                }
+
+                if (n.StartsWith("Dk"))
+                {
+                    n = n.Replace("Dk", "Dark");
+                }
+
+                if (n.StartsWith("Dk"))
+                {
+                    n = n.Replace("Med", "Medium");
+                }
+
+                if (n.StartsWith("Lt"))
+                {
+                    n = n.Replace("Lt", "Light");
+                }
+
                 var c = Color.FromName(n);
                 if (c == Color.Empty)
                 {

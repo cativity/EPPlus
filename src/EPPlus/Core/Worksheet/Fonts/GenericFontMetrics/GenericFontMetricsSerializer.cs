@@ -59,7 +59,11 @@ namespace OfficeOpenXml.Core.Worksheet.Core.Worksheet.Fonts.GenericMeasurements
                         }
                     }
                     var nCharactersInClass = reader.ReadUInt16();
-                    if (nCharactersInClass == 0) continue;
+                    if (nCharactersInClass == 0)
+                    {
+                        continue;
+                    }
+
                     for (int y = 0; y < nCharactersInClass; y++)
                     {
                         var cCode = reader.ReadUInt16();

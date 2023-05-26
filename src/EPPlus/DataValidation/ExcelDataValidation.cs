@@ -102,16 +102,22 @@ namespace OfficeOpenXml.DataValidation
             get
             {
                 if (!string.IsNullOrEmpty(errorStyleString))
-                    return (ExcelDataValidationWarningStyle)Enum.Parse(typeof(ExcelDataValidationWarningStyle), errorStyleString, true);
+                {
+                    return (ExcelDataValidationWarningStyle)Enum.Parse(typeof(ExcelDataValidationWarningStyle), this.errorStyleString, true);
+                }
 
                 return ExcelDataValidationWarningStyle.undefined;
             }
             set
             {
                 if (value == ExcelDataValidationWarningStyle.undefined)
-                    errorStyleString = null;
+                {
+                    this.errorStyleString = null;
+                }
                 else
-                    errorStyleString = value.ToString();
+                {
+                    this.errorStyleString = value.ToString();
+                }
             }
         }
 
@@ -121,16 +127,22 @@ namespace OfficeOpenXml.DataValidation
             get
             {
                 if (string.IsNullOrEmpty(imeModeString))
+                {
                     return (ExcelDataValidationImeMode.NoControl);
+                }
 
                 return (ExcelDataValidationImeMode) imeModeString.ToEnum<ExcelDataValidationImeMode>();
             }
             set
             {
                 if (value == ExcelDataValidationImeMode.NoControl)
-                    imeModeString = null;
+                {
+                    this.imeModeString = null;
+                }
                 else
-                    imeModeString = value.ToString();
+                {
+                    this.imeModeString = value.ToString();
+                }
             }
         }
 
@@ -295,7 +307,9 @@ namespace OfficeOpenXml.DataValidation
         {
             string address = xr.GetAttribute("sqref");
             if (address == null)
-                InternalValidationType = InternalValidationType.ExtLst;
+            {
+                this.InternalValidationType = InternalValidationType.ExtLst;
+            }
 
             Uid = string.IsNullOrEmpty(xr.GetAttribute("xr:uid")) ? NewId() : xr.GetAttribute("xr:uid");
 

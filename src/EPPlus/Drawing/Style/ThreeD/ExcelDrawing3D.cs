@@ -38,7 +38,11 @@ namespace OfficeOpenXml.Drawing.Style.ThreeD
         private readonly string _path;
         internal ExcelDrawing3D(XmlNamespaceManager nameSpaceManager, XmlNode topNode, string path, string[] schemaNodeOrder) : base(nameSpaceManager, topNode)
         {
-            if (!string.IsNullOrEmpty(path)) path += "/";
+            if (!string.IsNullOrEmpty(path))
+            {
+                path += "/";
+            }
+
             _path = path;
             _sp3dPath = string.Format(_sp3dPath, path);
             _scene3dPath = string.Format(_scene3dPath, path);
@@ -225,11 +229,17 @@ namespace OfficeOpenXml.Drawing.Style.ThreeD
         }
         private void InitContourColor()
         {
-            if (ContourWidth <= 0) ContourWidth = 1;
+            if (ContourWidth <= 0)
+            {
+                this.ContourWidth = 1;
+            }
         }
         private void InitExtrusionColor()
         {
-            if (ExtrusionHeight <= 0) ExtrusionHeight = 1;
+            if (ExtrusionHeight <= 0)
+            {
+                this.ExtrusionHeight = 1;
+            }
         }
 
         internal void SetFromXml(XmlElement copyFromScene3DElement, XmlElement copyFromSp3DElement)

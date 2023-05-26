@@ -34,9 +34,20 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Statistical
             var sigma = ArgToDecimal(arguments, 1);
             var size = ArgToInt(arguments, 2);
 
-            if (alpha <= 0d || alpha >= 1d) return CreateResult(eErrorType.Num);
-            if (sigma <= 0d) return CreateResult(eErrorType.Num);
-            if (size < 1d) return CreateResult(eErrorType.Num);
+            if (alpha <= 0d || alpha >= 1d)
+            {
+                return this.CreateResult(eErrorType.Num);
+            }
+
+            if (sigma <= 0d)
+            {
+                return this.CreateResult(eErrorType.Num);
+            }
+
+            if (size < 1d)
+            {
+                return this.CreateResult(eErrorType.Num);
+            }
 
             var result = System.Math.Abs(StudentInv(alpha / 2, size - 1) * sigma / System.Math.Sqrt(size));
             return CreateResult(result, DataType.Decimal);

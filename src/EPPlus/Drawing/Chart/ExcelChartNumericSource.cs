@@ -66,21 +66,35 @@ namespace OfficeOpenXml.Drawing.Chart
             }
             set
             {
-                if (_sourceElement != null) _sourceElement.ParentNode.RemoveChild(_sourceElement);
+                if (_sourceElement != null)
+                {
+                    this._sourceElement.ParentNode.RemoveChild(this._sourceElement);
+                }
 
                 value = value.Trim();
-                if (value.StartsWith("=" , StringComparison.OrdinalIgnoreCase)) value = value.Substring(1);
+                if (value.StartsWith("=" , StringComparison.OrdinalIgnoreCase))
+                {
+                    value = value.Substring(1);
+                }
 
                 if (value.StartsWith("{", StringComparison.OrdinalIgnoreCase))
                 {
-                    if (!value.EndsWith("}", StringComparison.OrdinalIgnoreCase)) throw new ArgumentException("ValueSource", "Invalid format:Litteral values must begin and end with a curly bracket");
+                    if (!value.EndsWith("}", StringComparison.OrdinalIgnoreCase))
+                    {
+                        throw new ArgumentException("ValueSource", "Invalid format:Litteral values must begin and end with a curly bracket");
+                    }
+
                     CreateNumLit(value);
                 }
                 else
                 {
                     SetXmlNodeString($"{_path}/c:numRef/c:f", value);
                 }
-                if (!string.IsNullOrEmpty(_formatCode)) FormatCode = FormatCode;
+                if (!string.IsNullOrEmpty(_formatCode))
+                {
+                    this.FormatCode = this.FormatCode;
+                }
+
                 SetSourceElement();
             }
         }

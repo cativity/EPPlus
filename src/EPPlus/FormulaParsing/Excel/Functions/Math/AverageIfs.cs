@@ -40,7 +40,11 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
             var criterias = new List<string>();
             for (var ix = 1; ix < 31; ix += 2)
             {
-                if (functionArguments.Length <= ix) break;
+                if (functionArguments.Length <= ix)
+                {
+                    break;
+                }
+
                 var arg = functionArguments[ix];
                 if (arg.IsExcelRange)
                 {
@@ -62,7 +66,11 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
                 matchIndexes = matchIndexes.Intersect(indexes);
             }
 
-            if (matchIndexes.Count() == 0) return CreateResult(eErrorType.Div0);
+            if (matchIndexes.Count() == 0)
+            {
+                return this.CreateResult(eErrorType.Div0);
+            }
+
             var result = matchIndexes.Average(index => sumRange[index]);
 
             return CreateResult(result, DataType.Decimal);

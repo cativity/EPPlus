@@ -56,7 +56,11 @@ namespace OfficeOpenXml.Export.ToDataTable
                 {
                     var col = mapping.ZeroBasedColumnIndexInRange + _range.Start.Column;
                     var val = _sheet.GetValueInner(row, col);
-                    if (val != null && rowIsEmpty) rowIsEmpty = false;
+                    if (val != null && rowIsEmpty)
+                    {
+                        rowIsEmpty = false;
+                    }
+
                     if(!mapping.AllowNull && val == null)
                     {
                         rowErrorMsg = $"Value cannot be null, row: {row}, col: {col}";

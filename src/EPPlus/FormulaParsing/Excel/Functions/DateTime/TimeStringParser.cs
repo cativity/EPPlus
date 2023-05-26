@@ -78,7 +78,11 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime
             int minute;
             int second;
             GetValuesFromString(input, out hour, out minute, out second);
-            if (dayPart == "PM") hour += 12;
+            if (dayPart == "PM")
+            {
+                hour += 12;
+            }
+
             ValidateValues(hour, minute, second);
             return GetSerialNumber(hour, minute, second);
         }

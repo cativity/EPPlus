@@ -101,7 +101,10 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
                 };
 
             // workitem 9522
-            if (zss._baseDir=="") zss._baseDir=".";
+            if (zss._baseDir=="")
+            {
+                zss._baseDir=".";
+            }
 
             zss._SetWriteStream(0);
 
@@ -133,7 +136,9 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         public static Stream ForUpdate(string name, uint diskNumber)
         {
             if (diskNumber >= 99)
+            {
                 throw new ArgumentOutOfRangeException("diskNumber");
+            }
 
             string fname =
                 String.Format("{0}.z{1:D2}",
@@ -191,7 +196,9 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
             get
             {
                 if (_currentName==null)
-                    _currentName = _NameForSegment(CurrentSegment);
+                {
+                    this._currentName = this._NameForSegment(this.CurrentSegment);
+                }
 
                 return _currentName;
             }
@@ -229,7 +236,9 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         {
             if (_innerStream.Position + length > _maxSegmentSize)
                 // the block will go AT LEAST into the next segment
-                return CurrentSegment + 1;
+            {
+                return this.CurrentSegment + 1;
+            }
 
             // it will fit in the current segment
             return CurrentSegment;
@@ -257,7 +266,9 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
             }
 
             if (CurrentSegment + 1 == _maxDiskNumber)
-                _currentName = _baseName;
+            {
+                this._currentName = this._baseName;
+            }
 
             // Console.WriteLine("ZSS: SRS ({0})",
             //                   Path.GetFileName(CurrentName));
@@ -294,7 +305,9 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
                 }
 
                 if (CurrentSegment + 1 == _maxDiskNumber)
+                {
                     return r; // no more to read
+                }
 
                 CurrentSegment++;
                 _SetReadStream();
@@ -318,14 +331,19 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
                 _innerStream.Dispose();
 #endif
                 if (File.Exists(CurrentName))
-                    File.Delete(CurrentName);
+                {
+                    File.Delete(this.CurrentName);
+                }
+
                 File.Move(_currentTempName, CurrentName);
                 // Console.WriteLine("ZSS: SWS close ({0})",
                 //                   Path.GetFileName(CurrentName));
             }
 
             if (increment > 0)
-                CurrentSegment += increment;
+            {
+                this.CurrentSegment += increment;
+            }
 
             SharedUtilities.CreateAndOpenUniqueTempFile(_baseDir,
                                                         out _innerStream,
@@ -335,7 +353,9 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
             //                   Path.GetFileName(_currentTempName));
 
             if (CurrentSegment == 0)
-                _innerStream.Write(BitConverter.GetBytes(ZipConstants.SplitArchiveSignature), 0, 4);
+            {
+                this._innerStream.Write(BitConverter.GetBytes(ZipConstants.SplitArchiveSignature), 0, 4);
+            }
         }
 
 
@@ -358,7 +378,9 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
             {
                 // enough space for a contiguous write?
                 if (_innerStream.Position + count > _maxSegmentSize)
-                    _SetWriteStream(1);
+                {
+                    this._SetWriteStream(1);
+                }
             }
             else
             {
@@ -381,7 +403,9 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
             // Console.WriteLine("***ZSS.Trunc to disk {0}", diskNumber);
             // Console.WriteLine("***ZSS.Trunc:  current disk {0}", CurrentSegment);
             if (diskNumber >= 99)
+            {
                 throw new ArgumentOutOfRangeException("diskNumber");
+            }
 
             if (rwMode != RwMode.Write)
             {
@@ -411,7 +435,9 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
                 _innerStream.Dispose();
 #endif
                 if (File.Exists(_currentTempName))
-                    File.Delete(_currentTempName);
+                {
+                    File.Delete(this._currentTempName);
+                }
             }
 
             // Now, remove intervening segments.
@@ -420,7 +446,9 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
                 string s = _NameForSegment(j);
                 // Console.WriteLine("***ZSS.Trunc:  removing file {0}", s);
                 if (File.Exists(s))
+                {
                     File.Delete(s);
+                }
             }
 
             // now, open the desired segment.  It must exist.
@@ -438,7 +466,10 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
                 }
                 catch(IOException)
                 {
-                    if (i == 2) throw;
+                    if (i == 2)
+                    {
+                        throw;
+                    }
                 }
             }
 

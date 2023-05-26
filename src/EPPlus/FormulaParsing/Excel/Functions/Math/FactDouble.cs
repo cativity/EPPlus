@@ -28,7 +28,11 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
         {
             ValidateArguments(arguments, 1);
             var number = ArgToDecimal(arguments, 0);
-            if (number < 0) return CreateResult(eErrorType.NA);
+            if (number < 0)
+            {
+                return this.CreateResult(eErrorType.NA);
+            }
+
             var downTo = number % 2 == 0 ? 2 : 1;
             var result = 1d;
             for(var x = number; x >= downTo; x-=2)

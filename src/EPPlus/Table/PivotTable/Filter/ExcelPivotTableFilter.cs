@@ -390,7 +390,11 @@ namespace OfficeOpenXml.Table.PivotTable.Filter
             internal set
             {
                 var s = value.ToEnumString();
-                if (s.Length <= 3 && (s[0]=='m' || s[0] == 'q')) s = s.ToUpper();  //For M1 - M12 and Q1 - Q4
+                if (s.Length <= 3 && (s[0]=='m' || s[0] == 'q'))
+                {
+                    s = s.ToUpper();  //For M1 - M12 and Q1 - Q4
+                }
+
                 SetXmlNodeString("@type", s);
             }
         }

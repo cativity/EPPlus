@@ -37,7 +37,11 @@ namespace OfficeOpenXml.Drawing.Style.Effect
         internal ExcelDrawingEffectStyle(IPictureRelationDocument pictureRelationDocument, XmlNamespaceManager nameSpaceManager, XmlNode topNode, string path, string[] schemaNodeOrder) : base(nameSpaceManager, topNode)
         {
             _path = path;
-            if (path.Length > 0 && !path.EndsWith("/")) path += "/";
+            if (path.Length > 0 && !path.EndsWith("/"))
+            {
+                path += "/";
+            }
+
             _softEdgeRadiusPath = string.Format(_softEdgeRadiusPath, path);
             _blurPath = string.Format(_blurPath, path);
             _fillOverlayPath = string.Format(_fillOverlayPath, path);

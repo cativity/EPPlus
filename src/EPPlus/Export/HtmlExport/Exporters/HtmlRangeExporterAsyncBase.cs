@@ -69,12 +69,20 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
                     writer.AddAttribute("scope", "row");
                 }
 
-                if (Settings.SetRowHeight) AddRowHeightStyle(writer, range, row, Settings.StyleClassPrefix, IsMultiSheet);
+                if (Settings.SetRowHeight)
+                {
+                    this.AddRowHeightStyle(writer, range, row, this.Settings.StyleClassPrefix, this.IsMultiSheet);
+                }
+
                 await writer.RenderBeginTagAsync(HtmlElements.TableRow);
                 await writer.ApplyFormatIncreaseIndentAsync(Settings.Minify);
                 foreach (var col in _columns)
                 {
-                    if (InMergeCellSpan(row, col)) continue;
+                    if (InMergeCellSpan(row, col))
+                    {
+                        continue;
+                    }
+
                     var colIx = col - range._fromCol;
                     var cell = ws.Cells[row, col];
                     var cv = cell.Value;
@@ -121,7 +129,11 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
 
         protected async Task RenderHeaderRowAsync(ExcelRangeBase range, EpplusHtmlWriter writer, ExcelTable table, AccessibilitySettings accessibilitySettings, int headerRows, List<string> headers)
         {
-            if (table != null && table.ShowHeader == false) return;
+            if (table != null && table.ShowHeader == false)
+            {
+                return;
+            }
+
             if (accessibilitySettings.TableSettings.AddAccessibilityAttributes && !string.IsNullOrEmpty(accessibilitySettings.TableSettings.TheadRole))
             {
                 writer.AddAttribute("role", Settings.Accessibility.TableSettings.TheadRole);
@@ -145,12 +157,20 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
                     writer.AddAttribute("role", "row");
                 }
                 var row = range._fromRow + i;
-                if (Settings.SetRowHeight) AddRowHeightStyle(writer, range, row, Settings.StyleClassPrefix, IsMultiSheet);
+                if (Settings.SetRowHeight)
+                {
+                    this.AddRowHeightStyle(writer, range, row, this.Settings.StyleClassPrefix, this.IsMultiSheet);
+                }
+
                 await writer.RenderBeginTagAsync(HtmlElements.TableRow);
                 await writer.ApplyFormatIncreaseIndentAsync(Settings.Minify);
                 foreach (var col in _columns)
                 {
-                    if (InMergeCellSpan(row, col)) continue;
+                    if (InMergeCellSpan(row, col))
+                    {
+                        continue;
+                    }
+
                     var cell = range.Worksheet.Cells[row, col];
                     if (Settings.RenderDataTypes)
                     {

@@ -14,7 +14,10 @@ namespace OfficeOpenXml.Export.ToCollection
             if (headers == null || headers.Length == 0)
             {
                 headersList = new List<string>();
-                if (headerRow.HasValue == false) return headersList;
+                if (headerRow.HasValue == false)
+                {
+                    return headersList;
+                }
 
                 for (int c = range._fromCol; c <= range._toCol; c++)
                 {
@@ -44,7 +47,10 @@ namespace OfficeOpenXml.Export.ToCollection
         internal static List<T> ToCollection<T>(ExcelRangeBase range, Func<ToCollectionRow, T> setRow, ToCollectionRangeOptions options)
         {
             var ret = new List<T>();
-            if (range._toRow < range._fromRow) return null;
+            if (range._toRow < range._fromRow)
+            {
+                return null;
+            }
 
             var headers = GetRangeHeaders(range, options.Headers, options.HeaderRow);
 
@@ -73,7 +79,11 @@ namespace OfficeOpenXml.Export.ToCollection
         {
             var t = typeof(T);
             var h = GetRangeHeaders(range, options.Headers, options.HeaderRow);
-            if (h.Count <= 0) throw new InvalidOperationException("No headers specified. Please set a ToCollectionOptions.HeaderRow or ToCollectionOptions.Headers[].");
+            if (h.Count <= 0)
+            {
+                throw new InvalidOperationException("No headers specified. Please set a ToCollectionOptions.HeaderRow or ToCollectionOptions.Headers[].");
+            }
+
             var mappings = ToCollectionAutomap.GetAutomapList<T>(h);
             var l = new List<T>();
             var values = new List<ExcelValue>();

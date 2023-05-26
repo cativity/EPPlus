@@ -173,7 +173,10 @@ namespace EPPlusTest.Style
             using (var p = OpenTemplatePackage("SlicerStyleRead.xlsx"))
             {
                 var s = p.Workbook.Styles.SlicerStyles["CustomSlicerStyle1"];
-                if (s == null) Assert.Inconclusive("Custom style does not exists");
+                if (s == null)
+                {
+                    Assert.Inconclusive("Custom style does not exists");
+                }
 
                 Assert.AreEqual("CustomSlicerStyle1", s.Name);
 

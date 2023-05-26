@@ -52,9 +52,17 @@ namespace OfficeOpenXml.Utils
 
         internal static string ShiftAddressRowsInFormula(string worksheetName, string formula, int currentRow, int newRow)
         {
-            if (string.IsNullOrEmpty(formula)) return formula;
+            if (string.IsNullOrEmpty(formula))
+            {
+                return formula;
+            }
+
             var tokens = SourceCodeTokenizer.Default.Tokenize(formula, worksheetName);
-            if (!tokens.Any(x => x.TokenTypeIsSet(TokenType.ExcelAddress))) return formula;
+            if (!tokens.Any(x => x.TokenTypeIsSet(TokenType.ExcelAddress)))
+            {
+                return formula;
+            }
+
             var resultTokens = new List<Token>();
             foreach (var token in tokens)
             {
@@ -89,9 +97,17 @@ namespace OfficeOpenXml.Utils
 
         internal static string ShiftAddressColumnsInFormula(string worksheetName, string formula, int currentColumn, int newColumn)
         {
-            if (string.IsNullOrEmpty(formula)) return formula;
+            if (string.IsNullOrEmpty(formula))
+            {
+                return formula;
+            }
+
             var tokens = SourceCodeTokenizer.Default.Tokenize(formula, worksheetName);
-            if (!tokens.Any(x => x.TokenTypeIsSet(TokenType.ExcelAddress))) return formula;
+            if (!tokens.Any(x => x.TokenTypeIsSet(TokenType.ExcelAddress)))
+            {
+                return formula;
+            }
+
             var resultTokens = new List<Token>();
             foreach (var token in tokens)
             {

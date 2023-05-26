@@ -25,14 +25,24 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.Implementations
 
             //   Checking for error conditions
             if ((Per <= 0.0) || (Per >= (NPer + 1)))
+            {
                 return new FinanceCalcResult<double>(eErrorType.Num);
+            }
 
             var pmtResult = InternalMethods.PMT_Internal(Rate, NPer, PV, FV, Due);
-            if (pmtResult.HasError) return new FinanceCalcResult<double>(pmtResult.ExcelErrorType);
+            if (pmtResult.HasError)
+            {
+                return new FinanceCalcResult<double>(pmtResult.ExcelErrorType);
+            }
+
             Pmt = pmtResult.Result;
 
             var iPmtResult = IPmtImpl.Ipmt(Rate, Per, NPer, PV, FV, Due);
-            if (iPmtResult.HasError) return new FinanceCalcResult<double>(iPmtResult.ExcelErrorType);
+            if (iPmtResult.HasError)
+            {
+                return new FinanceCalcResult<double>(iPmtResult.ExcelErrorType);
+            }
+
             dIPMT = iPmtResult.Result;
 
             return new FinanceCalcResult<double>(Pmt - dIPMT);

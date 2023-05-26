@@ -174,10 +174,25 @@ namespace OfficeOpenXml.FormulaParsing.LexicalAnalysis
                 {
                     return false;
                 }
-                if (c == 'E') nExp++;
-                if (c == '.') nDot++;
-                if (c == '-') nMinus++;
-                if (c == '+') nPlus ++;
+                if (c == 'E')
+                {
+                    nExp++;
+                }
+
+                if (c == '.')
+                {
+                    nDot++;
+                }
+
+                if (c == '-')
+                {
+                    nMinus++;
+                }
+
+                if (c == '+')
+                {
+                    nPlus ++;
+                }
             }
             if(nExp == 0 && nMinus == 0)
             {

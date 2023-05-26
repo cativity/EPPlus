@@ -126,7 +126,10 @@ namespace OfficeOpenXml.Utils
                     {
                         comprBuffer[cPos++] = buffer[dPos++];
                     }
-                    if (dPos >= dEnd) break;
+                    if (dPos >= dEnd)
+                    {
+                        break;
+                    }
                 }
                 comprBuffer[flagPos] = tokenFlags;
                 flagPos = cPos++;
@@ -181,7 +184,10 @@ namespace OfficeOpenXml.Utils
                     //Decompress token
                     byte token = compBuffer[pos++];
                     if (pos >= endPos)
+                    {
                         break;
+                    }
+
                     for (int i = 0; i < 8; i++)
                     {
                         //Literal token
@@ -225,7 +231,9 @@ namespace OfficeOpenXml.Utils
 
                         }
                         if (pos >= endPos)
+                        {
                             break;
+                        }
                     }
                 }
                 return;

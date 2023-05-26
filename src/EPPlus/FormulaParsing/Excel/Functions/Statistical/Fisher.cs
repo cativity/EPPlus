@@ -29,7 +29,11 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Statistical
         {
             ValidateArguments(arguments, 1);
             var x = ArgToDecimal(arguments, 0);
-            if (x <= 0d || x >= 1d) return CreateResult(eErrorType.Num);
+            if (x <= 0d || x >= 1d)
+            {
+                return this.CreateResult(eErrorType.Num);
+            }
+
             var result = System.Math.Log((1 + x) / (1 - x)) / 2;
             return CreateResult(result, DataType.Decimal);
         }

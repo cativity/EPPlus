@@ -29,7 +29,11 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Text
         {
             ValidateArguments(arguments, 1);
             var arg = ArgToString(arguments, 0);
-            if (!IsString(arg, allowNullOrEmpty: false)) return CreateResult(ExcelErrorValue.Values.Value, DataType.ExcelError);
+            if (!IsString(arg, allowNullOrEmpty: false))
+            {
+                return this.CreateResult(ExcelErrorValue.Values.Value, DataType.ExcelError);
+            }
+
             var firstChar = arg.Substring(0, 1);
             var bytes = Encoding.UTF32.GetBytes(firstChar);
             var code = BitConverter.ToInt32(bytes, 0);

@@ -124,11 +124,18 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions
                         foreach (var arg in arguments)
                         {
                             nArgs++;
-                            if (nArgs >= minLength) return false;
+                            if (nArgs >= minLength)
+                            {
+                                return false;
+                            }
+
                             if (arg.IsExcelRange)
                             {
                                 nArgs += arg.ValueAsRangeInfo.GetNCells();
-                                if (nArgs >= minLength) return false;
+                                if (nArgs >= minLength)
+                                {
+                                    return false;
+                                }
                             }
                         }
                     }
@@ -156,11 +163,18 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions
                         foreach (var arg in arguments)
                         {
                             nArgs++;
-                            if (nArgs >= minLength) return false;
+                            if (nArgs >= minLength)
+                            {
+                                return false;
+                            }
+
                             if (arg.IsExcelRange)
                             {
                                 nArgs += arg.ValueAsRangeInfo.GetNCells();
-                                if (nArgs >= minLength) return false;
+                                if (nArgs >= minLength)
+                                {
+                                    return false;
+                                }
                             }
                         }
                     }
@@ -339,13 +353,21 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions
 
         protected bool IsNumericString(object value)
         {
-            if (value == null || string.IsNullOrEmpty(value.ToString())) return false;
+            if (value == null || string.IsNullOrEmpty(value.ToString()))
+            {
+                return false;
+            }
+
             return Regex.IsMatch(value.ToString(), @"^[\d]+(\,[\d])?");
         }
 
         protected bool IsInteger(object n)
         {
-            if (!IsNumeric(n)) return false;
+            if (!IsNumeric(n))
+            {
+                return false;
+            }
+
             return Convert.ToDouble(n) % 1 == 0;
         }
 
@@ -403,7 +425,10 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions
         /// <param name="value"></param>
         protected void ThrowExcelErrorValueException(ExcelErrorValue value)
         {
-            if (value != null) throw new ExcelErrorValueException(value.Type);
+            if (value != null)
+            {
+                throw new ExcelErrorValueException(value.Type);
+            }
         }
 
         /// <summary>
@@ -422,7 +447,11 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions
 
         protected bool IsNumeric(object val)
         {
-            if (val == null) return false;
+            if (val == null)
+            {
+                return false;
+            }
+
             return (TypeCompat.IsPrimitive(val) || val is double || val is decimal  || val is System.DateTime || val is TimeSpan);
         }
 
@@ -434,7 +463,10 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions
         protected bool IsString(object val, bool allowNullOrEmpty = true)
         {
             if (!allowNullOrEmpty)
+            {
                 return (val is string) && !string.IsNullOrEmpty(val as string);
+            }
+
             return val is string;
         }
 

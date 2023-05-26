@@ -46,7 +46,11 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.Implementations
 
             //   Calculate PMT (i.e. annuity) for given parms. Rqrd for FV
             var result = InternalMethods.PMT_Internal(Rate, NPer, PV, FV, Due);
-            if (result.HasError) return new FinanceCalcResult<double>(eErrorType.Num);
+            if (result.HasError)
+            {
+                return new FinanceCalcResult<double>(eErrorType.Num);
+            }
+
             Pmt = result.Result;
 
             if(Due != PmtDue.EndOfPeriod)

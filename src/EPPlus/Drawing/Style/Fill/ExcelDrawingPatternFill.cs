@@ -124,7 +124,11 @@ namespace OfficeOpenXml.Drawing.Style.Fill
 
         internal override void UpdateXml()
         {
-            if (_xml == null) CreateXmlHelper();
+            if (_xml == null)
+            {
+                this.CreateXmlHelper();
+            }
+
             SetXml(_nsm, _xml.TopNode);
         }
     }

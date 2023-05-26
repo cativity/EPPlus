@@ -49,7 +49,11 @@ namespace OfficeOpenXml.Drawing
                 StreamUtil.CopyStream(stream, ref newMs);
                 pt = GetPictureTypeFromMs((MemoryStream)newMs);
             }
-            if (throwException && pt == null) throw new InvalidOperationException("Cannot identify the image format of the stream.");
+            if (throwException && pt == null)
+            {
+                throw new InvalidOperationException("Cannot identify the image format of the stream.");
+            }
+
             return pt;
         }
 #if !NET35
@@ -66,7 +70,11 @@ namespace OfficeOpenXml.Drawing
                 await StreamUtil.CopyStreamAsync(stream, newMs, new CancellationToken()).ConfigureAwait(false);
                 pt = GetPictureTypeFromMs((MemoryStream)newMs);
             }
-            if (pt == null) throw new InvalidOperationException("Cannot identify the image format of the stream.");
+            if (pt == null)
+            {
+                throw new InvalidOperationException("Cannot identify the image format of the stream.");
+            }
+
             return pt;
         }
 #endif
@@ -384,9 +392,16 @@ namespace OfficeOpenXml.Drawing
                 {
                     var imageCount = br.ReadInt16();
                     width = br.ReadByte();
-                    if (width == 0) width = 256;
+                    if (width == 0)
+                    {
+                        width = 256;
+                    }
+
                     height = br.ReadByte();
-                    if (height == 0) height = 256;
+                    if (height == 0)
+                    {
+                        height = 256;
+                    }
 
                     //Icons will currently use the size from the icon and will not read the actual image size from the bmp or png. 
 
@@ -808,9 +823,17 @@ namespace OfficeOpenXml.Drawing
                                 }
                             }
                             width = GetSvgUnit(w);
-                            if (double.IsNaN(width)) return false;
+                            if (double.IsNaN(width))
+                            {
+                                return false;
+                            }
+
                             height = GetSvgUnit(h);
-                            if (double.IsNaN(height)) return false;
+                            if (double.IsNaN(height))
+                            {
+                                return false;
+                            }
+
                             return true;
                         }
                     }

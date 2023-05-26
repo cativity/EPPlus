@@ -37,7 +37,11 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance
                 guess = ArgToDecimal(arguments, 2);
             }
             var result = XirrImpl.GetXirr(values, dates, guess);
-            if (result.HasError) return CreateResult(result.ExcelErrorType);
+            if (result.HasError)
+            {
+                return this.CreateResult(result.ExcelErrorType);
+            }
+
             return CreateResult(result.Result, DataType.Decimal);
         }
     }

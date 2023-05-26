@@ -31,7 +31,11 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime
             var startDate = ParseDate(arguments, startDateObj);
             var endDateObj = arguments.ElementAt(1).Value;
             var endDate = ParseDate(arguments, endDateObj, 1);
-            if (startDate > endDate) return CreateResult(eErrorType.Num);
+            if (startDate > endDate)
+            {
+                return this.CreateResult(eErrorType.Num);
+            }
+
             var unit = ArgToString(arguments, 2);
             switch(unit.ToLower())
             {
@@ -97,7 +101,10 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime
                 do
                 {
                     tmpDate = tmpDate.AddMonths(1);
-                    if(tmpDate < endDate) nMonths++;
+                    if(tmpDate < endDate)
+                    {
+                        nMonths++;
+                    }
                 }
                 while (tmpDate < endDate);
             }

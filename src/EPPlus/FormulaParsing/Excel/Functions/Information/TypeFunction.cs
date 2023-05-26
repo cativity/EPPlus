@@ -31,15 +31,30 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Information
             ValidateArguments(arguments, 1);
             var val = arguments.ElementAt(0).Value;
             if (val is bool)
-                return CreateResult(4, DataType.Integer);
+            {
+                return this.CreateResult(4, DataType.Integer);
+            }
+
             if (IsNumeric(val) || val == null)
-                return CreateResult(1, DataType.Integer);
+            {
+                return this.CreateResult(1, DataType.Integer);
+            }
+
             if (ExcelErrorValue.Values.IsErrorValue(val))
-                return CreateResult(16, DataType.Integer);
+            {
+                return this.CreateResult(16, DataType.Integer);
+            }
+
             if (val is string)
-                return CreateResult(2, DataType.Integer);
+            {
+                return this.CreateResult(2, DataType.Integer);
+            }
+
             if (val.GetType().IsArray || val is IEnumerable)
-                return CreateResult(64, DataType.Integer);
+            {
+                return this.CreateResult(64, DataType.Integer);
+            }
+
             return new CompileResult(eErrorType.Value);
         }
     }

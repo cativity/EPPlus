@@ -322,8 +322,14 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Operators
         {
             if (obj.Result == null)
             {
-                if (other.DataType == DataType.String) return string.Empty;
-                else return 0d;
+                if (other.DataType == DataType.String)
+                {
+                    return string.Empty;
+                }
+                else
+                {
+                    return 0d;
+                }
             }
             return obj.ResultValue;
         }

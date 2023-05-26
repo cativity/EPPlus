@@ -68,7 +68,11 @@ namespace OfficeOpenXml.Export.HtmlExport
 
         internal void RenderAdditionalAndFontCss(string tableClass)
         {
-            if (_cssSettings.IncludeSharedClasses == false) return;
+            if (_cssSettings.IncludeSharedClasses == false)
+            {
+                return;
+            }
+
             WriteClass($"table.{tableClass}{{", _settings.Minify);
             if (_cssSettings.IncludeNormalFont)
             {
@@ -151,7 +155,11 @@ namespace OfficeOpenXml.Export.HtmlExport
                 type = img.Type.Value;
             }
 
-            if (type == null) return;
+            if (type == null)
+            {
+                return;
+            }
+
             var pc = (IPictureContainer)p.Picture;
             if (_images.Contains(pc.ImageHash) == false)
             {
@@ -213,7 +221,11 @@ namespace OfficeOpenXml.Export.HtmlExport
         private string GetDrawingBorder(ExcelPicture picture)
         {
             Color color = picture.Border.Fill.Color;
-            if (color.IsEmpty) return "";
+            if (color.IsEmpty)
+            {
+                return "";
+            }
+
             string lineStyle=$"{picture.Border.Width}px";
             
             switch (picture.Border.LineStyle.Value)
@@ -315,7 +327,11 @@ namespace OfficeOpenXml.Export.HtmlExport
         private bool IsAddedToCache(ExcelXfs xfs, out int id, int bottomStyleId = -1, int rightStyleId = -1)
         {
             var key = GetStyleKey(xfs);
-            if (bottomStyleId > -1) key += bottomStyleId + "|" + rightStyleId;
+            if (bottomStyleId > -1)
+            {
+                key += bottomStyleId + "|" + rightStyleId;
+            }
+
             if (_styleCache.ContainsKey(key))
             {
                 id = _styleCache[key];
@@ -382,10 +398,26 @@ namespace OfficeOpenXml.Export.HtmlExport
 
         private void WriteBorderStyles(ExcelBorderItemXml top, ExcelBorderItemXml bottom, ExcelBorderItemXml left, ExcelBorderItemXml right)
         {
-            if (EnumUtil.HasNotFlag(_borderExclude, eBorderExclude.Top)) WriteBorderItem(top, "top");
-            if (EnumUtil.HasNotFlag(_borderExclude, eBorderExclude.Bottom)) WriteBorderItem(bottom, "bottom");
-            if (EnumUtil.HasNotFlag(_borderExclude, eBorderExclude.Left)) WriteBorderItem(left, "left");
-            if (EnumUtil.HasNotFlag(_borderExclude, eBorderExclude.Right)) WriteBorderItem(right, "right");
+            if (EnumUtil.HasNotFlag(_borderExclude, eBorderExclude.Top))
+            {
+                this.WriteBorderItem(top, "top");
+            }
+
+            if (EnumUtil.HasNotFlag(_borderExclude, eBorderExclude.Bottom))
+            {
+                this.WriteBorderItem(bottom, "bottom");
+            }
+
+            if (EnumUtil.HasNotFlag(_borderExclude, eBorderExclude.Left))
+            {
+                this.WriteBorderItem(left, "left");
+            }
+
+            if (EnumUtil.HasNotFlag(_borderExclude, eBorderExclude.Right))
+            {
+                this.WriteBorderItem(right, "right");
+            }
+
             //TODO add Diagonal
             //WriteBorderItem(b.DiagonalDown, "right");
             //WriteBorderItem(b.DiagonalUp, "right");
@@ -450,7 +482,11 @@ namespace OfficeOpenXml.Export.HtmlExport
 
         private bool AreColorEqual(ExcelColorXml c1, ExcelColor c2)
         {
-            if (c1.Tint != c2.Tint) return false;
+            if (c1.Tint != c2.Tint)
+            {
+                return false;
+            }
+
             if(c1.Indexed>=0)
             {
                 return c1.Indexed == c2.Indexed;
@@ -471,7 +507,11 @@ namespace OfficeOpenXml.Export.HtmlExport
 
         private void WriteFillStyles(ExcelFillXml f)
         {
-            if (_cssExclude.Fill) return;
+            if (_cssExclude.Fill)
+            {
+                return;
+            }
+
             if (f is ExcelGradientFillXml gf && gf.Type!=ExcelFillGradientType.None)
             {
                 WriteGradient(gf);

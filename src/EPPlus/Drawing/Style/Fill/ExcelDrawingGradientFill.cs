@@ -80,7 +80,11 @@ namespace OfficeOpenXml.Drawing.Style.Fill
         internal override void SetXml(XmlNamespaceManager nsm, XmlNode node)
         {
             _initXml?.Invoke();
-            if (_xml == null) InitXml(nsm, node,"");
+            if (_xml == null)
+            {
+                this.InitXml(nsm, node,"");
+            }
+
             CheckTypeChange(NodeName);
             _xml.SetXmlNodeBool("@rotWithShape", RotateWithShape);
             if (TileFlip == eTileFlipMode.None)
@@ -155,7 +159,11 @@ namespace OfficeOpenXml.Drawing.Style.Fill
             var path=_xml.GetXmlNodeString("a:path/@path");
             if(!string.IsNullOrEmpty(path))
             {
-                if (path == "rect") path = "rectangle";
+                if (path == "rect")
+                {
+                    path = "rectangle";
+                }
+
                 ShadePath = path.ToEnum(eShadePath.Linear);
             }
             else
@@ -217,7 +225,11 @@ namespace OfficeOpenXml.Drawing.Style.Fill
         }
         internal override void UpdateXml()
         {
-            if (_xml == null) CreateXmlHelper();
+            if (_xml == null)
+            {
+                this.CreateXmlHelper();
+            }
+
             SetXml(_nsm, _xml.TopNode);
             
         }

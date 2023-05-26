@@ -39,7 +39,11 @@ namespace OfficeOpenXml.Style.XmlAccess
 
         private ExcelFillStyle GetPatternType(string patternType)
         {
-            if (patternType == "") return ExcelFillStyle.None;
+            if (patternType == "")
+            {
+                return ExcelFillStyle.None;
+            }
+
             patternType = patternType.Substring(0, 1).ToUpper(CultureInfo.InvariantCulture) + patternType.Substring(1, patternType.Length - 1);
             try
             {

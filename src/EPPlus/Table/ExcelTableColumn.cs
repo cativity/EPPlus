@@ -154,7 +154,10 @@ namespace OfficeOpenXml.Table
             {
                 if(!string.IsNullOrEmpty(value))
                 {
-                    if (value.StartsWith("=")) value = value.Substring(1, value.Length - 1);
+                    if (value.StartsWith("="))
+                    {
+                        value = value.Substring(1, value.Length - 1);
+                    }
                 }
                 SetXmlNodeString("@totalsRowFunction", "custom");                
                 SetXmlNodeString(TOTALSROWFORMULA_PATH, value);
@@ -257,7 +260,11 @@ namespace OfficeOpenXml.Table
                 }
                 else
                 {
-                    if (value.StartsWith("=")) value = value.Substring(1, value.Length - 1);
+                    if (value.StartsWith("="))
+                    {
+                        value = value.Substring(1, value.Length - 1);
+                    }
+
                     SetFormula(value);
                     SetTableFormula(false);
                 }

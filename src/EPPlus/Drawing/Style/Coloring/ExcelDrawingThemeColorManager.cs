@@ -57,7 +57,10 @@ namespace OfficeOpenXml.Drawing.Style.Coloring
             _initMethod = initMethod;
             _pathNode = GetPathNode();
             _schemaNodeOrder = schemaNodeOrder;
-            if (_pathNode == null) return;
+            if (_pathNode == null)
+            {
+                return;
+            }
 
             if (IsTopNodeColorNode(_topNode))
             {
@@ -130,7 +133,11 @@ namespace OfficeOpenXml.Drawing.Style.Coloring
         {
             get
             {
-                if (ColorType == eDrawingColorType.None) return null;
+                if (ColorType == eDrawingColorType.None)
+                {
+                    return null;
+                }
+
                 if (_transforms == null)
                 {
                     _transforms = new ExcelColorTransformCollection(_nameSpaceManager, _colorNode);

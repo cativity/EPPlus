@@ -25,8 +25,11 @@ namespace OfficeOpenXml.Drawing.Style.Coloring
         internal ExcelDrawingColorManager(XmlNamespaceManager nameSpaceManager, XmlNode topNode, string path, string[] schemaNodeOrder, Action initMethod = null) : 
             base(nameSpaceManager, topNode, path, schemaNodeOrder, initMethod)
         {
-            if (_pathNode == null || _colorNode==null)  return;
-         
+            if (_pathNode == null || _colorNode==null)
+            {
+                return;
+            }
+
             switch (_colorNode.LocalName)
             {
                 case "schemeClr":

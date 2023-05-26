@@ -53,20 +53,34 @@ namespace OfficeOpenXml
         internal ExcelFormulaAddress(string ws, string address)
             : base(address)
         {
-            if (string.IsNullOrEmpty(_ws)) _ws = ws;
+            if (string.IsNullOrEmpty(_ws))
+            {
+                this._ws = ws;
+            }
+
             SetFixed();
         }
         internal ExcelFormulaAddress(string ws, string address, bool isName)
             : base(address, isName)
         {
-            if (string.IsNullOrEmpty(_ws)) _ws = ws;
+            if (string.IsNullOrEmpty(_ws))
+            {
+                this._ws = ws;
+            }
+
             if(!isName)
-                SetFixed();
+            {
+                this.SetFixed();
+            }
         }
 
         private void SetFixed()
         {
-            if (Address.IndexOf('[') >= 0) return;
+            if (Address.IndexOf('[') >= 0)
+            {
+                return;
+            }
+
             var address=FirstAddress;
             if(_fromRow==_toRow && _fromCol==_toCol)
             {

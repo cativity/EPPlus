@@ -89,7 +89,11 @@ namespace OfficeOpenXml.Core
 
         internal void Move(int fromPosition, int toPosition, bool before)
         {
-            if (Count <= 1 || fromPosition == toPosition) return;
+            if (Count <= 1 || fromPosition == toPosition)
+            {
+                return;
+            }
+
             var listItem = _index[1][fromPosition];
             var insertPos = before ? toPosition : toPosition + 1;
             var removePos = fromPosition;

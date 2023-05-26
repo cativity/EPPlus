@@ -101,7 +101,11 @@ namespace OfficeOpenXml.Packaging
                         }
                         e = _zip.GetNextEntry();
                     }
-                    if (_dirSeparator == '0') _dirSeparator = '/';
+                    if (_dirSeparator == '0')
+                    {
+                        this._dirSeparator = '/';
+                    }
+
                     foreach (var p in Parts)
                     {
                         string name = Path.GetFileName(p.Key);

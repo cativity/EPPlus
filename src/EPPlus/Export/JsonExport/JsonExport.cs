@@ -86,7 +86,11 @@ namespace OfficeOpenXml
         }
         internal static string JsonEscape(string s)
         {
-            if (s == null) return "";
+            if (s == null)
+            {
+                return "";
+            }
+
             var sb = new StringBuilder();
             foreach (var c in s)
             {
@@ -129,7 +133,11 @@ namespace OfficeOpenXml
         }
         internal protected void WriteItem(StreamWriter sw, string v, bool indent=false, bool addComma=false)
         {
-            if (addComma) v += ",";
+            if (addComma)
+            {
+                v += ",";
+            }
+
             if (_minify)
             {
                 sw.Write(v);

@@ -22,7 +22,11 @@ namespace OfficeOpenXml.Core.CellStore
 
         public override string ToString()
         {
-            if (_value != null) return _value.ToString();
+            if (_value != null)
+            {
+                return this._value.ToString();
+            }
+
             return "null";
         }
     }

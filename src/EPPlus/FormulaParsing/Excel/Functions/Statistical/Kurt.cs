@@ -31,7 +31,11 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Statistical
             ValidateArguments(arguments, 1);
             var numbers = ArgsToDoubleEnumerable(true, arguments, context, true);
             var n = (double)numbers.Count();
-            if (n < 4) return CreateResult(eErrorType.Div0);
+            if (n < 4)
+            {
+                return this.CreateResult(eErrorType.Div0);
+            }
+
             var stdev = new Stdev().StandardDeviation(numbers.Select(x => x.Value));
             if(stdev == 0d)
             {

@@ -31,7 +31,11 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
         {
             ValidateArguments(arguments, 1);
             var arg = arguments.First();
-            if(!arg.IsExcelRange && arg.ExcelAddressReferenceId <= 0)throw new InvalidOperationException("CountBlank only support ranges as arguments");
+            if(!arg.IsExcelRange && arg.ExcelAddressReferenceId <= 0)
+            {
+                throw new InvalidOperationException("CountBlank only support ranges as arguments");
+            }
+
             var result = 0;
             IRangeInfo range;
             if(arg.IsExcelRange)

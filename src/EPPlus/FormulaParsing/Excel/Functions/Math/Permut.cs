@@ -30,7 +30,11 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
             var number = ArgToDecimal(arguments, 0);
             number = System.Math.Floor(number);
             var numberChosen = ArgToDecimal(arguments, 1);
-            if (number <= 0d || numberChosen <= 0 || number < numberChosen) return CreateResult(eErrorType.Num);
+            if (number <= 0d || numberChosen <= 0 || number < numberChosen)
+            {
+                return this.CreateResult(eErrorType.Num);
+            }
+
             var result = MathHelper.Factorial(number) / MathHelper.Factorial(number - numberChosen);
             return CreateResult(result, DataType.Decimal);
         }

@@ -184,10 +184,13 @@ namespace OfficeOpenXml
             {
                 var v=GetXmlNodeInt(ACTIVETAB_PATH);
                 if (v < 0)
-                    return _wb._package._worksheetAdd;
+                {
+                    return this._wb._package._worksheetAdd;
+                }
                 else
+                {
                     return v;
-
+                }
             }
             set
             {

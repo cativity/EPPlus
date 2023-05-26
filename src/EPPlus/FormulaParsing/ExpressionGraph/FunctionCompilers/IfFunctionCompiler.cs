@@ -34,13 +34,20 @@ namespace OfficeOpenXml.FormulaParsing.ExpressionGraph.FunctionCompilers
             : base(function, context)
         {
             Require.That(function).Named("function").IsNotNull();
-            if (!(function is If)) throw new ArgumentException("function must be of type If");
+            if (!(function is If))
+            {
+                throw new ArgumentException("function must be of type If");
+            }
         }
 
         public override CompileResult Compile(IEnumerable<Expression> children)
         {
             // 2 is allowed, Excel returns FALSE if false is the outcome of the expression
-            if (children.Count() < 2) throw new ExcelErrorValueException(eErrorType.Value);
+            if (children.Count() < 2)
+            {
+                throw new ExcelErrorValueException(eErrorType.Value);
+            }
+
             var args = new List<FunctionArgument>();
             Function.BeforeInvoke(Context);
             var firstChild = children.ElementAt(0);

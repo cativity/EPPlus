@@ -82,7 +82,11 @@ namespace OfficeOpenXml.FormulaParsing.LexicalAnalysis.TokenSeparatorHandlers
         private bool IsPartOfMultipleCharSeparator(TokenizerContext context, char c)
         {
             var lastTokenVal = string.Empty;
-            if (!context.LastToken.HasValue) return false;
+            if (!context.LastToken.HasValue)
+            {
+                return false;
+            }
+
             var lastToken = context.LastToken.Value;
             lastTokenVal = lastToken.Value ?? string.Empty;
             return _tokenSeparatorProvider.IsOperator(lastTokenVal)

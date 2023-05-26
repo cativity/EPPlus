@@ -110,7 +110,11 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions
             get
             {
                 var v = ValueFirst;
-                if (v == null) return default(string);
+                if (v == null)
+                {
+                    return default(string);
+                }
+
                 return ValueFirst.ToString();
             }
         }

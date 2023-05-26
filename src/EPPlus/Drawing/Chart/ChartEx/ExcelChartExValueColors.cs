@@ -75,7 +75,11 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
         {
             get
             {
-                if (NumberOfColors == eNumberOfColors.TwoColor) return null;
+                if (NumberOfColors == eNumberOfColors.TwoColor)
+                {
+                    return null;
+                }
+
                 if (_midColor == null)
                 {
                     _midColor = new ExcelChartExValueColor(NameSpaceManager, TopNode, SchemaNodeOrder, "mid");

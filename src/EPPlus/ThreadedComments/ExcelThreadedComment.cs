@@ -42,7 +42,11 @@ namespace OfficeOpenXml.ThreadedComments
         {
             set
             {
-                if (value == null) throw new ArgumentNullException("Thread");
+                if (value == null)
+                {
+                    throw new ArgumentNullException("Thread");
+                }
+
                 _thread = value;
             }
         }
@@ -186,7 +190,11 @@ namespace OfficeOpenXml.ThreadedComments
                 {
                     return null;
                 }
-                if (val == "1") return true;
+                if (val == "1")
+                {
+                    return true;
+                }
+
                 return false;
             }
             set

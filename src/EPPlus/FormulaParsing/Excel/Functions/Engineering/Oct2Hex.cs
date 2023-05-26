@@ -34,7 +34,10 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Engineering
             if (arguments.Count() > 1)
             {
                 padding = ArgToInt(arguments, 1);
-                if (padding.Value < 0 ^ padding.Value > 10) return CreateResult(eErrorType.Num);
+                if (padding.Value < 0 ^ padding.Value > 10)
+                {
+                    return this.CreateResult(eErrorType.Num);
+                }
             }
             var decNumber = TwoComplementHelper.ParseDecFromString(number, 8);
             var result = Convert.ToString(Convert.ToInt32(decNumber), 16).ToUpper();

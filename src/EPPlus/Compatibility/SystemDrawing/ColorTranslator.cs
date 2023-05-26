@@ -46,9 +46,12 @@ namespace OfficeOpenXml.Compatibility.System.Drawing
 
 		public static Color FromHtml(string htmlColor)
 		{
-			if (string.IsNullOrEmpty(htmlColor)) return Color.Empty;
+			if (string.IsNullOrEmpty(htmlColor))
+            {
+                return Color.Empty;
+            }
 
-			switch (htmlColor.ToLowerInvariant())
+            switch (htmlColor.ToLowerInvariant())
 			{
 				case "buttonface":
 				case "threedface":

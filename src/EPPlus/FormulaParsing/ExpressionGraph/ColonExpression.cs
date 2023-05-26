@@ -19,8 +19,15 @@ namespace OfficeOpenXml.FormulaParsing.ExpressionGraph
             var nextIsAddress = Next.GetType() == typeof(ExcelAddressExpression);
             var nextIsOffset = Next.GetType() == typeof(FunctionExpression) && ((FunctionExpression)Next).ExpressionString.ToLower() == "offset";
 
-            if (!prevIsAddress && !prevIsOffset) return new CompileResult(eErrorType.Value);
-            if (!nextIsAddress && !nextIsOffset) return new CompileResult(eErrorType.Value);
+            if (!prevIsAddress && !prevIsOffset)
+            {
+                return new CompileResult(eErrorType.Value);
+            }
+
+            if (!nextIsAddress && !nextIsOffset)
+            {
+                return new CompileResult(eErrorType.Value);
+            }
 
             if(prevIsAddress && nextIsOffset)
             {

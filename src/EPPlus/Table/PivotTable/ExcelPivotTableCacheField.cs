@@ -365,7 +365,10 @@ namespace OfficeOpenXml.Table.PivotTable
                             {
                                 var s = si.ToString();
                                 AppendItem(shNode, "s", s);
-                                if (s.Length > 255 && isLongText == false) isLongText = true;
+                                if (s.Length > 255 && isLongText == false)
+                                {
+                                    isLongText = true;
+                                }
                             }
                             break;
                     }
@@ -744,7 +747,10 @@ namespace OfficeOpenXml.Table.PivotTable
             for (int i = 0; i < items.Count; i++)
             {
                 var key = items[i];
-                if (!_cacheLookup.ContainsKey(key)) _cacheLookup.Add(key, i);
+                if (!_cacheLookup.ContainsKey(key))
+                {
+                    this._cacheLookup.Add(key, i);
+                }
             }
         }
 
@@ -768,7 +774,11 @@ namespace OfficeOpenXml.Table.PivotTable
         #endregion
         internal void Refresh()
         {
-            if (!string.IsNullOrEmpty(Formula)) return;
+            if (!string.IsNullOrEmpty(Formula))
+            {
+                return;
+            }
+
             if (Grouping == null)
             {
                 UpdateSharedItems();
@@ -802,7 +812,11 @@ namespace OfficeOpenXml.Table.PivotTable
         private void UpdateSharedItems()
         {
             var range = _cache.SourceRange;
-            if (range == null) return;
+            if (range == null)
+            {
+                return;
+            }
+
             var column = range._fromCol + Index;
             var hs = new HashSet<object>(new InvariantObjectComparer());
             var ws = range.Worksheet;

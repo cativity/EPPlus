@@ -317,7 +317,10 @@ namespace OfficeOpenXml
         /// <param name="Password"></param>
         public void SetPassword(string Password)
         {
-            if (IsProtected == false) IsProtected = true;
+            if (IsProtected == false)
+            {
+                this.IsProtected = true;
+            }
 
             Password = Password.Trim();
             if (Password == "")

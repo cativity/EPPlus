@@ -47,7 +47,11 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
             get
             {
                 var s = GetXmlNodeString("cx:layoutPr/cx:statistics/@quartileMethod");
-                if (string.IsNullOrEmpty(s)) return null;
+                if (string.IsNullOrEmpty(s))
+                {
+                    return null;
+                }
+
                 return s.ToEnum(eQuartileMethod.Inclusive);
             }
             set

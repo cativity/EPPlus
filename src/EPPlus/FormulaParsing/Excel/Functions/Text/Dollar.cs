@@ -49,7 +49,11 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Text
 
         private string GetFormatString(int decimals)
         {
-            if (decimals > 0) return "C" + decimals;
+            if (decimals > 0)
+            {
+                return "C" + decimals;
+            }
+
             return "C0";
         }
     }

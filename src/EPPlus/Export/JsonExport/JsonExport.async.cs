@@ -79,7 +79,11 @@ namespace OfficeOpenXml
         }
         internal protected async Task WriteItemAsync(StreamWriter sw, string v, bool indent = false, bool addComma = false)
         {
-            if (addComma) v += ",";
+            if (addComma)
+            {
+                v += ",";
+            }
+
             if (_minify)
             {
                 await sw.WriteAsync(v);

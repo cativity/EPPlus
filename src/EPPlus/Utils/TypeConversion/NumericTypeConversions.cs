@@ -24,9 +24,17 @@ namespace OfficeOpenXml.Utils.TypeConversion
             { typeof(uint), (o) => Convert.ToUInt32(o) },
             { typeof(int), (o) => Convert.ToInt32(o) },
             { typeof(float), (o) => {
-                if(o == null) return null;
+                if(o == null)
+                {
+                    return null;
+                }
+
                 float output;
-                if(float.TryParse(o.ToString(), out output)) return output;
+                if(float.TryParse(o.ToString(), out output))
+                {
+                    return output;
+                }
+
                 return null;
             } },
             { typeof(double), (o) => Convert.ToDouble(o) },

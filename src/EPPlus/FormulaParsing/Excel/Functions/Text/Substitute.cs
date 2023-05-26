@@ -42,7 +42,9 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Text
             {
                 pos = text.IndexOf(search, pos + 1);
                 if (pos < 0)
+                {
                     break;
+                }
             }
             return pos < 0 ? text : text.Substring(0, pos) + replace + text.Substring(pos + search.Length);
         }

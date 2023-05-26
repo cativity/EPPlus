@@ -47,7 +47,11 @@ namespace OfficeOpenXml.Drawing.Style.ThreeD
             }
             set
             {
-                if (!_isInit) InitXml();
+                if (!_isInit)
+                {
+                    this.InitXml();
+                }
+
                 SetXmlNodeEmuToPt(_widthPath, value);
             }
         }
@@ -78,7 +82,11 @@ namespace OfficeOpenXml.Drawing.Style.ThreeD
             }
             set
             {
-                if(!_isInit) InitXml();
+                if(!_isInit)
+                {
+                    this.InitXml();
+                }
+
                 SetXmlNodeEmuToPt(_heightPath, value);
             }
         }
@@ -101,7 +109,11 @@ namespace OfficeOpenXml.Drawing.Style.ThreeD
                 }
                 else
                 {
-                    if (!_isInit) InitXml();
+                    if (!_isInit)
+                    {
+                        this.InitXml();
+                    }
+
                     SetXmlNodeString(_typePath, value.ToEnumString());
                 }
             }

@@ -19,11 +19,17 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Engineering.Implementatio
         static FinanceCalcResult<double> Bessely0(double fX)
         {
             if (fX <= 0)
+            {
                 return new FinanceCalcResult<double>(eErrorType.Num);
+            }
+
             const double fMaxIteration = 9000000.0; // should not be reached
             if (fX > 5.0e+6) // iteration is not considerable better then approximation
+            {
                 return new FinanceCalcResult<double>(System.Math.Sqrt(1 / f_PI / fX)
-                        * (System.Math.Sin(fX) - System.Math.Cos(fX)));
+                                                     * (System.Math.Sin(fX) - System.Math.Cos(fX)));
+            }
+
             const double epsilon = 1.0e-15;
             const double EulerGamma = 0.57721566490153286060;
             double alpha = System.Math.Log(fX / 2.0) + EulerGamma;
@@ -44,7 +50,9 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Engineering.Implementatio
                 double km1mod2 = (k - 1.0) % 2.0;
                 double m_bar = (2.0 * km1mod2) * f_bar;
                 if (km1mod2 == 0.0)
+                {
                     alpha = 0.0;
+                }
                 else
                 {
                     alpha = sign_alpha * (4.0 / k);
@@ -61,7 +69,10 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Engineering.Implementatio
             }
             while (!bHasFound && k < fMaxIteration);
             if (!bHasFound)
+            {
                 return new FinanceCalcResult<double>(eErrorType.Num); // not likely to happen
+            }
+
             return new FinanceCalcResult<double>(u * f_2_DIV_PI);
         }
 
@@ -72,11 +83,17 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Engineering.Implementatio
         static FinanceCalcResult<double> Bessely1(double fX)
         {
             if (fX <= 0)
+            {
                 return new FinanceCalcResult<double>(eErrorType.Num);
+            }
+
             const double fMaxIteration = 9000000.0; // should not be reached
             if (fX > 5.0e+6) // iteration is not considerable better then approximation
+            {
                 return new FinanceCalcResult<double>(-System.Math.Sqrt(1 / f_PI / fX)
-                        * (System.Math.Sin(fX) + System.Math.Cos(fX)));
+                                                     * (System.Math.Sin(fX) + System.Math.Cos(fX)));
+            }
+
             const double epsilon = 1.0e-15;
             const double EulerGamma = 0.57721566490153286060;
             double alpha = 1.0 / fX;
@@ -104,7 +121,10 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Engineering.Implementatio
                     sign_alpha = -sign_alpha;
                 }
                 else
+                {
                     alpha = 0.0;
+                }
+
                 g_bar_delta_u = f_bar * alpha - g * delta_u - m_bar * u;
                 g_bar = m_bar - (2.0 * k) / fX + g;
                 delta_u = g_bar_delta_u / g_bar;
@@ -116,7 +136,10 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Engineering.Implementatio
             }
             while (!bHasFound && k < fMaxIteration);
             if (!bHasFound)
+            {
                 new FinanceCalcResult<double>(eErrorType.Num);
+            }
+
             return new FinanceCalcResult<double>(-u * 2.0 / f_PI);
         }
 
@@ -131,10 +154,18 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Engineering.Implementatio
                     {
                         double fTox = 2.0 / fNum;
                         var y0Result = Bessely0(fNum);
-                        if (y0Result.HasError) return y0Result;
+                        if (y0Result.HasError)
+                        {
+                            return y0Result;
+                        }
+
                         double fBym = y0Result.Result;
                         var y1Result = Bessely1(fNum);
-                        if (y1Result.HasError) return y1Result;
+                        if (y1Result.HasError)
+                        {
+                            return y1Result;
+                        }
+
                         double fBy = y1Result.Result;
 
                         for (int n = 1; n < nOrder; n++)

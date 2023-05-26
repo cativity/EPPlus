@@ -38,7 +38,10 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime
             if (arguments.Count() > 2)
             {
                 var european = ArgToBool(arguments, 2);
-                if (european) calcType = Days360Calctype.European;
+                if (european)
+                {
+                    calcType = Days360Calctype.European;
+                }
             }
 
             int result = Days360Impl.CalcDays360(dt1, dt2, calcType);

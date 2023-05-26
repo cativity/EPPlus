@@ -67,7 +67,11 @@ namespace OfficeOpenXml.VBA.ContentHash
         internal static byte[] ComputeHash(byte[] buffer, EPPlusSignatureContext ctx)
         {
             var algorithm = ctx.GetHashAlgorithm();
-            if (algorithm == null) return null;
+            if (algorithm == null)
+            {
+                return null;
+            }
+
             return algorithm.ComputeHash(buffer);
         }
     }

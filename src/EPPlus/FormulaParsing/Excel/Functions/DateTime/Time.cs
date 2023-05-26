@@ -45,10 +45,20 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime
             var min = ArgToInt(arguments, 1);
             var sec = ArgToInt(arguments, 2);
 
-            if (sec < 0 || sec > 59) return CreateResult(eErrorType.Value);
-            if (min < 0 || min > 59) return CreateResult(eErrorType.Value);
-            if (min < 0 || hour > 23) return CreateResult(eErrorType.Value);
+            if (sec < 0 || sec > 59)
+            {
+                return this.CreateResult(eErrorType.Value);
+            }
 
+            if (min < 0 || min > 59)
+            {
+                return this.CreateResult(eErrorType.Value);
+            }
+
+            if (min < 0 || hour > 23)
+            {
+                return this.CreateResult(eErrorType.Value);
+            }
 
             var secondsOfThisTime = (double)(hour * 60 * 60 + min * 60 + sec);
             return CreateResult(GetTimeSerialNumber(secondsOfThisTime), DataType.Time);

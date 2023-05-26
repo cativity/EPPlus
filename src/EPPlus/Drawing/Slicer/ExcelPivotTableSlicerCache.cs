@@ -37,8 +37,10 @@ namespace OfficeOpenXml.Drawing.Slicer
 
         internal void Init(ExcelWorkbook wb, string name, ExcelPivotTableField field)
         {
-            if(wb._slicerCaches==null) 
+            if(wb._slicerCaches==null)
+            {
                 wb.LoadSlicerCaches();
+            }
 
             CreatePart(wb);
             TopNode = SlicerCacheXml.DocumentElement;

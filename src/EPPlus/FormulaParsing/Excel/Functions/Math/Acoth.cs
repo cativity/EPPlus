@@ -30,7 +30,11 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
         {
             ValidateArguments(arguments, 1);
             var arg = ArgToDecimal(arguments, 0);
-            if (arg >= -1 && arg <= 1) return CreateResult(eErrorType.Num);
+            if (arg >= -1 && arg <= 1)
+            {
+                return this.CreateResult(eErrorType.Num);
+            }
+
             return CreateResult(MathHelper.HArccotan(arg), DataType.Decimal);
         }
     }

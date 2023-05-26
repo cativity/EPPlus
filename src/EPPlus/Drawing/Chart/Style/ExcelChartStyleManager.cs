@@ -153,7 +153,10 @@ namespace OfficeOpenXml.Drawing.Chart.Style
                     ZipEntry entry;
                     while ((entry = zipStream.GetNextEntry()) != null)
                     {
-                        if (entry.IsDirectory || !entry.FileName.EndsWith(".xml") || entry.UncompressedSize <= 0) continue;
+                        if (entry.IsDirectory || !entry.FileName.EndsWith(".xml") || entry.UncompressedSize <= 0)
+                        {
+                            continue;
+                        }
 
                         var name = new FileInfo(entry.FileName).Name;
                         int id;
@@ -162,12 +165,18 @@ namespace OfficeOpenXml.Drawing.Chart.Style
                             if (name.StartsWith("colors", StringComparison.InvariantCultureIgnoreCase))
                             {
                                 id = int.Parse(name.Substring(6, name.Length - 10));
-                                if (ColorsLibrary.ContainsKey(id)) continue;
+                                if (ColorsLibrary.ContainsKey(id))
+                                {
+                                    continue;
+                                }
                             }
                             else if (name.StartsWith("style", StringComparison.InvariantCultureIgnoreCase))
                             {
                                 id = int.Parse(name.Substring(5, name.Length - 9));
-                                if (StyleLibrary.ContainsKey(id)) continue;
+                                if (StyleLibrary.ContainsKey(id))
+                                {
+                                    continue;
+                                }
                             }
                             else if (name.Equals("defaulttheme.xml", StringComparison.InvariantCultureIgnoreCase))
                             {
@@ -266,7 +275,9 @@ namespace OfficeOpenXml.Drawing.Chart.Style
             finally
             {
                 if (fs != null)
+                {
                     fs.Close();
+                }
             }
         }
         /// <summary>
@@ -546,10 +557,25 @@ namespace OfficeOpenXml.Drawing.Chart.Style
             
             if(_chart is ExcelStandardChartWithLines lineChart)
             {
-                if (!(lineChart.DropLine is null)) ApplyStyle(lineChart.DropLine, Style.DropLine);
-                if (!(lineChart.HighLowLine is null)) ApplyStyle(lineChart.HighLowLine, Style.HighLowLine);
-                if (!(lineChart.UpBar is null)) ApplyStyle(lineChart.UpBar, Style.UpBar);
-                if (!(lineChart.DownBar is null)) ApplyStyle(lineChart.DownBar, Style.DownBar);
+                if (!(lineChart.DropLine is null))
+                {
+                    this.ApplyStyle(lineChart.DropLine, this.Style.DropLine);
+                }
+
+                if (!(lineChart.HighLowLine is null))
+                {
+                    this.ApplyStyle(lineChart.HighLowLine, this.Style.HighLowLine);
+                }
+
+                if (!(lineChart.UpBar is null))
+                {
+                    this.ApplyStyle(lineChart.UpBar, this.Style.UpBar);
+                }
+
+                if (!(lineChart.DownBar is null))
+                {
+                    this.ApplyStyle(lineChart.DownBar, this.Style.DownBar);
+                }
             }
 
             ApplyAxis();
@@ -597,7 +623,11 @@ namespace OfficeOpenXml.Drawing.Chart.Style
                 if(_chart.PivotTableSource==null)
                 {
                     var address = _chart.WorkSheet.Workbook.GetRange(_chart.WorkSheet, serie.Series);
-                    if (address == null) return;
+                    if (address == null)
+                    {
+                        return;
+                    }
+
                     points = address.Rows == 1 ? address.Columns : address.Rows;
                     
                 }
@@ -708,7 +738,10 @@ namespace OfficeOpenXml.Drawing.Chart.Style
                     {
                         serieNo++;  
                         ApplyStyle(tl, Style.Trendline, serieNo);
-                        if(tl.HasLbl) ApplyStyle(tl.Label, Style.TrendlineLabel, serieNo);
+                        if(tl.HasLbl)
+                        {
+                            this.ApplyStyle(tl.Label, this.Style.TrendlineLabel, serieNo);
+                        }
                     }
 
                     //Datapoints
@@ -769,9 +802,16 @@ namespace OfficeOpenXml.Drawing.Chart.Style
                 setMandatoryProperties.SetMandatoryProperties();
             }
             chartPart.CreatespPr();
-            if(applyFill) ApplyStyleFill(chartPart, section, indexForColor, numberOfItems);
+            if(applyFill)
+            {
+                this.ApplyStyleFill(chartPart, section, indexForColor, numberOfItems);
+            }
 
-            if(applyBorder) ApplyStyleBorder(chartPart.Border, section, indexForColor, numberOfItems);
+            if(applyBorder)
+            {
+                this.ApplyStyleBorder(chartPart.Border, section, indexForColor, numberOfItems);
+            }
+
             ApplyStyleEffect(chartPart.Effect, section, indexForColor, numberOfItems);
             ApplyStyle3D(chartPart, section, indexForColor, numberOfItems);
             if (chartPart is IDrawingStyle chartPartWithFont)
@@ -1109,7 +1149,11 @@ namespace OfficeOpenXml.Drawing.Chart.Style
         }
         private void LoadStyleAndColors(ExcelChart chart)
         {
-            if (chart.Part == null) return;
+            if (chart.Part == null)
+            {
+                return;
+            }
+
             var p = chart.WorkSheet.Workbook._package;
             foreach (var rel in chart.Part.GetRelationships())
             {

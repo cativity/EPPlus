@@ -41,7 +41,10 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
             var nToSkip = IsNumeric(arguments.ElementAt(1).Value) ? 2 : 1;  
             var options = nToSkip == 1 ? 0 : ArgToInt(arguments, 1);
 
-            if (options < 0 || options > 7) return CreateResult(eErrorType.Value);
+            if (options < 0 || options > 7)
+            {
+                return this.CreateResult(eErrorType.Value);
+            }
 
             if(IgnoreNestedSubtotalAndAggregate(options))
             {

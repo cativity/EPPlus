@@ -17,7 +17,11 @@ namespace EPPlusTest.Core
         {
             //_pck = OpenPackage("ExternalReferences.xlsx", true);
             var outDir = _worksheetPath + "ExternalReferences";
-            if (!Directory.Exists(outDir)) Directory.CreateDirectory(outDir);
+            if (!Directory.Exists(outDir))
+            {
+                Directory.CreateDirectory(outDir);
+            }
+
             foreach (var f in Directory.GetFiles(_testInputPath + "ExternalReferences"))
             {
                 File.Copy(f, outDir+"\\"+new FileInfo(f).Name,true);

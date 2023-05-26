@@ -48,7 +48,11 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance
             }
 
             var result = PriceImpl.GetPrice(FinancialDayFactory.Create(settlementDate, (DayCountBasis)basis), FinancialDayFactory.Create(maturityDate, (DayCountBasis)basis), rate, yield, redemption, frequency, (DayCountBasis)basis);
-            if (result.HasError) return CreateResult(result.ExcelErrorType);
+            if (result.HasError)
+            {
+                return this.CreateResult(result.ExcelErrorType);
+            }
+
             return CreateResult(result.Result, DataType.Decimal);
         }
     }

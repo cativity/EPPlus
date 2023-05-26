@@ -103,7 +103,11 @@ namespace OfficeOpenXml.Table.PivotTable
             }
             set
             {
-                if (Type != eItemType.Data) throw (new InvalidOperationException("Hidden can only be set for items of type Data"));
+                if (Type != eItemType.Data)
+                {
+                    throw (new InvalidOperationException("Hidden can only be set for items of type Data"));
+                }
+
                 SetFlag(eBoolFlags.Hidden, value);
             }
         }
@@ -193,7 +197,11 @@ namespace OfficeOpenXml.Table.PivotTable
 
         internal void GetXmlString(StringBuilder sb)
         {
-            if (X == -1 && Type == eItemType.Data) return;
+            if (X == -1 && Type == eItemType.Data)
+            {
+                return;
+            }
+
             sb.Append("<item");
             if(X>-1)
             {

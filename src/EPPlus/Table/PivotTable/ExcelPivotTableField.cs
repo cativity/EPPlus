@@ -330,7 +330,11 @@ namespace OfficeOpenXml.Table.PivotTable
             {
                 eSubTotalFunctions ret = 0;
                 XmlNodeList nl = TopNode.SelectNodes("d:items/d:item/@t", NameSpaceManager);
-                if (nl.Count == 0) return eSubTotalFunctions.None;
+                if (nl.Count == 0)
+                {
+                    return eSubTotalFunctions.None;
+                }
+
                 foreach (XmlAttribute item in nl)
                 {
                     try
@@ -656,7 +660,11 @@ namespace OfficeOpenXml.Table.PivotTable
         internal void LoadItems()
         {
             _items = new ExcelPivotTableFieldItemsCollection(this);
-            if (Cache.DatabaseField == false && (IsColumnField == false && IsRowField == false && IsRowField == false)) return;
+            if (Cache.DatabaseField == false && (IsColumnField == false && IsRowField == false && IsRowField == false))
+            {
+                return;
+            }
+
             EPPlusReadOnlyList<object> cacheItems;
             if (Cache.Grouping == null)
             {
@@ -706,7 +714,11 @@ namespace OfficeOpenXml.Table.PivotTable
         /// <returns>The <see cref="ExcelPivotTableSlicer">Slicer</see>/></returns>
         public ExcelPivotTableSlicer AddSlicer()
         {
-            if (_slicer != null) throw new InvalidOperationException("");
+            if (_slicer != null)
+            {
+                throw new InvalidOperationException("");
+            }
+
             _slicer = _pivotTable.WorkSheet.Drawings.AddPivotTableSlicer(this);
             return _slicer;
         }
@@ -920,7 +932,11 @@ namespace OfficeOpenXml.Table.PivotTable
                 AddField(eDateGroupBy.Years, startDate, endDate, ref firstField);
             }
 
-            if (fields>_pivotTable.Fields.Count) _cacheField.SetXmlNodeString("d:fieldGroup/@par", (_pivotTable.Fields.Count-1).ToString());
+            if (fields>_pivotTable.Fields.Count)
+            {
+                this._cacheField.SetXmlNodeString("d:fieldGroup/@par", (this._pivotTable.Fields.Count-1).ToString());
+            }
+
             if (groupInterval != 1)
             {
                 _cacheField.SetXmlNodeString("d:fieldGroup/d:rangePr/@groupInterval", groupInterval.ToString());
@@ -958,8 +974,11 @@ namespace OfficeOpenXml.Table.PivotTable
             {
                 AutoSort.Conditions.UpdateXml();
             }
-            if (cacheLookup == null) return "";
-            
+            if (cacheLookup == null)
+            {
+                return "";
+            }
+
             if (cacheLookup.Count==0)
             {
                 DeleteNode("d:items");       //Creates or return the existing node
@@ -978,10 +997,18 @@ namespace OfficeOpenXml.Table.PivotTable
                     {
                         item.X = -1;
                     }
-                    if (hasMultipleSelectedCount<=1 && item.Hidden==false && item.Type!=eItemType.Default) hasMultipleSelectedCount++;
+                    if (hasMultipleSelectedCount<=1 && item.Hidden==false && item.Type!=eItemType.Default)
+                    {
+                        hasMultipleSelectedCount++;
+                    }
+
                     item.GetXmlString(sb);
                 }
-                if (hasMultipleSelectedCount > 1 && IsPageField) PageFieldSettings.SelectedItem = -1;
+                if (hasMultipleSelectedCount > 1 && IsPageField)
+                {
+                    this.PageFieldSettings.SelectedItem = -1;
+                }
+
                 var node = (XmlElement)CreateNode("d:items");       //Creates or return the existing node
                 node.InnerXml = sb.ToString();
                 node.SetAttribute("count", Items.Count.ToString());

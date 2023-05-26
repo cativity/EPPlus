@@ -31,7 +31,11 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Statistical
         {
             ValidateArguments(arguments, 1);
             var n = ArgToDecimal(arguments, 0);
-            if (n <= 0) return CreateResult(eErrorType.Num);
+            if (n <= 0)
+            {
+                return this.CreateResult(eErrorType.Num);
+            }
+
             var result = GammaHelper.gamma(n);
             return CreateResult(result, DataType.Decimal);
         }

@@ -397,8 +397,11 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
             set
             {
                 if (value < 4)
+                {
                     throw new ArgumentException("MaxBufferPairs",
                                                 "Value must be 4 or greater.");
+                }
+
                 _maxBufferPairs = value;
             }
         }
@@ -449,8 +452,11 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
             set
             {
                 if (value < 1024)
+                {
                     throw new ArgumentOutOfRangeException("BufferSize",
                                                           "BufferSize must be greater than 1024 bytes");
+                }
+
                 _bufferSize = value;
             }
         }
@@ -531,7 +537,9 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
             //   3. if more data to be written,  goto step 1
 
             if (_isClosed)
+            {
                 throw new InvalidOperationException();
+            }
 
             // dispense any exceptions that occurred on the BG threads
             if (_pendingException != null)
@@ -542,7 +550,10 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
                 throw pe;
             }
 
-            if (count == 0) return;
+            if (count == 0)
+            {
+                return;
+            }
 
             if (!_firstWriteDone)
             {
@@ -628,15 +639,21 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
                                 workitem.inputBytesAvailable );
 
                     if (!ThreadPool.QueueUserWorkItem( _DeflateOne, workitem ))
+                    {
                         throw new Exception("Cannot enqueue workitem");
+                    }
 
                     _currentlyFilling = -1; // will get a new buffer next time
                 }
                 else
-                    _currentlyFilling = ix;
+                {
+                    this._currentlyFilling = ix;
+                }
 
                 if (count > 0)
-                    TraceOutput(TraceBits.WriteEnter, "Write    more");
+                {
+                    this.TraceOutput(TraceBits.WriteEnter, "Write    more");
+                }
             }
             while (count > 0);  // until no more to write
 
@@ -663,7 +680,9 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
             rc = compressor.Deflate(FlushType.Finish);
 
             if (rc != ZlibConstants.Z_STREAM_END && rc != ZlibConstants.Z_OK)
+            {
                 throw new Exception("deflating: " + compressor.Message);
+            }
 
             if (buffer.Length - compressor.AvailableBytesOut > 0)
             {
@@ -686,9 +705,14 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
         private void _Flush(bool lastInput)
         {
             if (_isClosed)
+            {
                 throw new InvalidOperationException();
+            }
 
-            if (emitting) return;
+            if (emitting)
+            {
+                return;
+            }
 
             // compress any partial buffer
             if (_currentlyFilling >= 0)
@@ -724,7 +748,9 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
                 throw pe;
             }
             if (_handlingException)
+            {
                 return;
+            }
 
             _Flush(false);
         }
@@ -750,9 +776,14 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
             }
 
             if (_handlingException)
+            {
                 return;
+            }
 
-            if (_isClosed) return;
+            if (_isClosed)
+            {
+                return;
+            }
 
             _Flush(true);
 
@@ -844,7 +875,10 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
             TraceOutput(TraceBits.Session, "-------------------------------------------------------");
             TraceOutput(TraceBits.Session, "Reset {0:X8} firstDone({1})", this.GetHashCode(), _firstWriteDone);
 
-            if (!_firstWriteDone) return;
+            if (!_firstWriteDone)
+            {
+                return;
+            }
 
             // reset all status
             _toWrite.Clear();
@@ -879,10 +913,16 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
             // method invokes this method AGAIN.  This can lead to a deadlock.
             // Therefore, failfast if re-entering.
 
-            if (emitting) return;
+            if (emitting)
+            {
+                return;
+            }
+
             emitting = true;
             if (doAll || mustWait)
-                _newlyCompressedBlob.WaitOne();
+            {
+                this._newlyCompressedBlob.WaitOne();
+            }
 
             do
             {
@@ -898,7 +938,9 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
                         try
                         {
                             if (_toWrite.Count > 0)
-                                nextToWrite = _toWrite.Dequeue();
+                            {
+                                nextToWrite = this._toWrite.Dequeue();
+                            }
                         }
                         finally
                         {
@@ -932,7 +974,9 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
                                     firstSkip = -1;
                                 }
                                 else if (firstSkip == -1)
+                                {
                                     firstSkip = nextToWrite;
+                                }
 
                                 continue;
                             }
@@ -961,12 +1005,16 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
                             _toFill.Enqueue(workitem.index);
 
                             // don't wait next time through
-                            if (millisecondsToWait == -1) millisecondsToWait = 0;
+                            if (millisecondsToWait == -1)
+                            {
+                                millisecondsToWait = 0;
+                            }
                         }
                     }
                     else
+                    {
                         nextToWrite = -1;
-
+                    }
                 } while (nextToWrite >= 0);
 
             //} while (doAll && (_lastWritten != _latestCompressed));
@@ -1177,7 +1225,9 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
                 lock(_latestLock)
                 {
                     if (workitem.ordinal > _latestCompressed)
-                        _latestCompressed = workitem.ordinal;
+                    {
+                        this._latestCompressed = workitem.ordinal;
+                    }
                 }
                 lock (_toWrite)
                 {
@@ -1191,7 +1241,9 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
                 {
                     // expose the exception to the main thread
                     if (_pendingException!=null)
-                        _pendingException = exc1;
+                    {
+                        this._pendingException = exc1;
+                    }
                 }
             }
         }

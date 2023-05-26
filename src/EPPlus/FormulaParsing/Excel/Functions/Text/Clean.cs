@@ -35,7 +35,9 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Text
                 foreach(var c in arr)
                 {
                     if (c > 31)
+                    {
                         sb.Append((char)c);
+                    }
                 }
                 str = sb.ToString();
             }

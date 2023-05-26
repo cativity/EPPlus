@@ -31,7 +31,11 @@ namespace OfficeOpenXml.FormulaParsing.ExpressionGraph.FunctionCompilers
                     BuildFunctionArguments(compileResult, args);
                 }
             }
-            if (args.Count < 2) return new CompileResult(eErrorType.Value);
+            if (args.Count < 2)
+            {
+                return new CompileResult(eErrorType.Value);
+            }
+
             var arg2 = args.ElementAt(1);
             if(arg2.DataType == DataType.Enumerable && arg2.IsExcelRange)
             {

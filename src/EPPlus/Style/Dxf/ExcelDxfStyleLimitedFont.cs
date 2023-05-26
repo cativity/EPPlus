@@ -50,9 +50,20 @@ namespace OfficeOpenXml.Style.Dxf
         }
         internal override void CreateNodes(XmlHelper helper, string path)
         {
-            if (Font.HasValue) Font.CreateNodes(helper, "d:font");
-            if (Fill.HasValue) Fill.CreateNodes(helper, "d:fill");
-            if (Border.HasValue) Border.CreateNodes(helper, "d:border");
+            if (Font.HasValue)
+            {
+                this.Font.CreateNodes(helper, "d:font");
+            }
+
+            if (Fill.HasValue)
+            {
+                this.Fill.CreateNodes(helper, "d:fill");
+            }
+
+            if (Border.HasValue)
+            {
+                this.Border.CreateNodes(helper, "d:border");
+            }
         }
         /// <summary>
         /// If the object has any properties set

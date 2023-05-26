@@ -63,7 +63,9 @@ namespace OfficeOpenXml.FormulaParsing.LexicalAnalysis.PostProcessing
                 else if (token.TokenTypeIsSet(TokenType.Operator) || token.TokenTypeIsSet(TokenType.Negator))
                 {
                     if (token.Value == "+" || token.Value == "-")
-                        HandleNegators();
+                    {
+                        this.HandleNegators();
+                    }
                 }
                 _navigator.MoveNext();
             }
@@ -120,9 +122,13 @@ namespace OfficeOpenXml.FormulaParsing.LexicalAnalysis.PostProcessing
                     index--;
                     var token = _navigator.GetTokenAtRelativePosition(index);
                     if (token.TokenTypeIsSet(TokenType.ClosingParenthesis))
+                    {
                         openedParenthesis++;
+                    }
                     else if (token.TokenTypeIsSet(TokenType.OpeningParenthesis))
+                    {
                         closedParethesis++;
+                    }
                 }
                 var offsetCandidate = _navigator.GetTokenAtRelativePosition(--index);
                 if(IsOffsetFunctionToken(offsetCandidate))
@@ -289,7 +295,10 @@ namespace OfficeOpenXml.FormulaParsing.LexicalAnalysis.PostProcessing
         {
             _context.Result.RemoveAt(_navigator.Index + offset);
             SetNegatorOperator(_navigator.Index);
-            if (_navigator.Index > 0) _navigator.MoveIndex(-1);
+            if (_navigator.Index > 0)
+            {
+                this._navigator.MoveIndex(-1);
+            }
         }
     }
 }

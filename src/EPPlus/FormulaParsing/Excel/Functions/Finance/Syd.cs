@@ -34,7 +34,9 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance
             var period = ArgToDecimal(arguments, 3);
 
             if (salvage < 0 || life <= 0 || period <= 0)
-                return CreateResult(eErrorType.Num);
+            {
+                return this.CreateResult(eErrorType.Num);
+            }
 
             var result = (cost - salvage) / (life * (life + 1));
             return CreateResult((result * (life + 1 - period) * 2), DataType.Decimal);

@@ -31,7 +31,10 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Text
             var str = ArgToString(arguments, 0);
             var length = ArgToInt(arguments, 1);
             if (str.Length < length)
+            {
                 length = str.Length;
+            }
+
             return CreateResult(str.Substring(0, length), DataType.String);
         }
     }

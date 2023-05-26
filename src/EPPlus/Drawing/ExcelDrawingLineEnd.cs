@@ -128,7 +128,11 @@ namespace OfficeOpenXml.Drawing
             }
             else
             {
-                if(doCreate) CreateNode(_linePath, false);
+                if(doCreate)
+                {
+                    this.CreateNode(this._linePath, false);
+                }
+
                 return _linePath + "/";
             }
         }

@@ -29,7 +29,11 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
 
         public static double Round(double number, double multiple, Direction direction)
         {
-            if (multiple == 0) return 0d;
+            if (multiple == 0)
+            {
+                return 0d;
+            }
+
             var isNegativeNumber = number < 0;
             var isNegativeMultiple = multiple < 0;
             var n = isNegativeNumber ? number * -1 : number;
@@ -55,9 +59,13 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
                 if (direction == Direction.Up || direction == Direction.AlwaysUp)
                 {
                     if (direction == Direction.AlwaysUp && isNegativeNumber)
+                    {
                         result = System.Math.Floor(n);
+                    }
                     else
+                    {
                         result = System.Math.Ceiling(n);
+                    }
                 }
                 else if (direction == Direction.Nearest)
                 {
@@ -70,9 +78,13 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
                 else
                 {
                     if (direction == Direction.AlwaysDown && isNegativeNumber)
+                    {
                         result = System.Math.Ceiling(n);
+                    }
                     else
+                    {
                         result = System.Math.Floor(n);
+                    }
                 }
             }
             else if (m > n)
@@ -83,7 +95,11 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
             {
                 if (direction == Direction.AlwaysUp && number < 0)
                 {
-                    if (multiple < 0) multiple *= -1;
+                    if (multiple < 0)
+                    {
+                        multiple *= -1;
+                    }
+
                     return System.Math.Round(number - (number % multiple), 14);
                 }
                 return System.Math.Round(number - (number % multiple) + multiple, 14);
@@ -91,15 +107,23 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
             else if (direction == Direction.Nearest)
             {
                 if ((n % m >= (m / 2d)))
+                {
                     result = System.Math.Round(n + (m - n % m));
+                }
                 else
+                {
                     result = System.Math.Round(n - (n % m));
+                }
             }
             else
             {
                 if (direction == Direction.AlwaysDown && number < 0)
                 {
-                    if (multiple < 0) multiple *= -1;
+                    if (multiple < 0)
+                    {
+                        multiple *= -1;
+                    }
+
                     return System.Math.Round(number - (number % multiple) - multiple, 14);
                 }
 
@@ -114,9 +138,13 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
             if (direction == Direction.Nearest)
             {
                 if ((upperRound - number) > (number - lowerRound))
+                {
                     result = lowerRound;
+                }
                 else
+                {
                     result = upperRound;
+                }
             }
             else if (direction == Direction.AlwaysUp)
             {
@@ -193,13 +221,20 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
             var tmp = n;
             int nFiguresIntPart;
             for (nFiguresIntPart = 0; tmp >= 1; ++nFiguresIntPart)
+            {
                 tmp = tmp / 10;
+            }
+
             return nFiguresIntPart;
         }
 
         private static double GetNumberOfLeadingZeroDecimals(double n)
         {
-            if (n == 0) return 0;
+            if (n == 0)
+            {
+                return 0;
+            }
+
             var tmp = n;
             var result = 0;
             while (tmp < 1d)

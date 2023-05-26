@@ -31,8 +31,16 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance
             var fractionalDollar = ArgToDecimal(arguments, 0);
             var fractionDec = ArgToDecimal(arguments, 1);
             var fraction = System.Math.Floor(fractionDec);
-            if (fraction <= 0d) return CreateResult(eErrorType.Num);
-            if (fraction < 1d) return CreateResult(eErrorType.Div0);
+            if (fraction <= 0d)
+            {
+                return this.CreateResult(eErrorType.Num);
+            }
+
+            if (fraction < 1d)
+            {
+                return this.CreateResult(eErrorType.Div0);
+            }
+
             var intResult = System.Math.Floor(fractionalDollar);
             var result = ((double)intResult) + (fractionalDollar % 1) * System.Math.Pow(10d, (double)System.Math.Ceiling(System.Math.Log(fraction) / System.Math.Log(10))) / fraction;
             var power = System.Math.Pow(10d, (double)System.Math.Ceiling(System.Math.Log(fraction) / System.Math.Log(2)) + 1);

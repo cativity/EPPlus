@@ -171,13 +171,21 @@ namespace OfficeOpenXml.LoadFunctions
 
         protected override int GetNumberOfRows()
         {
-            if (_items == null) return 0;
+            if (_items == null)
+            {
+                return 0;
+            }
+
             return _items.Count();
         }
 
         protected override int GetNumberOfColumns()
         {
-            if (_keys == null) return 0;
+            if (_keys == null)
+            {
+                return 0;
+            }
+
             return _keys.Count();
         }
 

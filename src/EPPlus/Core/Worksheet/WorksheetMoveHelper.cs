@@ -35,7 +35,10 @@ namespace OfficeOpenXml.Core.Worksheet
 
         internal static void RearrangeWorksheets(ExcelWorksheets worksheets, int sourcePositionId, int targetPositionId, bool before)
         {
-            if (sourcePositionId == targetPositionId) return;
+            if (sourcePositionId == targetPositionId)
+            {
+                return;
+            }
 
             lock (worksheets)
             {

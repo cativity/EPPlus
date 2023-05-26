@@ -78,7 +78,11 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
         }
         internal void SetTypeNumeric(int index, eNumericDataType type)
         {
-            if(index < 0 || index >= _list.Count) throw (new IndexOutOfRangeException("index is out of range"));
+            if(index < 0 || index >= _list.Count)
+            {
+                throw (new IndexOutOfRangeException("index is out of range"));
+            }
+
             if (_list[index] is ExcelChartExStringData data)
             {
                 var node = data.TopNode;
@@ -98,7 +102,11 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
         }
         internal void SetTypeString(int index, eStringDataType type)
         {
-            if (index < 0 || index >= _list.Count) throw (new IndexOutOfRangeException("index is out of range"));
+            if (index < 0 || index >= _list.Count)
+            {
+                throw (new IndexOutOfRangeException("index is out of range"));
+            }
+
             if (_list[index] is ExcelChartExNumericData data)
             {
                 var node = data.TopNode;
@@ -163,7 +171,10 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
             {
                 if(d is ExcelChartExStringData s)
                 {
-                    if (s.Type != eStringDataType.Category) return d;
+                    if (s.Type != eStringDataType.Category)
+                    {
+                        return d;
+                    }
                 }
                 else if(d is ExcelChartExNumericData n)
                 {

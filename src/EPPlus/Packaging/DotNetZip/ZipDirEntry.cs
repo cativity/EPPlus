@@ -76,7 +76,9 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
                     .Append(string.Format(" Needed to extract: {0}\n", this.VersionNeeded));
 
                 if (this._IsDirectory)
+                {
                     builder.Append("        Entry type: directory\n");
+                }
                 else
                 {
                     builder.Append(string.Format("         File type: {0}\n", this._IsText? "text":"binary"))
@@ -87,13 +89,17 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
                 }
                 builder.Append(string.Format("       Disk Number: {0}\n", this._diskNumber));
                 if (this._RelativeOffsetOfLocalHeader > 0xFFFFFFFF)
+                {
                     builder
                         .Append(string.Format("   Relative Offset: 0x{0:X16}\n", this._RelativeOffsetOfLocalHeader));
-                        else
+                }
+                else
+                {
                     builder
                         .Append(string.Format("   Relative Offset: 0x{0:X8}\n", this._RelativeOffsetOfLocalHeader));
+                }
 
-                    builder
+                builder
                     .Append(string.Format("         Bit Field: 0x{0:X4}\n", this._BitField))
                     .Append(string.Format("        Encrypted?: {0}\n", this._sourceIsEncrypted))
                     .Append(string.Format("          Timeblob: 0x{0:X8}\n", this._TimeBlob))
@@ -122,7 +128,9 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
             {
                 callCount++;
                 if (callCount > 25)
+                {
                     throw new OverflowException("overflow while creating filename");
+                }
 
                 int n = 1;
                 int r = f.LastIndexOf(".", StringComparison.OrdinalIgnoreCase);
@@ -217,7 +225,10 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
             int bytesRead = 42 + 4;
             byte[] block = new byte[42];
             int n = s.Read(block, 0, block.Length);
-            if (n != block.Length) return null;
+            if (n != block.Length)
+            {
+                return null;
+            }
 
             int i = 0;
             ZipEntry zde = new ZipEntry();
@@ -278,9 +289,15 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
             }
 
             if (zde.AttributesIndicateDirectory)
+            {
                 zde.MarkAsDirectory();  // may append a slash to filename if nec.
+            }
+
             // workitem 6898
-            else if (zde._FileNameInArchive.EndsWith("/")) zde.MarkAsDirectory();
+            else if (zde._FileNameInArchive.EndsWith("/"))
+            {
+                zde.MarkAsDirectory();
+            }
 
             zde._CompressedFileDataSize = zde._CompressedSize;
             if ((zde._BitField & 0x01) == 0x01)
@@ -324,9 +341,13 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
             {
                 // sig, CRC, Comp and Uncomp sizes
                 if (zde._InputUsesZip64)
+                {
                     zde._LengthOfTrailer += 24;
+                }
                 else
+                {
                     zde._LengthOfTrailer += 16;
+                }
             }
 
             // workitem 12744

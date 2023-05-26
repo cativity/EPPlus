@@ -30,8 +30,16 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance
             var settlementDate = System.DateTime.FromOADate(ArgToInt(arguments, 0));
             var maturityDate = System.DateTime.FromOADate(ArgToInt(arguments, 1));
             var discount = ArgToDecimal(arguments, 2);
-            if (settlementDate >= maturityDate) return CreateResult(eErrorType.Num);
-            if (discount <= 0d) return CreateResult(eErrorType.Num);
+            if (settlementDate >= maturityDate)
+            {
+                return this.CreateResult(eErrorType.Num);
+            }
+
+            if (discount <= 0d)
+            {
+                return this.CreateResult(eErrorType.Num);
+            }
+
             var finDays = FinancialDaysFactory.Create(DayCountBasis.Actual_360);
             var nDaysInPeriod = finDays.GetDaysBetweenDates(settlementDate, maturityDate);
             if(nDaysInPeriod > 366)

@@ -153,8 +153,15 @@ namespace OfficeOpenXml.Export.ToDataTable
 
         internal void Validate()
         {
-            if(string.IsNullOrEmpty(DataColumnName)) throw new ArgumentNullException("DataColumnName");
-            if (ZeroBasedColumnIndexInRange < 0) throw new ArgumentOutOfRangeException("ZeroBasedColumnIndex");
+            if(string.IsNullOrEmpty(DataColumnName))
+            {
+                throw new ArgumentNullException("DataColumnName");
+            }
+
+            if (ZeroBasedColumnIndexInRange < 0)
+            {
+                throw new ArgumentOutOfRangeException("ZeroBasedColumnIndex");
+            }
         }
     }
 }

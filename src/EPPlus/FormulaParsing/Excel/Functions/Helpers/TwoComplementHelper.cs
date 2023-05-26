@@ -20,7 +20,11 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Helpers
     {
         private static bool IsNegativeNumber(string candidate, int fromBase)
         {
-            if (string.IsNullOrEmpty(candidate)) return false;
+            if (string.IsNullOrEmpty(candidate))
+            {
+                return false;
+            }
+
             return candidate.Length >= 10 && candidate.ToUpper().StartsWith(fromBase == 16 ? "F" : "7", StringComparison.OrdinalIgnoreCase);
         }
 
@@ -35,7 +39,11 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Helpers
 
         private static double NegativeFromBase(string number, int fromBase)
         {
-            if (string.IsNullOrEmpty(number)) return double.NaN;
+            if (string.IsNullOrEmpty(number))
+            {
+                return double.NaN;
+            }
+
             var len = number.Length;
             var numArr = number.ToCharArray();
             var result = string.Empty;

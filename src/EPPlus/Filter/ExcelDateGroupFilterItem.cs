@@ -119,30 +119,46 @@ namespace OfficeOpenXml.Filter
                 throw (new ArgumentException("Year out of range(0-9999)"));
             }
 
-            if (Grouping == eDateTimeGrouping.Year) return;
+            if (Grouping == eDateTimeGrouping.Year)
+            {
+                return;
+            }
+
             if (Month < 1 && Month > 12)
             {
                 throw (new ArgumentException("Month out of range(1-12)"));
             }
-            if (Grouping == eDateTimeGrouping.Month) return;
+            if (Grouping == eDateTimeGrouping.Month)
+            {
+                return;
+            }
 
             if (Day < 1 && Day > 31)
             {
                 throw (new ArgumentException("Month out of range(1-31)"));
             }
-            if (Grouping == eDateTimeGrouping.Day) return;
+            if (Grouping == eDateTimeGrouping.Day)
+            {
+                return;
+            }
 
             if (Hour < 0 && Hour > 23)
             {
                 throw (new ArgumentException("Hour out of range(0-23)"));
             }
-            if (Grouping == eDateTimeGrouping.Hour) return;
+            if (Grouping == eDateTimeGrouping.Hour)
+            {
+                return;
+            }
 
             if (Minute < 0 && Minute > 59)
             {
                 throw (new ArgumentException("Minute out of range(0-59)"));
             }
-            if (Grouping == eDateTimeGrouping.Minute) return;
+            if (Grouping == eDateTimeGrouping.Minute)
+            {
+                return;
+            }
 
             if (Second < 0 && Second > 59)
             {

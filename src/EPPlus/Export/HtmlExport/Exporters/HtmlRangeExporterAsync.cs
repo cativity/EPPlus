@@ -170,7 +170,11 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
         /// <returns>The html document</returns>
         public async Task<string> GetSinglePageAsync(string htmlDocument = "<!DOCTYPE html>\r\n<html>\r\n<head>\r\n<style type=\"text/css\">\r\n{1}</style></head>\r\n<body>\r\n{0}\r\n</body>\r\n</html>")
         {
-            if (Settings.Minify) htmlDocument = htmlDocument.Replace("\r\n", "");
+            if (Settings.Minify)
+            {
+                htmlDocument = htmlDocument.Replace("\r\n", "");
+            }
+
             var html = await GetHtmlStringAsync();
             var cssExporter = HtmlExporterFactory.CreateCssExporterAsync(_settings, _ranges, _styleCache);
             var css = await cssExporter.GetCssStringAsync();

@@ -230,7 +230,10 @@ namespace OfficeOpenXml.Style.Table
             ZipEntry entry;
             while ((entry = zipStream.GetNextEntry()) != null)
             {
-                if (entry.IsDirectory || !entry.FileName.EndsWith(".xml") || entry.UncompressedSize <= 0 || !entry.FileName.StartsWith(folder)) continue;
+                if (entry.IsDirectory || !entry.FileName.EndsWith(".xml") || entry.UncompressedSize <= 0 || !entry.FileName.StartsWith(folder))
+                {
+                    continue;
+                }
 
                 var name = new FileInfo(entry.FileName).Name;
                 name = name.Substring(0, name.Length - 4);

@@ -29,7 +29,11 @@ namespace OfficeOpenXml.Utils.TypeConversion
         {
             get
             {
-                if (_object == null) return false;
+                if (_object == null)
+                {
+                    return false;
+                }
+
                 return _object is string;
             }
         }
@@ -38,7 +42,11 @@ namespace OfficeOpenXml.Utils.TypeConversion
         {
             get
             {
-                if (_object == null) return false;
+                if (_object == null)
+                {
+                    return false;
+                }
+
                 return _object is string && _object.ToString().Trim() == string.Empty;
             }
         }
@@ -47,7 +55,11 @@ namespace OfficeOpenXml.Utils.TypeConversion
         {
             get
             {
-                if(_object == null) return false;
+                if(_object == null)
+                {
+                    return false;
+                }
+
                 return NumericTypeConversions.IsNumeric(_object.GetType());
             }
         }

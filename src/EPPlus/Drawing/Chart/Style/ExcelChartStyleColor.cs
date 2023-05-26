@@ -54,7 +54,11 @@ namespace OfficeOpenXml.Drawing.Chart.Style
             }
             else
             {
-                if (index < 0) throw new ArgumentOutOfRangeException("index", "Index can't be negative");
+                if (index < 0)
+                {
+                    throw new ArgumentOutOfRangeException("index", "Index can't be negative");
+                }
+
                 SetXmlNodeString("@val", index.ToString(CultureInfo.InvariantCulture));
             }
 

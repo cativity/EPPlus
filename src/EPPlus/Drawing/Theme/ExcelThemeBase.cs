@@ -43,7 +43,10 @@ namespace OfficeOpenXml.Drawing.Theme
             _fontSchemePath = string.Format(_fontSchemePath, path);
             _fmtSchemePath = string.Format(_fmtSchemePath, path);
             _pck = package;
-            if (!NameSpaceManager.HasNamespace("a")) NameSpaceManager.AddNamespace("a", ExcelPackage.schemaDrawings);
+            if (!NameSpaceManager.HasNamespace("a"))
+            {
+                this.NameSpaceManager.AddNamespace("a", ExcelPackage.schemaDrawings);
+            }
         }
         internal Uri ThemeUri { get; set; }
         internal ZipPackagePart Part { get; set; }

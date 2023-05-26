@@ -88,10 +88,13 @@ namespace EPPlusTest
                     {
                         string fileName = name.Replace("EPPlusTest.Resources.", "");
                         using (var stream = asm.GetManifestResourceStream(name))
-                        using (var file = File.Create(Path.Combine(_clipartPath, fileName)))
                         {
-                            stream.CopyTo(file);
+                            using (var file = File.Create(Path.Combine(_clipartPath, fileName)))
+                            {
+                                stream.CopyTo(file);
+                            }
                         }
+
                         break;
                     }
                 }
@@ -204,7 +207,11 @@ namespace EPPlusTest
         }
         protected void SaveWorkbook(string name, ExcelPackage pck)
             {
-            if (pck.Workbook.Worksheets.Count == 0) return;
+            if (pck.Workbook.Worksheets.Count == 0)
+            {
+                return;
+            }
+
             var fi = new FileInfo(_worksheetPath + name);
             if (fi.Exists)
             {
@@ -394,20 +401,32 @@ namespace EPPlusTest
         {
             var startDate = new DateTime(DateTime.Today.Year-1, 11, 1);
             if (startDate > date)
+            {
                 return 2;
+            }
             else
+            {
                 return (date - startDate).Days + 2;
+            }
         }
         protected static ExcelWorksheet TryGetWorksheet(ExcelPackage pck, string worksheetName)
         {
             var ws = pck.Workbook.Worksheets[worksheetName];
-            if (ws == null) Assert.Inconclusive($"{worksheetName} worksheet is missing");
+            if (ws == null)
+            {
+                Assert.Inconclusive($"{worksheetName} worksheet is missing");
+            }
+
             return ws;
         }
         protected static ExcelShape TryGetShape(ExcelPackage pck, string wsName)
         {
             var ws = pck.Workbook.Worksheets[wsName];
-            if (ws == null) Assert.Inconclusive($"{wsName} worksheet is missing");
+            if (ws == null)
+            {
+                Assert.Inconclusive($"{wsName} worksheet is missing");
+            }
+
             var shape = (ExcelShape)ws.Drawings[0];
             return shape;
         }

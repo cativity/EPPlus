@@ -322,7 +322,10 @@ namespace OfficeOpenXml
                 _columnMin = ((int)(value >> 15) & 0x3FF);
                 _columnMax += prevColMin - ColumnMin;
                 //Todo:More Validation
-                if (_columnMax > ExcelPackage.MaxColumns) _columnMax = ExcelPackage.MaxColumns;
+                if (_columnMax > ExcelPackage.MaxColumns)
+                {
+                    this._columnMax = ExcelPackage.MaxColumns;
+                }
             }
         }
 

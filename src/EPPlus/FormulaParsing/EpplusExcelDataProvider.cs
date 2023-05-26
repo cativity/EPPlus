@@ -111,7 +111,10 @@ namespace OfficeOpenXml.FormulaParsing
                     {
                         return false;
                     }
-                    else if (_values == null) return true;
+                    else if (_values == null)
+                    {
+                        return true;
+                    }
                     else if (_values.Next())
                     {
                         _values.Reset();
@@ -133,7 +136,11 @@ namespace OfficeOpenXml.FormulaParsing
                 {
                     if (_cellCount == 0)
                     {
-                        if (_values == null) return false;
+                        if (_values == null)
+                        {
+                            return false;
+                        }
+
                         if (_values.Next() && _values.Next())
                         {
                             _values.Reset();
@@ -196,7 +203,11 @@ namespace OfficeOpenXml.FormulaParsing
             /// <returns></returns>
             public bool MoveNext()
             {
-                if (_values == null) return false;
+                if (_values == null)
+                {
+                    return false;
+                }
+
                 _cellCount++;
                 return _values.MoveNext();
             }
@@ -217,7 +228,11 @@ namespace OfficeOpenXml.FormulaParsing
             /// <returns></returns>
             public bool NextCell()
             {
-                if (_values == null) return false;
+                if (_values == null)
+                {
+                    return false;
+                }
+
                 _cellCount++;
                 return _values.MoveNext();
             }
@@ -262,7 +277,11 @@ namespace OfficeOpenXml.FormulaParsing
 
             public object GetOffset(int rowOffset, int colOffset)
             {
-                if (_values == null) return null;
+                if (_values == null)
+                {
+                    return null;
+                }
+
                 if (_values.Row < _fromRow || _values.Column < _fromCol)
                 {
                     return _ws.GetValue(_fromRow + rowOffset, _fromCol + colOffset);
@@ -434,7 +453,11 @@ namespace OfficeOpenXml.FormulaParsing
         {
             foreach (var ws in _package.Workbook.Worksheets)
             {
-                if (ws is ExcelChartsheet) continue;
+                if (ws is ExcelChartsheet)
+                {
+                    continue;
+                }
+
                 if (ws.Tables._tableNames.ContainsKey(name))
                 {
                     return ws.Tables[name];
@@ -576,7 +599,11 @@ namespace OfficeOpenXml.FormulaParsing
                     else
                     {
                         name = name.Substring(name.IndexOf("]") + 1);
-                        if (name.StartsWith("!")) name = name.Substring(1);
+                        if (name.StartsWith("!"))
+                        {
+                            name = name.Substring(1);
+                        }
+
                         return GetLocalName(externalWorkbook.Package, "", name);
                     }
                 }
@@ -592,12 +619,20 @@ namespace OfficeOpenXml.FormulaParsing
             var sheetName = ExcelAddressBase.GetWorksheetPart(name, "", ref ix);
             if (string.IsNullOrEmpty(sheetName))
             {
-                if (ix > 0) name = name.Substring(ix);
+                if (ix > 0)
+                {
+                    name = name.Substring(ix);
+                }
+
                 nameItem = externalWorkbook.CachedNames[name];
             }
             else
             {
-                if (ix >= 0) name = name.Substring(ix);
+                if (ix >= 0)
+                {
+                    name = name.Substring(ix);
+                }
+
                 nameItem = externalWorkbook.CachedWorksheets[sheetName].CachedNames[name];
             }
 
@@ -745,7 +780,11 @@ namespace OfficeOpenXml.FormulaParsing
 
         public override ulong GetCellId(string sheetName, int row, int col)
         {
-            if (string.IsNullOrEmpty(sheetName)) return 0;
+            if (string.IsNullOrEmpty(sheetName))
+            {
+                return 0;
+            }
+
             var worksheet = _package.Workbook.Worksheets[sheetName];
             var wsIx = worksheet != null ? worksheet.IndexInList : 0;
             return ExcelCellBase.GetCellId(wsIx, row, col);
@@ -862,15 +901,27 @@ namespace OfficeOpenXml.FormulaParsing
 
         public override bool IsExternalName(string name)
         {
-            if (name[0] != '[') return false;
+            if (name[0] != '[')
+            {
+                return false;
+            }
+
             var ixEnd = name.IndexOf("]");
             if(ixEnd>0)
             {
                 var ix = name.Substring(1,ixEnd-1);
                 var extRef=_package.Workbook.ExternalLinks.GetExternalLink(ix);
-                if (extRef < 0) return false;
+                if (extRef < 0)
+                {
+                    return false;
+                }
+
                 var extBook = _package.Workbook.ExternalLinks[extRef].As.ExternalWorkbook;
-                if(extBook==null) return false;
+                if(extBook==null)
+                {
+                    return false;
+                }
+
                 var address = name.Substring(ixEnd+1);
                 if (address.StartsWith("!"))
                 {

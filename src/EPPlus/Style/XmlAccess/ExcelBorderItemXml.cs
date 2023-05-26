@@ -45,7 +45,11 @@ namespace OfficeOpenXml.Style.XmlAccess
 
         private ExcelBorderStyle GetBorderStyle(string style)
         {
-            if(style=="") return ExcelBorderStyle.None;
+            if(style=="")
+            {
+                return ExcelBorderStyle.None;
+            }
+
             string sInStyle = style.Substring(0, 1).ToUpper(CultureInfo.InvariantCulture) + style.Substring(1, style.Length - 1);
             try
             {

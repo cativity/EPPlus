@@ -42,7 +42,10 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.FinancialDayCount
                     default:
                         throw new ArgumentException("frequency");
                 }
-                if(tmpDay > settlementDay) lastDay = tmpDay;
+                if(tmpDay > settlementDay)
+                {
+                    lastDay = tmpDay;
+                }
             }
             return new FinancialPeriod(tmpDay, lastDay);
         }

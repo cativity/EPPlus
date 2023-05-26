@@ -26,11 +26,14 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Engineering.Implementatio
                 double y = fNum2 * fNum2;
 
                 var iResult = new BesselIimpl().BesselI(fNum, 0);
-                if (iResult.HasError) return iResult;
+                if (iResult.HasError)
+                {
+                    return iResult;
+                }
 
                 fRet = -System.Math.Log(fNum2) * iResult.Result +
-                        (-0.57721566 + y * (0.42278420 + y * (0.23069756 + y * (0.3488590e-1 +
-                            y * (0.262698e-2 + y * (0.10750e-3 + y * 0.74e-5))))));
+                       (-0.57721566 + y * (0.42278420 + y * (0.23069756 + y * (0.3488590e-1 +
+                                                                               y * (0.262698e-2 + y * (0.10750e-3 + y * 0.74e-5))))));
             }
             else
             {
@@ -56,11 +59,15 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Engineering.Implementatio
                 double y = fNum2 * fNum2;
 
                 var iResult = new BesselIimpl().BesselI(fNum, 1);
-                if (iResult.HasError) return iResult;
+                if (iResult.HasError)
+                {
+                    return iResult;
+                }
+
                 fRet = System.Math.Log(fNum2) * iResult.Result +
-                        (1.0 + y * (0.15443144 + y * (-0.67278579 + y * (-0.18156897 + y * (-0.1919402e-1 +
-                            y * (-0.110404e-2 + y * -0.4686e-4))))))
-                        / fNum;
+                       (1.0 + y * (0.15443144 + y * (-0.67278579 + y * (-0.18156897 + y * (-0.1919402e-1 +
+                                                                                           y * (-0.110404e-2 + y * -0.4686e-4))))))
+                       / fNum;
             }
             else
             {
@@ -83,9 +90,17 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Engineering.Implementatio
                 default:
                     {
                         var k0Result = Besselk0(fNum);
-                        if (k0Result.HasError) return k0Result;
+                        if (k0Result.HasError)
+                        {
+                            return k0Result;
+                        }
+
                         var k1Result = Besselk1(fNum);
-                        if (k1Result.HasError) return k1Result;
+                        if (k1Result.HasError)
+                        {
+                            return k1Result;
+                        }
+
                         double fTox = 2.0 / fNum;
                         double fBkm = k0Result.Result;
                         double fBk = k1Result.Result;

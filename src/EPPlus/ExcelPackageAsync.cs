@@ -489,7 +489,11 @@ namespace OfficeOpenXml
         private async Task ConstructNewFileAsync(string password, CancellationToken cancellationToken)
         {
             var ms = RecyclableMemory.GetStream();
-            if (_stream == null) _stream = RecyclableMemory.GetStream();
+            if (_stream == null)
+            {
+                this._stream = RecyclableMemory.GetStream();
+            }
+
             File?.Refresh();
             if (File != null && File.Exists)
             {

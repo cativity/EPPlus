@@ -32,8 +32,16 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
             ValidateArguments(arguments, 1);
             var number = ArgToInt(arguments, 0, RoundingMethod.Floor);
             var type = arguments.Count() > 1 ? FirstArgumentToInt(arguments) : 0;
-            if (type < 0 || type > 4) return CreateResult(eErrorType.Value);
-            if (number < 0 || number > 3999) return CreateResult(eErrorType.Value);
+            if (type < 0 || type > 4)
+            {
+                return this.CreateResult(eErrorType.Value);
+            }
+
+            if (number < 0 || number > 3999)
+            {
+                return this.CreateResult(eErrorType.Value);
+            }
+
             RomanBase func = new RomanClassic();
             switch (type)
             {

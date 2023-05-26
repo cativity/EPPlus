@@ -57,7 +57,11 @@ namespace OfficeOpenXml.VBA.Signatures
 
         internal static void DeletePartAndRelations(ZipPackagePart part)
         {
-            if (part == null) return;
+            if (part == null)
+            {
+                return;
+            }
+
             foreach (var r in part.GetRelationships())
             {
                 part.DeleteRelationship(r.Id);

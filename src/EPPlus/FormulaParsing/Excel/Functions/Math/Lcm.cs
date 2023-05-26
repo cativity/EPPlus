@@ -29,7 +29,14 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
         {
             ValidateArguments(arguments, 1);
             var numbers = ArgsToDoubleEnumerable(arguments, context).Select(x => (int)x);
-            foreach (var number in numbers) if (number < 0) return CreateResult(eErrorType.Num);
+            foreach (var number in numbers)
+            {
+                if (number < 0)
+                {
+                    return this.CreateResult(eErrorType.Num);
+                }
+            }
+
             return CreateResult(MathHelper.LeastCommonMultiple(numbers.ToArray()), DataType.Integer);
         }
     }

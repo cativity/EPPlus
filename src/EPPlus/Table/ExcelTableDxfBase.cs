@@ -91,7 +91,11 @@ namespace OfficeOpenXml.Table
 
         internal void SetHeaderStyle(eStyleClass styleClass, eStyleProperty styleProperty, object value)
         {
-            if ((_table ?? _tableColumn.Table).ShowHeader == false || value==null) return;
+            if ((_table ?? _tableColumn.Table).ShowHeader == false || value==null)
+            {
+                return;
+            }
+
             ExcelRangeBase headerRange;
             if(_tableColumn==null)
             {
@@ -107,7 +111,11 @@ namespace OfficeOpenXml.Table
 
         internal void SetDataStyle(eStyleClass styleClass, eStyleProperty styleProperty, object value)
         {
-            if (value == null) return;
+            if (value == null)
+            {
+                return;
+            }
+
             ExcelRangeBase range;
             if (_tableColumn == null)
             {
@@ -122,7 +130,11 @@ namespace OfficeOpenXml.Table
         }
         internal void SetTotalsStyle(eStyleClass styleClass, eStyleProperty styleProperty, object value)
         {
-            if ((_table??_tableColumn.Table).ShowTotal == false || value==null) return;
+            if ((_table??_tableColumn.Table).ShowTotal == false || value==null)
+            {
+                return;
+            }
+
             ExcelRangeBase totalRange;
             if (_tableColumn == null)
             {

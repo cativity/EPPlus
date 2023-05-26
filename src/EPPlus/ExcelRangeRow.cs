@@ -367,8 +367,15 @@ namespace OfficeOpenXml
         {
             if (minCol < 0)
             {
-                if (_cs == null) Reset();
-                if (minCol < 0) return false;
+                if (_cs == null)
+                {
+                    this.Reset();
+                }
+
+                if (minCol < 0)
+                {
+                    return false;
+                }
             }
             enumCol = -1;
             return _cs.NextCell(ref enumRow, ref enumCol, enumRow, minCol, _toRow,ExcelPackage.MaxColumns);
@@ -395,7 +402,11 @@ namespace OfficeOpenXml
         /// </summary>
         public void Group()
         {
-            SetValue(new Action<RowInternal, int>((x, v) => { if (x.OutlineLevel < 8) x.OutlineLevel += (short)v; }), 1);
+            SetValue(new Action<RowInternal, int>((x, v) => { if (x.OutlineLevel < 8)
+                                                      {
+                                                          x.OutlineLevel += (short)v;
+                                                      }
+                                                  }), 1);
         }
         /// <summary>
         /// Ungroups the rows from the outline. 
@@ -403,7 +414,11 @@ namespace OfficeOpenXml
         /// </summary>
         public void Ungroup()
         {
-            SetValue(new Action<RowInternal, int>((x, v) => { if (x.OutlineLevel >= 0) x.OutlineLevel += (short)v; }), -1);
+            SetValue(new Action<RowInternal, int>((x, v) => { if (x.OutlineLevel >= 0)
+                                                      {
+                                                          x.OutlineLevel += (short)v;
+                                                      }
+                                                  }), -1);
         }
         /// <summary>
         /// Collapses and hides the rows's children. Children are rows immegetaly below or top of the row depending on the <see cref="ExcelWorksheet.OutLineSummaryBelow"/>
@@ -489,7 +504,11 @@ namespace OfficeOpenXml
 
         private RowInternal GetRow(int row)
         {
-            if (row < 1 || row > ExcelPackage.MaxRows) return null;
+            if (row < 1 || row > ExcelPackage.MaxRows)
+            {
+                return null;
+            }
+
             return _worksheet.GetValueInner(row, 0) as RowInternal;
         }
 

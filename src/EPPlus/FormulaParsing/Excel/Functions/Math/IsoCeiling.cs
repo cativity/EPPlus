@@ -32,8 +32,15 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
             var number = ArgToDecimal(arguments, 0, context.Configuration.PrecisionAndRoundingStrategy);
             var significance = 1d;
             if(arguments.Count() > 1)
-                significance = ArgToDecimal(arguments, 1);
-            if (RoundingHelper.IsInvalidNumberAndSign(number, significance)) return CreateResult(eErrorType.Num);
+            {
+                significance = this.ArgToDecimal(arguments, 1);
+            }
+
+            if (RoundingHelper.IsInvalidNumberAndSign(number, significance))
+            {
+                return this.CreateResult(eErrorType.Num);
+            }
+
             return CreateResult(RoundingHelper.Round(number, significance, RoundingHelper.Direction.AlwaysUp), DataType.Decimal);
         }
     }

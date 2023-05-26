@@ -63,7 +63,10 @@ namespace OfficeOpenXml.Style
                 {
                     SetXmlNodeString(ExcelRichText.COLOR_PATH, value.ToArgb().ToString("X"));
                 }
-                if (_rt._callback != null) _rt._callback();
+                if (_rt._callback != null)
+                {
+                    this._rt._callback();
+                }
             }
         }
         /// <summary>
@@ -87,7 +90,10 @@ namespace OfficeOpenXml.Style
                 {
                     SetXmlNodeString(ExcelRichText.COLOR_THEME_PATH, v);
                 }
-                if (_rt._callback != null) _rt._callback();
+                if (_rt._callback != null)
+                {
+                    this._rt._callback();
+                }
             }
         }
         /// <summary>
@@ -103,7 +109,10 @@ namespace OfficeOpenXml.Style
             {
                 _rt._collection.ConvertRichtext();
                 SetXmlNodeDouble(ExcelRichText.COLOR_TINT_PATH, value, true);
-                if (_rt._callback != null) _rt._callback();
+                if (_rt._callback != null)
+                {
+                    this._rt._callback();
+                }
             }
         }
     }

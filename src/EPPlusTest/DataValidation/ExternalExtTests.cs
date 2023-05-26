@@ -22,7 +22,10 @@ namespace EPPlusTest.DataValidation
         {
             //_pck = OpenPackage("ExternalReferences.xlsx", true);
             var outDir = _worksheetPath + "ExternalDataValidations";
-            if (!Directory.Exists(outDir)) Directory.CreateDirectory(outDir);
+            if (!Directory.Exists(outDir))
+            {
+                Directory.CreateDirectory(outDir);
+            }
         }
 
         //Ensures no save or load errors

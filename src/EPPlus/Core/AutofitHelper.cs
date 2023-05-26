@@ -57,7 +57,10 @@ namespace OfficeOpenXml.Core
             var fromCol = _range._fromCol > ws.Dimension._fromCol ? _range._fromCol : ws.Dimension._fromCol;
             var toCol = _range._toCol < ws.Dimension._toCol ? _range._toCol : ws.Dimension._toCol;
 
-            if (fromCol > toCol) return; //Issue 15383
+            if (fromCol > toCol)
+            {
+                return; //Issue 15383
+            }
 
             if (_range.Addresses == null)
             {
@@ -98,13 +101,33 @@ namespace OfficeOpenXml.Core
             var styles = ws.Workbook.Styles;
             var ns = styles.GetNormalStyle();
             var normalXfId = ns?.StyleXfId ?? 0;
-            if (normalXfId < 0 || normalXfId >= styles.CellStyleXfs.Count) normalXfId = 0;
+            if (normalXfId < 0 || normalXfId >= styles.CellStyleXfs.Count)
+            {
+                normalXfId = 0;
+            }
+
             var nf = styles.Fonts[styles.CellStyleXfs[normalXfId].FontId];
             var fs = MeasurementFontStyles.Regular;
-            if (nf.Bold) fs |= MeasurementFontStyles.Bold;
-            if (nf.UnderLine) fs |= MeasurementFontStyles.Underline;
-            if (nf.Italic) fs |= MeasurementFontStyles.Italic;
-            if (nf.Strike) fs |= MeasurementFontStyles.Strikeout;
+            if (nf.Bold)
+            {
+                fs |= MeasurementFontStyles.Bold;
+            }
+
+            if (nf.UnderLine)
+            {
+                fs |= MeasurementFontStyles.Underline;
+            }
+
+            if (nf.Italic)
+            {
+                fs |= MeasurementFontStyles.Italic;
+            }
+
+            if (nf.Strike)
+            {
+                fs |= MeasurementFontStyles.Strikeout;
+            }
+
             var nfont = new MeasurementFont
             {
                 FontFamily = nf.Name,
@@ -118,9 +141,15 @@ namespace OfficeOpenXml.Core
             foreach (var cell in _range)
             {
                 if (ws.Column(cell.Start.Column).Hidden)    //Issue 15338
+                {
                     continue;
+                }
 
-                if (cell.Merge == true || styles.CellXfs[cell.StyleID].WrapText) continue;
+                if (cell.Merge == true || styles.CellXfs[cell.StyleID].WrapText)
+                {
+                    continue;
+                }
+
                 var fntID = styles.CellXfs[cell.StyleID].FontId;
                 MeasurementFont f;
                 if (_fontCache.ContainsKey(fntID))
@@ -131,10 +160,26 @@ namespace OfficeOpenXml.Core
                 {
                     var fnt = styles.Fonts[fntID];
                     fs = MeasurementFontStyles.Regular;
-                    if (fnt.Bold) fs |= MeasurementFontStyles.Bold;
-                    if (fnt.UnderLine) fs |= MeasurementFontStyles.Underline;
-                    if (fnt.Italic) fs |= MeasurementFontStyles.Italic;
-                    if (fnt.Strike) fs |= MeasurementFontStyles.Strikeout;
+                    if (fnt.Bold)
+                    {
+                        fs |= MeasurementFontStyles.Bold;
+                    }
+
+                    if (fnt.UnderLine)
+                    {
+                        fs |= MeasurementFontStyles.Underline;
+                    }
+
+                    if (fnt.Italic)
+                    {
+                        fs |= MeasurementFontStyles.Italic;
+                    }
+
+                    if (fnt.Strike)
+                    {
+                        fs |= MeasurementFontStyles.Strikeout;
+                    }
+
                     f = new MeasurementFont
                     {
                         FontFamily = fnt.Name,
@@ -147,7 +192,11 @@ namespace OfficeOpenXml.Core
                 var ind = styles.CellXfs[cell.StyleID].Indent;
                 var textForWidth = cell.TextForWidth;
                 var t = textForWidth + (ind > 0 && !string.IsNullOrEmpty(textForWidth) ? new string('_', ind) : "");
-                if (t.Length > 32000) t = t.Substring(0, 32000); //Issue
+                if (t.Length > 32000)
+                {
+                    t = t.Substring(0, 32000); //Issue
+                }
+
                 var size = MeasureString(t, fntID, textSettings);
 
                 double width;
@@ -243,7 +292,11 @@ namespace OfficeOpenXml.Core
             foreach (ExcelValue val in iterator)
             {
                 var col = (ExcelColumn)val._value;
-                if (col.Hidden) continue;
+                if (col.Hidden)
+                {
+                    continue;
+                }
+
                 col.Width = minimumWidth;
                 if (ws.DefaultColWidth > minimumWidth && col.ColumnMin > prevCol)
                 {

@@ -43,8 +43,15 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Statistical
                 B = ArgToDecimal(arguments, 4);
             }
             // validate
-            if (alpha <= 0 || beta <= 0) return CreateResult(eErrorType.Num);
-            if (probability <= 0 || probability > 1) return CreateResult(eErrorType.Num);
+            if (alpha <= 0 || beta <= 0)
+            {
+                return this.CreateResult(eErrorType.Num);
+            }
+
+            if (probability <= 0 || probability > 1)
+            {
+                return this.CreateResult(eErrorType.Num);
+            }
 
             var result = BetaHelper.IBetaInv(probability, alpha, beta) * (B - A) + A;
             return CreateResult(result, DataType.Decimal);

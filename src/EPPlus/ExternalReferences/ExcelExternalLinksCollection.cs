@@ -163,7 +163,11 @@ namespace OfficeOpenXml.ExternalReferences
         /// </summary>
         public void Clear()
         {
-            if (_list.Count == 0) return;
+            if (_list.Count == 0)
+            {
+                return;
+            }
+
             var extRefs = _list[0].WorkbookElement.ParentNode;
 
             ExternalLinksHandler.BreakAllFormulaLinks(_wb);
@@ -208,7 +212,11 @@ namespace OfficeOpenXml.ExternalReferences
         }
         internal int GetExternalLink(string extRef)
         {
-            if (string.IsNullOrEmpty(extRef)) return -1;
+            if (string.IsNullOrEmpty(extRef))
+            {
+                return -1;
+            }
+
             if(extRef.Any(c=>char.IsDigit(c)==false))
             {
                 if(ExcelExternalLink.HasWebProtocol(extRef))
@@ -225,7 +233,10 @@ namespace OfficeOpenXml.ExternalReferences
                     }
                     return -1;
                 }
-                if (extRef.StartsWith("file:///")) extRef = extRef.Substring(8);
+                if (extRef.StartsWith("file:///"))
+                {
+                    extRef = extRef.Substring(8);
+                }
 
                 int ret = -1;
                 try

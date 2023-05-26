@@ -195,13 +195,20 @@ namespace OfficeOpenXml.Core.CellStore
         internal int PageCount;
         public void Dispose()
         {
-            if (_pages == null) return;
+            if (_pages == null)
+            {
+                return;
+            }
+
             for (int p = 0; p < PageCount; p++)
             {
                 (_pages[p] as IDisposable)?.Dispose();
             }
             _pages = null;
-            if (_values != null) _values.Clear();
+            if (_values != null)
+            {
+                this._values.Clear();
+            }
         }
     }
 }

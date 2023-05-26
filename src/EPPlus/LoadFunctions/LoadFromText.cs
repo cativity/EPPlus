@@ -142,12 +142,19 @@ namespace OfficeOpenXml.LoadFunctions
                         v += new string(_format.TextQualifier, (QCount) / 2);
                     }
                     if (lineQCount % 2 == 1)
+                    {
                         throw (new Exception(string.Format("Text delimiter is not closed in line : {0}", line)));
+                    }
+
                     items.Add(ConvertData(_format, v, col, isText));
 
                     _worksheet._values.SetValueRow_Value(_range._fromRow + row, _range._fromCol, items);
 
-                    if (col > maxCol) maxCol = col;
+                    if (col > maxCol)
+                    {
+                        maxCol = col;
+                    }
+
                     row++;
                 }
                 lineNo++;
@@ -165,15 +172,26 @@ namespace OfficeOpenXml.LoadFunctions
             var lines = Regex.Split(text, EOL);
             for (int i = 0; i < lines.Length; i++)
             {
-                if (EOL == "\n" && lines[i].EndsWith("\r", StringComparison.OrdinalIgnoreCase)) lines[i] = lines[i].Substring(0, lines[i].Length - 1); //If EOL char is lf and last chart cr then we remove the trailing cr.
-                if (EOL == "\r" && lines[i].StartsWith("\n", StringComparison.OrdinalIgnoreCase)) lines[i] = lines[i].Substring(1); //If EOL char is cr and last chart lf then we remove the heading lf.
+                if (EOL == "\n" && lines[i].EndsWith("\r", StringComparison.OrdinalIgnoreCase))
+                {
+                    lines[i] = lines[i].Substring(0, lines[i].Length - 1); //If EOL char is lf and last chart cr then we remove the trailing cr.
+                }
+
+                if (EOL == "\r" && lines[i].StartsWith("\n", StringComparison.OrdinalIgnoreCase))
+                {
+                    lines[i] = lines[i].Substring(1); //If EOL char is cr and last chart lf then we remove the heading lf.
+                }
             }
             return lines;
         }
 
         private string[] GetLines(string text, ExcelTextFormat Format)
         {
-            if (Format.EOL == null || Format.EOL.Length == 0) return new string[] { text };
+            if (Format.EOL == null || Format.EOL.Length == 0)
+            {
+                return new string[] { text };
+            }
+
             var eol = Format.EOL;
             var list = new List<string>();
             var inTQ = false;
@@ -189,8 +207,16 @@ namespace OfficeOpenXml.LoadFunctions
                     if (IsEOL(text, i, eol))
                     {
                         var s = text.Substring(prevLineStart, i - prevLineStart);
-                        if (eol == "\n" && s.EndsWith("\r", StringComparison.OrdinalIgnoreCase)) s = s.Substring(0, s.Length - 1); //If EOL char is lf and last chart cr then we remove the trailing cr.
-                        if (eol == "\r" && s.StartsWith("\n", StringComparison.OrdinalIgnoreCase)) s = s.Substring(1); //If EOL char is cr and last chart lf then we remove the heading lf.
+                        if (eol == "\n" && s.EndsWith("\r", StringComparison.OrdinalIgnoreCase))
+                        {
+                            s = s.Substring(0, s.Length - 1); //If EOL char is lf and last chart cr then we remove the trailing cr.
+                        }
+
+                        if (eol == "\r" && s.StartsWith("\n", StringComparison.OrdinalIgnoreCase))
+                        {
+                            s = s.Substring(1); //If EOL char is cr and last chart lf then we remove the heading lf.
+                        }
+
                         list.Add(s);
                         i += eol.Length - 1;
                         prevLineStart = i + 1;
@@ -219,14 +245,19 @@ namespace OfficeOpenXml.LoadFunctions
             for (int i = 0; i < eol.Length; i++)
             {
                 if (text[ix + i] != eol[i])
+                {
                     return false;
+                }
             }
             return ix + eol.Length <= text.Length;
         }
 
         private object ConvertData(ExcelTextFormat Format, string v, int col, bool isText)
         {
-            if (isText && (Format.DataTypes == null || Format.DataTypes.Length < col)) return string.IsNullOrEmpty(v) ? null : v;
+            if (isText && (Format.DataTypes == null || Format.DataTypes.Length < col))
+            {
+                return string.IsNullOrEmpty(v) ? null : v;
+            }
 
             double d;
             DateTime dt;

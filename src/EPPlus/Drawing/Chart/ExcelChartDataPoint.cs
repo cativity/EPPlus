@@ -180,10 +180,18 @@ namespace OfficeOpenXml.Drawing.Chart
         /// </summary>
         public void Dispose()
         {
-            if (_chart != null) _chart.Dispose();
+            if (_chart != null)
+            {
+                this._chart.Dispose();
+            }
+
             _chart = null;
             _line = null;
-            if (_fill != null) _fill.Dispose();
+            if (_fill != null)
+            {
+                this._fill.Dispose();
+            }
+
             _fill = null;
         }
     }

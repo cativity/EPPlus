@@ -59,8 +59,16 @@ namespace OfficeOpenXml.Utils
 
         private static int GetRgpPercentToRgb(double percentage)
         {
-            if (percentage < 0) return 0;
-            if (percentage > 255) return 255;
+            if (percentage < 0)
+            {
+                return 0;
+            }
+
+            if (percentage > 255)
+            {
+                return 255;
+            }
+
             return (int)(percentage * 255 / 100);
         }
         internal static Color ApplyTint(Color ret, double tint)

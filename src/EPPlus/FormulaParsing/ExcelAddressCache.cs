@@ -49,10 +49,17 @@ namespace OfficeOpenXml.FormulaParsing
         {
             lock(_myLock)
             {
-                if (_addressCache.ContainsKey(id)) return false;
+                if (_addressCache.ContainsKey(id))
+                {
+                    return false;
+                }
+
                 _addressCache.Add(id, address);
                 if(EnableLookupCache && !_lookupCache.ContainsKey(address))
-                    _lookupCache.Add(address, id);
+                {
+                    this._lookupCache.Add(address, id);
+                }
+
                 return true;
             }
             
@@ -73,7 +80,11 @@ namespace OfficeOpenXml.FormulaParsing
         /// <returns></returns>
         public string Get(int id)
         {
-            if (!_addressCache.ContainsKey(id)) return string.Empty;
+            if (!_addressCache.ContainsKey(id))
+            {
+                return string.Empty;
+            }
+
             return _addressCache[id];
         }
 

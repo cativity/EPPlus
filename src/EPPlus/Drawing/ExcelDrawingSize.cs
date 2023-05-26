@@ -56,7 +56,10 @@ namespace OfficeOpenXml.Drawing
             set
             {
                 _height = value;
-                if (_setWidthCallback != null) _setWidthCallback();
+                if (_setWidthCallback != null)
+                {
+                    this._setWidthCallback();
+                }
             }
         }
         const string rowOffPath = "@cx";
@@ -77,7 +80,10 @@ namespace OfficeOpenXml.Drawing
             set
             {
                 _width = value;
-                if (_setWidthCallback != null) _setWidthCallback();
+                if (_setWidthCallback != null)
+                {
+                    this._setWidthCallback();
+                }
             }
         }
     }

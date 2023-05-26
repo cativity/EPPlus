@@ -35,9 +35,17 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance
             var startPeriod = ArgToInt(arguments, 3);
             var endPeriod = ArgToInt(arguments, 4);
             var type = ArgToInt(arguments, 5);
-            if (type < 0 || type > 1) return CreateResult(eErrorType.Value);
+            if (type < 0 || type > 1)
+            {
+                return this.CreateResult(eErrorType.Value);
+            }
+
             var result = CumipmtImpl.GetCumipmt(rate, nper, pv, startPeriod, endPeriod, (PmtDue)type);
-            if (result.HasError) return CreateResult(result.ExcelErrorType);
+            if (result.HasError)
+            {
+                return this.CreateResult(result.ExcelErrorType);
+            }
+
             return CreateResult(result.Result, DataType.Decimal);
         }
     }

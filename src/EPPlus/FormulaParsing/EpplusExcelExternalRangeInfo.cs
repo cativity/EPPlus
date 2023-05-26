@@ -93,7 +93,10 @@ namespace OfficeOpenXml.FormulaParsing
                 {
                     return false;
                 }
-                else if (_values == null) return true;
+                else if (_values == null)
+                {
+                    return true;
+                }
                 else if (_values.Next())
                 {
                     _values.Reset();
@@ -114,7 +117,11 @@ namespace OfficeOpenXml.FormulaParsing
             {
                 if (_cellCount == 0)
                 {
-                    if (_values == null) return false;
+                    if (_values == null)
+                    {
+                        return false;
+                    }
+
                     if (_values.Next() && _values.Next())
                     {
                         _values.Reset();
@@ -169,7 +176,11 @@ namespace OfficeOpenXml.FormulaParsing
         /// <returns>returns true until the enumeration has reached the last cell.</returns>
         public bool MoveNext()
         {
-            if (_values == null) return false;
+            if (_values == null)
+            {
+                return false;
+            }
+
             _cellCount++;
             return _values.MoveNext();
         }
@@ -188,7 +199,11 @@ namespace OfficeOpenXml.FormulaParsing
         /// <returns></returns>
         public bool NextCell()
         {
-            if (_values == null) return false;
+            if (_values == null)
+            {
+                return false;
+            }
+
             _cellCount++;
             return _values.MoveNext();
         }
@@ -233,7 +248,11 @@ namespace OfficeOpenXml.FormulaParsing
         /// <returns></returns>
         public object GetOffset(int rowOffset, int colOffset)
         {
-            if (_values == null) return null;
+            if (_values == null)
+            {
+                return null;
+            }
+
             if (_values.Row < _fromRow || _values.Column < _fromCol)
             {
                 return _externalWs?.CellValues.GetValue(_fromRow + rowOffset, _fromCol + colOffset);

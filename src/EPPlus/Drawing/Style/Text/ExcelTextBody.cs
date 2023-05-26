@@ -159,7 +159,11 @@ namespace OfficeOpenXml.Drawing
             }
             set
             {
-                if (value < 0) throw new ArgumentOutOfRangeException("SpaceBetweenColumns", "Can't be negative");
+                if (value < 0)
+                {
+                    throw new ArgumentOutOfRangeException("SpaceBetweenColumns", "Can't be negative");
+                }
+
                 SetXmlNodeEmuToPt($"{_path}/@spcCol", value);
             }
         }
@@ -316,7 +320,11 @@ namespace OfficeOpenXml.Drawing
                 switch (value)
                 {
                     case eTextAutofit.NormalAutofit:
-                        if (value == TextAutofit) return;
+                        if (value == TextAutofit)
+                        {
+                            return;
+                        }
+
                         DeleteNode($"{_path}/a:spAutoFit");
                         DeleteNode($"{_path}/a:noAutofit");
                         CreateNode($"{_path}/a:normAutofit");
@@ -346,7 +354,11 @@ namespace OfficeOpenXml.Drawing
             }
             set
             {
-                if (TextAutofit != eTextAutofit.NormalAutofit) throw new ArgumentException("AutofitNormalFontScale", "TextAutofit must be set to NormalAutofit to use set this property");
+                if (TextAutofit != eTextAutofit.NormalAutofit)
+                {
+                    throw new ArgumentException("AutofitNormalFontScale", "TextAutofit must be set to NormalAutofit to use set this property");
+                }
+
                 SetXmlNodePercentage($"{_path}/a:normAutofit/@fontScale", value, false);
             }
         }
@@ -362,7 +374,11 @@ namespace OfficeOpenXml.Drawing
             }
             set
             {
-                if (TextAutofit != eTextAutofit.NormalAutofit) throw new ArgumentException("LineSpaceReduction", "TextAutofit must be set to NormalAutofit to use set this property");
+                if (TextAutofit != eTextAutofit.NormalAutofit)
+                {
+                    throw new ArgumentException("LineSpaceReduction", "TextAutofit must be set to NormalAutofit to use set this property");
+                }
+
                 SetXmlNodePercentage($"{_path}/a:normAutofit/@lnSpcReduction", value, false);
             }
         }

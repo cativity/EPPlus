@@ -29,7 +29,11 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Statistical
         {
             ValidateArguments(arguments, 1);
             var arr = ArgsToDoubleEnumerable(arguments, context);
-            if (!arr.Any()) return CreateResult(eErrorType.Num);
+            if (!arr.Any())
+            {
+                return this.CreateResult(eErrorType.Num);
+            }
+
             var mean = arr.Select(x => (double)x).Average();
             var result = arr.Aggregate(0d, (val, x) => val += System.Math.Pow(x - mean, 2));
             return CreateResult(result, DataType.Decimal);

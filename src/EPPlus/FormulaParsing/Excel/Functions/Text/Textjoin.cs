@@ -43,10 +43,17 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Text
                     foreach(var cell in arg.ValueAsRangeInfo)
                     {
                         var val = cell.Value != null ? cell.Value.ToString() : string.Empty;
-                        if (ignoreEmpty && string.IsNullOrEmpty(val)) continue;
+                        if (ignoreEmpty && string.IsNullOrEmpty(val))
+                        {
+                            continue;
+                        }
+
                         str.Append(val);
                         str.Append(delimiter);
-                        if (str.Length > MaxReturnLength) return CreateResult(eErrorType.Value);
+                        if (str.Length > MaxReturnLength)
+                        {
+                            return this.CreateResult(eErrorType.Value);
+                        }
                     }
                 }
                 else if(arg.Value is IEnumerable<FunctionArgument>)
@@ -57,20 +64,34 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Text
                         foreach(var item in items)
                         {
                             var val = item.Value != null ? item.Value.ToString() : string.Empty;
-                            if (ignoreEmpty && string.IsNullOrEmpty(val)) continue;
+                            if (ignoreEmpty && string.IsNullOrEmpty(val))
+                            {
+                                continue;
+                            }
+
                             str.Append(val);
                             str.Append(delimiter);
-                            if (str.Length > MaxReturnLength) return CreateResult(eErrorType.Value);
+                            if (str.Length > MaxReturnLength)
+                            {
+                                return this.CreateResult(eErrorType.Value);
+                            }
                         }
                     }
                 }
                 else
                 {
                     var val = arg.Value != null ? arg.Value.ToString() : string.Empty;
-                    if (ignoreEmpty && string.IsNullOrEmpty(val)) continue;
+                    if (ignoreEmpty && string.IsNullOrEmpty(val))
+                    {
+                        continue;
+                    }
+
                     str.Append(val);
                     str.Append(delimiter);
-                    if (str.Length > MaxReturnLength) return CreateResult(eErrorType.Value);
+                    if (str.Length > MaxReturnLength)
+                    {
+                        return this.CreateResult(eErrorType.Value);
+                    }
                 }
             }
             var resultString = str.ToString().TrimEnd(delimiter.ToCharArray());

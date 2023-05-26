@@ -122,7 +122,11 @@ namespace EPPlusTest.Style
             using (var p = OpenTemplatePackage("TableStyleRead.xlsx"))
             {
                 var s = p.Workbook.Styles.TableStyles["CustomTableStyle1"];
-                if (s == null) Assert.Inconclusive("CustomTableStyle1 does not exists in workbook");
+                if (s == null)
+                {
+                    Assert.Inconclusive("CustomTableStyle1 does not exists in workbook");
+                }
+
                 Assert.IsNotNull(s.As.TableStyle);
                 Assert.AreEqual("CustomTableStyle1", s.Name);
 
@@ -170,7 +174,11 @@ namespace EPPlusTest.Style
             using (var p = OpenTemplatePackage("TableStyleRead.xlsx"))
             {
                 var s = p.Workbook.Styles.TableStyles["CustomPivotTableStyle1"];
-                if (s == null) Assert.Inconclusive("CustomPivotTableStyle1 does not exists in workbook");
+                if (s == null)
+                {
+                    Assert.Inconclusive("CustomPivotTableStyle1 does not exists in workbook");
+                }
+
                 var ps = s.As.PivotTableStyle;
 
                 Assert.AreEqual("CustomPivotTableStyle1", ps.Name);
@@ -192,7 +200,10 @@ namespace EPPlusTest.Style
         {
             var ws = _pck.Workbook.Worksheets.Add("SharedTableStyle");
             var s = _pck.Workbook.Styles.CreateTableAndPivotTableStyle("CustomTableAndPivotTableStyle1");
-            if (s == null) Assert.Inconclusive("CustomTableAndPivotTableStyle1 does not exists in workbook");
+            if (s == null)
+            {
+                Assert.Inconclusive("CustomTableAndPivotTableStyle1 does not exists in workbook");
+            }
 
             s.WholeTable.Style.Font.Color.SetColor(Color.DarkMagenta);
 
@@ -220,7 +231,11 @@ namespace EPPlusTest.Style
             using (var p = OpenTemplatePackage("TableStyleRead.xlsx"))
             {
                 var s = p.Workbook.Styles.TableStyles["CustomTableAndPivotTableStyle1"];
-                if (s == null) Assert.Inconclusive("CustomTableAndPivotTableStyle1 style is not present in the workbook");
+                if (s == null)
+                {
+                    Assert.Inconclusive("CustomTableAndPivotTableStyle1 style is not present in the workbook");
+                }
+
                 var tpts =s.As.TableAndPivotTableStyle;
                 Assert.AreEqual("CustomTableAndPivotTableStyle1", tpts.Name);
 

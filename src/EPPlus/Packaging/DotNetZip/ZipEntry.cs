@@ -474,15 +474,30 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         public void SetEntryTimes(DateTime created, DateTime accessed, DateTime modified)
         {
             _ntfsTimesAreSet = true;
-            if (created == _zeroHour && created.Kind == _zeroHour.Kind) created = _win32Epoch;
-            if (accessed == _zeroHour && accessed.Kind == _zeroHour.Kind) accessed = _win32Epoch;
-            if (modified == _zeroHour && modified.Kind == _zeroHour.Kind) modified = _win32Epoch;
+            if (created == _zeroHour && created.Kind == _zeroHour.Kind)
+            {
+                created = _win32Epoch;
+            }
+
+            if (accessed == _zeroHour && accessed.Kind == _zeroHour.Kind)
+            {
+                accessed = _win32Epoch;
+            }
+
+            if (modified == _zeroHour && modified.Kind == _zeroHour.Kind)
+            {
+                modified = _win32Epoch;
+            }
+
             _Ctime = created.ToUniversalTime();
             _Atime = accessed.ToUniversalTime();
             _Mtime = modified.ToUniversalTime();
             _LastModified = _Mtime;
             if (!_emitUnixTimes && !_emitNtfsTimes)
-                _emitNtfsTimes = true;
+            {
+                this._emitNtfsTimes = true;
+            }
+
             _metadataChanged = true;
         }
 
@@ -868,14 +883,22 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
             set
             {
                 if (_container.ZipFile == null)
+                {
                     throw new ZipException("Cannot rename; this is not supported in ZipOutputStream/ZipInputStream.");
+                }
 
                 // rename the entry!
-                if (String.IsNullOrEmpty(value)) throw new ZipException("The FileName must be non empty and non-null.");
+                if (String.IsNullOrEmpty(value))
+                {
+                    throw new ZipException("The FileName must be non empty and non-null.");
+                }
 
                 var filename = ZipEntry.NameInArchive(value, null);
                 // workitem 8180
-                if (_FileNameInArchive == filename) return; // nothing to do
+                if (_FileNameInArchive == filename)
+                {
+                    return; // nothing to do
+                }
 
                 // workitem 8047 - when renaming, must remove old and then add a new entry
                 this._container.ZipFile.RemoveEntry(this);
@@ -937,7 +960,9 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
             set
             {
                 if (this._Source != ZipEntrySource.Stream)
+                {
                     throw new ZipException("You must not set the input stream for this entry.");
+                }
 
                 _sourceWasJitProvided = true;
                 _sourceStream = value;
@@ -1376,14 +1401,19 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
             get { return (CompressionMethod)_CompressionMethod; }
             set
             {
-                if (value == (CompressionMethod)_CompressionMethod) return; // nothing to do.
+                if (value == (CompressionMethod)_CompressionMethod)
+                {
+                    return; // nothing to do.
+                }
 
                 if (value != CompressionMethod.None && value != CompressionMethod.Deflate
 #if BZIP
                     && value != CompressionMethod.BZip2
 #endif
-                    )
+                   )
+                {
                     throw new InvalidOperationException("Unsupported compression method.");
+                }
 
                 // If the source is a zip archive and there was encryption on the
                 // entry, changing the compression method is not supported.
@@ -1393,11 +1423,19 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
                 _CompressionMethod = (Int16)value;
 
                 if (_CompressionMethod == (Int16)Ionic.Zip.CompressionMethod.None)
-                    _CompressionLevel = Ionic.Zlib.CompressionLevel.None;
+                {
+                    this._CompressionLevel = Ionic.Zlib.CompressionLevel.None;
+                }
                 else if (CompressionLevel == Ionic.Zlib.CompressionLevel.None)
-                    _CompressionLevel = Ionic.Zlib.CompressionLevel.Default;
+                {
+                    this._CompressionLevel = Ionic.Zlib.CompressionLevel.Default;
+                }
 
-                if (_container.ZipFile != null) _container.ZipFile.NotifyEntryChanged();
+                if (_container.ZipFile != null)
+                {
+                    this._container.ZipFile.NotifyEntryChanged();
+                }
+
                 _restreamRequiredOnSave = true;
             }
         }
@@ -1455,22 +1493,38 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
             {
                 if (_CompressionMethod != (short)CompressionMethod.Deflate &&
                     _CompressionMethod != (short)CompressionMethod.None)
+                {
                     return ; // no effect
+                }
 
                 if (value == OfficeOpenXml.Packaging.Ionic.Zlib.CompressionLevel.Default &&
-                    _CompressionMethod == (short)CompressionMethod.Deflate) return; // nothing to do
+                    _CompressionMethod == (short)CompressionMethod.Deflate)
+                {
+                    return; // nothing to do
+                }
+
                 _CompressionLevel = value;
 
                 if (value == OfficeOpenXml.Packaging.Ionic.Zlib.CompressionLevel.None &&
                     _CompressionMethod == (short)CompressionMethod.None)
+                {
                     return; // nothing more to do
+                }
 
                 if (_CompressionLevel == OfficeOpenXml.Packaging.Ionic.Zlib.CompressionLevel.None)
-                    _CompressionMethod = (short)OfficeOpenXml.Packaging.Ionic.Zip.CompressionMethod.None;
+                {
+                    this._CompressionMethod = (short)OfficeOpenXml.Packaging.Ionic.Zip.CompressionMethod.None;
+                }
                 else
-                    _CompressionMethod = (short)OfficeOpenXml.Packaging.Ionic.Zip.CompressionMethod.Deflate;
+                {
+                    this._CompressionMethod = (short)OfficeOpenXml.Packaging.Ionic.Zip.CompressionMethod.Deflate;
+                }
 
-                if (_container.ZipFile != null) _container.ZipFile.NotifyEntryChanged();
+                if (_container.ZipFile != null)
+                {
+                    this._container.ZipFile.NotifyEntryChanged();
+                }
+
                 _restreamRequiredOnSave = true;
             }
         }
@@ -1547,7 +1601,11 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         {
             get
             {
-                if (UncompressedSize == 0) return 0;
+                if (UncompressedSize == 0)
+                {
+                    return 0;
+                }
+
                 return 100 * (1.0 - (1.0 * CompressedSize) / (1.0 * UncompressedSize));
             }
         }
@@ -1762,10 +1820,15 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
             }
             set
             {
-                if (value == _Encryption) return; // no change
+                if (value == _Encryption)
+                {
+                    return; // no change
+                }
 
                 if (value == EncryptionAlgorithm.Unsupported)
+                {
                     throw new InvalidOperationException("You may not set Encryption to that value.");
+                }
 
                 // If the source is a zip archive and there was encryption
                 // on the entry, this will not work. <XXX>
@@ -1775,7 +1838,9 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
                 _Encryption = value;
                 _restreamRequiredOnSave = true;
                 if (_container.ZipFile!=null)
-                    _container.ZipFile.NotifyEntryChanged();
+                {
+                    this._container.ZipFile.NotifyEntryChanged();
+                }
             }
         }
 
@@ -1941,7 +2006,9 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
                     // If the source is a zip archive and there was previously no encryption
                     // on the entry, then we must re-stream the entry in order to encrypt it.
                     if (this._Source == ZipEntrySource.ZipFile && !_sourceIsEncrypted)
-                        _restreamRequiredOnSave = true;
+                    {
+                        this._restreamRequiredOnSave = true;
+                    }
 
                     if (Encryption == EncryptionAlgorithm.None)
                     {
@@ -2285,7 +2352,9 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         {
             string result = null;
             if (directoryPathInArchive == null)
+            {
                 result = filename;
+            }
 
             else
             {
@@ -2341,7 +2410,9 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         private static ZipEntry Create(string nameInArchive, ZipEntrySource source, Object arg1, Object arg2)
         {
             if (String.IsNullOrEmpty(nameInArchive))
+            {
                 throw new Ionic.Zip.ZipException("The entry name must be non-null and non-empty.");
+            }
 
             ZipEntry entry = new ZipEntry();
 
@@ -2378,7 +2449,9 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
                 String filename = (arg1 as String);   // must not be null
 
                 if (String.IsNullOrEmpty(filename))
+                {
                     throw new Ionic.Zip.ZipException("The filename must be non-null and non-empty.");
+                }
 
                 try
                 {
@@ -2413,7 +2486,9 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
                     // workitem 7071
                     // can only get attributes on files that exist.
                     if (File.Exists(filename) || Directory.Exists(filename))
+                    {
                         entry._ExternalFileAttrs = (int)File.GetAttributes(filename);
+                    }
 
 #endif
                     entry._ntfsTimesAreSet = true;
@@ -2446,7 +2521,9 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
             _IsDirectory = true;
             // workitem 6279
             if (!_FileNameInArchive.EndsWith("/"))
-                _FileNameInArchive += "/";
+            {
+                this._FileNameInArchive += "/";
+            }
         }
 
 
@@ -2643,7 +2720,10 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         internal static int GetLengthOfCryptoHeaderBytes(EncryptionAlgorithm a)
         {
             //if ((_BitField & 0x01) != 0x01) return 0;
-            if (a == EncryptionAlgorithm.None) return 0;
+            if (a == EncryptionAlgorithm.None)
+            {
+                return 0;
+            }
 
 #if AESCRYPTO
             if (a == EncryptionAlgorithm.WinZipAes128 ||
@@ -2655,7 +2735,10 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
             }
 #endif
             if (a == EncryptionAlgorithm.PkzipWeak)
+            {
                 return 12;
+            }
+
             throw new ZipException("internal error");
         }
 
@@ -2665,7 +2748,9 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
             get
             {
                 if (__FileDataPosition == -1)
-                    SetFdpLoh();
+                {
+                    this.SetFdpLoh();
+                }
 
                 return __FileDataPosition;
             }
@@ -2676,7 +2761,9 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
             get
             {
                 if (_LengthOfHeader == 0)
-                    SetFdpLoh();
+                {
+                    this.SetFdpLoh();
+                }
 
                 return _LengthOfHeader;
             }

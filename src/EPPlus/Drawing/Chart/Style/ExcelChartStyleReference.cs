@@ -38,7 +38,11 @@ namespace OfficeOpenXml.Drawing.Chart.Style
             }
             set
             {
-                if (value < 0) throw new ArgumentOutOfRangeException("Index", "Can't be negative");
+                if (value < 0)
+                {
+                    throw new ArgumentOutOfRangeException("Index", "Can't be negative");
+                }
+
                 SetXmlNodeString($"{_path}/@idx", value.ToString(CultureInfo.InvariantCulture));
             }   
         }

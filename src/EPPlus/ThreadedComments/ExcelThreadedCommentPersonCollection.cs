@@ -217,7 +217,10 @@ namespace OfficeOpenXml.ThreadedComments
         {
             if (Count == 0)
             {
-                if (package.ZipPackage.PartExists(personsUri)) package.ZipPackage.DeletePart(personsUri);
+                if (package.ZipPackage.PartExists(personsUri))
+                {
+                    package.ZipPackage.DeletePart(personsUri);
+                }
             }
             else
             {

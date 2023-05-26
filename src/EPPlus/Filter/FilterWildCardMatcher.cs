@@ -60,7 +60,10 @@ namespace OfficeOpenXml.Filter
                         return false;
                     }
                 }
-                if (match == false) return false;
+                if (match == false)
+                {
+                    return false;
+                }
             }
             if (isWC)
             {
@@ -81,10 +84,16 @@ namespace OfficeOpenXml.Filter
                     anyChars++;
                 }
                 tokenPos++;
-                if (tokenPos == tokens.Count) return (value.Length-stringPos)>anyChars;
+                if (tokenPos == tokens.Count)
+                {
+                    return (value.Length-stringPos)>anyChars;
+                }
             }
             stringPos += anyChars;
-            if (stringPos > value.Length) return false;
+            if (stringPos > value.Length)
+            {
+                return false;
+            }
 
             int foundPos = value.IndexOf(tokens[tokenPos], stringPos, StringComparison.CurrentCultureIgnoreCase);
             while (foundPos>=0)
@@ -93,12 +102,18 @@ namespace OfficeOpenXml.Filter
                 if (tokenPos + 1 >= tokens.Count)
                 {
                     match = foundPos + tokens[tokenPos].Length == value.Length;
-                    if (match) return true;
+                    if (match)
+                    {
+                        return true;
+                    }
                 }
                 else
                 {
                     match = MatchTokenList(value, tokens, foundPos + tokens[tokenPos].Length, tokenPos + 1);
-                    if (match) return true;
+                    if (match)
+                    {
+                        return true;
+                    }
                 }
                 foundPos = value.IndexOf(tokens[tokenPos], foundPos+1, StringComparison.CurrentCultureIgnoreCase);
             }

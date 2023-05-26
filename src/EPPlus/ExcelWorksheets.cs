@@ -305,19 +305,46 @@ namespace OfficeOpenXml
             //remove invalid characters
             if (ValidateName(Name))
             {
-                if (Name.IndexOf(':') > -1) Name = Name.Replace(':', ' ');
-                if (Name.IndexOf('/') > -1) Name = Name.Replace('/', ' ');
-                if (Name.IndexOf('\\') > -1) Name = Name.Replace('\\', ' ');
-                if (Name.IndexOf('?') > -1) Name = Name.Replace('?', ' ');
-                if (Name.IndexOf('[') > -1) Name = Name.Replace('[', ' ');
-                if (Name.IndexOf(']') > -1) Name = Name.Replace(']', ' ');
+                if (Name.IndexOf(':') > -1)
+                {
+                    Name = Name.Replace(':', ' ');
+                }
+
+                if (Name.IndexOf('/') > -1)
+                {
+                    Name = Name.Replace('/', ' ');
+                }
+
+                if (Name.IndexOf('\\') > -1)
+                {
+                    Name = Name.Replace('\\', ' ');
+                }
+
+                if (Name.IndexOf('?') > -1)
+                {
+                    Name = Name.Replace('?', ' ');
+                }
+
+                if (Name.IndexOf('[') > -1)
+                {
+                    Name = Name.Replace('[', ' ');
+                }
+
+                if (Name.IndexOf(']') > -1)
+                {
+                    Name = Name.Replace(']', ' ');
+                }
             }
 
             if (Name.StartsWith("'", StringComparison.OrdinalIgnoreCase) || Name.EndsWith("'", StringComparison.OrdinalIgnoreCase))
             {
                 throw new ArgumentException("The worksheet name cannot start or end with an apostrophe (').", "Name");
             }
-            if (Name.Length > 31) Name = Name.Substring(0, 31);   //A sheet can have max 31 char's            
+            if (Name.Length > 31)
+            {
+                Name = Name.Substring(0, 31);   //A sheet can have max 31 char's            
+            }
+
             return Name;
         }
         /// <summary>
@@ -561,7 +588,9 @@ namespace OfficeOpenXml
         {
             ExcelWorksheet Copy = this[Name];
             if (Copy == null)
+            {
                 throw new ArgumentException(string.Format("Copy worksheet error: Could not find worksheet to copy '{0}'", Name));
+            }
 
             ExcelWorksheet added = Add(NewName, Copy);
             return added;
@@ -580,13 +609,19 @@ namespace OfficeOpenXml
         }
         internal ExcelWorksheet GetByName(string name)
         {
-            if (string.IsNullOrEmpty(name)) return null;
+            if (string.IsNullOrEmpty(name))
+            {
+                return null;
+            }
+
             name = ValidateFixSheetName(name);
             ExcelWorksheet ws = null;
             foreach (ExcelWorksheet worksheet in _worksheets)
             {
                 if (worksheet.Name.Equals(name, StringComparison.OrdinalIgnoreCase))
+                {
                     ws = worksheet;
+                }
             }
             return (ws);
         }

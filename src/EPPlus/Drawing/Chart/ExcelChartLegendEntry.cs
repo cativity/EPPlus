@@ -109,10 +109,18 @@ namespace OfficeOpenXml.Drawing.Chart
         }
         internal void InitChartXml()
         {
-            if (HasValue) return;
+            if (HasValue)
+            {
+                return;
+            }
+
             HasValue = true;
             _font.CreateTopNode();
-            if (_chart.StyleManager.Style == null) return;
+            if (_chart.StyleManager.Style == null)
+            {
+                return;
+            }
+
             if (_chart.StyleManager.Style.Legend.HasTextRun)
             {
                 var node = (XmlElement)CreateNode("c:txPr/a:p/a:pPr/a:defRPr");

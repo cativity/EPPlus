@@ -146,8 +146,16 @@ namespace OfficeOpenXml.Style.XmlAccess
         {
             TopNode = topNode;
             CreateNode("d:gradientFill");
-            if(Type==ExcelFillGradientType.Path) SetXmlNodeString(_typePath, "path");
-            if(!double.IsNaN(Degree)) SetXmlNodeString(_degreePath, Degree.ToString(CultureInfo.InvariantCulture));
+            if(Type==ExcelFillGradientType.Path)
+            {
+                this.SetXmlNodeString(_typePath, "path");
+            }
+
+            if(!double.IsNaN(Degree))
+            {
+                this.SetXmlNodeString(_degreePath, this.Degree.ToString(CultureInfo.InvariantCulture));
+            }
+
             if (GradientColor1!=null)
             {
                 /*** Gradient color node 1***/
@@ -168,10 +176,25 @@ namespace OfficeOpenXml.Style.XmlAccess
 
                 GradientColor2.CreateXmlNode(colorNode);
             }
-            if (!double.IsNaN(Top)) SetXmlNodeString(_topPath, Top.ToString("F5",CultureInfo.InvariantCulture));
-            if (!double.IsNaN(Bottom)) SetXmlNodeString(_bottomPath, Bottom.ToString("F5", CultureInfo.InvariantCulture));
-            if (!double.IsNaN(Left)) SetXmlNodeString(_leftPath, Left.ToString("F5", CultureInfo.InvariantCulture));
-            if (!double.IsNaN(Right)) SetXmlNodeString(_rightPath, Right.ToString("F5", CultureInfo.InvariantCulture));
+            if (!double.IsNaN(Top))
+            {
+                this.SetXmlNodeString(_topPath, this.Top.ToString("F5",CultureInfo.InvariantCulture));
+            }
+
+            if (!double.IsNaN(Bottom))
+            {
+                this.SetXmlNodeString(_bottomPath, this.Bottom.ToString("F5", CultureInfo.InvariantCulture));
+            }
+
+            if (!double.IsNaN(Left))
+            {
+                this.SetXmlNodeString(_leftPath, this.Left.ToString("F5", CultureInfo.InvariantCulture));
+            }
+
+            if (!double.IsNaN(Right))
+            {
+                this.SetXmlNodeString(_rightPath, this.Right.ToString("F5", CultureInfo.InvariantCulture));
+            }
 
             return topNode;
         }

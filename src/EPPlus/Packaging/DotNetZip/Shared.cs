@@ -40,7 +40,9 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         public static Int64 GetFileLength(string fileName)
         {
             if (!File.Exists(fileName))
+            {
                 throw new System.IO.FileNotFoundException(fileName);
+            }
 
             long fileLength = 0L;
             FileShare fs = FileShare.ReadWrite;
@@ -123,7 +125,11 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
 
         private static string SimplifyFwdSlashPath(string path)
         {
-            if (path.StartsWith("./", StringComparison.OrdinalIgnoreCase)) path = path.Substring(2);
+            if (path.StartsWith("./", StringComparison.OrdinalIgnoreCase))
+            {
+                path = path.Substring(2);
+            }
+
             path = path.Replace("/./", "/");
 
             // Replace foo/anything/../bar with foo/bar
@@ -142,17 +148,25 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         public static string NormalizePathForUseInZipFile(string pathName)
         {
             // boundary case
-            if (String.IsNullOrEmpty(pathName)) return pathName;
+            if (String.IsNullOrEmpty(pathName))
+            {
+                return pathName;
+            }
 
             // trim volume if necessary
             if ((pathName.Length >= 2)  && ((pathName[1] == ':') && (pathName[2] == '\\')))
+            {
                 pathName =  pathName.Substring(3);
+            }
 
             // swap slashes
             pathName = pathName.Replace('\\', '/');
 
             // trim all leading slashes
-            while (pathName.StartsWith("/", StringComparison.OrdinalIgnoreCase)) pathName = pathName.Substring(1);
+            while (pathName.StartsWith("/", StringComparison.OrdinalIgnoreCase))
+            {
+                pathName = pathName.Substring(1);
+            }
 
             return SimplifyFwdSlashPath(pathName);
         }
@@ -278,7 +292,11 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
 #else
             n = s.Read(block, 0, block.Length);
 #endif
-            if (n != block.Length) throw new BadReadException(String.Format(message, s.Position));
+            if (n != block.Length)
+            {
+                throw new BadReadException(String.Format(message, s.Position));
+            }
+
             int data = unchecked((((block[3] * 256 + block[2]) * 256) + block[1]) * 256 + block[0]);
             return data;
         }
@@ -349,9 +367,15 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
                         }
                     }
                 }
-                else break;
-                if (success) break;
+                else
+                {
+                    break;
+                }
 
+                if (success)
+                {
+                    break;
+                }
             } while (true);
 
             if (!success)
@@ -373,13 +397,21 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         // SetWastWriteTime() etc, then I need to adjust it for Win32.
         internal static DateTime AdjustTime_Reverse(DateTime time)
         {
-            if (time.Kind == DateTimeKind.Utc) return time;
+            if (time.Kind == DateTimeKind.Utc)
+            {
+                return time;
+            }
+
             DateTime adjusted = time;
             if (DateTime.Now.IsDaylightSavingTime() && !time.IsDaylightSavingTime())
+            {
                 adjusted = time - new System.TimeSpan(1, 0, 0);
+            }
 
             else if (!DateTime.Now.IsDaylightSavingTime() && time.IsDaylightSavingTime())
+            {
                 adjusted = time + new System.TimeSpan(1, 0, 0);
+            }
 
             return adjusted;
         }
@@ -406,7 +438,9 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         {
             // workitem 7074 & workitem 7170
             if (packedDateTime == 0xFFFF || packedDateTime == 0)
+            {
                 return new System.DateTime(1995, 1, 1, 0, 0, 0, 0);  // return a fixed date when none is supplied.
+            }
 
             Int16 packedTime = unchecked((Int16)(packedDateTime & 0x0000ffff));
             Int16 packedDate = unchecked((Int16)((packedDateTime & 0xffff0000) >> 16));
@@ -460,16 +494,56 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
                 {
                     try
                     {
-                        while (year < 1980) year++;
-                        while (year > 2030) year--;
-                        while (month < 1) month++;
-                        while (month > 12) month--;
-                        while (day < 1) day++;
-                        while (day > 28) day--;
-                        while (minute < 0) minute++;
-                        while (minute > 59) minute--;
-                        while (second < 0) second++;
-                        while (second > 59) second--;
+                        while (year < 1980)
+                        {
+                            year++;
+                        }
+
+                        while (year > 2030)
+                        {
+                            year--;
+                        }
+
+                        while (month < 1)
+                        {
+                            month++;
+                        }
+
+                        while (month > 12)
+                        {
+                            month--;
+                        }
+
+                        while (day < 1)
+                        {
+                            day++;
+                        }
+
+                        while (day > 28)
+                        {
+                            day--;
+                        }
+
+                        while (minute < 0)
+                        {
+                            minute++;
+                        }
+
+                        while (minute > 59)
+                        {
+                            minute--;
+                        }
+
+                        while (second < 0)
+                        {
+                            second++;
+                        }
+
+                        while (second > 59)
+                        {
+                            second--;
+                        }
+
                         d = new System.DateTime(year, month, day, hour, minute, second, 0);
                         success= true;
                     }
@@ -542,7 +616,10 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
                 }
                 catch (IOException)
                 {
-                    if (i == 2) throw;
+                    if (i == 2)
+                    {
+                        throw;
+                    }
                 }
             }
             throw new IOException();
@@ -783,9 +860,14 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         {
             _bytesWritten -= delta;
             if (_bytesWritten < 0)
+            {
                 throw new InvalidOperationException();
+            }
+
             if (_s as CountingStream != null)
-                ((CountingStream)_s).Adjust(delta);
+            {
+                ((CountingStream)this._s).Adjust(delta);
+            }
         }
 
         /// <summary>
@@ -810,7 +892,11 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         /// <param name="count">the number of bytes to write.</param>
         public override void Write(byte[] buffer, int offset, int count)
         {
-            if (count == 0) return;
+            if (count == 0)
+            {
+                return;
+            }
+
             _s.Write(buffer, offset, count);
             _bytesWritten += count;
         }

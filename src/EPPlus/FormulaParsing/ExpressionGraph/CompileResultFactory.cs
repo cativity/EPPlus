@@ -35,7 +35,11 @@ namespace OfficeOpenXml.FormulaParsing.ExpressionGraph
             {
                 obj = ((IRangeInfo)obj).GetOffset(0, 0);
             }
-            if (obj == null) return new CompileResult(null, DataType.Empty);
+            if (obj == null)
+            {
+                return new CompileResult(null, DataType.Empty);
+            }
+
             if (obj.GetType().Equals(typeof(string)))
             {
                 return new CompileResult(obj, DataType.String, excelAddressReferenceId);

@@ -368,9 +368,17 @@ namespace EPPlusTest.Core.Worksheet
                     sheet3.Columns[x + 1].AutoFit();
                     sheet2.Cells[2, x + 2].Value = sheet3.Columns[x + 1].Width;
                 }
-                if (!Directory.Exists(@"c:\Temp\FontTests")) Directory.CreateDirectory(@"c:\Temp\FontTests");
+                if (!Directory.Exists(@"c:\Temp\FontTests"))
+                {
+                    Directory.CreateDirectory(@"c:\Temp\FontTests");
+                }
+
                 var path = $"c:\\Temp\\FontTests\\{font}Measurements.xlsx";
-                if (File.Exists(path)) File.Delete(path);
+                if (File.Exists(path))
+                {
+                    File.Delete(path);
+                }
+
                 package.SaveAs(path);
             }
         }

@@ -102,9 +102,13 @@ namespace OfficeOpenXml.Filter
                 }
 
                 if (match == false && And)
+                {
                     return false;
+                }
                 else if (match && And == false)
+                {
                     return true;
+                }
             }
             return match;
         }
@@ -168,12 +172,20 @@ namespace OfficeOpenXml.Filter
             {
                 var node = (XmlElement)CreateNode("d:customFilters");
                 node.RemoveAll();
-                if (And) node.SetAttribute("and", "1");
+                if (And)
+                {
+                    node.SetAttribute("and", "1");
+                }
+
                 foreach (var f in Filters)
                 {
                     var e = TopNode.OwnerDocument.CreateElement("customFilter", ExcelPackage.schemaMain);
                     e.SetAttribute("val", f.Value);
-                    if(f.Operator.HasValue) e.SetAttribute("operator", f.Operator.Value.ToEnumString());
+                    if(f.Operator.HasValue)
+                    {
+                        e.SetAttribute("operator", f.Operator.Value.ToEnumString());
+                    }
+
                     node.AppendChild(e);
                 }
             }

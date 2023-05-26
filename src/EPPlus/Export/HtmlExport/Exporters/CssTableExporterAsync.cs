@@ -67,13 +67,24 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
                 throw new IOException("Parameter stream must be a writeable System.IO.Stream");
             }
 
-            if (_dataTypes.Count == 0) GetDataTypes(_table.Address, _table);
+            if (_dataTypes.Count == 0)
+            {
+                this.GetDataTypes(this._table.Address, this._table);
+            }
+
             var sw = new StreamWriter(stream);
             var ranges = new List<ExcelRangeBase>() { _table.Range };
             var cellCssWriter = new EpplusCssWriter(sw, ranges, _tableSettings, _tableSettings.Css, _tableSettings.Css.Exclude.CellStyle, _styleCache);
             await cellCssWriter.RenderAdditionalAndFontCssAsync(TableClass);
-            if (_tableSettings.Css.IncludeTableStyles) await RenderTableCssAsync(sw, _table, _tableSettings, _styleCache, _dataTypes);
-            if (_tableSettings.Css.IncludeCellStyles) await RenderCellCssAsync(sw);
+            if (_tableSettings.Css.IncludeTableStyles)
+            {
+                await this.RenderTableCssAsync(sw, this._table, this._tableSettings, this._styleCache, this._dataTypes);
+            }
+
+            if (_tableSettings.Css.IncludeCellStyles)
+            {
+                await this.RenderCellCssAsync(sw);
+            }
 
             if (Settings.Pictures.Include == ePictureInclude.Include)
             {
@@ -107,7 +118,11 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
         internal async Task RenderTableCssAsync(StreamWriter sw, ExcelTable table, HtmlTableExportSettings settings, Dictionary<string, int> styleCache, List<string> datatypes)
         {
             var styleWriter = new EpplusTableCssWriter(sw, table, settings, styleCache);
-            if (settings.Minify == false) await styleWriter.WriteLineAsync();
+            if (settings.Minify == false)
+            {
+                await styleWriter.WriteLineAsync();
+            }
+
             ExcelTableNamedStyle tblStyle;
             if (table.TableStyle == TableStyles.Custom)
             {

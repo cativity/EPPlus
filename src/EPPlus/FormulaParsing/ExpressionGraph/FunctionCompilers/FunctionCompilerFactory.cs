@@ -55,8 +55,15 @@ namespace OfficeOpenXml.FormulaParsing.ExpressionGraph.FunctionCompilers
             {
                 return _specialCompilers[funcType];
             }
-            else if (function.IsLookupFuction) return new LookupFunctionCompiler(function, _context);
-            else if (function.IsErrorHandlingFunction) return new ErrorHandlingFunctionCompiler(function, _context);
+            else if (function.IsLookupFuction)
+            {
+                return new LookupFunctionCompiler(function, this._context);
+            }
+            else if (function.IsErrorHandlingFunction)
+            {
+                return new ErrorHandlingFunctionCompiler(function, this._context);
+            }
+
             return new DefaultCompiler(function, _context);
         }
         public virtual FunctionCompiler Create(ExcelFunction function)

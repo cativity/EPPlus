@@ -28,16 +28,27 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Helpers
             {
                 var c = chars[x];
                 var current = 0;
-                if (c != '0' && c != '1') return false;
+                if (c != '0' && c != '1')
+                {
+                    return false;
+                }
+
                 if (x == 9)
                 {
                     current = c == '1' ? 1 : 0;
-                    if (isNegative && !negativeUsed) current *= -1;
+                    if (isNegative && !negativeUsed)
+                    {
+                        current *= -1;
+                    }
                 }
                 else if (c == '1')
                 {
                     current = (int)System.Math.Pow(raiseToBase, 9 - x);
-                    if (isNegative && !negativeUsed) current *= -1;
+                    if (isNegative && !negativeUsed)
+                    {
+                        current *= -1;
+                    }
+
                     negativeUsed = true;
                 }
                 result += current;

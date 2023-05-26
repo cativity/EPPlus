@@ -60,7 +60,11 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
             {
                 foreach (var c in arg.ValueAsRangeInfo)
                 {
-                    if (ShouldIgnore(c, context)) continue;
+                    if (ShouldIgnore(c, context))
+                    {
+                        continue;
+                    }
+
                     CheckForAndHandleExcelError(c);
                     if (IsBool(c.Value))
                     {
@@ -111,8 +115,12 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
 			{
 				if (obj is bool)
 				{
-					if (isInArray) return default;
-					return ConvertUtil.GetValueDouble(obj);
+					if (isInArray)
+                    {
+                        return default;
+                    }
+
+                    return ConvertUtil.GetValueDouble(obj);
 				}
 				else if (ConvertUtil.TryParseNumericString(obj as string, out double number))
 				{

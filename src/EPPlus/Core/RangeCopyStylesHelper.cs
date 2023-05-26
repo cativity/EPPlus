@@ -42,9 +42,15 @@ namespace OfficeOpenXml.Core
                     }
                     _destinationRange.Worksheet.SetStyleInner(dr, dc, styleId);
 
-                    if (sr < _sourceRange._toRow) sr++;
+                    if (sr < _sourceRange._toRow)
+                    {
+                        sr++;
+                    }
                 }
-                if (sc < _sourceRange._toCol) sc++;
+                if (sc < _sourceRange._toCol)
+                {
+                    sc++;
+                }
             }
         }
 

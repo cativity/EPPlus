@@ -44,7 +44,11 @@ namespace OfficeOpenXml.Drawing.Style.Coloring
         internal static Color GetColorFromString(string s)
         {
             int n;
-            if (s.Length == 6) s = "FF" + s;
+            if (s.Length == 6)
+            {
+                s = "FF" + s;
+            }
+
             if (int.TryParse(s, System.Globalization.NumberStyles.HexNumber, CultureInfo.InvariantCulture, out n))
             {
                 return Color.FromArgb(n);
@@ -103,7 +107,9 @@ namespace OfficeOpenXml.Drawing.Style.Coloring
             }
            
             if (hue < 0)
+            {
                 hue += 360;
+            }
 
             luminance = (cMax + cMin) / 2;
             saturation = delta == 0 ? 0 : delta / (1 - Math.Abs(2 * luminance - 1));

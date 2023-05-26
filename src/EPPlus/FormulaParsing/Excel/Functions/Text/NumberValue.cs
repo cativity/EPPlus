@@ -64,7 +64,10 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Text
                 _arg = arg.Substring(0, pIndex).Replace(" ", "");
                 var percentage = arg.Substring(pIndex, arg.Length - pIndex).Trim();
                 if (!Regex.IsMatch(percentage, "[%]+"))
+                {
                     throw new ArgumentException("Invalid format: " + arg);
+                }
+
                 _nPercentage = percentage.Length;
             }
             else
@@ -75,7 +78,11 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Text
 
         private bool ValidateAndSetSeparators(FunctionArgument[] arguments)
         {
-            if (arguments.Length == 1) return true;
+            if (arguments.Length == 1)
+            {
+                return true;
+            }
+
             var decimalSeparator = ArgToString(arguments, 1).Substring(0, 1);
             if (!DecimalSeparatorIsValid(decimalSeparator))
             {

@@ -207,12 +207,19 @@ namespace OfficeOpenXml.Core.Worksheet
                         {
                             column._columnMax -= columns;
                         }
-                        if (column._columnMin > columnFrom) column._columnMin = columnFrom;
+                        if (column._columnMin > columnFrom)
+                        {
+                            column._columnMin = columnFrom;
+                        }
+
                         moveValue = cse.Value;
                     }
                 }
             }
-            if (moveValue._styleId != int.MaxValue) ws._values.SetValue(0, toCol + 1, moveValue);
+            if (moveValue._styleId != int.MaxValue)
+            {
+                ws._values.SetValue(0, toCol + 1, moveValue);
+            }
         }
 
         private static void ValidateRow(ExcelWorksheet ws, int rowFrom, int rows, int columnFrom = 1, int columns = ExcelPackage.MaxColumns)

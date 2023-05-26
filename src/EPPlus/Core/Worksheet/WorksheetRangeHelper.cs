@@ -183,7 +183,11 @@ namespace OfficeOpenXml.Core.Worksheet
                             }
                         }
                     }
-                    if (drawing.From.Row < 0) drawing.From.Row = 0;
+                    if (drawing.From.Row < 0)
+                    {
+                        drawing.From.Row = 0;
+                    }
+
                     drawing.AdjustPositionAndSize();
                 }
             }
@@ -241,7 +245,11 @@ namespace OfficeOpenXml.Core.Worksheet
                             drawing.To.Column += columns;
                         }
                     }
-                    if (drawing.From.Column < 0) drawing.From.Column = 0;
+                    if (drawing.From.Column < 0)
+                    {
+                        drawing.From.Column = 0;
+                    }
+
                     drawing.AdjustPositionAndSize();
                 }
             }
@@ -282,8 +290,15 @@ namespace OfficeOpenXml.Core.Worksheet
                     if ((ws.Name.Equals(wsName, StringComparison.CurrentCultureIgnoreCase) && string.IsNullOrEmpty(tokenAddress.WorkSheetName)) ||
                         (!string.IsNullOrEmpty(tokenAddress.WorkSheetName) && tokenAddress.WorkSheetName.Equals(wsName, StringComparison.CurrentCultureIgnoreCase)))
                     {
-                        if (tokenAddress._toRowFixed == false) tokenAddress._toRow += (sfAddress.Rows - 1);
-                        if (tokenAddress._toColFixed == false) tokenAddress._toCol += (sfAddress.Columns - 1);
+                        if (tokenAddress._toRowFixed == false)
+                        {
+                            tokenAddress._toRow += (sfAddress.Rows - 1);
+                        }
+
+                        if (tokenAddress._toColFixed == false)
+                        {
+                            tokenAddress._toCol += (sfAddress.Columns - 1);
+                        }
 
                         if (tokenAddress.Collide(delRange, true) != ExcelAddressBase.eAddressCollition.No)  //Shared Formula address is effected.
                         {

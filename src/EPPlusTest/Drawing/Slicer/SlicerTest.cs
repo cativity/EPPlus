@@ -25,7 +25,10 @@ namespace EPPlusTest.Drawing.Slicer
 
             SaveAndCleanup(_pck);
 
-            if (File.Exists(fileName)) File.Copy(fileName, dirName + "\\SlicerRead.xlsx", true);
+            if (File.Exists(fileName))
+            {
+                File.Copy(fileName, dirName + "\\SlicerRead.xlsx", true);
+            }
         }
         [TestMethod]
         public void AddTableSlicerDate()

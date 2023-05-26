@@ -188,7 +188,11 @@ namespace OfficeOpenXml
         {            
             lock (_lockObj)
             {
-                if (_isLoaded) return;
+                if (_isLoaded)
+                {
+                    return;
+                }
+
                 if(_fontStream!=null)
                 {
                     ReadFontSize(_fontStream, fontName);

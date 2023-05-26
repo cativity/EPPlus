@@ -125,9 +125,21 @@ namespace OfficeOpenXml.Style.XmlAccess
             TopNode = topNode;
             SetXmlNodeString(namePath, _name);
             SetXmlNodeString(idPath, _styles.CellStyleXfs[StyleXfId].newID.ToString());
-            if (BuildInId>=0) SetXmlNodeString(buildInIdPath, BuildInId.ToString());
-            if(CustomBuildin) SetXmlNodeBool(customBuiltinPath, true);
-            if (!string.IsNullOrEmpty(Uid)) SetXmlNodeString(uidPath, Uid);
+            if (BuildInId>=0)
+            {
+                this.SetXmlNodeString(buildInIdPath, this.BuildInId.ToString());
+            }
+
+            if(CustomBuildin)
+            {
+                this.SetXmlNodeBool(customBuiltinPath, true);
+            }
+
+            if (!string.IsNullOrEmpty(Uid))
+            {
+                this.SetXmlNodeString(uidPath, this.Uid);
+            }
+
             return TopNode;            
         }
     }

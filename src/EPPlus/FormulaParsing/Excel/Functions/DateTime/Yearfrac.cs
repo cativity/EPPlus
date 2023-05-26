@@ -49,7 +49,10 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime
             if (functionArguments.Count() > 2)
             {
                 basis = ArgToInt(functionArguments, 2);
-                if (basis < 0 || basis > 4) return CreateResult(eErrorType.Num);
+                if (basis < 0 || basis > 4)
+                {
+                    return this.CreateResult(eErrorType.Num);
+                }
             }
             var func = context.Configuration.FunctionRepository.GetFunction("days360");
             var calendar = new GregorianCalendar();
@@ -61,7 +64,10 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime
                     if (date1.Month == 2 && date2.Day==31)
                     {
                         var daysInFeb = calendar.IsLeapYear(date1.Year) ? 29 : 28;
-                        if (date1.Day == daysInFeb) d360Result++;  
+                        if (date1.Day == daysInFeb)
+                        {
+                            d360Result++;
+                        }
                     }
                     return CreateResult(d360Result / 360d, DataType.Decimal);
                 case 1:
@@ -94,11 +100,17 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime
                 nYears = 1;
                 perYear = 365;
                 if (calendar.IsLeapYear(dt1.Year) && dt1.Month <= 2)
+                {
                     perYear = 366;
+                }
                 else if (calendar.IsLeapYear(dt2.Year) && dt2.Month > 2)
+                {
                     perYear = 366;
+                }
                 else if (dt2.Month == 2 && dt2.Day == 29)
+                {
                     perYear = 366;
+                }
             }
             return perYear/(double) nYears;  
         }

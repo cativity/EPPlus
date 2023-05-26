@@ -34,7 +34,11 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
             var nums = ArgsToDoubleEnumerable(IgnoreHiddenValues, IgnoreErrors, arguments, context);
             var arr = nums.ToArray();
             Array.Sort(arr);
-            if (arr.Length == 0) return CreateResult(eErrorType.Num);
+            if (arr.Length == 0)
+            {
+                return this.CreateResult(eErrorType.Num);
+            }
+
             double result;
             if (arr.Length % 2 == 1)
             {

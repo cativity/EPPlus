@@ -21,9 +21,14 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Engineering.Implementatio
         public FinanceCalcResult<double> BesselJ(double x, int N)
         {
             if (N < 0)
+            {
                 return new FinanceCalcResult<double>(eErrorType.Num);
+            }
+
             if (x == 0.0)
+            {
                 return new FinanceCalcResult<double>((N == 0) ? 1.0 : 0.0);
+            }
 
             /*  The algorithm works only for x>0, therefore remember sign. BesselJ
                 with integer order N is an even function for even N (means J(-x)=J(x))
@@ -37,7 +42,10 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Engineering.Implementatio
             if (fEstimateIteration > fMaxIteration)
             {
                 if (!bAsymptoticPossible)
+                {
                     return new FinanceCalcResult<double>(eErrorType.Num);
+                }
+
                 var res = fSign * System.Math.Sqrt(f_2_DIV_PI / fX) * System.Math.Cos(fX - N * f_PI_DIV_2 - f_PI_DIV_4);
                 return new FinanceCalcResult<double>(res);
             }
@@ -111,7 +119,9 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Engineering.Implementatio
             }
             while (!bHasfound && k <= fMaxIteration);
             if (!bHasfound)
+            {
                 return new FinanceCalcResult<double>(eErrorType.Num); // unlikely to happen
+            }
 
             return new FinanceCalcResult<double>(u * fSign);
         }

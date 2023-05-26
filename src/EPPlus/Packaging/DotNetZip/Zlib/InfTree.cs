@@ -158,8 +158,13 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
                         // Find minimum and maximum length, bound *m by those
                         l = m[0];
                         for (j = 1; j <= BMAX; j++)
-                                if (c[j] != 0)
-                                        break;
+                        {
+                            if (this.c[j] != 0)
+                            {
+                                break;
+                            }
+                        }
+
                         k = j; // minimum code length
                         if (l < j)
                         {
@@ -168,7 +173,9 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
                         for (i = BMAX; i != 0; i--)
                         {
                                 if (c[i] != 0)
-                                        break;
+                                {
+                                    break;
+                                }
                         }
                         g = i; // maximum code length
                         if (l > i)
@@ -251,7 +258,10 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
                                                                 {
                                                                         // try smaller tables up to z bits
                                                                         if ((f <<= 1) <= c[++xp])
-                                                                                break; // enough codes to use up j bits
+                                                                        {
+                                                                            break; // enough codes to use up j bits
+                                                                        }
+
                                                                         f -= c[xp]; // else deduct codes from patterns
                                                                 }
                                                         }

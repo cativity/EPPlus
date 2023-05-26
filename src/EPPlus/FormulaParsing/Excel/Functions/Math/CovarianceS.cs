@@ -30,8 +30,16 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
             ValidateArguments(arguments, 2);
             var array1 = ArgsToDoubleEnumerable(arguments.Take(1), context).ToArray();
             var array2 = ArgsToDoubleEnumerable(arguments.Skip(1).Take(1), context).ToArray();
-            if (array1.Length != array2.Length) return CreateResult(eErrorType.NA);
-            if (array1.Length == 0) return CreateResult(eErrorType.Div0);
+            if (array1.Length != array2.Length)
+            {
+                return this.CreateResult(eErrorType.NA);
+            }
+
+            if (array1.Length == 0)
+            {
+                return this.CreateResult(eErrorType.Div0);
+            }
+
             var avg1 = array1.Select(x => x.Value).Average();
             var avg2 = array2.Select(x => x.Value).Average();
             var result = 0d;

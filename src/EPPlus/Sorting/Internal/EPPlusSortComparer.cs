@@ -36,8 +36,16 @@ namespace OfficeOpenXml.Sorting.Internal
             {
                 var x1 = x.Items[_columns[i]]._value;
                 var y1 = y.Items[_columns[i]]._value;
-                if (x1 == null && y1 != null) return 1;
-                if (x1 != null && y1 == null) return -1;
+                if (x1 == null && y1 != null)
+                {
+                    return 1;
+                }
+
+                if (x1 != null && y1 == null)
+                {
+                    return -1;
+                }
+
                 int ret;
                 if (CustomLists != null && CustomLists.ContainsKey(_columns[i]))
                 {
@@ -64,7 +72,10 @@ namespace OfficeOpenXml.Sorting.Internal
                 {
                     ret = CompareObjects(x1, y1);
                 }
-                if (ret != 0) return ret * (Descending[i] ? -1 : 1);
+                if (ret != 0)
+                {
+                    return ret * (this.Descending[i] ? -1 : 1);
+                }
             }
             return 0;
         }

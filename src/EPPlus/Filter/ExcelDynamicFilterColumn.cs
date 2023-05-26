@@ -55,7 +55,11 @@ namespace OfficeOpenXml.Filter
             else
             {
                 var date = ConvertUtil.GetValueDate(value);
-                if (date.HasValue == false) return false;
+                if (date.HasValue == false)
+                {
+                    return false;
+                }
+
                 return DynamicDateFilterMatcher.Match(this, date);
             }
         }
@@ -65,10 +69,21 @@ namespace OfficeOpenXml.Filter
             var node = (XmlElement)CreateNode("d:dynamicFilter");
             node.RemoveAll();
             var type = Type.ToEnumString();
-            if (type.Length <= 3) type = type.ToUpper();    //For M1, M12, Q1 etc
+            if (type.Length <= 3)
+            {
+                type = type.ToUpper();    //For M1, M12, Q1 etc
+            }
+
             node.SetAttribute("type", GetTypeForXml(Type));
-            if(Value.HasValue) node.SetAttribute("val", Value.Value.ToString("R15", CultureInfo.InvariantCulture));
-            if(MaxValue.HasValue) node.SetAttribute("maxVal", MaxValue.Value.ToString("R15", CultureInfo.InvariantCulture));
+            if(Value.HasValue)
+            {
+                node.SetAttribute("val", this.Value.Value.ToString("R15", CultureInfo.InvariantCulture));
+            }
+
+            if(MaxValue.HasValue)
+            {
+                node.SetAttribute("maxVal", this.MaxValue.Value.ToString("R15", CultureInfo.InvariantCulture));
+            }
         }
         private string GetTypeForXml(eDynamicFilterType type)
         {

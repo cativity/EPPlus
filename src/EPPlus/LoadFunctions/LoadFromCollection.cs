@@ -61,7 +61,11 @@ namespace OfficeOpenXml.LoadFunctions
                 }
                 foreach (var columnInfo in _columns)
                 {
-                    if (columnInfo.MemberInfo == null) continue;
+                    if (columnInfo.MemberInfo == null)
+                    {
+                        continue;
+                    }
+
                     var member = columnInfo.MemberInfo;
                     if (member.DeclaringType != null && member.DeclaringType != type)
                     {
@@ -96,7 +100,11 @@ namespace OfficeOpenXml.LoadFunctions
 
         protected override int GetNumberOfRows()
         {
-            if (_items == null) return 0;
+            if (_items == null)
+            {
+                return 0;
+            }
+
             return _items.Count();
         }
 
@@ -104,7 +112,11 @@ namespace OfficeOpenXml.LoadFunctions
         {
             for(var ix = 0; ix < table.Columns.Count; ix++)
             {
-                if (ix >= _columns.Length) break;
+                if (ix >= _columns.Length)
+                {
+                    break;
+                }
+
                 var totalsRowFormula = _columns[ix].TotalsRowFormula;
                 var totalsRowLabel = _columns[ix].TotalsRowLabel;
                 if (!string.IsNullOrEmpty(totalsRowFormula))
@@ -252,7 +264,11 @@ namespace OfficeOpenXml.LoadFunctions
             object o = obj;
             foreach(var member in members)
             {
-                if (o == null) return null;
+                if (o == null)
+                {
+                    return null;
+                }
+
                 var memberInfos = o.GetType().GetMember(member);
                 if(memberInfos == null || memberInfos.Length == 0)
                 {

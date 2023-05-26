@@ -180,7 +180,10 @@ namespace OfficeOpenXml.DataValidation
         {
             Require.Argument(address).IsNotNullOrEmpty("address");
 
-            if (!InternalValidationEnabled) return;
+            if (!InternalValidationEnabled)
+            {
+                return;
+            }
 
             // ensure that the new address does not collide with an existing validation.
             var newAddress = new ExcelAddress(address);
@@ -206,7 +209,10 @@ namespace OfficeOpenXml.DataValidation
         /// </summary>
         internal void ValidateAll()
         {
-            if (!InternalValidationEnabled) return;
+            if (!InternalValidationEnabled)
+            {
+                return;
+            }
 
             foreach (var validation in _validations)
             {
@@ -414,7 +420,11 @@ namespace OfficeOpenXml.DataValidation
             }
 
             var retVal = _validations.Remove((ExcelDataValidation)item);
-            if (retVal) OnValidationCountChanged();
+            if (retVal)
+            {
+                this.OnValidationCountChanged();
+            }
+
             return retVal;
         }
 

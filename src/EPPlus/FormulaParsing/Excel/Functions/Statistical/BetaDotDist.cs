@@ -44,8 +44,16 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Statistical
                 B = ArgToDecimal(arguments, 5);
             }
             // validate
-            if (alpha <= 0 || beta <= 0) return CreateResult(eErrorType.Num);
-            if (x < A || x > B || A == B) return CreateResult(eErrorType.Num);
+            if (alpha <= 0 || beta <= 0)
+            {
+                return this.CreateResult(eErrorType.Num);
+            }
+
+            if (x < A || x > B || A == B)
+            {
+                return this.CreateResult(eErrorType.Num);
+            }
+
             x = (x - A) / (B - A);
             var result = cumulative ? BetaHelper.BetaCdf(x, alpha, beta) : BetaHelper.BetaPdf(x, alpha, beta);
             return CreateResult(result, DataType.Decimal);

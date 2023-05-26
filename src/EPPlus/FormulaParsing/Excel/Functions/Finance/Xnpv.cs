@@ -34,14 +34,21 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance
             var values = ArgsToDoubleEnumerable(arg2, context);
             var dates = GetDates(arguments.ElementAt(2), context);
             if (values.Count() != dates.Count())
-                return CreateResult(eErrorType.Num);
+            {
+                return this.CreateResult(eErrorType.Num);
+            }
+
             var firstDate = dates.First();
             var result = 0d;
             for(var i = 0; i < values.Count(); i++)
             {
                 var dt = dates.ElementAt(i);
                 var val = values.ElementAt(i);
-                if (dt < firstDate) return CreateResult(eErrorType.Num);
+                if (dt < firstDate)
+                {
+                    return this.CreateResult(eErrorType.Num);
+                }
+
                 result += val / System.Math.Pow(1d + rate, dt.Subtract(firstDate).TotalDays / 365d);
             }
             return CreateResult(result, DataType.Decimal);

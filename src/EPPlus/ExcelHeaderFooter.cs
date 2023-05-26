@@ -54,7 +54,11 @@ namespace OfficeOpenXml
         {
             _ws = ws;
             _hf = hf;
-            if (TextNode == null || string.IsNullOrEmpty(TextNode.InnerText)) return;
+            if (TextNode == null || string.IsNullOrEmpty(TextNode.InnerText))
+            {
+                return;
+            }
+
             string text = TextNode.InnerText;
             string code = text.Substring(0, 2);  
             int startPos=2;
@@ -551,12 +555,21 @@ namespace OfficeOpenXml
 		{
 			string ret = "";
 			if (headerFooter.LeftAlignedText != null)
-				ret += "&L" + headerFooter.LeftAlignedText;
-			if (headerFooter.CenteredText != null)
-				ret += "&C" + headerFooter.CenteredText;
-			if (headerFooter.RightAlignedText != null)
-				ret += "&R" + headerFooter.RightAlignedText;
-			return ret;
+            {
+                ret += "&L" + headerFooter.LeftAlignedText;
+            }
+
+            if (headerFooter.CenteredText != null)
+            {
+                ret += "&C" + headerFooter.CenteredText;
+            }
+
+            if (headerFooter.RightAlignedText != null)
+            {
+                ret += "&R" + headerFooter.RightAlignedText;
+            }
+
+            return ret;
 		}
 #endregion
 	}

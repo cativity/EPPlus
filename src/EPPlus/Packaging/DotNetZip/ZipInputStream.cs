@@ -343,7 +343,10 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         {
             _inputStream = stream;
             if (!_inputStream.CanRead)
+            {
                 throw new ZipException("The stream must be readable.");
+            }
+
             _container= new ZipContainer(this);
 
             _leaveUnderlyingStreamOpen = leaveOpen;
@@ -498,9 +501,14 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
             }
 
             if (_needSetup)
-                SetupStream();
+            {
+                this.SetupStream();
+            }
 
-            if (_LeftToRead == 0) return 0;
+            if (_LeftToRead == 0)
+            {
+                return 0;
+            }
 
             int len = (_LeftToRead > count) ? count : (int)_LeftToRead;
             int n = _crcStream.Read(buffer, offset, len);
@@ -561,7 +569,11 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
             {
                 // find the next signature
                 long d = SharedUtilities.FindSignature(_inputStream, ZipConstants.ZipEntrySignature);
-                if (d == -1) return null;
+                if (d == -1)
+                {
+                    return null;
+                }
+
                 // back up 4 bytes: ReadEntry assumes the file pointer is positioned before the entry signature
                 _inputStream.Seek(-4, SeekOrigin.Current);
                 // workitem 10178
@@ -621,7 +633,10 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         /// </param>
         protected override void Dispose(bool disposing)
         {
-            if (_closed) return;
+            if (_closed)
+            {
+                return;
+            }
 
             if (disposing) // not called from finalizer
             {
@@ -629,7 +644,10 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
                 // exception is thrown, Close() is invoked.  But we don't want to
                 // try to write anything in that case.  Eventually the exception
                 // will be propagated to the application.
-                if (_exceptionPending) return;
+                if (_exceptionPending)
+                {
+                    return;
+                }
 
                 if (!_leaveUnderlyingStreamOpen)
                 {

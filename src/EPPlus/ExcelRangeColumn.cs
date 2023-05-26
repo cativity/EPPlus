@@ -140,7 +140,11 @@ namespace OfficeOpenXml
         /// </summary>
         public void Group()
         {
-            SetValue(new Action<ExcelColumn, int>((x, v) => { if(x.OutlineLevel<8) x.OutlineLevel += v; }), 1);
+            SetValue(new Action<ExcelColumn, int>((x, v) => { if(x.OutlineLevel<8)
+                                                      {
+                                                          x.OutlineLevel += v;
+                                                      }
+                                                  }), 1);
         }
         /// <summary>
         /// Ungroups the columns from the outline. 
@@ -148,7 +152,11 @@ namespace OfficeOpenXml
         /// </summary>
         public void UnGroup()
         {
-            SetValue(new Action<ExcelColumn, int>((x, v) => { if (x.OutlineLevel >= 0) x.OutlineLevel += v; }), -1);
+            SetValue(new Action<ExcelColumn, int>((x, v) => { if (x.OutlineLevel >= 0)
+                                                      {
+                                                          x.OutlineLevel += v;
+                                                      }
+                                                  }), -1);
         }
 
         /// <summary>
@@ -599,8 +607,10 @@ namespace OfficeOpenXml
                 {
                     return false;
                 }
-                if (enumCol <= _toCol) 
+                if (enumCol <= _toCol)
+                {
                     return true;
+                }
             }
             return false;
         }

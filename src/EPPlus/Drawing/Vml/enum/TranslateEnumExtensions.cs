@@ -7,7 +7,11 @@ namespace OfficeOpenXml.Drawing.Vml
         {
             try
             {
-                if (string.IsNullOrEmpty(s)) return defaultValue;
+                if (string.IsNullOrEmpty(s))
+                {
+                    return defaultValue;
+                }
+
                 if(s=="linear sigma")
                 {
                     return eVmlGradientMethod.LinearSigma;

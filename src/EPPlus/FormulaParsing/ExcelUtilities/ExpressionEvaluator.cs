@@ -48,9 +48,13 @@ namespace OfficeOpenXml.FormulaParsing.ExcelUtilities
                 if (expr.Length > 1 && !char.IsLetterOrDigit(expr[0]) && !char.IsLetterOrDigit(expr[1]))
                 {
                     if (char.IsWhiteSpace(expr[1]))
+                    {
                         result = expr.Substring(0, 1);
+                    }
                     else
+                    {
                         result = expr.Substring(0, 2);
+                    }
                 }
                 else if (expr.Length > 0 && !char.IsLetterOrDigit(expr[0]))
                 {
@@ -104,7 +108,11 @@ namespace OfficeOpenXml.FormulaParsing.ExcelUtilities
         /// <returns>True if any of the supplied expressions evaluates to true</returns>
         public bool Evaluate(object left, IEnumerable<string> expressions)
         {
-            if (expressions == null || !expressions.Any()) return false;
+            if (expressions == null || !expressions.Any())
+            {
+                return false;
+            }
+
             foreach(var expression in expressions)
             {
                 if(Evaluate(left, expression))
@@ -138,7 +146,11 @@ namespace OfficeOpenXml.FormulaParsing.ExcelUtilities
             {
                 return left == null || left.ToString() == string.Empty;
             }
-            if (expression == "=" && left == null) return true;
+            if (expression == "=" && left == null)
+            {
+                return true;
+            }
+
             var operatorCandidate = GetNonAlphanumericStartChars(expression);
             if(!string.IsNullOrEmpty(operatorCandidate))
             {
@@ -209,7 +221,11 @@ namespace OfficeOpenXml.FormulaParsing.ExcelUtilities
 
         private bool IsTimeString(string str)
         {
-            if (string.IsNullOrEmpty(str) || str.Length < 5) return false;
+            if (string.IsNullOrEmpty(str) || str.Length < 5)
+            {
+                return false;
+            }
+
             return _timeStringParser.CanParse(str);
         }
     }

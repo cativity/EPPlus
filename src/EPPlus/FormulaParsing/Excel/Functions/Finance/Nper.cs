@@ -43,7 +43,11 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance
                 type = ArgToInt(arguments, 4);
             }
             var retVal = NperImpl.NPer(rate, pmt, pv, fv, (PmtDue)type);
-            if (retVal.HasError) return CreateResult(retVal.ExcelErrorType);
+            if (retVal.HasError)
+            {
+                return this.CreateResult(retVal.ExcelErrorType);
+            }
+
             return CreateResult(retVal.Result, DataType.Decimal);
         }
     }

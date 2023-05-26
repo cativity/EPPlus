@@ -33,7 +33,11 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance
             var financeRate = ArgToDecimal(arguments, 1);
             var reinvestState = ArgToDecimal(arguments, 2);
             var result = MirrImpl.MIRR(values.Select(x => (double)x).ToArray(), financeRate, reinvestState);
-            if (result.HasError) return CreateResult(result.ExcelErrorType);
+            if (result.HasError)
+            {
+                return this.CreateResult(result.ExcelErrorType);
+            }
+
             return CreateResult(result.Result, DataType.Decimal);
         }
     }

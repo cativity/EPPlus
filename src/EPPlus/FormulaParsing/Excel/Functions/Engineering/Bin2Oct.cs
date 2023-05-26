@@ -34,9 +34,16 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Engineering
             if(arguments.Count() > 1)
             {
                 padding = ArgToInt(arguments, 1);
-                if (padding.Value < 0 ^ padding.Value > 10) return CreateResult(eErrorType.Num);
+                if (padding.Value < 0 ^ padding.Value > 10)
+                {
+                    return this.CreateResult(eErrorType.Num);
+                }
             }
-            if (number.Length > 10) return CreateResult(eErrorType.Num);
+            if (number.Length > 10)
+            {
+                return this.CreateResult(eErrorType.Num);
+            }
+
             var octStr = string.Empty;
             if (number.Length < 10)
             {
@@ -45,7 +52,11 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Engineering
             }
             else
             {
-                if (!BinaryHelper.TryParseBinaryToDecimal(number, 2, out int result)) return CreateResult(eErrorType.Num);
+                if (!BinaryHelper.TryParseBinaryToDecimal(number, 2, out int result))
+                {
+                    return this.CreateResult(eErrorType.Num);
+                }
+
                 octStr = Convert.ToString(result, 8);
             }
             if(padding.HasValue)

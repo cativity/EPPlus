@@ -95,7 +95,11 @@ namespace OfficeOpenXml
         {
             get
             {
-                if(PositionID < 0) return default;
+                if(PositionID < 0)
+                {
+                    return default;
+                }
+
                 return _list[PositionID];
             }
         }
@@ -112,8 +116,16 @@ namespace OfficeOpenXml
         internal int Add(string key, T item)
         {
             _list.Add(item);
-            if (!_dic.ContainsKey(key.ToLower(CultureInfo.InvariantCulture))) _dic.Add(key.ToLower(CultureInfo.InvariantCulture), _list.Count - 1);
-            if (_setNextIdManual) NextId++;
+            if (!_dic.ContainsKey(key.ToLower(CultureInfo.InvariantCulture)))
+            {
+                this._dic.Add(key.ToLower(CultureInfo.InvariantCulture), this._list.Count - 1);
+            }
+
+            if (_setNextIdManual)
+            {
+                this.NextId++;
+            }
+
             return _list.Count-1;
         }
         /// <summary>

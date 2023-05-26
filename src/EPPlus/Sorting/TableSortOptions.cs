@@ -63,7 +63,10 @@ namespace OfficeOpenXml.Sorting
             get
             {
                 if (_sortLayer == null)
-                    _sortLayer = new TableSortLayer(this);
+                {
+                    this._sortLayer = new TableSortLayer(this);
+                }
+
                 return _sortLayer;
             }
         }

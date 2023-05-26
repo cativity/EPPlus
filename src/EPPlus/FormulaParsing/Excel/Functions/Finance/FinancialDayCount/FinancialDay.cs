@@ -77,8 +77,16 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.FinancialDayCount
 
         public int CompareTo(FinancialDay other)
         {
-            if (other is null) return 1;
-            if (Year == other.Year && Month == other.Month && Day == other.Day) return 0;
+            if (other is null)
+            {
+                return 1;
+            }
+
+            if (Year == other.Year && Month == other.Month && Day == other.Day)
+            {
+                return 0;
+            }
+
             return ToDateTime().CompareTo(other.ToDateTime());
         }
 
@@ -92,17 +100,41 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.FinancialDayCount
 
         public static bool operator ==(FinancialDay a, FinancialDay b)
         {
-            if (a is null && b is null) return true;
-            if (!(a is null) && b is null) return false;
-            if (a is null && !(b is null)) return false;
+            if (a is null && b is null)
+            {
+                return true;
+            }
+
+            if (!(a is null) && b is null)
+            {
+                return false;
+            }
+
+            if (a is null && !(b is null))
+            {
+                return false;
+            }
+
             return a.CompareTo(b) == 0;
         }
 
         public static bool operator !=(FinancialDay a, FinancialDay b)
         {
-            if (a is null && b is null) return false;
-            if (!(a is null) && b is null) return true;
-            if (a is null && !(b is null)) return true;
+            if (a is null && b is null)
+            {
+                return false;
+            }
+
+            if (!(a is null) && b is null)
+            {
+                return true;
+            }
+
+            if (a is null && !(b is null))
+            {
+                return true;
+            }
+
             return a.CompareTo(b) != 0;
         }
 

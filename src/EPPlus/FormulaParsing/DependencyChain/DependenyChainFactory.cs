@@ -125,7 +125,11 @@ namespace OfficeOpenXml.FormulaParsing
             var fs = new CellStoreEnumerator<object>(ws._formulas, Range.Start.Row, Range.Start.Column, Range.End.Row, Range.End.Column);
             while (fs.Next())
             {
-                if (fs.Value == null || fs.Value.ToString().Trim() == "") continue;
+                if (fs.Value == null || fs.Value.ToString().Trim() == "")
+                {
+                    continue;
+                }
+
                 var id = ExcelCellBase.GetCellId(ws.IndexInList, fs.Row, fs.Column);
                 if (!depChain.index.ContainsKey(id))
                 {
@@ -235,7 +239,10 @@ namespace OfficeOpenXml.FormulaParsing
                         {
                             name = null;
                         }
-                        if(name != null) f.iteratorWs = name.Worksheet;                        
+                        if(name != null)
+                        {
+                            f.iteratorWs = name.Worksheet;
+                        }
                     }
                     else if (wb.Names.ContainsKey(adrName))
                     {
@@ -319,7 +326,11 @@ namespace OfficeOpenXml.FormulaParsing
             while (f.iterator != null && f.iterator.Next())
             {
                 var v = f.iterator.Value;
-                if (v == null || v.ToString().Trim() == "") continue;
+                if (v == null || v.ToString().Trim() == "")
+                {
+                    continue;
+                }
+
                 var id = ExcelAddressBase.GetCellId(f.iteratorWs.IndexInList, f.iterator.Row, f.iterator.Column);
                 if (!depChain.index.ContainsKey(id))
                 {

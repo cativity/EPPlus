@@ -67,7 +67,9 @@ namespace OfficeOpenXml.Drawing.Chart
             get
             {
                 if (_chartXmlHelper.GetXmlNodeString(pieTypePath) == "bar")
+                {
                     return ePieType.Bar;
+                }
                 else
                 {
                     return ePieType.Pie;

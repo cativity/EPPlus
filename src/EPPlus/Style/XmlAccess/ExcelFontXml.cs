@@ -346,10 +346,33 @@ namespace OfficeOpenXml.Style.XmlAccess
         internal override XmlNode CreateXmlNode(XmlNode topElement)
         {
             TopNode = topElement;
-            if (_bold) CreateNode(boldPath); else DeleteAllNode(boldPath);
-            if (_italic) CreateNode(italicPath); else DeleteAllNode(italicPath);
-            if (_strike) CreateNode(strikePath); else DeleteAllNode(strikePath);
-            
+            if (_bold)
+            {
+                this.CreateNode(boldPath);
+            }
+            else
+            {
+                this.DeleteAllNode(boldPath);
+            }
+
+            if (_italic)
+            {
+                this.CreateNode(italicPath);
+            }
+            else
+            {
+                this.DeleteAllNode(italicPath);
+            }
+
+            if (_strike)
+            {
+                this.CreateNode(strikePath);
+            }
+            else
+            {
+                this.DeleteAllNode(strikePath);
+            }
+
             if (_underlineType == ExcelUnderLineType.None)
             {
                 DeleteAllNode(underLinedPath);
@@ -364,18 +387,37 @@ namespace OfficeOpenXml.Style.XmlAccess
                 SetXmlNodeString(underLinedPath + "/@val", v.Substring(0, 1).ToLower(CultureInfo.InvariantCulture) + v.Substring(1));
             }
 
-            if (_verticalAlign!="") SetXmlNodeString(verticalAlignPath, _verticalAlign.ToString());
-            if(_size>0) SetXmlNodeString(sizePath, _size.ToString(System.Globalization.CultureInfo.InvariantCulture));
+            if (_verticalAlign!="")
+            {
+                this.SetXmlNodeString(verticalAlignPath, this._verticalAlign.ToString());
+            }
+
+            if(_size>0)
+            {
+                this.SetXmlNodeString(sizePath, this._size.ToString(System.Globalization.CultureInfo.InvariantCulture));
+            }
+
             if (_color.Exists)
             {
                 CreateNode(_colorPath);
                 TopNode.AppendChild(_color.CreateXmlNode(TopNode.SelectSingleNode(_colorPath, NameSpaceManager)));
             }
 
-            if (!string.IsNullOrEmpty(_name)) SetXmlNodeString(namePath, _name);
-            if(_family>int.MinValue) SetXmlNodeString(familyPath, _family.ToString());
+            if (!string.IsNullOrEmpty(_name))
+            {
+                this.SetXmlNodeString(namePath, this._name);
+            }
+
+            if(_family>int.MinValue)
+            {
+                this.SetXmlNodeString(familyPath, this._family.ToString());
+            }
+
             SetXmlNodeInt(_charsetPath, Charset);
-            if (_scheme != "") SetXmlNodeString(schemePath, _scheme.ToString());
+            if (_scheme != "")
+            {
+                this.SetXmlNodeString(schemePath, this._scheme.ToString());
+            }
 
             return TopNode;
         }

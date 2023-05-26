@@ -29,7 +29,11 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Statistical
         {
             ValidateArguments(arguments, 1);
             var numbers = ArgsToDoubleEnumerable(arguments, context);
-            if (numbers.Any(x => x.Value <= 0d)) return CreateResult(eErrorType.Num);
+            if (numbers.Any(x => x.Value <= 0d))
+            {
+                return this.CreateResult(eErrorType.Num);
+            }
+
             var n = 0d;
             for (var x = 0; x < numbers.Count(); x++)
             {

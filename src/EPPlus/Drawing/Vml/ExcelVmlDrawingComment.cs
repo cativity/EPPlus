@@ -152,7 +152,11 @@ namespace OfficeOpenXml.Drawing.Vml
                 }
                 else
                 {
-                    if(col.StartsWith("#", StringComparison.OrdinalIgnoreCase)) col=col.Substring(1,col.Length-1);
+                    if(col.StartsWith("#", StringComparison.OrdinalIgnoreCase))
+                    {
+                        col=col.Substring(1,col.Length-1);
+                    }
+
                     int res;
                     if (int.TryParse(col,System.Globalization.NumberStyles.AllowHexSpecifier, CultureInfo.InvariantCulture, out res))
                     {
@@ -167,7 +171,11 @@ namespace OfficeOpenXml.Drawing.Vml
             set
             {
                 string color = value.ToArgb().ToString("X");
-                if (color.Length == 8) color = color.Substring(2, 6);
+                if (color.Length == 8)
+                {
+                    color = color.Substring(2, 6);
+                }
+
                 SetXmlNodeString(BACKGROUNDCOLOR_PATH, "#" + color);
                 //SetXmlNode(BACKGROUNDCOLOR2_PATH, color);
             }
@@ -234,7 +242,11 @@ namespace OfficeOpenXml.Drawing.Vml
                 }
                 else
                 {
-                    if (col.StartsWith("#", StringComparison.OrdinalIgnoreCase)) col = col.Substring(1, col.Length - 1);
+                    if (col.StartsWith("#", StringComparison.OrdinalIgnoreCase))
+                    {
+                        col = col.Substring(1, col.Length - 1);
+                    }
+
                     int res;
                     if (int.TryParse(col, System.Globalization.NumberStyles.AllowHexSpecifier, CultureInfo.InvariantCulture, out res))
                     {
@@ -261,8 +273,15 @@ namespace OfficeOpenXml.Drawing.Vml
             get
             {
                 string wt=GetXmlNodeString(LINEWIDTH_PATH);
-                if (wt == "") return (Single).75;
-                if(wt.EndsWith("pt")) wt=wt.Substring(0,wt.Length-2);
+                if (wt == "")
+                {
+                    return (Single).75;
+                }
+
+                if(wt.EndsWith("pt"))
+                {
+                    wt=wt.Substring(0,wt.Length-2);
+                }
 
                 Single ret;
                 if(Single.TryParse(wt,System.Globalization.NumberStyles.Any, CultureInfo.InvariantCulture, out ret))

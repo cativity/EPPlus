@@ -183,12 +183,20 @@ namespace OfficeOpenXml
             try
             {
                 worksheet.CheckSheetTypeAndNotDisposed();
-                if(string.IsNullOrEmpty(Formula.Trim())) return null;
+                if(string.IsNullOrEmpty(Formula.Trim()))
+                {
+                    return null;
+                }
+
                 Init(worksheet.Workbook);
                 var parser = worksheet.Workbook.FormulaParser;
                 var filterInfo = new FilterInfo(worksheet.Workbook);
                 parser.InitNewCalc(filterInfo);
-                if (Formula[0] == '=') Formula = Formula.Substring(1); //Remove any starting equal sign
+                if (Formula[0] == '=')
+                {
+                    Formula = Formula.Substring(1); //Remove any starting equal sign
+                }
+
                 var dc = DependencyChainFactory.Create(worksheet, Formula, options);
                 var f = dc.list[0];
                 dc.CalcOrder.RemoveAt(dc.CalcOrder.Count - 1);

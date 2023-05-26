@@ -27,7 +27,11 @@ namespace EPPlusTest.Utils
         }
         internal void Write(byte[] bytes, int size=-1)
         {
-            if (size < 0) size = bytes.Length;
+            if (size < 0)
+            {
+                size = bytes.Length;
+            }
+
             if(size >= _buffer.Length)
             {
                 _index = 0;

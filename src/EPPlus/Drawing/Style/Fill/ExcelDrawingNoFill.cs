@@ -53,7 +53,11 @@ namespace OfficeOpenXml.Drawing.Style.Fill
 
         internal override void SetXml(XmlNamespaceManager nsm, XmlNode node)
         {
-            if (_xml == null) InitXml(nsm, node.FirstChild, "");
+            if (_xml == null)
+            {
+                this.InitXml(nsm, node.FirstChild, "");
+            }
+
             CheckTypeChange(NodeName);
         }
 

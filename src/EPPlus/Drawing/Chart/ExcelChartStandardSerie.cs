@@ -147,7 +147,11 @@ namespace OfficeOpenXml.Drawing.Chart
            set
            {
                 value = value.Trim();
-                if (value.StartsWith("=", StringComparison.OrdinalIgnoreCase)) value = value.Substring(1);
+                if (value.StartsWith("=", StringComparison.OrdinalIgnoreCase))
+                {
+                    value = value.Substring(1);
+                }
+
                 if (value.StartsWith("{", StringComparison.OrdinalIgnoreCase) && value.EndsWith("}", StringComparison.OrdinalIgnoreCase))
                 {
                     GetLitValues(value, out double[] numLit, out string[] strLit);
@@ -184,7 +188,11 @@ namespace OfficeOpenXml.Drawing.Chart
            set
            {
                 _xSeries = value.Trim();
-                if (_xSeries.StartsWith("=", StringComparison.OrdinalIgnoreCase)) _xSeries = _xSeries.Substring(1);
+                if (_xSeries.StartsWith("=", StringComparison.OrdinalIgnoreCase))
+                {
+                    this._xSeries = this._xSeries.Substring(1);
+                }
+
                 if (value.StartsWith("{", StringComparison.OrdinalIgnoreCase) && value.EndsWith("}", StringComparison.OrdinalIgnoreCase))
                 {
                     GetLitValues(_xSeries, out double[] numLit, out string[] strLit);
@@ -351,7 +359,11 @@ namespace OfficeOpenXml.Drawing.Chart
 
         private void SetLitArray(XmlNode lit, double[] numLit)
         {
-            if (numLit.Length == 0) return;
+            if (numLit.Length == 0)
+            {
+                return;
+            }
+
             var ci = CultureInfo.InvariantCulture;
             for (int i = 0; i < numLit.Length; i++)
             {
@@ -421,7 +433,10 @@ namespace OfficeOpenXml.Drawing.Chart
         /// </summary>
         public void CreateCache()
         {
-            if (_isPivot) throw(new NotImplementedException("Cache for pivotcharts has not been implemented yet."));
+            if (_isPivot)
+            {
+                throw(new NotImplementedException("Cache for pivotcharts has not been implemented yet."));
+            }
 
             if (!string.IsNullOrEmpty(Series))
             {
@@ -485,7 +500,11 @@ namespace OfficeOpenXml.Drawing.Chart
 
         private void CreateCacheFromRange(XmlNode node, ExcelRangeBase range)
         {
-            if (range == null) return;
+            if (range == null)
+            {
+                return;
+            }
+
             var startRow = range._fromRow;
             var items = 0;
             var cse = new CellStoreEnumerator<ExcelValue>(range.Worksheet._values, startRow,range._fromCol, range._toRow, range._toCol);
@@ -512,7 +531,11 @@ namespace OfficeOpenXml.Drawing.Chart
         private void CreateCacheFromExternalCache(XmlNode node, ExternalReferences.ExcelExternalWorkbook er, ExcelAddressBase addr)
         {
             var ews = er.CachedWorksheets[addr.WorkSheetName];
-            if (ews == null) return;
+            if (ews == null)
+            {
+                return;
+            }
+
             var startRow = addr._fromRow;
             var items = 0;
             var cse = new CellStoreEnumerator<object>(ews.CellValues._values, startRow, addr._fromCol, addr._toRow, addr._toCol);

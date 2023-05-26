@@ -184,8 +184,12 @@ namespace OfficeOpenXml.Core.Worksheet.Fill
             int r = startRow, c = startCol;
             while (GetNextCell(options, fromRow, toRow, fromCol, toCol, ref r, ref c))
             {
-                if (ix == list.Count) ix = 0;
-                    worksheet.SetValue(r, c, list[ix++]);
+                if (ix == list.Count)
+                {
+                    ix = 0;
+                }
+
+                worksheet.SetValue(r, c, list[ix++]);
             }
         }
         private static bool GetNextCell(FillParams options, int fromRow, int toRow, int fromCol, int toCol, ref int r, ref int c)
@@ -239,16 +243,24 @@ namespace OfficeOpenXml.Core.Worksheet.Fill
             if (options.StartPosition == eFillStartPosition.TopLeft)
             {
                 if (options.Direction == eFillDirection.Column)
+                {
                     fromRow++;
+                }
                 else
+                {
                     fromCol++;
+                }
             }
             else
             {
                 if (options.Direction == eFillDirection.Column)
+                {
                     toRow--;
+                }
                 else
+                {
                     toCol--;
+                }
             }
 
         }

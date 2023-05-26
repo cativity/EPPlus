@@ -47,7 +47,11 @@ namespace OfficeOpenXml.Drawing
             }
             set
             {
-                if(isInit==false) _initParent(false);
+                if(isInit==false)
+                {
+                    this._initParent(false);
+                }
+
                 SetXmlNodeEmuToPt(_xPath, value);
             }
         }
@@ -62,7 +66,11 @@ namespace OfficeOpenXml.Drawing
             }
             set
             {
-                if (isInit == false) _initParent(false);
+                if (isInit == false)
+                {
+                    this._initParent(false);
+                }
+
                 SetXmlNodeEmuToPt(_yPath, value);
             }
         }
@@ -77,7 +85,11 @@ namespace OfficeOpenXml.Drawing
             }
             set
             {
-                if (isInit == false) _initParent(false);
+                if (isInit == false)
+                {
+                    this._initParent(false);
+                }
+
                 SetXmlNodeEmuToPt(_zPath, value);
             }
         }

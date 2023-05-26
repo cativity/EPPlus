@@ -49,7 +49,11 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance
             }
             
             var retVal = RateImpl.Rate(nPer, pmt, pv, fv, (PmtDue)type, guess);
-            if (retVal.HasError) return CreateResult(retVal.ExcelErrorType);
+            if (retVal.HasError)
+            {
+                return this.CreateResult(retVal.ExcelErrorType);
+            }
+
             return CreateResult(retVal.Result, DataType.Decimal);
         }
     }

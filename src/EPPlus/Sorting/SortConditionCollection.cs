@@ -64,7 +64,11 @@ namespace OfficeOpenXml.Sorting
         /// <param name="decending">If true - descending sort order, if false or null - ascending sort order.</param>
         internal void Add(string @ref, bool? decending = null)
         {
-            if (_sortConditions.Count > 63) throw new ArgumentException("Too many sort conditions added, max number of conditions is 64");
+            if (_sortConditions.Count > 63)
+            {
+                throw new ArgumentException("Too many sort conditions added, max number of conditions is 64");
+            }
+
             var node = CreateNode(TopNode, _sortConditionPath, true);
             var condition = new SortCondition(NameSpaceManager, node);
             condition.Ref = @ref;
@@ -84,7 +88,11 @@ namespace OfficeOpenXml.Sorting
         /// <param name="customList">A custom list of strings that defines the sort order for this condition.</param>
         internal void Add(string @ref, bool? decending, string[] customList = null)
         {
-            if (_sortConditions.Count > 63) throw new ArgumentException("Too many sort conditions added, max number of conditions is 64");
+            if (_sortConditions.Count > 63)
+            {
+                throw new ArgumentException("Too many sort conditions added, max number of conditions is 64");
+            }
+
             var node = CreateNode(TopNode, _sortConditionPath, true);
             var condition = new SortCondition(NameSpaceManager, node);
             condition.Ref = @ref;

@@ -559,7 +559,11 @@ namespace OfficeOpenXml.Core.Worksheet
 
         private static void CopyVmlRelations(ExcelWorksheet Copy, ExcelWorksheet added)
         {
-            if (Copy._vmlDrawings.Part == null) return;
+            if (Copy._vmlDrawings.Part == null)
+            {
+                return;
+            }
+
             foreach (var r in Copy._vmlDrawings.Part.GetRelationships())
             {
                 var newRel = added._vmlDrawings.Part.CreateRelationship(r.TargetUri, r.TargetMode, r.RelationshipType);
@@ -651,7 +655,10 @@ namespace OfficeOpenXml.Core.Worksheet
 
                 //var uriTbl = new Uri(string.Format("/xl/tables/table{0}.xml", Id), UriKind.Relative);
                 var uriTbl = XmlHelper.GetNewUri(added._package.ZipPackage, "/xl/tables/table{0}.xml", ref Id);
-                if (added.Workbook._nextTableID < Id) added.Workbook._nextTableID = Id;
+                if (added.Workbook._nextTableID < Id)
+                {
+                    added.Workbook._nextTableID = Id;
+                }
 
                 var part = added._package.ZipPackage.CreatePart(uriTbl, "application/vnd.openxmlformats-officedocument.spreadsheetml.table+xml", added._package.Compression);
                 StreamWriter streamTbl = new StreamWriter(part.GetStream(FileMode.Create, FileAccess.Write));
@@ -745,7 +752,11 @@ namespace OfficeOpenXml.Core.Worksheet
 
                 int Id = added._package.Workbook._nextPivotTableID++;
                 var uriTbl = XmlHelper.GetNewUri(added._package.ZipPackage, "/xl/pivotTables/pivotTable{0}.xml", ref Id);
-                if (added.Workbook._nextPivotTableID < Id) added.Workbook._nextPivotTableID = Id;
+                if (added.Workbook._nextPivotTableID < Id)
+                {
+                    added.Workbook._nextPivotTableID = Id;
+                }
+
                 var partTbl = added._package.ZipPackage.CreatePart(uriTbl, ContentTypes.contentTypePivotTable, added._package.Compression);
                 StreamWriter streamTbl = new StreamWriter(partTbl.GetStream(FileMode.Create, FileAccess.Write));
                 streamTbl.Write(xml);
@@ -787,7 +798,10 @@ namespace OfficeOpenXml.Core.Worksheet
             string xmlCache = tbl.CacheDefinition.CacheDefinitionXml.OuterXml;
             var cacheId = wbAdded._nextPivotCacheId;
             var uriCache = XmlHelper.GetNewUri(added._package.ZipPackage, "/xl/pivotCache/pivotCacheDefinition{0}.xml", ref cacheId);
-            if (wbAdded._nextPivotCacheId < cacheId) wbAdded._nextPivotCacheId = cacheId;
+            if (wbAdded._nextPivotCacheId < cacheId)
+            {
+                wbAdded._nextPivotCacheId = cacheId;
+            }
 
             var partCache = added._package.ZipPackage.CreatePart(uriCache, ContentTypes.contentTypePivotCacheDefinition, added._package.Compression);
             StreamWriter streamCache = new StreamWriter(partCache.GetStream(FileMode.Create, FileAccess.Write));
@@ -846,18 +860,49 @@ namespace OfficeOpenXml.Core.Worksheet
             {
                 var tblFrom = copy.Tables[i];
                 var tblTo = added.Tables[i];
-                if (tblFrom.HeaderRowStyle.HasValue) tblTo.HeaderRowStyle = (ExcelDxfStyle)tblFrom.HeaderRowStyle.Clone();
-                if (tblFrom.HeaderRowBorderStyle.HasValue) tblTo.HeaderRowBorderStyle = (ExcelDxfBorderBase)tblFrom.HeaderRowBorderStyle.Clone();
-                if (tblFrom.DataStyle.HasValue) tblTo.DataStyle = (ExcelDxfStyle)tblFrom.DataStyle.Clone();
-                if (tblFrom.TableBorderStyle.HasValue) tblTo.TableBorderStyle = (ExcelDxfBorderBase)tblFrom.TableBorderStyle.Clone();
-                if (tblFrom.TotalsRowStyle.HasValue) tblTo.TotalsRowStyle = (ExcelDxfStyle)tblFrom.TotalsRowStyle.Clone();
+                if (tblFrom.HeaderRowStyle.HasValue)
+                {
+                    tblTo.HeaderRowStyle = (ExcelDxfStyle)tblFrom.HeaderRowStyle.Clone();
+                }
+
+                if (tblFrom.HeaderRowBorderStyle.HasValue)
+                {
+                    tblTo.HeaderRowBorderStyle = (ExcelDxfBorderBase)tblFrom.HeaderRowBorderStyle.Clone();
+                }
+
+                if (tblFrom.DataStyle.HasValue)
+                {
+                    tblTo.DataStyle = (ExcelDxfStyle)tblFrom.DataStyle.Clone();
+                }
+
+                if (tblFrom.TableBorderStyle.HasValue)
+                {
+                    tblTo.TableBorderStyle = (ExcelDxfBorderBase)tblFrom.TableBorderStyle.Clone();
+                }
+
+                if (tblFrom.TotalsRowStyle.HasValue)
+                {
+                    tblTo.TotalsRowStyle = (ExcelDxfStyle)tblFrom.TotalsRowStyle.Clone();
+                }
+
                 for (int c=0;c < tblFrom.Columns.Count;c++)
                 {
                     var colFrom = tblFrom.Columns[c];
                     var colTo = tblTo.Columns[c];
-                    if (colFrom.HeaderRowStyle.HasValue) colTo.HeaderRowStyle = (ExcelDxfStyle)colFrom.HeaderRowStyle.Clone();
-                    if (colFrom.DataStyle.HasValue) colTo.DataStyle = (ExcelDxfStyle)colFrom.DataStyle.Clone();
-                    if (colFrom.TotalsRowStyle.HasValue) colTo.TotalsRowStyle = (ExcelDxfStyle)colFrom.TotalsRowStyle.Clone();
+                    if (colFrom.HeaderRowStyle.HasValue)
+                    {
+                        colTo.HeaderRowStyle = (ExcelDxfStyle)colFrom.HeaderRowStyle.Clone();
+                    }
+
+                    if (colFrom.DataStyle.HasValue)
+                    {
+                        colTo.DataStyle = (ExcelDxfStyle)colFrom.DataStyle.Clone();
+                    }
+
+                    if (colFrom.TotalsRowStyle.HasValue)
+                    {
+                        colTo.TotalsRowStyle = (ExcelDxfStyle)colFrom.TotalsRowStyle.Clone();
+                    }
                 }
             }
         }
@@ -906,7 +951,11 @@ namespace OfficeOpenXml.Core.Worksheet
 
         private static void AppendDxf(ExcelStyles stylesFrom, ExcelStyles stylesTo, Dictionary<string, int> dxfStyleCashe, int dxfId)
         {
-            if (dxfId < 0) return;
+            if (dxfId < 0)
+            {
+                return;
+            }
+
             if (!dxfStyleCashe.ContainsKey(dxfId.ToString()))
             {
                 var s = DxfStyleHandler.CloneDxfStyle(stylesFrom, stylesTo, dxfId, ExcelStyles.DxfsPath);
@@ -994,14 +1043,41 @@ namespace OfficeOpenXml.Core.Worksheet
         }
         private static void CopyHeaderFooterPictures(ExcelWorksheet Copy, ExcelWorksheet added)
         {
-            if (Copy.TopNode != null && Copy.GetNode("d:headerFooter") == null) return;
+            if (Copy.TopNode != null && Copy.GetNode("d:headerFooter") == null)
+            {
+                return;
+            }
+
             //Copy the texts
-            if (Copy.HeaderFooter._oddHeader != null) CopyText(Copy.HeaderFooter._oddHeader, added.HeaderFooter.OddHeader);
-            if (Copy.HeaderFooter._oddFooter != null) CopyText(Copy.HeaderFooter._oddFooter, added.HeaderFooter.OddFooter);
-            if (Copy.HeaderFooter._evenHeader != null) CopyText(Copy.HeaderFooter._evenHeader, added.HeaderFooter.EvenHeader);
-            if (Copy.HeaderFooter._evenFooter != null) CopyText(Copy.HeaderFooter._evenFooter, added.HeaderFooter.EvenFooter);
-            if (Copy.HeaderFooter._firstHeader != null) CopyText(Copy.HeaderFooter._firstHeader, added.HeaderFooter.FirstHeader);
-            if (Copy.HeaderFooter._firstFooter != null) CopyText(Copy.HeaderFooter._firstFooter, added.HeaderFooter.FirstFooter);
+            if (Copy.HeaderFooter._oddHeader != null)
+            {
+                CopyText(Copy.HeaderFooter._oddHeader, added.HeaderFooter.OddHeader);
+            }
+
+            if (Copy.HeaderFooter._oddFooter != null)
+            {
+                CopyText(Copy.HeaderFooter._oddFooter, added.HeaderFooter.OddFooter);
+            }
+
+            if (Copy.HeaderFooter._evenHeader != null)
+            {
+                CopyText(Copy.HeaderFooter._evenHeader, added.HeaderFooter.EvenHeader);
+            }
+
+            if (Copy.HeaderFooter._evenFooter != null)
+            {
+                CopyText(Copy.HeaderFooter._evenFooter, added.HeaderFooter.EvenFooter);
+            }
+
+            if (Copy.HeaderFooter._firstHeader != null)
+            {
+                CopyText(Copy.HeaderFooter._firstHeader, added.HeaderFooter.FirstHeader);
+            }
+
+            if (Copy.HeaderFooter._firstFooter != null)
+            {
+                CopyText(Copy.HeaderFooter._firstFooter, added.HeaderFooter.FirstFooter);
+            }
 
             //Copy any images;
             if (Copy.HeaderFooter.Pictures.Count > 0)

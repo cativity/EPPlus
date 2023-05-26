@@ -78,7 +78,10 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
                     }
                 }
 
-                if (Settings.SetRowHeight) AddRowHeightStyle(writer, _table.Range, row, Settings.StyleClassPrefix, false);
+                if (Settings.SetRowHeight)
+                {
+                    this.AddRowHeightStyle(writer, this._table.Range, row, this.Settings.StyleClassPrefix, false);
+                }
 
                 await writer.RenderBeginTagAsync(HtmlElements.TableRow);
                 await writer.ApplyFormatIncreaseIndentAsync(Settings.Minify);
@@ -138,7 +141,11 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
             }
             var adr = _table.Address;
             var row = adr._fromRow;
-            if (Settings.SetRowHeight) AddRowHeightStyle(writer, _table.Range, row, Settings.StyleClassPrefix, false);
+            if (Settings.SetRowHeight)
+            {
+                this.AddRowHeightStyle(writer, this._table.Range, row, this.Settings.StyleClassPrefix, false);
+            }
+
             await writer.RenderBeginTagAsync(HtmlElements.TableRow);
             await writer.ApplyFormatIncreaseIndentAsync(Settings.Minify);
             HtmlImage image = null;
@@ -212,7 +219,11 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
                 writer.AddAttribute("role", "row");
                 writer.AddAttribute("scope", "row");
             }
-            if (Settings.SetRowHeight) AddRowHeightStyle(writer, _table.Range, rowIndex, Settings.StyleClassPrefix, false);
+            if (Settings.SetRowHeight)
+            {
+                this.AddRowHeightStyle(writer, this._table.Range, rowIndex, this.Settings.StyleClassPrefix, false);
+            }
+
             await writer.RenderBeginTagAsync(HtmlElements.TableRow);
             await writer.ApplyFormatIncreaseIndentAsync(Settings.Minify);
             var address = _table.Address;
@@ -301,7 +312,11 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
         /// <returns>The html document</returns>
         public async Task<string> GetSinglePageAsync(string htmlDocument = "<!DOCTYPE html>\r\n<html>\r\n<head>\r\n<style type=\"text/css\">\r\n{1}</style></head>\r\n<body>\r\n{0}</body>\r\n</html>")
         {
-            if (Settings.Minify) htmlDocument = htmlDocument.Replace("\r\n", "");
+            if (Settings.Minify)
+            {
+                htmlDocument = htmlDocument.Replace("\r\n", "");
+            }
+
             var html = await GetHtmlStringAsync();
             var cssExporter = HtmlExporterFactory.CreateCssExporterTableAsync(_settings, _table, _styleCache);
             var css = await cssExporter.GetCssStringAsync();

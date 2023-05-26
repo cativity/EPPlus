@@ -26,7 +26,11 @@ namespace OfficeOpenXml.Utils
         internal static string GetFormattedText(object Value, ExcelWorkbook wb, int styleId, bool forWidthCalc, CultureInfo cultureInfo=null)
         {
             object v = Value;
-            if (v == null) return "";
+            if (v == null)
+            {
+                return "";
+            }
+
             var styles = wb.Styles;
             var nfID = styles.CellXfs[styleId].NumberFormatId;
             ExcelNumberFormatXml.ExcelFormatTranslator nf = null;

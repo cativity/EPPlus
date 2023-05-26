@@ -171,7 +171,11 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
         private static eChartType GetChartType(XmlNode node, XmlNamespaceManager nsm)
         {
             var layoutId = node.SelectSingleNode("cx:plotArea/cx:plotAreaRegion/cx:series[1]/@layoutId", nsm);
-            if (layoutId == null) return eChartType.Treemap;
+            if (layoutId == null)
+            {
+                return eChartType.Treemap;
+            }
+
             switch (layoutId.Value)
             {
                 case "clusteredColumn":

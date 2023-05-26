@@ -98,7 +98,10 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math.RomanFunctions
 
         protected string HandleType(int type, string roman)
         {
-            if (type <= 0) return roman;
+            if (type <= 0)
+            {
+                return roman;
+            }
 
             // all other types than 0
             roman = roman.Replace("CMXCV", "LMVL");

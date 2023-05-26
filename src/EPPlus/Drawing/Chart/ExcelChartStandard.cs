@@ -36,7 +36,11 @@ namespace OfficeOpenXml.Drawing.Chart
         internal ExcelChartStandard(ExcelDrawings drawings, XmlNode node, eChartType? type, bool isPivot, ExcelGroupShape parent, string drawingPath = "xdr:graphicFrame", string nvPrPath = "xdr:nvGraphicFramePr/xdr:cNvPr") :
             base(drawings, node, parent, drawingPath, nvPrPath)
         {
-            if (type.HasValue) ChartType = type.Value;
+            if (type.HasValue)
+            {
+                this.ChartType = type.Value;
+            }
+
             CreateNewChart(drawings, null, null, type);
 
             Init(drawings, _chartNode);
@@ -47,7 +51,11 @@ namespace OfficeOpenXml.Drawing.Chart
         internal ExcelChartStandard(ExcelDrawings drawings, XmlNode drawingsNode, eChartType? type, ExcelChart topChart, ExcelPivotTable PivotTableSource, XmlDocument chartXml = null, ExcelGroupShape parent = null, string drawingPath = "xdr:graphicFrame", string nvPrPath = "xdr:nvGraphicFramePr/xdr:cNvPr") :
             base(drawings, drawingsNode, chartXml, parent, drawingPath, nvPrPath)
         {
-            if (type.HasValue) ChartType = type.Value;
+            if (type.HasValue)
+            {
+                this.ChartType = type.Value;
+            }
+
             _topChart = topChart;
             CreateNewChart(drawings, topChart, chartXml, type);
 
@@ -63,11 +71,15 @@ namespace OfficeOpenXml.Drawing.Chart
             }
 
             InitSeries(this, drawings.NameSpaceManager, _chartNode, PivotTableSource != null);
-            if (PivotTableSource != null) SetPivotSource(PivotTableSource);
-
+            if (PivotTableSource != null)
+            {
+                this.SetPivotSource(PivotTableSource);
+            }
 
             if (topChart == null)
-                LoadAxis();
+            {
+                this.LoadAxis();
+            }
             else
             {
                 _axis = topChart.Axis;

@@ -303,7 +303,11 @@ namespace OfficeOpenXml.Drawing
             {
                 try
                 {
-                    if (_nvPrPath == "") return "";
+                    if (_nvPrPath == "")
+                    {
+                        return "";
+                    }
+
                     return GetXmlNodeString(_nvPrPath+"/@name");
                 }
                 catch
@@ -315,7 +319,11 @@ namespace OfficeOpenXml.Drawing
             {
                 try
                 {
-                    if (_nvPrPath == "") throw new NotImplementedException();
+                    if (_nvPrPath == "")
+                    {
+                        throw new NotImplementedException();
+                    }
+
                     SetXmlNodeString(_nvPrPath + "/@name", value);
                     if (this is ExcelSlicer<ExcelTableSlicerCache> ts)
                     {
@@ -345,7 +353,11 @@ namespace OfficeOpenXml.Drawing
             {
                 try
                 {
-                    if (_nvPrPath == "") return "";
+                    if (_nvPrPath == "")
+                    {
+                        return "";
+                    }
+
                     return GetXmlNodeString(_nvPrPath + "/@descr");
                 }
                 catch
@@ -357,7 +369,11 @@ namespace OfficeOpenXml.Drawing
             {
                 try
                 {
-                    if (_nvPrPath == "") throw new NotImplementedException();
+                    if (_nvPrPath == "")
+                    {
+                        throw new NotImplementedException();
+                    }
+
                     SetXmlNodeString(_nvPrPath + "/@descr", value);
                 }
                 catch
@@ -549,7 +565,11 @@ namespace OfficeOpenXml.Drawing
         /// <returns>The Drawing object</returns>
         internal static ExcelDrawing GetDrawing(ExcelDrawings drawings, XmlNode node)
         {
-            if (node.ChildNodes.Count < 3) return null; //Invalid formatted anchor node, ignore
+            if (node.ChildNodes.Count < 3)
+            {
+                return null; //Invalid formatted anchor node, ignore
+            }
+
             XmlElement drawNode = (XmlElement)node.GetChildAtPosition(2);
             return GetDrawingFromNode(drawings, node, drawNode);
         }
@@ -1161,7 +1181,10 @@ namespace OfficeOpenXml.Drawing
             foreach(var d in drawing)
             {
                 ExcelGroupShape.Validate(d, _drawings, grp);
-                if (d._parent != null) grp = d._parent;
+                if (d._parent != null)
+                {
+                    grp = d._parent;
+                }
             }
             if (grp == null)
             {
@@ -1243,7 +1266,11 @@ namespace OfficeOpenXml.Drawing
         }
         internal void GetPositionSize()
         {
-            if (_doNotAdjust) return;
+            if (_doNotAdjust)
+            {
+                return;
+            }
+
             _top = GetPixelTop();
             _left = GetPixelLeft();
             _height = GetPixelHeight();
@@ -1255,7 +1282,11 @@ namespace OfficeOpenXml.Drawing
         /// </summary>
         public void AdjustPositionAndSize()
         {
-            if (_drawings.Worksheet.Workbook._package.DoAdjustDrawings == false) return;
+            if (_drawings.Worksheet.Workbook._package.DoAdjustDrawings == false)
+            {
+                return;
+            }
+
             _drawings.Worksheet.Workbook._package.DoAdjustDrawings = false;
             if (EditAs==eEditAs.Absolute)
             {

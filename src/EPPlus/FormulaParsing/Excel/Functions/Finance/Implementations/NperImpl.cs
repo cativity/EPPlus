@@ -27,12 +27,16 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.Implementations
 
             //   Checking Error Conditions
             if (Rate <= -1.0)
+            {
                 return new FinanceCalcResult<double>(eErrorType.Num);
+            }
 
             if (Rate == 0.0)
             {
                 if (Pmt == 0.0)
+                {
                     return new FinanceCalcResult<double>(eErrorType.Num);
+                }
 
                 return new FinanceCalcResult<double>(-(PV + FV) / Pmt);
             }

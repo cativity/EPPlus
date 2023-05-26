@@ -305,10 +305,25 @@ namespace OfficeOpenXml.Style
             LatinFont = name;
             ComplexFont = name;
             Size = size;
-            if (bold) Bold = bold;
-            if (italic) Italic = italic;
-            if (underline) UnderLine = eUnderLineType.Single;
-            if (strikeout) Strike = eStrikeType.Single;            
+            if (bold)
+            {
+                this.Bold = bold;
+            }
+
+            if (italic)
+            {
+                this.Italic = italic;
+            }
+
+            if (underline)
+            {
+                this.UnderLine = eUnderLineType.Single;
+            }
+
+            if (strikeout)
+            {
+                this.Strike = eStrikeType.Single;
+            }
         }
     }
 }

@@ -47,7 +47,11 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime.Workdays
         public System.DateTime AdjustResultWithHolidays(System.DateTime resultDate,
                                                          IEnumerable<FunctionArgument> arguments)
         {
-            if (arguments.Count() == 2) return resultDate;
+            if (arguments.Count() == 2)
+            {
+                return resultDate;
+            }
+
             var holidays = arguments.ElementAt(2).Value as IEnumerable<FunctionArgument>;
             if (holidays != null)
             {

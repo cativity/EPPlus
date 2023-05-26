@@ -32,7 +32,11 @@ namespace OfficeOpenXml.Utils.Extensions
         {
             try
             {
-                if (string.IsNullOrEmpty(s)) return null;
+                if (string.IsNullOrEmpty(s))
+                {
+                    return null;
+                }
+
                 if (!Enum.GetNames(typeof(T)).Any(x => x.Equals(s, StringComparison.OrdinalIgnoreCase)))
                 {
                     return null;
@@ -49,7 +53,11 @@ namespace OfficeOpenXml.Utils.Extensions
         {
             try
             {
-                if (string.IsNullOrEmpty(s)) return defaultValue;
+                if (string.IsNullOrEmpty(s))
+                {
+                    return defaultValue;
+                }
+
                 return (T)Enum.Parse(typeof(T), s, true);
             }
             catch

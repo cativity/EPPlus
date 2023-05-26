@@ -222,20 +222,45 @@ namespace OfficeOpenXml.Drawing.Style
         #region ePresetColor
         internal static ePresetColor TranslatePresetColor(this string v)
         {
-            if (v.Contains("Grey")) v = v.Replace("Grey", "Gray");
-            else if (v.Contains("grey")) v = v.Replace("grey", "gray");
+            if (v.Contains("Grey"))
+            {
+                v = v.Replace("Grey", "Gray");
+            }
+            else if (v.Contains("grey"))
+            {
+                v = v.Replace("grey", "gray");
+            }
 
-            if (v.StartsWith("dk")) v = v.Replace("dk", "Dark");
-            else if (v.StartsWith("med")) v = v.Replace("med", "Medium");
-            else if (v.StartsWith("lt")) v = v.Replace("lt", "Light");
+            if (v.StartsWith("dk"))
+            {
+                v = v.Replace("dk", "Dark");
+            }
+            else if (v.StartsWith("med"))
+            {
+                v = v.Replace("med", "Medium");
+            }
+            else if (v.StartsWith("lt"))
+            {
+                v = v.Replace("lt", "Light");
+            }
+
             return v.ToEnum(ePresetColor.Black);
         }
         internal static string TranslateString(this ePresetColor v)
         {
             var s = v.ToEnumString();
-            if (s.StartsWith("dark")) s = s.Replace("dark", "dk");
-            else if (s.StartsWith("medium")) s = s.Replace("medium", "med");
-            else if (s.StartsWith("light")) s = s.Replace("light", "lt");
+            if (s.StartsWith("dark"))
+            {
+                s = s.Replace("dark", "dk");
+            }
+            else if (s.StartsWith("medium"))
+            {
+                s = s.Replace("medium", "med");
+            }
+            else if (s.StartsWith("light"))
+            {
+                s = s.Replace("light", "lt");
+            }
 
             return s;
         }

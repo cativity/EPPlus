@@ -18,7 +18,11 @@ namespace OfficeOpenXml.FormulaParsing.LexicalAnalysis.TokenSeparatorHandlers
             {
                 var currentToken = context.CurrentToken;
                 var arr = currentToken.Trim().ToArray();
-                if (arr[arr.Length - 1] != 'E') return false;
+                if (arr[arr.Length - 1] != 'E')
+                {
+                    return false;
+                }
+
                 for (var x = 0; x < arr.Length - 1; x++)
                 {
                     var ch = arr[x];
@@ -38,7 +42,10 @@ namespace OfficeOpenXml.FormulaParsing.LexicalAnalysis.TokenSeparatorHandlers
             {
                 var currentToken = context.CurrentToken;
                 var arr = currentToken.Trim().ToArray();
-                if (arr[arr.Length - 1] != 'E') return false;
+                if (arr[arr.Length - 1] != 'E')
+                {
+                    return false;
+                }
 
                 for (var x = 0; x < arr.Length - 1; x++)
                 {

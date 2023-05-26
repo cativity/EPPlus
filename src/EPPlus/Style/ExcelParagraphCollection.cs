@@ -121,9 +121,13 @@ namespace OfficeOpenXml.Style
                     ((XmlElement)defNode).SetAttribute("sz", (_defaultFontSize*100).ToString(CultureInfo.InvariantCulture));
                     var normalStyle = _drawing._drawings.Worksheet.Workbook.Styles.GetNormalStyle();
                     if (normalStyle == null)
+                    {
                         defNode.InnerXml = "<a:latin typeface=\"Calibri\" /><a:cs typeface=\"Calibri\" />";
+                    }
                     else
+                    {
                         defNode.InnerXml = $"<a:latin typeface=\"{normalStyle.Style.Font.Name}\"/><a:cs typeface=\"{normalStyle.Style.Font.Name}\"/>";
+                    }
                 }
             }
 
@@ -202,7 +206,11 @@ namespace OfficeOpenXml.Style
                         sb.Append(item.Text);
                     }
                 }
-                if (sb.Length > 2) sb.Remove(sb.Length - 2, 2); //Remove last crlf
+                if (sb.Length > 2)
+                {
+                    sb.Remove(sb.Length - 2, 2); //Remove last crlf
+                }
+
                 return sb.ToString();
             }
             set

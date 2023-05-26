@@ -31,7 +31,10 @@ namespace OfficeOpenXml.Utils
                 ZipEntry entry;
                 while ((entry = zipStream.GetNextEntry()) != null)
                 {
-                    if (entry.IsDirectory || !entry.FileName.EndsWith(".xml") || entry.UncompressedSize <= 0) continue;
+                    if (entry.IsDirectory || !entry.FileName.EndsWith(".xml") || entry.UncompressedSize <= 0)
+                    {
+                        continue;
+                    }
 
                     var fileName = new FileInfo(entry.FileName).Name;
 

@@ -11,7 +11,10 @@ namespace OfficeOpenXml.Export.HtmlExport
     {
         private static string GetClassName(string className, string optionalName)
         {
-            if (string.IsNullOrEmpty(optionalName)) return optionalName;
+            if (string.IsNullOrEmpty(optionalName))
+            {
+                return optionalName;
+            }
 
             className = className.Trim().Replace(" ", "-");
             var newClassName = "";

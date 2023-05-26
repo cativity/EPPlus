@@ -34,10 +34,18 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Engineering
             if(arguments.Count() > 1)
             {
                 var padding = ArgToInt(arguments, 1);
-                if (padding < 0 ^ padding > 10) return CreateResult(eErrorType.Num);
+                if (padding < 0 ^ padding > 10)
+                {
+                    return this.CreateResult(eErrorType.Num);
+                }
+
                 formatString += padding;
             }
-            if (number.Length > 10) return CreateResult(eErrorType.Num);
+            if (number.Length > 10)
+            {
+                return this.CreateResult(eErrorType.Num);
+            }
+
             if (number.Length < 10)
             {
                 var n = Convert.ToInt32(number, 2);
@@ -45,7 +53,11 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Engineering
             }
             else
             {
-                if (!BinaryHelper.TryParseBinaryToDecimal(number, 2, out int result)) return CreateResult(eErrorType.Num);
+                if (!BinaryHelper.TryParseBinaryToDecimal(number, 2, out int result))
+                {
+                    return this.CreateResult(eErrorType.Num);
+                }
+
                 var hexStr = result.ToString(formatString);
                 if(result < 0)
                 {

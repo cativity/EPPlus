@@ -87,7 +87,11 @@ namespace OfficeOpenXml.FormulaParsing.LexicalAnalysis.PostProcessing
         {
             get
             {
-                if (Index == _tokens.Count - 1) throw new ArgumentOutOfRangeException("NextToken: current token is the last token");
+                if (Index == _tokens.Count - 1)
+                {
+                    throw new ArgumentOutOfRangeException("NextToken: current token is the last token");
+                }
+
                 return _tokens[Index + 1];
             }
         }
@@ -99,7 +103,11 @@ namespace OfficeOpenXml.FormulaParsing.LexicalAnalysis.PostProcessing
         public void MoveIndex(int relativePosition)
         {
             var newPosition = Index + relativePosition;
-            if (newPosition < 0 || newPosition >= _tokens.Count) throw new ArgumentOutOfRangeException("MoveIndex: new index out of range");
+            if (newPosition < 0 || newPosition >= _tokens.Count)
+            {
+                throw new ArgumentOutOfRangeException("MoveIndex: new index out of range");
+            }
+
             Index += relativePosition;
         }
 
@@ -111,7 +119,11 @@ namespace OfficeOpenXml.FormulaParsing.LexicalAnalysis.PostProcessing
         public Token GetTokenAtRelativePosition(int relativePosition)
         {
             var newPosition = Index + relativePosition;
-            if (newPosition < 0 || newPosition >= _tokens.Count) throw new ArgumentOutOfRangeException("¨GetTokenAtRelativePosition: new index out of range");
+            if (newPosition < 0 || newPosition >= _tokens.Count)
+            {
+                throw new ArgumentOutOfRangeException("¨GetTokenAtRelativePosition: new index out of range");
+            }
+
             return _tokens[newPosition];
         }
     }

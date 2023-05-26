@@ -40,7 +40,11 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance
                 var guess = ArgToDecimal(arguments, 1);
                 result = IrrImpl.Irr(values.Select(x => (double)x).ToArray(), guess);
             }
-            if (result.HasError) return CreateResult(result.ExcelErrorType);
+            if (result.HasError)
+            {
+                return this.CreateResult(result.ExcelErrorType);
+            }
+
             return CreateResult(result.Result, DataType.Decimal);
         }
     }

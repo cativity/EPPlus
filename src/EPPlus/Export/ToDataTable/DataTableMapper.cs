@@ -29,13 +29,21 @@ namespace OfficeOpenXml.Export.ToDataTable
             foreach(var columnObj in _dataTable.Columns)
             {
                 var column = columnObj as DataColumn;
-                if (column == null) continue;
+                if (column == null)
+                {
+                    continue;
+                }
+
                 if(!_options.Mappings.Any(x => string.Compare(column.ColumnName, x.DataColumnName, StringComparison.OrdinalIgnoreCase) == 0))
                 {
                     if(_options.FirstRowIsColumnNames)
                     {
                         var ix = FindIndexInRange(column.ColumnName);
-                        if (ix == -1) throw new InvalidOperationException("Column name not found in range: " + column.ColumnName);
+                        if (ix == -1)
+                        {
+                            throw new InvalidOperationException("Column name not found in range: " + column.ColumnName);
+                        }
+
                         _options.Mappings.Add(ix, column.ColumnName, column.DataType, column.AllowDBNull);
                     }
                     else
@@ -54,7 +62,11 @@ namespace OfficeOpenXml.Export.ToDataTable
             for(var col = _range.Start.Column; col <= _range.End.Column; col++)
             {
                 var cellVal = _range.Worksheet.GetValueInner(row, col);
-                if (cellVal == null) continue;
+                if (cellVal == null)
+                {
+                    continue;
+                }
+
                 if (string.Compare(columnName, cellVal.ToString(), StringComparison.OrdinalIgnoreCase) == 0)
                 {
                     return index;

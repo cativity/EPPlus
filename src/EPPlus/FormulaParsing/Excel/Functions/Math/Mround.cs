@@ -28,10 +28,18 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
         public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
         {
             ValidateArguments(arguments, 2);
-            if (arguments.ElementAt(0).Value == null) return CreateResult(0d, DataType.Decimal);
+            if (arguments.ElementAt(0).Value == null)
+            {
+                return this.CreateResult(0d, DataType.Decimal);
+            }
+
             var number = ArgToDecimal(arguments, 0, context.Configuration.PrecisionAndRoundingStrategy);
             var significance = ArgToDecimal(arguments, 1);
-            if ((number > 0 && significance < 0) || (number < 0 && significance > 0)) return CreateResult(eErrorType.Num);
+            if ((number > 0 && significance < 0) || (number < 0 && significance > 0))
+            {
+                return this.CreateResult(eErrorType.Num);
+            }
+
             return CreateResult(RoundingHelper.Round(number, significance, RoundingHelper.Direction.Nearest), DataType.Decimal);
         }
     }

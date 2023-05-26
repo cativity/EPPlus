@@ -32,16 +32,25 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
         public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
         {
             ValidateArguments(arguments, 1);
-            if (arguments.Count() > 255) return CreateResult(eErrorType.Value);
+            if (arguments.Count() > 255)
+            {
+                return this.CreateResult(eErrorType.Value);
+            }
+
             var numbers = ArgsToDoubleEnumerable(IgnoreHiddenValues, IgnoreErrors, arguments, context);
             var counts = new Dictionary<double, int>();
             double? maxCountValue = default;
             foreach(var number in numbers)
             {
                 if (!counts.ContainsKey(number))
+                {
                     counts[number] = 1;
+                }
                 else
+                {
                     counts[number] = counts[number] + 1;
+                }
+
                 if(counts[number] > 1 && (!maxCountValue.HasValue || counts[number] >= counts[maxCountValue.Value]))
                 {
                     if(!maxCountValue.HasValue)
@@ -49,12 +58,20 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
                         maxCountValue = number;
                     }
                     else if (counts[number] == counts[maxCountValue.Value] && number < maxCountValue)
+                    {
                         maxCountValue = number;
+                    }
                     else if (counts[number] > counts[maxCountValue.Value])
+                    {
                         maxCountValue = number;
+                    }
                 }
             }
-            if (!maxCountValue.HasValue) return CreateResult(eErrorType.Num);
+            if (!maxCountValue.HasValue)
+            {
+                return this.CreateResult(eErrorType.Num);
+            }
+
             return CreateResult(maxCountValue.Value, DataType.Decimal);
         }
     }

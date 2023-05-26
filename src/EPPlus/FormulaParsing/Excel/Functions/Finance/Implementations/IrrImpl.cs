@@ -32,7 +32,10 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.Implementations
             double divRate = 1.0 + Guess;
 
             while ((lLower <= lUpper) && ValueArray[lLower] == 0.0)
+            {
                 lLower = lLower + 1;
+            }
+
             for (lIndex = lUpper; lIndex > lLower - 1; lIndex--)
             {
                 dTotal = dTotal / divRate;
@@ -103,9 +106,13 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.Implementations
             {
                 //Get max of values in cash flow
                 if (ValueArray[lIndex] > dTemp)
+                {
                     dTemp = ValueArray[lIndex];
+                }
                 else if (-ValueArray[lIndex] > dTemp)
+                {
                     dTemp = -ValueArray[lIndex];
+                }
             }
 
             dNpvEpsilon = dTemp * cnL_IT_EPSILON * 0.01;
@@ -115,12 +122,18 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.Implementations
             dNPv0 = OptPV2(ref ValueArray, dRate0);
 
             if (dNPv0 > 0.0)
+            {
                 dRate1 = dRate0 + cnL_IT_STEP;
+            }
             else
+            {
                 dRate1 = dRate0 - cnL_IT_STEP;
+            }
 
             if (dRate1 <= -1.0)
+            {
                 return new FinanceCalcResult<double>(eErrorType.Num);
+            }
 
             dNpv1 = OptPV2(ref ValueArray, dRate1);
 
@@ -129,36 +142,54 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.Implementations
                 if (dNpv1 == dNPv0)
                 {
                     if (dRate1 > dRate0)
+                    {
                         dRate0 = dRate0 - cnL_IT_STEP;
+                    }
                     else
+                    {
                         dRate0 = dRate0 + cnL_IT_STEP;
+                    }
                 }
                 dNPv0 = OptPV2(ref ValueArray, dRate0);
                 if (dNpv1 == dNPv0)
+                {
                     return new FinanceCalcResult<double>(eErrorType.Value);
+                }
 
                 dRate0 = dRate1 - (dRate1 - dRate0) * dNpv1 / (dNpv1 - dNPv0);
 
                 //Secant method of generating next approximation
                 if (dRate0 <= -1.0)
+                {
                     dRate0 = (dRate1 - 1.0) * 0.5;
+                }
 
                 //Basically give the algorithm a second chance. Helps the
                 //algorithm when it starts to diverge to -ve side
                 dNPv0 = OptPV2(ref ValueArray, dRate0);
                 if (dRate0 > dRate1)
+                {
                     dTemp = dRate0 - dRate1;
+                }
                 else
+                {
                     dTemp = dRate1 - dRate0;
+                }
 
                 if (dNPv0 > 0.0)
+                {
                     dTemp1 = dNPv0;
+                }
                 else
+                {
                     dTemp1 = -dNPv0;
+                }
 
                 //Test : npv - > 0 and rate converges
                 if (dTemp1 < dNpvEpsilon && dTemp < cnL_IT_EPSILON)
+                {
                     return new FinanceCalcResult<double>(dRate0);
+                }
 
                 //Exchange the values - store the new values in the 1's
                 dTemp = dNPv0;

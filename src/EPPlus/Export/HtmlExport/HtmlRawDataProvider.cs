@@ -24,7 +24,11 @@ namespace OfficeOpenXml.Export.HtmlExport
         private static readonly DateTime JsBaseDate = new DateTime(1970, 1, 1);
         internal static string GetHtmlDataTypeFromValue(object value)
         {
-            if (value == null) return ColumnDataTypeManager.HtmlDataTypes.String;
+            if (value == null)
+            {
+                return ColumnDataTypeManager.HtmlDataTypes.String;
+            }
+
             var t = value.GetType();
             var tc = Type.GetTypeCode(t);
             switch (tc)

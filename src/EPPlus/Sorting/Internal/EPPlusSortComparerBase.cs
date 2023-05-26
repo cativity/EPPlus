@@ -43,12 +43,18 @@ namespace OfficeOpenXml.Sorting.Internal
 
         protected int GetSortWeightByCustomList(string val, string[] list)
         {
-            if (list == null || list.Count() == 0) return -1;
+            if (list == null || list.Count() == 0)
+            {
+                return -1;
+            }
+
             var ignoreCase = CompOptions == CompareOptions.IgnoreCase || CompOptions == CompareOptions.OrdinalIgnoreCase;
             for (var x = 0; x < list.Length; x++)
             {
                 if (string.Compare(val, list[x], ignoreCase, Culture) == 0)
+                {
                     return x;
+                }
             }
             return CustomListNotFound;
         }

@@ -96,7 +96,11 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
 
             byte[] block = new byte[26];
             int n = ze.ArchiveStream.Read(block, 0, block.Length);
-            if (n != block.Length) return false;
+            if (n != block.Length)
+            {
+                return false;
+            }
+
             bytesRead += n;
 
             int i = 0;
@@ -127,7 +131,9 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
                     (uint)ze._UncompressedSize == 0xFFFFFFFF ||
                     ze.VersionNeeded==45)
 
+                {
                     ze._InputUsesZip64 = true;
+                }
             }
 
             Int16 filenameLength = (short)(block[i++] + block[i++] * 256);
@@ -151,7 +157,10 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
             ze._FileNameInArchive = ze.AlternateEncoding.GetString(block, 0, block.Length);
 
             // workitem 6898
-            if (ze._FileNameInArchive.EndsWith("/")) ze.MarkAsDirectory();
+            if (ze._FileNameInArchive.EndsWith("/"))
+            {
+                ze.MarkAsDirectory();
+            }
 
             bytesRead += ze.ProcessExtraField(ze.ArchiveStream, extraFieldLength);
 
@@ -192,10 +201,15 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
                     // determine if the zip entry is valid, later.
 
                     if (ze._container.ZipFile != null)
+                    {
                         ze._container.ZipFile.OnReadBytes(ze);
+                    }
 
                     long d = SharedUtilities.FindSignature(ze.ArchiveStream, ZipConstants.ZipEntryDataDescriptorSignature);
-                    if (d == -1) return false;
+                    if (d == -1)
+                    {
+                        return false;
+                    }
 
                     // total size of data read (through all loops of this).
                     SizeOfDataRead += d;
@@ -205,7 +219,10 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
                         // read 1x 4-byte (CRC) and 2x 8-bytes (Compressed Size, Uncompressed Size)
                         block = new byte[20];
                         n = ze.ArchiveStream.Read(block, 0, block.Length);
-                        if (n != 20) return false;
+                        if (n != 20)
+                        {
+                            return false;
+                        }
 
                         // do not increment bytesRead - it is for entry header only.
                         // the data we have just read is a footer (falls after the file data)
@@ -225,7 +242,10 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
                         // read 3x 4-byte fields (CRC, Compressed Size, Uncompressed Size)
                         block = new byte[12];
                         n = ze.ArchiveStream.Read(block, 0, block.Length);
-                        if (n != 12) return false;
+                        if (n != 12)
+                        {
+                            return false;
+                        }
 
                         // do not increment bytesRead - it is for entry header only.
                         // the data we have just read is a footer (falls after the file data)
@@ -328,7 +348,9 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
             // read the 12-byte encryption header
             int additionalBytesRead = s.Read(buffer, 0, 12);
             if (additionalBytesRead != 12)
+            {
                 throw new ZipException(String.Format("Unexpected end of data at position 0x{0:X8}", s.Position));
+            }
 
             return additionalBytesRead;
         }
@@ -361,12 +383,20 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
             entry._container = zc;
             entry._archiveStream = s;
             if (zf != null)
+            {
                 zf.OnReadEntry(true, null);
+            }
 
-            if (first) HandlePK00Prefix(s);
+            if (first)
+            {
+                HandlePK00Prefix(s);
+            }
 
             // Read entry header, including any encryption header
-            if (!ReadHeader(entry, defaultEncoding)) return null;
+            if (!ReadHeader(entry, defaultEncoding))
+            {
+                return null;
+            }
 
             // Store the position in the stream for this entry
             // change for workitem 8098
@@ -472,7 +502,10 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
             while (j + 3 < extra.Length)
             {
                 UInt16 headerId = (UInt16)(extra[j++] + extra[j++] * 256);
-                if (headerId == targetHeaderId) return j-2;
+                if (headerId == targetHeaderId)
+                {
+                    return j-2;
+                }
 
                 // else advance to next segment
                 Int16 dataSize = (short)(extra[j++] + extra[j++] * 256);
@@ -641,13 +674,19 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
 
             // workitem 7941: check datasize before reading.
             if (dataSize > 28)
+            {
                 throw new BadReadException(String.Format("  Inconsistent size (0x{0:X4}) for ZIP64 extra field at position 0x{1:X16}",
                                                          dataSize, posn));
+            }
+
             int remainingData = dataSize;
 
             var slurp = new Func<Int64>( () => {
                     if (remainingData < 8)
+                    {
                         throw new BadReadException(String.Format("  Missing data for ZIP64 extra field, position 0x{0:X16}", posn));
+                    }
+
                     var x = BitConverter.ToInt64(buffer, j);
                     j+= 8;
                     remainingData -= 8;
@@ -655,13 +694,19 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
                 });
 
             if (this._UncompressedSize == 0xFFFFFFFF)
+            {
                 this._UncompressedSize = slurp();
+            }
 
             if (this._CompressedSize == 0xFFFFFFFF)
+            {
                 this._CompressedSize = slurp();
+            }
 
             if (this._RelativeOffsetOfLocalHeader == 0xFFFFFFFF)
+            {
                 this._RelativeOffsetOfLocalHeader = slurp();
+            }
 
             // Ignore anything else. Potentially there are 4 more bytes for the
             // disk start number.  DotNetZip currently doesn't handle multi-disk
@@ -673,7 +718,9 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         private int ProcessExtraFieldInfoZipTimes(byte[] buffer, int j, Int16 dataSize, long posn)
         {
             if (dataSize != 12 && dataSize != 8)
+            {
                 throw new BadReadException(String.Format("  Unexpected size (0x{0:X4}) for InfoZip v1 extra field at position 0x{1:X16}", dataSize, posn));
+            }
 
             Int32 timet = BitConverter.ToInt32(buffer, j);
             this._Mtime = _unixEpoch.AddSeconds(timet);
@@ -697,7 +744,9 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
             // storing seconds since Unix epoch.
 
             if (dataSize != 13 && dataSize != 9 && dataSize != 5)
+            {
                 throw new BadReadException(String.Format("  Unexpected size (0x{0:X4}) for Extended Timestamp extra field at position 0x{1:X16}", dataSize, posn));
+            }
 
             int remainingData = dataSize;
 
@@ -714,11 +763,13 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
                 remainingData--;
 
                 if ((flag & 0x0001) != 0 && remainingData >= 4)
+                {
                     this._Mtime = slurp();
+                }
 
-                 this._Atime = ((flag & 0x0002) != 0 && remainingData >= 4)
-                     ? slurp()
-                     : DateTime.UtcNow;
+                this._Atime = ((flag & 0x0002) != 0 && remainingData >= 4)
+                                  ? slurp()
+                                  : DateTime.UtcNow;
 
                  this._Ctime =  ((flag & 0x0004) != 0 && remainingData >= 4)
                      ? slurp()
@@ -729,7 +780,9 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
                 _emitUnixTimes = true;
             }
             else
-                ReadExtraField(); // will recurse
+            {
+                this.ReadExtraField(); // will recurse
+            }
 
             return j;
         }
@@ -752,7 +805,9 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
             // ctime      8 bytes    win32 ticks since win32epoch
 
             if (dataSize < 4)
+            {
                 throw new BadReadException(String.Format("  Unexpected size (0x{0:X4}) for NTFS times extra field at position 0x{1:X16}", dataSize, posn));
+            }
 
             j += 4;  // reserved
             Int16 timetag = (Int16)(buffer[j] + buffer[j + 1] * 256);

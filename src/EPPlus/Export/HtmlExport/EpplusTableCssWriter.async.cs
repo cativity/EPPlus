@@ -93,7 +93,11 @@ namespace OfficeOpenXml.Export.HtmlExport
         internal async Task AddToCssAsync(string name, ExcelTableStyleElement element, string htmlElement)
         {
             var s = element.Style;
-            if (s.HasValue == false) return; //Dont add empty elements
+            if (s.HasValue == false)
+            {
+                return; //Dont add empty elements
+            }
+
             await WriteClassAsync($"table.{name}{htmlElement}{{", _settings.Minify);
             await WriteFillStylesAsync(s.Fill);
             await WriteFontStylesAsync(s.Font);
@@ -111,7 +115,11 @@ namespace OfficeOpenXml.Export.HtmlExport
         internal async Task AddToCssBorderVHAsync(string name, ExcelTableStyleElement element, string htmlElement)
         {
             var s = element.Style;
-            if (s.Border.Vertical.HasValue == false && s.Border.Horizontal.HasValue==false) return; //Dont add empty elements
+            if (s.Border.Vertical.HasValue == false && s.Border.Horizontal.HasValue==false)
+            {
+                return; //Dont add empty elements
+            }
+
             await WriteClassAsync($"table.{name}{htmlElement} td,tr {{", _settings.Minify);
             await WriteBorderStylesVerticalHorizontalAsync(s.Border);
             await WriteClassEndAsync(_settings.Minify);
@@ -200,10 +208,25 @@ namespace OfficeOpenXml.Export.HtmlExport
             if (b.HasValue)
             {
                 var flags = _settings.Css.Exclude.TableStyle.Border;
-                if(EnumUtil.HasNotFlag(flags, eBorderExclude.Top)) await WriteBorderItemAsync(b.Top, "top");
-                if(EnumUtil.HasNotFlag(flags, eBorderExclude.Bottom)) await WriteBorderItemAsync(b.Bottom, "bottom");
-                if(EnumUtil.HasNotFlag(flags, eBorderExclude.Left)) await WriteBorderItemAsync(b.Left, "left");
-                if(EnumUtil.HasNotFlag(flags, eBorderExclude.Right)) await WriteBorderItemAsync(b.Right, "right");
+                if(EnumUtil.HasNotFlag(flags, eBorderExclude.Top))
+                {
+                    await this.WriteBorderItemAsync(b.Top, "top");
+                }
+
+                if(EnumUtil.HasNotFlag(flags, eBorderExclude.Bottom))
+                {
+                    await this.WriteBorderItemAsync(b.Bottom, "bottom");
+                }
+
+                if(EnumUtil.HasNotFlag(flags, eBorderExclude.Left))
+                {
+                    await this.WriteBorderItemAsync(b.Left, "left");
+                }
+
+                if(EnumUtil.HasNotFlag(flags, eBorderExclude.Right))
+                {
+                    await this.WriteBorderItemAsync(b.Right, "right");
+                }
             }
         }
         private async Task WriteBorderStylesVerticalHorizontalAsync(ExcelDxfBorderBase b)
@@ -211,10 +234,25 @@ namespace OfficeOpenXml.Export.HtmlExport
             if (b.HasValue)
             {
                 var flags = _settings.Css.Exclude.TableStyle.Border;
-                if (EnumUtil.HasNotFlag(flags, eBorderExclude.Top)) await WriteBorderItemAsync(b.Horizontal, "top");
-                if (EnumUtil.HasNotFlag(flags, eBorderExclude.Bottom)) await WriteBorderItemAsync(b.Horizontal, "bottom");
-                if (EnumUtil.HasNotFlag(flags, eBorderExclude.Left)) await WriteBorderItemAsync(b.Vertical, "left");
-                if (EnumUtil.HasNotFlag(flags, eBorderExclude.Right)) await WriteBorderItemAsync(b.Vertical, "right");
+                if (EnumUtil.HasNotFlag(flags, eBorderExclude.Top))
+                {
+                    await this.WriteBorderItemAsync(b.Horizontal, "top");
+                }
+
+                if (EnumUtil.HasNotFlag(flags, eBorderExclude.Bottom))
+                {
+                    await this.WriteBorderItemAsync(b.Horizontal, "bottom");
+                }
+
+                if (EnumUtil.HasNotFlag(flags, eBorderExclude.Left))
+                {
+                    await this.WriteBorderItemAsync(b.Vertical, "left");
+                }
+
+                if (EnumUtil.HasNotFlag(flags, eBorderExclude.Right))
+                {
+                    await this.WriteBorderItemAsync(b.Vertical, "right");
+                }
             }
         }
 

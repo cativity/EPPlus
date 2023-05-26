@@ -32,8 +32,16 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Statistical
             var arg2 = arguments.ElementAt(1);
             var arr1 = ArgsToDoubleEnumerable(new FunctionArgument[] { arg1 }, context).ToArray();
             var arr2 = ArgsToDoubleEnumerable(new FunctionArgument[] { arg2 }, context).ToArray();
-            if (arr2.Count() != arr1.Count()) return CreateResult(eErrorType.NA);
-            if (arr1.Sum(x => x.Value) == 0 || arr2.Sum(x => x.Value) == 0) return CreateResult(eErrorType.Div0);
+            if (arr2.Count() != arr1.Count())
+            {
+                return this.CreateResult(eErrorType.NA);
+            }
+
+            if (arr1.Sum(x => x.Value) == 0 || arr2.Sum(x => x.Value) == 0)
+            {
+                return this.CreateResult(eErrorType.Div0);
+            }
+
             var result = Covar(arr1, arr2) / StandardDeviation(arr1) / StandardDeviation(arr2);
             return CreateResult(result, DataType.Decimal);
         }

@@ -34,7 +34,11 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Engineering
             {
                 n2 = ArgToDecimal(arguments, 1);
             }
-            if (n1.CompareTo(n2) == 0) return CreateResult(1, DataType.Integer);
+            if (n1.CompareTo(n2) == 0)
+            {
+                return this.CreateResult(1, DataType.Integer);
+            }
+
             return CreateResult(0, DataType.Integer);
         }
     }

@@ -26,7 +26,11 @@ namespace OfficeOpenXml.Drawing.Theme
         private readonly ExcelThemeBase _theme;
         internal ExcelThemeEffectStyle(XmlNamespaceManager nameSpaceManager, XmlNode topNode, string path, string[] schemaNodeOrder, ExcelThemeBase theme) : base(nameSpaceManager, topNode)
         {
-            if (!string.IsNullOrEmpty(path)) path += "/";
+            if (!string.IsNullOrEmpty(path))
+            {
+                path += "/";
+            }
+
             _path = path;
             _schemaNodeOrder = schemaNodeOrder;
             _theme = theme;

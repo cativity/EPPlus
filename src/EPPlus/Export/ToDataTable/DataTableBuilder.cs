@@ -65,7 +65,11 @@ namespace OfficeOpenXml.Export.ToDataTable
                 {                    
                     name = _sheet.GetValue(row, col)?.ToString();
                     origName = name;
-                    if (name == null) throw new InvalidOperationException(string.Format("First row contains an empty cell at index {0}", col - _range.Start.Column));
+                    if (name == null)
+                    {
+                        throw new InvalidOperationException(string.Format("First row contains an empty cell at index {0}", col - this._range.Start.Column));
+                    }
+
                     name = GetColumnName(name);
                 }
                 else
@@ -79,9 +83,16 @@ namespace OfficeOpenXml.Export.ToDataTable
                 columnNames.Add(name);
                 // find type
                 while (_sheet.GetValue(++row, col) == null && row <= _range.End.Row)
+                {
                     ;
+                }
+
                 var v = _sheet.GetValue(row, col);
-                if (row == _range.End.Row && v == null) throw new InvalidOperationException(string.Format("Column with index {0} does not contain any values", col));
+                if (row == _range.End.Row && v == null)
+                {
+                    throw new InvalidOperationException(string.Format("Column with index {0} does not contain any values", col));
+                }
+
                 var type = v == null ? typeof(Nullable) : v.GetType();
 
                 // check mapping
@@ -131,7 +142,11 @@ namespace OfficeOpenXml.Export.ToDataTable
                 foreach(var colObj in dataTable.Columns)
                 {
                     var col = colObj as DataColumn;
-                    if (col == null) continue;
+                    if (col == null)
+                    {
+                        continue;
+                    }
+
                     if (pk.ContainsKey(col.ColumnName))
                     {
                         cols.Add(col);

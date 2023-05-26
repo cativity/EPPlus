@@ -32,21 +32,33 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance
             ValidateArguments(arguments, 5);
             var settlementDate = System.DateTime.FromOADate(ArgToInt(arguments, 0));
             var maturityDate = System.DateTime.FromOADate(ArgToInt(arguments, 1));
-            if (settlementDate >= maturityDate) return CreateResult(eErrorType.Num);
+            if (settlementDate >= maturityDate)
+            {
+                return this.CreateResult(eErrorType.Num);
+            }
 
             var issueDate = System.DateTime.FromOADate(ArgToInt(arguments, 2));
             
             var rate = ArgToDecimal(arguments, 3);
-            if (rate < 0) return CreateResult(eErrorType.Num);
-            
+            if (rate < 0)
+            {
+                return this.CreateResult(eErrorType.Num);
+            }
+
             var price = ArgToDecimal(arguments, 4);
-            if (price <= 0) return CreateResult(eErrorType.Num);
-            
+            if (price <= 0)
+            {
+                return this.CreateResult(eErrorType.Num);
+            }
+
             var basis = 0;
             if(arguments.Count() > 5)
             {
                 basis = ArgToInt(arguments, 5);
-                if (basis < 0 || basis > 4) return CreateResult(eErrorType.Num);
+                if (basis < 0 || basis > 4)
+                {
+                    return this.CreateResult(eErrorType.Num);
+                }
             }
 
             var yearFracProvider = new YearFracProvider(context);

@@ -79,9 +79,17 @@ namespace EPPlusTest
         public void VbaError()
         {
             DirectoryInfo workingDir = new DirectoryInfo(@"C:\epplusExample\folder");
-            if (!workingDir.Exists) workingDir.Create();
+            if (!workingDir.Exists)
+            {
+                workingDir.Create();
+            }
+
             FileInfo f = new FileInfo(workingDir.FullName + "//" + "temp.xlsx");
-            if (f.Exists) f.Delete();
+            if (f.Exists)
+            {
+                f.Delete();
+            }
+
             ExcelPackage myPackage = new ExcelPackage(f);
             myPackage.Workbook.CreateVBAProject();
             ExcelWorksheet excelWorksheet = myPackage.Workbook.Worksheets.Add("Sheet1");

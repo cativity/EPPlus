@@ -28,8 +28,16 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.FinancialDayCount
 
         public double GetDaysBetweenDates(FinancialDay startDate, FinancialDay endDate)
         {
-            if (startDate.Day == 31) startDate.Day = 30;
-            if (endDate.Day == 31) endDate.Day = 30;
+            if (startDate.Day == 31)
+            {
+                startDate.Day = 30;
+            }
+
+            if (endDate.Day == 31)
+            {
+                endDate.Day = 30;
+            }
+
             return GetDaysBetweenDates(startDate, endDate, (int)DaysPerYear);
         }
 

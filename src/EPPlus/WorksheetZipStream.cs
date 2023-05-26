@@ -196,7 +196,11 @@ namespace OfficeOpenXml
             var xml = System.Text.Encoding.UTF8.GetString(((MemoryStream)Buffer.BaseStream).ToArray());
             var endElementIx = FindElementPos(xml, endElement, false);
 
-            if (endElementIx < 0) return startXml;
+            if (endElementIx < 0)
+            {
+                return startXml;
+            }
+
             if (string.IsNullOrEmpty(readToElement))
             {
                 xml = xml.Substring(endElementIx);
@@ -283,7 +287,11 @@ namespace OfficeOpenXml
 
         private bool HasExtElementUri(string elementString, string uriValue)
         {
-            if (elementString.StartsWith("</")) return false; //An endtag, return false;
+            if (elementString.StartsWith("</"))
+            {
+                return false; //An endtag, return false;
+            }
+
             var ix=elementString.IndexOf("uri");
             var pc = elementString[ix - 1];
             var nc = elementString[ix + 3];
@@ -339,7 +347,11 @@ namespace OfficeOpenXml
                         }
                     }
                 }
-                if (ix < 0) return -1;
+                if (ix < 0)
+                {
+                    return -1;
+                }
+
                 ix += element.Length;
             }
         }

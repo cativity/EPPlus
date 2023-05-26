@@ -36,12 +36,18 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.RefAndLookup
             if (functionArguments.Length > 3)
             {
                 height = ArgToInt(functionArguments, 3);
-                if (height == 0) return new CompileResult(eErrorType.Ref);
+                if (height == 0)
+                {
+                    return new CompileResult(eErrorType.Ref);
+                }
             }
             if (functionArguments.Length > 4)
             {
                 width = ArgToInt(functionArguments, 4);
-                if (width == 0) return new CompileResult(eErrorType.Ref);
+                if (width == 0)
+                {
+                    return new CompileResult(eErrorType.Ref);
+                }
             }
             var ws = context.Scopes.Current.Address.Worksheet;            
             var r =context.ExcelDataProvider.GetRange(ws, context.Scopes.Current.Address.FromRow, context.Scopes.Current.Address.FromCol, startRange);

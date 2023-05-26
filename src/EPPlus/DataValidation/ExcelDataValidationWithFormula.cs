@@ -70,13 +70,17 @@ namespace OfficeOpenXml.DataValidation
             xr.ReadUntil(formulaIdentifier, "dataValidation", "extLst");
 
             if (xr.LocalName != formulaIdentifier && formulaIdentifier != "formula2")
-                throw new NullReferenceException($"Cannot find DataValidation formula for {Uid}. " +
-                    $"Missing node name: {formulaIdentifier}");
+            {
+                throw new NullReferenceException($"Cannot find DataValidation formula for {this.Uid}. " +
+                                                 $"Missing node name: {formulaIdentifier}");
+            }
 
             bool isExt = xr.NamespaceURI == ExcelPackage.schemaMainX14;
 
             if (InternalValidationType == InternalValidationType.ExtLst || isExt)
+            {
                 xr.Read();
+            }
 
             return DefineFormulaClassType(xr.ReadString(), _workSheetName);
         }

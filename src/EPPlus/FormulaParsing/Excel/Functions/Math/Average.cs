@@ -38,7 +38,11 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
             double nValues = 0d, result = 0d;
             foreach (var arg in arguments)
             {
-                if (ShouldIgnore(arg, context)) continue;
+                if (ShouldIgnore(arg, context))
+                {
+                    continue;
+                }
+
                 Calculate(arg, context, ref result, ref nValues);
             }
             return CreateResult(Divide(result, nValues), DataType.Decimal);
@@ -61,9 +65,17 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
             {
                 foreach (var c in arg.ValueAsRangeInfo)
                 {
-                    if (ShouldIgnore(c, context)) continue;
+                    if (ShouldIgnore(c, context))
+                    {
+                        continue;
+                    }
+
                     CheckForAndHandleExcelError(c);
-                    if (!IsNumeric(c.Value) || IsBool(c.Value)) continue;
+                    if (!IsNumeric(c.Value) || IsBool(c.Value))
+                    {
+                        continue;
+                    }
+
                     nValues++;
                     retVal += c.ValueDouble;
                 }

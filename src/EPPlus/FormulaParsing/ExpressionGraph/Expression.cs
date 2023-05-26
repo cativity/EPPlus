@@ -91,7 +91,11 @@ namespace OfficeOpenXml.FormulaParsing.ExpressionGraph
                     expression.Operator = null;
                 }
                 expression.Next = Next.Next;
-                if (expression.Next != null) expression.Next.Prev = expression;
+                if (expression.Next != null)
+                {
+                    expression.Next.Prev = expression;
+                }
+
                 expression.Prev = Prev;
             }
             else

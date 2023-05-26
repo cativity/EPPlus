@@ -48,7 +48,11 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Database
             while (db.HasMoreRows)
             {
                 var dataRow = db.Read();
-                if (!RowMatcher.IsMatch(dataRow, criteria)) continue;
+                if (!RowMatcher.IsMatch(dataRow, criteria))
+                {
+                    continue;
+                }
+
                 var candidate = ConvertUtil.IsNumericOrDate(field) ? dataRow[(int)ConvertUtil.GetValueDouble(field)] : dataRow[field.ToString().ToLower(CultureInfo.InvariantCulture)];
                 if (ConvertUtil.IsNumericOrDate(candidate))
                 {

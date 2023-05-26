@@ -22,13 +22,28 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.Implementations
         public static FinanceCalcResult<double> GetPrice(FinancialDay settlement, FinancialDay maturity, double rate, double yield, double redemption, int frequency, DayCountBasis basis = DayCountBasis.US_30_360)
         {
             var coupDaysResult = new CoupdaysImpl(settlement, maturity, frequency, basis).GetCoupdays();
-            if (coupDaysResult.HasError) return coupDaysResult;
+            if (coupDaysResult.HasError)
+            {
+                return coupDaysResult;
+            }
+
             var coupdaysNcResult = new CoupdaysncImpl(settlement, maturity, frequency, basis).Coupdaysnc();
-            if (coupdaysNcResult.HasError) return coupdaysNcResult;
+            if (coupdaysNcResult.HasError)
+            {
+                return coupdaysNcResult;
+            }
+
             var coupnumResult = new CoupnumImpl(settlement, maturity, frequency, basis).GetCoupnum();
-            if (coupnumResult.HasError) return new FinanceCalcResult<double>(coupnumResult.ExcelErrorType);
+            if (coupnumResult.HasError)
+            {
+                return new FinanceCalcResult<double>(coupnumResult.ExcelErrorType);
+            }
+
             var coupdaysbsResult = new CoupdaybsImpl(settlement, maturity, frequency, basis).Coupdaybs();
-            if(coupdaysbsResult.HasError) return new FinanceCalcResult<double>(coupdaysbsResult.ExcelErrorType);
+            if(coupdaysbsResult.HasError)
+            {
+                return new FinanceCalcResult<double>(coupdaysbsResult.ExcelErrorType);
+            }
 
             var E = coupDaysResult.Result;
             var DSC = coupdaysNcResult.Result;

@@ -84,7 +84,11 @@ namespace OfficeOpenXml.Table.PivotTable
             {
                 //TODO: Add exception
             }
-            if (_list.Count == 0) Refresh();
+            if (_list.Count == 0)
+            {
+                this.Refresh();
+            }
+
             foreach (var item in _list)
             {
                 item.ShowDetails= isExpanded;

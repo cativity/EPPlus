@@ -45,9 +45,17 @@ namespace OfficeOpenXml.Core.CellStore
             maxRow = _endRow;
 
             minColPos = _cellStore.GetColumnPosition(_startCol);
-            if (minColPos < 0) minColPos = ~minColPos;
+            if (minColPos < 0)
+            {
+                this.minColPos = ~this.minColPos;
+            }
+
             maxColPos = _cellStore.GetColumnPosition(_endCol);
-            if (maxColPos < 0) maxColPos = ~maxColPos - 1;
+            if (maxColPos < 0)
+            {
+                this.maxColPos = ~this.maxColPos - 1;
+            }
+
             row = minRow;
             colPos = minColPos - 1;
 

@@ -21,9 +21,21 @@ namespace OfficeOpenXml.FormulaParsing.ExcelUtilities
 
         public virtual int IsMatch(object searchedValue, object candidate)
         {
-            if (searchedValue != null && candidate == null) return -1;
-            if (searchedValue == null && candidate != null) return 1;
-            if (searchedValue == null && candidate == null) return 0;
+            if (searchedValue != null && candidate == null)
+            {
+                return -1;
+            }
+
+            if (searchedValue == null && candidate != null)
+            {
+                return 1;
+            }
+
+            if (searchedValue == null && candidate == null)
+            {
+                return 0;
+            }
+
             //Handle ranges and defined names
             searchedValue = CheckGetRange(searchedValue);
             candidate = CheckGetRange(candidate);
@@ -93,7 +105,10 @@ namespace OfficeOpenXml.FormulaParsing.ExcelUtilities
             {
                 DateTime? date = ConvertUtil.GetValueDate(candidate);
                 if (date.HasValue == false)
+                {
                     return -1;
+                }
+
                 return date.Value.CompareTo(dtsv);
             }
             return IncompatibleOperands;

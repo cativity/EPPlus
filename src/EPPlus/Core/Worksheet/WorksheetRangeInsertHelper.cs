@@ -598,7 +598,11 @@ namespace OfficeOpenXml.Core.Worksheet
                 {
                     while (sce.Next())
                     {
-                        if (sce.Value._styleId == 0) continue;
+                        if (sce.Value._styleId == 0)
+                        {
+                            continue;
+                        }
+
                         l.Add(new int[] { sce.Row, sce.Value._styleId });
                     }
                 }
@@ -695,7 +699,11 @@ namespace OfficeOpenXml.Core.Worksheet
                             if((shift == eShiftTypeInsert.Down || shift == eShiftTypeInsert.EntireRow))
                             {
                                 var rows = range.Rows;
-                                if (f.StartRow >= rowFrom) f.StartRow += rows;
+                                if (f.StartRow >= rowFrom)
+                                {
+                                    f.StartRow += rows;
+                                }
+
                                 if (a._fromRow >= rowFrom)
                                 {
                                     a._fromRow += rows;
@@ -709,7 +717,11 @@ namespace OfficeOpenXml.Core.Worksheet
                             else
                             {
                                 var cols = range.Columns;
-                                if (f.StartCol >= columnFrom) f.StartCol += cols;
+                                if (f.StartCol >= columnFrom)
+                                {
+                                    f.StartCol += cols;
+                                }
+
                                 if (a._fromCol >= columnFrom)
                                 {
                                     a._fromCol += cols;
@@ -768,7 +780,11 @@ namespace OfficeOpenXml.Core.Worksheet
                     {
                         if (f.StartCol >= columnFrom)
                         {
-                            if (f.StartRow >= rowFrom) f.StartRow += rows;
+                            if (f.StartRow >= rowFrom)
+                            {
+                                f.StartRow += rows;
+                            }
+
                             var a = new ExcelAddressBase(f.Address);
                             if (a._fromRow >= rowFrom)
                             {
@@ -828,7 +844,11 @@ namespace OfficeOpenXml.Core.Worksheet
                 {
                     if (ws.Name == wsToUpdate.Name)
                     {
-                        if (f.StartCol >= columnFrom) f.StartCol += columns;
+                        if (f.StartCol >= columnFrom)
+                        {
+                            f.StartCol += columns;
+                        }
+
                         var a = new ExcelAddressBase(f.Address);
                         if (a._fromCol >= columnFrom)
                         {
@@ -956,14 +976,21 @@ namespace OfficeOpenXml.Core.Worksheet
 
         private static void CopyFromStyleRow(ExcelWorksheet ws, int rowFrom, int rows, int copyStylesFromRow)
         {
-            if (copyStylesFromRow >= rowFrom) copyStylesFromRow += rows;
+            if (copyStylesFromRow >= rowFrom)
+            {
+                copyStylesFromRow += rows;
+            }
 
             //Copy style from style row
             using (var cseS = new CellStoreEnumerator<ExcelValue>(ws._values, copyStylesFromRow, 0, copyStylesFromRow, ExcelPackage.MaxColumns))
             {
                 while (cseS.Next())
                 {
-                    if (cseS.Value._styleId == 0) continue;
+                    if (cseS.Value._styleId == 0)
+                    {
+                        continue;
+                    }
+
                     for (var r = 0; r < rows; r++)
                     {
                         ws.SetStyleInner(rowFrom + r, cseS.Column, cseS.Value._styleId);

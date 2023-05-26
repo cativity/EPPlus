@@ -105,7 +105,10 @@ namespace OfficeOpenXml.Export.HtmlExport
             if (styleId == 0 || HasStyle(xfs) == false)
             {
                 if (string.IsNullOrEmpty(cls) == false)
-                    AddAttribute("class", cls);
+                {
+                    this.AddAttribute("class", cls);
+                }
+
                 return;
             }
 

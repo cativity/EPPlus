@@ -78,7 +78,11 @@ namespace OfficeOpenXml.VBA.Signatures
         internal bool ReadSignature()
         {
 
-            if (_vbaPart == null) return true; //If no vba part exists, create the signature by default.
+            if (_vbaPart == null)
+            {
+                return true; //If no vba part exists, create the signature by default.
+            }
+
             var rel = _vbaPart.GetRelationshipsByType(SchemaRelation).FirstOrDefault();
             if(rel != null)
             {

@@ -21,7 +21,11 @@ namespace OfficeOpenXml.FormulaParsing.LexicalAnalysis.TokenSeparatorHandlers
     {
         public override bool Handle(char c, Token tokenSeparator, TokenizerContext context, ITokenIndexProvider tokenIndexProvider)
         {
-            if (context.IsInSheetName || context.IsInSheetName) return false;
+            if (context.IsInSheetName || context.IsInSheetName)
+            {
+                return false;
+            }
+
             if (tokenSeparator.TokenTypeIsSet(TokenType.OpeningBracket))
             {
                 context.AppendToCurrentToken(c);

@@ -585,7 +585,7 @@ namespace OfficeOpenXml.ExcelXMLWriter
             sw.Write($"</{prefix}mergeCells>");
         }
 
-        private void WriteDataValidationAttributes(ref StringBuilder cache, int i)
+        private void WriteDataValidationAttributes(StringBuilder cache, int i)
         {
             if (_ws.DataValidations[i].ValidationType != null && 
                 _ws.DataValidations[i].ValidationType.Type != eDataValidationType.Any)
@@ -663,10 +663,10 @@ namespace OfficeOpenXml.ExcelXMLWriter
             cache.Append(">");
         }
 
-        private void WriteDataValidation(ref StringBuilder cache, string prefix, int i, string extNode = "")
+        private void WriteDataValidation(StringBuilder cache, string prefix, int i, string extNode = "")
         {
             cache.Append($"<{prefix}dataValidation ");
-            WriteDataValidationAttributes(ref cache, i);
+            WriteDataValidationAttributes(cache, i);
 
             if (_ws.DataValidations[i].ValidationType.Type != eDataValidationType.Any)
             {
@@ -729,7 +729,7 @@ namespace OfficeOpenXml.ExcelXMLWriter
         }
 
         void WriteDataValidationFormulaSingle(IExcelDataValidationFormula formula,
-            in StringBuilder cache, string prefix, string extNode, string endExtNode)
+            StringBuilder cache, string prefix, string extNode, string endExtNode)
         {
             string string1 = ((ExcelDataValidationFormula)formula).GetXmlValue();
             string1 = ConvertUtil.ExcelEscapeAndEncodeString(string1);
@@ -738,7 +738,7 @@ namespace OfficeOpenXml.ExcelXMLWriter
         }
 
         void WriteDataValidationFormulas(IExcelDataValidationFormula formula1, IExcelDataValidationFormula formula2,
-            in StringBuilder cache, string prefix, string extNode, string endExtNode, ExcelDataValidationOperator dvOperator)
+            StringBuilder cache, string prefix, string extNode, string endExtNode, ExcelDataValidationOperator dvOperator)
         {
             string string1 = ((ExcelDataValidationFormula)formula1).GetXmlValue();
             string string2 = ((ExcelDataValidationFormula)formula2).GetXmlValue();
@@ -777,7 +777,7 @@ namespace OfficeOpenXml.ExcelXMLWriter
             {
                 if (_ws.DataValidations[i].InternalValidationType == type)
                 {
-                    WriteDataValidation(ref cache, prefix, i, extNode);
+                    WriteDataValidation(cache, prefix, i, extNode);
                 }
             }
 

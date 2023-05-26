@@ -46,14 +46,7 @@ namespace OfficeOpenXml.Drawing.Vml
         /// </summary>
         public ExcelVmlDrawingColor Color
         {
-            get
-            {
-                if (this._fillColor == null)
-                {
-                    this._fillColor = new ExcelVmlDrawingColor(this.NameSpaceManager, this.TopNode, "@fillcolor");
-                }
-                return this._fillColor;
-            }
+            get { return this._fillColor ??= new ExcelVmlDrawingColor(this.NameSpaceManager, this.TopNode, "@fillcolor"); }
         }
         /// <summary>
         /// Opacity for fill color 1. Spans 0-100%. 
@@ -81,14 +74,7 @@ namespace OfficeOpenXml.Drawing.Vml
         /// </summary>
         public ExcelVmlDrawingColor SecondColor
         {
-            get
-            {
-                if (this._secondColor == null)
-                {
-                    this._secondColor = new ExcelVmlDrawingColor(this.NameSpaceManager, this.TopNode, "v:fill/@color2");
-                }
-                return this._secondColor;
-            }
+            get { return this._secondColor ??= new ExcelVmlDrawingColor(this.NameSpaceManager, this.TopNode, "v:fill/@color2"); }
         }
         /// <summary>
         /// Opacity for fill color 2. Spans 0-100%
@@ -116,14 +102,7 @@ namespace OfficeOpenXml.Drawing.Vml
         /// </summary>
         public ExcelVmlDrawingGradientFill GradientSettings
         {
-            get
-            {
-                if(this._gradientSettings==null)
-                {
-                    this._gradientSettings = new ExcelVmlDrawingGradientFill(this, this.NameSpaceManager, this.TopNode);
-                }
-                return this._gradientSettings;
-            }
+            get { return this._gradientSettings ??= new ExcelVmlDrawingGradientFill(this, this.NameSpaceManager, this.TopNode); }
         }
         internal ExcelVmlDrawingPictureFill _patternPictureSettings = null;
         /// <summary>
@@ -133,11 +112,7 @@ namespace OfficeOpenXml.Drawing.Vml
         {
             get
             {
-                if(this._patternPictureSettings==null)
-                {
-                    this._patternPictureSettings = new ExcelVmlDrawingPictureFill(this, this.NameSpaceManager, this.TopNode);
-                }
-                return this._patternPictureSettings;
+                return this._patternPictureSettings ??= new ExcelVmlDrawingPictureFill(this, this.NameSpaceManager, this.TopNode);
             }
         }
         /// <summary>

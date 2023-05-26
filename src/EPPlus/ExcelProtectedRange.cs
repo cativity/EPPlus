@@ -53,14 +53,7 @@ namespace OfficeOpenXml
         /// </summary>
         public ExcelAddress Address 
         { 
-            get
-            {
-                if(this._address==null)
-                {
-                    this._address=new ExcelAddress(this.GetXmlNodeString("@sqref"));
-                }
-                return this._address;
-            }
+            get { return this._address ??= new ExcelAddress(this.GetXmlNodeString("@sqref")); }
             set
             {
                 this.SetXmlNodeString("@sqref", SqRefUtility.ToSqRefAddress(value.Address));

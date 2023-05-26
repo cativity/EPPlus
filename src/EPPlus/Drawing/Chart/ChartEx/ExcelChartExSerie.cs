@@ -93,14 +93,7 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
         /// </summary>
         public ExcelChartExDataCollection DataDimensions
         {
-            get
-            {
-                if (this._dataDimensions == null)
-                {
-                    this._dataDimensions = new ExcelChartExDataCollection(this, this.NameSpaceManager, this._dataNode);
-                }
-                return this._dataDimensions;
-            }
+            get { return this._dataDimensions ??= new ExcelChartExDataCollection(this, this.NameSpaceManager, this._dataNode); }
         }
         const string headerAddressPath = "c:tx/c:strRef/c:f";
         /// <summary>
@@ -238,11 +231,7 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
         {
             get
             {
-                if (this._dataLabels == null)
-                {
-                    this._dataLabels = new ExcelChartExSerieDataLabel(this, this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder);
-                }
-                return this._dataLabels;
+                return this._dataLabels ??= new ExcelChartExSerieDataLabel(this, this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder);
             }
         }
         ExcelChartExDataPointCollection _dataPoints = null;
@@ -253,11 +242,7 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
         {
             get
             {
-                if(this._dataPoints==null)
-                {
-                    this._dataPoints = new ExcelChartExDataPointCollection(this, this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder);
-                }
-                return this._dataPoints;
+                return this._dataPoints ??= new ExcelChartExDataPointCollection(this, this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder);
             }
         }
         /// <summary>

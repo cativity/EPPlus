@@ -43,11 +43,11 @@ namespace OfficeOpenXml.Drawing.Theme
         {
             get
             {
-                if(this._effects==null)
-                {
-                    this._effects = new ExcelDrawingEffectStyle(this._theme, this.NameSpaceManager, this.TopNode, this._path + "a:effectLst", this._schemaNodeOrder);
-                }
-                return this._effects;
+                return this._effects ??= new ExcelDrawingEffectStyle(this._theme,
+                                                                     this.NameSpaceManager,
+                                                                     this.TopNode,
+                                                                     this._path + "a:effectLst",
+                                                                     this._schemaNodeOrder);
             }
         }
         ExcelDrawing3D _threeD = null;
@@ -56,14 +56,7 @@ namespace OfficeOpenXml.Drawing.Theme
         /// </summary>
         public ExcelDrawing3D ThreeD
         {
-            get
-            {
-                if (this._threeD == null)
-                {
-                    this._threeD = new ExcelDrawing3D(this.NameSpaceManager, this.TopNode, this._path, this._schemaNodeOrder);
-                }
-                return this._threeD;
-            }
+            get { return this._threeD ??= new ExcelDrawing3D(this.NameSpaceManager, this.TopNode, this._path, this._schemaNodeOrder); }
         }
     }
 }

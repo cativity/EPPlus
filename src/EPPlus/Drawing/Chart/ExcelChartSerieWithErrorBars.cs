@@ -53,10 +53,7 @@ namespace OfficeOpenXml.Drawing.Chart
 
         internal ExcelChartErrorBars GetNewErrorBar(eErrorBarType barType, eErrorValueType valueType, ExcelChartErrorBars errorBars)
         {
-            if (errorBars == null)
-            {
-                errorBars = new ExcelChartErrorBars(this);
-            }
+            errorBars ??= new ExcelChartErrorBars(this);
             errorBars.BarType = barType;
             errorBars.ValueType = valueType;
             errorBars.NoEndCap = false;

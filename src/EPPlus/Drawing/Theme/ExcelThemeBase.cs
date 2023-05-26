@@ -63,11 +63,9 @@ namespace OfficeOpenXml.Drawing.Theme
         {
             get
             {
-                if (this._colorScheme == null)
-                {
-                    this._colorScheme = new ExcelColorScheme(this.NameSpaceManager, this.TopNode.SelectSingleNode(this._colorSchemePath, this.NameSpaceManager));
-                }
-                return this._colorScheme;
+                return this._colorScheme
+                       ?? (this._colorScheme =
+                               new ExcelColorScheme(this.NameSpaceManager, this.TopNode.SelectSingleNode(this._colorSchemePath, this.NameSpaceManager)));
             }
         }
         internal ExcelFontScheme _fontScheme = null;
@@ -78,11 +76,10 @@ namespace OfficeOpenXml.Drawing.Theme
         {
             get
             {
-                if (this._fontScheme == null)
-                {
-                    this._fontScheme = new ExcelFontScheme(this._pck, this.NameSpaceManager, this.TopNode.SelectSingleNode(this._fontSchemePath, this.NameSpaceManager));
-                }
-                return this._fontScheme;
+                return this._fontScheme
+                       ?? (this._fontScheme = new ExcelFontScheme(this._pck,
+                                                                  this.NameSpaceManager,
+                                                                  this.TopNode.SelectSingleNode(this._fontSchemePath, this.NameSpaceManager)));
             }
         }
         private ExcelFormatScheme _formatScheme = null;
@@ -93,11 +90,10 @@ namespace OfficeOpenXml.Drawing.Theme
         {
             get
             {
-                if (this._formatScheme == null)
-                {
-                    this._formatScheme = new ExcelFormatScheme(this.NameSpaceManager, this.TopNode.SelectSingleNode(this._fmtSchemePath, this.NameSpaceManager), this);
-                }
-                return this._formatScheme;
+                return this._formatScheme
+                       ?? (this._formatScheme = new ExcelFormatScheme(this.NameSpaceManager,
+                                                                      this.TopNode.SelectSingleNode(this._fmtSchemePath, this.NameSpaceManager),
+                                                                      this));
             }
         }
 

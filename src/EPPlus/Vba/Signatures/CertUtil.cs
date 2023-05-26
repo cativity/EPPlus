@@ -100,11 +100,8 @@ namespace OfficeOpenXml.VBA.Signatures
 
         internal static X509Certificate2 GetCertificate(string thumbprint)
         {
-            X509Certificate2? storeCert = GetCertFromStore(StoreLocation.CurrentUser, thumbprint);
-            if (storeCert == null)
-            {
-                storeCert = GetCertFromStore(StoreLocation.LocalMachine, thumbprint);
-            }
+            X509Certificate2? storeCert = GetCertFromStore(StoreLocation.CurrentUser, thumbprint) ?? GetCertFromStore(StoreLocation.LocalMachine, thumbprint);
+
             if (storeCert != null && storeCert.HasPrivateKey == true)
             {
                 return storeCert;

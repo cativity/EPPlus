@@ -141,11 +141,7 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             get
             {
-                if (this._textBody == null)
-                {
-                    this._textBody = new ExcelTextBody(this.NameSpaceManager, this.TopNode, $"c:txPr/a:bodyPr", this.SchemaNodeOrder);
-                }
-                return this._textBody;
+                return this._textBody ??= new ExcelTextBody(this.NameSpaceManager, this.TopNode, $"c:txPr/a:bodyPr", this.SchemaNodeOrder);
             }
         }
 

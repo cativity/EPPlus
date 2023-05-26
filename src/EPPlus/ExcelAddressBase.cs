@@ -593,14 +593,7 @@ namespace OfficeOpenXml
         /// <value>The start row column.</value>
         public ExcelCellAddress Start
         {
-            get
-            {
-                if (this._start == null)
-                {
-                    this._start = new ExcelCellAddress(this._fromRow, this._fromCol, this._fromRowFixed, this._fromColFixed);
-                }
-                return this._start;
-            }
+            get { return this._start ??= new ExcelCellAddress(this._fromRow, this._fromCol, this._fromRowFixed, this._fromColFixed); }
         }
         internal ExcelCellAddress _end = null;
         /// <summary>
@@ -609,14 +602,7 @@ namespace OfficeOpenXml
         /// <value>The end row column.</value>
         public ExcelCellAddress End
         {
-            get
-            {
-                if (this._end == null)
-                {
-                    this._end = new ExcelCellAddress(this._toRow, this._toCol, this._toRowFixed, this._toColFixed);
-                }
-                return this._end;
-            }
+            get { return this._end ??= new ExcelCellAddress(this._toRow, this._toCol, this._toRowFixed, this._toColFixed); }
         }
         /// <summary>
         /// The index to the external reference. Return 0, the current workbook, if no reference exists.
@@ -895,10 +881,7 @@ namespace OfficeOpenXml
                         }
                         else if (c == ',' && !isText)
                         {
-                            if(this._addresses==null)
-                            {
-                                this._addresses = new List<ExcelAddressBase>();
-                            }
+                            this._addresses ??= new List<ExcelAddressBase>();
 
                             if(string.IsNullOrEmpty(ws))
                             {

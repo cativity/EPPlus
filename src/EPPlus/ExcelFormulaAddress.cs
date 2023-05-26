@@ -146,15 +146,7 @@ namespace OfficeOpenXml
         /// </summary>
         public new List<ExcelFormulaAddress> Addresses
         {
-            get
-            {
-                if (this._addresses == null)
-                {
-                    this._addresses = new List<ExcelFormulaAddress>();
-                }
-                return this._addresses;
-
-            }
+            get { return this._addresses ??= new List<ExcelFormulaAddress>(); }
         }
         internal string GetOffset(int row, int column, bool withWbWs=false)
         {

@@ -2914,15 +2914,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
 
         private List<ZipEntry> ZipEntriesAsList
         {
-            get
-            {
-                if (this._zipEntriesAsList == null)
-                {
-                    this._zipEntriesAsList = new List<ZipEntry>(this._entries.Values);
-                }
-
-                return this._zipEntriesAsList;
-            }
+            get { return this._zipEntriesAsList ??= new List<ZipEntry>(this._entries.Values); }
         }
 
         /// <summary>

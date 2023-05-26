@@ -80,7 +80,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.Implementations
 
             if(dExcess > 0d)
             {
-                dRet = dRet - dExcess;
+                dRet -= dExcess;
             }
 
             if(dRet >= 0d)

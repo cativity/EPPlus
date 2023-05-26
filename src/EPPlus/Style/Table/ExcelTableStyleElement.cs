@@ -34,14 +34,7 @@ namespace OfficeOpenXml.Style
         /// </summary>
         public ExcelDxfStyleLimitedFont Style
         {
-            get
-            {
-                if (this._style == null)
-                {
-                    this._style = this._styles.GetDxfLimitedFont(this.GetXmlNodeIntNull("@dxfId"));
-                }
-                return this._style;
-            }
+            get { return this._style ??= this._styles.GetDxfLimitedFont(this.GetXmlNodeIntNull("@dxfId")); }
             internal set
             {
                 this._style = value;

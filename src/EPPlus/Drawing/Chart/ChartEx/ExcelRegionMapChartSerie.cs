@@ -134,14 +134,7 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
         /// </summary>
         public ExcelChartExValueColors Colors
         {
-            get
-            {
-                if(this._colors==null)
-                {
-                    this._colors = new ExcelChartExValueColors(this, this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder);
-                }
-                return this._colors;
-            }
+            get { return this._colors ??= new ExcelChartExValueColors(this, this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder); }
         }
         /// <summary>
         /// Layout type for region labels

@@ -60,7 +60,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.RefAndLookup
             else if(!result.IsMulti)
             {
                 ICellInfo? cell = result.FirstOrDefault();
-                object? val = cell != null ? cell.Value : null;
+                object? val = cell?.Value;
                 if (val == null)
                 {
                     return CompileResult.Empty;

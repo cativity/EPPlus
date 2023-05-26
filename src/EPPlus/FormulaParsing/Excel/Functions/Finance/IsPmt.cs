@@ -33,7 +33,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance
             int nper = this.ArgToInt(arguments, 2);
             double pv = this.ArgToDecimal(arguments, 3);
             double result = -pv * rate;
-            result = result - result / nper * per;
+            result -= result / nper * per;
             return this.CreateResult(result, DataType.Decimal);
         }
     }

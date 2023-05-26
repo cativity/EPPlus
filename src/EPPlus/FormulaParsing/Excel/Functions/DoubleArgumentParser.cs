@@ -30,7 +30,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions
             if (obj is IRangeInfo)
             {
                 ICellInfo? r=((IRangeInfo)obj).FirstOrDefault();
-                return r == null ? 0 : r.ValueDouble;
+                return r?.ValueDouble ?? 0;
             }
             if (obj is double)
             {

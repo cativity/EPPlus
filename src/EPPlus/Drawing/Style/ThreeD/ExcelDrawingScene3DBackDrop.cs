@@ -43,11 +43,7 @@ namespace OfficeOpenXml.Drawing.Style.ThreeD
         {
             get
             {
-                if (this._anchorPoint == null)
-                {
-                    this._anchorPoint = new ExcelDrawingPoint3D(this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder, this._anchorPath, "", this.InitXml);
-                }
-                return this._anchorPoint;
+                return this._anchorPoint ??= new ExcelDrawingPoint3D(this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder, this._anchorPath, "", this.InitXml);
             }
         }
         ExcelDrawingPoint3D _upVector = null;
@@ -58,12 +54,7 @@ namespace OfficeOpenXml.Drawing.Style.ThreeD
         {
             get
             {
-                if (this._upVector == null)
-                {
-                    this._upVector = new ExcelDrawingPoint3D(this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder, this._upPath, "d", this.InitXml);
-                }
-                return this._upVector;
-
+                return this._upVector ??= new ExcelDrawingPoint3D(this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder, this._upPath, "d", this.InitXml);
             }
         }
         ExcelDrawingPoint3D _normalVector = null;
@@ -74,12 +65,7 @@ namespace OfficeOpenXml.Drawing.Style.ThreeD
         {
             get
             {
-                if (this._normalVector == null)
-                {
-                    this._normalVector = new ExcelDrawingPoint3D(this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder, this._normPath, "d", this.InitXml);
-                }
-                return this._normalVector;
-
+                return this._normalVector ??= new ExcelDrawingPoint3D(this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder, this._normPath, "d", this.InitXml);
             }
         }
         private void InitXml(bool delete)

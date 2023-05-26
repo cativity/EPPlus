@@ -470,10 +470,7 @@ namespace OfficeOpenXml
         private async Task ConstructNewFileAsync(string password, CancellationToken cancellationToken)
         {
             MemoryStream? ms = RecyclableMemory.GetStream();
-            if (this._stream == null)
-            {
-                this._stream = RecyclableMemory.GetStream();
-            }
+            this._stream ??= RecyclableMemory.GetStream();
 
             this.File?.Refresh();
             if (this.File != null && this.File.Exists)

@@ -91,14 +91,7 @@ namespace OfficeOpenXml.Utils.CompundDocument
         List<CompoundDocumentItem> _directories = null;
         internal List<CompoundDocumentItem> Directories
         {
-            get
-            {
-                if (this._directories == null)
-                {
-                    this._directories = this.FlattenDirs();
-                }
-                return this._directories;
-            }
+            get { return this._directories ??= this.FlattenDirs(); }
         }
 
         /// <summary>

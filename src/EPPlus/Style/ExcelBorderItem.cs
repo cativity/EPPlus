@@ -52,11 +52,7 @@ namespace OfficeOpenXml.Style
         {
             get
             {
-                if (this._color == null)
-                {
-                    this._color = new ExcelColor(this._styles, this._ChangedEvent, this._positionID, this._address, this._cls, this._parent);
-                }
-                return this._color;
+                return this._color ??= new ExcelColor(this._styles, this._ChangedEvent, this._positionID, this._address, this._cls, this._parent);
             }
         }
 

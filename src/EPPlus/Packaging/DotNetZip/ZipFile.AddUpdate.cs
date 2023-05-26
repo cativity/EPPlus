@@ -2128,10 +2128,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
                                                   string rootDirectoryPathInArchive,
                                                   AddOrUpdateAction action)
         {
-            if (rootDirectoryPathInArchive == null)
-            {
-                rootDirectoryPathInArchive = "";
-            }
+            rootDirectoryPathInArchive ??= "";
 
             return this.AddOrUpdateDirectoryImpl(directoryName, rootDirectoryPathInArchive, action, true, 0);
         }

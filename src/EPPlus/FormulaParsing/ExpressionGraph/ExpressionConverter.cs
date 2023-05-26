@@ -84,14 +84,7 @@ namespace OfficeOpenXml.FormulaParsing.ExpressionGraph
         private static IExpressionConverter _instance;
         public static IExpressionConverter Instance
         {
-            get
-            {
-                if (_instance == null)
-                {
-                    _instance = new ExpressionConverter();
-                }
-                return _instance;
-            }
+            get { return _instance ??= new ExpressionConverter(); }
         }
     }
 }

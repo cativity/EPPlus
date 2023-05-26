@@ -950,10 +950,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
             header[i++] = flag;
 
             // mtime
-            if (!this.LastModified.HasValue)
-            {
-                this.LastModified = DateTime.Now;
-            }
+            this.LastModified ??= DateTime.Now;
 
             TimeSpan delta = this.LastModified.Value - _unixEpoch;
             Int32 timet = (Int32)delta.TotalSeconds;

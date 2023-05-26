@@ -810,14 +810,7 @@ namespace OfficeOpenXml.Table.PivotTable
         /// </summary>
         public ExcelPivotTableFilterCollection Filters
         {
-            get
-            {
-                if (this._filters == null)
-                {
-                    this._filters = new ExcelPivotTableFilterCollection(this);
-                }
-                return this._filters;
-            }
+            get { return this._filters ??= new ExcelPivotTableFilterCollection(this); }
         }
         const string FIRSTHEADERROW_PATH = "d:location/@firstHeaderRow";
         /// <summary>
@@ -870,14 +863,7 @@ namespace OfficeOpenXml.Table.PivotTable
         /// </summary>
         public ExcelPivotTableFieldCollection Fields
         {
-            get
-            {
-                if (this._fields == null)
-                {
-                    this._fields = new ExcelPivotTableFieldCollection(this);
-                }
-                return this._fields;
-            }
+            get { return this._fields ??= new ExcelPivotTableFieldCollection(this); }
         }
         ExcelPivotTableRowColumnFieldCollection _rowFields = null;
         /// <summary>
@@ -885,14 +871,7 @@ namespace OfficeOpenXml.Table.PivotTable
         /// </summary>
         public ExcelPivotTableRowColumnFieldCollection RowFields
         {
-            get
-            {
-                if (this._rowFields == null)
-                {
-                    this._rowFields = new ExcelPivotTableRowColumnFieldCollection(this, "rowFields");
-                }
-                return this._rowFields;
-            }
+            get { return this._rowFields ??= new ExcelPivotTableRowColumnFieldCollection(this, "rowFields"); }
         }
         ExcelPivotTableRowColumnFieldCollection _columnFields = null;
         /// <summary>
@@ -900,14 +879,7 @@ namespace OfficeOpenXml.Table.PivotTable
         /// </summary>
         public ExcelPivotTableRowColumnFieldCollection ColumnFields
         {
-            get
-            {
-                if (this._columnFields == null)
-                {
-                    this._columnFields = new ExcelPivotTableRowColumnFieldCollection(this, "colFields");
-                }
-                return this._columnFields;
-            }
+            get { return this._columnFields ??= new ExcelPivotTableRowColumnFieldCollection(this, "colFields"); }
         }
         ExcelPivotTableDataFieldCollection _dataFields = null;
         /// <summary>
@@ -915,14 +887,7 @@ namespace OfficeOpenXml.Table.PivotTable
         /// </summary>
         public ExcelPivotTableDataFieldCollection DataFields
         {
-            get
-            {
-                if (this._dataFields == null)
-                {
-                    this._dataFields = new ExcelPivotTableDataFieldCollection(this);
-                }
-                return this._dataFields;
-            }
+            get { return this._dataFields ??= new ExcelPivotTableDataFieldCollection(this); }
         }
         ExcelPivotTableRowColumnFieldCollection _pageFields = null;
         /// <summary>
@@ -930,14 +895,7 @@ namespace OfficeOpenXml.Table.PivotTable
         /// </summary>
         public ExcelPivotTableRowColumnFieldCollection PageFields
         {
-            get
-            {
-                if (this._pageFields == null)
-                {
-                    this._pageFields = new ExcelPivotTableRowColumnFieldCollection(this, "pageFields");
-                }
-                return this._pageFields;
-            }
+            get { return this._pageFields ??= new ExcelPivotTableRowColumnFieldCollection(this, "pageFields"); }
         }
         const string STYLENAME_PATH = "d:pivotTableStyleInfo/@name";
         /// <summary>

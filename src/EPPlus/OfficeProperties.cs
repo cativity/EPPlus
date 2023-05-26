@@ -252,16 +252,12 @@ namespace OfficeOpenXml
         {
             get
             {
-                if (this._xmlPropertiesExtended == null)
-                {
-                    this._xmlPropertiesExtended = this.GetXmlDocument(string.Format("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\" ?><Properties xmlns:vt=\"{0}\" xmlns=\"{1}\"></Properties>",
-                                                                                    ExcelPackage.schemaVt,
-                                                                                    ExcelPackage.schemaExtended),
-                                                                      this._uriPropertiesExtended,
-                                                                      @"application/vnd.openxmlformats-officedocument.extended-properties+xml",
-                                                                      @"http://schemas.openxmlformats.org/officeDocument/2006/relationships/extended-properties");
-                }
-                return (this._xmlPropertiesExtended);
+                return this._xmlPropertiesExtended ??= this.GetXmlDocument(string.Format("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\" ?><Properties xmlns:vt=\"{0}\" xmlns=\"{1}\"></Properties>",
+                                                                                         ExcelPackage.schemaVt,
+                                                                                         ExcelPackage.schemaExtended),
+                                                                           this._uriPropertiesExtended,
+                                                                           @"application/vnd.openxmlformats-officedocument.extended-properties+xml",
+                                                                           @"http://schemas.openxmlformats.org/officeDocument/2006/relationships/extended-properties");
             }
         }
         #endregion
@@ -421,16 +417,12 @@ namespace OfficeOpenXml
         {
             get
             {
-                if (this._xmlPropertiesCustom == null)
-                {
-                    this._xmlPropertiesCustom = this.GetXmlDocument(string.Format("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\" ?><Properties xmlns:vt=\"{0}\" xmlns=\"{1}\"></Properties>",
-                                                                                  ExcelPackage.schemaVt,
-                                                                                  ExcelPackage.schemaCustom),
-                                                                    this._uriPropertiesCustom, 
-                                                                    @"application/vnd.openxmlformats-officedocument.custom-properties+xml",
-                                                                    @"http://schemas.openxmlformats.org/officeDocument/2006/relationships/custom-properties");
-                }
-                return (this._xmlPropertiesCustom);
+                return this._xmlPropertiesCustom ??= this.GetXmlDocument(string.Format("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\" ?><Properties xmlns:vt=\"{0}\" xmlns=\"{1}\"></Properties>",
+                                                                                       ExcelPackage.schemaVt,
+                                                                                       ExcelPackage.schemaCustom),
+                                                                         this._uriPropertiesCustom,
+                                                                         @"application/vnd.openxmlformats-officedocument.custom-properties+xml",
+                                                                         @"http://schemas.openxmlformats.org/officeDocument/2006/relationships/custom-properties");
             }
         }
         #endregion

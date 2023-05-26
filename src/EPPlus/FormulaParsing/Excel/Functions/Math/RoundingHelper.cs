@@ -201,7 +201,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
                     int h = (int)f - 2;
                     if (h % 2 != 0)
                     {
-                        e = e - 1;
+                        e -= 1;
                     }
                 }
             }
@@ -222,7 +222,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
             int nFiguresIntPart;
             for (nFiguresIntPart = 0; tmp >= 1; ++nFiguresIntPart)
             {
-                tmp = tmp / 10;
+                tmp /= 10;
             }
 
             return nFiguresIntPart;

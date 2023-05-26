@@ -39,11 +39,10 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
         {
             get
             {
-                if(this._color==null)
-                {
-                    this._color = new ExcelDrawingColorManager(this.NameSpaceManager, this.TopNode, $"cx:valueColors/cx:{this._prefix}Color", this.SchemaNodeOrder);
-                }
-                return this._color;
+                return this._color ??= new ExcelDrawingColorManager(this.NameSpaceManager,
+                                                                    this.TopNode,
+                                                                    $"cx:valueColors/cx:{this._prefix}Color",
+                                                                    this.SchemaNodeOrder);
             }
         }
         /// <summary>

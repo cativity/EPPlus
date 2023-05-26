@@ -60,14 +60,7 @@ namespace OfficeOpenXml.Drawing.Style.Effect
         /// </summary>
         public ExcelDrawingBlurEffect Blur
         {
-            get
-            {
-                if (this._blur == null)
-                {
-                    this._blur = new ExcelDrawingBlurEffect(this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder, this._blurPath);
-                }
-                return this._blur;
-            }
+            get { return this._blur ??= new ExcelDrawingBlurEffect(this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder, this._blurPath); }
         }
 
         ExcelDrawingFillOverlayEffect _fillOverlay = null;
@@ -78,11 +71,11 @@ namespace OfficeOpenXml.Drawing.Style.Effect
         {
             get
             {
-                if(this._fillOverlay==null)
-                {
-                    this._fillOverlay = new ExcelDrawingFillOverlayEffect(this._pictureRelationDocument, this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder, this._fillOverlayPath);
-                }
-                return this._fillOverlay;
+                return this._fillOverlay ??= new ExcelDrawingFillOverlayEffect(this._pictureRelationDocument,
+                                                                               this.NameSpaceManager,
+                                                                               this.TopNode,
+                                                                               this.SchemaNodeOrder,
+                                                                               this._fillOverlayPath);
             }
         }
         ExcelDrawingGlowEffect _glow = null;
@@ -91,14 +84,7 @@ namespace OfficeOpenXml.Drawing.Style.Effect
         /// </summary>
         public ExcelDrawingGlowEffect Glow
         {
-            get
-            {
-                if (this._glow == null)
-                {
-                    this._glow = new ExcelDrawingGlowEffect(this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder, this._glowPath);
-                }
-                return this._glow;
-            }
+            get { return this._glow ??= new ExcelDrawingGlowEffect(this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder, this._glowPath); }
         }
         ExcelDrawingInnerShadowEffect _innerShadowEffect = null;
         /// <summary>
@@ -108,11 +94,7 @@ namespace OfficeOpenXml.Drawing.Style.Effect
         {
             get
             {
-                if (this._innerShadowEffect == null)
-                {
-                    this._innerShadowEffect = new ExcelDrawingInnerShadowEffect(this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder, this._innerShadowPath);
-                }
-                return this._innerShadowEffect;
+                return this._innerShadowEffect ??= new ExcelDrawingInnerShadowEffect(this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder, this._innerShadowPath);
             }
         }
         ExcelDrawingOuterShadowEffect _outerShadow=null;
@@ -123,11 +105,7 @@ namespace OfficeOpenXml.Drawing.Style.Effect
         {
             get
             {
-                if (this._outerShadow == null)
-                {
-                    this._outerShadow = new ExcelDrawingOuterShadowEffect(this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder, this._outerShadowPath);
-                }
-                return this._outerShadow;
+                return this._outerShadow ??= new ExcelDrawingOuterShadowEffect(this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder, this._outerShadowPath);
             }
         }
         ExcelDrawingPresetShadowEffect _presetShadow;
@@ -138,11 +116,7 @@ namespace OfficeOpenXml.Drawing.Style.Effect
         {
             get
             {
-                if (this._presetShadow == null)
-                {
-                    this._presetShadow = new ExcelDrawingPresetShadowEffect(this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder, this._presetShadowPath);
-                }
-                return this._presetShadow;
+                return this._presetShadow ??= new ExcelDrawingPresetShadowEffect(this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder, this._presetShadowPath);
             }
         }
         ExcelDrawingReflectionEffect _reflection;
@@ -153,11 +127,7 @@ namespace OfficeOpenXml.Drawing.Style.Effect
         {
             get
             {
-                if (this._reflection == null)
-                {
-                    this._reflection = new ExcelDrawingReflectionEffect(this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder, this._reflectionPath);
-                }
-                return this._reflection;
+                return this._reflection ??= new ExcelDrawingReflectionEffect(this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder, this._reflectionPath);
             }
         }
         /// <summary>

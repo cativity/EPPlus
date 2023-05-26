@@ -39,11 +39,7 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
         {
             get
             {
-                if (this._dataLabels == null)
-                {
-                    this._dataLabels = new ExcelChartExDataLabelCollection(this._serie, this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder);
-                }
-                return this._dataLabels;
+                return this._dataLabels ??= new ExcelChartExDataLabelCollection(this._serie, this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder);
             }
         }
         /// <summary>

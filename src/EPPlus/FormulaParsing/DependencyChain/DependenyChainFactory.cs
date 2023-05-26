@@ -90,10 +90,10 @@ namespace OfficeOpenXml.FormulaParsing
             ulong id = ExcelCellBase.GetCellId(ws==null || ws.IsDisposed ? -1 : ws.IndexInList, name.Index, 0);
             if (!depChain.index.ContainsKey(id))
             {
-                FormulaCell? f = new FormulaCell() { ws=ws, wsIndex = (ws == null ? -1 : ws.IndexInList), Row = name.Index, Column = 0, Formula=name.NameFormula };
+                FormulaCell? f = new FormulaCell() { ws=ws, wsIndex = ws?.IndexInList ?? -1, Row = name.Index, Column = 0, Formula=name.NameFormula };
                 if (!string.IsNullOrEmpty(f.Formula))
                 {
-                    f.Tokens = lexer.Tokenize(f.Formula, (ws==null ? null : ws.Name)).ToList();
+                    f.Tokens = lexer.Tokenize(f.Formula, ws?.Name).ToList();
                     if (ws == null)
                     {
                         name._workbook._formulaTokens.SetValue(name.Index, 0, f.Tokens);

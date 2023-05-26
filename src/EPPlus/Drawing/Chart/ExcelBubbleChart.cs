@@ -133,11 +133,11 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             get
             {
-                if (this._dataLabel == null)
-                {
-                    this._dataLabel = new ExcelChartDataLabelStandard(this.Series._chart, this.NameSpaceManager, this.ChartNode, "dLbls", this._chartXmlHelper.SchemaNodeOrder);
-                }
-                return this._dataLabel;
+                return this._dataLabel ??= new ExcelChartDataLabelStandard(this.Series._chart,
+                                                                           this.NameSpaceManager,
+                                                                           this.ChartNode,
+                                                                           "dLbls",
+                                                                           this._chartXmlHelper.SchemaNodeOrder);
             }
         }
         /// <summary>

@@ -81,7 +81,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Operators
         {
             get
             {
-                return _plus ?? (_plus = new Operator(Operators.Plus, PrecedenceAddSubtract, (l, r) =>
+                return _plus ??= new Operator(Operators.Plus, PrecedenceAddSubtract, (l, r) =>
                 {
                     l = l == null || l.Result == null ? CompileResult.ZeroInt : l;
                     r = r == null || r.Result == null ? CompileResult.ZeroInt : r;
@@ -99,7 +99,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Operators
                         return new CompileResult(l.ResultNumeric + r.ResultNumeric, DataType.Decimal);
                     }
                     return new CompileResult(eErrorType.Value);
-                }));
+                });
             }
         }
 
@@ -108,7 +108,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Operators
         {
             get
             {
-                return _minus ?? (_minus = new Operator(Operators.Minus, PrecedenceAddSubtract, (l, r) =>
+                return _minus ??= new Operator(Operators.Minus, PrecedenceAddSubtract, (l, r) =>
                 {
                     l = l == null || l.Result == null ? CompileResult.ZeroInt : l;
                     r = r == null || r.Result == null ? CompileResult.ZeroInt : r;
@@ -122,7 +122,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Operators
                     }
 
                     return new CompileResult(eErrorType.Value);
-                }));
+                });
             }
         }
 
@@ -131,10 +131,10 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Operators
         {
             get
             {
-                return _multiply ?? (_multiply = new Operator(Operators.Multiply, PrecedenceMultiplyDevide, (l, r) =>
+                return _multiply ??= new Operator(Operators.Multiply, PrecedenceMultiplyDevide, (l, r) =>
                 {
-                    l = l ?? CompileResult.ZeroInt;
-                    r = r ?? CompileResult.ZeroInt;
+                    l ??= CompileResult.ZeroInt;
+                    r ??= CompileResult.ZeroInt;
                     if (l.DataType == DataType.Integer && r.DataType == DataType.Integer)
                     {
                         return new CompileResult(l.ResultNumeric*r.ResultNumeric, DataType.Integer);
@@ -144,7 +144,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Operators
                         return new CompileResult(l.ResultNumeric*r.ResultNumeric, DataType.Decimal);
                     }
                     return new CompileResult(eErrorType.Value);
-                }));
+                });
             }
         }
 
@@ -153,7 +153,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Operators
         {
             get
             {
-                return _divide ?? (_divide = new Operator(Operators.Divide, PrecedenceMultiplyDevide, (l, r) =>
+                return _divide ??= new Operator(Operators.Divide, PrecedenceMultiplyDevide, (l, r) =>
                 {
                     if (!(l.IsNumeric || l.IsNumericString || l.IsDateString || l.Result is IRangeInfo) ||
                         !(r.IsNumeric || r.IsNumericString || r.IsDateString || r.Result is IRangeInfo))
@@ -171,7 +171,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Operators
                         return new CompileResult(left/right, DataType.Decimal);
                     }
                     return new CompileResult(eErrorType.Value);
-                }));
+                });
             }
         }
 
@@ -185,8 +185,8 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Operators
                         {
                             return new CompileResult(eErrorType.Value);
                         }
-                        l = l ?? CompileResult.ZeroInt;
-                        r = r ?? CompileResult.ZeroInt;
+                        l ??= CompileResult.ZeroInt;
+                        r ??= CompileResult.ZeroInt;
                         if (CanDoNumericOperation(l, r))
                         {
                             return new CompileResult(Math.Pow(l.ResultNumeric, r.ResultNumeric), DataType.Decimal);
@@ -214,8 +214,8 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Operators
             {
                 return new Operator(Operators.Concat, PrecedenceConcat, (l, r) =>
                     {
-                        l = l ?? new CompileResult(string.Empty, DataType.String);
-                        r = r ?? new CompileResult(string.Empty, DataType.String);
+                        l ??= new CompileResult(string.Empty, DataType.String);
+                        r ??= new CompileResult(string.Empty, DataType.String);
                         string? lStr = l.Result != null ? CompileResultToString(l) : string.Empty;
                         string? rStr = r.Result != null ? CompileResultToString(r) : string.Empty;
                         return new CompileResult(string.Concat(lStr, rStr), DataType.String);
@@ -228,10 +228,8 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Operators
         {
             get
             {
-                return _greaterThan ??
-                       (_greaterThan =
-                           new Operator(Operators.GreaterThan, PrecedenceComparison,
-                               (l, r) => Compare(l, r, (compRes) => compRes > 0)));
+                return _greaterThan ??= new Operator(Operators.GreaterThan, PrecedenceComparison,
+                                                     (l, r) => Compare(l, r, (compRes) => compRes > 0));
             }
         }
 
@@ -240,10 +238,8 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Operators
         {
             get
             {
-                return _eq ??
-                       (_eq =
-                           new Operator(Operators.Equals, PrecedenceComparison,
-                               (l, r) => Compare(l, r, (compRes) => compRes == 0)));
+                return _eq ??= new Operator(Operators.Equals, PrecedenceComparison,
+                                            (l, r) => Compare(l, r, (compRes) => compRes == 0));
             }
         }
 
@@ -252,10 +248,8 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Operators
         {
             get
             {
-                return _notEqualsTo ??
-                       (_notEqualsTo =
-                           new Operator(Operators.NotEqualTo, PrecedenceComparison,
-                               (l, r) => Compare(l, r, (compRes) => compRes != 0)));
+                return _notEqualsTo ??= new Operator(Operators.NotEqualTo, PrecedenceComparison,
+                                                     (l, r) => Compare(l, r, (compRes) => compRes != 0));
             }
         }
 
@@ -264,10 +258,8 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Operators
         {
             get
             {
-                return _greaterThanOrEqual ??
-                       (_greaterThanOrEqual =
-                           new Operator(Operators.GreaterThanOrEqual, PrecedenceComparison,
-                               (l, r) => Compare(l, r, (compRes) => compRes >= 0)));
+                return _greaterThanOrEqual ??= new Operator(Operators.GreaterThanOrEqual, PrecedenceComparison,
+                                                            (l, r) => Compare(l, r, (compRes) => compRes >= 0));
             }
         }
 
@@ -276,10 +268,8 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Operators
         {
             get
             {
-                return _lessThan ??
-                       (_lessThan =
-                           new Operator(Operators.LessThan, PrecedenceComparison,
-                               (l, r) => Compare(l, r, (compRes) => compRes < 0)));
+                return _lessThan ??= new Operator(Operators.LessThan, PrecedenceComparison,
+                                                  (l, r) => Compare(l, r, (compRes) => compRes < 0));
             }
         }
 
@@ -297,24 +287,24 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Operators
         {
             get
             {
-                if (_percent == null)
-                {
-                    _percent = new Operator(Operators.Percent, PrecedencePercent, (l, r) =>
-                        {
-                            l = l ?? CompileResult.ZeroInt;
-                            r = r ?? CompileResult.ZeroInt;
-                            if (l.DataType == DataType.Integer && r.DataType == DataType.Integer)
-                            {
-                                return new CompileResult(l.ResultNumeric * r.ResultNumeric, DataType.Integer);
-                            }
-                            else if (CanDoNumericOperation(l, r))
-                            {
-                                return new CompileResult(l.ResultNumeric * r.ResultNumeric, DataType.Decimal);
-                            }
-                            return new CompileResult(eErrorType.Value);
-                        });
-                }
-                return _percent;
+                return _percent ??= new Operator(Operators.Percent,
+                                                 PrecedencePercent,
+                                                 (l, r) =>
+                                                 {
+                                                     l ??= CompileResult.ZeroInt;
+                                                     r ??= CompileResult.ZeroInt;
+
+                                                     if (l.DataType == DataType.Integer && r.DataType == DataType.Integer)
+                                                     {
+                                                         return new CompileResult(l.ResultNumeric * r.ResultNumeric, DataType.Integer);
+                                                     }
+                                                     else if (CanDoNumericOperation(l, r))
+                                                     {
+                                                         return new CompileResult(l.ResultNumeric * r.ResultNumeric, DataType.Decimal);
+                                                     }
+
+                                                     return new CompileResult(eErrorType.Value);
+                                                 });
             }
         }
 

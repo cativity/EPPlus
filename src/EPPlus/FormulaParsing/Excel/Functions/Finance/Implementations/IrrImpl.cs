@@ -33,13 +33,13 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.Implementations
 
             while ((lLower <= lUpper) && ValueArray[lLower] == 0.0)
             {
-                lLower = lLower + 1;
+                lLower += 1;
             }
 
             for (lIndex = lUpper; lIndex > lLower - 1; lIndex--)
             {
-                dTotal = dTotal / divRate;
-                dTotal = dTotal + ValueArray[lIndex];
+                dTotal /= divRate;
+                dTotal += ValueArray[lIndex];
             }
             return dTotal;
         }
@@ -143,11 +143,11 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.Implementations
                 {
                     if (dRate1 > dRate0)
                     {
-                        dRate0 = dRate0 - cnL_IT_STEP;
+                        dRate0 -= cnL_IT_STEP;
                     }
                     else
                     {
-                        dRate0 = dRate0 + cnL_IT_STEP;
+                        dRate0 += cnL_IT_STEP;
                     }
                 }
                 dNPv0 = OptPV2(ref ValueArray, dRate0);

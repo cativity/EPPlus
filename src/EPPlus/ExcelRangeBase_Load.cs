@@ -105,7 +105,7 @@ namespace OfficeOpenXml
         /// <returns>The filled range</returns>
         public async Task<ExcelRangeBase> LoadFromDataReaderAsync(DbDataReader Reader, bool PrintHeaders, string TableName, TableStyles TableStyle = TableStyles.None,  CancellationToken? cancellationToken=null)
         {
-            cancellationToken = cancellationToken ?? CancellationToken.None;
+            cancellationToken ??= CancellationToken.None;
             ExcelRangeBase? r = await this.LoadFromDataReaderAsync(Reader, PrintHeaders, cancellationToken.Value).ConfigureAwait(false);
 
             if (cancellationToken.Value.IsCancellationRequested)

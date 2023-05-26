@@ -318,7 +318,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         private void UpdateKeys(byte byteValue)
         {
             this._Keys[0] = (UInt32)this.crc32.ComputeCrc32((int)this._Keys[0], byteValue);
-            this._Keys[1] = this._Keys[1] + (byte)this._Keys[0];
+            this._Keys[1] += (byte)this._Keys[0];
             this._Keys[1] = this._Keys[1] * 0x08088405 + 1;
             this._Keys[2] = (UInt32)this.crc32.ComputeCrc32((int)this._Keys[2], (byte)(this._Keys[1] >> 24));
         }

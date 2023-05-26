@@ -548,11 +548,7 @@ namespace OfficeOpenXml
             {
                 if (this._worksheets == null)
                 {
-                    XmlNode? sheetsNode = this._workbookXml.DocumentElement.SelectSingleNode("d:sheets", this._namespaceManager);
-                    if (sheetsNode == null)
-                    {
-                        sheetsNode = this.CreateNode("d:sheets");
-                    }
+                    XmlNode? sheetsNode = this._workbookXml.DocumentElement.SelectSingleNode("d:sheets", this._namespaceManager) ?? this.CreateNode("d:sheets");
 
                     this._worksheets = new ExcelWorksheets(this._package, this._namespaceManager, sheetsNode);
                 }
@@ -607,30 +603,14 @@ namespace OfficeOpenXml
         /// </summary>
         public ExcelExternalLinksCollection ExternalLinks
         {
-            get
-            {
-                if (this._externalLinks == null)
-                {
-                    this._externalLinks = new ExcelExternalLinksCollection(this);
-
-                }
-                return this._externalLinks;
-
-            }
+            get { return this._externalLinks ??= new ExcelExternalLinksCollection(this); }
         }
         #region Workbook Properties
         decimal _standardFontWidth = decimal.MinValue;
         string _fontID = "";
         internal FormulaParser FormulaParser
         {
-            get
-            {
-                if (this._formulaParser == null)
-                {
-                    this._formulaParser = new FormulaParser(new EpplusExcelDataProvider(this._package));
-                }
-                return this._formulaParser;
-            }
+            get { return this._formulaParser ??= new FormulaParser(new EpplusExcelDataProvider(this._package)); }
         }
         /// <summary>
         /// Manage the formula parser.
@@ -638,14 +618,7 @@ namespace OfficeOpenXml
         /// </summary>
         public FormulaParserManager FormulaParserManager
         {
-            get
-            {
-                if (this._parserManager == null)
-                {
-                    this._parserManager = new FormulaParserManager(this.FormulaParser);
-                }
-                return this._parserManager;
-            }
+            get { return this._parserManager ??= new FormulaParserManager(this.FormulaParser); }
         }
 
         /// <summary>
@@ -653,14 +626,7 @@ namespace OfficeOpenXml
         /// </summary>
         public ExcelThreadedCommentPersonCollection ThreadedCommentPersons
         {
-            get
-            {
-                if (this._threadedCommentPersons == null)
-                {
-                    this._threadedCommentPersons = new ExcelThreadedCommentPersonCollection(this);
-                }
-                return this._threadedCommentPersons;
-            }
+            get { return this._threadedCommentPersons ??= new ExcelThreadedCommentPersonCollection(this); }
         }
         /// <summary>
         /// Max font width for the workbook
@@ -758,14 +724,7 @@ namespace OfficeOpenXml
         /// </summary>
         public ExcelWorkbookView View
         {
-            get
-            {
-                if (this._view == null)
-                {
-                    this._view = new ExcelWorkbookView(this.NameSpaceManager, this.TopNode, this);
-                }
-                return this._view;
-            }
+            get { return this._view ??= new ExcelWorkbookView(this.NameSpaceManager, this.TopNode, this); }
         }
         ExcelVbaProject _vba = null;
         /// <summary>
@@ -935,10 +894,8 @@ namespace OfficeOpenXml
         {
             get
             {
-                if (this.date1904Cache == null)
-                {
-                    this.date1904Cache = this.GetXmlNodeBool(date1904Path, false);
-                }
+                this.date1904Cache ??= this.GetXmlNodeBool(date1904Path, false);
+
                 return this.date1904Cache.Value;
             }
             set
@@ -1062,14 +1019,7 @@ namespace OfficeOpenXml
         /// </summary>
         public ExcelStyles Styles
         {
-            get
-            {
-                if (this._styles == null)
-                {
-                    this._styles = new ExcelStyles(this.NameSpaceManager, this.StylesXml, this);
-                }
-                return this._styles;
-            }
+            get { return this._styles ??= new ExcelStyles(this.NameSpaceManager, this.StylesXml, this); }
         }
         #endregion
 
@@ -1079,16 +1029,9 @@ namespace OfficeOpenXml
         /// </summary>
         public OfficeProperties Properties
         {
-            get
-            {
-                if (this._properties == null)
-                {
-                    //  Create a NamespaceManager to handle the default namespace, 
-                    //  and create a prefix for the default namespace:                   
-                    this._properties = new OfficeProperties(this._package, this.NameSpaceManager);
-                }
-                return this._properties;
-            }
+                                                  //  Create a NamespaceManager to handle the default namespace, 
+                                                  //  and create a prefix for the default namespace:                   
+            get { return this._properties ??= new OfficeProperties(this._package, this.NameSpaceManager); }
         }
         #endregion
 
@@ -1155,14 +1098,7 @@ namespace OfficeOpenXml
         /// </summary>
         public ExcelThemeManager ThemeManager
         {
-            get
-            {
-                if (this._theme == null)
-                {
-                    this._theme = new ExcelThemeManager(this);
-                }
-                return this._theme;
-            }
+            get { return this._theme ??= new ExcelThemeManager(this); }
         }
         const string defaultThemeVersionPath = "d:workbookPr/@defaultThemeVersion";
         /// <summary>

@@ -53,11 +53,12 @@ namespace OfficeOpenXml.Drawing
         {
             get
             {
-                if (this._fill == null)
-                {
-                    this._fill = new ExcelDrawingFillBasic(this._pictureRelationDocument.Package, this.NameSpaceManager, this.TopNode, this._linePath, this.SchemaNodeOrder, true);
-                }
-                return this._fill;
+                return this._fill ??= new ExcelDrawingFillBasic(this._pictureRelationDocument.Package,
+                                                                this.NameSpaceManager,
+                                                                this.TopNode,
+                                                                this._linePath,
+                                                                this.SchemaNodeOrder,
+                                                                true);
             }
         }
         string _lineStylePath = "{0}/a:prstDash/@val";

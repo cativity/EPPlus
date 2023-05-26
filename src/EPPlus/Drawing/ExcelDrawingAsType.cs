@@ -67,14 +67,7 @@ namespace OfficeOpenXml.Drawing
         /// </summary>
         public ExcelChartAsType Chart
         {
-            get
-            {
-                if (this._chartAsType == null)
-                {
-                    this._chartAsType = new ExcelChartAsType(this._drawing);
-                }
-                return this._chartAsType;
-            }
+            get { return this._chartAsType ??= new ExcelChartAsType(this._drawing); }
         }
 
         ExcelSlicerAsType _slicerAsType;
@@ -83,14 +76,7 @@ namespace OfficeOpenXml.Drawing
         /// </summary>
         public ExcelSlicerAsType Slicer 
         { 
-            get
-            {
-                if (this._slicerAsType == null)
-                {
-                    this._slicerAsType = new ExcelSlicerAsType(this._drawing);
-                }
-                return this._slicerAsType;
-            }
+            get { return this._slicerAsType ??= new ExcelSlicerAsType(this._drawing); }
         }
 
         ExcelControlAsType _controlAsType;
@@ -101,14 +87,7 @@ namespace OfficeOpenXml.Drawing
         /// <returns></returns>
         public ExcelControlAsType Control
         {
-            get
-            {
-                if(this._controlAsType == null)
-                {
-                    this._controlAsType = new ExcelControlAsType(this._drawing);
-                }
-                return this._controlAsType;
-            }
+            get { return this._controlAsType ??= new ExcelControlAsType(this._drawing); }
         }
     }
 }

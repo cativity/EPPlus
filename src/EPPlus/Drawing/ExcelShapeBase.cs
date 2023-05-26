@@ -111,11 +111,7 @@ namespace OfficeOpenXml.Drawing
         {
             get
             {
-                if (this._fill == null)
-                {
-                    this._fill = new ExcelDrawingFill(this._drawings, this.NameSpaceManager, this.TopNode, this._fillPath, this.SchemaNodeOrder);
-                }
-                return this._fill;
+                return this._fill ??= new ExcelDrawingFill(this._drawings, this.NameSpaceManager, this.TopNode, this._fillPath, this.SchemaNodeOrder);
             }
         }
         ExcelDrawingBorder _border = null;
@@ -126,11 +122,7 @@ namespace OfficeOpenXml.Drawing
         {
             get
             {
-                if (this._border == null)
-                {
-                    this._border = new ExcelDrawingBorder(this._drawings, this.NameSpaceManager, this.TopNode, this._borderPath, this.SchemaNodeOrder);
-                }
-                return this._border;
+                return this._border ??= new ExcelDrawingBorder(this._drawings, this.NameSpaceManager, this.TopNode, this._borderPath, this.SchemaNodeOrder);
             }
         }
         ExcelDrawingEffectStyle _effect = null;
@@ -141,11 +133,11 @@ namespace OfficeOpenXml.Drawing
         {
             get
             {
-                if (this._effect == null)
-                {
-                    this._effect = new ExcelDrawingEffectStyle(this._drawings, this.NameSpaceManager, this.TopNode, this._effectPath, this.SchemaNodeOrder);
-                }
-                return this._effect;
+                return this._effect ??= new ExcelDrawingEffectStyle(this._drawings,
+                                                                    this.NameSpaceManager,
+                                                                    this.TopNode,
+                                                                    this._effectPath,
+                                                                    this.SchemaNodeOrder);
             }
         }
         ExcelDrawing3D _threeD = null;
@@ -154,14 +146,7 @@ namespace OfficeOpenXml.Drawing
         /// </summary>
         public ExcelDrawing3D ThreeD
         {
-            get
-            {
-                if (this._threeD == null)
-                {
-                    this._threeD = new ExcelDrawing3D(this.NameSpaceManager, this.TopNode, this._fillPath, this.SchemaNodeOrder);
-                }
-                return this._threeD;
-            }
+            get { return this._threeD ??= new ExcelDrawing3D(this.NameSpaceManager, this.TopNode, this._fillPath, this.SchemaNodeOrder); }
         }
         ExcelDrawingLineEnd _headEnd = null;
         /// <summary>
@@ -169,14 +154,7 @@ namespace OfficeOpenXml.Drawing
         /// </summary>
         public ExcelDrawingLineEnd HeadEnd
         {
-            get
-            {
-                if (this._headEnd == null)
-                {
-                    this._headEnd = new ExcelDrawingLineEnd(this.NameSpaceManager, this.TopNode, this._headEndPath, this.InitSpPr);
-                }
-                return this._headEnd;
-            }
+            get { return this._headEnd ??= new ExcelDrawingLineEnd(this.NameSpaceManager, this.TopNode, this._headEndPath, this.InitSpPr); }
         }
         ExcelDrawingLineEnd _tailEnd = null;
         /// <summary>
@@ -184,14 +162,7 @@ namespace OfficeOpenXml.Drawing
         /// </summary>
         public ExcelDrawingLineEnd TailEnd
         {
-            get
-            {
-                if (this._tailEnd == null)
-                {
-                    this._tailEnd = new ExcelDrawingLineEnd(this.NameSpaceManager, this.TopNode, this._tailEndPath, this.InitSpPr);
-                }
-                return this._tailEnd;
-            }
+            get { return this._tailEnd ??= new ExcelDrawingLineEnd(this.NameSpaceManager, this.TopNode, this._tailEndPath, this.InitSpPr); }
         }
         ExcelTextFont _font = null;
         /// <summary>
@@ -269,11 +240,7 @@ namespace OfficeOpenXml.Drawing
         {
             get
             {
-                if (this._richText == null)
-                {
-                    this._richText = new ExcelParagraphCollection(this, this.NameSpaceManager, this.TopNode, this._paragraphPath, this.SchemaNodeOrder);
-                }
-                return this._richText;
+                return this._richText ??= new ExcelParagraphCollection(this, this.NameSpaceManager, this.TopNode, this._paragraphPath, this.SchemaNodeOrder);
             }
         }
         /// <summary>
@@ -405,11 +372,7 @@ namespace OfficeOpenXml.Drawing
         {
             get
             {
-                if (this._textBody == null)
-                {
-                    this._textBody = new ExcelTextBody(this.NameSpaceManager, this.TopNode, this._textBodyPath, this.SchemaNodeOrder);
-                }
-                return this._textBody;
+                return this._textBody ??= new ExcelTextBody(this.NameSpaceManager, this.TopNode, this._textBodyPath, this.SchemaNodeOrder);
             }
         }
 

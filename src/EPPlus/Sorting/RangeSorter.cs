@@ -73,15 +73,9 @@ namespace OfficeOpenXml.Sorting
             CompareOptions compareOptions = CompareOptions.None, 
             Dictionary<int, string[]> customLists = null)
         {
-            if (columns == null)
-            {
-                columns = new int[] { 0 };
-            }
+            columns ??= new int[] { 0 };
             ValidateColumnArray(range, columns);
-            if (descending == null)
-            {
-                descending = CreateDefaultDescendingArray(columns);
-            }
+            descending ??= CreateDefaultDescendingArray(columns);
             List<SortItem<ExcelValue>>? sortItems = SortItemFactory.Create(range);
             EPPlusSortComparer? comp = new EPPlusSortComparer(columns, descending, customLists, culture ?? CultureInfo.CurrentCulture, compareOptions);
             sortItems.Sort(comp);
@@ -99,15 +93,9 @@ namespace OfficeOpenXml.Sorting
             Dictionary<int, string[]> customLists = null
             )
         {
-            if (rows == null)
-            {
-                rows = new int[] { 0 };
-            }
+            rows ??= new int[] { 0 };
             ValidateRowsArray(range, rows);
-            if (descending == null)
-            {
-                descending = CreateDefaultDescendingArray(rows);
-            }
+            descending ??= CreateDefaultDescendingArray(rows);
             List<SortItemLeftToRight<ExcelValue>>? sortItems = SortItemLeftToRightFactory.Create(range);
             EPPlusSortComparerLeftToRight? comp = new EPPlusSortComparerLeftToRight(rows, descending, customLists, culture ?? CultureInfo.CurrentCulture, compareOptions);
             sortItems.Sort(comp);

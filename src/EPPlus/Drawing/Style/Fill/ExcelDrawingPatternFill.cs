@@ -64,11 +64,7 @@ namespace OfficeOpenXml.Drawing.Style.Fill
         {
             get
             {
-                if (this._fgColor == null)
-                {
-                    this._fgColor = new ExcelDrawingColorManager(this._nsm, this._topNode, "a:fgClr", this._schemaNodeOrder, this._initXml);
-                }
-                return this._fgColor;
+                return this._fgColor ??= new ExcelDrawingColorManager(this._nsm, this._topNode, "a:fgClr", this._schemaNodeOrder, this._initXml);
             }
         }
         ExcelDrawingColorManager _bgColor = null;
@@ -79,11 +75,7 @@ namespace OfficeOpenXml.Drawing.Style.Fill
         {
             get
             {
-                if(this._bgColor == null)
-                {
-                    this._bgColor = new ExcelDrawingColorManager(this._nsm, this._topNode, "a:bgClr", this._schemaNodeOrder, this._initXml);
-                }
-                return this._bgColor;
+                return this._bgColor ??= new ExcelDrawingColorManager(this._nsm, this._topNode, "a:bgClr", this._schemaNodeOrder, this._initXml);
             }
         }
 

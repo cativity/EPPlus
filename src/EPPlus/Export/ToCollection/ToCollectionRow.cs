@@ -170,10 +170,7 @@ namespace OfficeOpenXml.Export.ToCollection
         public void Automap<T>(T item)
             where T : class
         {
-            if(this._members==null)
-            {
-                this._members = ToCollectionAutomap.GetAutomapList<T>(this.Headers);
-            }
+            this._members ??= ToCollectionAutomap.GetAutomapList<T>(this.Headers);
 
             foreach (MappedProperty? m in this._members)
             {

@@ -93,20 +93,8 @@ namespace OfficeOpenXml.Drawing
         /// </summary>
         internal protected virtual void LoadFill()
         {
-            if (this._fillTypeNode == null)
-            {
-                this._fillTypeNode = this._fillNode.SelectSingleNode("a:solidFill", this.NameSpaceManager);
-            }
-
-            if (this._fillTypeNode == null)
-            {
-                this._fillTypeNode = this._fillNode.SelectSingleNode("a:gradFill", this.NameSpaceManager);
-            }
-
-            if (this._fillTypeNode == null)
-            {
-                this._fillTypeNode = this._fillNode.SelectSingleNode("a:noFill", this.NameSpaceManager);
-            }
+            this._fillTypeNode ??= (this._fillNode.SelectSingleNode("a:solidFill", this.NameSpaceManager) ?? this._fillNode.SelectSingleNode("a:gradFill", this.NameSpaceManager))
+                                   ?? this._fillNode.SelectSingleNode("a:noFill", this.NameSpaceManager);
 
             if (this._fillTypeNode == null)
             {
@@ -215,10 +203,7 @@ namespace OfficeOpenXml.Drawing
                 }
                 else if(this._fillTypeNode==null)
                 {
-                    if(this._fillNode==null)
-                    {
-                        this._fillNode = this.GetNode(this._fillPath);
-                    }
+                    this._fillNode ??= this.GetNode(this._fillPath);
                     if (!this._fillNode.HasChildNodes)
                     {
                         this._fillNode.InnerXml = $"<a:{GetStyleText(style)}/>";
@@ -386,10 +371,7 @@ namespace OfficeOpenXml.Drawing
                 }
 
                 this._fillTypeNode = this.CreateNode(this._fillPath + "/a:" + GetStyleText(value), false);
-                if(this._fillNode==null)
-                {
-                    this._fillNode = this._fillTypeNode.ParentNode;
-                }
+                this._fillNode ??= this._fillTypeNode.ParentNode;
             }
         }
 

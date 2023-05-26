@@ -45,14 +45,7 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
         /// </summary>
         public ExcelChartExSerieBinning Binning
         {
-            get
-            {
-                if (this._binning == null)
-                {
-                    this._binning = new ExcelChartExSerieBinning(this.NameSpaceManager, this.TopNode);
-                }
-                return this._binning;
-            }
+            get { return this._binning ??= new ExcelChartExSerieBinning(this.NameSpaceManager, this.TopNode); }
         }
         internal const string _aggregationPath = "cx:layoutPr/cx:aggregation";
         internal const string _binningPath = "cx:layoutPr/cx:binning";

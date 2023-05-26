@@ -55,11 +55,11 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.Implementations
                 {
                     if (dRate1 > dRate0)
                     {
-                        dRate0 = dRate0 - cnL_IT_STEP;
+                        dRate0 -= cnL_IT_STEP;
                     }
                     else
                     {
-                        dRate0 = dRate0 - cnL_IT_STEP * (-1);
+                        dRate0 -= cnL_IT_STEP * (-1);
                     }
 
                     dY0 = LEvalRate(dRate0, NPer, Pmt, PV, FV, Due);

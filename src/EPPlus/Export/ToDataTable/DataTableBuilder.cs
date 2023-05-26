@@ -42,10 +42,7 @@ namespace OfficeOpenXml.Export.ToDataTable
         internal DataTable Build()
         {
             HashSet<string>? columnNames = new HashSet<string>(StringComparer.InvariantCultureIgnoreCase);
-            if(this._dataTable == null)
-            {
-                this._dataTable = string.IsNullOrEmpty(this._options.DataTableName) ? new DataTable() : new DataTable(this._options.DataTableName);
-            }
+            this._dataTable ??= string.IsNullOrEmpty(this._options.DataTableName) ? new DataTable() : new DataTable(this._options.DataTableName);
             if(!string.IsNullOrEmpty(this._options.DataTableNamespace))
             {
                 this._dataTable.Namespace = this._options.DataTableNamespace;

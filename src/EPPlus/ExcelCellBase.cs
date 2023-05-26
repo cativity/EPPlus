@@ -970,10 +970,7 @@ namespace OfficeOpenXml
         {
             try
             {
-                if (tokens == null)
-                {
-                    tokens = _sct.Tokenize(formula);
-                }
+                tokens ??= _sct.Tokenize(formula);
                 string? f = "";
                 foreach (Token t in tokens)
                 {

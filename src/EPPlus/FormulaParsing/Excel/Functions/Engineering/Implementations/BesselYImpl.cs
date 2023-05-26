@@ -44,7 +44,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Engineering.Implementatio
 
             double sign_alpha = 1.0;
             bool bHasFound = false;
-            k = k + 1;
+            k += 1;
             do
             {
                 double km1mod2 = (k - 1.0) % 2.0;
@@ -61,11 +61,11 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Engineering.Implementatio
                 g_bar_delta_u = f_bar * alpha - g * delta_u - m_bar * u;
                 g_bar = m_bar - (2.0 * k) / fX + g;
                 delta_u = g_bar_delta_u / g_bar;
-                u = u + delta_u;
+                u += delta_u;
                 g = -1.0 / g_bar;
-                f_bar = f_bar * g;
+                f_bar *= g;
                 bHasFound = (System.Math.Abs(delta_u) <= System.Math.Abs(u) * epsilon);
-                k = k + 1;
+                k += 1;
             }
             while (!bHasFound && k < fMaxIteration);
             if (!bHasFound)
@@ -104,12 +104,12 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Engineering.Implementatio
             double g_bar_delta_u = -alpha;
             double g_bar = -2.0 / fX;
             double delta_u = g_bar_delta_u / g_bar;
-            u = u + delta_u;
+            u += delta_u;
             double g = -1.0 / g_bar;
-            f_bar = f_bar * g;
+            f_bar *= g;
             double sign_alpha = -1.0;
             bool bHasFound = false;
-            k = k + 1.0;
+            k += 1.0;
             do
             {
                 double km1mod2 = (k - 1.0) % 2.0;
@@ -128,11 +128,11 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Engineering.Implementatio
                 g_bar_delta_u = f_bar * alpha - g * delta_u - m_bar * u;
                 g_bar = m_bar - (2.0 * k) / fX + g;
                 delta_u = g_bar_delta_u / g_bar;
-                u = u + delta_u;
+                u += delta_u;
                 g = -1.0 / g_bar;
-                f_bar = f_bar * g;
+                f_bar *= g;
                 bHasFound = (System.Math.Abs(delta_u) <= System.Math.Abs(u) * epsilon);
-                k = k + 1;
+                k += 1;
             }
             while (!bHasFound && k < fMaxIteration);
             if (!bHasFound)

@@ -200,14 +200,7 @@ namespace OfficeOpenXml.DataValidation
         /// </summary>
         public ExcelDataValidationAsType As
         {
-            get
-            {
-                if (this._as == null)
-                {
-                    this._as = new ExcelDataValidationAsType(this);
-                }
-                return this._as;
-            }
+            get { return this._as ??= new ExcelDataValidationAsType(this); }
         }
 
         /// <summary>

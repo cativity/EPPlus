@@ -301,10 +301,7 @@ namespace OfficeOpenXml
         {
             this._worksheet = xlWorksheet;
             this.SchemaNodeOrder = new string[] { "sheetViews", "sheetView", "pane", "selection" };
-            if (this._paneSettings == null)
-            {
-                this._paneSettings = new ExcelWorksheetViewPaneSettings(this.NameSpaceManager, this.TopNode);
-            }
+            this._paneSettings ??= new ExcelWorksheetViewPaneSettings(this.NameSpaceManager, this.TopNode);
 
             this.SetPaneSettings();
             this.Panes = this.LoadPanes();

@@ -64,11 +64,7 @@ namespace OfficeOpenXml.Drawing.Chart.Style
         {
             get
             {
-                if (this._borderReference == null)
-                {
-                    this._borderReference = new ExcelChartStyleReference(this.NameSpaceManager, this.TopNode, this._borderReferencePath);
-                }
-                return this._borderReference;
+                return this._borderReference ??= new ExcelChartStyleReference(this.NameSpaceManager, this.TopNode, this._borderReferencePath);
             }
         }
         private ExcelChartStyleReference _fillReference = null;
@@ -80,11 +76,7 @@ namespace OfficeOpenXml.Drawing.Chart.Style
         {
             get
             {
-                if (this._fillReference == null)
-                {
-                    this._fillReference = new ExcelChartStyleReference(this.NameSpaceManager, this.TopNode, this._fillReferencePath);
-                }
-                return this._fillReference;
+                return this._fillReference ??= new ExcelChartStyleReference(this.NameSpaceManager, this.TopNode, this._fillReferencePath);
             }
         }
         private ExcelChartStyleReference _effectReference = null;
@@ -96,11 +88,7 @@ namespace OfficeOpenXml.Drawing.Chart.Style
         {
             get
             {
-                if (this._effectReference == null)
-                {
-                    this._effectReference = new ExcelChartStyleReference(this.NameSpaceManager, this.TopNode, this._effectReferencePath);
-                }
-                return this._effectReference;
+                return this._effectReference ??= new ExcelChartStyleReference(this.NameSpaceManager, this.TopNode, this._effectReferencePath);
             }
         }
         ExcelChartStyleFontReference _fontReference = null;
@@ -112,11 +100,7 @@ namespace OfficeOpenXml.Drawing.Chart.Style
         {
             get
             {
-                if (this._fontReference == null)
-                {
-                    this._fontReference = new ExcelChartStyleFontReference(this.NameSpaceManager, this.TopNode, this._fontReferencePath);
-                }
-                return this._fontReference;
+                return this._fontReference ??= new ExcelChartStyleFontReference(this.NameSpaceManager, this.TopNode, this._fontReferencePath);
             }
         }
 
@@ -128,11 +112,11 @@ namespace OfficeOpenXml.Drawing.Chart.Style
         {
             get
             {
-                if(this._fill==null)
-                {
-                    this._fill = new ExcelDrawingFill(this._pictureRelationDocument, this.NameSpaceManager, this.TopNode, this._fillPath, this.SchemaNodeOrder);
-                }
-                return this._fill;
+                return this._fill ??= new ExcelDrawingFill(this._pictureRelationDocument,
+                                                           this.NameSpaceManager,
+                                                           this.TopNode,
+                                                           this._fillPath,
+                                                           this.SchemaNodeOrder);
             }
         }
         private ExcelDrawingBorder _border = null;
@@ -143,11 +127,11 @@ namespace OfficeOpenXml.Drawing.Chart.Style
         {
             get
             {
-                if (this._border == null)
-                {
-                    this._border = new ExcelDrawingBorder(this._pictureRelationDocument, this.NameSpaceManager, this.TopNode, this._borderPath, this.SchemaNodeOrder);
-                }
-                return this._border;
+                return this._border ??= new ExcelDrawingBorder(this._pictureRelationDocument,
+                                                               this.NameSpaceManager,
+                                                               this.TopNode,
+                                                               this._borderPath,
+                                                               this.SchemaNodeOrder);
             }
         }
         private ExcelDrawingEffectStyle _effect = null;
@@ -158,11 +142,11 @@ namespace OfficeOpenXml.Drawing.Chart.Style
         {
             get
             {
-                if (this._effect == null)
-                {
-                    this._effect = new ExcelDrawingEffectStyle(this._pictureRelationDocument, this.NameSpaceManager, this.TopNode, this._effectPath, this.SchemaNodeOrder);
-                }
-                return this._effect;
+                return this._effect ??= new ExcelDrawingEffectStyle(this._pictureRelationDocument,
+                                                                    this.NameSpaceManager,
+                                                                    this.TopNode,
+                                                                    this._effectPath,
+                                                                    this.SchemaNodeOrder);
             }
         }
         private ExcelDrawing3D _threeD = null;
@@ -171,14 +155,7 @@ namespace OfficeOpenXml.Drawing.Chart.Style
         /// </summary>
         public ExcelDrawing3D ThreeD
         {
-            get
-            {
-                if (this._threeD == null)
-                {
-                    this._threeD = new ExcelDrawing3D(this.NameSpaceManager, this.TopNode, this._fillPath, this.SchemaNodeOrder);
-                }
-                return this._threeD;
-            }
+            get { return this._threeD ??= new ExcelDrawing3D(this.NameSpaceManager, this.TopNode, this._fillPath, this.SchemaNodeOrder); }
         }
         private ExcelTextRun _defaultTextRun = null;
         /// <summary>
@@ -186,15 +163,7 @@ namespace OfficeOpenXml.Drawing.Chart.Style
         /// </summary>
         public ExcelTextRun DefaultTextRun
         {
-            get
-            {
-                if (this._defaultTextRun == null)
-                {
-                    this._defaultTextRun = new ExcelTextRun(this.NameSpaceManager, this.TopNode, this._defaultTextRunPath);
-                }
-                return this._defaultTextRun;
-                
-            }
+            get { return this._defaultTextRun ??= new ExcelTextRun(this.NameSpaceManager, this.TopNode, this._defaultTextRunPath); }
         }
         private ExcelTextBody _defaultTextBody = null;
         /// <summary>
@@ -202,15 +171,7 @@ namespace OfficeOpenXml.Drawing.Chart.Style
         /// </summary>
         public ExcelTextBody DefaultTextBody
         {
-            get 
-            {
-                if (this._defaultTextBody == null)
-                {
-                    this._defaultTextBody = new ExcelTextBody(this.NameSpaceManager, this.TopNode, this._defaultTextBodyPath);
-                }
-                return this._defaultTextBody;
-
-            }
+            get { return this._defaultTextBody ??= new ExcelTextBody(this.NameSpaceManager, this.TopNode, this._defaultTextBodyPath); }
         }
         /// <summary>
         /// Modifier for the chart

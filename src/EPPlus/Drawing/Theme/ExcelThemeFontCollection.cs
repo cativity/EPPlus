@@ -130,11 +130,7 @@ namespace OfficeOpenXml.Drawing.Theme
 
         private void SetSpecialFont(string typeface, eFontType fontType)
         {
-            ExcelDrawingFontBase? f = this._lst.Where((x => x is ExcelDrawingFontSpecial sf && sf.Type == fontType)).FirstOrDefault();
-            if (f == null)
-            {
-                f = this.AddSpecialFont(fontType, typeface);
-            }
+            ExcelDrawingFontBase? f = this._lst.Where((x => x is ExcelDrawingFontSpecial sf && sf.Type == fontType)).FirstOrDefault() ?? this.AddSpecialFont(fontType, typeface);
 
             f.Typeface = typeface;
         }

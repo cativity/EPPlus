@@ -48,11 +48,11 @@ namespace OfficeOpenXml.Drawing.Style.ThreeD
         {
             get
             {
-                if(this._camera == null)
-                {
-                    this._camera = new ExcelDrawingScene3DCamera(this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder, this._cameraPath, this.InitXml);
-                }
-                return this._camera;
+                return this._camera ??= new ExcelDrawingScene3DCamera(this.NameSpaceManager,
+                                                                      this.TopNode,
+                                                                      this.SchemaNodeOrder,
+                                                                      this._cameraPath,
+                                                                      this.InitXml);
             }
         }
         ExcelDrawingScene3DLightRig _lightRig = null;
@@ -64,11 +64,7 @@ namespace OfficeOpenXml.Drawing.Style.ThreeD
         {
             get
             {
-                if (this._lightRig == null)
-                {
-                    this._lightRig = new ExcelDrawingScene3DLightRig(this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder, this._lightRigPath, this.InitXml);
-                }
-                return this._lightRig;
+                return this._lightRig ??= new ExcelDrawingScene3DLightRig(this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder, this._lightRigPath, this.InitXml);
             }
         }
         ExcelDrawingScene3DBackDrop _backDropPlane = null;
@@ -79,11 +75,7 @@ namespace OfficeOpenXml.Drawing.Style.ThreeD
         {
             get
             {
-                if (this._backDropPlane == null)
-                {
-                    this._backDropPlane = new ExcelDrawingScene3DBackDrop(this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder, this._backDropPath, this.InitXml);
-                }
-                return this._backDropPlane;
+                return this._backDropPlane ??= new ExcelDrawingScene3DBackDrop(this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder, this._backDropPath, this.InitXml);
             }
         }
         bool hasInit = false;

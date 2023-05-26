@@ -875,10 +875,7 @@ namespace OfficeOpenXml.FormulaParsing
                     break;
                 }
             }
-            if(ft==null)
-            {
-                ft=new ExcelNumberFormatXml.ExcelFormatTranslator(format, -1);
-            }
+            ft ??= new ExcelNumberFormatXml.ExcelFormatTranslator(format, -1);
             return ValueToTextHandler.FormatValue(value,false, ft, null);
         }
         public override List<Token> GetRangeFormulaTokens(string worksheetName, int row, int column)

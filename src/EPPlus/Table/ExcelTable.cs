@@ -602,14 +602,7 @@ namespace OfficeOpenXml.Table
         /// </summary>
         public ExcelTableColumnCollection Columns
         {
-            get
-            {
-                if(this._cols==null)
-                {
-                    this._cols = new ExcelTableColumnCollection(this);
-                }
-                return this._cols;
-            }
+            get { return this._cols ??= new ExcelTableColumnCollection(this); }
         }
         TableStyles _tableStyle = TableStyles.Medium6;
         /// <summary>

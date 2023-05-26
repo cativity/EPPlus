@@ -36,10 +36,7 @@ namespace OfficeOpenXml.Vba.ContentHash
 
         public void CreateHashInput(MemoryStream ms)
         {
-            if(ms == null)
-            {
-                ms = RecyclableMemory.GetStream();
-            }
+            ms ??= RecyclableMemory.GetStream();
 
             this.CreateHashInputInternal(ms);
         }

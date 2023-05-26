@@ -93,10 +93,7 @@ namespace OfficeOpenXml
                 this._isEncrypted = value;
                 if (this._isEncrypted)
                 {
-                    if (this._password == null)
-                    {
-                        this._password = "";
-                    }
+                    this._password ??= "";
                 }
                 else
                 {

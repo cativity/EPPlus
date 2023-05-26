@@ -384,14 +384,7 @@ namespace OfficeOpenXml.Style
         /// </summary>
         public ExcelRichTextColor ColorSettings
         {
-            get
-            {
-                if(this._colorSettings==null)
-                {
-                    this._colorSettings = new ExcelRichTextColor(this.NameSpaceManager, this.TopNode, this);
-                }
-                return this._colorSettings;
-            }
+            get { return this._colorSettings ??= new ExcelRichTextColor(this.NameSpaceManager, this.TopNode, this); }
         }
         /// <summary>
         /// A referens to the richtext collection

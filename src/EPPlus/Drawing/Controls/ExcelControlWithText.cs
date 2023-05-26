@@ -71,11 +71,7 @@ namespace OfficeOpenXml.Drawing.Controls
         {
             get
             {
-                if (this._richText == null)
-                {
-                    this._richText = new ExcelParagraphCollection(this, this.NameSpaceManager, this.TopNode, this._paragraphPath, this.SchemaNodeOrder);
-                }
-                return this._richText;
+                return this._richText ??= new ExcelParagraphCollection(this, this.NameSpaceManager, this.TopNode, this._paragraphPath, this.SchemaNodeOrder);
             }
         }
         /// <summary>
@@ -101,11 +97,7 @@ namespace OfficeOpenXml.Drawing.Controls
         {
             get
             {
-                if (this._textBody == null)
-                {
-                    this._textBody = new ExcelTextBody(this.NameSpaceManager, this.TopNode, "xdr:sp/xdr:txBody/a:bodyPr", this.SchemaNodeOrder);
-                }
-                return this._textBody;
+                return this._textBody ??= new ExcelTextBody(this.NameSpaceManager, this.TopNode, "xdr:sp/xdr:txBody/a:bodyPr", this.SchemaNodeOrder);
             }
         }
     }

@@ -237,14 +237,7 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
         /// </summary>
         public new ExcelChartExAxis[] Axis
         {
-            get
-            {
-                if(this._exAxis==null)
-                {
-                    this._exAxis= this._axis.Select(x => (ExcelChartExAxis)x).ToArray();
-                }
-                return this._exAxis;
-            }
+            get { return this._exAxis ??= this._axis.Select(x => (ExcelChartExAxis)x).ToArray(); }
         }
         /// <summary>
         /// The titel of the chart
@@ -253,10 +246,8 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
         {
             get
             {
-                if (this._title == null)
-                {
-                    this._title = this.GetTitle();
-                }
+                this._title ??= this.GetTitle();
+
                 return (ExcelChartExTitle)this._title;
             }
         }
@@ -287,11 +278,11 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
         {
             get
             {
-                if (this._border == null)
-                {
-                    this._border = new ExcelDrawingBorder(this, this.NameSpaceManager, this.ChartXml.SelectSingleNode("cx:chartSpace", this.NameSpaceManager), "cx:spPr/a:ln", this._chartXmlHelper.SchemaNodeOrder);
-                }
-                return this._border;
+                return this._border ??= new ExcelDrawingBorder(this,
+                                                               this.NameSpaceManager,
+                                                               this.ChartXml.SelectSingleNode("cx:chartSpace", this.NameSpaceManager),
+                                                               "cx:spPr/a:ln",
+                                                               this._chartXmlHelper.SchemaNodeOrder);
             }
         }
         ExcelDrawingFill _fill = null;
@@ -302,11 +293,11 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
         {
             get
             {
-                if (this._fill == null)
-                {
-                    this._fill = new ExcelDrawingFill(this, this.NameSpaceManager, this.ChartXml.SelectSingleNode("cx:chartSpace", this.NameSpaceManager), "cx:spPr", this._chartXmlHelper.SchemaNodeOrder);
-                }
-                return this._fill;
+                return this._fill ??= new ExcelDrawingFill(this,
+                                                           this.NameSpaceManager,
+                                                           this.ChartXml.SelectSingleNode("cx:chartSpace", this.NameSpaceManager),
+                                                           "cx:spPr",
+                                                           this._chartXmlHelper.SchemaNodeOrder);
             }
         }
         ExcelDrawingEffectStyle _effect = null;
@@ -317,11 +308,11 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
         {
             get
             {
-                if (this._effect == null)
-                {
-                    this._effect = new ExcelDrawingEffectStyle(this, this.NameSpaceManager, this.ChartXml.SelectSingleNode("cx:chartSpace", this.NameSpaceManager), "cx:spPr/a:effectLst", this._chartXmlHelper.SchemaNodeOrder);
-                }
-                return this._effect;
+                return this._effect ??= new ExcelDrawingEffectStyle(this,
+                                                                    this.NameSpaceManager,
+                                                                    this.ChartXml.SelectSingleNode("cx:chartSpace", this.NameSpaceManager),
+                                                                    "cx:spPr/a:effectLst",
+                                                                    this._chartXmlHelper.SchemaNodeOrder);
             }
         }
         ExcelDrawing3D _threeD = null;
@@ -332,11 +323,10 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
         {
             get
             {
-                if (this._threeD == null)
-                {
-                    this._threeD = new ExcelDrawing3D(this.NameSpaceManager, this.ChartXml.SelectSingleNode("cx:chartSpace", this.NameSpaceManager), "cx:spPr", this._chartXmlHelper.SchemaNodeOrder);
-                }
-                return this._threeD;
+                return this._threeD ??= new ExcelDrawing3D(this.NameSpaceManager,
+                                                           this.ChartXml.SelectSingleNode("cx:chartSpace", this.NameSpaceManager),
+                                                           "cx:spPr",
+                                                           this._chartXmlHelper.SchemaNodeOrder);
             }
         }
         ExcelTextFont _font = null;
@@ -347,11 +337,11 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
         {
             get
             {
-                if (this._font == null)
-                {
-                    this._font = new ExcelTextFont(this, this.NameSpaceManager, this.ChartXml.SelectSingleNode("cx:chartSpace", this.NameSpaceManager), "cx:txPr/a:p/a:pPr/a:defRPr", this._chartXmlHelper.SchemaNodeOrder);
-                }
-                return this._font;
+                return this._font ??= new ExcelTextFont(this,
+                                                        this.NameSpaceManager,
+                                                        this.ChartXml.SelectSingleNode("cx:chartSpace", this.NameSpaceManager),
+                                                        "cx:txPr/a:p/a:pPr/a:defRPr",
+                                                        this._chartXmlHelper.SchemaNodeOrder);
             }
         }
         ExcelTextBody _textBody = null;
@@ -362,11 +352,10 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
         {
             get
             {
-                if (this._textBody == null)
-                {
-                    this._textBody = new ExcelTextBody(this.NameSpaceManager, this.ChartXml.SelectSingleNode("cx:chartSpace", this.NameSpaceManager), "cx:txPr/a:bodyPr", this._chartXmlHelper.SchemaNodeOrder);
-                }
-                return this._textBody;
+                return this._textBody ??= new ExcelTextBody(this.NameSpaceManager,
+                                                            this.ChartXml.SelectSingleNode("cx:chartSpace", this.NameSpaceManager),
+                                                            "cx:txPr/a:bodyPr",
+                                                            this._chartXmlHelper.SchemaNodeOrder);
             }
         }
         /// <summary>

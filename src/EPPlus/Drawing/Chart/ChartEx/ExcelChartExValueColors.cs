@@ -58,14 +58,7 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
         /// </summary>
         public ExcelChartExValueColor MinColor 
         {
-            get
-            {
-                if(this._minColor==null)
-                {
-                    this._minColor = new ExcelChartExValueColor(this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder, "min");
-                }
-                return this._minColor;
-            }
+            get { return this._minColor ??= new ExcelChartExValueColor(this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder, "min"); }
         }
         ExcelChartExValueColor _midColor = null;
         /// <summary>
@@ -80,11 +73,7 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
                     return null;
                 }
 
-                if (this._midColor == null)
-                {
-                    this._midColor = new ExcelChartExValueColor(this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder, "mid");
-                }
-                return this._midColor;
+                return this._midColor ??= new ExcelChartExValueColor(this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder, "mid");
             }
         }
         ExcelChartExValueColor _maxColor = null;
@@ -93,14 +82,7 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
         /// </summary>
         public ExcelChartExValueColor MaxColor
         {
-            get
-            {
-                if (this._maxColor == null)
-                {
-                    this._maxColor = new ExcelChartExValueColor(this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder, "max");
-                }
-                return this._maxColor;
-            }
+            get { return this._maxColor ??= new ExcelChartExValueColor(this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder, "max"); }
         }
     }
 }

@@ -20,10 +20,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Helpers
     {
         public static string EnsureLength(string input, int length, string padWith = "")
         {
-            if (input == null)
-            {
-                input = string.Empty;
-            }
+            input ??= string.Empty;
 
             if (input.Length < length && !string.IsNullOrEmpty(padWith))
             {

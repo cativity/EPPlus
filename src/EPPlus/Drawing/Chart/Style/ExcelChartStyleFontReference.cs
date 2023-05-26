@@ -50,12 +50,7 @@ namespace OfficeOpenXml.Drawing.Chart.Style
         {
             get
             {
-                if (this._color == null)
-                {
-                    this._color = new ExcelChartStyleColorManager(this.NameSpaceManager, this.TopNode, this._path, this.SchemaNodeOrder);
-                }
-
-                return this._color;
+                return this._color ??= new ExcelChartStyleColorManager(this.NameSpaceManager, this.TopNode, this._path, this.SchemaNodeOrder);
             }
         }
         /// <summary>

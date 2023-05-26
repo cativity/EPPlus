@@ -53,15 +53,7 @@ namespace OfficeOpenXml.Drawing.Chart
             }
             else
             {
-                insertAfter = this._serie.TopNode.SelectSingleNode("c:marker", this._serie.NameSpaceManager);
-                if (insertAfter == null)
-                {
-                    insertAfter = this._serie.TopNode.SelectSingleNode("c:tx", this._serie.NameSpaceManager);
-                    if (insertAfter == null)
-                    {
-                        insertAfter = this._serie.TopNode.SelectSingleNode("c:order", this._serie.NameSpaceManager);
-                    }
-                }
+                insertAfter = this._serie.TopNode.SelectSingleNode("c:marker", this._serie.NameSpaceManager) ?? (this._serie.TopNode.SelectSingleNode("c:tx", this._serie.NameSpaceManager) ?? this._serie.TopNode.SelectSingleNode("c:order", this._serie.NameSpaceManager));
             }
 
             XmlElement? node= this._serie.TopNode.OwnerDocument.CreateElement("c","trendline", ExcelPackage.schemaChart);

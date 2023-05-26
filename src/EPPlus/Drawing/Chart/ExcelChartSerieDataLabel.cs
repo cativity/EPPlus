@@ -38,11 +38,7 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             get
             {
-                if (this._dataLabels == null)
-                {
-                    this._dataLabels = new ExcelChartDataLabelCollection(this._chart, this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder);
-                }
-                return this._dataLabels;
+                return this._dataLabels ??= new ExcelChartDataLabelCollection(this._chart, this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder);
             }
         }
     }

@@ -252,8 +252,8 @@ namespace OfficeOpenXml.Core
                 }
                 if (!measurement.IsEmpty && ts.AutofitScaleFactor != 1f)
                 {
-                    measurement.Height = measurement.Height * ts.AutofitScaleFactor;
-                    measurement.Width = measurement.Width * ts.AutofitScaleFactor;
+                    measurement.Height *= ts.AutofitScaleFactor;
+                    measurement.Width *= ts.AutofitScaleFactor;
                 }
                 measureCache.Add(key, measurement);
             }
@@ -281,8 +281,8 @@ namespace OfficeOpenXml.Core
                 this._nonExistingFont.Size = font.Size;
                 this._nonExistingFont.Style = font.Style;
                 measurement = this._genericMeasurer.MeasureText(t, this._nonExistingFont);
-                measurement.Height = measurement.Height * ts.AutofitScaleFactor;
-                measurement.Width = measurement.Width * ts.AutofitScaleFactor;
+                measurement.Height *= ts.AutofitScaleFactor;
+                measurement.Width *= ts.AutofitScaleFactor;
             }
 
             return measurement;

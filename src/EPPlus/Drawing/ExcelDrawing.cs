@@ -549,14 +549,7 @@ namespace OfficeOpenXml.Drawing
         /// </summary>
         public ExcelDrawingAsType As
         {
-            get
-            {
-                if (this._as == null)
-                {
-                    this._as = new ExcelDrawingAsType(this);
-                }
-                return this._as;
-            }
+            get { return this._as ??= new ExcelDrawingAsType(this); }
         }
         internal ZipPackageRelationship HypRel { get; set; }
         /// <summary>
@@ -1137,8 +1130,8 @@ namespace OfficeOpenXml.Drawing
                 this._height = this.GetPixelHeight();
             }
 
-            this._width = this._width * ((double)Percent / 100);
-            this._height = this._height * ((double)Percent / 100);
+            this._width *= ((double)Percent / 100);
+            this._height *= ((double)Percent / 100);
 
             this.SetPixelWidth(this._width);
             this.SetPixelHeight(this._height);
@@ -1192,10 +1185,7 @@ namespace OfficeOpenXml.Drawing
                     grp = d._parent;
                 }
             }
-            if (grp == null)
-            {
-                grp = this._drawings.AddGroupDrawing();
-            }
+            grp ??= this._drawings.AddGroupDrawing();
             
             grp.Drawings.AddDrawing(this);
 

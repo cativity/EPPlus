@@ -76,14 +76,7 @@ namespace OfficeOpenXml.Drawing.Style.Fill
         /// </summary>
         public ExcelDrawingBlipEffects Effects
         {
-            get
-            {
-                if(this._effects==null)
-                {
-                    this._effects = new ExcelDrawingBlipEffects(this._nsm, this._topNode.SelectSingleNode("a:blip", this._nsm));
-                }
-                return this._effects;
-            }
+            get { return this._effects ?? (this._effects = new ExcelDrawingBlipEffects(this._nsm, this._topNode.SelectSingleNode("a:blip", this._nsm))); }
         }
         internal override string NodeName
         {

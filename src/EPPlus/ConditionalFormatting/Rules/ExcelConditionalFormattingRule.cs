@@ -73,25 +73,27 @@ namespace OfficeOpenXml.ConditionalFormatting
       this._worksheet = worksheet;
       this.SchemaNodeOrder = this._worksheet.SchemaNodeOrder;
 
-      if (itemElementNode == null)
-      {
         // Create/Get the <cfRule> inside <conditionalFormatting>
-        itemElementNode = this.CreateComplexNode(this._worksheet.WorksheetXml.DocumentElement,
-                                                 string.Format(
-                                                               "{0}[{1}='{2}']/{1}='{2}'/{3}[{4}='{5}']/{4}='{5}'",
+      itemElementNode ??= this.CreateComplexNode(this._worksheet.WorksheetXml.DocumentElement,
+                                                 string.Format("{0}[{1}='{2}']/{1}='{2}'/{3}[{4}='{5}']/{4}='{5}'",
+
                                                                //{0}
                                                                ExcelConditionalFormattingConstants.Paths.ConditionalFormatting,
+
                                                                // {1}
                                                                ExcelConditionalFormattingConstants.Paths.SqrefAttribute,
+
                                                                // {2}
-                                                               address.AddressSpaceSeparated,          //CF node don't what to have comma between multi addresses, use space instead.
+                                                               address
+                                                                   .AddressSpaceSeparated, //CF node don't what to have comma between multi addresses, use space instead.
                                                                // {3}
                                                                ExcelConditionalFormattingConstants.Paths.CfRule,
+
                                                                //{4}
                                                                ExcelConditionalFormattingConstants.Paths.PriorityAttribute,
+
                                                                //{5}
                                                                priority));
-      }
 
       // Point to <cfRule>
       this.TopNode = itemElementNode;
@@ -213,14 +215,12 @@ namespace OfficeOpenXml.ConditionalFormatting
     {
       get
       {
-        // Transform the @type attribute to EPPlus Rule Type (slighty diferente)
-        if(this._type==null)
-        {
-            this._type = ExcelConditionalFormattingRuleType.GetTypeByAttrbiute(this.GetXmlNodeString(ExcelConditionalFormattingConstants.Paths.TypeAttribute),
+          // Transform the @type attribute to EPPlus Rule Type (slighty diferente)
+          this._type ??= ExcelConditionalFormattingRuleType.GetTypeByAttrbiute(this.GetXmlNodeString(ExcelConditionalFormattingConstants.Paths.TypeAttribute),
                                                                                this.TopNode,
                                                                                this._worksheet.NameSpaceManager);
-        }
-        return (eExcelConditionalFormattingRuleType)this._type;
+
+          return (eExcelConditionalFormattingRuleType)this._type;
       }
       internal set
       {
@@ -349,11 +349,7 @@ namespace OfficeOpenXml.ConditionalFormatting
     {
         get
         {
-            if (this._style == null)
-            {
-                this._style = new ExcelDxfStyleConditionalFormatting(this.NameSpaceManager, null, this._worksheet.Workbook.Styles, null);                
-            }
-            return this._style;
+            return this._style ??= new ExcelDxfStyleConditionalFormatting(this.NameSpaceManager, null, this._worksheet.Workbook.Styles, null);
         }
     }        
     /// <summary>
@@ -617,14 +613,7 @@ namespace OfficeOpenXml.ConditionalFormatting
     /// </summary>
     public ExcelConditionalFormattingAsType As 
     { 
-        get
-        {
-            if(this._as==null)
-            {
-                this._as = new ExcelConditionalFormattingAsType(this);
-            }
-            return this._as;
-        }
+        get { return this._as ??= new ExcelConditionalFormattingAsType(this); }
     } 
     #endregion Internal Properties
     /****************************************************************************************/

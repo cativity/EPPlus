@@ -51,11 +51,7 @@ namespace OfficeOpenXml.Drawing.Style.ThreeD
         {
             get
             {
-                if(this._rotation==null)
-                {
-                    this._rotation = new ExcelDrawingSphereCoordinate(this.NameSpaceManager, this.TopNode, this._rotationPath, this._initParent);
-                }
-                return this._rotation;
+                return this._rotation ??= new ExcelDrawingSphereCoordinate(this.NameSpaceManager, this.TopNode, this._rotationPath, this._initParent);
             }
         }
         /// <summary>

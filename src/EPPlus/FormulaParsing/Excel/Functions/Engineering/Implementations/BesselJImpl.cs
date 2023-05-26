@@ -75,34 +75,34 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Engineering.Implementatio
                 g_bar_delta_u = 0.0;    // alpha_k = 0.0, m_bar = 0.0; g= 0.0
                 g_bar = -2.0 / fX;       // k = 1.0, g = 0.0
                 delta_u = g_bar_delta_u / g_bar;
-                u = u + delta_u;       // u_k = u_{k-1} + delta_u_k
+                u += delta_u;       // u_k = u_{k-1} + delta_u_k
                 g = -1.0 / g_bar;       // g_k=b_{k+2}/g_bar_k
-                f_bar = f_bar * g;      // f_bar_k = f_bar_{k-1}* g_k
+                f_bar *= g;      // f_bar_k = f_bar_{k-1}* g_k
                 k = 2.0;
                 // From now on all alpha_k = 0.0 and k > N+1
             }
             else
             {   // N >= 1 and alpha_k = 0.0 for k<N
                 u = 0.0; // u_0 = alpha_0
-                for (k = 1.0; k <= N - 1; k = k + 1.0)
+                for (k = 1.0; k <= N - 1; k += 1.0)
                 {
                     m_bar = 2.0 * ((k - 1.0) % 2.0) * f_bar;
                     g_bar_delta_u = -g * delta_u - m_bar * u; // alpha_k = 0.0
                     g_bar = m_bar - 2.0 * k / fX + g;
                     delta_u = g_bar_delta_u / g_bar;
-                    u = u + delta_u;
+                    u += delta_u;
                     g = -1.0 / g_bar;
-                    f_bar = f_bar * g;
+                    f_bar *= g;
                 }
                 // Step alpha_N = 1.0
                 m_bar = 2.0 * ((k - 1.0) % 2.0) * f_bar;
                 g_bar_delta_u = f_bar - g * delta_u - m_bar * u; // alpha_k = 1.0
                 g_bar = m_bar - 2.0 * k / fX + g;
                 delta_u = g_bar_delta_u / g_bar;
-                u = u + delta_u;
+                u += delta_u;
                 g = -1.0 / g_bar;
-                f_bar = f_bar * g;
-                k = k + 1.0;
+                f_bar *= g;
+                k += 1.0;
             }
 
             do
@@ -111,11 +111,11 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Engineering.Implementatio
                 g_bar_delta_u = -g * delta_u - m_bar * u;
                 g_bar = m_bar - 2.0 * k / fX + g;
                 delta_u = g_bar_delta_u / g_bar;
-                u = u + delta_u;
+                u += delta_u;
                 g = -1.0 / g_bar;
-                f_bar = f_bar * g;
+                f_bar *= g;
                 bHasfound = (System.Math.Abs(delta_u) <= System.Math.Abs(u) * epsilon);
-                k = k + 1.0;
+                k += 1.0;
             }
             while (!bHasfound && k <= fMaxIteration);
             if (!bHasfound)

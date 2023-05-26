@@ -404,14 +404,7 @@ namespace OfficeOpenXml.Drawing.Chart
        /// </summary>
         public override ExcelChartTrendlineCollection TrendLines
         {
-            get
-            {
-                if (this._trendLines == null)
-                {
-                    this._trendLines = new ExcelChartTrendlineCollection(this);
-                }
-                return this._trendLines;
-            }
+            get { return this._trendLines ??= new ExcelChartTrendlineCollection(this); }
         }
         /// <summary>
         /// Number of items in the serie

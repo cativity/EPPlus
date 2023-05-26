@@ -83,14 +83,7 @@ namespace OfficeOpenXml
         XmlNode _topNode=null;
         internal XmlNode TopNode
         {
-            get
-            {
-                if(this._topNode==null)
-                {
-                    this._topNode= this._excelWorksheet.CreateNode("d:ignoredErrors");
-                }   
-                return this._topNode;
-            }
+            get { return this._topNode ??= this._excelWorksheet.CreateNode("d:ignoredErrors"); }
         }
         /// <summary>
         /// Gets the enumerator for the collection

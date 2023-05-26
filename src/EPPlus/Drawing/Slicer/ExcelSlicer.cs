@@ -231,10 +231,8 @@ namespace OfficeOpenXml.Drawing.Slicer
         {
             get
             {
-                if(this._cache==null)
-                {
-                    this._cache = this._drawings.Worksheet.Workbook.GetSlicerCaches(this.CacheName);
-                }
+                this._cache ??= this._drawings.Worksheet.Workbook.GetSlicerCaches(this.CacheName);
+
                 return this._cache as T;
             }
         }

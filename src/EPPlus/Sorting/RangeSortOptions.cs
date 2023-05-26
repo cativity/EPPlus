@@ -46,15 +46,7 @@ namespace OfficeOpenXml.Sorting
         /// </summary>
         public RangeSortLayer SortBy
         {
-            get
-            {
-                if(this._sortLayer == null)
-                {
-                    this._sortLayer = new RangeSortLayer(this);
-                }
-
-                return this._sortLayer;
-            }
+            get { return this._sortLayer ??= new RangeSortLayer(this); }
         }
 
         /// <summary>
@@ -62,15 +54,7 @@ namespace OfficeOpenXml.Sorting
         /// </summary>
         public RangeLeftToRightSortLayer SortLeftToRightBy
         {
-            get
-            {
-                if (this._sortLayerLeftToRight == null)
-                {
-                    this._sortLayerLeftToRight = new RangeLeftToRightSortLayer(this);
-                }
-
-                return this._sortLayerLeftToRight;
-            }
+            get { return this._sortLayerLeftToRight ??= new RangeLeftToRightSortLayer(this); }
         }
     }
 }

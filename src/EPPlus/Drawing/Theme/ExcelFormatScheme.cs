@@ -55,11 +55,9 @@ namespace OfficeOpenXml.Drawing.Theme
         {
             get
             {
-                if (this._fillStyle == null)
-                {
-                    this._fillStyle = new ExcelThemeFillStyles(this.NameSpaceManager, this.TopNode.SelectSingleNode(fillStylePath, this.NameSpaceManager), this._theme);
-                }
-                return this._fillStyle;
+                return this._fillStyle ??= new ExcelThemeFillStyles(this.NameSpaceManager,
+                                                                    this.TopNode.SelectSingleNode(fillStylePath, this.NameSpaceManager),
+                                                                    this._theme);
             }
         }
 
@@ -72,11 +70,9 @@ namespace OfficeOpenXml.Drawing.Theme
         {
             get
             {
-                if (this._lineStyle == null)
-                {
-                    this._lineStyle = new ExcelThemeLineStyles(this.NameSpaceManager, this.TopNode.SelectSingleNode(lineStylePath, this.NameSpaceManager));
-                }
-                return this._lineStyle;
+                return this._lineStyle
+                       ?? (this._lineStyle =
+                               new ExcelThemeLineStyles(this.NameSpaceManager, this.TopNode.SelectSingleNode(lineStylePath, this.NameSpaceManager)));
             }
         }
         const string effectStylePath = "a:effectStyleLst";
@@ -88,11 +84,10 @@ namespace OfficeOpenXml.Drawing.Theme
         {
             get
             {
-                if (this._effectStyle == null)
-                {
-                    this._effectStyle = new ExcelThemeEffectStyles(this.NameSpaceManager, this.TopNode.SelectSingleNode(effectStylePath, this.NameSpaceManager), this._theme);
-                }
-                return this._effectStyle;
+                return this._effectStyle
+                       ?? (this._effectStyle = new ExcelThemeEffectStyles(this.NameSpaceManager,
+                                                                          this.TopNode.SelectSingleNode(effectStylePath, this.NameSpaceManager),
+                                                                          this._theme));
             }
         }
         const string backgroundFillStylePath = "a:bgFillStyleLst";
@@ -104,11 +99,10 @@ namespace OfficeOpenXml.Drawing.Theme
         {
             get
             {
-                if (this._backgroundFillStyle == null)
-                {
-                    this._backgroundFillStyle = new ExcelThemeFillStyles(this.NameSpaceManager, this.TopNode.SelectSingleNode(backgroundFillStylePath, this.NameSpaceManager), this._theme);
-                }
-                return this._backgroundFillStyle;
+                return this._backgroundFillStyle
+                       ?? (this._backgroundFillStyle = new ExcelThemeFillStyles(this.NameSpaceManager,
+                                                                                this.TopNode.SelectSingleNode(backgroundFillStylePath, this.NameSpaceManager),
+                                                                                this._theme));
             }
         }
     }

@@ -268,11 +268,7 @@ namespace OfficeOpenXml.Drawing
         {
             get
             {
-                if (this._fill == null)
-                {
-                    this._fill = new ExcelDrawingFill(this._drawings, this.NameSpaceManager, this.TopNode, "xdr:pic/xdr:spPr", this.SchemaNodeOrder);
-                }
-                return this._fill;
+                return this._fill ??= new ExcelDrawingFill(this._drawings, this.NameSpaceManager, this.TopNode, "xdr:pic/xdr:spPr", this.SchemaNodeOrder);
             }
         }
         ExcelDrawingBorder _border = null;
@@ -283,11 +279,11 @@ namespace OfficeOpenXml.Drawing
         {
             get
             {
-                if (this._border == null)
-                {
-                    this._border = new ExcelDrawingBorder(this._drawings, this.NameSpaceManager, this.TopNode, "xdr:pic/xdr:spPr/a:ln", this.SchemaNodeOrder);
-                }
-                return this._border;
+                return this._border ??= new ExcelDrawingBorder(this._drawings,
+                                                               this.NameSpaceManager,
+                                                               this.TopNode,
+                                                               "xdr:pic/xdr:spPr/a:ln",
+                                                               this.SchemaNodeOrder);
             }
         }
         ExcelDrawingEffectStyle _effect = null;
@@ -298,11 +294,11 @@ namespace OfficeOpenXml.Drawing
         {
             get
             {
-                if (this._effect == null)
-                {
-                    this._effect = new ExcelDrawingEffectStyle(this._drawings, this.NameSpaceManager, this.TopNode, "xdr:pic/xdr:spPr/a:effectLst", this.SchemaNodeOrder);
-                }
-                return this._effect;
+                return this._effect ??= new ExcelDrawingEffectStyle(this._drawings,
+                                                                    this.NameSpaceManager,
+                                                                    this.TopNode,
+                                                                    "xdr:pic/xdr:spPr/a:effectLst",
+                                                                    this.SchemaNodeOrder);
             }
         }
         const string _preferRelativeResizePath = "xdr:pic/xdr:nvPicPr/xdr:cNvPicPr/@preferRelativeResize";

@@ -471,10 +471,7 @@ namespace OfficeOpenXml
                 {
                     throw new IOException($"{template.FullName} cannot be a zero-byte file.");
                 }
-                if (this._stream==null)
-                {
-                    this._stream = RecyclableMemory.GetStream();
-                }
+                this._stream ??= RecyclableMemory.GetStream();
 
                 MemoryStream? ms = RecyclableMemory.GetStream();
                 if (password != null)
@@ -520,10 +517,7 @@ namespace OfficeOpenXml
         private void ConstructNewFile(string password)
         {
             MemoryStream? ms = RecyclableMemory.GetStream();
-            if (this._stream == null)
-            {
-                this._stream = RecyclableMemory.GetStream();
-            }
+            this._stream ??= RecyclableMemory.GetStream();
 
             if (this.File != null)
             {
@@ -596,14 +590,7 @@ namespace OfficeOpenXml
         PictureStore _pictureStore = null;
         internal PictureStore PictureStore
         {
-            get
-            {
-                if(this._pictureStore==null)
-                {
-                    this._pictureStore = new PictureStore(this);
-                }
-                return this._pictureStore;
-            }
+            get { return this._pictureStore ??= new PictureStore(this); }
         }
         /// <summary>
         /// Returns a reference to the package
@@ -615,14 +602,7 @@ namespace OfficeOpenXml
         /// </summary>
         public ExcelEncryption Encryption
         {
-            get
-            {
-                if (this._encryption == null)
-                {
-                    this._encryption = new ExcelEncryption();
-                }
-                return this._encryption;
-            }
+            get { return this._encryption ??= new ExcelEncryption(); }
         }
         private static LicenseContext? _licenseType = null;
         internal static bool _licenseSet = false;
@@ -1123,14 +1103,7 @@ namespace OfficeOpenXml
         /// </summary>
         public CompatibilitySettings Compatibility
         {
-            get
-            {
-                if(this._compatibility==null)
-                {
-                    this._compatibility=new CompatibilitySettings(this);
-                }
-                return this._compatibility;
-            }
+            get { return this._compatibility ??= new CompatibilitySettings(this); }
         }
         /// <summary>
         /// Package generic settings

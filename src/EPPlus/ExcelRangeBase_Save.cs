@@ -147,10 +147,7 @@ namespace OfficeOpenXml
         /// <param name="Format">Information how to create the csv text</param>
         public void SaveToText(Stream stream, ExcelOutputTextFormat Format)
         {
-            if (Format == null)
-            {
-                Format = new ExcelOutputTextFormat();
-            }
+            Format ??= new ExcelOutputTextFormat();
 
             StreamWriter? sw = new StreamWriter(stream, Format.Encoding);
             if (!string.IsNullOrEmpty(Format.Header))
@@ -253,10 +250,7 @@ namespace OfficeOpenXml
         /// <param name="Format">Information how to create the csv text</param>
         public async Task SaveToTextAsync(Stream stream, ExcelOutputTextFormat Format)
         {
-            if (Format == null)
-            {
-                Format = new ExcelOutputTextFormat();
-            }
+            Format ??= new ExcelOutputTextFormat();
 
             StreamWriter? sw = new StreamWriter(stream, Format.Encoding);
             if (!string.IsNullOrEmpty(Format.Header))
@@ -270,14 +264,7 @@ namespace OfficeOpenXml
             string encodedTextQualifier = "";
             if (hasTextQ)
             {
-                if (Format.EncodedTextQualifiers == null)
-                {
-                    encodedTextQualifier = new string(Format.TextQualifier, 2);
-                }
-                else
-                {
-                    encodedTextQualifier = Format.EncodedTextQualifiers;
-                }
+                encodedTextQualifier = Format.EncodedTextQualifiers ?? new string(Format.TextQualifier, 2);
             }
             int skipLinesBegining = Format.SkipLinesBeginning + (Format.FirstRowIsHeader ? 1 : 0);
             CultureInfo ci = GetCultureInfo(Format);

@@ -39,14 +39,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Operators
 
         public static IDictionary<string, IOperator> Instance
         {
-            get 
-            {
-                if (_instance == null)
-                {
-                    _instance = new OperatorsDict();
-                }
-                return _instance;
-            }
+            get { return _instance ??= new OperatorsDict(); }
         }
     }
 }

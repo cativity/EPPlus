@@ -100,11 +100,7 @@ namespace OfficeOpenXml
         {
             get
             {
-                if (this._writeProtection == null)
-                {
-                    this._writeProtection = new ExcelWriteProtection(this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder);
-                }
-                return this._writeProtection;
+                return this._writeProtection ??= new ExcelWriteProtection(this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder);
             }
         }
     }

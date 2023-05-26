@@ -404,35 +404,20 @@ namespace OfficeOpenXml.Drawing
         {
             get
             {
-                if(this._xFrmPosition==null)
-                {
-                    this._xFrmPosition= new ExcelDrawingCoordinate(this.NameSpaceManager, this.GetNode("xdr:grpSp/xdr:grpSpPr/a:xfrm/a:off")); 
-                }
-                return this._xFrmPosition;
+                return this._xFrmPosition ??= new ExcelDrawingCoordinate(this.NameSpaceManager, this.GetNode("xdr:grpSp/xdr:grpSpPr/a:xfrm/a:off"));
             }
         }
         ExcelDrawingSize _xFrmSize = null;
         internal ExcelDrawingSize xFrmSize
         {
-            get
-            {
-                if (this._xFrmSize == null)
-                {
-                    this._xFrmSize = new ExcelDrawingSize(this.NameSpaceManager, this.GetNode("xdr:grpSp/xdr:grpSpPr/a:xfrm/a:ext")); 
-                }
-                return this._xFrmSize;
-            }
+            get { return this._xFrmSize ??= new ExcelDrawingSize(this.NameSpaceManager, this.GetNode("xdr:grpSp/xdr:grpSpPr/a:xfrm/a:ext")); }
         }
         ExcelDrawingCoordinate _xFrmChildPosition = null;
         internal ExcelDrawingCoordinate xFrmChildPosition
         {
             get
             {
-                if (this._xFrmChildPosition == null)
-                {
-                    this._xFrmChildPosition = new ExcelDrawingCoordinate(this.NameSpaceManager, this.GetNode("xdr:grpSp/xdr:grpSpPr/a:xfrm/a:chOff"));
-                }
-                return this._xFrmChildPosition;
+                return this._xFrmChildPosition ??= new ExcelDrawingCoordinate(this.NameSpaceManager, this.GetNode("xdr:grpSp/xdr:grpSpPr/a:xfrm/a:chOff"));
             }
         }
         ExcelDrawingSize _xFrmChildSize = null;
@@ -440,11 +425,7 @@ namespace OfficeOpenXml.Drawing
         {
             get
             {
-                if (this._xFrmChildSize == null)
-                {
-                    this._xFrmChildSize = new ExcelDrawingSize(this.NameSpaceManager, this.GetNode("xdr:grpSp/xdr:grpSpPr/a:xfrm/a:chExt"));
-                }
-                return this._xFrmChildSize;
+                return this._xFrmChildSize ??= new ExcelDrawingSize(this.NameSpaceManager, this.GetNode("xdr:grpSp/xdr:grpSpPr/a:xfrm/a:chExt"));
             }
         }
         /// <summary>

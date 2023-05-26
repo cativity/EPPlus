@@ -1209,7 +1209,7 @@ namespace OfficeOpenXml
             {
                 if (nameNode.NodeType == XmlNodeType.Attribute)
                 {
-                    return nameNode.Value != null ? nameNode.Value : "";
+                    return nameNode.Value ?? "";
                 }
                 else
                 {

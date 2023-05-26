@@ -68,11 +68,7 @@ namespace OfficeOpenXml.Drawing.Style.ThreeD
         {
             get
             {
-                if (this._scene3D == null)
-                {
-                    this._scene3D = new ExcelDrawingScene3D(this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder, this._scene3dPath);
-                }
-                return this._scene3D;
+                return this._scene3D ??= new ExcelDrawingScene3D(this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder, this._scene3dPath);
             }
         }
         /// <summary>
@@ -111,11 +107,7 @@ namespace OfficeOpenXml.Drawing.Style.ThreeD
         {
             get
             {
-                if(this._topBevel==null)
-                {
-                    this._topBevel = new ExcelDrawing3DBevel(this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder, this._bevelTPath, this.InitXml);
-                }
-                return this._topBevel;
+                return this._topBevel ??= new ExcelDrawing3DBevel(this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder, this._bevelTPath, this.InitXml);
             }
         }
         ExcelDrawing3DBevel _bottomBevel = null;
@@ -126,11 +118,7 @@ namespace OfficeOpenXml.Drawing.Style.ThreeD
         {
             get
             {
-                if (this._bottomBevel == null)
-                {
-                    this._bottomBevel = new ExcelDrawing3DBevel(this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder, this._bevelBPath, this.InitXml);
-                }
-                return this._bottomBevel;
+                return this._bottomBevel ??= new ExcelDrawing3DBevel(this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder, this._bevelBPath, this.InitXml);
             }
         }
         ExcelDrawingColorManager _extrusionColor = null;

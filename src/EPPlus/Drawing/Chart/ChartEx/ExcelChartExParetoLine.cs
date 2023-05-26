@@ -33,11 +33,11 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
         {
             get
             {
-                if (this._effect == null)
-                {
-                    this._effect = new ExcelDrawingEffectStyle(this._chart, this.NameSpaceManager, this.TopNode, "cx:spPr/a:effectLst", this.SchemaNodeOrder);
-                }
-                return this._effect;
+                return this._effect ??= new ExcelDrawingEffectStyle(this._chart,
+                                                                    this.NameSpaceManager,
+                                                                    this.TopNode,
+                                                                    "cx:spPr/a:effectLst",
+                                                                    this.SchemaNodeOrder);
             }
         }
     }

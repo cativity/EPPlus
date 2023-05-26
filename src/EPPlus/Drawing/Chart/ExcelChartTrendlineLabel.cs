@@ -39,11 +39,11 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             get
             {
-                if (this._fill == null)
-                {
-                    this._fill = new ExcelDrawingFill(this._serie._chart, this.NameSpaceManager, this.TopNode, "c:trendlineLbl/c:spPr", this.SchemaNodeOrder);
-                }
-                return this._fill;
+                return this._fill ??= new ExcelDrawingFill(this._serie._chart,
+                                                           this.NameSpaceManager,
+                                                           this.TopNode,
+                                                           "c:trendlineLbl/c:spPr",
+                                                           this.SchemaNodeOrder);
             }
         }
         ExcelDrawingBorder _border = null;
@@ -54,11 +54,11 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             get
             {
-                if (this._border == null)
-                {
-                    this._border = new ExcelDrawingBorder(this._serie._chart, this.NameSpaceManager, this.TopNode, "c:trendlineLbl/c:spPr/a:ln", this.SchemaNodeOrder);
-                }
-                return this._border;
+                return this._border ??= new ExcelDrawingBorder(this._serie._chart,
+                                                               this.NameSpaceManager,
+                                                               this.TopNode,
+                                                               "c:trendlineLbl/c:spPr/a:ln",
+                                                               this.SchemaNodeOrder);
             }
         }
         ExcelTextFont _font = null;
@@ -69,11 +69,11 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             get
             {
-                if (this._font == null)
-                {
-                    this._font = new ExcelTextFont(this._serie._chart, this.NameSpaceManager, this.TopNode, "c:trendlineLbl/c:txPr/a:p/a:pPr/a:defRPr", this.SchemaNodeOrder);
-                }
-                return this._font;
+                return this._font ??= new ExcelTextFont(this._serie._chart,
+                                                        this.NameSpaceManager,
+                                                        this.TopNode,
+                                                        "c:trendlineLbl/c:txPr/a:p/a:pPr/a:defRPr",
+                                                        this.SchemaNodeOrder);
             }
         }
         ExcelTextBody _textBody = null;
@@ -84,11 +84,7 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             get
             {
-                if (this._textBody == null)
-                {
-                    this._textBody = new ExcelTextBody(this.NameSpaceManager, this.TopNode, "c:trendlineLbl/c:txPr/a:bodyPr", this.SchemaNodeOrder);
-                }
-                return this._textBody;
+                return this._textBody ??= new ExcelTextBody(this.NameSpaceManager, this.TopNode, "c:trendlineLbl/c:txPr/a:bodyPr", this.SchemaNodeOrder);
             }
         }
         ExcelDrawingEffectStyle _effect = null;
@@ -99,11 +95,11 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             get
             {
-                if (this._effect == null)
-                {
-                    this._effect = new ExcelDrawingEffectStyle(this._serie._chart, this.NameSpaceManager, this.TopNode, "c:trendlineLbl/c:spPr/a:effectLst", this.SchemaNodeOrder);
-                }
-                return this._effect;
+                return this._effect ??= new ExcelDrawingEffectStyle(this._serie._chart,
+                                                                    this.NameSpaceManager,
+                                                                    this.TopNode,
+                                                                    "c:trendlineLbl/c:spPr/a:effectLst",
+                                                                    this.SchemaNodeOrder);
             }
         }
         ExcelDrawing3D _threeD = null;
@@ -114,11 +110,7 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             get
             {
-                if (this._threeD == null)
-                {
-                    this._threeD = new ExcelDrawing3D(this.NameSpaceManager, this.TopNode, "c:trendlineLbl/c:spPr", this.SchemaNodeOrder);
-                }
-                return this._threeD;
+                return this._threeD ??= new ExcelDrawing3D(this.NameSpaceManager, this.TopNode, "c:trendlineLbl/c:spPr", this.SchemaNodeOrder);
             }
         }
         void IDrawingStyleBase.CreatespPr()
@@ -134,11 +126,11 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             get
             {
-                if (this._richText == null)
-                {
-                    this._richText = new ExcelParagraphCollection(this._serie._chart, this.NameSpaceManager, this.TopNode, "c:trendlineLbl/c:tx/c:rich/a:p", this.SchemaNodeOrder);
-                }
-                return this._richText;
+                return this._richText ??= new ExcelParagraphCollection(this._serie._chart,
+                                                                       this.NameSpaceManager,
+                                                                       this.TopNode,
+                                                                       "c:trendlineLbl/c:tx/c:rich/a:p",
+                                                                       this.SchemaNodeOrder);
             }
         }
         /// <summary>

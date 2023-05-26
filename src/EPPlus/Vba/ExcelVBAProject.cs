@@ -113,14 +113,7 @@ namespace OfficeOpenXml.VBA
         /// </summary>
         public ExcelVbaSignature Signature
         {
-            get
-            {
-                if (this._signature == null)
-                {
-                    this._signature=new ExcelVbaSignature(this.Part);
-                }
-                return this._signature;
-            }
+            get { return this._signature ??= new ExcelVbaSignature(this.Part); }
         }
         ExcelVbaProtection _protection=null;
         /// <summary>
@@ -128,14 +121,7 @@ namespace OfficeOpenXml.VBA
         /// </summary>
         public ExcelVbaProtection Protection
         {
-            get
-            {
-                if (this._protection == null)
-                {
-                    this._protection = new ExcelVbaProtection(this);
-                }
-                return this._protection;
-            }
+            get { return this._protection ??= new ExcelVbaProtection(this); }
         }
         #endregion
         #region Read Project
@@ -654,10 +640,10 @@ namespace OfficeOpenXml.VBA
 
         private bool Validate()
         {
-            this.Description = this.Description ?? "";
-            this.HelpFile1 = this.HelpFile1 ?? "";
-            this.HelpFile2 = this.HelpFile2 ?? "";
-            this.Constants = this.Constants ?? "";
+            this.Description ??= "";
+            this.HelpFile1 ??= "";
+            this.HelpFile2 ??= "";
+            this.Constants ??= "";
             return true;
         }
 
@@ -822,7 +808,7 @@ namespace OfficeOpenXml.VBA
             bw.Write((uint)nameUnicodeBytes.Length);
             bw.Write(nameUnicodeBytes);                                         //Stream Name
 
-            module.Description = module.Description ?? "";
+            module.Description ??= "";
             bw.Write((ushort)0x1C);
             byte[]? descriptionBytes = Encoding.GetEncoding(this.CodePage).GetBytes(module.Description);
             bw.Write((uint)descriptionBytes.Length);

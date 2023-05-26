@@ -70,10 +70,7 @@ namespace OfficeOpenXml.Drawing.Slicer
                     ExcelPivotTable? pt = ws?.PivotTables[name];
                     if(pt!=null)
                     {
-                        if (this._field == null)
-                        {
-                            this._field = pt.Fields.Where(x => x.Cache.Name == this.SourceName).FirstOrDefault();
-                        }
+                        this._field ??= pt.Fields.Where(x => x.Cache.Name == this.SourceName).FirstOrDefault();
 
                         this.PivotTables._list.Add(pt);
                     }
@@ -105,14 +102,7 @@ namespace OfficeOpenXml.Drawing.Slicer
         /// </summary>
         public ExcelPivotTableSlicerCacheTabularData Data 
         { 
-            get
-            {
-                if(this._data==null)
-                {
-                    this._data = new ExcelPivotTableSlicerCacheTabularData(this.NameSpaceManager, this.TopNode, this);
-                }
-                return this._data;
-            }
+            get { return this._data ??= new ExcelPivotTableSlicerCacheTabularData(this.NameSpaceManager, this.TopNode, this); }
         }
 
         internal void UpdateItemsXml()

@@ -138,11 +138,7 @@ namespace OfficeOpenXml.Drawing.Style.Coloring
                     return null;
                 }
 
-                if (this._transforms == null)
-                {
-                    this._transforms = new ExcelColorTransformCollection(this._nameSpaceManager, this._colorNode);
-                }
-                return this._transforms;
+                return this._transforms ??= new ExcelColorTransformCollection(this._nameSpaceManager, this._colorNode);
             }
         }
         /// <summary>

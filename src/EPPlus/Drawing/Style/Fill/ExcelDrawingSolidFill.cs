@@ -50,11 +50,7 @@ namespace OfficeOpenXml.Drawing.Style.Fill
         {
             get
             {
-                if (this._color == null)
-                {
-                    this._color = new ExcelDrawingColorManager(this._nsm, this._topNode, this._fillPath, this._schemaNodeOrder, this._initXml);
-                }
-                return this._color;
+                return this._color ??= new ExcelDrawingColorManager(this._nsm, this._topNode, this._fillPath, this._schemaNodeOrder, this._initXml);
             }
         }
 

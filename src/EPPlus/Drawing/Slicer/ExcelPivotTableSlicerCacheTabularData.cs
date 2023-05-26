@@ -101,14 +101,7 @@ namespace OfficeOpenXml.Drawing.Slicer
         /// </summary>
         public ExcelPivotTableSlicerItemCollection Items
         {
-            get
-            {
-                if(this._items==null)
-                {
-                    this._items = new ExcelPivotTableSlicerItemCollection(this._cache);
-                }
-                return this._items;
-            }
+            get { return this._items ??= new ExcelPivotTableSlicerItemCollection(this._cache); }
         }
         /// <summary>
         /// The pivot table cache id

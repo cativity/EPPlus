@@ -20,7 +20,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions
         private static CompileResultValidator _empty;
         public static CompileResultValidator Empty
         {
-            get { return _empty ?? (_empty = new EmptyCompileResultValidator()); }
+            get { return _empty ??= new EmptyCompileResultValidator(); }
         }
     }
 

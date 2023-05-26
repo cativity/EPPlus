@@ -239,11 +239,12 @@ namespace OfficeOpenXml.Style
         {
             get
             {
-                if (this._fill == null)
-                {
-                    this._fill = new ExcelDrawingFill(this._pictureRelationDocument, this.NameSpaceManager, this._rootNode, this._path, this.SchemaNodeOrder, this.CreateTopNode);
-                }
-                return this._fill;
+                return this._fill ??= new ExcelDrawingFill(this._pictureRelationDocument,
+                                                           this.NameSpaceManager,
+                                                           this._rootNode,
+                                                           this._path,
+                                                           this.SchemaNodeOrder,
+                                                           this.CreateTopNode);
             }
         }
         string _colorPath = "a:solidFill/a:srgbClr/@val";

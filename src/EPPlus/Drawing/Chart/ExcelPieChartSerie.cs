@@ -63,11 +63,7 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             get
             {
-                if (this._DataLabel == null)
-                {
-                    this._DataLabel = new ExcelChartSerieDataLabel(this._chart, this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder);
-                }
-                return this._DataLabel;
+                return this._DataLabel ??= new ExcelChartSerieDataLabel(this._chart, this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder);
             }
         }
         /// <summary>
@@ -88,12 +84,7 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             get
             {
-
-                if (this._dataPoints == null)
-                {
-                    this._dataPoints = new ExcelChartDataPointCollection(this._chart, this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder);
-                }
-                return this._dataPoints;
+                return this._dataPoints ??= new ExcelChartDataPointCollection(this._chart, this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder);
             }
         }
 

@@ -176,12 +176,12 @@ namespace OfficeOpenXml.Style
         {
             get
             {
-                if (this._gradientColor1 == null)
-                {
-                    this._gradientColor1 = new ExcelColor(this._styles, this._ChangedEvent, this._positionID, this._address, eStyleClass.FillGradientColor1, this);
-                }
-                return this._gradientColor1;
-
+                return this._gradientColor1 ??= new ExcelColor(this._styles,
+                                                               this._ChangedEvent,
+                                                               this._positionID,
+                                                               this._address,
+                                                               eStyleClass.FillGradientColor1,
+                                                               this);
             }
         }
         ExcelColor _gradientColor2 = null;
@@ -192,12 +192,12 @@ namespace OfficeOpenXml.Style
         {
             get
             {
-                if (this._gradientColor2 == null)
-                {
-                    this._gradientColor2 = new ExcelColor(this._styles, this._ChangedEvent, this._positionID, this._address, eStyleClass.FillGradientColor2, this);
-                }
-                return this._gradientColor2;
-
+                return this._gradientColor2 ??= new ExcelColor(this._styles,
+                                                               this._ChangedEvent,
+                                                               this._positionID,
+                                                               this._address,
+                                                               eStyleClass.FillGradientColor2,
+                                                               this);
             }
         }
         internal override string Id

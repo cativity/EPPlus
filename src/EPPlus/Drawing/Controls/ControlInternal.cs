@@ -210,26 +210,12 @@ namespace OfficeOpenXml.Drawing.Controls
         ExcelPosition _from = null;
         public ExcelPosition From
         {
-            get
-            {
-                if(this._from==null)
-                {
-                    this._from = new ExcelPosition(this.NameSpaceManager, this.GetNode("d:controlPr/d:anchor/d:from"), null);
-                }
-                return this._from;
-            }
+            get { return this._from ?? (this._from = new ExcelPosition(this.NameSpaceManager, this.GetNode("d:controlPr/d:anchor/d:from"), null)); }
         }
         ExcelPosition _to=null;
         public ExcelPosition To
         {
-            get
-            {
-                if (this._to == null)
-                {
-                    this._to=new ExcelPosition(this.NameSpaceManager, this.GetNode("d:controlPr/d:anchor/d:to"), null);
-                }
-                return this._to;
-            }
+            get { return this._to ?? (this._to = new ExcelPosition(this.NameSpaceManager, this.GetNode("d:controlPr/d:anchor/d:to"), null)); }
         }
         public bool MoveWithCells 
         { 

@@ -353,11 +353,9 @@ namespace OfficeOpenXml.Drawing.Vml
         {
             get
             {
-                if (this._from == null)
-                {
-                    this._from = new ExcelVmlDrawingPosition(this.NameSpaceManager, this.TopNode.SelectSingleNode("x:ClientData", this.NameSpaceManager), 0);
-                }
-                return this._from;
+                return this._from ??= new ExcelVmlDrawingPosition(this.NameSpaceManager,
+                                                                  this.TopNode.SelectSingleNode("x:ClientData", this.NameSpaceManager),
+                                                                  0);
             }
         }
         ExcelVmlDrawingPosition _to = null;
@@ -368,11 +366,9 @@ namespace OfficeOpenXml.Drawing.Vml
         {
             get
             {
-                if (this._to == null)
-                {
-                    this._to = new ExcelVmlDrawingPosition(this.NameSpaceManager, this.TopNode.SelectSingleNode("x:ClientData", this.NameSpaceManager), 4);
-                }
-                return this._to;
+                return this._to ??= new ExcelVmlDrawingPosition(this.NameSpaceManager,
+                                                                this.TopNode.SelectSingleNode("x:ClientData", this.NameSpaceManager),
+                                                                4);
             }
         }
         const string ROW_PATH = "x:ClientData/x:Row";
@@ -425,11 +421,7 @@ namespace OfficeOpenXml.Drawing.Vml
         {
             get
             {
-                if (this._fill == null)
-                {
-                    this._fill = new ExcelVmlDrawingFill(this.Range.Worksheet.Drawings, this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder);
-                }
-                return this._fill;
+                return this._fill ??= new ExcelVmlDrawingFill(this.Range.Worksheet.Drawings, this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder);
             }
         }
 

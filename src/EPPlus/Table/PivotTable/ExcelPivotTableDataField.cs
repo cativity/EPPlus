@@ -198,14 +198,7 @@ namespace OfficeOpenXml.Table.PivotTable
         /// </summary>
         public ExcelPivotTableDataFieldShowDataAs ShowDataAs
         {
-            get
-            {
-                if (this._showDataAs == null)
-                {
-                    this._showDataAs = new ExcelPivotTableDataFieldShowDataAs(this);
-                }
-                return this._showDataAs;
-            }
+            get { return this._showDataAs ??= new ExcelPivotTableDataFieldShowDataAs(this); }
         }
         internal eShowDataAs ShowDataAsInternal
         {

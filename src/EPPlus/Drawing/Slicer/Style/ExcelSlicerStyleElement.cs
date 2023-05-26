@@ -34,14 +34,7 @@ namespace OfficeOpenXml.Drawing.Slicer.Style
         /// </summary>
         public ExcelDxfSlicerStyle Style
         {
-            get
-            {
-                if (this._style == null)
-                {
-                    this._style = this._styles.GetDxfSlicer(this.GetXmlNodeIntNull("@dxfId"));
-                }
-                return this._style;
-            }
+            get { return this._style ??= this._styles.GetDxfSlicer(this.GetXmlNodeIntNull("@dxfId")); }
             internal set
             {
                 this._style = value;

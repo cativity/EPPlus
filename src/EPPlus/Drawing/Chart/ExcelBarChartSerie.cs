@@ -83,12 +83,7 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             get
             {
-
-                if (this._dataPoints == null)
-                {
-                    this._dataPoints = new ExcelChartDataPointCollection(this._chart, this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder);
-                }
-                return this._dataPoints;
+                return this._dataPoints ??= new ExcelChartDataPointCollection(this._chart, this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder);
             }
         }
     }

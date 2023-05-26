@@ -49,14 +49,7 @@ namespace OfficeOpenXml.Drawing.Style.Fill
         /// </summary>
         public ExcelDrawingGradientFillColorList Colors
         {
-            get
-            {
-                if (this._colors == null)
-                {
-                    this._colors = new ExcelDrawingGradientFillColorList(this._nsm, this._topNode, ColorsPath, this._schemaNodeOrder);
-                }
-                return this._colors;
-            }
+            get { return this._colors ??= new ExcelDrawingGradientFillColorList(this._nsm, this._topNode, ColorsPath, this._schemaNodeOrder); }
         }
         /// <summary>
         /// The fill style. 

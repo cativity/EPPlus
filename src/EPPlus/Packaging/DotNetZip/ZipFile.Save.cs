@@ -208,9 +208,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
 
                 ZipSegmentedStream? zss = this.WriteStream as ZipSegmentedStream;
 
-                this._numberOfSegmentsForMostRecentSave = (zss!=null)
-                                                              ? zss.CurrentSegment
-                                                              : 1;
+                this._numberOfSegmentsForMostRecentSave = zss?.CurrentSegment ?? 1;
 
                 bool directoryNeededZip64 =
                     ZipOutput.WriteCentralDirectoryStructure
@@ -687,13 +685,11 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
             // output stream.
 
             CountingStream? output = s as CountingStream;
-            long Finish = (output != null) ? output.ComputedPosition : s.Position;  // BytesWritten
+            long Finish = output?.ComputedPosition ?? s.Position;  // BytesWritten
             long Start = Finish - aLength;
 
             // need to know which segment the EOCD record starts in
-            UInt32 startSegment = (zss != null)
-                ? zss.CurrentSegment
-                : 0;
+            UInt32 startSegment = zss?.CurrentSegment ?? 0;
 
             Int64 SizeOfCentralDirectory = Finish - Start;
 

@@ -43,15 +43,7 @@ namespace OfficeOpenXml.Drawing
         /// </summary>
         internal protected override void LoadFill()
         {
-            if (this._fillTypeNode == null)
-            {
-                this._fillTypeNode = this._fillNode.SelectSingleNode("a:pattFill", this.NameSpaceManager);
-            }
-
-            if (this._fillTypeNode == null)
-            {
-                this._fillTypeNode = this._fillNode.SelectSingleNode("a:blipFill", this.NameSpaceManager);
-            }
+            this._fillTypeNode ??= this._fillNode.SelectSingleNode("a:pattFill", this.NameSpaceManager) ?? this._fillNode.SelectSingleNode("a:blipFill", this.NameSpaceManager);
 
             if (this._fillTypeNode == null)
             {

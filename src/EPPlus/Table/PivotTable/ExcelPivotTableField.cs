@@ -1026,14 +1026,7 @@ namespace OfficeOpenXml.Table.PivotTable
         /// </summary>
         public ExcelPivotTableFieldFilterCollection Filters
         {
-            get
-            {
-                if (this._filters == null)
-                {
-                    this._filters = new ExcelPivotTableFieldFilterCollection(this);
-                }
-                return this._filters;
-            }
+            get { return this._filters ??= new ExcelPivotTableFieldFilterCollection(this); }
         }
 
         internal int? NumFmtId 

@@ -42,11 +42,11 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.Implementations
             for(I = lLower; I <= lUpper; I++)
             {
                 dTVal = ValueArray[I];
-                dTemp2 = dTemp2 + dTemp2 * Rate;
+                dTemp2 += dTemp2 * Rate;
 
                 if(!((bSkipPos && dTVal > 0.0) || (bSkipNeg && dTVal< 0.0)))
                 {
-                    dTotal = dTotal + dTVal / dTemp2;
+                    dTotal += dTVal / dTemp2;
                 }
            
             }

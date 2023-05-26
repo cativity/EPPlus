@@ -35,11 +35,7 @@ namespace OfficeOpenXml.Drawing.Style.Effect
         {
             get
             {
-                if (this._color1 == null)
-                {
-                    this._color1 = new ExcelDrawingColorManager(this.NameSpaceManager, this.TopNode.FirstChild, "", this.SchemaNodeOrder);
-                }
-                return this._color1;
+                return this._color1 ??= new ExcelDrawingColorManager(this.NameSpaceManager, this.TopNode.FirstChild, "", this.SchemaNodeOrder);
             }
         }
         private ExcelDrawingColorManager _color2;
@@ -50,11 +46,7 @@ namespace OfficeOpenXml.Drawing.Style.Effect
         {
             get
             {
-                if (this._color2 == null)
-                {
-                    this._color2 = new ExcelDrawingColorManager(this.NameSpaceManager, this.TopNode.LastChild, "", this.SchemaNodeOrder);
-                }
-                return this._color2;
+                return this._color2 ??= new ExcelDrawingColorManager(this.NameSpaceManager, this.TopNode.LastChild, "", this.SchemaNodeOrder);
             }
         }
     }

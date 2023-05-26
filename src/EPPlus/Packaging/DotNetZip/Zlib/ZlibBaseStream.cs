@@ -124,15 +124,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
 
         private byte[] workingBuffer
         {
-            get
-            {
-                if (this._workingBuffer == null)
-                {
-                    this._workingBuffer = new byte[this._bufferSize];
-                }
-
-                return this._workingBuffer;
-            }
+            get { return this._workingBuffer ??= new byte[this._bufferSize]; }
         }
 
 

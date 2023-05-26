@@ -521,15 +521,9 @@ namespace OfficeOpenXml.ExcelXMLWriter
                             }
                             else
                             {
-                                string? s = Convert.ToString(v);
-                                if (s == null) //If for example a struct 
-                                {
-                                    s = v.ToString();
-                                    if (s == null)
-                                    {
-                                        s = "";
-                                    }
-                                }
+                                //If for example a struct 
+                                string? s = Convert.ToString(v) ?? (v.ToString() ?? "");
+
                                 int ix;
                                 if (!ss.ContainsKey(s))
                                 {

@@ -123,15 +123,10 @@ namespace OfficeOpenXml.ConditionalFormatting
                                                                                 this._worksheet.NameSpaceManager);
 
                 // Check for en error (rule type does not have <cfvo>)
-                if (itemElementNode == null)
-                {
-                    throw new Exception(
-                        ExcelConditionalFormattingConstants.Errors.MissingCfvoParentNode);
-                }
                 // Point to the <cfvo> parent node (<colorScale>, <dataBar> or <iconSet>)
                 // This is different than normal, as TopNode does not point to the node itself but to
                 // its PARENT. Later, in the CreateNodeByOrdem method the TopNode will be updated.
-                this.TopNode = itemElementNode;
+                this.TopNode = itemElementNode ?? throw new Exception(ExcelConditionalFormattingConstants.Errors.MissingCfvoParentNode);
 
                 // Save the attributes
                 this.Type = type;

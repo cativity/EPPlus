@@ -43,14 +43,7 @@ namespace OfficeOpenXml.Drawing.Controls
         /// </summary>
         public ExcelControlMargin Margin
         {
-            get
-            {
-                if (this._margin == null)
-                {
-                    this._margin = new ExcelControlMargin(this);
-                }
-                return this._margin;
-            }
+            get { return this._margin ??= new ExcelControlMargin(this); }
         }        
         /// <summary>
         /// The buttons text layout flow

@@ -87,14 +87,7 @@ namespace OfficeOpenXml.Drawing.Vml
         /// </summary>
         public ExcelVmlMeasurementUnit Width
         {
-            get
-            {
-                if(this._width==null)
-                {
-                    this._width = new ExcelVmlMeasurementUnit(this.GetXmlNodeString("@strokeweight"));
-                }
-                return this._width;
-            }
+            get { return this._width ??= new ExcelVmlMeasurementUnit(this.GetXmlNodeString("@strokeweight")); }
         }
 
         internal void UpdateXml()

@@ -110,7 +110,7 @@ namespace OfficeOpenXml.Utils
                             UInt16 offsetMask = (ushort)~lengthMask;
                             ushort token = (ushort)(((ushort)(dPos - (bestCandidate + 1))) << (bitCount) | (ushort)(bestLength - 3));
                             Array.Copy(BitConverter.GetBytes(token), 0, comprBuffer, cPos, 2);
-                            dPos = dPos + bestLength;
+                            dPos += bestLength;
                             cPos += 2;
                             //SetCopy Token                        
                         }

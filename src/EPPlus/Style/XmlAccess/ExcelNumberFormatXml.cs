@@ -173,14 +173,7 @@ namespace OfficeOpenXml.Style.XmlAccess
         ExcelFormatTranslator _translator = null;
         internal ExcelFormatTranslator FormatTranslator
         {
-            get
-            {
-                if (this._translator == null)
-                {
-                    this._translator = new ExcelFormatTranslator(this.Format, this.NumFmtId);
-                }
-                return this._translator;
-            }
+            get { return this._translator ??= new ExcelFormatTranslator(this.Format, this.NumFmtId); }
         }
         #region Excel --> .Net Format
         internal class ExcelFormatTranslator

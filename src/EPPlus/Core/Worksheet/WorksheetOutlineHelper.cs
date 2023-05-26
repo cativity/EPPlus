@@ -109,10 +109,7 @@ namespace OfficeOpenXml.Core.Worksheet
             {
                 startLevel = col.OutlineLevel;
             }
-            if (col == null)
-            {
-                col = this._worksheet.Column(colNo);
-            }
+            col ??= this._worksheet.Column(colNo);
 
             col.Collapsed = collapsed;
 

@@ -48,11 +48,7 @@ namespace OfficeOpenXml.Drawing.Controls
         {
             get
             {
-                if (this._border == null)
-                {
-                    this._border = new ExcelVmlDrawingBorder(this._drawings, this._vml.NameSpaceManager, this._vml.TopNode, this._vml.SchemaNodeOrder);
-                }
-                return this._border;
+                return this._border ??= new ExcelVmlDrawingBorder(this._drawings, this._vml.NameSpaceManager, this._vml.TopNode, this._vml.SchemaNodeOrder);
             }
         }
         internal override void UpdateXml()

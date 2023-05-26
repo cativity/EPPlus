@@ -48,7 +48,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
                 }
                 else
                 {
-                    counts[number] = counts[number] + 1;
+                    counts[number] += 1;
                 }
 
                 if(counts[number] > 1 && (!maxCountValue.HasValue || counts[number] >= counts[maxCountValue.Value]))

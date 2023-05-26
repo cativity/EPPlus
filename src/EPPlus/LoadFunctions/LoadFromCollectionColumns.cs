@@ -128,7 +128,7 @@ namespace OfficeOpenXml.LoadFunctions
                         continue;
                     }
                     string? header = default(string);
-                    int sortOrderColumnsIndex = this._sortOrderColumns != null ? this._sortOrderColumns.IndexOf(memberPath) : -1;
+                    int sortOrderColumnsIndex = this._sortOrderColumns?.IndexOf(memberPath) ?? -1;
                     int sortOrder = sortOrderColumnsIndex > -1 ? sortOrderColumnsIndex : SortOrderOffset;
                     string? numberFormat = string.Empty;
                     RowFunctions rowFunction = RowFunctions.None;
@@ -202,7 +202,7 @@ namespace OfficeOpenXml.LoadFunctions
                             mp = $"{path}.{member.Name}";
                         }
                         List<int>? colInfoSortOrderList = new List<int>();
-                        int sortOrderColumnsIndex = this._sortOrderColumns != null ? this._sortOrderColumns.IndexOf(mp) : -1;
+                        int sortOrderColumnsIndex = this._sortOrderColumns?.IndexOf(mp) ?? -1;
                         int sortOrder = sortOrderColumnsIndex > -1 ? sortOrderColumnsIndex : SortOrderOffset;
                         List<int>? sortOrderList = CopyList(sortOrderListArg);
                         EpplusTableColumnAttribute? epplusColumnAttr = member.GetFirstAttributeOfType<EpplusTableColumnAttribute>();

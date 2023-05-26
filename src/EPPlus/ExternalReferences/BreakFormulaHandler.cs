@@ -34,11 +34,8 @@ namespace OfficeOpenXml.ExternalReferences
                 {
                     if (f is string formula)
                     {
-                        IEnumerable<Token> t = ws._formulaTokens?.GetValue(enumerator.Row, enumerator.Column);
-                        if (t == null)
-                        {
-                            t = SourceCodeTokenizer.Default.Tokenize(formula, ws.Name);
-                        }
+                        IEnumerable<Token> t = ws._formulaTokens?.GetValue(enumerator.Row, enumerator.Column) ?? SourceCodeTokenizer.Default.Tokenize(formula, ws.Name);
+
                         if (HasFormulaExternalReference(t))
                         {
                             ws._formulas.Clear(enumerator.Row, enumerator.Column, 1, 1);
@@ -80,11 +77,8 @@ namespace OfficeOpenXml.ExternalReferences
                 {
                     if (f is string formula)
                     {
-                        IEnumerable<Token> t = ws._formulaTokens?.GetValue(enumerator.Row, enumerator.Column);
-                        if (t == null)
-                        {
-                            t = SourceCodeTokenizer.Default.Tokenize(formula, ws.Name);
-                        }
+                        IEnumerable<Token> t = ws._formulaTokens?.GetValue(enumerator.Row, enumerator.Column) ?? SourceCodeTokenizer.Default.Tokenize(formula, ws.Name);
+
                         if (HasFormulaExternalReference(wb, ix, t, out string newFormula, false))
                         {
                             ws._formulas.Clear(enumerator.Row, enumerator.Column, 1, 1);

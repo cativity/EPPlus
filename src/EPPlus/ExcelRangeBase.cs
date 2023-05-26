@@ -1400,11 +1400,8 @@ namespace OfficeOpenXml
             get
             {
                 this.IsRangeValid("richtext");
-                if (this._rtc == null)
-                {
-                    this._rtc = this._worksheet.GetRichText(this._fromRow, this._fromCol, this);
-                }
-                return this._rtc;
+
+                return this._rtc ??= this._worksheet.GetRichText(this._fromRow, this._fromCol, this);
             }
         }
 

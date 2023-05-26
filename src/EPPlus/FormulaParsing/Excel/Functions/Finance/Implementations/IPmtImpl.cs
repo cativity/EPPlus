@@ -55,7 +55,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.Implementations
 
             if(Due != PmtDue.EndOfPeriod)
             {
-                PV = PV + Pmt;
+                PV += Pmt;
             }
 
             dTFv = InternalMethods.FV_Internal(Rate, (Per - dTemp), Pmt, PV, PmtDue.EndOfPeriod);

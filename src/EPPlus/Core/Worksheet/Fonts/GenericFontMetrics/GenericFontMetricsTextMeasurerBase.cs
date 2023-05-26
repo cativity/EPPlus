@@ -35,10 +35,7 @@ namespace OfficeOpenXml.Core.Worksheet.Fonts.GenericFontMetrics
         {
             lock (_syncRoot)
             {
-                if (_fonts == null)
-                {
-                    _fonts = GenericFontMetricsLoader.LoadFontMetrics();
-                }
+                _fonts ??= GenericFontMetricsLoader.LoadFontMetrics();
             }
         }
 

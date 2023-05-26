@@ -149,7 +149,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
                     else
                     {
                         string copy = String.Format(" (copy {0})", n);
-                        f = f + copy;
+                        f += copy;
                     }
                 }
                 else

@@ -202,11 +202,7 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             get
             {
-                if (this._DataLabel == null)
-                {
-                    this._DataLabel = new ExcelChartDataLabelStandard(this, this.NameSpaceManager, this.ChartNode, "dLbls", this._chartXmlHelper.SchemaNodeOrder);
-                }
-                return this._DataLabel;
+                return this._DataLabel ??= new ExcelChartDataLabelStandard(this, this.NameSpaceManager, this.ChartNode, "dLbls", this._chartXmlHelper.SchemaNodeOrder);
             }
         }
         /// <summary>

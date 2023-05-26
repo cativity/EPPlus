@@ -351,13 +351,11 @@ namespace OfficeOpenXml
         /// </summary>
         public ExcelHeaderFooterText OddHeader 
         { 
-            get 
+            get
             {
-                if (this._oddHeader == null)
-                {
-                    this._oddHeader = new ExcelHeaderFooterText(this.TopNode.SelectSingleNode("d:oddHeader", this.NameSpaceManager), this._ws, "H");
-                }
-                return this._oddHeader; } 
+                return this._oddHeader
+                       ?? (this._oddHeader = new ExcelHeaderFooterText(this.TopNode.SelectSingleNode("d:oddHeader", this.NameSpaceManager), this._ws, "H"));
+            } 
         }
 		/// <summary>
 		/// Provides access to the footer on odd numbered pages of the document.
@@ -365,13 +363,10 @@ namespace OfficeOpenXml
 		/// </summary>
 		public ExcelHeaderFooterText OddFooter 
         { 
-            get 
+            get
             {
-                if (this._oddFooter == null)
-                {
-                    this._oddFooter = new ExcelHeaderFooterText(this.TopNode.SelectSingleNode("d:oddFooter", this.NameSpaceManager), this._ws, "F");
-                }
-                return this._oddFooter; 
+                return this._oddFooter
+                       ?? (this._oddFooter = new ExcelHeaderFooterText(this.TopNode.SelectSingleNode("d:oddFooter", this.NameSpaceManager), this._ws, "F"));
             } 
         }
 		// evenHeader and evenFooter set differentOddEven = true

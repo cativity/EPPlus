@@ -78,11 +78,8 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
             // the same as the local entry or MS .NET System.IO.Zip fails read.
             Int16 vNeeded = (Int16)(this.VersionNeeded != 0 ? this.VersionNeeded : 20);
             // workitem 12964
-            if (this._OutputUsesZip64==null)
-            {
-                // a zipentry in a zipoutputstream, with zero bytes written
-                this._OutputUsesZip64 = new Nullable<bool>(this._container.Zip64 == Zip64Option.Always);
-            }
+            // a zipentry in a zipoutputstream, with zero bytes written
+            this._OutputUsesZip64 ??= new Nullable<bool>(this._container.Zip64 == Zip64Option.Always);
 
             Int16 versionNeededToExtract = (Int16)(this._OutputUsesZip64.Value ? 45 : vNeeded);
 #if BZIP
@@ -180,13 +177,13 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
 
             this._Extra = this.ConstructExtraField(true);
 
-            Int16 extraFieldLength = (Int16)((this._Extra == null) ? 0 : this._Extra.Length);
+            Int16 extraFieldLength = (Int16)(this._Extra?.Length ?? 0);
             bytes[i++] = (byte)(extraFieldLength & 0x00FF);
             bytes[i++] = (byte)((extraFieldLength & 0xFF00) >> 8);
 
             // File (entry) Comment Length
             // the _CommentBytes private field was set during WriteHeader()
-            int commentLength = (this._CommentBytes == null) ? 0 : this._CommentBytes.Length;
+            int commentLength = this._CommentBytes?.Length ?? 0;
 
             // the size of our buffer defines the max length of the comment we can write
             if (commentLength + i > bytes.Length)
@@ -863,9 +860,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
             // zip archive (and maybe decrypted, and maybe decompressed) and then
             // written to another zip archive, with different settings for
             // compression method, compression level, or encryption algorithm.
-            this._future_ROLH = (counter != null)
-                                    ? counter.ComputedPosition
-                                    : s.Position;
+            this._future_ROLH = counter?.ComputedPosition ?? s.Position;
 
             int j = 0, i = 0;
 
@@ -1152,7 +1147,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
             this._Extra = this.ConstructExtraField(false);
 
             // (i==28) extra field length (short)
-            Int16 extraFieldLength = (Int16)((this._Extra == null) ? 0 : this._Extra.Length);
+            Int16 extraFieldLength = (Int16)(this._Extra?.Length ?? 0);
             block[i++] = (byte)(extraFieldLength & 0x00FF);
             block[i++] = (byte)((extraFieldLength & 0xFF00) >> 8);
 
@@ -1251,10 +1246,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
                     else if (this._Source == ZipEntrySource.JitStream)
                     {
                         // allow the application to open the stream
-                        if (this._sourceStream == null)
-                        {
-                            this._sourceStream = this._OpenDelegate(this.FileName);
-                        }
+                        this._sourceStream ??= this._OpenDelegate(this.FileName);
 
                         this.PrepSourceStream();
                         input = this._sourceStream;
@@ -1553,10 +1545,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
             else if (this._Source == ZipEntrySource.JitStream)
             {
                 // allow the application to open the stream
-                if (this._sourceStream == null)
-                {
-                    this._sourceStream = this._OpenDelegate(this.FileName);
-                }
+                this._sourceStream ??= this._OpenDelegate(this.FileName);
 
                 this.PrepSourceStream();
                 input = this._sourceStream;
@@ -2327,9 +2316,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
                         {
                             // must reset file pointer here.
                             // workitem 13903 - seek back only when necessary
-                            long p1 = (cs1 != null)
-                                ? cs1.ComputedPosition
-                                : s.Position;
+                            long p1 = cs1?.ComputedPosition ?? s.Position;
                             long delta = p1 - this._future_ROLH;
                             if (delta > 0)
                             {
@@ -2705,9 +2692,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
             // entry was removed or added.)
             CountingStream? counter = outstream as CountingStream;
 
-            this._RelativeOffsetOfLocalHeader = (counter != null)
-                                                    ? counter.ComputedPosition
-                                                    : outstream.Position;  // BytesWritten
+            this._RelativeOffsetOfLocalHeader = counter?.ComputedPosition ?? outstream.Position;  // BytesWritten
 
             // copy through the header, filedata, trailer, everything...
             long remaining = this._TotalEntrySize;

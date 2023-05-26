@@ -26,14 +26,7 @@ namespace OfficeOpenXml.LoadFunctions
             this._range = range;
             this._worksheet = range.Worksheet;
             this._text = text;
-            if(parameters.Format == null)
-            {
-                this._format = new ExcelTextFormat();
-            }
-            else
-            {
-                this._format = parameters.Format;
-            }
+            this._format = parameters.Format ?? new ExcelTextFormat();
         }
 
         private readonly ExcelWorksheet _worksheet;

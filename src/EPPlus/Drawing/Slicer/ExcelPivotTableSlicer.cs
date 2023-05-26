@@ -43,10 +43,7 @@ namespace OfficeOpenXml.Drawing.Slicer
                 this.CacheName = "Slicer_" + ExcelAddressUtil.GetValidName(name);
 
                 ExcelPivotTableSlicerCache? cache = new ExcelPivotTableSlicerCache(this.NameSpaceManager);
-                if (field.Slicer == null)
-                {
-                    field.Slicer = this;
-                }
+                field.Slicer ??= this;
 
                 cache.Init(drawings.Worksheet.Workbook, name, field);
                 this._cache = cache;

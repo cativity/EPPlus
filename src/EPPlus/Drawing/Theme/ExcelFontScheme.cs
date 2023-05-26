@@ -46,11 +46,9 @@ namespace OfficeOpenXml.Drawing.Theme
         {
             get
             {
-                if(this._majorFont==null)
-                {
-                    this._majorFont = new ExcelThemeFontCollection(this._pck, this.NameSpaceManager, this.TopNode.SelectSingleNode("a:majorFont", this.NameSpaceManager));
-                }
-                return this._majorFont;
+                return this._majorFont ??= new ExcelThemeFontCollection(this._pck,
+                                                                        this.NameSpaceManager,
+                                                                        this.TopNode.SelectSingleNode("a:majorFont", this.NameSpaceManager));
             }
         }
         ExcelThemeFontCollection _minorFont = null;
@@ -61,11 +59,9 @@ namespace OfficeOpenXml.Drawing.Theme
         {
             get
             {
-                if (this._minorFont == null)
-                {
-                    this._minorFont = new ExcelThemeFontCollection(this._pck, this.NameSpaceManager, this.TopNode.SelectSingleNode("a:minorFont", this.NameSpaceManager));
-                }
-                return this._minorFont;
+                return this._minorFont ??= new ExcelThemeFontCollection(this._pck,
+                                                                        this.NameSpaceManager,
+                                                                        this.TopNode.SelectSingleNode("a:minorFont", this.NameSpaceManager));
             }
         }
     }

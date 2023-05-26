@@ -84,14 +84,7 @@ namespace OfficeOpenXml.Filter
         /// </summary>
         public ExcelAddressBase Address
         {
-            get
-            {
-                if (this._address == null)
-                {
-                    this._address = new ExcelAddressBase(this.GetXmlNodeString("@ref"));
-                }
-                return this._address;
-            }
+            get { return this._address ??= new ExcelAddressBase(this.GetXmlNodeString("@ref")); }
             internal set
             {                
                 if (value._fromCol != this.Address._fromCol || value._toCol != this.Address._toCol || value._fromRow!= this.Address._fromRow) //Allow different _toRow

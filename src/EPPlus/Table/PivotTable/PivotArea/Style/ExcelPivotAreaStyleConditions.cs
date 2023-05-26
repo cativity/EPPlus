@@ -36,10 +36,7 @@ namespace OfficeOpenXml.Table.PivotTable
                 }
             }
 
-            if(this.DataFields==null)
-            {
-                this.DataFields = new ExcelPivotAreaDataFieldReference(nsm, topNode, pt, -2);
-            }
+            this.DataFields ??= new ExcelPivotAreaDataFieldReference(nsm, topNode, pt, -2);
         }
         /// <summary>
         /// Row and column fields that the conditions will apply to. 

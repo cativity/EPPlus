@@ -21,14 +21,7 @@ namespace OfficeOpenXml.Drawing.Vml
         /// </summary>
         public ExcelVmlDrawingColor SecondColor
         {
-            get
-            {
-                if (this._secondColor == null)
-                {
-                    this._secondColor = new ExcelVmlDrawingColor(this.NameSpaceManager, this.TopNode, "v:fill/@color2");
-                }
-                return this._secondColor;
-            }
+            get { return this._secondColor ??= new ExcelVmlDrawingColor(this.NameSpaceManager, this.TopNode, "v:fill/@color2"); }
         }
         /// <summary>
         /// Opacity for fill color 2. Spans 0-100%

@@ -1223,10 +1223,7 @@ namespace EPPlusTest
         [TestMethod]
         public void LoadDataReader()
         {
-            if (_pck == null)
-            {
-                _pck = new ExcelPackage();
-            }
+            _pck ??= new ExcelPackage();
 
             ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("Loaded DataReader");
             ExcelRangeBase range;
@@ -1254,10 +1251,7 @@ namespace EPPlusTest
         [TestMethod]
         public async Task LoadDataReaderAsync()
         {
-            if (_pck == null)
-            {
-                _pck = new ExcelPackage();
-            }
+            _pck ??= new ExcelPackage();
 
             ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("Loaded DataReader Async");
             ExcelRangeBase range;
@@ -1309,10 +1303,7 @@ namespace EPPlusTest
         [TestMethod]
         public void LoadDataTable()
         {
-            if (_pck == null)
-            {
-                _pck = new ExcelPackage();
-            }
+            _pck ??= new ExcelPackage();
 
             _pck.Workbook.Properties.Title = $"from {DateTime.Today.AddDays(-7):D} to {DateTime.Today:D}";
             _pck.Workbook.Properties.Author = "Jan Källman";
@@ -1361,10 +1352,7 @@ namespace EPPlusTest
         [TestMethod]
         public void LoadEmptyDataTable()
         {
-            if (_pck == null)
-            {
-                _pck = new ExcelPackage();
-            }
+            _pck ??= new ExcelPackage();
 
             ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("Loaded Empty DataTable");
 

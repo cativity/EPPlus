@@ -193,15 +193,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         /// </remarks>
         public String CurrentName
         {
-            get
-            {
-                if (this._currentName==null)
-                {
-                    this._currentName = this._NameForSegment(this.CurrentSegment);
-                }
-
-                return this._currentName;
-            }
+            get { return this._currentName ??= this._NameForSegment(this.CurrentSegment); }
         }
 
 

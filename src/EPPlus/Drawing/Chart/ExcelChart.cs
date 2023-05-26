@@ -75,14 +75,7 @@ namespace OfficeOpenXml.Drawing.Chart
         /// </summary>
         public ExcelChartStyleManager StyleManager
         {
-            get
-            {
-                if (this._styleManager == null)
-                {
-                    this._styleManager = new ExcelChartStyleManager(this.NameSpaceManager, this);
-                }
-                return this._styleManager;
-            }
+            get { return this._styleManager ??= new ExcelChartStyleManager(this.NameSpaceManager, this); }
         }
         private bool HasPrimaryAxis()
         {
@@ -196,15 +189,7 @@ namespace OfficeOpenXml.Drawing.Chart
         /// </summary>
         public virtual ExcelChartTitle Title
         {
-            get
-            {
-                
-                if(this._title==null)
-                {
-                    this._title = this.GetTitle();
-                }
-                return this._title;
-            }
+            get { return this._title ??= this.GetTitle(); }
         }
         internal abstract ExcelChartTitle GetTitle();
         /// <summary>

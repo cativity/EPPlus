@@ -60,11 +60,7 @@ namespace OfficeOpenXml.Drawing.Vml
         internal ExcelVmlDrawingFill _fill = null;
         internal ExcelVmlDrawingFill GetFill()
         {
-            if (this._fill == null)
-            {
-                this._fill = new ExcelVmlDrawingFill(this._ws.Drawings, this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder);
-            }
-            return this._fill;
+            return this._fill ??= new ExcelVmlDrawingFill(this._ws.Drawings, this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder);
         }
     }
 }

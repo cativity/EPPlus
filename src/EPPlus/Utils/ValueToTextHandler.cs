@@ -42,10 +42,8 @@ namespace OfficeOpenXml.Utils
                     break;
                 }
             }
-            if (nf == null)
-            {
-                nf = styles.NumberFormats[0].FormatTranslator;  //nf should never be null. If so set to General, Issue 173
-            }
+            //nf should never be null. If so set to General, Issue 173
+            nf ??= styles.NumberFormats[0].FormatTranslator;
 
             return FormatValue(v, forWidthCalc, nf, cultureInfo);
         }

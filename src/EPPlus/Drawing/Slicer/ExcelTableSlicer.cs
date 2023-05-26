@@ -45,10 +45,7 @@ namespace OfficeOpenXml.Drawing.Slicer
         internal ExcelTableSlicer(ExcelDrawings drawings, XmlNode node, ExcelTableColumn column) : base(drawings, node)
         {
             this.TableColumn = column;
-            if(column.Slicer==null)
-            {
-                column.Slicer = this;
-            }
+            column.Slicer ??= this;
 
             string? name = drawings.Worksheet.Workbook.GetSlicerName(column.Name);
             this.CreateDrawing(name);

@@ -42,12 +42,7 @@ namespace OfficeOpenXml.ThreadedComments
         {
             set
             {
-                if (value == null)
-                {
-                    throw new ArgumentNullException("Thread");
-                }
-
-                this._thread = value;
+                this._thread = value ?? throw new ArgumentNullException("Thread");
             }
         }
 
@@ -89,14 +84,7 @@ namespace OfficeOpenXml.ThreadedComments
         /// </summary>
         public ExcelCellAddress CellAddress
         {
-            get
-            {
-                if(this._cellAddress==null)
-                {
-                    this._cellAddress = new ExcelCellAddress(this.Ref);
-                }
-                return this._cellAddress;
-            }
+            get { return this._cellAddress ??= new ExcelCellAddress(this.Ref); }
             internal set
             {
                 this._cellAddress = value;

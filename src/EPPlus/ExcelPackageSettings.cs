@@ -32,14 +32,7 @@ namespace OfficeOpenXml
         /// </summary>
         public ExcelTextSettings TextSettings
         {
-            get
-            {
-                if (this._textSettings == null)
-                {
-                    this._textSettings = new ExcelTextSettings();
-                }
-                return this._textSettings;
-            }
+            get { return this._textSettings ??= new ExcelTextSettings(); }
         }
         private ExcelImageSettings _imageSettings = null;
         /// <summary>
@@ -47,14 +40,7 @@ namespace OfficeOpenXml
         /// </summary>
         public ExcelImageSettings ImageSettings
         {
-            get
-            {
-                if (this._imageSettings == null)
-                {
-                    this._imageSettings = new ExcelImageSettings();
-                }
-                return this._imageSettings;
-            }
+            get { return this._imageSettings ??= new ExcelImageSettings(); }
         }
     }
 }

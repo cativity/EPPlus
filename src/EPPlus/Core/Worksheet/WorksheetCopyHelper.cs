@@ -499,11 +499,8 @@ namespace OfficeOpenXml.Core.Worksheet
 
             //Add the relationship ID to the worksheet xml.
             ZipPackageRelationship? vmlRelation = newSheet.Part.CreateRelationship(UriHelper.GetRelativeUri(newSheet.WorksheetUri, vmlUri), TargetMode.Internal, ExcelPackage.schemaRelationships + "/vmlDrawing");
-            XmlElement? e = newSheet.WorksheetXml.SelectSingleNode("//d:legacyDrawing", newSheet.NameSpaceManager) as XmlElement;
-            if (e == null)
-            {
-                e = newSheet.WorksheetXml.CreateNode(XmlNodeType.Entity, "//d:legacyDrawing", newSheet.NameSpaceManager.LookupNamespace("d")) as XmlElement;
-            }
+            XmlElement? e = newSheet.WorksheetXml.SelectSingleNode("//d:legacyDrawing", newSheet.NameSpaceManager) as XmlElement ?? newSheet.WorksheetXml.CreateNode(XmlNodeType.Entity, "//d:legacyDrawing", newSheet.NameSpaceManager.LookupNamespace("d")) as XmlElement;
+
             if (e != null)
             {
                 e.SetAttribute("id", ExcelPackage.schemaRelationships, vmlRelation.Id);

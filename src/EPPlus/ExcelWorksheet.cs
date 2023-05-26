@@ -107,10 +107,7 @@ namespace OfficeOpenXml
 
             internal void SetTokens(string worksheet)
             {
-                if (this.Tokens == null)
-                {
-                    this.Tokens = this._tokenizer.Tokenize(this.Formula, worksheet);
-                }
+                this.Tokens ??= this._tokenizer.Tokenize(this.Formula, worksheet);
             }
             internal string GetFormula(int row, int column, string worksheet)
             {
@@ -1677,11 +1674,8 @@ namespace OfficeOpenXml
             get
             {
                 this.CheckSheetTypeAndNotDisposed();
-                if (this._dataValidations == null)
-                {
-                    this._dataValidations = new ExcelDataValidationCollection(this);
-                }
-                return this._dataValidations;
+
+                return this._dataValidations ??= new ExcelDataValidationCollection(this);
             }
         }
 
@@ -1792,17 +1786,10 @@ namespace OfficeOpenXml
                         col = address._fromCol;
                     }
 
-
                     //Datetype
-                    if (xr.GetAttribute("t") != null)
-                    {
-                        type = xr.GetAttribute("t");
-                        //_types.SetValue(address._fromRow, address._fromCol, type); 
-                    }
-                    else
-                    {
-                        type = "";
-                    }
+                           //_types.SetValue(address._fromRow, address._fromCol, type); 
+                    type = xr.GetAttribute("t") ?? "";
+
                     //Style
                     if (xr.GetAttribute("s") != null)
                     {
@@ -2079,11 +2066,7 @@ namespace OfficeOpenXml
             {
                 if (this._headerFooter == null)
                 {
-                    XmlNode headerFooterNode = this.TopNode.SelectSingleNode("d:headerFooter", this.NameSpaceManager);
-                    if (headerFooterNode == null)
-                    {
-                        headerFooterNode = this.CreateNode("d:headerFooter");
-                    }
+                    XmlNode headerFooterNode = this.TopNode.SelectSingleNode("d:headerFooter", this.NameSpaceManager) ?? this.CreateNode("d:headerFooter");
 
                     this._headerFooter = new ExcelHeaderFooter(this.NameSpaceManager, headerFooterNode, this);
                 }
@@ -2111,14 +2094,7 @@ namespace OfficeOpenXml
         ExcelSlicerXmlSources _slicerXmlSources = null;
         internal ExcelSlicerXmlSources SlicerXmlSources
         {
-            get
-            {
-                if (this._slicerXmlSources == null)
-                {
-                    this._slicerXmlSources = new ExcelSlicerXmlSources(this.NameSpaceManager, this.TopNode, this.Part);
-                }
-                return this._slicerXmlSources;
-            }
+            get { return this._slicerXmlSources ??= new ExcelSlicerXmlSources(this.NameSpaceManager, this.TopNode, this.Part); }
         }
 
         #region Worksheet Public Methods
@@ -3121,14 +3097,7 @@ namespace OfficeOpenXml
         /// </summary>
         public ExcelSheetProtection Protection
         {
-            get
-            {
-                if (this._protection == null)
-                {
-                    this._protection = new ExcelSheetProtection(this.NameSpaceManager, this.TopNode, this);
-                }
-                return this._protection;
-            }
+            get { return this._protection ??= new ExcelSheetProtection(this.NameSpaceManager, this.TopNode, this); }
         }
 
         private ExcelProtectedRangeCollection _protectedRanges = null;
@@ -3137,14 +3106,7 @@ namespace OfficeOpenXml
         /// </summary>
         public ExcelProtectedRangeCollection ProtectedRanges
         {
-            get
-            {
-                if (this._protectedRanges == null)
-                {
-                    this._protectedRanges = new ExcelProtectedRangeCollection(this);
-                }
-                return this._protectedRanges;
-            }
+            get { return this._protectedRanges ??= new ExcelProtectedRangeCollection(this); }
         }
 
         #region Drawing
@@ -3172,10 +3134,7 @@ namespace OfficeOpenXml
 
         internal void LoadDrawings()
         {
-            if (this._drawings == null)
-            {
-                this._drawings = new ExcelDrawings(this._package, this);
-            }
+            this._drawings ??= new ExcelDrawings(this._package, this);
         }
         #endregion
         #region SparklineGroups
@@ -3186,14 +3145,7 @@ namespace OfficeOpenXml
         /// </summary>
         public ExcelSparklineGroupCollection SparklineGroups
         {
-            get
-            {
-                if (this._sparklineGroups == null)
-                {
-                    this._sparklineGroups = new ExcelSparklineGroupCollection(this);
-                }
-                return this._sparklineGroups;
-            }
+            get { return this._sparklineGroups ??= new ExcelSparklineGroupCollection(this); }
         }
         #endregion
         ExcelTableCollection _tables = null;
@@ -3210,11 +3162,7 @@ namespace OfficeOpenXml
                     this.Workbook.ReadAllTables();
                 }
 
-                if (this._tables == null)
-                {
-                    this._tables = new ExcelTableCollection(this);
-                }
-                return this._tables;
+                return this._tables ??= new ExcelTableCollection(this);
             }
         }
         internal ExcelPivotTableCollection _pivotTables = null;
@@ -3255,11 +3203,8 @@ namespace OfficeOpenXml
             get
             {
                 this.CheckSheetTypeAndNotDisposed();
-                if (this._conditionalFormatting == null)
-                {
-                    this._conditionalFormatting = new ExcelConditionalFormattingCollection(this);
-                }
-                return this._conditionalFormatting;
+
+                return this._conditionalFormatting ??= new ExcelConditionalFormattingCollection(this);
             }
         }
 
@@ -3272,11 +3217,8 @@ namespace OfficeOpenXml
             get
             {
                 this.CheckSheetTypeAndNotDisposed();
-                if (this._ignoredErrors == null)
-                {
-                    this._ignoredErrors = new ExcelIgnoredErrorCollection(this._package, this, this.NameSpaceManager);
-                }
-                return this._ignoredErrors;
+
+                return this._ignoredErrors ??= new ExcelIgnoredErrorCollection(this._package, this, this.NameSpaceManager);
             }
         }
         internal void ClearValidations()
@@ -3290,14 +3232,7 @@ namespace OfficeOpenXml
         /// </summary>
         public ExcelBackgroundImage BackgroundImage
         {
-            get
-            {
-                if (this._backgroundImage == null)
-                {
-                    this._backgroundImage = new ExcelBackgroundImage(this.NameSpaceManager, this.TopNode, this);
-                }
-                return this._backgroundImage;
-            }
+            get { return this._backgroundImage ??= new ExcelBackgroundImage(this.NameSpaceManager, this.TopNode, this); }
         }
         /// <summary>
         /// The workbook object
@@ -3497,14 +3432,7 @@ namespace OfficeOpenXml
         ControlsCollectionInternal _controls = null;
         internal ControlsCollectionInternal Controls
         {
-            get
-            {
-                if (this._controls == null)
-                {
-                    this._controls = new ControlsCollectionInternal(this.NameSpaceManager, this.TopNode);
-                }
-                return this._controls;
-            }
+            get { return this._controls ??= new ControlsCollectionInternal(this.NameSpaceManager, this.TopNode); }
         }
         /// <summary>
         /// A collection of row specific properties in the worksheet.

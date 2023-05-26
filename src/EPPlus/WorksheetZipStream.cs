@@ -130,7 +130,7 @@ namespace OfficeOpenXml
             return placeholderTag;
         }
 
-        private int GetEndElementPos(string xml, string element, int endIx)
+        private static int GetEndElementPos(string xml, string element, int endIx)
         {
             int ix = xml.IndexOf("/" + element + ">", endIx);
             if (ix > 0)
@@ -140,7 +140,7 @@ namespace OfficeOpenXml
             return -1;
         }
 
-        private void GetElementPos(string xml, string element, out int startIx, out int endIx)
+        private static void GetElementPos(string xml, string element, out int startIx, out int endIx)
         {
             int ix = -1;
             do
@@ -269,7 +269,7 @@ namespace OfficeOpenXml
             return startXml;
         }
 
-        private int GetXmlIndex(string xml, string uriValue)
+        private static int GetXmlIndex(string xml, string uriValue)
         {
             int elementStartIx = FindElementPos(xml, "ext", true, 0);
             while (elementStartIx > 0)
@@ -285,7 +285,7 @@ namespace OfficeOpenXml
             return -1;
         }
 
-        private bool HasExtElementUri(string elementString, string uriValue)
+        private static bool HasExtElementUri(string elementString, string uriValue)
         {
             if (elementString.StartsWith("</"))
             {
@@ -314,7 +314,7 @@ namespace OfficeOpenXml
         /// <param name="element">The element</param>
         /// <param name="returnStartPos">If the position before the start element is returned. If false the end of the end element is returned.</param>
         /// <returns>The position of the element in the input xml</returns>
-        private int FindElementPos(string xml, string element, bool returnStartPos = true, int ix=0)
+        private static int FindElementPos(string xml, string element, bool returnStartPos = true, int ix=0)
         {
             while (true)
             {

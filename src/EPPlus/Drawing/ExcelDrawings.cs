@@ -534,7 +534,7 @@ namespace OfficeOpenXml.Drawing
             return chart;
         }
 
-        private void ValidateSeries(ExcelRangeBase CategorySerie, ExcelRangeBase HighSerie, ExcelRangeBase LowSerie, ExcelRangeBase CloseSerie)
+        private static void ValidateSeries(ExcelRangeBase CategorySerie, ExcelRangeBase HighSerie, ExcelRangeBase LowSerie, ExcelRangeBase CloseSerie)
         {
             if (CategorySerie == null)
             {
@@ -1144,7 +1144,7 @@ namespace OfficeOpenXml.Drawing
 
             return chart;
         }
-        private string GetChartNodeName(XmlHelper xmlHelper)
+        private static string GetChartNodeName(XmlHelper xmlHelper)
         {
             XmlNode? ploterareaNode = xmlHelper.GetNode(ExcelChart.plotAreaPath);
             foreach (XmlNode node in ploterareaNode?.ChildNodes)
@@ -1425,13 +1425,13 @@ namespace OfficeOpenXml.Drawing
                 StreamWriter streamChart = new StreamWriter(_part.GetStream(FileMode.Create, FileAccess.Write));
                 DrawingXml.Save(streamChart);
                 streamChart.Close();
-                package.Flush();
+                ZipPackage.Flush();
 
                 _drawingRelation = Worksheet.Part.CreateRelationship(UriHelper.GetRelativeUri(Worksheet.WorksheetUri, _uriDrawing), Packaging.TargetMode.Internal, ExcelPackage.schemaRelationships + "/drawing");
                 XmlElement e = (XmlElement)Worksheet.CreateNode("d:drawing");
                 e.SetAttribute("id", ExcelPackage.schemaRelationships, _drawingRelation.Id);
 
-                package.Flush();
+                ZipPackage.Flush();
             }
             XmlNode colNode = _drawingsXml.SelectSingleNode("//xdr:wsDr", NameSpaceManager);
             XmlElement drawNode;

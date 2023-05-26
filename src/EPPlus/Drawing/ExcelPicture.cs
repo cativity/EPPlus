@@ -169,7 +169,7 @@ namespace OfficeOpenXml.Drawing
             //Create relationship
             SetRelId(TopNode, type, relId);
             //TopNode.SelectSingleNode("xdr:pic/xdr:blipFill/a:blip/@r:embed", NameSpaceManager).Value = relId;
-            package.Flush();
+            ZipPackage.Flush();
         }
 
         private void CreatePicNode(XmlNode node, ePictureType type)
@@ -180,7 +180,7 @@ namespace OfficeOpenXml.Drawing
             node.InsertAfter(node.OwnerDocument.CreateElement("xdr", "clientData", ExcelPackage.schemaSheetDrawings), picNode);
         }
 
-        private void AddNewPicture(byte[] img, string relID)
+        private static void AddNewPicture(byte[] img, string relID)
         {
             ExcelDrawings.ImageCompare? newPic = new ExcelDrawings.ImageCompare();
             newPic.image = img;

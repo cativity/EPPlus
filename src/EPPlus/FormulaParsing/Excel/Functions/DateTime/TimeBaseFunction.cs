@@ -43,22 +43,22 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime
             SerialNumber = (double)ArgToDecimal(arguments, 0);
         }
 
-        protected double SecondsInADay
+        protected static double SecondsInADay
         {
             get{ return 24 * 60 * 60; }
         }
 
-        protected double GetTimeSerialNumber(double seconds)
+        protected static double GetTimeSerialNumber(double seconds)
         {
             return seconds / SecondsInADay;
         }
 
-        protected double GetSeconds(double serialNumber)
+        protected static double GetSeconds(double serialNumber)
         {
             return serialNumber * SecondsInADay;
         }
 
-        protected double GetHour(double serialNumber)
+        protected static double GetHour(double serialNumber)
         {
             double seconds = GetSeconds(serialNumber);
             return (int)seconds / (60 * 60);
@@ -71,7 +71,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime
             return (seconds - (seconds % 60)) / 60;
         }
 
-        protected double GetSecond(double serialNumber)
+        protected static double GetSecond(double serialNumber)
         {
             return GetSeconds(serialNumber) % 60;
         }

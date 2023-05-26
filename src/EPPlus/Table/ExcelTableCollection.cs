@@ -101,7 +101,7 @@ namespace OfficeOpenXml.Table
             return Add(new ExcelTable(_ws, Range, Name, _ws.Workbook._nextTableID));
         }
 
-        private void ValidateName(string name)
+        private static void ValidateName(string name)
         {
             if (string.IsNullOrEmpty(name.Trim()))
             {
@@ -218,7 +218,7 @@ namespace OfficeOpenXml.Table
         /// </summary>
         /// <param name="Range">The range</param>
         /// <returns>The table. Null if no range matches</returns>
-        public ExcelTable GetFromRange(ExcelRangeBase Range)
+        public static ExcelTable GetFromRange(ExcelRangeBase Range)
         {
             foreach (ExcelTable? tbl in Range.Worksheet.Tables)
             {

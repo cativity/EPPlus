@@ -242,7 +242,7 @@ namespace OfficeOpenXml.DataValidation
             }
         }
 
-        private string CheckAndFixRangeAddress(string address)
+        private static string CheckAndFixRangeAddress(string address)
         {
             if (address.Contains(","))
             {
@@ -257,7 +257,7 @@ namespace OfficeOpenXml.DataValidation
             return address;
         }
 
-        bool IsEntireColumn(string address)
+        static bool IsEntireColumn(string address)
         {
             bool hasColon = false;
             foreach (char c in address)

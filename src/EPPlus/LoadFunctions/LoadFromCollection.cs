@@ -192,7 +192,7 @@ namespace OfficeOpenXml.LoadFunctions
                         {
                             if(!string.IsNullOrEmpty(colInfo.Path) && colInfo.Path.Contains("."))
                             {
-                                values[row, col++] = GetValueByPath(item, colInfo.Path);
+                                values[row, col++] = LoadFromCollection<T>.GetValueByPath(item, colInfo.Path);
                                 continue;
                             }
                             T? obj = item;
@@ -258,7 +258,7 @@ namespace OfficeOpenXml.LoadFunctions
 #endif            
         }
 
-        private object GetValueByPath(object obj, string path)
+        private static object GetValueByPath(object obj, string path)
         {
             string[]? members = path.Split('.');
             object o = obj;

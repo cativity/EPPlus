@@ -83,7 +83,7 @@ namespace OfficeOpenXml.Utils
                     }
                     else
                     {
-                        return nf.FormatFraction(d, f);
+                        return ExcelNumberFormatXml.ExcelFormatTranslator.FormatFraction(d, f);
                     }
                 }
                 else if (nf.DataType == ExcelNumberFormatXml.eFormatType.DateTime)
@@ -130,7 +130,7 @@ namespace OfficeOpenXml.Utils
                     }
                     else
                     {
-                        return nf.FormatFraction(d, f);
+                        return ExcelNumberFormatXml.ExcelFormatTranslator.FormatFraction(d, f);
                     }
                 }
             }
@@ -149,7 +149,7 @@ namespace OfficeOpenXml.Utils
                     }
                     else
                     {
-                        return nf.FormatFraction(d,f);
+                        return ExcelNumberFormatXml.ExcelFormatTranslator.FormatFraction(d,f);
                     }
                 }                
             }

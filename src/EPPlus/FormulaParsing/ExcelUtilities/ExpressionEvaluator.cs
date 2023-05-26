@@ -39,7 +39,7 @@ namespace OfficeOpenXml.FormulaParsing.ExcelUtilities
             _compileResultFactory = compileResultFactory;
         }
 
-        private string GetNonAlphanumericStartChars(string expr)
+        private static string GetNonAlphanumericStartChars(string expr)
         {
             string? result = string.Empty;
             if (!string.IsNullOrEmpty(expr))
@@ -77,7 +77,7 @@ namespace OfficeOpenXml.FormulaParsing.ExcelUtilities
             return (bool)result.Result;
         }
 
-        public bool TryConvertToDouble(object op, out double d, bool convertNumericString)
+        public static bool TryConvertToDouble(object op, out double d, bool convertNumericString)
         {
             if (op is double || op is int || op is decimal)
             {

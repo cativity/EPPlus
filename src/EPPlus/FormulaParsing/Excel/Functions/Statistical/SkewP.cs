@@ -42,7 +42,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Statistical
             return CreateResult(result, DataType.Decimal);
         }
 
-        private double CalcStandardDev(IEnumerable<double> numbers, double avg)
+        private static double CalcStandardDev(IEnumerable<double> numbers, double avg)
         {
             double stdDev = 0d;
             foreach (double n in numbers)

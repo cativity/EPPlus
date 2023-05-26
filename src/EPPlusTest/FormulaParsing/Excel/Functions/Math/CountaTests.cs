@@ -12,7 +12,7 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions.Math
     [TestClass]
     public class CountaTests
     {
-        private void SetValues(ExcelWorksheet worksheet)
+        private static void SetValues(ExcelWorksheet worksheet)
         {
             worksheet.Cells["A1"].Value = "Value 1";
             worksheet.Cells["A2"].Value = "Value 2";

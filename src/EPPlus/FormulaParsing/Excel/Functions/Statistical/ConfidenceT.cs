@@ -54,7 +54,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Statistical
         }
 
 
-        private double StudentInv(double p, double dof)
+        private static double StudentInv(double p, double dof)
         {
             double x = BetaHelper.IBetaInv(2 * System.Math.Min(p, 1 - p), 0.5 * dof, 0.5);
             x = System.Math.Sqrt(dof * (1 - x) / x);

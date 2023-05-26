@@ -57,7 +57,7 @@ namespace OfficeOpenXml.LoadFunctions
             return result;
         }
 
-        private List<ListType> CopyList<ListType>(List<ListType> source)
+        private static List<ListType> CopyList<ListType>(List<ListType> source)
         {
             if (source == null)
             {
@@ -80,7 +80,7 @@ namespace OfficeOpenXml.LoadFunctions
                 foreach (PropertyInfo? member in members)
                 {
                     string? hPrefix = default(string);
-                    List<int>? sortOrderList = CopyList(sortOrderListArg);
+                    List<int>? sortOrderList = LoadFromCollectionColumns<T>.CopyList(sortOrderListArg);
                     if (member.HasPropertyOfType<EpplusIgnore>())
                     {
                         continue;
@@ -203,7 +203,7 @@ namespace OfficeOpenXml.LoadFunctions
                         List<int>? colInfoSortOrderList = new List<int>();
                         int sortOrderColumnsIndex = _sortOrderColumns != null ? _sortOrderColumns.IndexOf(mp) : -1;
                         int sortOrder = sortOrderColumnsIndex > -1 ? sortOrderColumnsIndex : SortOrderOffset;
-                        List<int>? sortOrderList = CopyList(sortOrderListArg);
+                        List<int>? sortOrderList = LoadFromCollectionColumns<T>.CopyList(sortOrderListArg);
                         EpplusTableColumnAttribute? epplusColumnAttr = member.GetFirstAttributeOfType<EpplusTableColumnAttribute>();
                         if (epplusColumnAttr != null)
                         {

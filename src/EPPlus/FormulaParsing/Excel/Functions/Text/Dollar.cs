@@ -47,7 +47,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Text
             return CreateResult(result.ToString(GetFormatString(decimals), CultureInfo.CurrentCulture), DataType.String);
         }
 
-        private string GetFormatString(int decimals)
+        private static string GetFormatString(int decimals)
         {
             if (decimals > 0)
             {

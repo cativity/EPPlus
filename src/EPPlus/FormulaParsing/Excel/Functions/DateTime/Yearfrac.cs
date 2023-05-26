@@ -86,7 +86,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime
             }
         }
 
-        private double CalculateAcutalYear(System.DateTime dt1, System.DateTime dt2)
+        private static double CalculateAcutalYear(System.DateTime dt1, System.DateTime dt2)
         {
             GregorianCalendar? calendar = new GregorianCalendar();
             double perYear = 0d;

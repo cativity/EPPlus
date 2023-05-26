@@ -113,7 +113,7 @@ namespace OfficeOpenXml.Style.XmlAccess
                 _format = value;
             }
         }
-        internal string GetNewID(int NumFmtId, string Format)
+        internal static string GetNewID(int NumFmtId, string Format)
         {            
             if (NumFmtId < 0)
             {
@@ -553,7 +553,7 @@ namespace OfficeOpenXml.Style.XmlAccess
                 }
             }
 
-            internal string FormatFraction(double d, FormatPart f)
+            internal static string FormatFraction(double d, FormatPart f)
             {
                 int numerator, denomerator;
 
@@ -661,7 +661,7 @@ namespace OfficeOpenXml.Style.XmlAccess
                 }
             }
 
-            private string FmtInt(double value, string format)
+            private static string FmtInt(double value, string format)
             {
                 string v = value.ToString("#");
                 string pad = "";

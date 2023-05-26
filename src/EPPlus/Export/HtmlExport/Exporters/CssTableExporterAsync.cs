@@ -79,7 +79,7 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
             await cellCssWriter.RenderAdditionalAndFontCssAsync(TableClass);
             if (_tableSettings.Css.IncludeTableStyles)
             {
-                await this.RenderTableCssAsync(sw, this._table, this._tableSettings, this._styleCache, this._dataTypes);
+                await RenderTableCssAsync(sw, this._table, this._tableSettings, this._styleCache, this._dataTypes);
             }
 
             if (_tableSettings.Css.IncludeCellStyles)
@@ -116,7 +116,7 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
             await styleWriter.FlushStreamAsync();
         }
 
-        internal async Task RenderTableCssAsync(StreamWriter sw, ExcelTable table, HtmlTableExportSettings settings, Dictionary<string, int> styleCache, List<string> datatypes)
+        internal static async Task RenderTableCssAsync(StreamWriter sw, ExcelTable table, HtmlTableExportSettings settings, Dictionary<string, int> styleCache, List<string> datatypes)
         {
             EpplusTableCssWriter? styleWriter = new EpplusTableCssWriter(sw, table, settings, styleCache);
             if (settings.Minify == false)

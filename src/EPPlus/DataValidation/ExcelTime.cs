@@ -209,7 +209,7 @@ namespace OfficeOpenXml.DataValidation
             }
         }
 
-        private decimal Round(decimal value)
+        private static decimal Round(decimal value)
         {
             return Math.Round(value, NumberOfDecimals);
         }

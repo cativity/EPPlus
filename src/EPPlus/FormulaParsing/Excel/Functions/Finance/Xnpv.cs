@@ -54,7 +54,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance
             return CreateResult(result, DataType.Decimal);
         }
 
-        private IEnumerable<System.DateTime> GetDates(FunctionArgument arg, ParsingContext context)
+        private static IEnumerable<System.DateTime> GetDates(FunctionArgument arg, ParsingContext context)
         {
             List<System.DateTime>? dates = new List<System.DateTime>();
             if(arg.Value is IEnumerable<FunctionArgument>)

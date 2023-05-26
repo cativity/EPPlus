@@ -35,7 +35,7 @@ namespace EPPlusTest.FormulaParsing
             }
         }
 
-        public void ShouldHandleNumericFormulaHigh()
+        public static void ShouldHandleNumericFormulaHigh()
         {
             using (ExcelPackage? package = new ExcelPackage())
             {

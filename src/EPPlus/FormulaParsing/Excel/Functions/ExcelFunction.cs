@@ -89,7 +89,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions
         /// not be compiled before the function is called.
         /// </summary>
         //public bool SkipArgumentEvaluation { get; set; }
-        protected object GetFirstValue(IEnumerable<FunctionArgument> val)
+        protected static object GetFirstValue(IEnumerable<FunctionArgument> val)
         {
             FunctionArgument? arg = ((IEnumerable<FunctionArgument>)val).FirstOrDefault();
             if(arg.Value is IRangeInfo)
@@ -112,7 +112,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions
         /// <param name="arguments"></param>
         /// <param name="minLength"></param>
         /// <param name="errorTypeToThrow">The <see cref="eErrorType"/> of the <see cref="ExcelErrorValueException"/> that will be thrown if <paramref name="minLength"/> is not met.</param>
-        protected void ValidateArguments(IEnumerable<FunctionArgument> arguments, int minLength,
+        protected static void ValidateArguments(IEnumerable<FunctionArgument> arguments, int minLength,
                                          eErrorType errorTypeToThrow)
         {
             Require.That(arguments).Named("arguments").IsNotNull();
@@ -152,7 +152,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions
         /// <param name="arguments"></param>
         /// <param name="minLength"></param>
         /// <exception cref="ArgumentException"></exception>
-        protected void ValidateArguments(IEnumerable<FunctionArgument> arguments, int minLength)
+        protected static void ValidateArguments(IEnumerable<FunctionArgument> arguments, int minLength)
         {
             Require.That(arguments).Named("arguments").IsNotNull();
             ThrowArgumentExceptionIf(() =>
@@ -181,12 +181,12 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions
                     return true;
                 }, "Expecting at least {0} arguments", minLength.ToString());
         }
-        protected string ArgToAddress(IEnumerable<FunctionArgument> arguments, int index)
+        protected static string ArgToAddress(IEnumerable<FunctionArgument> arguments, int index)
         {            
             return arguments.ElementAt(index).IsExcelRange ? arguments.ElementAt(index).ValueAsRangeInfo.Address.FullAddress : ArgToString(arguments, index);
         }
 
-        protected string ArgToAddress(IEnumerable<FunctionArgument> arguments, int index, ParsingContext context)
+        protected static string ArgToAddress(IEnumerable<FunctionArgument> arguments, int index, ParsingContext context)
         {
             FunctionArgument? arg = arguments.ElementAt(index);
             if(arg.ExcelAddressReferenceId > 0)
@@ -260,7 +260,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions
         /// <param name="arguments"></param>
         /// <param name="index"></param>
         /// <returns>Value of the argument as a string.</returns>
-        protected string ArgToString(IEnumerable<FunctionArgument> arguments, int index)
+        protected static string ArgToString(IEnumerable<FunctionArgument> arguments, int index)
         {
             object? obj = arguments.ElementAt(index).ValueFirst;
             return obj != null ? obj.ToString() : string.Empty;
@@ -337,12 +337,12 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions
         /// <param name="arguments"></param>
         /// <param name="index"></param>
         /// <returns></returns>
-        protected IRangeInfo ArgToRangeInfo(IEnumerable<FunctionArgument> arguments, int index)
+        protected static IRangeInfo ArgToRangeInfo(IEnumerable<FunctionArgument> arguments, int index)
         {
             return arguments.ElementAt(index).Value as IRangeInfo;
         }
 
-        protected double Divide(double left, double right)
+        protected static double Divide(double left, double right)
         {
             if (System.Math.Abs(right - 0d) < double.Epsilon)
             {
@@ -351,7 +351,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions
             return left/right;
         }
 
-        protected bool IsNumericString(object value)
+        protected static bool IsNumericString(object value)
         {
             if (value == null || string.IsNullOrEmpty(value.ToString()))
             {
@@ -361,7 +361,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions
             return Regex.IsMatch(value.ToString(), @"^[\d]+(\,[\d])?");
         }
 
-        protected bool IsInteger(object n)
+        protected static bool IsInteger(object n)
         {
             if (!IsNumeric(n))
             {
@@ -391,7 +391,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions
         /// <param name="condition"></param>
         /// <param name="message"></param>
         /// <exception cref="ArgumentException"></exception>
-        protected void ThrowArgumentExceptionIf(Func<bool> condition, string message)
+        protected static void ThrowArgumentExceptionIf(Func<bool> condition, string message)
         {
             if (condition())
             {
@@ -405,7 +405,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions
         /// <param name="condition"></param>
         /// <param name="message"></param>
         /// <param name="formats">Formats to the message string.</param>
-        protected void ThrowArgumentExceptionIf(Func<bool> condition, string message, params object[] formats)
+        protected static void ThrowArgumentExceptionIf(Func<bool> condition, string message, params object[] formats)
         {
             message = string.Format(message, formats);
             ThrowArgumentExceptionIf(condition, message);
@@ -415,7 +415,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions
         /// Throws an <see cref="ExcelErrorValueException"/> with the given <paramref name="errorType"/> set.
         /// </summary>
         /// <param name="errorType"></param>
-        protected void ThrowExcelErrorValueException(eErrorType errorType)
+        protected static void ThrowExcelErrorValueException(eErrorType errorType)
         {
             throw new ExcelErrorValueException("An excel function error occurred", ExcelErrorValue.Create(errorType));
         }
@@ -423,7 +423,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions
         /// Throws an <see cref="ExcelErrorValueException"/> with the type of given <paramref name="value"/> set.
         /// </summary>
         /// <param name="value"></param>
-        protected void ThrowExcelErrorValueException(ExcelErrorValue value)
+        protected static void ThrowExcelErrorValueException(ExcelErrorValue value)
         {
             if (value != null)
             {
@@ -437,7 +437,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions
         /// <param name="condition"></param>
         /// <param name="errorType"></param>
         /// <exception cref="ExcelErrorValueException"></exception>
-        protected void ThrowExcelErrorValueExceptionIf(Func<bool> condition, eErrorType errorType)
+        protected static void ThrowExcelErrorValueExceptionIf(Func<bool> condition, eErrorType errorType)
         {
             if (condition())
             {
@@ -445,7 +445,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions
             }
         }
 
-        protected bool IsNumeric(object val)
+        protected static bool IsNumeric(object val)
         {
             if (val == null)
             {
@@ -455,12 +455,12 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions
             return (TypeCompat.IsPrimitive(val) || val is double || val is decimal  || val is System.DateTime || val is TimeSpan);
         }
 
-        protected bool IsBool(object val)
+        protected static bool IsBool(object val)
         {
             return val is bool;
         }
 
-        protected bool IsString(object val, bool allowNullOrEmpty = true)
+        protected static bool IsString(object val, bool allowNullOrEmpty = true)
         {
             if (!allowNullOrEmpty)
             {
@@ -482,7 +482,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions
         /// <param name="d1"></param>
         /// <param name="d2"></param>
         /// <returns></returns>
-        protected bool AreEqual(double d1, double d2)
+        protected static bool AreEqual(double d1, double d2)
         {
             return System.Math.Abs(d1 - d2) < double.Epsilon;
         }
@@ -630,7 +630,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions
         /// </summary>
         /// <param name="arg"></param>
         /// <exception cref="ExcelErrorValueException"></exception>
-        protected void CheckForAndHandleExcelError(FunctionArgument arg)
+        protected static void CheckForAndHandleExcelError(FunctionArgument arg)
         {
             if (arg.ValueIsExcelError)
             {
@@ -643,7 +643,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions
         /// an <see cref="ExcelErrorValueException"/> with that errorcode will be thrown
         /// </summary>
         /// <param name="cell"></param>
-        protected void CheckForAndHandleExcelError(ICellInfo cell)
+        protected static void CheckForAndHandleExcelError(ICellInfo cell)
         {
             if (cell.IsExcelError)
             {

@@ -49,7 +49,7 @@ namespace OfficeOpenXml.Drawing.Style.Coloring
                 return ExcelDrawingRgbColor.GetColorFromString(GetXmlNodeString("@lastClr"));
             }            
         }
-        private eSystemColor TranslateFromString(string v)
+        private static eSystemColor TranslateFromString(string v)
         {
             switch (v)
             {
@@ -145,7 +145,7 @@ namespace OfficeOpenXml.Drawing.Style.Coloring
                     return EPPlusSystemColors.Window;
             }
         }
-        private string TranslateFromEnum(eSystemColor e)
+        private static string TranslateFromEnum(eSystemColor e)
         {
             string s;
             switch (e)

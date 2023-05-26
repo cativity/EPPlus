@@ -41,7 +41,7 @@ namespace EPPlusTest.DataValidation
        // private readonly decimal HoursPerDay = 24;
         private readonly decimal SecondsPerDay = 3600 * 24;
 
-        private decimal Round(decimal value)
+        private static decimal Round(decimal value)
         {
             return Math.Round(value, ExcelTime.NumberOfDecimals);
         }

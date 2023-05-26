@@ -60,11 +60,11 @@ namespace OfficeOpenXml.Drawing.Style.Coloring
         }
 
         internal const string NodeName = "a:srgbClr";
-        internal void SetXml(XmlNamespaceManager nsm, XmlNode node, bool doInit = false)
+        internal static void SetXml(XmlNamespaceManager nsm, XmlNode node, bool doInit = false)
         {
             
         }
-        internal void GetXml()
+        internal static void GetXml()
         {
         }
         internal void GetHsl(out double hue, out double saturation, out double luminance)

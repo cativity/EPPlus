@@ -618,7 +618,7 @@ namespace OfficeOpenXml.Table.PivotTable
         /// </summary>
         public string Format { get; set; }
         #region Private & internal Methods
-        internal XmlElement AppendField(XmlNode rowsNode, int index, string fieldNodeText, string indexAttrText)
+        internal static XmlElement AppendField(XmlNode rowsNode, int index, string fieldNodeText, string indexAttrText)
         {
             XmlElement prevField = null, newElement;
             foreach (XmlElement field in rowsNode.ChildNodes)

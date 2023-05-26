@@ -39,7 +39,7 @@ namespace OfficeOpenXml.Packaging
         /// </summary>
         /// <param name="id">The Id</param>
         /// <param name="maxRId">Return the maximum relation id</param>
-        internal protected void UpdateMaxRId(string id, ref int maxRId)
+        protected internal static void UpdateMaxRId(string id, ref int maxRId)
         {
             if (id.StartsWith("rId"))
             {

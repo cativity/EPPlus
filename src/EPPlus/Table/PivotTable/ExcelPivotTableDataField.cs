@@ -244,7 +244,7 @@ namespace OfficeOpenXml.Table.PivotTable
             }
         }
 
-        private bool IsShowDataAsExtLst(eShowDataAs value)
+        private static bool IsShowDataAsExtLst(eShowDataAs value)
         {
             return
                value == eShowDataAs.PercentOfParent ||

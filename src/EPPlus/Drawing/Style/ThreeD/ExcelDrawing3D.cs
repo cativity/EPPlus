@@ -256,7 +256,7 @@ namespace OfficeOpenXml.Drawing.Style.ThreeD
             }
         }
 
-        private void CopyXml(XmlElement copyFrom, XmlElement to)
+        private static void CopyXml(XmlElement copyFrom, XmlElement to)
         {
             foreach (XmlAttribute a in copyFrom.Attributes)
             {

@@ -130,7 +130,7 @@ namespace OfficeOpenXml.Vba.ContentHash
             return designerModules.ToList();
         }
 
-        private void NormalizeDesignerStorage(ExcelVBAModule designerModule, BinaryWriter bw)
+        private static void NormalizeDesignerStorage(ExcelVBAModule designerModule, BinaryWriter bw)
         {
             BufferedStream? buffer = new System.IO.BufferedStream(bw.BaseStream, 1023);
             //var ds = p.Document.Storage.SubStorage[designerModule.streamName];

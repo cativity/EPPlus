@@ -769,7 +769,7 @@ namespace OfficeOpenXml
             get;
             set;
         }
-        private XmlNamespaceManager CreateDefaultNSM()
+        private static XmlNamespaceManager CreateDefaultNSM()
         {
             //  Create a NamespaceManager to handle the default namespace, 
             //  and create a prefix for the default namespace:
@@ -868,7 +868,7 @@ namespace OfficeOpenXml
                 {
                     CloseStream();
                 }
-                _zipPackage.Close();    
+                ZipPackage.Close();    
                 if(_workbook != null)
                 {
                     _workbook.Dispose();
@@ -936,7 +936,7 @@ namespace OfficeOpenXml
                         _zipPackage.Save(_stream);
                     }
                     _stream.Flush();
-                    _zipPackage.Close();
+                    ZipPackage.Close();
                 }
                 else
                 {
@@ -953,7 +953,7 @@ namespace OfficeOpenXml
                     }
 
                     _zipPackage.Save(_stream);
-                    _zipPackage.Close();
+                    ZipPackage.Close();
                     if (Stream is MemoryStream)
                     {
                         using (FileStream? fi = new FileStream(File.FullName, FileMode.Create))
@@ -1211,7 +1211,7 @@ namespace OfficeOpenXml
             if (save)
             {
                 Workbook.Save();
-                _zipPackage.Close();
+                ZipPackage.Close();
                 if(_stream is MemoryStream && _stream.Length>0)
                 {
                     CloseStream();
@@ -1327,7 +1327,7 @@ namespace OfficeOpenXml
             //Release some resources:
             if (_zipPackage != null)
             {
-                _zipPackage.Close();
+                ZipPackage.Close();
                 _zipPackage = null;
             }
             if (_stream != null)

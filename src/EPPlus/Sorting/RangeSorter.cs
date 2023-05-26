@@ -31,7 +31,7 @@ namespace OfficeOpenXml.Sorting
 
         private readonly ExcelWorksheet _worksheet;
 
-        private void ValidateColumnArray(ExcelRangeBase range, int[] columns)
+        private static void ValidateColumnArray(ExcelRangeBase range, int[] columns)
         {
             int cols = range._toCol - range._fromCol + 1;
             foreach (int c in columns)
@@ -43,7 +43,7 @@ namespace OfficeOpenXml.Sorting
             }
         }
 
-        private void ValidateRowsArray(ExcelRangeBase range, int[] rows)
+        private static void ValidateRowsArray(ExcelRangeBase range, int[] rows)
         {
             int nRows = range._toRow - range._fromRow + 1;
             foreach (int r in rows)
@@ -55,7 +55,7 @@ namespace OfficeOpenXml.Sorting
             }
         }
 
-        private bool[] CreateDefaultDescendingArray(int[] sortParams)
+        private static bool[] CreateDefaultDescendingArray(int[] sortParams)
         {
             bool[]? descending = new bool[sortParams.Length];
             for (int i = 0; i < sortParams.Length; i++)

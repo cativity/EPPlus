@@ -48,7 +48,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime
             return CreateResult(result, DataType.Integer);
         }
 
-        private int GetNumWholeMonths(System.DateTime dt1, System.DateTime dt2)
+        private static int GetNumWholeMonths(System.DateTime dt1, System.DateTime dt2)
         {
             System.DateTime startDate = new System.DateTime(dt1.Year, dt1.Month, 1).AddMonths(1);
             System.DateTime endDate = new System.DateTime(dt2.Year, dt2.Month, 1);

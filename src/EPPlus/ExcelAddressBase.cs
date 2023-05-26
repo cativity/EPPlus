@@ -1092,7 +1092,7 @@ namespace OfficeOpenXml
             }
         }
 
-        private int GetRow(int row, bool setRefOnMinMax)
+        private static int GetRow(int row, bool setRefOnMinMax)
         {
             if (setRefOnMinMax==false)
             {
@@ -1109,7 +1109,7 @@ namespace OfficeOpenXml
 
             return row;
         }
-        private int GetColumn(int column, bool setRefOnMinMax)
+        private static int GetColumn(int column, bool setRefOnMinMax)
         {
             if (setRefOnMinMax == false)
             {
@@ -1931,7 +1931,7 @@ namespace OfficeOpenXml
             }
         }
 
-        private bool IsEqual(ExcelAddressBase a1, ExcelAddressBase a2)
+        private static bool IsEqual(ExcelAddressBase a1, ExcelAddressBase a2)
         {
             return a1._fromRow == a2._fromRow &&
                     a1._toRow == a2._toRow &&

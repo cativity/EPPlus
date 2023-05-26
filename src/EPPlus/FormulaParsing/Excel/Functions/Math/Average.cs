@@ -90,13 +90,13 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
 				}
 				else if (IsString(arg.Value) && !isInArray)
 				{
-					ThrowExcelErrorValueException(eErrorType.Value);
+                    ThrowExcelErrorValueException(eErrorType.Value);
 				}
             }
             CheckForAndHandleExcelError(arg);
         }
 
-        private double? GetNumericValue(object obj, bool isInArray)
+        private static double? GetNumericValue(object obj, bool isInArray)
         {
             if (IsNumeric(obj) && !(IsBool(obj)))
             {

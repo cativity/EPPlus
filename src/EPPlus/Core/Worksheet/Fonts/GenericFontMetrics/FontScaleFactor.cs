@@ -42,11 +42,11 @@ namespace OfficeOpenXml.Core.Worksheet.Fonts.GenericFontMetrics
         {
             if (width < (100 * _sizeFactor))
             {
-                return this.Adjustment(width, (25 * this._sizeFactor), (100 * this._sizeFactor), this._small, this._medium);
+                return Adjustment(width, (25 * this._sizeFactor), (100 * this._sizeFactor), this._small, this._medium);
             }
             else if (width < (200 * _sizeFactor))
             {
-                return this.Adjustment(width, (100 * this._sizeFactor), (200 * this._sizeFactor), this._medium, this._large);
+                return Adjustment(width, (100 * this._sizeFactor), (200 * this._sizeFactor), this._medium, this._large);
             }
             else
             {
@@ -54,7 +54,7 @@ namespace OfficeOpenXml.Core.Worksheet.Fonts.GenericFontMetrics
             }
         }
 
-        private float Adjustment(float v, float lowerWidth, float upperWidth, float originalFactorLower, float originalFactorUpper)
+        private static float Adjustment(float v, float lowerWidth, float upperWidth, float originalFactorLower, float originalFactorUpper)
         {
             if (v < lowerWidth)
             {

@@ -451,7 +451,7 @@ namespace OfficeOpenXml
             private set;
         }
 
-        private bool IsActiveCellInSelection(ExcelAddressBase ac, ExcelAddressBase sd)
+        private static bool IsActiveCellInSelection(ExcelAddressBase ac, ExcelAddressBase sd)
         {
             ExcelAddressBase.eAddressCollition c = sd.Collide(ac);
             if (c == ExcelAddressBase.eAddressCollition.Equal || c == ExcelAddressBase.eAddressCollition.Inside)

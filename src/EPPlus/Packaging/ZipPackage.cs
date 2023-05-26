@@ -265,7 +265,7 @@ namespace OfficeOpenXml.Packaging
             }
         }
 
-        internal string GetUriKey(string uri)
+        internal static string GetUriKey(string uri)
         {
             string ret = uri.Replace('\\', '/');
             if (ret[0] != '/')
@@ -366,11 +366,11 @@ namespace OfficeOpenXml.Packaging
             xml.Append("</Types>");
             return xml.ToString();
         }
-        internal void Flush()
+        internal static void Flush()
         {
 
         }
-        internal void Close()
+        internal static void Close()
         {
             
         }

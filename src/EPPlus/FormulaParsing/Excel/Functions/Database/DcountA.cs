@@ -84,7 +84,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Database
             return CreateResult(nHits, DataType.Integer);
         }
 
-        private bool ShouldCount(object value)
+        private static bool ShouldCount(object value)
         {
             if (value == null)
             {

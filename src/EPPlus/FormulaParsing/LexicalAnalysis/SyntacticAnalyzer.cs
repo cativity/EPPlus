@@ -67,7 +67,7 @@ namespace OfficeOpenXml.FormulaParsing.LexicalAnalysis
             }
         }
 
-        private void EnsureParenthesesAreWellFormed(Token token, AnalyzingContext context)
+        private static void EnsureParenthesesAreWellFormed(Token token, AnalyzingContext context)
         {
             if (token.TokenTypeIsSet(TokenType.OpeningParenthesis))
             {
@@ -79,7 +79,7 @@ namespace OfficeOpenXml.FormulaParsing.LexicalAnalysis
             }
         }
 
-        private void EnsureStringsAreWellFormed(Token token, AnalyzingContext context)
+        private static void EnsureStringsAreWellFormed(Token token, AnalyzingContext context)
         {
             if (!context.IsInString && token.TokenTypeIsSet(TokenType.String))
             {

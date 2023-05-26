@@ -366,7 +366,7 @@ namespace OfficeOpenXml.Core.CellStore
                             break;
                         }
 
-                        GetIntersect(item, toColumn[pos], out fr, out tr);
+                        RangeDictionary<T>.GetIntersect(item, toColumn[pos], out fr, out tr);
                         if (fr >= 0)
                         {
                             fr = Math.Max(fr, fromRow);
@@ -380,7 +380,7 @@ namespace OfficeOpenXml.Core.CellStore
             }
         }
 
-        private void GetIntersect(RangeItem itemFirst, RangeItem itemLast, out int fr, out int tr)
+        private static void GetIntersect(RangeItem itemFirst, RangeItem itemLast, out int fr, out int tr)
         {
             if (itemFirst.Value.Equals(itemLast.Value) == false)
             {

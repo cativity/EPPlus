@@ -25,7 +25,7 @@ namespace EPPlusTest.Drawing.Chart
             ws.Cells["A1:A10"].Style.Numberformat.Format = "yyyy-MM-dd";
             ws.Cells["B1:D10"].Style.Numberformat.Format = "#,##0";
         }
-        protected void LoadStockChartDataText(ExcelWorksheet ws)
+        protected static void LoadStockChartDataText(ExcelWorksheet ws)
         {
             List<EquityData>? l = new List<EquityData>()
             {

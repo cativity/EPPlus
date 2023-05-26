@@ -71,7 +71,7 @@ namespace OfficeOpenXml.Style.Dxf
         /// <param name="helper">The xml helper</param>
         /// <param name="path">The x path</param>
         /// <param name="color">The color</param>
-        protected void SetValueColor(XmlHelper helper,string path, ExcelDxfColor color)
+        protected static void SetValueColor(XmlHelper helper,string path, ExcelDxfColor color)
         {
             if (color != null && color.HasValue)
             {
@@ -103,7 +103,7 @@ namespace OfficeOpenXml.Style.Dxf
         /// <param name="helper">The xml helper</param>
         /// <param name="path">The Xpath</param>
         /// <param name="v">The value</param>
-        internal void SetValueEnum(XmlHelper helper, string path, Enum v)
+        internal static void SetValueEnum(XmlHelper helper, string path, Enum v)
         {
             if (v == null)
             {
@@ -122,7 +122,7 @@ namespace OfficeOpenXml.Style.Dxf
         /// <param name="helper">The xml helper</param>
         /// <param name="path">The x path</param>
         /// <param name="v">The object</param>
-        internal void SetValue(XmlHelper helper, string path, object v)
+        internal static void SetValue(XmlHelper helper, string path, object v)
         {
             if (v == null)
             {
@@ -150,7 +150,7 @@ namespace OfficeOpenXml.Style.Dxf
         /// <param name="helper">The xml helper</param>
         /// <param name="path">The x path</param>
         /// <param name="s">The string</param>
-        internal void SetValue(XmlHelper helper, string path, string s)
+        internal static void SetValue(XmlHelper helper, string path, string s)
         {
             if (string.IsNullOrEmpty(s))
             {
@@ -167,7 +167,7 @@ namespace OfficeOpenXml.Style.Dxf
         /// <param name="helper">The xml helper</param>
         /// <param name="path">The x path</param>
         /// <param name="v">The boolean value</param>
-        internal void SetValueBool(XmlHelper helper, string path, bool? v)
+        internal static void SetValueBool(XmlHelper helper, string path, bool? v)
         {
             if (v == null)
             {
@@ -178,7 +178,7 @@ namespace OfficeOpenXml.Style.Dxf
                 helper.SetXmlNodeBool(path, (bool)v);
             }
         }
-        internal string GetAsString(object v)
+        internal static string GetAsString(object v)
         {
             return (v ?? "").ToString();
         }

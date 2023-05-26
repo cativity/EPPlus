@@ -226,7 +226,7 @@ namespace OfficeOpenXml.Table.PivotTable
             sb.Append("/>");
         }
 
-        private void AddBool(StringBuilder sb, string attrName, bool b, bool defaultValue=false)
+        private static void AddBool(StringBuilder sb, string attrName, bool b, bool defaultValue=false)
         {
             if(b != defaultValue)
             {

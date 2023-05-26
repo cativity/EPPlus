@@ -73,7 +73,7 @@ namespace OfficeOpenXml.DataValidation.Formulas
             set;
         }
 
-        private int MeasureFormulaLength(string formula)
+        private static int MeasureFormulaLength(string formula)
         {
             if (string.IsNullOrEmpty(formula))
             {

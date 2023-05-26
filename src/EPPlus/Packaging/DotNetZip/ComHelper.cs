@@ -46,7 +46,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         /// </summary>
         /// <param name="filename">The filename to of the zip file to check.</param>
         /// <returns>true if the file contains a valid zip file.</returns>
-        public bool IsZipFile(string filename)
+        public static bool IsZipFile(string filename)
         {
             return ZipFile.IsZipFile(filename);
         }
@@ -60,7 +60,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         /// </remarks>
         /// <param name="filename">The filename to of the zip file to check.</param>
         /// <returns>true if the file contains a valid zip file.</returns>
-        public bool IsZipFileWithExtract(string filename)
+        public static bool IsZipFileWithExtract(string filename)
         {
             return ZipFile.IsZipFile(filename, true);
         }
@@ -72,7 +72,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         /// <param name="filename">The filename to of the zip file to check.</param>
         ///
         /// <returns>true if the named zip file checks OK. Otherwise, false. </returns>
-        public bool CheckZip(string filename)
+        public static bool CheckZip(string filename)
         {
             return ZipFile.CheckZip(filename);
         }
@@ -86,7 +86,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         /// <param name="password">The password to check.</param>
         ///
         /// <returns>true if the named zip file checks OK. Otherwise, false. </returns>
-        public bool CheckZipPassword(string filename, string password)
+        public static bool CheckZipPassword(string filename, string password)
         {
             return ZipFile.CheckZipPassword(filename, password);
         }
@@ -95,7 +95,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         ///  A wrapper for <see cref="ZipFile.FixZipDirectory(string)">ZipFile.FixZipDirectory(string)</see>
         /// </summary>
         /// <param name="filename">The filename to of the zip file to fix.</param>
-        public void FixZipDirectory(string filename)
+        public static void FixZipDirectory(string filename)
         {
             ZipFile.FixZipDirectory(filename);
         }
@@ -107,7 +107,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         /// <returns>
         ///  the version number on the DotNetZip assembly, formatted as a string.
         /// </returns>
-        public string GetZipLibraryVersion()
+        public static string GetZipLibraryVersion()
         {
             return ZipFile.LibraryVersion.ToString();
         }

@@ -106,7 +106,7 @@ namespace EPPlusTest
            File.WriteAllBytes(@"c:\temp\vba.bin", ms.ToArray());
         }
 
-        private void printitems(CompoundDocumentItem item)
+        private static void printitems(CompoundDocumentItem item)
         {
             File.AppendAllText(@"c:\temp\items.txt", item.Name+ "\t");            
             foreach(CompoundDocumentItem? c in item.Children)
@@ -119,7 +119,7 @@ namespace EPPlusTest
         {
             for(int i=1;i<50;i++)
             {
-                byte[]? b=CreateFile(i);
+                byte[]? b= CreateFile(i);
                 ReadFile(b,i);
                 GC.Collect();
             }
@@ -131,7 +131,7 @@ namespace EPPlusTest
             }
         }
 
-        private void ReadFile(byte[] b, int noSheets)
+        private static void ReadFile(byte[] b, int noSheets)
         {
             MemoryStream? ms = new MemoryStream(b);
             using (ExcelPackage? p = new ExcelPackage(ms))
@@ -141,7 +141,7 @@ namespace EPPlusTest
             }
         }
 
-        public byte[] CreateFile(int noSheets)
+        public static byte[] CreateFile(int noSheets)
         {
             using (ExcelPackage? package = new ExcelPackage())
             {
@@ -177,7 +177,8 @@ namespace EPPlusTest
             ExcelVbaProject? vba = p.Workbook.VbaProject;
             p.SaveAs(new FileInfo(@"c:\temp\pricecheckSaved.xlsm"));
         }
-        FileInfo TempFile(string name)
+
+        static FileInfo TempFile(string name)
         {
             string? baseFolder = Path.Combine(@"c:\temp\bug\");
             return new FileInfo(Path.Combine(baseFolder, name));

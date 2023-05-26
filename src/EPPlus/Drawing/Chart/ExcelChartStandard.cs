@@ -218,11 +218,11 @@ namespace OfficeOpenXml.Drawing.Chart
                 StreamWriter streamChart = new StreamWriter(Part.GetStream(FileMode.Create, FileAccess.Write));
                 ChartXml.Save(streamChart);
                 streamChart.Close();
-                package.Flush();
+                ZipPackage.Flush();
 
                 ZipPackageRelationship? chartRelation = drawings.Part.CreateRelationship(UriHelper.GetRelativeUri(drawings.UriDrawing, UriChart), Packaging.TargetMode.Internal, ExcelPackage.schemaRelationships + "/chart");
                 graphFrame.SelectSingleNode("a:graphic/a:graphicData/c:chart", NameSpaceManager).Attributes["r:id"].Value = chartRelation.Id;
-                package.Flush();
+                ZipPackage.Flush();
                 _chartNode = ChartXml.SelectSingleNode(string.Format("c:chartSpace/c:chart/c:plotArea/{0}", GetChartNodeText()), NameSpaceManager);
             }
             else
@@ -398,7 +398,7 @@ namespace OfficeOpenXml.Drawing.Chart
             xml.AppendFormat("</{0}>", chartNodeText);
         }
 
-        private object GetAxisShapeProperties()
+        private static object GetAxisShapeProperties()
         {
             return //"<c:spPr><a:noFill/><a:ln><a:noFill/></a:ln><a:effectLst/></c:spPr>" +
                 "<c:txPr>" +
@@ -408,7 +408,7 @@ namespace OfficeOpenXml.Drawing.Chart
                 "</c:txPr>";
         }
 
-        private string AddLegend()
+        private static string AddLegend()
         {
             return "<c:legend><c:legendPos val=\"r\"/><c:layout/><c:overlay val=\"0\" />" +
                 //"<c:spPr><a:noFill/><a:ln><a:noFill/></a:ln><a:effectLst/></c:spPr>" +
@@ -478,7 +478,7 @@ namespace OfficeOpenXml.Drawing.Chart
                     return "catAx";
             }
         }
-        private string AddScatterType(eChartType type)
+        private static string AddScatterType(eChartType type)
         {
             if (type == eChartType.XYScatter ||
                 type == eChartType.XYScatterLines ||
@@ -493,7 +493,7 @@ namespace OfficeOpenXml.Drawing.Chart
                 return "";
             }
         }
-        private string AddRadarType(eChartType type)
+        private static string AddRadarType(eChartType type)
         {
             if (type == eChartType.Radar ||
                 type == eChartType.RadarFilled ||
@@ -518,7 +518,7 @@ namespace OfficeOpenXml.Drawing.Chart
                 return "";
             }
         }
-        private string AddHoleSize(eChartType type)
+        private static string AddHoleSize(eChartType type)
         {
             if (type == eChartType.Doughnut ||
                 type == eChartType.DoughnutExploded)
@@ -530,7 +530,7 @@ namespace OfficeOpenXml.Drawing.Chart
                 return "";
             }
         }
-        private string AddFirstSliceAng(eChartType type)
+        private static string AddFirstSliceAng(eChartType type)
         {
             if (type == eChartType.Doughnut ||
                 type == eChartType.DoughnutExploded)
@@ -560,7 +560,7 @@ namespace OfficeOpenXml.Drawing.Chart
                 }
             }
         }
-        private string AddHasMarker(eChartType type)
+        private static string AddHasMarker(eChartType type)
         {
             if (type == eChartType.LineMarkers ||
                 type == eChartType.LineMarkersStacked ||
@@ -621,7 +621,7 @@ namespace OfficeOpenXml.Drawing.Chart
             }
         }
 
-        private string Add3DPart(string name)
+        private static string Add3DPart(string name)
         {
             return string.Format("<c:{0}><c:thickness val=\"0\"/></c:{0}>", name);  //<c:spPr><a:noFill/><a:ln><a:noFill/></a:ln><a:effectLst/><a:sp3d/></c:spPr>
         }
@@ -1169,7 +1169,7 @@ namespace OfficeOpenXml.Drawing.Chart
         }
 
         #region "Grouping Enum Translation"
-        private string GetGroupingText(eGrouping grouping)
+        private static string GetGroupingText(eGrouping grouping)
         {
             switch (grouping)
             {
@@ -1184,7 +1184,7 @@ namespace OfficeOpenXml.Drawing.Chart
 
             }
         }
-        private eGrouping GetGroupingEnum(string grouping)
+        private static eGrouping GetGroupingEnum(string grouping)
         {
             switch (grouping)
             {
@@ -1198,7 +1198,7 @@ namespace OfficeOpenXml.Drawing.Chart
         }
         #endregion
 
-        internal int Items
+        internal static int Items
         {
             get
             {

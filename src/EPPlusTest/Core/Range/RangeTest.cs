@@ -306,7 +306,7 @@ namespace EPPlusTest.Core.Range
                 ws.Tables.Add(ws.Cells["D4:E5"], "Table1");
             }
         }
-        public void ValidateDeleted()
+        public static void ValidateDeleted()
         {
             using (ExcelPackage? p = new ExcelPackage())
             {

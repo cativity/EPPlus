@@ -287,7 +287,7 @@ namespace OfficeOpenXml.Core
             return measurement;
         }
 
-        private void SetMinWidth(ExcelWorksheet ws, double minimumWidth, int fromCol, int toCol)
+        private static void SetMinWidth(ExcelWorksheet ws, double minimumWidth, int fromCol, int toCol)
         {
             CellStoreEnumerator<ExcelValue>? iterator = new CellStoreEnumerator<ExcelValue>(ws._values, 0, fromCol, 0, toCol);
             int prevCol = fromCol;

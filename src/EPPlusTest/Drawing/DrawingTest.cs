@@ -175,7 +175,7 @@ namespace EPPlusTest
 
         //[TestMethod]
         //[Ignore]
-        public void DrawingSizingAndPositioning()
+        public static void DrawingSizingAndPositioning()
          {
              ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("DrawingPosSize");
 
@@ -981,7 +981,7 @@ namespace EPPlusTest
             ser1.HeaderAddress = new ExcelAddress("A1");
             pck.Dispose();
         }
-        public void DrawingRowheightDynamic()
+        public static void DrawingRowheightDynamic()
         {
             ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("PicResize");
             ws.Cells["A1"].Value = "test";

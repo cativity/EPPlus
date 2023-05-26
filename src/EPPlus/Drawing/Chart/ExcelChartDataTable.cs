@@ -32,7 +32,7 @@ namespace OfficeOpenXml.Drawing.Chart
            if (topNode == null)
            {
                topNode = node.OwnerDocument.CreateElement("c", "dTable", ExcelPackage.schemaChart);
-               InserAfter(node, "c:valAx,c:catAx,c:dateAx,c:serAx", topNode);
+                InserAfter(node, "c:valAx,c:catAx,c:dateAx,c:serAx", topNode);
                topNode.InnerXml = "<c:showHorzBorder val=\"1\"/><c:showVertBorder val=\"1\"/><c:showOutline val=\"1\"/><c:showKeys val=\"1\"/>" +
                     "<c:spPr><a:noFill/><a:ln cap = \"flat\" w=\"9525\" algn=\"ctr\" cmpd=\"sng\" ><a:solidFill><a:schemeClr val=\"tx1\"><a:lumMod val=\"15000\"/><a:lumOff val=\"85000\"/></a:schemeClr></a:solidFill><a:round/></a:ln><a:effectLst/></c:spPr>" +
                     "<c:txPr><a:bodyPr rot=\"0\" spcFirstLastPara=\"1\" vertOverflow=\"ellipsis\" vert=\"horz\" wrap=\"square\" anchor=\"ctr\" anchorCtr=\"1\"/>" +

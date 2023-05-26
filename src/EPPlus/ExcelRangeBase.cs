@@ -1252,7 +1252,7 @@ namespace OfficeOpenXml
                 if (value)
                 {
                     ValidateAutofilterDontCollide();
-                    ExcelTable? tbl = _worksheet.Tables.GetFromRange(this);
+                    ExcelTable? tbl = ExcelTableCollection.GetFromRange(this);
                     if (tbl == null)
                     {
                         _worksheet.AutoFilterAddress = this;
@@ -1319,7 +1319,7 @@ namespace OfficeOpenXml
         {
             get
             {
-                return _worksheet.Tables.GetFromRange(this) != null;
+                return ExcelTableCollection.GetFromRange(this) != null;
             }
         }
         /// <summary>
@@ -1329,7 +1329,7 @@ namespace OfficeOpenXml
         /// </summary>
         public ExcelTable GetTable()
         {
-            return _worksheet.Tables.GetFromRange(this);
+            return ExcelTableCollection.GetFromRange(this);
         }
         internal void SetIsRichTextFlag(bool value)
         {
@@ -1785,7 +1785,7 @@ namespace OfficeOpenXml
             }
         }
 
-        private object ConvertData(ExcelTextFormat Format, string v, int col, bool isText)
+        private static object ConvertData(ExcelTextFormat Format, string v, int col, bool isText)
         {
             if (isText && (Format.DataTypes == null || Format.DataTypes.Length < col))
             {
@@ -2137,7 +2137,7 @@ namespace OfficeOpenXml
         /// <param name="fromCol"></param>
         /// <param name="rows"></param>
         /// <param name="cols"></param>
-        private void ClearValue(CellStoreValue values, bool clearValue, int fromRow, int fromCol, int rows, int cols)
+        private static void ClearValue(CellStoreValue values, bool clearValue, int fromRow, int fromCol, int rows, int cols)
         {
             int toRow = fromRow + rows - 1;
             int toCol = fromCol + cols - 1;
@@ -2441,7 +2441,7 @@ namespace OfficeOpenXml
             }
             else
             {
-                ExcelTable? t = Worksheet.Tables.GetFromRange(this);
+                ExcelTable? t = ExcelTableCollection.GetFromRange(this);
                 if (t != null)
                 {
                     return t.Name;

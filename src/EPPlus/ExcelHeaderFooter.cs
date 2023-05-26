@@ -552,7 +552,7 @@ namespace OfficeOpenXml
                 }
             }
         }
-		private string GetText(ExcelHeaderFooterText headerFooter)
+		private static string GetText(ExcelHeaderFooterText headerFooter)
 		{
 			string ret = "";
 			if (headerFooter.LeftAlignedText != null)

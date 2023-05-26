@@ -31,7 +31,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Engineering
             ValidateArguments(arguments, 2);
             double x = ArgToDecimal(arguments, 0);
             int n = ArgToInt(arguments, 1);
-            FinanceCalcResult<double>? result = new BesselIimpl().BesselI(x, n);
+            FinanceCalcResult<double>? result = BesselIimpl.BesselI(x, n);
             return CreateResult(result.Result, DataType.Decimal);
         }
     }

@@ -38,7 +38,7 @@ namespace OfficeOpenXml.Drawing.Style.Coloring
                 SetXmlNodeString("@val", TranslateFromEnum(value));
             }
         }
-        private eSchemeColor TranslateFromString(string v)
+        private static eSchemeColor TranslateFromString(string v)
         {
             switch (v.ToLower())
             {
@@ -75,7 +75,7 @@ namespace OfficeOpenXml.Drawing.Style.Coloring
                     }
             }
         }
-        private string TranslateFromEnum(eSchemeColor e)
+        private static string TranslateFromEnum(eSchemeColor e)
         {
             string s;
             switch (e)

@@ -163,7 +163,7 @@ namespace OfficeOpenXml.FormulaParsing.ExpressionGraph
             }
         }
 
-        private bool IsWaste(Token token)
+        private static bool IsWaste(Token token)
         {
             if (token.TokenTypeIsSet(TokenType.String) || token.TokenTypeIsSet(TokenType.Colon))
             {

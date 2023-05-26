@@ -195,7 +195,7 @@ namespace EPPlusTest
             return null;
         }
 
-        internal void IsNullRange(ExcelRange address)
+        internal static void IsNullRange(ExcelRange address)
         {
             for(int row=address._fromRow;row<=address._toRow;row++)
             {
@@ -205,7 +205,7 @@ namespace EPPlusTest
                 }
             }
         }
-        protected void SaveWorkbook(string name, ExcelPackage pck)
+        protected static void SaveWorkbook(string name, ExcelPackage pck)
             {
             if (pck.Workbook.Worksheets.Count == 0)
             {
@@ -397,7 +397,7 @@ namespace EPPlusTest
             _ws.Cells[1, 1, noItems, 1].Style.Numberformat.Format = "yyyy-MM-dd";
             _ws.Cells[2, 4, noItems, 4].Style.Numberformat.Format = "#,##0.00";
         }
-        protected int GetRowFromDate(DateTime date)
+        protected static int GetRowFromDate(DateTime date)
         {
             DateTime startDate = new DateTime(DateTime.Today.Year-1, 11, 1);
             if (startDate > date)
@@ -446,7 +446,7 @@ namespace EPPlusTest
                 return null;
             }
         }
-        protected void AssertIsNull(ExcelRangeBase range)
+        protected static void AssertIsNull(ExcelRangeBase range)
         {
             foreach (ExcelRangeBase? r in range)
             {
@@ -455,7 +455,7 @@ namespace EPPlusTest
         }
 
 
-        protected void AssertNoChange(ExcelRangeBase range)
+        protected static void AssertNoChange(ExcelRangeBase range)
         {
             foreach (ExcelRangeBase? r in range)
             {

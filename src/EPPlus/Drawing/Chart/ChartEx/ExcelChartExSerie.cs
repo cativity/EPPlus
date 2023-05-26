@@ -333,7 +333,7 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
             else
             {
                 XmlHelper? f = XmlHelperFactory.Create(chart.NameSpaceManager, plotareaNode);
-                f.InserAfter(plotareaNode, "cx:plotSurface", ser);
+                InserAfter(plotareaNode, "cx:plotSurface", ser);
             }
             ser.SetAttribute("formatIdx", index.ToString());
             ser.SetAttribute("uniqueId", "{" + Guid.NewGuid().ToString() + "}");

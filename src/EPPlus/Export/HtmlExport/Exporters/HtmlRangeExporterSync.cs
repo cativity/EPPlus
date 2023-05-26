@@ -244,7 +244,7 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
 
                 if (Settings.SetRowHeight)
                 {
-                    this.AddRowHeightStyle(writer, range, row, this.Settings.StyleClassPrefix, this.IsMultiSheet);
+                    AddRowHeightStyle(writer, range, row, this.Settings.StyleClassPrefix, this.IsMultiSheet);
                 }
 
                 writer.RenderBeginTag(HtmlElements.TableRow);
@@ -270,7 +270,7 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
 
                     if (cell.Hyperlink == null)
                     {
-                        _cellDataWriter.Write(cell, dataType, writer, Settings, accessibilitySettings, false, image);
+                        CellDataWriter.Write(cell, dataType, writer, Settings, accessibilitySettings, false, image);
                     }
                     else
                     {
@@ -331,7 +331,7 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
                 int row = range._fromRow + i;
                 if (Settings.SetRowHeight)
                 {
-                    this.AddRowHeightStyle(writer, range, row, this.Settings.StyleClassPrefix, this.IsMultiSheet);
+                    AddRowHeightStyle(writer, range, row, this.Settings.StyleClassPrefix, this.IsMultiSheet);
                 }
 
                 writer.RenderBeginTag(HtmlElements.TableRow);

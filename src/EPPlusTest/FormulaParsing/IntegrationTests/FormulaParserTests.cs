@@ -48,7 +48,8 @@ namespace EPPlusTest.FormulaParsing.IntegrationTests
                 Assert.AreEqual(2, sheetB.Names[1].Value);
             }
         }
-        string QStr(string s)
+
+        static string QStr(string s)
         {
             char quotechar = '\"';
             return $"{quotechar}{s}{quotechar}";

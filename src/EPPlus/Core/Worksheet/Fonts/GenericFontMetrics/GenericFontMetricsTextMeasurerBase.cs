@@ -42,7 +42,7 @@ namespace OfficeOpenXml.Core.Worksheet.Fonts.GenericFontMetrics
             }
         }
 
-        internal protected bool IsValidFont(uint fontKey)
+        protected internal static bool IsValidFont(uint fontKey)
         {
             return _fonts.ContainsKey(fontKey);
         }

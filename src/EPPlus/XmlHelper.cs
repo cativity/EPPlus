@@ -1306,7 +1306,7 @@ namespace OfficeOpenXml
         /// <param name="parentNode">Parent node</param>
         /// <param name="beforeNodes">comma separated list containing nodes to insert after. Left to right order</param>
         /// <param name="newNode">The new node to be inserterd</param>
-        internal void InserAfter(XmlNode parentNode, string beforeNodes, XmlNode newNode)
+        internal static void InserAfter(XmlNode parentNode, string beforeNodes, XmlNode newNode)
         {
             string[] nodePaths = beforeNodes.Split(',');
 

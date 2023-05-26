@@ -29,7 +29,7 @@ namespace OfficeOpenXml.Packaging
             Package = package;
             Entry = entry;
             SaveHandler = null;
-            Uri = new Uri(package.GetUriKey(entry.FileName), UriKind.Relative);
+            Uri = new Uri(ZipPackage.GetUriKey(entry.FileName), UriKind.Relative);
         }
         internal ZipPackagePart(ZipPackage package, Uri partUri, string contentType, CompressionLevel compressionLevel)
         {
@@ -100,17 +100,17 @@ namespace OfficeOpenXml.Packaging
             {
                 if (!string.IsNullOrEmpty(_contentType))
                 {
-                    if (Package._contentTypes.ContainsKey(Package.GetUriKey(Uri.OriginalString)))
+                    if (Package._contentTypes.ContainsKey(ZipPackage.GetUriKey(Uri.OriginalString)))
                     {
-                        Package._contentTypes.Remove(Package.GetUriKey(Uri.OriginalString));
-                        Package._contentTypes.Add(Package.GetUriKey(Uri.OriginalString), new ZipPackage.ContentType(value, false, Uri.OriginalString));
+                        Package._contentTypes.Remove(ZipPackage.GetUriKey(Uri.OriginalString));
+                        Package._contentTypes.Add(ZipPackage.GetUriKey(Uri.OriginalString), new ZipPackage.ContentType(value, false, Uri.OriginalString));
                     }
                 }
                 _contentType = value;
             }
         }
         public Uri Uri { get; private set; }
-        public Stream GetZipStream()
+        public static Stream GetZipStream()
         {
             MemoryStream ms = RecyclableMemory.GetStream();
             ZipOutputStream os = new ZipOutputStream(ms);

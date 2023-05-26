@@ -91,7 +91,7 @@ namespace OfficeOpenXml
             }
         }
 
-        private eWorkSheetHidden TranslateHidden(string value)
+        private static eWorkSheetHidden TranslateHidden(string value)
         {
             switch (value)
             {
@@ -159,7 +159,7 @@ namespace OfficeOpenXml
                 StreamWriter streamWorksheet = new StreamWriter(worksheetPart.GetStream(FileMode.Create, FileAccess.Write));
                 XmlDocument worksheetXml = CreateNewWorksheet(isChart);
                 worksheetXml.Save(streamWorksheet);
-                _pck.ZipPackage.Flush();
+                ZipPackage.Flush();
 
                 string rel = CreateWorkbookRel(Name, sheetID, uriWorksheet, isChart, sheetElement);
 
@@ -178,7 +178,7 @@ namespace OfficeOpenXml
                 if (_pck.Workbook.VbaProject != null)
                 {
                     string? name = _pck.Workbook.VbaProject.GetModuleNameFromWorksheet(worksheet);
-                    _pck.Workbook.VbaProject.Modules.Add(new ExcelVBAModule(worksheet.CodeNameChange) { Name = name, Code = "", Attributes = _pck.Workbook.VbaProject.GetDocumentAttributes(Name, "0{00020820-0000-0000-C000-000000000046}"), Type = eModuleType.Document, HelpContext = 0 });
+                    _pck.Workbook.VbaProject.Modules.Add(new ExcelVBAModule(worksheet.CodeNameChange) { Name = name, Code = "", Attributes = ExcelVbaProject.GetDocumentAttributes(Name, "0{00020820-0000-0000-C000-000000000046}"), Type = eModuleType.Document, HelpContext = 0 });
                     worksheet.CodeModuleName = name;
                 }
 
@@ -258,7 +258,7 @@ namespace OfficeOpenXml
         {
             //Create the relationship between the workbook and the new worksheet
             ZipPackageRelationship? rel = _pck.Workbook.Part.CreateRelationship(UriHelper.GetRelativeUri(_pck.Workbook.WorkbookUri, uriWorksheet), Packaging.TargetMode.Internal, ExcelPackage.schemaRelationships + "/" + (isChart ? "chartsheet" : "worksheet"));
-            _pck.ZipPackage.Flush();
+            ZipPackage.Flush();
 
             //Create the new sheet node
             if(sheetElement==null)
@@ -296,7 +296,7 @@ namespace OfficeOpenXml
             } while (_pck.ZipPackage.PartExists(uriWorksheet));
         }
 
-        internal string ValidateFixSheetName(string Name)
+        internal static string ValidateFixSheetName(string Name)
         {
             if (string.IsNullOrEmpty(Name) || Name.Trim() == "")
             {
@@ -353,7 +353,7 @@ namespace OfficeOpenXml
         /// </summary>
         /// <param name="Name">The Name</param>
         /// <returns>True if valid</returns>
-        private bool ValidateName(string Name)
+        private static bool ValidateName(string Name)
         {
             return System.Text.RegularExpressions.Regex.IsMatch(Name, @":|\?|/|\\|\[|\]");
         }
@@ -362,7 +362,7 @@ namespace OfficeOpenXml
         /// Creates the XML document representing a new empty worksheet
         /// </summary>
         /// <returns></returns>
-        internal XmlDocument CreateNewWorksheet(bool isChart)
+        internal static XmlDocument CreateNewWorksheet(bool isChart)
         {
             XmlDocument xmlDoc = new XmlDocument();
             XmlElement elemWs = xmlDoc.CreateElement(isChart ? "chartsheet" : "worksheet", ExcelPackage.schemaMain);

@@ -1069,7 +1069,7 @@ namespace OfficeOpenXml.Drawing.Chart.Style
             }
         }
 
-        private string GetStartStyleXml(int id)
+        private static string GetStartStyleXml(int id)
         {
             StringBuilder? sb = new StringBuilder();
             sb.Append($"<cs:chartStyle xmlns:cs=\"http://schemas.microsoft.com/office/drawing/2012/chartStyle\" xmlns:a=\"http://schemas.openxmlformats.org/drawingml/2006/main\" id=\"{id}\">");
@@ -1108,11 +1108,11 @@ namespace OfficeOpenXml.Drawing.Chart.Style
 
             return sb.ToString();
         }
-        private void AppendDefaultStyleSection(StringBuilder sb, string section)
+        private static void AppendDefaultStyleSection(StringBuilder sb, string section)
         {
             sb.Append($"<cs:{section}><cs:lnRef idx=\"0\"/><cs:fillRef idx=\"0\"/><cs:effectRef idx=\"0\"/><cs:fontRef idx=\"minor\"></cs:fontRef></cs:{section}>");
         }
-        private string GetStartColorXml()
+        private static string GetStartColorXml()
         {
             return $"<cs:colorStyle xmlns:cs=\"http://schemas.microsoft.com/office/drawing/2012/chartStyle\" xmlns:a=\"http://schemas.openxmlformats.org/drawingml/2006/main\" meth=\"cycle\" id=\"10\">" +
                 "<a:schemeClr val=\"accent1\"/>" +
@@ -1131,7 +1131,7 @@ namespace OfficeOpenXml.Drawing.Chart.Style
                 "<cs:variation><a:lumMod val=\"50000\"/><a:lumOff val=\"50000\"/></cs:variation>" +
                 "</cs:colorStyle>";
         }
-        private int GetIxFromChartUri(string name)
+        private static int GetIxFromChartUri(string name)
         {
             if (name.StartsWith("chart", StringComparison.InvariantCultureIgnoreCase) && name.EndsWith(".xml", StringComparison.InvariantCultureIgnoreCase))
             {

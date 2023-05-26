@@ -80,7 +80,7 @@ namespace OfficeOpenXml
             }
         }
 
-        private ExcelRange GetTableAddess(ExcelWorksheet _worksheet, string address)
+        private static ExcelRange GetTableAddess(ExcelWorksheet _worksheet, string address)
         {
             int ixStart = address.IndexOf('[');
             if (ixStart == 0) //External Address

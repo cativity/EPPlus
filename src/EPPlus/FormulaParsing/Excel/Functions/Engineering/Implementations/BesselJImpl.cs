@@ -18,7 +18,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Engineering.Implementatio
     public class BesselJImpl : BesselBase
     {
 
-        public FinanceCalcResult<double> BesselJ(double x, int N)
+        public static FinanceCalcResult<double> BesselJ(double x, int N)
         {
             if (N < 0)
             {

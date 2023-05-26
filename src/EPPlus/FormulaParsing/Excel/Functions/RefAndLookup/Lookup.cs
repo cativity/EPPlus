@@ -39,7 +39,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.RefAndLookup
             return HandleSingleRange(arguments, context);
         }
 
-        private bool HaveTwoRanges(IEnumerable<FunctionArgument> arguments)
+        private static bool HaveTwoRanges(IEnumerable<FunctionArgument> arguments)
         {
             if (arguments.Count() < 3)
             {

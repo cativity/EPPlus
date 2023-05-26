@@ -38,12 +38,12 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Text
             return CreateResult(result, DataType.String);
         }
 
-        private string GetFirstPart(string text, int startPos)
+        private static string GetFirstPart(string text, int startPos)
         {
             return text.Substring(0, startPos - 1);
         }
 
-        private string GetLastPart(string text, int startPos, int nCharactersToReplace)
+        private static string GetLastPart(string text, int startPos, int nCharactersToReplace)
         {
             int startIx = startPos -1;
             startIx += nCharactersToReplace;

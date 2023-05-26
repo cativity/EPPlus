@@ -111,7 +111,7 @@ namespace OfficeOpenXml.Drawing.Style.Fill
             }
         }
 
-        private string GetPathString(eShadePath shadePath)
+        private static string GetPathString(eShadePath shadePath)
         {
             switch(shadePath)
             {

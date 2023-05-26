@@ -19,6 +19,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.FinancialDayCount
 {
     internal abstract class FinancialDaysBase
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1822:Mark members as static", Justification = "<Pending>")]
         public FinancialPeriod GetCouponPeriod(FinancialDay settlementDay, FinancialDay maturityDay, int frequency)
         {
             List<FinancialPeriod>? periods = new List<FinancialPeriod>();
@@ -50,6 +51,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.FinancialDayCount
             return new FinancialPeriod(tmpDay, lastDay);
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1822:Mark members as static", Justification = "<Pending>")]
         public IEnumerable<FinancialPeriod> GetCouponPeriodsBackwards(FinancialDay settlement, FinancialDay date, int frequency)
         {
             List<FinancialPeriod>? periods = new List<FinancialPeriod>();
@@ -76,7 +78,8 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.FinancialDayCount
             return periods;
         }
 
-        private FinancialPeriod CreateCalendarPeriod(System.DateTime startDate, int frequency, DayCountBasis basis, bool createFuturePeriod)
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1822:Mark members as static", Justification = "<Pending>")]
+        private static FinancialPeriod CreateCalendarPeriod(System.DateTime startDate, int frequency, DayCountBasis basis, bool createFuturePeriod)
         {
             System.DateTime d1 = System.DateTime.MinValue;
             int factor = createFuturePeriod ? 1 : -1;
@@ -104,7 +107,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.FinancialDayCount
             }
         }
 
-        private FinancialPeriod GetSettlementCalendarYearPeriod(FinancialDay date, int frequency)
+        private static FinancialPeriod GetSettlementCalendarYearPeriod(FinancialDay date, int frequency)
         {
             System.DateTime startDate = default(System.DateTime);
             if (frequency == 1)
@@ -173,6 +176,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.FinancialDayCount
             return periods;
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1822:Mark members as static", Justification = "<Pending>")]
         public int GetNumberOfCouponPeriods(FinancialDay settlementDay, FinancialDay maturityDay, int frequency)
         {
             System.DateTime settlementDate = settlementDay.ToDateTime();
@@ -205,6 +209,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.FinancialDayCount
             return (basis * (end.Year - start.Year) + 30 * (end.Month - start.Month) + ((end.Day > 30 ? 30 : end.Day) - (start.Day > 30 ? 30 : start.Day)));
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1822:Mark members as static", Justification = "<Pending>")]
         protected double ActualDaysInLeapYear(FinancialDay start, FinancialDay end)
         {
             double daysInLeapYear = 0d;

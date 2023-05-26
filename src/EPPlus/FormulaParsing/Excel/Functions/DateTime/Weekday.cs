@@ -38,7 +38,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime
         private static List<int> _oneBasedStartOnMonday = new List<int> { 7, 1, 2, 3, 4, 5, 6 };
         private static List<int> _zeroBasedStartOnSunday = new List<int> { 6, 0, 1, 2, 3, 4, 5 };
 
-        private int CalculateDayOfWeek(System.DateTime dateTime, int returnType)
+        private static int CalculateDayOfWeek(System.DateTime dateTime, int returnType)
         {
             int dayIx = (int)dateTime.DayOfWeek;
             switch (returnType)

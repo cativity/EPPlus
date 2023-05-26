@@ -78,7 +78,7 @@ namespace OfficeOpenXml
         /// <summary>
         /// Returns an instance of the internal generic text measurer
         /// </summary>
-        public ITextMeasurer GenericTextMeasurer
+        public static ITextMeasurer GenericTextMeasurer
         {
             get
             {

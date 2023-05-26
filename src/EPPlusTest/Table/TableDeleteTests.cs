@@ -298,7 +298,7 @@ namespace EPPlusTest.Table
 
         #region Delete (ShowHeader)
 
-        private ExcelPackage CreateTablePackage(bool showHeader, string sheetName, string tableName)
+        private static ExcelPackage CreateTablePackage(bool showHeader, string sheetName, string tableName)
         {
             ExcelPackage? package = new ExcelPackage();
             ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("Sheet1");

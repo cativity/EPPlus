@@ -311,7 +311,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Crc
         }
 
 
-        private uint gf2_matrix_times(uint[] matrix, uint vec)
+        private static uint gf2_matrix_times(uint[] matrix, uint vec)
         {
             uint sum = 0;
             int i=0;
@@ -328,11 +328,11 @@ namespace OfficeOpenXml.Packaging.Ionic.Crc
             return sum;
         }
 
-        private void gf2_matrix_square(uint[] square, uint[] mat)
+        private static void gf2_matrix_square(uint[] square, uint[] mat)
         {
             for (int i = 0; i < 32; i++)
             {
-                square[i] = this.gf2_matrix_times(mat, mat[i]);
+                square[i] = gf2_matrix_times(mat, mat[i]);
             }
         }
 
@@ -387,7 +387,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Crc
 
                 if ((len2 & 1)== 1)
                 {
-                    crc1 = this.gf2_matrix_times(even, crc1);
+                    crc1 = gf2_matrix_times(even, crc1);
                 }
 
                 len2 >>= 1;
@@ -401,7 +401,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Crc
                 gf2_matrix_square(odd, even);
                 if ((len2 & 1)==1)
                 {
-                    crc1 = this.gf2_matrix_times(odd, crc1);
+                    crc1 = gf2_matrix_times(odd, crc1);
                 }
 
                 len2 >>= 1;

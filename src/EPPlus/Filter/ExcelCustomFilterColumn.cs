@@ -113,7 +113,7 @@ namespace OfficeOpenXml.Filter
             return match;
         }
 
-        private bool MatchByOperatorNumeric(object value, ExcelFilterCustomItem filter)
+        private static bool MatchByOperatorNumeric(object value, ExcelFilterCustomItem filter)
         {
             if (filter.Operator == null)
             {

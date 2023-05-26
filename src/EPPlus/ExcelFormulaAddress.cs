@@ -97,7 +97,7 @@ namespace OfficeOpenXml
             }
         }
 
-        private void GetFixed(string address, out bool rowFixed, out bool colFixed)
+        private static void GetFixed(string address, out bool rowFixed, out bool colFixed)
         {            
             rowFixed=colFixed=false;
             int ix=address.IndexOf('$');

@@ -59,7 +59,7 @@ namespace OfficeOpenXml.Core.Worksheet
             XmlDocument worksheetXml = new XmlDocument();
             worksheetXml.LoadXml(copy.WorksheetXml.OuterXml);
             worksheetXml.Save(streamWorksheet);
-            pck.ZipPackage.Flush();
+            ZipPackage.Flush();
 
             //Create a relation to the workbook
             string relID = worksheets.CreateWorkbookRel(name, sheetID, uriWorksheet, false, null);
@@ -123,7 +123,7 @@ namespace OfficeOpenXml.Core.Worksheet
                     {
                         Name = wsName,
                         Code = copy.CodeModule.Code,
-                        Attributes = pck.Workbook.VbaProject.GetDocumentAttributes(name, "0{00020820-0000-0000-C000-000000000046}"),
+                        Attributes = ExcelVbaProject.GetDocumentAttributes(name, "0{00020820-0000-0000-C000-000000000046}"),
                         Type = eModuleType.Document,
                         HelpContext = 0
                     });

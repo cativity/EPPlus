@@ -44,7 +44,7 @@ namespace EPPlusTest.FormulaParsing.ExpressionGraph
         private ParsingContext _parsingContext;
         private ParsingScope _scope;
 
-        private ExcelCell CreateItem(object val)
+        private static ExcelCell CreateItem(object val)
         {
             return new ExcelCell(val, null, 0, 0);
         }

@@ -85,7 +85,7 @@ namespace OfficeOpenXml.Filter
                 node.SetAttribute("maxVal", this.MaxValue.Value.ToString("R15", CultureInfo.InvariantCulture));
             }
         }
-        private string GetTypeForXml(eDynamicFilterType type)
+        private static string GetTypeForXml(eDynamicFilterType type)
         {
             if(type.ToString().Length>3)
             {

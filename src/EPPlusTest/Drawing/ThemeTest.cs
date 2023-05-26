@@ -425,7 +425,7 @@ namespace EPPlusTest.Drawing
             ExcelTheme? theme = _pck.Workbook.ThemeManager.CurrentTheme;
             Assert.AreEqual(eFillStyle.BlipFill, theme.FormatScheme.BackgroundFillStyle[2].Style);
             ExcelWorksheet? ws=_pck.Workbook.Worksheets.Add("ThemeTest");
-            LoadTestdata(ws); 
+            LoadTestdata(ws);
             SaveWorkbook("ThemeWoodTypeBlipFill.xlsx", _pck);
         }
         [TestMethod]

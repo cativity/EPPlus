@@ -115,7 +115,7 @@ namespace OfficeOpenXml.Drawing.Vml
             }
         }
 
-        private string CreateVmlDrawings()
+        private static string CreateVmlDrawings()
         {
             string vml = string.Format("<xml xmlns:v=\"{0}\" xmlns:o=\"{1}\" xmlns:x=\"{2}\">",
                 ExcelPackage.schemaMicrosoftVml,
@@ -239,7 +239,7 @@ namespace OfficeOpenXml.Drawing.Vml
             shapeElement.InnerXml = vml.ToString();
             return shapeElement;
         }
-        private string GetFontName(ExcelControl ctrl)
+        private static string GetFontName(ExcelControl ctrl)
         {
             if (ctrl.ControlType == eControlType.Button)
             {
@@ -251,7 +251,7 @@ namespace OfficeOpenXml.Drawing.Vml
             }
         }
 
-        private string GetFontSize(ExcelControl ctrl)
+        private static string GetFontSize(ExcelControl ctrl)
         {
             if (ctrl.ControlType == eControlType.Button)
             {
@@ -263,7 +263,7 @@ namespace OfficeOpenXml.Drawing.Vml
             }
         }
 
-        private string GetVmlClientData(ExcelControl ctrl, XmlElement shapeElement)
+        private static string GetVmlClientData(ExcelControl ctrl, XmlElement shapeElement)
         {
             switch (ctrl.ControlType)
             {
@@ -289,7 +289,7 @@ namespace OfficeOpenXml.Drawing.Vml
             }
         }
 
-        private string GetVml(ExcelControl ctrl, XmlElement shapeElement)
+        private static string GetVml(ExcelControl ctrl, XmlElement shapeElement)
         {
             switch (ctrl.ControlType)
             {
@@ -302,7 +302,7 @@ namespace OfficeOpenXml.Drawing.Vml
             }
         }
 
-        private void SetShapeAttributes(ExcelControl ctrl, XmlElement shapeElement)
+        private static void SetShapeAttributes(ExcelControl ctrl, XmlElement shapeElement)
         {
             switch (ctrl.ControlType)
             {

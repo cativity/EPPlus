@@ -65,7 +65,7 @@ namespace OfficeOpenXml.Drawing.Chart
         }
         #region "Grouping Enum Translation"
         string _scatterTypePath = "c:scatterStyle/@val";
-        private eScatterStyle GetScatterEnum(string text)
+        private static eScatterStyle GetScatterEnum(string text)
         {
             switch (text)
             {
@@ -76,7 +76,7 @@ namespace OfficeOpenXml.Drawing.Chart
             }
         }
 
-        private string GetScatterText(eScatterStyle shatterStyle)
+        private static string GetScatterText(eScatterStyle shatterStyle)
         {
             switch (shatterStyle)
             {

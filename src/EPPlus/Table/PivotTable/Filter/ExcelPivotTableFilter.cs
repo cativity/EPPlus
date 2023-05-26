@@ -359,7 +359,7 @@ namespace OfficeOpenXml.Table.PivotTable.Filter
             _filter = cf;
         }
 
-        private string GetFilterValueAsString(object v)
+        private static string GetFilterValueAsString(object v)
         {
             if (ConvertUtil.IsNumericOrDate(v))
             {

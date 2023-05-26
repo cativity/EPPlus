@@ -230,7 +230,7 @@ namespace EPPlusTest.Drawing.Chart
             Assert.AreEqual("sv", serie.Region.TwoLetterISOLanguageName);
             Assert.AreEqual("sv-SE", serie.Language.Name);
         }
-        private ExcelWorksheet GetWorksheet(string wsName)
+        private static ExcelWorksheet GetWorksheet(string wsName)
         {
             if (_pck == null || _pck.Workbook.Worksheets.Count==0)
             {

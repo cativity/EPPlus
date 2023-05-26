@@ -64,7 +64,7 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
             writer.ApplyFormat(settings.Minify);
         }
 
-        protected void AddImage(EpplusHtmlWriter writer, HtmlExportSettings settings, HtmlImage image, object value)
+        protected static void AddImage(EpplusHtmlWriter writer, HtmlExportSettings settings, HtmlImage image, object value)
         {
             if (image != null)
             {
@@ -86,7 +86,7 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
         /// <param name="writer"></param>
         /// <param name="cell"></param>
         /// <param name="settings"></param>
-        protected void RenderHyperlink(EpplusHtmlWriter writer, ExcelRangeBase cell, HtmlExportSettings settings)
+        protected static void RenderHyperlink(EpplusHtmlWriter writer, ExcelRangeBase cell, HtmlExportSettings settings)
         {
             if (cell.Hyperlink is ExcelHyperLink eurl)
             {

@@ -120,11 +120,11 @@ namespace OfficeOpenXml
                 StreamWriter stream = new StreamWriter(part.GetStream(FileMode.Create, FileAccess.Write));
                 xmlDoc.Save(stream);
                 //stream.Close();
-                _package.ZipPackage.Flush();
+                Packaging.ZipPackage.Flush();
 
                 // create the relationship between the workbook and the new shared strings part
                 _package.ZipPackage.CreateRelationship(UriHelper.GetRelativeUri(new Uri("/xl", UriKind.Relative), uri), Packaging.TargetMode.Internal, relationship);
-                _package.ZipPackage.Flush();
+                Packaging.ZipPackage.Flush();
             }
             return xmlDoc;
         }

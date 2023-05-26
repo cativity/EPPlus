@@ -238,7 +238,7 @@ namespace OfficeOpenXml.Drawing.Theme
             }
         }
 
-        private void Init()
+        private static void Init()
         {
 
         }

@@ -33,7 +33,7 @@ namespace OfficeOpenXml.FormulaParsing.ExcelUtilities
             return base.CompareStringToString(candidate, searchedValue);
         }
 
-        private string BuildRegex(string searchedValue, string candidate)
+        private static string BuildRegex(string searchedValue, string candidate)
         {
             StringBuilder? result = new StringBuilder();
             string? regexPattern = Regex.Escape(searchedValue);

@@ -72,7 +72,7 @@ namespace EPPlusTest.DataValidation
 
         }
 
-        public void TestTypeOperator(ExcelDataValidation type)
+        public static void TestTypeOperator(ExcelDataValidation type)
         {
 
         }

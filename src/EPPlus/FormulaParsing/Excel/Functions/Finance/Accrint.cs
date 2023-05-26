@@ -89,7 +89,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance
             }
         }
 
-        private double CalculateInterest(FinancialDay issue, FinancialDay firstInterest, FinancialDay settlement, double rate, double par, int frequency, DayCountBasis basis, ParsingContext context)
+        private static double CalculateInterest(FinancialDay issue, FinancialDay firstInterest, FinancialDay settlement, double rate, double par, int frequency, DayCountBasis basis, ParsingContext context)
         {
             YearFracProvider? yearFrac = new YearFracProvider(context);
             IFinanicalDays? fds = FinancialDaysFactory.Create(basis);

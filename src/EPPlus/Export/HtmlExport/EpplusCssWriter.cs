@@ -218,7 +218,7 @@ namespace OfficeOpenXml.Export.HtmlExport
             WriteClassEnd(_settings.Minify);
         }
 
-        private string GetDrawingBorder(ExcelPicture picture)
+        private static string GetDrawingBorder(ExcelPicture picture)
         {
             Color color = picture.Border.Fill.Color;
             if (color.IsEmpty)
@@ -250,7 +250,7 @@ namespace OfficeOpenXml.Export.HtmlExport
             return lineStyle;
         }
 
-        private object GetContentType(ePictureType type)
+        private static object GetContentType(ePictureType type)
         {
             switch(type)
             {
@@ -480,7 +480,7 @@ namespace OfficeOpenXml.Export.HtmlExport
             }            
         }
 
-        private bool AreColorEqual(ExcelColorXml c1, ExcelColor c2)
+        private static bool AreColorEqual(ExcelColorXml c1, ExcelColor c2)
         {
             if (c1.Tint != c2.Tint)
             {

@@ -137,7 +137,7 @@ namespace OfficeOpenXml.Filter
             }
         }
 
-        private string ConvertToString(object f)
+        private static string ConvertToString(object f)
         {
             return f?.ToString();
         }

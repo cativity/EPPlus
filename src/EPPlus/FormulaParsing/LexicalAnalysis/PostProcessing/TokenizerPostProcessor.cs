@@ -102,7 +102,7 @@ namespace OfficeOpenXml.FormulaParsing.LexicalAnalysis.PostProcessing
             _context.ChangeValue(value, _navigator.Index);
         }
 
-        private bool IsOffsetFunctionToken(Token token)
+        private static bool IsOffsetFunctionToken(Token token)
         {
             return token.TokenTypeIsSet(TokenType.Function) && token.Value.ToLower() == "offset";
         }
@@ -274,11 +274,11 @@ namespace OfficeOpenXml.FormulaParsing.LexicalAnalysis.PostProcessing
             }
         }
 
-        private bool TokenIsNegator(TokenizerContext context)
+        private static bool TokenIsNegator(TokenizerContext context)
         {
             return TokenIsNegator(context.LastToken.Value);
         }
-        private bool TokenIsNegator(Token t)
+        private static bool TokenIsNegator(Token t)
         {
             return t.TokenTypeIsSet(TokenType.Operator)
                         ||

@@ -54,7 +54,7 @@ namespace OfficeOpenXml.Drawing.Vml
             }
         }
 
-        private string CreateVmlDrawings()
+        private static string CreateVmlDrawings()
         {
             string vml=string.Format("<xml xmlns:v=\"{0}\" xmlns:o=\"{1}\" xmlns:x=\"{2}\">", 
                 ExcelPackage.schemaMicrosoftVml, 

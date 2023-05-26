@@ -36,7 +36,7 @@ namespace OfficeOpenXml.FormulaParsing.ExcelUtilities
 
         public IEnumerable<KeyValuePair<string, FormulaDependency>> Dependencies { get { return _dependencies; } }
 
-        public void AddFormulaScope(ParsingScope parsingScope)
+        public static void AddFormulaScope(ParsingScope parsingScope)
         {
             //var dependency = _formulaDependencyFactory.Create(parsingScope);
             //var address = parsingScope.Address.ToString();

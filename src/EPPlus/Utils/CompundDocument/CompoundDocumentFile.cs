@@ -259,7 +259,7 @@ namespace OfficeOpenXml.Utils.CompundDocument
                 }
             }
         }
-        private byte[] GetStream(int startingSectorLocation, long streamSize, List<int> FAT, List<byte[]> sectors)
+        private static byte[] GetStream(int startingSectorLocation, long streamSize, List<int> FAT, List<byte[]> sectors)
         {
             using (MemoryStream? ms = RecyclableMemory.GetStream())
             {
@@ -334,7 +334,7 @@ namespace OfficeOpenXml.Utils.CompundDocument
             }
             return l;
         }
-        private void ReadDirectory(List<byte[]> sectors, int index, List<CompoundDocumentItem> l)
+        private static void ReadDirectory(List<byte[]> sectors, int index, List<CompoundDocumentItem> l)
         {
             using (MemoryStream? ms = RecyclableMemory.GetStream(sectors[index]))
             {
@@ -455,14 +455,14 @@ namespace OfficeOpenXml.Utils.CompundDocument
             return l;
         }
 
-        private void InitItem(CompoundDocumentItem item)
+        private static void InitItem(CompoundDocumentItem item)
         {
             item.LeftSibling = -1;
             item.RightSibling = -1;
             item._handled = false;
         }
 
-        private int AddChildren(CompoundDocumentItem item, List<CompoundDocumentItem> l)
+        private static int AddChildren(CompoundDocumentItem item, List<CompoundDocumentItem> l)
         {
             int childId = -1;
             item.ColorFlag = 1; //Always Black-No matter here, we just add nodes as a b-tree
@@ -485,7 +485,7 @@ namespace OfficeOpenXml.Utils.CompundDocument
             return childId;
         }
 
-        private void SetUnhandled(int listAdd, List<CompoundDocumentItem> children)
+        private static void SetUnhandled(int listAdd, List<CompoundDocumentItem> children)
         {
             for(int i=0;i<children.Count;i++)
             {
@@ -507,7 +507,7 @@ namespace OfficeOpenXml.Utils.CompundDocument
             }
         }
 
-        private int SetSiblings(int listAdd, List<CompoundDocumentItem> children, int fromPos, int toPos, int currSibl)
+        private static int SetSiblings(int listAdd, List<CompoundDocumentItem> children, int fromPos, int toPos, int currSibl)
         {
             int pos, div;
             pos = GetPos(fromPos,toPos);
@@ -548,13 +548,13 @@ namespace OfficeOpenXml.Utils.CompundDocument
             return pos + listAdd;
         }
 
-        private int GetPos(int fromPos, int toPos)
+        private static int GetPos(int fromPos, int toPos)
         {
             int div=(toPos - fromPos) / 2;
             return fromPos + div;
         }
 
-        private bool NoGreater(List<CompoundDocumentItem> children, int pos, int lPos, int listAdd)
+        private static bool NoGreater(List<CompoundDocumentItem> children, int pos, int lPos, int listAdd)
         {
             if (pos - lPos <= 1)
             {
@@ -570,7 +570,7 @@ namespace OfficeOpenXml.Utils.CompundDocument
             }
             return true;
         }
-        private bool NoLess(List<CompoundDocumentItem> children, int pos, int rPos, int listAdd)
+        private static bool NoLess(List<CompoundDocumentItem> children, int pos, int rPos, int listAdd)
         {
             if (rPos - pos <= 1)
             {
@@ -587,7 +587,7 @@ namespace OfficeOpenXml.Utils.CompundDocument
             return true;
         }
 
-        private int GetLevels(int c)
+        private static int GetLevels(int c)
         {
             c--;
             int i = 0;
@@ -631,7 +631,7 @@ namespace OfficeOpenXml.Utils.CompundDocument
             }
             bw.Seek(pos, SeekOrigin.Begin);
         }
-        private void WritePosition(BinaryWriter bw, int[] sectors, ref int writePos)
+        private static void WritePosition(BinaryWriter bw, int[] sectors, ref int writePos)
         {
             int pos = (int)bw.BaseStream.Position;
             bw.Seek(writePos, SeekOrigin.Begin);
@@ -878,7 +878,7 @@ namespace OfficeOpenXml.Utils.CompundDocument
             _currentFATSectorPos = (int)bw.BaseStream.Position;            
         }
 
-        private int GetSectors(int v, int size)
+        private static int GetSectors(int v, int size)
         {
             if(v % size==0)
             {
@@ -964,7 +964,7 @@ namespace OfficeOpenXml.Utils.CompundDocument
                     item.StreamSize = item.Stream.Length;
                     if (item.StreamSize < _miniStreamCutoffSize)
                     {
-                        item.StartingSectorLocation=WriteStream(bwMini, dwi.miniFAT, item.Stream, miniFATSectorSize);
+                        item.StartingSectorLocation= WriteStream(bwMini, dwi.miniFAT, item.Stream, miniFATSectorSize);
                     }
                     else
                     {
@@ -978,7 +978,7 @@ namespace OfficeOpenXml.Utils.CompundDocument
             }
         }
 
-        private int WriteStream(BinaryWriter bw, List<int> fat, byte[] stream, int FATSectorSize)
+        private static int WriteStream(BinaryWriter bw, List<int> fat, byte[] stream, int FATSectorSize)
         {
             int rest = FATSectorSize - (stream.Length % FATSectorSize);
             bw.Write(stream);
@@ -993,7 +993,7 @@ namespace OfficeOpenXml.Utils.CompundDocument
             return ret; //Returns the start sector
         }
 
-        private void AddFAT(List<int> fat, long streamSize, int sectorSize, int addPos)
+        private static void AddFAT(List<int> fat, long streamSize, int sectorSize, int addPos)
         {
             int size = 0;
             while (size<streamSize)

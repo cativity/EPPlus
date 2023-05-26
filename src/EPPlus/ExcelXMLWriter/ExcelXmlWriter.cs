@@ -109,7 +109,7 @@ namespace OfficeOpenXml.ExcelXMLWriter
             sw.Write(xml.Substring(endOfNode, xml.Length - endOfNode));
         }
 
-        internal void FindNodePositionAndClearItInit(StreamWriter sw, string xml, string nodeName,
+        internal static void FindNodePositionAndClearItInit(StreamWriter sw, string xml, string nodeName,
             ref int start, ref int end)
         {
             start = end;
@@ -118,7 +118,7 @@ namespace OfficeOpenXml.ExcelXMLWriter
             sw.Write(xml.Substring(0, start));
         }
 
-        internal void FindNodePositionAndClearIt(StreamWriter sw, string xml, string nodeName,
+        internal static void FindNodePositionAndClearIt(StreamWriter sw, string xml, string nodeName,
             ref int start, ref int end)
         {
             int oldEnd = end;
@@ -321,7 +321,7 @@ namespace OfficeOpenXml.ExcelXMLWriter
             cache.Append(">");
         }
 
-        private string GetDataTableAttributes(Formulas f)
+        private static string GetDataTableAttributes(Formulas f)
         {
             string? attributes = " ";
             if (f.IsDataTableRow)
@@ -728,7 +728,7 @@ namespace OfficeOpenXml.ExcelXMLWriter
             cache.Append($"</{prefix}dataValidation>");
         }
 
-        void WriteDataValidationFormulaSingle(IExcelDataValidationFormula formula,
+        static void WriteDataValidationFormulaSingle(IExcelDataValidationFormula formula,
             StringBuilder cache, string prefix, string extNode, string endExtNode)
         {
             string string1 = ((ExcelDataValidationFormula)formula).GetXmlValue();
@@ -737,7 +737,7 @@ namespace OfficeOpenXml.ExcelXMLWriter
             cache.Append($"<{prefix}formula1>{extNode}{string1}{endExtNode}</{prefix}formula1>");
         }
 
-        void WriteDataValidationFormulas(IExcelDataValidationFormula formula1, IExcelDataValidationFormula formula2,
+        static void WriteDataValidationFormulas(IExcelDataValidationFormula formula1, IExcelDataValidationFormula formula2,
             StringBuilder cache, string prefix, string extNode, string endExtNode, ExcelDataValidationOperator dvOperator)
         {
             string string1 = ((ExcelDataValidationFormula)formula1).GetXmlValue();

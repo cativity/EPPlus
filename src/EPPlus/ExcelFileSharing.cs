@@ -78,7 +78,7 @@ namespace OfficeOpenXml
             }
         }
 
-        private string SetHashAlogorithm(eHashAlgorithm value)
+        private static string SetHashAlogorithm(eHashAlgorithm value)
         {
             switch(value)
             {
@@ -89,7 +89,7 @@ namespace OfficeOpenXml
             }
         }
 
-        private eHashAlgorithm GetHashAlogorithm(string v)
+        private static eHashAlgorithm GetHashAlogorithm(string v)
         {
             switch (v)
             {

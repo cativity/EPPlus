@@ -111,7 +111,7 @@ namespace OfficeOpenXml.Table.PivotTable
             }
 
         }
-        private ExcelRangeBase GetRangeByName(ExcelWorksheet w, string name)
+        private static ExcelRangeBase GetRangeByName(ExcelWorksheet w, string name)
         {
             if (w is ExcelChartsheet)
             {
@@ -538,7 +538,7 @@ namespace OfficeOpenXml.Table.PivotTable
             }
             cacheRecord.Save(recPart.GetStream(FileMode.Create, FileAccess.Write));
         }
-        private string GetStartXml(ExcelWorksheet sourceWorksheet, ExcelRangeBase sourceRange)
+        private static string GetStartXml(ExcelWorksheet sourceWorksheet, ExcelRangeBase sourceRange)
         {
             string xml = "<pivotCacheDefinition xmlns=\"http://schemas.openxmlformats.org/spreadsheetml/2006/main\" xmlns:r=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships\" r:id=\"\" refreshOnLoad=\"1\" refreshedBy=\"SomeUser\" refreshedDate=\"40504.582403125001\" createdVersion=\"6\" refreshedVersion=\"6\" recordCount=\"5\" upgradeOnRefresh=\"1\">";
 

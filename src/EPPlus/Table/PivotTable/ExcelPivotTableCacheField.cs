@@ -250,7 +250,7 @@ namespace OfficeOpenXml.Table.PivotTable
         }
 
 
-        private void SetFlags(XmlElement shNode, DataTypeFlags flags)
+        private static void SetFlags(XmlElement shNode, DataTypeFlags flags)
         {
             if((flags & DataTypeFlags.DateTime) == DataTypeFlags.DateTime)
             {
@@ -276,7 +276,7 @@ namespace OfficeOpenXml.Table.PivotTable
                 shNode.SetAttribute("containsString", "0");
             }
         }
-        private int GetNoOfTypes(DataTypeFlags flags)
+        private static int GetNoOfTypes(DataTypeFlags flags)
         {
             int types = 0;
             foreach (DataTypeFlags v in Enum.GetValues(typeof(DataTypeFlags)))
@@ -456,7 +456,7 @@ namespace OfficeOpenXml.Table.PivotTable
             }
             return flags;
         }
-        private void AppendItem(XmlElement shNode, string elementName, string value)
+        private static void AppendItem(XmlElement shNode, string elementName, string value)
         {
             XmlElement? e = shNode.OwnerDocument.CreateElement(elementName, ExcelPackage.schemaMain);
             if (value != null)

@@ -315,7 +315,7 @@ namespace EPPlusTest
 
 
 
-        public void TestAllWorkbooks()
+        public static void TestAllWorkbooks()
         {
             StringBuilder sb=new StringBuilder();
             //Add sheets to test in this directory or change it to your testpath.
@@ -413,7 +413,7 @@ namespace EPPlusTest
 
             }
         }
-        private string GetOutput(string file)
+        private static string GetOutput(string file)
         {
             using (ExcelPackage? pck = new ExcelPackage(new FileInfo(file)))
             {

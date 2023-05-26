@@ -166,7 +166,7 @@ namespace OfficeOpenXml.DataValidation
             return GetCount(InternalValidationType.ExtLst);
         }
 
-        private void OnValidationCountChanged()
+        private static void OnValidationCountChanged()
         {
 
         }
@@ -422,7 +422,7 @@ namespace OfficeOpenXml.DataValidation
             bool retVal = _validations.Remove((ExcelDataValidation)item);
             if (retVal)
             {
-                this.OnValidationCountChanged();
+                OnValidationCountChanged();
             }
 
             return retVal;

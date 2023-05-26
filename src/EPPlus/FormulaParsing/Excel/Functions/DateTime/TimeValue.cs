@@ -45,7 +45,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime
                 CreateResult(ExcelErrorValue.Create(eErrorType.Value), DataType.ExcelError);
         }
 
-        private double GetTimeValue(System.DateTime result)
+        private static double GetTimeValue(System.DateTime result)
         {
             return (int)result.TimeOfDay.TotalSeconds == 0 ? 0d : result.TimeOfDay.TotalSeconds/ (3600 * 24);
         }

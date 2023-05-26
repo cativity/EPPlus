@@ -37,7 +37,7 @@ namespace OfficeOpenXml.Style.XmlAccess
             _patternColor = new ExcelColorXml(nsm, topNode.SelectSingleNode(_patternColorPath, nsm));
         }
 
-        private ExcelFillStyle GetPatternType(string patternType)
+        private static ExcelFillStyle GetPatternType(string patternType)
         {
             if (patternType == "")
             {
@@ -149,7 +149,7 @@ namespace OfficeOpenXml.Style.XmlAccess
             return topNode;
         }
 
-        private string SetPatternString(ExcelFillStyle pattern)
+        private static string SetPatternString(ExcelFillStyle pattern)
         {
             string newName = Enum.GetName(typeof(ExcelFillStyle), pattern);
             return newName.Substring(0, 1).ToLower(CultureInfo.InvariantCulture) + newName.Substring(1, newName.Length - 1);

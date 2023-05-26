@@ -38,7 +38,7 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions.Database
     [TestClass]
     public class RowMatcherTests
     {
-        private ExcelDatabaseCriteria GetCriteria(Dictionary<ExcelDatabaseCriteriaField, object> items)
+        private static ExcelDatabaseCriteria GetCriteria(Dictionary<ExcelDatabaseCriteriaField, object> items)
         {
             ExcelDataProvider? provider = A.Fake<ExcelDataProvider>();
             ExcelDatabaseCriteria? criteria = A.Fake<ExcelDatabaseCriteria>();// (provider, string.Empty);

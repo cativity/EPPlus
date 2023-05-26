@@ -86,7 +86,7 @@ namespace EPPlusTest.Core.Worksheet
                     sw.Stop();
                     long ms = sw.ElapsedMilliseconds;
                 }
-                
+
                 SaveWorkbook($"Autofit_SerializedFont_{fontFamily.Replace(" ", string.Empty)}.xlsx", package);
             }
         }

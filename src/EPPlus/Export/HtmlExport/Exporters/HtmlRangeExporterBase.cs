@@ -105,7 +105,7 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
             }
         }
 
-        internal bool HandleHiddenRow(EpplusHtmlWriter writer, ExcelWorksheet ws, HtmlExportSettings Settings, ref int row)
+        internal static bool HandleHiddenRow(EpplusHtmlWriter writer, ExcelWorksheet ws, HtmlExportSettings Settings, ref int row)
         {
             if (Settings.HiddenRows != eHiddenState.Include)
             {
@@ -127,7 +127,7 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
             return false;
         }
 
-        internal void AddRowHeightStyle(EpplusHtmlWriter writer, ExcelRangeBase range, int row, string styleClassPrefix, bool isMultiSheet)
+        internal static void AddRowHeightStyle(EpplusHtmlWriter writer, ExcelRangeBase range, int row, string styleClassPrefix, bool isMultiSheet)
         {
             ExcelValue r = range.Worksheet._values.GetValue(row, 0);
             if (r._value is RowInternal rowInternal)
@@ -143,7 +143,7 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
             writer.AddAttribute("class", clsName); //Default row height
         }
 
-        protected string GetPictureName(HtmlImage p)
+        protected static string GetPictureName(HtmlImage p)
         {
             string? hash = ((IPictureContainer)p.Picture).ImageHash;
             FileInfo? fi = new FileInfo(p.Picture.Part.Uri.OriginalString);
@@ -240,7 +240,7 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
             }
         }
 
-        protected void AddTableAccessibilityAttributes(AccessibilitySettings settings, EpplusHtmlWriter writer)
+        protected static void AddTableAccessibilityAttributes(AccessibilitySettings settings, EpplusHtmlWriter writer)
         {
             if (!settings.TableSettings.AddAccessibilityAttributes)
             {
@@ -298,7 +298,7 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
             return overrideSettings.Accessibility;
         }
 
-        protected void AddClassesAttributes(EpplusHtmlWriter writer, ExcelTable table, string tableId, List<string> additionalTableClassNames)
+        protected static void AddClassesAttributes(EpplusHtmlWriter writer, ExcelTable table, string tableId, List<string> additionalTableClassNames)
         {
             string? tableClasses = TableClass;
             if (table != null)

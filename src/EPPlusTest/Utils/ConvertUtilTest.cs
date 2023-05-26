@@ -107,7 +107,7 @@ namespace EPPlusTest.Utils
         
         // This is just illustration of the bug in old implementation
         //[TestMethod]
-        public void TextToIntInOldImplementation()
+        public static void TextToIntInOldImplementation()
         {
             int result = GetTypedValue<int>("204");
 
@@ -115,7 +115,7 @@ namespace EPPlusTest.Utils
         }
 
         // previous implementation
-        internal T GetTypedValue<T>(object v)
+        internal static T GetTypedValue<T>(object v)
         {
             if (v == null)
             {

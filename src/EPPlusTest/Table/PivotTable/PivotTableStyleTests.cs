@@ -33,7 +33,7 @@ namespace EPPlusTest.Table.PivotTable
             SaveAndCleanup(_pck);
             File.Copy(fileName, dirName + "\\PivotTableReadStyle.xlsx", true);
         }
-        internal ExcelPivotTable CreatePivotTable(ExcelWorksheet ws)
+        internal static ExcelPivotTable CreatePivotTable(ExcelWorksheet ws)
         {
             ExcelPivotTable? pt = ws.PivotTables.Add(ws.Cells["A3"], _ws.Cells[_ws.Dimension.Address], "PivotTable1");
             pt.RowFields.Add(pt.Fields[0]);

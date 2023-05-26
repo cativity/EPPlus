@@ -52,7 +52,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions
             return result;
         }
 
-        private int ConvertToInt(object obj, RoundingMethod roundingMethod)
+        private static int ConvertToInt(object obj, RoundingMethod roundingMethod)
         {
             Type? objType = obj.GetType();
             if (roundingMethod == RoundingMethod.Convert)

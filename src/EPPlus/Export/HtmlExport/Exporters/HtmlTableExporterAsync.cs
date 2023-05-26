@@ -81,7 +81,7 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
 
                 if (Settings.SetRowHeight)
                 {
-                    this.AddRowHeightStyle(writer, this._table.Range, row, this.Settings.StyleClassPrefix, false);
+                    AddRowHeightStyle(writer, this._table.Range, row, this.Settings.StyleClassPrefix, false);
                 }
 
                 await writer.RenderBeginTagAsync(HtmlElements.TableRow);
@@ -100,7 +100,7 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
                     if (cell.Hyperlink == null)
                     {
                         bool addRowScope = (_table.ShowFirstColumn && col == _table.Address._fromCol) || (_table.ShowLastColumn && col == _table.Address._toCol);
-                        await _cellDataWriter.WriteAsync(cell, dataType, writer, Settings, accessibilitySettings, addRowScope, image);
+                        await CellDataWriter.WriteAsync(cell, dataType, writer, Settings, accessibilitySettings, addRowScope, image);
                     }
                     else
                     {
@@ -144,7 +144,7 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
             int row = adr._fromRow;
             if (Settings.SetRowHeight)
             {
-                this.AddRowHeightStyle(writer, this._table.Range, row, this.Settings.StyleClassPrefix, false);
+                AddRowHeightStyle(writer, this._table.Range, row, this.Settings.StyleClassPrefix, false);
             }
 
             await writer.RenderBeginTagAsync(HtmlElements.TableRow);
@@ -222,7 +222,7 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
             }
             if (Settings.SetRowHeight)
             {
-                this.AddRowHeightStyle(writer, this._table.Range, rowIndex, this.Settings.StyleClassPrefix, false);
+                AddRowHeightStyle(writer, this._table.Range, rowIndex, this.Settings.StyleClassPrefix, false);
             }
 
             await writer.RenderBeginTagAsync(HtmlElements.TableRow);

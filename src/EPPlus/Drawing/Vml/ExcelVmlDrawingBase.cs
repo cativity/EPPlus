@@ -89,7 +89,7 @@ namespace OfficeOpenXml.Drawing.Vml
         /// <param name="key">The key to search for</param>
         /// <param name="value">The value to return</param>
         /// <returns>True if found</returns>
-        protected bool GetStyle(string style, string key, out string value)
+        protected static bool GetStyle(string style, string key, out string value)
         {
             string[]styles = style.Split(';');
             foreach(string s in styles)
@@ -119,7 +119,7 @@ namespace OfficeOpenXml.Drawing.Vml
         /// <param name="key">The key</param>
         /// <param name="value">The value</param>
         /// <returns>The new list</returns>
-        internal protected string SetStyle(string style, string key, string value)
+        protected internal static string SetStyle(string style, string key, string value)
         {
             string[] styles = style.Split(';');
             string newStyle="";

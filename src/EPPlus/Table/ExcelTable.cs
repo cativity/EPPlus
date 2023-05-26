@@ -838,7 +838,7 @@ namespace OfficeOpenXml.Table
             }
         }
 
-        private TableStyles GetTableStyle(string value)
+        private static TableStyles GetTableStyle(string value)
         {
             if (value.StartsWith("TableStyle"))
             {

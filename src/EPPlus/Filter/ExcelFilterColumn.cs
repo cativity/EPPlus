@@ -29,7 +29,7 @@ namespace OfficeOpenXml.Filter
         /// </summary>
         /// <param name="value">The value</param>
         /// <returns></returns>
-        internal protected object GetFilterValue(string value)
+        protected internal static object GetFilterValue(string value)
         {
             if ((value[0] >= '0' && value[0] <= '9') ||
                 (value[value.Length - 1] >= '0' && value[value.Length - 1] <= '9'))

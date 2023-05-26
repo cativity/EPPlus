@@ -50,7 +50,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime.Workdays
             return new HolidayWeekdays(retVal.ToArray());
         }
 
-        public HolidayWeekdays Create(int code)
+        public static HolidayWeekdays Create(int code)
         {
             switch (code)
             {

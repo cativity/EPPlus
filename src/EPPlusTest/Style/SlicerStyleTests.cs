@@ -163,7 +163,7 @@ namespace EPPlusTest.Style
                 slicer.SetPosition(100, 100);
                 slicer.StyleName = "CustomSlicerStyleCopyPck";
 
-              //  Assert.AreEqual(fmt, sc.HoveredUnselectedItemWithNoData.Style.NumberFormat.Format);
+                //  Assert.AreEqual(fmt, sc.HoveredUnselectedItemWithNoData.Style.NumberFormat.Format);
 
                 SaveWorkbook("SlicerStyleNewPackage.Xlsx", p);
             }

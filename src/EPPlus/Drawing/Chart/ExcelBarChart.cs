@@ -251,7 +251,7 @@ namespace OfficeOpenXml.Drawing.Chart
         }
         #endregion
         #region "Direction Enum Traslation"
-        private string GetDirectionText(eDirection direction)
+        private static string GetDirectionText(eDirection direction)
         {
             switch (direction)
             {
@@ -262,7 +262,7 @@ namespace OfficeOpenXml.Drawing.Chart
             }
         }
 
-        private eDirection GetDirectionEnum(string direction)
+        private static eDirection GetDirectionEnum(string direction)
         {
             switch (direction)
             {
@@ -274,7 +274,7 @@ namespace OfficeOpenXml.Drawing.Chart
         }
         #endregion
         #region "Shape Enum Translation"
-        private string GetShapeText(eShape Shape)
+        private static string GetShapeText(eShape Shape)
         {
             switch (Shape)
             {
@@ -295,7 +295,7 @@ namespace OfficeOpenXml.Drawing.Chart
             }
         }
 
-        private eShape GetShapeEnum(string text)
+        private static eShape GetShapeEnum(string text)
         {
             switch (text)
             {

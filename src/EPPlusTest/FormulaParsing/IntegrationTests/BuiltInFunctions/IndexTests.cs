@@ -107,7 +107,7 @@ namespace EPPlusTest.FormulaParsing.IntegrationTests.BuiltInFunctions
             Index(13, 2.0, 201.30);
         }
 
-        public void Index(double row, double column, double expectedValue)
+        public static void Index(double row, double column, double expectedValue)
         {
             using (ExcelPackage? package = CreateExcelPackage())
             {

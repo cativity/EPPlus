@@ -51,7 +51,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         /// </remarks>
         ///
         /// <param name='filename'>the name of the file to be deleted</param>
-        private void DeleteFileWithRetry(string filename)
+        private static void DeleteFileWithRetry(string filename)
         {
             bool done = false;
             int nRetries = 3;
@@ -314,7 +314,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
 #endif
                         if (File.Exists(tmpName))
                         {
-                            this.DeleteFileWithRetry(tmpName);
+                            DeleteFileWithRetry(tmpName);
                         }
 
                         File.Move(_name, tmpName);

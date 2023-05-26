@@ -105,7 +105,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
             CheckForAndHandleExcelError(arg);
         }
 
-        private double? GetNumericValue(object obj, bool isInArray)
+        private static double? GetNumericValue(object obj, bool isInArray)
         {
             if (IsNumeric(obj) && !(IsBool(obj)))
             {

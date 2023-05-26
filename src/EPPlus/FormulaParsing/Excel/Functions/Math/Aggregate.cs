@@ -221,17 +221,17 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
             return result;
         }
 
-        private bool IgnoreHidden(int options)
+        private static bool IgnoreHidden(int options)
         {
             return options == 1 || options == 3 || options == 5 || options == 7;
         }
 
-        private bool IgnoreErrors(int options)
+        private static bool IgnoreErrors(int options)
         {
             return options == 2 || options == 3 || options == 6 || options == 7;
         }
 
-        private bool IgnoreNestedSubtotalAndAggregate(int options)
+        private static bool IgnoreNestedSubtotalAndAggregate(int options)
         {
             return options == 0 || options == 1 || options == 2 || options == 3;
         }

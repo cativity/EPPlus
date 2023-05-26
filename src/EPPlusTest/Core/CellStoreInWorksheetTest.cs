@@ -181,11 +181,11 @@ namespace EPPlusTest.Core
                 ws.SetValue(i + 2, 1, i + 2);
             }
         }
-        private void LoadData(ExcelWorksheet ws)
+        private static void LoadData(ExcelWorksheet ws)
         {
             LoadData(ws, 1000);
         }
-        private void LoadData(ExcelWorksheet ws, int rows, int cols = 1, bool isNumeric = false)
+        private static void LoadData(ExcelWorksheet ws, int rows, int cols = 1, bool isNumeric = false)
         {
             for (int r = 0; r < rows; r++)
             {

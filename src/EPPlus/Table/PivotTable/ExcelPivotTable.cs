@@ -208,7 +208,7 @@ namespace OfficeOpenXml.Table.PivotTable
             }
 
         }
-        private string GetStartXml(string name, ExcelAddressBase address, int fields)
+        private static string GetStartXml(string name, ExcelAddressBase address, int fields)
         {
             string xml = string.Format("<pivotTableDefinition xmlns=\"http://schemas.openxmlformats.org/spreadsheetml/2006/main\" name=\"{0}\" dataOnRows=\"1\" applyNumberFormats=\"0\" applyBorderFormats=\"0\" applyFontFormats=\"0\" applyPatternFormats=\"0\" applyAlignmentFormats=\"0\" applyWidthHeightFormats=\"1\" dataCaption=\"Data\"  createdVersion=\"6\" updatedVersion=\"6\" showMemberPropertyTips=\"0\" useAutoFormatting=\"1\" itemPrintTitles=\"1\" indent=\"0\" compact=\"0\" compactData=\"0\" gridDropZones=\"1\">",
                 ConvertUtil.ExcelEscapeString(name));
@@ -292,7 +292,7 @@ namespace OfficeOpenXml.Table.PivotTable
             get;
             private set;
         }
-        private string cleanDisplayName(string name)
+        private static string cleanDisplayName(string name)
         {
             return Regex.Replace(name, @"[^\w\.-_]", "_");
         }

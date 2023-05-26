@@ -59,7 +59,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math.RomanFunctions
             return roman.ToString();
         }
 
-        private void Apply(ref int number, RomanNumber roman, StringBuilder result)
+        private static void Apply(ref int number, RomanNumber roman, StringBuilder result)
         {
             if (number >= roman.Number)
             {
@@ -72,7 +72,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math.RomanFunctions
             }
         }
 
-        private void Apply(ref int number, RomanNumber roman, RomanNumber lowerRoman, StringBuilder result)
+        private static void Apply(ref int number, RomanNumber roman, RomanNumber lowerRoman, StringBuilder result)
         {
             if (number >= roman.Number)
             {
@@ -87,7 +87,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math.RomanFunctions
             }
         }
 
-        private void Apply(ref int number, int limit, string letters, StringBuilder result)
+        private static void Apply(ref int number, int limit, string letters, StringBuilder result)
         {
             if (number >= limit)
             {
@@ -96,7 +96,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math.RomanFunctions
             }
         }
 
-        protected string HandleType(int type, string roman)
+        protected static string HandleType(int type, string roman)
         {
             if (type <= 0)
             {

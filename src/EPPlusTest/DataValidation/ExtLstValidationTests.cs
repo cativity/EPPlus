@@ -92,7 +92,7 @@ namespace EPPlusTest.DataValidation
             }
         }
 
-        ExcelPackage MakePackageWithExtLstIntValidation()
+        static ExcelPackage MakePackageWithExtLstIntValidation()
         {
             ExcelPackage? package = new ExcelPackage(new MemoryStream());
 
@@ -177,7 +177,7 @@ namespace EPPlusTest.DataValidation
             Assert.AreEqual(InternalValidationType.ExtLst, validations[4].InternalValidationType);
         }
 
-        internal void AddDataValidations(ref ExcelWorksheet ws, bool isExtLst = false, string extSheetName = "", bool many = false)
+        internal static void AddDataValidations(ref ExcelWorksheet ws, bool isExtLst = false, string extSheetName = "", bool many = false)
         {
             if (isExtLst)
             {
@@ -217,7 +217,7 @@ namespace EPPlusTest.DataValidation
         }
 
         //Ensures no save or load errors
-        internal void SaveAndLoadAndSave(in ExcelPackage pck)
+        internal static void SaveAndLoadAndSave(in ExcelPackage pck)
         {
             FileInfo? file = pck.File;
 

@@ -726,7 +726,7 @@ namespace OfficeOpenXml
                     return;
                 }
 
-                value = _package.Workbook.Worksheets.ValidateFixSheetName(value);
+                value = ExcelWorksheets.ValidateFixSheetName(value);
                 foreach (ExcelWorksheet? ws in Workbook.Worksheets)
                 {
                     if (ws.PositionId != PositionId && ws.Name.Equals(value, StringComparison.OrdinalIgnoreCase))
@@ -1365,7 +1365,7 @@ namespace OfficeOpenXml
 
         }
 
-        private void MoveEntry(ZipInputStream zip, ZipEntry entry)
+        private static void MoveEntry(ZipInputStream zip, ZipEntry entry)
         {
             zip.Position = 0;
             ZipEntry e;
@@ -1382,7 +1382,7 @@ namespace OfficeOpenXml
         /// </summary>
         /// <param name="xr"></param>
         /// <returns></returns>
-        private int GetAttributeLength(XmlReader xr)
+        private static int GetAttributeLength(XmlReader xr)
         {
             if (xr.NodeType != XmlNodeType.Element)
             {
@@ -1655,7 +1655,7 @@ namespace OfficeOpenXml
             }
         }
 
-        private ExcelHyperLink GetHyperlinkFromRef(XmlReader xr, string refTag, int fromRow = 0, int toRow = 0, int fromCol = 0, int toCol = 0)
+        private static ExcelHyperLink GetHyperlinkFromRef(XmlReader xr, string refTag, int fromRow = 0, int toRow = 0, int fromCol = 0, int toCol = 0)
         {
             ExcelHyperLink? hl = new ExcelHyperLink(xr.GetAttribute(refTag), xr.GetAttribute("display"));
             hl.RowSpann = toRow - fromRow;
@@ -1970,7 +1970,7 @@ namespace OfficeOpenXml
                 }
             }
         }
-        private bool DoAddRow(XmlReader xr)
+        private static bool DoAddRow(XmlReader xr)
         {
             int c = xr.GetAttribute("r") == null ? 0 : 1;
             if (xr.GetAttribute("spans") != null)
@@ -2009,7 +2009,7 @@ namespace OfficeOpenXml
         /// <param name="xr">The reader</param>
         /// <param name="row">The row number</param>
         /// <returns></returns>
-        private RowInternal AddRow(XmlReader xr, int row)
+        private static RowInternal AddRow(XmlReader xr, int row)
         {
             return new RowInternal()
             {
@@ -3394,7 +3394,7 @@ namespace OfficeOpenXml
             }
         }
 
-        private void DisposeInternal(IDisposable candidateDisposable)
+        private static void DisposeInternal(IDisposable candidateDisposable)
         {
             if (candidateDisposable != null)
             {

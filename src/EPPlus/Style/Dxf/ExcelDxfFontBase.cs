@@ -182,7 +182,7 @@ namespace OfficeOpenXml.Style.Dxf
             }
         }
 
-        private ExcelUnderLineType? GetUnderLine(XmlHelper helper)
+        private static ExcelUnderLineType? GetUnderLine(XmlHelper helper)
         {
             if (helper.ExistsNode("d:font/d:u"))
             {

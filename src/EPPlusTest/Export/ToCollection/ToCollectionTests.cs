@@ -422,7 +422,7 @@ namespace EPPlusTest.Export.ToCollection
             }
         }
         #endregion
-        private ExcelWorksheet LoadTestData(ExcelPackage p, string wsName, bool addTable = false)
+        private static ExcelWorksheet LoadTestData(ExcelPackage p, string wsName, bool addTable = false)
         {
             ExcelWorksheet? sheet = p.Workbook.Worksheets.Add(wsName);
             sheet.Cells["A1"].Value = "Id";

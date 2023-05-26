@@ -25,7 +25,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Engineering.Implementatio
                 double fNum2 = fNum * 0.5;
                 double y = fNum2 * fNum2;
 
-                FinanceCalcResult<double>? iResult = new BesselIimpl().BesselI(fNum, 0);
+                FinanceCalcResult<double>? iResult = BesselIimpl.BesselI(fNum, 0);
                 if (iResult.HasError)
                 {
                     return iResult;
@@ -58,7 +58,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Engineering.Implementatio
                 double fNum2 = fNum * 0.5;
                 double y = fNum2 * fNum2;
 
-                FinanceCalcResult<double>? iResult = new BesselIimpl().BesselI(fNum, 1);
+                FinanceCalcResult<double>? iResult = BesselIimpl.BesselI(fNum, 1);
                 if (iResult.HasError)
                 {
                     return iResult;
@@ -81,7 +81,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Engineering.Implementatio
             return new FinanceCalcResult<double>(fRet);
         }
 
-        public FinanceCalcResult<double> BesselK(double fNum, int nOrder)
+        public static FinanceCalcResult<double> BesselK(double fNum, int nOrder)
         {
             switch (nOrder)
             {

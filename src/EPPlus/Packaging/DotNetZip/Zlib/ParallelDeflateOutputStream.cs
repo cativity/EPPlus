@@ -1251,7 +1251,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
 
 
 
-        private bool DeflateOneSegment(WorkItem workitem)
+        private static bool DeflateOneSegment(WorkItem workitem)
         {
             ZlibCodec compressor = workitem.compressor;
             int rc= 0;

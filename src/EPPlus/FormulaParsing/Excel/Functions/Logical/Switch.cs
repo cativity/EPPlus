@@ -59,7 +59,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Logical
             return new CompileResult(eErrorType.NA);
         }
 
-        private bool IsMatch(object right, object left)
+        private static bool IsMatch(object right, object left)
         {
             if(IsNumeric(right) || IsNumeric(left))
             {
@@ -79,7 +79,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Logical
             return right.Equals(left);
         }
 
-        private double GetNumericValue(object obj)
+        private static double GetNumericValue(object obj)
         {
             if(obj is System.DateTime)
             {

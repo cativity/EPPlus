@@ -149,7 +149,7 @@ namespace OfficeOpenXml
             }
         }
 
-        private string GetUniqueName(string name, HashSet<string> hs)
+        private static string GetUniqueName(string name, HashSet<string> hs)
         {
             string n = name;
             int ix = 1;
@@ -995,7 +995,7 @@ namespace OfficeOpenXml
                 StreamWriter stream = new StreamWriter(partWorkbook.GetStream(FileMode.Create, FileAccess.Write));
                 _workbookXml.Save(stream);
                 //stream.Close();
-                _package.ZipPackage.Flush();
+                ZipPackage.Flush();
             }
         }
         #endregion
@@ -1039,11 +1039,11 @@ namespace OfficeOpenXml
 
                         _stylesXml.Save(stream);
                         //stream.Close();
-                        _package.ZipPackage.Flush();
+                        ZipPackage.Flush();
 
                         // create the relationship between the workbook and the new shared strings part
                         _package.Workbook.Part.CreateRelationship(UriHelper.GetRelativeUri(WorkbookUri, StylesUri), Packaging.TargetMode.Internal, ExcelPackage.schemaRelationships + "/styles");
-                        _package.ZipPackage.Flush();
+                        ZipPackage.Flush();
                     }
                 }
                 return (_stylesXml);
@@ -1336,7 +1336,7 @@ namespace OfficeOpenXml
                     ExcelRangeBase? r = cache.SourceRange;
                     if (r != null && r.Worksheet != null)              //Source does not exist
                     {
-                        ExcelTable t = r.Worksheet.Tables.GetFromRange(r);
+                        ExcelTable t = ExcelTableCollection.GetFromRange(r);
 
                         XmlNodeList? fields =
                             cache.CacheDefinitionXml.SelectNodes(
@@ -1386,7 +1386,7 @@ namespace OfficeOpenXml
             }
 
         }
-        private string GetNewName(HashSet<string> flds, string fldName)
+        private static string GetNewName(HashSet<string> flds, string fldName)
         {
             int ix = 2;
             while (flds.Contains(fldName + ix.ToString(CultureInfo.InvariantCulture)))
@@ -1547,7 +1547,7 @@ namespace OfficeOpenXml
             }
         }
 
-        private void SetNameElement(ExcelNamedRange name, XmlElement elem)
+        private static void SetNameElement(ExcelNamedRange name, XmlElement elem)
         {
             if (name.IsName)
             {

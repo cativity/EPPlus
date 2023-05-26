@@ -272,7 +272,7 @@ namespace OfficeOpenXml.Vba.ContentHash
 
         }
 
-        private void HandleProjectReference(ExcelVbaProject p, BinaryWriter bw, ExcelVbaReference reference)
+        private static void HandleProjectReference(ExcelVbaProject p, BinaryWriter bw, ExcelVbaReference reference)
         {
             Encoding? encoding = Encoding.GetEncoding(p.CodePage);
 

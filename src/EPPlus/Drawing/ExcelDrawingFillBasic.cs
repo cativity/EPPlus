@@ -153,7 +153,7 @@ namespace OfficeOpenXml.Drawing
             }
         }
 
-        private void CreateImageRelation(ExcelDrawingFill fill, XmlElement copyFromFillElement)
+        private static void CreateImageRelation(ExcelDrawingFill fill, XmlElement copyFromFillElement)
         {
             IPictureContainer pic = fill.BlipFill;
 

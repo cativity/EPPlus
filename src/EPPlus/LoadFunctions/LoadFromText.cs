@@ -167,7 +167,7 @@ namespace OfficeOpenXml.LoadFunctions
             return _worksheet.Cells[_range._fromRow, _range._fromCol, _range._fromRow + row - 1, _range._fromCol + maxCol];
         }
 
-        private string[] SplitLines(string text, string EOL)
+        private static string[] SplitLines(string text, string EOL)
         {
             string[]? lines = Regex.Split(text, EOL);
             for (int i = 0; i < lines.Length; i++)
@@ -185,7 +185,7 @@ namespace OfficeOpenXml.LoadFunctions
             return lines;
         }
 
-        private string[] GetLines(string text, ExcelTextFormat Format)
+        private static string[] GetLines(string text, ExcelTextFormat Format)
         {
             if (Format.EOL == null || Format.EOL.Length == 0)
             {
@@ -240,7 +240,7 @@ namespace OfficeOpenXml.LoadFunctions
             //}
             return list.ToArray();
         }
-        private bool IsEOL(string text, int ix, string eol)
+        private static bool IsEOL(string text, int ix, string eol)
         {
             for (int i = 0; i < eol.Length; i++)
             {
@@ -252,7 +252,7 @@ namespace OfficeOpenXml.LoadFunctions
             return ix + eol.Length <= text.Length;
         }
 
-        private object ConvertData(ExcelTextFormat Format, string v, int col, bool isText)
+        private static object ConvertData(ExcelTextFormat Format, string v, int col, bool isText)
         {
             if (isText && (Format.DataTypes == null || Format.DataTypes.Length < col))
             {

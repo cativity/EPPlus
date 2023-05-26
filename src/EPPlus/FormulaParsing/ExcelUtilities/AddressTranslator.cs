@@ -92,17 +92,17 @@ namespace OfficeOpenXml.FormulaParsing.ExcelUtilities
             return _excelDataProvider.ExcelMaxRows;
         }
 
-        private int GetNumericAlphaValue(char c)
+        private static int GetNumericAlphaValue(char c)
         {
             return (int)c - 64;
         }
 
-        private string GetAlphaPart(string address)
+        private static string GetAlphaPart(string address)
         {
             return Regex.Match(address, "[A-Z]+").Value;
         }
 
-        private int? GetIntPart(string address)
+        private static int? GetIntPart(string address)
         {
             if (Regex.IsMatch(address, "[0-9]+"))
             {

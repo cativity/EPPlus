@@ -30,7 +30,7 @@ namespace EPPlusTest.DataValidation
         }
 
         //Ensures no save or load errors
-        internal void SaveAndLoadAndSave(in ExcelPackage pck)
+        internal static void SaveAndLoadAndSave(in ExcelPackage pck)
         {
             FileInfo? file = pck.File;
 
@@ -44,7 +44,7 @@ namespace EPPlusTest.DataValidation
             SaveAndCleanup(loadedPackage);
         }
 
-        internal void AddDataValidations(ref ExcelWorksheet ws, bool isExtLst = false, string extSheetName = "", bool many = false)
+        internal static void AddDataValidations(ref ExcelWorksheet ws, bool isExtLst = false, string extSheetName = "", bool many = false)
         {
             if(isExtLst)
             {

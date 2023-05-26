@@ -51,7 +51,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
             return array;
         }
 
-        protected double PercentRankIncImpl(double[] array, double number)
+        protected static double PercentRankIncImpl(double[] array, double number)
         {
             double smallerThan = 0d;
             double largestBelow = 0d;
@@ -80,7 +80,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
             return percentrankLow + (percentrankHigh - percentrankLow) * ((number - largestBelow) / (smallestAbove - largestBelow));
         }
 
-        protected double PercentRankExcImpl(double[] array, double number)
+        protected static double PercentRankExcImpl(double[] array, double number)
         {
             double smallerThan = 0d;
             double largestBelow = 0d;
@@ -116,7 +116,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
         /// <param name="number">The number to round</param>
         /// <param name="sign">Number of siginicant digits</param>
         /// <returns></returns>
-        protected double RoundResult(double number, int sign)
+        protected static double RoundResult(double number, int sign)
         {
             return RoundingHelper.RoundToSignificantFig(number, sign, false);
         }

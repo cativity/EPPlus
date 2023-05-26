@@ -353,7 +353,7 @@ namespace OfficeOpenXml.Drawing.Chart
         /// Package internal URI
         /// </summary>
         internal Uri UriChart { get; set; }
-        internal new string Id
+        internal new static string Id
         {
             get { return ""; }
         }

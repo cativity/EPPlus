@@ -59,7 +59,7 @@ namespace OfficeOpenXml.Sorting.Internal
             return CustomListNotFound;
         }
 
-        protected int CompareObjects(object x1, object y1)
+        protected static int CompareObjects(object x1, object y1)
         {
             int ret;
             bool isNumX = ConvertUtil.IsNumericOrDate(x1);

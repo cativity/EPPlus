@@ -144,7 +144,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Engineering.Implementatio
         }
 
 
-        public FinanceCalcResult<double> BesselY(double fNum, int nOrder)
+        public static FinanceCalcResult<double> BesselY(double fNum, int nOrder)
         {
             switch (nOrder)
             {

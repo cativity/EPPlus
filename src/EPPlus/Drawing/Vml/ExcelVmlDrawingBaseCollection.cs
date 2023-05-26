@@ -62,7 +62,7 @@ namespace OfficeOpenXml.Drawing.Vml
             }
         }
 
-        private string RemoveUnclosedBrTags(string xml)
+        private static string RemoveUnclosedBrTags(string xml)
         {
             //TODO:Vml can contain unclosed BR tags. Replace with correctly closed tag and retry. Replace this code with a better approach.
             return xml.Replace("</br>", "").Replace("<br>", "<br/>");

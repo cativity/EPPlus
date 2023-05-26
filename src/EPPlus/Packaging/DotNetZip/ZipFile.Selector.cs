@@ -639,7 +639,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         }
 
 
-        private string EnsureendInSlash(string s)
+        private static string EnsureendInSlash(string s)
         {
             if (s.EndsWith("\\"))
             {

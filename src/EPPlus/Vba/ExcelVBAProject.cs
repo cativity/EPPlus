@@ -345,7 +345,7 @@ namespace OfficeOpenXml.VBA
         /// </summary>
         /// <param name="value">Byte hex string</param>
         /// <returns>The decrypted value</returns>
-        private byte[] Decrypt(string value)
+        private static byte[] Decrypt(string value)
         {
             byte[] enc = GetByte(value);
             byte[] dec = new byte[(value.Length - 1)];
@@ -413,7 +413,7 @@ namespace OfficeOpenXml.VBA
 
             return GetString(enc, pos - 1);
         }
-        private string GetString(byte[] value, int max)
+        private static string GetString(byte[] value, int max)
         {
             string ret = "";
             for (int i = 0; i <= max; i++)
@@ -429,7 +429,7 @@ namespace OfficeOpenXml.VBA
             }
             return ret.ToUpperInvariant();
         }
-        private byte[] GetByte(string value)
+        private static byte[] GetByte(string value)
         {
             byte[] ret = new byte[value.Length / 2];
             for (int i = 0; i < ret.Length; i++)
@@ -667,7 +667,7 @@ namespace OfficeOpenXml.VBA
         /// MS-OVBA 2.3.4.1
         /// </summary>
         /// <returns></returns>
-        private byte[] CreateVBAProjectStream()
+        private static byte[] CreateVBAProjectStream()
         {
             using (MemoryStream? ms = RecyclableMemory.GetStream())
             {
@@ -1099,7 +1099,7 @@ namespace OfficeOpenXml.VBA
         {
             return GetString(br, size, System.Text.Encoding.GetEncoding(CodePage));
         }
-        private string GetString(BinaryReader br, uint size, Encoding enc)
+        private static string GetString(BinaryReader br, uint size, Encoding enc)
         {
             if (size > 0)
             {
@@ -1143,7 +1143,7 @@ namespace OfficeOpenXml.VBA
             MajorVersion = 1361024421;
             MinorVersion = 6;
             HelpContextID = 0;
-            Modules.Add(new ExcelVBAModule(_wb.CodeNameChange) { Name = "ThisWorkbook", Code = "", Attributes=GetDocumentAttributes("ThisWorkbook", "0{00020819-0000-0000-C000-000000000046}"), Type = eModuleType.Document, HelpContext = 0 });
+            Modules.Add(new ExcelVBAModule(_wb.CodeNameChange) { Name = "ThisWorkbook", Code = "", Attributes= GetDocumentAttributes("ThisWorkbook", "0{00020819-0000-0000-C000-000000000046}"), Type = eModuleType.Document, HelpContext = 0 });
             foreach (ExcelWorksheet? sheet in _wb.Worksheets)
             {
                 string? name = GetModuleNameFromWorksheet(sheet);
@@ -1171,7 +1171,7 @@ namespace OfficeOpenXml.VBA
             return name;
         }
 
-        internal ExcelVbaModuleAttributesCollection GetDocumentAttributes(string name, string clsid)
+        internal static ExcelVbaModuleAttributesCollection GetDocumentAttributes(string name, string clsid)
         {
             ExcelVbaModuleAttributesCollection? attr = new ExcelVbaModuleAttributesCollection();
             attr._list.Add(new ExcelVbaModuleAttribute() { Name = "VB_Name", Value = name, DataType = eAttributeDataType.String });

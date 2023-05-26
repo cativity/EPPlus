@@ -23,7 +23,7 @@ namespace OfficeOpenXml.SystemDrawing.Image
             }
         }
 
-        private bool IsWindows()
+        private static bool IsWindows()
         {
             if(Environment.OSVersion.Platform == PlatformID.Unix ||
 #if(NET5_0_OR_GREATER)

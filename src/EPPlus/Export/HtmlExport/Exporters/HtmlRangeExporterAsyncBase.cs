@@ -71,7 +71,7 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
 
                 if (Settings.SetRowHeight)
                 {
-                    this.AddRowHeightStyle(writer, range, row, this.Settings.StyleClassPrefix, this.IsMultiSheet);
+                    AddRowHeightStyle(writer, range, row, this.Settings.StyleClassPrefix, this.IsMultiSheet);
                 }
 
                 await writer.RenderBeginTagAsync(HtmlElements.TableRow);
@@ -97,7 +97,7 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
 
                     if (cell.Hyperlink == null)
                     {
-                        await _cellDataWriter.WriteAsync(cell, dataType, writer, Settings, accessibilitySettings, false, image);
+                        await CellDataWriter.WriteAsync(cell, dataType, writer, Settings, accessibilitySettings, false, image);
                     }
                     else
                     {
@@ -159,7 +159,7 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
                 int row = range._fromRow + i;
                 if (Settings.SetRowHeight)
                 {
-                    this.AddRowHeightStyle(writer, range, row, this.Settings.StyleClassPrefix, this.IsMultiSheet);
+                    AddRowHeightStyle(writer, range, row, this.Settings.StyleClassPrefix, this.IsMultiSheet);
                 }
 
                 await writer.RenderBeginTagAsync(HtmlElements.TableRow);
@@ -216,7 +216,7 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
             await writer.ApplyFormatAsync(Settings.Minify);
         }
 
-        protected async Task RenderHyperlinkAsync(EpplusHtmlWriter writer, ExcelRangeBase cell, HtmlExportSettings settings)
+        protected static async Task RenderHyperlinkAsync(EpplusHtmlWriter writer, ExcelRangeBase cell, HtmlExportSettings settings)
         {
             if (cell.Hyperlink is ExcelHyperLink eurl)
             {
@@ -253,7 +253,7 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
             }
         }
 
-        protected async Task AddImageAsync(EpplusHtmlWriter writer, HtmlExportSettings settings, HtmlImage image, object value)
+        protected static async Task AddImageAsync(EpplusHtmlWriter writer, HtmlExportSettings settings, HtmlImage image, object value)
         {
             if (image != null)
             {

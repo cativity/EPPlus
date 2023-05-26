@@ -147,7 +147,7 @@ namespace OfficeOpenXml.Table
             }
             SetStyle(totalRange, styleClass, styleProperty, value);
         }
-        private void SetStyle(ExcelRangeBase headerRange, eStyleClass styleClass, eStyleProperty styleProperty, object value)
+        private static void SetStyle(ExcelRangeBase headerRange, eStyleClass styleClass, eStyleProperty styleProperty, object value)
         {
             switch(styleClass)
             {
@@ -189,7 +189,7 @@ namespace OfficeOpenXml.Table
                     break;
             }
         }
-        private void SetStyleNumberFormat(ExcelRangeBase range, eStyleProperty styleProperty, object value)
+        private static void SetStyleNumberFormat(ExcelRangeBase range, eStyleProperty styleProperty, object value)
         {
             switch (styleProperty)
             {
@@ -205,7 +205,7 @@ namespace OfficeOpenXml.Table
                     break;
             }
         }
-        private void SetStyleFont(ExcelRangeBase headerRange, eStyleProperty styleProperty, object value)
+        private static void SetStyleFont(ExcelRangeBase headerRange, eStyleProperty styleProperty, object value)
         {
             switch(styleProperty)
             {
@@ -245,7 +245,7 @@ namespace OfficeOpenXml.Table
             }
         }
 
-        private void SetStyleBorder(ExcelBorderItem border, eStyleProperty styleProperty, object value)
+        private static void SetStyleBorder(ExcelBorderItem border, eStyleProperty styleProperty, object value)
         {
             switch (styleProperty)
             {
@@ -261,7 +261,7 @@ namespace OfficeOpenXml.Table
             }
         }
 
-            private void SetStyleColor(ExcelColor color, eStyleProperty styleProperty, object value)
+            private static void SetStyleColor(ExcelColor color, eStyleProperty styleProperty, object value)
         {            
             switch (styleProperty)
             {
@@ -282,7 +282,7 @@ namespace OfficeOpenXml.Table
                     break;
             }
         }
-        private void SetStyleFill(ExcelRangeBase headerRange, eStyleProperty styleProperty, object value)
+        private static void SetStyleFill(ExcelRangeBase headerRange, eStyleProperty styleProperty, object value)
         {
             switch(styleProperty)
             {
@@ -291,7 +291,7 @@ namespace OfficeOpenXml.Table
                     break;
             }
         }
-        private void SetStyleGradient(ExcelRangeBase headerRange, eStyleProperty styleProperty, object value)
+        private static void SetStyleGradient(ExcelRangeBase headerRange, eStyleProperty styleProperty, object value)
         {
             switch (styleProperty)
             {

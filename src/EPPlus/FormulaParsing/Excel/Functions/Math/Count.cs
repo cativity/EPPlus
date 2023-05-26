@@ -77,7 +77,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
             }
         }
 
-        private void _CheckForAndHandleExcelError(FunctionArgument arg, ParsingContext context)
+        private static void _CheckForAndHandleExcelError(FunctionArgument arg, ParsingContext context)
         {
             //if (context.Scopes.Current.IsSubtotal)
             //{
@@ -85,7 +85,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
             //}
         }
 
-        private void _CheckForAndHandleExcelError(ICellInfo cell, ParsingContext context)
+        private static void _CheckForAndHandleExcelError(ICellInfo cell, ParsingContext context)
         {
             //if (context.Scopes.Current.IsSubtotal)
             //{
@@ -93,7 +93,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
             //}
         }
 
-        private bool ShouldCount(object value, ItemContext context)
+        private static bool ShouldCount(object value, ItemContext context)
         {
             switch (context)
             {

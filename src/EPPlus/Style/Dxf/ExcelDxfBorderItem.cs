@@ -67,7 +67,7 @@ namespace OfficeOpenXml.Style.Dxf
         /// <param name="helper">The xml helper</param>
         /// <param name="path">The X Path</param>
         internal override void CreateNodes(XmlHelper helper, string path)
-        {            
+        {
             SetValueEnum(helper, path + "/@style", Style);
             SetValueColor(helper, path + "/d:color", Color);
         }

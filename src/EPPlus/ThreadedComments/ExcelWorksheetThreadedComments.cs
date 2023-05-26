@@ -119,7 +119,7 @@ namespace OfficeOpenXml.ThreadedComments
             }
         }
 
-        private void ValidateCellAddress(string cellAddress)
+        private static void ValidateCellAddress(string cellAddress)
         {
             Require.Argument(cellAddress).IsNotNullOrEmpty("cellAddress");
             if (!ExcelAddress.IsValidCellAddress(cellAddress))

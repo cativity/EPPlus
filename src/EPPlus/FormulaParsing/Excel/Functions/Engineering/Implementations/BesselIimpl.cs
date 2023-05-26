@@ -16,7 +16,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Engineering.Implementatio
 {
     public class BesselIimpl : BesselBase
     {
-        public FinanceCalcResult<double> BesselI(double x, int n)
+        public static FinanceCalcResult<double> BesselI(double x, int n)
         {
             const int nMaxIteration = 2000;
             double fXHalf = x / 2.0;

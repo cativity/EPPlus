@@ -50,7 +50,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.RefAndLookup
             return _valueMatcher.IsMatch(searchedValue, candidate);
         }
 
-        protected LookupDirection GetLookupDirection(RangeAddress rangeAddress)
+        protected static LookupDirection GetLookupDirection(RangeAddress rangeAddress)
         {
             int nRows = rangeAddress.ToRow - rangeAddress.FromRow;
             int nCols = rangeAddress.ToCol - rangeAddress.FromCol;

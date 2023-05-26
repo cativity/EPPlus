@@ -431,7 +431,7 @@ namespace OfficeOpenXml
             }
         }
 
-        private bool GetFromCache(Dictionary<int, ExcelValue> colCache, int col, ref int s)
+        private static bool GetFromCache(Dictionary<int, ExcelValue> colCache, int col, ref int s)
         {
             int c = col;
             while (!colCache.ContainsKey(--c))
@@ -703,7 +703,7 @@ namespace OfficeOpenXml
                 ws.SetStyleInner(0, column.ColumnMin, newId);
             }
         }
-        internal int GetStyleId(ExcelWorksheet ws, int row, int col)
+        internal static int GetStyleId(ExcelWorksheet ws, int row, int col)
         {
             int v = 0;
             if (ws.ExistsStyleInner(row, col, ref v))
@@ -827,7 +827,7 @@ namespace OfficeOpenXml
         public ExcelStyleCollection<ExcelDxfStyleBase> Dxfs = new ExcelStyleCollection<ExcelDxfStyleBase>();
         internal ExcelStyleCollection<ExcelDxfStyleBase> DxfsSlicers = new ExcelStyleCollection<ExcelDxfStyleBase>();
         internal Dictionary<string, XmlNode> _slicerTableStyleNodes = new Dictionary<string, XmlNode>(StringComparer.InvariantCultureIgnoreCase);
-        internal string Id
+        internal static string Id
         {
             get { return ""; }
         }
@@ -1525,7 +1525,7 @@ namespace OfficeOpenXml
             }
         }
    #region XmlHelpFunctions
-        private int GetXmlNodeInt(XmlNode node)
+        private static int GetXmlNodeInt(XmlNode node)
         {
             int i;
             if (int.TryParse(GetXmlNode(node), out i))
@@ -1537,7 +1537,7 @@ namespace OfficeOpenXml
                 return 0;
             }
         }
-        private string GetXmlNode(XmlNode node)
+        private static string GetXmlNode(XmlNode node)
         {
             if (node == null)
             {

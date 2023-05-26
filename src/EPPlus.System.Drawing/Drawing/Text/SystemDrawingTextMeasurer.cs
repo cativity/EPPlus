@@ -12,7 +12,7 @@ namespace OfficeOpenXml.SystemDrawing.Text
         }
 
         private readonly StringFormat _stringFormat;
-        private FontStyle ToFontStyle(MeasurementFontStyles fontStyle)
+        private static FontStyle ToFontStyle(MeasurementFontStyles fontStyle)
         {
             switch (fontStyle)
             {

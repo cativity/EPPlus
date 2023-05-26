@@ -46,7 +46,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime
                 else if (IsNumeric(holidayArg))
                 {
                     int holidayCode = Convert.ToInt32(holidayArg);
-                    calculator = new WorkdayCalculator(weekdayFactory.Create(holidayCode));
+                    calculator = new WorkdayCalculator(HolidayWeekdaysFactory.Create(holidayCode));
                 }
                 else
                 {

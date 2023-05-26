@@ -686,7 +686,7 @@ namespace EPPlusTest.Table.PivotTable
             }
         }
 
-        private void AssertShartedItemsAttributes(XmlNode node, int count,bool numberValues, bool intValues, bool containsBlanks, bool semiMixedValues, bool mixedValues)
+        private static void AssertShartedItemsAttributes(XmlNode node, int count,bool numberValues, bool intValues, bool containsBlanks, bool semiMixedValues, bool mixedValues)
         {
             if(node.Attributes.Count!=count)
             {
@@ -701,7 +701,7 @@ namespace EPPlusTest.Table.PivotTable
             //containsInteger = "1" containsNumber = "1" containsString = "0" containsSemiMixedTypes = "0"
         }
 
-        private void AssertContains(XmlNode node, string attrName, bool value)
+        private static void AssertContains(XmlNode node, string attrName, bool value)
         {
             XmlAttribute? a = node.Attributes[attrName];
             if (a == null)

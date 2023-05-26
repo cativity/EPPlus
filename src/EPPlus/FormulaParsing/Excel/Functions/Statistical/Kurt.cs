@@ -36,7 +36,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Statistical
                 return this.CreateResult(eErrorType.Div0);
             }
 
-            double stdev = new Stdev().StandardDeviation(numbers.Select(x => x.Value));
+            double stdev = Stdev.StandardDeviation(numbers.Select(x => x.Value));
             if(stdev == 0d)
             {
                 return CreateResult(eErrorType.Div0);

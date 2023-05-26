@@ -62,7 +62,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime
             }
         }
 
-        private double DateDiffYears(System.DateTime start, System.DateTime end)
+        private static double DateDiffYears(System.DateTime start, System.DateTime end)
         {
             double result = Convert.ToDouble(end.Year - start.Year);
             System.DateTime tmpEnd = GetStartYearEndDate(start, end);
@@ -73,7 +73,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime
             return result;
         }
 
-        private double DateDiffMonths(System.DateTime start, System.DateTime end)
+        private static double DateDiffMonths(System.DateTime start, System.DateTime end)
         {
             double years = DateDiffYears(start, end);
             double result = years * 12;
@@ -91,7 +91,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime
             return result;
         }
 
-        private double DateDiffMonthsY(System.DateTime start, System.DateTime end)
+        private static double DateDiffMonthsY(System.DateTime start, System.DateTime end)
         {
             System.DateTime endDate = GetStartYearEndDateY(start, end);
             double nMonths = 0d;
@@ -112,12 +112,12 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime
             return nMonths;
         }
 
-        private System.DateTime GetStartYearEndDate(System.DateTime start, System.DateTime end)
+        private static System.DateTime GetStartYearEndDate(System.DateTime start, System.DateTime end)
         {
             return new System.DateTime(start.Year, end.Month, end.Day, end.Hour, end.Minute, end.Second, end.Millisecond);
         }
 
-        private System.DateTime GetStartYearEndDateY(System.DateTime start, System.DateTime end)
+        private static System.DateTime GetStartYearEndDateY(System.DateTime start, System.DateTime end)
         {
             System.DateTime dt = new System.DateTime(start.Year, end.Month, end.Day, end.Hour, end.Minute, end.Second, end.Millisecond);
             if(dt < start)
@@ -127,7 +127,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime
             return dt;
         }
 
-        private System.DateTime GetStartYearEndDateMd(System.DateTime start, System.DateTime end)
+        private static System.DateTime GetStartYearEndDateMd(System.DateTime start, System.DateTime end)
         {
             System.DateTime dt = new System.DateTime(start.Year, start.Month, end.Day, end.Hour, end.Minute, end.Second, end.Millisecond);
             if (dt < start)

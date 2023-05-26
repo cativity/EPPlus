@@ -43,7 +43,7 @@ namespace OfficeOpenXml.Style.XmlAccess
             }
         }
 
-        private ExcelBorderStyle GetBorderStyle(string style)
+        private static ExcelBorderStyle GetBorderStyle(string style)
         {
             if(style=="")
             {
@@ -132,7 +132,7 @@ namespace OfficeOpenXml.Style.XmlAccess
             return TopNode;
         }
 
-        private string SetBorderString(ExcelBorderStyle Style)
+        private static string SetBorderString(ExcelBorderStyle Style)
         {
             string newName=Enum.GetName(typeof(ExcelBorderStyle), Style);
             return newName.Substring(0, 1).ToLower(CultureInfo.InvariantCulture) + newName.Substring(1, newName.Length - 1);

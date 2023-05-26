@@ -82,7 +82,7 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
             }
         }
 
-        protected string GetCellText(ExcelRangeBase cell, HtmlExportSettings settings)
+        protected static string GetCellText(ExcelRangeBase cell, HtmlExportSettings settings)
         {
             if (cell.IsRichText)
             {
@@ -94,7 +94,7 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
             }
         }
 
-        protected string GetImageCellClassName(HtmlImage image, HtmlExportSettings settings)
+        protected static string GetImageCellClassName(HtmlImage image, HtmlExportSettings settings)
         {
             return image == null && settings.Pictures.Position != ePicturePosition.Absolute ? "" : settings.StyleClassPrefix + "image-cell";
         }

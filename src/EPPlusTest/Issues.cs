@@ -293,7 +293,7 @@ namespace EPPlusTest
             }
         }
 
-        private void LoadData(ExcelPackage p)
+        private static void LoadData(ExcelPackage p)
         {
             // add a new worksheet to the empty workbook
             ExcelWorksheet wsData = p.Workbook.Worksheets.Add("Data");
@@ -355,7 +355,7 @@ namespace EPPlusTest
 
             wsData.Cells.AutoFitColumns(0);
         }
-        private void BuildPivotTable1(ExcelPackage p)
+        private static void BuildPivotTable1(ExcelPackage p)
         {
             ExcelWorksheet? wsData = p.Workbook.Worksheets["Data"];
             string? totalRows = wsData.Dimension.Address;
@@ -386,7 +386,7 @@ namespace EPPlusTest
             pivotTable1.DataOnRows = false;
         }
 
-        private void BuildPivotTable2(ExcelPackage p)
+        private static void BuildPivotTable2(ExcelPackage p)
         {
             ExcelWorksheet? wsData = p.Workbook.Worksheets["Data"];
             string? totalRows = wsData.Dimension.Address;
@@ -2015,7 +2015,7 @@ namespace EPPlusTest
             }
         }
 
-        public void DefinedNamesAddressIssue()
+        public static void DefinedNamesAddressIssue()
         {
             using (ExcelPackage? p = OpenPackage("defnames.xlsx"))
             {
@@ -3173,7 +3173,7 @@ namespace EPPlusTest
             }
         }
 
-        string QStr(string s)
+        static string QStr(string s)
         {
             char quotechar = '\"';
             return $"{quotechar}{s}{quotechar}";
@@ -3690,7 +3690,7 @@ namespace EPPlusTest
                 SaveAndCleanup(p);
             }
         }
-        public void i720()
+        public static void i720()
         {
             MemoryStream? stream = new MemoryStream();
             using (ExcelPackage? p = OpenPackage("i720.xlsx"))
@@ -3739,7 +3739,7 @@ namespace EPPlusTest
                 SaveAndCleanup(p);
             }
         }
-        private void WriteStorage(CompoundDocument.StoragePart storage, StringWriter sb, string path, string dir)
+        private static void WriteStorage(CompoundDocument.StoragePart storage, StringWriter sb, string path, string dir)
         {
             foreach (string? key in storage.SubStorage.Keys)
             {
@@ -3753,7 +3753,7 @@ namespace EPPlusTest
             }
         }
 
-        private string GetFileName(string key)
+        private static string GetFileName(string key)
         {
             StringBuilder? sb = new StringBuilder();
             char[]? ic = Path.GetInvalidFileNameChars();
@@ -4402,14 +4402,14 @@ namespace EPPlusTest
                 SaveAndCleanup(package);
             }
         }
-        private void AddLineSeries(ExcelChart chart, string seriesAddress, string xSeriesAddress, string seriesName)
+        private static void AddLineSeries(ExcelChart chart, string seriesAddress, string xSeriesAddress, string seriesName)
         {
             ExcelChartSerie? lineSeries = chart.Series.Add(seriesAddress, xSeriesAddress);
             lineSeries.Header = seriesName;
         }
 
 
-        private DataTable Data()
+        private static DataTable Data()
         {
             DataTable? toReturn = new DataTable();
             toReturn.Columns.Add("Month");

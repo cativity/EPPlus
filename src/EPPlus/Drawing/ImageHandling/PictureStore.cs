@@ -217,7 +217,7 @@ namespace OfficeOpenXml.Drawing
             return BitConverter.ToString(hashProvider.ComputeHash(image)).Replace("-", "");
         }
 
-        private Uri GetNewUri(Packaging.ZipPackage package, string sUri)
+        private static Uri GetNewUri(Packaging.ZipPackage package, string sUri)
         {
             Uri uri;
             do

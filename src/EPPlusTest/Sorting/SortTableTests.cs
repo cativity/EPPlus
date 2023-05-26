@@ -14,7 +14,7 @@ namespace EPPlusTest.Sorting
     [TestClass]
     public class SortTableTests
     {
-        private ExcelTable CreateTable(ExcelWorksheet sheet, bool addTotalsRow = true)
+        private static ExcelTable CreateTable(ExcelWorksheet sheet, bool addTotalsRow = true)
         {
             // header
             sheet.Cells[1, 1].Value = "Header1";

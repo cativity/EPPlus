@@ -402,7 +402,7 @@ namespace EPPlusTest.Core
             return ws;
         }
 
-        private Dictionary<string, object> GetExternalCache(ExcelExternalWorkbook ewb)
+        private static Dictionary<string, object> GetExternalCache(ExcelExternalWorkbook ewb)
         {
             Dictionary<string, object>? d=new Dictionary<string, object>();
             foreach(ExcelExternalWorksheet ws in ewb.CachedWorksheets)

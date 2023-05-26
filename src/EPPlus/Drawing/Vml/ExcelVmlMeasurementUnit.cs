@@ -35,7 +35,7 @@ namespace OfficeOpenXml.Drawing.Vml
             return Value.ToString(CultureInfo.InvariantCulture) + Unit.TranslateString();
         }
 
-        private double GetValue(string v)
+        private static double GetValue(string v)
         {
             if (string.IsNullOrEmpty(v))
             {
@@ -48,7 +48,7 @@ namespace OfficeOpenXml.Drawing.Vml
             }
             return ConvertUtil.GetValueDouble(v);
         }
-        private eMeasurementUnits GetUnit(string v)
+        private static eMeasurementUnits GetUnit(string v)
         {
             foreach (eMeasurementUnits u in Enum.GetValues(typeof(eMeasurementUnits)))
             {

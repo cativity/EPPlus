@@ -185,7 +185,7 @@ namespace OfficeOpenXml.Encryption
                 }
             }
 
-            private eHashAlgorithm GetHashAlgorithm(string v)
+            private static eHashAlgorithm GetHashAlgorithm(string v)
             {
                 switch (v)
                 {
@@ -207,7 +207,7 @@ namespace OfficeOpenXml.Encryption
                 }
             }
 
-            private string GetHashAlgorithmString(eHashAlgorithm value)
+            private static string GetHashAlgorithmString(eHashAlgorithm value)
             {
                 switch (value)
                 {
@@ -252,7 +252,7 @@ namespace OfficeOpenXml.Encryption
                 }
             }
 
-            private eCipherAlgorithm GetCipherAlgorithm(string v)
+            private static eCipherAlgorithm GetCipherAlgorithm(string v)
             {
                 switch (v)
                 {
@@ -272,7 +272,7 @@ namespace OfficeOpenXml.Encryption
                 }
             }
 
-            private string GetCipherAlgorithmString(eCipherAlgorithm alg)
+            private static string GetCipherAlgorithmString(eCipherAlgorithm alg)
             {
                 switch (alg)
                 {

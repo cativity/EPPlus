@@ -101,11 +101,11 @@ namespace OfficeOpenXml.Drawing
             }
         }
         #region "Translate Enum functions"
-        private string TranslateEndStyleText(eEndStyle value)
+        private static string TranslateEndStyleText(eEndStyle value)
         {
             return value.ToString().ToLower();
         }
-        private eEndStyle? TranslateEndStyle(string text)
+        private static eEndStyle? TranslateEndStyle(string text)
         {
             switch (text)
             {
@@ -137,7 +137,7 @@ namespace OfficeOpenXml.Drawing
             }
         }
 
-        private string TranslateEndSizeText(eEndSize value)
+        private static string TranslateEndSizeText(eEndSize value)
         {
             string text = value.ToString();
             switch (value)
@@ -152,7 +152,7 @@ namespace OfficeOpenXml.Drawing
                     return null;
             }
         }
-        private eEndSize? TranslateEndSize(string text)
+        private static eEndSize? TranslateEndSize(string text)
         {
             switch (text)
             {

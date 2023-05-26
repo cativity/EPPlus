@@ -220,7 +220,7 @@ namespace OfficeOpenXml.Drawing.Chart
             }
        }
 
-        private void GetLitValues(string value, out double[] numberLiterals, out string[] stringLiterals)
+        private static void GetLitValues(string value, out double[] numberLiterals, out string[] stringLiterals)
         {
             value = value.Substring(1, value.Length - 2); //Remove outer {}
             if (value[0] == '\"' || value[0] == '\'')
@@ -244,7 +244,7 @@ namespace OfficeOpenXml.Drawing.Chart
             }
         }
 
-        private string[] SplitStringValue(string value, char textQualifier)
+        private static string[] SplitStringValue(string value, char textQualifier)
         {
             StringBuilder? sb = new StringBuilder();
             bool insideStr = true;
@@ -359,7 +359,7 @@ namespace OfficeOpenXml.Drawing.Chart
             }
         }
 
-        private void SetLitArray(XmlNode lit, double[] numLit)
+        private static void SetLitArray(XmlNode lit, double[] numLit)
         {
             if (numLit.Length == 0)
             {
@@ -377,7 +377,7 @@ namespace OfficeOpenXml.Drawing.Chart
             AddCount(lit, numLit.Length);
         }
 
-        private void SetLitArray(XmlNode lit, string[] strLit)
+        private static void SetLitArray(XmlNode lit, string[] strLit)
         {
             for (int i = 0; i < strLit.Length; i++)
             {

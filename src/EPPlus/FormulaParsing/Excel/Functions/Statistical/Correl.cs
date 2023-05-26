@@ -46,13 +46,13 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Statistical
             return CreateResult(result, DataType.Decimal);
         }
 
-        private double StandardDeviation(ExcelDoubleCellValue[] values)
+        private static double StandardDeviation(ExcelDoubleCellValue[] values)
         {
             double avg = values.Average(x => x.Value);
             return MathObj.Sqrt(values.Average(v => MathObj.Pow(v - avg, 2)));
         }
 
-        private double Covar(ExcelDoubleCellValue[] array1, ExcelDoubleCellValue[] array2)
+        private static double Covar(ExcelDoubleCellValue[] array1, ExcelDoubleCellValue[] array2)
         {
             double avg1 = array1.Select(x => x.Value).Average();
             double avg2 = array2.Select(x => x.Value).Average();

@@ -55,13 +55,13 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Statistical
 
         }
 
-        private double NormalCi(int s, double alpha, double sigma, int size)
+        private static double NormalCi(int s, double alpha, double sigma, int size)
         {
             double change = System.Math.Abs(NormalInv(alpha / 2, 0d, 1d) * sigma / System.Math.Sqrt((double)size));
             return 1d + change;
         }
 
-        private double NormalInv(double p, double mean, double std)
+        private static double NormalInv(double p, double mean, double std)
         {
             double n = -1.41421356237309505 * std * ErfHelper.Erfcinv(2 * p) + mean;
             return n;

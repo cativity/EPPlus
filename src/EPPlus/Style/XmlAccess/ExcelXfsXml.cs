@@ -64,7 +64,7 @@ namespace OfficeOpenXml.Style.XmlAccess
             ApplyProtection = GetXmlNodeBoolNullable("@applyProtection");
         }
 
-        private ExcelReadingOrder GetReadingOrder(string value)
+        private static ExcelReadingOrder GetReadingOrder(string value)
         {
             switch(value)
             {
@@ -77,7 +77,7 @@ namespace OfficeOpenXml.Style.XmlAccess
             }
         }
 
-        private ExcelHorizontalAlignment GetHorizontalAlign(string align)
+        private static ExcelHorizontalAlignment GetHorizontalAlign(string align)
         {
             if (align == "")
             {
@@ -95,7 +95,7 @@ namespace OfficeOpenXml.Style.XmlAccess
             }
         }
 
-        private ExcelVerticalAlignment GetVerticalAlign(string align)
+        private static ExcelVerticalAlignment GetVerticalAlign(string align)
         {
             if (align == "")
             {
@@ -307,7 +307,7 @@ namespace OfficeOpenXml.Style.XmlAccess
             }
         }
         #endregion
-        internal void RegisterEvent(ExcelXfs xf)
+        internal static void RegisterEvent(ExcelXfs xf)
         {
             //                RegisterEvent(xf, xf.Xf_ChangedEvent);
         }
@@ -491,7 +491,7 @@ namespace OfficeOpenXml.Style.XmlAccess
             return subId;
         }
 
-        private void SetBorderItem(ExcelBorderItemXml excelBorderItem, eStyleProperty styleProperty, object value)
+        private static void SetBorderItem(ExcelBorderItemXml excelBorderItem, eStyleProperty styleProperty, object value)
         {
             if(styleProperty==eStyleProperty.Style)
             {
@@ -814,7 +814,7 @@ namespace OfficeOpenXml.Style.XmlAccess
             }
             if(HorizontalAlignment != ExcelHorizontalAlignment.General)
             {
-                this.SetXmlNodeString(horizontalAlignPath, this.SetAlignString(this.HorizontalAlignment));
+                this.SetXmlNodeString(horizontalAlignPath, SetAlignString(this.HorizontalAlignment));
             }
 
             if (doSetXfId)
@@ -824,7 +824,7 @@ namespace OfficeOpenXml.Style.XmlAccess
 
             if(VerticalAlignment != ExcelVerticalAlignment.Bottom)
             {
-                this.SetXmlNodeString(verticalAlignPath, this.SetAlignString(this.VerticalAlignment));
+                this.SetXmlNodeString(verticalAlignPath, SetAlignString(this.VerticalAlignment));
             }
 
             if(WrapText)
@@ -885,7 +885,7 @@ namespace OfficeOpenXml.Style.XmlAccess
             return TopNode;
         }
 
-        private string SetAlignString(Enum align)
+        private static string SetAlignString(Enum align)
         {
             string newName = Enum.GetName(align.GetType(), align);
             return newName.Substring(0, 1).ToLower(CultureInfo.InvariantCulture) + newName.Substring(1, newName.Length - 1);

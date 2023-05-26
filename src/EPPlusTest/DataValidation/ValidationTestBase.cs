@@ -79,7 +79,7 @@ namespace EPPlusTest.DataValidation
             _dataValidationNode = xmlDoc.DocumentElement;
         }
 
-        protected IExcelDataValidationInt CreateSheetWithIntegerValidation(ExcelPackage package)
+        protected static IExcelDataValidationInt CreateSheetWithIntegerValidation(ExcelPackage package)
         {
             ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("NewSheet");
             IExcelDataValidationInt? validation = sheet.DataValidations.AddIntegerValidation("A1");
@@ -89,7 +89,7 @@ namespace EPPlusTest.DataValidation
             return validation;
         }
 
-        protected ExcelPackage ReadPackageAsNewPackage(ExcelPackage package)
+        protected static ExcelPackage ReadPackageAsNewPackage(ExcelPackage package)
         {
             MemoryStream xmlStream = new MemoryStream();
             package.SaveAs(xmlStream);
@@ -97,12 +97,12 @@ namespace EPPlusTest.DataValidation
             return new ExcelPackage(xmlStream);
         }
 
-        protected IExcelDataValidationInt ReadIntValidation(ExcelPackage package)
+        protected static IExcelDataValidationInt ReadIntValidation(ExcelPackage package)
         {
             return (IExcelDataValidationInt)ReadPackageAsNewPackage(package).Workbook.Worksheets[0].DataValidations[0];
         }
 
-        protected T ReadTValidation<T>(ExcelPackage package)
+        protected static T ReadTValidation<T>(ExcelPackage package)
         {
             ExcelDataValidation? validation = ReadPackageAsNewPackage(package).
                                               Workbook.Worksheets[0].DataValidations[0];

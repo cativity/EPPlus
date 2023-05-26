@@ -40,7 +40,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
             }
         }
 
-        private IEnumerable<FunctionArgument> BuildArgs(IEnumerable<FunctionArgument> arrArg, double quart)
+        private static IEnumerable<FunctionArgument> BuildArgs(IEnumerable<FunctionArgument> arrArg, double quart)
         {
             List<FunctionArgument>? argList = new List<FunctionArgument>();
             argList.AddRange(arrArg);

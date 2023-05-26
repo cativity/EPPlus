@@ -265,7 +265,7 @@ namespace OfficeOpenXml.Drawing.Chart
         /// </summary>
         /// <param name="pos">The position enum</param>
         /// <returns>The string</returns>
-        internal protected string GetPosText(eLabelPosition pos)
+        protected internal static string GetPosText(eLabelPosition pos)
        {
            switch (pos)
            {
@@ -294,7 +294,7 @@ namespace OfficeOpenXml.Drawing.Chart
         /// </summary>
         /// <param name="pos">The string value to translate</param>
         /// <returns>The enum value</returns>
-       internal protected eLabelPosition GetPosEnum(string pos)
+       protected internal static eLabelPosition GetPosEnum(string pos)
        {
            switch (pos)
            {

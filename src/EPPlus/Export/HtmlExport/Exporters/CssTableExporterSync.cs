@@ -35,7 +35,7 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
         private readonly ExcelTable _table;
         private readonly HtmlTableExportSettings _tableSettings;
 
-        private void RenderTableCss(StreamWriter sw, ExcelTable table, HtmlTableExportSettings settings, Dictionary<string, int> styleCache, List<string> datatypes)
+        private static void RenderTableCss(StreamWriter sw, ExcelTable table, HtmlTableExportSettings settings, Dictionary<string, int> styleCache, List<string> datatypes)
         {
             EpplusTableCssWriter? styleWriter = new EpplusTableCssWriter(sw, table, settings, styleCache);
             if (settings.Minify == false)
@@ -155,7 +155,7 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
             cellCssWriter.RenderAdditionalAndFontCss(TableClass);
             if (_tableSettings.Css.IncludeTableStyles)
             {
-                this.RenderTableCss(sw, this._table, this._tableSettings, this._styleCache, this._dataTypes);
+                RenderTableCss(sw, this._table, this._tableSettings, this._styleCache, this._dataTypes);
             }
 
             if (_tableSettings.Css.IncludeCellStyles)

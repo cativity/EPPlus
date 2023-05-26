@@ -26,7 +26,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
         IntroducedInExcelVersion = "2007")]
     internal class AverageIfs : MultipleRangeCriteriasFunction
     {
-        private string GetCriteraFromArgsByIndex(FunctionArgument[] arguments, int index)
+        private static string GetCriteraFromArgsByIndex(FunctionArgument[] arguments, int index)
         {
             return arguments[index + 1].Value != null ? arguments[index + 1].Value.ToString() : null;
         }

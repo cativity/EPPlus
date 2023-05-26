@@ -104,7 +104,7 @@ namespace OfficeOpenXml.Drawing.Style.Coloring
             }
         }
 
-        private bool IsTopNodeColorNode(XmlNode topNode)
+        private static bool IsTopNodeColorNode(XmlNode topNode)
         {
             return topNode.LocalName.EndsWith("Clr");                
         }
@@ -121,7 +121,7 @@ namespace OfficeOpenXml.Drawing.Style.Coloring
         /// <see cref="ExcelDrawingColorManager.SetSchemeColor(eSchemeColor)"/>
         /// </summary>
         public eDrawingColorType ColorType { get; internal protected set; } = eDrawingColorType.None;
-        internal void SetXml(XmlNamespaceManager nameSpaceManager, XmlNode node)
+        internal static void SetXml(XmlNamespaceManager nameSpaceManager, XmlNode node)
         {
             
         }

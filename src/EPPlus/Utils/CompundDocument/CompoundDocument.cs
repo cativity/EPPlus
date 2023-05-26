@@ -88,7 +88,7 @@ namespace OfficeOpenXml.Utils.CompundDocument
             }
         }
 
-        private void GetStorageAndStreams(StoragePart storage, CompoundDocumentItem parent)
+        private static void GetStorageAndStreams(StoragePart storage, CompoundDocumentItem parent)
         {
             foreach(CompoundDocumentItem? item in parent.Children)
             {
@@ -111,7 +111,7 @@ namespace OfficeOpenXml.Utils.CompundDocument
             Directories = doc.Directories;
             doc.Write(ms);
         }
-        private void WriteStorageAndStreams(StoragePart storage, CompoundDocumentItem parent)
+        private static void WriteStorageAndStreams(StoragePart storage, CompoundDocumentItem parent)
         {
             foreach(KeyValuePair<string, StoragePart> item in storage.SubStorage)
             {

@@ -228,7 +228,7 @@ namespace OfficeOpenXml
                         _zipPackage.Save(_stream);
                     }
                     await _stream.FlushAsync(cancellationToken);
-                    _zipPackage.Close();
+                    Packaging.ZipPackage.Close();
                 }
                 else
                 {
@@ -245,7 +245,7 @@ namespace OfficeOpenXml
                     }
 
                     _zipPackage.Save(_stream);
-                    _zipPackage.Close();
+                    Packaging.ZipPackage.Close();
                     if (Stream is MemoryStream stream)
                     {
 #if NETSTANDARD2_1
@@ -403,7 +403,7 @@ namespace OfficeOpenXml
             if (save)
             {
                 Workbook.Save();
-                _zipPackage.Close();
+                Packaging.ZipPackage.Close();
                 if (_stream is MemoryStream && _stream.Length > 0)
                 {
                     _stream.Close();

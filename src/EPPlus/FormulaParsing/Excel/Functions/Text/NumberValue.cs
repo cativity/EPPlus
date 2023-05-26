@@ -101,14 +101,14 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Text
             return true;
         }
 
-        private bool DecimalSeparatorIsValid(string separator)
+        private static bool DecimalSeparatorIsValid(string separator)
         {
             return !string.IsNullOrEmpty(separator)
                 &&
                 (separator == "." || separator == ",");
         }
 
-        private bool GroupSeparatorIsValid(string groupSeparator, string decimalSeparator)
+        private static bool GroupSeparatorIsValid(string groupSeparator, string decimalSeparator)
         {
             return !string.IsNullOrEmpty(groupSeparator)
                 &&

@@ -580,9 +580,8 @@ namespace OfficeOpenXml.Core.CellStore
         }
         private void AddRowSpan(int col, int fromRow, int toRow, T value)
         {
-            List<RangeItem> rows;
             long rowSpan = ((long)(fromRow - 1) << 20) | (long)(toRow - 1);
-            if (this._addresses.TryGetValue(col, out rows) == false)
+            if (this._addresses.TryGetValue(col, out List<RangeItem> rows) == false)
             {
                 rows = new List<RangeItem>(64);
                 this._addresses.Add(col, rows);
@@ -609,9 +608,8 @@ namespace OfficeOpenXml.Core.CellStore
         }
         private void MergeRowSpan(int col, int fromRow, int toRow, T value)
         {
-            List<RangeItem> rows;
             long rowSpan = ((long)(fromRow - 1) << 20) | (long)(toRow - 1);
-            if (this._addresses.TryGetValue(col, out rows) == false)
+            if (this._addresses.TryGetValue(col, out List<RangeItem> rows) == false)
             {
                 rows = new List<RangeItem>(64);
                 this._addresses.Add(col, rows);
@@ -633,11 +631,11 @@ namespace OfficeOpenXml.Core.CellStore
 
                 if (ix < rows.Count)
                 {
-                    int fr, tr = -1;
+                    int tr = -1;
                     while (rows.Count > ix)
                     {                         
                         RangeItem rs = rows[ix];
-                        fr = (int)(rs.RowSpan >> 20) + 1;
+                        int fr = (int)(rs.RowSpan >> 20) + 1;
                         tr = (int)(rs.RowSpan & 0xFFFFF) + 1;
                         if (fr <= fromRow && tr >= toRow)
                         {

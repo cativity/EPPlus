@@ -105,17 +105,16 @@ namespace OfficeOpenXml.Core.CellStore
         }
         internal CellStore<T> Clone()
         {
-            int row, col;
             CellStore<T>? ret = new CellStore<T>();
             for (int c = 0; c < this.ColumnCount; c++)
             {
                 ColumnIndex<T>? colIx = this._columnIndex[c];
-                col = colIx.Index;
+                int col = colIx.Index;
                 for (int p = 0; p < colIx.PageCount; p++)
                 {
                     for (int r = 0; r < colIx._pages[p].RowCount; r++)
                     {
-                        row = colIx._pages[p].IndexOffset + colIx._pages[p].Rows[r].Index;
+                        int row = colIx._pages[p].IndexOffset + colIx._pages[p].Rows[r].Index;
                         ret.SetValue(row, col, colIx._values[colIx._pages[p].Rows[r].IndexPointer]);
                     }
                 }

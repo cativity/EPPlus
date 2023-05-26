@@ -85,8 +85,8 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Operators
                 {
                     l = l == null || l.Result == null ? CompileResult.ZeroInt : l;
                     r = r == null || r.Result == null ? CompileResult.ZeroInt : r;
-                    ExcelErrorValue errorVal;
-                    if (EitherIsError(l, r, out errorVal))
+
+                    if (EitherIsError(l, r, out ExcelErrorValue errorVal))
                     {
                         return new CompileResult(errorVal);
                     }
@@ -326,14 +326,13 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Operators
 
         private static CompileResult Compare(CompileResult l, CompileResult r, Func<int, bool> comparison )
         {
-            ExcelErrorValue errorVal;
-            if (EitherIsError(l, r, out errorVal))
+            if (EitherIsError(l, r, out ExcelErrorValue errorVal))
             {
                 return new CompileResult(errorVal);
             }
-            object left, right;
-            left = GetObjFromOther(l, r);
-            right = GetObjFromOther(r, l);
+
+            object left = GetObjFromOther(l, r);
+            object right = GetObjFromOther(r, l);
             if (ConvertUtil.IsNumericOrDate(left) && ConvertUtil.IsNumericOrDate(right))
             {
                 double lnum = ConvertUtil.GetValueDouble(left);

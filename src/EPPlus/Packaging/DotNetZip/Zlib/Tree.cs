@@ -202,10 +202,8 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
             int base_Renamed = this.staticTree.extraBase;
             int max_length = this.staticTree.maxLength;
             int h; // heap index
-            int n, m; // iterate over the tree elements
+            int n; // iterate over the tree elements
             int bits; // bit length
-            int xbits; // extra bits
-            short f; // frequency
             int overflow = 0; // number of elements with bit length too large
                         
             for (bits = 0; bits <= InternalConstants.MAX_BITS; bits++)
@@ -234,13 +232,14 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
                 }
 
                 s.bl_count[bits]++;
-                xbits = 0;
+                int xbits = 0; // extra bits
+
                 if (n >= base_Renamed)
                 {
                     xbits = extra[n - base_Renamed];
                 }
 
-                f = tree[n * 2];
+                short f = tree[n * 2]; // frequency
                 s.opt_len += f * (bits + xbits);
                 if (stree != null)
                 {
@@ -276,7 +275,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
                 n = s.bl_count[bits];
                 while (n != 0)
                 {
-                    m = s.heap[--h];
+                    int m = s.heap[--h];
                     if (m > this.max_code)
                     {
                         continue;
@@ -303,7 +302,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
             short[] tree  = this.dyn_tree;
             short[] stree = this.staticTree.treeCodes;
             int elems     = this.staticTree.elems;
-            int n, m;            // iterate over heap elements
+            int n;            // iterate over heap elements
             int max_code  = -1;  // largest code with non zero frequency
             int node;            // new node being created
                         
@@ -363,8 +362,8 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
                 n = s.heap[1];
                 s.heap[1] = s.heap[s.heap_len--];
                 s.pqdownheap(tree, 1);
-                m = s.heap[1]; // m = node of next least frequency
-                                
+                int m = s.heap[1]; // m = node of next least frequency
+
                 s.heap[--s.heap_max] = n; // keep the nodes sorted by frequency
                 s.heap[--s.heap_max] = m;
                                 
@@ -400,12 +399,10 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
         {
             short[] next_code = new short[InternalConstants.MAX_BITS + 1]; // next code value for each bit length
             short code = 0; // running code value
-            int bits; // bit index
-            int n; // code index
-                        
+
             // The distribution counts are first used to generate the code values
             // without bit reversal.
-            for (bits = 1; bits <= InternalConstants.MAX_BITS; bits++)
+            for (int bits = 1; bits <= InternalConstants.MAX_BITS; bits++) // bit index
             {
                 unchecked {
                     next_code[bits] = code = (short) ((code + bl_count[bits - 1]) << 1);
@@ -417,8 +414,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
             //Assert (code + bl_count[MAX_BITS]-1 == (1<<MAX_BITS)-1,
             //        "inconsistent bit counts");
             //Tracev((stderr,"\ngen_codes: max_code %d ", max_code));
-                        
-            for (n = 0; n <= max_code; n++)
+            for (int n = 0; n <= max_code; n++) // code index
             {
                 int len = tree[n * 2 + 1];
                 if (len == 0)

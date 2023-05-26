@@ -30,7 +30,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions
         public override object Parse(object obj, RoundingMethod roundingMethod)
         {
             Require.That(obj).Named("argument").IsNotNull();
-            int result;
+
             if (obj is IRangeInfo)
             {
                 ICellInfo? r = ((IRangeInfo)obj).FirstOrDefault();
@@ -45,7 +45,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions
             {
                 return ConvertToInt(obj, roundingMethod);
             }
-            if (!int.TryParse(obj.ToString(), out result))
+            if (!int.TryParse(obj.ToString(), out int result))
             {
                 throw new ExcelErrorValueException(ExcelErrorValue.Create(eErrorType.Value));
             }

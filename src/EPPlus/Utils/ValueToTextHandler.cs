@@ -25,8 +25,7 @@ namespace OfficeOpenXml.Utils
     {
         internal static string GetFormattedText(object Value, ExcelWorkbook wb, int styleId, bool forWidthCalc, CultureInfo cultureInfo=null)
         {
-            object v = Value;
-            if (v == null)
+            if (Value == null)
             {
                 return "";
             }
@@ -45,7 +44,7 @@ namespace OfficeOpenXml.Utils
             //nf should never be null. If so set to General, Issue 173
             nf ??= styles.NumberFormats[0].FormatTranslator;
 
-            return FormatValue(v, forWidthCalc, nf, cultureInfo);
+            return FormatValue(Value, forWidthCalc, nf, cultureInfo);
         }
         internal static string FormatValue(object v, bool forWidthCalc, ExcelNumberFormatXml.ExcelFormatTranslator nf, CultureInfo overrideCultureInfo)
         {

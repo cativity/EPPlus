@@ -23,12 +23,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.Implementations
 
         public static FinanceCalcResult<double> Rate(double NPer, double Pmt, double PV, double FV = 0, PmtDue Due = PmtDue.EndOfPeriod, double Guess = 0.1)
         {
-            double dTemp;
-            double dRate0;
             double dRate1;
-            double dY0;
-            double dY1;
-            int I;
 
             // Check for error condition
             if (NPer <= 0.0)
@@ -36,8 +31,8 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.Implementations
                 throw new ArgumentException("NPer must by greater than zero");
             }
 
-            dRate0 = Guess;
-            dY0 = LEvalRate(dRate0, NPer, Pmt, PV, FV, Due);
+            double dRate0 = Guess;
+            double dY0 = LEvalRate(dRate0, NPer, Pmt, PV, FV, Due);
             if (dY0 > 0)
             {
                 dRate1 = (dRate0 / 2);
@@ -47,9 +42,9 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.Implementations
                 dRate1 = (dRate0 * 2);
             }
 
-            dY1 = LEvalRate(dRate1, NPer, Pmt, PV, FV, Due);
+            double dY1 = LEvalRate(dRate1, NPer, Pmt, PV, FV, Due);
 
-            for (I = 0; I <= 39; I++)
+            for (int I = 0; I <= 39; I++)
             {
                 if (dY1 == dY0)
                 {
@@ -78,7 +73,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.Implementations
                     return new FinanceCalcResult<double>(dRate0);
                 }
 
-                dTemp = dY0;
+                double dTemp = dY0;
                 dY0 = dY1;
                 dY1 = dTemp;
                 dTemp = dRate0;
@@ -91,20 +86,19 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.Implementations
 
         public static double LEvalRate(double Rate, double NPer, double Pmt, double PV, double dFv, PmtDue Due)
         {
-            double dTemp1;
-            double dTemp2;
-            double dTemp3;
-
             if (Rate == 0.0)
             {
                 return (PV + Pmt * NPer + dFv);
             }
             else
             {
-                dTemp3 = Rate + 1.0;
+                double dTemp3 = Rate + 1.0;
+
                 // WARSI Using the exponent operator for pow(..) in C code of LEvalRate. Still got
                 // to make sure that they (pow and ^) are same for all conditions
-                dTemp1 = System.Math.Pow(dTemp3, NPer);
+                double dTemp1 = System.Math.Pow(dTemp3, NPer);
+
+                double dTemp2;
 
                 if (Due != PmtDue.EndOfPeriod)
                 {

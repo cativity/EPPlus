@@ -212,8 +212,7 @@ namespace OfficeOpenXml
 	    {
 	        get
 	        {
-	            DateTime date;
-	            return DateTime.TryParse(this._coreHelper.GetXmlNodeString(CreatedPath), out date) ? date : DateTime.MinValue;
+                return DateTime.TryParse(this._coreHelper.GetXmlNodeString(CreatedPath), out DateTime date) ? date : DateTime.MinValue;
 	        }
 	        set
 	        {
@@ -329,8 +328,7 @@ namespace OfficeOpenXml
 	    {
 	        get
 	        {
-	            DateTime date;
-	            return DateTime.TryParse(this._coreHelper.GetXmlNodeString(ModifiedPath), out date) ? date : DateTime.MinValue;
+                return DateTime.TryParse(this._coreHelper.GetXmlNodeString(ModifiedPath), out DateTime date) ? date : DateTime.MinValue;
 	        }
 	        set
 	        {
@@ -442,8 +440,7 @@ namespace OfficeOpenXml
                 switch (node.LastChild.LocalName)
                 {
                     case "filetime":
-                        DateTime dt;
-                        if (DateTime.TryParse(value, out dt))
+                        if (DateTime.TryParse(value, out DateTime dt))
                         {
                             return dt;
                         }
@@ -452,8 +449,7 @@ namespace OfficeOpenXml
                             return null;
                         }
                     case "i4":
-                        int i;
-                        if (int.TryParse(value, NumberStyles.Number, CultureInfo.InvariantCulture, out i))
+                        if (int.TryParse(value, NumberStyles.Number, CultureInfo.InvariantCulture, out int i))
                         {
                             return i;
                         }
@@ -462,8 +458,7 @@ namespace OfficeOpenXml
                             return null;
                         }
                     case "r8":
-                        double d;
-                        if (double.TryParse(value, NumberStyles.Number, CultureInfo.InvariantCulture, out d))
+                        if (double.TryParse(value, NumberStyles.Number, CultureInfo.InvariantCulture, out double d))
                         {
                             return d;
                         }

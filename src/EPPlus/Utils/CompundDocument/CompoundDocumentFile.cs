@@ -487,8 +487,7 @@ namespace OfficeOpenXml.Utils.CompundDocument
 
         private static int SetSiblings(int listAdd, List<CompoundDocumentItem> children, int fromPos, int toPos, int currSibl)
         {
-            int pos, div;
-            pos = GetPos(fromPos,toPos);
+            int pos = GetPos(fromPos,toPos);
 
             CompoundDocumentItem? item = children[pos];
             if (item._handled)
@@ -502,7 +501,7 @@ namespace OfficeOpenXml.Utils.CompundDocument
                 return fromPos + listAdd;
             }
 
-            div = pos / 2;
+            int div = pos / 2;
             if (div <= 0)
             {
                 div = 1;
@@ -779,11 +778,10 @@ namespace OfficeOpenXml.Utils.CompundDocument
 
             //Directory Size
             int dirsPerSector = this._sectorSize / 128;
-            int dirSectors = 0;
             int firstFATSectorPos = this._currentFATSectorPos;
             if (dirs.Count > dirsPerSector)
             {
-                dirSectors = GetSectors(dirs.Count, dirsPerSector);
+                int dirSectors = GetSectors(dirs.Count, dirsPerSector);
                 noOfSectors += dirSectors - 1; //Four items per sector. Sector two is fixed for directories
             }
 

@@ -154,9 +154,7 @@ namespace EPPlusTest.Drawing.Style
         [TestMethod]
         public void RgbToHsl()
         {
-            double h, s, l;
-
-            ExcelDrawingRgbColor.GetHslColor(0, 0, 0, out h, out s, out l);
+            ExcelDrawingRgbColor.GetHslColor(0, 0, 0, out double h, out double s, out double l);
             Assert.AreEqual(0, h);
             Assert.AreEqual(0, s);
             Assert.AreEqual(0, l);

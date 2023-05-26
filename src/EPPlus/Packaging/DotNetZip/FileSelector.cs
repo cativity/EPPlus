@@ -1112,9 +1112,6 @@ namespace OfficeOpenXml.Packaging.Ionic
 
             SelectionCriterion current = null;
 
-            LogicalConjunction pendingConjunction = LogicalConjunction.NONE;
-
-            ParseState state;
             Stack<ParseState>? stateStack = new Stack<ParseState>();
             Stack<SelectionCriterion>? critStack = new Stack<SelectionCriterion>();
             stateStack.Push(ParseState.Start);
@@ -1122,6 +1119,8 @@ namespace OfficeOpenXml.Packaging.Ionic
             for (int i = 0; i < tokens.Length; i++)
             {
                 string tok1 = tokens[i].ToLower(CultureInfo.InvariantCulture);
+                ParseState state;
+
                 switch (tok1)
                 {
                     case "and":
@@ -1138,7 +1137,7 @@ namespace OfficeOpenXml.Packaging.Ionic
                             throw new ArgumentException(String.Join(" ", tokens, i, tokens.Length - i));
                         }
 
-                        pendingConjunction = (LogicalConjunction)Enum.Parse(typeof(LogicalConjunction), tokens[i].ToUpper(CultureInfo.InvariantCulture), true);
+                        LogicalConjunction pendingConjunction = (LogicalConjunction)Enum.Parse(typeof(LogicalConjunction), tokens[i].ToUpper(CultureInfo.InvariantCulture), true);
                         current = new CompoundCriterion { Left = current, Right = null, Conjunction = pendingConjunction };
                         stateStack.Push(state);
                         stateStack.Push(ParseState.ConjunctionPending);

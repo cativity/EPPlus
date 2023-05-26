@@ -20,28 +20,18 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.Implementations
     {
         internal static double LDoNPV(double Rate, ref double[] ValueArray, int iWNType)
         {
-            bool bSkipPos;
-            bool bSkipNeg;
+            bool bSkipPos = iWNType < 0;
+            bool bSkipNeg = iWNType > 0;
 
-            double dTemp2;
-            double dTotal;
-            double dTVal;
-            int I;
-            int lLower;
-            int lUpper;
+            double dTemp2 = 1.0;
+            double dTotal = 0.0;
 
-            bSkipPos = iWNType < 0;
-            bSkipNeg = iWNType > 0;
+            int lLower = 0;
+            int lUpper = ValueArray.Length - 1;
 
-            dTemp2 = 1.0;
-            dTotal = 0.0;
-
-            lLower = 0;
-            lUpper = ValueArray.Length - 1;
-
-            for(I = lLower; I <= lUpper; I++)
+            for(int I = lLower; I <= lUpper; I++)
             {
-                dTVal = ValueArray[I];
+                double dTVal = ValueArray[I];
                 dTemp2 += dTemp2 * Rate;
 
                 if(!((bSkipPos && dTVal > 0.0) || (bSkipNeg && dTVal< 0.0)))
@@ -55,23 +45,14 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.Implementations
 
         internal static FinanceCalcResult<double> MIRR(double[] ValueArray, double FinanceRate, double ReinvestRate)
         {
-            double dNpvPos;
-            double dNpvNeg;
-            double dTemp;
-            double dTemp1;
-            double dNTemp2;
-            int lCVal;
-            int lLower;
-            int lUpper;
-
             if(ValueArray.Rank != 1)
             {
                 return new FinanceCalcResult<double>(eErrorType.Value);
             }
 
-            lLower = 0;
-            lUpper = ValueArray.Length - 1;
-            lCVal = lUpper - lLower + 1;
+            int lLower = 0;
+            int lUpper = ValueArray.Length - 1;
+            int lCVal = lUpper - lLower + 1;
 
             if(FinanceRate == -1d)
             {
@@ -88,18 +69,18 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.Implementations
                 return new FinanceCalcResult<double>(eErrorType.Num);
             }
 
-            dNpvNeg = LDoNPV(FinanceRate, ref ValueArray, -1);
+            double dNpvNeg = LDoNPV(FinanceRate, ref ValueArray, -1);
 
             if (dNpvNeg == 0.0)
             {
                 return new FinanceCalcResult<double>(eErrorType.Div0);
             }
 
-            dNpvPos = LDoNPV(ReinvestRate, ref ValueArray, 1); // npv of +ve values
-            dTemp1 = ReinvestRate + 1.0;
-            dNTemp2 = lCVal;
+            double dNpvPos = LDoNPV(ReinvestRate, ref ValueArray, 1); // npv of +ve values
+            double dTemp1 = ReinvestRate + 1.0;
+            double dNTemp2 = lCVal;
 
-            dTemp = -dNpvPos * System.Math.Pow(dTemp1, dNTemp2) / (dNpvNeg * (FinanceRate + 1.0));
+            double dTemp = -dNpvPos * System.Math.Pow(dTemp1, dNTemp2) / (dNpvNeg * (FinanceRate + 1.0));
 
             if (dTemp < 0d)
             {

@@ -89,11 +89,10 @@ namespace EPPlusTest.Drawing
             List<Color>? l = new List<Color>();
             foreach (string? name in Enum.GetNames(typeof(eSystemColor)))
             {
-                string? n = name;
                 Color c = Color.Empty;
                 foreach (PropertyInfo? p in typeof(SystemColors).GetProperties(BindingFlags.Public | BindingFlags.Static))
                 {
-                    if (p.Name.Equals(n, StringComparison.CurrentCultureIgnoreCase))
+                    if (p.Name.Equals(name, StringComparison.CurrentCultureIgnoreCase))
                     {
                         c = (Color)p.GetValue(null, null);
                     }
@@ -101,7 +100,7 @@ namespace EPPlusTest.Drawing
 
                 if (c == Color.Empty)
                 {
-                    Console.WriteLine(n);
+                    Console.WriteLine(name);
                 }
                 l.Add(c);
             }

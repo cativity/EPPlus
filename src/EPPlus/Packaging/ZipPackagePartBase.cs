@@ -43,8 +43,7 @@ namespace OfficeOpenXml.Packaging
         {
             if (id.StartsWith("rId"))
             {
-                int num;
-                if (int.TryParse(id.Substring(3), out num))
+                if (int.TryParse(id.Substring(3), out int num))
                 {
                     if (num == maxRId - 1)
                     {
@@ -125,8 +124,7 @@ namespace OfficeOpenXml.Packaging
                 }
                 if (rel.Id.StartsWith("rid", StringComparison.OrdinalIgnoreCase))
                 {
-                    int id;
-                    if (int.TryParse(rel.Id.Substring(3), out id))
+                    if (int.TryParse(rel.Id.Substring(3), out int id))
                     {
                         if (id >= this.maxRId && id < int.MaxValue - 10000) //Not likly to have this high id's but make sure we have space to avoid overflow.
                         {

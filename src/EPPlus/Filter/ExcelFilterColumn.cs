@@ -34,8 +34,7 @@ namespace OfficeOpenXml.Filter
             if ((value[0] >= '0' && value[0] <= '9') ||
                 (value[value.Length - 1] >= '0' && value[value.Length - 1] <= '9'))
             {
-                double d;
-                if (ConvertUtil.TryParseNumericString(value, out d))
+                if (ConvertUtil.TryParseNumericString(value, out double d))
                 {
                     return d;
                 }

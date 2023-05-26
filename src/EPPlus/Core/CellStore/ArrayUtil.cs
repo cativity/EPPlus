@@ -34,11 +34,11 @@ namespace OfficeOpenXml.Core.CellStore
                     return -1;
                 }
 
-                int low = 0, high = length - 1, mid;
+                int low = 0, high = length - 1;
 
                 while (low <= high)
                 {
-                    mid = (low + high) >> 1;
+                    int mid = (low + high) >> 1;
 
                     if (pos < store[mid].Index)
                     {
@@ -64,11 +64,11 @@ namespace OfficeOpenXml.Core.CellStore
                 return -1;
             }
 
-            int low = 0, high = length - 1, mid;
+            int low = 0, high = length - 1;
 
             while (low <= high)
             {
-                mid = (low + high) >> 1;
+                int mid = (low + high) >> 1;
 
                 if (pos < store[mid].Index)
                 {

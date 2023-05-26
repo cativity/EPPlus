@@ -68,8 +68,8 @@ namespace OfficeOpenXml.Drawing.Slicer.Style
             {
                 return this._dicTable[element];
             }
-            ExcelSlicerTableStyleElement item;
-            item = new ExcelSlicerTableStyleElement(this.NameSpaceManager, this._tableStyleNode, this._styles, element);
+
+            ExcelSlicerTableStyleElement item = new(this.NameSpaceManager, this._tableStyleNode, this._styles, element);
             this._dicTable.Add(element, item);
             return item;
         }
@@ -79,8 +79,8 @@ namespace OfficeOpenXml.Drawing.Slicer.Style
             {
                 return this._dicSlicer[element];
             }
-            ExcelSlicerStyleElement item;
-            item = new ExcelSlicerStyleElement(this.NameSpaceManager, this.TopNode, this._styles, element);
+
+            ExcelSlicerStyleElement item = new(this.NameSpaceManager, this.TopNode, this._styles, element);
             this._dicSlicer.Add(element, item);
             return item;
         }

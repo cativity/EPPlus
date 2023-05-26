@@ -43,13 +43,12 @@ namespace OfficeOpenXml.Drawing.Style.Coloring
         }
         internal static Color GetColorFromString(string s)
         {
-            int n;
             if (s.Length == 6)
             {
                 s = "FF" + s;
             }
 
-            if (int.TryParse(s, NumberStyles.HexNumber, CultureInfo.InvariantCulture, out n))
+            if (int.TryParse(s, NumberStyles.HexNumber, CultureInfo.InvariantCulture, out int n))
             {
                 return Color.FromArgb(n);
             }

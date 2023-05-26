@@ -39,7 +39,6 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.Implementations
             }
             else
             {
-                double price = pr;
                 double fPriceN = 0.0;
                 double fYield1 = 0.0;
                 double fYield2 = 1.0;
@@ -48,23 +47,23 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.Implementations
                 double fYieldN = (fYield2 - fYield1) * 0.5;
 
 
-                for (int nIter = 0; nIter < 100 && !AreEqual(fPriceN, price); nIter++)
+                for (int nIter = 0; nIter < 100 && !AreEqual(fPriceN, pr); nIter++)
                 {
                     fPriceN = this._priceProvider.GetPrice(settlement, maturity, rate, fYieldN, redemption, frequency, basis);
 
-                    if (AreEqual(price, fPrice1))
+                    if (AreEqual(pr, fPrice1))
                     {
                         return fYield1;
                     }
-                    else if (AreEqual(price, fPrice2))
+                    else if (AreEqual(pr, fPrice2))
                     {
                         return fYield2;
                     }
-                    else if (AreEqual(price, fPriceN))
+                    else if (AreEqual(pr, fPriceN))
                     {
                         return fYieldN;
                     }
-                    else if (price < fPrice2)
+                    else if (pr < fPrice2)
                     {
                         fYield2 *= 2.0;
                         fPrice2 = this._priceProvider.GetPrice(settlement, maturity, rate, fYield2, redemption, frequency, basis);
@@ -73,7 +72,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.Implementations
                     }
                     else
                     {
-                        if (price < fPriceN)
+                        if (pr < fPriceN)
                         {
                             fYield1 = fYieldN;
                             fPrice1 = fPriceN;
@@ -84,10 +83,10 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.Implementations
                             fPrice2 = fPriceN;
                         }
 
-                        fYieldN = fYield2 - (fYield2 - fYield1) * ((price - fPrice2) / (fPrice1 - fPrice2));
+                        fYieldN = fYield2 - (fYield2 - fYield1) * ((pr - fPrice2) / (fPrice1 - fPrice2));
                     }
                 }
-                if (System.Math.Abs(price - fPriceN) > price / 100d)
+                if (System.Math.Abs(pr - fPriceN) > pr / 100d)
                 {
                     throw new Exception("Result not precise enough");
                 }

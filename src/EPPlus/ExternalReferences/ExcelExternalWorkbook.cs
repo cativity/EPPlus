@@ -137,10 +137,9 @@ namespace OfficeOpenXml.ExternalReferences
             {
                 this._sheetRefresh.Add(sheetId);
             }
-            CellStore<object> cellStoreValues;
-            CellStore<int> cellStoreMetaData;
-            cellStoreValues = this._sheetValues[sheetId];
-            cellStoreMetaData = this._sheetMetaData[sheetId];
+
+            CellStore<object> cellStoreValues = this._sheetValues[sheetId];
+            CellStore<int> cellStoreMetaData = this._sheetMetaData[sheetId];
 
             int row=0, col=0;
             string type="";

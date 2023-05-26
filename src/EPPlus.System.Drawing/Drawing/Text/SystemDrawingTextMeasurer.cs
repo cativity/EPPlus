@@ -30,13 +30,12 @@ namespace OfficeOpenXml.SystemDrawing.Text
         }        
         public TextMeasurement MeasureText(string text, MeasurementFont font)
         {
-            Bitmap b;
             Graphics g;
             float dpiCorrectX, dpiCorrectY;
             try
             {
                 //Check for missing GDI+, then use WPF istead.
-                b = new Bitmap(1, 1);
+                Bitmap b = new(1, 1);
                 g = Graphics.FromImage(b);
                 g.PageUnit = GraphicsUnit.Pixel;
                 dpiCorrectX = 96 / g.DpiX;

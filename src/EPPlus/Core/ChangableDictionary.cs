@@ -97,16 +97,16 @@ namespace OfficeOpenXml.Core
 
             int listItem = this._index[1][fromPosition];
             int insertPos = before ? toPosition : toPosition + 1;
-            int removePos = fromPosition;
-            if(insertPos>removePos)
+
+            if(insertPos>fromPosition)
             {
                 this.InsertAndShift(insertPos, 1);
-                this.RemoveAndShift(removePos, false);
+                this.RemoveAndShift(fromPosition, false);
                 insertPos--;
             }
             else
             {
-                this.RemoveAndShift(removePos, false);
+                this.RemoveAndShift(fromPosition, false);
                 this.InsertAndShift(insertPos, 1);
             }
 

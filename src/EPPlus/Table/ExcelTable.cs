@@ -708,9 +708,10 @@ namespace OfficeOpenXml.Table
         }
         private void WriteAutoFilter(bool showTotal)
         {
-            string autofilterAddress;
             if (this.ShowHeader)
             {
+                string autofilterAddress;
+
                 if (showTotal)
                 {
                     autofilterAddress = ExcelCellBase.GetAddress(this.Address._fromRow, this.Address._fromCol, this.Address._toRow - 1, this.Address._toCol);

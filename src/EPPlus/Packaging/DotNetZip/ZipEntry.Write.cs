@@ -115,11 +115,10 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
             bytes[i++] = (byte)((this._Crc32 & 0x00FF0000) >> 16);
             bytes[i++] = (byte)((this._Crc32 & 0xFF000000) >> 24);
 
-            int j = 0;
             if (this._OutputUsesZip64.Value)
             {
                 // CompressedSize (Int32) and UncompressedSize - all 0xFF
-                for (j = 0; j < 8; j++)
+                for (int j = 0; j < 8; j++)
                 {
                     bytes[i++] = 0xFF;
                 }
@@ -862,7 +861,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
             // compression method, compression level, or encryption algorithm.
             this._future_ROLH = counter?.ComputedPosition ?? s.Position;
 
-            int j = 0, i = 0;
+            int i = 0;
 
             byte[] block = new byte[30];
 
@@ -1116,7 +1115,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
             if (this._presumeZip64)
             {
                 // (i==18) CompressedSize (Int32) and UncompressedSize - all 0xFF for now
-                for (j = 0; j < 8; j++)
+                for (int j = 0; j < 8; j++)
                 {
                     block[i++] = 0xFF;
                 }
@@ -2544,7 +2543,6 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
 
         private void CopyThroughWithRecompute(Stream outstream)
         {
-            int n;
             byte[] bytes = new byte[this.BufferSize];
             CountingStream? input = new CountingStream(this.ArchiveStream);
 
@@ -2580,9 +2578,9 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
                     len = (remaining > bytes.Length) ? bytes.Length : (int)remaining;
 
                     // read
-                    n = input.Read(bytes, 0, len);
-                    //_CheckRead(n);
+                    int n = input.Read(bytes, 0, len);
 
+                    //_CheckRead(n);
                     // write
                     outstream.Write(bytes, 0, n);
                     remaining -= n;
@@ -2658,7 +2656,6 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
 
         private void CopyThroughWithNoChange(Stream outstream)
         {
-            int n;
             byte[] bytes = new byte[this.BufferSize];
             CountingStream? input = new CountingStream(this.ArchiveStream);
 
@@ -2701,9 +2698,9 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
                 int len = (remaining > bytes.Length) ? bytes.Length : (int)remaining;
 
                 // read
-                n = input.Read(bytes, 0, len);
-                //_CheckRead(n);
+                int n = input.Read(bytes, 0, len);
 
+                //_CheckRead(n);
                 // write
                 outstream.Write(bytes, 0, n);
                 remaining -= n;

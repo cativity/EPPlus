@@ -21,10 +21,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.Implementations
         internal static FinanceCalcResult<double> Ddb(double Cost, double Salvage, double Life, double Period, double Factor = 2.0)
         {
             double dRet;
-            double dTot;
-            double dExcess;
             double dTemp;
-            double dNTemp;
 
             if(Factor <= 0d || Salvage < 0d || Period <= 0d || Period > Life)
             {
@@ -67,7 +64,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.Implementations
 
             //   Perform the calculation
             dTemp = (Life - Factor) / Life;
-            dNTemp = Period - 1.0;
+            double dNTemp = Period - 1.0;
 
             //   WARSI Using the exponent operator for pow(..) in C code of DDB. Still got
             //   to make sure that they (pow and ^) are same for all conditions
@@ -75,8 +72,8 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.Implementations
 
             //   WARSI Using the exponent operator for pow(..) in C code of DDB. Still got
             //  to make sure that they (pow and ^) are same for all conditions
-            dTot = Cost * (1 - System.Math.Pow(dTemp, Period));
-            dExcess = dTot - Cost + Salvage;
+            double dTot = Cost * (1 - System.Math.Pow(dTemp, Period));
+            double dExcess = dTot - Cost + Salvage;
 
             if(dExcess > 0d)
             {

@@ -52,7 +52,6 @@ namespace OfficeOpenXml.Core.Worksheet.Fonts.GenericFontMetrics
             char[]? chars = text.ToCharArray();
             for (int x = 0; x < chars.Length; x++)
             {
-                SerializedFontMetrics? fnt = sFont;
                 char c = chars[x];
                 // if east asian char use default regardless of actual font.
                 if (IsEastAsianChar(c))
@@ -63,7 +62,7 @@ namespace OfficeOpenXml.Core.Worksheet.Fonts.GenericFontMetrics
                 {
                     if (sFont.CharMetrics.ContainsKey(c))
                     {
-                        float fw = fnt.ClassWidths[sFont.CharMetrics[c]];
+                        float fw = sFont.ClassWidths[sFont.CharMetrics[c]];
                         if (Char.IsDigit(c))
                         {
                             fw *= FontScaleFactors.DigitsScalingFactor;
@@ -73,7 +72,7 @@ namespace OfficeOpenXml.Core.Worksheet.Fonts.GenericFontMetrics
                     }
                     else
                     {
-                        width += sFont.ClassWidths[fnt.DefaultWidthClass];
+                        width += sFont.ClassWidths[sFont.DefaultWidthClass];
                     }
                 }
 

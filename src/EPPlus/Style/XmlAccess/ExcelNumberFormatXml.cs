@@ -266,7 +266,6 @@ namespace OfficeOpenXml.Style.XmlAccess
                 List<int> lstDec=new List<int>();
                 StringBuilder sb = new StringBuilder();
                 this.Culture = null;
-                char clc;
                 int secCount = 0;
                 FormatPart? f = this.Formats[0];
 
@@ -385,7 +384,8 @@ namespace OfficeOpenXml.Style.XmlAccess
                             }
                             else
                             {
-                                clc = c.ToString().ToLower(CultureInfo.InvariantCulture)[0];  //Lowercase character
+                                char clc = c.ToString().ToLower(CultureInfo.InvariantCulture)[0]; //Lowercase character
+
                                 //Set the datetype
                                 if (this.DataType == eFormatType.Unknown)
                                 {
@@ -554,8 +554,7 @@ namespace OfficeOpenXml.Style.XmlAccess
 
                 string[] fmt = f.FractionFormat.Split('/');
 
-                int fixedDenominator;
-                if (!int.TryParse(fmt[1], out fixedDenominator))
+                if (!int.TryParse(fmt[1], out int fixedDenominator))
                 {
                     fixedDenominator = 0;
                 }
@@ -591,7 +590,7 @@ namespace OfficeOpenXml.Style.XmlAccess
                     }
 
                     double divRes = 1 / ((double)Math.Abs(d) - intPart);
-                    double result, prevResult = double.NaN;
+                    double prevResult = double.NaN;
                     int listPos = 2, index = 1;
                     while (true)
                     {
@@ -605,7 +604,7 @@ namespace OfficeOpenXml.Style.XmlAccess
 
                         denominators.Add((intDivRes * denominators[index - 1] + denominators[index - 2]));
 
-                        result = numerators[index] / denominators[index];
+                        double result = numerators[index] / denominators[index];
                         if (denominators[index] > maxNum)
                         {
                             break;

@@ -106,8 +106,7 @@ namespace OfficeOpenXml.Drawing.Vml
             string[] numbers = anchor.Split(',');
             if (numbers.Length == 8)
             {
-                int ret;
-                if (int.TryParse(numbers[this._startPos + pos], NumberStyles.Number, CultureInfo.InvariantCulture, out ret))
+                if (int.TryParse(numbers[this._startPos + pos], NumberStyles.Number, CultureInfo.InvariantCulture, out int ret))
                 {
                     return ret;
                 }

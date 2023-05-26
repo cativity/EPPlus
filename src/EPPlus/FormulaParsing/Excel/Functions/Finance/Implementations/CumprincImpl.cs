@@ -29,19 +29,16 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.Implementations
 
         public FinanceCalcResult<double> GetCumprinc(double rate, double nper, double pv, int startPeriod, int endPeriod, PmtDue type)
         {
-            double fPmt, fPpmt;
-
             if (startPeriod < 1 || endPeriod < startPeriod || rate <= 0.0 || endPeriod > nper || pv <= 0.0)
             {
                 return new FinanceCalcResult<double>(eErrorType.Num);
             }
 
-            fPmt = this._pmtProvider.GetPmt(rate, nper, pv, 0.0, type);
+            double fPmt = this._pmtProvider.GetPmt(rate, nper, pv, 0.0, type);
 
-            fPpmt = 0.0;
+            double fPpmt = 0.0;
 
             int nStart = startPeriod;
-            int nEnd = endPeriod;
 
             if (nStart == 1)
             {
@@ -57,7 +54,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.Implementations
                 nStart++;
             }
 
-            for (int i = nStart; i <= nEnd; i++)
+            for (int i = nStart; i <= endPeriod; i++)
             {
                 if (type == PmtDue.BeginningOfPeriod)
                 {

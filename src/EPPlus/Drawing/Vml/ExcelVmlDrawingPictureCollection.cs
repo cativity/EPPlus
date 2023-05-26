@@ -128,8 +128,7 @@ namespace OfficeOpenXml.Drawing.Vml
                 {
                     if (draw.Id.Length > 3 && draw.Id.StartsWith("vml", StringComparison.OrdinalIgnoreCase))
                     {
-                        int id;
-                        if (int.TryParse(draw.Id.Substring(3, draw.Id.Length - 3), NumberStyles.Number, CultureInfo.InvariantCulture, out id))
+                        if (int.TryParse(draw.Id.Substring(3, draw.Id.Length - 3), NumberStyles.Number, CultureInfo.InvariantCulture, out int id))
                         {
                             if (id > this._nextID)
                             {

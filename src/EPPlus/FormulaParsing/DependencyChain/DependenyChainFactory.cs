@@ -213,9 +213,8 @@ namespace OfficeOpenXml.FormulaParsing
                 }
                 else if (t.TokenTypeIsSet(TokenType.NameValue))
                 {
-                    string adrWb, adrWs, adrName;
                     ExcelNamedRange name;
-                    ExcelAddressBase.SplitAddress(t.Value, out adrWb, out adrWs, out adrName, f.ws==null ? "" : f.ws.Name);
+                    ExcelAddressBase.SplitAddress(t.Value, out string adrWb, out string adrWs, out string adrName, f.ws==null ? "" : f.ws.Name);
                     if(!string.IsNullOrEmpty(adrWb))
                     {
                         name = null; //TODO:We should build a dependency across workbooks here when external links are fully implemented. Now we only use cached values.

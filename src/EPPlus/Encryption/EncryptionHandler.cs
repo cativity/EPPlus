@@ -273,14 +273,13 @@ namespace OfficeOpenXml.Encryption
 
         private static MemoryStream EncryptPackageBinary(byte[] package, ExcelEncryption encryption)
         {
-            byte[] encryptionKey;
             //Create the Encryption Info. This also returns the Encryptionkey
             EncryptionInfoBinary? encryptionInfo = CreateEncryptionInfo(encryption.Password,
                                                                         encryption.Algorithm == EncryptionAlgorithm.AES128 ?
                                                                             AlgorithmID.AES128 :
                                                                             encryption.Algorithm == EncryptionAlgorithm.AES192 ?
                                                                                 AlgorithmID.AES192 :
-                                                                                AlgorithmID.AES256, out encryptionKey);
+                                                                                AlgorithmID.AES256, out byte[] encryptionKey);
 
             //ILockBytes lb;
             //var iret = CreateILockBytesOnHGlobal(IntPtr.Zero, true, out lb);
@@ -480,10 +479,9 @@ namespace OfficeOpenXml.Encryption
 
             cs.FlushFinalBlock();
 
-            byte[] ret;
             if (useDataSize)
             {
-                ret = new byte[data.Length];
+                byte[] ret = new byte[data.Length];
                 ms.Seek(0, SeekOrigin.Begin);
                 ms.Read(ret, 0, data.Length);  //Truncate any padded Zeros
                 return ret;
@@ -884,7 +882,6 @@ namespace OfficeOpenXml.Encryption
         /// <returns>The hash to encrypt the document</returns>
         private static byte[] GetPasswordHashBinary(string password, EncryptionInfoBinary encryptionInfo)
         {
-            byte[] hash = null;
             byte[] tempHash = new byte[4 + 20];    //Iterator + prev. hash
             try
             {
@@ -906,7 +903,7 @@ namespace OfficeOpenXml.Encryption
                     throw new NotSupportedException("Hash provider is invalid. Must be SHA1(AlgIDHash == 0x8004)");
                 }
 
-                hash = GetPasswordHashSpinPrepending(hashProvider, encryptionInfo.Verifier.Salt, password, 50000, 20);
+                byte[] hash = GetPasswordHashSpinPrepending(hashProvider, encryptionInfo.Verifier.Salt, password, 50000, 20);
 
                 // Append "block" (0)
                 Array.Copy(hash, tempHash, hash.Length);
@@ -988,9 +985,8 @@ namespace OfficeOpenXml.Encryption
         }
         internal static byte[] GetPasswordHashSpinPrepending(HashAlgorithm hashProvider, byte[] salt, string password, int spinCount, int hashSize)
         {
-            byte[] hash;
             byte[] tempHash = new byte[4 + hashSize];    //Iterator + prev. hash
-            hash = hashProvider.ComputeHash(CombinePassword(salt, password));
+            byte[] hash = hashProvider.ComputeHash(CombinePassword(salt, password));
 
             //Iterate "spinCount" times, inserting i in first 4 bytes and then the prev. hash in byte 5-24
             for (int i = 0; i < spinCount; i++)
@@ -1005,9 +1001,8 @@ namespace OfficeOpenXml.Encryption
         }
         internal static byte[] GetPasswordHashSpinAppending(HashAlgorithm hashProvider, byte[] salt, string password, int spinCount, int hashSize)
         {
-            byte[] hash;
             byte[] tempHash = new byte[4 + hashSize];    //Iterator + prev. hash
-            hash = hashProvider.ComputeHash(CombinePassword(salt, password));
+            byte[] hash = hashProvider.ComputeHash(CombinePassword(salt, password));
 
             //Iterate "spinCount" times, inserting i in first 4 bytes and then the prev. hash in byte 5-24
             for (int i = 0; i < spinCount; i++)

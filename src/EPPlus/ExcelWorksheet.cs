@@ -271,8 +271,6 @@ namespace OfficeOpenXml
             }
             internal void Add(ExcelAddressBase address, bool doValidate)
             {
-                int ix = 0;
-
                 //Validate
                 if (doValidate && this.Validate(address) == false)
                 {
@@ -280,7 +278,7 @@ namespace OfficeOpenXml
                 }
                 lock (this)
                 {
-                    ix = this._list.Count;
+                    int ix = this._list.Count;
                     this._list.Add(address.Address);
                     this.SetIndex(address, ix);
                 }
@@ -821,8 +819,7 @@ namespace OfficeOpenXml
                 }
                 else
                 {
-                    string v;
-                    v = value.ToString();
+                    string v = value.ToString();
                     v = v.Substring(0, 1).ToLowerInvariant() + v.Substring(1);
                     this._package.Workbook.SetXmlNodeString(string.Format("d:sheets/d:sheet[@sheetId={0}]/@state", this._sheetID), v);
                     this.DeactivateTab();
@@ -1268,7 +1265,6 @@ namespace OfficeOpenXml
             this._worksheetXml = new XmlDocument();
             this._worksheetXml.PreserveWhitespace = ExcelPackage.preserveWhitespace;
             ZipPackagePart packPart = this._package.ZipPackage.GetPart(this.WorksheetUri);
-            string xml = "";
 
             // First Columns, rows, cells, mergecells, hyperlinks and pagebreakes are loaded from a xmlstream to optimize speed...
             bool doAdjust = this._package.DoAdjustDrawings;
@@ -1303,7 +1299,7 @@ namespace OfficeOpenXml
 #endif
             this.LoadColumns(xr);    //columnXml
             string? lastXmlElement = "sheetData";
-            xml = stream.GetBufferAsStringRemovingElement(false, lastXmlElement);
+            string xml = stream.GetBufferAsStringRemovingElement(false, lastXmlElement);
             long start = stream.Position;
             this.LoadCells(xr);
             int nextElementLength = GetAttributeLength(xr);
@@ -1411,8 +1407,7 @@ namespace OfficeOpenXml
                 {
                     if (xr.NodeType == XmlNodeType.Element)
                     {
-                        int id;
-                        if (int.TryParse(xr.GetAttribute("id"), NumberStyles.Number, CultureInfo.InvariantCulture, out id))
+                        if (int.TryParse(xr.GetAttribute("id"), NumberStyles.Number, CultureInfo.InvariantCulture, out int id))
                         {
                             this.Row(id).PageBreak = true;
                         }
@@ -1437,8 +1432,7 @@ namespace OfficeOpenXml
                 {
                     if (xr.NodeType == XmlNodeType.Element)
                     {
-                        int id;
-                        if (int.TryParse(xr.GetAttribute("id"), NumberStyles.Number, CultureInfo.InvariantCulture, out id))
+                        if (int.TryParse(xr.GetAttribute("id"), NumberStyles.Number, CultureInfo.InvariantCulture, out int id))
                         {
                             this.Column(id).PageBreak = true;
                         }
@@ -1508,8 +1502,7 @@ namespace OfficeOpenXml
                         col.Hidden = GetBoolFromString(xr.GetAttribute("hidden"));
                         this.SetValueInner(0, min, col);
 
-                        int style;
-                        if (!(xr.GetAttribute("style") == null || !int.TryParse(xr.GetAttribute("style"), NumberStyles.Number, CultureInfo.InvariantCulture, out style)))
+                        if (!(xr.GetAttribute("style") == null || !int.TryParse(xr.GetAttribute("style"), NumberStyles.Number, CultureInfo.InvariantCulture, out int style)))
                         {
                             this.SetStyleInner(0, min, style);
                         }
@@ -1540,11 +1533,10 @@ namespace OfficeOpenXml
                         continue;
                     }
 
-                    int fromRow, fromCol, toRow, toCol;
                     string? reference = xr.GetAttribute("ref");
                     if (reference != null && ExcelCellBase.IsValidAddress(reference))
                     {
-                        ExcelCellBase.GetRowColFromAddress(xr.GetAttribute("ref"), out fromRow, out fromCol, out toRow, out toCol);
+                        ExcelCellBase.GetRowColFromAddress(xr.GetAttribute("ref"), out int fromRow, out int fromCol, out int toRow, out int toCol);
                         ExcelHyperLink hl = null;
                         if (xr.GetAttribute("id", ExcelPackage.schemaRelationships) != null)
                         {
@@ -2258,9 +2250,9 @@ namespace OfficeOpenXml
         public void Select(string Address, bool SelectSheet)
         {
             this.CheckSheetTypeAndNotDisposed();
-            int fromCol, fromRow, toCol, toRow;
+            int toCol, toRow;
             //Get rows and columns and validate as well
-            ExcelCellBase.GetRowColFromAddress(Address, out fromRow, out fromCol, out toRow, out toCol);
+            ExcelCellBase.GetRowColFromAddress(Address, out int fromRow, out int fromCol, out toRow, out toCol);
 
             if (SelectSheet)
             {
@@ -2477,8 +2469,7 @@ namespace OfficeOpenXml
         public void SetValue(string Address, object Value)
         {
             this.CheckSheetTypeAndNotDisposed();
-            int row, col;
-            ExcelCellBase.GetRowCol(Address, out row, out col, true);
+            ExcelCellBase.GetRowCol(Address, out int row, out int col, true);
             if (row < 1 || col < 1 || row > ExcelPackage.MaxRows && col > ExcelPackage.MaxColumns)
             {
                 throw new ArgumentOutOfRangeException("Address is invalid or out of range");
@@ -3078,8 +3069,8 @@ namespace OfficeOpenXml
             get
             {
                 this.CheckSheetTypeAndNotDisposed();
-                int fromRow, fromCol, toRow, toCol;
-                if (this._values.GetDimension(out fromRow, out fromCol, out toRow, out toCol))
+
+                if (this._values.GetDimension(out int fromRow, out int fromCol, out int toRow, out int toCol))
                 {
                     ExcelAddressBase? addr = new ExcelAddressBase(fromRow, fromCol, toRow, toCol);
                     addr._ws = this.Name;

@@ -56,9 +56,12 @@ namespace OfficeOpenXml.Core.Worksheet
             {
                 if (!string.IsNullOrEmpty(ws._mergedCells[i]))
                 {
-                    ExcelAddressBase addr = new ExcelAddressBase(ws._mergedCells[i]), newAddr;
+                    ExcelAddressBase addr = new ExcelAddressBase(ws._mergedCells[i]);
+
                     if (addr._fromCol >= fromCol && addr._toCol <= toCol)
                     {
+                        ExcelAddressBase newAddr;
+
                         if (delete)
                         {
                             newAddr = addr.DeleteRow(row, rows);
@@ -96,10 +99,12 @@ namespace OfficeOpenXml.Core.Worksheet
             {
                 if (!string.IsNullOrEmpty(ws._mergedCells[i]))
                 {
-                    ExcelAddressBase addr = new ExcelAddressBase(ws._mergedCells[i]), newAddr;
+                    ExcelAddressBase addr = new ExcelAddressBase(ws._mergedCells[i]);
 
                     if (addr._fromRow >= fromRow && addr._toRow <= toRow)
                     {
+                        ExcelAddressBase newAddr;
+
                         if (delete)
                         {
                             newAddr = addr.DeleteColumn(column, columns);

@@ -29,8 +29,7 @@ namespace OfficeOpenXml.Utils.TypeConversion
                     return null;
                 }
 
-                float output;
-                if(float.TryParse(o.ToString(), out output))
+                if(float.TryParse(o.ToString(), out float output))
                 {
                     return output;
                 }

@@ -1687,8 +1687,7 @@ namespace EPPlusTest
             ExcelPivotTableField? rowField2 = pivotTable.RowFields.Add(pivotTable.Fields["JobNo"]);
             ExcelPivotTableField? calcField1 = pivotTable.Fields.AddCalculatedField("Productive", "'ProductiveHrs'/('ProductiveHrs'+'NonProductiveHrs')*100");
             calcField1.Format = "#,##0";
-            ExcelPivotTableDataField dataField;
-            dataField = pivotTable.DataFields.Add(pivotTable.Fields["Productive"]);
+            ExcelPivotTableDataField dataField = pivotTable.DataFields.Add(pivotTable.Fields["Productive"]);
             dataField.Format = "#,##0.0";
             dataField.Name = "Productive2";
 
@@ -2244,9 +2243,8 @@ namespace EPPlusTest
                 // Add column of errors and warnings
                 int startMessagesColumn = end.Column + 1;
                 worksheet.InsertColumn(startMessagesColumn, 2);
-                int errorColumn = startMessagesColumn;
                 int warningColumn = startMessagesColumn + 1;
-                worksheet.Cells[(dataStartRow) - 1, errorColumn].Value = "Errors";
+                worksheet.Cells[(dataStartRow) - 1, startMessagesColumn].Value = "Errors";
                 worksheet.Cells[(dataStartRow) - 1, warningColumn].Value = "Warnings";
                 foreach (Error? error in errors)
                 {
@@ -2267,7 +2265,7 @@ namespace EPPlusTest
                 int deletedColumns = 0;
                 for (int i = 1; i <= end.Column; i++)
                 {
-                    if (colFieldReference + 1 != i && errorColumn != i && warningColumn != i)
+                    if (colFieldReference + 1 != i && startMessagesColumn != i && warningColumn != i)
                     {
                         worksheet.DeleteColumn(i - deletedColumns);
                         deletedColumns++;

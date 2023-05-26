@@ -1428,10 +1428,9 @@ namespace OfficeOpenXml.Drawing
                 ZipPackage.Flush();
             }
             XmlNode colNode = this._drawingsXml.SelectSingleNode("//xdr:wsDr", this.NameSpaceManager);
-            XmlElement drawNode;
 
             string? topElementname = $"{topNodeType.ToEnumString()}Anchor";
-            drawNode = this._drawingsXml.CreateElement("xdr", topElementname, ExcelPackage.schemaSheetDrawings);
+            XmlElement drawNode = this._drawingsXml.CreateElement("xdr", topElementname, ExcelPackage.schemaSheetDrawings);
             if (asAlterniveContent)
             {
                 XmlElement? acNode = (XmlElement)this._drawingsXml.CreateElement("mc", "AlternateContent", ExcelPackage.schemaMarkupCompatibility);

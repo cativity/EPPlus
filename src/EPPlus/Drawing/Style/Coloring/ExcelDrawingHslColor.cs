@@ -83,7 +83,6 @@ namespace OfficeOpenXml.Drawing.Style.Coloring
         internal static Color GetRgb(double h, double s, double l)
         {
             //Created using formulas here...https://www.rapidtables.com/convert/color/hsl-to-rgb.html
-            double r, g, b;
 
             if (h < 0)
             {
@@ -130,6 +129,10 @@ namespace OfficeOpenXml.Drawing.Style.Coloring
                 double c = (1 - Math.Abs(2 * l - 1)) * s;
                 double x = c * (1 - Math.Abs((h / 60) % 2 - 1));
                 double m = l - c / 2;
+
+                double r;
+                double g;
+                double b;
 
                 if (h < 60)
                 {

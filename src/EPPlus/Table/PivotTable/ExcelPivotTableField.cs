@@ -622,12 +622,12 @@ namespace OfficeOpenXml.Table.PivotTable
         #region Private & internal Methods
         internal static XmlElement AppendField(XmlNode rowsNode, int index, string fieldNodeText, string indexAttrText)
         {
-            XmlElement prevField = null, newElement;
+            XmlElement prevField = null;
             foreach (XmlElement field in rowsNode.ChildNodes)
             {
                 string x = field.GetAttribute(indexAttrText);
-                int fieldIndex;
-                if (int.TryParse(x, out fieldIndex))
+
+                if (int.TryParse(x, out int fieldIndex))
                 {
                     if (fieldIndex == index)    //Row already exists
                     {
@@ -636,7 +636,7 @@ namespace OfficeOpenXml.Table.PivotTable
                 }
                 prevField = field;
             }
-            newElement = rowsNode.OwnerDocument.CreateElement(fieldNodeText, ExcelPackage.schemaMain);
+            XmlElement newElement = rowsNode.OwnerDocument.CreateElement(fieldNodeText, ExcelPackage.schemaMain);
             newElement.SetAttribute(indexAttrText, index.ToString());
             rowsNode.InsertAfter(newElement, prevField);
 

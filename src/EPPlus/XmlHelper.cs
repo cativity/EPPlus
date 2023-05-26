@@ -919,12 +919,11 @@ namespace OfficeOpenXml
         {
             if (value.HasValue)
             {
-                int v;
                 if (!string.IsNullOrEmpty(parameter) && (value < minValue || value > maxValue))
                 {
                     throw (new ArgumentOutOfRangeException(parameter, $"Value must be between {minValue} and {maxValue}"));
                 }
-                v = (int)(value * 60000);
+                int v = (int)(value * 60000);
                 this.SetXmlNodeString(path, v.ToString(CultureInfo.InvariantCulture));
             }
             else
@@ -936,8 +935,7 @@ namespace OfficeOpenXml
         {
             if (value.HasValue)
             {
-                int v;
-                v = (int)(value * Drawing.ExcelDrawing.EMU_PER_POINT);
+                int v = (int)(value * Drawing.ExcelDrawing.EMU_PER_POINT);
                 this.SetXmlNodeString(path, v.ToString());
             }
             else
@@ -1050,8 +1048,7 @@ namespace OfficeOpenXml
 
         internal int GetXmlNodeInt(string path, int defaultValue=int.MinValue)
         {
-            int i;
-            if (int.TryParse(this.GetXmlNodeString(path), NumberStyles.Number, CultureInfo.InvariantCulture, out i))
+            if (int.TryParse(this.GetXmlNodeString(path), NumberStyles.Number, CultureInfo.InvariantCulture, out int i))
             {
                 return i;
             }
@@ -1092,9 +1089,8 @@ namespace OfficeOpenXml
         }
         internal int? GetXmlNodeIntNull(string path)
         {
-            int i;
             string s = this.GetXmlNodeString(path);
-            if (s != "" && int.TryParse(s, NumberStyles.Number, CultureInfo.InvariantCulture, out i))
+            if (s != "" && int.TryParse(s, NumberStyles.Number, CultureInfo.InvariantCulture, out int i))
             {
                 return i;
             }
@@ -1105,9 +1101,8 @@ namespace OfficeOpenXml
         }
         internal long GetXmlNodeLong(string path)
         {
-            long l;
             string s = this.GetXmlNodeString(path);
-            if (s != "" && long.TryParse(s, NumberStyles.Number, CultureInfo.InvariantCulture, out l))
+            if (s != "" && long.TryParse(s, NumberStyles.Number, CultureInfo.InvariantCulture, out long l))
             {
                 return l;
             }
@@ -1119,9 +1114,8 @@ namespace OfficeOpenXml
 
         internal long? GetXmlNodeLongNull(string path)
         {
-            long l;
             string s = this.GetXmlNodeString(path);
-            if (s != "" && long.TryParse(s, NumberStyles.Number, CultureInfo.InvariantCulture, out l))
+            if (s != "" && long.TryParse(s, NumberStyles.Number, CultureInfo.InvariantCulture, out long l))
             {
                 return l;
             }
@@ -1133,8 +1127,7 @@ namespace OfficeOpenXml
 
         internal decimal GetXmlNodeDecimal(string path)
         {
-            decimal d;
-            if (decimal.TryParse(this.GetXmlNodeString(path), NumberStyles.Any, CultureInfo.InvariantCulture, out d))
+            if (decimal.TryParse(this.GetXmlNodeString(path), NumberStyles.Any, CultureInfo.InvariantCulture, out decimal d))
             {
                 return d;
             }
@@ -1145,8 +1138,7 @@ namespace OfficeOpenXml
         }
         internal decimal? GetXmlNodeDecimalNull(string path)
         {
-            decimal d;
-            if (decimal.TryParse(this.GetXmlNodeString(path), NumberStyles.Any, CultureInfo.InvariantCulture, out d))
+            if (decimal.TryParse(this.GetXmlNodeString(path), NumberStyles.Any, CultureInfo.InvariantCulture, out decimal d))
             {
                 return d;
             }
@@ -1164,8 +1156,7 @@ namespace OfficeOpenXml
             }
             else
             {
-                double v;
-                if (double.TryParse(s, NumberStyles.Any, CultureInfo.InvariantCulture, out v))
+                if (double.TryParse(s, NumberStyles.Any, CultureInfo.InvariantCulture, out double v))
                 {
                     return v;
                 }
@@ -1184,8 +1175,7 @@ namespace OfficeOpenXml
             }
             else
             {
-                double v;
-                if (double.TryParse(s, NumberStyles.Any, CultureInfo.InvariantCulture, out v))
+                if (double.TryParse(s, NumberStyles.Any, CultureInfo.InvariantCulture, out double v))
                 {
                     return v;
                 }

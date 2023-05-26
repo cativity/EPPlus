@@ -251,7 +251,6 @@ namespace OfficeOpenXml.Drawing
             using BinaryReader? br = new BinaryReader(ms);
             if (IsJpg(br))
             {
-                float xDensity = 1, yDensity = 1;
                 while (ms.Position < ms.Length)
                 {
                     ushort id = GetUInt16BigEndian(br);
@@ -262,8 +261,8 @@ namespace OfficeOpenXml.Drawing
                             byte[]? identifier = br.ReadBytes(5); //JFIF\0
                             byte[]? version = br.ReadBytes(2);
                             byte unit = br.ReadByte();
-                            xDensity = (int)GetInt16BigEndian(br);
-                            yDensity = (int)GetInt16BigEndian(br);
+                            float xDensity = (int)GetInt16BigEndian(br);
+                            float yDensity = (int)GetInt16BigEndian(br);
 
                             if (unit == 1)
                             {

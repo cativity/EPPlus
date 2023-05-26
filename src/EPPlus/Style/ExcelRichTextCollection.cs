@@ -190,8 +190,7 @@ namespace OfficeOpenXml.Style
                 this[0].Size = fnt.Size;
                 this[0].UnderLine = fnt.UnderLine;
 
-                int hex;
-                if (fnt.Color.Rgb != "" && int.TryParse(fnt.Color.Rgb, NumberStyles.HexNumber, null, out hex))
+                if (fnt.Color.Rgb != "" && int.TryParse(fnt.Color.Rgb, NumberStyles.HexNumber, null, out int hex))
                 {
                     this[0].Color = Color.FromArgb(hex);
                 }

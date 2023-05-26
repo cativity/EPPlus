@@ -813,7 +813,6 @@ namespace OfficeOpenXml.ExcelXMLWriter
                 }
                 else if (uri != null)
                 {
-                    string id;
                     Uri hyp;
                     string target = ""; ;
                     if (hl != null)
@@ -830,7 +829,7 @@ namespace OfficeOpenXml.ExcelXMLWriter
                     }
                     if (hyps.ContainsKey(hyp.OriginalString) && string.IsNullOrEmpty(target))
                     {
-                        id = hyps[hyp.OriginalString];
+                        string id = hyps[hyp.OriginalString];
                     }
                     else
                     {

@@ -231,10 +231,9 @@ namespace OfficeOpenXml.Drawing
         
         internal static byte[] GetPicture(string relId, IPictureContainer container, out string contentType, out ePictureType pictureType)
         {
-            ZipPackagePart part;
             container.RelPic = container.RelationDocument.RelatedPart.GetRelationship(relId);
             container.UriPic = UriHelper.ResolvePartUri(container.RelationDocument.RelatedUri, container.RelPic.TargetUri);
-            part = container.RelationDocument.RelatedPart.Package.GetPart(container.UriPic);
+            ZipPackagePart part = container.RelationDocument.RelatedPart.Package.GetPart(container.UriPic);
 
             string? extension = Path.GetExtension(container.UriPic.OriginalString);
             contentType = GetContentType(extension);

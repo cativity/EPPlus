@@ -157,8 +157,7 @@ namespace OfficeOpenXml.Drawing.Vml
                         col=col.Substring(1,col.Length-1);
                     }
 
-                    int res;
-                    if (int.TryParse(col,NumberStyles.AllowHexSpecifier, CultureInfo.InvariantCulture, out res))
+                    if (int.TryParse(col,NumberStyles.AllowHexSpecifier, CultureInfo.InvariantCulture, out int res))
                     {
                         return Color.FromArgb(res);
                     }
@@ -247,8 +246,7 @@ namespace OfficeOpenXml.Drawing.Vml
                         col = col.Substring(1, col.Length - 1);
                     }
 
-                    int res;
-                    if (int.TryParse(col, NumberStyles.AllowHexSpecifier, CultureInfo.InvariantCulture, out res))
+                    if (int.TryParse(col, NumberStyles.AllowHexSpecifier, CultureInfo.InvariantCulture, out int res))
                     {
                         return Color.FromArgb(res);
                     }
@@ -283,8 +281,7 @@ namespace OfficeOpenXml.Drawing.Vml
                     wt=wt.Substring(0,wt.Length-2);
                 }
 
-                Single ret;
-                if(Single.TryParse(wt,NumberStyles.Any, CultureInfo.InvariantCulture, out ret))
+                if(Single.TryParse(wt,NumberStyles.Any, CultureInfo.InvariantCulture, out Single ret))
                 {
                     return ret;
                 }
@@ -306,8 +303,7 @@ namespace OfficeOpenXml.Drawing.Vml
         {
             get
             {
-                string value;
-                GetStyle(this.GetXmlNodeString(TEXTBOX_STYLE_PATH), "mso-fit-shape-to-text", out value);
+                GetStyle(this.GetXmlNodeString(TEXTBOX_STYLE_PATH), "mso-fit-shape-to-text", out string value);
                 return value=="t";
             }
             set

@@ -481,9 +481,9 @@ namespace OfficeOpenXml.Style.XmlAccess
                 default:
                     throw (new Exception("Invalid class/property for class Border."));
             }
-            int subId;
+
             string id = border.Id;
-            subId = this._styles.Borders.FindIndexById(id);
+            int subId = this._styles.Borders.FindIndexById(id);
             if (subId == int.MinValue)
             {
                 return this._styles.Borders.Add(id, border);
@@ -588,9 +588,9 @@ namespace OfficeOpenXml.Style.XmlAccess
                 default:
                     throw (new ArgumentException("Invalid class/property for class Fill."));
             }
-            int subId;
+
             string id = fill.Id;
-            subId = this._styles.Fills.FindIndexById(id);
+            int subId = this._styles.Fills.FindIndexById(id);
             if (subId == int.MinValue)
             {
                 return this._styles.Fills.Add(id, fill);
@@ -677,9 +677,9 @@ namespace OfficeOpenXml.Style.XmlAccess
                 default:
                     throw (new ArgumentException("Invalid class/property for class Fill."));
             }
-            int subId;
+
             string id = fill.Id;
-            subId = this._styles.Fills.FindIndexById(id);
+            int subId = this._styles.Fills.FindIndexById(id);
             if (subId == int.MinValue)
             {
                 return this._styles.Fills.Add(id, fill);
@@ -758,9 +758,9 @@ namespace OfficeOpenXml.Style.XmlAccess
                 default:
                     throw (new Exception("Invalid property for class Font"));
             }
-            int subId;
+
             string id = fnt.Id;
-            subId = this._styles.Fonts.FindIndexById(id);
+            int subId = this._styles.Fonts.FindIndexById(id);
             if (subId == int.MinValue)
             {
                 return this._styles.Fonts.Add(id,fnt);

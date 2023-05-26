@@ -146,28 +146,20 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
 
         internal int Process(int r)
         {
-            int t; // temporary storage
-            int b; // bit buffer
-            int k; // bits in bit buffer
-            int p; // input data pointer
-            int n; // bytes available there
-            int q; // output window write pointer
-            int m; // bytes to end of window or read pointer
+            int p = this._codec.NextIn; // input data pointer// copy input/output information to locals (UPDATE macro restores)
+               
+            int n = this._codec.AvailableBytesIn; // bytes available there
+            int b = this.bitb; // bit buffer
+            int k = this.bitk; // bits in bit buffer
 
-            // copy input/output information to locals (UPDATE macro restores)
-
-            p = this._codec.NextIn;
-            n = this._codec.AvailableBytesIn;
-            b = this.bitb;
-            k = this.bitk;
-
-            q = this.writeAt;
-            m = (int)(q < this.readAt ? this.readAt - q - 1 : this.end - q);
-
+            int q = this.writeAt; // output window write pointer
+            int m = (int)(q < this.readAt ? this.readAt - q - 1 : this.end - q); // bytes to end of window or read pointer
 
             // process input based on current state
             while (true)
             {
+                int t; // temporary storage
+
                 switch (this.mode)
                 {
                     case InflateBlockMode.TYPE:
@@ -471,8 +463,6 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
                                 break;
                             }
 
-                            int i, j, c;
-
                             t = this.bb[0];
 
                             while (k < t)
@@ -498,7 +488,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
                             }
 
                             t = this.hufts[(this.tb[0] + (b & InternalInflateConstants.InflateMask[t])) * 3 + 1];
-                            c = this.hufts[(this.tb[0] + (b & InternalInflateConstants.InflateMask[t])) * 3 + 2];
+                            int c = this.hufts[(this.tb[0] + (b & InternalInflateConstants.InflateMask[t])) * 3 + 2];
 
                             if (c < 16)
                             {
@@ -508,8 +498,8 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
                             else
                             {
                                 // c == 16..18
-                                i = c == 18 ? 7 : c - 14;
-                                j = c == 18 ? 11 : 3;
+                                int i = c == 18 ? 7 : c - 14;
+                                int j = c == 18 ? 11 : 3;
 
                                 while (k < (t + i))
                                 {
@@ -711,10 +701,10 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
         // copy as much as possible from the sliding window to the output area
         internal int Flush(int r)
         {
-            int nBytes;
-
             for (int pass=0; pass < 2; pass++)
             {
+                int nBytes;
+
                 if (pass==0)
                 {
                     // compute number of bytes to copy as far as end of window
@@ -851,29 +841,23 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
 
         internal int Process(InflateBlocks blocks, int r)
         {
-            int j;      // temporary storage
-            int tindex; // temporary pointer
-            int e;      // extra bits or operation
-            int b = 0;  // bit buffer
-            int k = 0;  // bits in bit buffer
-            int p = 0;  // input data pointer
-            int n;      // bytes available there
-            int q;      // output window write pointer
-            int m;      // bytes to end of window or read pointer
-            int f;      // pointer to copy strings from
-
             ZlibCodec z = blocks._codec;
 
             // copy input/output information to locals (UPDATE macro restores)
-            p = z.NextIn;
-            n = z.AvailableBytesIn;
-            b = blocks.bitb;
-            k = blocks.bitk;
-            q = blocks.writeAt; m = q < blocks.readAt ? blocks.readAt - q - 1 : blocks.end - q;
+            int p = z.NextIn; // input data pointer
+            int n = z.AvailableBytesIn; // bytes available there
+            int b = blocks.bitb; // bit buffer
+            int k = blocks.bitk; // bits in bit buffer
+            int q = blocks.writeAt; int m = q < blocks.readAt ? blocks.readAt - q - 1 : blocks.end - q; // bytes to end of window or read pointer
 
+            // output window write pointer
             // process input and output based on current state
             while (true)
             {
+                int j;      // temporary storage
+                int tindex; // temporary pointer
+                int e;      // extra bits or operation
+
                 switch (this.mode)
                 {
                     // waiting for "i:"=input, "o:"=output, "x:"=nothing
@@ -1090,7 +1074,8 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
                         goto case COPY;
 
                     case COPY:  // o: copying bytes in window, waiting for space
-                        f = q - this.dist;
+                        int f = q - this.dist; // pointer to copy strings from
+
                         while (f < 0)
                         {
                             // modulo window size-"while" instead
@@ -1229,31 +1214,18 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
 
         internal static int InflateFast(int bl, int bd, int[] tl, int tl_index, int[] td, int td_index, InflateBlocks s, ZlibCodec z)
         {
-            int t;        // temporary pointer
-            int[] tp;     // temporary pointer
-            int tp_index; // temporary pointer
-            int e;        // extra bits or operation
-            int b;        // bit buffer
-            int k;        // bits in bit buffer
-            int p;        // input data pointer
-            int n;        // bytes available there
-            int q;        // output window write pointer
-            int m;        // bytes to end of window or read pointer
-            int ml;       // mask for literal/length tree
-            int md;       // mask for distance tree
             int c;        // bytes to copy
-            int d;        // distance back to copy from
-            int r;        // copy source pointer
-
-            int tp_index_t_3; // (tp_index+t)*3
 
             // load input, output, bit values
-            p = z.NextIn; n = z.AvailableBytesIn; b = s.bitb; k = s.bitk;
-            q = s.writeAt; m = q < s.readAt ? s.readAt - q - 1 : s.end - q;
-
+            int p = z.NextIn; int n = z.AvailableBytesIn; int b = s.bitb; int k = s.bitk; // bits in bit buffer
+            // input data pointer
+            // bytes available there
+            // bit buffer
+            int q = s.writeAt; int m = q < s.readAt ? s.readAt - q - 1 : s.end - q; // bytes to end of window or read pointer
+            // output window write pointer
             // initialize masks
-            ml = InternalInflateConstants.InflateMask[bl];
-            md = InternalInflateConstants.InflateMask[bd];
+            int ml = InternalInflateConstants.InflateMask[bl]; // mask for literal/length tree
+            int md = InternalInflateConstants.InflateMask[bd]; // mask for distance tree
 
             // do until not enough input or output space for fast loop
             do
@@ -1267,10 +1239,13 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
                     b |= (z.InputBuffer[p++] & 0xff) << k; k += 8;
                 }
 
-                t = b & ml;
-                tp = tl;
-                tp_index = tl_index;
-                tp_index_t_3 = (tp_index + t) * 3;
+                int t = b & ml; // temporary pointer
+                int[] tp = tl; // temporary pointer
+                int tp_index = tl_index; // temporary pointer
+                int tp_index_t_3 = (tp_index + t) * 3; // (tp_index+t)*3
+
+                int e;        // extra bits or operation
+
                 if ((e = tp[tp_index_t_3]) == 0)
                 {
                     b >>= (tp[tp_index_t_3 + 1]); k -= (tp[tp_index_t_3 + 1]);
@@ -1321,12 +1296,14 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
                                     b |= (z.InputBuffer[p++] & 0xff) << k; k += 8;
                                 }
 
-                                d = tp[tp_index_t_3 + 2] + (b & InternalInflateConstants.InflateMask[e]);
+                                int d = tp[tp_index_t_3 + 2] + (b & InternalInflateConstants.InflateMask[e]); // distance back to copy from
 
                                 b >>= e; k -= e;
 
                                 // do the copy
                                 m -= c;
+                                int r;        // copy source pointer
+
                                 if (q >= d)
                                 {
                                     // offset before dest
@@ -1581,8 +1558,6 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
 
         internal int Inflate(FlushType flush)
         {
-            int b;
-
             if (this._codec.InputBuffer == null)
             {
                 throw new ZlibException("InputBuffer is null. ");
@@ -1637,7 +1612,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
                         r = f;
                         this._codec.AvailableBytesIn--;
                         this._codec.TotalBytesIn++;
-                        b = (this._codec.InputBuffer[this._codec.NextIn++]) & 0xff;
+                        int b = (this._codec.InputBuffer[this._codec.NextIn++]) & 0xff;
 
                         if ((((this.method << 8) + b) % 31) != 0)
                         {
@@ -1853,9 +1828,6 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
         internal int Sync()
         {
             int n; // number of bytes to look at
-            int p; // pointer to bytes
-            int m; // number of marker bytes found in a row
-            long r, w; // temporaries to save total_in and total_out
 
             // set up
             if (this.mode != InflateManagerMode.BAD)
@@ -1868,8 +1840,8 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
                 return ZlibConstants.Z_BUF_ERROR;
             }
 
-            p = this._codec.NextIn;
-            m = this.marker;
+            int p = this._codec.NextIn; // pointer to bytes
+            int m = this.marker; // number of marker bytes found in a row
 
             // search
             while (n != 0 && m < 4)
@@ -1900,8 +1872,8 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
             {
                 return ZlibConstants.Z_DATA_ERROR;
             }
-            r = this._codec.TotalBytesIn;
-            w = this._codec.TotalBytesOut;
+            long r = this._codec.TotalBytesIn; // temporaries to save total_in and total_out
+            long w = this._codec.TotalBytesOut;
             this.Reset();
             this._codec.TotalBytesIn = r;
             this._codec.TotalBytesOut = w;

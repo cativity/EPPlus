@@ -1289,8 +1289,8 @@ namespace OfficeOpenXml
                 }
                 else
                 {
-                    string wb, ws, intAddress;
-                    if (SplitAddress(Address, out wb, out ws, out intAddress))
+                    string ws;
+                    if (SplitAddress(Address, out string wb, out ws, out string intAddress))
                     {
 
                         if (intAddress.Contains("[")) //Table reference
@@ -1389,9 +1389,10 @@ namespace OfficeOpenXml
             }
 
             string[]? cells = intAddress.Split(':');
-            int fromRow, toRow, fromCol, toCol;
+            int toRow,
+                toCol;
 
-            if(!GetRowCol(cells[0], out fromRow, out fromCol, false))
+            if(!GetRowCol(cells[0], out int fromRow, out int fromCol, false))
             {
                 return false;
             }

@@ -23,10 +23,8 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.Implementations
 
         private static double OptPV2(ref double[] ValueArray, double Guess = 0.1)
         {
-            int lUpper, lLower, lIndex;
-
-            lLower = 0;
-            lUpper = ValueArray.Length - 1;
+            int lLower = 0;
+            int lUpper = ValueArray.Length - 1;
 
             double dTotal = 0.0;
             double divRate = 1.0 + Guess;
@@ -36,7 +34,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.Implementations
                 lLower += 1;
             }
 
-            for (lIndex = lUpper; lIndex > lLower - 1; lIndex--)
+            for (int lIndex = lUpper; lIndex > lLower - 1; lIndex--)
             {
                 dTotal /= divRate;
                 dTotal += ValueArray[lIndex];
@@ -47,14 +45,8 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.Implementations
         internal static FinanceCalcResult<double> Irr(double[] ValueArray, double Guess = 0.1)
         {
             double dTemp;
-            double dRate0;
             double dRate1;
-            double dNPv0;
-            double dNpv1;
-            double dNpvEpsilon;
-            double dTemp1;
             int lIndex;
-            int lCVal;
             int lUpper = 0;
 
             // Compiler assures that rank of ValueArray is always 1, no need to check it.  
@@ -78,7 +70,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.Implementations
                 return new FinanceCalcResult<double>(eErrorType.Value);
             }
 
-            lCVal = lUpper + 1;
+            int lCVal = lUpper + 1;
 
             //Function fails for invalid parameters
             if (Guess <= -1.0)
@@ -115,11 +107,11 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.Implementations
                 }
             }
 
-            dNpvEpsilon = dTemp * cnL_IT_EPSILON * 0.01;
+            double dNpvEpsilon = dTemp * cnL_IT_EPSILON * 0.01;
 
             // Set up the initial values for the secant method
-            dRate0 = Guess;
-            dNPv0 = OptPV2(ref ValueArray, dRate0);
+            double dRate0 = Guess;
+            double dNPv0 = OptPV2(ref ValueArray, dRate0);
 
             if (dNPv0 > 0.0)
             {
@@ -135,7 +127,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.Implementations
                 return new FinanceCalcResult<double>(eErrorType.Num);
             }
 
-            dNpv1 = OptPV2(ref ValueArray, dRate1);
+            double dNpv1 = OptPV2(ref ValueArray, dRate1);
 
             for (lIndex = 0; lIndex <= 39; lIndex++)
             {
@@ -175,6 +167,8 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.Implementations
                 {
                     dTemp = dRate1 - dRate0;
                 }
+
+                double dTemp1;
 
                 if (dNPv0 > 0.0)
                 {

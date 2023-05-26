@@ -38,8 +38,6 @@ namespace OfficeOpenXml.Core.Worksheet
     {
         internal static ExcelWorksheet Copy(ExcelWorksheets worksheets, string name, ExcelWorksheet copy)
         {
-            int sheetID;
-            Uri uriWorksheet;
             if (copy is ExcelChartsheet)
             {
                 throw (new ArgumentException("Cannot copy a chartsheet"));
@@ -50,7 +48,7 @@ namespace OfficeOpenXml.Core.Worksheet
             }
             ExcelPackage? pck = worksheets._pck;
             XmlNamespaceManager? nsm = worksheets.NameSpaceManager;
-            worksheets.GetSheetURI(ref name, out sheetID, out uriWorksheet, false);
+            worksheets.GetSheetURI(ref name, out int sheetID, out Uri uriWorksheet, false);
 
             //Create a copy of the worksheet XML
             ZipPackagePart worksheetPart = pck.ZipPackage.CreatePart(uriWorksheet, ExcelWorksheets.WORKSHEET_CONTENTTYPE, pck.Compression);
@@ -189,12 +187,11 @@ namespace OfficeOpenXml.Core.Worksheet
             Dictionary<int, int> styleCashe = new Dictionary<int, int>();
             bool hasMetadata = Copy._metadataStore.HasValues && sameWorkbook;
             //Cells
-            int row, col;
             CellStoreEnumerator<ExcelValue>? val = new CellStoreEnumerator<ExcelValue>(Copy._values);
             while (val.Next())
             {
-                row = val.Row;
-                col = val.Column;
+                int row = val.Row;
+                int col = val.Column;
                 int styleID = 0;
                 if (row == 0) //Column
                 {
@@ -682,8 +679,7 @@ namespace OfficeOpenXml.Core.Worksheet
                 }
                 else
                 {
-                    XmlAttribute relAtt;
-                    relAtt = added.WorksheetXml.SelectSingleNode(string.Format("//d:tableParts/d:tablePart/@r:id[.='{0}']", tbl.RelationshipID), tbl.NameSpaceManager) as XmlAttribute;
+                    XmlAttribute relAtt = added.WorksheetXml.SelectSingleNode(string.Format("//d:tableParts/d:tablePart/@r:id[.='{0}']", tbl.RelationshipID), tbl.NameSpaceManager) as XmlAttribute;
                     relAtt.Value = rel.Id;
                 }
 

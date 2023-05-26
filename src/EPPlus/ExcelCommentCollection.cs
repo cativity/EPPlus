@@ -253,10 +253,10 @@ namespace OfficeOpenXml
         internal void Delete(int fromRow, int fromCol, int rows, int columns, int toRow = ExcelPackage.MaxRows, int toCol = ExcelPackage.MaxColumns)
         {
             List<ExcelComment> deletedComments = new List<ExcelComment>();
-            ExcelAddressBase address = null;
+
             foreach (ExcelComment comment in this._list.Where(x=>x!=null))
             {
-                address = new ExcelAddressBase(comment.Address);
+                ExcelAddressBase address = new(comment.Address);
                 if (columns > 0 && address._fromCol >= fromCol &&
                     address._fromRow >= fromRow && address._toRow <= toRow)
                 {

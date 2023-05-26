@@ -162,8 +162,7 @@ namespace OfficeOpenXml.FormulaParsing.ExcelUtilities
                 // ignore the wildcard operator *
                 if (operatorCandidate != "*")
                 {
-                    IOperator op;
-                    if (OperatorsDict.Instance.TryGetValue(operatorCandidate, out op))
+                    if (OperatorsDict.Instance.TryGetValue(operatorCandidate, out IOperator op))
                     {
                         string? right = expression.Replace(operatorCandidate, string.Empty);
                         if (left == null && string.IsNullOrEmpty(right))
@@ -174,11 +173,10 @@ namespace OfficeOpenXml.FormulaParsing.ExcelUtilities
                         {
                             return op.Operator == Operators.NotEqualTo;
                         }
-                        double leftNum, rightNum;
-                        DateTime date;
-                        bool leftIsNumeric = TryConvertToDouble(left, out leftNum, convertNumericString);
-                        bool rightIsNumeric = this.TryConvertStringToDouble(right, out rightNum);
-                        bool rightIsDate = DateTime.TryParse(right, out date);
+
+                        bool leftIsNumeric = TryConvertToDouble(left, out double leftNum, convertNumericString);
+                        bool rightIsNumeric = this.TryConvertStringToDouble(right, out double rightNum);
+                        bool rightIsDate = DateTime.TryParse(right, out DateTime date);
                         if (rightIsNumeric && op.Operator == Operators.Minus)
                         {
                             rightNum *= -1;

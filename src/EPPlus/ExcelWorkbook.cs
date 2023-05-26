@@ -331,10 +331,9 @@ namespace OfficeOpenXml
                 {
                     string fullAddress = elem.InnerText.TrimStart().TrimEnd();
 
-                    int localSheetID;
                     ExcelWorksheet nameWorksheet;
 
-                    if (!int.TryParse(elem.GetAttribute("localSheetId"), NumberStyles.Number, CultureInfo.InvariantCulture, out localSheetID))
+                    if (!int.TryParse(elem.GetAttribute("localSheetId"), NumberStyles.Number, CultureInfo.InvariantCulture, out int localSheetID))
                     {
                         localSheetID = -1;
                         nameWorksheet = null;
@@ -672,8 +671,7 @@ namespace OfficeOpenXml
 
         internal static decimal GetHeightPixels(string fontName, float fontSize)
         {
-            Dictionary<float, short> font;
-            font = FontSize.GetFontSize(fontName, false);
+            Dictionary<float, short> font = FontSize.GetFontSize(fontName, false);
 
             if (font.ContainsKey(fontSize))
             {

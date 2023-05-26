@@ -18,8 +18,7 @@ namespace OfficeOpenXml.ExcelXMLWriter
     {
         internal static void Pos(string xml, string tag, ref int start, ref int end)
         {
-            Match startmMatch, endMatch;
-            startmMatch = Regex.Match(xml.Substring(start), string.Format("(<[^>]*{0}[^>]*>)", tag)); //"<[a-zA-Z:]*" + tag + "[?]*>");
+            Match startmMatch = Regex.Match(xml.Substring(start), string.Format("(<[^>]*{0}[^>]*>)", tag)); //"<[a-zA-Z:]*" + tag + "[?]*>");
 
             if (!startmMatch.Success) //Not found
             {
@@ -34,7 +33,8 @@ namespace OfficeOpenXml.ExcelXMLWriter
             }
             else
             {
-                endMatch = Regex.Match(xml.Substring(start), string.Format("(</[^>]*{0}[^>]*>)", tag));
+                Match endMatch = Regex.Match(xml.Substring(start), string.Format("(</[^>]*{0}[^>]*>)", tag));
+
                 if (endMatch.Success)
                 {
                     end = endMatch.Index + endMatch.Length + start;

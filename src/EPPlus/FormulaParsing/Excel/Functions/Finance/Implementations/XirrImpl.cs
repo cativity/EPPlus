@@ -35,7 +35,6 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.Implementations
             // Newton's method - try to find a fResultRate, so that lcl_sca_XirrResult() returns 0.
             int nIter = 0;
             double fResultRate = rGuessRate;
-            double fResultValue;
             int nIterScan = 0;
             bool bContLoop = false;
             bool bResultRateScanEnd = false;
@@ -50,6 +49,8 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.Implementations
                 {
                     fResultRate = -0.99 + (nIterScan - 1) * 0.01;
                 }
+
+                double fResultValue;
 
                 do
                 {

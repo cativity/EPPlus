@@ -37,10 +37,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Helpers
             double EPS = 1e-8;
             double gln = GammaHelper.logGamma(a);
             double x;
-            double err;
             double t;
-            double u;
-            double pp;
             double lna1 = 0;
             double afac = 0;
 
@@ -58,7 +55,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Helpers
             {
                 lna1 = System.Math.Log(a1);
                 afac = System.Math.Exp(a1 * (lna1 - 1) - gln);
-                pp = (p < 0.5) ? p : 1 - p;
+                double pp = (p < 0.5) ? p : 1 - p;
                 t = System.Math.Sqrt(-2 * System.Math.Log(pp));
                 x = (2.30753 + t * 0.27061) / (1 + t * (0.99229 + t * 0.04481)) - t;
                 if (p < 0.5)
@@ -89,7 +86,8 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Helpers
                     return 0;
                 }
 
-                err = GammaHelper.regularizedGammaP(a, x, 1.0e-15, 10000) - p;
+                double err = GammaHelper.regularizedGammaP(a, x, 1.0e-15, 10000) - p;
+
                 //err = jStat.lowRegGamma(a, x) - p;
                 if (a > 1)
                 {
@@ -100,7 +98,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Helpers
                     t = System.Math.Exp(-x + a1 * System.Math.Log(x) - gln);
                 }
 
-                u = err / t;
+                double u = err / t;
                 x -= (t = u / (1 - 0.5 * System.Math.Min(1, u * ((a - 1) / x - 1))));
                 if (x <= 0)
                 {

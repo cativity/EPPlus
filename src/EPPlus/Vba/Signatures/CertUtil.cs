@@ -62,11 +62,10 @@ namespace OfficeOpenXml.VBA.Signatures
             bw.Write((uint)0x54524543); //fileType
 
             //SerializedCertificateEntry
-            byte[]? certData = certRawData;
             bw.Write((uint)0x20);
             bw.Write((uint)1);
-            bw.Write((uint)certData.Length);
-            bw.Write(certData);
+            bw.Write((uint)certRawData.Length);
+            bw.Write(certRawData);
 
             //EndElementMarkerEntry
             bw.Write((uint)0);

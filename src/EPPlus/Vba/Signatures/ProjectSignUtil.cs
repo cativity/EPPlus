@@ -47,7 +47,6 @@ namespace OfficeOpenXml.VBA.Signatures
 
         private static ContentInfo CreateContentInfo(byte[] hash, MemoryStream ms, EPPlusSignatureContext ctx)
         {
-            ContentInfo contentInfo;
             // [MS-OSHARED] 2.3.2.4.3.1 SpcIndirectDataContent
             BinaryWriter bw = new BinaryWriter(ms);
 
@@ -94,7 +93,7 @@ namespace OfficeOpenXml.VBA.Signatures
             bw.Write((byte)0x00);   //Null length
             bw.Write(hashContentBytes);
 
-            contentInfo = new ContentInfo(new Oid("1.3.6.1.4.1.311.2.1.4"), ms.ToArray());
+            ContentInfo contentInfo = new(new Oid("1.3.6.1.4.1.311.2.1.4"), ms.ToArray());
             return contentInfo;
         }
 

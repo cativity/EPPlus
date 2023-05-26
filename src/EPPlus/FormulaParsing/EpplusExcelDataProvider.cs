@@ -664,7 +664,6 @@ namespace OfficeOpenXml.FormulaParsing
         private INameInfo GetLocalName(ExcelPackage package, string worksheet, string name)
         {
             ExcelNamedRange nameItem;
-            ulong id;
             ExcelWorksheet ws;
             int ix = name.IndexOf('!');
             if(ix>0)
@@ -717,7 +716,7 @@ namespace OfficeOpenXml.FormulaParsing
                     }
                 }
             }
-            id = ExcelCellBase.GetCellId(nameItem.LocalSheetId, nameItem.Index, 0);
+            ulong id = ExcelCellBase.GetCellId(nameItem.LocalSheetId, nameItem.Index, 0);
 
             if (this._names.ContainsKey(id))
             {

@@ -267,7 +267,6 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
 
         private static int _ReadFourBytes(Stream s, string message)
         {
-            int n = 0;
             byte[] block = new byte[4];
 #if NETCF
             // workitem 9181
@@ -290,7 +289,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
                 n+= s.Read(block, i, 1);
             }
 #else
-            n = s.Read(block, 0, block.Length);
+            int n = s.Read(block, 0, block.Length);
 #endif
             if (n != block.Length)
             {

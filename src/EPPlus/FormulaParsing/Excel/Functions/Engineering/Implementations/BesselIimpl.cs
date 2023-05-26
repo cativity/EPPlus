@@ -25,8 +25,6 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Engineering.Implementatio
                 return new FinanceCalcResult<double>(eErrorType.Num);
             }
 
-            double fResult = 0.0;
-
             /*  Start the iteration without TERM(n,0), which is set here.
 
                     TERM(n,0) = (x/2)^n / n!
@@ -38,7 +36,8 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Engineering.Implementatio
             {
                 fTerm = fTerm / nK * fXHalf;
             }
-            fResult = fTerm;    // Start result with TERM(n,0).
+            double fResult = fTerm; // Start result with TERM(n,0).
+
             if (fTerm != 0.0)
             {
                 nK = 1;

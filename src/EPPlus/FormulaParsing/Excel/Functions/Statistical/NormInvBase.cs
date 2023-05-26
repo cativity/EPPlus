@@ -100,9 +100,9 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions
         protected static double NormsInv(double p, double mean, double stdev)
         {
 
-            double q, r, val;
+            double r, val;
 
-            q = p - 0.5;
+            double q = p - 0.5;
 
             if (System.Math.Abs(q) <= S1)
             {

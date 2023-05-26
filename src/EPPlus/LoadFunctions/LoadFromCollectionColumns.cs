@@ -79,7 +79,6 @@ namespace OfficeOpenXml.LoadFunctions
                 int index = 0;
                 foreach (PropertyInfo? member in members)
                 {
-                    string? hPrefix = default(string);
                     List<int>? sortOrderList = CopyList(sortOrderListArg);
                     if (member.HasPropertyOfType<EpplusIgnore>())
                     {
@@ -90,7 +89,7 @@ namespace OfficeOpenXml.LoadFunctions
                     {
                         EpplusNestedTableColumnAttribute? nestedTableAttr = member.GetFirstAttributeOfType<EpplusNestedTableColumnAttribute>();
                         int attrOrder = nestedTableAttr.Order;
-                        hPrefix = nestedTableAttr.HeaderPrefix;
+                        string? hPrefix = nestedTableAttr.HeaderPrefix;
                         if(!string.IsNullOrEmpty(headerPrefix) && !string.IsNullOrEmpty(hPrefix))
                         {
                             hPrefix = $"{headerPrefix} {hPrefix}";

@@ -448,9 +448,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
         // in the bit length tree.
         internal void scan_tree(short[] tree, int max_code)
         {
-            int n; // iterates over all tree elements
             int prevlen = -1; // last emitted length
-            int curlen; // length of current code
             int nextlen = (int)tree[0 * 2 + 1]; // length of next code
             int count = 0; // repeat count of the current code
             int max_count = 7; // max repeat count
@@ -462,9 +460,10 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
             }
             tree[(max_code + 1) * 2 + 1] = (short)0x7fff; // guard //??
 
-            for (n = 0; n <= max_code; n++)
+            for (int n = 0; n <= max_code; n++) // iterates over all tree elements
             {
-                curlen = nextlen; nextlen = (int)tree[(n + 1) * 2 + 1];
+                int curlen = nextlen; nextlen = (int)tree[(n + 1) * 2 + 1]; // length of current code
+
                 if (++count < max_count && curlen == nextlen)
                 {
                     continue;
@@ -543,12 +542,10 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
         // IN assertion: lcodes >= 257, dcodes >= 1, blcodes >= 4.
         internal void send_all_trees(int lcodes, int dcodes, int blcodes)
         {
-            int rank; // index in bl_order
-
             this.send_bits(lcodes - 257, 5); // not +255 as stated in appnote.txt
             this.send_bits(dcodes - 1, 5);
             this.send_bits(blcodes - 4, 4); // not -3 as stated in appnote.txt
-            for (rank = 0; rank < blcodes; rank++)
+            for (int rank = 0; rank < blcodes; rank++) // index in bl_order
             {
                 this.send_bits(this.bl_tree[Tree.bl_order[rank] * 2 + 1], 3);
             }
@@ -561,9 +558,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
         // bl_tree.
         internal void send_tree(short[] tree, int max_code)
         {
-            int n;                           // iterates over all tree elements
             int prevlen   = -1;              // last emitted length
-            int curlen;                      // length of current code
             int nextlen   = tree[0 * 2 + 1]; // length of next code
             int count     = 0;               // repeat count of the current code
             int max_count = 7;               // max repeat count
@@ -574,9 +569,10 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
                 max_count = 138; min_count = 3;
             }
 
-            for (n = 0; n <= max_code; n++)
+            for (int n = 0; n <= max_code; n++) // iterates over all tree elements
             {
-                curlen = nextlen; nextlen = tree[(n + 1) * 2 + 1];
+                int curlen = nextlen; nextlen = tree[(n + 1) * 2 + 1]; // length of current code
+
                 if (++count < max_count && curlen == nextlen)
                 {
                     continue;
@@ -664,10 +660,9 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
 
         internal void send_bits(int value, int length)
         {
-            int len = length;
             unchecked
             {
-                if (this.bi_valid > (int)Buf_size - len)
+                if (this.bi_valid > (int)Buf_size - length)
                 {
                     //int val = value;
                     //      bi_buf |= (val << bi_valid);
@@ -678,13 +673,13 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
                     this.pending[this.pendingCount++] = (byte)(this.bi_buf >> 8);
 
                     this.bi_buf = (short)((uint)value >> (Buf_size - this.bi_valid));
-                    this.bi_valid += len - Buf_size;
+                    this.bi_valid += length - Buf_size;
                 }
                 else
                 {
                     //      bi_buf |= (value) << bi_valid;
                     this.bi_buf |= (short)((value << this.bi_valid) & 0xffff);
-                    this.bi_valid += len;
+                    this.bi_valid += length;
                 }
             }
         }
@@ -748,8 +743,8 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
                 // Compute an upper bound for the compressed length
                 int out_length = this.last_lit << 3;
                 int in_length = this.strstart - this.block_start;
-                int dcode;
-                for (dcode = 0; dcode < InternalConstants.D_CODES; dcode++)
+
+                for (int dcode = 0; dcode < InternalConstants.D_CODES; dcode++)
                 {
                     out_length = (int)(out_length + (int)this.dyn_dtree[dcode * 2] * (5L + Tree.ExtraDistanceBits[dcode]));
                 }
@@ -772,20 +767,16 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
         // Send the block data compressed using the given Huffman trees
         internal void send_compressed_block(short[] ltree, short[] dtree)
         {
-            int distance; // distance of matched string
-            int lc;       // match length or unmatched char (if dist == 0)
             int lx = 0;   // running index in l_buf
-            int code;     // the code to send
-            int extra;    // number of extra bits to send
 
             if (this.last_lit != 0)
             {
                 do
                 {
                     int ix = this._distanceOffset + lx * 2;
-                    distance = ((this.pending[ix] << 8) & 0xff00) |
-                        (this.pending[ix + 1] & 0xff);
-                    lc = (this.pending[this._lengthOffset + lx]) & 0xff;
+                    int distance = ((this.pending[ix] << 8) & 0xff00) | // distance of matched string
+                                   (this.pending[ix + 1] & 0xff);
+                    int lc = (this.pending[this._lengthOffset + lx]) & 0xff; // match length or unmatched char (if dist == 0)
                     lx++;
 
                     if (distance == 0)
@@ -796,11 +787,12 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
                     {
                         // literal or match pair
                         // Here, lc is the match length - MIN_MATCH
-                        code = Tree.LengthCode[lc];
+                        int code = Tree.LengthCode[lc]; // the code to send
 
                         // send the length code
                         this.send_code(code + InternalConstants.LITERALS + 1, ltree);
-                        extra = Tree.ExtraLengthBits[code];
+                        int extra = Tree.ExtraLengthBits[code]; // number of extra bits to send
+
                         if (extra != 0)
                         {
                             // send the extra length bits
@@ -940,7 +932,6 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
             // to pending_buf_size, and each stored block has a 5 byte header:
 
             int max_block_size = 0xffff;
-            int max_start;
 
             if (max_block_size > this.pending.Length - 5)
             {
@@ -969,7 +960,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
                 this.lookahead = 0;
 
                 // Emit a stored block if pending will be full:
-                max_start = this.block_start + max_block_size;
+                int max_start = this.block_start + max_block_size;
                 if (this.strstart == 0 || this.strstart >= max_start)
                 {
                     // strstart == 0 is possible when wraparound on 16-bit machine
@@ -1097,15 +1088,13 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
         //    option -- not supported here).
         private void _fillWindow()
         {
-            int n, m;
-            int p;
-            int more; // Amount of free space at the end of the window.
-
             do
             {
-                more = (this.window_size - this.lookahead - this.strstart);
+                int more = (this.window_size - this.lookahead - this.strstart); // Amount of free space at the end of the window.
 
                 // Deal with !@#$% 64K limit:
+                int n;
+
                 if (more == 0 && this.strstart == 0 && this.lookahead == 0)
                 {
                     more = this.w_size;
@@ -1133,7 +1122,9 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
                     // zlib, so we don't care about this pathological case.)
 
                     n = this.hash_size;
-                    p = n;
+                    int p = n;
+                    int m;
+
                     do
                     {
                         m = (this.head[--p] & 0xffff);
@@ -1194,7 +1185,6 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
         {
             //    short hash_head = 0; // head of the hash chain
             int hash_head = 0; // head of the hash chain
-            bool bflush; // set if current block must be flushed
 
             while (true)
             {
@@ -1241,6 +1231,9 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
                     }
                     // longest_match() sets match_start
                 }
+
+                bool bflush; // set if current block must be flushed
+
                 if (this.match_length >= MIN_MATCH)
                 {
                     //        check_match(strstart, match_start, match_length);
@@ -1489,8 +1482,6 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
         {
             int chain_length = this.config.MaxChainLength; // max hash chain length
             int scan         = this.strstart;              // current string
-            int match;                                // matched string
-            int len;                                  // length of current match
             int best_len     = this.prev_length;           // best match length so far
             int limit        = this.strstart > (this.w_size - MIN_LOOKAHEAD) ? this.strstart - (this.w_size - MIN_LOOKAHEAD) : 0;
 
@@ -1523,7 +1514,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
 
             do
             {
-                match = cur_match;
+                int match = cur_match; // matched string
 
                 // Skip to next match if the match length cannot increase
                 // or if the match length is less than 2:
@@ -1546,7 +1537,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
                 }
                 while (this.window[++scan] == this.window[++match] && this.window[++scan] == this.window[++match] && this.window[++scan] == this.window[++match] && this.window[++scan] == this.window[++match] && this.window[++scan] == this.window[++match] && this.window[++scan] == this.window[++match] && this.window[++scan] == this.window[++match] && this.window[++scan] == this.window[++match] && scan < strend);
 
-                len = MAX_MATCH - (int)(strend - scan);
+                int len = MAX_MATCH - (int)(strend - scan); // length of current match
                 scan = strend - MAX_MATCH;
 
                 if (len > best_len)
@@ -1780,8 +1771,6 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
 
         internal int Deflate(FlushType flush)
         {
-            int old_flush;
-
             if (this._codec.OutputBuffer == null ||
                 (this._codec.InputBuffer == null && this._codec.AvailableBytesIn != 0) ||
                 (this.status == FINISH_STATE && flush != FlushType.Finish))
@@ -1795,7 +1784,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
                 throw new ZlibException("OutputBuffer is full (AvailableBytesOut == 0)");
             }
 
-            old_flush = this.last_flush;
+            int old_flush = this.last_flush;
             this.last_flush = (int)flush;
 
             // Write the zlib (rfc1950) header bytes

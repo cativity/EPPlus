@@ -573,8 +573,7 @@ namespace OfficeOpenXml.Table.PivotTable
         #region Grouping
         internal ExcelPivotTableFieldDateGroup SetDateGroup(ExcelPivotTableField field, eDateGroupBy groupBy, DateTime StartDate, DateTime EndDate, int interval)
         {
-            ExcelPivotTableFieldDateGroup group;
-            group = new ExcelPivotTableFieldDateGroup(this.NameSpaceManager, this.TopNode);
+            ExcelPivotTableFieldDateGroup group = new(this.NameSpaceManager, this.TopNode);
             this.SetXmlNodeBool("d:sharedItems/@containsDate", true);
             this.SetXmlNodeBool("d:sharedItems/@containsNonDate", false);
             this.SetXmlNodeBool("d:sharedItems/@containsSemiMixedTypes", false);
@@ -609,8 +608,7 @@ namespace OfficeOpenXml.Table.PivotTable
         }
         internal ExcelPivotTableFieldNumericGroup SetNumericGroup(int baseIndex, double start, double end, double interval)
         {
-            ExcelPivotTableFieldNumericGroup group;
-            group = new ExcelPivotTableFieldNumericGroup(this.NameSpaceManager, this.TopNode);
+            ExcelPivotTableFieldNumericGroup group = new(this.NameSpaceManager, this.TopNode);
             this.SetXmlNodeBool("d:sharedItems/@containsNumber", true);
             this.SetXmlNodeBool("d:sharedItems/@containsInteger", true);
             this.SetXmlNodeBool("d:sharedItems/@containsSemiMixedTypes", false);

@@ -41,10 +41,9 @@ namespace EPPlusTest.Utils
 		[TestMethod]
 		public void TryParseNumericString()
 		{
-			double result;
-			object numericString = null;
+            object numericString = null;
 			double expected = 0;
-			Assert.IsFalse(ConvertUtil.TryParseNumericString(numericString as string, out result));
+			Assert.IsFalse(ConvertUtil.TryParseNumericString(numericString as string, out double result));
 			Assert.AreEqual(expected, result);
 			expected = 1442.0;
 			numericString = expected.ToString("e", CultureInfo.CurrentCulture); // 1.442E+003
@@ -77,10 +76,9 @@ namespace EPPlusTest.Utils
 		[TestMethod]
 		public void TryParseDateString()
 		{
-			DateTime result;
-			object dateString = null;
+            object dateString = null;
 			DateTime expected = DateTime.MinValue;
-			Assert.IsFalse(ConvertUtil.TryParseDateString(dateString as string, out result));
+			Assert.IsFalse(ConvertUtil.TryParseDateString(dateString as string, out DateTime result));
 			Assert.AreEqual(expected, result);
 			expected = new DateTime(2013, 1, 15);
 			dateString = expected.ToString("d", CultureInfo.CurrentCulture); // 1/15/2013
@@ -140,8 +138,7 @@ namespace EPPlusTest.Utils
                 }
                 else if (fromType == typeof(string))
                 {
-                    DateTime dt;
-                    if (DateTime.TryParse(v.ToString(), out dt))
+                    if (DateTime.TryParse(v.ToString(), out DateTime dt))
                     {
                         return (T)(object)(dt);
                     }
@@ -171,8 +168,7 @@ namespace EPPlusTest.Utils
                 }
                 else if (fromType == typeof(string))
                 {
-                    TimeSpan ts;
-                    if (TimeSpan.TryParse(v.ToString(), out ts))
+                    if (TimeSpan.TryParse(v.ToString(), out TimeSpan ts))
                     {
                         return (T)(object)(ts);
                     }

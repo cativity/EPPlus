@@ -68,13 +68,12 @@ namespace OfficeOpenXml.VBA
             else
             {
                 //Join Password and Key
-                byte[] data;
                 //Set the key
                 this.PasswordKey = new byte[4];
                 RandomNumberGenerator r = RandomNumberGenerator.Create();
                 r.GetBytes(this.PasswordKey);
 
-                data = new byte[Password.Length + 4];
+                byte[] data = new byte[Password.Length + 4];
                 Array.Copy(Encoding.GetEncoding(this._project.CodePage).GetBytes(Password), data, Password.Length);
                 this.VbeProtected = true;
                 this.VisibilityState = false;

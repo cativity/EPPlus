@@ -43,8 +43,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions
                 return Convert.ToBoolean(obj);
             }
 
-            bool result;
-            if (bool.TryParse(obj.ToString(), out result))
+            if (bool.TryParse(obj.ToString(), out bool result))
             {
                 return result;
             }

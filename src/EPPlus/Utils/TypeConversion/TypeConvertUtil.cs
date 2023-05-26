@@ -44,8 +44,7 @@ namespace OfficeOpenXml.Utils.TypeConversion
             }
             if (NumericTypeConversions.IsNumeric(this.ReturnType.Type))
             {
-                object convertedObj;      
-                if(NumericTypeConversions.TryConvert(this.Value.Object, out convertedObj, this.ReturnType.Type))
+                if(NumericTypeConversions.TryConvert(this.Value.Object, out object convertedObj, this.ReturnType.Type))
                 {
                     return convertedObj;
                 }
@@ -108,8 +107,7 @@ namespace OfficeOpenXml.Utils.TypeConversion
             }
             if (this.Value.IsString)
             {
-                TimeSpan ts;
-                if (TimeSpan.TryParse(this.Value.ToString(), out ts))
+                if (TimeSpan.TryParse(this.Value.ToString(), out TimeSpan ts))
                 {
                     timeSpan = ts;
                     return true;

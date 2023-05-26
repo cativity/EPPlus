@@ -20,9 +20,6 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.Implementations
     {
         internal static FinanceCalcResult<double> Ppmt(double Rate, double Per, double NPer, double PV, double FV = 0, PmtDue Due = PmtDue.EndOfPeriod)
         {
-            double Pmt;
-            double dIPMT;
-
             //   Checking for error conditions
             if ((Per <= 0.0) || (Per >= (NPer + 1)))
             {
@@ -35,7 +32,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.Implementations
                 return new FinanceCalcResult<double>(pmtResult.ExcelErrorType);
             }
 
-            Pmt = pmtResult.Result;
+            double Pmt = pmtResult.Result;
 
             FinanceCalcResult<double>? iPmtResult = IPmtImpl.Ipmt(Rate, Per, NPer, PV, FV, Due);
             if (iPmtResult.HasError)
@@ -43,7 +40,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.Implementations
                 return new FinanceCalcResult<double>(iPmtResult.ExcelErrorType);
             }
 
-            dIPMT = iPmtResult.Result;
+            double dIPMT = iPmtResult.Result;
 
             return new FinanceCalcResult<double>(Pmt - dIPMT);
         }

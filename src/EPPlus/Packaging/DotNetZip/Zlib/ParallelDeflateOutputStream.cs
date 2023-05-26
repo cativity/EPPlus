@@ -1259,7 +1259,6 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
         private static bool DeflateOneSegment(WorkItem workitem)
         {
             ZlibCodec compressor = workitem.compressor;
-            int rc= 0;
             compressor.ResetDeflate();
             compressor.NextIn = 0;
 
@@ -1275,7 +1274,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
             while (compressor.AvailableBytesIn > 0 || compressor.AvailableBytesOut == 0);
 
             // step 2: flush (sync)
-            rc = compressor.Deflate(FlushType.Sync);
+            int rc = compressor.Deflate(FlushType.Sync);
 
             workitem.compressedBytesAvailable= (int) compressor.TotalBytesOut;
             return true;

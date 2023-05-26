@@ -41,7 +41,9 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Helpers
             double a1 = a - 1;
             double b1 = b - 1;
             int j = 0;
-            double lna, lnb, pp, t, u, err, x, al, h, w, afac;
+            double t, u,
+                   x,
+                   w;
             if (p <= 0)
             {
                 return 0;
@@ -54,7 +56,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Helpers
 
             if (a >= 1 && b >= 1)
             {
-                pp = (p < 0.5) ? p : 1 - p;
+                double pp = (p < 0.5) ? p : 1 - p;
                 t = System.Math.Sqrt(-2 * System.Math.Log(pp));
                 x = (2.30753 + t * 0.27061) / (1 + t * (0.99229 + t * 0.04481)) - t;
                 if (p < 0.5)
@@ -62,16 +64,16 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Helpers
                     x = -x;
                 }
 
-                al = (x * x - 3) / 6;
-                h = 2 / (1 / (2 * a - 1) + 1 / (2 * b - 1));
+                double al = (x * x - 3) / 6;
+                double h = 2 / (1 / (2 * a - 1) + 1 / (2 * b - 1));
                 w = (x * System.Math.Sqrt(al + h) / h) - (1 / (2 * b - 1) - 1 / (2 * a - 1)) *
                     (al + 5 / 6 - 2 / (3 * h));
                 x = a / (a + b * System.Math.Exp(2 * w));
             }
             else
             {
-                lna = System.Math.Log(a / (a + b));
-                lnb = System.Math.Log(b / (a + b));
+                double lna = System.Math.Log(a / (a + b));
+                double lnb = System.Math.Log(b / (a + b));
                 t = System.Math.Exp(a * lna) / a;
                 u = System.Math.Exp(b * lnb) / b;
                 w = t + u;
@@ -84,8 +86,9 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Helpers
                     x = 1 - System.Math.Pow(b * w * (1 - p), 1 / b);
                 }
             }
+
             //afac = -jStat.gammaln(a) - jStat.gammaln(b) + jStat.gammaln(a + b);
-            afac = -GammaHelper.logGamma(a) - GammaHelper.logGamma(b) + GammaHelper.logGamma(a + b);
+            double afac = -GammaHelper.logGamma(a) - GammaHelper.logGamma(b) + GammaHelper.logGamma(a + b);
             for (; j < 10; j++)
             {
                 if (x == 0 || x == 1)
@@ -93,7 +96,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Helpers
                     return x;
                 }
 
-                err = IBeta(x, a, b) - p;
+                double err = IBeta(x, a, b) - p;
                 t = System.Math.Exp(a1 * System.Math.Log(x) + b1 * System.Math.Log(1 - x) + afac);
                 u = err / t;
                 x -= (t = u / (1 - 0.5 * System.Math.Min(1, u * (a1 / x - b1 / (1 - x)))));
@@ -216,7 +219,6 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Helpers
             double qam = a - 1;
             double c = 1d;
             double d = 1 - qab * x / qap;
-            double m2, aa, del, h;
 
             // These q's will be used in factors that occur in the coefficients
             if (System.Math.Abs(d) < fpmin)
@@ -225,12 +227,13 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Helpers
             }
 
             d = 1 / d;
-            h = d;
+            double h = d;
 
             for (; m <= 100; m++)
             {
-                m2 = 2 * m;
-                aa = m * (b - m) * x / ((qam + m2) * (a + m2));
+                double m2 = 2 * m;
+                double aa = m * (b - m) * x / ((qam + m2) * (a + m2));
+
                 // One step (the even one) of the recurrence
                 d = 1 + aa * d;
                 if (System.Math.Abs(d) < fpmin)
@@ -261,7 +264,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Helpers
                 }
 
                 d = 1 / d;
-                del = d * c;
+                double del = d * c;
                 h *= del;
                 if (System.Math.Abs(del - 1.0) < 3e-7)
                 {

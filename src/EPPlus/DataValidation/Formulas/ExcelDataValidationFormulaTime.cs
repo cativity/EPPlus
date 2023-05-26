@@ -22,18 +22,16 @@ namespace OfficeOpenXml.DataValidation.Formulas
         public ExcelDataValidationFormulaTime(string formula, string validationUid, string sheetName, Action<OnFormulaChangedEventArgs> extHandler)
             : base(validationUid, sheetName, extHandler)
         {
-            string? value = formula;
-            if (!string.IsNullOrEmpty(value))
+            if (!string.IsNullOrEmpty(formula))
             {
-                decimal time = default;
-                if (decimal.TryParse(value, NumberStyles.Any, CultureInfo.InvariantCulture, out time))
+                if (decimal.TryParse(formula, NumberStyles.Any, CultureInfo.InvariantCulture, out decimal time))
                 {
                     this.Value = new ExcelTime(time);
                 }
                 else
                 {
                     this.Value = new ExcelTime();
-                    this.ExcelFormula = value;
+                    this.ExcelFormula = formula;
                 }
             }
             else

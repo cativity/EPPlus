@@ -327,8 +327,8 @@ namespace OfficeOpenXml.Drawing.Vml
                 if (split[0] == propertyName && split.Length > 1)
                 {
                     string value = split[1].EndsWith("pt") ? split[1].Substring(0, split[1].Length - 2) : split[1];
-                    double ret;
-                    if (double.TryParse(value, NumberStyles.Number, CultureInfo.InvariantCulture, out ret))
+
+                    if (double.TryParse(value, NumberStyles.Number, CultureInfo.InvariantCulture, out double ret))
                     {
                         return ret;
                     }

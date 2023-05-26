@@ -21,17 +21,15 @@ namespace OfficeOpenXml.DataValidation.Formulas
         public ExcelDataValidationFormulaDateTime(string formula, string validationUid, string sheetName, Action<OnFormulaChangedEventArgs> evtHandler)
             : base(validationUid, sheetName, evtHandler)
         {
-            string? value = formula;
-            if (!string.IsNullOrEmpty(value))
+            if (!string.IsNullOrEmpty(formula))
             {
-                double oADate = default(double);
-                if (double.TryParse(value, NumberStyles.Any, CultureInfo.InvariantCulture, out oADate))
+                if (double.TryParse(formula, NumberStyles.Any, CultureInfo.InvariantCulture, out double oADate))
                 {
                     this.Value = DateTime.FromOADate(oADate);
                 }
                 else
                 {
-                    this.ExcelFormula = value;
+                    this.ExcelFormula = formula;
                 }
             }
         }

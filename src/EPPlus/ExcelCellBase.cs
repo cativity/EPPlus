@@ -931,8 +931,7 @@ namespace OfficeOpenXml
             bool result = false;
             try
             {
-                int row, col;
-                if (GetRowColFromAddress(cellAddress, out row, out col))
+                if (GetRowColFromAddress(cellAddress, out int row, out int col))
                 {
                     if (row > 0 && col > 0 && row <= ExcelPackage.MaxRows && col <= ExcelPackage.MaxColumns)
                     {

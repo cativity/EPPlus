@@ -61,10 +61,11 @@ namespace OfficeOpenXml.FormulaParsing.LexicalAnalysis
             //Address with worksheet-string before  /JK
             if (token.StartsWith("!", StringComparison.OrdinalIgnoreCase) && tokenList[tokenList.Count - 1].TokenTypeIsSet(TokenType.String))
             {
-                string addr = "";
                 int i = tokenList.Count - 2;
                 if (i > 0)
                 {
+                    string addr = "";
+
                     if (tokenList[i].TokenTypeIsSet(TokenType.StringContent))
                     {
                         addr = "'" + tokenList[i].Value.Replace("'", "''") + "'";

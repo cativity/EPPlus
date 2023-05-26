@@ -77,8 +77,8 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
                         double value = ConvertUtil.GetValueDouble(arg.Value);
                         return System.Math.Pow(value, 2);
                     }
-                    bool ignoreBool = isInArray;
-                    retVal += System.Math.Pow(ConvertUtil.GetValueDouble(arg.Value, ignoreBool), 2);
+
+                    retVal += System.Math.Pow(ConvertUtil.GetValueDouble(arg.Value, isInArray), 2);
                 }
             }
             return retVal;

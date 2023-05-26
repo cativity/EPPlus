@@ -206,11 +206,12 @@ namespace OfficeOpenXml
             {
                 foreach (XmlNode n in tableStyleNode)
                 {
-                    ExcelTableNamedStyleBase item;
                     bool pivot = !(n.Attributes["pivot"]?.Value == "0");
                     bool table = !(n.Attributes["table"]?.Value == "0");
                     if (pivot || table)
                     {
+                        ExcelTableNamedStyleBase item;
+
                         if (pivot==false)
                         {
                             item = new ExcelTableNamedStyle(this._nameSpaceManager, n, this);
@@ -856,8 +857,7 @@ namespace OfficeOpenXml
                 throw new Exception(string.Format("Key {0} already exists in collection", name));
             }
 
-            ExcelNamedStyleXml style;
-            style = new ExcelNamedStyleXml(this.NameSpaceManager, this);
+            ExcelNamedStyleXml style = new(this.NameSpaceManager, this);
             int xfIdCopy, positionID;
             ExcelStyles styles;
             bool isTemplateNamedStyle;
@@ -1536,8 +1536,7 @@ namespace OfficeOpenXml
    #region XmlHelpFunctions
         private static int GetXmlNodeInt(XmlNode node)
         {
-            int i;
-            if (int.TryParse(GetXmlNode(node), out i))
+            if (int.TryParse(GetXmlNode(node), out int i))
             {
                 return i;
             }
@@ -1574,9 +1573,10 @@ namespace OfficeOpenXml
         }
         internal int CloneStyle(ExcelStyles style, int styleID, bool isNamedStyle, bool allwaysAddCellXfs, bool isCellStyleXfs)
         {
-            ExcelXfs xfs;
             lock (style)
             {
+                ExcelXfs xfs;
+
                 if (isCellStyleXfs)
                 {
                     xfs = style.CellStyleXfs[styleID];

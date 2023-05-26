@@ -58,8 +58,8 @@ namespace OfficeOpenXml.FormulaParsing.ExpressionGraph
             while (this._tokenIndex < tokens.Length)
             {
                 Token token = tokens[this._tokenIndex];
-                IOperator op = null;
-                if (token.TokenTypeIsSet(TokenType.Operator) && OperatorsDict.Instance.TryGetValue(token.Value, out op))
+
+                if (token.TokenTypeIsSet(TokenType.Operator) && OperatorsDict.Instance.TryGetValue(token.Value, out IOperator op))
                 {
                     this.SetOperatorOnExpression(parent, op);
                 }

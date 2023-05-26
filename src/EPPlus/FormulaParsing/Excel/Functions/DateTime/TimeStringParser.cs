@@ -62,8 +62,8 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime
             {
                 return Parse12HourTimeString(input);
             }
-            System.DateTime dateTime;
-            if (System.DateTime.TryParse(input, out dateTime))
+
+            if (System.DateTime.TryParse(input, out System.DateTime dateTime))
             {
                 return GetSerialNumber(dateTime.Hour, dateTime.Minute, dateTime.Second);
             }
@@ -74,10 +74,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime
         {
             string dayPart = string.Empty;
             dayPart = input.Substring(input.Length - 2, 2);
-            int hour;
-            int minute;
-            int second;
-            GetValuesFromString(input, out hour, out minute, out second);
+            GetValuesFromString(input, out int hour, out int minute, out int second);
             if (dayPart == "PM")
             {
                 hour += 12;
@@ -89,10 +86,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime
 
         private static double Parse24HourTimeString(string input)
         {
-            int hour;
-            int minute;
-            int second;
-            GetValuesFromString(input, out hour, out minute, out second);
+            GetValuesFromString(input, out int hour, out int minute, out int second);
             ValidateValues(hour, minute, second);
             return GetSerialNumber(hour, minute, second);
         }

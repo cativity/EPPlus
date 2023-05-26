@@ -129,8 +129,7 @@ namespace OfficeOpenXml.VBA
         {
 
             Stream? stream = this.Part.GetStream();
-            byte[] vba;
-            vba = new byte[stream.Length];
+            byte[] vba = new byte[stream.Length];
             stream.Read(vba, 0, (int)stream.Length);
             this.Document = new CompoundDocument(vba);
 
@@ -335,17 +334,16 @@ namespace OfficeOpenXml.VBA
         {
             byte[] enc = GetByte(value);
             byte[] dec = new byte[(value.Length - 1)];
-            byte seed, version, projKey, ignoredLength;
-            seed = enc[0];
+            byte seed = enc[0];
             dec[0] = (byte)(enc[1] ^ seed);
             dec[1] = (byte)(enc[2] ^ seed);
             for (int i = 2; i < enc.Length - 1; i++)
             {
                 dec[i] = (byte)(enc[i + 1] ^ (enc[i - 1] + dec[i - 1]));
             }
-            version = dec[0];
-            projKey = dec[1];
-            ignoredLength = (byte)((seed & 6) / 2);
+            byte version = dec[0];
+            byte projKey = dec[1];
+            byte ignoredLength = (byte)((seed & 6) / 2);
             int datalength = BitConverter.ToInt32(dec, ignoredLength + 2);
             byte[]? data = new byte[datalength];
             Array.Copy(dec, 6 + ignoredLength, data, 0, datalength);

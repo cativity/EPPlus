@@ -45,8 +45,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions
             string? str = obj != null ? obj.ToString() : string.Empty;
             try
             {
-                double d;
-                if (double.TryParse(str, NumberStyles.Any, CultureInfo.InvariantCulture, out d))
+                if (double.TryParse(str, NumberStyles.Any, CultureInfo.InvariantCulture, out double d))
                 {
                     return d;
                 }

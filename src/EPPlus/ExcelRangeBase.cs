@@ -771,13 +771,12 @@ namespace OfficeOpenXml
         }
         private ExcelAddressBase GetAddressDim(ExcelRangeBase addr)
         {
-            int fromRow, fromCol, toRow, toCol;
             ExcelAddressBase? d = this._worksheet.Dimension;
-            fromRow = addr._fromRow < d._fromRow ? d._fromRow : addr._fromRow;
-            fromCol = addr._fromCol < d._fromCol ? d._fromCol : addr._fromCol;
+            int fromRow = addr._fromRow < d._fromRow ? d._fromRow : addr._fromRow;
+            int fromCol = addr._fromCol < d._fromCol ? d._fromCol : addr._fromCol;
 
-            toRow = addr._toRow > d._toRow ? d._toRow : addr._toRow;
-            toCol = addr._toCol > d._toCol ? d._toCol : addr._toCol;
+            int toRow = addr._toRow > d._toRow ? d._toRow : addr._toRow;
+            int toCol = addr._toCol > d._toCol ? d._toCol : addr._toCol;
 
             if (addr._fromRow == fromRow && addr._fromCol == fromCol && addr._toRow == toRow && addr._toCol == this._toCol)
             {

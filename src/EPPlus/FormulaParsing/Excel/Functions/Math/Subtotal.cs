@@ -85,8 +85,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
                 return this.CreateResult(0d, DataType.Empty);
             }
             IEnumerable<FunctionArgument>? actualArgs = arguments.Skip(1);
-            ExcelFunction function = null;
-            function = this.GetFunctionByCalcType(funcNum);
+            ExcelFunction function = this.GetFunctionByCalcType(funcNum);
             CompileResult? compileResult = function.Execute(actualArgs, context);
             compileResult.IsResultOfSubtotal = true;
             return compileResult;

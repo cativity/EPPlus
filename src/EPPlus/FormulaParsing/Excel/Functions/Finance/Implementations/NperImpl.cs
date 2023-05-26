@@ -20,11 +20,6 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.Implementations
     {
         public static FinanceCalcResult<double> NPer(double Rate, double Pmt, double PV, double FV = 0, PmtDue Due = PmtDue.EndOfPeriod)
         {
-            double dTemp3;
-            double dTempFv;
-            double dTempPv;
-            double dTemp4;
-
             //   Checking Error Conditions
             if (Rate <= -1.0)
             {
@@ -42,6 +37,8 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.Implementations
             }
             else
             {
+                double dTemp3;
+
                 if (Due != 0)
                 {
                     dTemp3 = Pmt * (1.0 + Rate) / Rate;
@@ -50,8 +47,8 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.Implementations
                 {
                     dTemp3 = Pmt / Rate;
                 }
-                dTempFv = -FV + dTemp3;
-                dTempPv = PV + dTemp3;
+                double dTempFv = -FV + dTemp3;
+                double dTempPv = PV + dTemp3;
 
                 //       Make sure the values fit the domain of log()
                 if( dTempFv< 0.0 && dTempPv < 0.0)
@@ -63,7 +60,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.Implementations
                 {
                     return new FinanceCalcResult<double>(eErrorType.Num);
                 }
-                dTemp4 = Rate + 1.0;
+                double dTemp4 = Rate + 1.0;
 
                 double result = (System.Math.Log(dTempFv) - System.Math.Log(dTempPv)) / System.Math.Log(dTemp4);
                 return new FinanceCalcResult<double>(result);

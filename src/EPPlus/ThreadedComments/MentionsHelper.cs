@@ -15,41 +15,40 @@ using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;
 
-namespace OfficeOpenXml.ThreadedComments
-{
-    internal static class MentionsHelper
-    {
-        /// <summary>
-        /// Inserts mentions in the comment text and in the comment
-        /// </summary>
-        /// <param name="comment"></param>
-        /// <param name="textWithFormats">A string with format placeholders with indexes, simlar to string.Format</param>
-        /// <param name="personsToMention"><see cref="ExcelThreadedCommentPerson"/>s to mention</param>
-        internal static void InsertMentions(ExcelThreadedComment comment, string textWithFormats, params ExcelThreadedCommentPerson[] personsToMention)
-        {
-            string? str = textWithFormats;
-            Dictionary<string, bool>? isMentioned = new Dictionary<string, bool>();
-            for (int index = 0; index < personsToMention.Length; index++)
-            {
-                ExcelThreadedCommentPerson? person = personsToMention[index];
-                string? format = "{" + index + "}";
-                while (str.IndexOf(format) > -1)
-                {
-                    int placeHolderPos = str.IndexOf("{" + index + "}", StringComparison.OrdinalIgnoreCase);
-                    Regex? regex = new Regex(@"\{" + index + @"\}");
-                    str = regex.Replace(str, "@" + person.DisplayName, 1);
+namespace OfficeOpenXml.ThreadedComments;
 
-                    // Excel seems to only support one mention per person, so we
-                    // add a mention object only for the first occurance per person...
-                    if (!isMentioned.ContainsKey(person.Id))
-                    {
-                        comment.Mentions.AddMention(person, placeHolderPos);
-                        isMentioned[person.Id] = true;
-                    }
+internal static class MentionsHelper
+{
+    /// <summary>
+    /// Inserts mentions in the comment text and in the comment
+    /// </summary>
+    /// <param name="comment"></param>
+    /// <param name="textWithFormats">A string with format placeholders with indexes, simlar to string.Format</param>
+    /// <param name="personsToMention"><see cref="ExcelThreadedCommentPerson"/>s to mention</param>
+    internal static void InsertMentions(ExcelThreadedComment comment, string textWithFormats, params ExcelThreadedCommentPerson[] personsToMention)
+    {
+        string? str = textWithFormats;
+        Dictionary<string, bool>? isMentioned = new Dictionary<string, bool>();
+        for (int index = 0; index < personsToMention.Length; index++)
+        {
+            ExcelThreadedCommentPerson? person = personsToMention[index];
+            string? format = "{" + index + "}";
+            while (str.IndexOf(format) > -1)
+            {
+                int placeHolderPos = str.IndexOf("{" + index + "}", StringComparison.OrdinalIgnoreCase);
+                Regex? regex = new Regex(@"\{" + index + @"\}");
+                str = regex.Replace(str, "@" + person.DisplayName, 1);
+
+                // Excel seems to only support one mention per person, so we
+                // add a mention object only for the first occurance per person...
+                if (!isMentioned.ContainsKey(person.Id))
+                {
+                    comment.Mentions.AddMention(person, placeHolderPos);
+                    isMentioned[person.Id] = true;
                 }
             }
-            comment.Mentions.SortAndAddMentionsToXml();
-            comment.Text = str;
         }
+        comment.Mentions.SortAndAddMentionsToXml();
+        comment.Text = str;
     }
 }

@@ -17,19 +17,18 @@ using System.Text;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Metadata;
 using OfficeOpenXml.FormulaParsing.ExpressionGraph;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Text
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Text;
+
+[FunctionMetadata(
+                     Category = ExcelFunctionCategory.Text,
+                     EPPlusVersion = "4",
+                     Description = "Converts all characters in a supplied text string to lower case")]
+internal class Lower : ExcelFunction
 {
-    [FunctionMetadata(
-        Category = ExcelFunctionCategory.Text,
-        EPPlusVersion = "4",
-        Description = "Converts all characters in a supplied text string to lower case")]
-    internal class Lower : ExcelFunction
+    public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
     {
-        public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
-        {
-            ValidateArguments(arguments, 1);
-            string? arg = ArgToString(arguments, 0);
-            return this.CreateResult(arg.ToLower(), DataType.String);
-        }
+        ValidateArguments(arguments, 1);
+        string? arg = ArgToString(arguments, 0);
+        return this.CreateResult(arg.ToLower(), DataType.String);
     }
 }

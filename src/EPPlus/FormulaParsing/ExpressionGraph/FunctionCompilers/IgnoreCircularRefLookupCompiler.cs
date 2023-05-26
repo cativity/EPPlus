@@ -3,21 +3,20 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace OfficeOpenXml.FormulaParsing.ExpressionGraph.FunctionCompilers
-{
-    public class IgnoreCircularRefLookupCompiler : LookupFunctionCompiler
-    {
-        public IgnoreCircularRefLookupCompiler(ExcelFunction function, ParsingContext context) : base(function, context)
-        {
-        }
+namespace OfficeOpenXml.FormulaParsing.ExpressionGraph.FunctionCompilers;
 
-        public override CompileResult Compile(IEnumerable<Expression> children)
+public class IgnoreCircularRefLookupCompiler : LookupFunctionCompiler
+{
+    public IgnoreCircularRefLookupCompiler(ExcelFunction function, ParsingContext context) : base(function, context)
+    {
+    }
+
+    public override CompileResult Compile(IEnumerable<Expression> children)
+    {
+        foreach(Expression? child in children)
         {
-            foreach(Expression? child in children)
-            {
-                child.IgnoreCircularReference = true;
-            }
-            return base.Compile(children);
+            child.IgnoreCircularReference = true;
         }
+        return base.Compile(children);
     }
 }

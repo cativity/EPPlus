@@ -15,19 +15,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace OfficeOpenXml.FormulaParsing.ExpressionGraph
+namespace OfficeOpenXml.FormulaParsing.ExpressionGraph;
+
+public class StringExpression : AtomicExpression
 {
-    public class StringExpression : AtomicExpression
+    public StringExpression(string expression)
+        : base(expression)
     {
-        public StringExpression(string expression)
-            : base(expression)
-        {
 
-        }
+    }
 
-        public override CompileResult Compile()
-        {
-            return new CompileResult(this.ExpressionString, DataType.String);
-        }
+    public override CompileResult Compile()
+    {
+        return new CompileResult(this.ExpressionString, DataType.String);
     }
 }

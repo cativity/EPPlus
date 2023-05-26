@@ -10,47 +10,46 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
-namespace OfficeOpenXml
+namespace OfficeOpenXml;
+
+/// <summary>
+/// A collection of columns in a worksheet
+/// </summary>
+public class ExcelColumnCollection : ExcelRangeColumn
 {
-    /// <summary>
-    /// A collection of columns in a worksheet
-    /// </summary>
-    public class ExcelColumnCollection : ExcelRangeColumn
+    ExcelWorksheet _worksheet;
+    internal ExcelColumnCollection(ExcelWorksheet worksheet) : base(worksheet, 1, ExcelPackage.MaxColumns)
     {
-        ExcelWorksheet _worksheet;
-        internal ExcelColumnCollection(ExcelWorksheet worksheet) : base(worksheet, 1, ExcelPackage.MaxColumns)
+        this._worksheet = worksheet;            
+        if(worksheet.Dimension!=null)
         {
-            this._worksheet = worksheet;            
-            if(worksheet.Dimension!=null)
-            {
-                this._fromCol = worksheet.Dimension._fromCol;
-                this._toCol = worksheet.Dimension._toCol;
-            }
+            this._fromCol = worksheet.Dimension._fromCol;
+            this._toCol = worksheet.Dimension._toCol;
         }
-        /// <summary>
-        /// Indexer referenced by column index
-        /// </summary>
-        /// <param name="column">The column index</param>
-        /// <returns>The column</returns>
-        public ExcelRangeColumn this[int column]
-        {
-            get
-            {
-                return new ExcelRangeColumn(this._worksheet, column, column);
-            }
-        }
-        /// <summary>
-        /// Indexer referenced by from and to column index
-        /// </summary>
-        /// <param name="fromColumn">Column from index</param>
-        /// <param name="toColumn">Column to index</param>
-        /// <returns></returns>
-        public ExcelRangeColumn this[int fromColumn, int toColumn]
-        {
-            get
-            {            
-                return new ExcelRangeColumn(this._worksheet, fromColumn, toColumn);
-            }
-        }        
     }
+    /// <summary>
+    /// Indexer referenced by column index
+    /// </summary>
+    /// <param name="column">The column index</param>
+    /// <returns>The column</returns>
+    public ExcelRangeColumn this[int column]
+    {
+        get
+        {
+            return new ExcelRangeColumn(this._worksheet, column, column);
+        }
+    }
+    /// <summary>
+    /// Indexer referenced by from and to column index
+    /// </summary>
+    /// <param name="fromColumn">Column from index</param>
+    /// <param name="toColumn">Column to index</param>
+    /// <returns></returns>
+    public ExcelRangeColumn this[int fromColumn, int toColumn]
+    {
+        get
+        {            
+            return new ExcelRangeColumn(this._worksheet, fromColumn, toColumn);
+        }
+    }        
 }

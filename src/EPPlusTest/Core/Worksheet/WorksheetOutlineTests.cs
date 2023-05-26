@@ -33,122 +33,121 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace EPPlusTest.Core.Worksheet
+namespace EPPlusTest.Core.Worksheet;
+
+[TestClass]
+public class WorksheetOutlineTests
 {
-    [TestClass]
-    public class WorksheetOutlineTests
+    [TestMethod]
+    public void InsertRowsSetsOutlineLevel()
     {
-        [TestMethod]
-        public void InsertRowsSetsOutlineLevel()
+        using ExcelPackage? package = new ExcelPackage();
+        ExcelWorksheet? sheet1 = package.Workbook.Worksheets.Add("Sheet1");
+        sheet1.Row(15).OutlineLevel = 1;
+        sheet1.Row(15).StyleID = 2;
+        sheet1.Cells["A15"].StyleID = 3;
+        sheet1.InsertRow(2, 10, 15);
+        for (int i = 2; i < 12; i++)
         {
-            using ExcelPackage? package = new ExcelPackage();
-            ExcelWorksheet? sheet1 = package.Workbook.Worksheets.Add("Sheet1");
-            sheet1.Row(15).OutlineLevel = 1;
-            sheet1.Row(15).StyleID = 2;
-            sheet1.Cells["A15"].StyleID = 3;
-            sheet1.InsertRow(2, 10, 15);
-            for (int i = 2; i < 12; i++)
-            {
-                Assert.AreEqual(1, sheet1.Row(i).OutlineLevel, $"The outline level of row {i} is not set.");
-                Assert.AreEqual(2, sheet1.Row(i).StyleID, $"The row style for row {i} is not set.");
-                Assert.AreEqual(3, sheet1.Cells[i, 1].StyleID, $"The cell style for row {i} is not set.");
-            }
-            Assert.AreEqual(1, sheet1.Row(25).OutlineLevel);
-            Assert.AreEqual(2, sheet1.Row(25).StyleID);
-            Assert.AreEqual(3, sheet1.Cells[25, 1].StyleID);
+            Assert.AreEqual(1, sheet1.Row(i).OutlineLevel, $"The outline level of row {i} is not set.");
+            Assert.AreEqual(2, sheet1.Row(i).StyleID, $"The row style for row {i} is not set.");
+            Assert.AreEqual(3, sheet1.Cells[i, 1].StyleID, $"The cell style for row {i} is not set.");
         }
+        Assert.AreEqual(1, sheet1.Row(25).OutlineLevel);
+        Assert.AreEqual(2, sheet1.Row(25).StyleID);
+        Assert.AreEqual(3, sheet1.Cells[25, 1].StyleID);
+    }
 
-        [TestMethod]
-        public void InsertColumnsSetsOutlineLevel()
+    [TestMethod]
+    public void InsertColumnsSetsOutlineLevel()
+    {
+        using ExcelPackage? package = new ExcelPackage();
+        ExcelWorksheet? sheet1 = package.Workbook.Worksheets.Add("Sheet1");
+        sheet1.Column(15).OutlineLevel = 1;
+        sheet1.Column(15).StyleID = 2;
+        sheet1.Cells[1, 15].StyleID = 3;
+        sheet1.InsertColumn(2, 10, 15);
+        for (int i = 2; i < 12; i++)
         {
-            using ExcelPackage? package = new ExcelPackage();
-            ExcelWorksheet? sheet1 = package.Workbook.Worksheets.Add("Sheet1");
-            sheet1.Column(15).OutlineLevel = 1;
-            sheet1.Column(15).StyleID = 2;
-            sheet1.Cells[1, 15].StyleID = 3;
-            sheet1.InsertColumn(2, 10, 15);
-            for (int i = 2; i < 12; i++)
-            {
-                Assert.AreEqual(1, sheet1.Column(i).OutlineLevel, $"The outline level of column {i} is not set.");
-                Assert.AreEqual(2, sheet1.Column(i).StyleID, $"The column style for column {i} is not set.");
-                Assert.AreEqual(3, sheet1.Cells[1, i].StyleID, $"The cell style for column {i} is not set.");
-            }
-            Assert.AreEqual(1, sheet1.Column(25).OutlineLevel);
-            Assert.AreEqual(2, sheet1.Column(25).StyleID);
-            Assert.AreEqual(3, sheet1.Cells[1, 25].StyleID);
+            Assert.AreEqual(1, sheet1.Column(i).OutlineLevel, $"The outline level of column {i} is not set.");
+            Assert.AreEqual(2, sheet1.Column(i).StyleID, $"The column style for column {i} is not set.");
+            Assert.AreEqual(3, sheet1.Cells[1, i].StyleID, $"The cell style for column {i} is not set.");
         }
+        Assert.AreEqual(1, sheet1.Column(25).OutlineLevel);
+        Assert.AreEqual(2, sheet1.Column(25).StyleID);
+        Assert.AreEqual(3, sheet1.Cells[1, 25].StyleID);
+    }
 
-        [TestMethod]
-        public void CopyRowSetsOutlineLevelsCorrectly()
-        {
-            using ExcelPackage? package = new ExcelPackage();
-            ExcelWorksheet? sheet1 = package.Workbook.Worksheets.Add("Sheet1");
-            sheet1.Row(2).OutlineLevel = 1;
-            sheet1.Row(3).OutlineLevel = 1;
-            sheet1.Row(4).OutlineLevel = 0;
+    [TestMethod]
+    public void CopyRowSetsOutlineLevelsCorrectly()
+    {
+        using ExcelPackage? package = new ExcelPackage();
+        ExcelWorksheet? sheet1 = package.Workbook.Worksheets.Add("Sheet1");
+        sheet1.Row(2).OutlineLevel = 1;
+        sheet1.Row(3).OutlineLevel = 1;
+        sheet1.Row(4).OutlineLevel = 0;
 
-            // Set outline levels on rows to be copied over.
-            sheet1.Row(6).OutlineLevel = 17;
-            sheet1.Row(7).OutlineLevel = 25;
-            sheet1.Row(8).OutlineLevel = 29;
+        // Set outline levels on rows to be copied over.
+        sheet1.Row(6).OutlineLevel = 17;
+        sheet1.Row(7).OutlineLevel = 25;
+        sheet1.Row(8).OutlineLevel = 29;
 
-            sheet1.Cells["2:4"].Copy(sheet1.Cells["A6"]);
-            Assert.AreEqual(1, sheet1.Row(2).OutlineLevel);
-            Assert.AreEqual(1, sheet1.Row(3).OutlineLevel);
-            Assert.AreEqual(0, sheet1.Row(4).OutlineLevel);
+        sheet1.Cells["2:4"].Copy(sheet1.Cells["A6"]);
+        Assert.AreEqual(1, sheet1.Row(2).OutlineLevel);
+        Assert.AreEqual(1, sheet1.Row(3).OutlineLevel);
+        Assert.AreEqual(0, sheet1.Row(4).OutlineLevel);
 
-            Assert.AreEqual(1, sheet1.Row(6).OutlineLevel);
-            Assert.AreEqual(1, sheet1.Row(7).OutlineLevel);
-            Assert.AreEqual(0, sheet1.Row(8).OutlineLevel);
-        }
+        Assert.AreEqual(1, sheet1.Row(6).OutlineLevel);
+        Assert.AreEqual(1, sheet1.Row(7).OutlineLevel);
+        Assert.AreEqual(0, sheet1.Row(8).OutlineLevel);
+    }
 
-        [TestMethod]
-        public void CopyRowCrossSheetSetsOutlineLevelsCorrectly()
-        {
-            using ExcelPackage? package = new ExcelPackage();
-            ExcelWorksheet? sheet1 = package.Workbook.Worksheets.Add("Sheet1");
-            sheet1.Row(2).OutlineLevel = 1;
-            sheet1.Row(3).OutlineLevel = 1;
-            sheet1.Row(4).OutlineLevel = 0;
+    [TestMethod]
+    public void CopyRowCrossSheetSetsOutlineLevelsCorrectly()
+    {
+        using ExcelPackage? package = new ExcelPackage();
+        ExcelWorksheet? sheet1 = package.Workbook.Worksheets.Add("Sheet1");
+        sheet1.Row(2).OutlineLevel = 1;
+        sheet1.Row(3).OutlineLevel = 1;
+        sheet1.Row(4).OutlineLevel = 0;
 
-            ExcelWorksheet? sheet2 = package.Workbook.Worksheets.Add("Sheet2");
-            // Set outline levels on rows to be copied over.
-            sheet2.Row(6).OutlineLevel = 17;
-            sheet2.Row(7).OutlineLevel = 25;
-            sheet2.Row(8).OutlineLevel = 29;
+        ExcelWorksheet? sheet2 = package.Workbook.Worksheets.Add("Sheet2");
+        // Set outline levels on rows to be copied over.
+        sheet2.Row(6).OutlineLevel = 17;
+        sheet2.Row(7).OutlineLevel = 25;
+        sheet2.Row(8).OutlineLevel = 29;
 
-            sheet1.Cells["2:4"].Copy(sheet2.Cells["A6"]);
-            Assert.AreEqual(1, sheet1.Row(2).OutlineLevel);
-            Assert.AreEqual(1, sheet1.Row(3).OutlineLevel);
-            Assert.AreEqual(0, sheet1.Row(4).OutlineLevel);
+        sheet1.Cells["2:4"].Copy(sheet2.Cells["A6"]);
+        Assert.AreEqual(1, sheet1.Row(2).OutlineLevel);
+        Assert.AreEqual(1, sheet1.Row(3).OutlineLevel);
+        Assert.AreEqual(0, sheet1.Row(4).OutlineLevel);
 
-            Assert.AreEqual(1, sheet2.Row(6).OutlineLevel);
-            Assert.AreEqual(1, sheet2.Row(7).OutlineLevel);
-            Assert.AreEqual(0, sheet2.Row(8).OutlineLevel);
-        }
+        Assert.AreEqual(1, sheet2.Row(6).OutlineLevel);
+        Assert.AreEqual(1, sheet2.Row(7).OutlineLevel);
+        Assert.AreEqual(0, sheet2.Row(8).OutlineLevel);
+    }
 
-        [TestMethod]
-        public void CopyColumnSetsOutlineLevelsCorrectly()
-        {
-            using ExcelPackage? package = new ExcelPackage();
-            ExcelWorksheet? sheet1 = package.Workbook.Worksheets.Add("Sheet1");
-            sheet1.Column(2).OutlineLevel = 1;
-            sheet1.Column(3).OutlineLevel = 1;
-            sheet1.Column(4).OutlineLevel = 0;
+    [TestMethod]
+    public void CopyColumnSetsOutlineLevelsCorrectly()
+    {
+        using ExcelPackage? package = new ExcelPackage();
+        ExcelWorksheet? sheet1 = package.Workbook.Worksheets.Add("Sheet1");
+        sheet1.Column(2).OutlineLevel = 1;
+        sheet1.Column(3).OutlineLevel = 1;
+        sheet1.Column(4).OutlineLevel = 0;
 
-            // Set outline levels on rows to be copied over.
-            sheet1.Column(6).OutlineLevel = 17;
-            sheet1.Column(7).OutlineLevel = 25;
-            sheet1.Column(8).OutlineLevel = 29;
+        // Set outline levels on rows to be copied over.
+        sheet1.Column(6).OutlineLevel = 17;
+        sheet1.Column(7).OutlineLevel = 25;
+        sheet1.Column(8).OutlineLevel = 29;
 
-            sheet1.Cells["B:D"].Copy(sheet1.Cells["F1"]);
-            Assert.AreEqual(1, sheet1.Column(2).OutlineLevel);
-            Assert.AreEqual(1, sheet1.Column(3).OutlineLevel);
-            Assert.AreEqual(0, sheet1.Column(4).OutlineLevel);
+        sheet1.Cells["B:D"].Copy(sheet1.Cells["F1"]);
+        Assert.AreEqual(1, sheet1.Column(2).OutlineLevel);
+        Assert.AreEqual(1, sheet1.Column(3).OutlineLevel);
+        Assert.AreEqual(0, sheet1.Column(4).OutlineLevel);
 
-            Assert.AreEqual(1, sheet1.Column(6).OutlineLevel);
-            Assert.AreEqual(1, sheet1.Column(7).OutlineLevel);
-            Assert.AreEqual(0, sheet1.Column(8).OutlineLevel);
-        }
+        Assert.AreEqual(1, sheet1.Column(6).OutlineLevel);
+        Assert.AreEqual(1, sheet1.Column(7).OutlineLevel);
+        Assert.AreEqual(0, sheet1.Column(8).OutlineLevel);
     }
 }

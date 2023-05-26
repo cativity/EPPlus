@@ -10,24 +10,23 @@
  *************************************************************************************************
     04/16/2020         EPPlus Software AB       EPPlus 5.2
  *************************************************************************************************/
-namespace OfficeOpenXml.Drawing.Chart.ChartEx
+namespace OfficeOpenXml.Drawing.Chart.ChartEx;
+
+/// <summary>
+/// The layout type for the parent labels
+/// </summary>
+public enum eParentLabelLayout
 {
     /// <summary>
-    /// The layout type for the parent labels
+    /// No parent labels are shown
     /// </summary>
-    public enum eParentLabelLayout
-    {
-        /// <summary>
-        /// No parent labels are shown
-        /// </summary>
-        None,
-        /// <summary>
-        /// Parent label layout is a banner above the category
-        /// </summary>
-        Banner,
-        /// <summary>
-        /// Parent label is laid out within the category
-        /// </summary>
-        Overlapping
-    }
+    None,
+    /// <summary>
+    /// Parent label layout is a banner above the category
+    /// </summary>
+    Banner,
+    /// <summary>
+    /// Parent label is laid out within the category
+    /// </summary>
+    Overlapping
 }

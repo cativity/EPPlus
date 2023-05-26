@@ -10,48 +10,47 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
-namespace OfficeOpenXml.Drawing
+namespace OfficeOpenXml.Drawing;
+
+/// <summary>
+/// Describes how to position two rectangles relative to each other
+/// </summary>
+public enum eRectangleAlignment
 {
     /// <summary>
-    /// Describes how to position two rectangles relative to each other
+    /// Bottom
     /// </summary>
-    public enum eRectangleAlignment
-    {
-        /// <summary>
-        /// Bottom
-        /// </summary>
-        Bottom,
-        /// <summary>
-        /// Bottom Left
-        /// </summary>
-        BottomLeft,
-        /// <summary>
-        /// Bottom Right
-        /// </summary>
-        BottomRight,
-        /// <summary>
-        /// Center
-        /// </summary>
-        Center,
-        /// <summary>
-        /// Left
-        /// </summary>
-        Left,
-        /// <summary>
-        /// Right
-        /// </summary>
-        Right,
-        /// <summary>
-        /// Top
-        /// </summary>
-        Top,
-        /// <summary>
-        /// TopLeft
-        /// </summary>
-        TopLeft,
-        /// <summary>
-        /// TopRight
-        /// </summary>
-        TopRight
-    }
+    Bottom,
+    /// <summary>
+    /// Bottom Left
+    /// </summary>
+    BottomLeft,
+    /// <summary>
+    /// Bottom Right
+    /// </summary>
+    BottomRight,
+    /// <summary>
+    /// Center
+    /// </summary>
+    Center,
+    /// <summary>
+    /// Left
+    /// </summary>
+    Left,
+    /// <summary>
+    /// Right
+    /// </summary>
+    Right,
+    /// <summary>
+    /// Top
+    /// </summary>
+    Top,
+    /// <summary>
+    /// TopLeft
+    /// </summary>
+    TopLeft,
+    /// <summary>
+    /// TopRight
+    /// </summary>
+    TopRight
 }

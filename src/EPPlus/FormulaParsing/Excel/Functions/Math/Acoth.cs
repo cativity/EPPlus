@@ -17,25 +17,24 @@ using System.Text;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Metadata;
 using OfficeOpenXml.FormulaParsing.ExpressionGraph;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
-{
-    [FunctionMetadata(
-        Category = ExcelFunctionCategory.MathAndTrig,
-        EPPlusVersion = "5.1",
-        Description = "Returns the hyperbolic arccotangent of a number",
-        IntroducedInExcelVersion = "2013")]
-    internal class Acoth : ExcelFunction
-    {
-        public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
-        {
-            ValidateArguments(arguments, 1);
-            double arg = this.ArgToDecimal(arguments, 0);
-            if (arg >= -1 && arg <= 1)
-            {
-                return this.CreateResult(eErrorType.Num);
-            }
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
 
-            return this.CreateResult(MathHelper.HArccotan(arg), DataType.Decimal);
+[FunctionMetadata(
+                     Category = ExcelFunctionCategory.MathAndTrig,
+                     EPPlusVersion = "5.1",
+                     Description = "Returns the hyperbolic arccotangent of a number",
+                     IntroducedInExcelVersion = "2013")]
+internal class Acoth : ExcelFunction
+{
+    public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
+    {
+        ValidateArguments(arguments, 1);
+        double arg = this.ArgToDecimal(arguments, 0);
+        if (arg >= -1 && arg <= 1)
+        {
+            return this.CreateResult(eErrorType.Num);
         }
+
+        return this.CreateResult(MathHelper.HArccotan(arg), DataType.Decimal);
     }
 }

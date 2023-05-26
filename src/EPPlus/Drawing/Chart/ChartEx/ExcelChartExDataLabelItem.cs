@@ -17,33 +17,32 @@ using System.Globalization;
 using System.Text;
 using System.Xml;
 
-namespace OfficeOpenXml.Drawing.Chart.ChartEx
+namespace OfficeOpenXml.Drawing.Chart.ChartEx;
+
+/// <summary>
+/// An individual datalabel item
+/// </summary>
+public class ExcelChartExDataLabelItem : ExcelChartExDataLabel
 {
-    /// <summary>
-    /// An individual datalabel item
-    /// </summary>
-    public class ExcelChartExDataLabelItem : ExcelChartExDataLabel
+    internal ExcelChartExDataLabelItem(ExcelChartExSerie serie, XmlNamespaceManager nsm, XmlNode node) : base(serie, nsm, node)
     {
-        internal ExcelChartExDataLabelItem(ExcelChartExSerie serie, XmlNamespaceManager nsm, XmlNode node) : base(serie, nsm, node)
+    }
+    internal ExcelChartExDataLabelItem(ExcelChartExSerie serie, XmlNamespaceManager nsm, XmlNode node, int index) : base(serie, nsm, node)
+    {
+        this.Index = index;
+    }
+    /// <summary>
+    /// The index of the datapoint the label is attached to
+    /// </summary>
+    public int Index 
+    { 
+        get
         {
+            return this.GetXmlNodeInt("@idx");
         }
-        internal ExcelChartExDataLabelItem(ExcelChartExSerie serie, XmlNamespaceManager nsm, XmlNode node, int index) : base(serie, nsm, node)
+        private set
         {
-            this.Index = index;
-        }
-        /// <summary>
-        /// The index of the datapoint the label is attached to
-        /// </summary>
-        public int Index 
-        { 
-            get
-            {
-                return this.GetXmlNodeInt("@idx");
-            }
-            private set
-            {
-                this.SetXmlNodeInt("@idx", value);
-            }
+            this.SetXmlNodeInt("@idx", value);
         }
     }
 }

@@ -15,17 +15,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace OfficeOpenXml.FormulaParsing.ExpressionGraph.CompileStrategy
+namespace OfficeOpenXml.FormulaParsing.ExpressionGraph.CompileStrategy;
+
+public abstract class CompileStrategy
 {
-    public abstract class CompileStrategy
+    protected readonly Expression _expression;
+
+    public CompileStrategy(Expression expression)
     {
-        protected readonly Expression _expression;
-
-        public CompileStrategy(Expression expression)
-        {
-            this._expression = expression;
-        }
-
-        public abstract Expression Compile();
+        this._expression = expression;
     }
+
+    public abstract Expression Compile();
 }

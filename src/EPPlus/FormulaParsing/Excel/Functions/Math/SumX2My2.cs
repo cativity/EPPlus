@@ -16,24 +16,23 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
+
+[FunctionMetadata(
+                     Category = ExcelFunctionCategory.MathAndTrig,
+                     EPPlusVersion = "5.1",
+                     Description = "Returns the sum of the difference of squares of corresponding values in two supplied arrays")]
+internal class SumX2mY2 : SumxBase
 {
-    [FunctionMetadata(
-        Category = ExcelFunctionCategory.MathAndTrig,
-        EPPlusVersion = "5.1",
-        Description = "Returns the sum of the difference of squares of corresponding values in two supplied arrays")]
-    internal class SumX2mY2 : SumxBase
+    public override double Calculate(double[] set1, double[] set2)
     {
-        public override double Calculate(double[] set1, double[] set2)
+        double result = 0d;
+        for(int x = 0; x < set1.Length; x++)
         {
-            double result = 0d;
-            for(int x = 0; x < set1.Length; x++)
-            {
-                double a = set1[x];
-                double b = set2[x];
-                result += a * a - b * b;
-            }
-            return result;
+            double a = set1[x];
+            double b = set2[x];
+            result += a * a - b * b;
         }
+        return result;
     }
 }

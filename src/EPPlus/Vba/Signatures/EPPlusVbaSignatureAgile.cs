@@ -16,13 +16,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace OfficeOpenXml.VBA.Signatures
+namespace OfficeOpenXml.VBA.Signatures;
+
+internal class EPPlusVbaSignatureAgile : EPPlusVbaSignature
 {
-    internal class EPPlusVbaSignatureAgile : EPPlusVbaSignature
+    public EPPlusVbaSignatureAgile(ZipPackagePart part)
+        : base(part, ExcelVbaSignatureType.Agile)
     {
-        public EPPlusVbaSignatureAgile(ZipPackagePart part)
-            : base(part, ExcelVbaSignatureType.Agile)
-        {
-        }
     }
 }

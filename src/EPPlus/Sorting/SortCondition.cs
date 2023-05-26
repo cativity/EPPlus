@@ -16,83 +16,82 @@ using System.Linq;
 using System.Text;
 using System.Xml;
 
-namespace OfficeOpenXml.Sorting
+namespace OfficeOpenXml.Sorting;
+
+/// <summary>
+/// Represents a sort condition within a sort
+/// </summary>
+public class SortCondition : XmlHelper
 {
-    /// <summary>
-    /// Represents a sort condition within a sort
-    /// </summary>
-    public class SortCondition : XmlHelper
+    internal SortCondition(XmlNamespaceManager nameSpaceManager, XmlNode topNode) : base(nameSpaceManager, topNode)
     {
-        internal SortCondition(XmlNamespaceManager nameSpaceManager, XmlNode topNode) : base(nameSpaceManager, topNode)
+    }
+
+    private string _descendingPath = "@descending";
+    private string _refPath = "@ref";
+    private string _customListPath = "@customList";
+
+    /// <summary>
+    /// Sort direction of this condition. If false - ascending, if true - descending.
+    /// </summary>
+    public bool Descending
+    {
+        get
         {
+            return this.GetXmlNodeBool(this._descendingPath);
         }
-
-        private string _descendingPath = "@descending";
-        private string _refPath = "@ref";
-        private string _customListPath = "@customList";
-
-        /// <summary>
-        /// Sort direction of this condition. If false - ascending, if true - descending.
-        /// </summary>
-        public bool Descending
+        set
         {
-            get
-            {
-                return this.GetXmlNodeBool(this._descendingPath);
-            }
-            set
-            {
-                this.SetXmlNodeBool(this._descendingPath, value);
-            }
+            this.SetXmlNodeBool(this._descendingPath, value);
         }
+    }
 
-        /// <summary>
-        /// Address of the range used by this condition.
-        /// </summary>
-        public string Ref 
+    /// <summary>
+    /// Address of the range used by this condition.
+    /// </summary>
+    public string Ref 
+    {
+        get
         {
-            get
-            {
-                return this.GetXmlNodeString(this._refPath);
-            }
-            set
-            {
-                this.SetXmlNodeString(this._refPath, value);
-            }
+            return this.GetXmlNodeString(this._refPath);
         }
-
-        /// <summary>
-        /// A custom list of strings that defines the sort order for this condition.
-        /// </summary>
-        public string[] CustomList
+        set
         {
-            get
-            {
-                string? list = this.GetXmlNodeString(this._customListPath);
-                if(!string.IsNullOrEmpty(list))
-                {
-                    return list.Split(',').Where(x => !string.IsNullOrEmpty(x)).Select(x => x.Trim()).ToArray();
-                }
-                return null;
-            }
-            set
-            {
-                if(value == null || value.Length == 0)
-                {
-                    this.SetXmlNodeString(this._customListPath, string.Empty, true);
-                }
-                StringBuilder? val = new StringBuilder();
-                for(int x = 0; x < value.Length; x++)
-                {
-                    val.Append(value[x]);
-                    if(x < value.Length -1)
-                    {
-                        val.Append(",");
-                    }
-                }
+            this.SetXmlNodeString(this._refPath, value);
+        }
+    }
 
-                this.SetXmlNodeString(this._customListPath, val.ToString());
+    /// <summary>
+    /// A custom list of strings that defines the sort order for this condition.
+    /// </summary>
+    public string[] CustomList
+    {
+        get
+        {
+            string? list = this.GetXmlNodeString(this._customListPath);
+            if(!string.IsNullOrEmpty(list))
+            {
+                return list.Split(',').Where(x => !string.IsNullOrEmpty(x)).Select(x => x.Trim()).ToArray();
             }
+            return null;
+        }
+        set
+        {
+            if(value == null || value.Length == 0)
+            {
+                this.SetXmlNodeString(this._customListPath, string.Empty, true);
+            }
+            StringBuilder? val = new StringBuilder();
+            for(int x = 0; x < value.Length; x++)
+            {
+                val.Append(value[x]);
+                if(x < value.Length -1)
+                {
+                    val.Append(",");
+                }
+            }
+
+            this.SetXmlNodeString(this._customListPath, val.ToString());
         }
     }
 }

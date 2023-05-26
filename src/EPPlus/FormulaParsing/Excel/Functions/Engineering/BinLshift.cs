@@ -17,41 +17,40 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Engineering
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Engineering;
+
+[FunctionMetadata(
+                     Category = ExcelFunctionCategory.Engineering,
+                     EPPlusVersion = "5.1",
+                     Description = "Returns a number shifted left by a specified number of bits",
+                     IntroducedInExcelVersion = "2013")]
+internal class BitLshift : ExcelFunction
 {
-    [FunctionMetadata(
-        Category = ExcelFunctionCategory.Engineering,
-        EPPlusVersion = "5.1",
-        Description = "Returns a number shifted left by a specified number of bits",
-        IntroducedInExcelVersion = "2013")]
-    internal class BitLshift : ExcelFunction
+    public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
     {
-        public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
+        ValidateArguments(arguments, 2);
+        if (!IsNumeric(arguments.ElementAt(0).Value) || !IsNumeric(arguments.ElementAt(1).Value))
         {
-            ValidateArguments(arguments, 2);
-            if (!IsNumeric(arguments.ElementAt(0).Value) || !IsNumeric(arguments.ElementAt(1).Value))
-            {
-                return this.CreateResult(eErrorType.Value);
-            }
-
-            if (!IsInteger(arguments.ElementAt(0).Value) || !IsInteger(arguments.ElementAt(1).Value))
-            {
-                return this.CreateResult(eErrorType.Num);
-            }
-
-            int number = this.ArgToInt(arguments, 0);
-            int shiftAmount = this.ArgToInt(arguments, 1);
-            if (number < 0 || shiftAmount < 0)
-            {
-                return this.CreateResult(eErrorType.Num);
-            }
-
-            if (number > (System.Math.Pow(2, 48) - 1))
-            {
-                return this.CreateResult(eErrorType.Num);
-            }
-
-            return this.CreateResult(number << shiftAmount, DataType.Integer);
+            return this.CreateResult(eErrorType.Value);
         }
+
+        if (!IsInteger(arguments.ElementAt(0).Value) || !IsInteger(arguments.ElementAt(1).Value))
+        {
+            return this.CreateResult(eErrorType.Num);
+        }
+
+        int number = this.ArgToInt(arguments, 0);
+        int shiftAmount = this.ArgToInt(arguments, 1);
+        if (number < 0 || shiftAmount < 0)
+        {
+            return this.CreateResult(eErrorType.Num);
+        }
+
+        if (number > (System.Math.Pow(2, 48) - 1))
+        {
+            return this.CreateResult(eErrorType.Num);
+        }
+
+        return this.CreateResult(number << shiftAmount, DataType.Integer);
     }
 }

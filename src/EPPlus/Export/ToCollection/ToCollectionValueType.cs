@@ -10,20 +10,19 @@
  *************************************************************************************************
   10/04/2022         EPPlus Software AB       Initial release EPPlus 6.1
  *************************************************************************************************/
-namespace OfficeOpenXml.Export.ToCollection
+namespace OfficeOpenXml.Export.ToCollection;
+
+/// <summary>
+/// How conversion failures should be handled when mapping properties in the ToCollection method.
+/// </summary>
+public enum ToCollectionConversionFailureStrategy
 {
     /// <summary>
-    /// How conversion failures should be handled when mapping properties in the ToCollection method.
+    /// Throw an Exception if the conversion fails. Blank values will return the default value for the type. An <see cref="Exceptions.EPPlusDataTypeConvertionException"/> will be thrown on any datatype conversion failure when mapping properties.
     /// </summary>
-    public enum ToCollectionConversionFailureStrategy
-    {
-        /// <summary>
-        /// Throw an Exception if the conversion fails. Blank values will return the default value for the type. An <see cref="Exceptions.EPPlusDataTypeConvertionException"/> will be thrown on any datatype conversion failure when mapping properties.
-        /// </summary>
-        Exception,
-        /// <summary>
-        /// Set the default value for the property.
-        /// </summary>
-        SetDefaultValue
-    }
+    Exception,
+    /// <summary>
+    /// Set the default value for the property.
+    /// </summary>
+    SetDefaultValue
 }

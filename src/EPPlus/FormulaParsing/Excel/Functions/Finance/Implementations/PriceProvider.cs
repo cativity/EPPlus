@@ -15,20 +15,19 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.Implementations
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.Implementations;
+
+internal class PriceProvider : IPriceProvider
 {
-    internal class PriceProvider : IPriceProvider
+    public double GetPrice(System.DateTime settlement, System.DateTime maturity, double rate, double yield, double redemption, int frequency, DayCountBasis basis = DayCountBasis.US_30_360)
     {
-        public double GetPrice(System.DateTime settlement, System.DateTime maturity, double rate, double yield, double redemption, int frequency, DayCountBasis basis = DayCountBasis.US_30_360)
-        {
-            return PriceImpl.GetPrice(
-                FinancialDayFactory.Create(settlement, basis),
-                FinancialDayFactory.Create(maturity, basis),
-                rate,
-                yield,
-                redemption,
-                frequency,
-                basis).Result;
-        }
+        return PriceImpl.GetPrice(
+                                  FinancialDayFactory.Create(settlement, basis),
+                                  FinancialDayFactory.Create(maturity, basis),
+                                  rate,
+                                  yield,
+                                  redemption,
+                                  frequency,
+                                  basis).Result;
     }
 }

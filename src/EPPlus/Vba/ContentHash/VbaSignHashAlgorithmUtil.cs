@@ -20,53 +20,52 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace OfficeOpenXml.VBA.ContentHash
+namespace OfficeOpenXml.VBA.ContentHash;
+
+internal static class VbaSignHashAlgorithmUtil
 {
-    internal static class VbaSignHashAlgorithmUtil
+    internal static byte[] GetContentHash(ExcelVbaProject proj, EPPlusSignatureContext ctx)
     {
-        internal static byte[] GetContentHash(ExcelVbaProject proj, EPPlusSignatureContext ctx)
+        if (ctx.SignatureType == ExcelVbaSignatureType.Legacy)
         {
-            if (ctx.SignatureType == ExcelVbaSignatureType.Legacy)
-            {
-                using MemoryStream? ms = RecyclableMemory.GetStream();
-                ContentHashInputProvider.GetContentNormalizedDataHashInput(proj, ms);
-                byte[]? buffer = ms.ToArray();
-                byte[]? hash = ComputeHash(buffer, ctx);
-                byte[]? existingHash = ctx.SourceHash;
-                return hash;
-            }
-            else if (ctx.SignatureType == ExcelVbaSignatureType.Agile)
-            {
-                using MemoryStream? ms = RecyclableMemory.GetStream();
-                ContentHashInputProvider.GetContentNormalizedDataHashInput(proj, ms);
-                ContentHashInputProvider.GetFormsNormalizedDataHashInput(proj, ms);
-                byte[]? buffer = ms.ToArray();
-                byte[]? hash = ComputeHash(buffer, ctx);
-                byte[]? existingHash = ctx.SourceHash;
-                return hash;
-            }
-            else if(ctx.SignatureType == ExcelVbaSignatureType.V3)
-            {
-                using MemoryStream? ms = RecyclableMemory.GetStream();
-                ContentHashInputProvider.GetV3ContentNormalizedDataHashInput(proj, ms);
-                byte[]? buffer = ms.ToArray();
-                byte[]? hash = ComputeHash(buffer, ctx);
-                byte[]? existingHash = ctx.SourceHash;
+            using MemoryStream? ms = RecyclableMemory.GetStream();
+            ContentHashInputProvider.GetContentNormalizedDataHashInput(proj, ms);
+            byte[]? buffer = ms.ToArray();
+            byte[]? hash = ComputeHash(buffer, ctx);
+            byte[]? existingHash = ctx.SourceHash;
+            return hash;
+        }
+        else if (ctx.SignatureType == ExcelVbaSignatureType.Agile)
+        {
+            using MemoryStream? ms = RecyclableMemory.GetStream();
+            ContentHashInputProvider.GetContentNormalizedDataHashInput(proj, ms);
+            ContentHashInputProvider.GetFormsNormalizedDataHashInput(proj, ms);
+            byte[]? buffer = ms.ToArray();
+            byte[]? hash = ComputeHash(buffer, ctx);
+            byte[]? existingHash = ctx.SourceHash;
+            return hash;
+        }
+        else if(ctx.SignatureType == ExcelVbaSignatureType.V3)
+        {
+            using MemoryStream? ms = RecyclableMemory.GetStream();
+            ContentHashInputProvider.GetV3ContentNormalizedDataHashInput(proj, ms);
+            byte[]? buffer = ms.ToArray();
+            byte[]? hash = ComputeHash(buffer, ctx);
+            byte[]? existingHash = ctx.SourceHash;
 
-                return hash;
-            }
-            return default(byte[]);
+            return hash;
+        }
+        return default(byte[]);
             
-        }
-        internal static byte[] ComputeHash(byte[] buffer, EPPlusSignatureContext ctx)
+    }
+    internal static byte[] ComputeHash(byte[] buffer, EPPlusSignatureContext ctx)
+    {
+        HashAlgorithm? algorithm = ctx.GetHashAlgorithm();
+        if (algorithm == null)
         {
-            HashAlgorithm? algorithm = ctx.GetHashAlgorithm();
-            if (algorithm == null)
-            {
-                return null;
-            }
-
-            return algorithm.ComputeHash(buffer);
+            return null;
         }
+
+        return algorithm.ComputeHash(buffer);
     }
 }

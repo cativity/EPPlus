@@ -16,55 +16,54 @@ using System.Linq;
 using System.Text;
 using OfficeOpenXml.FormulaParsing;
 
-namespace OfficeOpenXml.FormulaParsing.ExpressionGraph
+namespace OfficeOpenXml.FormulaParsing.ExpressionGraph;
+
+public class CompileResultFactory
 {
-    public class CompileResultFactory
+    public virtual CompileResult Create(object obj)
     {
-        public virtual CompileResult Create(object obj)
+        return this.Create(obj, 0);
+    }
+
+    public virtual CompileResult Create(object obj, int excelAddressReferenceId)
+    {
+        if ((obj is INameInfo))
         {
-            return this.Create(obj, 0);
+            obj = ((INameInfo)obj).Value;
+        }
+        if (obj is IRangeInfo)
+        {
+            obj = ((IRangeInfo)obj).GetOffset(0, 0);
+        }
+        if (obj == null)
+        {
+            return new CompileResult(null, DataType.Empty);
         }
 
-        public virtual CompileResult Create(object obj, int excelAddressReferenceId)
+        if (obj.GetType().Equals(typeof(string)))
         {
-            if ((obj is INameInfo))
-            {
-                obj = ((INameInfo)obj).Value;
-            }
-            if (obj is IRangeInfo)
-            {
-                obj = ((IRangeInfo)obj).GetOffset(0, 0);
-            }
-            if (obj == null)
-            {
-                return new CompileResult(null, DataType.Empty);
-            }
-
-            if (obj.GetType().Equals(typeof(string)))
-            {
-                return new CompileResult(obj, DataType.String, excelAddressReferenceId);
-            }
-            if (obj.GetType().Equals(typeof(double)) || obj is decimal || obj is float)
-            {
-                return new CompileResult(obj, DataType.Decimal, excelAddressReferenceId);
-            }
-            if (obj.GetType().Equals(typeof(int)) || obj is long || obj is short)
-            {
-                return new CompileResult(obj, DataType.Integer, excelAddressReferenceId);
-            }
-            if (obj.GetType().Equals(typeof(bool)))
-            {
-                return new CompileResult(obj, DataType.Boolean, excelAddressReferenceId);
-            }
-            if (obj.GetType().Equals(typeof (ExcelErrorValue)))
-            {
-                return new CompileResult(obj, DataType.ExcelError, excelAddressReferenceId);
-            }
-            if (obj.GetType().Equals(typeof(DateTime)))
-            {
-                return new CompileResult(((DateTime)obj).ToOADate(), DataType.Date, excelAddressReferenceId);
-            }
-            throw new ArgumentException("Non supported type " + obj.GetType().FullName);
+            return new CompileResult(obj, DataType.String, excelAddressReferenceId);
         }
+        if (obj.GetType().Equals(typeof(double)) || obj is decimal || obj is float)
+        {
+            return new CompileResult(obj, DataType.Decimal, excelAddressReferenceId);
+        }
+        if (obj.GetType().Equals(typeof(int)) || obj is long || obj is short)
+        {
+            return new CompileResult(obj, DataType.Integer, excelAddressReferenceId);
+        }
+        if (obj.GetType().Equals(typeof(bool)))
+        {
+            return new CompileResult(obj, DataType.Boolean, excelAddressReferenceId);
+        }
+        if (obj.GetType().Equals(typeof (ExcelErrorValue)))
+        {
+            return new CompileResult(obj, DataType.ExcelError, excelAddressReferenceId);
+        }
+        if (obj.GetType().Equals(typeof(DateTime)))
+        {
+            return new CompileResult(((DateTime)obj).ToOADate(), DataType.Date, excelAddressReferenceId);
+        }
+        throw new ArgumentException("Non supported type " + obj.GetType().FullName);
     }
 }

@@ -38,99 +38,98 @@ using System.Reflection;
 using System.Text;
 using System.Xml;
 
-namespace EPPlusTest.Drawing.Chart.Styling
+namespace EPPlusTest.Drawing.Chart.Styling;
+
+[TestClass]
+public class BoxWhiskerChartStylingTest : TestBase
 {
-    [TestClass]
-    public class BoxWhiskerChartStylingTest : TestBase
+    static ExcelPackage _pck;
+    [ClassInitialize]
+    public static void Init(TestContext context)
     {
-        static ExcelPackage _pck;
-        [ClassInitialize]
-        public static void Init(TestContext context)
-        {
-            _pck = OpenPackage("BoxWhiskerChartStyling.xlsx", true);
-        }
-        [ClassCleanup]
-        public static void Cleanup()
-        {
-            SaveAndCleanup(_pck);
-        }
-        [TestMethod]
-        public void BoxWhiskerChart_Styles()
-        {
-            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("BoxWhiskerChart");
-            LoadTestdata(ws);
-            BoxWhiskerChartStyle(ws);
-        }
-        private static void BoxWhiskerChartStyle(ExcelWorksheet ws)
-        {
-            //Box & Whisker Chart styles
+        _pck = OpenPackage("BoxWhiskerChartStyling.xlsx", true);
+    }
+    [ClassCleanup]
+    public static void Cleanup()
+    {
+        SaveAndCleanup(_pck);
+    }
+    [TestMethod]
+    public void BoxWhiskerChart_Styles()
+    {
+        ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("BoxWhiskerChart");
+        LoadTestdata(ws);
+        BoxWhiskerChartStyle(ws);
+    }
+    private static void BoxWhiskerChartStyle(ExcelWorksheet ws)
+    {
+        //Box & Whisker Chart styles
 
-            //Box & Whisker chart Style 1
-            AddChartEx(ws, ePresetChartStyle.BoxWhiskerChartStyle1, "BoxWhiskerChartStyle1", 0, 5, 
-                c =>
-                {
-                    c.Legend.Position = eLegendPosition.Bottom;
-                    c.Legend.PositionAlignment = ePositionAlign.Min;
-                });
+        //Box & Whisker chart Style 1
+        AddChartEx(ws, ePresetChartStyle.BoxWhiskerChartStyle1, "BoxWhiskerChartStyle1", 0, 5, 
+                   c =>
+                   {
+                       c.Legend.Position = eLegendPosition.Bottom;
+                       c.Legend.PositionAlignment = ePositionAlign.Min;
+                   });
 
-            //Box & Whisker chart Style 2
-            AddChartEx(ws, ePresetChartStyle.BoxWhiskerChartStyle2, "BoxWhiskerStyle2", 0, 18, 
-                c =>
-                {
-                    c.Legend.Position = eLegendPosition.Bottom;
-                    c.Series[0].ShowOutliers = false;
-                    c.Series[0].ShowMeanLine = false;
-                    c.Series[0].ShowMeanMarker = true;
-                    c.Series[0].ShowNonOutliers = true;
-                });
+        //Box & Whisker chart Style 2
+        AddChartEx(ws, ePresetChartStyle.BoxWhiskerChartStyle2, "BoxWhiskerStyle2", 0, 18, 
+                   c =>
+                   {
+                       c.Legend.Position = eLegendPosition.Bottom;
+                       c.Series[0].ShowOutliers = false;
+                       c.Series[0].ShowMeanLine = false;
+                       c.Series[0].ShowMeanMarker = true;
+                       c.Series[0].ShowNonOutliers = true;
+                   });
 
-            //Box & Whisker chart Style 3
-            AddChartEx(ws, ePresetChartStyle.BoxWhiskerChartStyle3, "BoxWhiskerChartStyle3", 0, 31, 
-                c =>
-                {
-                    c.Legend.Position = eLegendPosition.Bottom;
-                    c.Series[0].ShowMeanMarker = false;
-                    c.Series[0].ShowNonOutliers = false;
-                    c.Series[0].ShowOutliers = true;
-                    c.Series[0].ShowMeanLine = true;
-                });
+        //Box & Whisker chart Style 3
+        AddChartEx(ws, ePresetChartStyle.BoxWhiskerChartStyle3, "BoxWhiskerChartStyle3", 0, 31, 
+                   c =>
+                   {
+                       c.Legend.Position = eLegendPosition.Bottom;
+                       c.Series[0].ShowMeanMarker = false;
+                       c.Series[0].ShowNonOutliers = false;
+                       c.Series[0].ShowOutliers = true;
+                       c.Series[0].ShowMeanLine = true;
+                   });
 
-            //Box & Whisker chart Style 4
-            AddChartEx(ws, ePresetChartStyle.BoxWhiskerChartStyle4, "BoxWhiskerChartStyle4", 20, 5, 
-                c =>
-                {
-                    c.Legend.Position = eLegendPosition.Bottom;
-                });
+        //Box & Whisker chart Style 4
+        AddChartEx(ws, ePresetChartStyle.BoxWhiskerChartStyle4, "BoxWhiskerChartStyle4", 20, 5, 
+                   c =>
+                   {
+                       c.Legend.Position = eLegendPosition.Bottom;
+                   });
 
-            //Box & Whisker chart Style 5
-            AddChartEx(ws, ePresetChartStyle.BoxWhiskerChartStyle5, "BoxWhiskerChartStyle5", 20, 18, 
-                c =>
-                {
-                    c.Legend.Position = eLegendPosition.Bottom;
-                });
+        //Box & Whisker chart Style 5
+        AddChartEx(ws, ePresetChartStyle.BoxWhiskerChartStyle5, "BoxWhiskerChartStyle5", 20, 18, 
+                   c =>
+                   {
+                       c.Legend.Position = eLegendPosition.Bottom;
+                   });
 
-            //Box & Whisker chart Style 6
-            AddChartEx(ws, ePresetChartStyle.BoxWhiskerChartStyle6, "BoxWhiskerChartStyle6", 20, 31, 
-                c =>
-                {
-                    c.Legend.Position = eLegendPosition.Bottom;
-                });
+        //Box & Whisker chart Style 6
+        AddChartEx(ws, ePresetChartStyle.BoxWhiskerChartStyle6, "BoxWhiskerChartStyle6", 20, 31, 
+                   c =>
+                   {
+                       c.Legend.Position = eLegendPosition.Bottom;
+                   });
 
-        }
-        private static ExcelBoxWhiskerChart AddChartEx(ExcelWorksheet ws, ePresetChartStyle style, string name, int row, int col,Action<ExcelBoxWhiskerChart> SetProperties)
-        {
-            ExcelBoxWhiskerChart? chart = ws.Drawings.AddBoxWhiskerChart(name);
-            chart.SetPosition(row, 0, col, 0);
-            chart.To.Column = col+12;
-            chart.To.ColumnOff = 0;
-            chart.To.Row = row + 18;
-            chart.To.RowOff = 0;
-            chart.Series.Add("D2:D8", "A2:A8");
+    }
+    private static ExcelBoxWhiskerChart AddChartEx(ExcelWorksheet ws, ePresetChartStyle style, string name, int row, int col,Action<ExcelBoxWhiskerChart> SetProperties)
+    {
+        ExcelBoxWhiskerChart? chart = ws.Drawings.AddBoxWhiskerChart(name);
+        chart.SetPosition(row, 0, col, 0);
+        chart.To.Column = col+12;
+        chart.To.ColumnOff = 0;
+        chart.To.Row = row + 18;
+        chart.To.RowOff = 0;
+        chart.Series.Add("D2:D8", "A2:A8");
 
-            SetProperties(chart);
+        SetProperties(chart);
 
-            chart.StyleManager.SetChartStyle(style);
-            return chart;
-        }
+        chart.StyleManager.SetChartStyle(style);
+        return chart;
     }
 }

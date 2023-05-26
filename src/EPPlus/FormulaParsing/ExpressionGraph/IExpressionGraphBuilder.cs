@@ -16,10 +16,9 @@ using System.Linq;
 using System.Text;
 using OfficeOpenXml.FormulaParsing.LexicalAnalysis;
 
-namespace OfficeOpenXml.FormulaParsing.ExpressionGraph
+namespace OfficeOpenXml.FormulaParsing.ExpressionGraph;
+
+internal interface IExpressionGraphBuilder
 {
-    internal interface IExpressionGraphBuilder
-    {
-        ExpressionGraph Build(IEnumerable<Token> tokens);
-    }
+    ExpressionGraph Build(IEnumerable<Token> tokens);
 }

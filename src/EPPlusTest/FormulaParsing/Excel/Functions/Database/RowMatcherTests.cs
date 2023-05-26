@@ -33,150 +33,149 @@ using OfficeOpenXml.FormulaParsing;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Database;
 using FakeItEasy;
 
-namespace EPPlusTest.FormulaParsing.Excel.Functions.Database
+namespace EPPlusTest.FormulaParsing.Excel.Functions.Database;
+
+[TestClass]
+public class RowMatcherTests
 {
-    [TestClass]
-    public class RowMatcherTests
+    private static ExcelDatabaseCriteria GetCriteria(Dictionary<ExcelDatabaseCriteriaField, object> items)
     {
-        private static ExcelDatabaseCriteria GetCriteria(Dictionary<ExcelDatabaseCriteriaField, object> items)
-        {
-            ExcelDataProvider? provider = A.Fake<ExcelDataProvider>();
-            ExcelDatabaseCriteria? criteria = A.Fake<ExcelDatabaseCriteria>();// (provider, string.Empty);
+        ExcelDataProvider? provider = A.Fake<ExcelDataProvider>();
+        ExcelDatabaseCriteria? criteria = A.Fake<ExcelDatabaseCriteria>();// (provider, string.Empty);
 
-            A.CallTo(() => criteria.Items).Returns(items);
-            return criteria;
-        }
-        [TestMethod]
-        public void IsMatchShouldReturnTrueIfCriteriasMatch()
-        {
-            ExcelDatabaseRow? data = new ExcelDatabaseRow();
-            data["Crit1"] = 1;
-            data["Crit2"] = 2;
-            data["Crit3"] = 3;
+        A.CallTo(() => criteria.Items).Returns(items);
+        return criteria;
+    }
+    [TestMethod]
+    public void IsMatchShouldReturnTrueIfCriteriasMatch()
+    {
+        ExcelDatabaseRow? data = new ExcelDatabaseRow();
+        data["Crit1"] = 1;
+        data["Crit2"] = 2;
+        data["Crit3"] = 3;
 
-            Dictionary<ExcelDatabaseCriteriaField, object>? crit = new Dictionary<ExcelDatabaseCriteriaField, object>();
-            crit[new ExcelDatabaseCriteriaField("Crit1")] = 1;
-            crit[new ExcelDatabaseCriteriaField("Crit3")] = 3;
+        Dictionary<ExcelDatabaseCriteriaField, object>? crit = new Dictionary<ExcelDatabaseCriteriaField, object>();
+        crit[new ExcelDatabaseCriteriaField("Crit1")] = 1;
+        crit[new ExcelDatabaseCriteriaField("Crit3")] = 3;
 
-            RowMatcher? matcher = new RowMatcher();
+        RowMatcher? matcher = new RowMatcher();
 
-            ExcelDatabaseCriteria? criteria = GetCriteria(crit);
+        ExcelDatabaseCriteria? criteria = GetCriteria(crit);
 
-            Assert.IsTrue(matcher.IsMatch(data, criteria));
-        }
+        Assert.IsTrue(matcher.IsMatch(data, criteria));
+    }
 
-        [TestMethod]
-        public void IsMatchShouldReturnFalseIfCriteriasDoesNotMatch()
-        {
-            ExcelDatabaseRow? data = new ExcelDatabaseRow();
-            data["Crit1"] = 1;
-            data["Crit2"] = 2;
-            data["Crit3"] = 3;
+    [TestMethod]
+    public void IsMatchShouldReturnFalseIfCriteriasDoesNotMatch()
+    {
+        ExcelDatabaseRow? data = new ExcelDatabaseRow();
+        data["Crit1"] = 1;
+        data["Crit2"] = 2;
+        data["Crit3"] = 3;
 
-            Dictionary<ExcelDatabaseCriteriaField, object>? crit = new Dictionary<ExcelDatabaseCriteriaField, object>();
-            crit[new ExcelDatabaseCriteriaField("Crit1")] = 1;
-            crit[new ExcelDatabaseCriteriaField("Crit3")] = 4;
+        Dictionary<ExcelDatabaseCriteriaField, object>? crit = new Dictionary<ExcelDatabaseCriteriaField, object>();
+        crit[new ExcelDatabaseCriteriaField("Crit1")] = 1;
+        crit[new ExcelDatabaseCriteriaField("Crit3")] = 4;
 
-            RowMatcher? matcher = new RowMatcher();
+        RowMatcher? matcher = new RowMatcher();
 
-            ExcelDatabaseCriteria? criteria = GetCriteria(crit);
+        ExcelDatabaseCriteria? criteria = GetCriteria(crit);
 
-            Assert.IsFalse(matcher.IsMatch(data, criteria));
-        }
+        Assert.IsFalse(matcher.IsMatch(data, criteria));
+    }
 
-        [TestMethod]
-        public void IsMatchShouldMatchStrings1()
-        {
-            ExcelDatabaseRow? data = new ExcelDatabaseRow();
-            data["Crit1"] = "1";
-            data["Crit2"] = 2;
-            data["Crit3"] = 3;
+    [TestMethod]
+    public void IsMatchShouldMatchStrings1()
+    {
+        ExcelDatabaseRow? data = new ExcelDatabaseRow();
+        data["Crit1"] = "1";
+        data["Crit2"] = 2;
+        data["Crit3"] = 3;
 
-            Dictionary<ExcelDatabaseCriteriaField, object>? crit = new Dictionary<ExcelDatabaseCriteriaField, object>();
-            crit[new ExcelDatabaseCriteriaField("Crit1")] = "1";
-            crit[new ExcelDatabaseCriteriaField("Crit3")] = 3;
+        Dictionary<ExcelDatabaseCriteriaField, object>? crit = new Dictionary<ExcelDatabaseCriteriaField, object>();
+        crit[new ExcelDatabaseCriteriaField("Crit1")] = "1";
+        crit[new ExcelDatabaseCriteriaField("Crit3")] = 3;
 
-            RowMatcher? matcher = new RowMatcher();
+        RowMatcher? matcher = new RowMatcher();
 
-            ExcelDatabaseCriteria? criteria = GetCriteria(crit);
+        ExcelDatabaseCriteria? criteria = GetCriteria(crit);
 
-            Assert.IsTrue(matcher.IsMatch(data, criteria));
-        }
+        Assert.IsTrue(matcher.IsMatch(data, criteria));
+    }
 
-        [TestMethod]
-        public void IsMatchShouldMatchStrings2()
-        {
-            ExcelDatabaseRow? data = new ExcelDatabaseRow();
-            data["Crit1"] = "2";
-            data["Crit2"] = 2;
-            data["Crit3"] = 3;
+    [TestMethod]
+    public void IsMatchShouldMatchStrings2()
+    {
+        ExcelDatabaseRow? data = new ExcelDatabaseRow();
+        data["Crit1"] = "2";
+        data["Crit2"] = 2;
+        data["Crit3"] = 3;
 
-            Dictionary<ExcelDatabaseCriteriaField, object>? crit = new Dictionary<ExcelDatabaseCriteriaField, object>();
-            crit[new ExcelDatabaseCriteriaField("Crit1")] = "1";
-            crit[new ExcelDatabaseCriteriaField("Crit3")] = 3;
+        Dictionary<ExcelDatabaseCriteriaField, object>? crit = new Dictionary<ExcelDatabaseCriteriaField, object>();
+        crit[new ExcelDatabaseCriteriaField("Crit1")] = "1";
+        crit[new ExcelDatabaseCriteriaField("Crit3")] = 3;
 
-            RowMatcher? matcher = new RowMatcher();
+        RowMatcher? matcher = new RowMatcher();
 
-            ExcelDatabaseCriteria? criteria = GetCriteria(crit);
+        ExcelDatabaseCriteria? criteria = GetCriteria(crit);
 
-            Assert.IsFalse(matcher.IsMatch(data, criteria));
-        }
+        Assert.IsFalse(matcher.IsMatch(data, criteria));
+    }
 
-        [TestMethod]
-        public void IsMatchShouldMatchWildcardStrings()
-        {
-            ExcelDatabaseRow? data = new ExcelDatabaseRow();
-            data["Crit1"] = "test";
-            data["Crit2"] = 2;
-            data["Crit3"] = 3;
+    [TestMethod]
+    public void IsMatchShouldMatchWildcardStrings()
+    {
+        ExcelDatabaseRow? data = new ExcelDatabaseRow();
+        data["Crit1"] = "test";
+        data["Crit2"] = 2;
+        data["Crit3"] = 3;
 
-            Dictionary<ExcelDatabaseCriteriaField, object>? crit = new Dictionary<ExcelDatabaseCriteriaField, object>();
-            crit[new ExcelDatabaseCriteriaField("Crit1")] = "t*t";
-            crit[new ExcelDatabaseCriteriaField("Crit3")] = 3;
+        Dictionary<ExcelDatabaseCriteriaField, object>? crit = new Dictionary<ExcelDatabaseCriteriaField, object>();
+        crit[new ExcelDatabaseCriteriaField("Crit1")] = "t*t";
+        crit[new ExcelDatabaseCriteriaField("Crit3")] = 3;
 
-            RowMatcher? matcher = new RowMatcher();
+        RowMatcher? matcher = new RowMatcher();
 
-            ExcelDatabaseCriteria? criteria = GetCriteria(crit);
+        ExcelDatabaseCriteria? criteria = GetCriteria(crit);
 
-            Assert.IsTrue(matcher.IsMatch(data, criteria));
-        }
+        Assert.IsTrue(matcher.IsMatch(data, criteria));
+    }
 
-        [TestMethod]
-        public void IsMatchShouldMatchNumericExpression()
-        {
-            ExcelDatabaseRow? data = new ExcelDatabaseRow();
-            data["Crit1"] = "test";
-            data["Crit2"] = 2;
-            data["Crit3"] = 3;
+    [TestMethod]
+    public void IsMatchShouldMatchNumericExpression()
+    {
+        ExcelDatabaseRow? data = new ExcelDatabaseRow();
+        data["Crit1"] = "test";
+        data["Crit2"] = 2;
+        data["Crit3"] = 3;
 
-            Dictionary<ExcelDatabaseCriteriaField, object>? crit = new Dictionary<ExcelDatabaseCriteriaField, object>();
-            crit[new ExcelDatabaseCriteriaField("Crit2")] = "<3";
-            crit[new ExcelDatabaseCriteriaField("Crit3")] = 3;
+        Dictionary<ExcelDatabaseCriteriaField, object>? crit = new Dictionary<ExcelDatabaseCriteriaField, object>();
+        crit[new ExcelDatabaseCriteriaField("Crit2")] = "<3";
+        crit[new ExcelDatabaseCriteriaField("Crit3")] = 3;
 
-            RowMatcher? matcher = new RowMatcher();
+        RowMatcher? matcher = new RowMatcher();
 
-            ExcelDatabaseCriteria? criteria = GetCriteria(crit);
+        ExcelDatabaseCriteria? criteria = GetCriteria(crit);
 
-            Assert.IsTrue(matcher.IsMatch(data, criteria));
-        }
+        Assert.IsTrue(matcher.IsMatch(data, criteria));
+    }
 
-        [TestMethod]
-        public void IsMatchShouldHandleFieldIndex()
-        {
-            ExcelDatabaseRow? data = new ExcelDatabaseRow();
-            data["Crit1"] = "test";
-            data["Crit2"] = 2;
-            data["Crit3"] = 3;
+    [TestMethod]
+    public void IsMatchShouldHandleFieldIndex()
+    {
+        ExcelDatabaseRow? data = new ExcelDatabaseRow();
+        data["Crit1"] = "test";
+        data["Crit2"] = 2;
+        data["Crit3"] = 3;
 
-            Dictionary<ExcelDatabaseCriteriaField, object>? crit = new Dictionary<ExcelDatabaseCriteriaField, object>();
-            crit[new ExcelDatabaseCriteriaField(2)] = "<3";
-            crit[new ExcelDatabaseCriteriaField("Crit3")] = 3;
+        Dictionary<ExcelDatabaseCriteriaField, object>? crit = new Dictionary<ExcelDatabaseCriteriaField, object>();
+        crit[new ExcelDatabaseCriteriaField(2)] = "<3";
+        crit[new ExcelDatabaseCriteriaField("Crit3")] = 3;
 
-            RowMatcher? matcher = new RowMatcher();
+        RowMatcher? matcher = new RowMatcher();
 
-            ExcelDatabaseCriteria? criteria = GetCriteria(crit);
+        ExcelDatabaseCriteria? criteria = GetCriteria(crit);
 
-            Assert.IsTrue(matcher.IsMatch(data, criteria));
-        }
+        Assert.IsTrue(matcher.IsMatch(data, criteria));
     }
 }

@@ -14,51 +14,50 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.FinancialDayCount
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.FinancialDayCount;
+
+/// <summary>
+/// Rules as defined on https://en.wikipedia.org/wiki/Day_count_convention
+/// </summary>
+internal class FinancialDaysUs_30_360 : FinancialDaysBase, IFinanicalDays
 {
-    /// <summary>
-    /// Rules as defined on https://en.wikipedia.org/wiki/Day_count_convention
-    /// </summary>
-    internal class FinancialDaysUs_30_360 : FinancialDaysBase, IFinanicalDays
+
+    public double GetDaysBetweenDates(System.DateTime startDate, System.DateTime endDate)
     {
+        FinancialDay? start = FinancialDayFactory.Create(startDate, DayCountBasis.US_30_360);
+        FinancialDay? end = FinancialDayFactory.Create(endDate, DayCountBasis.US_30_360);
+        return this.GetDaysBetweenDates(start, end);
+    }
 
-        public double GetDaysBetweenDates(System.DateTime startDate, System.DateTime endDate)
+    public double GetDaysBetweenDates(FinancialDay startDate, FinancialDay endDate)
+    {
+        if (endDate.IsLastDayOfFebruary)
         {
-            FinancialDay? start = FinancialDayFactory.Create(startDate, DayCountBasis.US_30_360);
-            FinancialDay? end = FinancialDayFactory.Create(endDate, DayCountBasis.US_30_360);
-            return this.GetDaysBetweenDates(start, end);
-        }
-
-        public double GetDaysBetweenDates(FinancialDay startDate, FinancialDay endDate)
-        {
-            if (endDate.IsLastDayOfFebruary)
+            if (startDate.IsLastDayOfFebruary)
             {
-                if (startDate.IsLastDayOfFebruary)
-                {
-                    endDate.Day = 30;
-                    startDate.Day = 30;
-                }
-                else
-                {
-                    endDate.Day = 30;
-                }
+                endDate.Day = 30;
+                startDate.Day = 30;
             }
-            if (endDate.Day == 31 && (startDate.Day == 30 || startDate.Day == 31))
+            else
             {
                 endDate.Day = 30;
             }
-            if (startDate.Day == 31)
-            {
-                startDate.Day = 30;
-            }
-            return this.GetDaysBetweenDates(startDate, endDate, (int)this.DaysPerYear);
         }
-
-        public double GetCoupdays(FinancialDay start, FinancialDay end, int frequency)
+        if (endDate.Day == 31 && (startDate.Day == 30 || startDate.Day == 31))
         {
-            return this.DaysPerYear / frequency;
+            endDate.Day = 30;
         }
-
-        public double DaysPerYear { get { return 360d; } }
+        if (startDate.Day == 31)
+        {
+            startDate.Day = 30;
+        }
+        return this.GetDaysBetweenDates(startDate, endDate, (int)this.DaysPerYear);
     }
+
+    public double GetCoupdays(FinancialDay start, FinancialDay end, int frequency)
+    {
+        return this.DaysPerYear / frequency;
+    }
+
+    public double DaysPerYear { get { return 360d; } }
 }

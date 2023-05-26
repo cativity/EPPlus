@@ -18,197 +18,196 @@ using System.Drawing;
 using System.Xml;
 using OfficeOpenXml.Drawing;
 
-namespace OfficeOpenXml.Style.Dxf
-{
-    /// <summary>
-    /// A color in a differential formatting record
-    /// </summary>
-    public class ExcelDxfColor : DxfStyleBase
+namespace OfficeOpenXml.Style.Dxf;
 
+/// <summary>
+/// A color in a differential formatting record
+/// </summary>
+public class ExcelDxfColor : DxfStyleBase
+
+{
+    eStyleClass _styleClass;
+    internal ExcelDxfColor(ExcelStyles styles, eStyleClass styleClass, Action<eStyleClass, eStyleProperty, object> callback) : base(styles, callback)
     {
-        eStyleClass _styleClass;
-        internal ExcelDxfColor(ExcelStyles styles, eStyleClass styleClass, Action<eStyleClass, eStyleProperty, object> callback) : base(styles, callback)
+        this._styleClass = styleClass;
+    }
+    eThemeSchemeColor? _theme=null;
+    /// <summary>
+    /// Gets or sets a theme color
+    /// </summary>
+    public eThemeSchemeColor? Theme 
+    { 
+        get
         {
-            this._styleClass = styleClass;
+            return this._theme;
         }
-        eThemeSchemeColor? _theme=null;
-        /// <summary>
-        /// Gets or sets a theme color
-        /// </summary>
-        public eThemeSchemeColor? Theme 
-        { 
-            get
-            {
-                return this._theme;
-            }
-            set
-            {
-                this._theme = value;
-                this._callback?.Invoke(this._styleClass, eStyleProperty.Theme, value);
-            }
-        }
-        int? _index;
-        /// <summary>
-        /// Gets or sets an indexed color
-        /// </summary>
-        public int? Index
+        set
         {
-            get
-            {
-                return this._index;
-            }
-            set
-            {
-                this._index = value;
-                this._callback?.Invoke(this._styleClass, eStyleProperty.IndexedColor, value);
-            }
+            this._theme = value;
+            this._callback?.Invoke(this._styleClass, eStyleProperty.Theme, value);
         }
-        bool? _auto;
-        /// <summary>
-        /// Gets or sets the color to automativ
-        /// </summary>
-        public bool? Auto
+    }
+    int? _index;
+    /// <summary>
+    /// Gets or sets an indexed color
+    /// </summary>
+    public int? Index
+    {
+        get
         {
-            get
-            {
-                return this._auto;
-            }
-            set
-            {
-                this._auto = value;
-                this._callback?.Invoke(this._styleClass, eStyleProperty.AutoColor, value);
-            }
+            return this._index;
         }
-        double? _tint;
-        /// <summary>
-        /// Gets or sets the Tint value for the color
-        /// </summary>
-        public double? Tint
+        set
         {
-            get
-            {
-                return this._tint;
-            }
-            set
-            {
-                this._tint = value;
-                this._callback?.Invoke(this._styleClass, eStyleProperty.Tint, value);
-            }
+            this._index = value;
+            this._callback?.Invoke(this._styleClass, eStyleProperty.IndexedColor, value);
         }
-        Color? _color;
-        /// <summary>
-        /// Sets the color.
-        /// </summary>
-        public Color? Color 
+    }
+    bool? _auto;
+    /// <summary>
+    /// Gets or sets the color to automativ
+    /// </summary>
+    public bool? Auto
+    {
+        get
         {
-            get
-            {
-                return this._color;
-            }
-            set
-            {
-                this._color = value;
-                this._callback?.Invoke(this._styleClass, eStyleProperty.Color, value);
-            }
+            return this._auto;
         }
-        /// <summary>
-        /// The Id
-        /// </summary>
-        internal override string Id
+        set
         {
-            get { return GetAsString(this.Theme) + "|" + GetAsString(this.Index) + "|" + GetAsString(this.Auto) + "|" + GetAsString(this.Tint) + "|" + GetAsString(this.Color==null ? "" : this.Color.Value.ToArgb().ToString("x")); }
+            this._auto = value;
+            this._callback?.Invoke(this._styleClass, eStyleProperty.AutoColor, value);
         }
-        /// <summary>
-        /// Set the color of the drawing
-        /// </summary>
-        /// <param name="color">The color</param>
-        public void SetColor(Color color)
+    }
+    double? _tint;
+    /// <summary>
+    /// Gets or sets the Tint value for the color
+    /// </summary>
+    public double? Tint
+    {
+        get
         {
-            this.Theme = null;
-            this.Auto = null;
-            this.Index = null;
-            this.Color = color;
+            return this._tint;
         }
-        /// <summary>
-        /// Set the color of the drawing
-        /// </summary>
-        /// <param name="color">The color</param>
-        public void SetColor(eThemeSchemeColor color)
+        set
         {
-            this.Color = null;
-            this.Auto = null;
-            this.Index = null;
-            this.Theme = color;
+            this._tint = value;
+            this._callback?.Invoke(this._styleClass, eStyleProperty.Tint, value);
         }
-        /// <summary>
-        /// Set the color of the drawing
-        /// </summary>
-        /// <param name="color">The color</param>
-        public void SetColor(ExcelIndexedColor color)
+    }
+    Color? _color;
+    /// <summary>
+    /// Sets the color.
+    /// </summary>
+    public Color? Color 
+    {
+        get
         {
-            this.Color = null;
-            this.Theme = null;
-            this.Auto = null;
-            this.Index = (int)color;
+            return this._color;
         }
-        /// <summary>
-        /// Set the color to automatic
-        /// </summary>
-        public void SetAuto()
+        set
         {
-            this.Color = null;
-            this.Theme = null;
-            this.Index = null;
-            this.Auto = true;
+            this._color = value;
+            this._callback?.Invoke(this._styleClass, eStyleProperty.Color, value);
         }
-        internal override void SetStyle()
+    }
+    /// <summary>
+    /// The Id
+    /// </summary>
+    internal override string Id
+    {
+        get { return GetAsString(this.Theme) + "|" + GetAsString(this.Index) + "|" + GetAsString(this.Auto) + "|" + GetAsString(this.Tint) + "|" + GetAsString(this.Color==null ? "" : this.Color.Value.ToArgb().ToString("x")); }
+    }
+    /// <summary>
+    /// Set the color of the drawing
+    /// </summary>
+    /// <param name="color">The color</param>
+    public void SetColor(Color color)
+    {
+        this.Theme = null;
+        this.Auto = null;
+        this.Index = null;
+        this.Color = color;
+    }
+    /// <summary>
+    /// Set the color of the drawing
+    /// </summary>
+    /// <param name="color">The color</param>
+    public void SetColor(eThemeSchemeColor color)
+    {
+        this.Color = null;
+        this.Auto = null;
+        this.Index = null;
+        this.Theme = color;
+    }
+    /// <summary>
+    /// Set the color of the drawing
+    /// </summary>
+    /// <param name="color">The color</param>
+    public void SetColor(ExcelIndexedColor color)
+    {
+        this.Color = null;
+        this.Theme = null;
+        this.Auto = null;
+        this.Index = (int)color;
+    }
+    /// <summary>
+    /// Set the color to automatic
+    /// </summary>
+    public void SetAuto()
+    {
+        this.Color = null;
+        this.Theme = null;
+        this.Index = null;
+        this.Auto = true;
+    }
+    internal override void SetStyle()
+    {
+        if (this._callback != null)
         {
-            if (this._callback != null)
-            {
-                this._callback.Invoke(this._styleClass, eStyleProperty.Color, this._color);
-                this._callback.Invoke(this._styleClass, eStyleProperty.Theme, this._theme);
-                this._callback.Invoke(this._styleClass, eStyleProperty.IndexedColor, this._index);
-                this._callback.Invoke(this._styleClass, eStyleProperty.AutoColor, this._auto);
-                this._callback.Invoke(this._styleClass, eStyleProperty.Tint, this._tint);
-            }
+            this._callback.Invoke(this._styleClass, eStyleProperty.Color, this._color);
+            this._callback.Invoke(this._styleClass, eStyleProperty.Theme, this._theme);
+            this._callback.Invoke(this._styleClass, eStyleProperty.IndexedColor, this._index);
+            this._callback.Invoke(this._styleClass, eStyleProperty.AutoColor, this._auto);
+            this._callback.Invoke(this._styleClass, eStyleProperty.Tint, this._tint);
         }
-        /// <summary>
-        /// Clone the object
-        /// </summary>
-        /// <returns>A new instance of the object</returns>
-        internal override DxfStyleBase Clone()
+    }
+    /// <summary>
+    /// Clone the object
+    /// </summary>
+    /// <returns>A new instance of the object</returns>
+    internal override DxfStyleBase Clone()
+    {
+        return new ExcelDxfColor(this._styles, this._styleClass, this._callback) { Theme = this.Theme, Index = this.Index, Color = this.Color, Auto = this.Auto, Tint = this.Tint };
+    }
+    /// <summary>
+    /// If the object has any properties set
+    /// </summary>
+    public override bool HasValue
+    {
+        get
         {
-            return new ExcelDxfColor(this._styles, this._styleClass, this._callback) { Theme = this.Theme, Index = this.Index, Color = this.Color, Auto = this.Auto, Tint = this.Tint };
+            return this.Theme != null || this.Index != null || this.Auto != null || this.Tint != null || this.Color != null;
         }
-        /// <summary>
-        /// If the object has any properties set
-        /// </summary>
-        public override bool HasValue
-        {
-            get
-            {
-                return this.Theme != null || this.Index != null || this.Auto != null || this.Tint != null || this.Color != null;
-            }
-        }
-        /// <summary>
-        /// Clears all properties
-        /// </summary>
-        public override void Clear()
-        {
-            this.Theme = null;
-            this.Index = null;
-            this.Auto = null;
-            this.Tint = null;
-            this.Color = null;
-        }
-        /// <summary>
-        /// Creates the the xml node
-        /// </summary>
-        /// <param name="helper">The xml helper</param>
-        /// <param name="path">The X Path</param>
-        internal override void CreateNodes(XmlHelper helper, string path)
-        {
-            throw new NotImplementedException();
-        }
+    }
+    /// <summary>
+    /// Clears all properties
+    /// </summary>
+    public override void Clear()
+    {
+        this.Theme = null;
+        this.Index = null;
+        this.Auto = null;
+        this.Tint = null;
+        this.Color = null;
+    }
+    /// <summary>
+    /// Creates the the xml node
+    /// </summary>
+    /// <param name="helper">The xml helper</param>
+    /// <param name="path">The X Path</param>
+    internal override void CreateNodes(XmlHelper helper, string path)
+    {
+        throw new NotImplementedException();
     }
 }

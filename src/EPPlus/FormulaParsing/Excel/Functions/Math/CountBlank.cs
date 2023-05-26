@@ -20,51 +20,50 @@ using System.Text;
 using OfficeOpenXml.FormulaParsing.ExcelUtilities;
 using static OfficeOpenXml.FormulaParsing.ExcelDataProvider;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
-{
-    [FunctionMetadata(
-        Category = ExcelFunctionCategory.Statistical,
-        EPPlusVersion = "4",
-        Description = "Returns the number of blank cells in a supplied range")]
-    internal class CountBlank : ExcelFunction
-    {
-        public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
-        {
-            ValidateArguments(arguments, 1);
-            FunctionArgument? arg = arguments.First();
-            if(!arg.IsExcelRange && arg.ExcelAddressReferenceId <= 0)
-            {
-                throw new InvalidOperationException("CountBlank only support ranges as arguments");
-            }
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
 
-            int result = 0;
-            IRangeInfo range;
-            if(arg.IsExcelRange)
-            {
-                range = arg.ValueAsRangeInfo;
-                result =  arg.ValueAsRangeInfo.GetNCells();
-            }
-            else
-            {
-                RangeAddress? currentCell = context.Scopes.Current.Address;
-                string? worksheet = currentCell.Worksheet;
-                string? address = context.AddressCache.Get(arg.ExcelAddressReferenceId);
-                ExcelAddressBase? excelAddress = new ExcelAddressBase(address);
-                if(!string.IsNullOrEmpty(excelAddress.WorkSheetName))
-                {
-                    worksheet = excelAddress.WorkSheetName;
-                }
-                range = context.ExcelDataProvider.GetRange(worksheet, currentCell.FromRow, currentCell.FromCol, excelAddress.Address);
-                result = range.GetNCells();
-            }
-            foreach (ICellInfo? cell in range)
-            {
-                if (!(cell.Value == null || cell.Value.ToString() == string.Empty))
-                {
-                    result--;
-                }
-            }
-            return this.CreateResult(result, DataType.Integer);
+[FunctionMetadata(
+                     Category = ExcelFunctionCategory.Statistical,
+                     EPPlusVersion = "4",
+                     Description = "Returns the number of blank cells in a supplied range")]
+internal class CountBlank : ExcelFunction
+{
+    public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
+    {
+        ValidateArguments(arguments, 1);
+        FunctionArgument? arg = arguments.First();
+        if(!arg.IsExcelRange && arg.ExcelAddressReferenceId <= 0)
+        {
+            throw new InvalidOperationException("CountBlank only support ranges as arguments");
         }
+
+        int result = 0;
+        IRangeInfo range;
+        if(arg.IsExcelRange)
+        {
+            range = arg.ValueAsRangeInfo;
+            result =  arg.ValueAsRangeInfo.GetNCells();
+        }
+        else
+        {
+            RangeAddress? currentCell = context.Scopes.Current.Address;
+            string? worksheet = currentCell.Worksheet;
+            string? address = context.AddressCache.Get(arg.ExcelAddressReferenceId);
+            ExcelAddressBase? excelAddress = new ExcelAddressBase(address);
+            if(!string.IsNullOrEmpty(excelAddress.WorkSheetName))
+            {
+                worksheet = excelAddress.WorkSheetName;
+            }
+            range = context.ExcelDataProvider.GetRange(worksheet, currentCell.FromRow, currentCell.FromCol, excelAddress.Address);
+            result = range.GetNCells();
+        }
+        foreach (ICellInfo? cell in range)
+        {
+            if (!(cell.Value == null || cell.Value.ToString() == string.Empty))
+            {
+                result--;
+            }
+        }
+        return this.CreateResult(result, DataType.Integer);
     }
 }

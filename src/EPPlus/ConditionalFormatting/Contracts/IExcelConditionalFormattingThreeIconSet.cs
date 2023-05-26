@@ -17,19 +17,19 @@ using System.Text;
 
 using OfficeOpenXml.ConditionalFormatting;
 
-namespace OfficeOpenXml.ConditionalFormatting.Contracts
-{
-	/// <summary>
-	/// IExcelConditionalFormattingThreeIconSet
-	/// </summary>
-	public interface IExcelConditionalFormattingThreeIconSet<T>
+namespace OfficeOpenXml.ConditionalFormatting.Contracts;
+
+/// <summary>
+/// IExcelConditionalFormattingThreeIconSet
+/// </summary>
+public interface IExcelConditionalFormattingThreeIconSet<T>
     : IExcelConditionalFormattingIconSetGroup<T>
-	{
-		#region Public Properties
+{
+    #region Public Properties
     /// <summary>
     /// Icon1 (part of the 3, 4 ou 5 Icon Set)
     /// </summary>
-        ExcelConditionalFormattingIconDataBarValue Icon1 { get; }
+    ExcelConditionalFormattingIconDataBarValue Icon1 { get; }
 
     /// <summary>
     /// Icon2 (part of the 3, 4 ou 5 Icon Set)
@@ -41,5 +41,4 @@ namespace OfficeOpenXml.ConditionalFormatting.Contracts
     /// </summary>
     ExcelConditionalFormattingIconDataBarValue Icon3 { get; }
     #endregion Public Properties
-	}
 }

@@ -17,28 +17,27 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance
-{
-    [FunctionMetadata(
-       Category = ExcelFunctionCategory.Financial,
-       EPPlusVersion = "5.5",
-       Description = "Calculates the Macauley modified duration for a security with an assumed par value of $100")]
-    internal class Mduration : Duration
-    {
-        public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
-        {
-            ValidateArguments(arguments, 5);
-            CompileResult? durationResult = base.Execute(arguments, context);
-            if (durationResult.DataType == DataType.ExcelError)
-            {
-                return durationResult;
-            }
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance;
 
-            double dur = durationResult.ResultNumeric;
-            double yield = this.ArgToDecimal(arguments, 3);
-            double frequency = this.ArgToDecimal(arguments, 4);
-            double result = dur / (1d + (yield / frequency));
-            return this.CreateResult(result, DataType.Decimal);
+[FunctionMetadata(
+                     Category = ExcelFunctionCategory.Financial,
+                     EPPlusVersion = "5.5",
+                     Description = "Calculates the Macauley modified duration for a security with an assumed par value of $100")]
+internal class Mduration : Duration
+{
+    public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
+    {
+        ValidateArguments(arguments, 5);
+        CompileResult? durationResult = base.Execute(arguments, context);
+        if (durationResult.DataType == DataType.ExcelError)
+        {
+            return durationResult;
         }
+
+        double dur = durationResult.ResultNumeric;
+        double yield = this.ArgToDecimal(arguments, 3);
+        double frequency = this.ArgToDecimal(arguments, 4);
+        double result = dur / (1d + (yield / frequency));
+        return this.CreateResult(result, DataType.Decimal);
     }
 }

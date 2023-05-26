@@ -14,59 +14,58 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.Implementations
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.Implementations;
+
+internal class CumprincImpl
 {
-    internal class CumprincImpl
+    public CumprincImpl(IPmtProvider pmtProvider, IFvProvider fvProvider)
     {
-        public CumprincImpl(IPmtProvider pmtProvider, IFvProvider fvProvider)
+        this._pmtProvider = pmtProvider;
+        this._fvProvider = fvProvider;
+    }
+
+    private readonly IPmtProvider _pmtProvider;
+    private readonly IFvProvider _fvProvider;
+
+    public FinanceCalcResult<double> GetCumprinc(double rate, double nper, double pv, int startPeriod, int endPeriod, PmtDue type)
+    {
+        if (startPeriod < 1 || endPeriod < startPeriod || rate <= 0.0 || endPeriod > nper || pv <= 0.0)
         {
-            this._pmtProvider = pmtProvider;
-            this._fvProvider = fvProvider;
+            return new FinanceCalcResult<double>(eErrorType.Num);
         }
 
-        private readonly IPmtProvider _pmtProvider;
-        private readonly IFvProvider _fvProvider;
+        double fPmt = this._pmtProvider.GetPmt(rate, nper, pv, 0.0, type);
 
-        public FinanceCalcResult<double> GetCumprinc(double rate, double nper, double pv, int startPeriod, int endPeriod, PmtDue type)
+        double fPpmt = 0.0;
+
+        int nStart = startPeriod;
+
+        if (nStart == 1)
         {
-            if (startPeriod < 1 || endPeriod < startPeriod || rate <= 0.0 || endPeriod > nper || pv <= 0.0)
+            if (type == PmtDue.EndOfPeriod)
             {
-                return new FinanceCalcResult<double>(eErrorType.Num);
+                fPpmt = fPmt + pv * rate;
+            }
+            else
+            {
+                fPpmt = fPmt;
             }
 
-            double fPmt = this._pmtProvider.GetPmt(rate, nper, pv, 0.0, type);
-
-            double fPpmt = 0.0;
-
-            int nStart = startPeriod;
-
-            if (nStart == 1)
-            {
-                if (type == PmtDue.EndOfPeriod)
-                {
-                    fPpmt = fPmt + pv * rate;
-                }
-                else
-                {
-                    fPpmt = fPmt;
-                }
-
-                nStart++;
-            }
-
-            for (int i = nStart; i <= endPeriod; i++)
-            {
-                if (type == PmtDue.BeginningOfPeriod)
-                {
-                    fPpmt += fPmt - (this._fvProvider.GetFv(rate, i - 2, fPmt, pv, type) - fPmt) * rate;
-                }
-                else
-                {
-                    fPpmt += fPmt - this._fvProvider.GetFv(rate, i - 1, fPmt, pv, type) * rate;
-                }
-            }
-
-            return new FinanceCalcResult<double>(fPpmt);
+            nStart++;
         }
+
+        for (int i = nStart; i <= endPeriod; i++)
+        {
+            if (type == PmtDue.BeginningOfPeriod)
+            {
+                fPpmt += fPmt - (this._fvProvider.GetFv(rate, i - 2, fPmt, pv, type) - fPmt) * rate;
+            }
+            else
+            {
+                fPpmt += fPmt - this._fvProvider.GetFv(rate, i - 1, fPmt, pv, type) * rate;
+            }
+        }
+
+        return new FinanceCalcResult<double>(fPpmt);
     }
 }

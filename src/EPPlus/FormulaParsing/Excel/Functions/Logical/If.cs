@@ -17,22 +17,21 @@ using System.Text;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Metadata;
 using OfficeOpenXml.FormulaParsing.ExpressionGraph;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Logical
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Logical;
+
+[FunctionMetadata(
+                     Category = ExcelFunctionCategory.Logical,
+                     EPPlusVersion = "4",
+                     Description = "Tests a user-defined condition and returns one result if the condition is TRUE, and another result if the condition is FALSE")]
+internal class If : ExcelFunction
 {
-    [FunctionMetadata(
-        Category = ExcelFunctionCategory.Logical,
-        EPPlusVersion = "4",
-        Description = "Tests a user-defined condition and returns one result if the condition is TRUE, and another result if the condition is FALSE")]
-    internal class If : ExcelFunction
+    public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
     {
-        public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
-        {
-            ValidateArguments(arguments, 3);
-            bool condition = this.ArgToBool(arguments, 0);
-            object? firstStatement = arguments.ElementAt(1).Value;
-            object? secondStatement = arguments.ElementAt(2).Value;
-            CompileResultFactory? factory = new CompileResultFactory();
-            return condition ? factory.Create(firstStatement) : factory.Create(secondStatement);
-        }
+        ValidateArguments(arguments, 3);
+        bool condition = this.ArgToBool(arguments, 0);
+        object? firstStatement = arguments.ElementAt(1).Value;
+        object? secondStatement = arguments.ElementAt(2).Value;
+        CompileResultFactory? factory = new CompileResultFactory();
+        return condition ? factory.Create(firstStatement) : factory.Create(secondStatement);
     }
 }

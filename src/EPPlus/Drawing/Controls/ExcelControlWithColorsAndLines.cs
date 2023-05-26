@@ -13,48 +13,47 @@
 using System.Xml;
 using OfficeOpenXml.Drawing.Vml;
 using OfficeOpenXml.Packaging;
-namespace OfficeOpenXml.Drawing.Controls
+namespace OfficeOpenXml.Drawing.Controls;
+
+/// <summary>
+/// An abstract class used by form controls with color and line settings
+/// </summary>
+public abstract class ExcelControlWithColorsAndLines : ExcelControlWithText
 {
-    /// <summary>
-    /// An abstract class used by form controls with color and line settings
-    /// </summary>
-    public abstract class ExcelControlWithColorsAndLines : ExcelControlWithText
+
+    internal ExcelControlWithColorsAndLines(ExcelDrawings drawings, XmlElement drawNode, string name, ExcelGroupShape parent) : base(drawings, drawNode, name, parent)
     {
+        this.SetSize(90, 30); //Default size        
+    }
+    internal ExcelControlWithColorsAndLines(ExcelDrawings drawings, XmlNode drawingNode, ControlInternal control, ZipPackagePart part, XmlDocument ctrlPropXml, ExcelGroupShape parent = null) :
+        base(drawings, drawingNode, control, part, ctrlPropXml, parent)
+    {
+    }
 
-        internal ExcelControlWithColorsAndLines(ExcelDrawings drawings, XmlElement drawNode, string name, ExcelGroupShape parent) : base(drawings, drawNode, name, parent)
+    /// <summary>
+    /// Fill settings for the control
+    /// </summary>
+    public ExcelVmlDrawingFill Fill
+    {
+        get
         {
-            this.SetSize(90, 30); //Default size        
+            return this._vml.GetFill();
         }
-        internal ExcelControlWithColorsAndLines(ExcelDrawings drawings, XmlNode drawingNode, ControlInternal control, ZipPackagePart part, XmlDocument ctrlPropXml, ExcelGroupShape parent = null) :
-            base(drawings, drawingNode, control, part, ctrlPropXml, parent)
+    }
+    ExcelVmlDrawingBorder _border = null;
+    /// <summary>
+    /// Border settings for the control
+    /// </summary>
+    public ExcelVmlDrawingBorder Border
+    {
+        get
         {
+            return this._border ??= new ExcelVmlDrawingBorder(this._drawings, this._vml.NameSpaceManager, this._vml.TopNode, this._vml.SchemaNodeOrder);
         }
-
-        /// <summary>
-        /// Fill settings for the control
-        /// </summary>
-        public ExcelVmlDrawingFill Fill
-        {
-            get
-            {
-                return this._vml.GetFill();
-            }
-        }
-        ExcelVmlDrawingBorder _border = null;
-        /// <summary>
-        /// Border settings for the control
-        /// </summary>
-        public ExcelVmlDrawingBorder Border
-        {
-            get
-            {
-                return this._border ??= new ExcelVmlDrawingBorder(this._drawings, this._vml.NameSpaceManager, this._vml.TopNode, this._vml.SchemaNodeOrder);
-            }
-        }
-        internal override void UpdateXml()
-        {
-            base.UpdateXml();
-            this.Border.UpdateXml();
-        }
+    }
+    internal override void UpdateXml()
+    {
+        base.UpdateXml();
+        this.Border.UpdateXml();
     }
 }

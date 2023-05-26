@@ -18,28 +18,27 @@ using OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime.Workdays;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Metadata;
 using OfficeOpenXml.FormulaParsing.ExpressionGraph;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime;
+
+[FunctionMetadata(
+                     Category = ExcelFunctionCategory.DateAndTime,
+                     EPPlusVersion = "4",
+                     Description = "Returns the number of whole networkdays (excluding weekends & holidays), between two supplied dates")]
+internal class Networkdays : ExcelFunction
 {
-    [FunctionMetadata(
-        Category = ExcelFunctionCategory.DateAndTime,
-        EPPlusVersion = "4",
-        Description = "Returns the number of whole networkdays (excluding weekends & holidays), between two supplied dates")]
-    internal class Networkdays : ExcelFunction
+    public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
     {
-        public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
+        FunctionArgument[]? functionArguments = arguments as FunctionArgument[] ?? arguments.ToArray();
+        ValidateArguments(functionArguments, 2);
+        System.DateTime startDate = System.DateTime.FromOADate(this.ArgToInt(functionArguments, 0));
+        System.DateTime endDate = System.DateTime.FromOADate(this.ArgToInt(functionArguments, 1));
+        WorkdayCalculator? calculator = new WorkdayCalculator();
+        WorkdayCalculatorResult? result = calculator.CalculateNumberOfWorkdays(startDate, endDate);
+        if (functionArguments.Length > 2)
         {
-            FunctionArgument[]? functionArguments = arguments as FunctionArgument[] ?? arguments.ToArray();
-            ValidateArguments(functionArguments, 2);
-            System.DateTime startDate = System.DateTime.FromOADate(this.ArgToInt(functionArguments, 0));
-            System.DateTime endDate = System.DateTime.FromOADate(this.ArgToInt(functionArguments, 1));
-            WorkdayCalculator? calculator = new WorkdayCalculator();
-            WorkdayCalculatorResult? result = calculator.CalculateNumberOfWorkdays(startDate, endDate);
-            if (functionArguments.Length > 2)
-            {
-                result = calculator.ReduceWorkdaysWithHolidays(result, functionArguments[2]);
-            }
-            
-            return new CompileResult(result.NumberOfWorkdays, DataType.Integer);
+            result = calculator.ReduceWorkdaysWithHolidays(result, functionArguments[2]);
         }
+            
+        return new CompileResult(result.NumberOfWorkdays, DataType.Integer);
     }
 }

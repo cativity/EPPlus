@@ -14,59 +14,58 @@ using System;
 using System.Xml;
 using System.Globalization;
 
-namespace OfficeOpenXml.Table.PivotTable
+namespace OfficeOpenXml.Table.PivotTable;
+
+/// <summary>
+/// A date group
+/// </summary>
+public class ExcelPivotTableFieldDateGroup : ExcelPivotTableFieldGroup
 {
-    /// <summary>
-    /// A date group
-    /// </summary>
-    public class ExcelPivotTableFieldDateGroup : ExcelPivotTableFieldGroup
+    internal ExcelPivotTableFieldDateGroup(XmlNamespaceManager ns, XmlNode topNode) :
+        base(ns, topNode)
     {
-        internal ExcelPivotTableFieldDateGroup(XmlNamespaceManager ns, XmlNode topNode) :
-            base(ns, topNode)
+    }
+    const string groupByPath = "d:fieldGroup/d:rangePr/@groupBy";
+    /// <summary>
+    /// How to group the date field
+    /// </summary>
+    public eDateGroupBy GroupBy
+    {
+        get
         {
-        }
-        const string groupByPath = "d:fieldGroup/d:rangePr/@groupBy";
-        /// <summary>
-        /// How to group the date field
-        /// </summary>
-        public eDateGroupBy GroupBy
-        {
-            get
+            string v = this.GetXmlNodeString(groupByPath);
+            if (v != "")
             {
-                string v = this.GetXmlNodeString(groupByPath);
-                if (v != "")
-                {
-                    return (eDateGroupBy)Enum.Parse(typeof(eDateGroupBy), v, true);
-                }
-                else
-                {
-                    throw (new Exception("Invalid date Groupby"));
-                }
+                return (eDateGroupBy)Enum.Parse(typeof(eDateGroupBy), v, true);
             }
-            private set
+            else
             {
-                this.SetXmlNodeString(groupByPath, value.ToString().ToLower(CultureInfo.InvariantCulture));
+                throw (new Exception("Invalid date Groupby"));
             }
         }
-        /// <summary>
-        /// Auto detect start date
-        /// </summary>
-        public bool AutoStart
+        private set
         {
-            get
-            {
-                return this.GetXmlNodeBool("@autoStart", false);
-            }
+            this.SetXmlNodeString(groupByPath, value.ToString().ToLower(CultureInfo.InvariantCulture));
         }
-        /// <summary>
-        /// Auto detect end date
-        /// </summary>
-        public bool AutoEnd
+    }
+    /// <summary>
+    /// Auto detect start date
+    /// </summary>
+    public bool AutoStart
+    {
+        get
         {
-            get
-            {
-                return this.GetXmlNodeBool("@autoStart", false);
-            }
+            return this.GetXmlNodeBool("@autoStart", false);
+        }
+    }
+    /// <summary>
+    /// Auto detect end date
+    /// </summary>
+    public bool AutoEnd
+    {
+        get
+        {
+            return this.GetXmlNodeBool("@autoStart", false);
         }
     }
 }

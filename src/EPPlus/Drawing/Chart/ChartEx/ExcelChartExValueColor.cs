@@ -15,118 +15,117 @@ using System;
 using System.Globalization;
 using System.Xml;
 
-namespace OfficeOpenXml.Drawing.Chart.ChartEx
+namespace OfficeOpenXml.Drawing.Chart.ChartEx;
+
+/// <summary>
+/// Individual color settings for a region map charts series colors
+/// </summary>
+public class ExcelChartExValueColor : XmlHelper
 {
-    /// <summary>
-    /// Individual color settings for a region map charts series colors
-    /// </summary>
-    public class ExcelChartExValueColor : XmlHelper
+    string _prefix;
+    string _positionPath;
+    internal ExcelChartExValueColor(XmlNamespaceManager nameSpaceManager, XmlNode topNode, string[] schemaNodeOrder, string prefix) : base(nameSpaceManager, topNode)
     {
-        string _prefix;
-        string _positionPath;
-        internal ExcelChartExValueColor(XmlNamespaceManager nameSpaceManager, XmlNode topNode, string[] schemaNodeOrder, string prefix) : base(nameSpaceManager, topNode)
-        {
-            this.SchemaNodeOrder = schemaNodeOrder;
-            this._prefix = prefix;
-            this._positionPath = $"cx:valueColorPositions/cx:{prefix}Position";
-        }
+        this.SchemaNodeOrder = schemaNodeOrder;
+        this._prefix = prefix;
+        this._positionPath = $"cx:valueColorPositions/cx:{prefix}Position";
+    }
 
-        ExcelDrawingColorManager _color = null;
-        /// <summary>
-        /// The color
-        /// </summary>
-        public ExcelDrawingColorManager Color
+    ExcelDrawingColorManager _color = null;
+    /// <summary>
+    /// The color
+    /// </summary>
+    public ExcelDrawingColorManager Color
+    {
+        get
         {
-            get
+            return this._color ??= new ExcelDrawingColorManager(this.NameSpaceManager,
+                                                                this.TopNode,
+                                                                $"cx:valueColors/cx:{this._prefix}Color",
+                                                                this.SchemaNodeOrder);
+        }
+    }
+    /// <summary>
+    /// The color variation type.
+    /// </summary>
+    public eColorValuePositionType ValueType
+    {
+        get
+        {
+            if(this.ExistsNode($"{this._positionPath}/cx:number"))
             {
-                return this._color ??= new ExcelDrawingColorManager(this.NameSpaceManager,
-                                                                    this.TopNode,
-                                                                    $"cx:valueColors/cx:{this._prefix}Color",
-                                                                    this.SchemaNodeOrder);
+                return eColorValuePositionType.Number;
+            }
+            else if(this.ExistsNode($"{this._positionPath}/cx:percent"))
+            {
+                return eColorValuePositionType.Percent;
+            }
+            else
+            {
+                return eColorValuePositionType.Extreme;
             }
         }
-        /// <summary>
-        /// The color variation type.
-        /// </summary>
-        public eColorValuePositionType ValueType
+        set
         {
-            get
+            if(this.ValueType!=value)
             {
-                if(this.ExistsNode($"{this._positionPath}/cx:number"))
+                this.ClearChildren(this._positionPath);
+                switch(value)
                 {
-                    return eColorValuePositionType.Number;
-                }
-                else if(this.ExistsNode($"{this._positionPath}/cx:percent"))
-                {
-                    return eColorValuePositionType.Percent;
-                }
-                else
-                {
-                    return eColorValuePositionType.Extreme;
-                }
-            }
-            set
-            {
-                if(this.ValueType!=value)
-                {
-                    this.ClearChildren(this._positionPath);
-                    switch(value)
-                    {
-                        case eColorValuePositionType.Extreme:
-                            this.CreateNode($"{this._positionPath}/cx:extremeValue");
-                            break;
-                        case eColorValuePositionType.Percent:
-                            this.SetXmlNodeString($"{this._positionPath}/cx:percent/@val", "0");
-                            break;
-                        default:
-                            this.SetXmlNodeString($"{this._positionPath}/cx:number/@val", "0");
-                            break;
-                    }
+                    case eColorValuePositionType.Extreme:
+                        this.CreateNode($"{this._positionPath}/cx:extremeValue");
+                        break;
+                    case eColorValuePositionType.Percent:
+                        this.SetXmlNodeString($"{this._positionPath}/cx:percent/@val", "0");
+                        break;
+                    default:
+                        this.SetXmlNodeString($"{this._positionPath}/cx:number/@val", "0");
+                        break;
                 }
             }
         }
+    }
 
-        /// <summary>
-        /// The color variation value.
-        /// </summary>
-        public double PositionValue
+    /// <summary>
+    /// The color variation value.
+    /// </summary>
+    public double PositionValue
+    {
+        get
         {
-            get
+            eColorValuePositionType t = this.ValueType;
+            if (t==eColorValuePositionType.Extreme)
             {
-                eColorValuePositionType t = this.ValueType;
-                if (t==eColorValuePositionType.Extreme)
-                {
-                    return 0;
-                }
-                else if(this.ValueType==eColorValuePositionType.Number)
-                {
-                    return this.GetXmlNodeDouble($"{this._positionPath}/cx:number/@val");
-                }
-                else
-                {
-                    return this.GetXmlNodeDoubleNull($"{this._positionPath}/cx:percent/@val")??0;
-                }
+                return 0;
             }
-            set
+            else if(this.ValueType==eColorValuePositionType.Number)
             {
-                eColorValuePositionType t = this.ValueType;
-                if (t==eColorValuePositionType.Extreme)
+                return this.GetXmlNodeDouble($"{this._positionPath}/cx:number/@val");
+            }
+            else
+            {
+                return this.GetXmlNodeDoubleNull($"{this._positionPath}/cx:percent/@val")??0;
+            }
+        }
+        set
+        {
+            eColorValuePositionType t = this.ValueType;
+            if (t==eColorValuePositionType.Extreme)
+            {
+                throw (new InvalidOperationException("Can't set PositionValue when ValueType is Extreme"));
+            }
+            else if (t==eColorValuePositionType.Number)
+            {
+                this.SetXmlNodeString($"{this._positionPath}/cx:number/@val", value.ToString(CultureInfo.InvariantCulture));
+            }
+            else if (t == eColorValuePositionType.Percent)
+            {
+                if (value < 0 || value > 100)
                 {
-                    throw (new InvalidOperationException("Can't set PositionValue when ValueType is Extreme"));
+                    throw new InvalidOperationException("PositionValue out of range. Percantage range is from 0 to 100");
                 }
-                else if (t==eColorValuePositionType.Number)
-                {
-                    this.SetXmlNodeString($"{this._positionPath}/cx:number/@val", value.ToString(CultureInfo.InvariantCulture));
-                }
-                else if (t == eColorValuePositionType.Percent)
-                {
-                    if (value < 0 || value > 100)
-                    {
-                        throw new InvalidOperationException("PositionValue out of range. Percantage range is from 0 to 100");
-                    }
 
-                    this.SetXmlNodeDouble($"{this._positionPath}/cx:percent/@val", value);
-                }
+                this.SetXmlNodeDouble($"{this._positionPath}/cx:percent/@val", value);
             }
         }
     }

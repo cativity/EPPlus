@@ -15,27 +15,26 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace OfficeOpenXml.Export.HtmlExport.Accessibility
+namespace OfficeOpenXml.Export.HtmlExport.Accessibility;
+
+internal class AriaAttributes
 {
-    internal class AriaAttributes
+    internal class AriaAttribute
     {
-        internal class AriaAttribute
+        public AriaAttribute(string attributeName, string defaultValue)
         {
-            public AriaAttribute(string attributeName, string defaultValue)
-            {
-                this.AttributeName = attributeName;
-                this.DefaultValue = defaultValue;
-            }
-
-            public string AttributeName { get; private set; }
-
-            public string DefaultValue { get; private set; }
+            this.AttributeName = attributeName;
+            this.DefaultValue = defaultValue;
         }
 
-        public static AriaAttribute AriaLabel { get { return new AriaAttribute("aria-label", string.Empty); } }
+        public string AttributeName { get; private set; }
 
-        public static AriaAttribute AriaDescribedBy { get { return new AriaAttribute("aria-describedby", string.Empty); } }
-
-        public static AriaAttribute AriaLabelledBy { get { return new AriaAttribute("aria-labelledby", string.Empty); } }
+        public string DefaultValue { get; private set; }
     }
+
+    public static AriaAttribute AriaLabel { get { return new AriaAttribute("aria-label", string.Empty); } }
+
+    public static AriaAttribute AriaDescribedBy { get { return new AriaAttribute("aria-describedby", string.Empty); } }
+
+    public static AriaAttribute AriaLabelledBy { get { return new AriaAttribute("aria-labelledby", string.Empty); } }
 }

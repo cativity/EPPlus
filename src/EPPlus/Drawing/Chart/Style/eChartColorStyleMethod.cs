@@ -10,32 +10,31 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
-namespace OfficeOpenXml.Drawing.Chart.Style
+namespace OfficeOpenXml.Drawing.Chart.Style;
+
+/// <summary>
+/// Method for how colors are picked from the Colors collection
+/// </summary>
+public enum eChartColorStyleMethod
 {
     /// <summary>
-    /// Method for how colors are picked from the Colors collection
+    /// The color picked from Colors is the index modulus the total set of colors in the list.
     /// </summary>
-    public enum eChartColorStyleMethod
-    {
-        /// <summary>
-        /// The color picked from Colors is the index modulus the total set of colors in the list.
-        /// </summary>
-        Cycle,
-        /// <summary>
-        /// The color picked from Colors is the first color with a brightness that varies from darker to lighter.
-        /// </summary>
-        WithinLinear,
-        /// <summary>
-        /// The color picked from Colors is the index modulus the total set of colors in the list. The brightness varies from lighter to darker
-        /// </summary>
-        AcrossLinear,
-        /// <summary>
-        /// The color picked from Colors is the first color with a brightness that varies from lighter to darker. The brightness varies from darker to lighter. 
-        /// </summary>
-        WithinLinearReversed,
-        /// <summary>
-        /// The color picked from Colors is the index modulus the total set of colors in the list. The brightness varies from darkerlighter. 
-        /// </summary>
-        AcrossLinearReversed
-    }
+    Cycle,
+    /// <summary>
+    /// The color picked from Colors is the first color with a brightness that varies from darker to lighter.
+    /// </summary>
+    WithinLinear,
+    /// <summary>
+    /// The color picked from Colors is the index modulus the total set of colors in the list. The brightness varies from lighter to darker
+    /// </summary>
+    AcrossLinear,
+    /// <summary>
+    /// The color picked from Colors is the first color with a brightness that varies from lighter to darker. The brightness varies from darker to lighter. 
+    /// </summary>
+    WithinLinearReversed,
+    /// <summary>
+    /// The color picked from Colors is the index modulus the total set of colors in the list. The brightness varies from darkerlighter. 
+    /// </summary>
+    AcrossLinearReversed
 }

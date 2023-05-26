@@ -22,90 +22,90 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace OfficeOpenXml
+namespace OfficeOpenXml;
+
+internal static class ExcelConfigurationReader
 {
-    internal static class ExcelConfigurationReader
+    /// <summary>
+    /// Reads an environment variable from the o/s. If an error occors it will rethrow the <see cref="Exception"/> unless SuppressInitializationExceptions of the <paramref name="config"/> is set to true.
+    /// </summary>
+    /// <param name="key">The key of the requested variable</param>
+    /// <param name="target">The <see cref="EnvironmentVariableTarget"/></param>
+    /// <param name="config">Configuration of the package</param>
+    /// <param name="initErrors">A list of logged <see cref="ExcelInitializationError"/> objects.</param>
+    /// <returns>The value of the environment variable</returns>
+    internal static string GetEnvironmentVariable(string key, EnvironmentVariableTarget target, ExcelPackageConfiguration config, List<ExcelInitializationError> initErrors)
     {
-        /// <summary>
-        /// Reads an environment variable from the o/s. If an error occors it will rethrow the <see cref="Exception"/> unless SuppressInitializationExceptions of the <paramref name="config"/> is set to true.
-        /// </summary>
-        /// <param name="key">The key of the requested variable</param>
-        /// <param name="target">The <see cref="EnvironmentVariableTarget"/></param>
-        /// <param name="config">Configuration of the package</param>
-        /// <param name="initErrors">A list of logged <see cref="ExcelInitializationError"/> objects.</param>
-        /// <returns>The value of the environment variable</returns>
-        internal static string GetEnvironmentVariable(string key, EnvironmentVariableTarget target, ExcelPackageConfiguration config, List<ExcelInitializationError> initErrors)
+        bool supressInitExceptions = config.SuppressInitializationExceptions;
+        try
         {
-            bool supressInitExceptions = config.SuppressInitializationExceptions;
-            try
-            {
-                return Environment.GetEnvironmentVariable(key, target);
-            }
-            catch (Exception ex)
-            {
-                if (supressInitExceptions)
-                {
-                    string? errorMessage = $"Could not read environment variable \"{key}\"";
-                    ExcelInitializationError? error = new ExcelInitializationError(errorMessage, ex);
-                    initErrors.Add(error);
-                }
-                else
-                {
-                    throw;
-                }
-            }
-            return default;
+            return Environment.GetEnvironmentVariable(key, target);
         }
+        catch (Exception ex)
+        {
+            if (supressInitExceptions)
+            {
+                string? errorMessage = $"Could not read environment variable \"{key}\"";
+                ExcelInitializationError? error = new ExcelInitializationError(errorMessage, ex);
+                initErrors.Add(error);
+            }
+            else
+            {
+                throw;
+            }
+        }
+        return default;
+    }
 
 #if (Core)
-        internal static string GetJsonConfigValue(string key, ExcelPackageConfiguration config, List<ExcelInitializationError> initErrors)
+    internal static string GetJsonConfigValue(string key, ExcelPackageConfiguration config, List<ExcelInitializationError> initErrors)
+    {
+        bool supressInitExceptions = config.SuppressInitializationExceptions;
+        string? basePath = config.JsonConfigBasePath;
+        string? configFileName = config.JsonConfigFileName;
+        IConfigurationRoot? configRoot = default(IConfigurationRoot);
+        try
         {
-            bool supressInitExceptions = config.SuppressInitializationExceptions;
-            string? basePath = config.JsonConfigBasePath;
-            string? configFileName = config.JsonConfigFileName;
-            IConfigurationRoot? configRoot = default(IConfigurationRoot);
+                
+            IConfigurationBuilder? build = new ConfigurationBuilder()
+                                           .SetBasePath(basePath)
+                                           .AddJsonFile(configFileName, true, false);
+            configRoot = build.Build();
+        }
+        catch (Exception ex)
+        {
+            if (supressInitExceptions)
+            {
+                string? errorMessage = $"Could not load configuration file \"{configFileName}\"";
+                ExcelInitializationError? error = new ExcelInitializationError(errorMessage, ex);
+                initErrors.Add(error);
+            }
+            else
+            {
+                throw;
+            }
+        }
+        if (configRoot != null)
+        {
             try
             {
-                
-                IConfigurationBuilder? build = new ConfigurationBuilder()
-                                               .SetBasePath(basePath)
-                                               .AddJsonFile(configFileName, true, false);
-                configRoot = build.Build();
+                string? v = configRoot[key];
+                return v;
             }
             catch (Exception ex)
             {
                 if (supressInitExceptions)
                 {
-                    string? errorMessage = $"Could not load configuration file \"{configFileName}\"";
+                    string? errorMessage = $"Could read key \"{key}\" from appsettings.json";
                     ExcelInitializationError? error = new ExcelInitializationError(errorMessage, ex);
                     initErrors.Add(error);
+                    return null;
                 }
-                else
-                {
-                    throw;
-                }
+                throw;
             }
-            if (configRoot != null)
-            {
-                try
-                {
-                    string? v = configRoot[key];
-                    return v;
-                }
-                catch (Exception ex)
-                {
-                    if (supressInitExceptions)
-                    {
-                        string? errorMessage = $"Could read key \"{key}\" from appsettings.json";
-                        ExcelInitializationError? error = new ExcelInitializationError(errorMessage, ex);
-                        initErrors.Add(error);
-                        return null;
-                    }
-                    throw;
-                }
-            }
-            return null;
         }
+        return null;
+    }
 #endif
 
 #if (!Core)
@@ -129,5 +129,4 @@ namespace OfficeOpenXml
             }
         }
 #endif
-    }
 }

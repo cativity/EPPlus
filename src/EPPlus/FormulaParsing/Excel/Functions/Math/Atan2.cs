@@ -17,21 +17,20 @@ using System.Text;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Metadata;
 using OfficeOpenXml.FormulaParsing.ExpressionGraph;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
+
+[FunctionMetadata(
+                     Category = ExcelFunctionCategory.MathAndTrig,
+                     EPPlusVersion = "4",
+                     Description = "Returns the Arctangent of a given pair of x and y coordinates")]
+internal class Atan2 : ExcelFunction
 {
-    [FunctionMetadata(
-        Category = ExcelFunctionCategory.MathAndTrig,
-        EPPlusVersion = "4",
-        Description = "Returns the Arctangent of a given pair of x and y coordinates")]
-    internal class Atan2 : ExcelFunction
+    public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
     {
-        public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
-        {
-            ValidateArguments(arguments, 2);
-            double arg1 = this.ArgToDecimal(arguments, 0);
-            double arg2 = this.ArgToDecimal(arguments, 1);
-            // Had to switch order of the arguments to get the same result as in excel /MA
-            return this.CreateResult(System.Math.Atan2(arg2, arg1), DataType.Decimal);
-        }
+        ValidateArguments(arguments, 2);
+        double arg1 = this.ArgToDecimal(arguments, 0);
+        double arg2 = this.ArgToDecimal(arguments, 1);
+        // Had to switch order of the arguments to get the same result as in excel /MA
+        return this.CreateResult(System.Math.Atan2(arg2, arg1), DataType.Decimal);
     }
 }

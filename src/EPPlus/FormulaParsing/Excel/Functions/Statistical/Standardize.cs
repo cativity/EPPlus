@@ -17,22 +17,21 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Statistical
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Statistical;
+
+[FunctionMetadata(
+                     Category = ExcelFunctionCategory.Statistical,
+                     EPPlusVersion = "6.0",
+                     Description = "Returns a normalized value from a distribution characterized by mean and standard_dev.")]
+internal class Standardize : ExcelFunction
 {
-    [FunctionMetadata(
-        Category = ExcelFunctionCategory.Statistical,
-        EPPlusVersion = "6.0",
-        Description = "Returns a normalized value from a distribution characterized by mean and standard_dev.")]
-    internal class Standardize : ExcelFunction
+    public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
     {
-        public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
-        {
-            ValidateArguments(arguments, 3);
-            double val = this.ArgToDecimal(arguments, 0);
-            double avg = this.ArgToDecimal(arguments, 1);
-            double stdev = this.ArgToDecimal(arguments, 2);
-            double result = (val - avg) / stdev;
-            return this.CreateResult(result, DataType.Decimal);
-        }
+        ValidateArguments(arguments, 3);
+        double val = this.ArgToDecimal(arguments, 0);
+        double avg = this.ArgToDecimal(arguments, 1);
+        double stdev = this.ArgToDecimal(arguments, 2);
+        double result = (val - avg) / stdev;
+        return this.CreateResult(result, DataType.Decimal);
     }
 }

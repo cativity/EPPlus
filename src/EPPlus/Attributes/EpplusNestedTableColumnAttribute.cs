@@ -15,30 +15,29 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace OfficeOpenXml.Attributes
+namespace OfficeOpenXml.Attributes;
+
+/// <summary>
+/// Attribute used by <see cref="ExcelRangeBase.LoadFromCollection{T}(IEnumerable{T})" /> to support complex type properties/>
+/// </summary>
+[AttributeUsage(AttributeTargets.Method | AttributeTargets.Property | AttributeTargets.Field)]    
+public class EpplusNestedTableColumnAttribute : Attribute
 {
     /// <summary>
-    /// Attribute used by <see cref="ExcelRangeBase.LoadFromCollection{T}(IEnumerable{T})" /> to support complex type properties/>
+    /// Order of the columns value, default value is 0
     /// </summary>
-    [AttributeUsage(AttributeTargets.Method | AttributeTargets.Property | AttributeTargets.Field)]    
-    public class EpplusNestedTableColumnAttribute : Attribute
+    public int Order
     {
-        /// <summary>
-        /// Order of the columns value, default value is 0
-        /// </summary>
-        public int Order
-        {
-            get;
-            set;
-        }
+        get;
+        set;
+    }
 
-        /// <summary>
-        /// This will prefix all names derived by members in the complex type.
-        /// </summary>
-        public string HeaderPrefix
-        {
-            get;
-            set;
-        }
+    /// <summary>
+    /// This will prefix all names derived by members in the complex type.
+    /// </summary>
+    public string HeaderPrefix
+    {
+        get;
+        set;
     }
 }

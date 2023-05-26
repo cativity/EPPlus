@@ -36,119 +36,118 @@ using System.IO;
 using System.Text;
 using System.Xml;
 
-namespace EPPlusTest.Drawing.Chart.Styling
+namespace EPPlusTest.Drawing.Chart.Styling;
+
+[TestClass]
+public class RadarChartStylingTest : TestBase
 {
-    [TestClass]
-    public class RadarChartStylingTest : TestBase
+    static ExcelPackage _pck;
+    [ClassInitialize]
+    public static void Init(TestContext context)
     {
-        static ExcelPackage _pck;
-        [ClassInitialize]
-        public static void Init(TestContext context)
-        {
-            _pck = OpenPackage("RadarChartStyling.xlsx", true);
-        }
-        [ClassCleanup]
-        public static void Cleanup()
-        {
-            SaveAndCleanup(_pck);
-        }
-        [TestMethod]
-        public void Radar_Styles()
-        {
-            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("Radar");
-            LoadTestdata(ws);
+        _pck = OpenPackage("RadarChartStyling.xlsx", true);
+    }
+    [ClassCleanup]
+    public static void Cleanup()
+    {
+        SaveAndCleanup(_pck);
+    }
+    [TestMethod]
+    public void Radar_Styles()
+    {
+        ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("Radar");
+        LoadTestdata(ws);
 
-            RadarLineStyle(ws, eRadarChartType.Radar);
-        }
-        [TestMethod]
-        public void RadarFilled_Styles()
-        {
-            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("RadarFilled");
-            LoadTestdata(ws);
+        RadarLineStyle(ws, eRadarChartType.Radar);
+    }
+    [TestMethod]
+    public void RadarFilled_Styles()
+    {
+        ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("RadarFilled");
+        LoadTestdata(ws);
 
-            RadarLineStyle(ws, eRadarChartType.RadarFilled);
-        }
-        [TestMethod]
-        public void RadarMarkers_Styles()
-        {
-            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("RadarMarkers");
-            LoadTestdata(ws);
+        RadarLineStyle(ws, eRadarChartType.RadarFilled);
+    }
+    [TestMethod]
+    public void RadarMarkers_Styles()
+    {
+        ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("RadarMarkers");
+        LoadTestdata(ws);
 
-            RadarLineStyle(ws, eRadarChartType.RadarMarkers);
-        }
-        private static void RadarLineStyle(ExcelWorksheet ws, eRadarChartType chartType)
-        {
-            //Style 1
-            AddRadar(ws, chartType, "RadarChartStyle1", 0, 5, ePresetChartStyle.RadarChartStyle1,
-                c =>
-                {
-                    c.Legend.Position = eLegendPosition.Bottom;
-                });
+        RadarLineStyle(ws, eRadarChartType.RadarMarkers);
+    }
+    private static void RadarLineStyle(ExcelWorksheet ws, eRadarChartType chartType)
+    {
+        //Style 1
+        AddRadar(ws, chartType, "RadarChartStyle1", 0, 5, ePresetChartStyle.RadarChartStyle1,
+                 c =>
+                 {
+                     c.Legend.Position = eLegendPosition.Bottom;
+                 });
 
-            //Style 2
-            AddRadar(ws, chartType, "RadarChartStyle2", 0, 18, ePresetChartStyle.RadarChartStyle2,
-                c =>
-                {
-                    c.Legend.Position = eLegendPosition.Top;
-                });
+        //Style 2
+        AddRadar(ws, chartType, "RadarChartStyle2", 0, 18, ePresetChartStyle.RadarChartStyle2,
+                 c =>
+                 {
+                     c.Legend.Position = eLegendPosition.Top;
+                 });
 
-            //Style 3
-            AddRadar(ws, chartType, "RadarChartStyle3", 0, 31, ePresetChartStyle.RadarChartStyle3,
-            c =>
-            {
-                c.DataLabel.ShowPercent = true;
-            });
+        //Style 3
+        AddRadar(ws, chartType, "RadarChartStyle3", 0, 31, ePresetChartStyle.RadarChartStyle3,
+                 c =>
+                 {
+                     c.DataLabel.ShowPercent = true;
+                 });
 
-            //Style 4
-            AddRadar(ws, chartType, "RadarChartStyle4", 22, 5, ePresetChartStyle.RadarChartStyle4,
-                c =>
-                {
-                    c.Legend.Position = eLegendPosition.Bottom;
-                });
+        //Style 4
+        AddRadar(ws, chartType, "RadarChartStyle4", 22, 5, ePresetChartStyle.RadarChartStyle4,
+                 c =>
+                 {
+                     c.Legend.Position = eLegendPosition.Bottom;
+                 });
 
-            //Style 5
-            AddRadar(ws, chartType, "RadarChartStyle5", 22, 18, ePresetChartStyle.RadarChartStyle5,
-                c =>
-                {
-                    c.Legend.Position = eLegendPosition.Bottom;
-                });
+        //Style 5
+        AddRadar(ws, chartType, "RadarChartStyle5", 22, 18, ePresetChartStyle.RadarChartStyle5,
+                 c =>
+                 {
+                     c.Legend.Position = eLegendPosition.Bottom;
+                 });
 
-            //Style 6
-            AddRadar(ws, chartType, "RadarChartStyle6", 22, 31, ePresetChartStyle.RadarChartStyle6,
-                c =>
-                {
-                });
+        //Style 6
+        AddRadar(ws, chartType, "RadarChartStyle6", 22, 31, ePresetChartStyle.RadarChartStyle6,
+                 c =>
+                 {
+                 });
 
-            //Style 7
-            AddRadar(ws, chartType, "RadarChartStyle7", 44, 5, ePresetChartStyle.RadarChartStyle7,
-                c =>
-                {
-                    c.Legend.Position = eLegendPosition.Bottom;
-                });
+        //Style 7
+        AddRadar(ws, chartType, "RadarChartStyle7", 44, 5, ePresetChartStyle.RadarChartStyle7,
+                 c =>
+                 {
+                     c.Legend.Position = eLegendPosition.Bottom;
+                 });
 
-            //Style 8
-            AddRadar(ws, chartType, "RadarChartStyle8", 44, 18, ePresetChartStyle.RadarChartStyle8,
-                c =>
-                {
-                    c.Legend.Position = eLegendPosition.Top;
-                    c.DataLabel.ShowPercent = true;
-                });
-        }
-        private static ExcelRadarChart AddRadar(ExcelWorksheet ws, eRadarChartType type, string name, int row, int col, ePresetChartStyle style, Action<ExcelRadarChart> SetProperties)    
-        {
-            ExcelRadarChart? chart = ws.Drawings.AddRadarChart(name, type);
-            chart.SetPosition(row, 0, col, 0);
-            chart.To.Column = col+12;
-            chart.To.ColumnOff = 0;
-            chart.To.Row = row + 18;
-            chart.To.RowOff = 0;
-            ExcelRadarChartSerie? serie = chart.Series.Add("D2:D8", "A2:A8");
+        //Style 8
+        AddRadar(ws, chartType, "RadarChartStyle8", 44, 18, ePresetChartStyle.RadarChartStyle8,
+                 c =>
+                 {
+                     c.Legend.Position = eLegendPosition.Top;
+                     c.DataLabel.ShowPercent = true;
+                 });
+    }
+    private static ExcelRadarChart AddRadar(ExcelWorksheet ws, eRadarChartType type, string name, int row, int col, ePresetChartStyle style, Action<ExcelRadarChart> SetProperties)    
+    {
+        ExcelRadarChart? chart = ws.Drawings.AddRadarChart(name, type);
+        chart.SetPosition(row, 0, col, 0);
+        chart.To.Column = col+12;
+        chart.To.ColumnOff = 0;
+        chart.To.Row = row + 18;
+        chart.To.RowOff = 0;
+        ExcelRadarChartSerie? serie = chart.Series.Add("D2:D8", "A2:A8");
 
-            SetProperties(chart);
+        SetProperties(chart);
 
-            chart.StyleManager.SetChartStyle(style);
+        chart.StyleManager.SetChartStyle(style);
 
-            return chart;
-        }
+        return chart;
     }
 }

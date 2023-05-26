@@ -11,24 +11,23 @@
   1/4/2021         EPPlus Software AB           EPPlus Interfaces 1.0
  *************************************************************************************************/
 
-namespace OfficeOpenXml.Interfaces.Drawing.Text
+namespace OfficeOpenXml.Interfaces.Drawing.Text;
+
+/// <summary>
+/// Interface for measuring width and height of texts.
+/// </summary>
+public interface ITextMeasurer
 {
     /// <summary>
-    /// Interface for measuring width and height of texts.
+    /// Should return true if the text measurer is valid for this environment. 
     /// </summary>
-    public interface ITextMeasurer
-    {
-        /// <summary>
-        /// Should return true if the text measurer is valid for this environment. 
-        /// </summary>
-        /// <returns>True if the measurer can be used else false.</returns>
-        bool ValidForEnvironment();
-        /// <summary>
-        /// Measures width and height of the parameter <paramref name="text"/>.
-        /// </summary>
-        /// <param name="text">The text to measure</param>
-        /// <param name="font">The <see cref="MeasurementFont">font</see> to measure</param>
-        /// <returns></returns>
-        TextMeasurement MeasureText(string text, MeasurementFont font);
-    }
+    /// <returns>True if the measurer can be used else false.</returns>
+    bool ValidForEnvironment();
+    /// <summary>
+    /// Measures width and height of the parameter <paramref name="text"/>.
+    /// </summary>
+    /// <param name="text">The text to measure</param>
+    /// <param name="font">The <see cref="MeasurementFont">font</see> to measure</param>
+    /// <returns></returns>
+    TextMeasurement MeasureText(string text, MeasurementFont font);
 }

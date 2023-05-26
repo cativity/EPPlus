@@ -15,18 +15,17 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.Implementations
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.Implementations;
+
+internal class CouponPeriod
 {
-    internal class CouponPeriod
+    public CouponPeriod(FinancialDay start, FinancialDay end)
     {
-        public CouponPeriod(FinancialDay start, FinancialDay end)
-        {
-            this.Start = start;
-            this.End = end;
-        }
-
-        public FinancialDay Start { get; }
-
-        public FinancialDay End { get; }
+        this.Start = start;
+        this.End = end;
     }
+
+    public FinancialDay Start { get; }
+
+    public FinancialDay End { get; }
 }

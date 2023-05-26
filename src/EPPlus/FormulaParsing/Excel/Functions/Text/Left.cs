@@ -17,25 +17,24 @@ using System.Text;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Metadata;
 using OfficeOpenXml.FormulaParsing.ExpressionGraph;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Text
-{
-    [FunctionMetadata(
-        Category = ExcelFunctionCategory.Text,
-        EPPlusVersion = "4",
-        Description = "Returns a specified number of characters from the start of a supplied text string")]
-    internal class Left : ExcelFunction
-    {
-        public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
-        {
-            ValidateArguments(arguments, 2);
-            string? str = ArgToString(arguments, 0);
-            int length = this.ArgToInt(arguments, 1);
-            if (str.Length < length)
-            {
-                length = str.Length;
-            }
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Text;
 
-            return this.CreateResult(str.Substring(0, length), DataType.String);
+[FunctionMetadata(
+                     Category = ExcelFunctionCategory.Text,
+                     EPPlusVersion = "4",
+                     Description = "Returns a specified number of characters from the start of a supplied text string")]
+internal class Left : ExcelFunction
+{
+    public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
+    {
+        ValidateArguments(arguments, 2);
+        string? str = ArgToString(arguments, 0);
+        int length = this.ArgToInt(arguments, 1);
+        if (str.Length < length)
+        {
+            length = str.Length;
         }
+
+        return this.CreateResult(str.Substring(0, length), DataType.String);
     }
 }

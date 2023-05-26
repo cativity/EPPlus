@@ -39,28 +39,27 @@ using OfficeOpenXml.Drawing;
 using OfficeOpenXml.ConditionalFormatting;
 using System.Threading;
 using System.Drawing;
-namespace EPPlusTest
+namespace EPPlusTest;
+
+[TestClass]
+public class ReadTemplate : TestBase
 {
-    [TestClass]
-    public class ReadTemplate : TestBase
+    [TestMethod]
+    public void ReadBlankStream()
     {
-        [TestMethod]
-        public void ReadBlankStream()
+        MemoryStream stream = new MemoryStream();
+        using (ExcelPackage pck = new ExcelPackage(stream))
         {
-            MemoryStream stream = new MemoryStream();
-            using (ExcelPackage pck = new ExcelPackage(stream))
-            {
-                ExcelWorksheet? ws = pck.Workbook.Worksheets.Add("Perf");
-                pck.SaveAs(stream);
-            }
-            stream.Close();
+            ExcelWorksheet? ws = pck.Workbook.Worksheets.Add("Perf");
+            pck.SaveAs(stream);
         }
-        [TestMethod]
-        public void OpenXlts()
-        {
-            using ExcelPackage? pck = OpenTemplatePackage("Template.xltx");
-            ExcelWorksheet? ws = pck.Workbook.Worksheets[0];
-            SaveWorkbook("Template.xlsx", pck);
-        }
+        stream.Close();
+    }
+    [TestMethod]
+    public void OpenXlts()
+    {
+        using ExcelPackage? pck = OpenTemplatePackage("Template.xltx");
+        ExcelWorksheet? ws = pck.Workbook.Worksheets[0];
+        SaveWorkbook("Template.xlsx", pck);
     }
 }

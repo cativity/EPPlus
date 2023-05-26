@@ -19,38 +19,37 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance;
+
+[FunctionMetadata(
+                     Category = ExcelFunctionCategory.Financial,
+                     EPPlusVersion = "5.5",
+                     Description = "Calculates the interest rate for a fully invested security")]
+internal class Intrate : ExcelFunction
 {
-    [FunctionMetadata(
-        Category = ExcelFunctionCategory.Financial,
-        EPPlusVersion = "5.5",
-        Description = "Calculates the interest rate for a fully invested security")]
-    internal class Intrate : ExcelFunction
+    public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
     {
-        public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
+        ValidateArguments(arguments, 4);
+        System.DateTime settlementDate = System.DateTime.FromOADate(this.ArgToInt(arguments, 0));
+        System.DateTime maturityDate = System.DateTime.FromOADate(this.ArgToInt(arguments, 1));
+        double investment = this.ArgToDecimal(arguments, 2);
+        double redemption = this.ArgToDecimal(arguments, 3);
+        int basis = 0;
+        if (arguments.Count() >= 5)
         {
-            ValidateArguments(arguments, 4);
-            System.DateTime settlementDate = System.DateTime.FromOADate(this.ArgToInt(arguments, 0));
-            System.DateTime maturityDate = System.DateTime.FromOADate(this.ArgToInt(arguments, 1));
-            double investment = this.ArgToDecimal(arguments, 2);
-            double redemption = this.ArgToDecimal(arguments, 3);
-            int basis = 0;
-            if (arguments.Count() >= 5)
-            {
-                basis = this.ArgToInt(arguments, 4);
-            }
-            if (basis < 0 || basis > 4)
-            {
-                return this.CreateResult(eErrorType.Num);
-            }
-
-            FinanceCalcResult<double>? result = IntRateImpl.Intrate(settlementDate, maturityDate, investment, redemption, (DayCountBasis)basis);
-            if (result.HasError)
-            {
-                return this.CreateResult(result.ExcelErrorType);
-            }
-
-            return this.CreateResult(result.Result, result.DataType);
+            basis = this.ArgToInt(arguments, 4);
         }
+        if (basis < 0 || basis > 4)
+        {
+            return this.CreateResult(eErrorType.Num);
+        }
+
+        FinanceCalcResult<double>? result = IntRateImpl.Intrate(settlementDate, maturityDate, investment, redemption, (DayCountBasis)basis);
+        if (result.HasError)
+        {
+            return this.CreateResult(result.ExcelErrorType);
+        }
+
+        return this.CreateResult(result.Result, result.DataType);
     }
 }

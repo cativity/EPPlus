@@ -38,81 +38,80 @@ using System.Reflection;
 using System.Text;
 using System.Xml;
 
-namespace EPPlusTest.Drawing.Chart.Styling
+namespace EPPlusTest.Drawing.Chart.Styling;
+
+[TestClass]
+public class RegionMapChartStylingTest : TestBase
 {
-    [TestClass]
-    public class RegionMapChartStylingTest : TestBase
+    static ExcelPackage _pck;
+    [ClassInitialize]
+    public static void Init(TestContext context)
     {
-        static ExcelPackage _pck;
-        [ClassInitialize]
-        public static void Init(TestContext context)
-        {
-            _pck = OpenPackage("RegionMapChartStyling.xlsx", true);
-        }
-        [ClassCleanup]
-        public static void Cleanup()
-        {
-            SaveAndCleanup(_pck);
-        }
-        [TestMethod]
-        public void RegionMapChart_Styles()
-        {
-            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("RegionMapChart");
-            LoadGeoTestData(ws);
-            RegionMapChartStyle(ws);
-        }
-        private static void RegionMapChartStyle(ExcelWorksheet ws)
-        {
-            //RegionMap Chart styles
+        _pck = OpenPackage("RegionMapChartStyling.xlsx", true);
+    }
+    [ClassCleanup]
+    public static void Cleanup()
+    {
+        SaveAndCleanup(_pck);
+    }
+    [TestMethod]
+    public void RegionMapChart_Styles()
+    {
+        ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("RegionMapChart");
+        LoadGeoTestData(ws);
+        RegionMapChartStyle(ws);
+    }
+    private static void RegionMapChartStyle(ExcelWorksheet ws)
+    {
+        //RegionMap Chart styles
 
-            //RegionMap chart Style 1
-            AddChart(ws, ePresetChartStyle.RegionMapChartStyle1, "RegionMapChartStyle1", 0, 5,
-                c =>
-                {
-                    c.Title.Text = "RegionMap 1";
-                    c.Series[0].DataLabel.Add(false,true);
-                    c.Series[0].RegionLableLayout = eRegionLabelLayout.BestFitOnly;
-                    c.Series[0].ViewedRegionType = eGeoMappingLevel.World;
-                });
+        //RegionMap chart Style 1
+        AddChart(ws, ePresetChartStyle.RegionMapChartStyle1, "RegionMapChartStyle1", 0, 5,
+                 c =>
+                 {
+                     c.Title.Text = "RegionMap 1";
+                     c.Series[0].DataLabel.Add(false,true);
+                     c.Series[0].RegionLableLayout = eRegionLabelLayout.BestFitOnly;
+                     c.Series[0].ViewedRegionType = eGeoMappingLevel.World;
+                 });
 
-            //RegionMap chart Style 2
-            AddChart(ws, ePresetChartStyle.RegionMapChartStyle2, "RegionMapChartStyle2", 0, 18,
-                c =>
-                {
-                    c.Legend.Position = eLegendPosition.Bottom;
-                });
+        //RegionMap chart Style 2
+        AddChart(ws, ePresetChartStyle.RegionMapChartStyle2, "RegionMapChartStyle2", 0, 18,
+                 c =>
+                 {
+                     c.Legend.Position = eLegendPosition.Bottom;
+                 });
 
-            //RegionMap chart Style 3
-            AddChart(ws, ePresetChartStyle.RegionMapChartStyle3, "RegionMapChartStyle3", 0, 31,
-                c =>
-                {
-                    c.Legend.Position = eLegendPosition.Bottom;
-                });
+        //RegionMap chart Style 3
+        AddChart(ws, ePresetChartStyle.RegionMapChartStyle3, "RegionMapChartStyle3", 0, 31,
+                 c =>
+                 {
+                     c.Legend.Position = eLegendPosition.Bottom;
+                 });
 
-            //RegionMap chart Style 4
-            AddChart(ws, ePresetChartStyle.RegionMapChartStyle4, "RegionMapChartStyle4", 20, 5,
-                c =>
-                {
-                    c.Legend.Position = eLegendPosition.Bottom;
-                });
+        //RegionMap chart Style 4
+        AddChart(ws, ePresetChartStyle.RegionMapChartStyle4, "RegionMapChartStyle4", 20, 5,
+                 c =>
+                 {
+                     c.Legend.Position = eLegendPosition.Bottom;
+                 });
 
-        }
+    }
 
 
-        private static ExcelRegionMapChart AddChart(ExcelWorksheet ws, ePresetChartStyle style, string name, int row, int col, Action<ExcelRegionMapChart> SetProperties)
-        {
-            ExcelRegionMapChart? chart = ws.Drawings.AddRegionMapChart(name);
-            chart.SetPosition(row, 0, col, 0);
-            chart.To.Column = col+12;
-            chart.To.ColumnOff = 0;
-            chart.To.Row = row + 18;
-            chart.To.RowOff = 0;
-            chart.Series.Add("C1:C11", "A1:B11");
+    private static ExcelRegionMapChart AddChart(ExcelWorksheet ws, ePresetChartStyle style, string name, int row, int col, Action<ExcelRegionMapChart> SetProperties)
+    {
+        ExcelRegionMapChart? chart = ws.Drawings.AddRegionMapChart(name);
+        chart.SetPosition(row, 0, col, 0);
+        chart.To.Column = col+12;
+        chart.To.ColumnOff = 0;
+        chart.To.Row = row + 18;
+        chart.To.RowOff = 0;
+        chart.Series.Add("C1:C11", "A1:B11");
 
-            SetProperties(chart);
+        SetProperties(chart);
 
-            chart.StyleManager.SetChartStyle(style);
-            return chart;
-        }
+        chart.StyleManager.SetChartStyle(style);
+        return chart;
     }
 }

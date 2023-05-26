@@ -10,52 +10,51 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
-namespace OfficeOpenXml.Table
+namespace OfficeOpenXml.Table;
+
+/// <summary>
+/// Build-in table row functions
+/// </summary>
+public enum RowFunctions
 {
     /// <summary>
-    /// Build-in table row functions
+    /// Average
     /// </summary>
-    public enum RowFunctions
-    {
-        /// <summary>
-        /// Average
-        /// </summary>
-        Average,
-        /// <summary>
-        /// Count
-        /// </summary>
-        Count,
-        /// <summary>
-        /// Count, numbers
-        /// </summary>
-        CountNums,
-        /// <summary>
-        /// Custum function
-        /// </summary>
-        Custom,
-        /// <summary>
-        /// Maximum
-        /// </summary>
-        Max,
-        /// <summary>
-        /// Minimum
-        /// </summary>
-        Min,
-        /// <summary>
-        /// None
-        /// </summary>
-        None,
-        /// <summary>
-        /// Standard deviation
-        /// </summary>
-        StdDev,
-        /// <summary>
-        /// Summary
-        /// </summary>
-        Sum,
-        /// <summary>
-        /// Variation
-        /// </summary>
-        Var
-    }
+    Average,
+    /// <summary>
+    /// Count
+    /// </summary>
+    Count,
+    /// <summary>
+    /// Count, numbers
+    /// </summary>
+    CountNums,
+    /// <summary>
+    /// Custum function
+    /// </summary>
+    Custom,
+    /// <summary>
+    /// Maximum
+    /// </summary>
+    Max,
+    /// <summary>
+    /// Minimum
+    /// </summary>
+    Min,
+    /// <summary>
+    /// None
+    /// </summary>
+    None,
+    /// <summary>
+    /// Standard deviation
+    /// </summary>
+    StdDev,
+    /// <summary>
+    /// Summary
+    /// </summary>
+    Sum,
+    /// <summary>
+    /// Variation
+    /// </summary>
+    Var
 }

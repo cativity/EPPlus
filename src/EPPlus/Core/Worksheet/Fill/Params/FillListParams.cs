@@ -10,17 +10,16 @@
  *************************************************************************************************
     08/11/2021         EPPlus Software AB       EPPlus 5.8
  *************************************************************************************************/
-namespace OfficeOpenXml.Core.Worksheet.Fill
+namespace OfficeOpenXml.Core.Worksheet.Fill;
+
+/// <summary>
+/// Parameters for the <see cref="ExcelRangeBase.FillList{T}(System.Collections.Generic.IEnumerable{T}, System.Action{FillListParams})" /> method 
+/// </summary>
+public class FillListParams : FillParams
 {
     /// <summary>
-    /// Parameters for the <see cref="ExcelRangeBase.FillList{T}(System.Collections.Generic.IEnumerable{T}, System.Action{FillListParams})" /> method 
+    /// The start index in the list. 
+    /// <seealso cref="FillParams.Direction"/>
     /// </summary>
-    public class FillListParams : FillParams
-    {
-        /// <summary>
-        /// The start index in the list. 
-        /// <seealso cref="FillParams.Direction"/>
-        /// </summary>
-        public int StartIndex { get; set; } = 0;
-    }
+    public int StartIndex { get; set; } = 0;
 }

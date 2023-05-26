@@ -17,49 +17,48 @@ using System.Text;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Metadata;
 using OfficeOpenXml.FormulaParsing.ExpressionGraph;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
+
+[FunctionMetadata(
+                     Category = ExcelFunctionCategory.MathAndTrig,
+                     EPPlusVersion = "4",
+                     Description = "Rounds a number towards zero, (i.e. rounds a positive number down and a negative number up), to a given number of digits")]
+internal class Rounddown : ExcelFunction
 {
-    [FunctionMetadata(
-        Category = ExcelFunctionCategory.MathAndTrig,
-        EPPlusVersion = "4",
-        Description = "Rounds a number towards zero, (i.e. rounds a positive number down and a negative number up), to a given number of digits")]
-    internal class Rounddown : ExcelFunction
+    public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
     {
-        public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
+        ValidateArguments(arguments, 2);
+        if (arguments.ElementAt(0).Value == null)
         {
-            ValidateArguments(arguments, 2);
-            if (arguments.ElementAt(0).Value == null)
-            {
-                return this.CreateResult(0d, DataType.Decimal);
-            }
-
-            double number = this.ArgToDecimal(arguments, 0, context.Configuration.PrecisionAndRoundingStrategy);
-            int nDecimals = this.ArgToInt(arguments, 1);
-
-            int nFactor = number < 0 ? -1 : 1;
-            number *= nFactor;
-
-            double result;
-            if (nDecimals > 0)
-            {
-                result = RoundDownDecimalNumber(number, nDecimals);
-            }
-            else
-            {
-                result = (int)System.Math.Floor(number);
-                result -= (result % System.Math.Pow(10, (nDecimals*-1)));
-            }
-            return this.CreateResult(result * nFactor, DataType.Decimal);
+            return this.CreateResult(0d, DataType.Decimal);
         }
 
-        private static double RoundDownDecimalNumber(double number, int nDecimals)
+        double number = this.ArgToDecimal(arguments, 0, context.Configuration.PrecisionAndRoundingStrategy);
+        int nDecimals = this.ArgToInt(arguments, 1);
+
+        int nFactor = number < 0 ? -1 : 1;
+        number *= nFactor;
+
+        double result;
+        if (nDecimals > 0)
         {
-            double integerPart = System.Math.Floor(number);
-            double decimalPart = number - integerPart;
-            decimalPart = System.Math.Pow(10d, nDecimals)*decimalPart;
-            decimalPart = System.Math.Truncate(decimalPart)/System.Math.Pow(10d, nDecimals);
-            double result = integerPart + decimalPart;
-            return result;
+            result = RoundDownDecimalNumber(number, nDecimals);
         }
+        else
+        {
+            result = (int)System.Math.Floor(number);
+            result -= (result % System.Math.Pow(10, (nDecimals*-1)));
+        }
+        return this.CreateResult(result * nFactor, DataType.Decimal);
+    }
+
+    private static double RoundDownDecimalNumber(double number, int nDecimals)
+    {
+        double integerPart = System.Math.Floor(number);
+        double decimalPart = number - integerPart;
+        decimalPart = System.Math.Pow(10d, nDecimals)*decimalPart;
+        decimalPart = System.Math.Truncate(decimalPart)/System.Math.Pow(10d, nDecimals);
+        double result = integerPart + decimalPart;
+        return result;
     }
 }

@@ -13,61 +13,60 @@
 using System.Xml;
 using System.Globalization;
 
-namespace OfficeOpenXml.Table.PivotTable
+namespace OfficeOpenXml.Table.PivotTable;
+
+/// <summary>
+/// A pivot table field numeric grouping
+/// </summary>
+public class ExcelPivotTableFieldNumericGroup : ExcelPivotTableFieldGroup
 {
-    /// <summary>
-    /// A pivot table field numeric grouping
-    /// </summary>
-    public class ExcelPivotTableFieldNumericGroup : ExcelPivotTableFieldGroup
+    internal ExcelPivotTableFieldNumericGroup(XmlNamespaceManager ns, XmlNode topNode) :
+        base(ns, topNode)
     {
-        internal ExcelPivotTableFieldNumericGroup(XmlNamespaceManager ns, XmlNode topNode) :
-            base(ns, topNode)
+    }
+    const string startPath = "d:fieldGroup/d:rangePr/@startNum";
+    /// <summary>
+    /// Start value
+    /// </summary>
+    public double Start
+    {
+        get
         {
+            return (double)this.GetXmlNodeDoubleNull(startPath);
         }
-        const string startPath = "d:fieldGroup/d:rangePr/@startNum";
-        /// <summary>
-        /// Start value
-        /// </summary>
-        public double Start
+        private set
         {
-            get
-            {
-                return (double)this.GetXmlNodeDoubleNull(startPath);
-            }
-            private set
-            {
-                this.SetXmlNodeString(startPath,value.ToString(CultureInfo.InvariantCulture));
-            }
+            this.SetXmlNodeString(startPath,value.ToString(CultureInfo.InvariantCulture));
         }
-        const string endPath = "d:fieldGroup/d:rangePr/@endNum";
-        /// <summary>
-        /// End value
-        /// </summary>
-        public double End
+    }
+    const string endPath = "d:fieldGroup/d:rangePr/@endNum";
+    /// <summary>
+    /// End value
+    /// </summary>
+    public double End
+    {
+        get
         {
-            get
-            {
-                return (double)this.GetXmlNodeDoubleNull(endPath);
-            }
-            private set
-            {
-                this.SetXmlNodeString(endPath, value.ToString(CultureInfo.InvariantCulture));
-            }
+            return (double)this.GetXmlNodeDoubleNull(endPath);
         }
-        const string groupIntervalPath = "d:fieldGroup/d:rangePr/@groupInterval";
-        /// <summary>
-        /// Interval
-        /// </summary>
-        public double Interval
+        private set
         {
-            get
-            {
-                return (double)this.GetXmlNodeDoubleNull(groupIntervalPath);
-            }
-            private set
-            {
-                this.SetXmlNodeString(groupIntervalPath, value.ToString(CultureInfo.InvariantCulture));
-            }
+            this.SetXmlNodeString(endPath, value.ToString(CultureInfo.InvariantCulture));
+        }
+    }
+    const string groupIntervalPath = "d:fieldGroup/d:rangePr/@groupInterval";
+    /// <summary>
+    /// Interval
+    /// </summary>
+    public double Interval
+    {
+        get
+        {
+            return (double)this.GetXmlNodeDoubleNull(groupIntervalPath);
+        }
+        private set
+        {
+            this.SetXmlNodeString(groupIntervalPath, value.ToString(CultureInfo.InvariantCulture));
         }
     }
 }

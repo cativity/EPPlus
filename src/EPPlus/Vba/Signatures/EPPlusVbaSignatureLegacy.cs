@@ -12,13 +12,12 @@
  *************************************************************************************************/
 using OfficeOpenXml.Packaging;
 
-namespace OfficeOpenXml.VBA.Signatures
+namespace OfficeOpenXml.VBA.Signatures;
+
+internal class EPPlusVbaSignatureLegacy : EPPlusVbaSignature
 {
-    internal class EPPlusVbaSignatureLegacy : EPPlusVbaSignature
+    public EPPlusVbaSignatureLegacy(ZipPackagePart part) 
+        : base(part, ExcelVbaSignatureType.Legacy)
     {
-        public EPPlusVbaSignatureLegacy(ZipPackagePart part) 
-            : base(part, ExcelVbaSignatureType.Legacy)
-        {
-        }
     }
 }

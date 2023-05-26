@@ -10,30 +10,29 @@
  *************************************************************************************************
     08/11/2021         EPPlus Software AB       EPPlus 5.8
  *************************************************************************************************/
-namespace OfficeOpenXml.Core.Worksheet.Fill
+namespace OfficeOpenXml.Core.Worksheet.Fill;
+
+/// <summary>
+/// Parameters for the <see cref="ExcelRangeBase.FillNumber(System.Action{FillNumberParams})" /> method 
+/// </summary>
+public class FillNumberParams : FillParams
 {
     /// <summary>
-    /// Parameters for the <see cref="ExcelRangeBase.FillNumber(System.Action{FillNumberParams})" /> method 
+    /// The start value. If null, the first value in the row/column is used. 
+    /// <seealso cref="FillParams.Direction"/>
     /// </summary>
-    public class FillNumberParams : FillParams
-    {
-        /// <summary>
-        /// The start value. If null, the first value in the row/column is used. 
-        /// <seealso cref="FillParams.Direction"/>
-        /// </summary>
-        public double? StartValue { get; set; } = null;
-        /// <summary>
-        /// When this value is exceeded the fill stops
-        /// </summary>
-        public double? EndValue { get; set; } = null;
-        /// <summary>
-        /// The value to use in the calculation for each step. 
-        /// <seealso cref="CalculationMethod"/>
-        /// </summary>
-        public double StepValue { get; set; } = 1;
-        /// <summary>
-        /// The calculation method to use 
-        /// </summary>
-        public eCalculationMethod CalculationMethod { get; set; } = eCalculationMethod.Add;
-    }
+    public double? StartValue { get; set; } = null;
+    /// <summary>
+    /// When this value is exceeded the fill stops
+    /// </summary>
+    public double? EndValue { get; set; } = null;
+    /// <summary>
+    /// The value to use in the calculation for each step. 
+    /// <seealso cref="CalculationMethod"/>
+    /// </summary>
+    public double StepValue { get; set; } = 1;
+    /// <summary>
+    /// The calculation method to use 
+    /// </summary>
+    public eCalculationMethod CalculationMethod { get; set; } = eCalculationMethod.Add;
 }

@@ -10,29 +10,28 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
-namespace OfficeOpenXml.Filter
+namespace OfficeOpenXml.Filter;
+
+/// <summary>
+/// A custom filter item
+/// </summary>
+public class ExcelFilterCustomItem : ExcelFilterValueItem
 {
     /// <summary>
-    /// A custom filter item
+    /// Create a Custom filter.
     /// </summary>
-    public class ExcelFilterCustomItem : ExcelFilterValueItem
+    /// <param name="value">The value to filter by. 
+    /// If the data is text wildcard can be used. 
+    /// Asterisk (*) for any combination of characters. 
+    /// Question mark (?) for any single charcter
+    /// If the data is numeric, use dot (.) for decimal.</param>
+    /// <param name="filterOperator">The operator to use</param>
+    public ExcelFilterCustomItem(string value, eFilterOperator filterOperator = eFilterOperator.Equal) : base(value)
     {
-        /// <summary>
-        /// Create a Custom filter.
-        /// </summary>
-        /// <param name="value">The value to filter by. 
-        /// If the data is text wildcard can be used. 
-        /// Asterisk (*) for any combination of characters. 
-        /// Question mark (?) for any single charcter
-        /// If the data is numeric, use dot (.) for decimal.</param>
-        /// <param name="filterOperator">The operator to use</param>
-        public ExcelFilterCustomItem(string value, eFilterOperator filterOperator = eFilterOperator.Equal) : base(value)
-        {
-            this.Operator = filterOperator;
-        }
-        /// <summary>
-        /// Operator used by the filter comparison
-        /// </summary>
-        public eFilterOperator? Operator { get; set; }
+        this.Operator = filterOperator;
     }
+    /// <summary>
+    /// Operator used by the filter comparison
+    /// </summary>
+    public eFilterOperator? Operator { get; set; }
 }

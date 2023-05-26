@@ -15,24 +15,23 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace OfficeOpenXml.Core.Worksheet.Fonts
+namespace OfficeOpenXml.Core.Worksheet.Fonts;
+
+internal class BoundingRectangle
 {
-    internal class BoundingRectangle
+    public BoundingRectangle(short xMin, short yMin, short xMax, short yMax)
     {
-        public BoundingRectangle(short xMin, short yMin, short xMax, short yMax)
-        {
-            this.Xmin = xMin;
-            this.Ymin = yMin;
-            this.Xmax = xMax;
-            this.Ymax = yMax;
-        }
-
-        public short Xmin { get; set; }
-
-        public short Ymin { get; set; }
-
-        public short Xmax { get; set; }
-
-        public short Ymax { get; set; }
+        this.Xmin = xMin;
+        this.Ymin = yMin;
+        this.Xmax = xMax;
+        this.Ymax = yMax;
     }
+
+    public short Xmin { get; set; }
+
+    public short Ymin { get; set; }
+
+    public short Xmax { get; set; }
+
+    public short Ymax { get; set; }
 }

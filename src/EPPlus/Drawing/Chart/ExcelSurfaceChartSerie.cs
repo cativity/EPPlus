@@ -16,23 +16,22 @@ using System.Globalization;
 using System.Text;
 using System.Xml;
 
-namespace OfficeOpenXml.Drawing.Chart
+namespace OfficeOpenXml.Drawing.Chart;
+
+/// <summary>
+/// A serie for a surface chart
+/// </summary>
+public sealed class ExcelSurfaceChartSerie : ExcelChartStandardSerie
 {
     /// <summary>
-    /// A serie for a surface chart
+    /// Default constructor
     /// </summary>
-    public sealed class ExcelSurfaceChartSerie : ExcelChartStandardSerie
+    /// <param name="chart">The chart</param>
+    /// <param name="ns">Namespacemanager</param>
+    /// <param name="node">Topnode</param>
+    /// <param name="isPivot">Is pivotchart</param>
+    internal ExcelSurfaceChartSerie(ExcelChart chart, XmlNamespaceManager ns, XmlNode node, bool isPivot) :
+        base(chart, ns, node, isPivot)
     {
-        /// <summary>
-        /// Default constructor
-        /// </summary>
-        /// <param name="chart">The chart</param>
-        /// <param name="ns">Namespacemanager</param>
-        /// <param name="node">Topnode</param>
-        /// <param name="isPivot">Is pivotchart</param>
-        internal ExcelSurfaceChartSerie(ExcelChart chart, XmlNamespaceManager ns, XmlNode node, bool isPivot) :
-            base(chart, ns, node, isPivot)
-        {
-        }
     }
 }

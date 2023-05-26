@@ -15,14 +15,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace OfficeOpenXml.Attributes
-{
-    /// <summary>
-    /// Use this attribute on a Method, Property or a Field to set parameters for how an object should be represented when imported to a range.
-    /// </summary>
-    [AttributeUsage(AttributeTargets.Method | AttributeTargets.Property | AttributeTargets.Field)]
-    public class EpplusTableColumnAttribute : EpplusTableColumnAttributeBase
-    {
+namespace OfficeOpenXml.Attributes;
 
-    }
+/// <summary>
+/// Use this attribute on a Method, Property or a Field to set parameters for how an object should be represented when imported to a range.
+/// </summary>
+[AttributeUsage(AttributeTargets.Method | AttributeTargets.Property | AttributeTargets.Field)]
+public class EpplusTableColumnAttribute : EpplusTableColumnAttributeBase
+{
+
 }

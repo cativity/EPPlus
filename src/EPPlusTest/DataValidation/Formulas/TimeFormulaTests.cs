@@ -33,175 +33,174 @@ using OfficeOpenXml.Style;
 using System.IO;
 using OfficeOpenXml.DataValidation.Contracts;
 
-namespace EPPlusTest.DataValidation.Formulas
+namespace EPPlusTest.DataValidation.Formulas;
+
+[TestClass]
+public class TimeFormulaTests : ValidationTestBase
 {
-    [TestClass]
-    public class TimeFormulaTests : ValidationTestBase
+    [TestInitialize]
+    public void Setup()
     {
-        [TestInitialize]
-        public void Setup()
-        {
-            this.SetupTestData();
-        }
+        this.SetupTestData();
+    }
 
-        [TestCleanup]
-        public void Cleanup()
-        {
-            this.CleanupTestData();
-        }
+    [TestCleanup]
+    public void Cleanup()
+    {
+        this.CleanupTestData();
+    }
 
-        [TestMethod]
-        public void ValueIsRead()
-        {
-            ExcelPackage? package = new ExcelPackage(new MemoryStream());
-            ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("TimeTest");
+    [TestMethod]
+    public void ValueIsRead()
+    {
+        ExcelPackage? package = new ExcelPackage(new MemoryStream());
+        ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("TimeTest");
 
-            IExcelDataValidationTime? validationOrig = sheet.DataValidations.AddTimeValidation("A1");
+        IExcelDataValidationTime? validationOrig = sheet.DataValidations.AddTimeValidation("A1");
 
-            validationOrig.Formula.Value.Hour = 14;
-            validationOrig.Formula.Value.Minute = 30;
-            validationOrig.Formula.Value.Second = 42;
+        validationOrig.Formula.Value.Hour = 14;
+        validationOrig.Formula.Value.Minute = 30;
+        validationOrig.Formula.Value.Second = 42;
 
-            validationOrig.Operator = ExcelDataValidationOperator.lessThanOrEqual;
+        validationOrig.Operator = ExcelDataValidationOperator.lessThanOrEqual;
 
-            ExcelDataValidationTime? validation = ReadTValidation<ExcelDataValidationTime>(package);
+        ExcelDataValidationTime? validation = ReadTValidation<ExcelDataValidationTime>(package);
 
-            Assert.AreEqual(validationOrig.Formula.Value.Hour, validation.Formula.Value.Hour);
-            Assert.AreEqual(validationOrig.Formula.Value.Minute, validation.Formula.Value.Minute);
-            Assert.AreEqual(validationOrig.Formula.Value.Second, validation.Formula.Value.Second);
-        }
+        Assert.AreEqual(validationOrig.Formula.Value.Hour, validation.Formula.Value.Hour);
+        Assert.AreEqual(validationOrig.Formula.Value.Minute, validation.Formula.Value.Minute);
+        Assert.AreEqual(validationOrig.Formula.Value.Second, validation.Formula.Value.Second);
+    }
 
-        [TestMethod]
-        public void ExcelFormulaIsRead()
-        {
-            ExcelPackage? package = new ExcelPackage(new MemoryStream());
-            ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("TimeTest");
+    [TestMethod]
+    public void ExcelFormulaIsRead()
+    {
+        ExcelPackage? package = new ExcelPackage(new MemoryStream());
+        ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("TimeTest");
 
-            IExcelDataValidationTime? validationOrig = sheet.DataValidations.AddTimeValidation("A1");
+        IExcelDataValidationTime? validationOrig = sheet.DataValidations.AddTimeValidation("A1");
 
-            validationOrig.Formula.ExcelFormula = "D1";
+        validationOrig.Formula.ExcelFormula = "D1";
 
-            validationOrig.Operator = ExcelDataValidationOperator.lessThanOrEqual;
+        validationOrig.Operator = ExcelDataValidationOperator.lessThanOrEqual;
 
-            ExcelDataValidationTime? validation = ReadTValidation<ExcelDataValidationTime>(package);
+        ExcelDataValidationTime? validation = ReadTValidation<ExcelDataValidationTime>(package);
 
-            Assert.AreEqual("D1", validation.Formula.ExcelFormula);
-        }
+        Assert.AreEqual("D1", validation.Formula.ExcelFormula);
+    }
 
-        [TestMethod]
-        public void FormulaSpecialSignsAreWrittenAndRead()
-        {
-            ExcelPackage? package = new ExcelPackage(new MemoryStream());
-            ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("TimeTest");
+    [TestMethod]
+    public void FormulaSpecialSignsAreWrittenAndRead()
+    {
+        ExcelPackage? package = new ExcelPackage(new MemoryStream());
+        ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("TimeTest");
 
-            IExcelDataValidationTime? lessThan = sheet.DataValidations.AddTimeValidation("A1");
-            lessThan.Operator = ExcelDataValidationOperator.equal;
+        IExcelDataValidationTime? lessThan = sheet.DataValidations.AddTimeValidation("A1");
+        lessThan.Operator = ExcelDataValidationOperator.equal;
 
-            lessThan.Formula.Value.Hour = 10;
+        lessThan.Formula.Value.Hour = 10;
 
-            ExcelTime time = new ExcelTime();
-            time.Hour = 9;
+        ExcelTime time = new ExcelTime();
+        time.Hour = 9;
 
-            sheet.Cells["B1"].Value = time.ToExcelString();
-            sheet.Cells["B1"].Style.Numberformat.Format = "HH:MM:SS";
+        sheet.Cells["B1"].Value = time.ToExcelString();
+        sheet.Cells["B1"].Style.Numberformat.Format = "HH:MM:SS";
 
-            string timeString = lessThan.Formula.Value.ToExcelString();
+        string timeString = lessThan.Formula.Value.ToExcelString();
 
-            lessThan.Formula.ExcelFormula = $"=IF(B1<\"{timeString}\"," +
-                $"\"{time.ToExcelString()}\",\"{timeString}\")";
-            lessThan.ShowErrorMessage = true;
+        lessThan.Formula.ExcelFormula = $"=IF(B1<\"{timeString}\"," +
+                                        $"\"{time.ToExcelString()}\",\"{timeString}\")";
+        lessThan.ShowErrorMessage = true;
 
-            IExcelDataValidationTime? greaterThan = sheet.DataValidations.AddTimeValidation("A2");
+        IExcelDataValidationTime? greaterThan = sheet.DataValidations.AddTimeValidation("A2");
 
-            greaterThan.Formula.ExcelFormula = $"=B1>\"{time.ToExcelString()}\"";
-            greaterThan.ShowErrorMessage = true;
+        greaterThan.Formula.ExcelFormula = $"=B1>\"{time.ToExcelString()}\"";
+        greaterThan.ShowErrorMessage = true;
 
-            greaterThan.Operator = ExcelDataValidationOperator.equal;
+        greaterThan.Operator = ExcelDataValidationOperator.equal;
 
-            MemoryStream stream = new MemoryStream();
-            package.SaveAs(stream);
+        MemoryStream stream = new MemoryStream();
+        package.SaveAs(stream);
 
-            ExcelPackage? loadedpkg = new ExcelPackage(stream);
-            ExcelWorksheet? loadedSheet = loadedpkg.Workbook.Worksheets[0];
+        ExcelPackage? loadedpkg = new ExcelPackage(stream);
+        ExcelWorksheet? loadedSheet = loadedpkg.Workbook.Worksheets[0];
 
-            ExcelDataValidationCollection? validations = loadedSheet.DataValidations;
+        ExcelDataValidationCollection? validations = loadedSheet.DataValidations;
 
-            Assert.AreEqual(((ExcelDataValidationTime)validations[0]).Formula.ExcelFormula, 
-                $"=IF(B1<\"{timeString}\"," +
-                $"\"{time.ToExcelString()}\",\"{timeString}\")");
-            Assert.AreEqual(((ExcelDataValidationTime)validations[1]).Formula.ExcelFormula, $"=B1>\"{time.ToExcelString()}\"");
-        }
+        Assert.AreEqual(((ExcelDataValidationTime)validations[0]).Formula.ExcelFormula, 
+                        $"=IF(B1<\"{timeString}\"," +
+                        $"\"{time.ToExcelString()}\",\"{timeString}\")");
+        Assert.AreEqual(((ExcelDataValidationTime)validations[1]).Formula.ExcelFormula, $"=B1>\"{time.ToExcelString()}\"");
+    }
 
-        [TestMethod]
-        public void Formula2EmptyWhenReadOnIrrelevantOperator()
-        {
-            ExcelPackage? package = new ExcelPackage(new MemoryStream());
-            ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("TimeTest");
+    [TestMethod]
+    public void Formula2EmptyWhenReadOnIrrelevantOperator()
+    {
+        ExcelPackage? package = new ExcelPackage(new MemoryStream());
+        ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("TimeTest");
 
-            IExcelDataValidationTime? equals = sheet.DataValidations.AddTimeValidation("A1");
-            equals.Operator = ExcelDataValidationOperator.equal;
+        IExcelDataValidationTime? equals = sheet.DataValidations.AddTimeValidation("A1");
+        equals.Operator = ExcelDataValidationOperator.equal;
 
-            equals.Formula.Value.Hour = 5;
+        equals.Formula.Value.Hour = 5;
 
-            MemoryStream stream = new MemoryStream();
-            package.SaveAs(stream);
+        MemoryStream stream = new MemoryStream();
+        package.SaveAs(stream);
 
-            ExcelPackage? loadedpkg = new ExcelPackage(stream);
+        ExcelPackage? loadedpkg = new ExcelPackage(stream);
 
-            ExcelTime? time = new ExcelTime();
+        ExcelTime? time = new ExcelTime();
 
-            Assert.IsNull(equals.Formula2.ExcelFormula);
-            //Formula2 has default value instead of null so users do not have to assign "new Exceltime()"
-            Assert.AreEqual(time.Hour, equals.Formula2.Value.Hour);
-            Assert.AreEqual(time.Minute, equals.Formula2.Value.Minute);
-            Assert.AreEqual(time.Second, equals.Formula2.Value.Second);
-        }
+        Assert.IsNull(equals.Formula2.ExcelFormula);
+        //Formula2 has default value instead of null so users do not have to assign "new Exceltime()"
+        Assert.AreEqual(time.Hour, equals.Formula2.Value.Hour);
+        Assert.AreEqual(time.Minute, equals.Formula2.Value.Minute);
+        Assert.AreEqual(time.Second, equals.Formula2.Value.Second);
+    }
 
-        [TestMethod]
-        public void Formula2WrittenAndRead()
-        {
-            ExcelPackage? package = new ExcelPackage(new MemoryStream());
-            ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("TimeTest");
+    [TestMethod]
+    public void Formula2WrittenAndRead()
+    {
+        ExcelPackage? package = new ExcelPackage(new MemoryStream());
+        ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("TimeTest");
 
-            IExcelDataValidationTime? between = sheet.DataValidations.AddTimeValidation("A1");
-            between.Operator = ExcelDataValidationOperator.between;
+        IExcelDataValidationTime? between = sheet.DataValidations.AddTimeValidation("A1");
+        between.Operator = ExcelDataValidationOperator.between;
 
-            between.Formula.Value.Hour = 10;
-            between.Formula2.Value.Hour = 11;
+        between.Formula.Value.Hour = 10;
+        between.Formula2.Value.Hour = 11;
 
-            between.ShowInputMessage = true;
+        between.ShowInputMessage = true;
 
-            between.PromptTitle = $"Time between 10 and 11";
-            between.Prompt = $"Test for read-write";
+        between.PromptTitle = $"Time between 10 and 11";
+        between.Prompt = $"Test for read-write";
 
 
-            IExcelDataValidationTime? notBetween = sheet.DataValidations.AddTimeValidation("A2");
-            notBetween.Operator = ExcelDataValidationOperator.notBetween;
+        IExcelDataValidationTime? notBetween = sheet.DataValidations.AddTimeValidation("A2");
+        notBetween.Operator = ExcelDataValidationOperator.notBetween;
 
-            notBetween.Formula.Value.Hour = 12;
-            notBetween.Formula2.Value.Hour = 13;
+        notBetween.Formula.Value.Hour = 12;
+        notBetween.Formula2.Value.Hour = 13;
 
-            notBetween.ShowInputMessage = true;
+        notBetween.ShowInputMessage = true;
 
-            notBetween.PromptTitle = $"Time NOT between 10 and 11";
-            notBetween.Prompt = $"Test for read-write";
+        notBetween.PromptTitle = $"Time NOT between 10 and 11";
+        notBetween.Prompt = $"Test for read-write";
 
-            MemoryStream stream = new MemoryStream();
-            package.SaveAs(stream);
+        MemoryStream stream = new MemoryStream();
+        package.SaveAs(stream);
 
-            ExcelPackage? loadedpkg = new ExcelPackage(stream);
+        ExcelPackage? loadedpkg = new ExcelPackage(stream);
 
-            ExcelDataValidationCollection? dataValidations = loadedpkg.Workbook.Worksheets[0].DataValidations;
+        ExcelDataValidationCollection? dataValidations = loadedpkg.Workbook.Worksheets[0].DataValidations;
 
-            Assert.AreEqual(dataValidations[0].As.TimeValidation.Formula.Value.Hour, 10);
-            Assert.AreEqual(dataValidations[0].As.TimeValidation.Formula2.Value.Hour, 11);
-            Assert.AreEqual(dataValidations[0].As.TimeValidation.PromptTitle, "Time between 10 and 11");
-            Assert.AreEqual(dataValidations[0].As.TimeValidation.Prompt, "Test for read-write");
+        Assert.AreEqual(dataValidations[0].As.TimeValidation.Formula.Value.Hour, 10);
+        Assert.AreEqual(dataValidations[0].As.TimeValidation.Formula2.Value.Hour, 11);
+        Assert.AreEqual(dataValidations[0].As.TimeValidation.PromptTitle, "Time between 10 and 11");
+        Assert.AreEqual(dataValidations[0].As.TimeValidation.Prompt, "Test for read-write");
 
-            Assert.AreEqual(dataValidations[1].As.TimeValidation.Formula.Value.Hour, 12);
-            Assert.AreEqual(dataValidations[1].As.TimeValidation.Formula2.Value.Hour, 13);
-            Assert.AreEqual(dataValidations[1].As.TimeValidation.PromptTitle, "Time NOT between 10 and 11");
-            Assert.AreEqual(dataValidations[1].As.TimeValidation.Prompt, "Test for read-write");
-        }
+        Assert.AreEqual(dataValidations[1].As.TimeValidation.Formula.Value.Hour, 12);
+        Assert.AreEqual(dataValidations[1].As.TimeValidation.Formula2.Value.Hour, 13);
+        Assert.AreEqual(dataValidations[1].As.TimeValidation.PromptTitle, "Time NOT between 10 and 11");
+        Assert.AreEqual(dataValidations[1].As.TimeValidation.Prompt, "Test for read-write");
     }
 }

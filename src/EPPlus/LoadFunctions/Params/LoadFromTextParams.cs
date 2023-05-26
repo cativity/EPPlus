@@ -14,24 +14,23 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace OfficeOpenXml.LoadFunctions.Params
+namespace OfficeOpenXml.LoadFunctions.Params;
+
+/// <summary>
+/// Parameters for the LoadFromDictionaries method
+/// </summary>
+public class LoadFromTextParams
 {
     /// <summary>
-    /// Parameters for the LoadFromDictionaries method
+    /// The first row in the text is the header row
     /// </summary>
-    public class LoadFromTextParams
-    {
-        /// <summary>
-        /// The first row in the text is the header row
-        /// </summary>
-        public bool FirstRowIsHeader { get; set; }
-        /// <summary>
-        /// The text to split
-        /// </summary>
-        public string Text { get; set; }
-        /// <summary>
-        /// Describes how to split a CSV text.
-        /// </summary>
-        public ExcelTextFormat Format { get; set; } = new ExcelTextFormat();
-    }
+    public bool FirstRowIsHeader { get; set; }
+    /// <summary>
+    /// The text to split
+    /// </summary>
+    public string Text { get; set; }
+    /// <summary>
+    /// Describes how to split a CSV text.
+    /// </summary>
+    public ExcelTextFormat Format { get; set; } = new ExcelTextFormat();
 }

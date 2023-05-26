@@ -17,21 +17,20 @@ using System.Text;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Metadata;
 using OfficeOpenXml.FormulaParsing.ExpressionGraph;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
+
+[FunctionMetadata(
+                     Category = ExcelFunctionCategory.MathAndTrig,
+                     EPPlusVersion = "4",
+                     Description = "Returns the result of a given number raised to a supplied power")]
+internal class Power : ExcelFunction
 {
-    [FunctionMetadata(
-        Category = ExcelFunctionCategory.MathAndTrig,
-        EPPlusVersion = "4",
-        Description = "Returns the result of a given number raised to a supplied power")]
-    internal class Power : ExcelFunction
+    public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
     {
-        public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
-        {
-            ValidateArguments(arguments, 2);
-            double number = this.ArgToDecimal(arguments, 0);
-            double power = this.ArgToDecimal(arguments, 1);
-            double result = System.Math.Pow(number, power);
-            return this.CreateResult(result, DataType.Decimal);
-        }
+        ValidateArguments(arguments, 2);
+        double number = this.ArgToDecimal(arguments, 0);
+        double power = this.ArgToDecimal(arguments, 1);
+        double result = System.Math.Pow(number, power);
+        return this.CreateResult(result, DataType.Decimal);
     }
 }

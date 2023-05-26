@@ -18,41 +18,40 @@ using OfficeOpenXml.FormulaParsing.Excel.Functions.Metadata;
 using OfficeOpenXml.FormulaParsing.ExpressionGraph;
 using static OfficeOpenXml.FormulaParsing.ExcelDataProvider;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions.RefAndLookup
-{
-    [FunctionMetadata(
-        Category = ExcelFunctionCategory.LookupAndReference,
-        EPPlusVersion = "4",
-        Description = "Returns one of a list of values, depending on the value of a supplied index number")]
-    internal class Choose : ExcelFunction
-    {
-        public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
-        {
-            ValidateArguments(arguments, 2);
-            List<object>? items = new List<object>();
-            for (int x = 0; x < arguments.Count(); x++)
-            {
-                items.Add(arguments.ElementAt(x).ValueFirst);
-            }
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions.RefAndLookup;
 
-            IEnumerable<FunctionArgument>? chooseIndices = arguments.ElementAt(0).ValueFirst as IEnumerable<FunctionArgument>;
-            if (chooseIndices != null && chooseIndices.Count() > 1)
+[FunctionMetadata(
+                     Category = ExcelFunctionCategory.LookupAndReference,
+                     EPPlusVersion = "4",
+                     Description = "Returns one of a list of values, depending on the value of a supplied index number")]
+internal class Choose : ExcelFunction
+{
+    public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
+    {
+        ValidateArguments(arguments, 2);
+        List<object>? items = new List<object>();
+        for (int x = 0; x < arguments.Count(); x++)
+        {
+            items.Add(arguments.ElementAt(x).ValueFirst);
+        }
+
+        IEnumerable<FunctionArgument>? chooseIndices = arguments.ElementAt(0).ValueFirst as IEnumerable<FunctionArgument>;
+        if (chooseIndices != null && chooseIndices.Count() > 1)
+        {
+            IntArgumentParser intParser = new IntArgumentParser();
+            object[] values = chooseIndices.Select(chosenIndex => items[(int)intParser.Parse(chosenIndex.ValueFirst)]).ToArray();
+            return this.CreateResult(values, DataType.Enumerable);
+        }
+        else
+        {
+            int index = this.ArgToInt(arguments, 0);
+            object? choosedValue = arguments.ElementAt(index).Value;
+            if(choosedValue is IRangeInfo)
             {
-                IntArgumentParser intParser = new IntArgumentParser();
-                object[] values = chooseIndices.Select(chosenIndex => items[(int)intParser.Parse(chosenIndex.ValueFirst)]).ToArray();
-                return this.CreateResult(values, DataType.Enumerable);
+                return this.CreateResult(choosedValue, DataType.Enumerable);
             }
-            else
-            {
-                int index = this.ArgToInt(arguments, 0);
-                object? choosedValue = arguments.ElementAt(index).Value;
-                if(choosedValue is IRangeInfo)
-                {
-                    return this.CreateResult(choosedValue, DataType.Enumerable);
-                }
-                CompileResultFactory? factory = new CompileResultFactory();
-                return factory.Create(choosedValue);
-            }
+            CompileResultFactory? factory = new CompileResultFactory();
+            return factory.Create(choosedValue);
         }
     }
 }

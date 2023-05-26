@@ -15,12 +15,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace OfficeOpenXml.VBA
+namespace OfficeOpenXml.VBA;
+
+internal enum ExcelVbaSignatureType
 {
-    internal enum ExcelVbaSignatureType
-    {
-        Legacy,
-        Agile,
-        V3
-    }
+    Legacy,
+    Agile,
+    V3
 }

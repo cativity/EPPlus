@@ -14,57 +14,56 @@ using OfficeOpenXml.Core;
 using OfficeOpenXml.Core.CellStore;
 using System;
 
-namespace OfficeOpenXml.ExternalReferences
-{
-    /// <summary>
-    /// A representation of an external cached worksheet.
-    /// </summary>
-    public class ExcelExternalWorksheet : IExcelExternalNamedItem
-    {
-        internal ExcelExternalWorksheet()
-        {
-            this.CachedNames = new ExcelExternalNamedItemCollection<ExcelExternalDefinedName>();
-            this.CellValues = new ExcelExternalCellCollection(new CellStore<object>(), new CellStore<int>());
-        }
+namespace OfficeOpenXml.ExternalReferences;
 
-        internal ExcelExternalWorksheet(
-            CellStore<object> values,
-            CellStore<int> metaData,
-            ExcelExternalNamedItemCollection<ExcelExternalDefinedName> definedNames)
-        {
-            this.CachedNames = definedNames;
-            this.CellValues = new ExcelExternalCellCollection(values, metaData);
-        }
-        /// <summary>
-        /// The sheet id
-        /// </summary>
-        public int SheetId { get; internal set; }
-        /// <summary>
-        /// The name of the worksheet.
-        /// </summary>
-        public string Name { get; internal set; }
-        /// <summary>
-        /// If errors have occured on the last update of the cached values.
-        /// </summary>
-        public bool RefreshError { get; internal set; }
-        /// <summary>
-        /// A collection of cached names for an external worksheet
-        /// </summary>
-        public ExcelExternalNamedItemCollection<ExcelExternalDefinedName> CachedNames { get; }
-        /// <summary>
-        /// Cached cell values for the worksheet. Only cells referenced in the workbook are stored in the cache.
-        /// </summary>
-        public ExcelExternalCellCollection CellValues 
-        { 
-            get; 
-        }
-        /// <summary>
-        /// Returns a string that represents the current object.
-        /// </summary>
-        /// <returns>A string that represents the current object.</returns>
-        public override string ToString()
-        {
-            return this.Name;
-        }
+/// <summary>
+/// A representation of an external cached worksheet.
+/// </summary>
+public class ExcelExternalWorksheet : IExcelExternalNamedItem
+{
+    internal ExcelExternalWorksheet()
+    {
+        this.CachedNames = new ExcelExternalNamedItemCollection<ExcelExternalDefinedName>();
+        this.CellValues = new ExcelExternalCellCollection(new CellStore<object>(), new CellStore<int>());
+    }
+
+    internal ExcelExternalWorksheet(
+        CellStore<object> values,
+        CellStore<int> metaData,
+        ExcelExternalNamedItemCollection<ExcelExternalDefinedName> definedNames)
+    {
+        this.CachedNames = definedNames;
+        this.CellValues = new ExcelExternalCellCollection(values, metaData);
+    }
+    /// <summary>
+    /// The sheet id
+    /// </summary>
+    public int SheetId { get; internal set; }
+    /// <summary>
+    /// The name of the worksheet.
+    /// </summary>
+    public string Name { get; internal set; }
+    /// <summary>
+    /// If errors have occured on the last update of the cached values.
+    /// </summary>
+    public bool RefreshError { get; internal set; }
+    /// <summary>
+    /// A collection of cached names for an external worksheet
+    /// </summary>
+    public ExcelExternalNamedItemCollection<ExcelExternalDefinedName> CachedNames { get; }
+    /// <summary>
+    /// Cached cell values for the worksheet. Only cells referenced in the workbook are stored in the cache.
+    /// </summary>
+    public ExcelExternalCellCollection CellValues 
+    { 
+        get; 
+    }
+    /// <summary>
+    /// Returns a string that represents the current object.
+    /// </summary>
+    /// <returns>A string that represents the current object.</returns>
+    public override string ToString()
+    {
+        return this.Name;
     }
 }

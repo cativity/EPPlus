@@ -17,14 +17,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace OfficeOpenXml.Core.Worksheet.Fonts.GenericFontMetrics
+namespace OfficeOpenXml.Core.Worksheet.Fonts.GenericFontMetrics;
+
+internal class DefaultTextMeasurer : GenericFontMetricsTextMeasurerBase
 {
-    internal class DefaultTextMeasurer : GenericFontMetricsTextMeasurerBase
+    internal TextMeasurement Measure(string text, float size)
     {
-        internal TextMeasurement Measure(string text, float size)
-        {
-            uint fontKey = GetKey(FontMetricsFamilies.Calibri, FontSubFamilies.Regular);
-            return this.MeasureTextInternal(text, fontKey, MeasurementFontStyles.Regular, size);
-        }
+        uint fontKey = GetKey(FontMetricsFamilies.Calibri, FontSubFamilies.Regular);
+        return this.MeasureTextInternal(text, fontKey, MeasurementFontStyles.Regular, size);
     }
 }

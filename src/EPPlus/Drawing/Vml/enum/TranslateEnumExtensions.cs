@@ -1,42 +1,41 @@
 ﻿using System;
-namespace OfficeOpenXml.Drawing.Vml
-{
-    internal static class TranslateEnumExtensions
-    {
-        internal static eVmlGradientMethod ToGradientMethodEnum(this string s, eVmlGradientMethod defaultValue)
-        {
-            try
-            {
-                if (string.IsNullOrEmpty(s))
-                {
-                    return defaultValue;
-                }
+namespace OfficeOpenXml.Drawing.Vml;
 
-                if(s=="linear sigma")
-                {
-                    return eVmlGradientMethod.LinearSigma;
-                }
-                else
-                {
-                    return (eVmlGradientMethod)Enum.Parse(typeof(eVmlGradientMethod), s, true);
-                }                    
-            }
-            catch
+internal static class TranslateEnumExtensions
+{
+    internal static eVmlGradientMethod ToGradientMethodEnum(this string s, eVmlGradientMethod defaultValue)
+    {
+        try
+        {
+            if (string.IsNullOrEmpty(s))
             {
                 return defaultValue;
             }
-        }
-        internal static string ToEnumString(this eVmlGradientMethod enumValue)
-        {
-            if(enumValue== eVmlGradientMethod.LinearSigma)
+
+            if(s=="linear sigma")
             {
-                return "linear sigma";
+                return eVmlGradientMethod.LinearSigma;
             }
             else
             {
-                string? s = enumValue.ToString();
-                return s.Substring(0, 1).ToLower() + s.Substring(1);
-            }
+                return (eVmlGradientMethod)Enum.Parse(typeof(eVmlGradientMethod), s, true);
+            }                    
+        }
+        catch
+        {
+            return defaultValue;
+        }
+    }
+    internal static string ToEnumString(this eVmlGradientMethod enumValue)
+    {
+        if(enumValue== eVmlGradientMethod.LinearSigma)
+        {
+            return "linear sigma";
+        }
+        else
+        {
+            string? s = enumValue.ToString();
+            return s.Substring(0, 1).ToLower() + s.Substring(1);
         }
     }
 }

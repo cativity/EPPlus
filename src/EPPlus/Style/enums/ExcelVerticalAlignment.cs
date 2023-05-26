@@ -10,32 +10,31 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
-namespace OfficeOpenXml.Style
+namespace OfficeOpenXml.Style;
+
+/// <summary>
+/// Vertical text alignment
+/// </summary>
+public enum ExcelVerticalAlignment
 {
     /// <summary>
-    /// Vertical text alignment
+    /// Top aligned
     /// </summary>
-    public enum ExcelVerticalAlignment
-    {
-        /// <summary>
-        /// Top aligned
-        /// </summary>
-        Top,
-        /// <summary>
-        /// Center aligned
-        /// </summary>
-        Center,
-        /// <summary>
-        /// Bottom aligned
-        /// </summary>
-        Bottom,
-        /// <summary>
-        /// Distributed. Each line of text inside the cell is evenly distributed across the height of the cell
-        /// </summary>
-        Distributed,
-        /// <summary>
-        /// Justify. Each line of text inside the cell is evenly distributed across the height of the cell
-        /// </summary>
-        Justify
-    }
+    Top,
+    /// <summary>
+    /// Center aligned
+    /// </summary>
+    Center,
+    /// <summary>
+    /// Bottom aligned
+    /// </summary>
+    Bottom,
+    /// <summary>
+    /// Distributed. Each line of text inside the cell is evenly distributed across the height of the cell
+    /// </summary>
+    Distributed,
+    /// <summary>
+    /// Justify. Each line of text inside the cell is evenly distributed across the height of the cell
+    /// </summary>
+    Justify
 }

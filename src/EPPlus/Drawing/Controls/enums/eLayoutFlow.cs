@@ -10,28 +10,27 @@
  *************************************************************************************************
   10/21/2020         EPPlus Software AB           Controls 
  *************************************************************************************************/
-namespace OfficeOpenXml.Drawing.Controls
+namespace OfficeOpenXml.Drawing.Controls;
+
+/// <summary>
+/// Text layout flow.
+/// </summary>
+public enum eLayoutFlow
 {
     /// <summary>
-    /// Text layout flow.
+    /// Text is displayed horizontally.
     /// </summary>
-    public enum eLayoutFlow
-    {
-        /// <summary>
-        /// Text is displayed horizontally.
-        /// </summary>
-        Horizontal,
-        /// <summary>
-        /// Text is displayed vertically.
-        /// </summary>
-        Vertical,
-        /// <summary>
-        /// Ideographic text is displayed horizontally.
-        /// </summary>
-        HorizontalIdeographic,
-        /// <summary>
-        /// Ideographic text is displayed vertically.
-        /// </summary>
-        VerticalIdeographic
-    }
+    Horizontal,
+    /// <summary>
+    /// Text is displayed vertically.
+    /// </summary>
+    Vertical,
+    /// <summary>
+    /// Ideographic text is displayed horizontally.
+    /// </summary>
+    HorizontalIdeographic,
+    /// <summary>
+    /// Ideographic text is displayed vertically.
+    /// </summary>
+    VerticalIdeographic
 }

@@ -15,43 +15,42 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace OfficeOpenXml.Sorting
+namespace OfficeOpenXml.Sorting;
+
+/// <summary>
+/// Critieras for sorting a range left to right
+/// </summary>
+public class RangeLeftToRightSortLayer : SortLayerBase
 {
-    /// <summary>
-    /// Critieras for sorting a range left to right
-    /// </summary>
-    public class RangeLeftToRightSortLayer : SortLayerBase
+    internal RangeLeftToRightSortLayer(RangeSortOptions options)
+        : base(options)
     {
-        internal RangeLeftToRightSortLayer(RangeSortOptions options)
-            : base(options)
-        {
-            options.LeftToRight = true;
-            this._options = options;
-        }
+        options.LeftToRight = true;
+        this._options = options;
+    }
 
-        private readonly RangeSortOptions _options;
+    private readonly RangeSortOptions _options;
 
-        /// <summary>
-        /// Sorts by the column that corresponds to the <paramref name="row"/> (zerobased) with ascending sort direction
-        /// </summary>
-        /// <param name="row">The row to sort on</param>
-        /// <returns>A <see cref="RangeLeftToRightSortLayerBuilder"/> for adding more sort criterias</returns>
-        public virtual RangeLeftToRightSortLayerBuilder Row(int row)
-        {
-            this.SetColumn(row);
-            return new RangeLeftToRightSortLayerBuilder(this._options, this);
-        }
+    /// <summary>
+    /// Sorts by the column that corresponds to the <paramref name="row"/> (zerobased) with ascending sort direction
+    /// </summary>
+    /// <param name="row">The row to sort on</param>
+    /// <returns>A <see cref="RangeLeftToRightSortLayerBuilder"/> for adding more sort criterias</returns>
+    public virtual RangeLeftToRightSortLayerBuilder Row(int row)
+    {
+        this.SetColumn(row);
+        return new RangeLeftToRightSortLayerBuilder(this._options, this);
+    }
 
-        /// <summary>
-        /// Sorts by the column that corresponds to the <paramref name="row"/> (zerobased) using the supplied sort direction.
-        /// </summary>
-        /// <param name="row">The column to sort on</param>
-        /// <param name="sortOrder">Ascending or Descending sort</param>
-        /// <returns>A <see cref="RangeLeftToRightSortLayerBuilder"/> for adding more sort criterias</returns>
-        public RangeLeftToRightSortLayerBuilder Row(int row, eSortOrder sortOrder)
-        {
-            this.SetColumn(row, sortOrder);
-            return new RangeLeftToRightSortLayerBuilder(this._options, this);
-        }
+    /// <summary>
+    /// Sorts by the column that corresponds to the <paramref name="row"/> (zerobased) using the supplied sort direction.
+    /// </summary>
+    /// <param name="row">The column to sort on</param>
+    /// <param name="sortOrder">Ascending or Descending sort</param>
+    /// <returns>A <see cref="RangeLeftToRightSortLayerBuilder"/> for adding more sort criterias</returns>
+    public RangeLeftToRightSortLayerBuilder Row(int row, eSortOrder sortOrder)
+    {
+        this.SetColumn(row, sortOrder);
+        return new RangeLeftToRightSortLayerBuilder(this._options, this);
     }
 }

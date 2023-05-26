@@ -14,37 +14,36 @@ using OfficeOpenXml.DataValidation.Events;
 using OfficeOpenXml.DataValidation.Formulas.Contracts;
 using System;
 
-namespace OfficeOpenXml.DataValidation.Formulas
+namespace OfficeOpenXml.DataValidation.Formulas;
+
+/// <summary>
+/// 
+/// </summary>
+internal class ExcelDataValidationFormulaCustom : ExcelDataValidationFormula, IExcelDataValidationFormula
 {
-    /// <summary>
-    /// 
-    /// </summary>
-    internal class ExcelDataValidationFormulaCustom : ExcelDataValidationFormula, IExcelDataValidationFormula
+    public ExcelDataValidationFormulaCustom(string formula, string validationUid, string sheetName, Action<OnFormulaChangedEventArgs> extHandler)
+        : base(validationUid, sheetName, extHandler)
     {
-        public ExcelDataValidationFormulaCustom(string formula, string validationUid, string sheetName, Action<OnFormulaChangedEventArgs> extHandler)
-            : base(validationUid, sheetName, extHandler)
+        if (!string.IsNullOrEmpty(formula))
         {
-            if (!string.IsNullOrEmpty(formula))
-            {
-                this.ExcelFormula = formula;
-            }
-
-            this.State = FormulaState.Formula;
+            this.ExcelFormula = formula;
         }
 
-        internal override string GetXmlValue()
-        {
-            return this.ExcelFormula;
-        }
+        this.State = FormulaState.Formula;
+    }
 
-        protected override string GetValueAsString()
-        {
-            return this.ExcelFormula;
-        }
+    internal override string GetXmlValue()
+    {
+        return this.ExcelFormula;
+    }
 
-        internal override void ResetValue()
-        {
+    protected override string GetValueAsString()
+    {
+        return this.ExcelFormula;
+    }
 
-        }
+    internal override void ResetValue()
+    {
+
     }
 }

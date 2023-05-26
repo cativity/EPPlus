@@ -16,30 +16,29 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
-{
-    [FunctionMetadata(
-        Category = ExcelFunctionCategory.MathAndTrig,
-        EPPlusVersion = "5.1",
-        Description = "Returns the Double Factorial of a given number")]
-    internal class FactDouble : ExcelFunction
-    {
-        public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
-        {
-            ValidateArguments(arguments, 1);
-            double number = this.ArgToDecimal(arguments, 0);
-            if (number < 0)
-            {
-                return this.CreateResult(eErrorType.NA);
-            }
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
 
-            int downTo = number % 2 == 0 ? 2 : 1;
-            double result = 1d;
-            for(double x = number; x >= downTo; x-=2)
-            {
-                result *= x;
-            }
-            return this.CreateResult(result, DataType.Decimal);
+[FunctionMetadata(
+                     Category = ExcelFunctionCategory.MathAndTrig,
+                     EPPlusVersion = "5.1",
+                     Description = "Returns the Double Factorial of a given number")]
+internal class FactDouble : ExcelFunction
+{
+    public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
+    {
+        ValidateArguments(arguments, 1);
+        double number = this.ArgToDecimal(arguments, 0);
+        if (number < 0)
+        {
+            return this.CreateResult(eErrorType.NA);
         }
+
+        int downTo = number % 2 == 0 ? 2 : 1;
+        double result = 1d;
+        for(double x = number; x >= downTo; x-=2)
+        {
+            result *= x;
+        }
+        return this.CreateResult(result, DataType.Decimal);
     }
 }

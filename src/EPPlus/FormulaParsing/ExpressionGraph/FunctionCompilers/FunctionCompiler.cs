@@ -18,61 +18,60 @@ using OfficeOpenXml.FormulaParsing.Excel.Functions;
 using System.Collections;
 using OfficeOpenXml.FormulaParsing.Utilities;
 
-namespace OfficeOpenXml.FormulaParsing.ExpressionGraph.FunctionCompilers
+namespace OfficeOpenXml.FormulaParsing.ExpressionGraph.FunctionCompilers;
+
+public abstract class FunctionCompiler
 {
-    public abstract class FunctionCompiler
+    protected ExcelFunction Function
     {
-        protected ExcelFunction Function
-        {
-            get;
-            private set;
-        }
-
-        protected ParsingContext Context
-        {
-            get;
-            private set;
-        }
-
-        public FunctionCompiler(ExcelFunction function, ParsingContext context)
-        {
-            Require.That(function).Named("function").IsNotNull();
-            Require.That(context).Named("context").IsNotNull();
-            this.Function = function;
-            this.Context = context;
-        }
-
-        protected static void BuildFunctionArguments(CompileResult compileResult, DataType dataType, List<FunctionArgument> args)
-        {
-            if (compileResult.Result is IEnumerable<object> && !(compileResult.Result is IRangeInfo))
-            {
-                CompileResultFactory? compileResultFactory = new CompileResultFactory();
-                List<FunctionArgument>? argList = new List<FunctionArgument>();
-                IEnumerable<object>? objects = compileResult.Result as IEnumerable<object>;
-                foreach (object? arg in objects)
-                {
-                    CompileResult? cr = compileResultFactory.Create(arg);
-                    BuildFunctionArguments(cr, dataType, argList);
-                }
-                args.Add(new FunctionArgument(argList));
-            }
-            else
-            {
-                FunctionArgument? funcArg = new FunctionArgument(compileResult.Result, dataType);
-                funcArg.ExcelAddressReferenceId = compileResult.ExcelAddressReferenceId;
-                if(compileResult.IsHiddenCell)
-                {
-                    funcArg.SetExcelStateFlag(Excel.ExcelCellState.HiddenCell);
-                }
-                args.Add(funcArg);
-            }
-        }
-
-        protected static void BuildFunctionArguments(CompileResult result, List<FunctionArgument> args)
-        {
-            BuildFunctionArguments(result, result.DataType, args);
-        }
-
-        public abstract CompileResult Compile(IEnumerable<Expression> children);
+        get;
+        private set;
     }
+
+    protected ParsingContext Context
+    {
+        get;
+        private set;
+    }
+
+    public FunctionCompiler(ExcelFunction function, ParsingContext context)
+    {
+        Require.That(function).Named("function").IsNotNull();
+        Require.That(context).Named("context").IsNotNull();
+        this.Function = function;
+        this.Context = context;
+    }
+
+    protected static void BuildFunctionArguments(CompileResult compileResult, DataType dataType, List<FunctionArgument> args)
+    {
+        if (compileResult.Result is IEnumerable<object> && !(compileResult.Result is IRangeInfo))
+        {
+            CompileResultFactory? compileResultFactory = new CompileResultFactory();
+            List<FunctionArgument>? argList = new List<FunctionArgument>();
+            IEnumerable<object>? objects = compileResult.Result as IEnumerable<object>;
+            foreach (object? arg in objects)
+            {
+                CompileResult? cr = compileResultFactory.Create(arg);
+                BuildFunctionArguments(cr, dataType, argList);
+            }
+            args.Add(new FunctionArgument(argList));
+        }
+        else
+        {
+            FunctionArgument? funcArg = new FunctionArgument(compileResult.Result, dataType);
+            funcArg.ExcelAddressReferenceId = compileResult.ExcelAddressReferenceId;
+            if(compileResult.IsHiddenCell)
+            {
+                funcArg.SetExcelStateFlag(Excel.ExcelCellState.HiddenCell);
+            }
+            args.Add(funcArg);
+        }
+    }
+
+    protected static void BuildFunctionArguments(CompileResult result, List<FunctionArgument> args)
+    {
+        BuildFunctionArguments(result, result.DataType, args);
+    }
+
+    public abstract CompileResult Compile(IEnumerable<Expression> children);
 }

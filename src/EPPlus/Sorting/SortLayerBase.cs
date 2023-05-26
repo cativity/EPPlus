@@ -15,76 +15,75 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace OfficeOpenXml.Sorting
+namespace OfficeOpenXml.Sorting;
+
+/// <summary>
+/// Base class for sort layers
+/// </summary>
+public abstract class SortLayerBase
 {
-    /// <summary>
-    /// Base class for sort layers
-    /// </summary>
-    public abstract class SortLayerBase
+    internal SortLayerBase(SortOptionsBase options)
     {
-        internal SortLayerBase(SortOptionsBase options)
+        this._options = options;
+    }
+
+    private readonly SortOptionsBase _options;
+    private int _column = -1;
+    private int _row = -1;
+
+    /// <summary>
+    /// Sets the column
+    /// </summary>
+    /// <param name="column"></param>
+    protected void SetColumn(int column)
+    {
+        this._column = column;
+        this._options.ColumnIndexes.Add(column);
+        this._options.Descending.Add(false);
+    }
+
+    /// <summary>
+    /// Sets the column
+    /// </summary>
+    /// <param name="column">Column to sort</param>
+    /// <param name="sortOrder">Sort order</param>
+    protected void SetColumn(int column, eSortOrder sortOrder)
+    {
+        this._column = column;
+        this._options.ColumnIndexes.Add(column);
+        this._options.Descending.Add((sortOrder == eSortOrder.Descending));
+    }
+
+    /// <summary>
+    /// Sets the row
+    /// </summary>
+    /// <param name="row"></param>
+    protected void SetRow(int row)
+    {
+        this._row = row;
+        this._options.RowIndexes.Add(row);
+        this._options.Descending.Add(false);
+    }
+
+    /// <summary>
+    /// Sets the row
+    /// </summary>
+    /// <param name="row"></param>
+    /// <param name="sortOrder"></param>
+    protected void SetRow(int row, eSortOrder sortOrder)
+    {
+        this._row = row;
+        this._options.RowIndexes.Add(row);
+        this._options.Descending.Add((sortOrder == eSortOrder.Descending));
+    }
+
+    internal void SetCustomList(params string[] values)
+    {
+        if(this._options.CustomLists.ContainsKey(this._column))
         {
-            this._options = options;
+            throw new ArgumentException("Custom list is already defined for column index " + this._column);
         }
 
-        private readonly SortOptionsBase _options;
-        private int _column = -1;
-        private int _row = -1;
-
-        /// <summary>
-        /// Sets the column
-        /// </summary>
-        /// <param name="column"></param>
-        protected void SetColumn(int column)
-        {
-            this._column = column;
-            this._options.ColumnIndexes.Add(column);
-            this._options.Descending.Add(false);
-        }
-
-        /// <summary>
-        /// Sets the column
-        /// </summary>
-        /// <param name="column">Column to sort</param>
-        /// <param name="sortOrder">Sort order</param>
-        protected void SetColumn(int column, eSortOrder sortOrder)
-        {
-            this._column = column;
-            this._options.ColumnIndexes.Add(column);
-            this._options.Descending.Add((sortOrder == eSortOrder.Descending));
-        }
-
-        /// <summary>
-        /// Sets the row
-        /// </summary>
-        /// <param name="row"></param>
-        protected void SetRow(int row)
-        {
-            this._row = row;
-            this._options.RowIndexes.Add(row);
-            this._options.Descending.Add(false);
-        }
-
-        /// <summary>
-        /// Sets the row
-        /// </summary>
-        /// <param name="row"></param>
-        /// <param name="sortOrder"></param>
-        protected void SetRow(int row, eSortOrder sortOrder)
-        {
-            this._row = row;
-            this._options.RowIndexes.Add(row);
-            this._options.Descending.Add((sortOrder == eSortOrder.Descending));
-        }
-
-        internal void SetCustomList(params string[] values)
-        {
-            if(this._options.CustomLists.ContainsKey(this._column))
-            {
-                throw new ArgumentException("Custom list is already defined for column index " + this._column);
-            }
-
-            this._options.CustomLists[this._column] = values;
-        }
+        this._options.CustomLists[this._column] = values;
     }
 }

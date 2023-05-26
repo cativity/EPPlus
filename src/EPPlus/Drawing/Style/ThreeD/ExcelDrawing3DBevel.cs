@@ -14,108 +14,107 @@ using OfficeOpenXml.Utils.Extensions;
 using System;
 using System.Xml;
 
-namespace OfficeOpenXml.Drawing.Style.ThreeD
+namespace OfficeOpenXml.Drawing.Style.ThreeD;
+
+/// <summary>
+/// Defines a bevel off a shape
+/// </summary>
+public class ExcelDrawing3DBevel : XmlHelper
 {
-    /// <summary>
-    /// Defines a bevel off a shape
-    /// </summary>
-    public class ExcelDrawing3DBevel : XmlHelper
+    bool _isInit = false;
+    private string _path;
+    private readonly string _widthPath = "{0}/@w";
+    private readonly string _heightPath = "{0}/@h";
+    private readonly string _typePath="{0}/@prst";
+    private readonly Action<bool> _initParent;
+    internal ExcelDrawing3DBevel(XmlNamespaceManager nameSpaceManager, XmlNode topNode, string[] schemaNodeOrder, string path, Action<bool> initParent) : base(nameSpaceManager, topNode)
     {
-        bool _isInit = false;
-        private string _path;
-        private readonly string _widthPath = "{0}/@w";
-        private readonly string _heightPath = "{0}/@h";
-        private readonly string _typePath="{0}/@prst";
-        private readonly Action<bool> _initParent;
-        internal ExcelDrawing3DBevel(XmlNamespaceManager nameSpaceManager, XmlNode topNode, string[] schemaNodeOrder, string path, Action<bool> initParent) : base(nameSpaceManager, topNode)
+        this.SchemaNodeOrder = schemaNodeOrder;
+        this._path = path;
+        this._widthPath = string.Format(this._widthPath, path);
+        this._heightPath = string.Format(this._heightPath, path);
+        this._typePath = string.Format(this._typePath, path);
+        this._initParent = initParent;
+    }
+    /// <summary>
+    /// The width of the bevel in points (pt)
+    /// </summary>
+    public double Width
+    {
+        get
         {
-            this.SchemaNodeOrder = schemaNodeOrder;
-            this._path = path;
-            this._widthPath = string.Format(this._widthPath, path);
-            this._heightPath = string.Format(this._heightPath, path);
-            this._typePath = string.Format(this._typePath, path);
-            this._initParent = initParent;
+            return this.GetXmlNodeEmuToPtNull(this._widthPath) ?? 6;
         }
-        /// <summary>
-        /// The width of the bevel in points (pt)
-        /// </summary>
-        public double Width
+        set
         {
-            get
+            if (!this._isInit)
             {
-                return this.GetXmlNodeEmuToPtNull(this._widthPath) ?? 6;
+                this.InitXml();
             }
-            set
+
+            this.SetXmlNodeEmuToPt(this._widthPath, value);
+        }
+    }
+
+    private void InitXml()
+    {
+        if (this._isInit==false)
+        {
+            this._isInit = true;
+            if (!this.ExistsNode(this._typePath))
+            {
+                this._initParent(false);
+                this.Height = 6;
+                this.Width = 6;
+                this.BevelType = eBevelPresetType.Circle;
+            }
+        }
+    }
+
+    /// <summary>
+    /// The height of the bevel in points (pt)
+    /// </summary>
+    public double Height
+    {
+        get
+        {
+            return this.GetXmlNodeEmuToPtNull(this._heightPath) ?? 6;
+        }
+        set
+        {
+            if(!this._isInit)
+            {
+                this.InitXml();
+            }
+
+            this.SetXmlNodeEmuToPt(this._heightPath, value);
+        }
+    }
+    /// <summary>
+    /// A preset bevel that can be applied to a shape.
+    /// </summary>
+    public eBevelPresetType BevelType
+    {
+        get
+        {
+            return this.GetXmlNodeString(this._typePath).ToEnum(eBevelPresetType.Circle);
+        }
+        set
+        {
+            if(value==eBevelPresetType.None)
+            {
+                this.DeleteNode(this._typePath);
+                this.DeleteNode(this._heightPath);
+                this.DeleteNode(this._widthPath);
+            }
+            else
             {
                 if (!this._isInit)
                 {
                     this.InitXml();
                 }
 
-                this.SetXmlNodeEmuToPt(this._widthPath, value);
-            }
-        }
-
-        private void InitXml()
-        {
-            if (this._isInit==false)
-            {
-                this._isInit = true;
-                if (!this.ExistsNode(this._typePath))
-                {
-                    this._initParent(false);
-                    this.Height = 6;
-                    this.Width = 6;
-                    this.BevelType = eBevelPresetType.Circle;
-                }
-            }
-        }
-
-        /// <summary>
-        /// The height of the bevel in points (pt)
-        /// </summary>
-        public double Height
-        {
-            get
-            {
-                return this.GetXmlNodeEmuToPtNull(this._heightPath) ?? 6;
-            }
-            set
-            {
-                if(!this._isInit)
-                {
-                    this.InitXml();
-                }
-
-                this.SetXmlNodeEmuToPt(this._heightPath, value);
-            }
-        }
-        /// <summary>
-        /// A preset bevel that can be applied to a shape.
-        /// </summary>
-        public eBevelPresetType BevelType
-        {
-            get
-            {
-                return this.GetXmlNodeString(this._typePath).ToEnum(eBevelPresetType.Circle);
-            }
-            set
-            {
-                if(value==eBevelPresetType.None)
-                {
-                    this.DeleteNode(this._typePath);
-                    this.DeleteNode(this._heightPath);
-                    this.DeleteNode(this._widthPath);
-                }
-                else
-                {
-                    if (!this._isInit)
-                    {
-                        this.InitXml();
-                    }
-
-                    this.SetXmlNodeString(this._typePath, value.ToEnumString());
-                }
+                this.SetXmlNodeString(this._typePath, value.ToEnumString());
             }
         }
     }

@@ -16,39 +16,38 @@ using OfficeOpenXml.FormulaParsing.ExpressionGraph;
 using System;
 using System.Collections.Generic;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance;
+
+[FunctionMetadata(
+                     Category = ExcelFunctionCategory.Financial,
+                     EPPlusVersion = "6.0",
+                     Description = "Calculates the price per $100 face value for a treasury bill")]
+internal class TbillPrice : ExcelFunction
 {
-    [FunctionMetadata(
-        Category = ExcelFunctionCategory.Financial,
-        EPPlusVersion = "6.0",
-        Description = "Calculates the price per $100 face value for a treasury bill")]
-    internal class TbillPrice : ExcelFunction
+    public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
     {
-        public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
+        ValidateArguments(arguments, 3);
+        System.DateTime settlementDate = System.DateTime.FromOADate(this.ArgToInt(arguments, 0));
+        System.DateTime maturityDate = System.DateTime.FromOADate(this.ArgToInt(arguments, 1));
+        double discount = this.ArgToDecimal(arguments, 2);
+        if (settlementDate >= maturityDate)
         {
-            ValidateArguments(arguments, 3);
-            System.DateTime settlementDate = System.DateTime.FromOADate(this.ArgToInt(arguments, 0));
-            System.DateTime maturityDate = System.DateTime.FromOADate(this.ArgToInt(arguments, 1));
-            double discount = this.ArgToDecimal(arguments, 2);
-            if (settlementDate >= maturityDate)
-            {
-                return this.CreateResult(eErrorType.Num);
-            }
-
-            if (maturityDate.Subtract(settlementDate).TotalDays > 365)
-            {
-                return this.CreateResult(eErrorType.Num);
-            }
-
-            if (discount <= 0d)
-            {
-                return this.CreateResult(eErrorType.Num);
-            }
-
-            IFinanicalDays? finDays = FinancialDaysFactory.Create(DayCountBasis.Actual_360);
-            double nDaysInPeriod = finDays.GetDaysBetweenDates(settlementDate, maturityDate);
-            double result = 100d * (1d - (discount * nDaysInPeriod / 360d));
-            return this.CreateResult(result, DataType.Decimal);
+            return this.CreateResult(eErrorType.Num);
         }
+
+        if (maturityDate.Subtract(settlementDate).TotalDays > 365)
+        {
+            return this.CreateResult(eErrorType.Num);
+        }
+
+        if (discount <= 0d)
+        {
+            return this.CreateResult(eErrorType.Num);
+        }
+
+        IFinanicalDays? finDays = FinancialDaysFactory.Create(DayCountBasis.Actual_360);
+        double nDaysInPeriod = finDays.GetDaysBetweenDates(settlementDate, maturityDate);
+        double result = 100d * (1d - (discount * nDaysInPeriod / 360d));
+        return this.CreateResult(result, DataType.Decimal);
     }
 }

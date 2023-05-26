@@ -10,24 +10,23 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
-namespace OfficeOpenXml.Style
+namespace OfficeOpenXml.Style;
+
+/// <summary>
+/// The reading order
+/// </summary>
+public enum ExcelReadingOrder
 {
     /// <summary>
-    /// The reading order
+    /// Reading order is determined by the first non-whitespace character
     /// </summary>
-    public enum ExcelReadingOrder
-    {
-        /// <summary>
-        /// Reading order is determined by the first non-whitespace character
-        /// </summary>
-        ContextDependent=0,
-        /// <summary>
-        /// Left to Right
-        /// </summary>
-        LeftToRight=1,
-        /// <summary>
-        /// Right to Left
-        /// </summary>
-        RightToLeft=2
-    }
+    ContextDependent=0,
+    /// <summary>
+    /// Left to Right
+    /// </summary>
+    LeftToRight=1,
+    /// <summary>
+    /// Right to Left
+    /// </summary>
+    RightToLeft=2
 }

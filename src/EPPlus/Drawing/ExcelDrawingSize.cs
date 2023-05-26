@@ -12,78 +12,77 @@
  *************************************************************************************************/
 using System.Xml;
 
-namespace OfficeOpenXml.Drawing
-{
-    /// <summary>
-    /// The size of the drawing 
-    /// </summary>
-    public class ExcelDrawingSize : XmlHelper
-    {
-        internal delegate void SetWidthCallback();
-        SetWidthCallback _setWidthCallback;
-        internal ExcelDrawingSize(XmlNamespaceManager ns, XmlNode node, SetWidthCallback setWidthCallback=null) :
-            base (ns,node)
-        {
-            this._setWidthCallback = setWidthCallback;
-            this.Load();
-        }
+namespace OfficeOpenXml.Drawing;
 
-        private void Load()
+/// <summary>
+/// The size of the drawing 
+/// </summary>
+public class ExcelDrawingSize : XmlHelper
+{
+    internal delegate void SetWidthCallback();
+    SetWidthCallback _setWidthCallback;
+    internal ExcelDrawingSize(XmlNamespaceManager ns, XmlNode node, SetWidthCallback setWidthCallback=null) :
+        base (ns,node)
+    {
+        this._setWidthCallback = setWidthCallback;
+        this.Load();
+    }
+
+    private void Load()
+    {
+        this._height = this.GetXmlNodeLong(colOffPath);
+        this._width = this.GetXmlNodeLong(rowOffPath);
+    }
+    public void UpdateXml()
+    {
+        this.SetXmlNodeString(colOffPath, this._height.ToString());
+        this.SetXmlNodeString(rowOffPath, this._width.ToString());
+    }
+    const string colOffPath = "@cy";
+    long _height=long.MinValue;
+    /// <summary>
+    /// Column Offset
+    /// 
+    /// EMU units   1cm         =   1/360000 
+    ///             1US inch    =   1/914400
+    ///             1pixel      =   1/9525
+    /// </summary>
+    public long Height
+    {
+        get
         {
-            this._height = this.GetXmlNodeLong(colOffPath);
-            this._width = this.GetXmlNodeLong(rowOffPath);
+            return this._height;
         }
-        public void UpdateXml()
+        set
         {
-            this.SetXmlNodeString(colOffPath, this._height.ToString());
-            this.SetXmlNodeString(rowOffPath, this._width.ToString());
-        }
-        const string colOffPath = "@cy";
-        long _height=long.MinValue;
-        /// <summary>
-        /// Column Offset
-        /// 
-        /// EMU units   1cm         =   1/360000 
-        ///             1US inch    =   1/914400
-        ///             1pixel      =   1/9525
-        /// </summary>
-        public long Height
-        {
-            get
+            this._height = value;
+            if (this._setWidthCallback != null)
             {
-                return this._height;
-            }
-            set
-            {
-                this._height = value;
-                if (this._setWidthCallback != null)
-                {
-                    this._setWidthCallback();
-                }
+                this._setWidthCallback();
             }
         }
-        const string rowOffPath = "@cx";
-        long _width = long.MinValue;
-        /// <summary>
-        /// Row Offset
-        /// 
-        /// EMU units   1cm         =   1/360000 
-        ///             1US inch    =   1/914400
-        ///             1pixel      =   1/9525
-        /// </summary>
-        public long Width
+    }
+    const string rowOffPath = "@cx";
+    long _width = long.MinValue;
+    /// <summary>
+    /// Row Offset
+    /// 
+    /// EMU units   1cm         =   1/360000 
+    ///             1US inch    =   1/914400
+    ///             1pixel      =   1/9525
+    /// </summary>
+    public long Width
+    {
+        get
         {
-            get
+            return this._width;                
+        }
+        set
+        {
+            this._width = value;
+            if (this._setWidthCallback != null)
             {
-                return this._width;                
-            }
-            set
-            {
-                this._width = value;
-                if (this._setWidthCallback != null)
-                {
-                    this._setWidthCallback();
-                }
+                this._setWidthCallback();
             }
         }
     }

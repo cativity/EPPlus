@@ -16,24 +16,23 @@ using System.Collections.Generic;
 using System.Text;
 using System.Xml;
 
-namespace OfficeOpenXml.Drawing.Style.Effect
-{
-    /// <summary>
-    /// A color change effect
-    /// </summary>
-    public class ExcelDrawingColorReplaceEffect : XmlHelper
-    {
-        internal ExcelDrawingColorReplaceEffect(XmlNamespaceManager nsm, XmlNode topNode) : base(nsm, topNode)
-        {
+namespace OfficeOpenXml.Drawing.Style.Effect;
 
-        }
-        private  ExcelDrawingColorManager _color;
-        /// <summary>
-        /// The color to replace with
-        /// </summary>
-        public ExcelDrawingColorManager Color
-        {
-            get { return this._color ??= new ExcelDrawingColorManager(this.NameSpaceManager, this.TopNode, "", this.SchemaNodeOrder); }
-        }
+/// <summary>
+/// A color change effect
+/// </summary>
+public class ExcelDrawingColorReplaceEffect : XmlHelper
+{
+    internal ExcelDrawingColorReplaceEffect(XmlNamespaceManager nsm, XmlNode topNode) : base(nsm, topNode)
+    {
+
+    }
+    private  ExcelDrawingColorManager _color;
+    /// <summary>
+    /// The color to replace with
+    /// </summary>
+    public ExcelDrawingColorManager Color
+    {
+        get { return this._color ??= new ExcelDrawingColorManager(this.NameSpaceManager, this.TopNode, "", this.SchemaNodeOrder); }
     }
 }

@@ -13,48 +13,46 @@
 using OfficeOpenXml.DataValidation.Events;
 using System;
 
-namespace OfficeOpenXml.DataValidation.Formulas
+namespace OfficeOpenXml.DataValidation.Formulas;
+
+/// <summary>
+/// This class represents a validation formula. Its value can be specified as a value of the specified datatype or as a formula.
+/// </summary>
+/// <typeparam name="T"></typeparam>
+internal abstract class ExcelDataValidationFormulaValue<T> : ExcelDataValidationFormula
 {
-
     /// <summary>
-    /// This class represents a validation formula. Its value can be specified as a value of the specified datatype or as a formula.
+    /// Constructor
     /// </summary>
-    /// <typeparam name="T"></typeparam>
-    internal abstract class ExcelDataValidationFormulaValue<T> : ExcelDataValidationFormula
+    /// <param name="validationUid">Uid for the data validation</param>
+    public ExcelDataValidationFormulaValue(string validationUid, string worksheetName, Action<OnFormulaChangedEventArgs> extListHandler)
+        : base(validationUid, worksheetName, extListHandler)
     {
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        /// <param name="validationUid">Uid for the data validation</param>
-        public ExcelDataValidationFormulaValue(string validationUid, string worksheetName, Action<OnFormulaChangedEventArgs> extListHandler)
-            : base(validationUid, worksheetName, extListHandler)
-        {
-
-        }
-
-        internal override bool HasValue => this._value == null ? false : true;
-
-        private T _value;
-        /// <summary>
-        /// Typed value
-        /// </summary>
-        public T Value
-        {
-            get
-            {
-                return this._value;
-            }
-            set
-            {
-                this.State = FormulaState.Value;
-                this._value = value;
-            }
-        }
-
-        internal override void ResetValue()
-        {
-            this.Value = default(T);
-        }
 
     }
+
+    internal override bool HasValue => this._value == null ? false : true;
+
+    private T _value;
+    /// <summary>
+    /// Typed value
+    /// </summary>
+    public T Value
+    {
+        get
+        {
+            return this._value;
+        }
+        set
+        {
+            this.State = FormulaState.Value;
+            this._value = value;
+        }
+    }
+
+    internal override void ResetValue()
+    {
+        this.Value = default(T);
+    }
+
 }

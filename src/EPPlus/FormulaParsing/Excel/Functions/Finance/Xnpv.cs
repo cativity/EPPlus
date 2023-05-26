@@ -18,62 +18,61 @@ using OfficeOpenXml.FormulaParsing;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Metadata;
 using OfficeOpenXml.FormulaParsing.ExpressionGraph;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance;
+
+[FunctionMetadata(
+                     Category = ExcelFunctionCategory.Financial,
+                     EPPlusVersion = "5.2",
+                     Description = "Calculates the net present value for a schedule of cash flows occurring at a series of supplied dates")]
+internal class Xnpv : ExcelFunction
 {
-    [FunctionMetadata(
-       Category = ExcelFunctionCategory.Financial,
-       EPPlusVersion = "5.2",
-       Description = "Calculates the net present value for a schedule of cash flows occurring at a series of supplied dates")]
-    internal class Xnpv : ExcelFunction
+    public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
     {
-        public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
+        ValidateArguments(arguments, 3);
+        double rate = this.ArgToDecimal(arguments, 0);
+        List<FunctionArgument>? arg2 = new List<FunctionArgument> { arguments.ElementAt(1) };
+        IEnumerable<ExcelDoubleCellValue>? values = this.ArgsToDoubleEnumerable(arg2, context);
+        IEnumerable<System.DateTime>? dates = GetDates(arguments.ElementAt(2), context);
+        if (values.Count() != dates.Count())
         {
-            ValidateArguments(arguments, 3);
-            double rate = this.ArgToDecimal(arguments, 0);
-            List<FunctionArgument>? arg2 = new List<FunctionArgument> { arguments.ElementAt(1) };
-            IEnumerable<ExcelDoubleCellValue>? values = this.ArgsToDoubleEnumerable(arg2, context);
-            IEnumerable<System.DateTime>? dates = GetDates(arguments.ElementAt(2), context);
-            if (values.Count() != dates.Count())
+            return this.CreateResult(eErrorType.Num);
+        }
+
+        System.DateTime firstDate = dates.First();
+        double result = 0d;
+        for(int i = 0; i < values.Count(); i++)
+        {
+            System.DateTime dt = dates.ElementAt(i);
+            ExcelDoubleCellValue val = values.ElementAt(i);
+            if (dt < firstDate)
             {
                 return this.CreateResult(eErrorType.Num);
             }
 
-            System.DateTime firstDate = dates.First();
-            double result = 0d;
-            for(int i = 0; i < values.Count(); i++)
-            {
-                System.DateTime dt = dates.ElementAt(i);
-                ExcelDoubleCellValue val = values.ElementAt(i);
-                if (dt < firstDate)
-                {
-                    return this.CreateResult(eErrorType.Num);
-                }
-
-                result += val / System.Math.Pow(1d + rate, dt.Subtract(firstDate).TotalDays / 365d);
-            }
-            return this.CreateResult(result, DataType.Decimal);
+            result += val / System.Math.Pow(1d + rate, dt.Subtract(firstDate).TotalDays / 365d);
         }
+        return this.CreateResult(result, DataType.Decimal);
+    }
 
-        private static IEnumerable<System.DateTime> GetDates(FunctionArgument arg, ParsingContext context)
+    private static IEnumerable<System.DateTime> GetDates(FunctionArgument arg, ParsingContext context)
+    {
+        List<System.DateTime>? dates = new List<System.DateTime>();
+        if(arg.Value is IEnumerable<FunctionArgument>)
         {
-            List<System.DateTime>? dates = new List<System.DateTime>();
-            if(arg.Value is IEnumerable<FunctionArgument>)
+            IEnumerable<int>? args = ((IEnumerable<FunctionArgument>)arg.Value).Select(x => (int)x.Value);
+            foreach(int num in args)
             {
-                IEnumerable<int>? args = ((IEnumerable<FunctionArgument>)arg.Value).Select(x => (int)x.Value);
-                foreach(int num in args)
-                {
-                    dates.Add(System.DateTime.FromOADate(num));
-                }
+                dates.Add(System.DateTime.FromOADate(num));
             }
-            else if (arg.Value is IRangeInfo)
-            {
-                foreach (ICellInfo? c in (IRangeInfo)arg.Value)
-                {
-                    int num = Convert.ToInt32(c.ValueDouble);
-                    dates.Add(System.DateTime.FromOADate(num));
-                }
-            }
-            return dates;
         }
+        else if (arg.Value is IRangeInfo)
+        {
+            foreach (ICellInfo? c in (IRangeInfo)arg.Value)
+            {
+                int num = Convert.ToInt32(c.ValueDouble);
+                dates.Add(System.DateTime.FromOADate(num));
+            }
+        }
+        return dates;
     }
 }

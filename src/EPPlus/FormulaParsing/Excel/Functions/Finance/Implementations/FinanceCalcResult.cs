@@ -15,51 +15,50 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.Implementations
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.Implementations;
+
+public class FinanceCalcResult<T>
 {
-    public class FinanceCalcResult<T>
+    public FinanceCalcResult(T result)
     {
-        public FinanceCalcResult(T result)
+        this.Result = result;
+        if(result is double)
         {
-            this.Result = result;
-            if(result is double)
-            {
-                this.DataType = DataType.Decimal;
-            }
-            else if(result is int)
-            {
-                this.DataType = DataType.Integer;
-            }
-            else if(result is System.DateTime)
-            {
-                this.DataType = DataType.Date;
-            }
-            else
-            {
-                this.DataType = DataType.Unknown;
-            }
+            this.DataType = DataType.Decimal;
         }
-        public FinanceCalcResult(T result, DataType dataType)
+        else if(result is int)
         {
-            this.Result = result;
-            this.DataType = dataType;
+            this.DataType = DataType.Integer;
         }
-
-        public FinanceCalcResult(eErrorType error)
+        else if(result is System.DateTime)
         {
-            this.HasError = true;
-            this.ExcelErrorType = error;
+            this.DataType = DataType.Date;
         }
-
-        public T Result { get; private set; }
-
-        public DataType DataType { get; private set; }
-
-        public bool HasError
+        else
         {
-            get; private set;
+            this.DataType = DataType.Unknown;
         }
-
-        public eErrorType ExcelErrorType { get; private set; }
     }
+    public FinanceCalcResult(T result, DataType dataType)
+    {
+        this.Result = result;
+        this.DataType = dataType;
+    }
+
+    public FinanceCalcResult(eErrorType error)
+    {
+        this.HasError = true;
+        this.ExcelErrorType = error;
+    }
+
+    public T Result { get; private set; }
+
+    public DataType DataType { get; private set; }
+
+    public bool HasError
+    {
+        get; private set;
+    }
+
+    public eErrorType ExcelErrorType { get; private set; }
 }

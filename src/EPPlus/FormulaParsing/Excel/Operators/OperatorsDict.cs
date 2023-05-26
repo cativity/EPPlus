@@ -15,31 +15,30 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Operators
+namespace OfficeOpenXml.FormulaParsing.Excel.Operators;
+
+public class OperatorsDict : Dictionary<string, IOperator>
 {
-    public class OperatorsDict : Dictionary<string, IOperator>
+    public OperatorsDict()
     {
-        public OperatorsDict()
-        {
-            this.Add("+", Operator.Plus);
-            this.Add("-", Operator.Minus);
-            this.Add("*", Operator.Multiply);
-            this.Add("/", Operator.Divide);
-            this.Add("^", Operator.Exp);
-            this.Add("=", Operator.Eq);
-            this.Add(">", Operator.GreaterThan);
-            this.Add(">=", Operator.GreaterThanOrEqual);
-            this.Add("<", Operator.LessThan);
-            this.Add("<=", Operator.LessThanOrEqual);
-            this.Add("<>", Operator.NotEqualsTo);
-            this.Add("&", Operator.Concat);
-        }
+        this.Add("+", Operator.Plus);
+        this.Add("-", Operator.Minus);
+        this.Add("*", Operator.Multiply);
+        this.Add("/", Operator.Divide);
+        this.Add("^", Operator.Exp);
+        this.Add("=", Operator.Eq);
+        this.Add(">", Operator.GreaterThan);
+        this.Add(">=", Operator.GreaterThanOrEqual);
+        this.Add("<", Operator.LessThan);
+        this.Add("<=", Operator.LessThanOrEqual);
+        this.Add("<>", Operator.NotEqualsTo);
+        this.Add("&", Operator.Concat);
+    }
 
-        private static IDictionary<string, IOperator> _instance;
+    private static IDictionary<string, IOperator> _instance;
 
-        public static IDictionary<string, IOperator> Instance
-        {
-            get { return _instance ??= new OperatorsDict(); }
-        }
+    public static IDictionary<string, IOperator> Instance
+    {
+        get { return _instance ??= new OperatorsDict(); }
     }
 }

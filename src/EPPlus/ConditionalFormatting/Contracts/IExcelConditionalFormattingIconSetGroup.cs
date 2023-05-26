@@ -17,15 +17,15 @@ using System.Text;
 
 using OfficeOpenXml.ConditionalFormatting;
 
-namespace OfficeOpenXml.ConditionalFormatting.Contracts
+namespace OfficeOpenXml.ConditionalFormatting.Contracts;
+
+/// <summary>
+/// IExcelConditionalFormattingIconSetGroup
+/// </summary>
+public interface IExcelConditionalFormattingIconSetGroup<T>
+    : IExcelConditionalFormattingRule
 {
-	/// <summary>
-	/// IExcelConditionalFormattingIconSetGroup
-	/// </summary>
-	public interface IExcelConditionalFormattingIconSetGroup<T>
-		: IExcelConditionalFormattingRule
-	{
-		#region Public Properties
+    #region Public Properties
     /// <summary>
     /// Reverse
     /// </summary>
@@ -41,5 +41,4 @@ namespace OfficeOpenXml.ConditionalFormatting.Contracts
     /// </summary>
     T IconSet { get; set; }
     #endregion Public Properties
-	}
 }

@@ -32,141 +32,140 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace EPPlusTest.DataValidation
+namespace EPPlusTest.DataValidation;
+
+[TestClass]
+public class RangeBaseTests : ValidationTestBase
 {
-    [TestClass]
-    public class RangeBaseTests : ValidationTestBase
+    [TestInitialize]
+    public void Setup()
     {
-        [TestInitialize]
-        public void Setup()
-        {
-            this.SetupTestData();
-        }
+        this.SetupTestData();
+    }
 
-        [TestCleanup]
-        public void Cleanup()
-        {
-            this.CleanupTestData();
-        }
+    [TestCleanup]
+    public void Cleanup()
+    {
+        this.CleanupTestData();
+    }
 
-        [TestMethod]
-        public void RangeBase_AddIntegerValidation_ValidationIsAdded()
-        {
-            // Act
-            this._sheet.Cells["A1:A2"].DataValidation.AddIntegerDataValidation();
+    [TestMethod]
+    public void RangeBase_AddIntegerValidation_ValidationIsAdded()
+    {
+        // Act
+        this._sheet.Cells["A1:A2"].DataValidation.AddIntegerDataValidation();
 
-            // Assert
-            Assert.AreEqual(1, this._sheet.DataValidations.Count);
-        }
+        // Assert
+        Assert.AreEqual(1, this._sheet.DataValidations.Count);
+    }
 
-        [TestMethod]
-        public void RangeBase_AddIntegerValidation_AddressIsCorrect()
-        {
-            // Act
-            this._sheet.Cells["A1:A2"].DataValidation.AddIntegerDataValidation();
+    [TestMethod]
+    public void RangeBase_AddIntegerValidation_AddressIsCorrect()
+    {
+        // Act
+        this._sheet.Cells["A1:A2"].DataValidation.AddIntegerDataValidation();
 
-            // Assert
-            Assert.AreEqual("A1:A2", this._sheet.DataValidations[0].Address.Address);
-        }
+        // Assert
+        Assert.AreEqual("A1:A2", this._sheet.DataValidations[0].Address.Address);
+    }
 
-        [TestMethod]
-        public void RangeBase_AddDecimalValidation_ValidationIsAdded()
-        {
-            // Act
-            this._sheet.Cells["A1:A2"].DataValidation.AddDecimalDataValidation();
+    [TestMethod]
+    public void RangeBase_AddDecimalValidation_ValidationIsAdded()
+    {
+        // Act
+        this._sheet.Cells["A1:A2"].DataValidation.AddDecimalDataValidation();
 
-            // Assert
-            Assert.AreEqual(1, this._sheet.DataValidations.Count);
-        }
+        // Assert
+        Assert.AreEqual(1, this._sheet.DataValidations.Count);
+    }
 
-        [TestMethod]
-        public void RangeBase_AddDecimalValidation_AddressIsCorrect()
-        {
-            // Act
-            this._sheet.Cells["A1:A2"].DataValidation.AddDecimalDataValidation();
+    [TestMethod]
+    public void RangeBase_AddDecimalValidation_AddressIsCorrect()
+    {
+        // Act
+        this._sheet.Cells["A1:A2"].DataValidation.AddDecimalDataValidation();
 
-            // Assert
-            Assert.AreEqual("A1:A2", this._sheet.DataValidations[0].Address.Address);
-        }
+        // Assert
+        Assert.AreEqual("A1:A2", this._sheet.DataValidations[0].Address.Address);
+    }
 
-        [TestMethod]
-        public void RangeBase_AddTextLengthValidation_ValidationIsAdded()
-        {
-            // Act
-            this._sheet.Cells["A1:A2"].DataValidation.AddTextLengthDataValidation();
+    [TestMethod]
+    public void RangeBase_AddTextLengthValidation_ValidationIsAdded()
+    {
+        // Act
+        this._sheet.Cells["A1:A2"].DataValidation.AddTextLengthDataValidation();
 
-            // Assert
-            Assert.AreEqual(1, this._sheet.DataValidations.Count);
-        }
+        // Assert
+        Assert.AreEqual(1, this._sheet.DataValidations.Count);
+    }
 
-        [TestMethod]
-        public void RangeBase_AddTextLengthValidation_AddressIsCorrect()
-        {
-            // Act
-            this._sheet.Cells["A1:A2"].DataValidation.AddTextLengthDataValidation();
+    [TestMethod]
+    public void RangeBase_AddTextLengthValidation_AddressIsCorrect()
+    {
+        // Act
+        this._sheet.Cells["A1:A2"].DataValidation.AddTextLengthDataValidation();
 
-            // Assert
-            Assert.AreEqual("A1:A2", this._sheet.DataValidations[0].Address.Address);
-        }
+        // Assert
+        Assert.AreEqual("A1:A2", this._sheet.DataValidations[0].Address.Address);
+    }
 
-        [TestMethod]
-        public void RangeBase_AddDateTimeValidation_ValidationIsAdded()
-        {
-            // Act
-            this._sheet.Cells["A1:A2"].DataValidation.AddDateTimeDataValidation();
+    [TestMethod]
+    public void RangeBase_AddDateTimeValidation_ValidationIsAdded()
+    {
+        // Act
+        this._sheet.Cells["A1:A2"].DataValidation.AddDateTimeDataValidation();
 
-            // Assert
-            Assert.AreEqual(1, this._sheet.DataValidations.Count);
-        }
+        // Assert
+        Assert.AreEqual(1, this._sheet.DataValidations.Count);
+    }
 
-        [TestMethod]
-        public void RangeBase_AddDateTimeValidation_AddressIsCorrect()
-        {
-            // Act
-            this._sheet.Cells["A1:A2"].DataValidation.AddDateTimeDataValidation();
+    [TestMethod]
+    public void RangeBase_AddDateTimeValidation_AddressIsCorrect()
+    {
+        // Act
+        this._sheet.Cells["A1:A2"].DataValidation.AddDateTimeDataValidation();
 
-            // Assert
-            Assert.AreEqual("A1:A2", this._sheet.DataValidations[0].Address.Address);
-        }
+        // Assert
+        Assert.AreEqual("A1:A2", this._sheet.DataValidations[0].Address.Address);
+    }
 
-        [TestMethod]
-        public void RangeBase_AddListValidation_ValidationIsAdded()
-        {
-            // Act
-            this._sheet.Cells["A1:A2"].DataValidation.AddListDataValidation();
+    [TestMethod]
+    public void RangeBase_AddListValidation_ValidationIsAdded()
+    {
+        // Act
+        this._sheet.Cells["A1:A2"].DataValidation.AddListDataValidation();
 
-            // Assert
-            Assert.AreEqual(1, this._sheet.DataValidations.Count);
-        }
+        // Assert
+        Assert.AreEqual(1, this._sheet.DataValidations.Count);
+    }
 
-        [TestMethod]
-        public void RangeBase_AddListValidation_AddressIsCorrect()
-        {
-            // Act
-            this._sheet.Cells["A1:A2"].DataValidation.AddListDataValidation();
+    [TestMethod]
+    public void RangeBase_AddListValidation_AddressIsCorrect()
+    {
+        // Act
+        this._sheet.Cells["A1:A2"].DataValidation.AddListDataValidation();
 
-            // Assert
-            Assert.AreEqual("A1:A2", this._sheet.DataValidations[0].Address.Address);
-        }
+        // Assert
+        Assert.AreEqual("A1:A2", this._sheet.DataValidations[0].Address.Address);
+    }
 
-        [TestMethod]
-        public void RangeBase_AdTimeValidation_ValidationIsAdded()
-        {
-            // Act
-            this._sheet.Cells["A1:A2"].DataValidation.AddTimeDataValidation();
+    [TestMethod]
+    public void RangeBase_AdTimeValidation_ValidationIsAdded()
+    {
+        // Act
+        this._sheet.Cells["A1:A2"].DataValidation.AddTimeDataValidation();
 
-            // Assert
-            Assert.AreEqual(1, this._sheet.DataValidations.Count);
-        }
+        // Assert
+        Assert.AreEqual(1, this._sheet.DataValidations.Count);
+    }
 
-        [TestMethod]
-        public void RangeBase_AddTimeValidation_AddressIsCorrect()
-        {
-            // Act
-            this._sheet.Cells["A1:A2"].DataValidation.AddTimeDataValidation();
+    [TestMethod]
+    public void RangeBase_AddTimeValidation_AddressIsCorrect()
+    {
+        // Act
+        this._sheet.Cells["A1:A2"].DataValidation.AddTimeDataValidation();
 
-            // Assert
-            Assert.AreEqual("A1:A2", this._sheet.DataValidations[0].Address.Address);
-        }
+        // Assert
+        Assert.AreEqual("A1:A2", this._sheet.DataValidations[0].Address.Address);
     }
 }

@@ -14,91 +14,90 @@ using OfficeOpenXml.Compatibility;
 using System;
 using System.Collections.Generic;
 
-namespace OfficeOpenXml.VBA
+namespace OfficeOpenXml.VBA;
+
+/// <summary>
+/// Base class for VBA collections
+/// </summary>
+/// <typeparam name="T"></typeparam>
+public class ExcelVBACollectionBase<T> : IEnumerable<T>
 {
     /// <summary>
-    /// Base class for VBA collections
+    /// A list of vba objects
     /// </summary>
-    /// <typeparam name="T"></typeparam>
-    public class ExcelVBACollectionBase<T> : IEnumerable<T>
+    internal protected List<T> _list=new List<T>();
+    /// <summary>
+    /// Gets the enumerator for the collection
+    /// </summary>
+    /// <returns>The enumerator</returns>
+    public IEnumerator<T> GetEnumerator()
     {
-        /// <summary>
-        /// A list of vba objects
-        /// </summary>
-        internal protected List<T> _list=new List<T>();
-        /// <summary>
-        /// Gets the enumerator for the collection
-        /// </summary>
-        /// <returns>The enumerator</returns>
-        public IEnumerator<T> GetEnumerator()
-        {
-            return this._list.GetEnumerator();
-        }
+        return this._list.GetEnumerator();
+    }
 
-        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+    System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+    {
+        return this._list.GetEnumerator();
+    }
+    /// <summary>
+    /// Indexer
+    /// </summary>
+    /// <param name="Name">Name</param>
+    /// <returns></returns>
+    public T this [string Name]
+    {
+        get
         {
-            return this._list.GetEnumerator();
+            return this._list.Find((f) => TypeCompat.GetPropertyValue(f,"Name").ToString().Equals(Name,StringComparison.OrdinalIgnoreCase));
         }
-        /// <summary>
-        /// Indexer
-        /// </summary>
-        /// <param name="Name">Name</param>
-        /// <returns></returns>
-        public T this [string Name]
+    }
+    /// <summary>
+    /// Indexer
+    /// </summary>
+    /// <param name="Index">Position</param>
+    /// <returns></returns>
+    public T this[int Index]
+    {
+        get
         {
-            get
-            {
-                return this._list.Find((f) => TypeCompat.GetPropertyValue(f,"Name").ToString().Equals(Name,StringComparison.OrdinalIgnoreCase));
-            }
+            return this._list[Index];
         }
-        /// <summary>
-        /// Indexer
-        /// </summary>
-        /// <param name="Index">Position</param>
-        /// <returns></returns>
-        public T this[int Index]
-        {
-            get
-            {
-                return this._list[Index];
-            }
-        }
-        /// <summary>
-        /// Number of items in the collection
-        /// </summary>
-        public int Count
-        {
-            get { return this._list.Count; }
-        }
-        /// <summary>
-        /// If a specific name exists in the collection
-        /// </summary>
-        /// <param name="Name">The name</param>
-        /// <returns>True if the name exists</returns>
-        public bool Exists(string Name)
-        {
-            return this._list.Exists((f) => TypeCompat.GetPropertyValue(f,"Name").ToString().Equals(Name,StringComparison.OrdinalIgnoreCase));
-        }
-        /// <summary>
-        /// Removes the item
-        /// </summary>
-        /// <param name="Item"></param>
-        public void Remove(T Item)
-        {
-            this._list.Remove(Item);
-        }
-        /// <summary>
-        /// Removes the item at the specified index
-        /// </summary>
-        /// <param name="index">THe index</param>
-        public void RemoveAt(int index)
-        {
-            this._list.RemoveAt(index);
-        }
+    }
+    /// <summary>
+    /// Number of items in the collection
+    /// </summary>
+    public int Count
+    {
+        get { return this._list.Count; }
+    }
+    /// <summary>
+    /// If a specific name exists in the collection
+    /// </summary>
+    /// <param name="Name">The name</param>
+    /// <returns>True if the name exists</returns>
+    public bool Exists(string Name)
+    {
+        return this._list.Exists((f) => TypeCompat.GetPropertyValue(f,"Name").ToString().Equals(Name,StringComparison.OrdinalIgnoreCase));
+    }
+    /// <summary>
+    /// Removes the item
+    /// </summary>
+    /// <param name="Item"></param>
+    public void Remove(T Item)
+    {
+        this._list.Remove(Item);
+    }
+    /// <summary>
+    /// Removes the item at the specified index
+    /// </summary>
+    /// <param name="index">THe index</param>
+    public void RemoveAt(int index)
+    {
+        this._list.RemoveAt(index);
+    }
         
-        internal void Clear()
-        {
-            this._list.Clear();
-        }
+    internal void Clear()
+    {
+        this._list.Clear();
     }
 }

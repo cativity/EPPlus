@@ -13,24 +13,23 @@
 using OfficeOpenXml.Packaging;
 using System.Xml;
 
-namespace OfficeOpenXml.Drawing.Controls
+namespace OfficeOpenXml.Drawing.Controls;
+
+/// <summary>
+/// Represents a group box form control. 
+/// </summary>
+public class ExcelControlGroupBox : ExcelControlWithText
 {
-    /// <summary>
-    /// Represents a group box form control. 
-    /// </summary>
-    public class ExcelControlGroupBox : ExcelControlWithText
+    internal ExcelControlGroupBox(ExcelDrawings drawings, XmlElement drawNode, string name, ExcelGroupShape parent=null) : base(drawings, drawNode, name, parent)
     {
-        internal ExcelControlGroupBox(ExcelDrawings drawings, XmlElement drawNode, string name, ExcelGroupShape parent=null) : base(drawings, drawNode, name, parent)
-        {
-            this.SetSize(200, 200); //Default size
-        }
-        internal ExcelControlGroupBox(ExcelDrawings drawings, XmlNode drawNode, ControlInternal control, ZipPackagePart part, XmlDocument controlPropertiesXml, ExcelGroupShape parent = null)
-            : base(drawings, drawNode, control, part, controlPropertiesXml, parent)
-        {
-        }
-        /// <summary>
-        /// The type of form control
-        /// </summary>
-        public override eControlType ControlType => eControlType.GroupBox;
+        this.SetSize(200, 200); //Default size
     }
+    internal ExcelControlGroupBox(ExcelDrawings drawings, XmlNode drawNode, ControlInternal control, ZipPackagePart part, XmlDocument controlPropertiesXml, ExcelGroupShape parent = null)
+        : base(drawings, drawNode, control, part, controlPropertiesXml, parent)
+    {
+    }
+    /// <summary>
+    /// The type of form control
+    /// </summary>
+    public override eControlType ControlType => eControlType.GroupBox;
 }

@@ -13,30 +13,29 @@
 using OfficeOpenXml.Drawing.Style;
 using System.Xml;
 
-namespace OfficeOpenXml.Drawing.Style.Font
-{
-    /// <summary>
-    /// Base class a font
-    /// </summary>
-    public class ExcelDrawingFontBase : XmlHelper
-    {
-        internal ExcelDrawingFontBase(XmlNamespaceManager nameSpaceManager, XmlNode topNode) : base(nameSpaceManager, topNode)
-        {
+namespace OfficeOpenXml.Drawing.Style.Font;
 
-        }
-        /// <summary>
-        /// The typeface or the name of the font
-        /// </summary>
-        public string Typeface
+/// <summary>
+/// Base class a font
+/// </summary>
+public class ExcelDrawingFontBase : XmlHelper
+{
+    internal ExcelDrawingFontBase(XmlNamespaceManager nameSpaceManager, XmlNode topNode) : base(nameSpaceManager, topNode)
+    {
+
+    }
+    /// <summary>
+    /// The typeface or the name of the font
+    /// </summary>
+    public string Typeface
+    {
+        get
         {
-            get
-            {
-                return this.GetXmlNodeString("@typeface");
-            }
-            internal set
-            {
-                this.SetXmlNodeString("@typeface", value);
-            }
+            return this.GetXmlNodeString("@typeface");
+        }
+        internal set
+        {
+            this.SetXmlNodeString("@typeface", value);
         }
     }
 }

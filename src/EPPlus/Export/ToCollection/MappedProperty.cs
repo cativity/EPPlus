@@ -16,18 +16,17 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 
-namespace OfficeOpenXml.Export.ToCollection
+namespace OfficeOpenXml.Export.ToCollection;
+
+internal class MappedProperty
 {
-    internal class MappedProperty
+    public MappedProperty(int ix, PropertyInfo property)
     {
-        public MappedProperty(int ix, PropertyInfo property)
-        {
-            this.Index = ix;
-            this.PropertyInfo = property;
-        }
-
-        internal int Index { get; set; }
-
-        internal PropertyInfo PropertyInfo { get; set; }
+        this.Index = ix;
+        this.PropertyInfo = property;
     }
+
+    internal int Index { get; set; }
+
+    internal PropertyInfo PropertyInfo { get; set; }
 }

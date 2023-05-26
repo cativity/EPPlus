@@ -35,42 +35,41 @@ using FakeItEasy;
 using OfficeOpenXml.FormulaParsing.ExcelUtilities;
 using OfficeOpenXml.FormulaParsing;
 
-namespace EPPlusTest.ExcelUtilities
+namespace EPPlusTest.ExcelUtilities;
+
+[TestClass]
+public class RangeAddressTests
 {
-    [TestClass]
-    public class RangeAddressTests
+    private RangeAddressFactory _factory;
+
+    [TestInitialize]
+    public void Setup()
     {
-        private RangeAddressFactory _factory;
+        ExcelDataProvider? provider = A.Fake<ExcelDataProvider>();
+        this._factory = new RangeAddressFactory(provider);
+    }
 
-        [TestInitialize]
-        public void Setup()
-        {
-            ExcelDataProvider? provider = A.Fake<ExcelDataProvider>();
-            this._factory = new RangeAddressFactory(provider);
-        }
+    [TestMethod]
+    public void CollideShouldReturnTrueIfRangesCollides()
+    {
+        RangeAddress? address1 = this._factory.Create("A1:A6");
+        RangeAddress? address2 = this._factory.Create("A5");
+        Assert.IsTrue(address1.CollidesWith(address2));
+    }
 
-        [TestMethod]
-        public void CollideShouldReturnTrueIfRangesCollides()
-        {
-            RangeAddress? address1 = this._factory.Create("A1:A6");
-            RangeAddress? address2 = this._factory.Create("A5");
-            Assert.IsTrue(address1.CollidesWith(address2));
-        }
+    [TestMethod]
+    public void CollideShouldReturnFalseIfRangesDoesNotCollide()
+    {
+        RangeAddress? address1 = this._factory.Create("A1:A6");
+        RangeAddress? address2 = this._factory.Create("A8");
+        Assert.IsFalse(address1.CollidesWith(address2));
+    }
 
-        [TestMethod]
-        public void CollideShouldReturnFalseIfRangesDoesNotCollide()
-        {
-            RangeAddress? address1 = this._factory.Create("A1:A6");
-            RangeAddress? address2 = this._factory.Create("A8");
-            Assert.IsFalse(address1.CollidesWith(address2));
-        }
-
-        [TestMethod]
-        public void CollideShouldReturnFalseIfRangesCollidesButWorksheetNameDiffers()
-        {
-            RangeAddress? address1 = this._factory.Create("Ws!A1:A6");
-            RangeAddress? address2 = this._factory.Create("A5");
-            Assert.IsFalse(address1.CollidesWith(address2));
-        }
+    [TestMethod]
+    public void CollideShouldReturnFalseIfRangesCollidesButWorksheetNameDiffers()
+    {
+        RangeAddress? address1 = this._factory.Create("Ws!A1:A6");
+        RangeAddress? address2 = this._factory.Create("A5");
+        Assert.IsFalse(address1.CollidesWith(address2));
     }
 }

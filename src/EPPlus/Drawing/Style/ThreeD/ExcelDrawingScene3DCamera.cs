@@ -17,95 +17,94 @@ using System.Linq;
 using System.Text;
 using System.Xml;
 
-namespace OfficeOpenXml.Drawing.Style.ThreeD
+namespace OfficeOpenXml.Drawing.Style.ThreeD;
+
+/// <summary>
+/// Settings for the camera in the 3D scene
+/// </summary>
+public class ExcelDrawingScene3DCamera : XmlHelper
 {
     /// <summary>
-    /// Settings for the camera in the 3D scene
+    /// The XPath
     /// </summary>
-    public class ExcelDrawingScene3DCamera : XmlHelper
-    {
-        /// <summary>
-        /// The XPath
-        /// </summary>
-        internal protected string _path;
-        private readonly string _fieldOfViewAnglePath = "{0}/@pov";
-        private readonly string _typePath = "{0}/@prst";
-        private readonly string _zoomPath = "{0}/@zoom";
-        private readonly string _rotationPath = "{0}/a:rot";
+    internal protected string _path;
+    private readonly string _fieldOfViewAnglePath = "{0}/@pov";
+    private readonly string _typePath = "{0}/@prst";
+    private readonly string _zoomPath = "{0}/@zoom";
+    private readonly string _rotationPath = "{0}/a:rot";
 
-        private readonly Action<bool> _initParent;
-        internal ExcelDrawingScene3DCamera(XmlNamespaceManager nameSpaceManager, XmlNode topNode, string[] schemaNodeOrder, string path, Action<bool> initParent) : base(nameSpaceManager, topNode)
+    private readonly Action<bool> _initParent;
+    internal ExcelDrawingScene3DCamera(XmlNamespaceManager nameSpaceManager, XmlNode topNode, string[] schemaNodeOrder, string path, Action<bool> initParent) : base(nameSpaceManager, topNode)
+    {
+        this._path = path;
+        this.SchemaNodeOrder = schemaNodeOrder;
+        this._initParent = initParent;
+        this._rotationPath = string.Format(this._rotationPath, path);
+        this._fieldOfViewAnglePath = string.Format(this._fieldOfViewAnglePath, path);
+        this._typePath = string.Format(this._typePath, path);
+        this._zoomPath = string.Format(this._zoomPath, path);
+    }
+    ExcelDrawingSphereCoordinate _rotation = null;
+    /// <summary>
+    /// Defines a rotation in 3D space
+    /// </summary>
+    public ExcelDrawingSphereCoordinate Rotation
+    {
+        get
         {
-            this._path = path;
-            this.SchemaNodeOrder = schemaNodeOrder;
-            this._initParent = initParent;
-            this._rotationPath = string.Format(this._rotationPath, path);
-            this._fieldOfViewAnglePath = string.Format(this._fieldOfViewAnglePath, path);
-            this._typePath = string.Format(this._typePath, path);
-            this._zoomPath = string.Format(this._zoomPath, path);
+            return this._rotation ??= new ExcelDrawingSphereCoordinate(this.NameSpaceManager, this.TopNode, this._rotationPath, this._initParent);
         }
-        ExcelDrawingSphereCoordinate _rotation = null;
-        /// <summary>
-        /// Defines a rotation in 3D space
-        /// </summary>
-        public ExcelDrawingSphereCoordinate Rotation
+    }
+    /// <summary>
+    /// An override for the default field of view for the camera.
+    /// </summary>
+    public double FieldOfViewAngle
+    {
+        get
         {
-            get
-            {
-                return this._rotation ??= new ExcelDrawingSphereCoordinate(this.NameSpaceManager, this.TopNode, this._rotationPath, this._initParent);
-            }
+            return this.GetXmlNodeAngel(this._fieldOfViewAnglePath, 0);
         }
-        /// <summary>
-        /// An override for the default field of view for the camera.
-        /// </summary>
-        public double FieldOfViewAngle
+        set
         {
-            get
+            this._initParent(false);
+            this.SetXmlNodeAngel(this._fieldOfViewAnglePath, value, "FieldOfViewAngle", 0, 180);
+        }
+    }
+    /// <summary>
+    /// The preset camera type that is being used.
+    /// </summary>
+    public ePresetCameraType CameraType
+    {
+        get
+        {
+            return this.GetXmlNodeString(this._typePath).ToEnum(ePresetCameraType.None);
+        }
+        set
+        {
+            if(value==ePresetCameraType.None)
             {
-                return this.GetXmlNodeAngel(this._fieldOfViewAnglePath, 0);
+                this._initParent(true);
             }
-            set
+            else
             {
                 this._initParent(false);
-                this.SetXmlNodeAngel(this._fieldOfViewAnglePath, value, "FieldOfViewAngle", 0, 180);
+                this.SetXmlNodeString(this._typePath, value.ToEnumString());
             }
         }
-        /// <summary>
-        /// The preset camera type that is being used.
-        /// </summary>
-        public ePresetCameraType CameraType
+    }
+    /// <summary>
+    /// The zoom factor of a given camera
+    /// </summary>
+    public double Zoom
+    {
+        get
         {
-            get
-            {
-                return this.GetXmlNodeString(this._typePath).ToEnum(ePresetCameraType.None);
-            }
-            set
-            {
-                if(value==ePresetCameraType.None)
-                {
-                    this._initParent(true);
-                }
-                else
-                {
-                    this._initParent(false);
-                    this.SetXmlNodeString(this._typePath, value.ToEnumString());
-                }
-            }
+            return this.GetXmlNodePercentage(this._zoomPath) ?? 100;
         }
-        /// <summary>
-        /// The zoom factor of a given camera
-        /// </summary>
-        public double Zoom
+        set
         {
-            get
-            {
-                return this.GetXmlNodePercentage(this._zoomPath) ?? 100;
-            }
-            set
-            {
-                this.SetXmlNodePercentage(this._zoomPath, value, false);
-                this._initParent(false);
-            }
+            this.SetXmlNodePercentage(this._zoomPath, value, false);
+            this._initParent(false);
         }
     }
 }

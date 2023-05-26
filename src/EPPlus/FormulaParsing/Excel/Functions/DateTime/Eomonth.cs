@@ -17,21 +17,20 @@ using System.Text;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Metadata;
 using OfficeOpenXml.FormulaParsing.ExpressionGraph;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime;
+
+[FunctionMetadata(
+                     Category = ExcelFunctionCategory.DateAndTime,
+                     EPPlusVersion = "4",
+                     Description = "Returns a date that is the last day of the month which is a specified number of months before or after an initial supplied start date")]
+internal class Eomonth : ExcelFunction
 {
-    [FunctionMetadata(
-        Category = ExcelFunctionCategory.DateAndTime,
-        EPPlusVersion = "4",
-        Description = "Returns a date that is the last day of the month which is a specified number of months before or after an initial supplied start date")]
-    internal class Eomonth : ExcelFunction
+    public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
     {
-        public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
-        {
-            ValidateArguments(arguments, 2);
-            System.DateTime date = System.DateTime.FromOADate(this.ArgToDecimal(arguments, 0));
-            int monthsToAdd = this.ArgToInt(arguments, 1);
-            System.DateTime resultDate = new System.DateTime(date.Year, date.Month, 1).AddMonths(monthsToAdd + 1).AddDays(-1);
-            return this.CreateResult(resultDate.ToOADate(), DataType.Date);
-        }
+        ValidateArguments(arguments, 2);
+        System.DateTime date = System.DateTime.FromOADate(this.ArgToDecimal(arguments, 0));
+        int monthsToAdd = this.ArgToInt(arguments, 1);
+        System.DateTime resultDate = new System.DateTime(date.Year, date.Month, 1).AddMonths(monthsToAdd + 1).AddDays(-1);
+        return this.CreateResult(resultDate.ToOADate(), DataType.Date);
     }
 }

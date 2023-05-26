@@ -17,37 +17,36 @@ using System.Text;
 using OfficeOpenXml.FormulaParsing.Excel.Functions;
 using OfficeOpenXml.FormulaParsing.Exceptions;
 
-namespace OfficeOpenXml.FormulaParsing.ExpressionGraph.FunctionCompilers
-{
-    public class ErrorHandlingFunctionCompiler : FunctionCompiler
-    {
-        public ErrorHandlingFunctionCompiler(ExcelFunction function, ParsingContext context)
-            : base(function, context)
-        {
+namespace OfficeOpenXml.FormulaParsing.ExpressionGraph.FunctionCompilers;
 
-        }
-        public override CompileResult Compile(IEnumerable<Expression> children)
+public class ErrorHandlingFunctionCompiler : FunctionCompiler
+{
+    public ErrorHandlingFunctionCompiler(ExcelFunction function, ParsingContext context)
+        : base(function, context)
+    {
+
+    }
+    public override CompileResult Compile(IEnumerable<Expression> children)
+    {
+        List<FunctionArgument>? args = new List<FunctionArgument>();
+        this.Function.BeforeInvoke(this.Context);
+        foreach (Expression? child in children)
         {
-            List<FunctionArgument>? args = new List<FunctionArgument>();
-            this.Function.BeforeInvoke(this.Context);
-            foreach (Expression? child in children)
+            try
             {
-                try
-                {
-                    CompileResult? arg = child.Compile();
-                    BuildFunctionArguments(arg != null ? arg : null, args);
-                }
-                catch (ExcelErrorValueException efe)
-                {
-                    return ((ErrorHandlingFunction)this.Function).HandleError(efe.ErrorValue.ToString());
-                }
-                catch// (Exception e)
-                {
-                    return ((ErrorHandlingFunction)this.Function).HandleError(ExcelErrorValue.Values.Value);
-                }
-                
+                CompileResult? arg = child.Compile();
+                BuildFunctionArguments(arg != null ? arg : null, args);
             }
-            return this.Function.Execute(args, this.Context);
+            catch (ExcelErrorValueException efe)
+            {
+                return ((ErrorHandlingFunction)this.Function).HandleError(efe.ErrorValue.ToString());
+            }
+            catch// (Exception e)
+            {
+                return ((ErrorHandlingFunction)this.Function).HandleError(ExcelErrorValue.Values.Value);
+            }
+                
         }
+        return this.Function.Execute(args, this.Context);
     }
 }

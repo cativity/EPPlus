@@ -19,69 +19,68 @@ using OfficeOpenXml.FormulaParsing.Excel.Functions.Metadata;
 using OfficeOpenXml.FormulaParsing.ExpressionGraph;
 using OfficeOpenXml.Utils;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Database
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Database;
+
+[FunctionMetadata(
+                     Category = ExcelFunctionCategory.Database,
+                     EPPlusVersion = "4",
+                     Description = "Returns the number of cells containing numbers in a field of a list or database that satisfy specified conditions")]
+internal class Dcount : ExcelFunction
 {
-    [FunctionMetadata(
-        Category = ExcelFunctionCategory.Database,
-        EPPlusVersion = "4",
-        Description = "Returns the number of cells containing numbers in a field of a list or database that satisfy specified conditions")]
-    internal class Dcount : ExcelFunction
+    private readonly RowMatcher _rowMatcher;
+
+    public Dcount()
+        : this(new RowMatcher())
     {
-        private readonly RowMatcher _rowMatcher;
-
-        public Dcount()
-            : this(new RowMatcher())
-        {
             
-        }
+    }
 
-        public Dcount(RowMatcher rowMatcher)
+    public Dcount(RowMatcher rowMatcher)
+    {
+        this._rowMatcher = rowMatcher;
+    }
+
+    public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
+    {
+        ValidateArguments(arguments, 2);
+        string? dbAddress = arguments.ElementAt(0).ValueAsRangeInfo.Address.Address;
+        string field = null;
+        string criteriaRange = null;
+        if (arguments.Count() == 2)
         {
-            this._rowMatcher = rowMatcher;
+            criteriaRange = arguments.ElementAt(1).ValueAsRangeInfo.Address.Address;
         }
-
-        public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
+        else
         {
-            ValidateArguments(arguments, 2);
-            string? dbAddress = arguments.ElementAt(0).ValueAsRangeInfo.Address.Address;
-            string field = null;
-            string criteriaRange = null;
-            if (arguments.Count() == 2)
-            {
-                criteriaRange = arguments.ElementAt(1).ValueAsRangeInfo.Address.Address;
-            }
-            else
-            {
-                field = ArgToString(arguments, 1).ToLower(CultureInfo.InvariantCulture);
-                criteriaRange = arguments.ElementAt(2).ValueAsRangeInfo.Address.Address;
-            } 
-            ExcelDatabase? db = new ExcelDatabase(context.ExcelDataProvider, dbAddress);
-            ExcelDatabaseCriteria? criteria = new ExcelDatabaseCriteria(context.ExcelDataProvider, criteriaRange);
+            field = ArgToString(arguments, 1).ToLower(CultureInfo.InvariantCulture);
+            criteriaRange = arguments.ElementAt(2).ValueAsRangeInfo.Address.Address;
+        } 
+        ExcelDatabase? db = new ExcelDatabase(context.ExcelDataProvider, dbAddress);
+        ExcelDatabaseCriteria? criteria = new ExcelDatabaseCriteria(context.ExcelDataProvider, criteriaRange);
 
-            int nHits = 0;
-            while (db.HasMoreRows)
+        int nHits = 0;
+        while (db.HasMoreRows)
+        {
+            ExcelDatabaseRow? dataRow = db.Read();
+            if (this._rowMatcher.IsMatch(dataRow, criteria))
             {
-                ExcelDatabaseRow? dataRow = db.Read();
-                if (this._rowMatcher.IsMatch(dataRow, criteria))
+                // if a fieldname is supplied, count only this row if the value
+                // of the supplied field is numeric.
+                if (!string.IsNullOrEmpty(field))
                 {
-                    // if a fieldname is supplied, count only this row if the value
-                    // of the supplied field is numeric.
-                    if (!string.IsNullOrEmpty(field))
+                    object? candidate = dataRow[field];
+                    if (ConvertUtil.IsNumericOrDate(candidate))
                     {
-                        object? candidate = dataRow[field];
-                        if (ConvertUtil.IsNumericOrDate(candidate))
-                        {
-                            nHits++;
-                        }
-                    }
-                    else
-                    {
-                        // no fieldname was supplied, always count matching row.
-                        nHits++;    
+                        nHits++;
                     }
                 }
+                else
+                {
+                    // no fieldname was supplied, always count matching row.
+                    nHits++;    
+                }
             }
-            return this.CreateResult(nHits, DataType.Integer);
         }
+        return this.CreateResult(nHits, DataType.Integer);
     }
 }

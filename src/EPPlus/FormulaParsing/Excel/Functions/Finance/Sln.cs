@@ -17,32 +17,31 @@ using System.Text;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Metadata;
 using OfficeOpenXml.FormulaParsing.ExpressionGraph;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance;
+
+[FunctionMetadata(
+                     Category = ExcelFunctionCategory.Financial,
+                     EPPlusVersion = "5.2",
+                     Description = "Returns the straight-line depreciation of an asset for one period")]
+internal class Sln : ExcelFunction
 {
-    [FunctionMetadata(
-        Category = ExcelFunctionCategory.Financial,
-        EPPlusVersion = "5.2",
-        Description = "Returns the straight-line depreciation of an asset for one period")]
-    internal class Sln : ExcelFunction
+    public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
     {
-        public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
+        ValidateArguments(arguments, 3);
+        double cost = this.ArgToDecimal(arguments, 0);
+        double salvage = this.ArgToDecimal(arguments, 1);
+        double life = this.ArgToDecimal(arguments, 2);
+
+        if (life == 0)
         {
-            ValidateArguments(arguments, 3);
-            double cost = this.ArgToDecimal(arguments, 0);
-            double salvage = this.ArgToDecimal(arguments, 1);
-            double life = this.ArgToDecimal(arguments, 2);
-
-            if (life == 0)
-            {
-                return this.CreateResult(eErrorType.Div0);
-            }
-
-            return this.CreateResult((cost - salvage) / life, DataType.Decimal);
+            return this.CreateResult(eErrorType.Div0);
         }
 
-        private static double GetInterest(double rate, double remainingAmount)
-        {
-            return remainingAmount * rate;
-        }
+        return this.CreateResult((cost - salvage) / life, DataType.Decimal);
+    }
+
+    private static double GetInterest(double rate, double remainingAmount)
+    {
+        return remainingAmount * rate;
     }
 }

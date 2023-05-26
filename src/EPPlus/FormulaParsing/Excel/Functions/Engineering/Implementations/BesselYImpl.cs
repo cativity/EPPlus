@@ -12,171 +12,170 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Engineering.Implementations
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Engineering.Implementations;
+
+public class BesselYImpl : BesselBase
 {
-    public class BesselYImpl : BesselBase
+    static FinanceCalcResult<double> Bessely0(double fX)
     {
-        static FinanceCalcResult<double> Bessely0(double fX)
+        if (fX <= 0)
         {
-            if (fX <= 0)
-            {
-                return new FinanceCalcResult<double>(eErrorType.Num);
-            }
-
-            const double fMaxIteration = 9000000.0; // should not be reached
-            if (fX > 5.0e+6) // iteration is not considerable better then approximation
-            {
-                return new FinanceCalcResult<double>(System.Math.Sqrt(1 / f_PI / fX)
-                                                     * (System.Math.Sin(fX) - System.Math.Cos(fX)));
-            }
-
-            const double epsilon = 1.0e-15;
-            const double EulerGamma = 0.57721566490153286060;
-            double alpha = System.Math.Log(fX / 2.0) + EulerGamma;
-            double u = alpha;
-
-            double k = 1.0;
-            double g_bar_delta_u = 0.0;
-            double g_bar = -2.0 / fX;
-            double delta_u = g_bar_delta_u / g_bar;
-            double g = -1.0 / g_bar;
-            double f_bar = -1 * g;
-
-            double sign_alpha = 1.0;
-            bool bHasFound = false;
-            k += 1;
-            do
-            {
-                double km1mod2 = (k - 1.0) % 2.0;
-                double m_bar = (2.0 * km1mod2) * f_bar;
-                if (km1mod2 == 0.0)
-                {
-                    alpha = 0.0;
-                }
-                else
-                {
-                    alpha = sign_alpha * (4.0 / k);
-                    sign_alpha = -sign_alpha;
-                }
-                g_bar_delta_u = f_bar * alpha - g * delta_u - m_bar * u;
-                g_bar = m_bar - (2.0 * k) / fX + g;
-                delta_u = g_bar_delta_u / g_bar;
-                u += delta_u;
-                g = -1.0 / g_bar;
-                f_bar *= g;
-                bHasFound = (System.Math.Abs(delta_u) <= System.Math.Abs(u) * epsilon);
-                k += 1;
-            }
-            while (!bHasFound && k < fMaxIteration);
-            if (!bHasFound)
-            {
-                return new FinanceCalcResult<double>(eErrorType.Num); // not likely to happen
-            }
-
-            return new FinanceCalcResult<double>(u * f_2_DIV_PI);
+            return new FinanceCalcResult<double>(eErrorType.Num);
         }
 
-        // See #i31656# for a commented version of this implementation, attachment #desc6
-        // https://bz.apache.org/ooo/attachment.cgi?id=63609
-        /// @throws IllegalArgumentException
-        /// @throws NoConvergenceException
-        static FinanceCalcResult<double> Bessely1(double fX)
+        const double fMaxIteration = 9000000.0; // should not be reached
+        if (fX > 5.0e+6) // iteration is not considerable better then approximation
         {
-            if (fX <= 0)
-            {
-                return new FinanceCalcResult<double>(eErrorType.Num);
-            }
+            return new FinanceCalcResult<double>(System.Math.Sqrt(1 / f_PI / fX)
+                                                 * (System.Math.Sin(fX) - System.Math.Cos(fX)));
+        }
 
-            const double fMaxIteration = 9000000.0; // should not be reached
-            if (fX > 5.0e+6) // iteration is not considerable better then approximation
-            {
-                return new FinanceCalcResult<double>(-System.Math.Sqrt(1 / f_PI / fX)
-                                                     * (System.Math.Sin(fX) + System.Math.Cos(fX)));
-            }
+        const double epsilon = 1.0e-15;
+        const double EulerGamma = 0.57721566490153286060;
+        double alpha = System.Math.Log(fX / 2.0) + EulerGamma;
+        double u = alpha;
 
-            const double epsilon = 1.0e-15;
-            const double EulerGamma = 0.57721566490153286060;
-            double alpha = 1.0 / fX;
-            double f_bar = -1.0;
-            double u = alpha;
-            double k = 1.0;
-            alpha = 1.0 - EulerGamma - System.Math.Log(fX / 2.0);
-            double g_bar_delta_u = -alpha;
-            double g_bar = -2.0 / fX;
-            double delta_u = g_bar_delta_u / g_bar;
+        double k = 1.0;
+        double g_bar_delta_u = 0.0;
+        double g_bar = -2.0 / fX;
+        double delta_u = g_bar_delta_u / g_bar;
+        double g = -1.0 / g_bar;
+        double f_bar = -1 * g;
+
+        double sign_alpha = 1.0;
+        bool bHasFound = false;
+        k += 1;
+        do
+        {
+            double km1mod2 = (k - 1.0) % 2.0;
+            double m_bar = (2.0 * km1mod2) * f_bar;
+            if (km1mod2 == 0.0)
+            {
+                alpha = 0.0;
+            }
+            else
+            {
+                alpha = sign_alpha * (4.0 / k);
+                sign_alpha = -sign_alpha;
+            }
+            g_bar_delta_u = f_bar * alpha - g * delta_u - m_bar * u;
+            g_bar = m_bar - (2.0 * k) / fX + g;
+            delta_u = g_bar_delta_u / g_bar;
             u += delta_u;
-            double g = -1.0 / g_bar;
+            g = -1.0 / g_bar;
             f_bar *= g;
-            double sign_alpha = -1.0;
-            bool bHasFound = false;
-            k += 1.0;
-            do
-            {
-                double km1mod2 = (k - 1.0) % 2.0;
-                double m_bar = (2.0 * km1mod2) * f_bar;
-                double q = (k - 1.0) / 2.0;
-                if (km1mod2 == 0.0) // k is odd
-                {
-                    alpha = sign_alpha * (1.0 / q + 1.0 / (q + 1.0));
-                    sign_alpha = -sign_alpha;
-                }
-                else
-                {
-                    alpha = 0.0;
-                }
-
-                g_bar_delta_u = f_bar * alpha - g * delta_u - m_bar * u;
-                g_bar = m_bar - (2.0 * k) / fX + g;
-                delta_u = g_bar_delta_u / g_bar;
-                u += delta_u;
-                g = -1.0 / g_bar;
-                f_bar *= g;
-                bHasFound = (System.Math.Abs(delta_u) <= System.Math.Abs(u) * epsilon);
-                k += 1;
-            }
-            while (!bHasFound && k < fMaxIteration);
-            if (!bHasFound)
-            {
-                new FinanceCalcResult<double>(eErrorType.Num);
-            }
-
-            return new FinanceCalcResult<double>(-u * 2.0 / f_PI);
+            bHasFound = (System.Math.Abs(delta_u) <= System.Math.Abs(u) * epsilon);
+            k += 1;
+        }
+        while (!bHasFound && k < fMaxIteration);
+        if (!bHasFound)
+        {
+            return new FinanceCalcResult<double>(eErrorType.Num); // not likely to happen
         }
 
+        return new FinanceCalcResult<double>(u * f_2_DIV_PI);
+    }
 
-        public static FinanceCalcResult<double> BesselY(double fNum, int nOrder)
+    // See #i31656# for a commented version of this implementation, attachment #desc6
+    // https://bz.apache.org/ooo/attachment.cgi?id=63609
+    /// @throws IllegalArgumentException
+    /// @throws NoConvergenceException
+    static FinanceCalcResult<double> Bessely1(double fX)
+    {
+        if (fX <= 0)
         {
-            switch (nOrder)
+            return new FinanceCalcResult<double>(eErrorType.Num);
+        }
+
+        const double fMaxIteration = 9000000.0; // should not be reached
+        if (fX > 5.0e+6) // iteration is not considerable better then approximation
+        {
+            return new FinanceCalcResult<double>(-System.Math.Sqrt(1 / f_PI / fX)
+                                                 * (System.Math.Sin(fX) + System.Math.Cos(fX)));
+        }
+
+        const double epsilon = 1.0e-15;
+        const double EulerGamma = 0.57721566490153286060;
+        double alpha = 1.0 / fX;
+        double f_bar = -1.0;
+        double u = alpha;
+        double k = 1.0;
+        alpha = 1.0 - EulerGamma - System.Math.Log(fX / 2.0);
+        double g_bar_delta_u = -alpha;
+        double g_bar = -2.0 / fX;
+        double delta_u = g_bar_delta_u / g_bar;
+        u += delta_u;
+        double g = -1.0 / g_bar;
+        f_bar *= g;
+        double sign_alpha = -1.0;
+        bool bHasFound = false;
+        k += 1.0;
+        do
+        {
+            double km1mod2 = (k - 1.0) % 2.0;
+            double m_bar = (2.0 * km1mod2) * f_bar;
+            double q = (k - 1.0) / 2.0;
+            if (km1mod2 == 0.0) // k is odd
             {
-                case 0: return Bessely0(fNum);
-                case 1: return Bessely1(fNum);
-                default:
-                    {
-                        double fTox = 2.0 / fNum;
-                        FinanceCalcResult<double>? y0Result = Bessely0(fNum);
-                        if (y0Result.HasError)
-                        {
-                            return y0Result;
-                        }
+                alpha = sign_alpha * (1.0 / q + 1.0 / (q + 1.0));
+                sign_alpha = -sign_alpha;
+            }
+            else
+            {
+                alpha = 0.0;
+            }
 
-                        double fBym = y0Result.Result;
-                        FinanceCalcResult<double>? y1Result = Bessely1(fNum);
-                        if (y1Result.HasError)
-                        {
-                            return y1Result;
-                        }
+            g_bar_delta_u = f_bar * alpha - g * delta_u - m_bar * u;
+            g_bar = m_bar - (2.0 * k) / fX + g;
+            delta_u = g_bar_delta_u / g_bar;
+            u += delta_u;
+            g = -1.0 / g_bar;
+            f_bar *= g;
+            bHasFound = (System.Math.Abs(delta_u) <= System.Math.Abs(u) * epsilon);
+            k += 1;
+        }
+        while (!bHasFound && k < fMaxIteration);
+        if (!bHasFound)
+        {
+            new FinanceCalcResult<double>(eErrorType.Num);
+        }
 
-                        double fBy = y1Result.Result;
+        return new FinanceCalcResult<double>(-u * 2.0 / f_PI);
+    }
 
-                        for (int n = 1; n < nOrder; n++)
-                        {
-                            double fByp = n * fTox * fBy - fBym;
-                            fBym = fBy;
-                            fBy = fByp;
-                        }
 
-                        return new FinanceCalcResult<double>(fBy);
-                    }
+    public static FinanceCalcResult<double> BesselY(double fNum, int nOrder)
+    {
+        switch (nOrder)
+        {
+            case 0: return Bessely0(fNum);
+            case 1: return Bessely1(fNum);
+            default:
+            {
+                double fTox = 2.0 / fNum;
+                FinanceCalcResult<double>? y0Result = Bessely0(fNum);
+                if (y0Result.HasError)
+                {
+                    return y0Result;
+                }
+
+                double fBym = y0Result.Result;
+                FinanceCalcResult<double>? y1Result = Bessely1(fNum);
+                if (y1Result.HasError)
+                {
+                    return y1Result;
+                }
+
+                double fBy = y1Result.Result;
+
+                for (int n = 1; n < nOrder; n++)
+                {
+                    double fByp = n * fTox * fBy - fBym;
+                    fBym = fBy;
+                    fBy = fByp;
+                }
+
+                return new FinanceCalcResult<double>(fBy);
             }
         }
     }

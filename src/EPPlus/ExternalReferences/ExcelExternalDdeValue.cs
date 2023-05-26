@@ -12,20 +12,19 @@
  *************************************************************************************************/
 using System.Collections.Generic;
 
-namespace OfficeOpenXml.ExternalReferences
+namespace OfficeOpenXml.ExternalReferences;
+
+/// <summary>
+/// Represents a value for a DDE item.
+/// </summary>
+public class ExcelExternalDdeValue
 {
     /// <summary>
-    /// Represents a value for a DDE item.
+    /// The data type of the value
     /// </summary>
-    public class ExcelExternalDdeValue
-    {
-        /// <summary>
-        /// The data type of the value
-        /// </summary>
-        public eDdeValueType DdeValueType { get; internal set; } = eDdeValueType.Number;
-        /// <summary>
-        /// The value of the item
-        /// </summary>
-        public string Value { get; internal set; }
-    }
+    public eDdeValueType DdeValueType { get; internal set; } = eDdeValueType.Number;
+    /// <summary>
+    /// The value of the item
+    /// </summary>
+    public string Value { get; internal set; }
 }

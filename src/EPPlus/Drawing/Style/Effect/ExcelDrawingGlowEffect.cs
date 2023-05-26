@@ -14,51 +14,50 @@ using OfficeOpenXml.Drawing.Style;
 using OfficeOpenXml.Drawing.Style.Coloring;
 using System.Xml;
 
-namespace OfficeOpenXml.Drawing.Style.Effect
+namespace OfficeOpenXml.Drawing.Style.Effect;
+
+/// <summary>
+/// The glow effect, in which a color blurred outline is added outside the edges of the drawing
+/// </summary>
+public class ExcelDrawingGlowEffect : ExcelDrawingEffectBase
 {
-    /// <summary>
-    /// The glow effect, in which a color blurred outline is added outside the edges of the drawing
-    /// </summary>
-    public class ExcelDrawingGlowEffect : ExcelDrawingEffectBase
+    private readonly string _radiusPath = "{0}/@rad";
+
+    internal ExcelDrawingGlowEffect(XmlNamespaceManager nameSpaceManager, XmlNode topNode, string[] schemaNodeOrder, string path) : base(nameSpaceManager, topNode, schemaNodeOrder, path)
     {
-        private readonly string _radiusPath = "{0}/@rad";
+        this._radiusPath = string.Format(this._radiusPath, path);
 
-        internal ExcelDrawingGlowEffect(XmlNamespaceManager nameSpaceManager, XmlNode topNode, string[] schemaNodeOrder, string path) : base(nameSpaceManager, topNode, schemaNodeOrder, path)
+    }
+    ExcelDrawingColorManager _color = null;
+    /// <summary>
+    /// The color of the glow
+    /// </summary>
+    public ExcelDrawingColorManager Color
+    {    
+        get { return this._color ??= new ExcelDrawingColorManager(this.NameSpaceManager, this.TopNode, this._path, this.SchemaNodeOrder); }
+    }
+    /// <summary>
+    /// The radius of the glow in pixels
+    /// </summary>
+    public double? Radius
+    {
+        get
         {
-            this._radiusPath = string.Format(this._radiusPath, path);
+            return this.GetXmlNodeEmuToPtNull(this._radiusPath)??0;
+        }
+        set
+        {
+            this.SetXmlNodeEmuToPt(this._radiusPath, value);
+            this.InitXml();
+        }
+    }
 
-        }
-        ExcelDrawingColorManager _color = null;
-        /// <summary>
-        /// The color of the glow
-        /// </summary>
-        public ExcelDrawingColorManager Color
-        {    
-            get { return this._color ??= new ExcelDrawingColorManager(this.NameSpaceManager, this.TopNode, this._path, this.SchemaNodeOrder); }
-        }
-        /// <summary>
-        /// The radius of the glow in pixels
-        /// </summary>
-        public double? Radius
+    private void InitXml()
+    {
+        if (this._color == null)
         {
-                get
-                {
-                    return this.GetXmlNodeEmuToPtNull(this._radiusPath)??0;
-                }
-                set
-                {
-                    this.SetXmlNodeEmuToPt(this._radiusPath, value);
-                    this.InitXml();
-            }
+            this.Color.SetPresetColor(ePresetColor.Black);
+            this.Color.Transforms.AddAlpha(50);
         }
-
-        private void InitXml()
-        {
-            if (this._color == null)
-            {
-                this.Color.SetPresetColor(ePresetColor.Black);
-                this.Color.Transforms.AddAlpha(50);
-            }
-        }
-    } 
+    }
 }

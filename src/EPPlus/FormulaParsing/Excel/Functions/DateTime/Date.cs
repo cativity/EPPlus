@@ -17,25 +17,24 @@ using System.Text;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Metadata;
 using OfficeOpenXml.FormulaParsing.ExpressionGraph;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime;
+
+[FunctionMetadata(
+                     Category = ExcelFunctionCategory.DateAndTime,
+                     EPPlusVersion = "4",
+                     Description = "Returns a date, from a user-supplied year, month and day")]
+internal class Date : ExcelFunction
 {
-    [FunctionMetadata(
-        Category = ExcelFunctionCategory.DateAndTime,
-        EPPlusVersion = "4",
-        Description = "Returns a date, from a user-supplied year, month and day")]
-    internal class Date : ExcelFunction
+    public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
     {
-        public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
-        {
-            ValidateArguments(arguments, 3);
-            int year = this.ArgToInt(arguments, 0);
-            int month = this.ArgToInt(arguments, 1);
-            int day = this.ArgToInt(arguments, 2);
-            System.DateTime date = new System.DateTime(year, 1, 1);
-            month -= 1;
-            date = date.AddMonths(month);
-            date = date.AddDays((double)(day - 1));
-            return this.CreateResult(date.ToOADate(), DataType.Date);
-        }
+        ValidateArguments(arguments, 3);
+        int year = this.ArgToInt(arguments, 0);
+        int month = this.ArgToInt(arguments, 1);
+        int day = this.ArgToInt(arguments, 2);
+        System.DateTime date = new System.DateTime(year, 1, 1);
+        month -= 1;
+        date = date.AddMonths(month);
+        date = date.AddDays((double)(day - 1));
+        return this.CreateResult(date.ToOADate(), DataType.Date);
     }
 }

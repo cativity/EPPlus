@@ -20,67 +20,66 @@ using OfficeOpenXml.Utils;
 using OfficeOpenXml.FormulaParsing.Exceptions;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Metadata;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
-{
-    [FunctionMetadata(
-        Category = ExcelFunctionCategory.MathAndTrig,
-        EPPlusVersion = "4",
-        Description = "Returns the sum of a supplied list of numbers")]
-    internal class Sum : HiddenValuesHandlingFunction
-    {
-        public Sum()
-        {
-            this.IgnoreErrors = false;
-        }
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
 
-        public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
+[FunctionMetadata(
+                     Category = ExcelFunctionCategory.MathAndTrig,
+                     EPPlusVersion = "4",
+                     Description = "Returns the sum of a supplied list of numbers")]
+internal class Sum : HiddenValuesHandlingFunction
+{
+    public Sum()
+    {
+        this.IgnoreErrors = false;
+    }
+
+    public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
+    {
+        double retVal = 0d;
+        if (arguments != null)
         {
-            double retVal = 0d;
-            if (arguments != null)
+            foreach (FunctionArgument? arg in arguments)
             {
-                foreach (FunctionArgument? arg in arguments)
-                {
-                    retVal += this.Calculate(arg, context);                    
-                }
+                retVal += this.Calculate(arg, context);                    
             }
-            return this.CreateResult(retVal, DataType.Decimal);
         }
+        return this.CreateResult(retVal, DataType.Decimal);
+    }
 
         
-        private double Calculate(FunctionArgument arg, ParsingContext context)
+    private double Calculate(FunctionArgument arg, ParsingContext context)
+    {
+        double retVal = 0d;
+        if (this.ShouldIgnore(arg, context))
         {
-            double retVal = 0d;
-            if (this.ShouldIgnore(arg, context))
-            {
-                return retVal;
-            }
-            if (arg.Value is IEnumerable<FunctionArgument>)
-            {
-                foreach (FunctionArgument? item in (IEnumerable<FunctionArgument>)arg.Value)
-                {
-                    if(!this.ShouldIgnore(arg, context))
-                    {
-                        retVal += this.Calculate(item, context);
-                    }
-                }
-            }
-            else if (arg.Value is IRangeInfo)
-            {
-                foreach (ICellInfo? c in (IRangeInfo)arg.Value)
-                {
-                    if (this.ShouldIgnore(c, context) == false)
-                    {
-                        CheckForAndHandleExcelError(c);
-                        retVal += c.ValueDouble;
-                    }
-                }
-            }
-            else
-            {
-                CheckForAndHandleExcelError(arg);
-                retVal += ConvertUtil.GetValueDouble(arg.Value, true);
-            }
             return retVal;
         }
+        if (arg.Value is IEnumerable<FunctionArgument>)
+        {
+            foreach (FunctionArgument? item in (IEnumerable<FunctionArgument>)arg.Value)
+            {
+                if(!this.ShouldIgnore(arg, context))
+                {
+                    retVal += this.Calculate(item, context);
+                }
+            }
+        }
+        else if (arg.Value is IRangeInfo)
+        {
+            foreach (ICellInfo? c in (IRangeInfo)arg.Value)
+            {
+                if (this.ShouldIgnore(c, context) == false)
+                {
+                    CheckForAndHandleExcelError(c);
+                    retVal += c.ValueDouble;
+                }
+            }
+        }
+        else
+        {
+            CheckForAndHandleExcelError(arg);
+            retVal += ConvertUtil.GetValueDouble(arg.Value, true);
+        }
+        return retVal;
     }
 }

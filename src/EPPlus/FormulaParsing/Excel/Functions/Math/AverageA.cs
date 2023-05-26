@@ -19,119 +19,118 @@ using OfficeOpenXml.FormulaParsing.Excel.Functions.Metadata;
 using OfficeOpenXml.FormulaParsing.ExpressionGraph;
 using OfficeOpenXml.Utils;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
+
+[FunctionMetadata(
+                     Category = ExcelFunctionCategory.Statistical,
+                     EPPlusVersion = "4",
+                     Description = "Returns the Average of a list of supplied numbers, counting text and the logical value FALSE as the value 0 and counting the logical value TRUE as the value 1")]
+internal class AverageA : HiddenValuesHandlingFunction
 {
-    [FunctionMetadata(
-        Category = ExcelFunctionCategory.Statistical,
-        EPPlusVersion = "4",
-        Description = "Returns the Average of a list of supplied numbers, counting text and the logical value FALSE as the value 0 and counting the logical value TRUE as the value 1")]
-    internal class AverageA : HiddenValuesHandlingFunction
+    public AverageA()
     {
-        public AverageA()
-        {
-            this.IgnoreErrors = false;
-        }
+        this.IgnoreErrors = false;
+    }
 
-        public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
+    public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
+    {
+        ValidateArguments(arguments, 1, eErrorType.Div0);
+        double nValues = 0d, result = 0d;
+        foreach (FunctionArgument? arg in arguments)
         {
-            ValidateArguments(arguments, 1, eErrorType.Div0);
-            double nValues = 0d, result = 0d;
-            foreach (FunctionArgument? arg in arguments)
-            {
-                this.Calculate(arg, context, ref result, ref nValues);
-            }
-            return this.CreateResult(Divide(result, nValues), DataType.Decimal);
+            this.Calculate(arg, context, ref result, ref nValues);
         }
+        return this.CreateResult(Divide(result, nValues), DataType.Decimal);
+    }
 
-        private void Calculate(FunctionArgument arg, ParsingContext context, ref double retVal, ref double nValues, bool isInArray = false)
+    private void Calculate(FunctionArgument arg, ParsingContext context, ref double retVal, ref double nValues, bool isInArray = false)
+    {
+        if (this.ShouldIgnore(arg, context))
         {
-            if (this.ShouldIgnore(arg, context))
+            return;
+        }
+        if (arg.Value is IEnumerable<FunctionArgument>)
+        {
+            foreach (FunctionArgument? item in (IEnumerable<FunctionArgument>)arg.Value)
             {
-                return;
+                this.Calculate(item, context, ref retVal, ref nValues, true);
             }
-            if (arg.Value is IEnumerable<FunctionArgument>)
+        }
+        else if (arg.IsExcelRange)
+        {
+            foreach (ICellInfo? c in arg.ValueAsRangeInfo)
             {
-                foreach (FunctionArgument? item in (IEnumerable<FunctionArgument>)arg.Value)
+                if (this.ShouldIgnore(c, context))
                 {
-                    this.Calculate(item, context, ref retVal, ref nValues, true);
+                    continue;
                 }
-            }
-            else if (arg.IsExcelRange)
-            {
-                foreach (ICellInfo? c in arg.ValueAsRangeInfo)
-                {
-                    if (this.ShouldIgnore(c, context))
-                    {
-                        continue;
-                    }
 
-                    CheckForAndHandleExcelError(c);
-                    if (IsBool(c.Value))
-                    {
-                        nValues++;
-                        retVal += (bool)c.Value ? 1 : 0;
-                    }
-                    else if (IsNumeric(c.Value))
-					{
-						nValues++;
-						retVal += c.ValueDouble;
-					}
-					else if (IsString(c.Value))
-					{
-						nValues++;
-					}
-				}
-            }
-            else
-            {
-                double? numericValue = GetNumericValue(arg.Value, isInArray);
-                if (numericValue.HasValue)
+                CheckForAndHandleExcelError(c);
+                if (IsBool(c.Value))
                 {
                     nValues++;
-                    retVal += numericValue.Value;
+                    retVal += (bool)c.Value ? 1 : 0;
                 }
-                else if (IsString(arg.Value))
+                else if (IsNumeric(c.Value))
                 {
-                    if (isInArray)
-                    {
-                        nValues++;
-                    }
-                    else
-                    {
-                        ThrowExcelErrorValueException(eErrorType.Value);   
-                    }
+                    nValues++;
+                    retVal += c.ValueDouble;
+                }
+                else if (IsString(c.Value))
+                {
+                    nValues++;
                 }
             }
-            CheckForAndHandleExcelError(arg);
         }
-
-        private static double? GetNumericValue(object obj, bool isInArray)
+        else
         {
-            if (IsNumeric(obj) && !(IsBool(obj)))
+            double? numericValue = GetNumericValue(arg.Value, isInArray);
+            if (numericValue.HasValue)
             {
+                nValues++;
+                retVal += numericValue.Value;
+            }
+            else if (IsString(arg.Value))
+            {
+                if (isInArray)
+                {
+                    nValues++;
+                }
+                else
+                {
+                    ThrowExcelErrorValueException(eErrorType.Value);   
+                }
+            }
+        }
+        CheckForAndHandleExcelError(arg);
+    }
+
+    private static double? GetNumericValue(object obj, bool isInArray)
+    {
+        if (IsNumeric(obj) && !(IsBool(obj)))
+        {
+            return ConvertUtil.GetValueDouble(obj);
+        }
+        if (!isInArray)
+        {
+            if (obj is bool)
+            {
+                if (isInArray)
+                {
+                    return default;
+                }
+
                 return ConvertUtil.GetValueDouble(obj);
             }
-            if (!isInArray)
-			{
-				if (obj is bool)
-				{
-					if (isInArray)
-                    {
-                        return default;
-                    }
-
-                    return ConvertUtil.GetValueDouble(obj);
-				}
-				else if (ConvertUtil.TryParseNumericString(obj as string, out double number))
-				{
-					return number;
-				}
-				else if (ConvertUtil.TryParseDateString(obj as string, out System.DateTime date))
-				{
-					return date.ToOADate();
-				}
-			}
-			return default;
+            else if (ConvertUtil.TryParseNumericString(obj as string, out double number))
+            {
+                return number;
+            }
+            else if (ConvertUtil.TryParseDateString(obj as string, out System.DateTime date))
+            {
+                return date.ToOADate();
+            }
         }
+        return default;
     }
 }

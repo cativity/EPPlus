@@ -10,20 +10,19 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
-namespace OfficeOpenXml.Drawing.Chart
+namespace OfficeOpenXml.Drawing.Chart;
+
+/// <summary>
+/// Doughnut chart types
+/// </summary>
+public enum eDoughnutChartType
 {
     /// <summary>
-    /// Doughnut chart types
+    /// A doughnut chart
     /// </summary>
-    public enum eDoughnutChartType
-    {
-        /// <summary>
-        /// A doughnut chart
-        /// </summary>
-        Doughnut = -4120,
-        /// <summary>
-        /// An exploded doughnut chart
-        /// </summary>
-        DoughnutExploded = 80,
-    }
+    Doughnut = -4120,
+    /// <summary>
+    /// An exploded doughnut chart
+    /// </summary>
+    DoughnutExploded = 80,
 }

@@ -17,26 +17,25 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance;
+
+[FunctionMetadata(
+                     Category = ExcelFunctionCategory.Financial,
+                     EPPlusVersion = "5.2",
+                     Description = "Calculates the future value of an initial principal, after applying a series of compound interest rates")]
+internal class FvSchedule : ExcelFunction
 {
-    [FunctionMetadata(
-        Category = ExcelFunctionCategory.Financial,
-        EPPlusVersion = "5.2",
-        Description = "Calculates the future value of an initial principal, after applying a series of compound interest rates")]
-    internal class FvSchedule : ExcelFunction
+    public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
     {
-        public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
+        ValidateArguments(arguments, 2);
+        double principal = this.ArgToDecimal(arguments, 0);
+        List<FunctionArgument>? scheduleArg = new List<FunctionArgument> { arguments.ElementAt(1) };
+        IEnumerable<ExcelDoubleCellValue>? schedule = this.ArgsToDoubleEnumerable(scheduleArg, context);
+        double result = principal;
+        foreach(ExcelDoubleCellValue interest in schedule)
         {
-            ValidateArguments(arguments, 2);
-            double principal = this.ArgToDecimal(arguments, 0);
-            List<FunctionArgument>? scheduleArg = new List<FunctionArgument> { arguments.ElementAt(1) };
-            IEnumerable<ExcelDoubleCellValue>? schedule = this.ArgsToDoubleEnumerable(scheduleArg, context);
-            double result = principal;
-            foreach(ExcelDoubleCellValue interest in schedule)
-            {
-                result *= 1d + interest;
-            }
-            return this.CreateResult(result, DataType.Decimal);
+            result *= 1d + interest;
         }
+        return this.CreateResult(result, DataType.Decimal);
     }
 }

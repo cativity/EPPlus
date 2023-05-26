@@ -36,32 +36,31 @@ using EPPlusTest.FormulaParsing.TestHelpers;
 using OfficeOpenXml.FormulaParsing.ExpressionGraph;
 using OfficeOpenXml.FormulaParsing;
 
-namespace EPPlusTest.Excel.Functions
-{
-    [TestClass]
-    public class ExcelFunctionTests
-    {
-        private class ExcelFunctionTester : ExcelFunction
-        {
-            public IEnumerable<ExcelDoubleCellValue> ArgsToDoubleEnumerableImpl(IEnumerable<FunctionArgument> args)
-            {
-                return this.ArgsToDoubleEnumerable(args, ParsingContext.Create());
-            }
-            #region Other members
-            public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
-            {
-                throw new NotImplementedException();
-            }
-            #endregion
-        }
+namespace EPPlusTest.Excel.Functions;
 
-        [TestMethod]
-        public void ArgsToDoubleEnumerableShouldHandleInnerEnumerables()
+[TestClass]
+public class ExcelFunctionTests
+{
+    private class ExcelFunctionTester : ExcelFunction
+    {
+        public IEnumerable<ExcelDoubleCellValue> ArgsToDoubleEnumerableImpl(IEnumerable<FunctionArgument> args)
         {
-            IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(1, 2, FunctionsHelper.CreateArgs(3, 4));
-            ExcelFunctionTester? tester = new ExcelFunctionTester();
-            IEnumerable<ExcelDoubleCellValue>? result = tester.ArgsToDoubleEnumerableImpl(args);
-            Assert.AreEqual(4, result.Count());
+            return this.ArgsToDoubleEnumerable(args, ParsingContext.Create());
         }
+        #region Other members
+        public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
+        {
+            throw new NotImplementedException();
+        }
+        #endregion
+    }
+
+    [TestMethod]
+    public void ArgsToDoubleEnumerableShouldHandleInnerEnumerables()
+    {
+        IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(1, 2, FunctionsHelper.CreateArgs(3, 4));
+        ExcelFunctionTester? tester = new ExcelFunctionTester();
+        IEnumerable<ExcelDoubleCellValue>? result = tester.ArgsToDoubleEnumerableImpl(args);
+        Assert.AreEqual(4, result.Count());
     }
 }

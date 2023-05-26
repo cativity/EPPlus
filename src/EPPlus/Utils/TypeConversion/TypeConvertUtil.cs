@@ -14,107 +14,106 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace OfficeOpenXml.Utils.TypeConversion
+namespace OfficeOpenXml.Utils.TypeConversion;
+
+internal class TypeConvertUtil<TReturnType>
 {
-    internal class TypeConvertUtil<TReturnType>
+    internal TypeConvertUtil(object o)
     {
-        internal TypeConvertUtil(object o)
+        this.Value = new ValueWrapper(o);
+        this.ReturnType = new ReturnTypeWrapper<TReturnType>();
+    }
+
+    public ReturnTypeWrapper<TReturnType> ReturnType
+    {
+        get;
+        private set;
+    }
+
+    public ValueWrapper Value
+    {
+        get;
+        private set;
+    }
+
+    public object ConvertToReturnType()
+    {
+        if (this.ReturnType.IsNullable && this.Value.IsEmptyString)
         {
-            this.Value = new ValueWrapper(o);
-            this.ReturnType = new ReturnTypeWrapper<TReturnType>();
+            return null;
         }
-
-        public ReturnTypeWrapper<TReturnType> ReturnType
+        if (NumericTypeConversions.IsNumeric(this.ReturnType.Type))
         {
-            get;
-            private set;
+            if(NumericTypeConversions.TryConvert(this.Value.Object, out object convertedObj, this.ReturnType.Type))
+            {
+                return convertedObj;
+            }
+            return default(TReturnType);
         }
+        return this.Value.Object;
+    }
 
-        public ValueWrapper Value
+    public bool TryGetDateTime(out object returnDate)
+    {
+        returnDate = default;
+        if (!this.ReturnType.IsDateTime)
         {
-            get;
-            private set;
-        }
-
-        public object ConvertToReturnType()
-        {
-            if (this.ReturnType.IsNullable && this.Value.IsEmptyString)
-            {
-                return null;
-            }
-            if (NumericTypeConversions.IsNumeric(this.ReturnType.Type))
-            {
-                if(NumericTypeConversions.TryConvert(this.Value.Object, out object convertedObj, this.ReturnType.Type))
-                {
-                    return convertedObj;
-                }
-                return default(TReturnType);
-            }
-            return this.Value.Object;
-        }
-
-        public bool TryGetDateTime(out object returnDate)
-        {
-            returnDate = default;
-            if (!this.ReturnType.IsDateTime)
-            {
-                return false;
-            }
-
-            if (this.Value.Object is double)
-            {
-                returnDate = DateTime.FromOADate(this.Value.ToDouble());
-                return true;
-            }
-            if (this.Value.IsTimeSpan)
-            {
-                returnDate = new DateTime(this.Value.ToTimeSpan().Ticks);
-                return true;
-            }
-            if (this.Value.IsString)
-            {
-                if (DateTime.TryParse(this.Value.ToString(), out DateTime dt))
-                {
-                    returnDate = dt;
-                    return true;
-                }
-            }
             return false;
         }
 
-        public bool TryGetTimeSpan(out object timeSpan)
+        if (this.Value.Object is double)
         {
-            timeSpan = default;
-            if (!this.ReturnType.IsTimeSpan)
+            returnDate = DateTime.FromOADate(this.Value.ToDouble());
+            return true;
+        }
+        if (this.Value.IsTimeSpan)
+        {
+            returnDate = new DateTime(this.Value.ToTimeSpan().Ticks);
+            return true;
+        }
+        if (this.Value.IsString)
+        {
+            if (DateTime.TryParse(this.Value.ToString(), out DateTime dt))
             {
-                return false;
+                returnDate = dt;
+                return true;
             }
+        }
+        return false;
+    }
 
-            if (this.Value.Object is long)
-            {
-                timeSpan = new TimeSpan(Convert.ToInt64(this.Value.Object));
-                return true;
-            }
-            if(this.Value.Object is double)
-            {
-                timeSpan = new TimeSpan(DateTime.FromOADate((double)this.Value.Object).Ticks);
-                return true;
-            }
-            if (this.Value.IsDateTime)
-            {
-                timeSpan = new TimeSpan(this.Value.ToDateTime().Ticks);
-                return true;
-            }
-            if (this.Value.IsString)
-            {
-                if (TimeSpan.TryParse(this.Value.ToString(), out TimeSpan ts))
-                {
-                    timeSpan = ts;
-                    return true;
-                }
-                throw new FormatException(this.Value.ToString() + " could not be parsed to a TimeSpan");
-            }
+    public bool TryGetTimeSpan(out object timeSpan)
+    {
+        timeSpan = default;
+        if (!this.ReturnType.IsTimeSpan)
+        {
             return false;
         }
+
+        if (this.Value.Object is long)
+        {
+            timeSpan = new TimeSpan(Convert.ToInt64(this.Value.Object));
+            return true;
+        }
+        if(this.Value.Object is double)
+        {
+            timeSpan = new TimeSpan(DateTime.FromOADate((double)this.Value.Object).Ticks);
+            return true;
+        }
+        if (this.Value.IsDateTime)
+        {
+            timeSpan = new TimeSpan(this.Value.ToDateTime().Ticks);
+            return true;
+        }
+        if (this.Value.IsString)
+        {
+            if (TimeSpan.TryParse(this.Value.ToString(), out TimeSpan ts))
+            {
+                timeSpan = ts;
+                return true;
+            }
+            throw new FormatException(this.Value.ToString() + " could not be parsed to a TimeSpan");
+        }
+        return false;
     }
 }

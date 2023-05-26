@@ -17,20 +17,19 @@ using System.Text;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Metadata;
 using OfficeOpenXml.FormulaParsing.ExpressionGraph;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
+
+[FunctionMetadata(
+                     Category = ExcelFunctionCategory.MathAndTrig,
+                     EPPlusVersion = "4",
+                     Description = "Returns the positive square root of a given number")]
+internal class Sqrt : ExcelFunction
 {
-    [FunctionMetadata(
-        Category = ExcelFunctionCategory.MathAndTrig,
-        EPPlusVersion = "4",
-        Description = "Returns the positive square root of a given number")]
-    internal class Sqrt : ExcelFunction
+    public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
     {
-        public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
-        {
-            ValidateArguments(arguments, 1);
-            double arg = this.ArgToDecimal(arguments, 0);
-            double result = System.Math.Sqrt((double)arg);
-            return this.CreateResult((double)result, DataType.Decimal);
-        }
+        ValidateArguments(arguments, 1);
+        double arg = this.ArgToDecimal(arguments, 0);
+        double result = System.Math.Sqrt((double)arg);
+        return this.CreateResult((double)result, DataType.Decimal);
     }
 }

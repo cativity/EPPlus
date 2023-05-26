@@ -16,55 +16,54 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace OfficeOpenXml.Attributes
+namespace OfficeOpenXml.Attributes;
+
+/// <summary>
+/// Use this attribute on a class or an interface to insert a column with a formula
+/// </summary>
+[AttributeUsage(AttributeTargets.Class | AttributeTargets.Interface, AllowMultiple = true)]
+public class EpplusFormulaTableColumnAttribute : EpplusTableColumnAttributeBase
 {
+    private string _formula = null;
+    private string _formulaR1C1 = null;
+
     /// <summary>
-    /// Use this attribute on a class or an interface to insert a column with a formula
+    /// The spreadsheet formula (don't include the leading '='). If you use the {row} placeholder in the formula it will be replaced with the actual row of each cell in the column.
     /// </summary>
-    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Interface, AllowMultiple = true)]
-    public class EpplusFormulaTableColumnAttribute : EpplusTableColumnAttributeBase
+    public string Formula
     {
-        private string _formula = null;
-        private string _formulaR1C1 = null;
-
-        /// <summary>
-        /// The spreadsheet formula (don't include the leading '='). If you use the {row} placeholder in the formula it will be replaced with the actual row of each cell in the column.
-        /// </summary>
-        public string Formula
+        get
         {
-            get
-            {
-                return this._formula;
-            }
-            set
-            {
-                if(!string.IsNullOrEmpty(this._formulaR1C1) && !string.IsNullOrEmpty(value))
-                {
-                    throw new InvalidOperationException("EpplusFormulaTableColumn attribute: Formula cannot be set if FormulaR1C1 is not null or empty.");
-                }
-
-                this._formula = value;
-            }
+            return this._formula;
         }
-
-        /// <summary>
-        /// The spreadsheet formula (don't include the leading '=') in R1C1 format.
-        /// </summary>
-        public string FormulaR1C1
+        set
         {
-            get
+            if(!string.IsNullOrEmpty(this._formulaR1C1) && !string.IsNullOrEmpty(value))
             {
-                return this._formulaR1C1;
+                throw new InvalidOperationException("EpplusFormulaTableColumn attribute: Formula cannot be set if FormulaR1C1 is not null or empty.");
             }
-            set
-            {
-                if (!string.IsNullOrEmpty(this._formula) && !string.IsNullOrEmpty(value))
-                {
-                    throw new InvalidOperationException("EpplusFormulaTableColumn attribute: FormulaR1C1 cannot be set if Formula is not null or empty.");
-                }
 
-                this._formulaR1C1 = value;
+            this._formula = value;
+        }
+    }
+
+    /// <summary>
+    /// The spreadsheet formula (don't include the leading '=') in R1C1 format.
+    /// </summary>
+    public string FormulaR1C1
+    {
+        get
+        {
+            return this._formulaR1C1;
+        }
+        set
+        {
+            if (!string.IsNullOrEmpty(this._formula) && !string.IsNullOrEmpty(value))
+            {
+                throw new InvalidOperationException("EpplusFormulaTableColumn attribute: FormulaR1C1 cannot be set if Formula is not null or empty.");
             }
+
+            this._formulaR1C1 = value;
         }
     }
 }

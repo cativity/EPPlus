@@ -16,19 +16,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.Implementations
-{
-    internal class CoupdaysImpl : Coupbase
-    {
-        public CoupdaysImpl(FinancialDay settlement, FinancialDay maturity, int frequency, DayCountBasis basis) : base(settlement, maturity, frequency, basis)
-        {
-        }
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.Implementations;
 
-        internal FinanceCalcResult<double> GetCoupdays()
-        {
-            IFinanicalDays? fds = FinancialDaysFactory.Create(this.Basis);
-            FinancialPeriod? settlementPeriod = fds.GetCouponPeriod(this.Settlement, this.Maturity, this.Frequency);
-            return new FinanceCalcResult<double>(fds.GetCoupdays(settlementPeriod.Start, settlementPeriod.End, this.Frequency));
-        }
+internal class CoupdaysImpl : Coupbase
+{
+    public CoupdaysImpl(FinancialDay settlement, FinancialDay maturity, int frequency, DayCountBasis basis) : base(settlement, maturity, frequency, basis)
+    {
+    }
+
+    internal FinanceCalcResult<double> GetCoupdays()
+    {
+        IFinanicalDays? fds = FinancialDaysFactory.Create(this.Basis);
+        FinancialPeriod? settlementPeriod = fds.GetCouponPeriod(this.Settlement, this.Maturity, this.Frequency);
+        return new FinanceCalcResult<double>(fds.GetCoupdays(settlementPeriod.Start, settlementPeriod.End, this.Frequency));
     }
 }

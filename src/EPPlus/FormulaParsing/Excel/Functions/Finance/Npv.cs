@@ -18,21 +18,20 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance;
+
+[FunctionMetadata(
+                     Category = ExcelFunctionCategory.Financial,
+                     EPPlusVersion = "5.2",
+                     Description = "Calculates the net present value of an investment, based on a supplied discount rate, and a series of periodic cash flows")]
+internal class Npv : ExcelFunction
 {
-    [FunctionMetadata(
-        Category = ExcelFunctionCategory.Financial,
-        EPPlusVersion = "5.2",
-        Description = "Calculates the net present value of an investment, based on a supplied discount rate, and a series of periodic cash flows")]
-    internal class Npv : ExcelFunction
+    public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
     {
-        public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
-        {
-            ValidateArguments(arguments, 2);
-            double rate = this.ArgToDecimal(arguments, 0);
-            List<ExcelDoubleCellValue>? args = this.ArgsToDoubleEnumerable(false, true, arguments, context).ToList();
-            double retVal = CashFlowHelper.Npv(rate, args.Skip(1).Select(x => (double)x));
-            return this.CreateResult(retVal, DataType.Decimal);
-        }
+        ValidateArguments(arguments, 2);
+        double rate = this.ArgToDecimal(arguments, 0);
+        List<ExcelDoubleCellValue>? args = this.ArgsToDoubleEnumerable(false, true, arguments, context).ToList();
+        double retVal = CashFlowHelper.Npv(rate, args.Skip(1).Select(x => (double)x));
+        return this.CreateResult(retVal, DataType.Decimal);
     }
 }

@@ -18,31 +18,30 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Statistical
-{
-    [FunctionMetadata(
-        Category = ExcelFunctionCategory.Statistical,
-        EPPlusVersion = "6.0",
-        Description = "Returns the geometric mean of an array or range of positive data.")]
-    internal class Geomean : ExcelFunction
-    {
-        public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
-        {
-            ValidateArguments(arguments, 1);
-            IEnumerable<ExcelDoubleCellValue>? numbers = this.ArgsToDoubleEnumerable(arguments, context);
-            if (numbers.Any(x => x.Value <= 0d))
-            {
-                return this.CreateResult(eErrorType.Num);
-            }
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Statistical;
 
-            double p = 1d;
-            for(int x = 0; x < numbers.Count(); x++)
-            {
-                ExcelDoubleCellValue n = numbers.ElementAt(x);
-                p *= n.Value;
-            }
-            double result = System.Math.Pow(p, 1d / numbers.Count());
-            return this.CreateResult(result, DataType.Decimal);
+[FunctionMetadata(
+                     Category = ExcelFunctionCategory.Statistical,
+                     EPPlusVersion = "6.0",
+                     Description = "Returns the geometric mean of an array or range of positive data.")]
+internal class Geomean : ExcelFunction
+{
+    public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
+    {
+        ValidateArguments(arguments, 1);
+        IEnumerable<ExcelDoubleCellValue>? numbers = this.ArgsToDoubleEnumerable(arguments, context);
+        if (numbers.Any(x => x.Value <= 0d))
+        {
+            return this.CreateResult(eErrorType.Num);
         }
+
+        double p = 1d;
+        for(int x = 0; x < numbers.Count(); x++)
+        {
+            ExcelDoubleCellValue n = numbers.ElementAt(x);
+            p *= n.Value;
+        }
+        double result = System.Math.Pow(p, 1d / numbers.Count());
+        return this.CreateResult(result, DataType.Decimal);
     }
 }

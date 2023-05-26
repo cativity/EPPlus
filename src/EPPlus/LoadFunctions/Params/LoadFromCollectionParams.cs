@@ -15,31 +15,30 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
 
-namespace OfficeOpenXml.LoadFunctions.Params
+namespace OfficeOpenXml.LoadFunctions.Params;
+
+/// <summary>
+/// Parameters for the LoadFromCollection method
+/// </summary>
+public class LoadFromCollectionParams : LoadFunctionFunctionParamsBase
 {
     /// <summary>
-    /// Parameters for the LoadFromCollection method
+    /// Default value for the BindingFlags property
     /// </summary>
-    public class LoadFromCollectionParams : LoadFunctionFunctionParamsBase
-    {
-        /// <summary>
-        /// Default value for the BindingFlags property
-        /// </summary>
-        public const BindingFlags DefaultBindingFlags = BindingFlags.Public | BindingFlags.Instance;
+    public const BindingFlags DefaultBindingFlags = BindingFlags.Public | BindingFlags.Instance;
 
-        /// <summary>
-        /// The <see cref="BindingFlags"/> used when reading properties via reflection.
-        /// </summary>
-        public BindingFlags BindingFlags { get; set; } = DefaultBindingFlags;
+    /// <summary>
+    /// The <see cref="BindingFlags"/> used when reading properties via reflection.
+    /// </summary>
+    public BindingFlags BindingFlags { get; set; } = DefaultBindingFlags;
 
-        /// <summary>
-        /// If not null, this specifies the members that should be used. Any member not present will be ignored.
-        /// </summary>
-        public MemberInfo[] Members { get; set; }
+    /// <summary>
+    /// If not null, this specifies the members that should be used. Any member not present will be ignored.
+    /// </summary>
+    public MemberInfo[] Members { get; set; }
 
-        /// <summary>
-        /// Sets how headers should be parsed before added to the worksheet, see <see cref="HeaderParsingTypes"/>
-        /// </summary>
-        public HeaderParsingTypes HeaderParsingType { get; set; } = HeaderParsingTypes.UnderscoreToSpace;
-    }
+    /// <summary>
+    /// Sets how headers should be parsed before added to the worksheet, see <see cref="HeaderParsingTypes"/>
+    /// </summary>
+    public HeaderParsingTypes HeaderParsingType { get; set; } = HeaderParsingTypes.UnderscoreToSpace;
 }

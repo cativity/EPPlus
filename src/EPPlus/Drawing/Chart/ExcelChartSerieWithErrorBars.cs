@@ -13,62 +13,61 @@
 using System.Xml;
 using OfficeOpenXml.Drawing.Interfaces;
 
-namespace OfficeOpenXml.Drawing.Chart
+namespace OfficeOpenXml.Drawing.Chart;
+
+/// <summary>
+/// A base class used for chart series that support ErrorBars
+/// </summary>
+public class ExcelChartSerieWithErrorBars : ExcelChartStandardSerie, IDrawingChartErrorBars  
 {
     /// <summary>
-    /// A base class used for chart series that support ErrorBars
+    /// Default constructor
     /// </summary>
-    public class ExcelChartSerieWithErrorBars : ExcelChartStandardSerie, IDrawingChartErrorBars  
+    /// <param name="chart">Chart series</param>
+    /// <param name="ns">Namespacemanager</param>
+    /// <param name="node">Topnode</param>
+    /// <param name="isPivot">Is pivotchart</param>
+    internal ExcelChartSerieWithErrorBars(ExcelChart chart, XmlNamespaceManager ns, XmlNode node, bool isPivot) :
+        base(chart, ns, node, isPivot)
     {
-        /// <summary>
-        /// Default constructor
-        /// </summary>
-        /// <param name="chart">Chart series</param>
-        /// <param name="ns">Namespacemanager</param>
-        /// <param name="node">Topnode</param>
-        /// <param name="isPivot">Is pivotchart</param>
-        internal ExcelChartSerieWithErrorBars(ExcelChart chart, XmlNamespaceManager ns, XmlNode node, bool isPivot) :
-            base(chart, ns, node, isPivot)
+        XmlNode? errorNode = this.GetNode("c:errBars");
+        if (errorNode != null) 
         {
-            XmlNode? errorNode = this.GetNode("c:errBars");
-            if (errorNode != null) 
-            {
-                this.ErrorBars = new ExcelChartErrorBars(this, errorNode);
-            }
+            this.ErrorBars = new ExcelChartErrorBars(this, errorNode);
         }
-        /// <summary>
-        /// A collection of error bars
-        /// <seealso cref="AddErrorBars(eErrorBarType, eErrorValueType)"/>
-        /// </summary>
-        public ExcelChartErrorBars ErrorBars { get; internal set; } = null;
-        /// <summary>
-        /// Adds a errorbars to the chart serie
-        /// </summary>
-        /// <param name="barType"></param>
-        /// <param name="valueType"></param>
-        public virtual void AddErrorBars(eErrorBarType barType, eErrorValueType valueType)
-        {
-            this.ErrorBars = this.GetNewErrorBar(barType, valueType, this.ErrorBars);
-        }
+    }
+    /// <summary>
+    /// A collection of error bars
+    /// <seealso cref="AddErrorBars(eErrorBarType, eErrorValueType)"/>
+    /// </summary>
+    public ExcelChartErrorBars ErrorBars { get; internal set; } = null;
+    /// <summary>
+    /// Adds a errorbars to the chart serie
+    /// </summary>
+    /// <param name="barType"></param>
+    /// <param name="valueType"></param>
+    public virtual void AddErrorBars(eErrorBarType barType, eErrorValueType valueType)
+    {
+        this.ErrorBars = this.GetNewErrorBar(barType, valueType, this.ErrorBars);
+    }
 
-        internal ExcelChartErrorBars GetNewErrorBar(eErrorBarType barType, eErrorValueType valueType, ExcelChartErrorBars errorBars)
-        {
-            errorBars ??= new ExcelChartErrorBars(this);
-            errorBars.BarType = barType;
-            errorBars.ValueType = valueType;
-            errorBars.NoEndCap = false;
+    internal ExcelChartErrorBars GetNewErrorBar(eErrorBarType barType, eErrorValueType valueType, ExcelChartErrorBars errorBars)
+    {
+        errorBars ??= new ExcelChartErrorBars(this);
+        errorBars.BarType = barType;
+        errorBars.ValueType = valueType;
+        errorBars.NoEndCap = false;
 
-            this._chart.ApplyStyleOnPart(errorBars, this._chart.StyleManager?.Style?.ErrorBar);
-            return errorBars;
-        }
+        this._chart.ApplyStyleOnPart(errorBars, this._chart.StyleManager?.Style?.ErrorBar);
+        return errorBars;
+    }
 
-        /// <summary>
-        /// Returns true if the serie has Error Bars
-        /// </summary>
-        /// <returns>True if the serie has Error Bars</returns>
-        public bool HasErrorBars()
-        {
-            return this.ExistsNode("c:errBars");
-        }
+    /// <summary>
+    /// Returns true if the serie has Error Bars
+    /// </summary>
+    /// <returns>True if the serie has Error Bars</returns>
+    public bool HasErrorBars()
+    {
+        return this.ExistsNode("c:errBars");
     }
 }

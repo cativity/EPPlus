@@ -19,78 +19,77 @@ using System.Collections.Generic;
 using System.Text;
 using System.Xml;
 
-namespace OfficeOpenXml.Drawing.Chart
-{
-    /// <summary>
-    /// Represents a up-down bar, dropline or hi-low line in a chart
-    /// </summary>
-    public class ExcelChartStyleItem : XmlHelper, IDrawingStyleBase
-    {
-        ExcelChart _chart;
-        string _path;
-        Action _removeMe;
-        internal ExcelChartStyleItem(XmlNamespaceManager nsm, XmlNode topNode, ExcelChart chart, string path, Action removeMe) : base(nsm, topNode)
-        {
-            this._chart = chart;
-            this._path = path;
-            this.AddSchemaNodeOrder(chart._chartXmlHelper.SchemaNodeOrder, ExcelDrawing._schemaNodeOrderSpPr);
-            this.TopNode = this.CreateNode(path);
-            this._removeMe = removeMe;
-        }
-        ExcelDrawingFill _fill = null;
-        /// <summary>
-        /// Access to fill properties
-        /// </summary>
-        public ExcelDrawingFill Fill
-        {
-            get { return this._fill ??= new ExcelDrawingFill(this._chart, this.NameSpaceManager, this.TopNode, "c:spPr", this.SchemaNodeOrder); }
-        }
-        ExcelDrawingBorder _border = null;
-        /// <summary>
-        /// Access to border properties
-        /// </summary>
-        public ExcelDrawingBorder Border
-        {
-            get
-            {
-                return this._border ??= new ExcelDrawingBorder(this._chart, this.NameSpaceManager, this.TopNode, "c:spPr/a:ln", this.SchemaNodeOrder);
-            }
-        }
+namespace OfficeOpenXml.Drawing.Chart;
 
-        ExcelDrawingEffectStyle _effect = null;
-        /// <summary>
-        /// Effects
-        /// </summary>
-        public ExcelDrawingEffectStyle Effect
+/// <summary>
+/// Represents a up-down bar, dropline or hi-low line in a chart
+/// </summary>
+public class ExcelChartStyleItem : XmlHelper, IDrawingStyleBase
+{
+    ExcelChart _chart;
+    string _path;
+    Action _removeMe;
+    internal ExcelChartStyleItem(XmlNamespaceManager nsm, XmlNode topNode, ExcelChart chart, string path, Action removeMe) : base(nsm, topNode)
+    {
+        this._chart = chart;
+        this._path = path;
+        this.AddSchemaNodeOrder(chart._chartXmlHelper.SchemaNodeOrder, ExcelDrawing._schemaNodeOrderSpPr);
+        this.TopNode = this.CreateNode(path);
+        this._removeMe = removeMe;
+    }
+    ExcelDrawingFill _fill = null;
+    /// <summary>
+    /// Access to fill properties
+    /// </summary>
+    public ExcelDrawingFill Fill
+    {
+        get { return this._fill ??= new ExcelDrawingFill(this._chart, this.NameSpaceManager, this.TopNode, "c:spPr", this.SchemaNodeOrder); }
+    }
+    ExcelDrawingBorder _border = null;
+    /// <summary>
+    /// Access to border properties
+    /// </summary>
+    public ExcelDrawingBorder Border
+    {
+        get
         {
-            get
-            {
-                return this._effect ??= new ExcelDrawingEffectStyle(this._chart,
-                                                                    this.NameSpaceManager,
-                                                                    this.TopNode,
-                                                                    "c:spPr/a:effectLst",
-                                                                    this.SchemaNodeOrder);
-            }
+            return this._border ??= new ExcelDrawingBorder(this._chart, this.NameSpaceManager, this.TopNode, "c:spPr/a:ln", this.SchemaNodeOrder);
         }
-        ExcelDrawing3D _threeD = null;
-        /// <summary>
-        /// 3D properties
-        /// </summary>
-        public ExcelDrawing3D ThreeD
+    }
+
+    ExcelDrawingEffectStyle _effect = null;
+    /// <summary>
+    /// Effects
+    /// </summary>
+    public ExcelDrawingEffectStyle Effect
+    {
+        get
         {
-            get { return this._threeD ??= new ExcelDrawing3D(this.NameSpaceManager, this.TopNode, "c:spPr", this.SchemaNodeOrder); }
+            return this._effect ??= new ExcelDrawingEffectStyle(this._chart,
+                                                                this.NameSpaceManager,
+                                                                this.TopNode,
+                                                                "c:spPr/a:effectLst",
+                                                                this.SchemaNodeOrder);
         }
-        void IDrawingStyleBase.CreatespPr()
-        {
-            this.CreatespPrNode();
-        }
-        /// <summary>
-        /// Removes the item
-        /// </summary>
-        public void Remove()
-        {
-            this.TopNode.ParentNode.RemoveChild(this.TopNode);
-            this._removeMe();            
-        }
+    }
+    ExcelDrawing3D _threeD = null;
+    /// <summary>
+    /// 3D properties
+    /// </summary>
+    public ExcelDrawing3D ThreeD
+    {
+        get { return this._threeD ??= new ExcelDrawing3D(this.NameSpaceManager, this.TopNode, "c:spPr", this.SchemaNodeOrder); }
+    }
+    void IDrawingStyleBase.CreatespPr()
+    {
+        this.CreatespPrNode();
+    }
+    /// <summary>
+    /// Removes the item
+    /// </summary>
+    public void Remove()
+    {
+        this.TopNode.ParentNode.RemoveChild(this.TopNode);
+        this._removeMe();            
     }
 }

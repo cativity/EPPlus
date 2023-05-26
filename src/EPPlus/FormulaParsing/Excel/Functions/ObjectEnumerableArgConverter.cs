@@ -17,31 +17,30 @@ using System.Text;
 using OfficeOpenXml.Utils;
 using OfficeOpenXml.FormulaParsing;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions;
+
+public class ObjectEnumerableArgConverter : CollectionFlattener<object>
 {
-    public class ObjectEnumerableArgConverter : CollectionFlattener<object>
+    public virtual IEnumerable<object> ConvertArgs(bool ignoreHidden, IEnumerable<FunctionArgument> arguments, ParsingContext context)
     {
-        public virtual IEnumerable<object> ConvertArgs(bool ignoreHidden, IEnumerable<FunctionArgument> arguments, ParsingContext context)
-        {
-            return base.FuncArgsToFlatEnumerable(arguments, (arg, argList) =>
+        return base.FuncArgsToFlatEnumerable(arguments, (arg, argList) =>
+            {
+                if (arg.Value is IRangeInfo)
                 {
-                    if (arg.Value is IRangeInfo)
+                    foreach (ICellInfo? cell in (IRangeInfo)arg.Value)
                     {
-                        foreach (ICellInfo? cell in (IRangeInfo)arg.Value)
+                        if (!CellStateHelper.ShouldIgnore(ignoreHidden, cell, context))
                         {
-                            if (!CellStateHelper.ShouldIgnore(ignoreHidden, cell, context))
-                            {
-                                argList.Add(cell.Value);
-                            }
+                            argList.Add(cell.Value);
                         }
                     }
-                    else
-                    {
-                       argList.Add(arg.Value);
-                    }
-                })
+                }
+                else
+                {
+                    argList.Add(arg.Value);
+                }
+            })
             ;
 
-        }
     }
 }

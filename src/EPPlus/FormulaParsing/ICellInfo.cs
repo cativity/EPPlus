@@ -16,26 +16,25 @@ using System.Linq;
 using System.Text;
 using OfficeOpenXml.FormulaParsing.LexicalAnalysis;
 
-namespace OfficeOpenXml.FormulaParsing
+namespace OfficeOpenXml.FormulaParsing;
+
+/// <summary>
+/// Information and help methods about a cell
+/// </summary>
+public interface ICellInfo
 {
-    /// <summary>
-    /// Information and help methods about a cell
-    /// </summary>
-    public interface ICellInfo
-    {
-        string Address { get; }
+    string Address { get; }
 
-        string WorksheetName { get; }
-        int Row { get; }
-        int Column { get; }
+    string WorksheetName { get; }
+    int Row { get; }
+    int Column { get; }
 
-        ulong Id { get; }
-        string Formula { get; }
-        object Value { get; }
-        double ValueDouble { get; }
-        double ValueDoubleLogical { get; }
-        bool IsHiddenRow { get; }
-        bool IsExcelError { get; }
-        IList<Token> Tokens { get; }
-    }
+    ulong Id { get; }
+    string Formula { get; }
+    object Value { get; }
+    double ValueDouble { get; }
+    double ValueDoubleLogical { get; }
+    bool IsHiddenRow { get; }
+    bool IsExcelError { get; }
+    IList<Token> Tokens { get; }
 }

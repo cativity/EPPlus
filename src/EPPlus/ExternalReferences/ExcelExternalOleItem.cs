@@ -10,28 +10,27 @@
  *************************************************************************************************
   04/16/2021         EPPlus Software AB       EPPlus 5.7
  *************************************************************************************************/
-namespace OfficeOpenXml.ExternalReferences
+namespace OfficeOpenXml.ExternalReferences;
+
+/// <summary>
+/// An OLE item in an external OLE link. Readonly.
+/// </summary>
+public class ExcelExternalOleItem 
 {
     /// <summary>
-    /// An OLE item in an external OLE link. Readonly.
+    /// If the linked object should notify the application when the external data changes.
     /// </summary>
-    public class ExcelExternalOleItem 
-    {
-        /// <summary>
-        /// If the linked object should notify the application when the external data changes.
-        /// </summary>
-        public bool Advise { get; internal set; }
-        /// <summary>
-        /// If the linked object is represented by an image.
-        /// </summary>
-        public bool PreferPicture { get; internal set; }
-        /// <summary>
-        /// If the linked object is represented by an icon
-        /// </summary>
-        public bool Icon { get; internal set; }
-        /// <summary>
-        /// The name of the OLE link item
-        /// </summary>
-        public string Name { get; internal set; }
-    }
+    public bool Advise { get; internal set; }
+    /// <summary>
+    /// If the linked object is represented by an image.
+    /// </summary>
+    public bool PreferPicture { get; internal set; }
+    /// <summary>
+    /// If the linked object is represented by an icon
+    /// </summary>
+    public bool Icon { get; internal set; }
+    /// <summary>
+    /// The name of the OLE link item
+    /// </summary>
+    public string Name { get; internal set; }
 }

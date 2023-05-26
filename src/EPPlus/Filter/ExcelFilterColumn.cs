@@ -13,81 +13,80 @@
 using OfficeOpenXml.Utils;
 using System.Xml;
 
-namespace OfficeOpenXml.Filter
-{
-    /// <summary>
-    /// Base class for filter columns
-    /// </summary>
-    public abstract class ExcelFilterColumn : XmlHelper
-    {
-        internal ExcelFilterColumn(XmlNamespaceManager namespaceManager, XmlNode node) : base(namespaceManager, node)
-        {
+namespace OfficeOpenXml.Filter;
 
-        }
-        /// <summary>
-        /// Gets the filter value
-        /// </summary>
-        /// <param name="value">The value</param>
-        /// <returns></returns>
-        protected internal static object GetFilterValue(string value)
+/// <summary>
+/// Base class for filter columns
+/// </summary>
+public abstract class ExcelFilterColumn : XmlHelper
+{
+    internal ExcelFilterColumn(XmlNamespaceManager namespaceManager, XmlNode node) : base(namespaceManager, node)
+    {
+
+    }
+    /// <summary>
+    /// Gets the filter value
+    /// </summary>
+    /// <param name="value">The value</param>
+    /// <returns></returns>
+    protected internal static object GetFilterValue(string value)
+    {
+        if ((value[0] >= '0' && value[0] <= '9') ||
+            (value[value.Length - 1] >= '0' && value[value.Length - 1] <= '9'))
         {
-            if ((value[0] >= '0' && value[0] <= '9') ||
-                (value[value.Length - 1] >= '0' && value[value.Length - 1] <= '9'))
+            if (ConvertUtil.TryParseNumericString(value, out double d))
             {
-                if (ConvertUtil.TryParseNumericString(value, out double d))
-                {
-                    return d;
-                }
-                else
-                {
-                    return value;
-                }
+                return d;
             }
             else
             {
                 return value;
             }
         }
-        /// <summary>
-        /// Zero-based index indicating the AutoFilter column to which this filter information applies
-        /// </summary>
-        public int Position { get => this.GetXmlNodeInt("@colId"); }
-        const string _hiddenButtonPath = "@hiddenButton";
-        /// <summary>
-        /// If true the AutoFilter button for this column is hidden.
-        /// </summary>
-        public bool HiddenButton
+        else
         {
-            get
-            {
-                return this.GetXmlNodeBool(_hiddenButtonPath);
-            }
-            set
-            {
-                this.SetXmlNodeBool(_hiddenButtonPath, value, false);
-            }
+            return value;
         }
-        const string _showButtonPath = "@showButton";
-        /// <summary>
-        /// Should filtering interface elements on this cell be shown.
-        /// </summary>
-        public bool ShowButton
+    }
+    /// <summary>
+    /// Zero-based index indicating the AutoFilter column to which this filter information applies
+    /// </summary>
+    public int Position { get => this.GetXmlNodeInt("@colId"); }
+    const string _hiddenButtonPath = "@hiddenButton";
+    /// <summary>
+    /// If true the AutoFilter button for this column is hidden.
+    /// </summary>
+    public bool HiddenButton
+    {
+        get
         {
-            get
-            {
-                return this.GetXmlNodeBool(_showButtonPath);
-            }
-            set
-            {
-                this.SetXmlNodeBool(_showButtonPath, value, true);
-            }
+            return this.GetXmlNodeBool(_hiddenButtonPath);
         }
+        set
+        {
+            this.SetXmlNodeBool(_hiddenButtonPath, value, false);
+        }
+    }
+    const string _showButtonPath = "@showButton";
+    /// <summary>
+    /// Should filtering interface elements on this cell be shown.
+    /// </summary>
+    public bool ShowButton
+    {
+        get
+        {
+            return this.GetXmlNodeBool(_showButtonPath);
+        }
+        set
+        {
+            this.SetXmlNodeBool(_showButtonPath, value, true);
+        }
+    }
 
-        internal abstract void Save();
-        internal abstract bool Match(object value, string valueText);
-        internal virtual void SetFilterValue(ExcelWorksheet worksheet, ExcelAddressBase address)
-        {
+    internal abstract void Save();
+    internal abstract bool Match(object value, string valueText);
+    internal virtual void SetFilterValue(ExcelWorksheet worksheet, ExcelAddressBase address)
+    {
 
-        }
     }
 }

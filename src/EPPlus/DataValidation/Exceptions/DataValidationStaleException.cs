@@ -15,16 +15,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace OfficeOpenXml.DataValidation.Exceptions
-{
-    /// <summary>
-    /// This exception is thrown by an instance of <see cref="ExcelDataValidation"/> if it is stale and should not allow setting of properties.
-    /// </summary>
-    public class DataValidationStaleException : InvalidOperationException
-    {
+namespace OfficeOpenXml.DataValidation.Exceptions;
 
-        internal DataValidationStaleException(string message) : base(message)
-        {
-        }
+/// <summary>
+/// This exception is thrown by an instance of <see cref="ExcelDataValidation"/> if it is stale and should not allow setting of properties.
+/// </summary>
+public class DataValidationStaleException : InvalidOperationException
+{
+
+    internal DataValidationStaleException(string message) : base(message)
+    {
     }
 }

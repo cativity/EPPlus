@@ -16,13 +16,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Statistical
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Statistical;
+
+[FunctionMetadata(
+                     Category = ExcelFunctionCategory.Statistical,
+                     EPPlusVersion = "5.8",
+                     Description = "Calculates the inverse of the Cumulative Normal Distribution Function for a supplied value of x, and a supplied distribution mean & standard deviation.")]
+internal class NormDotSdotInv : NormsInv
 {
-    [FunctionMetadata(
-            Category = ExcelFunctionCategory.Statistical,
-            EPPlusVersion = "5.8",
-            Description = "Calculates the inverse of the Cumulative Normal Distribution Function for a supplied value of x, and a supplied distribution mean & standard deviation.")]
-    internal class NormDotSdotInv : NormsInv
-    {
-    }
 }

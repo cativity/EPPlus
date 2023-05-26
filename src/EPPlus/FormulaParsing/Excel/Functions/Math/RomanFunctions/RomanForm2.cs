@@ -14,13 +14,12 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math.RomanFunctions
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math.RomanFunctions;
+
+internal class RomanForm2 : RomanBase
 {
-    internal class RomanForm2 : RomanBase
+    internal override string Execute(int number)
     {
-        internal override string Execute(int number)
-        {
-            return HandleType(2, this.GetClassicRomanFormat(number));
-        }
+        return HandleType(2, this.GetClassicRomanFormat(number));
     }
 }

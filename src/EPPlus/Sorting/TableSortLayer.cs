@@ -15,64 +15,63 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace OfficeOpenXml.Sorting
+namespace OfficeOpenXml.Sorting;
+
+public class TableSortLayer : SortLayerBase
 {
-    public class TableSortLayer : SortLayerBase
+    internal TableSortLayer(TableSortOptions options)
+        : base(options)
     {
-        internal TableSortLayer(TableSortOptions options)
-            : base(options)
-        {
-            this._options = options;
-        }
+        this._options = options;
+    }
 
-        private readonly TableSortOptions _options;
+    private readonly TableSortOptions _options;
 
-        /// <summary>
-        /// Sorts by the column that corresponds to the <paramref name="column"/> (zerobased) with ascending sort direction
-        /// </summary>
-        /// <param name="column">The column to sort</param>
-        /// <returns>A <see cref="TableSortLayerBuilder"/> for adding more sort criterias</returns>
-        public TableSortLayerBuilder Column(int column)
-        {
-            this.SetColumn(column);
-            return new TableSortLayerBuilder(this._options, this);
-        }
+    /// <summary>
+    /// Sorts by the column that corresponds to the <paramref name="column"/> (zerobased) with ascending sort direction
+    /// </summary>
+    /// <param name="column">The column to sort</param>
+    /// <returns>A <see cref="TableSortLayerBuilder"/> for adding more sort criterias</returns>
+    public TableSortLayerBuilder Column(int column)
+    {
+        this.SetColumn(column);
+        return new TableSortLayerBuilder(this._options, this);
+    }
 
-        /// <summary>
-        /// Sorts by the column that corresponds to the <paramref name="column"/> (zerobased) using the supplied sort direction.
-        /// </summary>
-        /// <param name="column">The column to sort</param>
-        /// <param name="sortOrder">Ascending or Descending sort</param>
-        /// <returns>A <see cref="TableSortLayerBuilder"/> for adding more sort criterias</returns>
-        public TableSortLayerBuilder Column(int column, eSortOrder sortOrder)
-        {
-            this.SetColumn(column, sortOrder);
-            return new TableSortLayerBuilder(this._options, this);
-        }
+    /// <summary>
+    /// Sorts by the column that corresponds to the <paramref name="column"/> (zerobased) using the supplied sort direction.
+    /// </summary>
+    /// <param name="column">The column to sort</param>
+    /// <param name="sortOrder">Ascending or Descending sort</param>
+    /// <returns>A <see cref="TableSortLayerBuilder"/> for adding more sort criterias</returns>
+    public TableSortLayerBuilder Column(int column, eSortOrder sortOrder)
+    {
+        this.SetColumn(column, sortOrder);
+        return new TableSortLayerBuilder(this._options, this);
+    }
 
-        /// <summary>
-        /// Sorts by the column that corresponds to the <paramref name="columnName"/> ith ascending sort direction
-        /// </summary>
-        /// <param name="columnName">The name of the column to sort, see <see cref="OfficeOpenXml.Table.ExcelTableColumn.Name"/>.</param>
-        /// <returns>A <see cref="TableSortLayerBuilder"/> for adding more sort criterias</returns>
-        public TableSortLayerBuilder ColumnNamed(string columnName)
-        {
-            int ix = this._options.GetColumnNameIndex(columnName);
-            this.SetColumn(ix);
-            return new TableSortLayerBuilder(this._options, this);
-        }
+    /// <summary>
+    /// Sorts by the column that corresponds to the <paramref name="columnName"/> ith ascending sort direction
+    /// </summary>
+    /// <param name="columnName">The name of the column to sort, see <see cref="OfficeOpenXml.Table.ExcelTableColumn.Name"/>.</param>
+    /// <returns>A <see cref="TableSortLayerBuilder"/> for adding more sort criterias</returns>
+    public TableSortLayerBuilder ColumnNamed(string columnName)
+    {
+        int ix = this._options.GetColumnNameIndex(columnName);
+        this.SetColumn(ix);
+        return new TableSortLayerBuilder(this._options, this);
+    }
 
-        /// <summary>
-        /// Sorts by the column that corresponds to the <paramref name="columnName"/> using the supplied sort direction.
-        /// </summary>
-        /// <param name="columnName">Name of the column to sort, see <see cref="OfficeOpenXml.Table.ExcelTableColumn.Name"/></param>
-        /// <param name="sortOrder">Ascending or Descending sort</param>
-        /// <returns>A <see cref="TableSortLayerBuilder"/> for adding more sort criterias</returns>
-        public TableSortLayerBuilder ColumnNamed(string columnName, eSortOrder sortOrder)
-        {
-            int ix = this._options.GetColumnNameIndex(columnName);
-            this.SetColumn(ix, sortOrder);
-            return new TableSortLayerBuilder(this._options, this);
-        }
+    /// <summary>
+    /// Sorts by the column that corresponds to the <paramref name="columnName"/> using the supplied sort direction.
+    /// </summary>
+    /// <param name="columnName">Name of the column to sort, see <see cref="OfficeOpenXml.Table.ExcelTableColumn.Name"/></param>
+    /// <param name="sortOrder">Ascending or Descending sort</param>
+    /// <returns>A <see cref="TableSortLayerBuilder"/> for adding more sort criterias</returns>
+    public TableSortLayerBuilder ColumnNamed(string columnName, eSortOrder sortOrder)
+    {
+        int ix = this._options.GetColumnNameIndex(columnName);
+        this.SetColumn(ix, sortOrder);
+        return new TableSortLayerBuilder(this._options, this);
     }
 }

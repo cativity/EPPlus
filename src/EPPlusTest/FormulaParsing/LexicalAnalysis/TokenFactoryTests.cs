@@ -36,194 +36,193 @@ using OfficeOpenXml.FormulaParsing.LexicalAnalysis;
 using FakeItEasy;
 using OfficeOpenXml.FormulaParsing.Utilities;
 
-namespace EPPlusTest.FormulaParsing.LexicalAnalysis
+namespace EPPlusTest.FormulaParsing.LexicalAnalysis;
+
+[TestClass]
+public class TokenFactoryTests
 {
-    [TestClass]
-    public class TokenFactoryTests
+    private ITokenFactory _tokenFactory;
+    private INameValueProvider _nameValueProvider;
+
+
+    [TestInitialize]
+    public void Setup()
     {
-        private ITokenFactory _tokenFactory;
-        private INameValueProvider _nameValueProvider;
+        ParsingContext? context = ParsingContext.Create();
+        ExcelDataProvider? excelDataProvider = A.Fake<ExcelDataProvider>();
+        this._nameValueProvider = A.Fake<INameValueProvider>();
+        this._tokenFactory = new TokenFactory(context.Configuration.FunctionRepository, this._nameValueProvider);
+    }
 
-
-        [TestInitialize]
-        public void Setup()
-        {
-            ParsingContext? context = ParsingContext.Create();
-            ExcelDataProvider? excelDataProvider = A.Fake<ExcelDataProvider>();
-            this._nameValueProvider = A.Fake<INameValueProvider>();
-            this._tokenFactory = new TokenFactory(context.Configuration.FunctionRepository, this._nameValueProvider);
-        }
-
-        [TestCleanup]
-        public void Cleanup()
-        {
+    [TestCleanup]
+    public void Cleanup()
+    {
       
-        }
+    }
 
-        [TestMethod]
-        public void ShouldCreateAStringToken()
-        {
-            string? input = "\"";
-            Token token = this._tokenFactory.Create(Enumerable.Empty<Token>(), input);
+    [TestMethod]
+    public void ShouldCreateAStringToken()
+    {
+        string? input = "\"";
+        Token token = this._tokenFactory.Create(Enumerable.Empty<Token>(), input);
 
-            Assert.AreEqual("\"", token.Value);
-            Assert.IsTrue(token.TokenTypeIsSet(TokenType.String));
-        }
+        Assert.AreEqual("\"", token.Value);
+        Assert.IsTrue(token.TokenTypeIsSet(TokenType.String));
+    }
 
-        [TestMethod]
-        public void ShouldCreatePlusAsOperatorToken()
-        {
-            string? input = "+";
-            Token token = this._tokenFactory.Create(Enumerable.Empty<Token>(), input);
+    [TestMethod]
+    public void ShouldCreatePlusAsOperatorToken()
+    {
+        string? input = "+";
+        Token token = this._tokenFactory.Create(Enumerable.Empty<Token>(), input);
 
-            Assert.AreEqual("+", token.Value);
-            Assert.IsTrue(token.TokenTypeIsSet(TokenType.Operator));
-        }
+        Assert.AreEqual("+", token.Value);
+        Assert.IsTrue(token.TokenTypeIsSet(TokenType.Operator));
+    }
 
-        [TestMethod]
-        public void ShouldCreateMinusAsOperatorToken()
-        {
-            string? input = "-";
-            Token token = this._tokenFactory.Create(Enumerable.Empty<Token>(), input);
+    [TestMethod]
+    public void ShouldCreateMinusAsOperatorToken()
+    {
+        string? input = "-";
+        Token token = this._tokenFactory.Create(Enumerable.Empty<Token>(), input);
 
-            Assert.AreEqual("-", token.Value);
-            Assert.IsTrue(token.TokenTypeIsSet(TokenType.Operator));
-        }
+        Assert.AreEqual("-", token.Value);
+        Assert.IsTrue(token.TokenTypeIsSet(TokenType.Operator));
+    }
 
-        [TestMethod]
-        public void ShouldCreateMultiplyAsOperatorToken()
-        {
-            string? input = "*";
-            Token token = this._tokenFactory.Create(Enumerable.Empty<Token>(), input);
+    [TestMethod]
+    public void ShouldCreateMultiplyAsOperatorToken()
+    {
+        string? input = "*";
+        Token token = this._tokenFactory.Create(Enumerable.Empty<Token>(), input);
 
-            Assert.AreEqual("*", token.Value);
-            Assert.IsTrue(token.TokenTypeIsSet(TokenType.Operator));
-        }
+        Assert.AreEqual("*", token.Value);
+        Assert.IsTrue(token.TokenTypeIsSet(TokenType.Operator));
+    }
 
-        [TestMethod]
-        public void ShouldCreateDivideAsOperatorToken()
-        {
-            string? input = "/";
-            Token token = this._tokenFactory.Create(Enumerable.Empty<Token>(), input);
+    [TestMethod]
+    public void ShouldCreateDivideAsOperatorToken()
+    {
+        string? input = "/";
+        Token token = this._tokenFactory.Create(Enumerable.Empty<Token>(), input);
 
-            Assert.AreEqual("/", token.Value);
-            Assert.IsTrue(token.TokenTypeIsSet(TokenType.Operator));
-        }
+        Assert.AreEqual("/", token.Value);
+        Assert.IsTrue(token.TokenTypeIsSet(TokenType.Operator));
+    }
 
-        [TestMethod]
-        public void ShouldCreateEqualsAsOperatorToken()
-        {
-            string? input = "=";
-            Token token = this._tokenFactory.Create(Enumerable.Empty<Token>(), input);
+    [TestMethod]
+    public void ShouldCreateEqualsAsOperatorToken()
+    {
+        string? input = "=";
+        Token token = this._tokenFactory.Create(Enumerable.Empty<Token>(), input);
 
-            Assert.AreEqual("=", token.Value);
-            Assert.IsTrue(token.TokenTypeIsSet(TokenType.Operator));
-        }
+        Assert.AreEqual("=", token.Value);
+        Assert.IsTrue(token.TokenTypeIsSet(TokenType.Operator));
+    }
 
-        [TestMethod]
-        public void ShouldCreateIntegerAsIntegerToken()
-        {
-            string? input = "23";
-            Token token = this._tokenFactory.Create(Enumerable.Empty<Token>(), input);
+    [TestMethod]
+    public void ShouldCreateIntegerAsIntegerToken()
+    {
+        string? input = "23";
+        Token token = this._tokenFactory.Create(Enumerable.Empty<Token>(), input);
 
-            Assert.AreEqual("23", token.Value);
-            Assert.IsTrue(token.TokenTypeIsSet(TokenType.Integer));
+        Assert.AreEqual("23", token.Value);
+        Assert.IsTrue(token.TokenTypeIsSet(TokenType.Integer));
 
-        }
+    }
 
-        [TestMethod]
-        public void ShouldCreateBooleanAsBooleanToken()
-        {
-            string? input = "true";
-            Token token = this._tokenFactory.Create(Enumerable.Empty<Token>(), input);
+    [TestMethod]
+    public void ShouldCreateBooleanAsBooleanToken()
+    {
+        string? input = "true";
+        Token token = this._tokenFactory.Create(Enumerable.Empty<Token>(), input);
 
-            Assert.AreEqual("true", token.Value);
-            Assert.IsTrue(token.TokenTypeIsSet(TokenType.Boolean));
-        }
+        Assert.AreEqual("true", token.Value);
+        Assert.IsTrue(token.TokenTypeIsSet(TokenType.Boolean));
+    }
 
-        [TestMethod]
-        public void ShouldCreateDecimalAsDecimalToken()
-        {
-            string? input = "23.3";
-            Token token = this._tokenFactory.Create(Enumerable.Empty<Token>(), input);
+    [TestMethod]
+    public void ShouldCreateDecimalAsDecimalToken()
+    {
+        string? input = "23.3";
+        Token token = this._tokenFactory.Create(Enumerable.Empty<Token>(), input);
 
-            Assert.AreEqual("23.3", token.Value);
-            Assert.IsTrue(token.TokenTypeIsSet(TokenType.Decimal));
-        }
+        Assert.AreEqual("23.3", token.Value);
+        Assert.IsTrue(token.TokenTypeIsSet(TokenType.Decimal));
+    }
 
-        [TestMethod]
-        public void CreateShouldReadFunctionsFromFuncRepository()
-        {
-            string? input = "Text";
-            Token token = this._tokenFactory.Create(Enumerable.Empty<Token>(), input);
-            Assert.IsTrue(token.TokenTypeIsSet(TokenType.Function));
-            Assert.AreEqual("Text", token.Value);
-        }
+    [TestMethod]
+    public void CreateShouldReadFunctionsFromFuncRepository()
+    {
+        string? input = "Text";
+        Token token = this._tokenFactory.Create(Enumerable.Empty<Token>(), input);
+        Assert.IsTrue(token.TokenTypeIsSet(TokenType.Function));
+        Assert.AreEqual("Text", token.Value);
+    }
 
-        [TestMethod]
-        public void CreateShouldCreateExcelAddressAsExcelAddressToken()
-        {
-            string? input = "A1";
-            Token token = this._tokenFactory.Create(Enumerable.Empty<Token>(), input);
-            Assert.IsTrue(token.TokenTypeIsSet(TokenType.ExcelAddress));
-            Assert.AreEqual("A1", token.Value);
-        }
+    [TestMethod]
+    public void CreateShouldCreateExcelAddressAsExcelAddressToken()
+    {
+        string? input = "A1";
+        Token token = this._tokenFactory.Create(Enumerable.Empty<Token>(), input);
+        Assert.IsTrue(token.TokenTypeIsSet(TokenType.ExcelAddress));
+        Assert.AreEqual("A1", token.Value);
+    }
 
-        [TestMethod]
-        public void CreateShouldCreateExcelRangeAsExcelAddressToken()
-        {
-            string? input = "A1:B15";
-            Token token = this._tokenFactory.Create(Enumerable.Empty<Token>(), input);
-            Assert.IsTrue(token.TokenTypeIsSet(TokenType.ExcelAddress));
-            Assert.AreEqual("A1:B15", token.Value);
-        }
+    [TestMethod]
+    public void CreateShouldCreateExcelRangeAsExcelAddressToken()
+    {
+        string? input = "A1:B15";
+        Token token = this._tokenFactory.Create(Enumerable.Empty<Token>(), input);
+        Assert.IsTrue(token.TokenTypeIsSet(TokenType.ExcelAddress));
+        Assert.AreEqual("A1:B15", token.Value);
+    }
 
-        [TestMethod]
-        public void CreateShouldCreateExcelRangeOnOtherSheetAsExcelAddressToken()
-        {
-            string? input = "ws!A1:B15";
-            Token token = this._tokenFactory.Create(Enumerable.Empty<Token>(), input);
-            Assert.IsTrue(token.TokenTypeIsSet(TokenType.ExcelAddress));
-            Assert.AreEqual("ws!A1:B15", token.Value);
-        }
+    [TestMethod]
+    public void CreateShouldCreateExcelRangeOnOtherSheetAsExcelAddressToken()
+    {
+        string? input = "ws!A1:B15";
+        Token token = this._tokenFactory.Create(Enumerable.Empty<Token>(), input);
+        Assert.IsTrue(token.TokenTypeIsSet(TokenType.ExcelAddress));
+        Assert.AreEqual("ws!A1:B15", token.Value);
+    }
 
-        [TestMethod]
-        public void CreateShouldCreateNamedValueAsExcelAddressToken()
-        {
-            string? input = "NamedValue";
-            A.CallTo(() => this._nameValueProvider.IsNamedValue("NamedValue","")).Returns(true);
-            A.CallTo(() => this._nameValueProvider.IsNamedValue("NamedValue", null)).Returns(true);
-            Token token = this._tokenFactory.Create(Enumerable.Empty<Token>(), input);
-            Assert.IsTrue(token.TokenTypeIsSet(TokenType.NameValue));
-            Assert.AreEqual("NamedValue", token.Value);
-        }
+    [TestMethod]
+    public void CreateShouldCreateNamedValueAsExcelAddressToken()
+    {
+        string? input = "NamedValue";
+        A.CallTo(() => this._nameValueProvider.IsNamedValue("NamedValue","")).Returns(true);
+        A.CallTo(() => this._nameValueProvider.IsNamedValue("NamedValue", null)).Returns(true);
+        Token token = this._tokenFactory.Create(Enumerable.Empty<Token>(), input);
+        Assert.IsTrue(token.TokenTypeIsSet(TokenType.NameValue));
+        Assert.AreEqual("NamedValue", token.Value);
+    }
 
-        [TestMethod]
-        public void TokenFactory_IsNumericTests()
-        {
-            List<Token>? tokens = new List<Token>();
+    [TestMethod]
+    public void TokenFactory_IsNumericTests()
+    {
+        List<Token>? tokens = new List<Token>();
             
-            Token t = this._tokenFactory.Create(tokens, "1");
-            Assert.IsTrue(t.TokenTypeIsSet(TokenType.Integer), "Failed to recognize integer");
+        Token t = this._tokenFactory.Create(tokens, "1");
+        Assert.IsTrue(t.TokenTypeIsSet(TokenType.Integer), "Failed to recognize integer");
 
-            t = this._tokenFactory.Create(tokens, "1.01");
-            Assert.IsTrue(t.TokenTypeIsSet(TokenType.Decimal), "Failed to recognize decimal");
+        t = this._tokenFactory.Create(tokens, "1.01");
+        Assert.IsTrue(t.TokenTypeIsSet(TokenType.Decimal), "Failed to recognize decimal");
 
-            t = this._tokenFactory.Create(tokens, "1.01345E-05");
-            Assert.IsTrue(t.TokenTypeIsSet(TokenType.Decimal), "Failed to recognize low exponential");
+        t = this._tokenFactory.Create(tokens, "1.01345E-05");
+        Assert.IsTrue(t.TokenTypeIsSet(TokenType.Decimal), "Failed to recognize low exponential");
 
-            t = this._tokenFactory.Create(tokens, "1.01345E+05");
-            Assert.IsTrue(t.TokenTypeIsSet(TokenType.Decimal), "Failed to recognize high exponential");
+        t = this._tokenFactory.Create(tokens, "1.01345E+05");
+        Assert.IsTrue(t.TokenTypeIsSet(TokenType.Decimal), "Failed to recognize high exponential");
 
-            t = this._tokenFactory.Create(tokens, "ABC-E0");
-            Assert.IsFalse(t.TokenTypeIsSet(TokenType.Integer | TokenType.Decimal), "Invalid low exponential number was still numeric 1");
+        t = this._tokenFactory.Create(tokens, "ABC-E0");
+        Assert.IsFalse(t.TokenTypeIsSet(TokenType.Integer | TokenType.Decimal), "Invalid low exponential number was still numeric 1");
 
-            t = this._tokenFactory.Create(tokens, "ABC-E0");
-            Assert.IsFalse(t.TokenTypeIsSet(TokenType.Integer | TokenType.Decimal), "Invalid high exponential number was still numeric 1");
+        t = this._tokenFactory.Create(tokens, "ABC-E0");
+        Assert.IsFalse(t.TokenTypeIsSet(TokenType.Integer | TokenType.Decimal), "Invalid high exponential number was still numeric 1");
 
-            t = this._tokenFactory.Create(tokens, "E1");
-            Assert.IsFalse(t.TokenTypeIsSet(TokenType.Integer | TokenType.Decimal), "Invalid exponential number was still numeric 2");
+        t = this._tokenFactory.Create(tokens, "E1");
+        Assert.IsFalse(t.TokenTypeIsSet(TokenType.Integer | TokenType.Decimal), "Invalid exponential number was still numeric 2");
 
-        }
     }
 }

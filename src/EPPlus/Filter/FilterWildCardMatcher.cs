@@ -15,132 +15,131 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace OfficeOpenXml.Filter
-{
-    internal  static class FilterWildCardMatcher
-    {
-        internal static bool Match(string value, string pattern)
-        {
-            List<string>? tokens = SplitInTokens(pattern);
-            if (tokens.Count == 1 && tokens[0]!="*" && tokens[0] != "?")
-            {
-                return value.Equals(tokens[0], StringComparison.CurrentCultureIgnoreCase);
-            }
-            return MatchTokenList(value, tokens, 0, 0);
-        }
+namespace OfficeOpenXml.Filter;
 
-        private static bool MatchTokenList(string value, List<string> tokens, int stringPos, int tokenPos)
+internal  static class FilterWildCardMatcher
+{
+    internal static bool Match(string value, string pattern)
+    {
+        List<string>? tokens = SplitInTokens(pattern);
+        if (tokens.Count == 1 && tokens[0]!="*" && tokens[0] != "?")
         {
-            bool match = true;
-            bool isWC=false;
-            for (int i=tokenPos;i<tokens.Count;i++)
+            return value.Equals(tokens[0], StringComparison.CurrentCultureIgnoreCase);
+        }
+        return MatchTokenList(value, tokens, 0, 0);
+    }
+
+    private static bool MatchTokenList(string value, List<string> tokens, int stringPos, int tokenPos)
+    {
+        bool match = true;
+        bool isWC=false;
+        for (int i=tokenPos;i<tokens.Count;i++)
+        {
+            if (tokens[i] == "*")
             {
-                if (tokens[i] == "*")
+                isWC = true;
+            }
+            else if (tokens[i] == "?")
+            {
+                stringPos++;
+            }
+            else
+            {
+                if (isWC)
                 {
-                    isWC = true;
+                    return MatchWildCards(value, tokens, stringPos, i);
                 }
-                else if (tokens[i] == "?")
+                else if (stringPos + tokens[i].Length <= value.Length)
                 {
-                    stringPos++;
+                    match = value.Substring(stringPos, tokens[i].Length).Equals(tokens[i], StringComparison.CurrentCultureIgnoreCase);
+                    stringPos += tokens[i].Length;
+                    isWC = false;
                 }
                 else
-                {
-                    if (isWC)
-                    {
-                        return MatchWildCards(value, tokens, stringPos, i);
-                    }
-                    else if (stringPos + tokens[i].Length <= value.Length)
-                    {
-                        match = value.Substring(stringPos, tokens[i].Length).Equals(tokens[i], StringComparison.CurrentCultureIgnoreCase);
-                        stringPos += tokens[i].Length;
-                        isWC = false;
-                    }
-                    else
-                    {
-                        return false;
-                    }
-                }
-                if (match == false)
                 {
                     return false;
                 }
             }
-            if (isWC)
-            {
-                return true;
-            }
-            else
-            {
-                return stringPos == value.Length;
-            }
-        }
-        private static bool MatchWildCards(string value, List<string> tokens, int stringPos, int tokenPos)
-        {
-            int anyChars = 0;
-            while (tokens[tokenPos]=="*" || tokens[tokenPos] == "?")
-            {
-                if(tokens[tokenPos] == "?")
-                {
-                    anyChars++;
-                }
-                tokenPos++;
-                if (tokenPos == tokens.Count)
-                {
-                    return (value.Length-stringPos)>anyChars;
-                }
-            }
-            stringPos += anyChars;
-            if (stringPos > value.Length)
+            if (match == false)
             {
                 return false;
             }
-
-            int foundPos = value.IndexOf(tokens[tokenPos], stringPos, StringComparison.CurrentCultureIgnoreCase);
-            while (foundPos>=0)
+        }
+        if (isWC)
+        {
+            return true;
+        }
+        else
+        {
+            return stringPos == value.Length;
+        }
+    }
+    private static bool MatchWildCards(string value, List<string> tokens, int stringPos, int tokenPos)
+    {
+        int anyChars = 0;
+        while (tokens[tokenPos]=="*" || tokens[tokenPos] == "?")
+        {
+            if(tokens[tokenPos] == "?")
             {
-                bool match;
-                if (tokenPos + 1 >= tokens.Count)
-                {
-                    match = foundPos + tokens[tokenPos].Length == value.Length;
-                    if (match)
-                    {
-                        return true;
-                    }
-                }
-                else
-                {
-                    match = MatchTokenList(value, tokens, foundPos + tokens[tokenPos].Length, tokenPos + 1);
-                    if (match)
-                    {
-                        return true;
-                    }
-                }
-                foundPos = value.IndexOf(tokens[tokenPos], foundPos+1, StringComparison.CurrentCultureIgnoreCase);
+                anyChars++;
             }
+            tokenPos++;
+            if (tokenPos == tokens.Count)
+            {
+                return (value.Length-stringPos)>anyChars;
+            }
+        }
+        stringPos += anyChars;
+        if (stringPos > value.Length)
+        {
             return false;
         }
-        private static List<string> SplitInTokens(string filter)
+
+        int foundPos = value.IndexOf(tokens[tokenPos], stringPos, StringComparison.CurrentCultureIgnoreCase);
+        while (foundPos>=0)
         {
-            List<string>? ret = new List<string>();
-            int start = 0;
-            for (int i = 0; i < filter.Length; i++)
+            bool match;
+            if (tokenPos + 1 >= tokens.Count)
             {
-                if (filter[i] == '*' ||
-                   filter[i] == '?')
+                match = foundPos + tokens[tokenPos].Length == value.Length;
+                if (match)
                 {
-                    if (start < i)
-                    {
-                        ret.Add(filter.Substring(start, i - start).Replace("**","*").Replace("??", "?"));
-                    }
-                    ret.Add(filter[i].ToString());
-                    start = i + 1;
+                    return true;
                 }
             }
-            if (start < filter.Length)
+            else
             {
-                ret.Add(filter.Substring(start, filter.Length - start).Replace("**", "*").Replace("??", "?"));
+                match = MatchTokenList(value, tokens, foundPos + tokens[tokenPos].Length, tokenPos + 1);
+                if (match)
+                {
+                    return true;
+                }
             }
-            return ret;
+            foundPos = value.IndexOf(tokens[tokenPos], foundPos+1, StringComparison.CurrentCultureIgnoreCase);
         }
+        return false;
+    }
+    private static List<string> SplitInTokens(string filter)
+    {
+        List<string>? ret = new List<string>();
+        int start = 0;
+        for (int i = 0; i < filter.Length; i++)
+        {
+            if (filter[i] == '*' ||
+                filter[i] == '?')
+            {
+                if (start < i)
+                {
+                    ret.Add(filter.Substring(start, i - start).Replace("**","*").Replace("??", "?"));
+                }
+                ret.Add(filter[i].ToString());
+                start = i + 1;
+            }
+        }
+        if (start < filter.Length)
+        {
+            ret.Add(filter.Substring(start, filter.Length - start).Replace("**", "*").Replace("??", "?"));
+        }
+        return ret;
     }
 }

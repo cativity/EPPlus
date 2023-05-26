@@ -34,36 +34,35 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EPPlusTest
+namespace EPPlusTest;
+
+[TestClass]
+public class ProtectionTest : TestBase
 {
-    [TestClass]
-    public class ProtectionTest : TestBase
+    [TestMethod]
+    public void SetReadOnlyFileSharing()
     {
-        [TestMethod]
-        public void SetReadOnlyFileSharing()
-        {
-            using ExcelPackage? p = OpenPackage("FileSharing.xlsx", true);
-            ExcelWorksheet? ws = p.Workbook.Worksheets.Add("FileSharing");
-            ExcelRange? a1 = ws.Cells["A1"];
-            p.Workbook.Protection.WriteProtection.SetReadOnly("Jan Källman", "EPPlus");
-            p.Workbook.Protection.WriteProtection.ReadOnlyRecommended = true;
-            Assert.IsTrue(p.Workbook.Protection.WriteProtection.ReadOnlyRecommended);
-            //Assert.IsTrue(p.Workbook.Protection.WriteProtection.IsReadOnly);
-            SaveAndCleanup(p);
-        }
-        [TestMethod]
-        public void VerifyRemoveReadonly()
-        {
-            using ExcelPackage? p = new ExcelPackage();
-            ExcelWorksheet? ws = p.Workbook.Worksheets.Add("FileSharing");
-            ExcelRange? a1 = ws.Cells["A1"];
-            p.Workbook.Protection.WriteProtection.SetReadOnly("Jan Källman", "EPPlus");
-            p.Workbook.Protection.WriteProtection.ReadOnlyRecommended = true;
-            Assert.IsTrue(p.Workbook.Protection.WriteProtection.ReadOnlyRecommended);
-            Assert.IsTrue(p.Workbook.Protection.WriteProtection.IsReadOnly);
-            p.Workbook.Protection.WriteProtection.RemoveReadOnly();
-            Assert.IsFalse(p.Workbook.Protection.WriteProtection.IsReadOnly);
-            Assert.IsFalse(p.Workbook.Protection.WriteProtection.ReadOnlyRecommended);
-        }
+        using ExcelPackage? p = OpenPackage("FileSharing.xlsx", true);
+        ExcelWorksheet? ws = p.Workbook.Worksheets.Add("FileSharing");
+        ExcelRange? a1 = ws.Cells["A1"];
+        p.Workbook.Protection.WriteProtection.SetReadOnly("Jan Källman", "EPPlus");
+        p.Workbook.Protection.WriteProtection.ReadOnlyRecommended = true;
+        Assert.IsTrue(p.Workbook.Protection.WriteProtection.ReadOnlyRecommended);
+        //Assert.IsTrue(p.Workbook.Protection.WriteProtection.IsReadOnly);
+        SaveAndCleanup(p);
+    }
+    [TestMethod]
+    public void VerifyRemoveReadonly()
+    {
+        using ExcelPackage? p = new ExcelPackage();
+        ExcelWorksheet? ws = p.Workbook.Worksheets.Add("FileSharing");
+        ExcelRange? a1 = ws.Cells["A1"];
+        p.Workbook.Protection.WriteProtection.SetReadOnly("Jan Källman", "EPPlus");
+        p.Workbook.Protection.WriteProtection.ReadOnlyRecommended = true;
+        Assert.IsTrue(p.Workbook.Protection.WriteProtection.ReadOnlyRecommended);
+        Assert.IsTrue(p.Workbook.Protection.WriteProtection.IsReadOnly);
+        p.Workbook.Protection.WriteProtection.RemoveReadOnly();
+        Assert.IsFalse(p.Workbook.Protection.WriteProtection.IsReadOnly);
+        Assert.IsFalse(p.Workbook.Protection.WriteProtection.ReadOnlyRecommended);
     }
 }

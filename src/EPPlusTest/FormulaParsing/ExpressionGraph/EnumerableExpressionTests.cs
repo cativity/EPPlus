@@ -33,23 +33,22 @@ using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OfficeOpenXml.FormulaParsing.ExpressionGraph;
 
-namespace EPPlusTest.FormulaParsing.ExpressionGraph
-{
-    [TestClass]
-    public class EnumerableExpressionTests
-    {
-        [TestMethod]
-        public void CompileShouldReturnEnumerableOfCompiledChildExpressions()
-        {
-            EnumerableExpression? expression = new EnumerableExpression();
-            expression.AddChild(new IntegerExpression("2"));
-            expression.AddChild(new IntegerExpression("3"));
-            CompileResult? result = expression.Compile();
+namespace EPPlusTest.FormulaParsing.ExpressionGraph;
 
-            Assert.IsInstanceOfType(result.Result, typeof(IEnumerable<object>));
-            IEnumerable<object>? resultList = (IEnumerable<object>)result.Result;
-            Assert.AreEqual(2d, resultList.ElementAt(0));
-            Assert.AreEqual(3d, resultList.ElementAt(1));
-        }
+[TestClass]
+public class EnumerableExpressionTests
+{
+    [TestMethod]
+    public void CompileShouldReturnEnumerableOfCompiledChildExpressions()
+    {
+        EnumerableExpression? expression = new EnumerableExpression();
+        expression.AddChild(new IntegerExpression("2"));
+        expression.AddChild(new IntegerExpression("3"));
+        CompileResult? result = expression.Compile();
+
+        Assert.IsInstanceOfType(result.Result, typeof(IEnumerable<object>));
+        IEnumerable<object>? resultList = (IEnumerable<object>)result.Result;
+        Assert.AreEqual(2d, resultList.ElementAt(0));
+        Assert.AreEqual(3d, resultList.ElementAt(1));
     }
 }

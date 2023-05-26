@@ -16,13 +16,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace OfficeOpenXml.VBA.Signatures
+namespace OfficeOpenXml.VBA.Signatures;
+
+internal class EPPlusVbaSignatureV3 : EPPlusVbaSignature
 {
-    internal class EPPlusVbaSignatureV3 : EPPlusVbaSignature
+    public EPPlusVbaSignatureV3(ZipPackagePart vbaPart) 
+        : base(vbaPart, ExcelVbaSignatureType.V3)
     {
-        public EPPlusVbaSignatureV3(ZipPackagePart vbaPart) 
-            : base(vbaPart, ExcelVbaSignatureType.V3)
-        {
-        }
     }
 }

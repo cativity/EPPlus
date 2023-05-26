@@ -14,46 +14,45 @@ using OfficeOpenXml.Core;
 using System;
 using System.Xml;
 
-namespace OfficeOpenXml.Table.PivotTable
+namespace OfficeOpenXml.Table.PivotTable;
+
+/// <summary>
+/// A collection of pivot area references. A pivot area reference is a reference to a column, row field or a data field
+/// </summary>
+public class ExcelPivotAreaReferenceCollection : EPPlusReadOnlyList<ExcelPivotAreaReference>
 {
-    /// <summary>
-    /// A collection of pivot area references. A pivot area reference is a reference to a column, row field or a data field
-    /// </summary>
-    public class ExcelPivotAreaReferenceCollection : EPPlusReadOnlyList<ExcelPivotAreaReference>
+    XmlHelper _xmlHelper;
+    ExcelPivotTable _pt;
+    internal ExcelPivotAreaReferenceCollection(XmlNamespaceManager nsm, XmlNode topNode, ExcelPivotTable pt)
     {
-        XmlHelper _xmlHelper;
-        ExcelPivotTable _pt;
-        internal ExcelPivotAreaReferenceCollection(XmlNamespaceManager nsm, XmlNode topNode, ExcelPivotTable pt)
+        this._xmlHelper = XmlHelperFactory.Create(nsm, topNode);
+        this._pt = pt;
+    }
+    /// <summary>
+    /// Adds a pivot table field to the collection. The field is usually a column or row field
+    /// </summary>
+    /// <param name="field">The column or row field</param>
+    /// <returns>The pivot area reference</returns>
+    public ExcelPivotAreaReference Add(ExcelPivotTableField field)
+    {
+        return this.Add(field._pivotTable, field.Index);
+    }
+    /// <summary>
+    /// Adds a pivot table field to the collection. The field is usually a column or row field
+    /// </summary>
+    /// <param name="pivotTable">The pivot table</param>
+    /// <param name="fieldIndex">The index of the pivot table field</param>
+    /// <returns></returns>
+    public ExcelPivotAreaReference Add(ExcelPivotTable pivotTable, int fieldIndex)
+    {
+        XmlNode? n = this._xmlHelper.CreateNode("d:references");
+        XmlNode? rn= this._xmlHelper.CreateNode(n, "d:reference", true);
+        if(pivotTable!= this._pt)
         {
-            this._xmlHelper = XmlHelperFactory.Create(nsm, topNode);
-            this._pt = pt;
+            throw new InvalidOperationException("The pivot table field is from another pivot table.");
         }
-        /// <summary>
-        /// Adds a pivot table field to the collection. The field is usually a column or row field
-        /// </summary>
-        /// <param name="field">The column or row field</param>
-        /// <returns>The pivot area reference</returns>
-        public ExcelPivotAreaReference Add(ExcelPivotTableField field)
-        {
-            return this.Add(field._pivotTable, field.Index);
-        }
-        /// <summary>
-        /// Adds a pivot table field to the collection. The field is usually a column or row field
-        /// </summary>
-        /// <param name="pivotTable">The pivot table</param>
-        /// <param name="fieldIndex">The index of the pivot table field</param>
-        /// <returns></returns>
-        public ExcelPivotAreaReference Add(ExcelPivotTable pivotTable, int fieldIndex)
-        {
-            XmlNode? n = this._xmlHelper.CreateNode("d:references");
-            XmlNode? rn= this._xmlHelper.CreateNode(n, "d:reference", true);
-            if(pivotTable!= this._pt)
-            {
-                throw new InvalidOperationException("The pivot table field is from another pivot table.");
-            }
-            ExcelPivotAreaReference? r =new ExcelPivotAreaReference(this._xmlHelper.NameSpaceManager, rn, pivotTable, fieldIndex);
-            this._list.Add(r);
-            return r;
-        }
+        ExcelPivotAreaReference? r =new ExcelPivotAreaReference(this._xmlHelper.NameSpaceManager, rn, pivotTable, fieldIndex);
+        this._list.Add(r);
+        return r;
     }
 }

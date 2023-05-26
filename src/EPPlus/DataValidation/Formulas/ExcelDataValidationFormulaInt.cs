@@ -15,29 +15,28 @@ using OfficeOpenXml.DataValidation.Formulas.Contracts;
 using System;
 using System.Globalization;
 
-namespace OfficeOpenXml.DataValidation.Formulas
+namespace OfficeOpenXml.DataValidation.Formulas;
+
+internal class ExcelDataValidationFormulaInt : ExcelDataValidationFormulaValue<int?>, IExcelDataValidationFormulaInt
 {
-    internal class ExcelDataValidationFormulaInt : ExcelDataValidationFormulaValue<int?>, IExcelDataValidationFormulaInt
+    public ExcelDataValidationFormulaInt(string formula, string validationUid, string worksheetName, Action<OnFormulaChangedEventArgs> extListHandler)
+        : base(validationUid, worksheetName, extListHandler)
     {
-        public ExcelDataValidationFormulaInt(string formula, string validationUid, string worksheetName, Action<OnFormulaChangedEventArgs> extListHandler)
-            : base(validationUid, worksheetName, extListHandler)
+        if (!string.IsNullOrEmpty(formula))
         {
-            if (!string.IsNullOrEmpty(formula))
+            if (int.TryParse(formula, NumberStyles.Number, CultureInfo.InvariantCulture, out int intValue))
             {
-                if (int.TryParse(formula, NumberStyles.Number, CultureInfo.InvariantCulture, out int intValue))
-                {
-                    this.Value = intValue;
-                }
-                else
-                {
-                    this.ExcelFormula = formula;
-                }
+                this.Value = intValue;
+            }
+            else
+            {
+                this.ExcelFormula = formula;
             }
         }
+    }
 
-        protected override string GetValueAsString()
-        {
-            return this.Value.HasValue ? this.Value.Value.ToString() : string.Empty;
-        }
+    protected override string GetValueAsString()
+    {
+        return this.Value.HasValue ? this.Value.Value.ToString() : string.Empty;
     }
 }

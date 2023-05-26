@@ -15,131 +15,130 @@ using OfficeOpenXml.Utils.Extensions;
 using System;
 using System.Xml;
 
-namespace OfficeOpenXml.Filter
+namespace OfficeOpenXml.Filter;
+
+/// <summary>
+/// Represents a value filter column
+/// </summary>
+public class ExcelValueFilterColumn : ExcelFilterColumn
 {
-    /// <summary>
-    /// Represents a value filter column
-    /// </summary>
-    public class ExcelValueFilterColumn : ExcelFilterColumn
+    internal ExcelValueFilterColumn(XmlNamespaceManager namespaceManager, XmlNode topNode) : base(namespaceManager, topNode)
     {
-        internal ExcelValueFilterColumn(XmlNamespaceManager namespaceManager, XmlNode topNode) : base(namespaceManager, topNode)
-        {
-            this.Filters = new ExcelValueFilterCollection();
-            this.LoadFilters(topNode);
-        }
+        this.Filters = new ExcelValueFilterCollection();
+        this.LoadFilters(topNode);
+    }
 
-        private void LoadFilters(XmlNode topNode)
+    private void LoadFilters(XmlNode topNode)
+    {
+        foreach (XmlNode node in topNode.FirstChild.ChildNodes)
         {
-            foreach (XmlNode node in topNode.FirstChild.ChildNodes)
+            switch (node.LocalName)
             {
-                switch (node.LocalName)
-                {
-                    case "filter":
-                        this.Filters.Add(new ExcelFilterValueItem(node.Attributes["val"].Value));
-                        break;
-                    case "dateGroupItem":
-                        ExcelFilterDateGroupItem? item = this.CreateDateGroupItem(node);
-                        if (item != null)
-                        {
-                            this.Filters.Add(item);
-                        }
-                        break;
-                }
-            }
-        }
-
-        private ExcelFilterDateGroupItem CreateDateGroupItem(XmlNode node)
-        {
-            try
-            {
-                XmlHelper? xml=XmlHelperFactory.Create(this.NameSpaceManager, node);
-                eDateTimeGrouping grouping = (eDateTimeGrouping)Enum.Parse(typeof(eDateTimeGrouping), xml.GetXmlNodeString("@dateTimeGrouping"), true);
-                switch (grouping)
-                {
-                    case eDateTimeGrouping.Year:
-                        return new ExcelFilterDateGroupItem(xml.GetXmlNodeInt("@year"));
-                    case eDateTimeGrouping.Month:
-                        return new ExcelFilterDateGroupItem(xml.GetXmlNodeInt("@year"), xml.GetXmlNodeInt("@month"));
-                    case eDateTimeGrouping.Day:
-                        return new ExcelFilterDateGroupItem(xml.GetXmlNodeInt("@year"), xml.GetXmlNodeInt("@month"), xml.GetXmlNodeInt("@day"));
-                    case eDateTimeGrouping.Hour:
-                        return new ExcelFilterDateGroupItem(xml.GetXmlNodeInt("@year"), xml.GetXmlNodeInt("@month"), xml.GetXmlNodeInt("@day"), xml.GetXmlNodeInt("@hour"));
-                    case eDateTimeGrouping.Minute:
-                        return new ExcelFilterDateGroupItem(xml.GetXmlNodeInt("@year"), xml.GetXmlNodeInt("@month"), xml.GetXmlNodeInt("@day"), xml.GetXmlNodeInt("@hour"), xml.GetXmlNodeInt("@minute"));
-                    default:
-                        return new ExcelFilterDateGroupItem(xml.GetXmlNodeInt("@year"), xml.GetXmlNodeInt("@month"), xml.GetXmlNodeInt("@day"), xml.GetXmlNodeInt("@hour"), xml.GetXmlNodeInt("@minute"), xml.GetXmlNodeInt("@second"));
-                }
-            }
-            catch
-            {
-                return null;
-            }
-        }
-
-        /// <summary>
-        /// The filters applied to the columns
-        /// </summary>
-        public ExcelValueFilterCollection Filters { get; set; }
-        internal override bool Match(object value, string valueText)
-        {
-            bool match = true;
-            foreach (ExcelFilterItem? filter in this.Filters)
-            {
-                if(filter is ExcelFilterDateGroupItem d)
-                {
-                    DateTime? valueDate = ConvertUtil.GetValueDate(value);
-                    match = valueDate.HasValue && d.Match(valueDate.Value);                    
-                }
-                else if (filter is ExcelFilterValueItem v)
-                {
-                    if(string.IsNullOrEmpty(valueText))
+                case "filter":
+                    this.Filters.Add(new ExcelFilterValueItem(node.Attributes["val"].Value));
+                    break;
+                case "dateGroupItem":
+                    ExcelFilterDateGroupItem? item = this.CreateDateGroupItem(node);
+                    if (item != null)
                     {
-                        match = this.Filters.Blank;
+                        this.Filters.Add(item);
                     }
-                    else
-                    {
-                        match = v.Value == valueText;
-                    }
-                }
-                if (match)
-                {
-                    return true;
-                }
+                    break;
             }
-            return match;
         }
-        internal override void Save()
+    }
+
+    private ExcelFilterDateGroupItem CreateDateGroupItem(XmlNode node)
+    {
+        try
         {
-            XmlElement? node = (XmlElement)this.CreateNode("d:filters");
-            node.RemoveAll();
-            if (this.Filters.Blank)
+            XmlHelper? xml=XmlHelperFactory.Create(this.NameSpaceManager, node);
+            eDateTimeGrouping grouping = (eDateTimeGrouping)Enum.Parse(typeof(eDateTimeGrouping), xml.GetXmlNodeString("@dateTimeGrouping"), true);
+            switch (grouping)
             {
-                (node).SetAttribute("blank", "1");
+                case eDateTimeGrouping.Year:
+                    return new ExcelFilterDateGroupItem(xml.GetXmlNodeInt("@year"));
+                case eDateTimeGrouping.Month:
+                    return new ExcelFilterDateGroupItem(xml.GetXmlNodeInt("@year"), xml.GetXmlNodeInt("@month"));
+                case eDateTimeGrouping.Day:
+                    return new ExcelFilterDateGroupItem(xml.GetXmlNodeInt("@year"), xml.GetXmlNodeInt("@month"), xml.GetXmlNodeInt("@day"));
+                case eDateTimeGrouping.Hour:
+                    return new ExcelFilterDateGroupItem(xml.GetXmlNodeInt("@year"), xml.GetXmlNodeInt("@month"), xml.GetXmlNodeInt("@day"), xml.GetXmlNodeInt("@hour"));
+                case eDateTimeGrouping.Minute:
+                    return new ExcelFilterDateGroupItem(xml.GetXmlNodeInt("@year"), xml.GetXmlNodeInt("@month"), xml.GetXmlNodeInt("@day"), xml.GetXmlNodeInt("@hour"), xml.GetXmlNodeInt("@minute"));
+                default:
+                    return new ExcelFilterDateGroupItem(xml.GetXmlNodeInt("@year"), xml.GetXmlNodeInt("@month"), xml.GetXmlNodeInt("@day"), xml.GetXmlNodeInt("@hour"), xml.GetXmlNodeInt("@minute"), xml.GetXmlNodeInt("@second"));
             }
+        }
+        catch
+        {
+            return null;
+        }
+    }
 
-            if (this.Filters.CalendarTyp.HasValue)
+    /// <summary>
+    /// The filters applied to the columns
+    /// </summary>
+    public ExcelValueFilterCollection Filters { get; set; }
+    internal override bool Match(object value, string valueText)
+    {
+        bool match = true;
+        foreach (ExcelFilterItem? filter in this.Filters)
+        {
+            if(filter is ExcelFilterDateGroupItem d)
             {
-                (node).SetAttribute("calendarType", this.Filters.CalendarTyp.Value.ToEnumString());
+                DateTime? valueDate = ConvertUtil.GetValueDate(value);
+                match = valueDate.HasValue && d.Match(valueDate.Value);                    
             }
-
-            foreach(ExcelFilterItem? f in this.Filters)
+            else if (filter is ExcelFilterValueItem v)
             {
-                if(f is ExcelFilterDateGroupItem d)
+                if(string.IsNullOrEmpty(valueText))
                 {
-                    d.AddNode(node);
+                    match = this.Filters.Blank;
                 }
                 else
                 {
-                    XmlElement? e = this.TopNode.OwnerDocument.CreateElement("filter", ExcelPackage.schemaMain);
-                    e.SetAttribute("val", ((ExcelFilterValueItem)f).Value);
-                    node.AppendChild(e);
+                    match = v.Value == valueText;
                 }
             }
+            if (match)
+            {
+                return true;
+            }
+        }
+        return match;
+    }
+    internal override void Save()
+    {
+        XmlElement? node = (XmlElement)this.CreateNode("d:filters");
+        node.RemoveAll();
+        if (this.Filters.Blank)
+        {
+            (node).SetAttribute("blank", "1");
         }
 
-        private static string ConvertToString(object f)
+        if (this.Filters.CalendarTyp.HasValue)
         {
-            return f?.ToString();
+            (node).SetAttribute("calendarType", this.Filters.CalendarTyp.Value.ToEnumString());
         }
+
+        foreach(ExcelFilterItem? f in this.Filters)
+        {
+            if(f is ExcelFilterDateGroupItem d)
+            {
+                d.AddNode(node);
+            }
+            else
+            {
+                XmlElement? e = this.TopNode.OwnerDocument.CreateElement("filter", ExcelPackage.schemaMain);
+                e.SetAttribute("val", ((ExcelFilterValueItem)f).Value);
+                node.AppendChild(e);
+            }
+        }
+    }
+
+    private static string ConvertToString(object f)
+    {
+        return f?.ToString();
     }
 }

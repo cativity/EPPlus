@@ -17,21 +17,20 @@ using System.Linq;
 using System.Text;
 using System.Xml;
 
-namespace OfficeOpenXml.Drawing.Style.Fill
+namespace OfficeOpenXml.Drawing.Style.Fill;
+
+/// <summary>
+/// Represents a color in the gradiant color list
+/// </summary>
+public class ExcelDrawingGradientFillColor
 {
     /// <summary>
-    /// Represents a color in the gradiant color list
+    /// The position of color in a range from 0-100%
     /// </summary>
-    public class ExcelDrawingGradientFillColor
-    {
-        /// <summary>
-        /// The position of color in a range from 0-100%
-        /// </summary>
-        public double Position { get; internal set; }
-        /// <summary>
-        /// The color to use.
-        /// </summary>
-        public ExcelDrawingColorManager Color { get; set; }
-        internal XmlNode TopNode { get; set; }
-    }
+    public double Position { get; internal set; }
+    /// <summary>
+    /// The color to use.
+    /// </summary>
+    public ExcelDrawingColorManager Color { get; set; }
+    internal XmlNode TopNode { get; set; }
 }

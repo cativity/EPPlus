@@ -17,18 +17,17 @@ using System.Text;
 
 using OfficeOpenXml.ConditionalFormatting;
 
-namespace OfficeOpenXml.ConditionalFormatting.Contracts
+namespace OfficeOpenXml.ConditionalFormatting.Contracts;
+
+/// <summary>
+/// IExcelConditionalFormattingWithFormula
+/// </summary>
+public interface IExcelConditionalFormattingWithFormula
 {
-  /// <summary>
-  /// IExcelConditionalFormattingWithFormula
-  /// </summary>
-  public interface IExcelConditionalFormattingWithFormula
-  {
     #region Public Properties
     /// <summary>
     /// Formula Attribute
     /// </summary>
     string Formula { get; set; }
     #endregion Public Properties
-  }
 }

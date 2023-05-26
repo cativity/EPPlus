@@ -17,26 +17,25 @@ using System.Text;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Metadata;
 using OfficeOpenXml.FormulaParsing.ExpressionGraph;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
-{
-    [FunctionMetadata(
-        Category = ExcelFunctionCategory.MathAndTrig,
-        EPPlusVersion = "4",
-        Description = "Returns the integer portion of a division between two supplied numbers")]
-    internal class Quotient : ExcelFunction
-    {
-        public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
-        {
-            ValidateArguments(arguments, 2);
-            double num = this.ArgToDecimal(arguments, 0);
-            double denom = this.ArgToDecimal(arguments, 1);
-            if ((int)denom == 0)
-            {
-                return this.CreateResult(eErrorType.Div0);
-            }
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
 
-            int result = (int)(num/denom);
-            return this.CreateResult(result, DataType.Integer);
+[FunctionMetadata(
+                     Category = ExcelFunctionCategory.MathAndTrig,
+                     EPPlusVersion = "4",
+                     Description = "Returns the integer portion of a division between two supplied numbers")]
+internal class Quotient : ExcelFunction
+{
+    public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
+    {
+        ValidateArguments(arguments, 2);
+        double num = this.ArgToDecimal(arguments, 0);
+        double denom = this.ArgToDecimal(arguments, 1);
+        if ((int)denom == 0)
+        {
+            return this.CreateResult(eErrorType.Div0);
         }
+
+        int result = (int)(num/denom);
+        return this.CreateResult(result, DataType.Integer);
     }
 }

@@ -12,58 +12,57 @@
  *************************************************************************************************/
 using System.Collections.Generic;
 
-namespace OfficeOpenXml.Export.HtmlExport
+namespace OfficeOpenXml.Export.HtmlExport;
+
+/// <summary>
+/// Base class for css export settings.
+/// </summary>
+public abstract class CssExportSettings
 {
     /// <summary>
-    /// Base class for css export settings.
+    /// If set to true shared css classes used on table elements are included in the css. 
+    /// If set to false, these classes has to be included manually. <see cref="IncludeNormalFont"/> will be ignored if set to false and no font css will be added.        
+    /// Default is true
     /// </summary>
-    public abstract class CssExportSettings
+    public bool IncludeSharedClasses { get; set; } = true;
+    /// <summary>
+    /// If true the normal font will be included in the css. Default is true
+    /// </summary>
+    public bool IncludeNormalFont { get; set; } = true;
+
+    /// <summary>
+    /// Css elements added to the table.
+    /// </summary>
+    public Dictionary<string, string> AdditionalCssElements
     {
-        /// <summary>
-        /// If set to true shared css classes used on table elements are included in the css. 
-        /// If set to false, these classes has to be included manually. <see cref="IncludeNormalFont"/> will be ignored if set to false and no font css will be added.        
-        /// Default is true
-        /// </summary>
-        public bool IncludeSharedClasses { get; set; } = true;
-        /// <summary>
-        /// If true the normal font will be included in the css. Default is true
-        /// </summary>
-        public bool IncludeNormalFont { get; set; } = true;
+        get;
+        internal set;
+    }
+    /// <summary>
+    /// The value used in the stylesheet for an indentation in a cell
+    /// </summary>
+    public float IndentValue { get; set; } = 2;
+    /// <summary>
+    /// The unit used in the stylesheet for an indentation in a cell
+    /// </summary>
+    public string IndentUnit { get; set; } = "em";
+    internal void ResetToDefaultInternal()
+    {
+        this.AdditionalCssElements = new Dictionary<string, string>()
+        {
+            { "border-spacing", "0" },
+            { "border-collapse", "collapse" },
+            { "word-wrap", "break-word"},
+            { "white-space", "nowrap"},
+        };
 
-        /// <summary>
-        /// Css elements added to the table.
-        /// </summary>
-        public Dictionary<string, string> AdditionalCssElements
-        {
-            get;
-            internal set;
-        }
-        /// <summary>
-        /// The value used in the stylesheet for an indentation in a cell
-        /// </summary>
-        public float IndentValue { get; set; } = 2;
-        /// <summary>
-        /// The unit used in the stylesheet for an indentation in a cell
-        /// </summary>
-        public string IndentUnit { get; set; } = "em";
-        internal void ResetToDefaultInternal()
-        {
-            this.AdditionalCssElements = new Dictionary<string, string>()
-            {
-                { "border-spacing", "0" },
-                { "border-collapse", "collapse" },
-                { "word-wrap", "break-word"},
-                { "white-space", "nowrap"},
-            };
-
-            this.IndentValue = 2;
-            this.IndentUnit = "em";
-        }
-        internal void CopyInternal(CssExportSettings copy)
-        {
-            this.AdditionalCssElements = copy.AdditionalCssElements;
-            this.IndentValue = copy.IndentValue;
-            this.IndentUnit = copy.IndentUnit;
-        }
+        this.IndentValue = 2;
+        this.IndentUnit = "em";
+    }
+    internal void CopyInternal(CssExportSettings copy)
+    {
+        this.AdditionalCssElements = copy.AdditionalCssElements;
+        this.IndentValue = copy.IndentValue;
+        this.IndentUnit = copy.IndentUnit;
     }
 }

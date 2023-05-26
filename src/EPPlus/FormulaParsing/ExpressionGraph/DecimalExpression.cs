@@ -12,36 +12,35 @@
  *************************************************************************************************/
 using System.Globalization;
 
-namespace OfficeOpenXml.FormulaParsing.ExpressionGraph
+namespace OfficeOpenXml.FormulaParsing.ExpressionGraph;
+
+public class DecimalExpression : AtomicExpression
 {
-    public class DecimalExpression : AtomicExpression
+    private double? _compiledValue;
+    private bool _negate;
+
+    public DecimalExpression(string expression)
+        : this(expression, false)
     {
-        private double? _compiledValue;
-        private bool _negate;
-
-        public DecimalExpression(string expression)
-            : this(expression, false)
-        {
             
-        }
+    }
 
-        public DecimalExpression(string expression, bool negate)
-            : base(expression)
-        {
-            this._negate = negate;
-        }
+    public DecimalExpression(string expression, bool negate)
+        : base(expression)
+    {
+        this._negate = negate;
+    }
 
-        public DecimalExpression(double compiledValue)
-            : base(compiledValue.ToString(CultureInfo.InvariantCulture))
-        {
-            this._compiledValue = compiledValue;
-        }
+    public DecimalExpression(double compiledValue)
+        : base(compiledValue.ToString(CultureInfo.InvariantCulture))
+    {
+        this._compiledValue = compiledValue;
+    }
 
-        public override CompileResult Compile()
-        {
-            double result = this._compiledValue ?? double.Parse(this.ExpressionString, CultureInfo.InvariantCulture);
-            result = this._negate ? result * -1 : result;
-            return new CompileResult(result, DataType.Decimal);
-        }
+    public override CompileResult Compile()
+    {
+        double result = this._compiledValue ?? double.Parse(this.ExpressionString, CultureInfo.InvariantCulture);
+        result = this._negate ? result * -1 : result;
+        return new CompileResult(result, DataType.Decimal);
     }
 }

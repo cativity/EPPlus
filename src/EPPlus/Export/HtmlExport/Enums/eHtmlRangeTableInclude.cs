@@ -10,24 +10,23 @@
  *************************************************************************************************
   05/11/2021         EPPlus Software AB           ExcelTable Html Export
  *************************************************************************************************/
-namespace OfficeOpenXml
+namespace OfficeOpenXml;
+
+/// <summary>
+/// How to handle a range when it is a table.
+/// </summary>
+public enum eHtmlRangeTableInclude
 {
     /// <summary>
-    /// How to handle a range when it is a table.
+    /// Do not set the table style css classes on the html table or create the table style css.
     /// </summary>
-    public enum eHtmlRangeTableInclude
-    {
-        /// <summary>
-        /// Do not set the table style css classes on the html table or create the table style css.
-        /// </summary>
-        Exclude,
-        /// <summary>
-        /// Set the css table style classes on the table, but do not include the table classes in the css.
-        /// </summary>
-        ClassNamesOnly,
-        /// <summary>
-        /// Include the css table style for the table and set the corresponding classes on the html table.
-        /// </summary>
-        Include
-    }
+    Exclude,
+    /// <summary>
+    /// Set the css table style classes on the table, but do not include the table classes in the css.
+    /// </summary>
+    ClassNamesOnly,
+    /// <summary>
+    /// Include the css table style for the table and set the corresponding classes on the html table.
+    /// </summary>
+    Include
 }

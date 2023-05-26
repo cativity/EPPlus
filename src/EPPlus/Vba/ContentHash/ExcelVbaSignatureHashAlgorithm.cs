@@ -15,32 +15,31 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace OfficeOpenXml.VBA.ContentHash
+namespace OfficeOpenXml.VBA.ContentHash;
+
+/// <summary>
+/// Hash algorithms for usage when signing VBA
+/// </summary>
+internal enum ExcelVbaSignatureHashAlgorithm
 {
     /// <summary>
-    /// Hash algorithms for usage when signing VBA
+    /// MD5 hash algorithm
     /// </summary>
-    internal enum ExcelVbaSignatureHashAlgorithm
-    {
-        /// <summary>
-        /// MD5 hash algorithm
-        /// </summary>
-        MD5,
-        /// <summary>
-        /// SHA1 hash algorithm
-        /// </summary>
-        SHA1,
-        /// <summary>
-        /// SHA256 hash algorithm
-        /// </summary>
-        SHA256,
-        /// <summary>
-        /// SHA384 hash algorithm
-        /// </summary>
-        SHA384,
-        /// <summary>
-        /// SHA512 hash algorithm
-        /// </summary>
-        SHA512
-    }
+    MD5,
+    /// <summary>
+    /// SHA1 hash algorithm
+    /// </summary>
+    SHA1,
+    /// <summary>
+    /// SHA256 hash algorithm
+    /// </summary>
+    SHA256,
+    /// <summary>
+    /// SHA384 hash algorithm
+    /// </summary>
+    SHA384,
+    /// <summary>
+    /// SHA512 hash algorithm
+    /// </summary>
+    SHA512
 }

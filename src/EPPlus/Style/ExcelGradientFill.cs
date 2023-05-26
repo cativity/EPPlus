@@ -17,192 +17,191 @@ using OfficeOpenXml.Style.XmlAccess;
 using System.Globalization;
 using OfficeOpenXml.Style;
 
-namespace OfficeOpenXml.Style
+namespace OfficeOpenXml.Style;
+
+/// <summary>
+/// The background fill of a cell
+/// </summary>
+public class ExcelGradientFill : StyleBase
 {
-    /// <summary>
-    /// The background fill of a cell
-    /// </summary>
-    public class ExcelGradientFill : StyleBase
+    internal ExcelGradientFill(ExcelStyles styles, XmlHelper.ChangedEventHandler ChangedEvent, int PositionID, string address, int index) :
+        base(styles, ChangedEvent, PositionID, address)
+
     {
-        internal ExcelGradientFill(ExcelStyles styles, XmlHelper.ChangedEventHandler ChangedEvent, int PositionID, string address, int index) :
-            base(styles, ChangedEvent, PositionID, address)
-
+        this.Index = index;
+    }
+    /// <summary>
+    /// Angle of the linear gradient
+    /// </summary>
+    public double Degree
+    {
+        get
         {
-            this.Index = index;
+            if (this.Index < 0)
+            {
+                return 0;
+            }
+
+            return ((ExcelGradientFillXml)this._styles.Fills[this.Index]).Degree;
         }
-        /// <summary>
-        /// Angle of the linear gradient
-        /// </summary>
-        public double Degree
+        set
         {
-            get
-            {
-                if (this.Index < 0)
-                {
-                    return 0;
-                }
-
-                return ((ExcelGradientFillXml)this._styles.Fills[this.Index]).Degree;
-            }
-            set
-            {
-                this._ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.GradientFill, eStyleProperty.GradientDegree, value, this._positionID, this._address));
-            }
+            this._ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.GradientFill, eStyleProperty.GradientDegree, value, this._positionID, this._address));
         }
-        /// <summary>
-        /// Linear or Path gradient
-        /// </summary>
-        public ExcelFillGradientType Type
+    }
+    /// <summary>
+    /// Linear or Path gradient
+    /// </summary>
+    public ExcelFillGradientType Type
+    {
+        get
         {
-            get
+            if (this.Index < 0)
             {
-                if (this.Index < 0)
-                {
-                    return ExcelFillGradientType.None;
-                }
+                return ExcelFillGradientType.None;
+            }
 
-                return ((ExcelGradientFillXml)this._styles.Fills[this.Index]).Type;
-            }
-            set
-            {
-                this._ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.GradientFill, eStyleProperty.GradientType, value, this._positionID, this._address));
-            }
+            return ((ExcelGradientFillXml)this._styles.Fills[this.Index]).Type;
         }
-        /// <summary>
-        /// The top position of the inner rectangle (color 1) in percentage format (from the top to the bottom). 
-        /// Spans from 0 to 1
-        /// </summary>
-        public double Top
+        set
         {
-            get
-            {
-                if (this.Index < 0)
-                {
-                    return 0;
-                }
-
-                return ((ExcelGradientFillXml)this._styles.Fills[this.Index]).Top;
-            }
-            set
-            {
-                if (value < 0 | value > 1)
-                {
-                    throw (new ArgumentOutOfRangeException("Value must be between 0 and 1"));
-                }
-
-                this._ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.GradientFill, eStyleProperty.GradientTop, value, this._positionID, this._address));
-            }
+            this._ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.GradientFill, eStyleProperty.GradientType, value, this._positionID, this._address));
         }
-        /// <summary>
-        /// The bottom position of the inner rectangle (color 1) in percentage format (from the top to the bottom). 
-        /// Spans from 0 to 1
-        /// </summary>
-        public double Bottom
+    }
+    /// <summary>
+    /// The top position of the inner rectangle (color 1) in percentage format (from the top to the bottom). 
+    /// Spans from 0 to 1
+    /// </summary>
+    public double Top
+    {
+        get
         {
-            get
+            if (this.Index < 0)
             {
-                if (this.Index < 0)
-                {
-                    return 0;
-                }
-
-                return ((ExcelGradientFillXml)this._styles.Fills[this.Index]).Bottom;
+                return 0;
             }
-            set
-            {
-                if (value < 0 | value > 1)
-                {
-                    throw (new ArgumentOutOfRangeException("Value must be between 0 and 1"));
-                }
 
-                this._ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.GradientFill, eStyleProperty.GradientBottom, value, this._positionID, this._address));
-            }
+            return ((ExcelGradientFillXml)this._styles.Fills[this.Index]).Top;
         }
-        /// <summary>
-        /// The left position of the inner rectangle (color 1) in percentage format (from the left to the right). 
-        /// Spans from 0 to 1
-        /// </summary>
-        public double Left
+        set
         {
-            get
+            if (value < 0 | value > 1)
             {
-                if (this.Index < 0)
-                {
-                    return 0;
-                }
+                throw (new ArgumentOutOfRangeException("Value must be between 0 and 1"));
+            }
 
-                return ((ExcelGradientFillXml)this._styles.Fills[this.Index]).Left;
-            }
-            set
+            this._ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.GradientFill, eStyleProperty.GradientTop, value, this._positionID, this._address));
+        }
+    }
+    /// <summary>
+    /// The bottom position of the inner rectangle (color 1) in percentage format (from the top to the bottom). 
+    /// Spans from 0 to 1
+    /// </summary>
+    public double Bottom
+    {
+        get
+        {
+            if (this.Index < 0)
             {
-                if (value < 0 | value > 1)
-                {
-                    throw (new ArgumentOutOfRangeException("Value must be between 0 and 1"));
-                }
+                return 0;
+            }
 
-                this._ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.GradientFill, eStyleProperty.GradientLeft, value, this._positionID, this._address));
-            }
+            return ((ExcelGradientFillXml)this._styles.Fills[this.Index]).Bottom;
         }
-        /// <summary>
-        /// The right position of the inner rectangle (color 1) in percentage format (from the left to the right). 
-        /// Spans from 0 to 1
-        /// </summary>
-        public double Right
+        set
         {
-            get
+            if (value < 0 | value > 1)
             {
-                if (this.Index < 0)
-                {
-                    return 0;
-                }
+                throw (new ArgumentOutOfRangeException("Value must be between 0 and 1"));
+            }
 
-                return ((ExcelGradientFillXml)this._styles.Fills[this.Index]).Right;
-            }
-            set
+            this._ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.GradientFill, eStyleProperty.GradientBottom, value, this._positionID, this._address));
+        }
+    }
+    /// <summary>
+    /// The left position of the inner rectangle (color 1) in percentage format (from the left to the right). 
+    /// Spans from 0 to 1
+    /// </summary>
+    public double Left
+    {
+        get
+        {
+            if (this.Index < 0)
             {
-                if (value < 0 | value > 1)
-                {
-                    throw (new ArgumentOutOfRangeException("Value must be between 0 and 1"));
-                }
+                return 0;
+            }
 
-                this._ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.GradientFill, eStyleProperty.GradientRight, value, this._positionID, this._address));
-            }
+            return ((ExcelGradientFillXml)this._styles.Fills[this.Index]).Left;
         }
-        ExcelColor _gradientColor1 = null;
-        /// <summary>
-        /// Gradient Color 1
-        /// </summary>
-        public ExcelColor Color1
+        set
         {
-            get
+            if (value < 0 | value > 1)
             {
-                return this._gradientColor1 ??= new ExcelColor(this._styles,
-                                                               this._ChangedEvent,
-                                                               this._positionID,
-                                                               this._address,
-                                                               eStyleClass.FillGradientColor1,
-                                                               this);
+                throw (new ArgumentOutOfRangeException("Value must be between 0 and 1"));
             }
+
+            this._ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.GradientFill, eStyleProperty.GradientLeft, value, this._positionID, this._address));
         }
-        ExcelColor _gradientColor2 = null;
-        /// <summary>
-        /// Gradient Color 2
-        /// </summary>
-        public ExcelColor Color2
+    }
+    /// <summary>
+    /// The right position of the inner rectangle (color 1) in percentage format (from the left to the right). 
+    /// Spans from 0 to 1
+    /// </summary>
+    public double Right
+    {
+        get
         {
-            get
+            if (this.Index < 0)
             {
-                return this._gradientColor2 ??= new ExcelColor(this._styles,
-                                                               this._ChangedEvent,
-                                                               this._positionID,
-                                                               this._address,
-                                                               eStyleClass.FillGradientColor2,
-                                                               this);
+                return 0;
             }
+
+            return ((ExcelGradientFillXml)this._styles.Fills[this.Index]).Right;
         }
-        internal override string Id
+        set
         {
-            get { return this.Degree.ToString() + this.Type + this.Color1.Id + this.Color2.Id + this.Top.ToString() + this.Bottom.ToString() + this.Left.ToString() + this.Right.ToString(); }
+            if (value < 0 | value > 1)
+            {
+                throw (new ArgumentOutOfRangeException("Value must be between 0 and 1"));
+            }
+
+            this._ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.GradientFill, eStyleProperty.GradientRight, value, this._positionID, this._address));
         }
+    }
+    ExcelColor _gradientColor1 = null;
+    /// <summary>
+    /// Gradient Color 1
+    /// </summary>
+    public ExcelColor Color1
+    {
+        get
+        {
+            return this._gradientColor1 ??= new ExcelColor(this._styles,
+                                                           this._ChangedEvent,
+                                                           this._positionID,
+                                                           this._address,
+                                                           eStyleClass.FillGradientColor1,
+                                                           this);
+        }
+    }
+    ExcelColor _gradientColor2 = null;
+    /// <summary>
+    /// Gradient Color 2
+    /// </summary>
+    public ExcelColor Color2
+    {
+        get
+        {
+            return this._gradientColor2 ??= new ExcelColor(this._styles,
+                                                           this._ChangedEvent,
+                                                           this._positionID,
+                                                           this._address,
+                                                           eStyleClass.FillGradientColor2,
+                                                           this);
+        }
+    }
+    internal override string Id
+    {
+        get { return this.Degree.ToString() + this.Type + this.Color1.Id + this.Color2.Id + this.Top.ToString() + this.Bottom.ToString() + this.Left.ToString() + this.Right.ToString(); }
     }
 }

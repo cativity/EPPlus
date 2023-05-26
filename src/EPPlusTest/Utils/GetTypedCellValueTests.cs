@@ -32,160 +32,159 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace EPPlusTest.Utils
+namespace EPPlusTest.Utils;
+
+[TestClass]
+public class GetTypedCellValueTests
 {
-    [TestClass]
-    public class GetTypedCellValueTests
+    [TestMethod]
+    public void DoubleToNullableInt()
     {
-        [TestMethod]
-        public void DoubleToNullableInt()
-        {
-            int? result = ConvertUtil.GetTypedCellValue<int?>(2D);
+        int? result = ConvertUtil.GetTypedCellValue<int?>(2D);
 
-            Assert.AreEqual(2, result);
-        }
+        Assert.AreEqual(2, result);
+    }
 
-        [TestMethod]
-        public void StringToDecimal()
-        {
-            string? decimalSign = System.Globalization.CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator;
-            decimal result = ConvertUtil.GetTypedCellValue<decimal>($"1{decimalSign}4");
+    [TestMethod]
+    public void StringToDecimal()
+    {
+        string? decimalSign = System.Globalization.CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator;
+        decimal result = ConvertUtil.GetTypedCellValue<decimal>($"1{decimalSign}4");
 
-            Assert.AreEqual((decimal)1.4, result);
-        }
+        Assert.AreEqual((decimal)1.4, result);
+    }
 
-        [TestMethod]
-        public void EmptyStringToNullableDecimal()
-        {
-            decimal? result = ConvertUtil.GetTypedCellValue<decimal?>("");
-            Assert.IsNull(result);
-        }
+    [TestMethod]
+    public void EmptyStringToNullableDecimal()
+    {
+        decimal? result = ConvertUtil.GetTypedCellValue<decimal?>("");
+        Assert.IsNull(result);
+    }
 
-        [TestMethod]
-        public void BlankStringToNullableDecimal()
-        {
-            decimal? result = ConvertUtil.GetTypedCellValue<decimal?>(" ");
+    [TestMethod]
+    public void BlankStringToNullableDecimal()
+    {
+        decimal? result = ConvertUtil.GetTypedCellValue<decimal?>(" ");
 
-            Assert.IsNull(result);
-        }
+        Assert.IsNull(result);
+    }
 
-        [TestMethod]
-        [ExpectedException(typeof(FormatException))]
-        public void EmptyStringToDecimal()
-        {
-            ConvertUtil.GetTypedCellValue<decimal>("");
-        }
+    [TestMethod]
+    [ExpectedException(typeof(FormatException))]
+    public void EmptyStringToDecimal()
+    {
+        ConvertUtil.GetTypedCellValue<decimal>("");
+    }
 
-        [TestMethod]
-        [ExpectedException(typeof(FormatException))]
-        public void FloatingPointStringToInt()
-        {
-            ConvertUtil.GetTypedCellValue<int>("1.4");
-        }
+    [TestMethod]
+    [ExpectedException(typeof(FormatException))]
+    public void FloatingPointStringToInt()
+    {
+        ConvertUtil.GetTypedCellValue<int>("1.4");
+    }
 
-        [TestMethod]
-        [ExpectedException(typeof(InvalidCastException))]
-        public void IntToDateTime()
-        {
-            ConvertUtil.GetTypedCellValue<DateTime>(122);
-        }
+    [TestMethod]
+    [ExpectedException(typeof(InvalidCastException))]
+    public void IntToDateTime()
+    {
+        ConvertUtil.GetTypedCellValue<DateTime>(122);
+    }
 
-        [TestMethod]
-        [ExpectedException(typeof(InvalidCastException))]
-        public void IntToTimeSpan()
-        {
-            ConvertUtil.GetTypedCellValue<TimeSpan>(122);
-        }
+    [TestMethod]
+    [ExpectedException(typeof(InvalidCastException))]
+    public void IntToTimeSpan()
+    {
+        ConvertUtil.GetTypedCellValue<TimeSpan>(122);
+    }
 
-        [TestMethod]
-        public void IntStringToTimeSpan()
-        {
-            Assert.AreEqual(TimeSpan.FromDays(122), ConvertUtil.GetTypedCellValue<TimeSpan>("122"));
-        }
+    [TestMethod]
+    public void IntStringToTimeSpan()
+    {
+        Assert.AreEqual(TimeSpan.FromDays(122), ConvertUtil.GetTypedCellValue<TimeSpan>("122"));
+    }
 
-        [TestMethod]
-        public void BoolToInt()
-        {
-            Assert.AreEqual(1, ConvertUtil.GetTypedCellValue<int>(true));
-            Assert.AreEqual(0, ConvertUtil.GetTypedCellValue<int>(false));
-        }
+    [TestMethod]
+    public void BoolToInt()
+    {
+        Assert.AreEqual(1, ConvertUtil.GetTypedCellValue<int>(true));
+        Assert.AreEqual(0, ConvertUtil.GetTypedCellValue<int>(false));
+    }
 
-        [TestMethod]
-        public void BoolToDecimal()
-        {
-            Assert.AreEqual(1m, ConvertUtil.GetTypedCellValue<decimal>(true));
-            Assert.AreEqual(0m, ConvertUtil.GetTypedCellValue<decimal>(false));
-        }
+    [TestMethod]
+    public void BoolToDecimal()
+    {
+        Assert.AreEqual(1m, ConvertUtil.GetTypedCellValue<decimal>(true));
+        Assert.AreEqual(0m, ConvertUtil.GetTypedCellValue<decimal>(false));
+    }
 
-        [TestMethod]
-        public void BoolToDouble()
-        {
-            Assert.AreEqual(1d, ConvertUtil.GetTypedCellValue<double>(true));
-            Assert.AreEqual(0d, ConvertUtil.GetTypedCellValue<double>(false));
-        }
+    [TestMethod]
+    public void BoolToDouble()
+    {
+        Assert.AreEqual(1d, ConvertUtil.GetTypedCellValue<double>(true));
+        Assert.AreEqual(0d, ConvertUtil.GetTypedCellValue<double>(false));
+    }
 
-        [TestMethod]
-        [ExpectedException(typeof(FormatException))]
-        public void BadTextToInt()
-        {
-            ConvertUtil.GetTypedCellValue<int>("text1");
-        }
-        [TestMethod]
-        public void DoubleToDateTime()
-        {
-            DateTime expected = new DateTime(2020, 1, 1);
-            Assert.AreEqual(expected, ConvertUtil.GetTypedCellValue<DateTime>(expected.ToOADate()));
-        }
-        [TestMethod]
-        public void StringToDateTime()
-        {
-            DateTime expected = new DateTime(2020, 1, 1);
-            Assert.AreEqual(expected, ConvertUtil.GetTypedCellValue<DateTime>(expected.ToString()));
-        }
-        [TestMethod]
-        public void DateTimeToTimeSpan()
-        {
-            DateTime expected = new DateTime(2020, 1, 1);
-            Assert.AreEqual(expected, ConvertUtil.GetTypedCellValue<DateTime>(new TimeSpan(expected.Ticks)));
-        }
-        [TestMethod]
-        public void StringToTimeSpan()
-        {
-            TimeSpan expected = new TimeSpan(10, 11, 12);
-            Assert.AreEqual(expected, ConvertUtil.GetTypedCellValue<TimeSpan>(expected.ToString()));
-        }
-        [TestMethod]
-        public void TimeSpanToDateTime()
-        {
-            TimeSpan expected = new TimeSpan(10, 11, 12);
-            Assert.AreEqual(expected, ConvertUtil.GetTypedCellValue<TimeSpan>(new DateTime(expected.Ticks)));
-        }
-        [TestMethod]
-        public void DateTimeToNullableDateTime()
-        {
-            DateTime? expected = new DateTime(10, 11, 12);
-            Assert.AreEqual(expected.Value, ConvertUtil.GetTypedCellValue<DateTime>(expected));
-        }
-        [TestMethod]
-        public void DateTimeToNullableDateTimeNull()
-        {
-            DateTime? expected = null;
-            Assert.AreEqual(default, ConvertUtil.GetTypedCellValue<DateTime>(expected));
-        }
-        [TestMethod]
-        public void EmptyStringToNullableShouldReturnNull()
-        {
-            Assert.IsNull(ConvertUtil.GetTypedCellValue<int?>(""));
-            Assert.IsNull(ConvertUtil.GetTypedCellValue<int?>("  "));
+    [TestMethod]
+    [ExpectedException(typeof(FormatException))]
+    public void BadTextToInt()
+    {
+        ConvertUtil.GetTypedCellValue<int>("text1");
+    }
+    [TestMethod]
+    public void DoubleToDateTime()
+    {
+        DateTime expected = new DateTime(2020, 1, 1);
+        Assert.AreEqual(expected, ConvertUtil.GetTypedCellValue<DateTime>(expected.ToOADate()));
+    }
+    [TestMethod]
+    public void StringToDateTime()
+    {
+        DateTime expected = new DateTime(2020, 1, 1);
+        Assert.AreEqual(expected, ConvertUtil.GetTypedCellValue<DateTime>(expected.ToString()));
+    }
+    [TestMethod]
+    public void DateTimeToTimeSpan()
+    {
+        DateTime expected = new DateTime(2020, 1, 1);
+        Assert.AreEqual(expected, ConvertUtil.GetTypedCellValue<DateTime>(new TimeSpan(expected.Ticks)));
+    }
+    [TestMethod]
+    public void StringToTimeSpan()
+    {
+        TimeSpan expected = new TimeSpan(10, 11, 12);
+        Assert.AreEqual(expected, ConvertUtil.GetTypedCellValue<TimeSpan>(expected.ToString()));
+    }
+    [TestMethod]
+    public void TimeSpanToDateTime()
+    {
+        TimeSpan expected = new TimeSpan(10, 11, 12);
+        Assert.AreEqual(expected, ConvertUtil.GetTypedCellValue<TimeSpan>(new DateTime(expected.Ticks)));
+    }
+    [TestMethod]
+    public void DateTimeToNullableDateTime()
+    {
+        DateTime? expected = new DateTime(10, 11, 12);
+        Assert.AreEqual(expected.Value, ConvertUtil.GetTypedCellValue<DateTime>(expected));
+    }
+    [TestMethod]
+    public void DateTimeToNullableDateTimeNull()
+    {
+        DateTime? expected = null;
+        Assert.AreEqual(default, ConvertUtil.GetTypedCellValue<DateTime>(expected));
+    }
+    [TestMethod]
+    public void EmptyStringToNullableShouldReturnNull()
+    {
+        Assert.IsNull(ConvertUtil.GetTypedCellValue<int?>(""));
+        Assert.IsNull(ConvertUtil.GetTypedCellValue<int?>("  "));
 
-        }
+    }
 
-        [TestMethod]
-        public void TextToInt()
-        {
-            int result = ConvertUtil.GetTypedCellValue<int>("204");
+    [TestMethod]
+    public void TextToInt()
+    {
+        int result = ConvertUtil.GetTypedCellValue<int>("204");
 
-            Assert.AreEqual(204, result);
-        }
+        Assert.AreEqual(204, result);
     }
 }

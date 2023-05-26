@@ -13,75 +13,74 @@
 using OfficeOpenXml.Drawing.Style;
 using System.Xml;
 
-namespace OfficeOpenXml.Drawing.Style.Font
-{
-    /// <summary>
-    /// Represents a special font, Complex, Latin or East asian 
-    /// </summary>
-    public class ExcelDrawingFontSpecial : ExcelDrawingFontBase
-    {
-        internal ExcelDrawingFontSpecial(XmlNamespaceManager nameSpaceManager, XmlNode topNode) : base(nameSpaceManager, topNode)
-        {
+namespace OfficeOpenXml.Drawing.Style.Font;
 
-        }
-        /// <summary>
-        /// The type of font
-        /// </summary>
-        public eFontType Type
-        {
-            get
-            {
-                switch (this.TopNode.LocalName)
-                {
-                    case "cs":
-                        return eFontType.Complex;
-                    case "sym":
-                        return eFontType.Symbol;
-                    case "ea":
-                        return eFontType.EastAsian;
-                    default:
-                        return eFontType.Latin;
-                }
-            }
-            }
-        /// <summary>
-        /// Specifies the Panose-1 classification number for the current font using the mechanism
-        /// defined in §5.2.7.17 of ISO/IEC 14496-22.
-        /// This value is used as one piece of information to guide selection of a similar alternate font if the desired font is unavailable.
-        /// </summary>        
-        public string Panose
-        {
-            get
-            {
-                return this.GetXmlNodeString("@panose");
-            }
-            set
-            {
-                this.SetXmlNodeString("@panose",value);
-            }
-        }
-        /// <summary>
-        /// The font pitch as well as the font family for the font
-        /// </summary>
-        public ePitchFamily PitchFamily
-        {
-            get
-            {
-                int p= this.GetXmlNodeInt("@pitchFamily");
-                try
-                {
-                    return (ePitchFamily)p;
-                }
-                catch
-                {
-                    return ePitchFamily.Default;
-                }
-            }
-            set
-            {
-                this.SetXmlNodeString("@pitchFamily", ((int)value).ToString());
-            }
-        }
+/// <summary>
+/// Represents a special font, Complex, Latin or East asian 
+/// </summary>
+public class ExcelDrawingFontSpecial : ExcelDrawingFontBase
+{
+    internal ExcelDrawingFontSpecial(XmlNamespaceManager nameSpaceManager, XmlNode topNode) : base(nameSpaceManager, topNode)
+    {
 
     }
+    /// <summary>
+    /// The type of font
+    /// </summary>
+    public eFontType Type
+    {
+        get
+        {
+            switch (this.TopNode.LocalName)
+            {
+                case "cs":
+                    return eFontType.Complex;
+                case "sym":
+                    return eFontType.Symbol;
+                case "ea":
+                    return eFontType.EastAsian;
+                default:
+                    return eFontType.Latin;
+            }
+        }
+    }
+    /// <summary>
+    /// Specifies the Panose-1 classification number for the current font using the mechanism
+    /// defined in §5.2.7.17 of ISO/IEC 14496-22.
+    /// This value is used as one piece of information to guide selection of a similar alternate font if the desired font is unavailable.
+    /// </summary>        
+    public string Panose
+    {
+        get
+        {
+            return this.GetXmlNodeString("@panose");
+        }
+        set
+        {
+            this.SetXmlNodeString("@panose",value);
+        }
+    }
+    /// <summary>
+    /// The font pitch as well as the font family for the font
+    /// </summary>
+    public ePitchFamily PitchFamily
+    {
+        get
+        {
+            int p= this.GetXmlNodeInt("@pitchFamily");
+            try
+            {
+                return (ePitchFamily)p;
+            }
+            catch
+            {
+                return ePitchFamily.Default;
+            }
+        }
+        set
+        {
+            this.SetXmlNodeString("@pitchFamily", ((int)value).ToString());
+        }
+    }
+
 }

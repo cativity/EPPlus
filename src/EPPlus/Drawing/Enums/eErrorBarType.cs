@@ -14,24 +14,23 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace OfficeOpenXml.Drawing
+namespace OfficeOpenXml.Drawing;
+
+/// <summary>
+/// The possible ways to draw an error bar
+/// </summary>
+public enum eErrorBarType
 {
     /// <summary>
-    /// The possible ways to draw an error bar
+    /// The error bars will be shown in both the positive and negative directions.
     /// </summary>
-    public enum eErrorBarType
-    {
-        /// <summary>
-        /// The error bars will be shown in both the positive and negative directions.
-        /// </summary>
-        Both,
-        /// <summary>
-        /// The error bars will be shown in the negative direction only.
-        /// </summary>
-        Minus,
-        /// <summary>
-        /// The error bars will be shown in the positive direction only
-        /// </summary>
-        Plus
-    }
+    Both,
+    /// <summary>
+    /// The error bars will be shown in the negative direction only.
+    /// </summary>
+    Minus,
+    /// <summary>
+    /// The error bars will be shown in the positive direction only
+    /// </summary>
+    Plus
 }

@@ -12,30 +12,29 @@
  *************************************************************************************************/
 using System.Xml;
 
-namespace OfficeOpenXml.Drawing.Style.Font
-{
-    /// <summary>
-    /// Represents a normal font
-    /// </summary>
-    public class ExcelDrawingFont : ExcelDrawingFontBase
-    {
-        internal ExcelDrawingFont(XmlNamespaceManager nameSpaceManager, XmlNode topNode) : base(nameSpaceManager, topNode)
-        {
+namespace OfficeOpenXml.Drawing.Style.Font;
 
-        }
-        /// <summary>
-        /// The script or language 
-        /// </summary>
-        public string Script
+/// <summary>
+/// Represents a normal font
+/// </summary>
+public class ExcelDrawingFont : ExcelDrawingFontBase
+{
+    internal ExcelDrawingFont(XmlNamespaceManager nameSpaceManager, XmlNode topNode) : base(nameSpaceManager, topNode)
+    {
+
+    }
+    /// <summary>
+    /// The script or language 
+    /// </summary>
+    public string Script
+    {
+        get
         {
-            get
-            {
-                return this.GetXmlNodeString("@script");
-            }
-            internal set
-            {
-                this.SetXmlNodeString("@script", value);
-            }
+            return this.GetXmlNodeString("@script");
+        }
+        internal set
+        {
+            this.SetXmlNodeString("@script", value);
         }
     }
 }

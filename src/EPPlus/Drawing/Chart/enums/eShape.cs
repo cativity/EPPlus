@@ -10,36 +10,35 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
-namespace OfficeOpenXml.Drawing.Chart
+namespace OfficeOpenXml.Drawing.Chart;
+
+/// <summary>
+/// Shape for bar charts
+/// </summary>
+public enum eShape
 {
     /// <summary>
-    /// Shape for bar charts
+    /// A box shape
     /// </summary>
-    public enum eShape
-    {
-        /// <summary>
-        /// A box shape
-        /// </summary>
-        Box,
-        /// <summary>
-        /// A cone shape
-        /// </summary>
-        Cone,
-        /// <summary>
-        /// A cone shape, truncated to max
-        /// </summary>
-        ConeToMax,
-        /// <summary>
-        /// A cylinder shape
-        /// </summary>
-        Cylinder,
-        /// <summary>
-        /// A pyramid shape
-        /// </summary>
-        Pyramid,
-        /// <summary>
-        /// A pyramid shape, truncated to max
-        /// </summary>
-        PyramidToMax
-    }
+    Box,
+    /// <summary>
+    /// A cone shape
+    /// </summary>
+    Cone,
+    /// <summary>
+    /// A cone shape, truncated to max
+    /// </summary>
+    ConeToMax,
+    /// <summary>
+    /// A cylinder shape
+    /// </summary>
+    Cylinder,
+    /// <summary>
+    /// A pyramid shape
+    /// </summary>
+    Pyramid,
+    /// <summary>
+    /// A pyramid shape, truncated to max
+    /// </summary>
+    PyramidToMax
 }

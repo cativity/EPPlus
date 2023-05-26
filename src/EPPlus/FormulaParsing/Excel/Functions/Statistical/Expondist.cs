@@ -17,40 +17,39 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Statistical
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Statistical;
+
+[FunctionMetadata(
+                     Category = ExcelFunctionCategory.Statistical,
+                     EPPlusVersion = "6.0",
+                     Description = "Returns the value of the exponential distribution for a give value of x. Same implementation as EXPON.DIST")]
+internal class Expondist : ExcelFunction
 {
-    [FunctionMetadata(
-            Category = ExcelFunctionCategory.Statistical,
-            EPPlusVersion = "6.0",
-            Description = "Returns the value of the exponential distribution for a give value of x. Same implementation as EXPON.DIST")]
-    internal class Expondist : ExcelFunction
+    public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
     {
-        public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
+        ValidateArguments(arguments, 3);
+        double x = this.ArgToDecimal(arguments, 0);
+        double lambda = this.ArgToDecimal(arguments, 1);
+        bool cumulative = this.ArgToBool(arguments, 2);
+        if (lambda <= 0d)
         {
-            ValidateArguments(arguments, 3);
-            double x = this.ArgToDecimal(arguments, 0);
-            double lambda = this.ArgToDecimal(arguments, 1);
-            bool cumulative = this.ArgToBool(arguments, 2);
-            if (lambda <= 0d)
-            {
-                return this.CreateResult(eErrorType.Num);
-            }
-
-            if (x < 0d)
-            {
-                return this.CreateResult(eErrorType.Num);
-            }
-
-            double result = 0d;
-            if (cumulative && x >= 0)
-            {
-                result = 1d - System.Math.Exp(x * -lambda);
-            }
-            else if(!cumulative && x >= 0)
-            {
-                result = lambda * System.Math.Exp(x * -lambda);
-            }
-            return this.CreateResult(result, DataType.Decimal);
+            return this.CreateResult(eErrorType.Num);
         }
+
+        if (x < 0d)
+        {
+            return this.CreateResult(eErrorType.Num);
+        }
+
+        double result = 0d;
+        if (cumulative && x >= 0)
+        {
+            result = 1d - System.Math.Exp(x * -lambda);
+        }
+        else if(!cumulative && x >= 0)
+        {
+            result = lambda * System.Math.Exp(x * -lambda);
+        }
+        return this.CreateResult(result, DataType.Decimal);
     }
 }

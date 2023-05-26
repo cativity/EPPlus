@@ -16,20 +16,19 @@ using System.Linq;
 using System.Text;
 using OfficeOpenXml.FormulaParsing.Excel.Operators;
 
-namespace OfficeOpenXml.FormulaParsing.ExpressionGraph.CompileStrategy
+namespace OfficeOpenXml.FormulaParsing.ExpressionGraph.CompileStrategy;
+
+public class CompileStrategyFactory : ICompileStrategyFactory
 {
-    public class CompileStrategyFactory : ICompileStrategyFactory
+    public CompileStrategy Create(Expression expression)
     {
-        public CompileStrategy Create(Expression expression)
+        if (expression.Operator.Operator == Operators.Concat)
         {
-            if (expression.Operator.Operator == Operators.Concat)
-            {
-                return new StringConcatStrategy(expression);
-            }
-            else
-            {
-                return new DefaultCompileStrategy(expression);
-            }
+            return new StringConcatStrategy(expression);
+        }
+        else
+        {
+            return new DefaultCompileStrategy(expression);
         }
     }
 }

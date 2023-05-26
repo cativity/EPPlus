@@ -10,20 +10,19 @@
  *************************************************************************************************
     04/16/2020         EPPlus Software AB       EPPlus 5.2
  *************************************************************************************************/
-namespace OfficeOpenXml.Drawing.Chart.ChartEx
+namespace OfficeOpenXml.Drawing.Chart.ChartEx;
+
+/// <summary>
+/// Side positions for a chart element
+/// </summary>
+public enum eFormulaDirection
 {
     /// <summary>
-    /// Side positions for a chart element
+    /// The formula is interpreted column-wise
     /// </summary>
-    public enum eFormulaDirection
-    {
-        /// <summary>
-        /// The formula is interpreted column-wise
-        /// </summary>
-        Column,
-        /// <summary>
-        /// The formula is interpreted row-wise
-        /// </summary>
-        Row
-    }
+    Column,
+    /// <summary>
+    /// The formula is interpreted row-wise
+    /// </summary>
+    Row
 }

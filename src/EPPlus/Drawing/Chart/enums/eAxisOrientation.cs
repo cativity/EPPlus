@@ -10,20 +10,19 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
-namespace OfficeOpenXml.Drawing.Chart
+namespace OfficeOpenXml.Drawing.Chart;
+
+/// <summary>
+/// Axis orientaion
+/// </summary>
+public enum eAxisOrientation
 {
     /// <summary>
-    /// Axis orientaion
+    /// Max to min
     /// </summary>
-    public enum eAxisOrientation
-    {
-        /// <summary>
-        /// Max to min
-        /// </summary>
-        MaxMin,
-        /// <summary>
-        /// Min to max
-        /// </summary>
-        MinMax
-    }
+    MaxMin,
+    /// <summary>
+    /// Min to max
+    /// </summary>
+    MinMax
 }

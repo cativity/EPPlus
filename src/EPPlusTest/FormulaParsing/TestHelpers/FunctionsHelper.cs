@@ -33,23 +33,22 @@ using System.Text;
 using OfficeOpenXml.FormulaParsing;
 using OfficeOpenXml.FormulaParsing.Excel.Functions;
 
-namespace EPPlusTest.FormulaParsing.TestHelpers
-{
-    public static class FunctionsHelper
-    {
-        public static IEnumerable<FunctionArgument> CreateArgs(params object[] args)
-        {
-            List<FunctionArgument>? list = new List<FunctionArgument>();
-            foreach (object? arg in args)
-            {
-                list.Add(new FunctionArgument(arg));
-            }
-            return list;
-        }
+namespace EPPlusTest.FormulaParsing.TestHelpers;
 
-        public static IEnumerable<FunctionArgument> Empty()
+public static class FunctionsHelper
+{
+    public static IEnumerable<FunctionArgument> CreateArgs(params object[] args)
+    {
+        List<FunctionArgument>? list = new List<FunctionArgument>();
+        foreach (object? arg in args)
         {
-            return new List<FunctionArgument>() {new FunctionArgument(null)};
+            list.Add(new FunctionArgument(arg));
         }
+        return list;
+    }
+
+    public static IEnumerable<FunctionArgument> Empty()
+    {
+        return new List<FunctionArgument>() {new FunctionArgument(null)};
     }
 }

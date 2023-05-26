@@ -19,183 +19,182 @@ using System.Xml;
 using OfficeOpenXml.Drawing.Theme;
 using OfficeOpenXml.Utils.Extensions;
 
-namespace OfficeOpenXml.Style.Dxf
+namespace OfficeOpenXml.Style.Dxf;
+
+/// <summary>
+/// A base class for differential formatting font styles
+/// </summary>
+public class ExcelDxfFontBase : DxfStyleBase
 {
-    /// <summary>
-    /// A base class for differential formatting font styles
-    /// </summary>
-    public class ExcelDxfFontBase : DxfStyleBase
+    internal ExcelDxfFontBase(ExcelStyles styles, Action<eStyleClass, eStyleProperty, object> callback)
+        : base(styles, callback)
     {
-        internal ExcelDxfFontBase(ExcelStyles styles, Action<eStyleClass, eStyleProperty, object> callback)
-            : base(styles, callback)
+        this.Color = new ExcelDxfColor(styles, eStyleClass.Font, callback);
+    }
+    bool? _bold;
+    /// <summary>
+    /// Font bold
+    /// </summary>
+    public bool? Bold
+    {
+        get
         {
-            this.Color = new ExcelDxfColor(styles, eStyleClass.Font, callback);
+            return this._bold;
         }
-        bool? _bold;
-        /// <summary>
-        /// Font bold
-        /// </summary>
-        public bool? Bold
+        set
         {
-            get
-            {
-                return this._bold;
-            }
-            set
-            {
-                this._bold = value;
-                this._callback?.Invoke(eStyleClass.Font, eStyleProperty.Bold, value);
-            }
+            this._bold = value;
+            this._callback?.Invoke(eStyleClass.Font, eStyleProperty.Bold, value);
         }
-        bool? _italic;
-        /// <summary>
-        /// Font Italic
-        /// </summary>
-        public bool? Italic
+    }
+    bool? _italic;
+    /// <summary>
+    /// Font Italic
+    /// </summary>
+    public bool? Italic
+    {
+        get
         {
-            get
-            {
-                return this._italic;
-            }
-            set
-            {
-                this._italic = value;
-                this._callback?.Invoke(eStyleClass.Font, eStyleProperty.Italic, value);
-            }
+            return this._italic;
         }
-        bool? _strike;
-        /// <summary>
-        /// Font-Strikeout
-        /// </summary>
-        public bool? Strike
+        set
         {
-            get
-            {
-                return this._strike;
-            }
-            set
-            {
-                this._strike = value;
-                this._callback?.Invoke(eStyleClass.Font, eStyleProperty.Strike, value);
-            }
+            this._italic = value;
+            this._callback?.Invoke(eStyleClass.Font, eStyleProperty.Italic, value);
         }
-        /// <summary>
-        /// The color of the text
-        /// </summary>
-        public ExcelDxfColor Color { get; set; }
-        ExcelUnderLineType? _underline;
-        /// <summary>
-        /// The underline type
-        /// </summary>
-        public ExcelUnderLineType? Underline
+    }
+    bool? _strike;
+    /// <summary>
+    /// Font-Strikeout
+    /// </summary>
+    public bool? Strike
+    {
+        get
         {
-            get
-            {
-                return this._underline;
-            }
-            set
-            {
-                this._underline = value;
-                this._callback?.Invoke(eStyleClass.Font, eStyleProperty.UnderlineType, value);
-            }
+            return this._strike;
         }
+        set
+        {
+            this._strike = value;
+            this._callback?.Invoke(eStyleClass.Font, eStyleProperty.Strike, value);
+        }
+    }
+    /// <summary>
+    /// The color of the text
+    /// </summary>
+    public ExcelDxfColor Color { get; set; }
+    ExcelUnderLineType? _underline;
+    /// <summary>
+    /// The underline type
+    /// </summary>
+    public ExcelUnderLineType? Underline
+    {
+        get
+        {
+            return this._underline;
+        }
+        set
+        {
+            this._underline = value;
+            this._callback?.Invoke(eStyleClass.Font, eStyleProperty.UnderlineType, value);
+        }
+    }
 
-        /// <summary>
-        /// The id
-        /// </summary>
-        internal override string Id
+    /// <summary>
+    /// The id
+    /// </summary>
+    internal override string Id
+    {
+        get
         {
-            get
-            {
-                return GetAsString(this.Bold) + "|" + GetAsString(this.Italic) + "|" + GetAsString(this.Strike) + "|" + (this.Color == null ? "" : this.Color.Id) + "|" + GetAsString(this.Underline)
-                    + "|||||||||";
-            }
+            return GetAsString(this.Bold) + "|" + GetAsString(this.Italic) + "|" + GetAsString(this.Strike) + "|" + (this.Color == null ? "" : this.Color.Id) + "|" + GetAsString(this.Underline)
+                   + "|||||||||";
         }
+    }
 
-        /// <summary>
-        /// Creates the the xml node
-        /// </summary>
-        /// <param name="helper">The xml helper</param>
-        /// <param name="path">The X Path</param>
-        internal override void CreateNodes(XmlHelper helper, string path)
+    /// <summary>
+    /// Creates the the xml node
+    /// </summary>
+    /// <param name="helper">The xml helper</param>
+    /// <param name="path">The X Path</param>
+    internal override void CreateNodes(XmlHelper helper, string path)
+    {
+        helper.CreateNode(path);
+        SetValueBool(helper, path + "/d:b/@val", this.Bold);
+        SetValueBool(helper, path + "/d:i/@val", this.Italic);
+        SetValueBool(helper, path + "/d:strike/@val", this.Strike);
+        SetValue(helper, path + "/d:u/@val", this.Underline==null?null: this.Underline.ToEnumString());
+        SetValueColor(helper, path + "/d:color", this.Color);
+    }
+    internal override void SetStyle()
+    {
+        if (this._callback != null)
         {
-            helper.CreateNode(path);
-            SetValueBool(helper, path + "/d:b/@val", this.Bold);
-            SetValueBool(helper, path + "/d:i/@val", this.Italic);
-            SetValueBool(helper, path + "/d:strike/@val", this.Strike);
-            SetValue(helper, path + "/d:u/@val", this.Underline==null?null: this.Underline.ToEnumString());
-            SetValueColor(helper, path + "/d:color", this.Color);
+            this._callback.Invoke(eStyleClass.Font, eStyleProperty.Bold, this._bold);
+            this._callback.Invoke(eStyleClass.Font, eStyleProperty.Italic, this._italic);
+            this._callback.Invoke(eStyleClass.Font, eStyleProperty.Strike, this._strike);
+            this._callback.Invoke(eStyleClass.Font, eStyleProperty.UnderlineType, this.Underline);
+            this.Color.SetStyle();
         }
-        internal override void SetStyle()
+    }
+    /// <summary>
+    /// If the object has any properties set
+    /// </summary>
+    public override bool HasValue
+    {
+        get
         {
-            if (this._callback != null)
-            {
-                this._callback.Invoke(eStyleClass.Font, eStyleProperty.Bold, this._bold);
-                this._callback.Invoke(eStyleClass.Font, eStyleProperty.Italic, this._italic);
-                this._callback.Invoke(eStyleClass.Font, eStyleProperty.Strike, this._strike);
-                this._callback.Invoke(eStyleClass.Font, eStyleProperty.UnderlineType, this.Underline);
-                this.Color.SetStyle();
-            }
+            return this.Bold != null || this.Italic != null || this.Strike != null || this.Underline != null || this.Color.HasValue;
         }
-        /// <summary>
-        /// If the object has any properties set
-        /// </summary>
-        public override bool HasValue
+    }
+    /// <summary>
+    /// Clears all properties
+    /// </summary>
+    public override void Clear()
+    {
+        this.Bold = null;
+        this.Italic = null;
+        this.Strike = null;
+        this.Underline = null;
+        this.Color.Clear();
+    }
+    /// <summary>
+    /// Clone the object
+    /// </summary>
+    /// <returns>A new instance of the object</returns>
+    internal override DxfStyleBase Clone()
+    {
+        return new ExcelDxfFontBase(this._styles, this._callback) { Bold = this.Bold, Color = (ExcelDxfColor)this.Color.Clone(), Italic = this.Italic, Strike = this.Strike, Underline = this.Underline };
+    }
+    internal override void SetValuesFromXml(XmlHelper helper)
+    {
+        if (helper.ExistsNode("d:font"))
         {
-            get
-            {
-                return this.Bold != null || this.Italic != null || this.Strike != null || this.Underline != null || this.Color.HasValue;
-            }
+            this.Bold = helper.GetXmlNodeBoolNullableWithVal("d:font/d:b");
+            this.Italic = helper.GetXmlNodeBoolNullableWithVal("d:font/d:i");
+            this.Strike = helper.GetXmlNodeBoolNullableWithVal("d:font/d:strike");
+            this.Underline = GetUnderLine(helper);
+            this.Color = this.GetColor(helper, "d:font/d:color", eStyleClass.Font);
         }
-        /// <summary>
-        /// Clears all properties
-        /// </summary>
-        public override void Clear()
-        {
-            this.Bold = null;
-            this.Italic = null;
-            this.Strike = null;
-            this.Underline = null;
-            this.Color.Clear();
-        }
-        /// <summary>
-        /// Clone the object
-        /// </summary>
-        /// <returns>A new instance of the object</returns>
-        internal override DxfStyleBase Clone()
-        {
-            return new ExcelDxfFontBase(this._styles, this._callback) { Bold = this.Bold, Color = (ExcelDxfColor)this.Color.Clone(), Italic = this.Italic, Strike = this.Strike, Underline = this.Underline };
-        }
-        internal override void SetValuesFromXml(XmlHelper helper)
-        {
-            if (helper.ExistsNode("d:font"))
-            {
-                this.Bold = helper.GetXmlNodeBoolNullableWithVal("d:font/d:b");
-                this.Italic = helper.GetXmlNodeBoolNullableWithVal("d:font/d:i");
-                this.Strike = helper.GetXmlNodeBoolNullableWithVal("d:font/d:strike");
-                this.Underline = GetUnderLine(helper);
-                this.Color = this.GetColor(helper, "d:font/d:color", eStyleClass.Font);
-            }
-        }
+    }
 
-        private static ExcelUnderLineType? GetUnderLine(XmlHelper helper)
+    private static ExcelUnderLineType? GetUnderLine(XmlHelper helper)
+    {
+        if (helper.ExistsNode("d:font/d:u"))
         {
-            if (helper.ExistsNode("d:font/d:u"))
+            string? v = helper.GetXmlNodeString("d:font/d:u/@val");
+            if (string.IsNullOrEmpty(v))
             {
-                string? v = helper.GetXmlNodeString("d:font/d:u/@val");
-                if (string.IsNullOrEmpty(v))
-                {
-                    return ExcelUnderLineType.Single;
-                }
-                else
-                {
-                    return GetUnderLineEnum(v);
-                }
+                return ExcelUnderLineType.Single;
             }
             else
             {
-                return null;
+                return GetUnderLineEnum(v);
             }
+        }
+        else
+        {
+            return null;
         }
     }
 }

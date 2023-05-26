@@ -17,43 +17,42 @@ using System.Text;
 using OfficeOpenXml.Utils;
 using OfficeOpenXml.FormulaParsing;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime.Workdays
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime.Workdays;
+
+public class AdditionalHolidayDays
 {
-    public class AdditionalHolidayDays
+    private readonly FunctionArgument _holidayArg;
+    private readonly List<System.DateTime> _holidayDates = new List<System.DateTime>(); 
+
+    public AdditionalHolidayDays(FunctionArgument holidayArg)
     {
-        private readonly FunctionArgument _holidayArg;
-        private readonly List<System.DateTime> _holidayDates = new List<System.DateTime>(); 
+        this._holidayArg = holidayArg;
+        this.Initialize();
+    }
 
-        public AdditionalHolidayDays(FunctionArgument holidayArg)
+    public IEnumerable<System.DateTime> AdditionalDates => this._holidayDates;
+
+    private void Initialize()
+    {
+        IEnumerable<FunctionArgument>? holidays = this._holidayArg.Value as IEnumerable<FunctionArgument>;
+        if (holidays != null)
         {
-            this._holidayArg = holidayArg;
-            this.Initialize();
+            foreach (System.DateTime holidayDate in from arg in holidays where ConvertUtil.IsNumericOrDate(arg.Value) select ConvertUtil.GetValueDouble(arg.Value) into dateSerial select System.DateTime.FromOADate(dateSerial))
+            {
+                this._holidayDates.Add(holidayDate);
+            }
         }
-
-        public IEnumerable<System.DateTime> AdditionalDates => this._holidayDates;
-
-        private void Initialize()
+        IRangeInfo? range = this._holidayArg.Value as IRangeInfo;
+        if (range != null)
         {
-            IEnumerable<FunctionArgument>? holidays = this._holidayArg.Value as IEnumerable<FunctionArgument>;
-            if (holidays != null)
+            foreach (System.DateTime holidayDate in from cell in range where ConvertUtil.IsNumericOrDate(cell.Value) select ConvertUtil.GetValueDouble(cell.Value) into dateSerial select System.DateTime.FromOADate(dateSerial))
             {
-                foreach (System.DateTime holidayDate in from arg in holidays where ConvertUtil.IsNumericOrDate(arg.Value) select ConvertUtil.GetValueDouble(arg.Value) into dateSerial select System.DateTime.FromOADate(dateSerial))
-                {
-                    this._holidayDates.Add(holidayDate);
-                }
+                this._holidayDates.Add(holidayDate);
             }
-            IRangeInfo? range = this._holidayArg.Value as IRangeInfo;
-            if (range != null)
-            {
-                foreach (System.DateTime holidayDate in from cell in range where ConvertUtil.IsNumericOrDate(cell.Value) select ConvertUtil.GetValueDouble(cell.Value) into dateSerial select System.DateTime.FromOADate(dateSerial))
-                {
-                    this._holidayDates.Add(holidayDate);
-                }
-            }
-            if (ConvertUtil.IsNumericOrDate(this._holidayArg.Value))
-            {
-                this._holidayDates.Add(System.DateTime.FromOADate(ConvertUtil.GetValueDouble(this._holidayArg.Value)));
-            }
+        }
+        if (ConvertUtil.IsNumericOrDate(this._holidayArg.Value))
+        {
+            this._holidayDates.Add(System.DateTime.FromOADate(ConvertUtil.GetValueDouble(this._holidayArg.Value)));
         }
     }
 }

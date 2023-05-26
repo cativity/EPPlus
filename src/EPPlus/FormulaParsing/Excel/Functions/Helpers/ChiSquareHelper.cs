@@ -3,36 +3,35 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Helpers
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Helpers;
+
+internal static class ChiSquareHelper
 {
-    internal static class ChiSquareHelper
+    public static double PropbabilityDistribution(double n, double degreeOfFreedom)
     {
-        public static double PropbabilityDistribution(double n, double degreeOfFreedom)
+        if (n < 0d)
         {
-            if (n < 0d)
-            {
-                return 0d;
-            }
-            else if(n == 0d && degreeOfFreedom == 2d)
-            {
-                return 0.5d;
-            }
-            return System.Math.Exp(degreeOfFreedom / 2 - 1) * System.Math.Log(n) - degreeOfFreedom / 2d * System.Math.Log(2d) - GammaHelper.logGamma(degreeOfFreedom / 2);
-
+            return 0d;
         }
-
-        public static double CumulativeDistribution(double n, double degreeOfFreedom)
+        else if(n == 0d && degreeOfFreedom == 2d)
         {
-            if(n < 0d)
-            {
-                return 0;
-            }
-            return GammaHelper.regularizedGammaP(degreeOfFreedom / 2, n / 2, 1.0e-15, 10000);
+            return 0.5d;
         }
+        return System.Math.Exp(degreeOfFreedom / 2 - 1) * System.Math.Log(n) - degreeOfFreedom / 2d * System.Math.Log(2d) - GammaHelper.logGamma(degreeOfFreedom / 2);
 
-        public static double Inverse(double n, double degreeOfFreedom)
+    }
+
+    public static double CumulativeDistribution(double n, double degreeOfFreedom)
+    {
+        if(n < 0d)
         {
-            return 2 * GammaPinvHelper.gammapinv(n, 0.5 * degreeOfFreedom);
+            return 0;
         }
+        return GammaHelper.regularizedGammaP(degreeOfFreedom / 2, n / 2, 1.0e-15, 10000);
+    }
+
+    public static double Inverse(double n, double degreeOfFreedom)
+    {
+        return 2 * GammaPinvHelper.gammapinv(n, 0.5 * degreeOfFreedom);
     }
 }

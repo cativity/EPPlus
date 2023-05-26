@@ -17,37 +17,36 @@ using System.Text;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Metadata;
 using OfficeOpenXml.FormulaParsing.ExpressionGraph;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Text
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Text;
+
+[FunctionMetadata(
+                     Category = ExcelFunctionCategory.Text,
+                     EPPlusVersion = "4",
+                     Description = "Replaces all or part of a text string with another string (from a user supplied position)")]
+internal class Replace : ExcelFunction
 {
-    [FunctionMetadata(
-        Category = ExcelFunctionCategory.Text,
-        EPPlusVersion = "4",
-        Description = "Replaces all or part of a text string with another string (from a user supplied position)")]
-    internal class Replace : ExcelFunction
+    public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
     {
-        public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
-        {
-            ValidateArguments(arguments, 4);
-            string? oldText = ArgToString(arguments, 0);
-            int startPos = this.ArgToInt(arguments, 1);
-            int nCharsToReplace = this.ArgToInt(arguments, 2);
-            string? newText = ArgToString(arguments, 3);
-            string? firstPart = GetFirstPart(oldText, startPos);
-            string? lastPart = GetLastPart(oldText, startPos, nCharsToReplace);
-            string? result = string.Concat(firstPart, newText, lastPart);
-            return this.CreateResult(result, DataType.String);
-        }
+        ValidateArguments(arguments, 4);
+        string? oldText = ArgToString(arguments, 0);
+        int startPos = this.ArgToInt(arguments, 1);
+        int nCharsToReplace = this.ArgToInt(arguments, 2);
+        string? newText = ArgToString(arguments, 3);
+        string? firstPart = GetFirstPart(oldText, startPos);
+        string? lastPart = GetLastPart(oldText, startPos, nCharsToReplace);
+        string? result = string.Concat(firstPart, newText, lastPart);
+        return this.CreateResult(result, DataType.String);
+    }
 
-        private static string GetFirstPart(string text, int startPos)
-        {
-            return text.Substring(0, startPos - 1);
-        }
+    private static string GetFirstPart(string text, int startPos)
+    {
+        return text.Substring(0, startPos - 1);
+    }
 
-        private static string GetLastPart(string text, int startPos, int nCharactersToReplace)
-        {
-            int startIx = startPos -1;
-            startIx += nCharactersToReplace;
-            return text.Substring(startIx, text.Length - startIx);
-        }
+    private static string GetLastPart(string text, int startPos, int nCharactersToReplace)
+    {
+        int startIx = startPos -1;
+        startIx += nCharactersToReplace;
+        return text.Substring(startIx, text.Length - startIx);
     }
 }

@@ -17,19 +17,18 @@ using System.Text;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Metadata;
 using OfficeOpenXml.FormulaParsing.ExpressionGraph;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
+
+[FunctionMetadata(
+                     Category = ExcelFunctionCategory.MathAndTrig,
+                     EPPlusVersion = "4",
+                     Description = "Returns the base 10 logarithm of a given number")]
+internal class Log10 : ExcelFunction
 {
-    [FunctionMetadata(
-        Category = ExcelFunctionCategory.MathAndTrig,
-        EPPlusVersion = "4",
-        Description = "Returns the base 10 logarithm of a given number")]
-    internal class Log10 : ExcelFunction
+    public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
     {
-        public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
-        {
-            ValidateArguments(arguments, 1);
-            double number = this.ArgToDecimal(arguments, 0);
-            return this.CreateResult(System.Math.Log10(number), DataType.Decimal);
-        }
+        ValidateArguments(arguments, 1);
+        double number = this.ArgToDecimal(arguments, 0);
+        return this.CreateResult(System.Math.Log10(number), DataType.Decimal);
     }
 }

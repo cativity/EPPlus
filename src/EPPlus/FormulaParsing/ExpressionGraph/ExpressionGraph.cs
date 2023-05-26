@@ -15,41 +15,40 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace OfficeOpenXml.FormulaParsing.ExpressionGraph
+namespace OfficeOpenXml.FormulaParsing.ExpressionGraph;
+
+public class ExpressionGraph
 {
-    public class ExpressionGraph
+    private List<Expression> _expressions = new List<Expression>();
+    public IEnumerable<Expression> Expressions { get { return this._expressions; } }
+    public Expression Current { get; private set; }
+
+    public Expression Add(Expression expression)
     {
-        private List<Expression> _expressions = new List<Expression>();
-        public IEnumerable<Expression> Expressions { get { return this._expressions; } }
-        public Expression Current { get; private set; }
-
-        public Expression Add(Expression expression)
+        this._expressions.Add(expression);
+        if (this.Current != null)
         {
-            this._expressions.Add(expression);
-            if (this.Current != null)
-            {
-                this.Current.Next = expression;
-                expression.Prev = this.Current;
-            }
-
-            this.Current = expression;
-            return expression;
+            this.Current.Next = expression;
+            expression.Prev = this.Current;
         }
 
-        public void Reset()
+        this.Current = expression;
+        return expression;
+    }
+
+    public void Reset()
+    {
+        this._expressions.Clear();
+        this.Current = null;
+    }
+
+    public void Remove(Expression item)
+    {
+        if (item == this.Current)
         {
-            this._expressions.Clear();
-            this.Current = null;
+            this.Current = item.Prev ?? item.Next;
         }
 
-        public void Remove(Expression item)
-        {
-            if (item == this.Current)
-            {
-                this.Current = item.Prev ?? item.Next;
-            }
-
-            this._expressions.Remove(item);
-        }
+        this._expressions.Remove(item);
     }
 }

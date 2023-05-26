@@ -15,13 +15,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace OfficeOpenXml.Core.Worksheet.Core.Worksheet.Fonts
+namespace OfficeOpenXml.Core.Worksheet.Core.Worksheet.Fonts;
+
+internal enum FontSubFamilies : ushort
 {
-    internal enum FontSubFamilies : ushort
-    {
-        Regular = 0,
-        Bold = 1,
-        Italic = 2,
-        BoldItalic = 3
-    }
+    Regular = 0,
+    Bold = 1,
+    Italic = 2,
+    BoldItalic = 3
 }

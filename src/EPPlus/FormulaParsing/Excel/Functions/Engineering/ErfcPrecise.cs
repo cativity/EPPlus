@@ -15,13 +15,12 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Engineering
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Engineering;
+
+[FunctionMetadata(
+                     Category = ExcelFunctionCategory.Engineering,
+                     EPPlusVersion = "5.2",
+                     Description = "Returns the complementary error function integrated between a supplied lower limit and infinity")]
+internal class ErfcPrecise : Erfc
 {
-    [FunctionMetadata(
-    Category = ExcelFunctionCategory.Engineering,
-    EPPlusVersion = "5.2",
-    Description = "Returns the complementary error function integrated between a supplied lower limit and infinity")]
-    internal class ErfcPrecise : Erfc
-    {
-    }
 }

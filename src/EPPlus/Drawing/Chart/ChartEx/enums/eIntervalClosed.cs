@@ -10,24 +10,23 @@
  *************************************************************************************************
     04/16/2020         EPPlus Software AB       EPPlus 5.2
  *************************************************************************************************/
-namespace OfficeOpenXml.Drawing.Chart.ChartEx
+namespace OfficeOpenXml.Drawing.Chart.ChartEx;
+
+/// <summary>
+/// The interval closed side.
+/// </summary>
+public enum eIntervalClosed
 {
     /// <summary>
-    /// The interval closed side.
+    /// The IntervalClosed is not specified.
     /// </summary>
-    public enum eIntervalClosed
-    {
-        /// <summary>
-        /// The IntervalClosed is not specified.
-        /// </summary>
-        None,
-        /// <summary>
-        /// The interval is closed on the left side
-        /// </summary>
-        Left,
-        /// <summary>
-        /// The interval is closed on the right side
-        /// </summary>
-        Right
-    }
+    None,
+    /// <summary>
+    /// The interval is closed on the left side
+    /// </summary>
+    Left,
+    /// <summary>
+    /// The interval is closed on the right side
+    /// </summary>
+    Right
 }

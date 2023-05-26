@@ -18,24 +18,23 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Engineering
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Engineering;
+
+[FunctionMetadata(
+                     Category = ExcelFunctionCategory.Engineering,
+                     EPPlusVersion = "5.2",
+                     Description = "Returns the complementary error function integrated between a supplied lower limit and infinity",
+                     IntroducedInExcelVersion = "2010")]
+internal class ErfPrecise : ExcelFunction
 {
-    [FunctionMetadata(
-        Category = ExcelFunctionCategory.Engineering,
-        EPPlusVersion = "5.2",
-        Description = "Returns the complementary error function integrated between a supplied lower limit and infinity",
-        IntroducedInExcelVersion = "2010")]
-    internal class ErfPrecise : ExcelFunction
+    public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
     {
-        public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
-        {
-            ValidateArguments(arguments, 1);
-            double x = this.ArgToDecimal(arguments, 0);
-            double retVal = ErfHelper.Erf(0d, x);
-            return this.CreateResult(retVal, DataType.Decimal);
-        }
-
-
-
+        ValidateArguments(arguments, 1);
+        double x = this.ArgToDecimal(arguments, 0);
+        double retVal = ErfHelper.Erf(0d, x);
+        return this.CreateResult(retVal, DataType.Decimal);
     }
+
+
+
 }

@@ -34,153 +34,152 @@ using OfficeOpenXml.Filter;
 using System.Globalization;
 using System.Threading;
 
-namespace EPPlusTest.Filter
+namespace EPPlusTest.Filter;
+
+[TestClass]
+public class CustomFilter : TestBase
 {
-    [TestClass]
-    public class CustomFilter : TestBase
+    static ExcelPackage _pck;
+    [ClassInitialize]
+    public static void Init(TestContext context)
     {
-        static ExcelPackage _pck;
-        [ClassInitialize]
-        public static void Init(TestContext context)
-        {
-            _pck = OpenPackage("CustomFilter.xlsx", true);
-        }
-        [ClassCleanup]
-        public static void Cleanup()
-        {
-            SaveAndCleanup(_pck);
-        }
+        _pck = OpenPackage("CustomFilter.xlsx", true);
+    }
+    [ClassCleanup]
+    public static void Cleanup()
+    {
+        SaveAndCleanup(_pck);
+    }
 
-        [TestMethod]
-        public void CustomEndWith()
-        {
-            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("CustomEndWith");
-            LoadTestdata(ws);
+    [TestMethod]
+    public void CustomEndWith()
+    {
+        ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("CustomEndWith");
+        LoadTestdata(ws);
             
-            ws.AutoFilterAddress = ws.Cells["A1:D100"];
-            ExcelCustomFilterColumn? col=ws.AutoFilter.Columns.AddCustomFilterColumn(2);
-            col.Filters.Add(new ExcelFilterCustomItem("*3"));
-            ws.AutoFilter.ApplyFilter();
+        ws.AutoFilterAddress = ws.Cells["A1:D100"];
+        ExcelCustomFilterColumn? col=ws.AutoFilter.Columns.AddCustomFilterColumn(2);
+        col.Filters.Add(new ExcelFilterCustomItem("*3"));
+        ws.AutoFilter.ApplyFilter();
 
-            Assert.AreEqual(true, ws.Row(2).Hidden);
-            Assert.AreEqual(false, ws.Row(3).Hidden);
-        }
-        [TestMethod]
-        public void CustomStartsWithOrContainsText()
+        Assert.AreEqual(true, ws.Row(2).Hidden);
+        Assert.AreEqual(false, ws.Row(3).Hidden);
+    }
+    [TestMethod]
+    public void CustomStartsWithOrContainsText()
+    {
+        ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("StartOrContains");
+        LoadTestdata(ws);
+
+        ws.AutoFilterAddress = ws.Cells["A1:D100"];
+        ExcelCustomFilterColumn? col = ws.AutoFilter.Columns.AddCustomFilterColumn(2);
+        col.Filters.Add(new ExcelFilterCustomItem("*3"));
+        col.Filters.Add(new ExcelFilterCustomItem("*ue ?2"));
+        col.And = false;
+        ws.AutoFilter.ApplyFilter();
+
+        Assert.AreEqual(true, ws.Row(2).Hidden);
+        Assert.AreEqual(false, ws.Row(3).Hidden);
+        Assert.AreEqual(false, ws.Row(22).Hidden);
+        Assert.AreEqual(false, ws.Row(33).Hidden);
+    }
+    [TestMethod]
+    public void CustomContains()
+    {
+        ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("StartsWith");
+        LoadTestdata(ws);
+        for (int row = 2; row <= ws.Dimension.Rows; row++)
         {
-            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("StartOrContains");
-            LoadTestdata(ws);
-
-            ws.AutoFilterAddress = ws.Cells["A1:D100"];
-            ExcelCustomFilterColumn? col = ws.AutoFilter.Columns.AddCustomFilterColumn(2);
-            col.Filters.Add(new ExcelFilterCustomItem("*3"));
-            col.Filters.Add(new ExcelFilterCustomItem("*ue ?2"));
-            col.And = false;
-            ws.AutoFilter.ApplyFilter();
-
-            Assert.AreEqual(true, ws.Row(2).Hidden);
-            Assert.AreEqual(false, ws.Row(3).Hidden);
-            Assert.AreEqual(false, ws.Row(22).Hidden);
-            Assert.AreEqual(false, ws.Row(33).Hidden);
-        }
-        [TestMethod]
-        public void CustomContains()
-        {
-            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("StartsWith");
-            LoadTestdata(ws);
-            for (int row = 2; row <= ws.Dimension.Rows; row++)
+            if (row % 10 == 0)
             {
-                if (row % 10 == 0)
-                {
-                    ws.Cells[row, 3].Value = ws.Cells[row, 3].Value.ToString().Replace("Value", "value");
-                }
-            }
-
-            ws.AutoFilterAddress = ws.Cells["A1:D100"];
-            ExcelCustomFilterColumn? col = ws.AutoFilter.Columns.AddCustomFilterColumn(2);
-            col.Filters.Add(new ExcelFilterCustomItem("*value*"));
-            col.And = false;
-            ws.AutoFilter.ApplyFilter();
-
-            for (int row = 2; row <= ws.Dimension.Rows; row++)
-            {
-                Assert.AreEqual(false, ws.Row(row).Hidden);
+                ws.Cells[row, 3].Value = ws.Cells[row, 3].Value.ToString().Replace("Value", "value");
             }
         }
-        [TestMethod]
-        public void CustomNumericEqualOrGreaterThanOrEqual()
+
+        ws.AutoFilterAddress = ws.Cells["A1:D100"];
+        ExcelCustomFilterColumn? col = ws.AutoFilter.Columns.AddCustomFilterColumn(2);
+        col.Filters.Add(new ExcelFilterCustomItem("*value*"));
+        col.And = false;
+        ws.AutoFilter.ApplyFilter();
+
+        for (int row = 2; row <= ws.Dimension.Rows; row++)
         {
-            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("NumberEqOrGrEq");
-            LoadTestdata(ws);
-
-            ws.AutoFilterAddress = ws.Cells["A1:D100"];
-            ExcelCustomFilterColumn? col = ws.AutoFilter.Columns.AddCustomFilterColumn(1);
-            col.Filters.Add(new ExcelFilterCustomItem("14"));
-            col.Filters.Add(new ExcelFilterCustomItem("95", eFilterOperator.GreaterThanOrEqual));
-            col.And = false;
-            ws.AutoFilter.ApplyFilter();
-
-            Assert.AreEqual(true, ws.Row(13).Hidden);
-            Assert.AreEqual(false, ws.Row(14).Hidden);
-            Assert.AreEqual(true, ws.Row(94).Hidden);
-            Assert.AreEqual(false, ws.Row(95).Hidden);
-            Assert.AreEqual(false, ws.Row(96).Hidden);
+            Assert.AreEqual(false, ws.Row(row).Hidden);
         }
-        [TestMethod]
-        public void CustomNumericEqualOrLessThanOrEqual()
-        {
-            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("NumberEqOrLessEq");
-            LoadTestdata(ws);
+    }
+    [TestMethod]
+    public void CustomNumericEqualOrGreaterThanOrEqual()
+    {
+        ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("NumberEqOrGrEq");
+        LoadTestdata(ws);
 
-            ws.AutoFilterAddress = ws.Cells["A1:D100"];
-            ExcelCustomFilterColumn? col = ws.AutoFilter.Columns.AddCustomFilterColumn(1);
-            col.Filters.Add(new ExcelFilterCustomItem("14"));
-            col.Filters.Add(new ExcelFilterCustomItem("12.3", eFilterOperator.LessThanOrEqual));
-            col.And = false;
-            ws.AutoFilter.ApplyFilter();
+        ws.AutoFilterAddress = ws.Cells["A1:D100"];
+        ExcelCustomFilterColumn? col = ws.AutoFilter.Columns.AddCustomFilterColumn(1);
+        col.Filters.Add(new ExcelFilterCustomItem("14"));
+        col.Filters.Add(new ExcelFilterCustomItem("95", eFilterOperator.GreaterThanOrEqual));
+        col.And = false;
+        ws.AutoFilter.ApplyFilter();
 
-            Assert.AreEqual(false, ws.Row(2).Hidden);
-            Assert.AreEqual(false, ws.Row(12).Hidden);
-            Assert.AreEqual(true, ws.Row(13).Hidden);
-            Assert.AreEqual(false, ws.Row(14).Hidden);
-        }
-        [TestMethod]
-        public void CustomNumericEqualAndLessThanOrEqual()
-        {
-            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("NumberEqAndLess");
-            LoadTestdata(ws);
+        Assert.AreEqual(true, ws.Row(13).Hidden);
+        Assert.AreEqual(false, ws.Row(14).Hidden);
+        Assert.AreEqual(true, ws.Row(94).Hidden);
+        Assert.AreEqual(false, ws.Row(95).Hidden);
+        Assert.AreEqual(false, ws.Row(96).Hidden);
+    }
+    [TestMethod]
+    public void CustomNumericEqualOrLessThanOrEqual()
+    {
+        ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("NumberEqOrLessEq");
+        LoadTestdata(ws);
 
-            ws.AutoFilterAddress = ws.Cells["A1:D100"];
-            ExcelCustomFilterColumn? col = ws.AutoFilter.Columns.AddCustomFilterColumn(1);
-            col.Filters.Add(new ExcelFilterCustomItem("13"));
-            col.Filters.Add(new ExcelFilterCustomItem("12", eFilterOperator.LessThan));
-            col.And = true;
-            ws.AutoFilter.ApplyFilter();
+        ws.AutoFilterAddress = ws.Cells["A1:D100"];
+        ExcelCustomFilterColumn? col = ws.AutoFilter.Columns.AddCustomFilterColumn(1);
+        col.Filters.Add(new ExcelFilterCustomItem("14"));
+        col.Filters.Add(new ExcelFilterCustomItem("12.3", eFilterOperator.LessThanOrEqual));
+        col.And = false;
+        ws.AutoFilter.ApplyFilter();
 
-            Assert.AreEqual(true, ws.Row(2).Hidden);
-            Assert.AreEqual(true, ws.Row(12).Hidden);
-            Assert.AreEqual(true, ws.Row(13).Hidden);
-            Assert.AreEqual(true, ws.Row(14).Hidden);
-        }
-        [TestMethod]
-        public void CustomNumericEqualAndNotEqual()
-        {
-            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("NumberGtAndNotEq");
-            LoadTestdata(ws);
+        Assert.AreEqual(false, ws.Row(2).Hidden);
+        Assert.AreEqual(false, ws.Row(12).Hidden);
+        Assert.AreEqual(true, ws.Row(13).Hidden);
+        Assert.AreEqual(false, ws.Row(14).Hidden);
+    }
+    [TestMethod]
+    public void CustomNumericEqualAndLessThanOrEqual()
+    {
+        ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("NumberEqAndLess");
+        LoadTestdata(ws);
 
-            ws.AutoFilterAddress = ws.Cells["A1:D100"];
-            ExcelCustomFilterColumn? col = ws.AutoFilter.Columns.AddCustomFilterColumn(1);
-            col.Filters.Add(new ExcelFilterCustomItem("94", eFilterOperator.GreaterThan));
-            col.Filters.Add(new ExcelFilterCustomItem("98", eFilterOperator.NotEqual));
-            col.And = true;
-            ws.AutoFilter.ApplyFilter();
+        ws.AutoFilterAddress = ws.Cells["A1:D100"];
+        ExcelCustomFilterColumn? col = ws.AutoFilter.Columns.AddCustomFilterColumn(1);
+        col.Filters.Add(new ExcelFilterCustomItem("13"));
+        col.Filters.Add(new ExcelFilterCustomItem("12", eFilterOperator.LessThan));
+        col.And = true;
+        ws.AutoFilter.ApplyFilter();
 
-            Assert.AreEqual(true, ws.Row(93).Hidden);
-            Assert.AreEqual(true, ws.Row(94).Hidden);
-            Assert.AreEqual(false, ws.Row(95).Hidden);
-            Assert.AreEqual(false, ws.Row(97).Hidden);
-            Assert.AreEqual(true, ws.Row(98).Hidden);
-            Assert.AreEqual(false, ws.Row(99).Hidden);
-        }
+        Assert.AreEqual(true, ws.Row(2).Hidden);
+        Assert.AreEqual(true, ws.Row(12).Hidden);
+        Assert.AreEqual(true, ws.Row(13).Hidden);
+        Assert.AreEqual(true, ws.Row(14).Hidden);
+    }
+    [TestMethod]
+    public void CustomNumericEqualAndNotEqual()
+    {
+        ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("NumberGtAndNotEq");
+        LoadTestdata(ws);
+
+        ws.AutoFilterAddress = ws.Cells["A1:D100"];
+        ExcelCustomFilterColumn? col = ws.AutoFilter.Columns.AddCustomFilterColumn(1);
+        col.Filters.Add(new ExcelFilterCustomItem("94", eFilterOperator.GreaterThan));
+        col.Filters.Add(new ExcelFilterCustomItem("98", eFilterOperator.NotEqual));
+        col.And = true;
+        ws.AutoFilter.ApplyFilter();
+
+        Assert.AreEqual(true, ws.Row(93).Hidden);
+        Assert.AreEqual(true, ws.Row(94).Hidden);
+        Assert.AreEqual(false, ws.Row(95).Hidden);
+        Assert.AreEqual(false, ws.Row(97).Hidden);
+        Assert.AreEqual(true, ws.Row(98).Hidden);
+        Assert.AreEqual(false, ws.Row(99).Hidden);
     }
 }

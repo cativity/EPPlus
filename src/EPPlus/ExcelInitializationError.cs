@@ -16,45 +16,44 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace OfficeOpenXml
+namespace OfficeOpenXml;
+
+/// <summary>
+/// This class represents an error/Exception that has occured during initalization.
+/// </summary>
+public class ExcelInitializationError
 {
     /// <summary>
-    /// This class represents an error/Exception that has occured during initalization.
+    /// Constructor
     /// </summary>
-    public class ExcelInitializationError
+    /// <param name="errorMessage"></param>
+    /// <param name="e"></param>
+    internal ExcelInitializationError(string errorMessage, Exception e)
     {
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        /// <param name="errorMessage"></param>
-        /// <param name="e"></param>
-        internal ExcelInitializationError(string errorMessage, Exception e)
-        {
-            Require.Argument(errorMessage).IsNotNullOrEmpty("errorMessage");
-            Require.Argument(e).IsNotNull("e");
-            this.ErrorMessage = errorMessage;
-            this.Exception = e;
-            this.TimestampUtc = DateTime.UtcNow;
-        }
-
-        private ExcelInitializationError()
-        {
-
-        }
-
-        /// <summary>
-        /// Error message describing the initialization error
-        /// </summary>
-        public string ErrorMessage { get; private set; }
-
-        /// <summary>
-        /// Timestamp representing when the error occurred
-        /// </summary>
-        public DateTime TimestampUtc { get; private set; }
-
-        /// <summary>
-        /// The <see cref="Exception"/>
-        /// </summary>
-        public Exception Exception { get; private set; }
+        Require.Argument(errorMessage).IsNotNullOrEmpty("errorMessage");
+        Require.Argument(e).IsNotNull("e");
+        this.ErrorMessage = errorMessage;
+        this.Exception = e;
+        this.TimestampUtc = DateTime.UtcNow;
     }
+
+    private ExcelInitializationError()
+    {
+
+    }
+
+    /// <summary>
+    /// Error message describing the initialization error
+    /// </summary>
+    public string ErrorMessage { get; private set; }
+
+    /// <summary>
+    /// Timestamp representing when the error occurred
+    /// </summary>
+    public DateTime TimestampUtc { get; private set; }
+
+    /// <summary>
+    /// The <see cref="Exception"/>
+    /// </summary>
+    public Exception Exception { get; private set; }
 }

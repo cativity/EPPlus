@@ -15,42 +15,41 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace OfficeOpenXml.Sorting
+namespace OfficeOpenXml.Sorting;
+
+/// <summary>
+/// This class is used to build multiple search parameters for columnbased sorting.
+/// </summary>
+public class RangeLeftToRightSortLayerBuilder
 {
-    /// <summary>
-    /// This class is used to build multiple search parameters for columnbased sorting.
-    /// </summary>
-    public class RangeLeftToRightSortLayerBuilder
+    internal RangeLeftToRightSortLayerBuilder(RangeSortOptions options, RangeLeftToRightSortLayer sortLayer)
     {
-        internal RangeLeftToRightSortLayerBuilder(RangeSortOptions options, RangeLeftToRightSortLayer sortLayer)
-        {
-            this._options = options;
-            this._sortLayer = sortLayer;
-        }
+        this._options = options;
+        this._sortLayer = sortLayer;
+    }
 
-        private readonly RangeSortOptions _options;
-        private readonly RangeLeftToRightSortLayer _sortLayer;
+    private readonly RangeSortOptions _options;
+    private readonly RangeLeftToRightSortLayer _sortLayer;
 
-        /// <summary>
-        /// Adds a new <see cref="RangeLeftToRightSortLayer">sort layer</see>
-        /// </summary>
-        public virtual RangeLeftToRightSortLayer ThenSortBy
+    /// <summary>
+    /// Adds a new <see cref="RangeLeftToRightSortLayer">sort layer</see>
+    /// </summary>
+    public virtual RangeLeftToRightSortLayer ThenSortBy
+    {
+        get
         {
-            get
-            {
-                return new RangeLeftToRightSortLayer(this._options);
-            }
+            return new RangeLeftToRightSortLayer(this._options);
         }
+    }
 
-        /// <summary>
-        /// Use a custom list for sorting on the current Sort layer.
-        /// </summary>
-        /// <param name="values">An array of strings defining the sort order</param>
-        /// <returns>A <see cref="RangeLeftToRightSortLayerBuilder"/></returns>
-        public RangeLeftToRightSortLayerBuilder UsingCustomList(params string[] values)
-        {
-            this._sortLayer.SetCustomList(values);
-            return this;
-        }
+    /// <summary>
+    /// Use a custom list for sorting on the current Sort layer.
+    /// </summary>
+    /// <param name="values">An array of strings defining the sort order</param>
+    /// <returns>A <see cref="RangeLeftToRightSortLayerBuilder"/></returns>
+    public RangeLeftToRightSortLayerBuilder UsingCustomList(params string[] values)
+    {
+        this._sortLayer.SetCustomList(values);
+        return this;
     }
 }

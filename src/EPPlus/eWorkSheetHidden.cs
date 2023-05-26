@@ -11,24 +11,23 @@
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
 
-namespace OfficeOpenXml
+namespace OfficeOpenXml;
+
+/// <summary>
+/// Worksheet hidden enumeration
+/// </summary>
+public enum eWorkSheetHidden
 {
     /// <summary>
-    /// Worksheet hidden enumeration
+    /// The worksheet is visible
     /// </summary>
-    public enum eWorkSheetHidden
-    {
-        /// <summary>
-        /// The worksheet is visible
-        /// </summary>
-        Visible,
-        /// <summary>
-        /// The worksheet is hidden but can be shown by the user via the user interface
-        /// </summary>
-        Hidden,
-        /// <summary>
-        /// The worksheet is hidden and cannot be shown by the user via the user interface
-        /// </summary>
-        VeryHidden
-    }
+    Visible,
+    /// <summary>
+    /// The worksheet is hidden but can be shown by the user via the user interface
+    /// </summary>
+    Hidden,
+    /// <summary>
+    /// The worksheet is hidden and cannot be shown by the user via the user interface
+    /// </summary>
+    VeryHidden
 }

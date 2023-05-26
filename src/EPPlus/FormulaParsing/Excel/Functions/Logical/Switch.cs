@@ -17,79 +17,78 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Logical
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Logical;
+
+[FunctionMetadata(
+                     Category = ExcelFunctionCategory.Logical,
+                     EPPlusVersion = "5.0",
+                     Description = "Compares a number of supplied values to a supplied test expression and returns a result corresponding to the first value that matches the test expression. ",
+                     IntroducedInExcelVersion = "2019")]
+internal class Switch : ExcelFunction
 {
-    [FunctionMetadata(
-        Category = ExcelFunctionCategory.Logical,
-        EPPlusVersion = "5.0",
-        Description = "Compares a number of supplied values to a supplied test expression and returns a result corresponding to the first value that matches the test expression. ",
-        IntroducedInExcelVersion = "2019")]
-    internal class Switch : ExcelFunction
+    public Switch()
+        : this(new CompileResultFactory())
     {
-        public Switch()
-            : this(new CompileResultFactory())
-        {
 
-        }
-        public Switch(CompileResultFactory compileResultFactory)
-        {
-            this._compileResultFactory = compileResultFactory;
-        }
+    }
+    public Switch(CompileResultFactory compileResultFactory)
+    {
+        this._compileResultFactory = compileResultFactory;
+    }
 
-        private readonly CompileResultFactory _compileResultFactory;
+    private readonly CompileResultFactory _compileResultFactory;
 
-        public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
+    public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
+    {
+        ValidateArguments(arguments, 3);
+        object? expression = arguments.ElementAt(0).ValueFirst;
+        int maxLength = 1 + 126 * 2;
+        for(int x = 1; x < (arguments.Count() - 1) || x >= maxLength; x += 2)
         {
-            ValidateArguments(arguments, 3);
-            object? expression = arguments.ElementAt(0).ValueFirst;
-            int maxLength = 1 + 126 * 2;
-            for(int x = 1; x < (arguments.Count() - 1) || x >= maxLength; x += 2)
+            object? candidate = arguments.ElementAt(x).Value;
+            if(IsMatch(expression, candidate))
             {
-                object? candidate = arguments.ElementAt(x).Value;
-                if(IsMatch(expression, candidate))
-                {
-                    return this._compileResultFactory.Create(arguments.ElementAt(x + 1).Value);
-                }
+                return this._compileResultFactory.Create(arguments.ElementAt(x + 1).Value);
             }
-            if (arguments.Count() % 2 == 0)
-            {
-                return this._compileResultFactory.Create(arguments.Last().Value);
-            }
-
-            return new CompileResult(eErrorType.NA);
+        }
+        if (arguments.Count() % 2 == 0)
+        {
+            return this._compileResultFactory.Create(arguments.Last().Value);
         }
 
-        private static bool IsMatch(object right, object left)
-        {
-            if(IsNumeric(right) || IsNumeric(left))
-            {
-                double r = GetNumericValue(right);
-                double l = GetNumericValue(left);
-                return r.Equals(l);
-            }
-            if(right == null && left == null)
-            {
-                return true;
-            }
-            if (right == null)
-            {
-                return false;
-            }
+        return new CompileResult(eErrorType.NA);
+    }
 
-            return right.Equals(left);
+    private static bool IsMatch(object right, object left)
+    {
+        if(IsNumeric(right) || IsNumeric(left))
+        {
+            double r = GetNumericValue(right);
+            double l = GetNumericValue(left);
+            return r.Equals(l);
+        }
+        if(right == null && left == null)
+        {
+            return true;
+        }
+        if (right == null)
+        {
+            return false;
         }
 
-        private static double GetNumericValue(object obj)
+        return right.Equals(left);
+    }
+
+    private static double GetNumericValue(object obj)
+    {
+        if(obj is System.DateTime)
         {
-            if(obj is System.DateTime)
-            {
-                return ((System.DateTime)obj).ToOADate();
-            }
-            if(obj is TimeSpan)
-            {
-                return ((TimeSpan)obj).TotalMilliseconds;
-            }
-            return Convert.ToDouble(obj);
+            return ((System.DateTime)obj).ToOADate();
         }
+        if(obj is TimeSpan)
+        {
+            return ((TimeSpan)obj).TotalMilliseconds;
+        }
+        return Convert.ToDouble(obj);
     }
 }

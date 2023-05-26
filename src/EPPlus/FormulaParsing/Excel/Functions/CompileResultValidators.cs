@@ -16,28 +16,27 @@ using System.Linq;
 using System.Text;
 using OfficeOpenXml.FormulaParsing.ExpressionGraph;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions;
+
+public class CompileResultValidators
 {
-    public class CompileResultValidators
+    private readonly Dictionary<DataType, CompileResultValidator> _validators = new Dictionary<DataType, CompileResultValidator>(); 
+
+    private CompileResultValidator CreateOrGet(DataType dataType)
     {
-        private readonly Dictionary<DataType, CompileResultValidator> _validators = new Dictionary<DataType, CompileResultValidator>(); 
-
-        private CompileResultValidator CreateOrGet(DataType dataType)
+        if (this._validators.ContainsKey(dataType))
         {
-            if (this._validators.ContainsKey(dataType))
-            {
-                return this._validators[dataType];
-            }
-            if (dataType == DataType.Decimal)
-            {
-                return this._validators[DataType.Decimal] = new DecimalCompileResultValidator();
-            }
-            return CompileResultValidator.Empty;
+            return this._validators[dataType];
         }
-
-        public CompileResultValidator GetValidator(DataType dataType)
+        if (dataType == DataType.Decimal)
         {
-            return this.CreateOrGet(dataType);
+            return this._validators[DataType.Decimal] = new DecimalCompileResultValidator();
         }
+        return CompileResultValidator.Empty;
+    }
+
+    public CompileResultValidator GetValidator(DataType dataType)
+    {
+        return this.CreateOrGet(dataType);
     }
 }

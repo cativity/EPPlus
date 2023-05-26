@@ -11,16 +11,15 @@
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
 
-namespace OfficeOpenXml.DataValidation.Formulas.Contracts
+namespace OfficeOpenXml.DataValidation.Formulas.Contracts;
+
+/// <summary>
+/// Interface for a data validation formula
+/// </summary>
+public interface IExcelDataValidationFormula
 {
     /// <summary>
-    /// Interface for a data validation formula
+    /// An excel formula
     /// </summary>
-    public interface IExcelDataValidationFormula
-    {
-        /// <summary>
-        /// An excel formula
-        /// </summary>
-        string ExcelFormula { get; set; }
-    }
+    string ExcelFormula { get; set; }
 }

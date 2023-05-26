@@ -12,80 +12,79 @@
  *************************************************************************************************/
 using System;
 
-namespace OfficeOpenXml.Core.CellStore
+namespace OfficeOpenXml.Core.CellStore;
+
+/// <summary>
+/// These binary search functions are identical, except that one uses a struc and the other a class.
+/// Structs consume less memory and are also faster.
+/// </summary>
+internal static class ArrayUtil
 {
     /// <summary>
-    /// These binary search functions are identical, except that one uses a struc and the other a class.
-    /// Structs consume less memory and are also faster.
+    /// For the struct.
     /// </summary>
-    internal static class ArrayUtil
+    /// <param name="store"></param>
+    /// <param name="pos"></param>
+    /// <param name="length"></param>
+    /// <returns></returns>
+    internal static int OptimizedBinarySearch(IndexItem[] store, int pos, int length)
     {
-        /// <summary>
-        /// For the struct.
-        /// </summary>
-        /// <param name="store"></param>
-        /// <param name="pos"></param>
-        /// <param name="length"></param>
-        /// <returns></returns>
-        internal static int OptimizedBinarySearch(IndexItem[] store, int pos, int length)
+        if (length == 0)
         {
-                if (length == 0)
-                {
-                    return -1;
-                }
-
-                int low = 0, high = length - 1;
-
-                while (low <= high)
-                {
-                    int mid = (low + high) >> 1;
-
-                    if (pos < store[mid].Index)
-                    {
-                        high = mid - 1;
-                    }
-
-                    else if (pos > store[mid].Index)
-                    {
-                        low = mid + 1;
-                    }
-
-                    else
-                    {
-                        return mid;
-                    }
-                }
-                return ~low;
+            return -1;
         }
-        internal static int OptimizedBinarySearch(IndexBase[] store, int pos, int length)
+
+        int low = 0, high = length - 1;
+
+        while (low <= high)
         {
-            if (length == 0)
+            int mid = (low + high) >> 1;
+
+            if (pos < store[mid].Index)
             {
-                return -1;
+                high = mid - 1;
             }
 
-            int low = 0, high = length - 1;
-
-            while (low <= high)
+            else if (pos > store[mid].Index)
             {
-                int mid = (low + high) >> 1;
-
-                if (pos < store[mid].Index)
-                {
-                    high = mid - 1;
-                }
-
-                else if (pos > store[mid].Index)
-                {
-                    low = mid + 1;
-                }
-
-                else
-                {
-                    return mid;
-                }
+                low = mid + 1;
             }
-            return ~low;
+
+            else
+            {
+                return mid;
+            }
         }
+        return ~low;
+    }
+    internal static int OptimizedBinarySearch(IndexBase[] store, int pos, int length)
+    {
+        if (length == 0)
+        {
+            return -1;
+        }
+
+        int low = 0, high = length - 1;
+
+        while (low <= high)
+        {
+            int mid = (low + high) >> 1;
+
+            if (pos < store[mid].Index)
+            {
+                high = mid - 1;
+            }
+
+            else if (pos > store[mid].Index)
+            {
+                low = mid + 1;
+            }
+
+            else
+            {
+                return mid;
+            }
+        }
+        return ~low;
     }
 }

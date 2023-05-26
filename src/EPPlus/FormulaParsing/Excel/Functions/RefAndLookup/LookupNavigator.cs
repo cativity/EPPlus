@@ -17,38 +17,37 @@ using System.Text;
 using OfficeOpenXml.FormulaParsing.Utilities;
 using OfficeOpenXml.FormulaParsing.ExcelUtilities;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions.RefAndLookup
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions.RefAndLookup;
+
+internal abstract class LookupNavigator
 {
-    internal abstract class LookupNavigator
+    protected readonly LookupDirection Direction;
+    protected readonly LookupArguments Arguments;
+    protected readonly ParsingContext ParsingContext;
+
+
+
+    public LookupNavigator(LookupDirection direction, LookupArguments arguments, ParsingContext parsingContext)
     {
-        protected readonly LookupDirection Direction;
-        protected readonly LookupArguments Arguments;
-        protected readonly ParsingContext ParsingContext;
-
-
-
-        public LookupNavigator(LookupDirection direction, LookupArguments arguments, ParsingContext parsingContext)
-        {
-            Require.That(arguments).Named("arguments").IsNotNull();
-            Require.That(parsingContext).Named("parsingContext").IsNotNull();
-            Require.That(parsingContext.ExcelDataProvider).Named("parsingContext.ExcelDataProvider").IsNotNull();
-            this.Direction = direction;
-            this.Arguments = arguments;
-            this.ParsingContext = parsingContext;
-        }
-
-        public abstract int Index
-        {
-            get;
-        }
-
-        public abstract bool MoveNext();
-
-        public abstract object CurrentValue
-        {
-            get;
-        }
-
-        public abstract object GetLookupValue();
+        Require.That(arguments).Named("arguments").IsNotNull();
+        Require.That(parsingContext).Named("parsingContext").IsNotNull();
+        Require.That(parsingContext.ExcelDataProvider).Named("parsingContext.ExcelDataProvider").IsNotNull();
+        this.Direction = direction;
+        this.Arguments = arguments;
+        this.ParsingContext = parsingContext;
     }
+
+    public abstract int Index
+    {
+        get;
+    }
+
+    public abstract bool MoveNext();
+
+    public abstract object CurrentValue
+    {
+        get;
+    }
+
+    public abstract object GetLookupValue();
 }

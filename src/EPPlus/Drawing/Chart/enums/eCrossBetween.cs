@@ -10,20 +10,19 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
-namespace OfficeOpenXml.Drawing.Chart
+namespace OfficeOpenXml.Drawing.Chart;
+
+/// <summary>
+/// How the axis are crossed
+/// </summary>
+public enum eCrossBetween
 {
     /// <summary>
-    /// How the axis are crossed
+    /// The value axis will cross the category axis between data markers
     /// </summary>
-    public enum eCrossBetween
-    {
-        /// <summary>
-        /// The value axis will cross the category axis between data markers
-        /// </summary>
-        Between,
-        /// <summary>
-        /// The value axis will cross the category axis at the middle of a category.
-        /// </summary>
-        MidCat
-    }
+    Between,
+    /// <summary>
+    /// The value axis will cross the category axis at the middle of a category.
+    /// </summary>
+    MidCat
 }

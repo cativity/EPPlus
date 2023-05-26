@@ -16,28 +16,27 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
-{
-    [FunctionMetadata(
-        Category = ExcelFunctionCategory.Statistical,
-        EPPlusVersion = "5.5",
-        IntroducedInExcelVersion = "2013",
-        Description = "Returns the number of permutations for a given number of objects (with repetitions) that can be selected from the total objects")]
-    internal class Permutationa : ExcelFunction
-    {
-        public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
-        {
-            ValidateArguments(arguments, 2);
-            double number = this.ArgToDecimal(arguments, 0);
-            number = System.Math.Floor(number);
-            double numberChosen = this.ArgToDecimal(arguments, 1);
-            if (number <= 0d || numberChosen <= 0 || number < numberChosen)
-            {
-                return this.CreateResult(eErrorType.Num);
-            }
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
 
-            double result = System.Math.Pow(number, numberChosen);
-            return this.CreateResult(result, DataType.Decimal);
+[FunctionMetadata(
+                     Category = ExcelFunctionCategory.Statistical,
+                     EPPlusVersion = "5.5",
+                     IntroducedInExcelVersion = "2013",
+                     Description = "Returns the number of permutations for a given number of objects (with repetitions) that can be selected from the total objects")]
+internal class Permutationa : ExcelFunction
+{
+    public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
+    {
+        ValidateArguments(arguments, 2);
+        double number = this.ArgToDecimal(arguments, 0);
+        number = System.Math.Floor(number);
+        double numberChosen = this.ArgToDecimal(arguments, 1);
+        if (number <= 0d || numberChosen <= 0 || number < numberChosen)
+        {
+            return this.CreateResult(eErrorType.Num);
         }
+
+        double result = System.Math.Pow(number, numberChosen);
+        return this.CreateResult(result, DataType.Decimal);
     }
 }

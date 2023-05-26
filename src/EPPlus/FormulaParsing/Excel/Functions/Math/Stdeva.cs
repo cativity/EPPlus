@@ -20,55 +20,54 @@ using OfficeOpenXml.FormulaParsing.ExpressionGraph;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Metadata;
 using OfficeOpenXml.Utils;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
+
+[FunctionMetadata(
+                     Category = ExcelFunctionCategory.Statistical,
+                     EPPlusVersion = "5.5",
+                     Description = "Returns the standard deviation of a supplied set of values (which represent a sample of a population), counting text and the logical value FALSE as the value 0 and counting the logical value TRUE as the value 1")]
+internal class Stdeva : HiddenValuesHandlingFunction
 {
-    [FunctionMetadata(
-        Category = ExcelFunctionCategory.Statistical,
-        EPPlusVersion = "5.5",
-        Description = "Returns the standard deviation of a supplied set of values (which represent a sample of a population), counting text and the logical value FALSE as the value 0 and counting the logical value TRUE as the value 1")]
-    internal class Stdeva : HiddenValuesHandlingFunction
+    private readonly DoubleEnumerableArgConverter _argConverter;
+
+    public Stdeva()
+        : this(new DoubleEnumerableArgConverter())
     {
-        private readonly DoubleEnumerableArgConverter _argConverter;
-
-        public Stdeva()
-            : this(new DoubleEnumerableArgConverter())
-        {
-
-        }
-
-        public Stdeva(DoubleEnumerableArgConverter argConverter)
-        {
-            Require.Argument(argConverter).IsNotNull("argConverter");
-            this._argConverter = argConverter;
-        }
-
-        public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
-        {
-            ValidateArguments(arguments, 1);
-            IEnumerable<double>? values = this._argConverter.ConvertArgsIncludingOtherTypes(arguments, this.IgnoreHiddenValues).Select(x => (double)x);
-            return this.CreateResult(StandardDeviation(values), DataType.Decimal);
-        }
-
-        private static double StandardDeviation(IEnumerable<double> values)
-        {
-            double ret = 0;
-            if (values.Any())
-            {
-                int nValues = values.Count();
-                if (nValues == 1)
-                {
-                    throw new ExcelErrorValueException(eErrorType.Div0);
-                }
-
-                //Compute the Average       
-                double avg = values.Average();
-                //Perform the Sum of (value-avg)_2_2       
-                double sum = values.Sum(d => MathObj.Pow(d - avg, 2));
-                //Put it all together       
-                ret = MathObj.Sqrt(Divide(sum, (values.Count() - 1)));
-            }
-            return ret;
-        }
 
     }
+
+    public Stdeva(DoubleEnumerableArgConverter argConverter)
+    {
+        Require.Argument(argConverter).IsNotNull("argConverter");
+        this._argConverter = argConverter;
+    }
+
+    public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
+    {
+        ValidateArguments(arguments, 1);
+        IEnumerable<double>? values = this._argConverter.ConvertArgsIncludingOtherTypes(arguments, this.IgnoreHiddenValues).Select(x => (double)x);
+        return this.CreateResult(StandardDeviation(values), DataType.Decimal);
+    }
+
+    private static double StandardDeviation(IEnumerable<double> values)
+    {
+        double ret = 0;
+        if (values.Any())
+        {
+            int nValues = values.Count();
+            if (nValues == 1)
+            {
+                throw new ExcelErrorValueException(eErrorType.Div0);
+            }
+
+            //Compute the Average       
+            double avg = values.Average();
+            //Perform the Sum of (value-avg)_2_2       
+            double sum = values.Sum(d => MathObj.Pow(d - avg, 2));
+            //Put it all together       
+            ret = MathObj.Sqrt(Divide(sum, (values.Count() - 1)));
+        }
+        return ret;
+    }
+
 }

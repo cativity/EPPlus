@@ -10,32 +10,31 @@
  *************************************************************************************************
     10/21/2020         EPPlus Software AB           Controls 
  *************************************************************************************************/
-namespace OfficeOpenXml.Drawing.Controls
+namespace OfficeOpenXml.Drawing.Controls;
+
+/// <summary>
+/// Vertical Alignment for a form control
+/// </summary>
+public enum eVerticalAlignmentControl
 {
     /// <summary>
-    /// Vertical Alignment for a form control
+    /// Top alignment
     /// </summary>
-    public enum eVerticalAlignmentControl
-    {
-        /// <summary>
-        /// Top alignment
-        /// </summary>
-        Top,
-        /// <summary>
-        /// Center alignmet
-        /// </summary>
-        Center,
-        /// <summary>
-        /// Bottom alignment
-        /// </summary>
-        Bottom,
-        /// <summary>
-        /// Justify alignment
-        /// </summary>
-        Justify,
-        /// <summary>
-        /// Distributed alignment
-        /// </summary>
-        Distributed
-    }
+    Top,
+    /// <summary>
+    /// Center alignmet
+    /// </summary>
+    Center,
+    /// <summary>
+    /// Bottom alignment
+    /// </summary>
+    Bottom,
+    /// <summary>
+    /// Justify alignment
+    /// </summary>
+    Justify,
+    /// <summary>
+    /// Distributed alignment
+    /// </summary>
+    Distributed
 }

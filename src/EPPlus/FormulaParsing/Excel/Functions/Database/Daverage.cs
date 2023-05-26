@@ -17,35 +17,34 @@ using System.Text;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Metadata;
 using OfficeOpenXml.FormulaParsing.ExpressionGraph;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Database
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Database;
+
+[FunctionMetadata(
+                     Category = ExcelFunctionCategory.Database,
+                     EPPlusVersion = "4",
+                     Description = "Calculates the average of values in a field of a list or database, that satisfy specified conditions")]
+internal class Daverage : DatabaseFunction
 {
-    [FunctionMetadata(
-        Category = ExcelFunctionCategory.Database,
-        EPPlusVersion = "4",
-        Description = "Calculates the average of values in a field of a list or database, that satisfy specified conditions")]
-    internal class Daverage : DatabaseFunction
+    public Daverage()
+        : this(new RowMatcher())
     {
-         public Daverage()
-            : this(new RowMatcher())
-        {
 
+    }
+
+    public Daverage(RowMatcher rowMatcher)
+        : base(rowMatcher)
+    {
+
+    }
+    public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
+    {
+        ValidateArguments(arguments, 3);
+        IEnumerable<double>? values = this.GetMatchingValues(arguments, context);
+        if (!values.Any())
+        {
+            return this.CreateResult(0d, DataType.Integer);
         }
 
-         public Daverage(RowMatcher rowMatcher)
-            : base(rowMatcher)
-        {
-
-        }
-        public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
-        {
-            ValidateArguments(arguments, 3);
-            IEnumerable<double>? values = this.GetMatchingValues(arguments, context);
-            if (!values.Any())
-            {
-                return this.CreateResult(0d, DataType.Integer);
-            }
-
-            return this.CreateResult(values.Average(), DataType.Integer);
-        }
+        return this.CreateResult(values.Average(), DataType.Integer);
     }
 }

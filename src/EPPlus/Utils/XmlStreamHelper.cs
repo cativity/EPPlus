@@ -12,17 +12,16 @@
  *************************************************************************************************/
 using System.Xml;
 
-namespace OfficeOpenXml.Utils
+namespace OfficeOpenXml.Utils;
+
+internal class XmlStreamHelper
 {
-    internal class XmlStreamHelper
+    internal static void ReadUntil(XmlTextReader reader, string elementName)
     {
-        internal static void ReadUntil(XmlTextReader reader, string elementName)
-        {
-            do { if (!reader.Read())
-                {
-                    break;
-                }
-            } while (!(reader.NodeType == XmlNodeType.EndElement && reader.LocalName == elementName));
-        }
+        do { if (!reader.Read())
+            {
+                break;
+            }
+        } while (!(reader.NodeType == XmlNodeType.EndElement && reader.LocalName == elementName));
     }
 }

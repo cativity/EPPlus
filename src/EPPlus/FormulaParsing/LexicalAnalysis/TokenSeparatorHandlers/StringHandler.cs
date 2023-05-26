@@ -15,49 +15,48 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace OfficeOpenXml.FormulaParsing.LexicalAnalysis.TokenSeparatorHandlers
-{
-    internal class StringHandler : SeparatorHandler
-    {
-        public override bool Handle(char c, Token tokenSeparator, TokenizerContext context, ITokenIndexProvider tokenIndexProvider)
-        {
-            if(context.IsInString)
-            { 
-                if (IsDoubleQuote(tokenSeparator, tokenIndexProvider.Index, context))
-                {
-                    tokenIndexProvider.MoveIndexPointerForward();
-                    context.AppendToCurrentToken(c);
-                    return true;
-                }
-                if (!tokenSeparator.TokenTypeIsSet(TokenType.String))
-                {
-                    context.AppendToCurrentToken(c);
-                    return true;
-                }
-            }
+namespace OfficeOpenXml.FormulaParsing.LexicalAnalysis.TokenSeparatorHandlers;
 
-            if (tokenSeparator.TokenTypeIsSet(TokenType.String))
+internal class StringHandler : SeparatorHandler
+{
+    public override bool Handle(char c, Token tokenSeparator, TokenizerContext context, ITokenIndexProvider tokenIndexProvider)
+    {
+        if(context.IsInString)
+        { 
+            if (IsDoubleQuote(tokenSeparator, tokenIndexProvider.Index, context))
             {
-                if (context.LastToken != null && context.LastToken.Value.TokenTypeIsSet(TokenType.OpeningEnumerable))
-                {
-                    context.AppendToCurrentToken(c);
-                    context.ToggleIsInString();
-                    context.AddToken(tokenSeparator);
-                    context.NewToken();
-                    return true;
-                }
-                if (context.LastToken != null && context.LastToken.Value.TokenTypeIsSet(TokenType.String))
-                {
-                    context.AddToken(!context.CurrentTokenHasValue
-                        ? new Token(string.Empty, TokenType.StringContent)
-                        : new Token(context.CurrentToken, TokenType.StringContent));
-                }
-                context.AddToken(new Token("\"", TokenType.String));
+                tokenIndexProvider.MoveIndexPointerForward();
+                context.AppendToCurrentToken(c);
+                return true;
+            }
+            if (!tokenSeparator.TokenTypeIsSet(TokenType.String))
+            {
+                context.AppendToCurrentToken(c);
+                return true;
+            }
+        }
+
+        if (tokenSeparator.TokenTypeIsSet(TokenType.String))
+        {
+            if (context.LastToken != null && context.LastToken.Value.TokenTypeIsSet(TokenType.OpeningEnumerable))
+            {
+                context.AppendToCurrentToken(c);
                 context.ToggleIsInString();
+                context.AddToken(tokenSeparator);
                 context.NewToken();
                 return true;
             }
-            return false;
+            if (context.LastToken != null && context.LastToken.Value.TokenTypeIsSet(TokenType.String))
+            {
+                context.AddToken(!context.CurrentTokenHasValue
+                                     ? new Token(string.Empty, TokenType.StringContent)
+                                     : new Token(context.CurrentToken, TokenType.StringContent));
+            }
+            context.AddToken(new Token("\"", TokenType.String));
+            context.ToggleIsInString();
+            context.NewToken();
+            return true;
         }
+        return false;
     }
 }

@@ -10,28 +10,27 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
-namespace OfficeOpenXml.VBA
+namespace OfficeOpenXml.VBA;
+
+/// <summary>
+/// Type of VBA module
+/// </summary>
+public enum eModuleType
 {
     /// <summary>
-    /// Type of VBA module
+    /// A Workbook or Worksheet objects
     /// </summary>
-    public enum eModuleType
-    {
-        /// <summary>
-        /// A Workbook or Worksheet objects
-        /// </summary>
-        Document=0,
-        /// <summary>
-        /// A Module
-        /// </summary>
-        Module=1,
-        /// <summary>
-        /// A Class
-        /// </summary>
-        Class=2,
-        /// <summary>
-        /// Designer, typically a user form
-        /// </summary>
-        Designer=3
-    }
+    Document=0,
+    /// <summary>
+    /// A Module
+    /// </summary>
+    Module=1,
+    /// <summary>
+    /// A Class
+    /// </summary>
+    Class=2,
+    /// <summary>
+    /// Designer, typically a user form
+    /// </summary>
+    Designer=3
 }

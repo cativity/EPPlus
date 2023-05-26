@@ -11,29 +11,28 @@
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
 
-namespace OfficeOpenXml.DataValidation
+namespace OfficeOpenXml.DataValidation;
+
+/// <summary>
+/// warning style, controls how Excel will handle invalid changes.
+/// </summary>
+public enum ExcelDataValidationWarningStyle
 {
     /// <summary>
-    /// warning style, controls how Excel will handle invalid changes.
+    /// warning style will be excluded.
+    /// Excel will default this to Stop warning style.
     /// </summary>
-    public enum ExcelDataValidationWarningStyle
-    {
-        /// <summary>
-        /// warning style will be excluded.
-        /// Excel will default this to Stop warning style.
-        /// </summary>
-        undefined,
-        /// <summary>
-        /// stop warning style, invalid changes will not be accepted
-        /// </summary>
-        stop,
-        /// <summary>
-        /// warning will be presented when an attempt to an invalid change is done, but the change will be accepted.
-        /// </summary>
-        warning,
-        /// <summary>
-        /// information warning style.
-        /// </summary>
-        information
-    }
+    undefined,
+    /// <summary>
+    /// stop warning style, invalid changes will not be accepted
+    /// </summary>
+    stop,
+    /// <summary>
+    /// warning will be presented when an attempt to an invalid change is done, but the change will be accepted.
+    /// </summary>
+    warning,
+    /// <summary>
+    /// information warning style.
+    /// </summary>
+    information
 }

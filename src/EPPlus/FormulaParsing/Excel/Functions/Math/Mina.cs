@@ -18,31 +18,30 @@ using OfficeOpenXml.FormulaParsing.Excel.Functions.Metadata;
 using OfficeOpenXml.FormulaParsing.ExpressionGraph;
 using OfficeOpenXml.FormulaParsing.Utilities;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
+
+[FunctionMetadata(
+                     Category = ExcelFunctionCategory.Statistical,
+                     EPPlusVersion = "4",
+                     Description = "Returns the smallest value from a list of supplied values, counting text and the logical value FALSE as the value 0 and counting the logical value TRUE as the value 1")]
+internal class Mina : ExcelFunction
 {
-    [FunctionMetadata(
-        Category = ExcelFunctionCategory.Statistical,
-        EPPlusVersion = "4",
-        Description = "Returns the smallest value from a list of supplied values, counting text and the logical value FALSE as the value 0 and counting the logical value TRUE as the value 1")]
-    internal class Mina : ExcelFunction
+    private readonly DoubleEnumerableArgConverter _argConverter;
+
+    public Mina()
+        : this(new DoubleEnumerableArgConverter())
     {
-        private readonly DoubleEnumerableArgConverter _argConverter;
 
-        public Mina()
-            : this(new DoubleEnumerableArgConverter())
-        {
-
-        }
-        public Mina(DoubleEnumerableArgConverter argConverter)
-        {
-            Require.That(argConverter).Named("argConverter").IsNotNull();
-            this._argConverter = argConverter;
-        }
-        public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
-        {
-            ValidateArguments(arguments, 1);
-            IEnumerable<ExcelDoubleCellValue>? values = this._argConverter.ConvertArgsIncludingOtherTypes(arguments, false);
-            return this.CreateResult(values.Min(), DataType.Decimal);
-        }
+    }
+    public Mina(DoubleEnumerableArgConverter argConverter)
+    {
+        Require.That(argConverter).Named("argConverter").IsNotNull();
+        this._argConverter = argConverter;
+    }
+    public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
+    {
+        ValidateArguments(arguments, 1);
+        IEnumerable<ExcelDoubleCellValue>? values = this._argConverter.ConvertArgsIncludingOtherTypes(arguments, false);
+        return this.CreateResult(values.Min(), DataType.Decimal);
     }
 }

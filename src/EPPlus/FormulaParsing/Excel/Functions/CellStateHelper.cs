@@ -15,43 +15,42 @@ using OfficeOpenXml.Utils;
 using System;
 using System.Linq;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions;
+
+internal static class CellStateHelper
 {
-    internal static class CellStateHelper
+    private static bool IsSubTotal(ICellInfo c, ParsingContext context)
     {
-        private static bool IsSubTotal(ICellInfo c, ParsingContext context)
+        return (context.Scopes.Current.IsSubtotal && context.SubtotalAddresses.Contains(c.Id));
+    }
+
+    internal static bool ShouldIgnore(bool ignoreHiddenValues, ICellInfo c, ParsingContext context)
+    {
+        return ShouldIgnore(ignoreHiddenValues, false, c, context);
+    }
+
+    internal static bool ShouldIgnore(bool ignoreHiddenValues, bool ignoreNonNumeric, ICellInfo c, ParsingContext context)
+    {
+        if (ignoreNonNumeric && !ConvertUtil.IsNumericOrDate(c.Value))
         {
-            return (context.Scopes.Current.IsSubtotal && context.SubtotalAddresses.Contains(c.Id));
+            return true;
         }
 
-        internal static bool ShouldIgnore(bool ignoreHiddenValues, ICellInfo c, ParsingContext context)
+        bool hasFilter = false;
+        if (context.Parser != null && context.Parser.FilterInfo != null)
         {
-            return ShouldIgnore(ignoreHiddenValues, false, c, context);
+            hasFilter = context.Parser.FilterInfo.WorksheetHasFilter(c.WorksheetName);
         }
+        return ((ignoreHiddenValues || hasFilter) && c.IsHiddenRow) || IsSubTotal(c, context);
+    }
 
-        internal static bool ShouldIgnore(bool ignoreHiddenValues, bool ignoreNonNumeric, ICellInfo c, ParsingContext context)
+    internal static bool ShouldIgnore(bool ignoreHiddenValues, FunctionArgument arg, ParsingContext context)
+    {
+        bool hasFilter = false;
+        if (context.Parser != null && context.Parser.FilterInfo != null && context.Parser.FilterInfo.WorksheetHasFilter(context.Scopes.Current.Address.Worksheet))
         {
-            if (ignoreNonNumeric && !ConvertUtil.IsNumericOrDate(c.Value))
-            {
-                return true;
-            }
-
-            bool hasFilter = false;
-            if (context.Parser != null && context.Parser.FilterInfo != null)
-            {
-                hasFilter = context.Parser.FilterInfo.WorksheetHasFilter(c.WorksheetName);
-            }
-            return ((ignoreHiddenValues || hasFilter) && c.IsHiddenRow) || IsSubTotal(c, context);
+            hasFilter = true;
         }
-
-        internal static bool ShouldIgnore(bool ignoreHiddenValues, FunctionArgument arg, ParsingContext context)
-        {
-            bool hasFilter = false;
-            if (context.Parser != null && context.Parser.FilterInfo != null && context.Parser.FilterInfo.WorksheetHasFilter(context.Scopes.Current.Address.Worksheet))
-            {
-                hasFilter = true;
-            }
-            return (ignoreHiddenValues || hasFilter) && arg.ExcelStateFlagIsSet(ExcelCellState.HiddenCell);
-        }
+        return (ignoreHiddenValues || hasFilter) && arg.ExcelStateFlagIsSet(ExcelCellState.HiddenCell);
     }
 }

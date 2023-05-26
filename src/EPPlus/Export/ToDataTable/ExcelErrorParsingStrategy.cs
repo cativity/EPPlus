@@ -14,24 +14,23 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace OfficeOpenXml.Export.ToDataTable
+namespace OfficeOpenXml.Export.ToDataTable;
+
+/// <summary>
+/// Defines how cells with errors in the source range should be handled.
+/// </summary>
+public enum ExcelErrorParsingStrategy
 {
     /// <summary>
-    /// Defines how cells with errors in the source range should be handled.
+    /// Excel Errors in cells will be handles as blank cells
     /// </summary>
-    public enum ExcelErrorParsingStrategy
-    {
-        /// <summary>
-        /// Excel Errors in cells will be handles as blank cells
-        /// </summary>
-        HandleExcelErrorsAsBlankCells,
-        /// <summary>
-        /// An exception will be thrown when an error occurs in a cell
-        /// </summary>
-        ThrowException,
-        /// <summary>
-        /// If an error is detected, the entire row will be ignored
-        /// </summary>
-        IgnoreRowWithErrors
-    }
+    HandleExcelErrorsAsBlankCells,
+    /// <summary>
+    /// An exception will be thrown when an error occurs in a cell
+    /// </summary>
+    ThrowException,
+    /// <summary>
+    /// If an error is detected, the entire row will be ignored
+    /// </summary>
+    IgnoreRowWithErrors
 }

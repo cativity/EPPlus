@@ -30,59 +30,58 @@ using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OfficeOpenXml;
 
-namespace EPPlusTest.FormulaParsing.IntegrationTests.BuiltInFunctions.ExcelRanges
+namespace EPPlusTest.FormulaParsing.IntegrationTests.BuiltInFunctions.ExcelRanges;
+
+[TestClass]
+public class WorksheetRefsTest
 {
-    [TestClass]
-    public class WorksheetRefsTest
+    private ExcelPackage _package;
+    private ExcelWorksheet _firstSheet;
+    private ExcelWorksheet _secondSheet;
+
+    [TestInitialize]
+    public void Init()
     {
-        private ExcelPackage _package;
-        private ExcelWorksheet _firstSheet;
-        private ExcelWorksheet _secondSheet;
+        this._package = new ExcelPackage();
+        this._firstSheet = this._package.Workbook.Worksheets.Add("sheet1");
+        this._secondSheet = this._package.Workbook.Worksheets.Add("sheet2");
+        this._firstSheet.Cells["A1"].Value = 1;
+        this._firstSheet.Cells["A2"].Value = 2;
+    }
 
-        [TestInitialize]
-        public void Init()
-        {
-            this._package = new ExcelPackage();
-            this._firstSheet = this._package.Workbook.Worksheets.Add("sheet1");
-            this._secondSheet = this._package.Workbook.Worksheets.Add("sheet2");
-            this._firstSheet.Cells["A1"].Value = 1;
-            this._firstSheet.Cells["A2"].Value = 2;
-        }
+    [TestCleanup]
+    public void Cleanup()
+    {
+        this._package.Dispose();
+    }
 
-        [TestCleanup]
-        public void Cleanup()
-        {
-            this._package.Dispose();
-        }
+    [TestMethod]
+    public void ShouldHandleReferenceToOtherSheet()
+    {
+        this._secondSheet.Cells["A1"].Formula = "SUM('sheet1'!A1:A2)";
+        this._secondSheet.Calculate();
+        Assert.AreEqual(3d, this._secondSheet.Cells["A1"].Value);
+    }
 
-        [TestMethod]
-        public void ShouldHandleReferenceToOtherSheet()
-        {
-            this._secondSheet.Cells["A1"].Formula = "SUM('sheet1'!A1:A2)";
-            this._secondSheet.Calculate();
-            Assert.AreEqual(3d, this._secondSheet.Cells["A1"].Value);
-        }
+    [TestMethod]
+    public void ShouldHandleReferenceToOtherSheetWithComplexName()
+    {
+        ExcelWorksheet? sheet = this._package.Workbook.Worksheets.Add("ab#k..2");
+        sheet.Cells["A1"].Value = 1;
+        sheet.Cells["A2"].Value = 2;
+        this._secondSheet.Cells["A1"].Formula = "SUM('ab#k..2'!A1:A2)";
+        this._secondSheet.Calculate();
+        Assert.AreEqual(3d, this._secondSheet.Cells["A1"].Value);
+    }
 
-        [TestMethod]
-        public void ShouldHandleReferenceToOtherSheetWithComplexName()
-        {
-            ExcelWorksheet? sheet = this._package.Workbook.Worksheets.Add("ab#k..2");
-            sheet.Cells["A1"].Value = 1;
-            sheet.Cells["A2"].Value = 2;
-            this._secondSheet.Cells["A1"].Formula = "SUM('ab#k..2'!A1:A2)";
-            this._secondSheet.Calculate();
-            Assert.AreEqual(3d, this._secondSheet.Cells["A1"].Value);
-        }
-
-        [TestMethod]
-        public void ShouldHandleInvalidRef()
-        {
-            ExcelWorksheet? sheet = this._package.Workbook.Worksheets.Add("ab#k..2");
-            sheet.Cells["A1"].Value = 1;
-            sheet.Cells["A2"].Value = 2;
-            this._secondSheet.Cells["A1"].Formula = "SUM('ab#k..2A1:A2')";
-            this._secondSheet.Calculate();
-            Assert.IsInstanceOfType(this._secondSheet.Cells["A1"].Value, typeof(ExcelErrorValue));
-        }
+    [TestMethod]
+    public void ShouldHandleInvalidRef()
+    {
+        ExcelWorksheet? sheet = this._package.Workbook.Worksheets.Add("ab#k..2");
+        sheet.Cells["A1"].Value = 1;
+        sheet.Cells["A2"].Value = 2;
+        this._secondSheet.Cells["A1"].Formula = "SUM('ab#k..2A1:A2')";
+        this._secondSheet.Calculate();
+        Assert.IsInstanceOfType(this._secondSheet.Cells["A1"].Value, typeof(ExcelErrorValue));
     }
 }

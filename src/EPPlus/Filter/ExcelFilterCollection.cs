@@ -14,89 +14,88 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
-namespace OfficeOpenXml.Filter
+namespace OfficeOpenXml.Filter;
+
+/// <summary>
+/// A collection of filters for a filter column
+/// </summary>
+/// <typeparam name="T">The filter type</typeparam>
+public class ExcelFilterCollectionBase<T> : IEnumerable<T>
 {
     /// <summary>
-    /// A collection of filters for a filter column
+    /// A list of columns
     /// </summary>
-    /// <typeparam name="T">The filter type</typeparam>
-    public class ExcelFilterCollectionBase<T> : IEnumerable<T>
+    internal List<T> _list;
+    internal readonly bool _maxTwoItems;
+    internal ExcelFilterCollectionBase()
     {
-        /// <summary>
-        /// A list of columns
-        /// </summary>
-        internal List<T> _list;
-        internal readonly bool _maxTwoItems;
-        internal ExcelFilterCollectionBase()
+        if (typeof(T) == typeof(ExcelFilterCustomItem))
         {
-            if (typeof(T) == typeof(ExcelFilterCustomItem))
-            {
-                this._maxTwoItems = true;
-            }
-
-            this._list = new List<T>();
-        }
-        /// <summary>
-        /// Gets the enumerator for the collection
-        /// </summary>
-        /// <returns>The enumerator</returns>
-        public IEnumerator<T> GetEnumerator()
-        {
-            return this._list.GetEnumerator();
+            this._maxTwoItems = true;
         }
 
-        /// <summary>
-        /// Gets the enumerator for the collection
-        /// </summary>
-        /// <returns>The enumerator</returns>
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return this._list.GetEnumerator();
-        }
+        this._list = new List<T>();
+    }
+    /// <summary>
+    /// Gets the enumerator for the collection
+    /// </summary>
+    /// <returns>The enumerator</returns>
+    public IEnumerator<T> GetEnumerator()
+    {
+        return this._list.GetEnumerator();
+    }
+
+    /// <summary>
+    /// Gets the enumerator for the collection
+    /// </summary>
+    /// <returns>The enumerator</returns>
+    IEnumerator IEnumerable.GetEnumerator()
+    {
+        return this._list.GetEnumerator();
+    }
         
-        /// <summary>
-        /// The indexer for the collection
-        /// </summary>
-        /// <param name="index">The index of the item</param>
-        /// <returns>The item at the index.</returns>
-        public T this[int index]
+    /// <summary>
+    /// The indexer for the collection
+    /// </summary>
+    /// <param name="index">The index of the item</param>
+    /// <returns>The item at the index.</returns>
+    public T this[int index]
+    {
+        get
         {
-            get
-            {
-                return this._list[index];
-            }
-        }
-        /// <summary>
-        /// Number of items in the collection
-        /// </summary>
-        public int Count
-        {
-            get
-            {
-                return this._list.Count;
-            }
+            return this._list[index];
         }
     }
     /// <summary>
-    /// A collection of filters for a filter column
+    /// Number of items in the collection
     /// </summary>
-    /// <typeparam name="T">The filter type</typeparam>
-    public class ExcelFilterCollection<T> : ExcelFilterCollectionBase<T>
+    public int Count
     {
-        /// <summary>
-        /// Add a new filter item
-        /// </summary>
-        /// <param name="value"></param>
-        public T Add(T value)
+        get
         {
-            if (this._maxTwoItems && this._list.Count >= 2)
-            {
-                throw (new InvalidOperationException("You can only have two filters on an ExcelCustomFilterColumn collection"));
-            }
-
-            this._list.Add(value);
-            return value;
+            return this._list.Count;
+        }
+    }
+}
+/// <summary>
+/// A collection of filters for a filter column
+/// </summary>
+/// <typeparam name="T">The filter type</typeparam>
+public class ExcelFilterCollection<T> : ExcelFilterCollectionBase<T>
+{
+    /// <summary>
+    /// Add a new filter item
+    /// </summary>
+    /// <param name="value"></param>
+    public T Add(T value)
+    {
+        if (this._maxTwoItems && this._list.Count >= 2)
+        {
+            throw (new InvalidOperationException("You can only have two filters on an ExcelCustomFilterColumn collection"));
         }
 
+        this._list.Add(value);
+        return value;
     }
+
 }

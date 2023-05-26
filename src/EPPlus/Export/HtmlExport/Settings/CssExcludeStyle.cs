@@ -12,24 +12,23 @@
  *************************************************************************************************/
 using OfficeOpenXml.Table;
 
-namespace OfficeOpenXml.Export.HtmlExport
-{
-    /// <summary>
-    /// Exclude css on an <see cref="ExcelTable"/>.
-    /// </summary>
-    public class CssExcludeStyle
-    {
-        internal CssExcludeStyle()
-        {
+namespace OfficeOpenXml.Export.HtmlExport;
 
-        }
-        /// <summary>
-        /// Css settings for table styles
-        /// </summary>
-        public CssExclude TableStyle { get; } = new CssExclude();
-        /// <summary>
-        /// Css settings for cell styles.
-        /// </summary>
-        public CssExclude CellStyle { get; } = new CssExclude();
+/// <summary>
+/// Exclude css on an <see cref="ExcelTable"/>.
+/// </summary>
+public class CssExcludeStyle
+{
+    internal CssExcludeStyle()
+    {
+
     }
+    /// <summary>
+    /// Css settings for table styles
+    /// </summary>
+    public CssExclude TableStyle { get; } = new CssExclude();
+    /// <summary>
+    /// Css settings for cell styles.
+    /// </summary>
+    public CssExclude CellStyle { get; } = new CssExclude();
 }

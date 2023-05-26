@@ -13,33 +13,32 @@
 using System;
 using System.Collections.Generic;
 
-namespace OfficeOpenXml.Utils
+namespace OfficeOpenXml.Utils;
+
+internal class InvariantObjectComparer : IEqualityComparer<object>
 {
-    internal class InvariantObjectComparer : IEqualityComparer<object>
-    {
-        static Comparer<object> c = Comparer<object>.Default;
-        static StringComparer sc = StringComparer.OrdinalIgnoreCase;
+    static Comparer<object> c = Comparer<object>.Default;
+    static StringComparer sc = StringComparer.OrdinalIgnoreCase;
 
-        public new bool Equals(object x, object y)
-        {            
-            if (x is string s1 && y is string s2)
-            {
-                return sc.Equals(s1, s2);
-            }
-            else
-            {
-                return object.Equals(x, y);
-            }
-        }
-
-        public int GetHashCode(object obj)
+    public new bool Equals(object x, object y)
+    {            
+        if (x is string s1 && y is string s2)
         {
-            if (obj is string s)
-            {
-                return s.ToLowerInvariant().GetHashCode();
-            }
-            
-            return obj.GetHashCode();
+            return sc.Equals(s1, s2);
         }
+        else
+        {
+            return object.Equals(x, y);
+        }
+    }
+
+    public int GetHashCode(object obj)
+    {
+        if (obj is string s)
+        {
+            return s.ToLowerInvariant().GetHashCode();
+        }
+            
+        return obj.GetHashCode();
     }
 }

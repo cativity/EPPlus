@@ -17,22 +17,21 @@ using System.Text;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Metadata;
 using OfficeOpenXml.FormulaParsing.ExpressionGraph;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Text
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Text;
+
+[FunctionMetadata(
+                     Category = ExcelFunctionCategory.Text,
+                     EPPlusVersion = "4",
+                     Description = "Creates a hyperlink to a document in a supplied location.")]
+internal class Hyperlink : ExcelFunction
 {
-    [FunctionMetadata(
-        Category = ExcelFunctionCategory.Text,
-        EPPlusVersion = "4",
-        Description = "Creates a hyperlink to a document in a supplied location.")]
-    internal class Hyperlink : ExcelFunction
+    public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
     {
-        public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
+        ValidateArguments(arguments, 1);
+        if (arguments.Count() > 1)
         {
-            ValidateArguments(arguments, 1);
-            if (arguments.Count() > 1)
-            {
-                return this.CreateResult(ArgToString(arguments, 1), DataType.String);
-            }
-            return this.CreateResult(ArgToString(arguments, 0), DataType.String);
+            return this.CreateResult(ArgToString(arguments, 1), DataType.String);
         }
+        return this.CreateResult(ArgToString(arguments, 0), DataType.String);
     }
 }

@@ -13,14 +13,14 @@
 using OfficeOpenXml.ConditionalFormatting.Contracts;
 using System.Drawing;
 
-namespace OfficeOpenXml.ConditionalFormatting
+namespace OfficeOpenXml.ConditionalFormatting;
+
+/// <summary>
+/// Provides functionality for adding Conditional Formatting to a range (<see cref="ExcelRangeBase"/>).
+/// Each method will return a configurable condtional formatting type.
+/// </summary>
+public interface IRangeConditionalFormatting
 {
-	/// <summary>
-	/// Provides functionality for adding Conditional Formatting to a range (<see cref="ExcelRangeBase"/>).
-	/// Each method will return a configurable condtional formatting type.
-	/// </summary>
-	public interface IRangeConditionalFormatting
-	{
     /// <summary>
     /// Adds an Above Average rule to the range
     /// </summary>
@@ -291,5 +291,4 @@ namespace OfficeOpenXml.ConditionalFormatting
     /// <param name="color"></param>
     /// <returns></returns>
     IExcelConditionalFormattingDataBarGroup AddDatabar(Color color);
-    }
 }

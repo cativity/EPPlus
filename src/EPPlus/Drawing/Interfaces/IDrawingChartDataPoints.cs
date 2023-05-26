@@ -12,10 +12,9 @@
  *************************************************************************************************/
 using OfficeOpenXml.Drawing.Chart;
 
-namespace OfficeOpenXml.Drawing.Interfaces
+namespace OfficeOpenXml.Drawing.Interfaces;
+
+internal interface IDrawingChartDataPoints
 {
-    internal interface IDrawingChartDataPoints
-    {
-        ExcelChartDataPointCollection DataPoints { get; }
-    }
+    ExcelChartDataPointCollection DataPoints { get; }
 }

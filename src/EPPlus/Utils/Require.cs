@@ -16,24 +16,23 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace OfficeOpenXml.Utils
+namespace OfficeOpenXml.Utils;
+
+/// <summary>
+/// Utility for validation in functions.
+/// </summary>
+public static class Require
 {
     /// <summary>
-    /// Utility for validation in functions.
+    /// Represent an argument to the function where the validation is implemented.
     /// </summary>
-    public static class Require
+    /// <typeparam name="T"></typeparam>
+    /// <param name="argument">The argument to validate</param>
+    /// <returns></returns>
+    public static IArgument<T> Argument<T>(T argument)
     {
-        /// <summary>
-        /// Represent an argument to the function where the validation is implemented.
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="argument">The argument to validate</param>
-        /// <returns></returns>
-        public static IArgument<T> Argument<T>(T argument)
-        {
-            return new Argument<T>(argument);
-        }
-
-
+        return new Argument<T>(argument);
     }
+
+
 }

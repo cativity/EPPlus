@@ -16,27 +16,26 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace OfficeOpenXml.Sorting
+namespace OfficeOpenXml.Sorting;
+
+internal class TableSorter
 {
-    internal class TableSorter
+    public TableSorter(ExcelTable table)
     {
-        public TableSorter(ExcelTable table)
-        {
-            this._table = table;
-        }
+        this._table = table;
+    }
 
-        private readonly ExcelTable _table;
+    private readonly ExcelTable _table;
 
-        public void Sort(TableSortOptions options)
-        {
-            this._table.DataRange.Sort(options, this._table);
-        }
+    public void Sort(TableSortOptions options)
+    {
+        this._table.DataRange.Sort(options, this._table);
+    }
 
-        public void Sort(Action<TableSortOptions> configuration)
-        {
-            TableSortOptions? options = new TableSortOptions(this._table);
-            configuration(options);
-            this.Sort(options);
-        }
+    public void Sort(Action<TableSortOptions> configuration)
+    {
+        TableSortOptions? options = new TableSortOptions(this._table);
+        configuration(options);
+        this.Sort(options);
     }
 }

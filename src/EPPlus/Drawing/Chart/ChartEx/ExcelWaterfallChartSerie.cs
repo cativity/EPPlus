@@ -12,32 +12,31 @@
  *************************************************************************************************/
 using OfficeOpenXml.Utils.Extensions;
 using System.Xml;
-namespace OfficeOpenXml.Drawing.Chart.ChartEx
+namespace OfficeOpenXml.Drawing.Chart.ChartEx;
+
+/// <summary>
+/// A series for an Waterfall Chart
+/// </summary>
+public class ExcelWaterfallChartSerie : ExcelChartExSerie
 {
-    /// <summary>
-    /// A series for an Waterfall Chart
-    /// </summary>
-    public class ExcelWaterfallChartSerie : ExcelChartExSerie
+    internal ExcelWaterfallChartSerie(ExcelChartEx chart, XmlNamespaceManager ns, XmlNode node) : base(chart, ns, node)
     {
-        internal ExcelWaterfallChartSerie(ExcelChartEx chart, XmlNamespaceManager ns, XmlNode node) : base(chart, ns, node)
-        {
 
+    }
+
+    const string _connectorLinesPath = "cx:layoutPr/cx:visibility/@connectorLines";
+    /// <summary>
+    /// The visibility of connector lines between data points
+    /// </summary>
+    public bool ShowConnectorLines
+    {
+        get
+        {
+            return this.GetXmlNodeBool($"{_connectorLinesPath}");
         }
-
-        const string _connectorLinesPath = "cx:layoutPr/cx:visibility/@connectorLines";
-        /// <summary>
-        /// The visibility of connector lines between data points
-        /// </summary>
-        public bool ShowConnectorLines
+        set
         {
-            get
-            {
-                return this.GetXmlNodeBool($"{_connectorLinesPath}");
-            }
-            set
-            {
-                this.SetXmlNodeBool($"{_connectorLinesPath}", value);
-            }
+            this.SetXmlNodeBool($"{_connectorLinesPath}", value);
         }
     }
 }

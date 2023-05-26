@@ -19,57 +19,56 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace OfficeOpenXml.FormulaParsing.ExpressionGraph
+namespace OfficeOpenXml.FormulaParsing.ExpressionGraph;
+
+/// <summary>
+/// This Expression handles addresses where the OFFSET function is a part of the range, i.e. OFFSET(..):A1 or OFFSET(..):OFFSET(..)
+/// </summary>
+internal class RangeOffsetExpression : Expression
 {
-    /// <summary>
-    /// This Expression handles addresses where the OFFSET function is a part of the range, i.e. OFFSET(..):A1 or OFFSET(..):OFFSET(..)
-    /// </summary>
-    internal class RangeOffsetExpression : Expression
+    public RangeOffsetExpression(ParsingContext context)
     {
-        public RangeOffsetExpression(ParsingContext context)
+        this._parsingContext = context;  
+    }
+    /// <summary>
+    /// The first part of the range, should be an OFFSET call
+    /// </summary>
+    public FunctionExpression OffsetExpression1 { get; set; }
+
+    /// <summary>
+    /// The second part of the range, should be an OFFSET call
+    /// </summary>
+    public FunctionExpression OffsetExpression2 { get; set; }
+
+    /// <summary>
+    /// The second part of the range, should be an Excel address
+    /// </summary>
+    public ExcelAddressExpression AddressExpression2 { get; set; }
+
+
+
+    private readonly ParsingContext _parsingContext;
+
+    public override bool IsGroupedExpression => false;
+
+    public override CompileResult Compile()
+    {
+        IRangeInfo? offsetRange1 = this.OffsetExpression1.Compile().Result as IRangeInfo;
+        RangeOffset? rangeOffset = new RangeOffset
         {
-            this._parsingContext = context;  
-        }
-        /// <summary>
-        /// The first part of the range, should be an OFFSET call
-        /// </summary>
-        public FunctionExpression OffsetExpression1 { get; set; }
-
-        /// <summary>
-        /// The second part of the range, should be an OFFSET call
-        /// </summary>
-        public FunctionExpression OffsetExpression2 { get; set; }
-
-        /// <summary>
-        /// The second part of the range, should be an Excel address
-        /// </summary>
-        public ExcelAddressExpression AddressExpression2 { get; set; }
-
-
-
-        private readonly ParsingContext _parsingContext;
-
-        public override bool IsGroupedExpression => false;
-
-        public override CompileResult Compile()
+            StartRange = offsetRange1
+        };
+        if(this.AddressExpression2 != null)
         {
-            IRangeInfo? offsetRange1 = this.OffsetExpression1.Compile().Result as IRangeInfo;
-            RangeOffset? rangeOffset = new RangeOffset
-            {
-                StartRange = offsetRange1
-            };
-            if(this.AddressExpression2 != null)
-            {
-                ParsingScope? c = this._parsingContext.Scopes.Current;
-                IRangeInfo? resultRange = this._parsingContext.ExcelDataProvider.GetRange(c.Address.Worksheet, c.Address.FromRow, c.Address.FromCol, this.AddressExpression2.ExpressionString);
-                rangeOffset.EndRange = resultRange;
-            }
-            else
-            {
-                object? offsetRange2 = this.OffsetExpression2.Compile().Result;
-                rangeOffset.EndRange = offsetRange2 as IRangeInfo;
-            }
-            return new CompileResult(rangeOffset.Execute(new FunctionArgument[] { }, this._parsingContext).Result, DataType.Enumerable);
+            ParsingScope? c = this._parsingContext.Scopes.Current;
+            IRangeInfo? resultRange = this._parsingContext.ExcelDataProvider.GetRange(c.Address.Worksheet, c.Address.FromRow, c.Address.FromCol, this.AddressExpression2.ExpressionString);
+            rangeOffset.EndRange = resultRange;
         }
+        else
+        {
+            object? offsetRange2 = this.OffsetExpression2.Compile().Result;
+            rangeOffset.EndRange = offsetRange2 as IRangeInfo;
+        }
+        return new CompileResult(rangeOffset.Execute(new FunctionArgument[] { }, this._parsingContext).Result, DataType.Enumerable);
     }
 }

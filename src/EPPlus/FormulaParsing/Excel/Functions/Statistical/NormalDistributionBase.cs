@@ -16,18 +16,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Statistical
-{
-    internal abstract class NormalDistributionBase : ExcelFunction
-    {
-        protected static double CumulativeDistribution(double x, double mean, double stdDev)
-        {
-            return 0.5 * (1 + ErfHelper.Erf((x - mean) / System.Math.Sqrt(2 * System.Math.Pow(stdDev, 2))));
-        }
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Statistical;
 
-        protected static double ProbabilityDensity(double x, double mean, double stdDev)
-        {
-            return System.Math.Exp(-0.5 * System.Math.Log(2 * System.Math.PI) - System.Math.Log(stdDev) - System.Math.Pow(x - mean, 2) / (2 * System.Math.Pow(stdDev, 2)));
-        }
+internal abstract class NormalDistributionBase : ExcelFunction
+{
+    protected static double CumulativeDistribution(double x, double mean, double stdDev)
+    {
+        return 0.5 * (1 + ErfHelper.Erf((x - mean) / System.Math.Sqrt(2 * System.Math.Pow(stdDev, 2))));
+    }
+
+    protected static double ProbabilityDensity(double x, double mean, double stdDev)
+    {
+        return System.Math.Exp(-0.5 * System.Math.Log(2 * System.Math.PI) - System.Math.Log(stdDev) - System.Math.Pow(x - mean, 2) / (2 * System.Math.Pow(stdDev, 2)));
     }
 }

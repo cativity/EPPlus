@@ -15,10 +15,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace OfficeOpenXml.FormulaParsing.LexicalAnalysis
+namespace OfficeOpenXml.FormulaParsing.LexicalAnalysis;
+
+public interface ISourceCodeTokenizer
 {
-    public interface ISourceCodeTokenizer
-    {
-        IEnumerable<Token> Tokenize(string input, string worksheet);
-    }
+    IEnumerable<Token> Tokenize(string input, string worksheet);
 }

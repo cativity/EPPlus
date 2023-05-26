@@ -17,51 +17,50 @@ using System.Text;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Metadata;
 using OfficeOpenXml.FormulaParsing.ExpressionGraph;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime;
+
+[FunctionMetadata(
+                     Category = ExcelFunctionCategory.DateAndTime,
+                     EPPlusVersion = "4",
+                     Description = "Returns a time, from a user-supplied hour, minute and second")]
+internal class Time : TimeBaseFunction
 {
-    [FunctionMetadata(
-        Category = ExcelFunctionCategory.DateAndTime,
-        EPPlusVersion = "4",
-        Description = "Returns a time, from a user-supplied hour, minute and second")]
-    internal class Time : TimeBaseFunction
+    public Time()
+        : base()
     {
-        public Time()
-            : base()
-        {
 
+    }
+
+    public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
+    {
+        ValidateArguments(arguments, 1);
+        string? firstArg = arguments.ElementAt(0).Value.ToString();
+        if(arguments.Count() == 1 && this.TimeStringParser.CanParse(firstArg))
+        {
+            double result = this.TimeStringParser.Parse(firstArg);
+            return new CompileResult(result, DataType.Time);
+        }
+        ValidateArguments(arguments, 3);
+        int hour = this.ArgToInt(arguments, 0);
+        int min = this.ArgToInt(arguments, 1);
+        int sec = this.ArgToInt(arguments, 2);
+
+        if (sec < 0 || sec > 59)
+        {
+            return this.CreateResult(eErrorType.Value);
         }
 
-        public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
+        if (min < 0 || min > 59)
         {
-            ValidateArguments(arguments, 1);
-            string? firstArg = arguments.ElementAt(0).Value.ToString();
-            if(arguments.Count() == 1 && this.TimeStringParser.CanParse(firstArg))
-            {
-                double result = this.TimeStringParser.Parse(firstArg);
-                return new CompileResult(result, DataType.Time);
-            }
-            ValidateArguments(arguments, 3);
-            int hour = this.ArgToInt(arguments, 0);
-            int min = this.ArgToInt(arguments, 1);
-            int sec = this.ArgToInt(arguments, 2);
-
-            if (sec < 0 || sec > 59)
-            {
-                return this.CreateResult(eErrorType.Value);
-            }
-
-            if (min < 0 || min > 59)
-            {
-                return this.CreateResult(eErrorType.Value);
-            }
-
-            if (min < 0 || hour > 23)
-            {
-                return this.CreateResult(eErrorType.Value);
-            }
-
-            double secondsOfThisTime = (double)(hour * 60 * 60 + min * 60 + sec);
-            return this.CreateResult(GetTimeSerialNumber(secondsOfThisTime), DataType.Time);
+            return this.CreateResult(eErrorType.Value);
         }
+
+        if (min < 0 || hour > 23)
+        {
+            return this.CreateResult(eErrorType.Value);
+        }
+
+        double secondsOfThisTime = (double)(hour * 60 * 60 + min * 60 + sec);
+        return this.CreateResult(GetTimeSerialNumber(secondsOfThisTime), DataType.Time);
     }
 }

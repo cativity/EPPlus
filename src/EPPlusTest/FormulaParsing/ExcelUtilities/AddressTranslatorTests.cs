@@ -35,63 +35,62 @@ using OfficeOpenXml.FormulaParsing.ExcelUtilities;
 using OfficeOpenXml.FormulaParsing;
 using FakeItEasy;
 
-namespace EPPlusTest.ExcelUtilities
+namespace EPPlusTest.ExcelUtilities;
+
+[TestClass]
+public class AddressTranslatorTests
 {
-    [TestClass]
-    public class AddressTranslatorTests
+    private AddressTranslator _addressTranslator;
+    private ExcelDataProvider _excelDataProvider;
+    private const int ExcelMaxRows = 1356;
+
+    [TestInitialize]
+    public void Setup()
     {
-        private AddressTranslator _addressTranslator;
-        private ExcelDataProvider _excelDataProvider;
-        private const int ExcelMaxRows = 1356;
+        this._excelDataProvider = A.Fake<ExcelDataProvider>();
+        A.CallTo(() => this._excelDataProvider.ExcelMaxRows).Returns(ExcelMaxRows);
+        this._addressTranslator = new AddressTranslator(this._excelDataProvider);
+    }
 
-        [TestInitialize]
-        public void Setup()
-        {
-            this._excelDataProvider = A.Fake<ExcelDataProvider>();
-            A.CallTo(() => this._excelDataProvider.ExcelMaxRows).Returns(ExcelMaxRows);
-            this._addressTranslator = new AddressTranslator(this._excelDataProvider);
-        }
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void ConstructorShouldThrowIfProviderIsNull()
+    {
+        new AddressTranslator(null);
+    }
 
-        [TestMethod, ExpectedException(typeof(ArgumentNullException))]
-        public void ConstructorShouldThrowIfProviderIsNull()
-        {
-            new AddressTranslator(null);
-        }
+    [TestMethod]
+    public void ShouldTranslateRowNumber()
+    {
+        int col;
+        this._addressTranslator.ToColAndRow("A2", out col, out int row);
+        Assert.AreEqual(2, row);
+    }
 
-        [TestMethod]
-        public void ShouldTranslateRowNumber()
-        {
-            int col;
-            this._addressTranslator.ToColAndRow("A2", out col, out int row);
-            Assert.AreEqual(2, row);
-        }
+    [TestMethod]
+    public void ShouldTranslateLettersToColumnIndex()
+    {
+        int row;
+        this._addressTranslator.ToColAndRow("C1", out int col, out row);
+        Assert.AreEqual(3, col);
+        this._addressTranslator.ToColAndRow("AA2", out col, out row);
+        Assert.AreEqual(27, col);
+        this._addressTranslator.ToColAndRow("BC1", out col, out row);
+        Assert.AreEqual(55, col);
+    }
 
-        [TestMethod]
-        public void ShouldTranslateLettersToColumnIndex()
-        {
-            int row;
-            this._addressTranslator.ToColAndRow("C1", out int col, out row);
-            Assert.AreEqual(3, col);
-            this._addressTranslator.ToColAndRow("AA2", out col, out row);
-            Assert.AreEqual(27, col);
-            this._addressTranslator.ToColAndRow("BC1", out col, out row);
-            Assert.AreEqual(55, col);
-        }
+    [TestMethod]
+    public void ShouldTranslateLetterAddressUsingMaxRowsFromProviderLower()
+    {
+        int col;
+        this._addressTranslator.ToColAndRow("A", out col, out int row);
+        Assert.AreEqual(1, row);
+    }
 
-        [TestMethod]
-        public void ShouldTranslateLetterAddressUsingMaxRowsFromProviderLower()
-        {
-            int col;
-            this._addressTranslator.ToColAndRow("A", out col, out int row);
-            Assert.AreEqual(1, row);
-        }
-
-        [TestMethod]
-        public void ShouldTranslateLetterAddressUsingMaxRowsFromProviderUpper()
-        {
-            int col;
-            this._addressTranslator.ToColAndRow("A", out col, out int row, AddressTranslator.RangeCalculationBehaviour.LastPart);
-            Assert.AreEqual(ExcelMaxRows, row);
-        }
+    [TestMethod]
+    public void ShouldTranslateLetterAddressUsingMaxRowsFromProviderUpper()
+    {
+        int col;
+        this._addressTranslator.ToColAndRow("A", out col, out int row, AddressTranslator.RangeCalculationBehaviour.LastPart);
+        Assert.AreEqual(ExcelMaxRows, row);
     }
 }

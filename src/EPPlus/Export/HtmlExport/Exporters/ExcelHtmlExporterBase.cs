@@ -16,71 +16,70 @@ using System.Linq;
 using System.Text;
 using OfficeOpenXml.Core;
 
-namespace OfficeOpenXml.Export.HtmlExport.Exporters
+namespace OfficeOpenXml.Export.HtmlExport.Exporters;
+
+/// <summary>
+/// Base class for Html exporters
+/// </summary>
+public abstract class ExcelHtmlExporterBase
 {
     /// <summary>
-    /// Base class for Html exporters
+    /// Constructor
     /// </summary>
-    public abstract class ExcelHtmlExporterBase
+    /// <param name="range"></param>
+    internal ExcelHtmlExporterBase(ExcelRangeBase range)
     {
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        /// <param name="range"></param>
-        internal ExcelHtmlExporterBase(ExcelRangeBase range)
-        {
-            this._ranges = new EPPlusReadOnlyList<ExcelRangeBase>();
+        this._ranges = new EPPlusReadOnlyList<ExcelRangeBase>();
 
-            if (range.Addresses == null)
+        if (range.Addresses == null)
+        {
+            this.AddRange(range);
+        }
+        else
+        {
+            foreach (ExcelAddressBase? address in range.Addresses)
             {
-                this.AddRange(range);
-            }
-            else
-            {
-                foreach (ExcelAddressBase? address in range.Addresses)
-                {
-                    this.AddRange(range.Worksheet.Cells[address.Address]);
-                }
+                this.AddRange(range.Worksheet.Cells[address.Address]);
             }
         }
+    }
 
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        /// <param name="ranges"></param>
-        internal ExcelHtmlExporterBase(params ExcelRangeBase[] ranges)
+    /// <summary>
+    /// Constructor
+    /// </summary>
+    /// <param name="ranges"></param>
+    internal ExcelHtmlExporterBase(params ExcelRangeBase[] ranges)
+    {
+        this._ranges = new EPPlusReadOnlyList<ExcelRangeBase>();
+        foreach (ExcelRangeBase? range in ranges)
         {
-            this._ranges = new EPPlusReadOnlyList<ExcelRangeBase>();
-            foreach (ExcelRangeBase? range in ranges)
-            {
-                this.AddRange(range);
-            }
+            this.AddRange(range);
         }
+    }
 
 
-        private readonly EPPlusReadOnlyList<ExcelRangeBase> _ranges;
+    private readonly EPPlusReadOnlyList<ExcelRangeBase> _ranges;
 
-        /// <summary>
-        /// Exported ranges
-        /// </summary>
-        public EPPlusReadOnlyList<ExcelRangeBase> Ranges
+    /// <summary>
+    /// Exported ranges
+    /// </summary>
+    public EPPlusReadOnlyList<ExcelRangeBase> Ranges
+    {
+        get
         {
-            get
-            {
-                return this._ranges;
-            }
+            return this._ranges;
         }
+    }
 
-        private void AddRange(ExcelRangeBase range)
+    private void AddRange(ExcelRangeBase range)
+    {
+        if (range.IsFullColumn && range.IsFullRow)
         {
-            if (range.IsFullColumn && range.IsFullRow)
-            {
-                this._ranges.Add(new ExcelRangeBase(range.Worksheet, range.Worksheet.Dimension.Address));
-            }
-            else
-            {
-                this._ranges.Add(range);
-            }
+            this._ranges.Add(new ExcelRangeBase(range.Worksheet, range.Worksheet.Dimension.Address));
+        }
+        else
+        {
+            this._ranges.Add(range);
         }
     }
 }

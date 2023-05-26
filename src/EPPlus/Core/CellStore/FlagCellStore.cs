@@ -10,25 +10,24 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
-namespace OfficeOpenXml.Core.CellStore
+namespace OfficeOpenXml.Core.CellStore;
+
+internal class FlagCellStore : CellStore<byte>
 {
-    internal class FlagCellStore : CellStore<byte>
+    internal void SetFlagValue(int Row, int Col, bool value, CellFlags cellFlags)
     {
-        internal void SetFlagValue(int Row, int Col, bool value, CellFlags cellFlags)
+        CellFlags currentValue = (CellFlags)this.GetValue(Row, Col);
+        if (value)
         {
-            CellFlags currentValue = (CellFlags)this.GetValue(Row, Col);
-            if (value)
-            {
-                this.SetValue(Row, Col, (byte)(currentValue | cellFlags)); // add the CellFlag bit
-            }
-            else
-            {
-                this.SetValue(Row, Col, (byte)(currentValue & ~cellFlags)); // remove the CellFlag bit
-            }
+            this.SetValue(Row, Col, (byte)(currentValue | cellFlags)); // add the CellFlag bit
         }
-        internal bool GetFlagValue(int Row, int Col, CellFlags cellFlags)
+        else
         {
-            return !(((byte)cellFlags & this.GetValue(Row, Col)) == 0);
+            this.SetValue(Row, Col, (byte)(currentValue & ~cellFlags)); // remove the CellFlag bit
         }
+    }
+    internal bool GetFlagValue(int Row, int Col, CellFlags cellFlags)
+    {
+        return !(((byte)cellFlags & this.GetValue(Row, Col)) == 0);
     }
 }

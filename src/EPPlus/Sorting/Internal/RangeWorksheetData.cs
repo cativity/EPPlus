@@ -16,42 +16,41 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace OfficeOpenXml.Sorting.Internal
+namespace OfficeOpenXml.Sorting.Internal;
+
+internal class RangeWorksheetData
 {
-    internal class RangeWorksheetData
+    /// <summary>
+    /// Constructor
+    /// </summary>
+    public RangeWorksheetData(ExcelRangeBase range)
     {
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        public RangeWorksheetData(ExcelRangeBase range)
+        ExcelWorksheet? worksheet = range.Worksheet;
+        this.Flags = GetItems(range, worksheet._flags);
+        this.Formulas = GetItems(range, worksheet._formulas);
+        this.Hyperlinks = GetItems(range, worksheet._hyperLinks);
+        this.Comments = GetItems(range, worksheet._commentsStore);
+        this.Metadata = GetItems(range, worksheet._metadataStore);
+    }
+
+    public Dictionary<string, byte> Flags { get; private set; }
+
+    public Dictionary<string, object> Formulas { get; private set; }
+
+    public Dictionary<string, Uri> Hyperlinks { get; private set; }
+
+    public Dictionary<string, int> Comments { get; private set; }
+
+    public Dictionary<string, ExcelWorksheet.MetaDataReference> Metadata { get; private set; }
+
+    private static Dictionary<string, T> GetItems<T>(ExcelRangeBase r, CellStore<T> store)
+    {
+        CellStoreEnumerator<T>? e = new CellStoreEnumerator<T>(store, r._fromRow, r._fromCol, r._toRow, r._toCol);
+        Dictionary<string, T>? l = new Dictionary<string, T>();
+        while (e.Next())
         {
-            ExcelWorksheet? worksheet = range.Worksheet;
-            this.Flags = GetItems(range, worksheet._flags);
-            this.Formulas = GetItems(range, worksheet._formulas);
-            this.Hyperlinks = GetItems(range, worksheet._hyperLinks);
-            this.Comments = GetItems(range, worksheet._commentsStore);
-            this.Metadata = GetItems(range, worksheet._metadataStore);
+            l.Add(e.CellAddress, e.Value);
         }
-
-        public Dictionary<string, byte> Flags { get; private set; }
-
-        public Dictionary<string, object> Formulas { get; private set; }
-
-        public Dictionary<string, Uri> Hyperlinks { get; private set; }
-
-        public Dictionary<string, int> Comments { get; private set; }
-
-        public Dictionary<string, ExcelWorksheet.MetaDataReference> Metadata { get; private set; }
-
-        private static Dictionary<string, T> GetItems<T>(ExcelRangeBase r, CellStore<T> store)
-        {
-            CellStoreEnumerator<T>? e = new CellStoreEnumerator<T>(store, r._fromRow, r._fromCol, r._toRow, r._toCol);
-            Dictionary<string, T>? l = new Dictionary<string, T>();
-            while (e.Next())
-            {
-                l.Add(e.CellAddress, e.Value);
-            }
-            return l;
-        }
+        return l;
     }
 }

@@ -15,47 +15,46 @@ using System;
 using System.Drawing;
 using System.IO;
 
-namespace OfficeOpenXml.Drawing
+namespace OfficeOpenXml.Drawing;
+
+/// <summary>
+/// Information about the content, type, bounds and resolution of an image.
+/// </summary>
+public class ExcelImageInfo
 {
-    /// <summary>
-    /// Information about the content, type, bounds and resolution of an image.
-    /// </summary>
-    public class ExcelImageInfo
+    internal ExcelImageInfo()
     {
-        internal ExcelImageInfo()
-        {
-        }
-        /// <summary>
-        /// The width of the image
-        /// </summary>
-        public double Width
-        {
-            get;
-            internal set;
-        }
-        /// <summary>
-        /// The height of the image
-        /// </summary>
-        public double Height
-        {
-            get;
-            internal set;
-        }
-        /// <summary>
-        /// The horizontal resolution of the image
-        /// </summary>
-        public double HorizontalResolution
-        {
-            get;
-            internal set;
-        } = ExcelDrawing.STANDARD_DPI;
-        /// <summary>
-        /// The vertical resolution of the image
-        /// </summary>
-        public double VerticalResolution
-        {
-            get;
-            internal set;
-        } = ExcelDrawing.STANDARD_DPI;
     }
+    /// <summary>
+    /// The width of the image
+    /// </summary>
+    public double Width
+    {
+        get;
+        internal set;
+    }
+    /// <summary>
+    /// The height of the image
+    /// </summary>
+    public double Height
+    {
+        get;
+        internal set;
+    }
+    /// <summary>
+    /// The horizontal resolution of the image
+    /// </summary>
+    public double HorizontalResolution
+    {
+        get;
+        internal set;
+    } = ExcelDrawing.STANDARD_DPI;
+    /// <summary>
+    /// The vertical resolution of the image
+    /// </summary>
+    public double VerticalResolution
+    {
+        get;
+        internal set;
+    } = ExcelDrawing.STANDARD_DPI;
 }

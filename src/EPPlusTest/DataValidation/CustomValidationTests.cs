@@ -31,46 +31,45 @@ using System;
 using System.Text;
 using OfficeOpenXml.DataValidation.Contracts;
 
-namespace EPPlusTest.DataValidation
+namespace EPPlusTest.DataValidation;
+
+[TestClass]
+public class CustomValidationTests : ValidationTestBase
 {
-    [TestClass]
-    public class CustomValidationTests : ValidationTestBase
+    [TestInitialize]
+    public void Setup()
     {
-        [TestInitialize]
-        public void Setup()
+        this.SetupTestData();
+    }
+
+    [TestCleanup]
+    public void Cleanup()
+    {
+        this.CleanupTestData();
+    }
+
+    [TestMethod]
+    public void CustomValidation_FormulaIsSet()
+    {
+        // Act
+        IExcelDataValidationCustom? validation = this._sheet.DataValidations.AddCustomValidation("A1");
+
+        // Assert
+        Assert.IsNotNull(validation.Formula);
+    }
+
+    [TestMethod, ExpectedException(typeof(InvalidOperationException), AllowDerivedTypes = true)]
+    public void CustomValidation_ShouldThrowExceptionIfFormulaIsTooLong()
+    {
+        // Arrange
+        StringBuilder? sb = new StringBuilder();
+        for (int x = 0; x < 257; x++)
         {
-            this.SetupTestData();
+            sb.Append("x");
         }
 
-        [TestCleanup]
-        public void Cleanup()
-        {
-            this.CleanupTestData();
-        }
-
-        [TestMethod]
-        public void CustomValidation_FormulaIsSet()
-        {
-            // Act
-            IExcelDataValidationCustom? validation = this._sheet.DataValidations.AddCustomValidation("A1");
-
-            // Assert
-            Assert.IsNotNull(validation.Formula);
-        }
-
-        [TestMethod, ExpectedException(typeof(InvalidOperationException), AllowDerivedTypes = true)]
-        public void CustomValidation_ShouldThrowExceptionIfFormulaIsTooLong()
-        {
-            // Arrange
-            StringBuilder? sb = new StringBuilder();
-            for (int x = 0; x < 257; x++)
-            {
-                sb.Append("x");
-            }
-
-            // Act
-            IExcelDataValidationCustom? validation = this._sheet.DataValidations.AddCustomValidation("A1");
-            validation.Formula.ExcelFormula = sb.ToString();
-        }
+        // Act
+        IExcelDataValidationCustom? validation = this._sheet.DataValidations.AddCustomValidation("A1");
+        validation.Formula.ExcelFormula = sb.ToString();
     }
 }

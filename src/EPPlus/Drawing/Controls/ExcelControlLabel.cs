@@ -14,25 +14,24 @@ using OfficeOpenXml.Packaging;
 using System;
 using System.Xml;
 
-namespace OfficeOpenXml.Drawing.Controls
-{
-    /// <summary>
-    /// Represents a label form control.
-    /// </summary>
-    public class ExcelControlLabel : ExcelControlWithText
-    {
-        internal ExcelControlLabel(ExcelDrawings drawings, XmlElement drawNode, string name, ExcelGroupShape parent=null) : base(drawings, drawNode, name, parent)
-        {
-            this.SetSize(150, 30); //Default size
-        }
-        internal ExcelControlLabel(ExcelDrawings drawings, XmlNode drawNode, ControlInternal control, ZipPackagePart part, XmlDocument controlPropertiesXml, ExcelGroupShape parent = null)
-            : base(drawings, drawNode, control, part, controlPropertiesXml, parent)
-        {
-        }
+namespace OfficeOpenXml.Drawing.Controls;
 
-        /// <summary>
-        /// The type of form control
-        /// </summary>
-        public override eControlType ControlType => eControlType.Label;
+/// <summary>
+/// Represents a label form control.
+/// </summary>
+public class ExcelControlLabel : ExcelControlWithText
+{
+    internal ExcelControlLabel(ExcelDrawings drawings, XmlElement drawNode, string name, ExcelGroupShape parent=null) : base(drawings, drawNode, name, parent)
+    {
+        this.SetSize(150, 30); //Default size
     }
+    internal ExcelControlLabel(ExcelDrawings drawings, XmlNode drawNode, ControlInternal control, ZipPackagePart part, XmlDocument controlPropertiesXml, ExcelGroupShape parent = null)
+        : base(drawings, drawNode, control, part, controlPropertiesXml, parent)
+    {
+    }
+
+    /// <summary>
+    /// The type of form control
+    /// </summary>
+    public override eControlType ControlType => eControlType.Label;
 }

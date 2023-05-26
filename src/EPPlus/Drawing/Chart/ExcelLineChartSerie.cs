@@ -18,204 +18,203 @@ using System.Xml;
 using System.Drawing;
 using OfficeOpenXml.Drawing.Interfaces;
 
-namespace OfficeOpenXml.Drawing.Chart
+namespace OfficeOpenXml.Drawing.Chart;
+
+/// <summary>
+/// A serie for a line chart
+/// </summary>
+public sealed class ExcelLineChartSerie : ExcelChartSerieWithErrorBars, IDrawingSerieDataLabel, IDrawingChartMarker, IDrawingChartDataPoints
 {
     /// <summary>
-    /// A serie for a line chart
+    /// Default constructor
     /// </summary>
-    public sealed class ExcelLineChartSerie : ExcelChartSerieWithErrorBars, IDrawingSerieDataLabel, IDrawingChartMarker, IDrawingChartDataPoints
+    /// <param name="chart">The chart</param>
+    /// <param name="ns">Namespacemanager</param>
+    /// <param name="node">Topnode</param>
+    /// <param name="isPivot">Is pivotchart</param>
+    internal ExcelLineChartSerie(ExcelChart chart, XmlNamespaceManager ns, XmlNode node, bool isPivot) :
+        base(chart, ns, node, isPivot)
     {
-        /// <summary>
-        /// Default constructor
-        /// </summary>
-        /// <param name="chart">The chart</param>
-        /// <param name="ns">Namespacemanager</param>
-        /// <param name="node">Topnode</param>
-        /// <param name="isPivot">Is pivotchart</param>
-        internal ExcelLineChartSerie(ExcelChart chart, XmlNamespaceManager ns, XmlNode node, bool isPivot) :
-            base(chart, ns, node, isPivot)
+    }
+    ExcelChartSerieDataLabel _DataLabel = null;
+    /// <summary>
+    /// Datalabels
+    /// </summary>
+    public ExcelChartSerieDataLabel DataLabel
+    {
+        get
         {
+            return this._DataLabel ??= new ExcelChartSerieDataLabel(this._chart, this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder);
         }
-        ExcelChartSerieDataLabel _DataLabel = null;
-        /// <summary>
-        /// Datalabels
-        /// </summary>
-        public ExcelChartSerieDataLabel DataLabel
+    }
+    /// <summary>
+    /// If the chart has datalabel
+    /// </summary>
+    public bool HasDataLabel
+    {
+        get
         {
-            get
-            {
-                return this._DataLabel ??= new ExcelChartSerieDataLabel(this._chart, this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder);
-            }
+            return this.TopNode.SelectSingleNode("c:dLbls", this.NameSpaceManager) != null;
         }
-        /// <summary>
-        /// If the chart has datalabel
-        /// </summary>
-        public bool HasDataLabel
+    }
+    ExcelChartMarker _chartMarker = null;
+    /// <summary>
+    /// A reference to marker properties
+    /// </summary>
+    public ExcelChartMarker Marker
+    {
+        get
         {
-            get
-            {
-                return this.TopNode.SelectSingleNode("c:dLbls", this.NameSpaceManager) != null;
-            }
+            //if (IsMarkersAllowed() == false)
+            //{
+            //    return null;
+            //}
+            return this._chartMarker ??= new ExcelChartMarker(this._chart, this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder);
         }
-        ExcelChartMarker _chartMarker = null;
-        /// <summary>
-        /// A reference to marker properties
-        /// </summary>
-        public ExcelChartMarker Marker
-        {
-            get
-            {
-                //if (IsMarkersAllowed() == false)
-                //{
-                //    return null;
-                //}
-                return this._chartMarker ??= new ExcelChartMarker(this._chart, this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder);
-            }
-        }
-        /// <summary>
-        /// If the serie has markers
-        /// </summary>
-        /// <returns>True if serie has markers</returns>
-        public bool HasMarker()
-        {
-            return this.Marker.Style!=eMarkerStyle.None;
-        }
+    }
+    /// <summary>
+    /// If the serie has markers
+    /// </summary>
+    /// <returns>True if serie has markers</returns>
+    public bool HasMarker()
+    {
+        return this.Marker.Style!=eMarkerStyle.None;
+    }
 
-        const string smoothPath = "c:smooth/@val";
-        /// <summary>
-        /// Smooth lines
-        /// </summary>
-        public bool Smooth
+    const string smoothPath = "c:smooth/@val";
+    /// <summary>
+    /// Smooth lines
+    /// </summary>
+    public bool Smooth
+    {
+        get
         {
-            get
+            return this.GetXmlNodeBool(smoothPath, false);
+        }
+        set
+        {
+            this.SetXmlNodeBool(smoothPath, value);
+        }
+    }
+    ExcelChartDataPointCollection _dataPoints = null;
+    /// <summary>
+    /// A collection of the individual datapoints
+    /// </summary>
+    public ExcelChartDataPointCollection DataPoints
+    {
+        get
+        {
+            return this._dataPoints ??= new ExcelChartDataPointCollection(this._chart, this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder);
+        }
+    }
+    /// <summary>
+    /// Line color.
+    /// </summary>
+    ///
+    /// <value>
+    /// The color of the line.
+    /// </value>
+    [Obsolete("Please use Border.Fill.Color")]
+    public Color LineColor
+    {
+        get
+        {
+            if (this.Border.Fill.Style == eFillStyle.SolidFill && this.Border.Fill.SolidFill.Color.ColorType==eDrawingColorType.Rgb)
             {
-                return this.GetXmlNodeBool(smoothPath, false);
+                return this.Border.Fill.Color;
             }
-            set
+            else
             {
-                this.SetXmlNodeBool(smoothPath, value);
+                return Color.Black;
             }
         }
-        ExcelChartDataPointCollection _dataPoints = null;
-        /// <summary>
-        /// A collection of the individual datapoints
-        /// </summary>
-        public ExcelChartDataPointCollection DataPoints
+        set
         {
-            get
-            {
-                return this._dataPoints ??= new ExcelChartDataPointCollection(this._chart, this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder);
-            }
+            this.Border.Fill.Color = value;
         }
-        /// <summary>
-        /// Line color.
-        /// </summary>
-        ///
-        /// <value>
-        /// The color of the line.
-        /// </value>
-        [Obsolete("Please use Border.Fill.Color")]
-        public Color LineColor
+    }
+    /// <summary>
+    /// Gets or sets the size of the marker.
+    /// </summary>
+    ///
+    /// <remarks>
+    /// value between 2 and 72.
+    /// </remarks>
+    ///
+    /// <value>
+    /// The size of the marker.
+    /// </value>
+    [Obsolete("Please use Marker.Size")]
+    public int MarkerSize
+    {
+        get
         {
-            get
-            {
-                if (this.Border.Fill.Style == eFillStyle.SolidFill && this.Border.Fill.SolidFill.Color.ColorType==eDrawingColorType.Rgb)
-                {
-                    return this.Border.Fill.Color;
-                }
-                else
-                {
-                    return Color.Black;
-                }
-            }
-            set
-            {
-                this.Border.Fill.Color = value;
-            }
-        }
-        /// <summary>
-        /// Gets or sets the size of the marker.
-        /// </summary>
-        ///
-        /// <remarks>
-        /// value between 2 and 72.
-        /// </remarks>
-        ///
-        /// <value>
-        /// The size of the marker.
-        /// </value>
-        [Obsolete("Please use Marker.Size")]
-        public int MarkerSize
-        {
-            get
-            {
 
-                int size = this.Marker.Size;
-                if (size == 0)
-                {
-                    return 5;
-                }
-                else
-                {
-                    return size;
-                }
-            }
-            set
+            int size = this.Marker.Size;
+            if (size == 0)
             {
-                this.Marker.Size = value;
+                return 5;
+            }
+            else
+            {
+                return size;
             }
         }
-        /// <summary>
-        /// Gets or sets the width of the line in pt.
-        /// </summary>
-        /// <value>
-        /// The width of the line.
-        /// </value>
-        [Obsolete("Please use Border.Width")]
-        public double LineWidth
+        set
         {
-            get
+            this.Marker.Size = value;
+        }
+    }
+    /// <summary>
+    /// Gets or sets the width of the line in pt.
+    /// </summary>
+    /// <value>
+    /// The width of the line.
+    /// </value>
+    [Obsolete("Please use Border.Width")]
+    public double LineWidth
+    {
+        get
+        {
+            double width = this.Border.Width;
+            if (width == 0)
             {
-                double width = this.Border.Width;
-                if (width == 0)
-                {
-                    return 2.25;
-                }
-                else
-                {
-                    return width;
-                }
+                return 2.25;
             }
-            set
+            else
             {
-                this.Border.Width = value;
+                return width;
             }
         }
-        /// <summary>
-        /// Marker Line color. 
-        /// (not to be confused with LineColor)
-        /// </summary>
-        /// <value>
-        /// The color of the Marker line.
-        /// </value>
-        [Obsolete("Please use Marker.Border.Fill.Color")]
-        public Color MarkerLineColor
+        set
         {
-            get
+            this.Border.Width = value;
+        }
+    }
+    /// <summary>
+    /// Marker Line color. 
+    /// (not to be confused with LineColor)
+    /// </summary>
+    /// <value>
+    /// The color of the Marker line.
+    /// </value>
+    [Obsolete("Please use Marker.Border.Fill.Color")]
+    public Color MarkerLineColor
+    {
+        get
+        {
+            if (this.Marker.Border.Fill.Style == eFillStyle.SolidFill && this.Marker.Border.Fill.SolidFill.Color.ColorType == eDrawingColorType.Rgb)
             {
-                if (this.Marker.Border.Fill.Style == eFillStyle.SolidFill && this.Marker.Border.Fill.SolidFill.Color.ColorType == eDrawingColorType.Rgb)
-                {
-                    return this.Marker.Border.Fill.Color;
-                }
-                else
-                {
-                    return Color.Black;
-                }
+                return this.Marker.Border.Fill.Color;
             }
-            set
+            else
             {
-                this.Marker.Border.Fill.Color= value;
+                return Color.Black;
             }
+        }
+        set
+        {
+            this.Marker.Border.Fill.Color= value;
         }
     }
 }

@@ -10,56 +10,55 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
-namespace OfficeOpenXml.Drawing.Chart
+namespace OfficeOpenXml.Drawing.Chart;
+
+/// <summary>
+/// Markerstyle
+/// </summary>
+public enum eMarkerStyle
 {
     /// <summary>
-    /// Markerstyle
+    /// The shape of a circle
     /// </summary>
-    public enum eMarkerStyle
-    {
-        /// <summary>
-        /// The shape of a circle
-        /// </summary>
-        Circle,
-        /// <summary>
-        /// The shape of a dash
-        /// </summary>
-        Dash,
-        /// <summary>
-        /// The shape of a diamond
-        /// </summary>
-        Diamond,
-        /// <summary>
-        /// The shape of a dot
-        /// </summary>
-        Dot,
-        /// <summary>
-        /// No marker
-        /// </summary>
-        None,
-        /// <summary>
-        /// A picture, currently unsupported
-        /// </summary>
-        Picture,
-        /// <summary>
-        /// The shape of a plus
-        /// </summary>
-        Plus,
-        /// <summary>
-        /// The shape of a square
-        /// </summary>
-        Square,
-        /// <summary>
-        /// The shape of a star
-        /// </summary>
-        Star,
-        /// <summary>
-        /// The shape of a triangle
-        /// </summary>
-        Triangle,
-        /// <summary>
-        /// The shape of a X
-        /// </summary>
-        X,
-    }
+    Circle,
+    /// <summary>
+    /// The shape of a dash
+    /// </summary>
+    Dash,
+    /// <summary>
+    /// The shape of a diamond
+    /// </summary>
+    Diamond,
+    /// <summary>
+    /// The shape of a dot
+    /// </summary>
+    Dot,
+    /// <summary>
+    /// No marker
+    /// </summary>
+    None,
+    /// <summary>
+    /// A picture, currently unsupported
+    /// </summary>
+    Picture,
+    /// <summary>
+    /// The shape of a plus
+    /// </summary>
+    Plus,
+    /// <summary>
+    /// The shape of a square
+    /// </summary>
+    Square,
+    /// <summary>
+    /// The shape of a star
+    /// </summary>
+    Star,
+    /// <summary>
+    /// The shape of a triangle
+    /// </summary>
+    Triangle,
+    /// <summary>
+    /// The shape of a X
+    /// </summary>
+    X,
 }

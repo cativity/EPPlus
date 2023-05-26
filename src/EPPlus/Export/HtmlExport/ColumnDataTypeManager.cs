@@ -16,55 +16,54 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace OfficeOpenXml.Export.HtmlExport
+namespace OfficeOpenXml.Export.HtmlExport;
+
+internal static class ColumnDataTypeManager
 {
-    internal static class ColumnDataTypeManager
+    private static CompileResultFactory _compileResultFactory = new CompileResultFactory();
+
+    public static class HtmlDataTypes
     {
-        private static CompileResultFactory _compileResultFactory = new CompileResultFactory();
+        public const string Number = "number";
+        public const string String = "string";
+        public const string Boolean = "boolean";
+        public const string DateTime = "datetime";
+        public const string TimeSpan = "timespan";
+    }
 
-        public static class HtmlDataTypes
+    public static string GetColumnDataType(ExcelWorksheet sheet, ExcelRangeBase range, int startRow, int column)
+    {
+        int rowIndex = startRow;
+        DataType dataType = DataType.Empty;
+        while(rowIndex <= range.End.Row)
         {
-            public const string Number = "number";
-            public const string String = "string";
-            public const string Boolean = "boolean";
-            public const string DateTime = "datetime";
-            public const string TimeSpan = "timespan";
-        }
-
-        public static string GetColumnDataType(ExcelWorksheet sheet, ExcelRangeBase range, int startRow, int column)
-        {
-            int rowIndex = startRow;
-            DataType dataType = DataType.Empty;
-            while(rowIndex <= range.End.Row)
+            object? v = sheet.Cells[rowIndex, column].Value;
+            if(v != null)
             {
-                object? v = sheet.Cells[rowIndex, column].Value;
-                if(v != null)
-                {
-                    return HtmlRawDataProvider.GetHtmlDataTypeFromValue(v);
-                }
-                rowIndex++;
+                return HtmlRawDataProvider.GetHtmlDataTypeFromValue(v);
             }
-            return GetHtmlDataType(dataType);
+            rowIndex++;
         }
+        return GetHtmlDataType(dataType);
+    }
 
-        private static string GetHtmlDataType(DataType dataType)
+    private static string GetHtmlDataType(DataType dataType)
+    {
+        switch(dataType)
         {
-            switch(dataType)
-            {
-                case DataType.Integer:
-                case DataType.Decimal:
-                    return HtmlDataTypes.Number;
-                case DataType.String:
-                    return HtmlDataTypes.String;
-                case DataType.Boolean:
-                    return HtmlDataTypes.Boolean;
-                case DataType.Time:
-                    return HtmlDataTypes.TimeSpan;
-                case DataType.Date:
-                    return HtmlDataTypes.DateTime;
-                default:
-                    return HtmlDataTypes.String;
-            }
+            case DataType.Integer:
+            case DataType.Decimal:
+                return HtmlDataTypes.Number;
+            case DataType.String:
+                return HtmlDataTypes.String;
+            case DataType.Boolean:
+                return HtmlDataTypes.Boolean;
+            case DataType.Time:
+                return HtmlDataTypes.TimeSpan;
+            case DataType.Date:
+                return HtmlDataTypes.DateTime;
+            default:
+                return HtmlDataTypes.String;
         }
     }
 }

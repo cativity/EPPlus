@@ -17,30 +17,29 @@ using System.Security.Cryptography.Pkcs;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 
-namespace OfficeOpenXml.VBA.Signatures
+namespace OfficeOpenXml.VBA.Signatures;
+
+internal class SignatureInfo
 {
-    internal class SignatureInfo
-    {
-        public uint cbSignature;
-        public uint signatureOffset;     //44 ??
-        public uint cbSigningCertStore;
-        public uint certStoreOffset;
-        public uint cbProjectName;
-        public uint projectNameOffset;
-        public uint fTimestamp;
-        public uint cbTimestampUrl;
-        public uint timestampUrlOffset;
-        public byte[] signature;
-        public uint version;
-        public uint fileType;
+    public uint cbSignature;
+    public uint signatureOffset;     //44 ??
+    public uint cbSigningCertStore;
+    public uint certStoreOffset;
+    public uint cbProjectName;
+    public uint projectNameOffset;
+    public uint fTimestamp;
+    public uint cbTimestampUrl;
+    public uint timestampUrlOffset;
+    public byte[] signature;
+    public uint version;
+    public uint fileType;
 
-        public uint id;
-        internal uint endel1;
-        internal uint endel2;
-        internal ushort rgchProjectNameBuffer;
-        internal ushort rgchTimestampBuffer;
+    public uint id;
+    internal uint endel1;
+    internal uint endel2;
+    internal ushort rgchProjectNameBuffer;
+    internal ushort rgchTimestampBuffer;
 
-        public X509Certificate2 Certificate { get; internal set; }
-        public SignedCms Verifier { get; internal set; }
-    }
+    public X509Certificate2 Certificate { get; internal set; }
+    public SignedCms Verifier { get; internal set; }
 }

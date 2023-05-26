@@ -15,10 +15,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace OfficeOpenXml.Sorting.Internal
+namespace OfficeOpenXml.Sorting.Internal;
+
+internal abstract class SortItemBase<T>
 {
-    internal abstract class SortItemBase<T>
-    {
-        internal T[] Items { get; set; }
-    }
+    internal T[] Items { get; set; }
 }

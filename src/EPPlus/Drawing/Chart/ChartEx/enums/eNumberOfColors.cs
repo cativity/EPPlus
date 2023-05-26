@@ -10,20 +10,19 @@
  *************************************************************************************************
     04/16/2020         EPPlus Software AB       EPPlus 5.2
  *************************************************************************************************/
-namespace OfficeOpenXml.Drawing.Chart.ChartEx
+namespace OfficeOpenXml.Drawing.Chart.ChartEx;
+
+/// <summary>
+/// The number of colors used to create the series gradient color scale in a extended chart.
+/// </summary>
+public enum eNumberOfColors
 {
     /// <summary>
-    /// The number of colors used to create the series gradient color scale in a extended chart.
+    /// Uses two colors to create the gradient color scale
     /// </summary>
-    public enum eNumberOfColors
-    {
-        /// <summary>
-        /// Uses two colors to create the gradient color scale
-        /// </summary>
-        TwoColor=2,
-        /// <summary>
-        /// Diverging. Uses three colors to create the gradient color scale
-        /// </summary>
-        ThreeColor=3
-    }
+    TwoColor=2,
+    /// <summary>
+    /// Diverging. Uses three colors to create the gradient color scale
+    /// </summary>
+    ThreeColor=3
 }

@@ -16,30 +16,29 @@ using OfficeOpenXml.Packaging;
 using System;
 using System.Collections.Generic;
 using System.Xml;
-namespace OfficeOpenXml.Drawing.Chart.ChartEx
+namespace OfficeOpenXml.Drawing.Chart.ChartEx;
+
+/// <summary>
+/// Represents a Treemap Chart
+/// </summary>
+public class ExcelTreemapChart : ExcelChartEx
 {
-    /// <summary>
-    /// Represents a Treemap Chart
-    /// </summary>
-    public class ExcelTreemapChart : ExcelChartEx
+    internal ExcelTreemapChart(ExcelDrawings drawings, XmlNode drawingsNode, eChartType? type, XmlDocument chartXml = null, ExcelGroupShape parent = null) :
+        base(drawings, drawingsNode, type, chartXml, parent)
     {
-        internal ExcelTreemapChart(ExcelDrawings drawings, XmlNode drawingsNode, eChartType? type, XmlDocument chartXml = null, ExcelGroupShape parent = null) :
-            base(drawings, drawingsNode, type, chartXml, parent)
-        {
-            this.Series.Init(this, this.NameSpaceManager, this.TopNode, false, base.Series._list);
-            this.StyleManager.SetChartStyle(Chart.Style.ePresetChartStyle.TreemapChartStyle1);
-        }
-        internal ExcelTreemapChart(ExcelDrawings drawings, XmlNode node, Uri uriChart, ZipPackagePart part, XmlDocument chartXml, XmlNode chartNode, ExcelGroupShape parent = null) :
-            base(drawings, node, uriChart, part, chartXml, chartNode, parent)
-        {
-            this.Series.Init(this, this.NameSpaceManager, this.TopNode, false, base.Series._list);
-        }
-        /// <summary>
-        /// The series for a treemap chart
-        /// </summary>
-        public new ExcelChartSeries<ExcelTreemapChartSerie> Series
-        {
-            get;
-        } = new ExcelChartSeries<ExcelTreemapChartSerie>();
+        this.Series.Init(this, this.NameSpaceManager, this.TopNode, false, base.Series._list);
+        this.StyleManager.SetChartStyle(Chart.Style.ePresetChartStyle.TreemapChartStyle1);
     }
+    internal ExcelTreemapChart(ExcelDrawings drawings, XmlNode node, Uri uriChart, ZipPackagePart part, XmlDocument chartXml, XmlNode chartNode, ExcelGroupShape parent = null) :
+        base(drawings, node, uriChart, part, chartXml, chartNode, parent)
+    {
+        this.Series.Init(this, this.NameSpaceManager, this.TopNode, false, base.Series._list);
+    }
+    /// <summary>
+    /// The series for a treemap chart
+    /// </summary>
+    public new ExcelChartSeries<ExcelTreemapChartSerie> Series
+    {
+        get;
+    } = new ExcelChartSeries<ExcelTreemapChartSerie>();
 }

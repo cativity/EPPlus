@@ -18,50 +18,49 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace OfficeOpenXml.Drawing.Interfaces
+namespace OfficeOpenXml.Drawing.Interfaces;
+
+/// <summary>
+/// Interface to handle styles on a chart part
+/// </summary>
+internal interface IDrawingStyleBase
 {
     /// <summary>
-    /// Interface to handle styles on a chart part
+    /// Create the spPr element within the drawing part if does not exist.
     /// </summary>
-    internal interface IDrawingStyleBase
-    {
-        /// <summary>
-        /// Create the spPr element within the drawing part if does not exist.
-        /// </summary>
-        void CreatespPr();
-        /// <summary>
-        /// Border settings
-        /// </summary>
-        ExcelDrawingBorder Border { get; }
-        /// <summary>
-        /// Effect settings
-        /// </summary>
-        ExcelDrawingEffectStyle Effect { get; }
-        /// <summary>
-        /// Fill settings
-        /// </summary>
-        ExcelDrawingFill Fill { get; }
-        /// <summary>
-        /// 3D settings
-        /// </summary>
-        ExcelDrawing3D ThreeD { get; }
-    }
+    void CreatespPr();
     /// <summary>
-    /// Interface to handle font styles on a chart part
+    /// Border settings
     /// </summary>
-    internal interface IDrawingStyle : IDrawingStyleBase
-    {
-        /// <summary>
-        /// Font settings
-        /// </summary>
-        ExcelTextFont Font { get;  }
-        /// <summary>
-        /// Text body settings
-        /// </summary>
-        ExcelTextBody TextBody { get; }
-    }
-    internal interface IStyleMandatoryProperties
-    {
-        void SetMandatoryProperties();
-    }
+    ExcelDrawingBorder Border { get; }
+    /// <summary>
+    /// Effect settings
+    /// </summary>
+    ExcelDrawingEffectStyle Effect { get; }
+    /// <summary>
+    /// Fill settings
+    /// </summary>
+    ExcelDrawingFill Fill { get; }
+    /// <summary>
+    /// 3D settings
+    /// </summary>
+    ExcelDrawing3D ThreeD { get; }
+}
+/// <summary>
+/// Interface to handle font styles on a chart part
+/// </summary>
+internal interface IDrawingStyle : IDrawingStyleBase
+{
+    /// <summary>
+    /// Font settings
+    /// </summary>
+    ExcelTextFont Font { get;  }
+    /// <summary>
+    /// Text body settings
+    /// </summary>
+    ExcelTextBody TextBody { get; }
+}
+internal interface IStyleMandatoryProperties
+{
+    void SetMandatoryProperties();
 }

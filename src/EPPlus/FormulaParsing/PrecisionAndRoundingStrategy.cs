@@ -14,20 +14,19 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace OfficeOpenXml.FormulaParsing
+namespace OfficeOpenXml.FormulaParsing;
+
+/// <summary>
+/// Represent strategies for handling precision and rounding of float/double values when calculating formulas.
+/// </summary>
+public enum PrecisionAndRoundingStrategy
 {
     /// <summary>
-    /// Represent strategies for handling precision and rounding of float/double values when calculating formulas.
+    /// Use .NET's default functionality
     /// </summary>
-    public enum PrecisionAndRoundingStrategy
-    {
-        /// <summary>
-        /// Use .NET's default functionality
-        /// </summary>
-        DotNet,
-        /// <summary>
-        /// Use Excels strategy with max 15 significant figures.
-        /// </summary>
-        Excel
-    }
+    DotNet,
+    /// <summary>
+    /// Use Excels strategy with max 15 significant figures.
+    /// </summary>
+    Excel
 }

@@ -18,38 +18,37 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Statistical
-{
-    [FunctionMetadata(
-        Category = ExcelFunctionCategory.Statistical,
-        EPPlusVersion = "6.0",
-        Description = "Calculates the skewness of a distribution based on a population")]
-    internal class SkewP : ExcelFunction
-    {
-        public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
-        {
-            ValidateArguments(arguments, 1);
-            double[]? numbers = this.ArgsToDoubleEnumerable(arguments, context).Select(x => x.Value).ToArray();
-            int n = numbers.Length;
-            double avg = numbers.Average();
-            double sd = CalcStandardDev(numbers, avg);
-            double i = 0d;
-            foreach(double number in numbers)
-            {
-                i += System.Math.Pow((number - avg)/sd, 3);
-            }
-            double result = i / n;
-            return this.CreateResult(result, DataType.Decimal);
-        }
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Statistical;
 
-        private static double CalcStandardDev(IEnumerable<double> numbers, double avg)
+[FunctionMetadata(
+                     Category = ExcelFunctionCategory.Statistical,
+                     EPPlusVersion = "6.0",
+                     Description = "Calculates the skewness of a distribution based on a population")]
+internal class SkewP : ExcelFunction
+{
+    public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
+    {
+        ValidateArguments(arguments, 1);
+        double[]? numbers = this.ArgsToDoubleEnumerable(arguments, context).Select(x => x.Value).ToArray();
+        int n = numbers.Length;
+        double avg = numbers.Average();
+        double sd = CalcStandardDev(numbers, avg);
+        double i = 0d;
+        foreach(double number in numbers)
         {
-            double stdDev = 0d;
-            foreach (double n in numbers)
-            {
-                stdDev += System.Math.Pow(n - avg, 2);
-            }
-            return System.Math.Sqrt(stdDev / numbers.Count());
+            i += System.Math.Pow((number - avg)/sd, 3);
         }
+        double result = i / n;
+        return this.CreateResult(result, DataType.Decimal);
+    }
+
+    private static double CalcStandardDev(IEnumerable<double> numbers, double avg)
+    {
+        double stdDev = 0d;
+        foreach (double n in numbers)
+        {
+            stdDev += System.Math.Pow(n - avg, 2);
+        }
+        return System.Math.Sqrt(stdDev / numbers.Count());
     }
 }

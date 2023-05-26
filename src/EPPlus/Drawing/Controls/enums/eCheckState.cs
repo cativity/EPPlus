@@ -10,24 +10,23 @@
  *************************************************************************************************
   10/21/2020         EPPlus Software AB           Controls 
  *************************************************************************************************/
-namespace OfficeOpenXml.Drawing.Controls
+namespace OfficeOpenXml.Drawing.Controls;
+
+/// <summary>
+/// The state of a check box form control
+/// </summary>
+public enum eCheckState
 {
     /// <summary>
-    /// The state of a check box form control
+    /// The checkbox is unchecked
     /// </summary>
-    public enum eCheckState
-    {
-        /// <summary>
-        /// The checkbox is unchecked
-        /// </summary>
-        Unchecked=0,
-        /// <summary>
-        /// The checkbox is checked
-        /// </summary>
-        Checked=1,
-        /// <summary>
-        /// The checkbox is greyed out, neither checked or unchecked
-        /// </summary>
-        Mixed=2
-    }
+    Unchecked=0,
+    /// <summary>
+    /// The checkbox is checked
+    /// </summary>
+    Checked=1,
+    /// <summary>
+    /// The checkbox is greyed out, neither checked or unchecked
+    /// </summary>
+    Mixed=2
 }

@@ -10,28 +10,27 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
-namespace OfficeOpenXml.Drawing.Chart
+namespace OfficeOpenXml.Drawing.Chart;
+
+/// <summary>
+/// Axis label position
+/// </summary>
+public enum eTickLabelPosition
 {
     /// <summary>
-    /// Axis label position
+    /// The axis labels will be at the high end of the perpendicular axis
     /// </summary>
-    public enum eTickLabelPosition
-    {
-        /// <summary>
-        /// The axis labels will be at the high end of the perpendicular axis
-        /// </summary>
-        High,
-        /// <summary>
-        /// The axis labels will be at the low end of the perpendicular axis
-        /// </summary>
-        Low,
-        /// <summary>
-        /// The axis labels will be next to the axis.
-        /// </summary>
-        NextTo,
-        /// <summary>
-        /// No axis labels are drawn
-        /// </summary>
-        None
-    }
+    High,
+    /// <summary>
+    /// The axis labels will be at the low end of the perpendicular axis
+    /// </summary>
+    Low,
+    /// <summary>
+    /// The axis labels will be next to the axis.
+    /// </summary>
+    NextTo,
+    /// <summary>
+    /// No axis labels are drawn
+    /// </summary>
+    None
 }

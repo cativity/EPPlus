@@ -37,111 +37,110 @@ using System.Threading.Tasks;
 using System.Xml;
 using OfficeOpenXml.Drawing;
 
-namespace EPPlusTest.Drawing.Chart
+namespace EPPlusTest.Drawing.Chart;
+
+[TestClass]
+public class ExcelChartAxisTest
 {
-    [TestClass]
-    public class ExcelChartAxisTest
-    {
-        private ExcelChartAxis axis;
+    private ExcelChartAxis axis;
         
-        [TestInitialize]
-        public void Initialize()
-        {
-            XmlDocument? xmlDoc = new XmlDocument();
-            xmlDoc.LoadXml("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><c:chartSpace xmlns:c=\"http://schemas.openxmlformats.org/drawingml/2006/chart\" xmlns:a=\"http://schemas.openxmlformats.org/drawingml/2006/main\" xmlns:r=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships\" ></c:chartSpace>");
-            XmlNamespaceManager? xmlNsm = new XmlNamespaceManager(new NameTable());
-            xmlNsm.AddNamespace("c", ExcelPackage.schemaChart);
-            xmlNsm.AddNamespace("a", ExcelPackage.schemaDrawings);
-            XmlElement? node = xmlDoc.CreateElement("axis");
-            xmlDoc.DocumentElement.AppendChild(node);
-            this.axis = new ExcelChartAxisStandard(null,xmlNsm, node, "c");
-        }
+    [TestInitialize]
+    public void Initialize()
+    {
+        XmlDocument? xmlDoc = new XmlDocument();
+        xmlDoc.LoadXml("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><c:chartSpace xmlns:c=\"http://schemas.openxmlformats.org/drawingml/2006/chart\" xmlns:a=\"http://schemas.openxmlformats.org/drawingml/2006/main\" xmlns:r=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships\" ></c:chartSpace>");
+        XmlNamespaceManager? xmlNsm = new XmlNamespaceManager(new NameTable());
+        xmlNsm.AddNamespace("c", ExcelPackage.schemaChart);
+        xmlNsm.AddNamespace("a", ExcelPackage.schemaDrawings);
+        XmlElement? node = xmlDoc.CreateElement("axis");
+        xmlDoc.DocumentElement.AppendChild(node);
+        this.axis = new ExcelChartAxisStandard(null,xmlNsm, node, "c");
+    }
 
-        [TestMethod]
-        public void CrossesAt_SetTo2_Is2()
-        {
-            this.axis.CrossesAt = 2;
-            Assert.AreEqual(this.axis.CrossesAt, 2);
-        }
+    [TestMethod]
+    public void CrossesAt_SetTo2_Is2()
+    {
+        this.axis.CrossesAt = 2;
+        Assert.AreEqual(this.axis.CrossesAt, 2);
+    }
 
-        [TestMethod]
-        public void CrossesAt_SetTo1EMinus6_Is1EMinus6()
-        {
-            this.axis.CrossesAt = 1.2e-6;
-            Assert.AreEqual(this.axis.CrossesAt, 1.2e-6);
-        }
+    [TestMethod]
+    public void CrossesAt_SetTo1EMinus6_Is1EMinus6()
+    {
+        this.axis.CrossesAt = 1.2e-6;
+        Assert.AreEqual(this.axis.CrossesAt, 1.2e-6);
+    }
 
-        [TestMethod]
-        public void MinValue_SetTo2_Is2()
-        {
-            this.axis.MinValue = 2;
-            Assert.AreEqual(this.axis.MinValue, 2);
-        }
+    [TestMethod]
+    public void MinValue_SetTo2_Is2()
+    {
+        this.axis.MinValue = 2;
+        Assert.AreEqual(this.axis.MinValue, 2);
+    }
 
-        [TestMethod]
-        public void MinValue_SetTo1EMinus6_Is1EMinus6()
-        {
-            this.axis.MinValue = 1.2e-6;
-            Assert.AreEqual(this.axis.MinValue, 1.2e-6);
-        }
+    [TestMethod]
+    public void MinValue_SetTo1EMinus6_Is1EMinus6()
+    {
+        this.axis.MinValue = 1.2e-6;
+        Assert.AreEqual(this.axis.MinValue, 1.2e-6);
+    }
 
-        [TestMethod]
-        public void MaxValue_SetTo2_Is2()
-        {
-            this.axis.MaxValue = 2;
-            Assert.AreEqual(this.axis.MaxValue, 2);
-        }
+    [TestMethod]
+    public void MaxValue_SetTo2_Is2()
+    {
+        this.axis.MaxValue = 2;
+        Assert.AreEqual(this.axis.MaxValue, 2);
+    }
 
-        [TestMethod]
-        public void MaxValue_SetTo1EMinus6_Is1EMinus6()
-        {
-            this.axis.MaxValue = 1.2e-6;
-            Assert.AreEqual(this.axis.MaxValue, 1.2e-6);
-        }
-        [TestMethod] 
-        public void Gridlines_Set_IsNotNull()
-        { 
-            ExcelDrawingBorder? major = this.axis.MajorGridlines;
-            major.Width = 1;
-            Assert.IsTrue(this.axis.ExistsNode("c:majorGridlines")); 
+    [TestMethod]
+    public void MaxValue_SetTo1EMinus6_Is1EMinus6()
+    {
+        this.axis.MaxValue = 1.2e-6;
+        Assert.AreEqual(this.axis.MaxValue, 1.2e-6);
+    }
+    [TestMethod] 
+    public void Gridlines_Set_IsNotNull()
+    { 
+        ExcelDrawingBorder? major = this.axis.MajorGridlines;
+        major.Width = 1;
+        Assert.IsTrue(this.axis.ExistsNode("c:majorGridlines")); 
   
-            ExcelDrawingBorder? minor = this.axis.MinorGridlines;
-            minor.Width = 1;
-            Assert.IsTrue(this.axis.ExistsNode("c:minorGridlines")); 
-        } 
+        ExcelDrawingBorder? minor = this.axis.MinorGridlines;
+        minor.Width = 1;
+        Assert.IsTrue(this.axis.ExistsNode("c:minorGridlines")); 
+    } 
   
-        [TestMethod] 
-        public void Gridlines_Remove_IsNull()
-        { 
-            ExcelDrawingBorder? major = this.axis.MajorGridlines;
-            major.Width = 1;
-            ExcelDrawingBorder? minor = this.axis.MinorGridlines;
-            minor.Width = 1;
+    [TestMethod] 
+    public void Gridlines_Remove_IsNull()
+    { 
+        ExcelDrawingBorder? major = this.axis.MajorGridlines;
+        major.Width = 1;
+        ExcelDrawingBorder? minor = this.axis.MinorGridlines;
+        minor.Width = 1;
 
-            this.axis.RemoveGridlines(); 
+        this.axis.RemoveGridlines(); 
   
-            Assert.IsFalse(this.axis.ExistsNode("c:majorGridlines")); 
-            Assert.IsFalse(this.axis.ExistsNode("c:minorGridlines")); 
+        Assert.IsFalse(this.axis.ExistsNode("c:majorGridlines")); 
+        Assert.IsFalse(this.axis.ExistsNode("c:minorGridlines")); 
   
-            major = this.axis.MajorGridlines;
-            major.Width = 1;
-            minor = this.axis.MinorGridlines;
-            minor.Width = 1;
+        major = this.axis.MajorGridlines;
+        major.Width = 1;
+        minor = this.axis.MinorGridlines;
+        minor.Width = 1;
 
-            this.axis.RemoveGridlines(true, false); 
+        this.axis.RemoveGridlines(true, false); 
   
-            Assert.IsFalse(this.axis.ExistsNode("c:majorGridlines")); 
-            Assert.IsTrue(this.axis.ExistsNode("c:minorGridlines")); 
+        Assert.IsFalse(this.axis.ExistsNode("c:majorGridlines")); 
+        Assert.IsTrue(this.axis.ExistsNode("c:minorGridlines")); 
   
-            major = this.axis.MajorGridlines;
-            major.Width = 1;
-            minor = this.axis.MinorGridlines;
-            minor.Width = 1;
+        major = this.axis.MajorGridlines;
+        major.Width = 1;
+        minor = this.axis.MinorGridlines;
+        minor.Width = 1;
 
-            this.axis.RemoveGridlines(false, true); 
+        this.axis.RemoveGridlines(false, true); 
   
-            Assert.IsTrue(this.axis.ExistsNode("c:majorGridlines"));
-            Assert.IsFalse(this.axis.ExistsNode("c:minorGridlines"));
-        }
+        Assert.IsTrue(this.axis.ExistsNode("c:majorGridlines"));
+        Assert.IsFalse(this.axis.ExistsNode("c:minorGridlines"));
     }
 }

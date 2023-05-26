@@ -34,78 +34,77 @@ using OfficeOpenXml.FormulaParsing;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.RefAndLookup;
 using OfficeOpenXml.FormulaParsing.ExpressionGraph;
 
-namespace EPPlusTest.FormulaParsing.Excel.Functions.RefAndLookup
+namespace EPPlusTest.FormulaParsing.Excel.Functions.RefAndLookup;
+
+[TestClass]
+public class IndexTests
 {
-    [TestClass]
-    public class IndexTests
+    private ParsingContext _parsingContext;
+    private ExcelPackage _package;
+    private ExcelWorksheet _worksheet;
+
+    [TestInitialize]
+    public void Initialize()
     {
-        private ParsingContext _parsingContext;
-        private ExcelPackage _package;
-        private ExcelWorksheet _worksheet;
+        this._parsingContext = ParsingContext.Create();
+        this._package = new ExcelPackage(new MemoryStream());
+        this._worksheet = this._package.Workbook.Worksheets.Add("test");
+    }
 
-        [TestInitialize]
-        public void Initialize()
-        {
-            this._parsingContext = ParsingContext.Create();
-            this._package = new ExcelPackage(new MemoryStream());
-            this._worksheet = this._package.Workbook.Worksheets.Add("test");
-        }
-
-        [TestCleanup]
-        public void Cleanup()
-        {
-            this._package.Dispose();
-        }
+    [TestCleanup]
+    public void Cleanup()
+    {
+        this._package.Dispose();
+    }
         
-        [TestMethod]
-        public void Index_Should_Return_Value_By_Index()
-        {
-            Index? func = new Index();
-            CompileResult? result = func.Execute(
-                                                 FunctionsHelper.CreateArgs(
-                                                                            FunctionsHelper.CreateArgs(1, 2, 5),
-                                                                            3
-                                                                           ),
-                                                 this._parsingContext);
-            Assert.AreEqual(5, result.Result);
-        }
+    [TestMethod]
+    public void Index_Should_Return_Value_By_Index()
+    {
+        Index? func = new Index();
+        CompileResult? result = func.Execute(
+                                             FunctionsHelper.CreateArgs(
+                                                                        FunctionsHelper.CreateArgs(1, 2, 5),
+                                                                        3
+                                                                       ),
+                                             this._parsingContext);
+        Assert.AreEqual(5, result.Result);
+    }
 
-        [TestMethod]
-        public void Index_Should_Handle_SingleRange()
-        {
-            this._worksheet.Cells["A1"].Value = 1d;
-            this._worksheet.Cells["A2"].Value = 3d;
-            this._worksheet.Cells["A3"].Value = 5d;
+    [TestMethod]
+    public void Index_Should_Handle_SingleRange()
+    {
+        this._worksheet.Cells["A1"].Value = 1d;
+        this._worksheet.Cells["A2"].Value = 3d;
+        this._worksheet.Cells["A3"].Value = 5d;
 
-            this._worksheet.Cells["A4"].Formula = "INDEX(A1:A3;3)";
+        this._worksheet.Cells["A4"].Formula = "INDEX(A1:A3;3)";
 
-            this._worksheet.Calculate();
+        this._worksheet.Calculate();
 
-            Assert.AreEqual(5d, this._worksheet.Cells["A4"].Value);
-        }
+        Assert.AreEqual(5d, this._worksheet.Cells["A4"].Value);
+    }
 
-        [TestMethod]
-        public void Index_SameColumn()
-        {
-            this._worksheet.Cells["A1"].Value = "value";
-            this._worksheet.Cells["A2"].Formula = "INDEX(A:A,1,1)";
+    [TestMethod]
+    public void Index_SameColumn()
+    {
+        this._worksheet.Cells["A1"].Value = "value";
+        this._worksheet.Cells["A2"].Formula = "INDEX(A:A,1,1)";
 
-            this._worksheet.Calculate();
+        this._worksheet.Calculate();
 
-            Assert.AreEqual("value", this._worksheet.Cells["A2"].Value);
-        }
+        Assert.AreEqual("value", this._worksheet.Cells["A2"].Value);
+    }
 
-        [TestMethod]
-        public void Index_With_Match()
-        {
-            this._worksheet.Cells["A1"].Value = "key1";
-            this._worksheet.Cells["A2"].Value = "key2";
-            this._worksheet.Cells["B1"].Value = "value_to_match";
-            this._worksheet.Cells["B2"].Formula = "INDEX($B:$B, MATCH(\"key1\", $A:$A, FALSE), 1)";
+    [TestMethod]
+    public void Index_With_Match()
+    {
+        this._worksheet.Cells["A1"].Value = "key1";
+        this._worksheet.Cells["A2"].Value = "key2";
+        this._worksheet.Cells["B1"].Value = "value_to_match";
+        this._worksheet.Cells["B2"].Formula = "INDEX($B:$B, MATCH(\"key1\", $A:$A, FALSE), 1)";
 
-            this._worksheet.Calculate();
+        this._worksheet.Calculate();
 
-            Assert.AreEqual("value_to_match", this._worksheet.Cells["B2"].Value);
-        }
+        Assert.AreEqual("value_to_match", this._worksheet.Cells["B2"].Value);
     }
 }

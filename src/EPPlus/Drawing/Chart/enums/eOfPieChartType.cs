@@ -10,20 +10,19 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
-namespace OfficeOpenXml.Drawing.Chart
+namespace OfficeOpenXml.Drawing.Chart;
+
+/// <summary>
+/// OfPie chart types
+/// </summary>
+public enum eOfPieChartType
 {
     /// <summary>
-    /// OfPie chart types
+    /// A pie of pie chart
     /// </summary>
-    public enum eOfPieChartType
-    {
-        /// <summary>
-        /// A pie of pie chart
-        /// </summary>
-        PieOfPie = 68,
-        /// <summary>
-        /// A bar of pie chart
-        /// </summary>
-        BarOfPie = 71
-    }
+    PieOfPie = 68,
+    /// <summary>
+    /// A bar of pie chart
+    /// </summary>
+    BarOfPie = 71
 }

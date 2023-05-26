@@ -33,130 +33,129 @@ using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OfficeOpenXml.FormulaParsing.ExcelUtilities;
 
-namespace EPPlusTest.ExcelUtilities
+namespace EPPlusTest.ExcelUtilities;
+
+[TestClass]
+public class ValueMatcherTests
 {
-    [TestClass]
-    public class ValueMatcherTests
+    private ValueMatcher _matcher;
+
+    [TestInitialize]
+    public void Setup()
     {
-        private ValueMatcher _matcher;
+        this._matcher = new ValueMatcher();
+    }
 
-        [TestInitialize]
-        public void Setup()
-        {
-            this._matcher = new ValueMatcher();
-        }
+    [TestMethod]
+    public void ShouldReturnMinus1WhenFirstParamIsSomethingAndSecondParamIsNull()
+    {
+        object searchedValue = 1;
+        object o2 = null;
+        int result = this._matcher.IsMatch(searchedValue, o2);
+        Assert.AreEqual(-1, result);
+    }
 
-        [TestMethod]
-        public void ShouldReturnMinus1WhenFirstParamIsSomethingAndSecondParamIsNull()
-        {
-            object searchedValue = 1;
-            object o2 = null;
-            int result = this._matcher.IsMatch(searchedValue, o2);
-            Assert.AreEqual(-1, result);
-        }
+    [TestMethod]
+    public void ShouldReturn1WhenFirstParamIsNullAndSecondParamIsSomething()
+    {
+        object searchedValue = null;
+        object o2 = 1;
+        int result = this._matcher.IsMatch(searchedValue, o2);
+        Assert.AreEqual(1, result);
+    }
 
-        [TestMethod]
-        public void ShouldReturn1WhenFirstParamIsNullAndSecondParamIsSomething()
-        {
-            object searchedValue = null;
-            object o2 = 1;
-            int result = this._matcher.IsMatch(searchedValue, o2);
-            Assert.AreEqual(1, result);
-        }
+    [TestMethod]
+    public void ShouldReturn0WhenBothParamsAreNull()
+    {
+        object o1 = null;
+        object o2 = null;
+        int result = this._matcher.IsMatch(o1, o2);
+        Assert.AreEqual(0, result);
+    }
 
-        [TestMethod]
-        public void ShouldReturn0WhenBothParamsAreNull()
-        {
-            object o1 = null;
-            object o2 = null;
-            int result = this._matcher.IsMatch(o1, o2);
-            Assert.AreEqual(0, result);
-        }
+    [TestMethod]
+    public void ShouldReturn0WhenBothParamsAreEqual()
+    {
+        object o1 = 1d;
+        object o2 = 1d;
+        int result = this._matcher.IsMatch(o1, o2);
+        Assert.AreEqual(0, result);
+    }
 
-        [TestMethod]
-        public void ShouldReturn0WhenBothParamsAreEqual()
-        {
-            object o1 = 1d;
-            object o2 = 1d;
-            int result = this._matcher.IsMatch(o1, o2);
-            Assert.AreEqual(0, result);
-        }
+    [TestMethod]
+    public void ShouldReturn1WhenFirstParamIsLessThanSecondParam()
+    {
+        object o1 = 1d;
+        object o2 = 5d;
+        int result = this._matcher.IsMatch(o1, o2);
+        Assert.AreEqual(1, result);
+    }
 
-        [TestMethod]
-        public void ShouldReturn1WhenFirstParamIsLessThanSecondParam()
-        {
-            object o1 = 1d;
-            object o2 = 5d;
-            int result = this._matcher.IsMatch(o1, o2);
-            Assert.AreEqual(1, result);
-        }
+    [TestMethod]
+    public void ShouldReturnMinus1WhenFirstParamIsGreaterThanSecondParam()
+    {
+        object o1 = 3d;
+        object o2 = 1d;
+        int result = this._matcher.IsMatch(o1, o2);
+        Assert.AreEqual(-1, result);
+    }
 
-        [TestMethod]
-        public void ShouldReturnMinus1WhenFirstParamIsGreaterThanSecondParam()
-        {
-            object o1 = 3d;
-            object o2 = 1d;
-            int result = this._matcher.IsMatch(o1, o2);
-            Assert.AreEqual(-1, result);
-        }
+    [TestMethod]
+    public void ShouldReturn0WhenWhenParamsAreEqualStrings()
+    {
+        object o1 = "T";
+        object o2 = "T";
+        int result = this._matcher.IsMatch(o1, o2);
+        Assert.AreEqual(0, result);
+    }
 
-        [TestMethod]
-        public void ShouldReturn0WhenWhenParamsAreEqualStrings()
-        {
-            object o1 = "T";
-            object o2 = "T";
-            int result = this._matcher.IsMatch(o1, o2);
-            Assert.AreEqual(0, result);
-        }
+    [TestMethod]
+    public void ShouldReturn0WhenParamsAreEqualButDifferentTypes()
+    {
+        object o1 = "2";
+        object o2 = 2d;
+        int result = this._matcher.IsMatch(o1, o2);
+        Assert.AreEqual(0, result, "IsMatch did not return 0 as expected when first param is a string and second a double");
 
-        [TestMethod]
-        public void ShouldReturn0WhenParamsAreEqualButDifferentTypes()
-        {
-            object o1 = "2";
-            object o2 = 2d;
-            int result = this._matcher.IsMatch(o1, o2);
-            Assert.AreEqual(0, result, "IsMatch did not return 0 as expected when first param is a string and second a double");
+        o1 = 2d;
+        o2 = "2";
+        result = this._matcher.IsMatch(o1, o2);
+        Assert.AreEqual(0, result, "IsMatch did not return 0 as expected when first param is a double and second a string");
+    }
 
-            o1 = 2d;
-            o2 = "2";
-            result = this._matcher.IsMatch(o1, o2);
-            Assert.AreEqual(0, result, "IsMatch did not return 0 as expected when first param is a double and second a string");
-        }
+    [TestMethod]
+    public void ShouldReturnIncompatibleOperandsWhenTypesDifferAndStringConversionToDoubleFails()
+    {
+        object o1 = 2d;
+        object o2 = "T";
+        int result = this._matcher.IsMatch(o1, o2);
+        Assert.AreEqual(ValueMatcher.IncompatibleOperands, result);
+    }
 
-        [TestMethod]
-        public void ShouldReturnIncompatibleOperandsWhenTypesDifferAndStringConversionToDoubleFails()
-        {
-            object o1 = 2d;
-            object o2 = "T";
-            int result = this._matcher.IsMatch(o1, o2);
-            Assert.AreEqual(ValueMatcher.IncompatibleOperands, result);
-        }
+    [TestMethod]
+    public void ShouldReturn0WhenEqualDateTimeAndDouble()
+    {
+        DateTime dt = new DateTime(2020, 2, 7).Date;
+        double o2 = dt.ToOADate();
+        int result = this._matcher.IsMatch(dt, o2);
+        Assert.AreEqual(0, result);
+    }
 
-        [TestMethod]
-        public void ShouldReturn0WhenEqualDateTimeAndDouble()
-        {
-            DateTime dt = new DateTime(2020, 2, 7).Date;
-            double o2 = dt.ToOADate();
-            int result = this._matcher.IsMatch(dt, o2);
-            Assert.AreEqual(0, result);
-        }
+    [TestMethod]
+    public void ShouldReturnMinus1WhenDateTimeLargerThanDouble()
+    {
+        DateTime searchedValue = new DateTime(2020, 2, 7).Date;
+        double o2 = searchedValue.AddDays(-1).ToOADate();
+        int result = this._matcher.IsMatch(searchedValue, o2);
+        Assert.AreEqual(-1, result);
+    }
 
-        [TestMethod]
-        public void ShouldReturnMinus1WhenDateTimeLargerThanDouble()
-        {
-            DateTime searchedValue = new DateTime(2020, 2, 7).Date;
-            double o2 = searchedValue.AddDays(-1).ToOADate();
-            int result = this._matcher.IsMatch(searchedValue, o2);
-            Assert.AreEqual(-1, result);
-        }
-
-        [TestMethod]
-        public void ShouldReturn1WhenDateTimeSmallerThanDouble()
-        {
-            DateTime searchedValue = new DateTime(2020, 2, 7).Date;
-            double o2 = searchedValue.AddDays(1).ToOADate();
-            int result = this._matcher.IsMatch(searchedValue, o2);
-            Assert.AreEqual(1, result);
-        }
+    [TestMethod]
+    public void ShouldReturn1WhenDateTimeSmallerThanDouble()
+    {
+        DateTime searchedValue = new DateTime(2020, 2, 7).Date;
+        double o2 = searchedValue.AddDays(1).ToOADate();
+        int result = this._matcher.IsMatch(searchedValue, o2);
+        Assert.AreEqual(1, result);
     }
 }

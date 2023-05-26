@@ -15,50 +15,49 @@ using OfficeOpenXml.DataValidation.Formulas.Contracts;
 using System;
 using System.Globalization;
 
-namespace OfficeOpenXml.DataValidation.Formulas
+namespace OfficeOpenXml.DataValidation.Formulas;
+
+internal class ExcelDataValidationFormulaTime : ExcelDataValidationFormulaValue<ExcelTime>, IExcelDataValidationFormulaTime
 {
-    internal class ExcelDataValidationFormulaTime : ExcelDataValidationFormulaValue<ExcelTime>, IExcelDataValidationFormulaTime
+    public ExcelDataValidationFormulaTime(string formula, string validationUid, string sheetName, Action<OnFormulaChangedEventArgs> extHandler)
+        : base(validationUid, sheetName, extHandler)
     {
-        public ExcelDataValidationFormulaTime(string formula, string validationUid, string sheetName, Action<OnFormulaChangedEventArgs> extHandler)
-            : base(validationUid, sheetName, extHandler)
+        if (!string.IsNullOrEmpty(formula))
         {
-            if (!string.IsNullOrEmpty(formula))
+            if (decimal.TryParse(formula, NumberStyles.Any, CultureInfo.InvariantCulture, out decimal time))
             {
-                if (decimal.TryParse(formula, NumberStyles.Any, CultureInfo.InvariantCulture, out decimal time))
-                {
-                    this.Value = new ExcelTime(time);
-                }
-                else
-                {
-                    this.Value = new ExcelTime();
-                    this.ExcelFormula = formula;
-                }
+                this.Value = new ExcelTime(time);
             }
             else
             {
                 this.Value = new ExcelTime();
+                this.ExcelFormula = formula;
             }
-
-            this.Value.TimeChanged += new EventHandler(this.Value_TimeChanged);
         }
-
-        void Value_TimeChanged(object sender, EventArgs e)
-        {
-            this._formula = this.Value.ToExcelString();
-        }
-
-        protected override string GetValueAsString()
-        {
-            if (this.State == FormulaState.Value)
-            {
-                return this.Value.ToExcelString();
-            }
-            return string.Empty;
-        }
-
-        internal override void ResetValue()
+        else
         {
             this.Value = new ExcelTime();
         }
+
+        this.Value.TimeChanged += new EventHandler(this.Value_TimeChanged);
+    }
+
+    void Value_TimeChanged(object sender, EventArgs e)
+    {
+        this._formula = this.Value.ToExcelString();
+    }
+
+    protected override string GetValueAsString()
+    {
+        if (this.State == FormulaState.Value)
+        {
+            return this.Value.ToExcelString();
+        }
+        return string.Empty;
+    }
+
+    internal override void ResetValue()
+    {
+        this.Value = new ExcelTime();
     }
 }

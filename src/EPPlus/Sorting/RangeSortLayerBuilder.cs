@@ -15,42 +15,41 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace OfficeOpenXml.Sorting
+namespace OfficeOpenXml.Sorting;
+
+/// <summary>
+/// This class is used to build multiple search parameters for rowbased sorting.
+/// </summary>
+public class RangeSortLayerBuilder
 {
-    /// <summary>
-    /// This class is used to build multiple search parameters for rowbased sorting.
-    /// </summary>
-    public class RangeSortLayerBuilder
+    internal RangeSortLayerBuilder(RangeSortOptions options, RangeSortLayer sortLayer)
     {
-        internal RangeSortLayerBuilder(RangeSortOptions options, RangeSortLayer sortLayer)
-        {
-            this._options = options;
-            this._sortLayer = sortLayer;
-        }
+        this._options = options;
+        this._sortLayer = sortLayer;
+    }
 
-        private readonly RangeSortOptions _options;
-        private readonly RangeSortLayer _sortLayer;
+    private readonly RangeSortOptions _options;
+    private readonly RangeSortLayer _sortLayer;
 
-        /// <summary>
-        /// Adds a new Sort layer to the sort options (i.e. the sort).
-        /// </summary>
-        public virtual RangeSortLayer ThenSortBy
+    /// <summary>
+    /// Adds a new Sort layer to the sort options (i.e. the sort).
+    /// </summary>
+    public virtual RangeSortLayer ThenSortBy
+    {
+        get
         {
-            get
-            {
-                return new RangeSortLayer(this._options);
-            }
+            return new RangeSortLayer(this._options);
         }
+    }
 
-        /// <summary>
-        /// Use a custom list for sorting on the current Sort layer.
-        /// </summary>
-        /// <param name="values">An array of strings defining the sort order</param>
-        /// <returns>A <see cref="RangeSortLayerBuilder"/></returns>
-        public RangeSortLayerBuilder UsingCustomList(params string[] values)
-        {
-            this._sortLayer.SetCustomList(values);
-            return this;
-        }
+    /// <summary>
+    /// Use a custom list for sorting on the current Sort layer.
+    /// </summary>
+    /// <param name="values">An array of strings defining the sort order</param>
+    /// <returns>A <see cref="RangeSortLayerBuilder"/></returns>
+    public RangeSortLayerBuilder UsingCustomList(params string[] values)
+    {
+        this._sortLayer.SetCustomList(values);
+        return this;
     }
 }

@@ -10,40 +10,39 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
-namespace OfficeOpenXml.Drawing.Chart
+namespace OfficeOpenXml.Drawing.Chart;
+
+/// <summary>
+/// Line chart type
+/// </summary>
+public enum eLineChartType
 {
     /// <summary>
-    /// Line chart type
+    /// A 3D line chart
     /// </summary>
-    public enum eLineChartType
-    {
-        /// <summary>
-        /// A 3D line chart
-        /// </summary>
-        Line3D = -4101,
-        /// <summary>
-        /// A line chart
-        /// </summary>
-        Line = 4,
-        /// <summary>
-        /// A line chart with markers
-        /// </summary>
-        LineMarkers = 65,
-        /// <summary>
-        /// A stacked line chart with markers
-        /// </summary>
-        LineMarkersStacked = 66,
-        /// <summary>
-        /// A 100% stacked line chart with markers
-        /// </summary>
-        LineMarkersStacked100 = 67,
-        /// <summary>
-        /// A stacked line chart
-        /// </summary>
-        LineStacked = 63,
-        /// <summary>
-        /// A 100% stacked line chart
-        /// </summary>
-        LineStacked100 = 64,
-    }
+    Line3D = -4101,
+    /// <summary>
+    /// A line chart
+    /// </summary>
+    Line = 4,
+    /// <summary>
+    /// A line chart with markers
+    /// </summary>
+    LineMarkers = 65,
+    /// <summary>
+    /// A stacked line chart with markers
+    /// </summary>
+    LineMarkersStacked = 66,
+    /// <summary>
+    /// A 100% stacked line chart with markers
+    /// </summary>
+    LineMarkersStacked100 = 67,
+    /// <summary>
+    /// A stacked line chart
+    /// </summary>
+    LineStacked = 63,
+    /// <summary>
+    /// A 100% stacked line chart
+    /// </summary>
+    LineStacked100 = 64,
 }

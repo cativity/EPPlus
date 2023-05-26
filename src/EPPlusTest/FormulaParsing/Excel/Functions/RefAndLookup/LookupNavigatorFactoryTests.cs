@@ -35,44 +35,43 @@ using OfficeOpenXml.FormulaParsing;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.RefAndLookup;
 using OfficeOpenXml.FormulaParsing.ExcelUtilities;
 
-namespace EPPlusTest.FormulaParsing.Excel.Functions.RefAndLookup
+namespace EPPlusTest.FormulaParsing.Excel.Functions.RefAndLookup;
+
+[TestClass]
+public class LookupNavigatorFactoryTests
 {
-    [TestClass]
-    public class LookupNavigatorFactoryTests
+    private ExcelPackage _excelPackage;
+    private ParsingContext _context;
+
+    [TestInitialize]
+    public void Initialize()
     {
-        private ExcelPackage _excelPackage;
-        private ParsingContext _context;
+        this._excelPackage = new ExcelPackage(new MemoryStream());
+        this._excelPackage.Workbook.Worksheets.Add("Test");
+        this._context = ParsingContext.Create();
+        this._context.ExcelDataProvider = new EpplusExcelDataProvider(this._excelPackage);
+        this._context.Scopes.NewScope(RangeAddress.Empty);
+    }
 
-        [TestInitialize]
-        public void Initialize()
-        {
-            this._excelPackage = new ExcelPackage(new MemoryStream());
-            this._excelPackage.Workbook.Worksheets.Add("Test");
-            this._context = ParsingContext.Create();
-            this._context.ExcelDataProvider = new EpplusExcelDataProvider(this._excelPackage);
-            this._context.Scopes.NewScope(RangeAddress.Empty);
-        }
+    [TestCleanup]
+    public void Cleanup()
+    {
+        this._excelPackage.Dispose();
+    }
 
-        [TestCleanup]
-        public void Cleanup()
-        {
-            this._excelPackage.Dispose();
-        }
+    [TestMethod]
+    public void Should_Return_ExcelLookupNavigator_When_Range_Is_Set()
+    {
+        LookupArguments? args = new LookupArguments(FunctionsHelper.CreateArgs(8, "A:B", 1), ParsingContext.Create());
+        LookupNavigator? navigator = LookupNavigatorFactory.Create(LookupDirection.Horizontal, args, this._context);
+        Assert.IsInstanceOfType(navigator, typeof(ExcelLookupNavigator));
+    }
 
-        [TestMethod]
-        public void Should_Return_ExcelLookupNavigator_When_Range_Is_Set()
-        {
-            LookupArguments? args = new LookupArguments(FunctionsHelper.CreateArgs(8, "A:B", 1), ParsingContext.Create());
-            LookupNavigator? navigator = LookupNavigatorFactory.Create(LookupDirection.Horizontal, args, this._context);
-            Assert.IsInstanceOfType(navigator, typeof(ExcelLookupNavigator));
-        }
-
-        [TestMethod]
-        public void Should_Return_ArrayLookupNavigator_When_Array_Is_Supplied()
-        {
-            LookupArguments? args = new LookupArguments(FunctionsHelper.CreateArgs(8, FunctionsHelper.CreateArgs(1,2), 1), ParsingContext.Create());
-            LookupNavigator? navigator = LookupNavigatorFactory.Create(LookupDirection.Horizontal, args, this._context);
-            Assert.IsInstanceOfType(navigator, typeof(ArrayLookupNavigator));
-        }
+    [TestMethod]
+    public void Should_Return_ArrayLookupNavigator_When_Array_Is_Supplied()
+    {
+        LookupArguments? args = new LookupArguments(FunctionsHelper.CreateArgs(8, FunctionsHelper.CreateArgs(1,2), 1), ParsingContext.Create());
+        LookupNavigator? navigator = LookupNavigatorFactory.Create(LookupDirection.Horizontal, args, this._context);
+        Assert.IsInstanceOfType(navigator, typeof(ArrayLookupNavigator));
     }
 }

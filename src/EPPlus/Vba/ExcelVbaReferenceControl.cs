@@ -12,54 +12,53 @@
  *************************************************************************************************/
 using System;
 
-namespace OfficeOpenXml.VBA
+namespace OfficeOpenXml.VBA;
+
+/// <summary>
+/// A reference to a twiddled type library
+/// </summary>
+public class ExcelVbaReferenceControl : ExcelVbaReference
 {
     /// <summary>
-    /// A reference to a twiddled type library
+    /// Constructor.
+    /// Sets ReferenceRecordID to 0x2F
     /// </summary>
-    public class ExcelVbaReferenceControl : ExcelVbaReference
+    public ExcelVbaReferenceControl()
     {
-        /// <summary>
-        /// Constructor.
-        /// Sets ReferenceRecordID to 0x2F
-        /// </summary>
-        public ExcelVbaReferenceControl()
-        {
-            this.ReferenceRecordID = 0x2F;
-        }
-        /// <summary>
-        /// LibIdExternal 
-        /// For more info check MS-OVBA 2.1.1.8 LibidReference and 2.3.4.2.2 PROJECTREFERENCES
-        /// This corresponds to LibIdExtended in the documentation.
-        /// </summary>
-        [Obsolete("Use LibIdExtended instead of this.")]
-        public string LibIdExternal
-        {
-            get
-            {
-                return this.LibIdExtended;
-            }
-            set
-            {
-                this.LibIdExtended = value;
-            }
-        }
-
-        /// <summary>
-        /// LibIdExtended 
-        /// For more info check MS-OVBA 2.1.1.8 LibidReference and 2.3.4.2.2 PROJECTREFERENCES
-        /// </summary>
-        public string LibIdExtended { get; set; }
-
-        /// <summary>
-        /// LibIdTwiddled
-        /// For more info check MS-OVBA 2.1.1.8 LibidReference and 2.3.4.2.2 PROJECTREFERENCES
-        /// </summary>
-        public string LibIdTwiddled { get; set; }
-        /// <summary>
-        /// A GUID that specifies the Automation type library the extended type library was generated from.
-        /// </summary>
-        public Guid OriginalTypeLib { get; set; }
-        internal uint Cookie { get; set; }
+        this.ReferenceRecordID = 0x2F;
     }
+    /// <summary>
+    /// LibIdExternal 
+    /// For more info check MS-OVBA 2.1.1.8 LibidReference and 2.3.4.2.2 PROJECTREFERENCES
+    /// This corresponds to LibIdExtended in the documentation.
+    /// </summary>
+    [Obsolete("Use LibIdExtended instead of this.")]
+    public string LibIdExternal
+    {
+        get
+        {
+            return this.LibIdExtended;
+        }
+        set
+        {
+            this.LibIdExtended = value;
+        }
+    }
+
+    /// <summary>
+    /// LibIdExtended 
+    /// For more info check MS-OVBA 2.1.1.8 LibidReference and 2.3.4.2.2 PROJECTREFERENCES
+    /// </summary>
+    public string LibIdExtended { get; set; }
+
+    /// <summary>
+    /// LibIdTwiddled
+    /// For more info check MS-OVBA 2.1.1.8 LibidReference and 2.3.4.2.2 PROJECTREFERENCES
+    /// </summary>
+    public string LibIdTwiddled { get; set; }
+    /// <summary>
+    /// A GUID that specifies the Automation type library the extended type library was generated from.
+    /// </summary>
+    public Guid OriginalTypeLib { get; set; }
+    internal uint Cookie { get; set; }
 }

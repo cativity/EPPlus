@@ -11,37 +11,36 @@
   1/4/2021         EPPlus Software AB           EPPlus Interfaces 1.0
  *************************************************************************************************/
 
-namespace OfficeOpenXml.Interfaces.Drawing.Text
+namespace OfficeOpenXml.Interfaces.Drawing.Text;
+
+public struct TextMeasurement
 {
-    public struct TextMeasurement
+    public TextMeasurement(float width, float height)
     {
-        public TextMeasurement(float width, float height)
-        {
-            this.Width = width;
-            this.Height = height;
-        }
+        this.Width = width;
+        this.Height = height;
+    }
 
-        /// <summary>
-        /// Width of the text
-        /// </summary>
-        public float Width { get; set; }
+    /// <summary>
+    /// Width of the text
+    /// </summary>
+    public float Width { get; set; }
 
-        /// <summary>
-        /// Height of the text
-        /// </summary>
-        public float Height { get; set; }
+    /// <summary>
+    /// Height of the text
+    /// </summary>
+    public float Height { get; set; }
 
-        public static TextMeasurement Empty
-        {
-            get { return new TextMeasurement(-1, -1); }
-        }
+    public static TextMeasurement Empty
+    {
+        get { return new TextMeasurement(-1, -1); }
+    }
 
-        /// <summary>
-        /// Returns true if this is an empty measurement
-        /// </summary>
-        public bool IsEmpty
-        {
-            get { return this.Width == -1 && this.Height == -1; }
-        }
+    /// <summary>
+    /// Returns true if this is an empty measurement
+    /// </summary>
+    public bool IsEmpty
+    {
+        get { return this.Width == -1 && this.Height == -1; }
     }
 }

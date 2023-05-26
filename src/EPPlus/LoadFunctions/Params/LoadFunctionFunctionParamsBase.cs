@@ -15,36 +15,35 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace OfficeOpenXml.LoadFunctions
+namespace OfficeOpenXml.LoadFunctions;
+
+/// <summary>
+/// Base class for parameter classes for Load functions
+/// </summary>
+public abstract class LoadFunctionFunctionParamsBase
 {
     /// <summary>
-    /// Base class for parameter classes for Load functions
+    /// If true a row with headers will be added above the data
     /// </summary>
-    public abstract class LoadFunctionFunctionParamsBase
+    public bool PrintHeaders
     {
-        /// <summary>
-        /// If true a row with headers will be added above the data
-        /// </summary>
-        public bool PrintHeaders
-        {
-            get; set;
-        }
-        /// <summary>
-        /// A custom name for the table, if created. 
-        /// The TableName must be unique within the workbook and be a valid table name.
-        /// </summary>
-        public string TableName
-        {
-            get;
-            set;
-        }
-        /// <summary>
-        /// If set to another value than TableStyles.None the data will be added to a
-        /// table with the specified style
-        /// </summary>
-        public TableStyles? TableStyle
-        {
-            get; set;
-        } = null;
+        get; set;
     }
+    /// <summary>
+    /// A custom name for the table, if created. 
+    /// The TableName must be unique within the workbook and be a valid table name.
+    /// </summary>
+    public string TableName
+    {
+        get;
+        set;
+    }
+    /// <summary>
+    /// If set to another value than TableStyles.None the data will be added to a
+    /// table with the specified style
+    /// </summary>
+    public TableStyles? TableStyle
+    {
+        get; set;
+    } = null;
 }

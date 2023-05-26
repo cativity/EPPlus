@@ -10,44 +10,43 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
-namespace OfficeOpenXml.Drawing.Theme
+namespace OfficeOpenXml.Drawing.Theme;
+
+/// <summary>
+/// The focus point for a non-liner gradient fill
+/// </summary>
+public class ExcelDrawingRectangle
 {
-    /// <summary>
-    /// The focus point for a non-liner gradient fill
-    /// </summary>
-    public class ExcelDrawingRectangle
+
+    internal ExcelDrawingRectangle(XmlHelper xml, string path, double defaultValue)
     {
-
-        internal ExcelDrawingRectangle(XmlHelper xml, string path, double defaultValue)
-        {
-            this.TopOffset = xml.GetXmlNodePercentage(path + "@t") ?? defaultValue;
-            this.BottomOffset = xml.GetXmlNodePercentage(path + "@b") ?? defaultValue;
-            this.LeftOffset = xml.GetXmlNodePercentage(path + "@l") ?? defaultValue;
-            this.RightOffset = xml.GetXmlNodePercentage(path+"@r") ?? defaultValue;
-        }
-
-        internal ExcelDrawingRectangle(double defaultValue)
-        {
-            this.TopOffset = defaultValue;
-            this.BottomOffset = defaultValue;
-            this.LeftOffset = defaultValue;
-            this.RightOffset = defaultValue;
-        }
-        /// <summary>
-        /// Top offset in percentage
-        /// </summary>
-        public double TopOffset { get; set; }
-        /// <summary>
-        /// Bottom offset in percentage
-        /// </summary>
-        public double BottomOffset { get; set; }
-        /// <summary>
-        /// Left offset in percentage
-        /// </summary>
-        public double LeftOffset { get; set; }
-        /// <summary>
-        /// Right offset in percentage
-        /// </summary>
-        public double RightOffset { get; set; }
+        this.TopOffset = xml.GetXmlNodePercentage(path + "@t") ?? defaultValue;
+        this.BottomOffset = xml.GetXmlNodePercentage(path + "@b") ?? defaultValue;
+        this.LeftOffset = xml.GetXmlNodePercentage(path + "@l") ?? defaultValue;
+        this.RightOffset = xml.GetXmlNodePercentage(path+"@r") ?? defaultValue;
     }
+
+    internal ExcelDrawingRectangle(double defaultValue)
+    {
+        this.TopOffset = defaultValue;
+        this.BottomOffset = defaultValue;
+        this.LeftOffset = defaultValue;
+        this.RightOffset = defaultValue;
+    }
+    /// <summary>
+    /// Top offset in percentage
+    /// </summary>
+    public double TopOffset { get; set; }
+    /// <summary>
+    /// Bottom offset in percentage
+    /// </summary>
+    public double BottomOffset { get; set; }
+    /// <summary>
+    /// Left offset in percentage
+    /// </summary>
+    public double LeftOffset { get; set; }
+    /// <summary>
+    /// Right offset in percentage
+    /// </summary>
+    public double RightOffset { get; set; }
 }

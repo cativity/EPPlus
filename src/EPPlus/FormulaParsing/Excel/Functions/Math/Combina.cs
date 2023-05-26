@@ -16,28 +16,27 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
-{
-    [FunctionMetadata(
-        Category = ExcelFunctionCategory.MathAndTrig,
-        EPPlusVersion = "5.1",
-        Description = "Returns the number of combinations (with repetitions) for a given number of items",
-        IntroducedInExcelVersion = "2013")]
-    internal class Combina : ExcelFunction
-    {
-        public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
-        {
-            ValidateArguments(arguments, 2);
-            double number = this.ArgToDecimal(arguments, 0);
-            number = System.Math.Floor(number);
-            double numberChosen = this.ArgToDecimal(arguments, 1);
-            if (number <= 0d || numberChosen <= 0)
-            {
-                return this.CreateResult(eErrorType.Num);
-            }
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
 
-            double result = MathHelper.Factorial(number + numberChosen - 1) / (MathHelper.Factorial(number - 1) * MathHelper.Factorial(numberChosen));
-            return this.CreateResult(result, DataType.Decimal);
+[FunctionMetadata(
+                     Category = ExcelFunctionCategory.MathAndTrig,
+                     EPPlusVersion = "5.1",
+                     Description = "Returns the number of combinations (with repetitions) for a given number of items",
+                     IntroducedInExcelVersion = "2013")]
+internal class Combina : ExcelFunction
+{
+    public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
+    {
+        ValidateArguments(arguments, 2);
+        double number = this.ArgToDecimal(arguments, 0);
+        number = System.Math.Floor(number);
+        double numberChosen = this.ArgToDecimal(arguments, 1);
+        if (number <= 0d || numberChosen <= 0)
+        {
+            return this.CreateResult(eErrorType.Num);
         }
+
+        double result = MathHelper.Factorial(number + numberChosen - 1) / (MathHelper.Factorial(number - 1) * MathHelper.Factorial(numberChosen));
+        return this.CreateResult(result, DataType.Decimal);
     }
 }

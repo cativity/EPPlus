@@ -13,107 +13,106 @@
 using OfficeOpenXml.Drawing.Chart.ChartEx;
 using OfficeOpenXml.Utils.Extensions;
 using System.Xml;
-namespace OfficeOpenXml.Drawing.Chart.ChartEx
+namespace OfficeOpenXml.Drawing.Chart.ChartEx;
+
+/// <summary>
+/// A series for an Box &amp; Whisker Chart
+/// </summary>
+public class ExcelBoxWhiskerChartSerie : ExcelChartExSerie
 {
-    /// <summary>
-    /// A series for an Box &amp; Whisker Chart
-    /// </summary>
-    public class ExcelBoxWhiskerChartSerie : ExcelChartExSerie
+    const string _path = "cx:layoutPr/cx:visibility";
+    internal ExcelBoxWhiskerChartSerie(ExcelChartEx chart, XmlNamespaceManager ns, XmlNode node) : base(chart, ns, node)
     {
-        const string _path = "cx:layoutPr/cx:visibility";
-        internal ExcelBoxWhiskerChartSerie(ExcelChartEx chart, XmlNamespaceManager ns, XmlNode node) : base(chart, ns, node)
-        {
 
-        }
-        /// <summary>
-        /// The layout type for the parent labels
-        /// </summary>
-        public eParentLabelLayout ParentLabelLayout
+    }
+    /// <summary>
+    /// The layout type for the parent labels
+    /// </summary>
+    public eParentLabelLayout ParentLabelLayout
+    {
+        get
         {
-            get
-            {
-                return this.GetXmlNodeString("cx:layoutPr/cx:parentLabelLayout/@val").ToEnum(eParentLabelLayout.None);
-            }
-            set
-            {
-                this.SetXmlNodeString("cx:layoutPr/cx:parentLabelLayout/@val", value.ToEnumString());
-            }
+            return this.GetXmlNodeString("cx:layoutPr/cx:parentLabelLayout/@val").ToEnum(eParentLabelLayout.None);
         }
-        /// <summary>
-        /// The quartile calculation methods
-        /// </summary>
-        public eQuartileMethod? QuartileMethod
+        set
         {
-            get
+            this.SetXmlNodeString("cx:layoutPr/cx:parentLabelLayout/@val", value.ToEnumString());
+        }
+    }
+    /// <summary>
+    /// The quartile calculation methods
+    /// </summary>
+    public eQuartileMethod? QuartileMethod
+    {
+        get
+        {
+            string? s = this.GetXmlNodeString("cx:layoutPr/cx:statistics/@quartileMethod");
+            if (string.IsNullOrEmpty(s))
             {
-                string? s = this.GetXmlNodeString("cx:layoutPr/cx:statistics/@quartileMethod");
-                if (string.IsNullOrEmpty(s))
-                {
-                    return null;
-                }
+                return null;
+            }
 
-                return s.ToEnum(eQuartileMethod.Inclusive);
-            }
-            set
-            {
-                this.SetXmlNodeString("cx:layoutPr/cx:statistics/@quartileMethod", value.ToEnumString());
-            }
+            return s.ToEnum(eQuartileMethod.Inclusive);
         }
-        /// <summary>
-        /// The visibility of connector lines between data points
-        /// </summary>
-        public bool ShowMeanLine
+        set
         {
-            get
-            {
-                return this.GetXmlNodeBool($"{_path}/@meanLine");
-            }
-            set
-            {
-                this.SetXmlNodeBool($"{_path}/@meanLine", value);
-            }
+            this.SetXmlNodeString("cx:layoutPr/cx:statistics/@quartileMethod", value.ToEnumString());
         }
-        /// <summary>
-        /// The visibility of markers denoting the mean
-        /// </summary>
-        public bool ShowMeanMarker
+    }
+    /// <summary>
+    /// The visibility of connector lines between data points
+    /// </summary>
+    public bool ShowMeanLine
+    {
+        get
         {
-            get
-            {
-                return this.GetXmlNodeBool($"{_path}/@meanMarker");
-            }
-            set
-            {
-                this.SetXmlNodeBool($"{_path}/@meanMarker", value);
-            }
+            return this.GetXmlNodeBool($"{_path}/@meanLine");
         }
-        /// <summary>
-        /// The visibility of non-outlier data points
-        /// </summary>
-        public bool ShowNonOutliers
+        set
         {
-            get
-            {
-                return this.GetXmlNodeBool($"{_path}/@nonoutliers");
-            }
-            set
-            {
-                this.SetXmlNodeBool($"{_path}/@nonoutliers", value);
-            }
+            this.SetXmlNodeBool($"{_path}/@meanLine", value);
         }
-        /// <summary>
-        /// The visibility of outlier data points
-        /// </summary>
-        public bool ShowOutliers
+    }
+    /// <summary>
+    /// The visibility of markers denoting the mean
+    /// </summary>
+    public bool ShowMeanMarker
+    {
+        get
         {
-            get
-            {
-                return this.GetXmlNodeBool($"{_path}/@outliers");
-            }
-            set
-            {
-                this.SetXmlNodeBool($"{_path}/@outliers", value);
-            }
+            return this.GetXmlNodeBool($"{_path}/@meanMarker");
+        }
+        set
+        {
+            this.SetXmlNodeBool($"{_path}/@meanMarker", value);
+        }
+    }
+    /// <summary>
+    /// The visibility of non-outlier data points
+    /// </summary>
+    public bool ShowNonOutliers
+    {
+        get
+        {
+            return this.GetXmlNodeBool($"{_path}/@nonoutliers");
+        }
+        set
+        {
+            this.SetXmlNodeBool($"{_path}/@nonoutliers", value);
+        }
+    }
+    /// <summary>
+    /// The visibility of outlier data points
+    /// </summary>
+    public bool ShowOutliers
+    {
+        get
+        {
+            return this.GetXmlNodeBool($"{_path}/@outliers");
+        }
+        set
+        {
+            this.SetXmlNodeBool($"{_path}/@outliers", value);
         }
     }
 }

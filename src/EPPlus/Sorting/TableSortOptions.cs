@@ -16,51 +16,50 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace OfficeOpenXml.Sorting
+namespace OfficeOpenXml.Sorting;
+
+/// <summary>
+/// Sort options for sorting an <see cref="ExcelTable"/>
+/// </summary>
+public class TableSortOptions : SortOptionsBase 
 {
     /// <summary>
-    /// Sort options for sorting an <see cref="ExcelTable"/>
+    /// Constructor
     /// </summary>
-    public class TableSortOptions : SortOptionsBase 
+    /// <param name="table">The table sort</param>
+    public TableSortOptions(ExcelTable table) : base()
     {
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        /// <param name="table">The table sort</param>
-        public TableSortOptions(ExcelTable table) : base()
+        this._table = table;
+        this._columnNameIndexes = new Dictionary<string, int>();
+        for(int x = 0; x < table.Columns.Count(); x++)
         {
-            this._table = table;
-            this._columnNameIndexes = new Dictionary<string, int>();
-            for(int x = 0; x < table.Columns.Count(); x++)
-            {
-                this._columnNameIndexes[table.Columns.ElementAt(x).Name] = x;
-            }
+            this._columnNameIndexes[table.Columns.ElementAt(x).Name] = x;
         }
+    }
 
-        private TableSortLayer _sortLayer = null;
-        private readonly ExcelTable _table;
-        private readonly Dictionary<string, int> _columnNameIndexes;
+    private TableSortLayer _sortLayer = null;
+    private readonly ExcelTable _table;
+    private readonly Dictionary<string, int> _columnNameIndexes;
 
-        internal ExcelTable Table
+    internal ExcelTable Table
+    {
+        get { return this._table; }
+    }
+
+    internal int GetColumnNameIndex(string name)
+    {
+        if(!this._columnNameIndexes.ContainsKey(name))
         {
-            get { return this._table; }
+            throw new InvalidOperationException($"Table {this._table.Name} does not contain column {name}");
         }
+        return this._columnNameIndexes[name];
+    }
 
-        internal int GetColumnNameIndex(string name)
-        {
-            if(!this._columnNameIndexes.ContainsKey(name))
-            {
-                throw new InvalidOperationException($"Table {this._table.Name} does not contain column {name}");
-            }
-            return this._columnNameIndexes[name];
-        }
-
-        /// <summary>
-        /// Defines the first <see cref="TableSortLayer"/>.
-        /// </summary>
-        public TableSortLayer SortBy
-        {
-            get { return this._sortLayer ??= new TableSortLayer(this); }
-        }
+    /// <summary>
+    /// Defines the first <see cref="TableSortLayer"/>.
+    /// </summary>
+    public TableSortLayer SortBy
+    {
+        get { return this._sortLayer ??= new TableSortLayer(this); }
     }
 }

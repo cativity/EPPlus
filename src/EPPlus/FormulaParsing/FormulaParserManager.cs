@@ -20,173 +20,172 @@ using OfficeOpenXml.FormulaParsing.Excel.Functions;
 using OfficeOpenXml.FormulaParsing.LexicalAnalysis;
 using OfficeOpenXml.FormulaParsing.Logging;
 using OfficeOpenXml.FormulaParsing.Utilities;
-namespace OfficeOpenXml.FormulaParsing
+namespace OfficeOpenXml.FormulaParsing;
+
+/// <summary>
+/// Provides access to various functionality regarding 
+/// excel formula evaluation.
+/// </summary>
+public class FormulaParserManager
 {
-    /// <summary>
-    /// Provides access to various functionality regarding 
-    /// excel formula evaluation.
-    /// </summary>
-    public class FormulaParserManager
+    private readonly FormulaParser _parser;
+
+    internal FormulaParserManager(FormulaParser parser)
     {
-        private readonly FormulaParser _parser;
+        Require.That(parser).Named("parser").IsNotNull();
+        this._parser = parser;
+    }
 
-        internal FormulaParserManager(FormulaParser parser)
+    /// <summary>
+    /// Loads a module containing custom functions to the formula parser. By using
+    /// this method you can add your own implementations of Excel functions, by
+    /// implementing a <see cref="IFunctionModule"/>.
+    /// </summary>
+    /// <param name="module">A <see cref="IFunctionModule"/> containing <see cref="ExcelFunction"/>s.</param>
+    public void LoadFunctionModule(IFunctionModule module)
+    {
+        this._parser.Configure(x => x.FunctionRepository.LoadModule(module));
+    }
+
+    /// <summary>
+    /// If the supplied <paramref name="functionName"/> does not exist, the supplied
+    /// <paramref name="functionImpl"/> implementation will be added to the formula parser.
+    /// If it exists, the existing function will be replaced by the supplied <paramref name="functionImpl">function implementation</paramref>
+    /// </summary>
+    /// <param name="functionName"></param>
+    /// <param name="functionImpl"></param>
+    public void AddOrReplaceFunction(string functionName, ExcelFunction functionImpl)
+    {
+        this._parser.Configure(x => x.FunctionRepository.AddOrReplaceFunction(functionName, functionImpl));
+    }
+
+    /// <summary>
+    /// Copies existing <see cref="ExcelFunction"/>´s from one workbook to another.
+    /// </summary>
+    /// <param name="otherWorkbook">The workbook containing the forumulas to be copied.</param>
+    public void CopyFunctionsFrom(ExcelWorkbook otherWorkbook)
+    {
+        IEnumerable<KeyValuePair<string, ExcelFunction>>? functions = otherWorkbook.FormulaParserManager.GetImplementedFunctions();
+        foreach (KeyValuePair<string, ExcelFunction> func in functions)
         {
-            Require.That(parser).Named("parser").IsNotNull();
-            this._parser = parser;
+            this.AddOrReplaceFunction(func.Key, func.Value);
         }
+    }
 
-        /// <summary>
-        /// Loads a module containing custom functions to the formula parser. By using
-        /// this method you can add your own implementations of Excel functions, by
-        /// implementing a <see cref="IFunctionModule"/>.
-        /// </summary>
-        /// <param name="module">A <see cref="IFunctionModule"/> containing <see cref="ExcelFunction"/>s.</param>
-        public void LoadFunctionModule(IFunctionModule module)
-        {
-            this._parser.Configure(x => x.FunctionRepository.LoadModule(module));
-        }
+    /// <summary>
+    /// Returns an enumeration of the names of all functions implemented, both the built in functions
+    /// and functions added using the LoadFunctionModule method of this class.
+    /// </summary>
+    /// <returns>Function names in lower case</returns>
+    public IEnumerable<string> GetImplementedFunctionNames()
+    {
+        List<string>? fnList = this._parser.FunctionNames.ToList();
+        fnList.Sort((x, y) => String.Compare(x, y, StringComparison.Ordinal));
+        return fnList;
+    }
 
-        /// <summary>
-        /// If the supplied <paramref name="functionName"/> does not exist, the supplied
-        /// <paramref name="functionImpl"/> implementation will be added to the formula parser.
-        /// If it exists, the existing function will be replaced by the supplied <paramref name="functionImpl">function implementation</paramref>
-        /// </summary>
-        /// <param name="functionName"></param>
-        /// <param name="functionImpl"></param>
-        public void AddOrReplaceFunction(string functionName, ExcelFunction functionImpl)
-        {
-            this._parser.Configure(x => x.FunctionRepository.AddOrReplaceFunction(functionName, functionImpl));
-        }
+    /// <summary>
+    /// Returns an enumeration of all implemented functions, including the implementing <see cref="ExcelFunction"/> instance.
+    /// </summary>
+    /// <returns>An enumeration of <see cref="KeyValuePair{String,ExcelFunction}"/>, where the key is the function name</returns>
+    public IEnumerable<KeyValuePair<string, ExcelFunction>> GetImplementedFunctions()
+    {
+        List<KeyValuePair<string, ExcelFunction>>? functions = new List<KeyValuePair<string, ExcelFunction>>();
 
-        /// <summary>
-        /// Copies existing <see cref="ExcelFunction"/>´s from one workbook to another.
-        /// </summary>
-        /// <param name="otherWorkbook">The workbook containing the forumulas to be copied.</param>
-        public void CopyFunctionsFrom(ExcelWorkbook otherWorkbook)
+        this._parser.Configure(parsingConfiguration =>
         {
-            IEnumerable<KeyValuePair<string, ExcelFunction>>? functions = otherWorkbook.FormulaParserManager.GetImplementedFunctions();
-            foreach (KeyValuePair<string, ExcelFunction> func in functions)
+            foreach (string? name in parsingConfiguration.FunctionRepository.FunctionNames)
             {
-                this.AddOrReplaceFunction(func.Key, func.Value);
+                functions.Add(new KeyValuePair<string, ExcelFunction>(name, parsingConfiguration.FunctionRepository.GetFunction(name)));
             }
-        }
+        });
+        return functions;
+    }
 
-        /// <summary>
-        /// Returns an enumeration of the names of all functions implemented, both the built in functions
-        /// and functions added using the LoadFunctionModule method of this class.
-        /// </summary>
-        /// <returns>Function names in lower case</returns>
-        public IEnumerable<string> GetImplementedFunctionNames()
+    /// <summary>
+    /// Parses the supplied <paramref name="formula"/> and returns the result.
+    /// </summary>
+    /// <param name="formula">The formula to parse</param>
+    /// <returns>The result of the parsed formula</returns>
+    public object Parse(string formula)
+    {
+        return this._parser.Parse(formula);
+    }
+
+    /// <summary>
+    /// Parses the supplied <paramref name="formula"/> and returns the result.
+    /// </summary>
+    /// <param name="formula">The formula to parse</param>
+    /// <param name="address">The full address in the workbook where the <paramref name="formula"/> should be parsed. Example: you might want to parse the formula of a conditional format, then this should be the address of the cell where the conditional format resides.</param>
+    /// <returns>The result of the parsed formula</returns>
+    public object Parse(string formula, string address)
+    {
+        return this._parser.Parse(formula, address);
+    }
+
+    /// <summary>
+    /// Attaches a logger to the <see cref="FormulaParser"/>.
+    /// </summary>
+    /// <param name="logger">An instance of <see cref="IFormulaParserLogger"/></param>
+    /// <see cref="OfficeOpenXml.FormulaParsing.Logging.LoggerFactory"/>
+    public void AttachLogger(IFormulaParserLogger logger)
+    {
+        this._parser.Configure(c => c.AttachLogger(logger));
+    }
+
+    /// <summary>
+    /// Attaches a logger to the formula parser that produces output to the supplied logfile.
+    /// </summary>
+    /// <param name="logfile"></param>
+    public void AttachLogger(FileInfo logfile)
+    {
+        this._parser.Configure(c => c.AttachLogger(LoggerFactory.CreateTextFileLogger(logfile)));
+    }
+    /// <summary>
+    /// Detaches any attached logger from the formula parser.
+    /// </summary>
+    public void DetachLogger()
+    {
+        this._parser.Configure(c => c.DetachLogger());
+    }
+
+    public IEnumerable<IFormulaCellInfo> GetCalculationChain(ExcelRangeBase range)
+    {
+        Require.That(range).IsNotNull();
+        return this.GetCalculationChain(range, null);
+    }
+
+    public IEnumerable<IFormulaCellInfo> GetCalculationChain(ExcelRangeBase range, ExcelCalculationOption options)
+    {
+        Require.That(range).IsNotNull();
+        Init(range.Worksheet.Workbook);
+        FilterInfo? filterInfo = new FilterInfo(range.Worksheet.Workbook);
+        this._parser.InitNewCalc(filterInfo);
+        ExcelCalculationOption? opt = options != null ? options : new ExcelCalculationOption();
+        DependencyChain? dc = DependencyChainFactory.Create(range, opt);
+        List<IFormulaCellInfo>? result = new List<IFormulaCellInfo>();
+        foreach(int co in dc.CalcOrder)
         {
-            List<string>? fnList = this._parser.FunctionNames.ToList();
-            fnList.Sort((x, y) => String.Compare(x, y, StringComparison.Ordinal));
-            return fnList;
+            FormulaCell? fc = dc.list[co];
+            ExcelAddress? adr = new ExcelAddress(fc.Row, fc.Column, fc.Row, fc.Column);
+            FormulaCellInfo? fi = new FormulaCellInfo(fc.ws.Name, adr.Address, fc.Formula);
+            result.Add(fi);
         }
+        return result;
+    }
 
-        /// <summary>
-        /// Returns an enumeration of all implemented functions, including the implementing <see cref="ExcelFunction"/> instance.
-        /// </summary>
-        /// <returns>An enumeration of <see cref="KeyValuePair{String,ExcelFunction}"/>, where the key is the function name</returns>
-        public IEnumerable<KeyValuePair<string, ExcelFunction>> GetImplementedFunctions()
+    private static void Init(ExcelWorkbook workbook)
+    {
+        workbook._formulaTokens = new CellStore<List<Token>>();
+        foreach (ExcelWorksheet? ws in workbook.Worksheets)
         {
-            List<KeyValuePair<string, ExcelFunction>>? functions = new List<KeyValuePair<string, ExcelFunction>>();
-
-            this._parser.Configure(parsingConfiguration =>
+            if (!(ws is ExcelChartsheet))
             {
-                foreach (string? name in parsingConfiguration.FunctionRepository.FunctionNames)
+                if (ws._formulaTokens != null)
                 {
-                    functions.Add(new KeyValuePair<string, ExcelFunction>(name, parsingConfiguration.FunctionRepository.GetFunction(name)));
+                    ws._formulaTokens.Dispose();
                 }
-            });
-            return functions;
-        }
-
-        /// <summary>
-        /// Parses the supplied <paramref name="formula"/> and returns the result.
-        /// </summary>
-        /// <param name="formula">The formula to parse</param>
-        /// <returns>The result of the parsed formula</returns>
-        public object Parse(string formula)
-        {
-            return this._parser.Parse(formula);
-        }
-
-        /// <summary>
-        /// Parses the supplied <paramref name="formula"/> and returns the result.
-        /// </summary>
-        /// <param name="formula">The formula to parse</param>
-        /// <param name="address">The full address in the workbook where the <paramref name="formula"/> should be parsed. Example: you might want to parse the formula of a conditional format, then this should be the address of the cell where the conditional format resides.</param>
-        /// <returns>The result of the parsed formula</returns>
-        public object Parse(string formula, string address)
-        {
-            return this._parser.Parse(formula, address);
-        }
-
-        /// <summary>
-        /// Attaches a logger to the <see cref="FormulaParser"/>.
-        /// </summary>
-        /// <param name="logger">An instance of <see cref="IFormulaParserLogger"/></param>
-        /// <see cref="OfficeOpenXml.FormulaParsing.Logging.LoggerFactory"/>
-        public void AttachLogger(IFormulaParserLogger logger)
-        {
-            this._parser.Configure(c => c.AttachLogger(logger));
-        }
-
-        /// <summary>
-        /// Attaches a logger to the formula parser that produces output to the supplied logfile.
-        /// </summary>
-        /// <param name="logfile"></param>
-        public void AttachLogger(FileInfo logfile)
-        {
-            this._parser.Configure(c => c.AttachLogger(LoggerFactory.CreateTextFileLogger(logfile)));
-        }
-        /// <summary>
-        /// Detaches any attached logger from the formula parser.
-        /// </summary>
-        public void DetachLogger()
-        {
-            this._parser.Configure(c => c.DetachLogger());
-        }
-
-        public IEnumerable<IFormulaCellInfo> GetCalculationChain(ExcelRangeBase range)
-        {
-            Require.That(range).IsNotNull();
-            return this.GetCalculationChain(range, null);
-        }
-
-        public IEnumerable<IFormulaCellInfo> GetCalculationChain(ExcelRangeBase range, ExcelCalculationOption options)
-        {
-            Require.That(range).IsNotNull();
-            Init(range.Worksheet.Workbook);
-            FilterInfo? filterInfo = new FilterInfo(range.Worksheet.Workbook);
-            this._parser.InitNewCalc(filterInfo);
-            ExcelCalculationOption? opt = options != null ? options : new ExcelCalculationOption();
-            DependencyChain? dc = DependencyChainFactory.Create(range, opt);
-            List<IFormulaCellInfo>? result = new List<IFormulaCellInfo>();
-            foreach(int co in dc.CalcOrder)
-            {
-                FormulaCell? fc = dc.list[co];
-                ExcelAddress? adr = new ExcelAddress(fc.Row, fc.Column, fc.Row, fc.Column);
-                FormulaCellInfo? fi = new FormulaCellInfo(fc.ws.Name, adr.Address, fc.Formula);
-                result.Add(fi);
-            }
-            return result;
-        }
-
-        private static void Init(ExcelWorkbook workbook)
-        {
-            workbook._formulaTokens = new CellStore<List<Token>>();
-            foreach (ExcelWorksheet? ws in workbook.Worksheets)
-            {
-                if (!(ws is ExcelChartsheet))
-                {
-                    if (ws._formulaTokens != null)
-                    {
-                        ws._formulaTokens.Dispose();
-                    }
-                    ws._formulaTokens = new CellStore<List<Token>>();
-                }
+                ws._formulaTokens = new CellStore<List<Token>>();
             }
         }
     }

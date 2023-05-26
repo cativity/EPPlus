@@ -21,81 +21,80 @@ using OfficeOpenXml.FormulaParsing.Utilities;
 using OfficeOpenXml.Utils;
 using Require = OfficeOpenXml.FormulaParsing.Utilities.Require;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
+
+[FunctionMetadata(
+                     Category = ExcelFunctionCategory.Statistical,
+                     EPPlusVersion = "4",
+                     Description = "Returns the number of cells (of a supplied range), that satisfy a given criteria")]
+internal class CountIf : ExcelFunction
 {
-    [FunctionMetadata(
-        Category = ExcelFunctionCategory.Statistical,
-        EPPlusVersion = "4",
-        Description = "Returns the number of cells (of a supplied range), that satisfy a given criteria")]
-    internal class CountIf : ExcelFunction
+    private readonly ExpressionEvaluator _expressionEvaluator;
+
+    public CountIf()
+        : this(new ExpressionEvaluator())
     {
-        private readonly ExpressionEvaluator _expressionEvaluator;
 
-        public CountIf()
-            : this(new ExpressionEvaluator())
+    }
+
+    public CountIf(ExpressionEvaluator evaluator)
+    {
+        Require.That(evaluator).Named("evaluator").IsNotNull();
+        this._expressionEvaluator = evaluator;
+    }
+
+    private bool Evaluate(object obj, string expression)
+    {
+        double? candidate = default(double?);
+        if (IsNumeric(obj))
         {
-
+            candidate = ConvertUtil.GetValueDouble(obj);
         }
-
-        public CountIf(ExpressionEvaluator evaluator)
+        if (candidate.HasValue)
         {
-            Require.That(evaluator).Named("evaluator").IsNotNull();
-            this._expressionEvaluator = evaluator;
+            return this._expressionEvaluator.Evaluate(candidate.Value, expression, false);
         }
+        return this._expressionEvaluator.Evaluate(obj, expression, false);
+    }
 
-        private bool Evaluate(object obj, string expression)
+    public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
+    {
+        FunctionArgument[]? functionArguments = arguments as FunctionArgument[] ?? arguments.ToArray();
+        ValidateArguments(functionArguments, 2);
+        FunctionArgument? range = functionArguments.ElementAt(0);
+        string? criteria = functionArguments.ElementAt(1).ValueFirstString;
+        double result = 0d;
+        if (range.IsExcelRange)
         {
-            double? candidate = default(double?);
-            if (IsNumeric(obj))
+            IRangeInfo? rangeInfo = range.ValueAsRangeInfo;
+            for (int row = rangeInfo.Address.Start.Row; row < rangeInfo.Address.End.Row + 1; row++)
             {
-                candidate = ConvertUtil.GetValueDouble(obj);
-            }
-            if (candidate.HasValue)
-            {
-                return this._expressionEvaluator.Evaluate(candidate.Value, expression, false);
-            }
-            return this._expressionEvaluator.Evaluate(obj, expression, false);
-        }
-
-        public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
-        {
-            FunctionArgument[]? functionArguments = arguments as FunctionArgument[] ?? arguments.ToArray();
-            ValidateArguments(functionArguments, 2);
-            FunctionArgument? range = functionArguments.ElementAt(0);
-            string? criteria = functionArguments.ElementAt(1).ValueFirstString;
-            double result = 0d;
-            if (range.IsExcelRange)
-            {
-                IRangeInfo? rangeInfo = range.ValueAsRangeInfo;
-                for (int row = rangeInfo.Address.Start.Row; row < rangeInfo.Address.End.Row + 1; row++)
+                for (int col = rangeInfo.Address.Start.Column; col < rangeInfo.Address.End.Column + 1; col++)
                 {
-                    for (int col = rangeInfo.Address.Start.Column; col < rangeInfo.Address.End.Column + 1; col++)
-                    {
-                        if (criteria != null && this.Evaluate(rangeInfo.GetValue(row, col), criteria))
-                        {
-                            result++;
-                        }
-                    }
-                }
-            }
-            else if (range.Value is IEnumerable<FunctionArgument>)
-            {
-                foreach (FunctionArgument? arg in (IEnumerable<FunctionArgument>) range.Value)
-                {
-                    if(this.Evaluate(arg.Value, criteria))
+                    if (criteria != null && this.Evaluate(rangeInfo.GetValue(row, col), criteria))
                     {
                         result++;
                     }
                 }
             }
-            else
+        }
+        else if (range.Value is IEnumerable<FunctionArgument>)
+        {
+            foreach (FunctionArgument? arg in (IEnumerable<FunctionArgument>) range.Value)
             {
-                if (this.Evaluate(range.Value, criteria))
+                if(this.Evaluate(arg.Value, criteria))
                 {
                     result++;
                 }
             }
-            return this.CreateResult(result, DataType.Integer);
         }
+        else
+        {
+            if (this.Evaluate(range.Value, criteria))
+            {
+                result++;
+            }
+        }
+        return this.CreateResult(result, DataType.Integer);
     }
 }

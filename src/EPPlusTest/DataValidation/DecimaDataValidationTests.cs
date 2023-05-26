@@ -30,37 +30,36 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OfficeOpenXml.DataValidation;
 using OfficeOpenXml.DataValidation.Contracts;
 
-namespace EPPlusTest.DataValidation
+namespace EPPlusTest.DataValidation;
+
+[TestClass]
+public class DecimaDataValidationTests : ValidationTestBase
 {
-    [TestClass]
-    public class DecimaDataValidationTests : ValidationTestBase
+    private IExcelDataValidationDecimal _validation;
+
+    [TestInitialize]
+    public void Setup()
     {
-        private IExcelDataValidationDecimal _validation;
+        this.SetupTestData();
+        this._validation = this._package.Workbook.Worksheets[1].DataValidations.AddDecimalValidation("A1");
+    }
 
-        [TestInitialize]
-        public void Setup()
-        {
-            this.SetupTestData();
-            this._validation = this._package.Workbook.Worksheets[1].DataValidations.AddDecimalValidation("A1");
-        }
+    [TestCleanup]
+    public void Cleanup()
+    {
+        this.CleanupTestData();
+        this._validation = null;
+    }
 
-        [TestCleanup]
-        public void Cleanup()
-        {
-            this.CleanupTestData();
-            this._validation = null;
-        }
+    [TestMethod]
+    public void DecimalDataValidation_Formula1IsSet()
+    {
+        Assert.IsNotNull(this._validation.Formula);
+    }
 
-        [TestMethod]
-        public void DecimalDataValidation_Formula1IsSet()
-        {
-            Assert.IsNotNull(this._validation.Formula);
-        }
-
-        [TestMethod]
-        public void DecimalDataValidation_Formula2IsSet()
-        {
-            Assert.IsNotNull(this._validation.Formula2);
-        }
+    [TestMethod]
+    public void DecimalDataValidation_Formula2IsSet()
+    {
+        Assert.IsNotNull(this._validation.Formula2);
     }
 }

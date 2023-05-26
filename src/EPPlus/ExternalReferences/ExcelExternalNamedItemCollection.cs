@@ -14,49 +14,48 @@ using OfficeOpenXml.Core;
 using System;
 using System.Collections.Generic;
 
-namespace OfficeOpenXml.ExternalReferences
+namespace OfficeOpenXml.ExternalReferences;
+
+/// <summary>
+/// A collection of cached defined names in an external workbook
+/// </summary>
+/// <typeparam name="T"></typeparam>
+public class ExcelExternalNamedItemCollection<T> : EPPlusReadOnlyList<T> where T : IExcelExternalNamedItem
 {
+    Dictionary<string, int> _names = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase);
     /// <summary>
-    /// A collection of cached defined names in an external workbook
+    /// Indexer for the collection
     /// </summary>
-    /// <typeparam name="T"></typeparam>
-    public class ExcelExternalNamedItemCollection<T> : EPPlusReadOnlyList<T> where T : IExcelExternalNamedItem
+    /// <param name="name">The name if the defined name</param>
+    /// <returns></returns>
+    public T this[string name]
     {
-        Dictionary<string, int> _names = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase);
-        /// <summary>
-        /// Indexer for the collection
-        /// </summary>
-        /// <param name="name">The name if the defined name</param>
-        /// <returns></returns>
-        public T this[string name]
+        get
         {
-            get
+            if (this._names.ContainsKey(name))
             {
-                if (this._names.ContainsKey(name))
-                {
-                    return this._list[this._names[name]];
-                }
-                return default(T);
+                return this._list[this._names[name]];
             }
+            return default(T);
         }
-        internal override void Add(T item)
-        {
-            this._names.Add(item.Name, this._list.Count);
-            base.Add(item);
-        }
-        internal override void Clear()
-        {
-            base.Clear();
-            this._names.Clear();
-        }
-        /// <summary>
-        /// If the name exists in the collection
-        /// </summary>
-        /// <param name="name">The name. Case insensitive</param>
-        /// <returns>true if the name exists in the collection, otherwise false</returns>
-        public bool ContainsKey(string name)
-        {
-            return this._names.ContainsKey(name);
-        }
+    }
+    internal override void Add(T item)
+    {
+        this._names.Add(item.Name, this._list.Count);
+        base.Add(item);
+    }
+    internal override void Clear()
+    {
+        base.Clear();
+        this._names.Clear();
+    }
+    /// <summary>
+    /// If the name exists in the collection
+    /// </summary>
+    /// <param name="name">The name. Case insensitive</param>
+    /// <returns>true if the name exists in the collection, otherwise false</returns>
+    public bool ContainsKey(string name)
+    {
+        return this._names.ContainsKey(name);
     }
 }

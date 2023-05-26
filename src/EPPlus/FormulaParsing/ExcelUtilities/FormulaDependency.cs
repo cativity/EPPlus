@@ -16,41 +16,40 @@ using System.Linq;
 using System.Text;
 using OfficeOpenXml.FormulaParsing.Exceptions;
 
-namespace OfficeOpenXml.FormulaParsing.ExcelUtilities
+namespace OfficeOpenXml.FormulaParsing.ExcelUtilities;
+
+public class FormulaDependency
 {
-    public class FormulaDependency
+    public FormulaDependency(ParsingScope scope)
     {
-        public FormulaDependency(ParsingScope scope)
-	    {
-            this.ScopeId = scope.ScopeId;
-            this.Address = scope.Address;
-	    }
-        public Guid ScopeId { get; private set; }
+        this.ScopeId = scope.ScopeId;
+        this.Address = scope.Address;
+    }
+    public Guid ScopeId { get; private set; }
 
-        public RangeAddress Address { get; private set; }
+    public RangeAddress Address { get; private set; }
 
-        private List<RangeAddress> _referencedBy = new List<RangeAddress>();
+    private List<RangeAddress> _referencedBy = new List<RangeAddress>();
 
-        private List<RangeAddress> _references = new List<RangeAddress>();
+    private List<RangeAddress> _references = new List<RangeAddress>();
 
-        public virtual void AddReferenceFrom(RangeAddress rangeAddress)
+    public virtual void AddReferenceFrom(RangeAddress rangeAddress)
+    {
+        if (this.Address.CollidesWith(rangeAddress) || this._references.Exists(x => x.CollidesWith(rangeAddress)))
         {
-            if (this.Address.CollidesWith(rangeAddress) || this._references.Exists(x => x.CollidesWith(rangeAddress)))
-            {
-                throw new CircularReferenceException("Circular reference detected at " + rangeAddress.ToString());
-            }
-
-            this._referencedBy.Add(rangeAddress);
+            throw new CircularReferenceException("Circular reference detected at " + rangeAddress.ToString());
         }
 
-        public virtual void AddReferenceTo(RangeAddress rangeAddress)
-        {
-            if (this.Address.CollidesWith(rangeAddress) || this._referencedBy.Exists(x => x.CollidesWith(rangeAddress)))
-            {
-                throw new CircularReferenceException("Circular reference detected at " + rangeAddress.ToString());
-            }
+        this._referencedBy.Add(rangeAddress);
+    }
 
-            this._references.Add(rangeAddress);
+    public virtual void AddReferenceTo(RangeAddress rangeAddress)
+    {
+        if (this.Address.CollidesWith(rangeAddress) || this._referencedBy.Exists(x => x.CollidesWith(rangeAddress)))
+        {
+            throw new CircularReferenceException("Circular reference detected at " + rangeAddress.ToString());
         }
+
+        this._references.Add(rangeAddress);
     }
 }

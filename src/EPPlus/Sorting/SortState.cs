@@ -17,121 +17,120 @@ using System.Linq;
 using System.Text;
 using System.Xml;
 
-namespace OfficeOpenXml.Sorting
+namespace OfficeOpenXml.Sorting;
+
+/// <summary>
+/// Preserves the AutoFilter sort state.
+/// </summary>
+public class SortState : XmlHelper
 {
-    /// <summary>
-    /// Preserves the AutoFilter sort state.
-    /// </summary>
-    public class SortState : XmlHelper
+    internal SortState(XmlNamespaceManager nameSpaceManager, XmlNode topNode) : base(nameSpaceManager, topNode)
     {
-        internal SortState(XmlNamespaceManager nameSpaceManager, XmlNode topNode) : base(nameSpaceManager, topNode)
+        this._sortConditions = new SortConditionCollection(nameSpaceManager, topNode);
+    }
+
+    internal SortState(XmlNamespaceManager nameSpaceManager, ExcelWorksheet worksheet) : base(nameSpaceManager, null)
+    {
+        this.SchemaNodeOrder = worksheet.SchemaNodeOrder;
+        this.TopNode = worksheet.WorksheetXml.SelectSingleNode(this._sortStatePath, nameSpaceManager);
+        if(this.TopNode == null)
         {
-            this._sortConditions = new SortConditionCollection(nameSpaceManager, topNode);
+            this.TopNode = this.CreateNode(worksheet.WorksheetXml.DocumentElement, this._sortStatePath);
+            XmlAttribute? attr = worksheet.WorksheetXml.CreateAttribute("xmlns:xlrd2");
+            attr.Value = ExcelPackage.schemaRichData2;
+            this.TopNode.Attributes.Append(attr);
+        }
+        else
+        {
+            this.TopNode.RemoveAll();
         }
 
-        internal SortState(XmlNamespaceManager nameSpaceManager, ExcelWorksheet worksheet) : base(nameSpaceManager, null)
-        {
-            this.SchemaNodeOrder = worksheet.SchemaNodeOrder;
-            this.TopNode = worksheet.WorksheetXml.SelectSingleNode(this._sortStatePath, nameSpaceManager);
-            if(this.TopNode == null)
-            {
-                this.TopNode = this.CreateNode(worksheet.WorksheetXml.DocumentElement, this._sortStatePath);
-                XmlAttribute? attr = worksheet.WorksheetXml.CreateAttribute("xmlns:xlrd2");
-                attr.Value = ExcelPackage.schemaRichData2;
-                this.TopNode.Attributes.Append(attr);
-            }
-            else
-            {
-                this.TopNode.RemoveAll();
-            }
+        this._sortConditions = new SortConditionCollection(nameSpaceManager, this.TopNode);
+    }
 
-            this._sortConditions = new SortConditionCollection(nameSpaceManager, this.TopNode);
+    internal SortState(XmlNamespaceManager nameSpaceManager, ExcelTable table) : base(nameSpaceManager, null)
+    {
+        this.SchemaNodeOrder = table.SchemaNodeOrder;
+        this.TopNode = table.TableXml.SelectSingleNode(this._sortStatePath, nameSpaceManager);
+        if (this.TopNode == null)
+        {
+            this.TopNode = this.CreateNode(table.TableXml.DocumentElement, this._sortStatePath);
+            XmlAttribute? attr = table.TableXml.CreateAttribute("xmlns:xlrd2");
+            attr.Value = ExcelPackage.schemaRichData2;
+            this.TopNode.Attributes.Append(attr);
         }
 
-        internal SortState(XmlNamespaceManager nameSpaceManager, ExcelTable table) : base(nameSpaceManager, null)
-        {
-            this.SchemaNodeOrder = table.SchemaNodeOrder;
-            this.TopNode = table.TableXml.SelectSingleNode(this._sortStatePath, nameSpaceManager);
-            if (this.TopNode == null)
-            {
-                this.TopNode = this.CreateNode(table.TableXml.DocumentElement, this._sortStatePath);
-                XmlAttribute? attr = table.TableXml.CreateAttribute("xmlns:xlrd2");
-                attr.Value = ExcelPackage.schemaRichData2;
-                this.TopNode.Attributes.Append(attr);
-            }
+        this._sortConditions = new SortConditionCollection(nameSpaceManager, this.TopNode);
+    }
 
-            this._sortConditions = new SortConditionCollection(nameSpaceManager, this.TopNode);
+    private string _sortStatePath = "//d:sortState";
+    private string _caseSensitivePath = "@caseSensitive";
+    private string _columnSortPath = "@columnSort";
+    private string _refPath = "@ref";
+
+    private readonly SortConditionCollection _sortConditions;
+
+    /// <summary>
+    /// Removes all sort conditions
+    /// </summary>
+    public void Clear()
+    {
+        this._sortConditions.Clear();
+    }
+
+    /// <summary>
+    /// The preserved sort conditions of the sort state.
+    /// </summary>
+    public SortConditionCollection SortConditions
+    {
+        get
+        {
+            return this._sortConditions;
         }
+    }
 
-        private string _sortStatePath = "//d:sortState";
-        private string _caseSensitivePath = "@caseSensitive";
-        private string _columnSortPath = "@columnSort";
-        private string _refPath = "@ref";
-
-        private readonly SortConditionCollection _sortConditions;
-
-        /// <summary>
-        /// Removes all sort conditions
-        /// </summary>
-        public void Clear()
+    /// <summary>
+    /// Indicates whether or not the sort is case-sensitive
+    /// </summary>
+    public bool CaseSensitive
+    {
+        get
         {
-            this._sortConditions.Clear();
+            return this.GetXmlNodeBool(this._caseSensitivePath);
         }
-
-        /// <summary>
-        /// The preserved sort conditions of the sort state.
-        /// </summary>
-        public SortConditionCollection SortConditions
+        internal set
         {
-            get
-            {
-                return this._sortConditions;
-            }
+            this.SetXmlNodeBool(this._caseSensitivePath, value, false);
         }
+    }
 
-        /// <summary>
-        /// Indicates whether or not the sort is case-sensitive
-        /// </summary>
-        public bool CaseSensitive
+    /// <summary>
+    /// Indicates whether or not to sort by columns.
+    /// </summary>
+    public bool ColumnSort
+    {
+        get
         {
-            get
-            {
-                return this.GetXmlNodeBool(this._caseSensitivePath);
-            }
-            internal set
-            {
-                this.SetXmlNodeBool(this._caseSensitivePath, value, false);
-            }
+            return this.GetXmlNodeBool(this._columnSortPath);
         }
-
-        /// <summary>
-        /// Indicates whether or not to sort by columns.
-        /// </summary>
-        public bool ColumnSort
+        internal set
         {
-            get
-            {
-                return this.GetXmlNodeBool(this._columnSortPath);
-            }
-            internal set
-            {
-                this.SetXmlNodeBool(this._columnSortPath, value, false);
-            }
+            this.SetXmlNodeBool(this._columnSortPath, value, false);
         }
+    }
 
-        /// <summary>
-        /// The whole range of data to sort (not only the sort-by column)
-        /// </summary>
-        public string Ref
+    /// <summary>
+    /// The whole range of data to sort (not only the sort-by column)
+    /// </summary>
+    public string Ref
+    {
+        get
         {
-            get
-            {
-                return this.GetXmlNodeString(this._refPath);
-            }
-            internal set
-            {
-                this.SetXmlNodeString(this._refPath, value);
-            }
+            return this.GetXmlNodeString(this._refPath);
+        }
+        internal set
+        {
+            this.SetXmlNodeString(this._refPath, value);
         }
     }
 }

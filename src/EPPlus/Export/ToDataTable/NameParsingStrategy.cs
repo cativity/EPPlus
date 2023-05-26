@@ -14,24 +14,23 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace OfficeOpenXml.Export.ToDataTable
+namespace OfficeOpenXml.Export.ToDataTable;
+
+/// <summary>
+/// Defines options for how to build a valid property or DataTable column name out of a string
+/// </summary>
+public enum NameParsingStrategy
 {
     /// <summary>
-    /// Defines options for how to build a valid property or DataTable column name out of a string
+    /// Preserve the input string as it is
     /// </summary>
-    public enum NameParsingStrategy
-    {
-        /// <summary>
-        /// Preserve the input string as it is
-        /// </summary>
-        Preserve,
-        /// <summary>
-        /// Replace any spaces with underscore
-        /// </summary>
-        SpaceToUnderscore,
-        /// <summary>
-        /// Remove all spaces
-        /// </summary>
-        RemoveSpace
-    }
+    Preserve,
+    /// <summary>
+    /// Replace any spaces with underscore
+    /// </summary>
+    SpaceToUnderscore,
+    /// <summary>
+    /// Remove all spaces
+    /// </summary>
+    RemoveSpace
 }

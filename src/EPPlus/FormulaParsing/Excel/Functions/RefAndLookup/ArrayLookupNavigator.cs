@@ -17,80 +17,79 @@ using System.Text;
 using OfficeOpenXml.FormulaParsing.Exceptions;
 using OfficeOpenXml.FormulaParsing.Utilities;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions.RefAndLookup
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions.RefAndLookup;
+
+internal class ArrayLookupNavigator : LookupNavigator
 {
-    internal class ArrayLookupNavigator : LookupNavigator
-    {
-        private readonly FunctionArgument[] _arrayData;
-        private int _index = 0;
-        private object _currentValue;
+    private readonly FunctionArgument[] _arrayData;
+    private int _index = 0;
+    private object _currentValue;
  
-        public ArrayLookupNavigator(LookupDirection direction, LookupArguments arguments, ParsingContext parsingContext)
-            : base(direction, arguments, parsingContext)
+    public ArrayLookupNavigator(LookupDirection direction, LookupArguments arguments, ParsingContext parsingContext)
+        : base(direction, arguments, parsingContext)
+    {
+        Require.That(arguments).Named("arguments").IsNotNull();
+        Require.That(arguments.DataArray).Named("arguments.DataArray").IsNotNull();
+        this._arrayData = arguments.DataArray.ToArray();
+        this.Initialize();
+    }
+
+    private void Initialize()
+    {
+        if (this.Arguments.LookupIndex >= this._arrayData.Length)
         {
-            Require.That(arguments).Named("arguments").IsNotNull();
-            Require.That(arguments.DataArray).Named("arguments.DataArray").IsNotNull();
-            this._arrayData = arguments.DataArray.ToArray();
-            this.Initialize();
+            throw new ExcelErrorValueException(eErrorType.Ref);
         }
 
-        private void Initialize()
+        this.SetCurrentValue();
+
+    }
+
+    public override int Index
+    {
+        get { return this._index; }
+    }
+
+    private void SetCurrentValue()
+    {
+        this._currentValue = this._arrayData[this._index];
+    }
+
+    private bool HasNext()
+    {
+        if (this.Direction == LookupDirection.Vertical)
         {
-            if (this.Arguments.LookupIndex >= this._arrayData.Length)
-            {
-                throw new ExcelErrorValueException(eErrorType.Ref);
-            }
+            return this._index < (this._arrayData.Length - 1);
+        }
+        else
+        {
+            return false;
+        }
+    }
 
-            this.SetCurrentValue();
-
+    public override bool MoveNext()
+    {
+        if (!this.HasNext())
+        {
+            return false;
         }
 
-        public override int Index
+        if (this.Direction == LookupDirection.Vertical)
         {
-            get { return this._index; }
+            this._index++;
         }
 
-        private void SetCurrentValue()
-        {
-            this._currentValue = this._arrayData[this._index];
-        }
+        this.SetCurrentValue();
+        return true;
+    }
 
-        private bool HasNext()
-        {
-            if (this.Direction == LookupDirection.Vertical)
-            {
-                return this._index < (this._arrayData.Length - 1);
-            }
-            else
-            {
-                return false;
-            }
-        }
+    public override object CurrentValue
+    {
+        get { return this._arrayData[this._index].Value; }
+    }
 
-        public override bool MoveNext()
-        {
-            if (!this.HasNext())
-            {
-                return false;
-            }
-
-            if (this.Direction == LookupDirection.Vertical)
-            {
-                this._index++;
-            }
-
-            this.SetCurrentValue();
-            return true;
-        }
-
-        public override object CurrentValue
-        {
-            get { return this._arrayData[this._index].Value; }
-        }
-
-        public override object GetLookupValue()
-        {
-            return this._arrayData[this._index].Value;
-        }
+    public override object GetLookupValue()
+    {
+        return this._arrayData[this._index].Value;
     }
 }

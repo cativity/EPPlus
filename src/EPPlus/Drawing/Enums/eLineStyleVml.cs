@@ -10,44 +10,43 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
-namespace OfficeOpenXml.Drawing.Vml
+namespace OfficeOpenXml.Drawing.Vml;
+
+/// <summary>
+/// Linestyle
+/// </summary>
+public enum eLineStyleVml
 {
     /// <summary>
-    /// Linestyle
+    /// Solid
     /// </summary>
-    public enum eLineStyleVml
-    {
-        /// <summary>
-        /// Solid
-        /// </summary>
-        Solid,
-        /// <summary>
-        /// Round
-        /// </summary>
-        Round,
-        /// <summary>
-        /// Square
-        /// </summary>
-        Square,
-        /// <summary>
-        /// Dash
-        /// </summary>
-        Dash,
-        /// <summary>
-        /// Dash dot
-        /// </summary>
-        DashDot,
-        /// <summary>
-        /// Long dash
-        /// </summary>
-        LongDash,
-        /// <summary>
-        /// Long dash dot
-        /// </summary>
-        LongDashDot,
-        /// <summary>
-        /// Long dash dot dot
-        /// </summary>
-        LongDashDotDot
-    }
+    Solid,
+    /// <summary>
+    /// Round
+    /// </summary>
+    Round,
+    /// <summary>
+    /// Square
+    /// </summary>
+    Square,
+    /// <summary>
+    /// Dash
+    /// </summary>
+    Dash,
+    /// <summary>
+    /// Dash dot
+    /// </summary>
+    DashDot,
+    /// <summary>
+    /// Long dash
+    /// </summary>
+    LongDash,
+    /// <summary>
+    /// Long dash dot
+    /// </summary>
+    LongDashDot,
+    /// <summary>
+    /// Long dash dot dot
+    /// </summary>
+    LongDashDotDot
 }

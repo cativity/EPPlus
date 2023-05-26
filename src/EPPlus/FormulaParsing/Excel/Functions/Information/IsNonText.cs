@@ -17,24 +17,23 @@ using System.Text;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Metadata;
 using OfficeOpenXml.FormulaParsing.ExpressionGraph;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Information
-{
-    [FunctionMetadata(
-        Category = ExcelFunctionCategory.Information,
-        EPPlusVersion = "4",
-        Description = "Tests if an initial supplied value (or expression) returns the Excel #N/A error and if so, returns TRUE; Otherwise returns FALSE")]
-    internal class IsNonText : ExcelFunction
-    {
-        public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
-        {
-            ValidateArguments(arguments, 1);
-            FunctionArgument? firstArg = arguments.ElementAt(0);
-            if (firstArg.Value == null || firstArg.ValueIsExcelError)
-            {
-                return this.CreateResult(false, DataType.Boolean);
-            }
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Information;
 
-            return this.CreateResult(!(firstArg.Value is string), DataType.Boolean);
+[FunctionMetadata(
+                     Category = ExcelFunctionCategory.Information,
+                     EPPlusVersion = "4",
+                     Description = "Tests if an initial supplied value (or expression) returns the Excel #N/A error and if so, returns TRUE; Otherwise returns FALSE")]
+internal class IsNonText : ExcelFunction
+{
+    public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
+    {
+        ValidateArguments(arguments, 1);
+        FunctionArgument? firstArg = arguments.ElementAt(0);
+        if (firstArg.Value == null || firstArg.ValueIsExcelError)
+        {
+            return this.CreateResult(false, DataType.Boolean);
         }
+
+        return this.CreateResult(!(firstArg.Value is string), DataType.Boolean);
     }
 }

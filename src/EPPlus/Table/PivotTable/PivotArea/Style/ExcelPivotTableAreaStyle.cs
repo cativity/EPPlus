@@ -13,55 +13,54 @@
 using OfficeOpenXml.Style.Dxf;
 using System.Xml;
 
-namespace OfficeOpenXml.Table.PivotTable
+namespace OfficeOpenXml.Table.PivotTable;
+
+/// <summary>
+/// Defines a pivot table area of selection used for styling.
+/// </summary>
+public class ExcelPivotTableAreaStyle : ExcelPivotArea
 {
-    /// <summary>
-    /// Defines a pivot table area of selection used for styling.
-    /// </summary>
-    public class ExcelPivotTableAreaStyle : ExcelPivotArea
+    ExcelStyles _styles;
+    internal ExcelPivotTableAreaStyle(XmlNamespaceManager nsm, XmlNode topNode, ExcelPivotTable pt) :
+        base(nsm, topNode, pt)
     {
-        ExcelStyles _styles;
-        internal ExcelPivotTableAreaStyle(XmlNamespaceManager nsm, XmlNode topNode, ExcelPivotTable pt) :
-            base(nsm, topNode, pt)
-        {
-            this._styles = pt.WorkSheet.Workbook.Styles;
-            this.Conditions = new ExcelPivotAreaStyleConditions(nsm, topNode, pt);
-        }
-        /// <summary>
-        /// Conditions for the pivot table. Conditions can be set for specific row-, column- or data fields. Specify labels, data grand totals and more.
-        /// </summary>
-        public ExcelPivotAreaStyleConditions Conditions
-        {
-            get;
-        }
+        this._styles = pt.WorkSheet.Workbook.Styles;
+        this.Conditions = new ExcelPivotAreaStyleConditions(nsm, topNode, pt);
+    }
+    /// <summary>
+    /// Conditions for the pivot table. Conditions can be set for specific row-, column- or data fields. Specify labels, data grand totals and more.
+    /// </summary>
+    public ExcelPivotAreaStyleConditions Conditions
+    {
+        get;
+    }
 
-        ExcelDxfStyle _style = null;
-        /// <summary>
-        /// Access to the style property for the pivot area
-        /// </summary>
-        public ExcelDxfStyle Style 
-        { 
-            get
+    ExcelDxfStyle _style = null;
+    /// <summary>
+    /// Access to the style property for the pivot area
+    /// </summary>
+    public ExcelDxfStyle Style 
+    { 
+        get
+        {
+            if (this._style == null)
             {
-                if (this._style == null)
-                {
-                    int? dxfId= this.GetXmlNodeIntNull("../@dxfId");
-                    this._style = this._styles.GetDxf(dxfId, null);
-                }
-                return this._style;
+                int? dxfId= this.GetXmlNodeIntNull("../@dxfId");
+                this._style = this._styles.GetDxf(dxfId, null);
             }
+            return this._style;
         }
+    }
 
-        internal int? DxfId 
-        { 
-            get
-            {
-                return this.GetXmlNodeIntNull("../@dxfId");
-            }
-            set
-            {
-                this.SetXmlNodeInt("../@dxfId", value);
-            }
+    internal int? DxfId 
+    { 
+        get
+        {
+            return this.GetXmlNodeIntNull("../@dxfId");
+        }
+        set
+        {
+            this.SetXmlNodeInt("../@dxfId", value);
         }
     }
 }

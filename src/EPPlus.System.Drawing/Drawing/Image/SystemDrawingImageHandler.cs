@@ -7,82 +7,81 @@ using System.Linq;
 using System.Text;
 using System.Drawing;
 
-namespace OfficeOpenXml.SystemDrawing.Image
+namespace OfficeOpenXml.SystemDrawing.Image;
+
+public class SystemDrawingImageHandler : IImageHandler
 {
-    public class SystemDrawingImageHandler : IImageHandler
+    public SystemDrawingImageHandler()
     {
-        public SystemDrawingImageHandler()
+        if(IsWindows())
         {
-            if(IsWindows())
-            {
-                this.SupportedTypes= new HashSet<ePictureType>() { ePictureType.Bmp, ePictureType.Jpg, ePictureType.Gif, ePictureType.Png, ePictureType.Tif, ePictureType.Emf, ePictureType.Wmf };
-            }
-            else
-            {
-                this.SupportedTypes = new HashSet<ePictureType>() { ePictureType.Bmp, ePictureType.Jpg, ePictureType.Gif, ePictureType.Png, ePictureType.Tif };
-            }
+            this.SupportedTypes= new HashSet<ePictureType>() { ePictureType.Bmp, ePictureType.Jpg, ePictureType.Gif, ePictureType.Png, ePictureType.Tif, ePictureType.Emf, ePictureType.Wmf };
         }
-
-        private static bool IsWindows()
+        else
         {
-            if(Environment.OSVersion.Platform == PlatformID.Unix ||
+            this.SupportedTypes = new HashSet<ePictureType>() { ePictureType.Bmp, ePictureType.Jpg, ePictureType.Gif, ePictureType.Png, ePictureType.Tif };
+        }
+    }
+
+    private static bool IsWindows()
+    {
+        if(Environment.OSVersion.Platform == PlatformID.Unix ||
 #if(NET5_0_OR_GREATER)
-               Environment.OSVersion.Platform == PlatformID.Other ||
+           Environment.OSVersion.Platform == PlatformID.Other ||
 #endif
-               Environment.OSVersion.Platform == PlatformID.MacOSX)
-            {
-                return false;
-            }
-            else
-            {
-                return true;
-            }
-        }
-
-        public HashSet<ePictureType> SupportedTypes
+           Environment.OSVersion.Platform == PlatformID.MacOSX)
         {
-            get;
-        } 
+            return false;
+        }
+        else
+        {
+            return true;
+        }
+    }
 
-        public Exception LastException { get; private set; }
+    public HashSet<ePictureType> SupportedTypes
+    {
+        get;
+    } 
 
-        public bool GetImageBounds(MemoryStream image, ePictureType type, out double width, out double height, out double horizontalResolution, out double verticalResolution)
+    public Exception LastException { get; private set; }
+
+    public bool GetImageBounds(MemoryStream image, ePictureType type, out double width, out double height, out double horizontalResolution, out double verticalResolution)
+    {
+        try
+        {
+            Bitmap? bmp = new Bitmap(image);
+            width = bmp.Width;
+            height = bmp.Height;
+            horizontalResolution = bmp.HorizontalResolution;
+            verticalResolution = bmp.VerticalResolution;
+            return true;
+        }
+        catch(Exception ex)
+        {
+            width = 0;
+            height = 0;
+            horizontalResolution = 0;
+            verticalResolution = 0;
+            this.LastException = ex;
+            return false;
+        }
+    }
+    bool? _validForEnvironment = null;
+    public bool ValidForEnvironment()
+    {
+        if (this._validForEnvironment.HasValue == false)
         {
             try
             {
-                Bitmap? bmp = new Bitmap(image);
-                width = bmp.Width;
-                height = bmp.Height;
-                horizontalResolution = bmp.HorizontalResolution;
-                verticalResolution = bmp.VerticalResolution;
-                return true;
+                Graphics? g = Graphics.FromHwnd(IntPtr.Zero); //Fails if no gdi.
+                this._validForEnvironment = true;
             }
-            catch(Exception ex)
+            catch
             {
-                width = 0;
-                height = 0;
-                horizontalResolution = 0;
-                verticalResolution = 0;
-                this.LastException = ex;
-                return false;
+                this._validForEnvironment = false;
             }
         }
-        bool? _validForEnvironment = null;
-        public bool ValidForEnvironment()
-        {
-            if (this._validForEnvironment.HasValue == false)
-            {
-                try
-                {
-                    Graphics? g = Graphics.FromHwnd(IntPtr.Zero); //Fails if no gdi.
-                    this._validForEnvironment = true;
-                }
-                catch
-                {
-                    this._validForEnvironment = false;
-                }
-            }
-            return this._validForEnvironment.Value;
-        }
+        return this._validForEnvironment.Value;
     }
 }

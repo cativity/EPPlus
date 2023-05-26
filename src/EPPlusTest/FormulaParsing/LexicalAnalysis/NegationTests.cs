@@ -35,94 +35,93 @@ using OfficeOpenXml.FormulaParsing.LexicalAnalysis;
 using OfficeOpenXml.FormulaParsing;
 
 
-namespace EPPlusTest.FormulaParsing.LexicalAnalysis
+namespace EPPlusTest.FormulaParsing.LexicalAnalysis;
+
+[TestClass]
+public class NegationTests
 {
-    [TestClass]
-    public class NegationTests
+    private SourceCodeTokenizer _tokenizer;
+
+    [TestInitialize]
+    public void Setup()
     {
-        private SourceCodeTokenizer _tokenizer;
+        ParsingContext? context = ParsingContext.Create();
+        this._tokenizer = new SourceCodeTokenizer(context.Configuration.FunctionRepository, null);
+    }
 
-        [TestInitialize]
-        public void Setup()
-        {
-            ParsingContext? context = ParsingContext.Create();
-            this._tokenizer = new SourceCodeTokenizer(context.Configuration.FunctionRepository, null);
-        }
+    [TestCleanup]
+    public void Cleanup()
+    {
 
-        [TestCleanup]
-        public void Cleanup()
-        {
+    }
 
-        }
+    [TestMethod]
+    public void ShouldSetNegatorOnFirstTokenIfFirstCharIsMinus()
+    {
+        string? input = "-1";
+        IEnumerable<Token>? tokens = this._tokenizer.Tokenize(input);
 
-        [TestMethod]
-        public void ShouldSetNegatorOnFirstTokenIfFirstCharIsMinus()
-        {
-            string? input = "-1";
-            IEnumerable<Token>? tokens = this._tokenizer.Tokenize(input);
+        Assert.AreEqual(2, tokens.Count());
+        Assert.IsTrue(tokens.First().TokenTypeIsSet(TokenType.Negator));
+    }
 
-            Assert.AreEqual(2, tokens.Count());
-            Assert.IsTrue(tokens.First().TokenTypeIsSet(TokenType.Negator));
-        }
+    [TestMethod]
+    public void ShouldChangePlusToMinusIfNegatorIsPresent()
+    {
+        string? input = "1 + -1";
+        IEnumerable<Token>? tokens = this._tokenizer.Tokenize(input);
 
-        [TestMethod]
-        public void ShouldChangePlusToMinusIfNegatorIsPresent()
-        {
-            string? input = "1 + -1";
-            IEnumerable<Token>? tokens = this._tokenizer.Tokenize(input);
+        Assert.AreEqual(3, tokens.Count());
+        Assert.IsTrue(tokens.ElementAt(1).TokenTypeIsSet(TokenType.Operator));
+        Assert.AreEqual("-", tokens.ElementAt(1).Value);
+    }
 
-            Assert.AreEqual(3, tokens.Count());
-            Assert.IsTrue(tokens.ElementAt(1).TokenTypeIsSet(TokenType.Operator));
-            Assert.AreEqual("-", tokens.ElementAt(1).Value);
-        }
+    [TestMethod]
+    public void ShouldSetNegatorOnTokenInsideParenthethis()
+    {
+        string? input = "1 + (-1 * 2)";
+        IEnumerable<Token>? tokens = this._tokenizer.Tokenize(input);
 
-        [TestMethod]
-        public void ShouldSetNegatorOnTokenInsideParenthethis()
-        {
-            string? input = "1 + (-1 * 2)";
-            IEnumerable<Token>? tokens = this._tokenizer.Tokenize(input);
+        Assert.AreEqual(8, tokens.Count());
+        Assert.IsTrue(tokens.ElementAt(3).TokenTypeIsSet(TokenType.Negator));
+    }
 
-            Assert.AreEqual(8, tokens.Count());
-            Assert.IsTrue(tokens.ElementAt(3).TokenTypeIsSet(TokenType.Negator));
-        }
+    [TestMethod]
+    public void ShouldSetNegatorOnTokenInsideFunctionCall()
+    {
+        string? input = "Ceiling(-1, -0.1)";
+        IEnumerable<Token>? tokens = this._tokenizer.Tokenize(input);
 
-        [TestMethod]
-        public void ShouldSetNegatorOnTokenInsideFunctionCall()
-        {
-            string? input = "Ceiling(-1, -0.1)";
-            IEnumerable<Token>? tokens = this._tokenizer.Tokenize(input);
+        Assert.AreEqual(8, tokens.Count());
+        Assert.IsTrue(tokens.ElementAt(2).TokenTypeIsSet(TokenType.Negator));
+        Assert.IsTrue(tokens.ElementAt(5).TokenTypeIsSet(TokenType.Negator), "Negator after comma was not identified");
+    }
 
-            Assert.AreEqual(8, tokens.Count());
-            Assert.IsTrue(tokens.ElementAt(2).TokenTypeIsSet(TokenType.Negator));
-            Assert.IsTrue(tokens.ElementAt(5).TokenTypeIsSet(TokenType.Negator), "Negator after comma was not identified");
-        }
+    [TestMethod]
+    public void ShouldSetNegatorOnTokenInEnumerable()
+    {
+        string? input = "{-1}";
+        IEnumerable<Token>? tokens = this._tokenizer.Tokenize(input);
+        Assert.IsTrue(tokens.ElementAt(1).TokenTypeIsSet(TokenType.Negator));
+    }
 
-        [TestMethod]
-        public void ShouldSetNegatorOnTokenInEnumerable()
-        {
-            string? input = "{-1}";
-            IEnumerable<Token>? tokens = this._tokenizer.Tokenize(input);
-            Assert.IsTrue(tokens.ElementAt(1).TokenTypeIsSet(TokenType.Negator));
-        }
+    [TestMethod]
+    public void ShouldSetNegatorOnExcelAddress()
+    {
+        string? input = "-A1";
+        IEnumerable<Token>? tokens = this._tokenizer.Tokenize(input);
+        Assert.IsTrue(tokens.ElementAt(0).TokenTypeIsSet(TokenType.Negator));
+        Assert.IsTrue(tokens.ElementAt(1).TokenTypeIsSet(TokenType.ExcelAddress));
+    }
 
-        [TestMethod]
-        public void ShouldSetNegatorOnExcelAddress()
-        {
-            string? input = "-A1";
-            IEnumerable<Token>? tokens = this._tokenizer.Tokenize(input);
-            Assert.IsTrue(tokens.ElementAt(0).TokenTypeIsSet(TokenType.Negator));
-            Assert.IsTrue(tokens.ElementAt(1).TokenTypeIsSet(TokenType.ExcelAddress));
-        }
-
-        [TestMethod]
-        public void ShouldNotRemoveDoubleNegators()
-        {
-            string? input = "--1";
-            IEnumerable<Token>? tokens = this._tokenizer.Tokenize(input);
-            Assert.AreEqual(3, tokens.Count(), "tokens.Count() was not 2, but " + tokens.Count());
-            Assert.IsTrue(tokens.ElementAt(0).TokenTypeIsSet(TokenType.Negator), "First token was not a negator");
-            Assert.IsTrue(tokens.ElementAt(1).TokenTypeIsSet(TokenType.Negator), "Second token was not a negator");
-            Assert.IsTrue(tokens.ElementAt(2).TokenTypeIsSet(TokenType.Integer), "Third token was not an integer");
-        }
+    [TestMethod]
+    public void ShouldNotRemoveDoubleNegators()
+    {
+        string? input = "--1";
+        IEnumerable<Token>? tokens = this._tokenizer.Tokenize(input);
+        Assert.AreEqual(3, tokens.Count(), "tokens.Count() was not 2, but " + tokens.Count());
+        Assert.IsTrue(tokens.ElementAt(0).TokenTypeIsSet(TokenType.Negator), "First token was not a negator");
+        Assert.IsTrue(tokens.ElementAt(1).TokenTypeIsSet(TokenType.Negator), "Second token was not a negator");
+        Assert.IsTrue(tokens.ElementAt(2).TokenTypeIsSet(TokenType.Integer), "Third token was not an integer");
     }
 }

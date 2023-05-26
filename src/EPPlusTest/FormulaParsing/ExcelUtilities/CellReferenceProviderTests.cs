@@ -36,43 +36,42 @@ using OfficeOpenXml.FormulaParsing.LexicalAnalysis;
 using OfficeOpenXml.FormulaParsing.ExcelUtilities;
 using FakeItEasy;
 
-namespace EPPlusTest.ExcelUtilities
+namespace EPPlusTest.ExcelUtilities;
+
+[TestClass]
+public class CellReferenceProviderTests
 {
-    [TestClass]
-    public class CellReferenceProviderTests
+    private ExcelDataProvider _provider;
+
+    [TestInitialize]
+    public void Setup()
     {
-        private ExcelDataProvider _provider;
+        this._provider = A.Fake<ExcelDataProvider>();
+        A.CallTo(() => this._provider.ExcelMaxRows).Returns(5000);
+    }
 
-        [TestInitialize]
-        public void Setup()
-        {
-            this._provider = A.Fake<ExcelDataProvider>();
-            A.CallTo(() => this._provider.ExcelMaxRows).Returns(5000);
-        }
+    [TestMethod]
+    public void ShouldReturnReferencedSingleAddress()
+    {
+        ParsingContext? parsingContext = ParsingContext.Create();
+        parsingContext.Scopes.NewScope(RangeAddress.Empty);
+        parsingContext.Configuration.SetLexer(new Lexer(parsingContext.Configuration.FunctionRepository, parsingContext.NameValueProvider));
+        parsingContext.RangeAddressFactory = new RangeAddressFactory(this._provider);
+        CellReferenceProvider? provider = new CellReferenceProvider();
+        IEnumerable<string>? result = provider.GetReferencedAddresses("A1", parsingContext);
+        Assert.AreEqual("A1", result.First());
+    }
 
-        [TestMethod]
-        public void ShouldReturnReferencedSingleAddress()
-        {
-            ParsingContext? parsingContext = ParsingContext.Create();
-            parsingContext.Scopes.NewScope(RangeAddress.Empty);
-            parsingContext.Configuration.SetLexer(new Lexer(parsingContext.Configuration.FunctionRepository, parsingContext.NameValueProvider));
-            parsingContext.RangeAddressFactory = new RangeAddressFactory(this._provider);
-            CellReferenceProvider? provider = new CellReferenceProvider();
-            IEnumerable<string>? result = provider.GetReferencedAddresses("A1", parsingContext);
-            Assert.AreEqual("A1", result.First());
-        }
-
-        [TestMethod]
-        public void ShouldReturnReferencedMultipleAddresses()
-        {
-            ParsingContext? parsingContext = ParsingContext.Create();
-            parsingContext.Scopes.NewScope(RangeAddress.Empty);
-            parsingContext.Configuration.SetLexer(new Lexer(parsingContext.Configuration.FunctionRepository, parsingContext.NameValueProvider));
-            parsingContext.RangeAddressFactory = new RangeAddressFactory(this._provider);
-            CellReferenceProvider? provider = new CellReferenceProvider();
-            IEnumerable<string>? result = provider.GetReferencedAddresses("A1:A2", parsingContext);
-            Assert.AreEqual("A1", result.First());
-            Assert.AreEqual("A2", result.Last());
-        }
+    [TestMethod]
+    public void ShouldReturnReferencedMultipleAddresses()
+    {
+        ParsingContext? parsingContext = ParsingContext.Create();
+        parsingContext.Scopes.NewScope(RangeAddress.Empty);
+        parsingContext.Configuration.SetLexer(new Lexer(parsingContext.Configuration.FunctionRepository, parsingContext.NameValueProvider));
+        parsingContext.RangeAddressFactory = new RangeAddressFactory(this._provider);
+        CellReferenceProvider? provider = new CellReferenceProvider();
+        IEnumerable<string>? result = provider.GetReferencedAddresses("A1:A2", parsingContext);
+        Assert.AreEqual("A1", result.First());
+        Assert.AreEqual("A2", result.Last());
     }
 }

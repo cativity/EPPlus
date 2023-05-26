@@ -20,153 +20,152 @@ using System.Collections.Generic;
 using System.Linq;
 using OfficeOpenXml.DataValidation.Formulas.Contracts;
 
-namespace OfficeOpenXml.DataValidation.Formulas
+namespace OfficeOpenXml.DataValidation.Formulas;
+
+/// <summary>
+/// Enumeration representing the state of an <see cref="ExcelDataValidationFormulaValue{T}"/>
+/// </summary>
+internal enum FormulaState
 {
     /// <summary>
-    /// Enumeration representing the state of an <see cref="ExcelDataValidationFormulaValue{T}"/>
+    /// Value is set
     /// </summary>
-    internal enum FormulaState
+    Value,
+    /// <summary>
+    /// Formula is set
+    /// </summary>
+    Formula
+}
+
+/// <summary>
+/// Base class for a formula
+/// </summary>
+internal abstract class ExcelDataValidationFormula :IExcelDataValidationFormula
+{
+
+    internal event EventHandler BecomesExt;
+
+    private readonly Action<OnFormulaChangedEventArgs> _handler;
+
+    /// <summary>
+    /// Constructor
+    /// </summary>
+    /// <param name="validationUid">id of the data validation containing this formula</param>
+    public ExcelDataValidationFormula(string validationUid, string workSheetName, Action<OnFormulaChangedEventArgs> extListHandler)
     {
-        /// <summary>
-        /// Value is set
-        /// </summary>
-        Value,
-        /// <summary>
-        /// Formula is set
-        /// </summary>
-        Formula
+        Require.Argument(validationUid).IsNotNullOrEmpty("validationUid");
+        this._validationUid = validationUid;
+        this._workSheetName = workSheetName;
+        this._handler = extListHandler;
+    }
+
+    private string _validationUid;
+    protected string _formula;
+    private string _workSheetName;
+
+    internal virtual bool HasValue { get; set; } = false;
+    /// <summary>
+    /// State of the validationformula, i.e. tells if value or formula is set
+    /// </summary>
+    protected FormulaState State
+    {
+        get;
+        set;
+    }
+
+    private static int MeasureFormulaLength(string formula)
+    {
+        if (string.IsNullOrEmpty(formula))
+        {
+            return 0;
+        }
+
+        formula = formula.Replace("_xlfn.", string.Empty).Replace("_xlws.", string.Empty);
+        return formula.Length;
     }
 
     /// <summary>
-    /// Base class for a formula
+    /// A formula which output must match the current validation type
     /// </summary>
-    internal abstract class ExcelDataValidationFormula :IExcelDataValidationFormula
+    public string ExcelFormula
     {
-
-        internal event EventHandler BecomesExt;
-
-        private readonly Action<OnFormulaChangedEventArgs> _handler;
-
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        /// <param name="validationUid">id of the data validation containing this formula</param>
-        public ExcelDataValidationFormula(string validationUid, string workSheetName, Action<OnFormulaChangedEventArgs> extListHandler)
+        get
         {
-            Require.Argument(validationUid).IsNotNullOrEmpty("validationUid");
-            this._validationUid = validationUid;
-            this._workSheetName = workSheetName;
-            this._handler = extListHandler;
+            return this._formula;
         }
-
-        private string _validationUid;
-        protected string _formula;
-        private string _workSheetName;
-
-        internal virtual bool HasValue { get; set; } = false;
-        /// <summary>
-        /// State of the validationformula, i.e. tells if value or formula is set
-        /// </summary>
-        protected FormulaState State
+        set
         {
-            get;
-            set;
-        }
-
-        private static int MeasureFormulaLength(string formula)
-        {
-            if (string.IsNullOrEmpty(formula))
+            if (value != null && MeasureFormulaLength(value) > 255)
             {
-                return 0;
+                throw new DataValidationFormulaTooLongException("The length of a DataValidation formula cannot exceed 255 characters");
             }
 
-            formula = formula.Replace("_xlfn.", string.Empty).Replace("_xlws.", string.Empty);
-            return formula.Length;
-        }
+            this._formula = value;
 
-        /// <summary>
-        /// A formula which output must match the current validation type
-        /// </summary>
-        public string ExcelFormula
-        {
-            get
+            if (!string.IsNullOrEmpty(value))
             {
-                return this._formula;
-            }
-            set
-            {
-                if (value != null && MeasureFormulaLength(value) > 255)
+                this.ResetValue();
+                this.State = FormulaState.Formula;
+
+                if (this._formula.Any(x => char.IsLetter(x)))
                 {
-                    throw new DataValidationFormulaTooLongException("The length of a DataValidation formula cannot exceed 255 characters");
-                }
-
-                this._formula = value;
-
-                if (!string.IsNullOrEmpty(value))
-                {
-                    this.ResetValue();
-                    this.State = FormulaState.Formula;
-
-                    if (this._formula.Any(x => char.IsLetter(x)))
+                    if (this.RefersToOtherWorksheet(this._formula))
                     {
-                        if (this.RefersToOtherWorksheet(this._formula))
-                        {
-                            OnFormulaChangedEventArgs? e = new OnFormulaChangedEventArgs();
-                            e.isExt = true;
-                            this._handler.Invoke(e);
-                        }
+                        OnFormulaChangedEventArgs? e = new OnFormulaChangedEventArgs();
+                        e.isExt = true;
+                        this._handler.Invoke(e);
                     }
                 }
             }
         }
-
-        private bool RefersToOtherWorksheet(string address)
-        {
-            if (!string.IsNullOrEmpty(address) && ExcelCellBase.IsValidAddress(address))
-            {
-                ExcelAddress? adr = new ExcelAddress(address);
-                return !string.IsNullOrEmpty(adr.WorkSheetName) && adr.WorkSheetName != this._workSheetName;
-            }
-            else if (!string.IsNullOrEmpty(address))
-            {
-                IEnumerable<Token>? tokens = SourceCodeTokenizer.Default.Tokenize(address, this._workSheetName);
-                if (!tokens.Any())
-                {
-                    return false;
-                }
-
-                IEnumerable<Token>? addressTokens = tokens.Where(x => x.TokenTypeIsSet(TokenType.ExcelAddress));
-                foreach (Token token in addressTokens)
-                {
-                    ExcelAddress? adr = new ExcelAddress(token.Value);
-                    if (!string.IsNullOrEmpty(adr.WorkSheetName) && adr.WorkSheetName != this._workSheetName)
-                    {
-                        return true;
-                    }
-                }
-
-            }
-            return false;
-        }
-
-        internal abstract void ResetValue();
-
-        /// <summary>
-        /// This value will be stored in the xml. Can be overridden by subclasses
-        /// </summary>
-        internal virtual string GetXmlValue()
-        {
-            if (this.State == FormulaState.Formula)
-            {
-                return this.ExcelFormula;
-            }
-            return this.GetValueAsString();
-        }
-
-        /// <summary>
-        /// Returns the value as a string. Must be implemented by subclasses
-        /// </summary>
-        /// <returns></returns>
-        protected abstract string GetValueAsString();
     }
+
+    private bool RefersToOtherWorksheet(string address)
+    {
+        if (!string.IsNullOrEmpty(address) && ExcelCellBase.IsValidAddress(address))
+        {
+            ExcelAddress? adr = new ExcelAddress(address);
+            return !string.IsNullOrEmpty(adr.WorkSheetName) && adr.WorkSheetName != this._workSheetName;
+        }
+        else if (!string.IsNullOrEmpty(address))
+        {
+            IEnumerable<Token>? tokens = SourceCodeTokenizer.Default.Tokenize(address, this._workSheetName);
+            if (!tokens.Any())
+            {
+                return false;
+            }
+
+            IEnumerable<Token>? addressTokens = tokens.Where(x => x.TokenTypeIsSet(TokenType.ExcelAddress));
+            foreach (Token token in addressTokens)
+            {
+                ExcelAddress? adr = new ExcelAddress(token.Value);
+                if (!string.IsNullOrEmpty(adr.WorkSheetName) && adr.WorkSheetName != this._workSheetName)
+                {
+                    return true;
+                }
+            }
+
+        }
+        return false;
+    }
+
+    internal abstract void ResetValue();
+
+    /// <summary>
+    /// This value will be stored in the xml. Can be overridden by subclasses
+    /// </summary>
+    internal virtual string GetXmlValue()
+    {
+        if (this.State == FormulaState.Formula)
+        {
+            return this.ExcelFormula;
+        }
+        return this.GetValueAsString();
+    }
+
+    /// <summary>
+    /// Returns the value as a string. Must be implemented by subclasses
+    /// </summary>
+    /// <returns></returns>
+    protected abstract string GetValueAsString();
 }

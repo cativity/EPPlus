@@ -17,80 +17,79 @@ using System.Linq;
 using System.Text;
 using System.Xml;
 
-namespace OfficeOpenXml.Drawing.Style.ThreeD
+namespace OfficeOpenXml.Drawing.Style.ThreeD;
+
+/// <summary>
+/// The lightrig
+/// When 3D is used, the light rig defines the lighting properties associated with the scene
+/// </summary>
+public class ExcelDrawingScene3DLightRig : XmlHelper
 {
     /// <summary>
-    /// The lightrig
-    /// When 3D is used, the light rig defines the lighting properties associated with the scene
+    /// The xpath
     /// </summary>
-    public class ExcelDrawingScene3DLightRig : XmlHelper
+    internal protected string _path;
+    private readonly string _directionPath = "{0}/@dir";
+    private readonly string _typePath = "{0}/@rig";
+    private readonly string _rotationPath = "{0}/a:rot";
+    private readonly Action<bool> _initParent;
+    internal ExcelDrawingScene3DLightRig(XmlNamespaceManager nameSpaceManager, XmlNode topNode, string[] schemaNodeOrder, string path, Action<bool> initParent) : base(nameSpaceManager, topNode)
     {
-        /// <summary>
-        /// The xpath
-        /// </summary>
-        internal protected string _path;
-        private readonly string _directionPath = "{0}/@dir";
-        private readonly string _typePath = "{0}/@rig";
-        private readonly string _rotationPath = "{0}/a:rot";
-        private readonly Action<bool> _initParent;
-        internal ExcelDrawingScene3DLightRig(XmlNamespaceManager nameSpaceManager, XmlNode topNode, string[] schemaNodeOrder, string path, Action<bool> initParent) : base(nameSpaceManager, topNode)
-        {
-            this._path = path;
-            this.SchemaNodeOrder = schemaNodeOrder;
+        this._path = path;
+        this.SchemaNodeOrder = schemaNodeOrder;
 
-            this._rotationPath = string.Format(this._rotationPath, path);
-            this._directionPath = string.Format(this._directionPath, path);
-            this._typePath = string.Format(this._typePath, path);
-            this._initParent = initParent;
-        }
-        ExcelDrawingSphereCoordinate _rotation = null;
-        /// <summary>
-        /// Defines a rotation in 3D space
-        /// </summary>
-        public ExcelDrawingSphereCoordinate Rotation
+        this._rotationPath = string.Format(this._rotationPath, path);
+        this._directionPath = string.Format(this._directionPath, path);
+        this._typePath = string.Format(this._typePath, path);
+        this._initParent = initParent;
+    }
+    ExcelDrawingSphereCoordinate _rotation = null;
+    /// <summary>
+    /// Defines a rotation in 3D space
+    /// </summary>
+    public ExcelDrawingSphereCoordinate Rotation
+    {
+        get
         {
-            get
-            {
-                return this._rotation ??= new ExcelDrawingSphereCoordinate(this.NameSpaceManager, this.TopNode, this._rotationPath, this._initParent);
-            }
+            return this._rotation ??= new ExcelDrawingSphereCoordinate(this.NameSpaceManager, this.TopNode, this._rotationPath, this._initParent);
         }
-        /// <summary>
-        /// The direction from which the light rig is oriented in relation to the scene.
-        /// </summary>
-        public eLightRigDirection Direction
+    }
+    /// <summary>
+    /// The direction from which the light rig is oriented in relation to the scene.
+    /// </summary>
+    public eLightRigDirection Direction
+    {
+        get
         {
-            get
+            return this.GetXmlNodeString(this._directionPath).TranslateLightRigDirection();
+        }
+        set
+        {
+            this._initParent(false);
+            this.SetXmlNodeString(this._directionPath, value.TranslateString());
+        }
+    }
+    /// <summary>
+    /// The preset type of light rig which is to be applied to the 3D scene
+    /// </summary>
+    public eRigPresetType RigType
+    {
+        get
+        {
+            return this.GetXmlNodeString(this._typePath).ToEnum(eRigPresetType.Balanced);
+        }
+        set
+        {
+            if(value==eRigPresetType.None)
             {
-                return this.GetXmlNodeString(this._directionPath).TranslateLightRigDirection();
+                this._initParent(true);
             }
-            set
+            else
             {
                 this._initParent(false);
-                this.SetXmlNodeString(this._directionPath, value.TranslateString());
+                this.SetXmlNodeString(this._typePath, value.ToEnumString());
             }
         }
-        /// <summary>
-        /// The preset type of light rig which is to be applied to the 3D scene
-        /// </summary>
-        public eRigPresetType RigType
-        {
-            get
-            {
-                return this.GetXmlNodeString(this._typePath).ToEnum(eRigPresetType.Balanced);
-            }
-            set
-            {
-                if(value==eRigPresetType.None)
-                {
-                    this._initParent(true);
-                }
-                else
-                {
-                    this._initParent(false);
-                    this.SetXmlNodeString(this._typePath, value.ToEnumString());
-                }
-            }
-        }
-
     }
+
 }

@@ -16,81 +16,80 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 
-namespace OfficeOpenXml.FormulaParsing.ExcelUtilities
+namespace OfficeOpenXml.FormulaParsing.ExcelUtilities;
+
+public static class ExcelAddressUtil
 {
-    public static class ExcelAddressUtil
+    static char[] SheetNameInvalidChars = new char[] { '?', ':', '*', '/', '\\' };
+    public static bool IsValidAddress(string token)
     {
-        static char[] SheetNameInvalidChars = new char[] { '?', ':', '*', '/', '\\' };
-        public static bool IsValidAddress(string token)
+        int ix;
+        if (token[0] == '\'')
         {
-            int ix;
-            if (token[0] == '\'')
+            ix = token.LastIndexOf('\'');
+            if (ix > 0 && ix < token.Length - 1 && token[ix + 1] == '!')
             {
-                ix = token.LastIndexOf('\'');
-                if (ix > 0 && ix < token.Length - 1 && token[ix + 1] == '!')
-                {
-                    if (token.IndexOfAny(SheetNameInvalidChars, 1, ix - 1) > 0)
-                    {
-                        return false;
-                    }
-                    token = token.Substring(ix + 2);
-                }
-                else
+                if (token.IndexOfAny(SheetNameInvalidChars, 1, ix - 1) > 0)
                 {
                     return false;
                 }
+                token = token.Substring(ix + 2);
             }
-            else if ((ix = token.IndexOf('!')) > 1)
+            else
             {
-                if (token.IndexOfAny(SheetNameInvalidChars, 0, token.IndexOf('!')) > 0)
-                {
-                    return false;
-                }
-                token = token.Substring(token.IndexOf('!') + 1);
+                return false;
             }
-            return ExcelCellBase.IsValidAddress(token);
         }
-        readonly static char[] NameInvalidChars = new char[] { '!', '@', '#', '$', '£', '%', '&', '/', '(', ')', '[', ']', '{', '}', '<', '>', '=', '+', '*', '-', '~', '^', ':', ';', '|', ',', ' ' };
-        public static bool IsValidName(string name)
+        else if ((ix = token.IndexOf('!')) > 1)
         {
-            if (string.IsNullOrEmpty(name))
+            if (token.IndexOfAny(SheetNameInvalidChars, 0, token.IndexOf('!')) > 0)
             {
                 return false;
             }
-            char fc = name[0];
-            if (!(char.IsLetter(fc) || fc == '_' || (fc == '\\' && name.Length > 2)))
-            {
-                return false;
-            }
-
-            if (name.IndexOfAny(NameInvalidChars, 1) > 0)
-            {
-                return false;
-            }
-
-            if(ExcelCellBase.IsValidAddress(name))
-            {
-                return false;
-            }
-
-            //TODO:Add check for functionnames.
-            return true;
+            token = token.Substring(token.IndexOf('!') + 1);
         }
-        public static string GetValidName(string name)
+        return ExcelCellBase.IsValidAddress(token);
+    }
+    readonly static char[] NameInvalidChars = new char[] { '!', '@', '#', '$', '£', '%', '&', '/', '(', ')', '[', ']', '{', '}', '<', '>', '=', '+', '*', '-', '~', '^', ':', ';', '|', ',', ' ' };
+    public static bool IsValidName(string name)
+    {
+        if (string.IsNullOrEmpty(name))
         {
-            if (string.IsNullOrEmpty(name))
-            {
-                return name;
-            }
+            return false;
+        }
+        char fc = name[0];
+        if (!(char.IsLetter(fc) || fc == '_' || (fc == '\\' && name.Length > 2)))
+        {
+            return false;
+        }
 
-            char fc = name[0];
-            if (!(char.IsLetter(fc) || fc == '_' || (fc == '\\' && name.Length > 2)))
-            {
-                name = "_" + name.Substring(1);
-            }
+        if (name.IndexOfAny(NameInvalidChars, 1) > 0)
+        {
+            return false;
+        }
 
-            name=NameInvalidChars.Aggregate(name, (c1, c2) => c1.Replace(c2, '_'));
+        if(ExcelCellBase.IsValidAddress(name))
+        {
+            return false;
+        }
+
+        //TODO:Add check for functionnames.
+        return true;
+    }
+    public static string GetValidName(string name)
+    {
+        if (string.IsNullOrEmpty(name))
+        {
             return name;
         }
+
+        char fc = name[0];
+        if (!(char.IsLetter(fc) || fc == '_' || (fc == '\\' && name.Length > 2)))
+        {
+            name = "_" + name.Substring(1);
+        }
+
+        name=NameInvalidChars.Aggregate(name, (c1, c2) => c1.Replace(c2, '_'));
+        return name;
     }
 }

@@ -18,39 +18,38 @@ using OfficeOpenXml.FormulaParsing;
 using OfficeOpenXml.FormulaParsing.ExcelUtilities;
 using OfficeOpenXml.FormulaParsing.Utilities;
 
-namespace OfficeOpenXml.FormulaParsing.ExpressionGraph
+namespace OfficeOpenXml.FormulaParsing.ExpressionGraph;
+
+public class ExcelErrorExpression : Expression
 {
-    public class ExcelErrorExpression : Expression
+    ExcelErrorValue _error;
+    public ExcelErrorExpression(string expression, ExcelErrorValue error)
+        : base(expression)
     {
-        ExcelErrorValue _error;
-        public ExcelErrorExpression(string expression, ExcelErrorValue error)
-            : base(expression)
-        {
-            this._error = error;
-        }
+        this._error = error;
+    }
 
-        public ExcelErrorExpression(ExcelErrorValue error)
-            : this(error.ToString(), error)
-        {
+    public ExcelErrorExpression(ExcelErrorValue error)
+        : this(error.ToString(), error)
+    {
             
-        }
+    }
 
-        public override bool IsGroupedExpression
-        {
-            get { return false; }
-        }
+    public override bool IsGroupedExpression
+    {
+        get { return false; }
+    }
 
-        public override CompileResult Compile()
-        {
-            return new CompileResult(this._error, DataType.ExcelError);
-            //if (ParentIsLookupFunction)
-            //{
-            //    return new CompileResult(ExpressionString, DataType.ExcelError);
-            //}
-            //else
-            //{
-            //    return CompileRangeValues();
-            //}
-        }
+    public override CompileResult Compile()
+    {
+        return new CompileResult(this._error, DataType.ExcelError);
+        //if (ParentIsLookupFunction)
+        //{
+        //    return new CompileResult(ExpressionString, DataType.ExcelError);
+        //}
+        //else
+        //{
+        //    return CompileRangeValues();
+        //}
     }
 }

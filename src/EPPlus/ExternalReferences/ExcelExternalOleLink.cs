@@ -16,102 +16,101 @@ using OfficeOpenXml.Utils.Extensions;
 using System.IO;
 using System.Xml;
 
-namespace OfficeOpenXml.ExternalReferences
+namespace OfficeOpenXml.ExternalReferences;
+
+/// <summary>
+/// Represents an external DDE link.
+/// </summary>
+public class ExcelExternalOleLink : ExcelExternalLink
 {
-    /// <summary>
-    /// Represents an external DDE link.
-    /// </summary>
-    public class ExcelExternalOleLink : ExcelExternalLink
+    internal ExcelExternalOleLink(ExcelWorkbook wb, XmlTextReader reader, ZipPackagePart part, XmlElement workbookElement) : base(wb, reader, part, workbookElement)
     {
-        internal ExcelExternalOleLink(ExcelWorkbook wb, XmlTextReader reader, ZipPackagePart part, XmlElement workbookElement) : base(wb, reader, part, workbookElement)
+        string? rId = reader.GetAttribute("id", ExcelPackage.schemaRelationships);
+        if(!string.IsNullOrEmpty(rId))
         {
-            string? rId = reader.GetAttribute("id", ExcelPackage.schemaRelationships);
-            if(!string.IsNullOrEmpty(rId))
-            {
-                this.Relation = part.GetRelationship(rId);
-            }
+            this.Relation = part.GetRelationship(rId);
+        }
 
-            this.ProgId = reader.GetAttribute("progId");
-            while (reader.Read())
+        this.ProgId = reader.GetAttribute("progId");
+        while (reader.Read())
+        {
+            if (reader.NodeType == XmlNodeType.Element)
             {
-                if (reader.NodeType == XmlNodeType.Element)
+                switch (reader.LocalName)
                 {
-                    switch (reader.LocalName)
-                    {
-                        case "oleItems":
-                            this.ReadOleItems(reader);
-                            break;
-                    }
-                }
-                else if (reader.NodeType == XmlNodeType.EndElement)
-                {
-                    if (reader.Name == "oleLink")
-                    {
+                    case "oleItems":
+                        this.ReadOleItems(reader);
                         break;
-                    }
                 }
             }
-        }
-        private void ReadOleItems(XmlTextReader reader)
-        {
-            while (reader.Read())
+            else if (reader.NodeType == XmlNodeType.EndElement)
             {
-                if (reader.NodeType == XmlNodeType.Element && reader.LocalName == "Fallback")
+                if (reader.Name == "oleLink")
                 {
-                    XmlStreamHelper.ReadUntil(reader, "Fallback");
+                    break;
                 }
-                if (reader.NodeType == XmlNodeType.Element && reader.LocalName == "oleItem")
+            }
+        }
+    }
+    private void ReadOleItems(XmlTextReader reader)
+    {
+        while (reader.Read())
+        {
+            if (reader.NodeType == XmlNodeType.Element && reader.LocalName == "Fallback")
+            {
+                XmlStreamHelper.ReadUntil(reader, "Fallback");
+            }
+            if (reader.NodeType == XmlNodeType.Element && reader.LocalName == "oleItem")
+            {
+                this.OleItems.Add(new ExcelExternalOleItem()
                 {
-                    this.OleItems.Add(new ExcelExternalOleItem()
-                    {
-                        Name = reader.GetAttribute("name"),
-                        Advise = XmlHelper.GetBoolFromString(reader.GetAttribute("advise")),
-                        Icon = XmlHelper.GetBoolFromString(reader.GetAttribute("icon")),
-                        PreferPicture = XmlHelper.GetBoolFromString(reader.GetAttribute("preferPic")),
-                    });
-                }
+                    Name = reader.GetAttribute("name"),
+                    Advise = XmlHelper.GetBoolFromString(reader.GetAttribute("advise")),
+                    Icon = XmlHelper.GetBoolFromString(reader.GetAttribute("icon")),
+                    PreferPicture = XmlHelper.GetBoolFromString(reader.GetAttribute("preferPic")),
+                });
             }
         }
+    }
 
-        /// <summary>
-        /// The type of external link.
-        /// </summary>
-        public override eExternalLinkType ExternalLinkType
+    /// <summary>
+    /// The type of external link.
+    /// </summary>
+    public override eExternalLinkType ExternalLinkType
+    {
+        get
         {
-            get
-            {
-                return eExternalLinkType.OleLink;
-            }
+            return eExternalLinkType.OleLink;
         }
-        internal ZipPackageRelationship Relation
-        {
-            get;
-            set;
-        }
-        /// <summary>
-        /// A collection of OLE items
-        /// </summary>
-        public ExcelExternalOleItemsCollection OleItems
-        {
-            get;
-        } = new ExcelExternalOleItemsCollection();
-        /// <summary>
-        /// The id for the connection. This is the ProgID of the OLE object
-        /// </summary>
-        public string ProgId { get; }
+    }
+    internal ZipPackageRelationship Relation
+    {
+        get;
+        set;
+    }
+    /// <summary>
+    /// A collection of OLE items
+    /// </summary>
+    public ExcelExternalOleItemsCollection OleItems
+    {
+        get;
+    } = new ExcelExternalOleItemsCollection();
+    /// <summary>
+    /// The id for the connection. This is the ProgID of the OLE object
+    /// </summary>
+    public string ProgId { get; }
 
-        internal override void Save(StreamWriter sw)
+    internal override void Save(StreamWriter sw)
+    {
+        sw.Write($"<oleLink progId=\"{this.ProgId}\" r:id=\"{this.Relation.Id}\" xmlns:r=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships\"><oleItems>");
+        foreach (ExcelExternalOleItem item in this.OleItems)
         {
-            sw.Write($"<oleLink progId=\"{this.ProgId}\" r:id=\"{this.Relation.Id}\" xmlns:r=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships\"><oleItems>");
-            foreach (ExcelExternalOleItem item in this.OleItems)
-            {
-                sw.Write(string.Format("<mc:AlternateContent><mc:Choice Requires=\"x14\"><x14:oleItem name=\"{0}\" {1}{2}{3}/></mc:Choice><mc:Fallback><oleItem name=\"{0}\" {1}{2}{3}/></mc:Fallback></mc:AlternateContent>",
-                  item.Name,
-                  item.Advise.GetXmlAttributeValue("advise", false),
-                  item.Icon.GetXmlAttributeValue("icon", false),
-                  item.PreferPicture.GetXmlAttributeValue("preferPic", false)));
-            }
-            sw.Write("</oleItems></oleLink>");
+            sw.Write(string.Format("<mc:AlternateContent><mc:Choice Requires=\"x14\"><x14:oleItem name=\"{0}\" {1}{2}{3}/></mc:Choice><mc:Fallback><oleItem name=\"{0}\" {1}{2}{3}/></mc:Fallback></mc:AlternateContent>",
+                                   item.Name,
+                                   item.Advise.GetXmlAttributeValue("advise", false),
+                                   item.Icon.GetXmlAttributeValue("icon", false),
+                                   item.PreferPicture.GetXmlAttributeValue("preferPic", false)));
         }
+        sw.Write("</oleItems></oleLink>");
     }
 }

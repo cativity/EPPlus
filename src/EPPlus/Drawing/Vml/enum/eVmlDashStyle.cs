@@ -10,60 +10,59 @@
  *************************************************************************************************
   11/23/2020         EPPlus Software AB       EPPlus 5.5
  *************************************************************************************************/
-namespace OfficeOpenXml
+namespace OfficeOpenXml;
+
+/// <summary>
+/// Dash style for a line used in VML drawings
+/// </summary>
+public enum eVmlDashStyle
 {
     /// <summary>
-    /// Dash style for a line used in VML drawings
+    /// A solid line
     /// </summary>
-    public enum eVmlDashStyle
-    {
-        /// <summary>
-        /// A solid line
-        /// </summary>
-        Solid,
-        /// <summary>
-        /// Short - Dash
-        /// </summary>
-        ShortDash,
-        /// <summary>
-        /// Short - Dot
-        /// </summary>
-        ShortDot,
-        /// <summary>
-        /// Short - Dash - Dot
-        /// </summary>
-        ShortDashDot,
-        /// <summary>
-        /// Short - Dash - Dot - Dot
-        /// </summary>
-        ShortDashDotDot,
-        /// <summary>
-        /// Dotted
-        /// </summary>
-        Dot,
-        /// <summary>
-        /// Dashed
-        /// </summary>
-        Dash,
-        /// <summary>
-        /// Long dashes
-        /// </summary>
-        LongDash,
-        /// <summary>
-        /// Dash - Dot
-        /// </summary>
-        DashDot,
-        /// <summary>
-        /// Long Dash - Dot
-        /// </summary>
-        LongDashDot,
-        /// <summary>
-        /// Long Dash - Dot - Dot
-        /// </summary>
-        LongDashDotDot,
-        /// <summary>
-        /// Custom dash style.
-        /// </summary>
-        Custom
-    }
+    Solid,
+    /// <summary>
+    /// Short - Dash
+    /// </summary>
+    ShortDash,
+    /// <summary>
+    /// Short - Dot
+    /// </summary>
+    ShortDot,
+    /// <summary>
+    /// Short - Dash - Dot
+    /// </summary>
+    ShortDashDot,
+    /// <summary>
+    /// Short - Dash - Dot - Dot
+    /// </summary>
+    ShortDashDotDot,
+    /// <summary>
+    /// Dotted
+    /// </summary>
+    Dot,
+    /// <summary>
+    /// Dashed
+    /// </summary>
+    Dash,
+    /// <summary>
+    /// Long dashes
+    /// </summary>
+    LongDash,
+    /// <summary>
+    /// Dash - Dot
+    /// </summary>
+    DashDot,
+    /// <summary>
+    /// Long Dash - Dot
+    /// </summary>
+    LongDashDot,
+    /// <summary>
+    /// Long Dash - Dot - Dot
+    /// </summary>
+    LongDashDotDot,
+    /// <summary>
+    /// Custom dash style.
+    /// </summary>
+    Custom
 }

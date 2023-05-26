@@ -16,69 +16,68 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace OfficeOpenXml.Configuration
+namespace OfficeOpenXml.Configuration;
+
+/// <summary>
+/// Parameters for configuring the <see cref="ExcelPackage"/> class before usage
+/// </summary>
+public class ExcelPackageConfiguration
 {
     /// <summary>
-    /// Parameters for configuring the <see cref="ExcelPackage"/> class before usage
+    /// If set to true errors/exceptions that occurs during initialization of the ExcelPackage class will
+    /// be suppressed and logged in <see cref="ExcelPackage.InitializationErrors"/>.
+    /// 
+    /// If set to false these Exceptions will be rethrown.
+    /// 
+    /// Default value of this property is false.
     /// </summary>
-    public class ExcelPackageConfiguration
+    public bool SuppressInitializationExceptions
     {
-        /// <summary>
-        /// If set to true errors/exceptions that occurs during initialization of the ExcelPackage class will
-        /// be suppressed and logged in <see cref="ExcelPackage.InitializationErrors"/>.
-        /// 
-        /// If set to false these Exceptions will be rethrown.
-        /// 
-        /// Default value of this property is false.
-        /// </summary>
-        public bool SuppressInitializationExceptions
-        {
-            get; set;
-        }
+        get; set;
+    }
 
-        private string _jsonConfigBasePath = Directory.GetCurrentDirectory();
-        /// <summary>
-        /// Path of the directory where the json configuration file is located.
-        /// Default value is the path returned from <see cref="System.IO.Directory.GetCurrentDirectory"/>
-        /// </summary>
-        public string JsonConfigBasePath
-        {
-            get { return this._jsonConfigBasePath; }
-            set { this._jsonConfigBasePath = value; }
-        }
+    private string _jsonConfigBasePath = Directory.GetCurrentDirectory();
+    /// <summary>
+    /// Path of the directory where the json configuration file is located.
+    /// Default value is the path returned from <see cref="System.IO.Directory.GetCurrentDirectory"/>
+    /// </summary>
+    public string JsonConfigBasePath
+    {
+        get { return this._jsonConfigBasePath; }
+        set { this._jsonConfigBasePath = value; }
+    }
 
-        private string _jsonConfigFileName = "appsettings.json";
-        /// <summary>
-        /// File name of the json configuration file.
-        /// Default value is appsettings.json
-        /// </summary>
-        public string JsonConfigFileName
-        {
-            get { return this._jsonConfigFileName; }
-            set { this._jsonConfigFileName = value; }
-        }
+    private string _jsonConfigFileName = "appsettings.json";
+    /// <summary>
+    /// File name of the json configuration file.
+    /// Default value is appsettings.json
+    /// </summary>
+    public string JsonConfigFileName
+    {
+        get { return this._jsonConfigFileName; }
+        set { this._jsonConfigFileName = value; }
+    }
 
-        /// <summary>
-        /// Configuration with default values.
-        /// </summary>
-        internal static ExcelPackageConfiguration Default
-        {
-            get { return new ExcelPackageConfiguration(); }
-        }
+    /// <summary>
+    /// Configuration with default values.
+    /// </summary>
+    internal static ExcelPackageConfiguration Default
+    {
+        get { return new ExcelPackageConfiguration(); }
+    }
 
-        internal void CopyFrom(ExcelPackageConfiguration other)
-        {
-            this._jsonConfigBasePath = other.JsonConfigBasePath;
-            this._jsonConfigFileName = other.JsonConfigFileName;
-            this.SuppressInitializationExceptions = other.SuppressInitializationExceptions;
-        }
+    internal void CopyFrom(ExcelPackageConfiguration other)
+    {
+        this._jsonConfigBasePath = other.JsonConfigBasePath;
+        this._jsonConfigFileName = other.JsonConfigFileName;
+        this.SuppressInitializationExceptions = other.SuppressInitializationExceptions;
+    }
 
-        /// <summary>
-        /// Resets configuration to its default values
-        /// </summary>
-        public void Reset()
-        {
-            this.CopyFrom(Default);
-        }
+    /// <summary>
+    /// Resets configuration to its default values
+    /// </summary>
+    public void Reset()
+    {
+        this.CopyFrom(Default);
     }
 }

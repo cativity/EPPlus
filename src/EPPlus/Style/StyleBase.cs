@@ -10,30 +10,29 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
-namespace OfficeOpenXml.Style
-{
-    /// <summary>
-    /// Base class for styles
-    /// </summary>
-    public abstract class StyleBase
-    {
-        internal ExcelStyles _styles;
-        internal XmlHelper.ChangedEventHandler _ChangedEvent;
-        internal int _positionID;
-        internal string _address;
-        internal StyleBase(ExcelStyles styles, XmlHelper.ChangedEventHandler ChangedEvent, int PositionID, string Address)
-        {
-            this._styles = styles;
-            this._ChangedEvent = ChangedEvent;
-            this._address = Address;
-            this._positionID = PositionID;
-        }
-        internal int Index { get; set;}
-        internal abstract string Id {get;}
+namespace OfficeOpenXml.Style;
 
-        internal virtual void SetIndex(int index)
-        {
-            this.Index = index;
-        }
+/// <summary>
+/// Base class for styles
+/// </summary>
+public abstract class StyleBase
+{
+    internal ExcelStyles _styles;
+    internal XmlHelper.ChangedEventHandler _ChangedEvent;
+    internal int _positionID;
+    internal string _address;
+    internal StyleBase(ExcelStyles styles, XmlHelper.ChangedEventHandler ChangedEvent, int PositionID, string Address)
+    {
+        this._styles = styles;
+        this._ChangedEvent = ChangedEvent;
+        this._address = Address;
+        this._positionID = PositionID;
+    }
+    internal int Index { get; set;}
+    internal abstract string Id {get;}
+
+    internal virtual void SetIndex(int index)
+    {
+        this.Index = index;
     }
 }

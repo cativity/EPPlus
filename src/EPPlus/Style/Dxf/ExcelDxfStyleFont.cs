@@ -13,86 +13,85 @@
  *************************************************************************************************/
 using System;
 using System.Xml;
-namespace OfficeOpenXml.Style.Dxf
+namespace OfficeOpenXml.Style.Dxf;
+
+/// <summary>
+/// Differential formatting record used in conditional formatting
+/// </summary>
+public class ExcelDxfStyleFont : ExcelDxfStyleBase
 {
-    /// <summary>
-    /// Differential formatting record used in conditional formatting
-    /// </summary>
-    public class ExcelDxfStyleFont : ExcelDxfStyleBase
+    internal ExcelDxfStyleFont(XmlNamespaceManager nameSpaceManager, XmlNode topNode, ExcelStyles styles, Action<eStyleClass, eStyleProperty, object> callback)
+        : base(nameSpaceManager, topNode, styles, callback)
     {
-        internal ExcelDxfStyleFont(XmlNamespaceManager nameSpaceManager, XmlNode topNode, ExcelStyles styles, Action<eStyleClass, eStyleProperty, object> callback)
-            : base(nameSpaceManager, topNode, styles, callback)
+        this.Font = new ExcelDxfFont(this._styles, callback);
+        if (topNode != null)
         {
-            this.Font = new ExcelDxfFont(this._styles, callback);
-            if (topNode != null)
-            {
-                this.Font.SetValuesFromXml(this._helper);
-            }
+            this.Font.SetValuesFromXml(this._helper);
         }
-        /// <summary>
-        /// Font formatting settings
-        /// </summary>
-        public ExcelDxfFont Font { get; internal set; }
-        internal override string Id
+    }
+    /// <summary>
+    /// Font formatting settings
+    /// </summary>
+    public ExcelDxfFont Font { get; internal set; }
+    internal override string Id
+    {
+        get
         {
-            get
-            {
-                return base.Id + this.Font.Id;
-            }
+            return base.Id + this.Font.Id;
         }
-        /// <summary>
-        /// If the object has any properties set
-        /// </summary>
-        public override bool HasValue
+    }
+    /// <summary>
+    /// If the object has any properties set
+    /// </summary>
+    public override bool HasValue
+    {
+        get
         {
-            get
-            {
-                return base.HasValue || this.Font.HasValue;
-            }
+            return base.HasValue || this.Font.HasValue;
         }
-        internal override DxfStyleBase Clone()
+    }
+    internal override DxfStyleBase Clone()
+    {
+        ExcelDxfStyleFont? s = new ExcelDxfStyleFont(this._helper.NameSpaceManager, null, this._styles, this._callback)
         {
-            ExcelDxfStyleFont? s = new ExcelDxfStyleFont(this._helper.NameSpaceManager, null, this._styles, this._callback)
-            {
-                Font = (ExcelDxfFont)this.Font.Clone(),
-                Fill = (ExcelDxfFill)this.Fill.Clone(),
-                Border = (ExcelDxfBorderBase)this.Border.Clone(),
-            };
+            Font = (ExcelDxfFont)this.Font.Clone(),
+            Fill = (ExcelDxfFill)this.Fill.Clone(),
+            Border = (ExcelDxfBorderBase)this.Border.Clone(),
+        };
 
-            return s;
-        }
-        internal override void CreateNodes(XmlHelper helper, string path)
+        return s;
+    }
+    internal override void CreateNodes(XmlHelper helper, string path)
+    {
+        if (this.Font.HasValue)
         {
-            if (this.Font.HasValue)
-            {
-                this.Font.CreateNodes(helper, "d:font");
-            }
+            this.Font.CreateNodes(helper, "d:font");
+        }
 
-            if (this.Fill.HasValue)
-            {
-                this.Fill.CreateNodes(helper, "d:fill");
-            }
+        if (this.Fill.HasValue)
+        {
+            this.Fill.CreateNodes(helper, "d:fill");
+        }
 
-            if (this.Border.HasValue)
-            {
-                this.Border.CreateNodes(helper, "d:border");
-            }
-        }
-        internal override void SetStyle()
+        if (this.Border.HasValue)
         {
-            if (this._callback != null)
-            {
-                base.SetStyle();
-                this.Font.SetStyle();
-            }
+            this.Border.CreateNodes(helper, "d:border");
         }
-        /// <summary>
-        /// Clears all properties
-        /// </summary>
-        public override void Clear()
+    }
+    internal override void SetStyle()
+    {
+        if (this._callback != null)
         {
-            base.Clear();
-            this.Font.Clear();
-       }
+            base.SetStyle();
+            this.Font.SetStyle();
+        }
+    }
+    /// <summary>
+    /// Clears all properties
+    /// </summary>
+    public override void Clear()
+    {
+        base.Clear();
+        this.Font.Clear();
     }
 }

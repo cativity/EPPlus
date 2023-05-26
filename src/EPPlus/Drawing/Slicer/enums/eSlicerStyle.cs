@@ -12,76 +12,75 @@
  *************************************************************************************************/
 using OfficeOpenXml.Drawing.Slicer;
 
-namespace OfficeOpenXml
+namespace OfficeOpenXml;
+
+/// <summary>
+/// Buildin slicer styles
+/// </summary>
+public enum eSlicerStyle
 {
     /// <summary>
-    /// Buildin slicer styles
+    /// No slicer style specified
     /// </summary>
-    public enum eSlicerStyle
-    {
-        /// <summary>
-        /// No slicer style specified
-        /// </summary>
-        None,
-        /// <summary>
-        /// A custom style set by the <see cref="ExcelSlicer{T}.Style"/> property
-        /// </summary>
-        Custom,
-        /// <summary>
-        /// Light 1 style
-        /// </summary>
-        Light1,
-        /// <summary>
-        /// Light 2 style
-        /// </summary>
-        Light2,
-        /// <summary>
-        /// Light 3 style
-        /// </summary>
-        Light3,
-        /// <summary>
-        /// Light 4 style
-        /// </summary>
-        Light4,
-        /// <summary>
-        /// Light 5 style
-        /// </summary>
-        Light5,
-        /// <summary>
-        /// Light 6 style
-        /// </summary>
-        Light6,
-        /// <summary>
-        /// Other 1 style
-        /// </summary>
-        Other1,
-        /// <summary>
-        /// Other 2 style
-        /// </summary>
-        Other2,
-        /// <summary>
-        /// Dark 1 style
-        /// </summary>
-        Dark1,
-        /// <summary>
-        /// Dark 2 style
-        /// </summary>
-        Dark2,
-        /// <summary>
-        /// Dark 3 style
-        /// </summary>
-        Dark3,
-        /// <summary>
-        /// Dark 4 style
-        /// </summary>
-        Dark4,
-        /// <summary>
-        /// Dark 5 style
-        /// </summary>
-        Dark5,
-        /// <summary>
-        /// Dark 6 style
-        /// </summary>
-        Dark6
-    }
+    None,
+    /// <summary>
+    /// A custom style set by the <see cref="ExcelSlicer{T}.Style"/> property
+    /// </summary>
+    Custom,
+    /// <summary>
+    /// Light 1 style
+    /// </summary>
+    Light1,
+    /// <summary>
+    /// Light 2 style
+    /// </summary>
+    Light2,
+    /// <summary>
+    /// Light 3 style
+    /// </summary>
+    Light3,
+    /// <summary>
+    /// Light 4 style
+    /// </summary>
+    Light4,
+    /// <summary>
+    /// Light 5 style
+    /// </summary>
+    Light5,
+    /// <summary>
+    /// Light 6 style
+    /// </summary>
+    Light6,
+    /// <summary>
+    /// Other 1 style
+    /// </summary>
+    Other1,
+    /// <summary>
+    /// Other 2 style
+    /// </summary>
+    Other2,
+    /// <summary>
+    /// Dark 1 style
+    /// </summary>
+    Dark1,
+    /// <summary>
+    /// Dark 2 style
+    /// </summary>
+    Dark2,
+    /// <summary>
+    /// Dark 3 style
+    /// </summary>
+    Dark3,
+    /// <summary>
+    /// Dark 4 style
+    /// </summary>
+    Dark4,
+    /// <summary>
+    /// Dark 5 style
+    /// </summary>
+    Dark5,
+    /// <summary>
+    /// Dark 6 style
+    /// </summary>
+    Dark6
 }

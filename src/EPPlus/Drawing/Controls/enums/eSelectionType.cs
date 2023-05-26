@@ -10,25 +10,24 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
-namespace OfficeOpenXml.Drawing.Controls
+namespace OfficeOpenXml.Drawing.Controls;
+
+/// <summary>
+/// Selection type for a list control
+/// </summary>
+public enum eSelectionType
 {
     /// <summary>
-    /// Selection type for a list control
+    /// Single selection only.
     /// </summary>
-    public enum eSelectionType
-    {
-        /// <summary>
-        /// Single selection only.
-        /// </summary>
-        Single,
-        /// <summary>
-        /// Multiple selection is allowed. 
-        /// Clicking any item in the list will select or deselect that item.
-        /// </summary>
-        Multi,
-        /// <summary>
-        /// Multiple selection is allowed while ctrl is used. 
-        /// </summary>
-        Extended
-    }
+    Single,
+    /// <summary>
+    /// Multiple selection is allowed. 
+    /// Clicking any item in the list will select or deselect that item.
+    /// </summary>
+    Multi,
+    /// <summary>
+    /// Multiple selection is allowed while ctrl is used. 
+    /// </summary>
+    Extended
 }

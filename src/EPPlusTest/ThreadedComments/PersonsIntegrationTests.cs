@@ -7,28 +7,27 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EPPlusTest.ThreadedComments
-{
-    [TestClass]
-    public class PersonsIntegrationTests : TestBase
-    {
-        [TestMethod]
-        public void PersonCollOnWorkbook()
-        {
-            using ExcelPackage? package = OpenTemplatePackage("comments.xlsx");
-            ExcelThreadedCommentPersonCollection? persons = package.Workbook.ThreadedCommentPersons;
-            ExcelThreadedCommentPerson? p = persons.Add("Jan Källman", "Jan Källman", IdentityProvider.NoProvider);
-            SaveWorkbook("commentsResult.xlsx", package);
-        }
+namespace EPPlusTest.ThreadedComments;
 
-        [TestMethod]
-        public void AddPersonToWorkbook()
-        {
-            using ExcelPackage? package = OpenPackage("commentsWithNewPerson.xlsx", true);
-            package.Workbook.Worksheets.Add("test");
-            ExcelThreadedCommentPersonCollection? persons = package.Workbook.ThreadedCommentPersons;
-            ExcelThreadedCommentPerson? p = persons.Add("Jan Källman", "Jan Källman", IdentityProvider.NoProvider);
-            package.Save();
-        }
+[TestClass]
+public class PersonsIntegrationTests : TestBase
+{
+    [TestMethod]
+    public void PersonCollOnWorkbook()
+    {
+        using ExcelPackage? package = OpenTemplatePackage("comments.xlsx");
+        ExcelThreadedCommentPersonCollection? persons = package.Workbook.ThreadedCommentPersons;
+        ExcelThreadedCommentPerson? p = persons.Add("Jan Källman", "Jan Källman", IdentityProvider.NoProvider);
+        SaveWorkbook("commentsResult.xlsx", package);
+    }
+
+    [TestMethod]
+    public void AddPersonToWorkbook()
+    {
+        using ExcelPackage? package = OpenPackage("commentsWithNewPerson.xlsx", true);
+        package.Workbook.Worksheets.Add("test");
+        ExcelThreadedCommentPersonCollection? persons = package.Workbook.ThreadedCommentPersons;
+        ExcelThreadedCommentPerson? p = persons.Add("Jan Källman", "Jan Källman", IdentityProvider.NoProvider);
+        package.Save();
     }
 }

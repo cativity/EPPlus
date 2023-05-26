@@ -16,28 +16,27 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime
-{
-    internal abstract class DateParsingFunction : ExcelFunction
-    {
-        protected System.DateTime ParseDate(IEnumerable<FunctionArgument> arguments, object dateObj, int argIndex)
-        {
-            System.DateTime date;
-            if (dateObj is string)
-            {
-                date = System.DateTime.Parse(dateObj.ToString(), CultureInfo.CurrentCulture);
-            }
-            else
-            {
-                double d = this.ArgToDecimal(arguments, argIndex);
-                date = System.DateTime.FromOADate(d);
-            }
-            return date;
-        }
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime;
 
-        protected System.DateTime ParseDate(IEnumerable<FunctionArgument> arguments, object dateObj)
+internal abstract class DateParsingFunction : ExcelFunction
+{
+    protected System.DateTime ParseDate(IEnumerable<FunctionArgument> arguments, object dateObj, int argIndex)
+    {
+        System.DateTime date;
+        if (dateObj is string)
         {
-            return this.ParseDate(arguments, dateObj, 0);
+            date = System.DateTime.Parse(dateObj.ToString(), CultureInfo.CurrentCulture);
         }
+        else
+        {
+            double d = this.ArgToDecimal(arguments, argIndex);
+            date = System.DateTime.FromOADate(d);
+        }
+        return date;
+    }
+
+    protected System.DateTime ParseDate(IEnumerable<FunctionArgument> arguments, object dateObj)
+    {
+        return this.ParseDate(arguments, dateObj, 0);
     }
 }

@@ -7,27 +7,26 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 
-namespace EPPlusTest.FormulaParsing.Excel.Functions.Engineering
+namespace EPPlusTest.FormulaParsing.Excel.Functions.Engineering;
+
+[TestClass]
+public class ComplexTests
 {
-    [TestClass]
-    public class ComplexTests
+    [TestMethod]
+    public void ComplexShouldReturnCorrectResult()
     {
-        [TestMethod]
-        public void ComplexShouldReturnCorrectResult()
-        {
-            string? comma = CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator;
-            using ExcelPackage? package = new ExcelPackage();
-            ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
+        string? comma = CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator;
+        using ExcelPackage? package = new ExcelPackage();
+        ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
 
-            sheet.Cells["A1"].Formula = "COMPLEX(5,2)";
-            sheet.Calculate();
-            object? result = sheet.Cells["A1"].Value;
-            Assert.AreEqual("5+2i", result);
+        sheet.Cells["A1"].Formula = "COMPLEX(5,2)";
+        sheet.Calculate();
+        object? result = sheet.Cells["A1"].Value;
+        Assert.AreEqual("5+2i", result);
 
-            sheet.Cells["A1"].Formula = "COMPLEX(5,-2.5, \"j\")";
-            sheet.Calculate();
-            result = sheet.Cells["A1"].Value;
-            Assert.AreEqual($"5-2{comma}5j", result);
-        }
+        sheet.Cells["A1"].Formula = "COMPLEX(5,-2.5, \"j\")";
+        sheet.Calculate();
+        result = sheet.Cells["A1"].Value;
+        Assert.AreEqual($"5-2{comma}5j", result);
     }
 }

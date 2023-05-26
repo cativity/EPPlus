@@ -16,12 +16,11 @@ using System.Linq;
 using System.Text;
 using OfficeOpenXml.DataValidation.Formulas.Contracts;
 
-namespace OfficeOpenXml.DataValidation.Contracts
+namespace OfficeOpenXml.DataValidation.Contracts;
+
+/// <summary>
+/// Interface for a datavalidation for an integer value (whole validation in Excel)
+/// </summary>
+public interface IExcelDataValidationInt : IExcelDataValidationWithFormula2<IExcelDataValidationFormulaInt>, IExcelDataValidationWithOperator
 {
-    /// <summary>
-    /// Interface for a datavalidation for an integer value (whole validation in Excel)
-    /// </summary>
-    public interface IExcelDataValidationInt : IExcelDataValidationWithFormula2<IExcelDataValidationFormulaInt>, IExcelDataValidationWithOperator
-    {
-    }
 }

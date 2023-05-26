@@ -18,101 +18,100 @@ using OfficeOpenXml.Utils.Extensions;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Text;
 using System.Globalization;
 
-namespace OfficeOpenXml.Style
-{
-    public class ExcelRichTextColor : XmlHelper
-    {
-        private ExcelRichText _rt;
+namespace OfficeOpenXml.Style;
 
-        internal ExcelRichTextColor(XmlNamespaceManager ns, XmlNode topNode, ExcelRichText rt) : base(ns, topNode)
+public class ExcelRichTextColor : XmlHelper
+{
+    private ExcelRichText _rt;
+
+    internal ExcelRichTextColor(XmlNamespaceManager ns, XmlNode topNode, ExcelRichText rt) : base(ns, topNode)
+    {
+        this._rt = rt;
+    }
+    /// <summary>
+    /// Gets the rgb color depending in <see cref="Rgb"/>, <see cref="Theme"/> and <see cref="Tint"/>
+    /// </summary>
+    public Color Color
+    {
+        get
         {
-            this._rt = rt;
+            return this._rt.Color;
         }
-        /// <summary>
-        /// Gets the rgb color depending in <see cref="Rgb"/>, <see cref="Theme"/> and <see cref="Tint"/>
-        /// </summary>
-        public Color Color
+    }
+    /// <summary>
+    /// The rgb color value set in the file.
+    /// </summary>
+    public Color Rgb
+    {
+        get
         {
-            get
+            string? col = this.GetXmlNodeString(ExcelRichText.COLOR_PATH);
+            if (string.IsNullOrEmpty(col))
             {
-                return this._rt.Color;
+                return Color.Empty;
             }
+            return Color.FromArgb(int.Parse(col, NumberStyles.AllowHexSpecifier));
         }
-        /// <summary>
-        /// The rgb color value set in the file.
-        /// </summary>
-        public Color Rgb
+        set
         {
-            get
+            this._rt._collection.ConvertRichtext();
+            if (value==Color.Empty)
             {
-                string? col = this.GetXmlNodeString(ExcelRichText.COLOR_PATH);
-                if (string.IsNullOrEmpty(col))
-                {
-                    return Color.Empty;
-                }
-                return Color.FromArgb(int.Parse(col, NumberStyles.AllowHexSpecifier));
+                this.DeleteNode(ExcelRichText.COLOR_PATH);
             }
-            set
+            else
             {
-                this._rt._collection.ConvertRichtext();
-                if (value==Color.Empty)
-                {
-                    this.DeleteNode(ExcelRichText.COLOR_PATH);
-                }
-                else
-                {
-                    this.SetXmlNodeString(ExcelRichText.COLOR_PATH, value.ToArgb().ToString("X"));
-                }
-                if (this._rt._callback != null)
-                {
-                    this._rt._callback();
-                }
+                this.SetXmlNodeString(ExcelRichText.COLOR_PATH, value.ToArgb().ToString("X"));
             }
-        }
-        /// <summary>
-        /// The color theme.
-        /// </summary>
-        public eThemeSchemeColor? Theme
-        {
-            get
+            if (this._rt._callback != null)
             {
-                return this.GetXmlNodeString(ExcelRichText.COLOR_THEME_PATH).ToEnum<eThemeSchemeColor>();
-            }
-            set
-            {
-                this._rt._collection.ConvertRichtext();
-                string? v =value.ToEnumString();
-                if(v==null)
-                {
-                    this.DeleteNode(ExcelRichText.COLOR_THEME_PATH);
-                }
-                else
-                {
-                    this.SetXmlNodeString(ExcelRichText.COLOR_THEME_PATH, v);
-                }
-                if (this._rt._callback != null)
-                {
-                    this._rt._callback();
-                }
+                this._rt._callback();
             }
         }
-        /// <summary>
-        /// The tint value for the color.
-        /// </summary>
-        public double? Tint
+    }
+    /// <summary>
+    /// The color theme.
+    /// </summary>
+    public eThemeSchemeColor? Theme
+    {
+        get
         {
-            get
+            return this.GetXmlNodeString(ExcelRichText.COLOR_THEME_PATH).ToEnum<eThemeSchemeColor>();
+        }
+        set
+        {
+            this._rt._collection.ConvertRichtext();
+            string? v =value.ToEnumString();
+            if(v==null)
             {
-                return this.GetXmlNodeDoubleNull(ExcelRichText.COLOR_TINT_PATH);
+                this.DeleteNode(ExcelRichText.COLOR_THEME_PATH);
             }
-            set
+            else
             {
-                this._rt._collection.ConvertRichtext();
-                this.SetXmlNodeDouble(ExcelRichText.COLOR_TINT_PATH, value, true);
-                if (this._rt._callback != null)
-                {
-                    this._rt._callback();
-                }
+                this.SetXmlNodeString(ExcelRichText.COLOR_THEME_PATH, v);
+            }
+            if (this._rt._callback != null)
+            {
+                this._rt._callback();
+            }
+        }
+    }
+    /// <summary>
+    /// The tint value for the color.
+    /// </summary>
+    public double? Tint
+    {
+        get
+        {
+            return this.GetXmlNodeDoubleNull(ExcelRichText.COLOR_TINT_PATH);
+        }
+        set
+        {
+            this._rt._collection.ConvertRichtext();
+            this.SetXmlNodeDouble(ExcelRichText.COLOR_TINT_PATH, value, true);
+            if (this._rt._callback != null)
+            {
+                this._rt._callback();
             }
         }
     }

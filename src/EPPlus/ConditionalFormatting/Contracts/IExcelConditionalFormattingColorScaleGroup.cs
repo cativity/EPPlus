@@ -17,15 +17,14 @@ using System.Text;
 
 using OfficeOpenXml.ConditionalFormatting;
 
-namespace OfficeOpenXml.ConditionalFormatting.Contracts
+namespace OfficeOpenXml.ConditionalFormatting.Contracts;
+
+/// <summary>
+/// IExcelConditionalFormattingColorScaleGroup
+/// </summary>
+public interface IExcelConditionalFormattingColorScaleGroup
+    : IExcelConditionalFormattingRule
 {
-	/// <summary>
-  /// IExcelConditionalFormattingColorScaleGroup
-	/// </summary>
-  public interface IExcelConditionalFormattingColorScaleGroup
-		: IExcelConditionalFormattingRule
-	{
-		#region Public Properties
-		#endregion Public Properties
-	}
+    #region Public Properties
+    #endregion Public Properties
 }

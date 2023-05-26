@@ -17,33 +17,32 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
-{
-    [FunctionMetadata(
-        Category = ExcelFunctionCategory.Statistical,
-        EPPlusVersion = "5.2",
-        IntroducedInExcelVersion = "2010",
-        Description = "The Excel Percentrank.Inc function calculates the relative position, between 0 and 1 (inclusive), of a specified value within a supplied array.")]
-    internal class PercentrankInc : RankFunctionBase
-    {
-        public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
-        {
-            ValidateArguments(arguments, 2);
-            double[]? array = this.GetNumbersFromArgs(arguments, 0, context);
-            double number = this.ArgToDecimal(arguments, 1);
-            if (number < array.First() || number > array.Last())
-            {
-                return this.CreateResult(eErrorType.NA);
-            }
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
 
-            int significance = 3;
-            if(arguments.Count() > 2)
-            {
-                significance = this.ArgToInt(arguments, 2);
-            }
-            double result = PercentRankIncImpl(array, number);
-            result = RoundResult(result, significance);
-            return this.CreateResult(result, DataType.Decimal);
+[FunctionMetadata(
+                     Category = ExcelFunctionCategory.Statistical,
+                     EPPlusVersion = "5.2",
+                     IntroducedInExcelVersion = "2010",
+                     Description = "The Excel Percentrank.Inc function calculates the relative position, between 0 and 1 (inclusive), of a specified value within a supplied array.")]
+internal class PercentrankInc : RankFunctionBase
+{
+    public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
+    {
+        ValidateArguments(arguments, 2);
+        double[]? array = this.GetNumbersFromArgs(arguments, 0, context);
+        double number = this.ArgToDecimal(arguments, 1);
+        if (number < array.First() || number > array.Last())
+        {
+            return this.CreateResult(eErrorType.NA);
         }
+
+        int significance = 3;
+        if(arguments.Count() > 2)
+        {
+            significance = this.ArgToInt(arguments, 2);
+        }
+        double result = PercentRankIncImpl(array, number);
+        result = RoundResult(result, significance);
+        return this.CreateResult(result, DataType.Decimal);
     }
 }

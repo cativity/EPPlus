@@ -18,14 +18,14 @@ using System.Drawing;
 using System.Xml;
 using OfficeOpenXml.ConditionalFormatting.Contracts;
 
-namespace OfficeOpenXml.ConditionalFormatting
-{
-    /// <summary>
-    /// Conditional formatting with a four icon set
-    /// </summary>
-    public class ExcelConditionalFormattingFourIconSet
+namespace OfficeOpenXml.ConditionalFormatting;
+
+/// <summary>
+/// Conditional formatting with a four icon set
+/// </summary>
+public class ExcelConditionalFormattingFourIconSet
     : ExcelConditionalFormattingIconSetBase<eExcelconditionalFormatting4IconsSetType>, IExcelConditionalFormattingFourIconSet<eExcelconditionalFormatting4IconsSetType>
-  {
+{
     /****************************************************************************************/
 
     #region Private Properties
@@ -44,18 +44,18 @@ namespace OfficeOpenXml.ConditionalFormatting
     /// <param name="itemElementNode"></param>
     /// <param name="namespaceManager"></param>
     internal ExcelConditionalFormattingFourIconSet(
-      ExcelAddress address,
-      int priority,
-      ExcelWorksheet worksheet,
-      XmlNode itemElementNode,
-      XmlNamespaceManager namespaceManager)
-      : base(
-        eExcelConditionalFormattingRuleType.FourIconSet,
-        address,
-        priority,
-        worksheet,
-        itemElementNode,
-        (namespaceManager == null) ? worksheet.NameSpaceManager : namespaceManager)
+        ExcelAddress address,
+        int priority,
+        ExcelWorksheet worksheet,
+        XmlNode itemElementNode,
+        XmlNamespaceManager namespaceManager)
+        : base(
+               eExcelConditionalFormattingRuleType.FourIconSet,
+               address,
+               priority,
+               worksheet,
+               itemElementNode,
+               (namespaceManager == null) ? worksheet.NameSpaceManager : namespaceManager)
     {
         if(itemElementNode!=null && itemElementNode.HasChildNodes)
         {
@@ -94,16 +94,16 @@ namespace OfficeOpenXml.ConditionalFormatting
     /// <param name="worksheet"></param>
     /// <param name="itemElementNode"></param>
     internal ExcelConditionalFormattingFourIconSet(
-      ExcelAddress address,
-      int priority,
-      ExcelWorksheet worksheet,
-      XmlNode itemElementNode)
-      : this(
-        address,
-        priority,
-        worksheet,
-        itemElementNode,
-        null)
+        ExcelAddress address,
+        int priority,
+        ExcelWorksheet worksheet,
+        XmlNode itemElementNode)
+        : this(
+               address,
+               priority,
+               worksheet,
+               itemElementNode,
+               null)
     {
     }
 
@@ -114,26 +114,25 @@ namespace OfficeOpenXml.ConditionalFormatting
     /// <param name="address"></param>
     /// <param name="worksheet"></param>
     internal ExcelConditionalFormattingFourIconSet(
-      ExcelAddress address,
-      int priority,
-      ExcelWorksheet worksheet)
-      : this(
-        address,
-        priority,
-        worksheet,
-        null,
-        null)
+        ExcelAddress address,
+        int priority,
+        ExcelWorksheet worksheet)
+        : this(
+               address,
+               priority,
+               worksheet,
+               null,
+               null)
     {
     }
-        #endregion Constructors
+    #endregion Constructors
 
-        /// <summary>
-        /// Icon 4 value
-        /// </summary>
-        public ExcelConditionalFormattingIconDataBarValue Icon4
+    /// <summary>
+    /// Icon 4 value
+    /// </summary>
+    public ExcelConditionalFormattingIconDataBarValue Icon4
     {
         get;
         internal set;
     }
-    }
-  }
+}

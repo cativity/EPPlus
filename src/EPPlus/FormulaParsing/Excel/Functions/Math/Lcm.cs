@@ -17,27 +17,26 @@ using System.Text;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Metadata;
 using OfficeOpenXml.FormulaParsing.ExpressionGraph;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
-{
-    [FunctionMetadata(
-        Category = ExcelFunctionCategory.Statistical,
-        EPPlusVersion = "5.1",
-        Description = "Returns the Least Common Multiple of two or more supplied numbers")]
-    internal class Lcm : ExcelFunction
-    {
-        public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
-        {
-            ValidateArguments(arguments, 1);
-            IEnumerable<int>? numbers = this.ArgsToDoubleEnumerable(arguments, context).Select(x => (int)x);
-            foreach (int number in numbers)
-            {
-                if (number < 0)
-                {
-                    return this.CreateResult(eErrorType.Num);
-                }
-            }
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
 
-            return this.CreateResult(MathHelper.LeastCommonMultiple(numbers.ToArray()), DataType.Integer);
+[FunctionMetadata(
+                     Category = ExcelFunctionCategory.Statistical,
+                     EPPlusVersion = "5.1",
+                     Description = "Returns the Least Common Multiple of two or more supplied numbers")]
+internal class Lcm : ExcelFunction
+{
+    public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
+    {
+        ValidateArguments(arguments, 1);
+        IEnumerable<int>? numbers = this.ArgsToDoubleEnumerable(arguments, context).Select(x => (int)x);
+        foreach (int number in numbers)
+        {
+            if (number < 0)
+            {
+                return this.CreateResult(eErrorType.Num);
+            }
         }
+
+        return this.CreateResult(MathHelper.LeastCommonMultiple(numbers.ToArray()), DataType.Integer);
     }
 }

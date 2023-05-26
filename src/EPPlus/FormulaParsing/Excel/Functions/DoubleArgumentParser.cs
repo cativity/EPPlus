@@ -20,47 +20,46 @@ using OfficeOpenXml.FormulaParsing.Utilities;
 using OfficeOpenXml.FormulaParsing.Exceptions;
 using util=OfficeOpenXml.Utils;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions;
+
+public class DoubleArgumentParser : ArgumentParser
 {
-    public class DoubleArgumentParser : ArgumentParser
+    public override object Parse(object obj)
     {
-        public override object Parse(object obj)
+        Require.That(obj).Named("argument").IsNotNull();
+        if (obj is IRangeInfo)
         {
-            Require.That(obj).Named("argument").IsNotNull();
-            if (obj is IRangeInfo)
-            {
-                ICellInfo? r=((IRangeInfo)obj).FirstOrDefault();
-                return r?.ValueDouble ?? 0;
-            }
-            if (obj is double)
-            {
-                return obj;
-            }
-
-            if (obj.IsNumeric())
-            {
-                return util.ConvertUtil.GetValueDouble(obj);
-            }
-
-            string? str = obj != null ? obj.ToString() : string.Empty;
-            try
-            {
-                if (double.TryParse(str, NumberStyles.Any, CultureInfo.InvariantCulture, out double d))
-                {
-                    return d;
-                }
-
-                return System.DateTime.Parse(str, CultureInfo.CurrentCulture, DateTimeStyles.None).ToOADate();
-            }
-            catch// (Exception e)
-            {
-                throw new ExcelErrorValueException(ExcelErrorValue.Create(eErrorType.Value));
-            }
+            ICellInfo? r=((IRangeInfo)obj).FirstOrDefault();
+            return r?.ValueDouble ?? 0;
+        }
+        if (obj is double)
+        {
+            return obj;
         }
 
-        public override object Parse(object obj, RoundingMethod roundingMethod)
+        if (obj.IsNumeric())
         {
-            return this.Parse(obj);
+            return util.ConvertUtil.GetValueDouble(obj);
         }
+
+        string? str = obj != null ? obj.ToString() : string.Empty;
+        try
+        {
+            if (double.TryParse(str, NumberStyles.Any, CultureInfo.InvariantCulture, out double d))
+            {
+                return d;
+            }
+
+            return System.DateTime.Parse(str, CultureInfo.CurrentCulture, DateTimeStyles.None).ToOADate();
+        }
+        catch// (Exception e)
+        {
+            throw new ExcelErrorValueException(ExcelErrorValue.Create(eErrorType.Value));
+        }
+    }
+
+    public override object Parse(object obj, RoundingMethod roundingMethod)
+    {
+        return this.Parse(obj);
     }
 }

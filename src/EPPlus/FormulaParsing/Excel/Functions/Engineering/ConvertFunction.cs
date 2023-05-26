@@ -16,36 +16,35 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Engineering
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Engineering;
+
+[FunctionMetadata(
+                     Category = ExcelFunctionCategory.Engineering,
+                     EPPlusVersion = "5.1",
+                     Description = "Calculates the modified Bessel function Yn(x)")]
+public class ConvertFunction : ExcelFunction
 {
-    [FunctionMetadata(
-            Category = ExcelFunctionCategory.Engineering,
-            EPPlusVersion = "5.1",
-            Description = "Calculates the modified Bessel function Yn(x)")]
-    public class ConvertFunction : ExcelFunction
+    public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
     {
-        public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
+        ValidateArguments(arguments, 3);
+        double number = this.ArgToDecimal(arguments, 0);
+        string? fromUnit = ArgToString(arguments, 1);
+        string? toUnit = ArgToString(arguments, 2);
+        if (!Conversions.IsValidUnit(fromUnit))
         {
-            ValidateArguments(arguments, 3);
-            double number = this.ArgToDecimal(arguments, 0);
-            string? fromUnit = ArgToString(arguments, 1);
-            string? toUnit = ArgToString(arguments, 2);
-            if (!Conversions.IsValidUnit(fromUnit))
-            {
-                return this.CreateResult(eErrorType.NA);
-            }
-
-            if (!Conversions.IsValidUnit(toUnit))
-            {
-                return this.CreateResult(eErrorType.NA);
-            }
-
-            double result = Conversions.Convert(number, fromUnit, toUnit);
-            if(double.IsNaN(result))
-            {
-                return this.CreateResult(eErrorType.NA);
-            }
-            return this.CreateResult(result, DataType.Decimal);
+            return this.CreateResult(eErrorType.NA);
         }
+
+        if (!Conversions.IsValidUnit(toUnit))
+        {
+            return this.CreateResult(eErrorType.NA);
+        }
+
+        double result = Conversions.Convert(number, fromUnit, toUnit);
+        if(double.IsNaN(result))
+        {
+            return this.CreateResult(eErrorType.NA);
+        }
+        return this.CreateResult(result, DataType.Decimal);
     }
 }

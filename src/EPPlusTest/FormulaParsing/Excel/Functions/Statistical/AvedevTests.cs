@@ -6,32 +6,31 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EPPlusTest.FormulaParsing.Excel.Functions.Statistical
+namespace EPPlusTest.FormulaParsing.Excel.Functions.Statistical;
+
+[TestClass]
+public class AvedevTests
 {
-    [TestClass]
-    public class AvedevTests
+    [TestMethod]
+    public void AvedevShouldReturnCorrectResult()
     {
-        [TestMethod]
-        public void AvedevShouldReturnCorrectResult()
-        {
-            using ExcelPackage? package = new ExcelPackage();
-            ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
-            sheet.Cells["A1"].Value = 1;
-            sheet.Cells["A2"].Value = 3;
-            sheet.Cells["A3"].Value = 5;
-            sheet.Cells["A4"].Value = 2;
-            sheet.Cells["A5"].Value = 9;
-            sheet.Cells["A6"].Value = 7;
+        using ExcelPackage? package = new ExcelPackage();
+        ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
+        sheet.Cells["A1"].Value = 1;
+        sheet.Cells["A2"].Value = 3;
+        sheet.Cells["A3"].Value = 5;
+        sheet.Cells["A4"].Value = 2;
+        sheet.Cells["A5"].Value = 9;
+        sheet.Cells["A6"].Value = 7;
 
-            sheet.Cells["B1"].Formula = "AVEDEV(A1:A6)";
-            sheet.Calculate();
-            object? result = sheet.Cells["B1"].Value;
-            Assert.AreEqual(2.5, result);
+        sheet.Cells["B1"].Formula = "AVEDEV(A1:A6)";
+        sheet.Calculate();
+        object? result = sheet.Cells["B1"].Value;
+        Assert.AreEqual(2.5, result);
 
-            sheet.Cells["B1"].Formula = "AVEDEV(A1:A6, 8, 10)";
-            sheet.Calculate();
-            result = sheet.Cells["B1"].Value;
-            Assert.AreEqual(2.875, result);
-        }
+        sheet.Cells["B1"].Formula = "AVEDEV(A1:A6, 8, 10)";
+        sheet.Calculate();
+        result = sheet.Cells["B1"].Value;
+        Assert.AreEqual(2.875, result);
     }
 }

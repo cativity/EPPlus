@@ -10,20 +10,19 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
-namespace OfficeOpenXml.Drawing
+namespace OfficeOpenXml.Drawing;
+
+/// <summary>
+/// The pen alignment type
+/// </summary>
+public enum ePenAlignment
 {
     /// <summary>
-    /// The pen alignment type
+    ///  Center pen
     /// </summary>
-    public enum ePenAlignment
-    {
-        /// <summary>
-        ///  Center pen
-        /// </summary>
-        Center,
-        /// <summary>
-        /// Inset pen 
-        /// </summary>
-        Inset 
-    }
+    Center,
+    /// <summary>
+    /// Inset pen 
+    /// </summary>
+    Inset 
 }

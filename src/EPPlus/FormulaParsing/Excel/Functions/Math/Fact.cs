@@ -17,29 +17,28 @@ using System.Text;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Metadata;
 using OfficeOpenXml.FormulaParsing.ExpressionGraph;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
-{
-    [FunctionMetadata(
-        Category = ExcelFunctionCategory.MathAndTrig,
-        EPPlusVersion = "4",
-        Description = "Returns the Factorial of a given number")]
-    internal class Fact : ExcelFunction
-    {
-        public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
-        {
-            ValidateArguments(arguments, 1);
-            double number = this.ArgToDecimal(arguments, 0);
-            if (number < 0)
-            {
-                return this.CreateResult(eErrorType.NA);
-            }
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
 
-            double result = 1d;
-            for (int x = 1; x < number; x++)
-            {
-                result *= x;
-            }
-            return this.CreateResult(result, DataType.Integer);
+[FunctionMetadata(
+                     Category = ExcelFunctionCategory.MathAndTrig,
+                     EPPlusVersion = "4",
+                     Description = "Returns the Factorial of a given number")]
+internal class Fact : ExcelFunction
+{
+    public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
+    {
+        ValidateArguments(arguments, 1);
+        double number = this.ArgToDecimal(arguments, 0);
+        if (number < 0)
+        {
+            return this.CreateResult(eErrorType.NA);
         }
+
+        double result = 1d;
+        for (int x = 1; x < number; x++)
+        {
+            result *= x;
+        }
+        return this.CreateResult(result, DataType.Integer);
     }
 }

@@ -17,69 +17,68 @@ using System.Collections.Generic;
 using System.Text;
 using System.Xml;
 
-namespace OfficeOpenXml.Style
-{
-    /// <summary>
-    /// Handels paragraph text
-    /// </summary>
-    public sealed class ExcelParagraph : ExcelTextFont
-    {
-        internal ExcelParagraph(IPictureRelationDocument pictureRelationDocument, XmlNamespaceManager ns, XmlNode rootNode, string path, string[] schemaNodeOrder) : 
-            base(pictureRelationDocument, ns, rootNode, path + "a:rPr", schemaNodeOrder)
-        { 
+namespace OfficeOpenXml.Style;
 
-        }
-        const string TextPath = "../a:t";
-        /// <summary>
-        /// Text
-        /// </summary>
-        public string Text
+/// <summary>
+/// Handels paragraph text
+/// </summary>
+public sealed class ExcelParagraph : ExcelTextFont
+{
+    internal ExcelParagraph(IPictureRelationDocument pictureRelationDocument, XmlNamespaceManager ns, XmlNode rootNode, string path, string[] schemaNodeOrder) : 
+        base(pictureRelationDocument, ns, rootNode, path + "a:rPr", schemaNodeOrder)
+    { 
+
+    }
+    const string TextPath = "../a:t";
+    /// <summary>
+    /// Text
+    /// </summary>
+    public string Text
+    {
+        get
         {
-            get
-            {
-                return this.GetXmlNodeString(TextPath);
-            }
-            set
-            {
-                this.CreateTopNode();
-                this.SetXmlNodeString(TextPath, value);
-            }
+            return this.GetXmlNodeString(TextPath);
         }
-        /// <summary>
-        /// If the paragraph is the first in the collection
-        /// </summary>
-        public bool IsFirstInParagraph
+        set
         {
-            get
+            this.CreateTopNode();
+            this.SetXmlNodeString(TextPath, value);
+        }
+    }
+    /// <summary>
+    /// If the paragraph is the first in the collection
+    /// </summary>
+    public bool IsFirstInParagraph
+    {
+        get
+        {
+            XmlNode? parent = this._rootNode.ParentNode;
+            for (int i=0;i<parent.ChildNodes.Count;i++)
             {
-                XmlNode? parent = this._rootNode.ParentNode;
-                for (int i=0;i<parent.ChildNodes.Count;i++)
+                if (parent.ChildNodes[i].LocalName == "r")
                 {
-                    if (parent.ChildNodes[i].LocalName == "r")
-                    {
-                        return parent.ChildNodes[i] == this._rootNode;
-                    }
+                    return parent.ChildNodes[i] == this._rootNode;
                 }
-                return false;
             }
+            return false;
         }
-        /// <summary>
-        /// If the paragraph is the last in the collection
-        /// </summary>
-        public bool IsLastInParagraph
+    }
+    /// <summary>
+    /// If the paragraph is the last in the collection
+    /// </summary>
+    public bool IsLastInParagraph
+    {
+        get
         {
-            get
+            XmlNode? parent = this._rootNode.ParentNode;
+            for (int i = parent.ChildNodes.Count-1; i >=0 ; i--)
             {
-                XmlNode? parent = this._rootNode.ParentNode;
-                for (int i = parent.ChildNodes.Count-1; i >=0 ; i--)
+                if (parent.ChildNodes[i].LocalName == "r")
                 {
-                    if (parent.ChildNodes[i].LocalName == "r")
-                    {
-                        return parent.ChildNodes[i] == this._rootNode;
-                    }
+                    return parent.ChildNodes[i] == this._rootNode;
                 }
-                return false;
             }
+            return false;
         }
     }
 }

@@ -16,75 +16,74 @@ using System.Collections.Generic;
 using System.Text;
 using System.Xml;
 
-namespace OfficeOpenXml.Drawing.Chart
+namespace OfficeOpenXml.Drawing.Chart;
+
+/// <summary>
+/// A serie for a Bar Chart
+/// </summary>s
+public sealed class ExcelBarChartSerie : ExcelChartSerieWithErrorBars, IDrawingSerieDataLabel, IDrawingChartDataPoints
 {
     /// <summary>
-    /// A serie for a Bar Chart
-    /// </summary>s
-    public sealed class ExcelBarChartSerie : ExcelChartSerieWithErrorBars, IDrawingSerieDataLabel, IDrawingChartDataPoints
+    /// Default constructor
+    /// </summary>
+    /// <param name="chart">Chart series</param>
+    /// <param name="ns">Namespacemanager</param>
+    /// <param name="node">Topnode</param>
+    /// <param name="isPivot">Is pivotchart</param>
+    internal ExcelBarChartSerie(ExcelChart chart, XmlNamespaceManager ns, XmlNode node, bool isPivot) :
+        base(chart, ns, node, isPivot)
     {
-        /// <summary>
-        /// Default constructor
-        /// </summary>
-        /// <param name="chart">Chart series</param>
-        /// <param name="ns">Namespacemanager</param>
-        /// <param name="node">Topnode</param>
-        /// <param name="isPivot">Is pivotchart</param>
-        internal ExcelBarChartSerie(ExcelChart chart, XmlNamespaceManager ns, XmlNode node, bool isPivot) :
-            base(chart, ns, node, isPivot)
+    }
+    ExcelChartSerieDataLabel _dataLabel = null;
+    /// <summary>
+    /// Datalabel
+    /// </summary>
+    public ExcelChartSerieDataLabel DataLabel
+    {
+        get
         {
-        }
-        ExcelChartSerieDataLabel _dataLabel = null;
-        /// <summary>
-        /// Datalabel
-        /// </summary>
-        public ExcelChartSerieDataLabel DataLabel
-        {
-            get
+            if (this._dataLabel == null)
             {
-                if (this._dataLabel == null)
+                if (ExcelChartDataLabelStandard.ForbiddDataLabelPosition(this._chart) == false)
                 {
-                    if (ExcelChartDataLabelStandard.ForbiddDataLabelPosition(this._chart) == false)
-                    {
-                        this._dataLabel = new ExcelChartSerieDataLabel(this._chart, this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder);
-                    }
+                    this._dataLabel = new ExcelChartSerieDataLabel(this._chart, this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder);
                 }
-                return this._dataLabel;
             }
+            return this._dataLabel;
         }
-        /// <summary>
-        /// If the chart has datalabel
-        /// </summary>
-        public bool HasDataLabel
+    }
+    /// <summary>
+    /// If the chart has datalabel
+    /// </summary>
+    public bool HasDataLabel
+    {
+        get
         {
-            get
-            {
-                return this.TopNode.SelectSingleNode("c:dLbls", this.NameSpaceManager) != null;
-            }
+            return this.TopNode.SelectSingleNode("c:dLbls", this.NameSpaceManager) != null;
         }
+    }
 
-        const string INVERTIFNEGATIVE_PATH = "c:invertIfNegative/@val";
-        internal bool InvertIfNegative
+    const string INVERTIFNEGATIVE_PATH = "c:invertIfNegative/@val";
+    internal bool InvertIfNegative
+    {
+        get
         {
-            get
-            {
-                return this.GetXmlNodeBool(INVERTIFNEGATIVE_PATH, true);
-            }
-            set
-            {
-                this.SetXmlNodeBool(INVERTIFNEGATIVE_PATH, value);
-            }
+            return this.GetXmlNodeBool(INVERTIFNEGATIVE_PATH, true);
         }
-        ExcelChartDataPointCollection _dataPoints = null;
-        /// <summary>
-        /// A collection of the individual datapoints
-        /// </summary>
-        public ExcelChartDataPointCollection DataPoints
+        set
         {
-            get
-            {
-                return this._dataPoints ??= new ExcelChartDataPointCollection(this._chart, this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder);
-            }
+            this.SetXmlNodeBool(INVERTIFNEGATIVE_PATH, value);
+        }
+    }
+    ExcelChartDataPointCollection _dataPoints = null;
+    /// <summary>
+    /// A collection of the individual datapoints
+    /// </summary>
+    public ExcelChartDataPointCollection DataPoints
+    {
+        get
+        {
+            return this._dataPoints ??= new ExcelChartDataPointCollection(this._chart, this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder);
         }
     }
 }

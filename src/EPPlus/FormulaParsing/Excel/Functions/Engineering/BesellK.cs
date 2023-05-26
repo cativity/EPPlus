@@ -18,21 +18,20 @@ using System.Collections.Generic;
 using System.Text;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.Implementations;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Engineering
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Engineering;
+
+[FunctionMetadata(
+                     Category = ExcelFunctionCategory.Engineering, 
+                     EPPlusVersion = "5.2", 
+                     Description = "Calculates the modified Bessel function Kn(x)")]
+internal class BesselK : ExcelFunction
 {
-    [FunctionMetadata(
-        Category = ExcelFunctionCategory.Engineering, 
-        EPPlusVersion = "5.2", 
-        Description = "Calculates the modified Bessel function Kn(x)")]
-    internal class BesselK : ExcelFunction
+    public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
     {
-        public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
-        {
-            ValidateArguments(arguments, 2);
-            double x = this.ArgToDecimal(arguments, 0);
-            int n = this.ArgToInt(arguments, 1);
-            FinanceCalcResult<double>? result = BesselKImpl.BesselK(x, n);
-            return this.CreateResult(result.Result, DataType.Decimal);
-        }
+        ValidateArguments(arguments, 2);
+        double x = this.ArgToDecimal(arguments, 0);
+        int n = this.ArgToInt(arguments, 1);
+        FinanceCalcResult<double>? result = BesselKImpl.BesselK(x, n);
+        return this.CreateResult(result.Result, DataType.Decimal);
     }
 }

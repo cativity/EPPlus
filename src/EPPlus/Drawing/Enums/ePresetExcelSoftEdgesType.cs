@@ -10,40 +10,39 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
-namespace OfficeOpenXml.Drawing
+namespace OfficeOpenXml.Drawing;
+
+/// <summary>
+/// Preset soft edges types in Excel
+/// </summary>
+public enum ePresetExcelSoftEdgesType
 {
     /// <summary>
-    /// Preset soft edges types in Excel
+    /// No soft edges
     /// </summary>
-    public enum ePresetExcelSoftEdgesType
-    {
-        /// <summary>
-        /// No soft edges
-        /// </summary>
-        None,
-        /// <summary>
-        /// Soft edges 1pt
-        /// </summary>
-        SoftEdge1Pt,
-        /// <summary>
-        /// Soft edges 2.5pt
-        /// </summary>
-        SoftEdge2_5Pt,
-        /// <summary>
-        /// Soft edges 5pt
-        /// </summary>
-        SoftEdge5Pt,
-        /// <summary>
-        /// Soft edges 10pt
-        /// </summary>
-        SoftEdge10Pt,
-        /// <summary>
-        /// Soft edges 25pt
-        /// </summary>
-        SoftEdge25Pt,
-        /// <summary>
-        /// Soft edges 50pt
-        /// </summary>
-        SoftEdge50Pt
-    }
+    None,
+    /// <summary>
+    /// Soft edges 1pt
+    /// </summary>
+    SoftEdge1Pt,
+    /// <summary>
+    /// Soft edges 2.5pt
+    /// </summary>
+    SoftEdge2_5Pt,
+    /// <summary>
+    /// Soft edges 5pt
+    /// </summary>
+    SoftEdge5Pt,
+    /// <summary>
+    /// Soft edges 10pt
+    /// </summary>
+    SoftEdge10Pt,
+    /// <summary>
+    /// Soft edges 25pt
+    /// </summary>
+    SoftEdge25Pt,
+    /// <summary>
+    /// Soft edges 50pt
+    /// </summary>
+    SoftEdge50Pt
 }

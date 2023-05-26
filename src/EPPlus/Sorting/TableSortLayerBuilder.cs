@@ -15,42 +15,41 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace OfficeOpenXml.Sorting
+namespace OfficeOpenXml.Sorting;
+
+/// <summary>
+/// Used to create sort criterias for sorting a range.
+/// </summary>
+public class TableSortLayerBuilder
 {
-    /// <summary>
-    /// Used to create sort criterias for sorting a range.
-    /// </summary>
-    public class TableSortLayerBuilder
+    internal TableSortLayerBuilder(TableSortOptions options, TableSortLayer sortLayer)
     {
-        internal TableSortLayerBuilder(TableSortOptions options, TableSortLayer sortLayer)
-        {
-            this._options = options;
-            this._sortLayer = sortLayer;
-        }
+        this._options = options;
+        this._sortLayer = sortLayer;
+    }
 
-        private readonly TableSortOptions _options;
-        private readonly TableSortLayer _sortLayer;
+    private readonly TableSortOptions _options;
+    private readonly TableSortLayer _sortLayer;
 
-        /// <summary>
-        /// Add a new Sort layer.
-        /// </summary>
-        public TableSortLayer ThenSortBy
+    /// <summary>
+    /// Add a new Sort layer.
+    /// </summary>
+    public TableSortLayer ThenSortBy
+    {
+        get
         {
-            get
-            {
-                return new TableSortLayer(this._options);
-            }
+            return new TableSortLayer(this._options);
         }
+    }
 
-        /// <summary>
-        /// Use a custom list for sorting on the current Sort layer.
-        /// </summary>
-        /// <param name="values">An array of strings defining the sort order</param>
-        /// <returns>A <see cref="TableSortLayerBuilder"/></returns>
-        public TableSortLayerBuilder UsingCustomList(params string[] values)
-        {
-            this._sortLayer.SetCustomList(values);
-            return this;
-        }
+    /// <summary>
+    /// Use a custom list for sorting on the current Sort layer.
+    /// </summary>
+    /// <param name="values">An array of strings defining the sort order</param>
+    /// <returns>A <see cref="TableSortLayerBuilder"/></returns>
+    public TableSortLayerBuilder UsingCustomList(params string[] values)
+    {
+        this._sortLayer.SetCustomList(values);
+        return this;
     }
 }

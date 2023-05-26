@@ -20,121 +20,120 @@ using System.Linq;
 using System.Security.Cryptography.Pkcs;
 using System.Security.Cryptography.X509Certificates;
 
-namespace OfficeOpenXml.VBA.Signatures
+namespace OfficeOpenXml.VBA.Signatures;
+
+internal abstract class EPPlusVbaSignature
 {
-    internal abstract class EPPlusVbaSignature
+    public EPPlusVbaSignature(ZipPackagePart vbaPart, ExcelVbaSignatureType signatureType)
     {
-        public EPPlusVbaSignature(ZipPackagePart vbaPart, ExcelVbaSignatureType signatureType)
-        {
-            this._vbaPart = vbaPart;
-            this._signatureType = signatureType;
-            this.Context=new EPPlusSignatureContext(signatureType);
-        }
+        this._vbaPart = vbaPart;
+        this._signatureType = signatureType;
+        this.Context=new EPPlusSignatureContext(signatureType);
+    }
 
-        private readonly ZipPackagePart _vbaPart;
-        private readonly ExcelVbaSignatureType _signatureType;
-        internal ZipPackagePart Part
-        {
-            get;
-            set;
-        }
+    private readonly ZipPackagePart _vbaPart;
+    private readonly ExcelVbaSignatureType _signatureType;
+    internal ZipPackagePart Part
+    {
+        get;
+        set;
+    }
 
-        internal string SchemaRelation
+    internal string SchemaRelation
+    {
+        get
         {
-            get
+            switch(this._signatureType)
             {
-                switch(this._signatureType)
-                {
-                    case ExcelVbaSignatureType.Legacy:
-                        return VbaSchemaRelations.Legacy;
-                    case ExcelVbaSignatureType.Agile:
-                        return VbaSchemaRelations.Agile;
-                    case ExcelVbaSignatureType.V3:
-                        return VbaSchemaRelations.V3;
-                    default:
-                        return VbaSchemaRelations.Legacy;
-                }
+                case ExcelVbaSignatureType.Legacy:
+                    return VbaSchemaRelations.Legacy;
+                case ExcelVbaSignatureType.Agile:
+                    return VbaSchemaRelations.Agile;
+                case ExcelVbaSignatureType.V3:
+                    return VbaSchemaRelations.V3;
+                default:
+                    return VbaSchemaRelations.Legacy;
             }
         }
-        internal string ContentType
+    }
+    internal string ContentType
+    {
+        get
         {
-            get
+            switch (this._signatureType)
             {
-                switch (this._signatureType)
-                {
-                    case ExcelVbaSignatureType.Legacy:
-                        return ContentTypes.contentTypeVBASignature;
-                    case ExcelVbaSignatureType.Agile:
-                        return ContentTypes.contentTypeVBASignatureAgile;
-                    default:
-                        return ContentTypes.contentTypeVBASignatureV3;
-                }
+                case ExcelVbaSignatureType.Legacy:
+                    return ContentTypes.contentTypeVBASignature;
+                case ExcelVbaSignatureType.Agile:
+                    return ContentTypes.contentTypeVBASignatureAgile;
+                default:
+                    return ContentTypes.contentTypeVBASignatureV3;
             }
         }
+    }
 
-        public X509Certificate2 Certificate { get; set; }
-        public SignedCms Verifier { get; internal set; }
+    public X509Certificate2 Certificate { get; set; }
+    public SignedCms Verifier { get; internal set; }
 
-        public EPPlusSignatureContext Context { get; set; }
+    public EPPlusSignatureContext Context { get; set; }
 
-        internal bool ReadSignature()
+    internal bool ReadSignature()
+    {
+
+        if (this._vbaPart == null)
         {
+            return true; //If no vba part exists, create the signature by default.
+        }
 
-            if (this._vbaPart == null)
-            {
-                return true; //If no vba part exists, create the signature by default.
-            }
+        ZipPackageRelationship? rel = this._vbaPart.GetRelationshipsByType(this.SchemaRelation).FirstOrDefault();
+        if(rel != null)
+        {
+            Uri? uri = UriHelper.ResolvePartUri(rel.SourceUri, rel.TargetUri);
+            this.Part = this._vbaPart.Package.GetPart(uri);
+            this.Context = new EPPlusSignatureContext(this._signatureType);
+            SignatureInfo? signature = SignatureReader.ReadSignature(this.Part, this._signatureType, this.Context);
+            this.Certificate = signature.Certificate;
+            this.Verifier = signature.Verifier;                
+            return true;
+        }
+        else
+        {
+            this.Certificate = null;
+            this.Verifier = null;
+            this.Context = new EPPlusSignatureContext(this._signatureType);
+            return false;
+        }
+    }
 
-            ZipPackageRelationship? rel = this._vbaPart.GetRelationshipsByType(this.SchemaRelation).FirstOrDefault();
-            if(rel != null)
+    internal void CreateSignature(ExcelVbaProject project)
+    {
+        byte[] certStore = CertUtil.GetSerializedCertStore(this.Certificate.RawData);
+        if (this.Certificate == null)
+        {
+            SignaturePartUtil.DeleteParts(this.Part);
+            return;
+        }
+
+        if (this.Certificate.HasPrivateKey == false)    //No signature. Remove any Signature part
+        {
+            X509Certificate2? storeCert = CertUtil.GetCertificate(this.Certificate.Thumbprint);
+            if (storeCert != null)
             {
-                Uri? uri = UriHelper.ResolvePartUri(rel.SourceUri, rel.TargetUri);
-                this.Part = this._vbaPart.Package.GetPart(uri);
-                this.Context = new EPPlusSignatureContext(this._signatureType);
-                SignatureInfo? signature = SignatureReader.ReadSignature(this.Part, this._signatureType, this.Context);
-                this.Certificate = signature.Certificate;
-                this.Verifier = signature.Verifier;                
-                return true;
+                this.Certificate = storeCert;
             }
             else
-            {
-                this.Certificate = null;
-                this.Verifier = null;
-                this.Context = new EPPlusSignatureContext(this._signatureType);
-                return false;
-            }
-        }
-
-        internal void CreateSignature(ExcelVbaProject project)
-        {
-            byte[] certStore = CertUtil.GetSerializedCertStore(this.Certificate.RawData);
-            if (this.Certificate == null)
             {
                 SignaturePartUtil.DeleteParts(this.Part);
                 return;
             }
-
-            if (this.Certificate.HasPrivateKey == false)    //No signature. Remove any Signature part
-            {
-                X509Certificate2? storeCert = CertUtil.GetCertificate(this.Certificate.Thumbprint);
-                if (storeCert != null)
-                {
-                    this.Certificate = storeCert;
-                }
-                else
-                {
-                    SignaturePartUtil.DeleteParts(this.Part);
-                    return;
-                }
-            }
-            using MemoryStream? ms = RecyclableMemory.GetStream();
-            BinaryWriter? bw = new BinaryWriter(ms);
-            this.Verifier = CertUtil.SignProject(project, this, this.Context);
-            byte[]? cert = this.Verifier.Encode();
-            byte[]? signatureBytes = CertUtil.CreateBinarySignature(ms, bw, certStore, cert);
-            this.Part = SignaturePartUtil.GetPart(project, this);
-            this.Part.GetStream(FileMode.Create).Write(signatureBytes, 0, signatureBytes.Length);
-
         }
+        using MemoryStream? ms = RecyclableMemory.GetStream();
+        BinaryWriter? bw = new BinaryWriter(ms);
+        this.Verifier = CertUtil.SignProject(project, this, this.Context);
+        byte[]? cert = this.Verifier.Encode();
+        byte[]? signatureBytes = CertUtil.CreateBinarySignature(ms, bw, certStore, cert);
+        this.Part = SignaturePartUtil.GetPart(project, this);
+        this.Part.GetStream(FileMode.Create).Write(signatureBytes, 0, signatureBytes.Length);
+
     }
 }

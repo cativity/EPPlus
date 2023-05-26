@@ -32,60 +32,59 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace EPPlusTest.FormulaParsing
+namespace EPPlusTest.FormulaParsing;
+
+[TestClass]
+public class ExcelAddressCacheTests
 {
-    [TestClass]
-    public class ExcelAddressCacheTests
+    [TestMethod]
+    public void ShouldGenerateNewIds()
     {
-        [TestMethod]
-        public void ShouldGenerateNewIds()
-        {
-            ExcelAddressCache? cache = new ExcelAddressCache();
-            int firstId = cache.GetNewId();
-            Assert.AreEqual(1, firstId);
+        ExcelAddressCache? cache = new ExcelAddressCache();
+        int firstId = cache.GetNewId();
+        Assert.AreEqual(1, firstId);
 
-            int secondId = cache.GetNewId();
-            Assert.AreEqual(2, secondId);
-        }
+        int secondId = cache.GetNewId();
+        Assert.AreEqual(2, secondId);
+    }
 
-        [TestMethod]
-        public void ShouldReturnCachedAddress()
-        {
-            ExcelAddressCache? cache = new ExcelAddressCache();
-            int id = cache.GetNewId();
-            string? address = "A1";
-            bool result = cache.Add(id, address);
-            Assert.IsTrue(result);
-            Assert.AreEqual(address, cache.Get(id));
-        }
+    [TestMethod]
+    public void ShouldReturnCachedAddress()
+    {
+        ExcelAddressCache? cache = new ExcelAddressCache();
+        int id = cache.GetNewId();
+        string? address = "A1";
+        bool result = cache.Add(id, address);
+        Assert.IsTrue(result);
+        Assert.AreEqual(address, cache.Get(id));
+    }
 
-        [TestMethod]
-        public void AddShouldReturnFalseIfUsedId()
-        {
-            ExcelAddressCache? cache = new ExcelAddressCache();
-            int id = cache.GetNewId();
-            string? address = "A1";
-            bool result = cache.Add(id, address);
-            Assert.IsTrue(result);
-            bool result2 = cache.Add(id, address);
-            Assert.IsFalse(result2);
-        }
+    [TestMethod]
+    public void AddShouldReturnFalseIfUsedId()
+    {
+        ExcelAddressCache? cache = new ExcelAddressCache();
+        int id = cache.GetNewId();
+        string? address = "A1";
+        bool result = cache.Add(id, address);
+        Assert.IsTrue(result);
+        bool result2 = cache.Add(id, address);
+        Assert.IsFalse(result2);
+    }
 
-        [TestMethod]
-        public void ClearShouldResetId()
-        {
-            ExcelAddressCache? cache = new ExcelAddressCache();
-            int id = cache.GetNewId();
-            Assert.AreEqual(1, id);
-            string? address = "A1";
-            bool result = cache.Add(id, address);
-            Assert.AreEqual(1, cache.Count);
-            int id2 = cache.GetNewId();
-            Assert.AreEqual(2, id2);
-            cache.Clear();
-            int id3 = cache.GetNewId();
-            Assert.AreEqual(1, id3);
+    [TestMethod]
+    public void ClearShouldResetId()
+    {
+        ExcelAddressCache? cache = new ExcelAddressCache();
+        int id = cache.GetNewId();
+        Assert.AreEqual(1, id);
+        string? address = "A1";
+        bool result = cache.Add(id, address);
+        Assert.AreEqual(1, cache.Count);
+        int id2 = cache.GetNewId();
+        Assert.AreEqual(2, id2);
+        cache.Clear();
+        int id3 = cache.GetNewId();
+        Assert.AreEqual(1, id3);
             
-        }
     }
 }

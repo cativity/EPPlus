@@ -14,148 +14,147 @@ using OfficeOpenXml.Packaging;
 using System;
 using System.Xml;
 
-namespace OfficeOpenXml.Drawing.Controls
+namespace OfficeOpenXml.Drawing.Controls;
+
+/// <summary>
+/// Represents a scroll bar form control
+/// </summary>
+public class ExcelControlScrollBar : ExcelControl
 {
-    /// <summary>
-    /// Represents a scroll bar form control
-    /// </summary>
-    public class ExcelControlScrollBar : ExcelControl
+    internal ExcelControlScrollBar(ExcelDrawings drawings, XmlElement drawNode, string name, ExcelGroupShape parent=null) : base(drawings, drawNode, name, parent)
     {
-        internal ExcelControlScrollBar(ExcelDrawings drawings, XmlElement drawNode, string name, ExcelGroupShape parent=null) : base(drawings, drawNode, name, parent)
-        {
-            this.SetSize(30, 150); //Default size
-        }
-        internal ExcelControlScrollBar(ExcelDrawings drawings, XmlNode drawNode, ControlInternal control, ZipPackagePart part, XmlDocument controlPropertiesXml, ExcelGroupShape parent = null)
-            : base(drawings, drawNode, control, part, controlPropertiesXml, parent)
-        {
-        }
+        this.SetSize(30, 150); //Default size
+    }
+    internal ExcelControlScrollBar(ExcelDrawings drawings, XmlNode drawNode, ControlInternal control, ZipPackagePart part, XmlDocument controlPropertiesXml, ExcelGroupShape parent = null)
+        : base(drawings, drawNode, control, part, controlPropertiesXml, parent)
+    {
+    }
 
-        /// <summary>
-        /// The type of form control
-        /// </summary>
-        public override eControlType ControlType => eControlType.ScrollBar;
+    /// <summary>
+    /// The type of form control
+    /// </summary>
+    public override eControlType ControlType => eControlType.ScrollBar;
 
-        /// <summary>
-        /// Gets or sets if scroll bar is horizontal or vertical
-        /// </summary>
-        public bool Horizontal
+    /// <summary>
+    /// Gets or sets if scroll bar is horizontal or vertical
+    /// </summary>
+    public bool Horizontal
+    {
+        get
         {
-            get
+            return this._ctrlProp.GetXmlNodeBool("@horiz");
+        }
+        set
+        {
+            this._ctrlProp.SetXmlNodeBool("@horiz", value);
+            if(value)
             {
-                return this._ctrlProp.GetXmlNodeBool("@horiz");
+                this._vmlProp.CreateNode("x:Horiz");
             }
-            set
+            else
             {
-                this._ctrlProp.SetXmlNodeBool("@horiz", value);
-                if(value)
-                {
-                    this._vmlProp.CreateNode("x:Horiz");
-                }
-                else
-                {
-                    this._vmlProp.DeleteNode("x:Horiz");
-                }
+                this._vmlProp.DeleteNode("x:Horiz");
             }
         }
-        /// <summary>
-        /// How much the scroll bar is incremented for each click
-        /// </summary>
-        public int Increment
+    }
+    /// <summary>
+    /// How much the scroll bar is incremented for each click
+    /// </summary>
+    public int Increment
+    {
+        get
         {
-            get
-            {
-                return this._ctrlProp.GetXmlNodeInt("@inc", 1);
-            }
-            set
-            {
-                if(value < 0 || value >3000)
-                {
-                    throw (new ArgumentOutOfRangeException("Increment must be between 0 and 3000"));
-                }
-
-                this._ctrlProp.SetXmlNodeInt("@inc", value);
-                this._vmlProp.SetXmlNodeInt("x:Inc", value);
-            }
+            return this._ctrlProp.GetXmlNodeInt("@inc", 1);
         }
-        /// <summary>
-        /// The number of items to move the scroll bar on a page click. Null is default
-        /// </summary>
-        public int? Page
+        set
         {
-            get
+            if(value < 0 || value >3000)
             {
-                return this._ctrlProp.GetXmlNodeIntNull("@page");
+                throw (new ArgumentOutOfRangeException("Increment must be between 0 and 3000"));
             }
-            set
-            {
-                if (value.HasValue && (value < 0 || value > 3000))
-                {
-                    throw (new ArgumentOutOfRangeException("Page must be between 0 and 3000"));
-                }
 
-                this._ctrlProp.SetXmlNodeInt("@page", value);
-                this._vmlProp.SetXmlNodeInt("x:Page", value);
-            }
+            this._ctrlProp.SetXmlNodeInt("@inc", value);
+            this._vmlProp.SetXmlNodeInt("x:Inc", value);
         }
-        /// <summary>
-        /// The value when a scroll bar is at it's minimum
-        /// </summary>
-        public int MinValue
+    }
+    /// <summary>
+    /// The number of items to move the scroll bar on a page click. Null is default
+    /// </summary>
+    public int? Page
+    {
+        get
         {
-            get
-            {
-                return this._ctrlProp.GetXmlNodeInt("@min", 0);
-            }
-            set
-            {
-                if (value < 0 || value > 30000)
-                {
-                    throw (new ArgumentOutOfRangeException("MinValue must be between 0 and 3000"));
-                }
-
-                this._ctrlProp.SetXmlNodeInt("@min", value);
-            }
+            return this._ctrlProp.GetXmlNodeIntNull("@page");
         }
-        /// <summary>
-        /// The value when a scroll bar is at it's maximum
-        /// </summary>
-        public int MaxValue
+        set
         {
-            get
+            if (value.HasValue && (value < 0 || value > 3000))
             {
-                return this._ctrlProp.GetXmlNodeInt("@max", 30000);
+                throw (new ArgumentOutOfRangeException("Page must be between 0 and 3000"));
             }
-            set
-            {
-                if (value < 0 || value > 30000)
-                {
-                    throw (new ArgumentOutOfRangeException("MaxValue must be between 0 and 30000"));
-                }
 
-                this._ctrlProp.SetXmlNodeInt("@max", value);
-            }
+            this._ctrlProp.SetXmlNodeInt("@page", value);
+            this._vmlProp.SetXmlNodeInt("x:Page", value);
         }
-        /// <summary>
-        /// The value of the scroll bar.
-        /// </summary>
-        public int Value
+    }
+    /// <summary>
+    /// The value when a scroll bar is at it's minimum
+    /// </summary>
+    public int MinValue
+    {
+        get
         {
-            get
+            return this._ctrlProp.GetXmlNodeInt("@min", 0);
+        }
+        set
+        {
+            if (value < 0 || value > 30000)
             {
-                return this._ctrlProp.GetXmlNodeInt("@val", 0);
+                throw (new ArgumentOutOfRangeException("MinValue must be between 0 and 3000"));
             }
-            set
+
+            this._ctrlProp.SetXmlNodeInt("@min", value);
+        }
+    }
+    /// <summary>
+    /// The value when a scroll bar is at it's maximum
+    /// </summary>
+    public int MaxValue
+    {
+        get
+        {
+            return this._ctrlProp.GetXmlNodeInt("@max", 30000);
+        }
+        set
+        {
+            if (value < 0 || value > 30000)
             {
-                if (value < 0 || value > 30000)
-                {
-                    throw (new ArgumentOutOfRangeException("Value must be between 0 and 30000"));
-                }
-
-                this._ctrlProp.SetXmlNodeInt("@val", value);
-                this._vmlProp.SetXmlNodeInt("x:Val", value);
-
-                this.SetLinkedCellValue(value);
+                throw (new ArgumentOutOfRangeException("MaxValue must be between 0 and 30000"));
             }
+
+            this._ctrlProp.SetXmlNodeInt("@max", value);
+        }
+    }
+    /// <summary>
+    /// The value of the scroll bar.
+    /// </summary>
+    public int Value
+    {
+        get
+        {
+            return this._ctrlProp.GetXmlNodeInt("@val", 0);
+        }
+        set
+        {
+            if (value < 0 || value > 30000)
+            {
+                throw (new ArgumentOutOfRangeException("Value must be between 0 and 30000"));
+            }
+
+            this._ctrlProp.SetXmlNodeInt("@val", value);
+            this._vmlProp.SetXmlNodeInt("x:Val", value);
+
+            this.SetLinkedCellValue(value);
         }
     }
 }

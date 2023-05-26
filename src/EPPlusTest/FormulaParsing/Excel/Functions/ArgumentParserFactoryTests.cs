@@ -34,38 +34,37 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OfficeOpenXml.FormulaParsing.Excel.Functions;
 using OfficeOpenXml.FormulaParsing.ExpressionGraph;
 
-namespace EPPlusTest.Excel.Functions
+namespace EPPlusTest.Excel.Functions;
+
+[TestClass]
+public class ArgumentParserFactoryTests
 {
-    [TestClass]
-    public class ArgumentParserFactoryTests
+    private ArgumentParserFactory _parserFactory;
+
+    [TestInitialize]
+    public void Setup()
     {
-        private ArgumentParserFactory _parserFactory;
+        this._parserFactory = new ArgumentParserFactory();
+    }
 
-        [TestInitialize]
-        public void Setup()
-        {
-            this._parserFactory = new ArgumentParserFactory();
-        }
+    [TestMethod]
+    public void ShouldReturnIntArgumentParserWhenDataTypeIsInteger()
+    {
+        ArgumentParser? parser = this._parserFactory.CreateArgumentParser(DataType.Integer);
+        Assert.IsInstanceOfType(parser, typeof(IntArgumentParser));
+    }
 
-        [TestMethod]
-        public void ShouldReturnIntArgumentParserWhenDataTypeIsInteger()
-        {
-            ArgumentParser? parser = this._parserFactory.CreateArgumentParser(DataType.Integer);
-            Assert.IsInstanceOfType(parser, typeof(IntArgumentParser));
-        }
+    [TestMethod]
+    public void ShouldReturnBoolArgumentParserWhenDataTypeIsBoolean()
+    {
+        ArgumentParser? parser = this._parserFactory.CreateArgumentParser(DataType.Boolean);
+        Assert.IsInstanceOfType(parser, typeof(BoolArgumentParser));
+    }
 
-        [TestMethod]
-        public void ShouldReturnBoolArgumentParserWhenDataTypeIsBoolean()
-        {
-            ArgumentParser? parser = this._parserFactory.CreateArgumentParser(DataType.Boolean);
-            Assert.IsInstanceOfType(parser, typeof(BoolArgumentParser));
-        }
-
-        [TestMethod]
-        public void ShouldReturnDoubleArgumentParserWhenDataTypeIsDecial()
-        {
-            ArgumentParser? parser = this._parserFactory.CreateArgumentParser(DataType.Decimal);
-            Assert.IsInstanceOfType(parser, typeof(DoubleArgumentParser));
-        }
+    [TestMethod]
+    public void ShouldReturnDoubleArgumentParserWhenDataTypeIsDecial()
+    {
+        ArgumentParser? parser = this._parserFactory.CreateArgumentParser(DataType.Decimal);
+        Assert.IsInstanceOfType(parser, typeof(DoubleArgumentParser));
     }
 }

@@ -12,55 +12,54 @@
  *************************************************************************************************/
 using System.Xml;
 
-namespace OfficeOpenXml.Style.Table
+namespace OfficeOpenXml.Style.Table;
+
+/// <summary>
+/// A custom named table style that applies to both tables and pivot tables
+/// </summary>
+public class ExcelTableAndPivotTableNamedStyle : ExcelPivotTableNamedStyle
 {
-    /// <summary>
-    /// A custom named table style that applies to both tables and pivot tables
-    /// </summary>
-    public class ExcelTableAndPivotTableNamedStyle : ExcelPivotTableNamedStyle
+    internal ExcelTableAndPivotTableNamedStyle(XmlNamespaceManager nameSpaceManager, XmlNode topNode, ExcelStyles styles) : base(nameSpaceManager, topNode, styles)
     {
-        internal ExcelTableAndPivotTableNamedStyle(XmlNamespaceManager nameSpaceManager, XmlNode topNode, ExcelStyles styles) : base(nameSpaceManager, topNode, styles)
+    }
+    /// <summary>
+    /// If the style applies to tables, pivot table or both
+    /// </summary>
+    public override eTableNamedStyleAppliesTo AppliesTo
+    {
+        get
         {
+            return eTableNamedStyleAppliesTo.TablesAndPivotTables;
         }
-        /// <summary>
-        /// If the style applies to tables, pivot table or both
-        /// </summary>
-        public override eTableNamedStyleAppliesTo AppliesTo
+    }
+    /// <summary>
+    /// Applies to the last header cell of a table
+    /// </summary>
+    public ExcelTableStyleElement LastHeaderCell
+    {
+        get
         {
-            get
-            {
-                return eTableNamedStyleAppliesTo.TablesAndPivotTables;
-            }
+            return this.GetTableStyleElement(eTableStyleElement.LastHeaderCell);
         }
-        /// <summary>
-        /// Applies to the last header cell of a table
-        /// </summary>
-        public ExcelTableStyleElement LastHeaderCell
+    }
+    /// <summary>
+    /// Applies to the first total cell of a table
+    /// </summary>
+    public ExcelTableStyleElement FirstTotalCell
+    {
+        get
         {
-            get
-            {
-                return this.GetTableStyleElement(eTableStyleElement.LastHeaderCell);
-            }
+            return this.GetTableStyleElement(eTableStyleElement.FirstTotalCell);
         }
-        /// <summary>
-        /// Applies to the first total cell of a table
-        /// </summary>
-        public ExcelTableStyleElement FirstTotalCell
+    }
+    /// <summary>
+    /// Applies to the last total cell of a table
+    /// </summary>
+    public ExcelTableStyleElement LastTotalCell
+    {
+        get
         {
-            get
-            {
-                return this.GetTableStyleElement(eTableStyleElement.FirstTotalCell);
-            }
-        }
-        /// <summary>
-        /// Applies to the last total cell of a table
-        /// </summary>
-        public ExcelTableStyleElement LastTotalCell
-        {
-            get
-            {
-                return this.GetTableStyleElement(eTableStyleElement.LastTotalCell);
-            }
+            return this.GetTableStyleElement(eTableStyleElement.LastTotalCell);
         }
     }
 }

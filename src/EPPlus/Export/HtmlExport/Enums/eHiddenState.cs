@@ -11,24 +11,23 @@
   05/11/2021         EPPlus Software AB           ExcelTable Html Export
  *************************************************************************************************/
 
-namespace OfficeOpenXml.Export.HtmlExport
+namespace OfficeOpenXml.Export.HtmlExport;
+
+/// <summary>
+/// How hidden rows are handled.
+/// </summary>
+public enum eHiddenState
 {
     /// <summary>
-    /// How hidden rows are handled.
+    /// Exclude hidden rows
     /// </summary>
-    public enum eHiddenState
-    {
-        /// <summary>
-        /// Exclude hidden rows
-        /// </summary>
-        Exclude,
-        /// <summary>
-        /// Include hidden rows, but hide them.
-        /// </summary>
-        IncludeButHide,
-        /// <summary>
-        /// Include hidden rows.
-        /// </summary>
-        Include
-    }
+    Exclude,
+    /// <summary>
+    /// Include hidden rows, but hide them.
+    /// </summary>
+    IncludeButHide,
+    /// <summary>
+    /// Include hidden rows.
+    /// </summary>
+    Include
 }

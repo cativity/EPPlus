@@ -12,52 +12,51 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.Implementations
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.Implementations;
+
+internal class DurationImpl
 {
-    internal class DurationImpl
+    public DurationImpl(IYearFracProvider yearFracProvider, ICouponProvider couponProvider)
     {
-        public DurationImpl(IYearFracProvider yearFracProvider, ICouponProvider couponProvider)
+        this._yearFracProvider = yearFracProvider;
+        this._couponProvider = couponProvider;
+    }
+
+    private readonly IYearFracProvider _yearFracProvider;
+    private readonly ICouponProvider _couponProvider;
+
+    public double GetDuration(System.DateTime settlement, System.DateTime maturity, double coupon, double yield, int nFreq, DayCountBasis nBase)
+    {
+        double fYearfrac = this._yearFracProvider.GetYearFrac(settlement, maturity, nBase);
+        double fNumOfCoups = this._couponProvider.GetCoupnum(settlement, maturity, nFreq, nBase);
+        double fDur = 0.0;
+        const double f100 = 100.0;
+        coupon *= f100 / (double)nFreq;    // fCoup is used as cash flow
+        yield /= nFreq;
+        yield += 1.0;
+
+        double nDiff = fYearfrac * nFreq - fNumOfCoups;
+
+        double t;
+
+        for (t = 1.0; t < fNumOfCoups; t++)
         {
-            this._yearFracProvider = yearFracProvider;
-            this._couponProvider = couponProvider;
+            fDur += (t + nDiff) * coupon / System.Math.Pow(yield, t + nDiff);
         }
 
-        private readonly IYearFracProvider _yearFracProvider;
-        private readonly ICouponProvider _couponProvider;
+        fDur += (fNumOfCoups + nDiff) * (coupon + f100) / System.Math.Pow(yield, fNumOfCoups + nDiff);
 
-        public double GetDuration(System.DateTime settlement, System.DateTime maturity, double coupon, double yield, int nFreq, DayCountBasis nBase)
+        double p = 0.0;
+        for (t = 1.0; t < fNumOfCoups; t++)
         {
-            double fYearfrac = this._yearFracProvider.GetYearFrac(settlement, maturity, nBase);
-            double fNumOfCoups = this._couponProvider.GetCoupnum(settlement, maturity, nFreq, nBase);
-            double fDur = 0.0;
-            const double f100 = 100.0;
-            coupon *= f100 / (double)nFreq;    // fCoup is used as cash flow
-            yield /= nFreq;
-            yield += 1.0;
-
-            double nDiff = fYearfrac * nFreq - fNumOfCoups;
-
-            double t;
-
-            for (t = 1.0; t < fNumOfCoups; t++)
-            {
-                fDur += (t + nDiff) * coupon / System.Math.Pow(yield, t + nDiff);
-            }
-
-            fDur += (fNumOfCoups + nDiff) * (coupon + f100) / System.Math.Pow(yield, fNumOfCoups + nDiff);
-
-            double p = 0.0;
-            for (t = 1.0; t < fNumOfCoups; t++)
-            {
-                p += coupon / System.Math.Pow(yield, t + nDiff);
-            }
-
-            p += (coupon + f100) / System.Math.Pow(yield, fNumOfCoups + nDiff);
-
-            fDur /= p;
-            fDur /= (double)nFreq;
-
-            return fDur;
+            p += coupon / System.Math.Pow(yield, t + nDiff);
         }
+
+        p += (coupon + f100) / System.Math.Pow(yield, fNumOfCoups + nDiff);
+
+        fDur /= p;
+        fDur /= (double)nFreq;
+
+        return fDur;
     }
 }

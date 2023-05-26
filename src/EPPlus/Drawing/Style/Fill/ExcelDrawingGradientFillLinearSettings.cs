@@ -10,31 +10,29 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
-namespace OfficeOpenXml.Drawing.Style.Fill
+namespace OfficeOpenXml.Drawing.Style.Fill;
+
+/// <summary>
+/// Settings specific for linear gradiant fills
+/// </summary>
+public class ExcelDrawingGradientFillLinearSettings
 {
+    internal ExcelDrawingGradientFillLinearSettings()
+    {
+    }
+    internal ExcelDrawingGradientFillLinearSettings(XmlHelper xml)
+    {
+        this.Angel = xml.GetXmlNodeAngel("a:lin/@ang");
+        this.Scaled = xml.GetXmlNodeBool("a:lin/@scaled", false);
+    }
 
     /// <summary>
-    /// Settings specific for linear gradiant fills
+    /// The direction of color change for the gradient.To define this angle, let its value
+    /// be x measured clockwise.Then( -sin x, cos x) is a vector parallel to the line of constant color in the gradient fill.
     /// </summary>
-    public class ExcelDrawingGradientFillLinearSettings
-    {
-        internal ExcelDrawingGradientFillLinearSettings()
-        {
-        }
-        internal ExcelDrawingGradientFillLinearSettings(XmlHelper xml)
-        {
-            this.Angel = xml.GetXmlNodeAngel("a:lin/@ang");
-            this.Scaled = xml.GetXmlNodeBool("a:lin/@scaled", false);
-        }
-
-        /// <summary>
-        /// The direction of color change for the gradient.To define this angle, let its value
-        /// be x measured clockwise.Then( -sin x, cos x) is a vector parallel to the line of constant color in the gradient fill.
-        /// </summary>
-        public double Angel { get; set; }
-        /// <summary>
-        /// If the gradient angle scales with the fill.
-        /// </summary>
-        public bool Scaled { get; set; }       
-    }
+    public double Angel { get; set; }
+    /// <summary>
+    /// If the gradient angle scales with the fill.
+    /// </summary>
+    public bool Scaled { get; set; }       
 }

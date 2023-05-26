@@ -2,10 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace OfficeOpenXml.DataValidation.Events
+namespace OfficeOpenXml.DataValidation.Events;
+
+internal interface IFormulaListener
 {
-    internal interface IFormulaListener
-    {
-        void Notify(ValidationFormulaChangedArgs e);
-    }
+    void Notify(ValidationFormulaChangedArgs e);
 }

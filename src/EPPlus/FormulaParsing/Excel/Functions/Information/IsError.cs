@@ -19,44 +19,43 @@ using OfficeOpenXml.FormulaParsing.ExpressionGraph;
 using OfficeOpenXml.FormulaParsing.Exceptions;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Metadata;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Information
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Information;
+
+[FunctionMetadata(
+                     Category = ExcelFunctionCategory.Information,
+                     EPPlusVersion = "4",
+                     Description = "Tests if an initial supplied value (or expression) returns an error and if so, returns TRUE; Otherwise returns FALSE")]
+internal class IsError : ErrorHandlingFunction
 {
-    [FunctionMetadata(
-        Category = ExcelFunctionCategory.Information,
-        EPPlusVersion = "4",
-        Description = "Tests if an initial supplied value (or expression) returns an error and if so, returns TRUE; Otherwise returns FALSE")]
-    internal class IsError : ErrorHandlingFunction
+    public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
     {
-        public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
+        if (arguments == null || arguments.Count() == 0)
         {
-            if (arguments == null || arguments.Count() == 0)
-            {
-                return this.CreateResult(false, DataType.Boolean);
-            }
-            foreach (FunctionArgument? argument in arguments)
-            {
-                if (argument.Value is IRangeInfo)
-                {
-                    IRangeInfo? r = (IRangeInfo)argument.Value;
-                    if (ExcelErrorValue.Values.IsErrorValue(r.GetValue(r.Address._fromRow, r.Address._fromCol)))
-                    {
-                        return this.CreateResult(true, DataType.Boolean);
-                    }
-                }
-                else
-                {
-                    if (ExcelErrorValue.Values.IsErrorValue(argument.Value))
-                    {
-                        return this.CreateResult(true, DataType.Boolean);
-                    }
-                }                
-            }
             return this.CreateResult(false, DataType.Boolean);
         }
-
-        public override CompileResult HandleError(string errorCode)
+        foreach (FunctionArgument? argument in arguments)
         {
-            return this.CreateResult(true, DataType.Boolean);
+            if (argument.Value is IRangeInfo)
+            {
+                IRangeInfo? r = (IRangeInfo)argument.Value;
+                if (ExcelErrorValue.Values.IsErrorValue(r.GetValue(r.Address._fromRow, r.Address._fromCol)))
+                {
+                    return this.CreateResult(true, DataType.Boolean);
+                }
+            }
+            else
+            {
+                if (ExcelErrorValue.Values.IsErrorValue(argument.Value))
+                {
+                    return this.CreateResult(true, DataType.Boolean);
+                }
+            }                
         }
+        return this.CreateResult(false, DataType.Boolean);
+    }
+
+    public override CompileResult HandleError(string errorCode)
+    {
+        return this.CreateResult(true, DataType.Boolean);
     }
 }

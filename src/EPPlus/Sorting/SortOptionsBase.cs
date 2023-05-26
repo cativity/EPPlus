@@ -16,48 +16,47 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 
-namespace OfficeOpenXml.Sorting
+namespace OfficeOpenXml.Sorting;
+
+/// <summary>
+/// Base class for Sort options.
+/// </summary>
+public abstract class SortOptionsBase
 {
     /// <summary>
-    /// Base class for Sort options.
+    /// Constructor
     /// </summary>
-    public abstract class SortOptionsBase
+    public SortOptionsBase()
     {
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        public SortOptionsBase()
-        {
-            this.ColumnIndexes = new List<int>();
-            this.RowIndexes = new List<int>();
-            this.Descending = new List<bool>();
-            this.CustomLists = new Dictionary<int, string[]>();
-            this.CompareOptions = CompareOptions.None;
-        }
+        this.ColumnIndexes = new List<int>();
+        this.RowIndexes = new List<int>();
+        this.Descending = new List<bool>();
+        this.CustomLists = new Dictionary<int, string[]>();
+        this.CompareOptions = CompareOptions.None;
+    }
 
-        internal bool LeftToRight { get; set; }
+    internal bool LeftToRight { get; set; }
 
-        internal List<int> ColumnIndexes { get; private set; }
+    internal List<int> ColumnIndexes { get; private set; }
 
-        internal List<int> RowIndexes { get; private set; }
-        internal List<bool> Descending { get; private set; }
+    internal List<int> RowIndexes { get; private set; }
+    internal List<bool> Descending { get; private set; }
 
-        internal Dictionary<int, string[]> CustomLists { get; private set; }
+    internal Dictionary<int, string[]> CustomLists { get; private set; }
 
-        /// <summary>
-        /// Culture to use in sort
-        /// </summary>
-        public CultureInfo Culture
-        {
-            get; set;
-        }
+    /// <summary>
+    /// Culture to use in sort
+    /// </summary>
+    public CultureInfo Culture
+    {
+        get; set;
+    }
 
-        /// <summary>
-        /// Compare options  to use in sort
-        /// </summary>
-        public CompareOptions CompareOptions
-        {
-            get; set;
-        }
+    /// <summary>
+    /// Compare options  to use in sort
+    /// </summary>
+    public CompareOptions CompareOptions
+    {
+        get; set;
     }
 }

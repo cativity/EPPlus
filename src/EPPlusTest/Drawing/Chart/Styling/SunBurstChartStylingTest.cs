@@ -38,106 +38,105 @@ using System.Reflection;
 using System.Text;
 using System.Xml;
 
-namespace EPPlusTest.Drawing.Chart.Styling
+namespace EPPlusTest.Drawing.Chart.Styling;
+
+[TestClass]
+public class SunBurstChartStylingTest : TestBase
 {
-    [TestClass]
-    public class SunBurstChartStylingTest : TestBase
+    static ExcelPackage _pck;
+    [ClassInitialize]
+    public static void Init(TestContext context)
     {
-        static ExcelPackage _pck;
-        [ClassInitialize]
-        public static void Init(TestContext context)
-        {
-            _pck = OpenPackage("SunburstChartStyling.xlsx", true);
-        }
-        [ClassCleanup]
-        public static void Cleanup()
-        {
-            SaveAndCleanup(_pck);
-        }
-        [TestMethod]
-        public void SunburstChart_Styles()
-        {
-            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("SunburstChart");
-            LoadHierarkiTestData(ws);
-            SunburstChartStyle(ws);
-        }
-        private static void SunburstChartStyle(ExcelWorksheet ws)
-        {
-            //Sunburst Chart styles
+        _pck = OpenPackage("SunburstChartStyling.xlsx", true);
+    }
+    [ClassCleanup]
+    public static void Cleanup()
+    {
+        SaveAndCleanup(_pck);
+    }
+    [TestMethod]
+    public void SunburstChart_Styles()
+    {
+        ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("SunburstChart");
+        LoadHierarkiTestData(ws);
+        SunburstChartStyle(ws);
+    }
+    private static void SunburstChartStyle(ExcelWorksheet ws)
+    {
+        //Sunburst Chart styles
 
-            //Sunburst Chart Style 1
-            AddChartEx(ws, ePresetChartStyle.SunburstChartStyle1, "SunburstChartStyle1", 0, 5,
-                c =>
-                {
-                    c.Title.Text = "sunburst" +
-                    " 1";
-                    c.Legend.Position = eLegendPosition.Bottom;
-                });
+        //Sunburst Chart Style 1
+        AddChartEx(ws, ePresetChartStyle.SunburstChartStyle1, "SunburstChartStyle1", 0, 5,
+                   c =>
+                   {
+                       c.Title.Text = "sunburst" +
+                                      " 1";
+                       c.Legend.Position = eLegendPosition.Bottom;
+                   });
 
-            //Sunburst Chart Style 2
-            AddChartEx(ws, ePresetChartStyle.SunburstChartStyle2, "SunburstChartStyle2", 0, 18,
-                c =>
-                {
-                    c.Legend.Add();
-                    ExcelChartExDataLabelItem? dl=c.Series[0].DataLabel.DataLabels.Add(0);
-                });
+        //Sunburst Chart Style 2
+        AddChartEx(ws, ePresetChartStyle.SunburstChartStyle2, "SunburstChartStyle2", 0, 18,
+                   c =>
+                   {
+                       c.Legend.Add();
+                       ExcelChartExDataLabelItem? dl=c.Series[0].DataLabel.DataLabels.Add(0);
+                   });
 
-            //Sunburst Chart Style 3
-            AddChartEx(ws, ePresetChartStyle.SunburstChartStyle3, "SunburstChartStyle3", 0, 31,
-                c =>
-                {
-                    c.Legend.Position = eLegendPosition.Bottom;
-                });
+        //Sunburst Chart Style 3
+        AddChartEx(ws, ePresetChartStyle.SunburstChartStyle3, "SunburstChartStyle3", 0, 31,
+                   c =>
+                   {
+                       c.Legend.Position = eLegendPosition.Bottom;
+                   });
 
-            //Sunburst Chart Style 4
-            AddChartEx(ws, ePresetChartStyle.SunburstChartStyle4, "SunburstChartStyle4", 20, 5,
-                c =>
-                {
-                    c.Legend.Position = eLegendPosition.Bottom;
-                });
+        //Sunburst Chart Style 4
+        AddChartEx(ws, ePresetChartStyle.SunburstChartStyle4, "SunburstChartStyle4", 20, 5,
+                   c =>
+                   {
+                       c.Legend.Position = eLegendPosition.Bottom;
+                   });
 
-            //Sunburst Chart Style 5
-            AddChartEx(ws, ePresetChartStyle.SunburstChartStyle5, "SunburstChartStyle5", 20, 18,
-                c =>
-                {
-                    c.Legend.Position = eLegendPosition.Bottom;
-                });
+        //Sunburst Chart Style 5
+        AddChartEx(ws, ePresetChartStyle.SunburstChartStyle5, "SunburstChartStyle5", 20, 18,
+                   c =>
+                   {
+                       c.Legend.Position = eLegendPosition.Bottom;
+                   });
 
-            //Sunburst Chart Style 6
-            AddChartEx(ws, ePresetChartStyle.SunburstChartStyle6, "SunburstChartStyle6", 20, 31,
-                c =>
-                {
-                    c.Legend.Position = eLegendPosition.Bottom;
-                });
+        //Sunburst Chart Style 6
+        AddChartEx(ws, ePresetChartStyle.SunburstChartStyle6, "SunburstChartStyle6", 20, 31,
+                   c =>
+                   {
+                       c.Legend.Position = eLegendPosition.Bottom;
+                   });
 
-            //Sunburst Chart Style 7
-            AddChartEx(ws, ePresetChartStyle.SunburstChartStyle7, "SunburstChartStyle7", 40, 5,
-                c =>
-                {
-                    c.Legend.Position = eLegendPosition.Bottom;
-                });
+        //Sunburst Chart Style 7
+        AddChartEx(ws, ePresetChartStyle.SunburstChartStyle7, "SunburstChartStyle7", 40, 5,
+                   c =>
+                   {
+                       c.Legend.Position = eLegendPosition.Bottom;
+                   });
 
-            //Sunburst Chart Style 8
-            AddChartEx(ws, ePresetChartStyle.SunburstChartStyle8, "SunburstChartStyle8", 40, 18,
-                c =>
-                {
-                    c.Legend.Position = eLegendPosition.Bottom;
-                });
-        }
-        private static ExcelSunburstChart AddChartEx(ExcelWorksheet ws, ePresetChartStyle style, string name, int row, int col, Action<ExcelSunburstChart> SetProperties)
-        {
-            ExcelSunburstChart? chart = ws.Drawings.AddSunburstChart(name);
-            chart.SetPosition(row, 0, col, 0);
-            chart.To.Column = col+12;
-            chart.To.ColumnOff = 0;
-            chart.To.Row = row + 18;
-            chart.To.RowOff = 0;
-            chart.Series.Add("D2:D17", "A2:C17");
+        //Sunburst Chart Style 8
+        AddChartEx(ws, ePresetChartStyle.SunburstChartStyle8, "SunburstChartStyle8", 40, 18,
+                   c =>
+                   {
+                       c.Legend.Position = eLegendPosition.Bottom;
+                   });
+    }
+    private static ExcelSunburstChart AddChartEx(ExcelWorksheet ws, ePresetChartStyle style, string name, int row, int col, Action<ExcelSunburstChart> SetProperties)
+    {
+        ExcelSunburstChart? chart = ws.Drawings.AddSunburstChart(name);
+        chart.SetPosition(row, 0, col, 0);
+        chart.To.Column = col+12;
+        chart.To.ColumnOff = 0;
+        chart.To.Row = row + 18;
+        chart.To.RowOff = 0;
+        chart.Series.Add("D2:D17", "A2:C17");
 
-            SetProperties(chart);
+        SetProperties(chart);
 
-            chart.StyleManager.SetChartStyle(style);
-            return chart;
-        }
+        chart.StyleManager.SetChartStyle(style);
+        return chart;
     }
 }

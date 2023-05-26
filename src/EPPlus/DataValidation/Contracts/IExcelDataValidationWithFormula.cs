@@ -16,18 +16,17 @@ using System.Linq;
 using System.Text;
 using OfficeOpenXml.DataValidation.Formulas.Contracts;
 
-namespace OfficeOpenXml.DataValidation.Contracts
+namespace OfficeOpenXml.DataValidation.Contracts;
+
+/// <summary>
+/// Interface for a datavalidation with an excel formula
+/// </summary>
+/// <typeparam name="T">An instance implementing the <see cref="IExcelDataValidationFormula"></see> interface.</typeparam>
+public interface IExcelDataValidationWithFormula<T> : IExcelDataValidation
+    where T : IExcelDataValidationFormula
 {
     /// <summary>
-    /// Interface for a datavalidation with an excel formula
+    /// Formula of the validation
     /// </summary>
-    /// <typeparam name="T">An instance implementing the <see cref="IExcelDataValidationFormula"></see> interface.</typeparam>
-    public interface IExcelDataValidationWithFormula<T> : IExcelDataValidation
-        where T : IExcelDataValidationFormula
-    {
-        /// <summary>
-        /// Formula of the validation
-        /// </summary>
-        T Formula { get; }
-    }
+    T Formula { get; }
 }

@@ -36,188 +36,187 @@ using System.IO;
 using System.Text;
 using System.Threading;
 
-namespace EPPlusTest.FormulaParsing
+namespace EPPlusTest.FormulaParsing;
+
+[TestClass]
+public class DateHandlingTest
 {
-    [TestClass]
-    public class DateHandlingTest
+    [TestMethod]
+    public void DateFunctionsWorkWithDifferentCultureDateFormats_US()
     {
-        [TestMethod]
-        public void DateFunctionsWorkWithDifferentCultureDateFormats_US()
-        {
-            CultureInfo? currentCulture = CultureInfo.CurrentCulture;
+        CultureInfo? currentCulture = CultureInfo.CurrentCulture;
 #if Core
-            CultureInfo? us = CultureInfo.DefaultThreadCurrentCulture = new CultureInfo("en-US");
+        CultureInfo? us = CultureInfo.DefaultThreadCurrentCulture = new CultureInfo("en-US");
 #else
             var us = CultureInfo.CreateSpecificCulture("en-US");
             Thread.CurrentThread.CurrentCulture = us;
 #endif
-            double usEoMonth = 0d, usEdate = 0d;
-            Thread? thread = new Thread(delegate ()
-            {
-                using ExcelPackage? package = new ExcelPackage();
-                ExcelWorksheet? ws = package.Workbook.Worksheets.Add("Sheet1");
-                ws.Cells[2, 2].Value = "1/15/2014";
-                ws.Cells[3, 3].Formula = "EOMONTH(C2, 0)";
-                ws.Cells[2, 3].Formula = "EDATE(B2, 0)";
-                ws.Calculate();
-                usEoMonth = Convert.ToDouble(ws.Cells[2, 3].Value);
-                usEdate = Convert.ToDouble(ws.Cells[3, 3].Value);
-            });
-            thread.Start();
-            thread.Join();
-            Assert.AreEqual(41654.0, usEoMonth);
-            Assert.AreEqual(41670.0, usEdate);
+        double usEoMonth = 0d, usEdate = 0d;
+        Thread? thread = new Thread(delegate ()
+        {
+            using ExcelPackage? package = new ExcelPackage();
+            ExcelWorksheet? ws = package.Workbook.Worksheets.Add("Sheet1");
+            ws.Cells[2, 2].Value = "1/15/2014";
+            ws.Cells[3, 3].Formula = "EOMONTH(C2, 0)";
+            ws.Cells[2, 3].Formula = "EDATE(B2, 0)";
+            ws.Calculate();
+            usEoMonth = Convert.ToDouble(ws.Cells[2, 3].Value);
+            usEdate = Convert.ToDouble(ws.Cells[3, 3].Value);
+        });
+        thread.Start();
+        thread.Join();
+        Assert.AreEqual(41654.0, usEoMonth);
+        Assert.AreEqual(41670.0, usEdate);
 #if Core
-            CultureInfo.DefaultThreadCurrentCulture = currentCulture;
+        CultureInfo.DefaultThreadCurrentCulture = currentCulture;
 #else
             Thread.CurrentThread.CurrentCulture = currentCulture;
 #endif
-        }
-
-        [TestMethod]
-        public void DateFunctionsWorkWithDifferentCultureDateFormats_GB()
-        {
-            CultureInfo? currentCulture = CultureInfo.CurrentCulture;
-
-            double gbEoMonth = 0d, gbEdate = 0d;
-            Thread? thread = new Thread(delegate ()
-            {
-                Thread.CurrentThread.CurrentCulture = CultureInfo.CreateSpecificCulture("en-GB");
-                using ExcelPackage? package = new ExcelPackage();
-                ExcelWorksheet? ws = package.Workbook.Worksheets.Add("Sheet1");
-                ws.Cells[2, 2].Value = "15/1/2014";
-                ws.Cells[3, 3].Formula = "EOMONTH(C2, 0)";
-                ws.Cells[2, 3].Formula = "EDATE(B2, 0)";
-                ws.Calculate();
-                try
-                {
-                    gbEoMonth = Convert.ToDouble(ws.Cells[2, 3].Value);
-                    gbEdate = Convert.ToDouble(ws.Cells[3, 3].Value);
-                }
-                catch (Exception ex)
-                {
-                    Assert.Fail($"Fail culture {Thread.CurrentThread.CurrentCulture.Name}\r\n{ex.Message}\r\n{ex.StackTrace}");
-                }
-            });
-            thread.Start();
-            thread.Join();
-            Assert.AreEqual(41654.0, gbEoMonth);
-            Assert.AreEqual(41670.0, gbEdate);
-#if Core
-            CultureInfo.DefaultThreadCurrentCulture = currentCulture;
-#else
-            Thread.CurrentThread.CurrentCulture = currentCulture;
-#endif
-        }
-
-        #region Date1904 Test Cases
-        [TestMethod]
-        public void TestDate1904WithoutSetting()
-        {
-            DateTime dt1 = new DateTime(2008, 2, 29);
-            DateTime dt2 = new DateTime(1950, 11, 30);
-
-            ExcelPackage pck = new ExcelPackage();
-            ExcelWorksheet ws = pck.Workbook.Worksheets.Add("test");
-            ws.Cells[1, 1, 2, 1].Style.Numberformat.Format = ExcelNumberFormat.GetFromBuildInFromID(14);
-            ws.Cells[1, 1].Value = dt1;
-            ws.Cells[2, 1].Value = dt2;
-            pck.Save();
-
-
-            ExcelPackage? pck2 = new ExcelPackage(pck.Stream);
-            ExcelWorksheet? ws2 = pck2.Workbook.Worksheets["test"];
-
-            Assert.AreEqual(dt1, ws2.Cells[1, 1].Value);
-            Assert.AreEqual(dt2, ws2.Cells[2, 1].Value);
-
-            pck.Dispose();
-            pck2.Dispose();
-        }
-
-        [TestMethod]
-        public void TestDate1904WithSetting()
-        {
-            DateTime dt1 = new DateTime(2008, 2, 29);
-            DateTime dt2 = new DateTime(1950, 11, 30);
-
-            ExcelPackage pck = new ExcelPackage();
-            ExcelWorksheet ws = pck.Workbook.Worksheets.Add("test");
-            pck.Workbook.Date1904 = false;
-            ws.Cells[1, 1, 2, 1].Style.Numberformat.Format = ExcelNumberFormat.GetFromBuildInFromID(14);
-            ws.Cells[1, 1].Value = dt1;
-            ws.Cells[2, 1].Value = dt2;
-            pck.Save();
-
-            ExcelPackage? pck2 = new ExcelPackage(pck.Stream);
-            ExcelWorksheet? ws2 = pck2.Workbook.Worksheets["test"];
-
-            Assert.AreEqual(dt1, ws2.Cells[1, 1].Value);
-            Assert.AreEqual(dt2, ws2.Cells[2, 1].Value);
-
-            pck.Dispose();
-            pck2.Dispose();
-        }
-        [TestMethod]
-        public void TestDate1904SetAndRemoveSetting()
-        {
-            DateTime dt1 = new DateTime(2008, 2, 29);
-            DateTime dt2 = new DateTime(1950, 11, 30);
-
-            ExcelPackage pck = new ExcelPackage();
-            pck.Workbook.Date1904 = true;
-            ExcelWorksheet? ws = pck.Workbook.Worksheets.Add("test");
-            ws.Cells[1, 1, 2, 1].Style.Numberformat.Format = ExcelNumberFormat.GetFromBuildInFromID(14);
-            ws.Cells[1, 1].Value = dt1;
-            ws.Cells[2, 1].Value = dt2;
-            pck.Save();
-
-
-            ExcelPackage? pck2 = new ExcelPackage(pck.Stream);
-            pck2.Workbook.Date1904 = false;
-            pck2.Save();
-
-            ExcelPackage? pck3 = new ExcelPackage(pck2.Stream);
-            ExcelWorksheet ws3 = pck3.Workbook.Worksheets["test"];
-
-            Assert.AreEqual(dt1.AddDays(365.5 * -4), ws3.Cells[1, 1].Value);
-            Assert.AreEqual(dt2.AddDays(365.5 * -4), ws3.Cells[2, 1].Value);
-
-            pck.Dispose();
-            pck2.Dispose();
-            pck3.Dispose();
-        }
-
-        [TestMethod]
-        public void TestDate1904SetAndSetSetting()
-        {
-            DateTime dt1 = new DateTime(2008, 2, 29);
-            DateTime dt2 = new DateTime(1950, 11, 30);
-
-            ExcelPackage pck = new ExcelPackage();
-            pck.Workbook.Date1904 = true;
-
-            ExcelWorksheet? ws = pck.Workbook.Worksheets.Add("test");
-            ws.Cells[1, 1, 2, 1].Style.Numberformat.Format = ExcelNumberFormat.GetFromBuildInFromID(14);
-            ws.Cells[1, 1].Value = dt1;
-            ws.Cells[2, 1].Value = dt2;
-            pck.Save();
-
-
-            ExcelPackage? pck2 = new ExcelPackage(pck.Stream);
-            pck2.Workbook.Date1904 = true;  // Only the cells must be updated when this change, if set the same nothing must change
-            pck2.Save();
-
-
-            ExcelPackage? pck3 = new ExcelPackage(pck2.Stream);
-            ExcelWorksheet? ws3 = pck3.Workbook.Worksheets["test"];
-
-            Assert.AreEqual(dt1, ws3.Cells[1, 1].Value);
-            Assert.AreEqual(dt2, ws3.Cells[2, 1].Value);
-            pck.Dispose();
-            pck2.Dispose();
-            pck3.Dispose();
-        }
-        #endregion
     }
+
+    [TestMethod]
+    public void DateFunctionsWorkWithDifferentCultureDateFormats_GB()
+    {
+        CultureInfo? currentCulture = CultureInfo.CurrentCulture;
+
+        double gbEoMonth = 0d, gbEdate = 0d;
+        Thread? thread = new Thread(delegate ()
+        {
+            Thread.CurrentThread.CurrentCulture = CultureInfo.CreateSpecificCulture("en-GB");
+            using ExcelPackage? package = new ExcelPackage();
+            ExcelWorksheet? ws = package.Workbook.Worksheets.Add("Sheet1");
+            ws.Cells[2, 2].Value = "15/1/2014";
+            ws.Cells[3, 3].Formula = "EOMONTH(C2, 0)";
+            ws.Cells[2, 3].Formula = "EDATE(B2, 0)";
+            ws.Calculate();
+            try
+            {
+                gbEoMonth = Convert.ToDouble(ws.Cells[2, 3].Value);
+                gbEdate = Convert.ToDouble(ws.Cells[3, 3].Value);
+            }
+            catch (Exception ex)
+            {
+                Assert.Fail($"Fail culture {Thread.CurrentThread.CurrentCulture.Name}\r\n{ex.Message}\r\n{ex.StackTrace}");
+            }
+        });
+        thread.Start();
+        thread.Join();
+        Assert.AreEqual(41654.0, gbEoMonth);
+        Assert.AreEqual(41670.0, gbEdate);
+#if Core
+        CultureInfo.DefaultThreadCurrentCulture = currentCulture;
+#else
+            Thread.CurrentThread.CurrentCulture = currentCulture;
+#endif
+    }
+
+    #region Date1904 Test Cases
+    [TestMethod]
+    public void TestDate1904WithoutSetting()
+    {
+        DateTime dt1 = new DateTime(2008, 2, 29);
+        DateTime dt2 = new DateTime(1950, 11, 30);
+
+        ExcelPackage pck = new ExcelPackage();
+        ExcelWorksheet ws = pck.Workbook.Worksheets.Add("test");
+        ws.Cells[1, 1, 2, 1].Style.Numberformat.Format = ExcelNumberFormat.GetFromBuildInFromID(14);
+        ws.Cells[1, 1].Value = dt1;
+        ws.Cells[2, 1].Value = dt2;
+        pck.Save();
+
+
+        ExcelPackage? pck2 = new ExcelPackage(pck.Stream);
+        ExcelWorksheet? ws2 = pck2.Workbook.Worksheets["test"];
+
+        Assert.AreEqual(dt1, ws2.Cells[1, 1].Value);
+        Assert.AreEqual(dt2, ws2.Cells[2, 1].Value);
+
+        pck.Dispose();
+        pck2.Dispose();
+    }
+
+    [TestMethod]
+    public void TestDate1904WithSetting()
+    {
+        DateTime dt1 = new DateTime(2008, 2, 29);
+        DateTime dt2 = new DateTime(1950, 11, 30);
+
+        ExcelPackage pck = new ExcelPackage();
+        ExcelWorksheet ws = pck.Workbook.Worksheets.Add("test");
+        pck.Workbook.Date1904 = false;
+        ws.Cells[1, 1, 2, 1].Style.Numberformat.Format = ExcelNumberFormat.GetFromBuildInFromID(14);
+        ws.Cells[1, 1].Value = dt1;
+        ws.Cells[2, 1].Value = dt2;
+        pck.Save();
+
+        ExcelPackage? pck2 = new ExcelPackage(pck.Stream);
+        ExcelWorksheet? ws2 = pck2.Workbook.Worksheets["test"];
+
+        Assert.AreEqual(dt1, ws2.Cells[1, 1].Value);
+        Assert.AreEqual(dt2, ws2.Cells[2, 1].Value);
+
+        pck.Dispose();
+        pck2.Dispose();
+    }
+    [TestMethod]
+    public void TestDate1904SetAndRemoveSetting()
+    {
+        DateTime dt1 = new DateTime(2008, 2, 29);
+        DateTime dt2 = new DateTime(1950, 11, 30);
+
+        ExcelPackage pck = new ExcelPackage();
+        pck.Workbook.Date1904 = true;
+        ExcelWorksheet? ws = pck.Workbook.Worksheets.Add("test");
+        ws.Cells[1, 1, 2, 1].Style.Numberformat.Format = ExcelNumberFormat.GetFromBuildInFromID(14);
+        ws.Cells[1, 1].Value = dt1;
+        ws.Cells[2, 1].Value = dt2;
+        pck.Save();
+
+
+        ExcelPackage? pck2 = new ExcelPackage(pck.Stream);
+        pck2.Workbook.Date1904 = false;
+        pck2.Save();
+
+        ExcelPackage? pck3 = new ExcelPackage(pck2.Stream);
+        ExcelWorksheet ws3 = pck3.Workbook.Worksheets["test"];
+
+        Assert.AreEqual(dt1.AddDays(365.5 * -4), ws3.Cells[1, 1].Value);
+        Assert.AreEqual(dt2.AddDays(365.5 * -4), ws3.Cells[2, 1].Value);
+
+        pck.Dispose();
+        pck2.Dispose();
+        pck3.Dispose();
+    }
+
+    [TestMethod]
+    public void TestDate1904SetAndSetSetting()
+    {
+        DateTime dt1 = new DateTime(2008, 2, 29);
+        DateTime dt2 = new DateTime(1950, 11, 30);
+
+        ExcelPackage pck = new ExcelPackage();
+        pck.Workbook.Date1904 = true;
+
+        ExcelWorksheet? ws = pck.Workbook.Worksheets.Add("test");
+        ws.Cells[1, 1, 2, 1].Style.Numberformat.Format = ExcelNumberFormat.GetFromBuildInFromID(14);
+        ws.Cells[1, 1].Value = dt1;
+        ws.Cells[2, 1].Value = dt2;
+        pck.Save();
+
+
+        ExcelPackage? pck2 = new ExcelPackage(pck.Stream);
+        pck2.Workbook.Date1904 = true;  // Only the cells must be updated when this change, if set the same nothing must change
+        pck2.Save();
+
+
+        ExcelPackage? pck3 = new ExcelPackage(pck2.Stream);
+        ExcelWorksheet? ws3 = pck3.Workbook.Worksheets["test"];
+
+        Assert.AreEqual(dt1, ws3.Cells[1, 1].Value);
+        Assert.AreEqual(dt2, ws3.Cells[2, 1].Value);
+        pck.Dispose();
+        pck2.Dispose();
+        pck3.Dispose();
+    }
+    #endregion
 }

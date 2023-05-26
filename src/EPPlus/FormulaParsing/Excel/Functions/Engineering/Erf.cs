@@ -18,28 +18,27 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Engineering
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Engineering;
+
+[FunctionMetadata(
+                     Category = ExcelFunctionCategory.Engineering,
+                     EPPlusVersion = "5.2",
+                     Description = "Returns the error function integrated between two supplied limits")]
+public class Erf : ExcelFunction
 {
-    [FunctionMetadata(
-        Category = ExcelFunctionCategory.Engineering,
-        EPPlusVersion = "5.2",
-        Description = "Returns the error function integrated between two supplied limits")]
-    public class Erf : ExcelFunction
+    public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
     {
-        public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
+        ValidateArguments(arguments, 1);
+        double lowerLimit = this.ArgToDecimal(arguments, 0);
+        double? upperLimit = default(double?);
+        if(arguments.Count() > 1)
         {
-            ValidateArguments(arguments, 1);
-            double lowerLimit = this.ArgToDecimal(arguments, 0);
-            double? upperLimit = default(double?);
-            if(arguments.Count() > 1)
-            {
-                upperLimit = this.ArgToDecimal(arguments, 1);
-            }
-            double retVal = !upperLimit.HasValue ? ErfHelper.Erf(lowerLimit) : ErfHelper.Erf(lowerLimit, upperLimit.Value); 
-            return this.CreateResult(retVal, DataType.Decimal);
+            upperLimit = this.ArgToDecimal(arguments, 1);
         }
+        double retVal = !upperLimit.HasValue ? ErfHelper.Erf(lowerLimit) : ErfHelper.Erf(lowerLimit, upperLimit.Value); 
+        return this.CreateResult(retVal, DataType.Decimal);
+    }
 
         
 
-    }
 }

@@ -21,102 +21,100 @@ using System.Linq;
 using System.Text;
 using System.Xml;
 
-namespace OfficeOpenXml.ExternalReferences
+namespace OfficeOpenXml.ExternalReferences;
+
+/// <summary>
+/// Represents an external DDE link.
+/// </summary>
+public class ExcelExternalDdeLink : ExcelExternalLink
 {
-    /// <summary>
-    /// Represents an external DDE link.
-    /// </summary>
-    public class ExcelExternalDdeLink : ExcelExternalLink
+    internal ExcelExternalDdeLink(ExcelWorkbook wb, XmlTextReader reader, ZipPackagePart part, XmlElement workbookElement) : base (wb, reader, part, workbookElement)
     {
-        internal ExcelExternalDdeLink(ExcelWorkbook wb, XmlTextReader reader, ZipPackagePart part, XmlElement workbookElement) : base (wb, reader, part, workbookElement)
-        {
-            this.DdeService = reader.GetAttribute("ddeService");
-            this.DdeTopic = reader.GetAttribute("ddeTopic");
+        this.DdeService = reader.GetAttribute("ddeService");
+        this.DdeTopic = reader.GetAttribute("ddeTopic");
             
-            while (reader.Read())
+        while (reader.Read())
+        {
+            if (reader.NodeType == XmlNodeType.Element)
             {
-                if (reader.NodeType == XmlNodeType.Element)
+                switch (reader.LocalName)
                 {
-                    switch (reader.LocalName)
-                    {
-                        case "ddeItems":
-                            this.ReadDdeItems(reader);
-                            break;
-                    }
-                }
-                else if (reader.NodeType == XmlNodeType.EndElement)
-                {
-                    if (reader.Name == "ddeLink")
-                    {
+                    case "ddeItems":
+                        this.ReadDdeItems(reader);
                         break;
-                    }
                 }
             }
-        }
-        private void ReadDdeItems(XmlTextReader reader)
-        {
-            while (reader.Read())
+            else if (reader.NodeType == XmlNodeType.EndElement)
             {
-                if (reader.NodeType == XmlNodeType.Element && reader.LocalName == "Fallback")
-                {
-                    XmlStreamHelper.ReadUntil(reader, "Fallback");
-                }
-                if (reader.NodeType == XmlNodeType.Element && reader.LocalName == "ddeItem")
-                {
-                    this.DdeItems.Add(new ExcelExternalDdeItem()
-                    {
-                        Name = reader.GetAttribute("name"),
-                        Advise = XmlHelper.GetBoolFromString(reader.GetAttribute("advise")),
-                        Ole = XmlHelper.GetBoolFromString(reader.GetAttribute("ole")),
-                        PreferPicture = XmlHelper.GetBoolFromString(reader.GetAttribute("preferPic")),
-                    });
-                }
-                else if (reader.NodeType == XmlNodeType.EndElement && reader.LocalName=="ddeItems")
+                if (reader.Name == "ddeLink")
                 {
                     break;
                 }
             }
         }
-
-        /// <summary>
-        /// The type of external link
-        /// </summary>
-        public override eExternalLinkType ExternalLinkType
+    }
+    private void ReadDdeItems(XmlTextReader reader)
+    {
+        while (reader.Read())
         {
-            get
+            if (reader.NodeType == XmlNodeType.Element && reader.LocalName == "Fallback")
             {
-                return eExternalLinkType.DdeLink;
+                XmlStreamHelper.ReadUntil(reader, "Fallback");
             }
-        }
-        /// <summary>
-        /// Service name for the DDE connection
-        /// </summary>
-        public string DdeService { get; internal set; }
-        /// <summary>
-        /// Topic for DDE server. 
-        /// </summary>
-        public string DdeTopic { get; internal set; }
-
-        /// <summary>
-        /// A collection of <see cref="ExcelExternalDdeItem" />
-        /// </summary>
-        public ExcelExternalDdeItemCollection DdeItems
-        {
-            get;
-        } = new ExcelExternalDdeItemCollection();
-        internal override void Save(StreamWriter sw)
-        {
-            sw.Write($"<ddeLink ddeTopic=\"{this.DdeTopic}\" ddeService=\"{this.DdeService}\"><ddeItems>");
-            foreach (ExcelExternalDdeItem item in this.DdeItems)
-            {                
-                sw.Write(string.Format("<ddeItem name=\"{0}\" {1}{2}{3}/>",
-                  item.Name,
-                  item.Advise.GetXmlAttributeValue("advise", false),
-                  item.Ole.GetXmlAttributeValue("ole", false),
-                  item.PreferPicture.GetXmlAttributeValue("preferPic", false)));
+            if (reader.NodeType == XmlNodeType.Element && reader.LocalName == "ddeItem")
+            {
+                this.DdeItems.Add(new ExcelExternalDdeItem()
+                {
+                    Name = reader.GetAttribute("name"),
+                    Advise = XmlHelper.GetBoolFromString(reader.GetAttribute("advise")),
+                    Ole = XmlHelper.GetBoolFromString(reader.GetAttribute("ole")),
+                    PreferPicture = XmlHelper.GetBoolFromString(reader.GetAttribute("preferPic")),
+                });
             }
-            sw.Write("</ddeItems></ddeLink>");
+            else if (reader.NodeType == XmlNodeType.EndElement && reader.LocalName=="ddeItems")
+            {
+                break;
+            }
         }
     }
-}
 
+    /// <summary>
+    /// The type of external link
+    /// </summary>
+    public override eExternalLinkType ExternalLinkType
+    {
+        get
+        {
+            return eExternalLinkType.DdeLink;
+        }
+    }
+    /// <summary>
+    /// Service name for the DDE connection
+    /// </summary>
+    public string DdeService { get; internal set; }
+    /// <summary>
+    /// Topic for DDE server. 
+    /// </summary>
+    public string DdeTopic { get; internal set; }
+
+    /// <summary>
+    /// A collection of <see cref="ExcelExternalDdeItem" />
+    /// </summary>
+    public ExcelExternalDdeItemCollection DdeItems
+    {
+        get;
+    } = new ExcelExternalDdeItemCollection();
+    internal override void Save(StreamWriter sw)
+    {
+        sw.Write($"<ddeLink ddeTopic=\"{this.DdeTopic}\" ddeService=\"{this.DdeService}\"><ddeItems>");
+        foreach (ExcelExternalDdeItem item in this.DdeItems)
+        {                
+            sw.Write(string.Format("<ddeItem name=\"{0}\" {1}{2}{3}/>",
+                                   item.Name,
+                                   item.Advise.GetXmlAttributeValue("advise", false),
+                                   item.Ole.GetXmlAttributeValue("ole", false),
+                                   item.PreferPicture.GetXmlAttributeValue("preferPic", false)));
+        }
+        sw.Write("</ddeItems></ddeLink>");
+    }
+}

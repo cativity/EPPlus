@@ -15,13 +15,12 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
+
+[FunctionMetadata(
+                     Category = ExcelFunctionCategory.Statistical,
+                     EPPlusVersion = "5.2",
+                     Description = "Returns the variance of a supplied set of values (which represent a sample of a population) ")]
+internal class VarDotS : Var
 {
-    [FunctionMetadata(
-        Category = ExcelFunctionCategory.Statistical,
-        EPPlusVersion = "5.2",
-        Description = "Returns the variance of a supplied set of values (which represent a sample of a population) ")]
-    internal class VarDotS : Var
-    {
-    }
 }

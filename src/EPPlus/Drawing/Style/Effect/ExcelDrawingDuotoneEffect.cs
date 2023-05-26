@@ -16,38 +16,37 @@ using System.Collections.Generic;
 using System.Text;
 using System.Xml;
 
-namespace OfficeOpenXml.Drawing.Style.Effect
-{
-    /// <summary>
-    /// A Duotune effect
-    /// </summary>
-    public class ExcelDrawingDuotoneEffect : XmlHelper
-    {
-        internal ExcelDrawingDuotoneEffect(XmlNamespaceManager nsm, XmlNode topNode) : base(nsm, topNode)
-        {
+namespace OfficeOpenXml.Drawing.Style.Effect;
 
-        }
-        private  ExcelDrawingColorManager _color1;
-        /// <summary>
-        /// The first color
-        /// </summary>
-        public ExcelDrawingColorManager Color1
+/// <summary>
+/// A Duotune effect
+/// </summary>
+public class ExcelDrawingDuotoneEffect : XmlHelper
+{
+    internal ExcelDrawingDuotoneEffect(XmlNamespaceManager nsm, XmlNode topNode) : base(nsm, topNode)
+    {
+
+    }
+    private  ExcelDrawingColorManager _color1;
+    /// <summary>
+    /// The first color
+    /// </summary>
+    public ExcelDrawingColorManager Color1
+    {
+        get
         {
-            get
-            {
-                return this._color1 ??= new ExcelDrawingColorManager(this.NameSpaceManager, this.TopNode.FirstChild, "", this.SchemaNodeOrder);
-            }
+            return this._color1 ??= new ExcelDrawingColorManager(this.NameSpaceManager, this.TopNode.FirstChild, "", this.SchemaNodeOrder);
         }
-        private ExcelDrawingColorManager _color2;
-        /// <summary>
-        /// The second color
-        /// </summary>
-        public ExcelDrawingColorManager Color2
+    }
+    private ExcelDrawingColorManager _color2;
+    /// <summary>
+    /// The second color
+    /// </summary>
+    public ExcelDrawingColorManager Color2
+    {
+        get
         {
-            get
-            {
-                return this._color2 ??= new ExcelDrawingColorManager(this.NameSpaceManager, this.TopNode.LastChild, "", this.SchemaNodeOrder);
-            }
+            return this._color2 ??= new ExcelDrawingColorManager(this.NameSpaceManager, this.TopNode.LastChild, "", this.SchemaNodeOrder);
         }
     }
 }

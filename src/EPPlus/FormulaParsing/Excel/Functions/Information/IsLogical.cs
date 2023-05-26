@@ -17,20 +17,19 @@ using System.Text;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Metadata;
 using OfficeOpenXml.FormulaParsing.ExpressionGraph;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Information
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Information;
+
+[FunctionMetadata(
+                     Category = ExcelFunctionCategory.Information,
+                     EPPlusVersion = "4",
+                     Description = "Tests if a supplied value is a logical value, and if so, returns TRUE; Otherwise, returns FALSE")]
+internal class IsLogical : ExcelFunction
 {
-    [FunctionMetadata(
-        Category = ExcelFunctionCategory.Information,
-        EPPlusVersion = "4",
-        Description = "Tests if a supplied value is a logical value, and if so, returns TRUE; Otherwise, returns FALSE")]
-    internal class IsLogical : ExcelFunction
+    public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
     {
-        public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
-        {
-            FunctionArgument[]? functionArguments = arguments as FunctionArgument[] ?? arguments.ToArray();
-            ValidateArguments(functionArguments, 1);
-            object? v = GetFirstValue(arguments);
-            return this.CreateResult(v is bool, DataType.Boolean);
-        }
+        FunctionArgument[]? functionArguments = arguments as FunctionArgument[] ?? arguments.ToArray();
+        ValidateArguments(functionArguments, 1);
+        object? v = GetFirstValue(arguments);
+        return this.CreateResult(v is bool, DataType.Boolean);
     }
 }

@@ -15,42 +15,41 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace OfficeOpenXml.Sorting
+namespace OfficeOpenXml.Sorting;
+
+/// <summary>
+/// This class represents a condition in a sort.
+/// </summary>
+public class RangeSortLayer : SortLayerBase
 {
-    /// <summary>
-    /// This class represents a condition in a sort.
-    /// </summary>
-    public class RangeSortLayer : SortLayerBase
+    internal RangeSortLayer(RangeSortOptions options)
+        : base(options)
     {
-        internal RangeSortLayer(RangeSortOptions options)
-            : base(options)
-        {
-            this._options = options;
-        }
+        this._options = options;
+    }
 
-        private readonly RangeSortOptions _options;
+    private readonly RangeSortOptions _options;
 
-        /// <summary>
-        /// Sorts by the column that corresponds to the <paramref name="column"/> (zerobased) with ascending sort direction
-        /// </summary>
-        /// <param name="column">The column to sort</param>
-        /// <returns>A <see cref="RangeSortLayerBuilder"/> for adding more sort criterias</returns>
-        public virtual RangeSortLayerBuilder Column(int column)
-        {
-            this.SetColumn(column);
-            return new RangeSortLayerBuilder(this._options, this);
-        }
+    /// <summary>
+    /// Sorts by the column that corresponds to the <paramref name="column"/> (zerobased) with ascending sort direction
+    /// </summary>
+    /// <param name="column">The column to sort</param>
+    /// <returns>A <see cref="RangeSortLayerBuilder"/> for adding more sort criterias</returns>
+    public virtual RangeSortLayerBuilder Column(int column)
+    {
+        this.SetColumn(column);
+        return new RangeSortLayerBuilder(this._options, this);
+    }
 
-        /// <summary>
-        /// Sorts by the column that corresponds to the <paramref name="column"/> (zerobased) using the supplied sort direction.
-        /// </summary>
-        /// <param name="column">The column to sort</param>
-        /// <param name="sortOrder">Ascending or Descending sort</param>
-        /// <returns>A <see cref="RangeSortLayerBuilder"/> for adding more sort criterias</returns>
-        public RangeSortLayerBuilder Column(int column, eSortOrder sortOrder)
-        {
-            this.SetColumn(column, sortOrder);
-            return new RangeSortLayerBuilder(this._options, this);
-        }
+    /// <summary>
+    /// Sorts by the column that corresponds to the <paramref name="column"/> (zerobased) using the supplied sort direction.
+    /// </summary>
+    /// <param name="column">The column to sort</param>
+    /// <param name="sortOrder">Ascending or Descending sort</param>
+    /// <returns>A <see cref="RangeSortLayerBuilder"/> for adding more sort criterias</returns>
+    public RangeSortLayerBuilder Column(int column, eSortOrder sortOrder)
+    {
+        this.SetColumn(column, sortOrder);
+        return new RangeSortLayerBuilder(this._options, this);
     }
 }

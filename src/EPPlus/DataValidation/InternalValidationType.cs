@@ -2,11 +2,10 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace OfficeOpenXml.DataValidation
+namespace OfficeOpenXml.DataValidation;
+
+internal enum InternalValidationType
 {
-    internal enum InternalValidationType
-    {
-        DataValidation,
-        ExtLst
-    }
+    DataValidation,
+    ExtLst
 }

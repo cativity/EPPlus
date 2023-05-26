@@ -15,18 +15,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace OfficeOpenXml.FormulaParsing.ExpressionGraph.CompileStrategy
-{
-    public class DefaultCompileStrategy : CompileStrategy
-    {
-        public DefaultCompileStrategy(Expression expression)
-            : base(expression)
-        {
+namespace OfficeOpenXml.FormulaParsing.ExpressionGraph.CompileStrategy;
 
-        }
-        public override Expression Compile()
-        {
-            return this._expression.MergeWithNext();
-        }
+public class DefaultCompileStrategy : CompileStrategy
+{
+    public DefaultCompileStrategy(Expression expression)
+        : base(expression)
+    {
+
+    }
+    public override Expression Compile()
+    {
+        return this._expression.MergeWithNext();
     }
 }

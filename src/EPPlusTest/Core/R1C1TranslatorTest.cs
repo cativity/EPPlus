@@ -33,8 +33,8 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace EPPlusTest.Core
-{
+    namespace EPPlusTest.Core; 
+
     /// <summary>
     /// All of these tests relate from cell B3
     /// </summary>
@@ -168,4 +168,3 @@ namespace EPPlusTest.Core
             Assert.AreEqual(r1c1, address);
         }
     }
-}

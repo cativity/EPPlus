@@ -18,136 +18,135 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace OfficeOpenXml.Core.Worksheet.Fonts.GenericFontMetrics
+namespace OfficeOpenXml.Core.Worksheet.Fonts.GenericFontMetrics;
+
+internal abstract class GenericFontMetricsTextMeasurerBase
 {
-    internal abstract class GenericFontMetricsTextMeasurerBase
+    private FontScaleFactors _fontScaleFactors = new FontScaleFactors();
+    private static Dictionary<uint, SerializedFontMetrics> _fonts;
+    private static object _syncRoot = new object();
+
+    public GenericFontMetricsTextMeasurerBase()
     {
-        private FontScaleFactors _fontScaleFactors = new FontScaleFactors();
-        private static Dictionary<uint, SerializedFontMetrics> _fonts;
-        private static object _syncRoot = new object();
+        Initialize();
+    }
 
-        public GenericFontMetricsTextMeasurerBase()
+    private static void Initialize()
+    {
+        lock (_syncRoot)
         {
-            Initialize();
+            _fonts ??= GenericFontMetricsLoader.LoadFontMetrics();
         }
+    }
 
-        private static void Initialize()
+    protected internal static bool IsValidFont(uint fontKey)
+    {
+        return _fonts.ContainsKey(fontKey);
+    }
+
+    internal protected TextMeasurement MeasureTextInternal(string text, uint fontKey, MeasurementFontStyles style, float size)
+    {
+        SerializedFontMetrics? sFont = _fonts[fontKey];
+        float width = 0f;
+        float widthEA = 0f;
+        char[]? chars = text.ToCharArray();
+        for (int x = 0; x < chars.Length; x++)
         {
-            lock (_syncRoot)
+            char c = chars[x];
+            // if east asian char use default regardless of actual font.
+            if (IsEastAsianChar(c))
             {
-                _fonts ??= GenericFontMetricsLoader.LoadFontMetrics();
+                widthEA += GetEastAsianCharWidth(c, style);
             }
-        }
-
-        protected internal static bool IsValidFont(uint fontKey)
-        {
-            return _fonts.ContainsKey(fontKey);
-        }
-
-        internal protected TextMeasurement MeasureTextInternal(string text, uint fontKey, MeasurementFontStyles style, float size)
-        {
-            SerializedFontMetrics? sFont = _fonts[fontKey];
-            float width = 0f;
-            float widthEA = 0f;
-            char[]? chars = text.ToCharArray();
-            for (int x = 0; x < chars.Length; x++)
+            else
             {
-                char c = chars[x];
-                // if east asian char use default regardless of actual font.
-                if (IsEastAsianChar(c))
+                if (sFont.CharMetrics.ContainsKey(c))
                 {
-                    widthEA += GetEastAsianCharWidth(c, style);
+                    float fw = sFont.ClassWidths[sFont.CharMetrics[c]];
+                    if (Char.IsDigit(c))
+                    {
+                        fw *= FontScaleFactors.DigitsScalingFactor;
+                    }
+
+                    width += fw;
                 }
                 else
                 {
-                    if (sFont.CharMetrics.ContainsKey(c))
-                    {
-                        float fw = sFont.ClassWidths[sFont.CharMetrics[c]];
-                        if (Char.IsDigit(c))
-                        {
-                            fw *= FontScaleFactors.DigitsScalingFactor;
-                        }
-
-                        width += fw;
-                    }
-                    else
-                    {
-                        width += sFont.ClassWidths[sFont.DefaultWidthClass];
-                    }
-                }
-
-            }
-            width *= size;
-            widthEA *= size;
-            float sf = this._fontScaleFactors.GetScaleFactor(fontKey, width);
-            width *= sf;
-            width += widthEA;
-            float height = sFont.LineHeight1em * size;
-            return new TextMeasurement(width, height);
-        }
-
-
-
-        internal static uint GetKey(FontMetricsFamilies family, FontSubFamilies subFamily)
-        {
-            ushort k1 = (ushort)family;
-            ushort k2 = (ushort)subFamily;
-            return (uint)((k1 << 16) | ((k2) & 0xffff));
-        }
-
-        internal static uint GetKey(string fontFamily, MeasurementFontStyles fontStyle)
-        {
-            string? enumName = fontFamily.Replace(" ", string.Empty);
-            Array? values = Enum.GetValues(typeof(FontMetricsFamilies));
-            bool supported = false;
-            foreach (object? enumVal in values)
-            {
-                if (enumVal.ToString() == enumName)
-                {
-                    supported = true;
-                    break;
+                    width += sFont.ClassWidths[sFont.DefaultWidthClass];
                 }
             }
-            if (!supported)
-            {
-                return uint.MaxValue;
-            }
 
-            FontMetricsFamilies family = (FontMetricsFamilies)Enum.Parse(typeof(FontMetricsFamilies), enumName);
-            FontSubFamilies subFamily = FontSubFamilies.Regular;
-            switch (fontStyle)
-            {
-                case MeasurementFontStyles.Bold:
-                    subFamily = FontSubFamilies.Bold;
-                    break;
-                case MeasurementFontStyles.Italic:
-                    subFamily = FontSubFamilies.Italic;
-                    break;
-                case MeasurementFontStyles.Italic | MeasurementFontStyles.Bold:
-                    subFamily = FontSubFamilies.BoldItalic;
-                    break;
-                default:
-                    break;
-            }
-            return GetKey(family, subFamily);
         }
-
-        private static float GetEastAsianCharWidth(int cc, MeasurementFontStyles style)
-        {
-            float emWidth = (cc >= 65377 && cc <= 65439) ? 0.5f : 1f;
-            if ((style & MeasurementFontStyles.Bold) != 0)
-            {
-                emWidth *= 1.05f;
-            }
-            return emWidth * (96F / 72F) * FontScaleFactors.JapaneseKanjiDefaultScalingFactor;
-        }
-
-        private static bool IsEastAsianChar(char c)
-        {
-            int cc = (int)c;
-
-            return UniCodeRange.JapaneseKanji.Any(x => x.IsInRange(cc));
-        }
-
+        width *= size;
+        widthEA *= size;
+        float sf = this._fontScaleFactors.GetScaleFactor(fontKey, width);
+        width *= sf;
+        width += widthEA;
+        float height = sFont.LineHeight1em * size;
+        return new TextMeasurement(width, height);
     }
+
+
+
+    internal static uint GetKey(FontMetricsFamilies family, FontSubFamilies subFamily)
+    {
+        ushort k1 = (ushort)family;
+        ushort k2 = (ushort)subFamily;
+        return (uint)((k1 << 16) | ((k2) & 0xffff));
+    }
+
+    internal static uint GetKey(string fontFamily, MeasurementFontStyles fontStyle)
+    {
+        string? enumName = fontFamily.Replace(" ", string.Empty);
+        Array? values = Enum.GetValues(typeof(FontMetricsFamilies));
+        bool supported = false;
+        foreach (object? enumVal in values)
+        {
+            if (enumVal.ToString() == enumName)
+            {
+                supported = true;
+                break;
+            }
+        }
+        if (!supported)
+        {
+            return uint.MaxValue;
+        }
+
+        FontMetricsFamilies family = (FontMetricsFamilies)Enum.Parse(typeof(FontMetricsFamilies), enumName);
+        FontSubFamilies subFamily = FontSubFamilies.Regular;
+        switch (fontStyle)
+        {
+            case MeasurementFontStyles.Bold:
+                subFamily = FontSubFamilies.Bold;
+                break;
+            case MeasurementFontStyles.Italic:
+                subFamily = FontSubFamilies.Italic;
+                break;
+            case MeasurementFontStyles.Italic | MeasurementFontStyles.Bold:
+                subFamily = FontSubFamilies.BoldItalic;
+                break;
+            default:
+                break;
+        }
+        return GetKey(family, subFamily);
+    }
+
+    private static float GetEastAsianCharWidth(int cc, MeasurementFontStyles style)
+    {
+        float emWidth = (cc >= 65377 && cc <= 65439) ? 0.5f : 1f;
+        if ((style & MeasurementFontStyles.Bold) != 0)
+        {
+            emWidth *= 1.05f;
+        }
+        return emWidth * (96F / 72F) * FontScaleFactors.JapaneseKanjiDefaultScalingFactor;
+    }
+
+    private static bool IsEastAsianChar(char c)
+    {
+        int cc = (int)c;
+
+        return UniCodeRange.JapaneseKanji.Any(x => x.IsInRange(cc));
+    }
+
 }

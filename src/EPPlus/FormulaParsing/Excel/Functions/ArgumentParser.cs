@@ -15,12 +15,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions
-{
-    public abstract class ArgumentParser
-    {
-        public abstract object Parse(object obj);
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions;
 
-        public abstract object Parse(object obj, RoundingMethod roundingMethod);
-    }
+public abstract class ArgumentParser
+{
+    public abstract object Parse(object obj);
+
+    public abstract object Parse(object obj, RoundingMethod roundingMethod);
 }

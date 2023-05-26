@@ -17,23 +17,22 @@ using System.Text;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Metadata;
 using OfficeOpenXml.FormulaParsing.ExpressionGraph;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
+
+[FunctionMetadata(
+                     Category = ExcelFunctionCategory.Statistical,
+                     EPPlusVersion = "4",
+                     Description = "Returns the variance of a supplied set of values (which represent an entire population) ")]
+internal class VarP : HiddenValuesHandlingFunction
 {
-    [FunctionMetadata(
-        Category = ExcelFunctionCategory.Statistical,
-        EPPlusVersion = "4",
-        Description = "Returns the variance of a supplied set of values (which represent an entire population) ")]
-    internal class VarP : HiddenValuesHandlingFunction
+    public VarP() : base()
     {
-        public VarP() : base()
-        {
-            this.IgnoreErrors = false;
-        }
-        public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
-        {
-            ValidateArguments(arguments, 1);
-            IEnumerable<ExcelDoubleCellValue>? args = this.ArgsToDoubleEnumerable(this.IgnoreHiddenValues, this.IgnoreErrors, arguments, context);
-            return new CompileResult(VarMethods.VarP(args), DataType.Decimal);
-        }
+        this.IgnoreErrors = false;
+    }
+    public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
+    {
+        ValidateArguments(arguments, 1);
+        IEnumerable<ExcelDoubleCellValue>? args = this.ArgsToDoubleEnumerable(this.IgnoreHiddenValues, this.IgnoreErrors, arguments, context);
+        return new CompileResult(VarMethods.VarP(args), DataType.Decimal);
     }
 }

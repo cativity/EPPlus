@@ -14,50 +14,49 @@ using OfficeOpenXml.Core;
 using System;
 using System.Linq;
 
-namespace OfficeOpenXml.Table.PivotTable
+namespace OfficeOpenXml.Table.PivotTable;
+
+/// <summary>
+/// A list of pivot item refernces
+/// </summary>
+public class ExcelPivotAreaReferenceItems : EPPlusReadOnlyList<PivotItemReference>
 {
-    /// <summary>
-    /// A list of pivot item refernces
-    /// </summary>
-    public class ExcelPivotAreaReferenceItems : EPPlusReadOnlyList<PivotItemReference>
+    private ExcelPivotAreaReference _reference;
+    internal ExcelPivotAreaReferenceItems(ExcelPivotAreaReference reference)
     {
-        private ExcelPivotAreaReference _reference;
-        internal ExcelPivotAreaReferenceItems(ExcelPivotAreaReference reference)
+        this._reference = reference;
+    }
+    /// <summary>
+    /// Adds the item at the index to the condition. The index referes to the pivot cache.
+    /// </summary>
+    /// <param name="index">Index into the pivot cache items. Either the shared items or the group items</param>
+    public void Add(int index)
+    {
         {
-            this._reference = reference;
-        }
-        /// <summary>
-        /// Adds the item at the index to the condition. The index referes to the pivot cache.
-        /// </summary>
-        /// <param name="index">Index into the pivot cache items. Either the shared items or the group items</param>
-        public void Add(int index)
-        {
+            EPPlusReadOnlyList<object>? items = this._reference.Field.Cache.SharedItems.Count == 0 ? this._reference.Field.Cache.GroupItems : this._reference.Field.Cache.SharedItems;
+            if (items.Count > index)
             {
-                EPPlusReadOnlyList<object>? items = this._reference.Field.Cache.SharedItems.Count == 0 ? this._reference.Field.Cache.GroupItems : this._reference.Field.Cache.SharedItems;
-                if (items.Count > index)
-                {
-                    this.Add(new PivotItemReference() { Index = index, Value = items[index] });
-                }
-                else
-                {
-                    throw new IndexOutOfRangeException("Index is out of range in cache Items. Please make sure the pivot table cache has been refreshed.");
-                }
+                this.Add(new PivotItemReference() { Index = index, Value = items[index] });
+            }
+            else
+            {
+                throw new IndexOutOfRangeException("Index is out of range in cache Items. Please make sure the pivot table cache has been refreshed.");
             }
         }
-        /// <summary>
-        /// Adds a specific cache item to the condition. The value is matched against the values in the pivot cache, either the shared items or the group items.
-        /// </summary>
-        /// <param name="value">The value to match against. Is matched agaist the cache values and must be matched with the same data type.</param>
-        /// <returns>true if the value has been added, otherwise false</returns>
-        public bool AddByValue(object value)
+    }
+    /// <summary>
+    /// Adds a specific cache item to the condition. The value is matched against the values in the pivot cache, either the shared items or the group items.
+    /// </summary>
+    /// <param name="value">The value to match against. Is matched agaist the cache values and must be matched with the same data type.</param>
+    /// <returns>true if the value has been added, otherwise false</returns>
+    public bool AddByValue(object value)
+    {
+        int index = this._reference.Field.Items._list.FindIndex(x => (x.Value!=null && (x.Value.Equals(value)) || (x.Text!=null && x.Text.Equals(value))));
+        if (index >= 0)
         {
-            int index = this._reference.Field.Items._list.FindIndex(x => (x.Value!=null && (x.Value.Equals(value)) || (x.Text!=null && x.Text.Equals(value))));
-            if (index >= 0)
-            {
-                this.Add(new PivotItemReference() { Index = index, Value = value });
-                return true;
-            }
-            return false;
+            this.Add(new PivotItemReference() { Index = index, Value = value });
+            return true;
         }
+        return false;
     }
 }

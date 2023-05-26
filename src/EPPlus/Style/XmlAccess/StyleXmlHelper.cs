@@ -14,46 +14,45 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Xml;
-namespace OfficeOpenXml.Style.XmlAccess
-{
-    /// <summary>
-    /// Xml helper class for cell style classes
-    /// </summary>
-    public abstract class  StyleXmlHelper : XmlHelper
-    {
-        internal StyleXmlHelper(XmlNamespaceManager nameSpaceManager) : base(nameSpaceManager)
-        { 
+namespace OfficeOpenXml.Style.XmlAccess;
 
-        }
-        internal StyleXmlHelper(XmlNamespaceManager nameSpaceManager, XmlNode topNode) : base(nameSpaceManager, topNode)
+/// <summary>
+/// Xml helper class for cell style classes
+/// </summary>
+public abstract class  StyleXmlHelper : XmlHelper
+{
+    internal StyleXmlHelper(XmlNamespaceManager nameSpaceManager) : base(nameSpaceManager)
+    { 
+
+    }
+    internal StyleXmlHelper(XmlNamespaceManager nameSpaceManager, XmlNode topNode) : base(nameSpaceManager, topNode)
+    {
+    }
+    internal abstract XmlNode CreateXmlNode(XmlNode top);
+    internal abstract string Id
+    {
+        get;
+    }
+    internal long useCnt=0;
+    internal int newID=int.MinValue;
+    internal bool GetBoolValue(XmlNode topNode, string path)
+    {
+        XmlNode? node = topNode.SelectSingleNode(path, this.NameSpaceManager);
+        if (node is XmlAttribute)
         {
+            return node.Value != "0";
         }
-        internal abstract XmlNode CreateXmlNode(XmlNode top);
-        internal abstract string Id
+        else
         {
-            get;
-        }
-        internal long useCnt=0;
-        internal int newID=int.MinValue;
-        internal bool GetBoolValue(XmlNode topNode, string path)
-        {
-            XmlNode? node = topNode.SelectSingleNode(path, this.NameSpaceManager);
-            if (node is XmlAttribute)
+            if (node != null && ((node.Attributes["val"] != null && node.Attributes["val"].Value != "0") || node.Attributes["val"] == null))
             {
-                return node.Value != "0";
+                return true;
             }
             else
             {
-                if (node != null && ((node.Attributes["val"] != null && node.Attributes["val"].Value != "0") || node.Attributes["val"] == null))
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }                
-            }
+                return false;
+            }                
         }
-
     }
+
 }

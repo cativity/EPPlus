@@ -21,33 +21,32 @@ using OfficeOpenXml.Utils;
 using OfficeOpenXml.Drawing.Chart;
 using OfficeOpenXml.Drawing.Interfaces;
 
-namespace OfficeOpenXml.Drawing.Theme
-{
-    /// <summary>
-    /// Defines a Theme within the package
-    /// </summary>
-    public class ExcelTheme : ExcelThemeBase
-    {
-        ExcelWorkbook _workbook;
-        /// <summary>
-        /// The name of the theme
-        /// </summary>
-        public string Name
-        {
-            get
-            {
-                return this.GetXmlNodeString("@name");
-            }
-            set
-            {
-                this.SetXmlNodeString("@name", value);
-            }
-        }
+namespace OfficeOpenXml.Drawing.Theme;
 
-        internal ExcelTheme(ExcelWorkbook workbook, ZipPackageRelationship rel)
-            : base(workbook._package,workbook.NameSpaceManager, rel, "a:themeElements/")
+/// <summary>
+/// Defines a Theme within the package
+/// </summary>
+public class ExcelTheme : ExcelThemeBase
+{
+    ExcelWorkbook _workbook;
+    /// <summary>
+    /// The name of the theme
+    /// </summary>
+    public string Name
+    {
+        get
         {
-            this._workbook = workbook;
+            return this.GetXmlNodeString("@name");
         }
+        set
+        {
+            this.SetXmlNodeString("@name", value);
+        }
+    }
+
+    internal ExcelTheme(ExcelWorkbook workbook, ZipPackageRelationship rel)
+        : base(workbook._package,workbook.NameSpaceManager, rel, "a:themeElements/")
+    {
+        this._workbook = workbook;
     }
 }

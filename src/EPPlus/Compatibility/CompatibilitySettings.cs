@@ -15,36 +15,36 @@ using System.Collections.Generic;
 using System.Text;
 using OfficeOpenXml;
 
-namespace OfficeOpenXml.Compatibility
+namespace OfficeOpenXml.Compatibility;
+
+/// <summary>
+/// Settings to stay compatible with older versions of EPPlus
+/// </summary>
+public class CompatibilitySettings
 {
-    /// <summary>
-    /// Settings to stay compatible with older versions of EPPlus
-    /// </summary>
-    public class CompatibilitySettings
+    private ExcelPackage excelPackage;
+
+
+    internal CompatibilitySettings(ExcelPackage excelPackage)
     {
-        private ExcelPackage excelPackage;
-
-
-        internal CompatibilitySettings(ExcelPackage excelPackage)
-        {
-            this.excelPackage = excelPackage;
-        }
+        this.excelPackage = excelPackage;
+    }
 #if Core
-        /// <summary>
-        /// If the worksheets collection of the ExcelWorkbook class is 1 based.
-        /// This property can be set from appsettings.json file.
-        /// <code>
-        ///     {
-        ///       "EPPlus": {
-        ///         "ExcelPackage": {
-        ///           "Compatibility": {
-        ///             "IsWorksheets1Based": true //Default and recommended value is false
-        ///           }
-        ///         }
-        ///       }
-        ///     }
-        /// </code>
-        /// </summary>
+    /// <summary>
+    /// If the worksheets collection of the ExcelWorkbook class is 1 based.
+    /// This property can be set from appsettings.json file.
+    /// <code>
+    ///     {
+    ///       "EPPlus": {
+    ///         "ExcelPackage": {
+    ///           "Compatibility": {
+    ///             "IsWorksheets1Based": true //Default and recommended value is false
+    ///           }
+    ///         }
+    ///       }
+    ///     }
+    /// </code>
+    /// </summary>
 #else
         /// <summary>
         /// If the worksheets collection of the ExcelWorkbook class is 1 based.
@@ -58,21 +58,20 @@ namespace OfficeOpenXml.Compatibility
         /// </summary>
 #endif
 
-        public bool IsWorksheets1Based
+    public bool IsWorksheets1Based
+    {
+        get
         {
-            get
+            return this.excelPackage._worksheetAdd==1;
+        }
+        set
+        {
+            this.excelPackage._worksheetAdd = value ? 1 : 0;
+            if(this.excelPackage._workbook!=null && this.excelPackage._workbook._worksheets!=null)
             {
-                return this.excelPackage._worksheetAdd==1;
-            }
-            set
-            {
-                this.excelPackage._worksheetAdd = value ? 1 : 0;
-                if(this.excelPackage._workbook!=null && this.excelPackage._workbook._worksheets!=null)
-                {
-                    this.excelPackage.Workbook.Worksheets.ReindexWorksheetDictionary();
+                this.excelPackage.Workbook.Worksheets.ReindexWorksheetDictionary();
 
-                }
             }
         }
-   }
+    }
 }

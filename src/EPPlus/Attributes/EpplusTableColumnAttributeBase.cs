@@ -16,75 +16,74 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace OfficeOpenXml.Attributes
+namespace OfficeOpenXml.Attributes;
+
+/// <summary>
+/// Attribute used by <see cref="ExcelRangeBase.LoadFromCollection{T}(IEnumerable{T})" /> to configure column parameters for the functions/>
+/// </summary>
+public abstract class EpplusTableColumnAttributeBase : Attribute
 {
+
     /// <summary>
-    /// Attribute used by <see cref="ExcelRangeBase.LoadFromCollection{T}(IEnumerable{T})" /> to configure column parameters for the functions/>
+    /// Order of the columns value, default value is 0
     /// </summary>
-    public abstract class EpplusTableColumnAttributeBase : Attribute
+    public int Order
     {
+        get;
+        set;
+    }
 
-        /// <summary>
-        /// Order of the columns value, default value is 0
-        /// </summary>
-        public int Order
-        {
-            get;
-            set;
-        }
+    /// <summary>
+    /// Name shown in the header row, overriding the property name
+    /// </summary>
+    public string Header
+    {
+        get;
+        set;
+    }
 
-        /// <summary>
-        /// Name shown in the header row, overriding the property name
-        /// </summary>
-        public string Header
-        {
-            get;
-            set;
-        }
+    /// <summary>
+    /// Excel format string for the column
+    /// </summary>
+    public string NumberFormat
+    {
+        get;
+        set;
+    }
 
-        /// <summary>
-        /// Excel format string for the column
-        /// </summary>
-        public string NumberFormat
-        {
-            get;
-            set;
-        }
+    /// <summary>
+    /// If not <see cref="RowFunctions.None"/> the last cell in the column (the totals row) will contain a formula of the specified type.
+    /// </summary>
+    public RowFunctions TotalsRowFunction
+    {
+        get;
+        set;
+    } = RowFunctions.None;
 
-        /// <summary>
-        /// If not <see cref="RowFunctions.None"/> the last cell in the column (the totals row) will contain a formula of the specified type.
-        /// </summary>
-        public RowFunctions TotalsRowFunction
-        {
-            get;
-            set;
-        } = RowFunctions.None;
+    /// <summary>
+    /// Formula for the total row of this column.
+    /// </summary>
+    public string TotalsRowFormula
+    {
+        get;
+        set;
+    }
 
-        /// <summary>
-        /// Formula for the total row of this column.
-        /// </summary>
-        public string TotalsRowFormula
-        {
-            get;
-            set;
-        }
+    /// <summary>
+    /// Number format for this columns cell in the totals row.
+    /// </summary>
+    public string TotalsRowNumberFormat
+    {
+        get;
+        set;
+    }
 
-        /// <summary>
-        /// Number format for this columns cell in the totals row.
-        /// </summary>
-        public string TotalsRowNumberFormat
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
-        /// Text in this columns cell in the totals row
-        /// </summary>
-        public string TotalsRowLabel
-        {
-            get;
-            set;
-        }
+    /// <summary>
+    /// Text in this columns cell in the totals row
+    /// </summary>
+    public string TotalsRowLabel
+    {
+        get;
+        set;
     }
 }

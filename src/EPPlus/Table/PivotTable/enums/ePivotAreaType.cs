@@ -12,40 +12,39 @@
  *************************************************************************************************/
 using OfficeOpenXml.Utils.Extensions;
 
-namespace OfficeOpenXml.Table.PivotTable
+namespace OfficeOpenXml.Table.PivotTable;
+
+/// <summary>
+/// Defines the pivot area affected by a style
+/// </summary>
+public enum ePivotAreaType
 {
     /// <summary>
-    /// Defines the pivot area affected by a style
+    /// Refers to the whole pivot table
     /// </summary>
-    public enum ePivotAreaType
-    {
-        /// <summary>
-        /// Refers to the whole pivot table
-        /// </summary>
-        All,
-        /// <summary>
-        /// Refers to a field button
-        /// </summary>
-        FieldButton,
-        /// <summary>
-        /// Refers to data in the data area.
-        /// </summary>
-        Data,
-        /// <summary>
-        /// Refers to no pivot area
-        /// </summary>
-        None,
-        /// <summary>
-        /// Refers to a header or item
-        /// </summary>
-        Normal,
-        /// <summary>
-        /// Refers to the blank cells at the top-left(LTR sheets) or bottom-right(RTL sheets) of the pivot table.
-        /// </summary>
-        Origin,
-        /// <summary>
-        /// Refers to the blank cells at the top of the pivot table, on its trailing edge. 
-        /// </summary>
-        TopEnd
-    }
+    All,
+    /// <summary>
+    /// Refers to a field button
+    /// </summary>
+    FieldButton,
+    /// <summary>
+    /// Refers to data in the data area.
+    /// </summary>
+    Data,
+    /// <summary>
+    /// Refers to no pivot area
+    /// </summary>
+    None,
+    /// <summary>
+    /// Refers to a header or item
+    /// </summary>
+    Normal,
+    /// <summary>
+    /// Refers to the blank cells at the top-left(LTR sheets) or bottom-right(RTL sheets) of the pivot table.
+    /// </summary>
+    Origin,
+    /// <summary>
+    /// Refers to the blank cells at the top of the pivot table, on its trailing edge. 
+    /// </summary>
+    TopEnd
 }

@@ -13,154 +13,153 @@
 using System;
 using System.Drawing;
 
-namespace OfficeOpenXml.Core.CellStore
+namespace OfficeOpenXml.Core.CellStore;
+
+internal class PageIndex : IndexBase, IDisposable
 {
-    internal class PageIndex : IndexBase, IDisposable
+    public PageIndex(int pageSizeMin)
     {
-        public PageIndex(int pageSizeMin)
-        {
-            this.Rows = new IndexItem[pageSizeMin];
-            this.RowCount = 0;
-        }
-        public PageIndex(IndexItem[] rows, int count)
-        {
-            this.Rows = rows;
-            this.RowCount = count;
-        }
-        public PageIndex(PageIndex pageItem, int start, int size)
-            : this(pageItem, start, size, pageItem.Index, pageItem.Offset)
-        {
+        this.Rows = new IndexItem[pageSizeMin];
+        this.RowCount = 0;
+    }
+    public PageIndex(IndexItem[] rows, int count)
+    {
+        this.Rows = rows;
+        this.RowCount = count;
+    }
+    public PageIndex(PageIndex pageItem, int start, int size)
+        : this(pageItem, start, size, pageItem.Index, pageItem.Offset)
+    {
 
-        }
-        public PageIndex(PageIndex pageItem, int start, int size, short index, int offset, int arraySize = -1)
+    }
+    public PageIndex(PageIndex pageItem, int start, int size, short index, int offset, int arraySize = -1)
+    {
+        if(arraySize<0)
         {
-            if(arraySize<0)
-            {
-                arraySize = CellStore<int>.GetSize(size);
-            }
-
-            this.Rows = new IndexItem[arraySize];
-            Array.Copy(pageItem.Rows, start, this.Rows, 0, pageItem.RowCount-start);
-            this.RowCount = size;
-            this.Index = index;
-            this.Offset = offset;
-        }
-        ~PageIndex()
-        {
-            this.Rows = null;
-        }
-        internal int Offset = 0;
-        /// <summary>
-        /// Rows in the rows collection. 
-        /// </summary>
-        internal int RowCount;
-        internal int IndexOffset
-        {
-            get
-            {
-                return this.IndexExpanded + this.Offset;
-            }
-        }
-        internal int IndexExpanded
-        {
-            get
-            {
-                return (this.Index << CellStoreSettings._pageBits);
-            }
-        }
-        internal IndexItem[] Rows { get; set; }
-        /// <summary>
-        /// First row index minus last row index
-        /// </summary>
-        internal int RowSpan
-        {
-            get
-            {
-                return this.MaxIndex - this.MinIndex+1;
-            }
+            arraySize = CellStore<int>.GetSize(size);
         }
 
-        internal int GetPosition(int offset)
+        this.Rows = new IndexItem[arraySize];
+        Array.Copy(pageItem.Rows, start, this.Rows, 0, pageItem.RowCount-start);
+        this.RowCount = size;
+        this.Index = index;
+        this.Offset = offset;
+    }
+    ~PageIndex()
+    {
+        this.Rows = null;
+    }
+    internal int Offset = 0;
+    /// <summary>
+    /// Rows in the rows collection. 
+    /// </summary>
+    internal int RowCount;
+    internal int IndexOffset
+    {
+        get
         {
-            return ArrayUtil.OptimizedBinarySearch(this.Rows, offset, this.RowCount);
+            return this.IndexExpanded + this.Offset;
         }
-        internal int GetRowPosition(int row)
+    }
+    internal int IndexExpanded
+    {
+        get
         {
-            int offset = row - this.IndexOffset;
-            return ArrayUtil.OptimizedBinarySearch(this.Rows, offset, this.RowCount);
+            return (this.Index << CellStoreSettings._pageBits);
         }
-        internal int GetNextRow(int row)
+    }
+    internal IndexItem[] Rows { get; set; }
+    /// <summary>
+    /// First row index minus last row index
+    /// </summary>
+    internal int RowSpan
+    {
+        get
         {
-            int o = this.GetRowPosition(row);
-            if (o < 0)
+            return this.MaxIndex - this.MinIndex+1;
+        }
+    }
+
+    internal int GetPosition(int offset)
+    {
+        return ArrayUtil.OptimizedBinarySearch(this.Rows, offset, this.RowCount);
+    }
+    internal int GetRowPosition(int row)
+    {
+        int offset = row - this.IndexOffset;
+        return ArrayUtil.OptimizedBinarySearch(this.Rows, offset, this.RowCount);
+    }
+    internal int GetNextRow(int row)
+    {
+        int o = this.GetRowPosition(row);
+        if (o < 0)
+        {
+            o = ~o;
+            if (o < this.RowCount)
             {
-                o = ~o;
-                if (o < this.RowCount)
-                {
-                    return o;
-                }
-                else
-                {
-                    return -1;
-                }
+                return o;
             }
-            return o;
-        }
-
-        public int MinIndex
-        {
-            get
+            else
             {
-                if (this.RowCount > 0)
-                {
-                    return this.IndexOffset + this.Rows[0].Index;
-                }
-                else
-                {
-                    return -1;
-                }
+                return -1;
             }
         }
-        public int MaxIndex
+        return o;
+    }
+
+    public int MinIndex
+    {
+        get
         {
-            get
+            if (this.RowCount > 0)
             {
-                if (this.RowCount > 0)
-                {
-                    return this.IndexOffset + this.Rows[this.RowCount - 1].Index;
-                }
-                else
-                {
-                    return -1;
-                }
+                return this.IndexOffset + this.Rows[0].Index;
+            }
+            else
+            {
+                return -1;
             }
         }
-        public int GetIndex(int pos)
+    }
+    public int MaxIndex
+    {
+        get
         {
-            return this.IndexOffset + this.Rows[pos].Index;
+            if (this.RowCount > 0)
+            {
+                return this.IndexOffset + this.Rows[this.RowCount - 1].Index;
+            }
+            else
+            {
+                return -1;
+            }
         }
-        public void Dispose()
-        {
-            this.Rows = null;
-        }
+    }
+    public int GetIndex(int pos)
+    {
+        return this.IndexOffset + this.Rows[pos].Index;
+    }
+    public void Dispose()
+    {
+        this.Rows = null;
+    }
 
-        internal bool IsWithin(int fromRow, int toRow)
-        {
-            return fromRow <= this.MinIndex  && toRow >= this.MaxIndex;
-        }
-        internal bool StartsWithin(int fromRow, int toRow)
-        {
-            return fromRow <= this.MaxIndex && toRow >= this.MinIndex;
-        }
+    internal bool IsWithin(int fromRow, int toRow)
+    {
+        return fromRow <= this.MinIndex  && toRow >= this.MaxIndex;
+    }
+    internal bool StartsWithin(int fromRow, int toRow)
+    {
+        return fromRow <= this.MaxIndex && toRow >= this.MinIndex;
+    }
 
-        internal bool StartsAfter(int row)
-        {
-            return row > this.MaxIndex;
-        }
+    internal bool StartsAfter(int row)
+    {
+        return row > this.MaxIndex;
+    }
 
-        internal int GetRow(int rowIx)
-        {
-            return this.IndexOffset + this.Rows[rowIx].Index;
-        }
+    internal int GetRow(int rowIx)
+    {
+        return this.IndexOffset + this.Rows[rowIx].Index;
     }
 }

@@ -17,79 +17,78 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
+
+internal abstract class SumxBase : ExcelFunction
 {
-    internal abstract class SumxBase : ExcelFunction
+    private ParsingContext _context;
+    public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
     {
-        private ParsingContext _context;
-        public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
+        this._context = context;
+        ValidateArguments(arguments, 2);
+        FunctionArgument? arg1 = arguments.ElementAt(0);
+        FunctionArgument? arg2 = arguments.ElementAt(1);
+        this.CreateSets(arg1, arg2, out double[] set1, out double[] set2);
+        if (set1.Length != set2.Length)
         {
-            this._context = context;
-            ValidateArguments(arguments, 2);
-            FunctionArgument? arg1 = arguments.ElementAt(0);
-            FunctionArgument? arg2 = arguments.ElementAt(1);
-            this.CreateSets(arg1, arg2, out double[] set1, out double[] set2);
-            if (set1.Length != set2.Length)
-            {
-                return this.CreateResult(eErrorType.NA);
-            }
-
-            double result = this.Calculate(set1.ToArray(), set2.ToArray());
-            return this.CreateResult(result, DataType.Decimal);
+            return this.CreateResult(eErrorType.NA);
         }
 
-        public abstract double Calculate(double[] set1, double[] set2);
+        double result = this.Calculate(set1.ToArray(), set2.ToArray());
+        return this.CreateResult(result, DataType.Decimal);
+    }
 
-        private void CreateSets(FunctionArgument arg1, FunctionArgument arg2, out double[] set1, out double[] set2)
-        {
-            List<double>? list1 = this.CreateSet(arg1);
-            List<double>? list2 = this.CreateSet(arg2);
-            if(list1.Count == list2.Count)
-            {
-                List<double>? r1 = new List<double>();
-                List<double>? r2 = new List<double>();
-                for(int x = 0; x < list1.Count; x++)
-                {
-                    if(!double.IsNaN(list1[x]) && !double.IsNaN(list2[x]))
-                    {
-                        r1.Add(list1[x]);
-                        r2.Add(list2[x]);
-                    }
-                }
-                set1 = r1.ToArray();
-                set2 = r2.ToArray();
-            }
-            else
-            {
-                set1 = list1.ToArray();
-                set2 = list2.ToArray();
-            }
-        }
+    public abstract double Calculate(double[] set1, double[] set2);
 
-        public List<double> CreateSet(FunctionArgument arg)
+    private void CreateSets(FunctionArgument arg1, FunctionArgument arg2, out double[] set1, out double[] set2)
+    {
+        List<double>? list1 = this.CreateSet(arg1);
+        List<double>? list2 = this.CreateSet(arg2);
+        if(list1.Count == list2.Count)
         {
-            List<double> result = new List<double>();
-            if (arg.IsExcelRange)
+            List<double>? r1 = new List<double>();
+            List<double>? r2 = new List<double>();
+            for(int x = 0; x < list1.Count; x++)
             {
-                IRangeInfo? r1 = arg.ValueAsRangeInfo;
-                for (int x = 0; x < r1.Count(); x++)
+                if(!double.IsNaN(list1[x]) && !double.IsNaN(list2[x]))
                 {
-                    object? v = r1.ElementAt(x).Value;
-                    if (!IsNumeric(v))
-                    {
-                        result.Add(double.NaN);
-                    }
-                    else
-                    {
-                        result.Add(ConvertUtil.GetValueDouble(v));
-                    }
+                    r1.Add(list1[x]);
+                    r2.Add(list2[x]);
                 }
             }
-            else
-            {
-                result = this.ArgsToDoubleEnumerable(new List<FunctionArgument> { arg }, this._context).Select(x => Convert.ToDouble(x)).ToList();
-            }
-            return result;
+            set1 = r1.ToArray();
+            set2 = r2.ToArray();
         }
+        else
+        {
+            set1 = list1.ToArray();
+            set2 = list2.ToArray();
+        }
+    }
+
+    public List<double> CreateSet(FunctionArgument arg)
+    {
+        List<double> result = new List<double>();
+        if (arg.IsExcelRange)
+        {
+            IRangeInfo? r1 = arg.ValueAsRangeInfo;
+            for (int x = 0; x < r1.Count(); x++)
+            {
+                object? v = r1.ElementAt(x).Value;
+                if (!IsNumeric(v))
+                {
+                    result.Add(double.NaN);
+                }
+                else
+                {
+                    result.Add(ConvertUtil.GetValueDouble(v));
+                }
+            }
+        }
+        else
+        {
+            result = this.ArgsToDoubleEnumerable(new List<FunctionArgument> { arg }, this._context).Select(x => Convert.ToDouble(x)).ToList();
+        }
+        return result;
     }
 }

@@ -10,24 +10,23 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
-namespace OfficeOpenXml.Drawing.Theme
+namespace OfficeOpenXml.Drawing.Theme;
+
+/// <summary>
+/// Theme font collection type
+/// </summary>
+public enum eThemeFontCollectionType
 {
     /// <summary>
-    /// Theme font collection type
+    /// Do not reference a font collection
     /// </summary>
-    public enum eThemeFontCollectionType
-    {
-        /// <summary>
-        /// Do not reference a font collection
-        /// </summary>
-        None,
-        /// <summary>
-        /// Reference the minor font collection
-        /// </summary>
-        Minor,
-        /// <summary>
-        /// Reference the major font collection
-        /// </summary>
-        Major
-    }
+    None,
+    /// <summary>
+    /// Reference the minor font collection
+    /// </summary>
+    Minor,
+    /// <summary>
+    /// Reference the major font collection
+    /// </summary>
+    Major
 }

@@ -36,80 +36,79 @@ using OfficeOpenXml.FormulaParsing.Excel.Operators;
 using System.Globalization;
 using System.Threading;
 
-namespace EPPlusTest.FormulaParsing.ExpressionGraph
+namespace EPPlusTest.FormulaParsing.ExpressionGraph;
+
+[TestClass]
+public class ExpressionConverterTests
 {
-    [TestClass]
-    public class ExpressionConverterTests
+    private IExpressionConverter _converter;
+
+    [TestInitialize]
+    public void Setup()
     {
-        private IExpressionConverter _converter;
+        this._converter = new ExpressionConverter();
+    }
 
-        [TestInitialize]
-        public void Setup()
-        {
-            this._converter = new ExpressionConverter();
-        }
+    [TestMethod]
+    public void ToStringExpressionShouldConvertIntegerExpressionToStringExpression()
+    {
+        IntegerExpression? integerExpression = new IntegerExpression("2");
+        StringExpression? result = this._converter.ToStringExpression(integerExpression);
+        Assert.IsInstanceOfType(result, typeof(StringExpression));
+        Assert.AreEqual("2", result.Compile().Result);
+    }
 
-        [TestMethod]
-        public void ToStringExpressionShouldConvertIntegerExpressionToStringExpression()
-        {
-            IntegerExpression? integerExpression = new IntegerExpression("2");
-            StringExpression? result = this._converter.ToStringExpression(integerExpression);
-            Assert.IsInstanceOfType(result, typeof(StringExpression));
-            Assert.AreEqual("2", result.Compile().Result);
-        }
+    [TestMethod]
+    public void ToStringExpressionShouldCopyOperatorToStringExpression()
+    {
+        IntegerExpression? integerExpression = new IntegerExpression("2");
+        integerExpression.Operator = Operator.Plus;
+        StringExpression? result = this._converter.ToStringExpression(integerExpression);
+        Assert.AreEqual(integerExpression.Operator, result.Operator);
+    }
 
-        [TestMethod]
-        public void ToStringExpressionShouldCopyOperatorToStringExpression()
-        {
-            IntegerExpression? integerExpression = new IntegerExpression("2");
-            integerExpression.Operator = Operator.Plus;
-            StringExpression? result = this._converter.ToStringExpression(integerExpression);
-            Assert.AreEqual(integerExpression.Operator, result.Operator);
-        }
+    [TestMethod]
+    public void ToStringExpressionShouldConvertDecimalExpressionToStringExpression()
+    {
+        DecimalExpression? decimalExpression = new DecimalExpression("2.5");
+        StringExpression? result = this._converter.ToStringExpression(decimalExpression);
+        Assert.IsInstanceOfType(result, typeof(StringExpression));
+        Assert.AreEqual($"2{CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator}5", result.Compile().Result);
+    }
 
-        [TestMethod]
-        public void ToStringExpressionShouldConvertDecimalExpressionToStringExpression()
-        {
-            DecimalExpression? decimalExpression = new DecimalExpression("2.5");
-            StringExpression? result = this._converter.ToStringExpression(decimalExpression);
-            Assert.IsInstanceOfType(result, typeof(StringExpression));
-            Assert.AreEqual($"2{CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator}5", result.Compile().Result);
-        }
+    [TestMethod]
+    public void FromCompileResultShouldCreateIntegerExpressionIfCompileResultIsInteger()
+    {
+        CompileResult? compileResult = new CompileResult(1, DataType.Integer);
+        Expression? result = this._converter.FromCompileResult(compileResult);
+        Assert.IsInstanceOfType(result, typeof(IntegerExpression));
+        Assert.AreEqual(1d, result.Compile().Result);
+    }
 
-        [TestMethod]
-        public void FromCompileResultShouldCreateIntegerExpressionIfCompileResultIsInteger()
-        {
-            CompileResult? compileResult = new CompileResult(1, DataType.Integer);
-            Expression? result = this._converter.FromCompileResult(compileResult);
-            Assert.IsInstanceOfType(result, typeof(IntegerExpression));
-            Assert.AreEqual(1d, result.Compile().Result);
-        }
+    [TestMethod]
+    public void FromCompileResultShouldCreateStringExpressionIfCompileResultIsString()
+    {
+        CompileResult? compileResult = new CompileResult("abc", DataType.String);
+        Expression? result = this._converter.FromCompileResult(compileResult);
+        Assert.IsInstanceOfType(result, typeof(StringExpression));
+        Assert.AreEqual("abc", result.Compile().Result);
+    }
 
-        [TestMethod]
-        public void FromCompileResultShouldCreateStringExpressionIfCompileResultIsString()
-        {
-            CompileResult? compileResult = new CompileResult("abc", DataType.String);
-            Expression? result = this._converter.FromCompileResult(compileResult);
-            Assert.IsInstanceOfType(result, typeof(StringExpression));
-            Assert.AreEqual("abc", result.Compile().Result);
-        }
+    [TestMethod]
+    public void FromCompileResultShouldCreateDecimalExpressionIfCompileResultIsDecimal()
+    {
+        CompileResult? compileResult = new CompileResult(2.5d, DataType.Decimal);
+        Expression? result = this._converter.FromCompileResult(compileResult);
+        Assert.IsInstanceOfType(result, typeof(DecimalExpression));
+        Assert.AreEqual(2.5d, result.Compile().Result);
+    }
 
-        [TestMethod]
-        public void FromCompileResultShouldCreateDecimalExpressionIfCompileResultIsDecimal()
-        {
-            CompileResult? compileResult = new CompileResult(2.5d, DataType.Decimal);
-            Expression? result = this._converter.FromCompileResult(compileResult);
-            Assert.IsInstanceOfType(result, typeof(DecimalExpression));
-            Assert.AreEqual(2.5d, result.Compile().Result);
-        }
-
-        [TestMethod]
-        public void FromCompileResultShouldCreateBooleanExpressionIfCompileResultIsBoolean()
-        {
-            CompileResult? compileResult = new CompileResult("true", DataType.Boolean);
-            Expression? result = this._converter.FromCompileResult(compileResult);
-            Assert.IsInstanceOfType(result, typeof(BooleanExpression));
-            Assert.IsTrue((bool)result.Compile().Result);
-        }
+    [TestMethod]
+    public void FromCompileResultShouldCreateBooleanExpressionIfCompileResultIsBoolean()
+    {
+        CompileResult? compileResult = new CompileResult("true", DataType.Boolean);
+        Expression? result = this._converter.FromCompileResult(compileResult);
+        Assert.IsInstanceOfType(result, typeof(BooleanExpression));
+        Assert.IsTrue((bool)result.Compile().Result);
     }
 }

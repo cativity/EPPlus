@@ -17,104 +17,103 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Xml;
 
-namespace OfficeOpenXml.Drawing.Theme
+namespace OfficeOpenXml.Drawing.Theme;
+
+/// <summary>
+/// The effect styles within the theme
+/// </summary>
+public class ExcelThemeEffectStyles : XmlHelper, IEnumerable<ExcelThemeEffectStyle>
 {
-    /// <summary>
-    /// The effect styles within the theme
-    /// </summary>
-    public class ExcelThemeEffectStyles : XmlHelper, IEnumerable<ExcelThemeEffectStyle>
+    List<ExcelThemeEffectStyle> _list;
+    private readonly ExcelThemeBase _theme;
+    internal ExcelThemeEffectStyles(XmlNamespaceManager nameSpaceManager, XmlNode topNode, ExcelThemeBase theme) : base(nameSpaceManager, topNode)
     {
-        List<ExcelThemeEffectStyle> _list;
-        private readonly ExcelThemeBase _theme;
-        internal ExcelThemeEffectStyles(XmlNamespaceManager nameSpaceManager, XmlNode topNode, ExcelThemeBase theme) : base(nameSpaceManager, topNode)
+        this._theme = theme;
+        this._list = new List<ExcelThemeEffectStyle>();
+        foreach (XmlNode node in topNode.ChildNodes)
         {
-            this._theme = theme;
-            this._list = new List<ExcelThemeEffectStyle>();
-            foreach (XmlNode node in topNode.ChildNodes)
-            {
-                this._list.Add(new ExcelThemeEffectStyle(nameSpaceManager, node, "", null, this._theme));
-            }
+            this._list.Add(new ExcelThemeEffectStyle(nameSpaceManager, node, "", null, this._theme));
         }
-        /// <summary>
-        /// Gets the enumerator for the collection
-        /// </summary>
-        /// <returns>The enumerator</returns>
-        public IEnumerator<ExcelThemeEffectStyle> GetEnumerator()
+    }
+    /// <summary>
+    /// Gets the enumerator for the collection
+    /// </summary>
+    /// <returns>The enumerator</returns>
+    public IEnumerator<ExcelThemeEffectStyle> GetEnumerator()
+    {
+        return this._list.GetEnumerator();
+    }
+
+    IEnumerator IEnumerable.GetEnumerator()
+    {
+        return this._list.GetEnumerator();
+    }
+    /// <summary>
+    /// Indexer for the collection
+    /// </summary>
+    /// <param name="index">The index</param>
+    /// <returns>The effect style</returns>
+    public ExcelThemeEffectStyle this[int index]
+    {
+        get
         {
-            return this._list.GetEnumerator();
+            return (this._list[index]);
+        }
+    }
+    /// <summary>
+    /// Adds a new effect style
+    /// </summary>
+    /// <returns></returns>
+    public ExcelThemeEffectStyle Add()
+    {
+        XmlElement? node = this.TopNode.OwnerDocument.CreateElement("a", "effectStyle", ExcelPackage.schemaMain);
+        this.TopNode.AppendChild(node);
+        return new ExcelThemeEffectStyle(this.NameSpaceManager, this.TopNode, "", null, this._theme);
+    }
+    /// <summary>
+    /// Removes an effect style. The collection must have at least three effect styles.
+    /// </summary>
+    /// <param name="item">The Item</param>
+    public void Remove(ExcelThemeEffectStyle item)
+    {
+        if (this._list.Count == 3)
+        {
+            throw (new InvalidOperationException("Collection must contain at least 3 items"));
         }
 
-        IEnumerator IEnumerable.GetEnumerator()
+        if (this._list.Contains(item))
         {
-            return this._list.GetEnumerator();
+            this._list.Remove(item);
+            item.TopNode.ParentNode.RemoveChild(item.TopNode);
         }
-        /// <summary>
-        /// Indexer for the collection
-        /// </summary>
-        /// <param name="index">The index</param>
-        /// <returns>The effect style</returns>
-        public ExcelThemeEffectStyle this[int index]
+    }
+    /// <summary>
+    /// Remove the effect style at the specified index. The collection must have at least three effect styles.
+    /// </summary>
+    /// <param name="Index">The index</param>
+    public void Remove(int Index)
+    {
+        if (this._list.Count == 3)
         {
-            get
-            {
-                return (this._list[index]);
-            }
-        }
-        /// <summary>
-        /// Adds a new effect style
-        /// </summary>
-        /// <returns></returns>
-        public ExcelThemeEffectStyle Add()
-        {
-            XmlElement? node = this.TopNode.OwnerDocument.CreateElement("a", "effectStyle", ExcelPackage.schemaMain);
-            this.TopNode.AppendChild(node);
-            return new ExcelThemeEffectStyle(this.NameSpaceManager, this.TopNode, "", null, this._theme);
-        }
-        /// <summary>
-        /// Removes an effect style. The collection must have at least three effect styles.
-        /// </summary>
-        /// <param name="item">The Item</param>
-        public void Remove(ExcelThemeEffectStyle item)
-        {
-            if (this._list.Count == 3)
-            {
-                throw (new InvalidOperationException("Collection must contain at least 3 items"));
-            }
-
-            if (this._list.Contains(item))
-            {
-                this._list.Remove(item);
-                item.TopNode.ParentNode.RemoveChild(item.TopNode);
-            }
-        }
-        /// <summary>
-        /// Remove the effect style at the specified index. The collection must have at least three effect styles.
-        /// </summary>
-        /// <param name="Index">The index</param>
-        public void Remove(int Index)
-        {
-            if (this._list.Count == 3)
-            {
-                throw (new InvalidOperationException("Collection must contain at least 3 items"));
-            }
-
-            if (Index >= this._list.Count)
-            {
-                throw new ArgumentException("Index", "Index out of range");
-            }
-
-            this._list.Remove(this._list[Index]);
+            throw (new InvalidOperationException("Collection must contain at least 3 items"));
         }
 
-        /// <summary>
-        /// Number of items in the collection
-        /// </summary>
-        public int Count
+        if (Index >= this._list.Count)
         {
-            get
-            {
-                return this._list.Count;
-            }
+            throw new ArgumentException("Index", "Index out of range");
         }
-     }
+
+        this._list.Remove(this._list[Index]);
+    }
+
+    /// <summary>
+    /// Number of items in the collection
+    /// </summary>
+    public int Count
+    {
+        get
+        {
+            return this._list.Count;
+        }
+    }
 }

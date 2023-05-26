@@ -10,40 +10,39 @@
  *************************************************************************************************
     11/24/2020         EPPlus Software AB           Controls 
  *************************************************************************************************/
-namespace OfficeOpenXml.Drawing.Controls
+namespace OfficeOpenXml.Drawing.Controls;
+
+/// <summary>
+/// Units of measurement
+/// </summary>
+public enum eMeasurementUnits
 {
     /// <summary>
-    /// Units of measurement
+    /// Inches
     /// </summary>
-    public enum eMeasurementUnits
-    {
-        /// <summary>
-        /// Inches
-        /// </summary>
-        Inches,
-        /// <summary>
-        /// Centimeters
-        /// </summary>
-        Centimeters,
-        /// <summary>
-        /// Millimeters
-        /// </summary>
-        Millimeters,
-        /// <summary>
-        /// Points
-        /// </summary>
-        Points,
-        /// <summary>
-        /// Picas
-        /// </summary>
-        Picas,
-        /// <summary>
-        /// Pixels
-        /// </summary>
-        Pixels,
-        /// <summary>
-        /// English metric unit
-        /// </summary>
-        EMUs
-    }
+    Inches,
+    /// <summary>
+    /// Centimeters
+    /// </summary>
+    Centimeters,
+    /// <summary>
+    /// Millimeters
+    /// </summary>
+    Millimeters,
+    /// <summary>
+    /// Points
+    /// </summary>
+    Points,
+    /// <summary>
+    /// Picas
+    /// </summary>
+    Picas,
+    /// <summary>
+    /// Pixels
+    /// </summary>
+    Pixels,
+    /// <summary>
+    /// English metric unit
+    /// </summary>
+    EMUs
 }

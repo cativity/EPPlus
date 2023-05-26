@@ -34,58 +34,56 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Globalization;
 
-namespace OfficeOpenXml.Compatibility.System.Drawing
+namespace OfficeOpenXml.Compatibility.System.Drawing;
+
+internal sealed class ColorTranslator
 {
 
-	internal sealed class ColorTranslator
-	{
+    private ColorTranslator()
+    {
+    }
 
-		private ColorTranslator()
-		{
-		}
+    public static Color FromHtml(string htmlColor)
+    {
+        if (string.IsNullOrEmpty(htmlColor))
+        {
+            return Color.Empty;
+        }
 
-		public static Color FromHtml(string htmlColor)
-		{
-			if (string.IsNullOrEmpty(htmlColor))
-            {
-                return Color.Empty;
-            }
+        switch (htmlColor.ToLowerInvariant())
+        {
+            case "buttonface":
+            case "threedface":
+                return EPPlusSystemColors.Control;
+            case "buttonhighlight":
+            case "threedlightshadow":
+                return EPPlusSystemColors.ControlLightLight;
+            case "buttonshadow":
+                return EPPlusSystemColors.ControlDark;
+            case "captiontext":
+                return EPPlusSystemColors.ActiveCaptionText;
+            case "threeddarkshadow":
+                return EPPlusSystemColors.ControlDarkDark;
+            case "threedhighlight":
+                return EPPlusSystemColors.ControlLight;
+            case "background":
+                return EPPlusSystemColors.Desktop;
+            case "buttontext":
+                return EPPlusSystemColors.ControlText;
+            case "infobackground":
+                return EPPlusSystemColors.Info;
+            // special case for Color.LightGray versus html's LightGrey (#340917)
+            case "lightgrey":
+                return Color.LightGray;
+        }
 
-            switch (htmlColor.ToLowerInvariant())
-			{
-				case "buttonface":
-				case "threedface":
-					return EPPlusSystemColors.Control;
-				case "buttonhighlight":
-				case "threedlightshadow":
-					return EPPlusSystemColors.ControlLightLight;
-				case "buttonshadow":
-					return EPPlusSystemColors.ControlDark;
-				case "captiontext":
-					return EPPlusSystemColors.ActiveCaptionText;
-				case "threeddarkshadow":
-					return EPPlusSystemColors.ControlDarkDark;
-				case "threedhighlight":
-					return EPPlusSystemColors.ControlLight;
-				case "background":
-					return EPPlusSystemColors.Desktop;
-				case "buttontext":
-					return EPPlusSystemColors.ControlText;
-				case "infobackground":
-					return EPPlusSystemColors.Info;
-				// special case for Color.LightGray versus html's LightGrey (#340917)
-				case "lightgrey":
-					return Color.LightGray;
-			}
+        if (htmlColor[0] == '#' && htmlColor.Length == 4)
+        {
+            char r = htmlColor[1], g = htmlColor[2], b = htmlColor[3];
+            htmlColor = new string(new char[] { '#', r, r, g, g, b, b });
+        }
 
-			if (htmlColor[0] == '#' && htmlColor.Length == 4)
-			{
-				char r = htmlColor[1], g = htmlColor[2], b = htmlColor[3];
-				htmlColor = new string(new char[] { '#', r, r, g, g, b, b });
-			}
-
-			TypeConverter converter = TypeDescriptor.GetConverter(typeof(Color));
-			return (Color)converter.ConvertFromString(htmlColor);
-		}
-	}
+        TypeConverter converter = TypeDescriptor.GetConverter(typeof(Color));
+        return (Color)converter.ConvertFromString(htmlColor);
+    }
 }

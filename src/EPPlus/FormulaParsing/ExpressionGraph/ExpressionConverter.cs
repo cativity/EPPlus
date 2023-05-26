@@ -17,74 +17,73 @@ using System.Linq;
 using System.Text;
 using OfficeOpenXml.FormulaParsing;
 
-namespace OfficeOpenXml.FormulaParsing.ExpressionGraph
+namespace OfficeOpenXml.FormulaParsing.ExpressionGraph;
+
+public class ExpressionConverter : IExpressionConverter
 {
-    public class ExpressionConverter : IExpressionConverter
+    public StringExpression ToStringExpression(Expression expression)
     {
-        public StringExpression ToStringExpression(Expression expression)
+        CompileResult result = expression.Compile();
+        string toString;
+        if(result.DataType == DataType.Decimal)
         {
-            CompileResult result = expression.Compile();
-            string toString;
-            if(result.DataType == DataType.Decimal)
-            {
-                toString = result.ResultNumeric.ToString("G15");
-            }
-            else
-            {
-                toString = result.Result.ToString();
-            }
-            StringExpression newExp = new StringExpression(toString);
-            newExp.Operator = expression.Operator;
-            return newExp;
+            toString = result.ResultNumeric.ToString("G15");
         }
-
-        public Expression FromCompileResult(CompileResult compileResult)
+        else
         {
-            switch (compileResult.DataType)
-            {
-                case DataType.Integer:
-                    return compileResult.Result is string
-                        ? new IntegerExpression(compileResult.Result.ToString())
-                        : new IntegerExpression(Convert.ToDouble(compileResult.Result));
-                case DataType.String:
-                    return new StringExpression(compileResult.Result.ToString());
-                case DataType.Decimal:
-                    return compileResult.Result is string
-                               ? new DecimalExpression(compileResult.Result.ToString())
-                               : new DecimalExpression(((double) compileResult.Result));
-                case DataType.Boolean:
-                    return compileResult.Result is string
-                               ? new BooleanExpression(compileResult.Result.ToString())
-                               : new BooleanExpression((bool) compileResult.Result);
-                //case DataType.Enumerable:
-                //    return 
-                case DataType.ExcelError:
-                    //throw (new OfficeOpenXml.FormulaParsing.Exceptions.ExcelErrorValueException((ExcelErrorValue)compileResult.Result)); //Added JK
-                    return compileResult.Result is string
-                        ? new ExcelErrorExpression(compileResult.Result.ToString(),
-                            ExcelErrorValue.Parse(compileResult.Result.ToString()))
-                        : new ExcelErrorExpression((ExcelErrorValue) compileResult.Result);
-                case DataType.Empty:
-                   return new IntegerExpression(0); //Added JK
-                case DataType.Time:
-                case DataType.Date:
-                    return new DecimalExpression((double)compileResult.Result);
-                case DataType.Enumerable:
-                    IRangeInfo? rangeInfo = compileResult.Result as IRangeInfo;
-                    if (rangeInfo != null)
-                    {
-                        return new ExcelRangeExpression(rangeInfo);
-                    }
-                    break;
-
-            }
-            return null;
+            toString = result.Result.ToString();
         }
+        StringExpression newExp = new StringExpression(toString);
+        newExp.Operator = expression.Operator;
+        return newExp;
+    }
 
-        private static IExpressionConverter _instance;
-        public static IExpressionConverter Instance
+    public Expression FromCompileResult(CompileResult compileResult)
+    {
+        switch (compileResult.DataType)
         {
-            get { return _instance ??= new ExpressionConverter(); }
+            case DataType.Integer:
+                return compileResult.Result is string
+                           ? new IntegerExpression(compileResult.Result.ToString())
+                           : new IntegerExpression(Convert.ToDouble(compileResult.Result));
+            case DataType.String:
+                return new StringExpression(compileResult.Result.ToString());
+            case DataType.Decimal:
+                return compileResult.Result is string
+                           ? new DecimalExpression(compileResult.Result.ToString())
+                           : new DecimalExpression(((double) compileResult.Result));
+            case DataType.Boolean:
+                return compileResult.Result is string
+                           ? new BooleanExpression(compileResult.Result.ToString())
+                           : new BooleanExpression((bool) compileResult.Result);
+            //case DataType.Enumerable:
+            //    return 
+            case DataType.ExcelError:
+                //throw (new OfficeOpenXml.FormulaParsing.Exceptions.ExcelErrorValueException((ExcelErrorValue)compileResult.Result)); //Added JK
+                return compileResult.Result is string
+                           ? new ExcelErrorExpression(compileResult.Result.ToString(),
+                                                      ExcelErrorValue.Parse(compileResult.Result.ToString()))
+                           : new ExcelErrorExpression((ExcelErrorValue) compileResult.Result);
+            case DataType.Empty:
+                return new IntegerExpression(0); //Added JK
+            case DataType.Time:
+            case DataType.Date:
+                return new DecimalExpression((double)compileResult.Result);
+            case DataType.Enumerable:
+                IRangeInfo? rangeInfo = compileResult.Result as IRangeInfo;
+                if (rangeInfo != null)
+                {
+                    return new ExcelRangeExpression(rangeInfo);
+                }
+                break;
+
         }
+        return null;
+    }
+
+    private static IExpressionConverter _instance;
+    public static IExpressionConverter Instance
+    {
+        get { return _instance ??= new ExpressionConverter(); }
     }
 }

@@ -15,50 +15,49 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace OfficeOpenXml.FormulaParsing.LexicalAnalysis.TokenSeparatorHandlers
+namespace OfficeOpenXml.FormulaParsing.LexicalAnalysis.TokenSeparatorHandlers;
+
+/// <summary>
+/// This class provides access to <see cref="SeparatorHandler"/>s - classes that exposes functionatlity
+/// needed when parsing strings to tokens.
+/// </summary>
+internal class TokenSeparatorHandler
 {
-    /// <summary>
-    /// This class provides access to <see cref="SeparatorHandler"/>s - classes that exposes functionatlity
-    /// needed when parsing strings to tokens.
-    /// </summary>
-    internal class TokenSeparatorHandler
+    public TokenSeparatorHandler(ITokenSeparatorProvider tokenSeparatorProvider, INameValueProvider nameValueProvider)
+        : this(new SeparatorHandler[]
+        {
+            new StringHandler(),
+            new BracketHandler(),
+            new SheetnameHandler(),
+            new MultipleCharSeparatorHandler(tokenSeparatorProvider, nameValueProvider),
+            new DefinedNameAddressHandler(nameValueProvider),
+            new ExponentialNumberHandler()
+        }){}
+
+    public TokenSeparatorHandler(params SeparatorHandler[] handlers)
     {
-        public TokenSeparatorHandler(ITokenSeparatorProvider tokenSeparatorProvider, INameValueProvider nameValueProvider)
-            : this(new SeparatorHandler[]
-                {
-                    new StringHandler(),
-                    new BracketHandler(),
-                    new SheetnameHandler(),
-                    new MultipleCharSeparatorHandler(tokenSeparatorProvider, nameValueProvider),
-                    new DefinedNameAddressHandler(nameValueProvider),
-                    new ExponentialNumberHandler()
-                }){}
+        this._handlers = handlers;
+    }
 
-        public TokenSeparatorHandler(params SeparatorHandler[] handlers)
+    private readonly SeparatorHandler[] _handlers;
+
+    /// <summary>
+    /// Handles a tokenseparator.
+    /// </summary>
+    /// <param name="c"></param>
+    /// <param name="tokenSeparator"></param>
+    /// <param name="context"></param>
+    /// <param name="tokenIndexProvider"></param>
+    /// <returns>Returns true if the tokenseparator was handled.</returns>
+    public bool Handle(char c, Token tokenSeparator, TokenizerContext context, ITokenIndexProvider tokenIndexProvider)
+    {
+        foreach(SeparatorHandler? handler in this._handlers)
         {
-            this._handlers = handlers;
-        }
-
-        private readonly SeparatorHandler[] _handlers;
-
-        /// <summary>
-        /// Handles a tokenseparator.
-        /// </summary>
-        /// <param name="c"></param>
-        /// <param name="tokenSeparator"></param>
-        /// <param name="context"></param>
-        /// <param name="tokenIndexProvider"></param>
-        /// <returns>Returns true if the tokenseparator was handled.</returns>
-        public bool Handle(char c, Token tokenSeparator, TokenizerContext context, ITokenIndexProvider tokenIndexProvider)
-        {
-            foreach(SeparatorHandler? handler in this._handlers)
+            if(handler.Handle(c, tokenSeparator, context, tokenIndexProvider))
             {
-                if(handler.Handle(c, tokenSeparator, context, tokenIndexProvider))
-                {
-                    return true;
-                }
+                return true;
             }
-            return false;
         }
+        return false;
     }
 }

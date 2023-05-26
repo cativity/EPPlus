@@ -18,26 +18,25 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Statistical
-{
-    [FunctionMetadata(
-        Category = ExcelFunctionCategory.Statistical,
-        EPPlusVersion = "5.5",
-        IntroducedInExcelVersion = "2013",
-        Description = "Return the gamma function value for a supplied number")]
-    internal class Gamma : ExcelFunction
-    {
-        public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
-        {
-            ValidateArguments(arguments, 1);
-            double n = this.ArgToDecimal(arguments, 0);
-            if (n <= 0)
-            {
-                return this.CreateResult(eErrorType.Num);
-            }
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Statistical;
 
-            double result = GammaHelper.gamma(n);
-            return this.CreateResult(result, DataType.Decimal);
+[FunctionMetadata(
+                     Category = ExcelFunctionCategory.Statistical,
+                     EPPlusVersion = "5.5",
+                     IntroducedInExcelVersion = "2013",
+                     Description = "Return the gamma function value for a supplied number")]
+internal class Gamma : ExcelFunction
+{
+    public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
+    {
+        ValidateArguments(arguments, 1);
+        double n = this.ArgToDecimal(arguments, 0);
+        if (n <= 0)
+        {
+            return this.CreateResult(eErrorType.Num);
         }
+
+        double result = GammaHelper.gamma(n);
+        return this.CreateResult(result, DataType.Decimal);
     }
 }

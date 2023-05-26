@@ -15,36 +15,35 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace OfficeOpenXml.FormulaParsing
+namespace OfficeOpenXml.FormulaParsing;
+
+/// <summary>
+/// Used in the formula calculation dependency chain
+/// </summary>
+public class FormulaCellInfo : IFormulaCellInfo
 {
-    /// <summary>
-    /// Used in the formula calculation dependency chain
-    /// </summary>
-    public class FormulaCellInfo : IFormulaCellInfo
+    internal FormulaCellInfo(string worksheet, string address, string formula)
     {
-        internal FormulaCellInfo(string worksheet, string address, string formula)
-        {
-            this._worksheet = worksheet;
-            this._address = address;
-            this._formula = formula;
-        }
-
-        private readonly string _worksheet;
-        private readonly string _address;
-        private readonly string _formula;
-
-        /// <summary>
-        /// The name of the worksheet.
-        /// </summary>
-        public string Worksheet => this._worksheet;
-
-        /// <summary>
-        /// The address of the formula
-        /// </summary>
-        public string Address => this._address;
-        /// <summary>
-        /// The formula
-        /// </summary>
-        public string Formula => this._formula;
+        this._worksheet = worksheet;
+        this._address = address;
+        this._formula = formula;
     }
+
+    private readonly string _worksheet;
+    private readonly string _address;
+    private readonly string _formula;
+
+    /// <summary>
+    /// The name of the worksheet.
+    /// </summary>
+    public string Worksheet => this._worksheet;
+
+    /// <summary>
+    /// The address of the formula
+    /// </summary>
+    public string Address => this._address;
+    /// <summary>
+    /// The formula
+    /// </summary>
+    public string Formula => this._formula;
 }

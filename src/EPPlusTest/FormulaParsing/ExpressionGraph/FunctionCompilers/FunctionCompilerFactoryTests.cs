@@ -41,120 +41,119 @@ using OfficeOpenXml.FormulaParsing.Excel.Functions.RefAndLookup;
 using OfficeOpenXml.FormulaParsing.ExpressionGraph;
 using OfficeOpenXml.FormulaParsing.ExpressionGraph.FunctionCompilers;
 
-namespace EPPlusTest.FormulaParsing.ExpressionGraph.FunctionCompilers
+namespace EPPlusTest.FormulaParsing.ExpressionGraph.FunctionCompilers;
+
+[TestClass]
+public class FunctionCompilerFactoryTests
 {
-    [TestClass]
-    public class FunctionCompilerFactoryTests
+    private ParsingContext _context;
+
+    [TestInitialize]
+    public void Initialize()
     {
-        private ParsingContext _context;
-
-        [TestInitialize]
-        public void Initialize()
-        {
-            this._context = ParsingContext.Create();
-        }
-        #region Create Tests
-        [TestMethod]
-        public void CreateHandlesStandardFunctionCompiler()
-        {
-            FunctionRepository? functionRepository = FunctionRepository.Create();
-            FunctionCompilerFactory? functionCompilerFactory = new FunctionCompilerFactory(functionRepository, this._context);
-            Sum? function = new Sum();
-            FunctionCompiler? functionCompiler = functionCompilerFactory.Create(function);
-            Assert.IsInstanceOfType(functionCompiler, typeof(DefaultCompiler));
-        }
-
-        [TestMethod]
-        public void CreateHandlesSpecialIfCompiler()
-        {
-            FunctionRepository? functionRepository = FunctionRepository.Create();
-            FunctionCompilerFactory? functionCompilerFactory = new FunctionCompilerFactory(functionRepository, this._context);
-            If? function = new If();
-            FunctionCompiler? functionCompiler = functionCompilerFactory.Create(function);
-            Assert.IsInstanceOfType(functionCompiler, typeof(IfFunctionCompiler));
-        }
-
-        [TestMethod]
-        public void CreateHandlesSpecialIfErrorCompiler()
-        {
-            FunctionRepository? functionRepository = FunctionRepository.Create();
-            FunctionCompilerFactory? functionCompilerFactory = new FunctionCompilerFactory(functionRepository, this._context);
-            IfError? function = new IfError();
-            FunctionCompiler? functionCompiler = functionCompilerFactory.Create(function);
-            Assert.IsInstanceOfType(functionCompiler, typeof(IfErrorFunctionCompiler));
-        }
-
-        [TestMethod]
-        public void CreateHandlesSpecialIfNaCompiler()
-        {
-            FunctionRepository? functionRepository = FunctionRepository.Create();
-            FunctionCompilerFactory? functionCompilerFactory = new FunctionCompilerFactory(functionRepository, this._context);
-            IfNa? function = new IfNa();
-            FunctionCompiler? functionCompiler = functionCompilerFactory.Create(function);
-            Assert.IsInstanceOfType(functionCompiler, typeof(IfNaFunctionCompiler));
-        }
-
-        [TestMethod]
-        public void CreateHandlesLookupFunctionCompiler()
-        {
-            FunctionRepository? functionRepository = FunctionRepository.Create();
-            FunctionCompilerFactory? functionCompilerFactory = new FunctionCompilerFactory(functionRepository, this._context);
-            Column? function = new Column();
-            FunctionCompiler? functionCompiler = functionCompilerFactory.Create(function);
-            Assert.IsInstanceOfType(functionCompiler, typeof(LookupFunctionCompiler));
-        }
-
-        [TestMethod]
-        public void CreateHandlesErrorFunctionCompiler()
-        {
-            FunctionRepository? functionRepository = FunctionRepository.Create();
-            FunctionCompilerFactory? functionCompilerFactory = new FunctionCompilerFactory(functionRepository, this._context);
-            IsError? function = new IsError();
-            FunctionCompiler? functionCompiler = functionCompilerFactory.Create(function);
-            Assert.IsInstanceOfType(functionCompiler, typeof(ErrorHandlingFunctionCompiler));
-        }
-
-        [TestMethod]
-        public void CreateHandlesCustomFunctionCompiler()
-        {
-            FunctionRepository? functionRepository = FunctionRepository.Create();
-            functionRepository.LoadModule(new TestFunctionModule(this._context));
-            FunctionCompilerFactory? functionCompilerFactory = new FunctionCompilerFactory(functionRepository, this._context);
-            MyFunction? function = new MyFunction();
-            FunctionCompiler? functionCompiler = functionCompilerFactory.Create(function);
-            Assert.IsInstanceOfType(functionCompiler, typeof(MyFunctionCompiler));
-        }
-        #endregion
-
-        #region Nested Classes
-        public class TestFunctionModule : FunctionsModule
-        {
-            public TestFunctionModule(ParsingContext context)
-            {
-                MyFunction? myFunction = new MyFunction();
-                MyFunctionCompiler? customCompiler = new MyFunctionCompiler(myFunction, context);
-                this.Functions.Add(MyFunction.Name, myFunction);
-                this.CustomCompilers.Add(typeof(MyFunction), customCompiler);
-            }
-        }
-
-        public class MyFunction : ExcelFunction
-        {
-            public const string Name = "MyFunction";
-            public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
-            {
-                throw new NotImplementedException();
-            }
-        }
-
-        public class MyFunctionCompiler : FunctionCompiler
-        {
-            public MyFunctionCompiler(MyFunction function, ParsingContext context) : base(function, context) { }
-            public override CompileResult Compile(IEnumerable<Expression> children)
-            {
-                throw new NotImplementedException();
-            }
-        }
-        #endregion
+        this._context = ParsingContext.Create();
     }
+    #region Create Tests
+    [TestMethod]
+    public void CreateHandlesStandardFunctionCompiler()
+    {
+        FunctionRepository? functionRepository = FunctionRepository.Create();
+        FunctionCompilerFactory? functionCompilerFactory = new FunctionCompilerFactory(functionRepository, this._context);
+        Sum? function = new Sum();
+        FunctionCompiler? functionCompiler = functionCompilerFactory.Create(function);
+        Assert.IsInstanceOfType(functionCompiler, typeof(DefaultCompiler));
+    }
+
+    [TestMethod]
+    public void CreateHandlesSpecialIfCompiler()
+    {
+        FunctionRepository? functionRepository = FunctionRepository.Create();
+        FunctionCompilerFactory? functionCompilerFactory = new FunctionCompilerFactory(functionRepository, this._context);
+        If? function = new If();
+        FunctionCompiler? functionCompiler = functionCompilerFactory.Create(function);
+        Assert.IsInstanceOfType(functionCompiler, typeof(IfFunctionCompiler));
+    }
+
+    [TestMethod]
+    public void CreateHandlesSpecialIfErrorCompiler()
+    {
+        FunctionRepository? functionRepository = FunctionRepository.Create();
+        FunctionCompilerFactory? functionCompilerFactory = new FunctionCompilerFactory(functionRepository, this._context);
+        IfError? function = new IfError();
+        FunctionCompiler? functionCompiler = functionCompilerFactory.Create(function);
+        Assert.IsInstanceOfType(functionCompiler, typeof(IfErrorFunctionCompiler));
+    }
+
+    [TestMethod]
+    public void CreateHandlesSpecialIfNaCompiler()
+    {
+        FunctionRepository? functionRepository = FunctionRepository.Create();
+        FunctionCompilerFactory? functionCompilerFactory = new FunctionCompilerFactory(functionRepository, this._context);
+        IfNa? function = new IfNa();
+        FunctionCompiler? functionCompiler = functionCompilerFactory.Create(function);
+        Assert.IsInstanceOfType(functionCompiler, typeof(IfNaFunctionCompiler));
+    }
+
+    [TestMethod]
+    public void CreateHandlesLookupFunctionCompiler()
+    {
+        FunctionRepository? functionRepository = FunctionRepository.Create();
+        FunctionCompilerFactory? functionCompilerFactory = new FunctionCompilerFactory(functionRepository, this._context);
+        Column? function = new Column();
+        FunctionCompiler? functionCompiler = functionCompilerFactory.Create(function);
+        Assert.IsInstanceOfType(functionCompiler, typeof(LookupFunctionCompiler));
+    }
+
+    [TestMethod]
+    public void CreateHandlesErrorFunctionCompiler()
+    {
+        FunctionRepository? functionRepository = FunctionRepository.Create();
+        FunctionCompilerFactory? functionCompilerFactory = new FunctionCompilerFactory(functionRepository, this._context);
+        IsError? function = new IsError();
+        FunctionCompiler? functionCompiler = functionCompilerFactory.Create(function);
+        Assert.IsInstanceOfType(functionCompiler, typeof(ErrorHandlingFunctionCompiler));
+    }
+
+    [TestMethod]
+    public void CreateHandlesCustomFunctionCompiler()
+    {
+        FunctionRepository? functionRepository = FunctionRepository.Create();
+        functionRepository.LoadModule(new TestFunctionModule(this._context));
+        FunctionCompilerFactory? functionCompilerFactory = new FunctionCompilerFactory(functionRepository, this._context);
+        MyFunction? function = new MyFunction();
+        FunctionCompiler? functionCompiler = functionCompilerFactory.Create(function);
+        Assert.IsInstanceOfType(functionCompiler, typeof(MyFunctionCompiler));
+    }
+    #endregion
+
+    #region Nested Classes
+    public class TestFunctionModule : FunctionsModule
+    {
+        public TestFunctionModule(ParsingContext context)
+        {
+            MyFunction? myFunction = new MyFunction();
+            MyFunctionCompiler? customCompiler = new MyFunctionCompiler(myFunction, context);
+            this.Functions.Add(MyFunction.Name, myFunction);
+            this.CustomCompilers.Add(typeof(MyFunction), customCompiler);
+        }
+    }
+
+    public class MyFunction : ExcelFunction
+    {
+        public const string Name = "MyFunction";
+        public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    public class MyFunctionCompiler : FunctionCompiler
+    {
+        public MyFunctionCompiler(MyFunction function, ParsingContext context) : base(function, context) { }
+        public override CompileResult Compile(IEnumerable<Expression> children)
+        {
+            throw new NotImplementedException();
+        }
+    }
+    #endregion
 }

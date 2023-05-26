@@ -10,24 +10,23 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
-namespace OfficeOpenXml.Core.CellStore
+namespace OfficeOpenXml.Core.CellStore;
+
+/// <summary>
+/// For cell value structure (for memory optimization of huge sheet)
+/// </summary>
+internal struct ExcelValue
 {
-    /// <summary>
-    /// For cell value structure (for memory optimization of huge sheet)
-    /// </summary>
-    internal struct ExcelValue
+    internal object _value;
+    internal int _styleId;
+
+    public override string ToString()
     {
-        internal object _value;
-        internal int _styleId;
-
-        public override string ToString()
+        if (this._value != null)
         {
-            if (this._value != null)
-            {
-                return this._value.ToString();
-            }
-
-            return "null";
+            return this._value.ToString();
         }
+
+        return "null";
     }
 }

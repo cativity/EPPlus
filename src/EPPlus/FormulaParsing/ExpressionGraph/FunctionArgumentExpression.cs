@@ -15,39 +15,38 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace OfficeOpenXml.FormulaParsing.ExpressionGraph
+namespace OfficeOpenXml.FormulaParsing.ExpressionGraph;
+
+internal class FunctionArgumentExpression : GroupExpression
 {
-    internal class FunctionArgumentExpression : GroupExpression
+    private readonly Expression _function;
+
+    public FunctionArgumentExpression(Expression function)
+        : base(false)
     {
-        private readonly Expression _function;
+        this._function = function;
+    }
 
-        public FunctionArgumentExpression(Expression function)
-            : base(false)
+    public override bool IsGroupedExpression
+    {
+        get { return false; }
+    }
+
+    public override bool IgnoreCircularReference 
+    { 
+        get => base.IgnoreCircularReference; 
+        set
         {
-            this._function = function;
-        }
-
-        public override bool IsGroupedExpression
-        {
-            get { return false; }
-        }
-
-        public override bool IgnoreCircularReference 
-        { 
-            get => base.IgnoreCircularReference; 
-            set
+            base.IgnoreCircularReference = value;
+            foreach(Expression? childExpression in this.Children)
             {
-                base.IgnoreCircularReference = value;
-                foreach(Expression? childExpression in this.Children)
-                {
-                    childExpression.IgnoreCircularReference = value;
-                }
+                childExpression.IgnoreCircularReference = value;
             }
         }
+    }
 
-        public override Expression PrepareForNextChild()
-        {
-            return this._function.PrepareForNextChild();
-        }
+    public override Expression PrepareForNextChild()
+    {
+        return this._function.PrepareForNextChild();
     }
 }

@@ -10,74 +10,73 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
-namespace OfficeOpenXml.Filter
+namespace OfficeOpenXml.Filter;
+
+/// <summary>
+/// A collection of value filters
+/// </summary>
+public class ExcelValueFilterCollection : ExcelFilterCollectionBase<ExcelFilterItem>
 {
     /// <summary>
-    /// A collection of value filters
+    /// Flag indicating whether to filter by blank
     /// </summary>
-    public class ExcelValueFilterCollection : ExcelFilterCollectionBase<ExcelFilterItem>
+    public bool Blank { get; set; }
+    /// <summary>
+    /// The calendar to be used. To be implemented
+    /// </summary>
+    internal eCalendarType? CalendarTyp{get;set;}
+    /// <summary>
+    /// Add a Date filter item. 
+    /// </summary>
+    /// <param name="value"></param>
+    /// <returns></returns>
+    public ExcelFilterDateGroupItem Add(ExcelFilterDateGroupItem value)
     {
-        /// <summary>
-        /// Flag indicating whether to filter by blank
-        /// </summary>
-        public bool Blank { get; set; }
-        /// <summary>
-        /// The calendar to be used. To be implemented
-        /// </summary>
-        internal eCalendarType? CalendarTyp{get;set;}
-        /// <summary>
-        /// Add a Date filter item. 
-        /// </summary>
-        /// <param name="value"></param>
-        /// <returns></returns>
-        public ExcelFilterDateGroupItem Add(ExcelFilterDateGroupItem value)
-        {
-            this._list.Add(value);
-            return value;
-        }
-        /// <summary>
-        /// Add a filter value that will be matched agains the ExcelRange.Text property
-        /// </summary>
-        /// <param name="item">The value</param>
-        /// <returns>The filter value item</returns>
-        public ExcelFilterValueItem Add(ExcelFilterValueItem item)
-        {
-            this._list.Add(item);
-            return item;
-        }
-        /// <summary>
-        /// Add a filter value that will be matched agains the ExcelRange.Text property
-        /// </summary>
-        /// <param name="value">The value</param>
-        /// <returns>The filter value item</returns>
-        public ExcelFilterValueItem Add(string value)
-        {
-            ExcelFilterValueItem? v = new ExcelFilterValueItem(value);
-            this._list.Add(v);
-            return v;
-        }
-        /// <summary>
-        /// Clears the collection
-        /// </summary>
-        public void Clear()
-        {
-            this._list.Clear();
-        }
-        /// <summary>
-        /// Remove the item at the specified index from the list
-        /// </summary>
-        /// <param name="index">The index in the list</param>
-        public void RemoveAt(int index)
-        {
-            this._list.RemoveAt(index);
-        }
-        /// <summary>
-        /// Remove the item from the list
-        /// </summary>
-        /// <param name="item">The item to remove</param>
-        public void Remove(ExcelFilterItem item)
-        {
-            this._list.Remove(item);
-        }
+        this._list.Add(value);
+        return value;
+    }
+    /// <summary>
+    /// Add a filter value that will be matched agains the ExcelRange.Text property
+    /// </summary>
+    /// <param name="item">The value</param>
+    /// <returns>The filter value item</returns>
+    public ExcelFilterValueItem Add(ExcelFilterValueItem item)
+    {
+        this._list.Add(item);
+        return item;
+    }
+    /// <summary>
+    /// Add a filter value that will be matched agains the ExcelRange.Text property
+    /// </summary>
+    /// <param name="value">The value</param>
+    /// <returns>The filter value item</returns>
+    public ExcelFilterValueItem Add(string value)
+    {
+        ExcelFilterValueItem? v = new ExcelFilterValueItem(value);
+        this._list.Add(v);
+        return v;
+    }
+    /// <summary>
+    /// Clears the collection
+    /// </summary>
+    public void Clear()
+    {
+        this._list.Clear();
+    }
+    /// <summary>
+    /// Remove the item at the specified index from the list
+    /// </summary>
+    /// <param name="index">The index in the list</param>
+    public void RemoveAt(int index)
+    {
+        this._list.RemoveAt(index);
+    }
+    /// <summary>
+    /// Remove the item from the list
+    /// </summary>
+    /// <param name="item">The item to remove</param>
+    public void Remove(ExcelFilterItem item)
+    {
+        this._list.Remove(item);
     }
 }

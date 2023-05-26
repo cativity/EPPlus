@@ -14,51 +14,50 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace OfficeOpenXml.Utils.TypeConversion
+namespace OfficeOpenXml.Utils.TypeConversion;
+
+internal static class NumericTypeConversions
 {
-    internal static class NumericTypeConversions
+    private static readonly Dictionary<Type, Func<object, object>> _numericTypes = new Dictionary<Type, Func<object, object>>
     {
-        private static readonly Dictionary<Type, Func<object, object>> _numericTypes = new Dictionary<Type, Func<object, object>>
-        {
-            { typeof(byte), (o) => Convert.ToByte(o) },
-            { typeof(uint), (o) => Convert.ToUInt32(o) },
-            { typeof(int), (o) => Convert.ToInt32(o) },
-            { typeof(float), (o) => {
-                if(o == null)
-                {
-                    return null;
-                }
-
-                if(float.TryParse(o.ToString(), out float output))
-                {
-                    return output;
-                }
-
-                return null;
-            } },
-            { typeof(double), (o) => Convert.ToDouble(o) },
-            { typeof(decimal), (o) => Convert.ToDecimal(o) },
-            { typeof(ulong), (o) => Convert.ToUInt64(o) },
-            { typeof(long), (o) => Convert.ToInt64(o) },
-            { typeof(ushort), (o) => Convert.ToUInt16(o) },
-            { typeof(short), (o) => Convert.ToInt16(o) }
-        };
-
-        public static bool IsNumeric(Type type)
-        {
-            return _numericTypes.ContainsKey(type);
-        }
-
-        public static bool TryConvert(object obj, out object convertedObj, Type convertToType)
-        {
-            convertedObj = obj;
-            if (_numericTypes.ContainsKey(convertToType))
+        { typeof(byte), (o) => Convert.ToByte(o) },
+        { typeof(uint), (o) => Convert.ToUInt32(o) },
+        { typeof(int), (o) => Convert.ToInt32(o) },
+        { typeof(float), (o) => {
+            if(o == null)
             {
-                Func<object, object>? conversionFunc = _numericTypes[convertToType];
-                convertedObj = conversionFunc(obj);
-                return true;
+                return null;
             }
-            return false;
+
+            if(float.TryParse(o.ToString(), out float output))
+            {
+                return output;
+            }
+
+            return null;
+        } },
+        { typeof(double), (o) => Convert.ToDouble(o) },
+        { typeof(decimal), (o) => Convert.ToDecimal(o) },
+        { typeof(ulong), (o) => Convert.ToUInt64(o) },
+        { typeof(long), (o) => Convert.ToInt64(o) },
+        { typeof(ushort), (o) => Convert.ToUInt16(o) },
+        { typeof(short), (o) => Convert.ToInt16(o) }
+    };
+
+    public static bool IsNumeric(Type type)
+    {
+        return _numericTypes.ContainsKey(type);
+    }
+
+    public static bool TryConvert(object obj, out object convertedObj, Type convertToType)
+    {
+        convertedObj = obj;
+        if (_numericTypes.ContainsKey(convertToType))
+        {
+            Func<object, object>? conversionFunc = _numericTypes[convertToType];
+            convertedObj = conversionFunc(obj);
+            return true;
         }
+        return false;
     }
 }

@@ -18,49 +18,48 @@ using OfficeOpenXml.Drawing.Interfaces;
 using OfficeOpenXml.Drawing.Style.Effect;
 using OfficeOpenXml.Style;
 
-namespace OfficeOpenXml.Drawing.Chart.ChartEx
+namespace OfficeOpenXml.Drawing.Chart.ChartEx;
+
+/// <summary>
+/// Datalabel properties
+/// </summary>
+public class ExcelChartExSerieDataLabel : ExcelChartExDataLabel
 {
-    /// <summary>
-    /// Datalabel properties
-    /// </summary>
-    public class ExcelChartExSerieDataLabel : ExcelChartExDataLabel
+    internal ExcelChartExSerieDataLabel(ExcelChartExSerie serie, XmlNamespaceManager ns, XmlNode node, string[] schemaNodeOrder)
+        : base(serie, ns, node)
     {
-        internal ExcelChartExSerieDataLabel(ExcelChartExSerie serie, XmlNamespaceManager ns, XmlNode node, string[] schemaNodeOrder)
-             : base(serie, ns, node)
-        {
-            this.SchemaNodeOrder = schemaNodeOrder;
-            this.Position = eLabelPosition.Center;
-        }
-        ExcelChartExDataLabelCollection _dataLabels = null;
-        /// <summary>
-        /// Individually formatted data labels.
-        /// </summary>
-        public ExcelChartExDataLabelCollection DataLabels
-        {
-            get
-            {
-                return this._dataLabels ??= new ExcelChartExDataLabelCollection(this._serie, this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder);
-            }
-        }
-        /// <summary>
-        /// Adds data labels to the series.
-        /// </summary>
-        /// <param name="showCategory">Show the category name</param>
-        /// <param name="showValue">Show values</param>
-        /// <param name="showSeriesName">Show series name</param>
-        public void Add(bool showCategory=true, bool showValue=false, bool showSeriesName=false)
-        {
-            this.SetDataLabelNode();
-            this.ShowCategory = showCategory;
-            this.ShowValue = showValue;
-            this.ShowSeriesName = showSeriesName;
-        }
-        /// <summary>
-        /// Removes data labels from the series
-        /// </summary>
-        public void Remove()
-        {
-            this._serie.DeleteNode("cx:dataLabels");
-        }        
+        this.SchemaNodeOrder = schemaNodeOrder;
+        this.Position = eLabelPosition.Center;
     }
+    ExcelChartExDataLabelCollection _dataLabels = null;
+    /// <summary>
+    /// Individually formatted data labels.
+    /// </summary>
+    public ExcelChartExDataLabelCollection DataLabels
+    {
+        get
+        {
+            return this._dataLabels ??= new ExcelChartExDataLabelCollection(this._serie, this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder);
+        }
+    }
+    /// <summary>
+    /// Adds data labels to the series.
+    /// </summary>
+    /// <param name="showCategory">Show the category name</param>
+    /// <param name="showValue">Show values</param>
+    /// <param name="showSeriesName">Show series name</param>
+    public void Add(bool showCategory=true, bool showValue=false, bool showSeriesName=false)
+    {
+        this.SetDataLabelNode();
+        this.ShowCategory = showCategory;
+        this.ShowValue = showValue;
+        this.ShowSeriesName = showSeriesName;
+    }
+    /// <summary>
+    /// Removes data labels from the series
+    /// </summary>
+    public void Remove()
+    {
+        this._serie.DeleteNode("cx:dataLabels");
+    }        
 }

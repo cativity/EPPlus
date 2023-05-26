@@ -10,28 +10,27 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
-namespace OfficeOpenXml.Drawing.Chart
+namespace OfficeOpenXml.Drawing.Chart;
+
+/// <summary>
+/// Tickmarks
+/// </summary>
+public enum eAxisTickMark
 {
     /// <summary>
-    /// Tickmarks
+    /// The tick marks will cross the axis. 
     /// </summary>
-    public enum eAxisTickMark
-    {
-        /// <summary>
-        /// The tick marks will cross the axis. 
-        /// </summary>
-        Cross,   
-        /// <summary>
-        /// The tick marks will be inside the plot area. 
-        /// </summary>
-        In,     
-        /// <summary>
-        /// There will be no tick marks.
-        /// </summary>
-        None,    
-        /// <summary>
-        /// The tick marks will be outside the plot area.
-        /// </summary>
-        Out
-    }
+    Cross,   
+    /// <summary>
+    /// The tick marks will be inside the plot area. 
+    /// </summary>
+    In,     
+    /// <summary>
+    /// There will be no tick marks.
+    /// </summary>
+    None,    
+    /// <summary>
+    /// The tick marks will be outside the plot area.
+    /// </summary>
+    Out
 }

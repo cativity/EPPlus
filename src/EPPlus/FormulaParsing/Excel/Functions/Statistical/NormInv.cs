@@ -17,26 +17,25 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Statistical
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Statistical;
+
+[FunctionMetadata(
+                     Category = ExcelFunctionCategory.Statistical,
+                     EPPlusVersion = "5.8",
+                     Description = "Calculates the inverse of the Cumulative Normal Distribution Function for a supplied value of x, and a supplied distribution mean & standard deviation.")]
+internal class NormInv : NormInvBase
 {
-    [FunctionMetadata(
-            Category = ExcelFunctionCategory.Statistical,
-            EPPlusVersion = "5.8",
-            Description = "Calculates the inverse of the Cumulative Normal Distribution Function for a supplied value of x, and a supplied distribution mean & standard deviation.")]
-    internal class NormInv : NormInvBase
+    public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
     {
-        public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
+        ValidateArguments(arguments, 3);
+        double probability = this.ArgToDecimal(arguments, 0);
+        double mean = this.ArgToDecimal(arguments, 1);
+        double stdev = this.ArgToDecimal(arguments, 2);
+        if(probability < 0 || probability > 1 || stdev <= 0)
         {
-            ValidateArguments(arguments, 3);
-            double probability = this.ArgToDecimal(arguments, 0);
-            double mean = this.ArgToDecimal(arguments, 1);
-            double stdev = this.ArgToDecimal(arguments, 2);
-            if(probability < 0 || probability > 1 || stdev <= 0)
-            {
-                return this.CreateResult(eErrorType.Num);
-            }
-            double result = NormsInv(probability, mean, stdev);
-            return this.CreateResult(result, DataType.Decimal);
+            return this.CreateResult(eErrorType.Num);
         }
+        double result = NormsInv(probability, mean, stdev);
+        return this.CreateResult(result, DataType.Decimal);
     }
 }

@@ -25,21 +25,20 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Xml;
-namespace OfficeOpenXml.Drawing.Chart.ChartEx
+namespace OfficeOpenXml.Drawing.Chart.ChartEx;
+
+/// <summary>
+/// Represents a Sunburst Chart
+/// </summary>
+public class ExcelSunburstChart : ExcelChartEx
 {
-    /// <summary>
-    /// Represents a Sunburst Chart
-    /// </summary>
-    public class ExcelSunburstChart : ExcelChartEx
+    internal ExcelSunburstChart(ExcelDrawings drawings, XmlNode drawingsNode, eChartType? type, XmlDocument chartXml = null, ExcelGroupShape parent = null) :
+        base(drawings, drawingsNode, type, chartXml, parent)
     {
-        internal ExcelSunburstChart(ExcelDrawings drawings, XmlNode drawingsNode, eChartType? type, XmlDocument chartXml = null, ExcelGroupShape parent = null) :
-            base(drawings, drawingsNode, type, chartXml, parent)
-        {
-            this.StyleManager.SetChartStyle(Chart.Style.ePresetChartStyle.SunburstChartStyle1);
-        }
-        internal ExcelSunburstChart(ExcelDrawings drawings, XmlNode node, Uri uriChart, ZipPackagePart part, XmlDocument chartXml, XmlNode chartNode, ExcelGroupShape parent = null) :
-            base(drawings, node, uriChart, part, chartXml, chartNode, parent)
-        {
-        }
+        this.StyleManager.SetChartStyle(Chart.Style.ePresetChartStyle.SunburstChartStyle1);
+    }
+    internal ExcelSunburstChart(ExcelDrawings drawings, XmlNode node, Uri uriChart, ZipPackagePart part, XmlDocument chartXml, XmlNode chartNode, ExcelGroupShape parent = null) :
+        base(drawings, node, uriChart, part, chartXml, chartNode, parent)
+    {
     }
 }

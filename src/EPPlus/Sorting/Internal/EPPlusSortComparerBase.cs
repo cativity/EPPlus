@@ -17,81 +17,80 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 
-namespace OfficeOpenXml.Sorting.Internal
-{
-    internal abstract class EPPlusSortComparerBase<T1, T2> : IComparer<T1>
-        where T1 : SortItemBase<T2>
-    { 
+namespace OfficeOpenXml.Sorting.Internal;
+
+internal abstract class EPPlusSortComparerBase<T1, T2> : IComparer<T1>
+    where T1 : SortItemBase<T2>
+{ 
 
 
-        public EPPlusSortComparerBase(bool[] descending, Dictionary<int, string[]> customLists, CultureInfo culture = null, CompareOptions compareOptions = CompareOptions.None)
-        {
-            this.Descending = descending;
-            this.CustomLists = customLists;
-            this.Culture = culture;
-            this.CompOptions = compareOptions;
-        }
-
-        protected const int CustomListNotFound = -1;
-
-        protected bool[] Descending { get; private set; }
-        protected Dictionary<int, string[]> CustomLists { get; private set; }
-
-        protected CultureInfo Culture { get; private set; }
-
-        protected CompareOptions CompOptions { get; private set; }
-
-        protected int GetSortWeightByCustomList(string val, string[] list)
-        {
-            if (list == null || list.Count() == 0)
-            {
-                return -1;
-            }
-
-            bool ignoreCase = this.CompOptions == CompareOptions.IgnoreCase || this.CompOptions == CompareOptions.OrdinalIgnoreCase;
-            for (int x = 0; x < list.Length; x++)
-            {
-                if (string.Compare(val, list[x], ignoreCase, this.Culture) == 0)
-                {
-                    return x;
-                }
-            }
-            return CustomListNotFound;
-        }
-
-        protected static int CompareObjects(object x1, object y1)
-        {
-            int ret;
-            bool isNumX = ConvertUtil.IsNumericOrDate(x1);
-            bool isNumY = ConvertUtil.IsNumericOrDate(y1);
-            if (isNumX && isNumY)   //Numeric Compare
-            {
-                double d1 = ConvertUtil.GetValueDouble(x1);
-                double d2 = ConvertUtil.GetValueDouble(y1);
-                if (double.IsNaN(d1))
-                {
-                    d1 = double.MaxValue;
-                }
-                if (double.IsNaN(d2))
-                {
-                    d2 = double.MaxValue;
-                }
-                ret = d1 < d2 ? -1 : (d1 > d2 ? 1 : 0);
-            }
-            else if (isNumX == false && isNumY == false)   //String Compare
-            {
-                string? s1 = x1 == null ? "" : x1.ToString();
-                string? s2 = y1 == null ? "" : y1.ToString();
-                ret = string.Compare(s1, s2, StringComparison.CurrentCulture);
-            }
-            else
-            {
-                ret = isNumX ? -1 : 1;
-            }
-
-            return ret;
-        }
-
-        public abstract int Compare(T1 x, T1 y);
+    public EPPlusSortComparerBase(bool[] descending, Dictionary<int, string[]> customLists, CultureInfo culture = null, CompareOptions compareOptions = CompareOptions.None)
+    {
+        this.Descending = descending;
+        this.CustomLists = customLists;
+        this.Culture = culture;
+        this.CompOptions = compareOptions;
     }
+
+    protected const int CustomListNotFound = -1;
+
+    protected bool[] Descending { get; private set; }
+    protected Dictionary<int, string[]> CustomLists { get; private set; }
+
+    protected CultureInfo Culture { get; private set; }
+
+    protected CompareOptions CompOptions { get; private set; }
+
+    protected int GetSortWeightByCustomList(string val, string[] list)
+    {
+        if (list == null || list.Count() == 0)
+        {
+            return -1;
+        }
+
+        bool ignoreCase = this.CompOptions == CompareOptions.IgnoreCase || this.CompOptions == CompareOptions.OrdinalIgnoreCase;
+        for (int x = 0; x < list.Length; x++)
+        {
+            if (string.Compare(val, list[x], ignoreCase, this.Culture) == 0)
+            {
+                return x;
+            }
+        }
+        return CustomListNotFound;
+    }
+
+    protected static int CompareObjects(object x1, object y1)
+    {
+        int ret;
+        bool isNumX = ConvertUtil.IsNumericOrDate(x1);
+        bool isNumY = ConvertUtil.IsNumericOrDate(y1);
+        if (isNumX && isNumY)   //Numeric Compare
+        {
+            double d1 = ConvertUtil.GetValueDouble(x1);
+            double d2 = ConvertUtil.GetValueDouble(y1);
+            if (double.IsNaN(d1))
+            {
+                d1 = double.MaxValue;
+            }
+            if (double.IsNaN(d2))
+            {
+                d2 = double.MaxValue;
+            }
+            ret = d1 < d2 ? -1 : (d1 > d2 ? 1 : 0);
+        }
+        else if (isNumX == false && isNumY == false)   //String Compare
+        {
+            string? s1 = x1 == null ? "" : x1.ToString();
+            string? s2 = y1 == null ? "" : y1.ToString();
+            ret = string.Compare(s1, s2, StringComparison.CurrentCulture);
+        }
+        else
+        {
+            ret = isNumX ? -1 : 1;
+        }
+
+        return ret;
+    }
+
+    public abstract int Compare(T1 x, T1 y);
 }

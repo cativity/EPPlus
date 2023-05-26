@@ -15,13 +15,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace OfficeOpenXml.Attributes
+namespace OfficeOpenXml.Attributes;
+
+/// <summary>
+/// Use this attribute to indicate that the attribute target should be ignored.
+/// </summary>
+[AttributeUsage(AttributeTargets.All)]
+public class EpplusIgnore : Attribute
 {
-    /// <summary>
-    /// Use this attribute to indicate that the attribute target should be ignored.
-    /// </summary>
-    [AttributeUsage(AttributeTargets.All)]
-    public class EpplusIgnore : Attribute
-    {
-    }
 }

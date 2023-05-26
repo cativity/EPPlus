@@ -10,25 +10,24 @@
  *************************************************************************************************
     04/16/2020         EPPlus Software AB       EPPlus 5.2
  *************************************************************************************************/
-namespace OfficeOpenXml.Drawing.Chart.ChartEx
+namespace OfficeOpenXml.Drawing.Chart.ChartEx;
+
+/// <summary>
+/// The side position alignment of a chart element
+/// </summary>
+public enum ePositionAlign
 {
     /// <summary>
-    /// The side position alignment of a chart element
+    /// The chart element is positioned at the top of the side.
     /// </summary>
-    public enum ePositionAlign
-    {
-        /// <summary>
-        /// The chart element is positioned at the top of the side.
-        /// </summary>
-        Min,
-        /// <summary>
-        /// The chart element is positioned at the center of the side.
-        /// </summary>
-        Center,
-        /// <summary>
-        /// The chart element is positioned at the bottom of the side.
-        /// </summary>
-        Max
+    Min,
+    /// <summary>
+    /// The chart element is positioned at the center of the side.
+    /// </summary>
+    Center,
+    /// <summary>
+    /// The chart element is positioned at the bottom of the side.
+    /// </summary>
+    Max
 
-    }
 }

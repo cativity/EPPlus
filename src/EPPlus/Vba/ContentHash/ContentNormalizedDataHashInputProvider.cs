@@ -18,55 +18,54 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace OfficeOpenXml.Vba.ContentHash
+namespace OfficeOpenXml.Vba.ContentHash;
+
+internal class ContentNormalizedDataHashInputProvider : ContentHashInputProvider
 {
-    internal class ContentNormalizedDataHashInputProvider : ContentHashInputProvider
+    public ContentNormalizedDataHashInputProvider(ExcelVbaProject project) : base(project)
     {
-        public ContentNormalizedDataHashInputProvider(ExcelVbaProject project) : base(project)
-        {
-        }
+    }
 
-        protected override void CreateHashInputInternal(MemoryStream ms)
-        {
-            this.GetContentHash(ms);
-        }
+    protected override void CreateHashInputInternal(MemoryStream ms)
+    {
+        this.GetContentHash(ms);
+    }
 
-        private void GetContentHash(MemoryStream ms)
+    private void GetContentHash(MemoryStream ms)
+    {
+        //MS-OVBA 2.4.2.1
+        BinaryWriter bw = new BinaryWriter(ms);
+        bw.Write(this.HashEncoding.GetBytes(this.Project.Name));
+        bw.Write(this.HashEncoding.GetBytes(this.Project.Constants));
+        foreach (ExcelVbaReference? reference in this.Project.References)
         {
-            //MS-OVBA 2.4.2.1
-            BinaryWriter bw = new BinaryWriter(ms);
-            bw.Write(this.HashEncoding.GetBytes(this.Project.Name));
-            bw.Write(this.HashEncoding.GetBytes(this.Project.Constants));
-            foreach (ExcelVbaReference? reference in this.Project.References)
+            if (reference.ReferenceRecordID == 0x0D)
             {
-                if (reference.ReferenceRecordID == 0x0D)
+                bw.Write((byte)0x7B);
+            }
+            else if (reference.ReferenceRecordID == 0x0E)
+            {
+                foreach (byte b in BitConverter.GetBytes((uint)reference.Libid.Length))  //Length will never be an UInt with 4 bytes that aren't 0 (> 0x00FFFFFF), so no need for the rest of the properties.
                 {
-                    bw.Write((byte)0x7B);
-                }
-                else if (reference.ReferenceRecordID == 0x0E)
-                {
-                    foreach (byte b in BitConverter.GetBytes((uint)reference.Libid.Length))  //Length will never be an UInt with 4 bytes that aren't 0 (> 0x00FFFFFF), so no need for the rest of the properties.
+                    if (b != 0)
                     {
-                        if (b != 0)
-                        {
-                            bw.Write(b);
-                        }
-                        else
-                        {
-                            break;
-                        }
+                        bw.Write(b);
+                    }
+                    else
+                    {
+                        break;
                     }
                 }
             }
-            foreach (ExcelVBAModule? module in this.Project.Modules)
+        }
+        foreach (ExcelVBAModule? module in this.Project.Modules)
+        {
+            string[]? lines = module.Code.Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
+            foreach (string? line in lines)
             {
-                string[]? lines = module.Code.Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
-                foreach (string? line in lines)
+                if (!line.StartsWith("attribute", StringComparison.OrdinalIgnoreCase))
                 {
-                    if (!line.StartsWith("attribute", StringComparison.OrdinalIgnoreCase))
-                    {
-                        bw.Write(this.HashEncoding.GetBytes(line));
-                    }
+                    bw.Write(this.HashEncoding.GetBytes(line));
                 }
             }
         }

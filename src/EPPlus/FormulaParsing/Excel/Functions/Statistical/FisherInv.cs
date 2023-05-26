@@ -16,21 +16,20 @@ using System;
 using System.Collections.Generic;
 using MathObj = System.Math;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Statistical
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Statistical;
+
+[FunctionMetadata(
+                     Category = ExcelFunctionCategory.Statistical,
+                     EPPlusVersion = "6.0",
+                     Description = "Returns the inverse of the Fisher transformation")]
+internal class FisherInv : ExcelFunction
 {
-    [FunctionMetadata(
-        Category = ExcelFunctionCategory.Statistical,
-        EPPlusVersion = "6.0",
-        Description = "Returns the inverse of the Fisher transformation")]
-    internal class FisherInv : ExcelFunction
+    public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
     {
-        public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
-        {
-            ValidateArguments(arguments, 1);
-            double y = this.ArgToDecimal(arguments, 0);
-            double n = MathObj.Exp(2 * y);
-            double result = (n - 1) / (n + 1);
-            return this.CreateResult(result, DataType.Decimal);
-        }
+        ValidateArguments(arguments, 1);
+        double y = this.ArgToDecimal(arguments, 0);
+        double n = MathObj.Exp(2 * y);
+        double result = (n - 1) / (n + 1);
+        return this.CreateResult(result, DataType.Decimal);
     }
 }

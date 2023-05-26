@@ -13,52 +13,51 @@
 using OfficeOpenXml.Utils.Extensions;
 using System.Xml;
 
-namespace OfficeOpenXml.Drawing.Chart.ChartEx
-{
-    /// <summary>
-    /// Numeric data reference for an extended chart
-    /// </summary>
-    public class ExcelChartExNumericData : ExcelChartExData
-    {
-        internal ExcelChartExNumericData(string worksheetName, XmlNamespaceManager nsm, XmlNode topNode) : base(worksheetName, nsm, topNode)
-        {
-        }
-        /// <summary>
-        /// The type of data.
-        /// </summary>
-        public eNumericDataType Type 
-        { 
-            get
-            {
-                string? s = this.GetXmlNodeString("@type");
-                switch (s)
-                {
-                    case "val":
-                        return eNumericDataType.Value;
-                    case "colorVal":
-                        return eNumericDataType.ColorValue;
-                    default:
-                        return s.ToEnum(eNumericDataType.Value);
-                }
-            }
-            set
-            {
-                string s;
-                switch(value)
-                {
-                    case eNumericDataType.Value:
-                        s = "val";
-                        break;
-                    case eNumericDataType.ColorValue:
-                        s = "colorVal";
-                        break;
-                    default:
-                        s = value.ToEnumString();
-                        break;
-                }
+namespace OfficeOpenXml.Drawing.Chart.ChartEx;
 
-                this.SetXmlNodeString("@type", s);
+/// <summary>
+/// Numeric data reference for an extended chart
+/// </summary>
+public class ExcelChartExNumericData : ExcelChartExData
+{
+    internal ExcelChartExNumericData(string worksheetName, XmlNamespaceManager nsm, XmlNode topNode) : base(worksheetName, nsm, topNode)
+    {
+    }
+    /// <summary>
+    /// The type of data.
+    /// </summary>
+    public eNumericDataType Type 
+    { 
+        get
+        {
+            string? s = this.GetXmlNodeString("@type");
+            switch (s)
+            {
+                case "val":
+                    return eNumericDataType.Value;
+                case "colorVal":
+                    return eNumericDataType.ColorValue;
+                default:
+                    return s.ToEnum(eNumericDataType.Value);
             }
+        }
+        set
+        {
+            string s;
+            switch(value)
+            {
+                case eNumericDataType.Value:
+                    s = "val";
+                    break;
+                case eNumericDataType.ColorValue:
+                    s = "colorVal";
+                    break;
+                default:
+                    s = value.ToEnumString();
+                    break;
+            }
+
+            this.SetXmlNodeString("@type", s);
         }
     }
 }

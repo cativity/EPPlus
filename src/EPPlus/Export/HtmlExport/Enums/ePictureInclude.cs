@@ -11,24 +11,23 @@
   05/11/2021         EPPlus Software AB           ExcelTable Html Export
  *************************************************************************************************/
 
-namespace OfficeOpenXml.Export.HtmlExport
+namespace OfficeOpenXml.Export.HtmlExport;
+
+/// <summary>
+/// How to include picture drawings in the html
+/// </summary>
+public enum ePictureInclude
 {
     /// <summary>
-    /// How to include picture drawings in the html
+    /// Do not include pictures in the html export. Default
     /// </summary>
-    public enum ePictureInclude
-    {
-        /// <summary>
-        /// Do not include pictures in the html export. Default
-        /// </summary>
-        Exclude,
-        /// <summary>
-        /// Include in css only, so they images can be added manually. 
-        /// </summary>
-        IncludeInCssOnly,
-        /// <summary>
-        /// Include the images in the html export.
-        /// </summary>
-        Include
-    }
+    Exclude,
+    /// <summary>
+    /// Include in css only, so they images can be added manually. 
+    /// </summary>
+    IncludeInCssOnly,
+    /// <summary>
+    /// Include the images in the html export.
+    /// </summary>
+    Include
 }

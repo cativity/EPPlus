@@ -14,42 +14,75 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace OfficeOpenXml
+namespace OfficeOpenXml;
+
+/// <summary>
+/// A single cell address 
+/// </summary>
+public class ExcelCellAddress
 {
     /// <summary>
-    /// A single cell address 
+    /// Initializes a new instance of the ExcelCellAddress class.
     /// </summary>
-    public class ExcelCellAddress
+    public ExcelCellAddress()
+        : this(1, 1)
     {
-        /// <summary>
-        /// Initializes a new instance of the ExcelCellAddress class.
-        /// </summary>
-        public ExcelCellAddress()
-            : this(1, 1)
-        {
 
+    }
+
+    private int _row;
+    private bool _isRowFixed;
+    private int _column;
+    private bool _isColumnFixed;
+    private string _address;
+    /// <summary>
+    /// Initializes a new instance of the ExcelCellAddress class.
+    /// </summary>
+    /// <param name="row">The row.</param>
+    /// <param name="column">The column.</param>
+    /// <param name="isRowFixed">If the row is fixed, prefixed with $</param>
+    /// <param name="isColumnFixed">If the column is fixed, prefixed with $</param>
+    public ExcelCellAddress(int row, int column, bool isRowFixed = false, bool isColumnFixed = false)
+    {
+        this._row = row;
+        this._column = column;
+        this._isRowFixed = isRowFixed;
+        this._isColumnFixed = isColumnFixed;
+
+        if (this._column > 0 && this._row > 0)
+        {
+            this._address = ExcelCellBase.GetAddress(this._row, this._column);
         }
-
-        private int _row;
-        private bool _isRowFixed;
-        private int _column;
-        private bool _isColumnFixed;
-        private string _address;
-        /// <summary>
-        /// Initializes a new instance of the ExcelCellAddress class.
-        /// </summary>
-        /// <param name="row">The row.</param>
-        /// <param name="column">The column.</param>
-        /// <param name="isRowFixed">If the row is fixed, prefixed with $</param>
-        /// <param name="isColumnFixed">If the column is fixed, prefixed with $</param>
-        public ExcelCellAddress(int row, int column, bool isRowFixed = false, bool isColumnFixed = false)
+        else
         {
-            this._row = row;
-            this._column = column;
-            this._isRowFixed = isRowFixed;
-            this._isColumnFixed = isColumnFixed;
-
-            if (this._column > 0 && this._row > 0)
+            this._address = "#REF!";
+        }
+    }
+    /// <summary>
+    /// Initializes a new instance of the ExcelCellAddress class.
+    /// </summary>
+    ///<param name="address">The address</param>
+    public ExcelCellAddress(string address)
+    {
+        this.Address = address; 
+    }
+    /// <summary>
+    /// Row
+    /// </summary>
+    public int Row
+    {
+        get
+        {
+            return this._row;
+        }
+        private set
+        {
+            if (value <= 0)
+            {
+                throw new ArgumentOutOfRangeException("value", "Row cannot be less than 1.");
+            }
+            this._row = value;
+            if(this._column>0)
             {
                 this._address = ExcelCellBase.GetAddress(this._row, this._column);
             }
@@ -58,126 +91,91 @@ namespace OfficeOpenXml
                 this._address = "#REF!";
             }
         }
-        /// <summary>
-        /// Initializes a new instance of the ExcelCellAddress class.
-        /// </summary>
-        ///<param name="address">The address</param>
-        public ExcelCellAddress(string address)
+    }
+    /// <summary>
+    /// Column
+    /// </summary>
+    public int Column
+    {
+        get
         {
-            this.Address = address; 
+            return this._column;
         }
-        /// <summary>
-        /// Row
-        /// </summary>
-        public int Row
+        private set
         {
-            get
+            if (value <= 0)
             {
-                return this._row;
+                throw new ArgumentOutOfRangeException("value", "Column cannot be less than 1.");
             }
-            private set
+            this._column = value;
+            if (this._row > 0)
             {
-                if (value <= 0)
-                {
-                    throw new ArgumentOutOfRangeException("value", "Row cannot be less than 1.");
-                }
-                this._row = value;
-                if(this._column>0)
-                {
-                    this._address = ExcelCellBase.GetAddress(this._row, this._column);
-                }
-                else
-                {
-                    this._address = "#REF!";
-                }
+                this._address = ExcelCellBase.GetAddress(this._row, this._column);
+            }
+            else
+            {
+                this._address = "#REF!";
             }
         }
-        /// <summary>
-        /// Column
-        /// </summary>
-        public int Column
+    }
+    /// <summary>
+    /// Celladdress
+    /// </summary>
+    public string Address
+    {
+        get
         {
-            get
-            {
-                return this._column;
-            }
-            private set
-            {
-                if (value <= 0)
-                {
-                    throw new ArgumentOutOfRangeException("value", "Column cannot be less than 1.");
-                }
-                this._column = value;
-                if (this._row > 0)
-                {
-                    this._address = ExcelCellBase.GetAddress(this._row, this._column);
-                }
-                else
-                {
-                    this._address = "#REF!";
-                }
-            }
+            return this._address;
         }
-        /// <summary>
-        /// Celladdress
-        /// </summary>
-        public string Address
+        internal set
         {
-            get
-            {
-                return this._address;
-            }
-            internal set
-            {
-                this._address = value;
-                ExcelCellBase.GetRowColFromAddress(this._address, out this._row, out this._column,out this._isRowFixed, out this._isColumnFixed);
-            }
+            this._address = value;
+            ExcelCellBase.GetRowColFromAddress(this._address, out this._row, out this._column,out this._isRowFixed, out this._isColumnFixed);
         }
-        /// <summary>
-        /// Returns true if the row is fixed 
-        /// </summary>
-        public bool IsRowFixed 
-        { 
-            get
-            {
-                return this._isRowFixed;
-            }
-        }
-        /// <summary>
-        /// Returns true if the column is fixed
-        /// </summary>
-        public bool IsColumnFixed
+    }
+    /// <summary>
+    /// Returns true if the row is fixed 
+    /// </summary>
+    public bool IsRowFixed 
+    { 
+        get
         {
-            get
-            {
-                return this._isColumnFixed;
-            }
+            return this._isRowFixed;
         }
+    }
+    /// <summary>
+    /// Returns true if the column is fixed
+    /// </summary>
+    public bool IsColumnFixed
+    {
+        get
+        {
+            return this._isColumnFixed;
+        }
+    }
 
     /// <summary>
     /// If the address is an invalid reference (#REF!)
     /// </summary>
     public bool IsRef
+    {
+        get
         {
-            get
-            {
-                return this._row <= 0;
-            }
-        }
-
-        /// <summary>
-        /// Returns the letter corresponding to the supplied 1-based column index.
-        /// </summary>
-        /// <param name="column">Index of the column (1-based)</param>
-        /// <returns>The corresponding letter, like A for 1.</returns>
-        public static string GetColumnLetter(int column)
-        {
-            if (column > ExcelPackage.MaxColumns || column < 1)
-            {
-                throw new InvalidOperationException("Invalid 1-based column index: " + column + ". Valid range is 1 to " + ExcelPackage.MaxColumns);
-            }
-            return ExcelCellBase.GetColumnLetter(column);
+            return this._row <= 0;
         }
     }
-}
 
+    /// <summary>
+    /// Returns the letter corresponding to the supplied 1-based column index.
+    /// </summary>
+    /// <param name="column">Index of the column (1-based)</param>
+    /// <returns>The corresponding letter, like A for 1.</returns>
+    public static string GetColumnLetter(int column)
+    {
+        if (column > ExcelPackage.MaxColumns || column < 1)
+        {
+            throw new InvalidOperationException("Invalid 1-based column index: " + column + ". Valid range is 1 to " + ExcelPackage.MaxColumns);
+        }
+        return ExcelCellBase.GetColumnLetter(column);
+    }
+}

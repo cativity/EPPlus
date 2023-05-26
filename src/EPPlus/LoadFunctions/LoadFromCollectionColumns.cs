@@ -19,291 +19,290 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 
-namespace OfficeOpenXml.LoadFunctions
+namespace OfficeOpenXml.LoadFunctions;
+
+internal class LoadFromCollectionColumns<T>
 {
-    internal class LoadFromCollectionColumns<T>
+    public LoadFromCollectionColumns(BindingFlags bindingFlags)
+        : this(bindingFlags, new List<string>())
     {
-        public LoadFromCollectionColumns(BindingFlags bindingFlags)
-            : this(bindingFlags, new List<string>())
-        {
 
+    }
+
+    public LoadFromCollectionColumns(BindingFlags bindingFlags, List<string> sortOrderColumns)
+    {
+        this._bindingFlags = bindingFlags;
+        this._sortOrderColumns = sortOrderColumns;
+    }
+
+    private readonly BindingFlags _bindingFlags;
+    private readonly List<string> _sortOrderColumns;
+    private const int SortOrderOffset = ExcelPackage.MaxColumns;
+
+    internal List<ColumnInfo> Setup()
+    {
+        List<ColumnInfo>? result = new List<ColumnInfo>();
+        Type? t = typeof(T);
+        Type? ut = Nullable.GetUnderlyingType(t);
+        if (ut != null)
+        {
+            t = ut;
         }
 
-        public LoadFromCollectionColumns(BindingFlags bindingFlags, List<string> sortOrderColumns)
+        bool sort= this.SetupInternal(t, result, null);
+        if (sort)
         {
-            this._bindingFlags = bindingFlags;
-            this._sortOrderColumns = sortOrderColumns;
+            ReindexAndSortColumns(result);
+        }
+        return result;
+    }
+
+    private static List<ListType> CopyList<ListType>(List<ListType> source)
+    {
+        if (source == null)
+        {
+            return null;
         }
 
-        private readonly BindingFlags _bindingFlags;
-        private readonly List<string> _sortOrderColumns;
-        private const int SortOrderOffset = ExcelPackage.MaxColumns;
+        List<ListType>? copy = new List<ListType>();
+        source.ForEach(x => copy.Add(x));
+        return copy;
+    }
 
-        internal List<ColumnInfo> Setup()
+    private bool SetupInternal(Type type, List<ColumnInfo> result, List<int> sortOrderListArg, string path = null, string headerPrefix = null)
+    {
+        bool sort = false;
+        PropertyInfo[]? members = type.GetProperties(this._bindingFlags);
+        if (type.HasMemberWithPropertyOfType<EpplusTableColumnAttribute>())
         {
-            List<ColumnInfo>? result = new List<ColumnInfo>();
-            Type? t = typeof(T);
-            Type? ut = Nullable.GetUnderlyingType(t);
-            if (ut != null)
+            sort = true;
+            int index = 0;
+            foreach (PropertyInfo? member in members)
             {
-                t = ut;
-            }
-
-            bool sort= this.SetupInternal(t, result, null);
-            if (sort)
-            {
-                ReindexAndSortColumns(result);
-            }
-            return result;
-        }
-
-        private static List<ListType> CopyList<ListType>(List<ListType> source)
-        {
-            if (source == null)
-            {
-                return null;
-            }
-
-            List<ListType>? copy = new List<ListType>();
-            source.ForEach(x => copy.Add(x));
-            return copy;
-        }
-
-        private bool SetupInternal(Type type, List<ColumnInfo> result, List<int> sortOrderListArg, string path = null, string headerPrefix = null)
-        {
-            bool sort = false;
-            PropertyInfo[]? members = type.GetProperties(this._bindingFlags);
-            if (type.HasMemberWithPropertyOfType<EpplusTableColumnAttribute>())
-            {
-                sort = true;
-                int index = 0;
-                foreach (PropertyInfo? member in members)
+                List<int>? sortOrderList = CopyList(sortOrderListArg);
+                if (member.HasPropertyOfType<EpplusIgnore>())
                 {
-                    List<int>? sortOrderList = CopyList(sortOrderListArg);
-                    if (member.HasPropertyOfType<EpplusIgnore>())
+                    continue;
+                }
+                string? memberPath = path != null ? $"{path}.{member.Name}" : member.Name;
+                if (member.HasPropertyOfType<EpplusNestedTableColumnAttribute>())
+                {
+                    EpplusNestedTableColumnAttribute? nestedTableAttr = member.GetFirstAttributeOfType<EpplusNestedTableColumnAttribute>();
+                    int attrOrder = nestedTableAttr.Order;
+                    string? hPrefix = nestedTableAttr.HeaderPrefix;
+                    if(!string.IsNullOrEmpty(headerPrefix) && !string.IsNullOrEmpty(hPrefix))
                     {
-                        continue;
-                    }
-                    string? memberPath = path != null ? $"{path}.{member.Name}" : member.Name;
-                    if (member.HasPropertyOfType<EpplusNestedTableColumnAttribute>())
-                    {
-                        EpplusNestedTableColumnAttribute? nestedTableAttr = member.GetFirstAttributeOfType<EpplusNestedTableColumnAttribute>();
-                        int attrOrder = nestedTableAttr.Order;
-                        string? hPrefix = nestedTableAttr.HeaderPrefix;
-                        if(!string.IsNullOrEmpty(headerPrefix) && !string.IsNullOrEmpty(hPrefix))
-                        {
-                            hPrefix = $"{headerPrefix} {hPrefix}";
-                        }
-                        else if(!string.IsNullOrEmpty(headerPrefix))
-                        {
-                            hPrefix = headerPrefix;
-                        }
-                        if(this._sortOrderColumns != null && this._sortOrderColumns.IndexOf(memberPath) > -1)
-                        {
-                            attrOrder = this._sortOrderColumns.IndexOf(memberPath);
-                        }
-                        else
-                        {
-                            attrOrder += SortOrderOffset;
-                        }
-                        if(sortOrderList == null)
-                        {
-                            sortOrderList = new List<int>
-                            {
-                                attrOrder
-                            };
-                        }
-                        else
-                        {
-                            sortOrderList.Add(attrOrder);
-                            if (attrOrder < SortOrderOffset)
-                            {
-                                sortOrderList[0] = this._sortOrderColumns.IndexOf(memberPath);
-                            }
-                        }
-
-                        this.SetupInternal(member.PropertyType, result, sortOrderList, memberPath, hPrefix);
-                        sortOrderList.RemoveAt(sortOrderList.Count - 1);
-                        continue;
-                    }
-                    string? header = default(string);
-                    int sortOrderColumnsIndex = this._sortOrderColumns?.IndexOf(memberPath) ?? -1;
-                    int sortOrder = sortOrderColumnsIndex > -1 ? sortOrderColumnsIndex : SortOrderOffset;
-                    string? numberFormat = string.Empty;
-                    RowFunctions rowFunction = RowFunctions.None;
-                    string? totalsRowNumberFormat = string.Empty;
-                    string? totalsRowLabel = string.Empty;
-                    string? totalsRowFormula = string.Empty;
-                    List<int>? colInfoSortOrderList = new List<int>();
-                    EpplusTableColumnAttribute? epplusColumnAttr = member.GetFirstAttributeOfType<EpplusTableColumnAttribute>();
-                    if (epplusColumnAttr != null)
-                    {
-                        if(!string.IsNullOrEmpty(epplusColumnAttr.Header) && !string.IsNullOrEmpty(headerPrefix))
-                        {
-                            header = $"{headerPrefix} {epplusColumnAttr.Header}";
-                        }
-                        else
-                        {
-                            header = epplusColumnAttr.Header;
-                        }
-                        sortOrder = sortOrderColumnsIndex > -1 ? sortOrderColumnsIndex : epplusColumnAttr.Order + SortOrderOffset;
-                        
-                        if(sortOrderList != null && sortOrderList.Any())
-                        {
-                            if(sortOrderColumnsIndex > -1)
-                            {
-                                sortOrderList[0] = sortOrder;
-                            }    
-                            colInfoSortOrderList.AddRange(sortOrderList);
-                        }
-                        colInfoSortOrderList.Add(sortOrder < SortOrderOffset ? sortOrder : epplusColumnAttr.Order + SortOrderOffset);
-                        numberFormat = epplusColumnAttr.NumberFormat;
-                        rowFunction = epplusColumnAttr.TotalsRowFunction;
-                        totalsRowNumberFormat = epplusColumnAttr.TotalsRowNumberFormat;
-                        totalsRowLabel = epplusColumnAttr.TotalsRowLabel;
-                        totalsRowFormula = epplusColumnAttr.TotalsRowFormula;
+                        hPrefix = $"{headerPrefix} {hPrefix}";
                     }
                     else if(!string.IsNullOrEmpty(headerPrefix))
                     {
-                        header = string.IsNullOrEmpty(header) ? member.Name : header;
-                        header = $"{headerPrefix} {header}";
+                        hPrefix = headerPrefix;
+                    }
+                    if(this._sortOrderColumns != null && this._sortOrderColumns.IndexOf(memberPath) > -1)
+                    {
+                        attrOrder = this._sortOrderColumns.IndexOf(memberPath);
                     }
                     else
                     {
-                        header = string.IsNullOrEmpty(header) ? member.Name : header;
+                        attrOrder += SortOrderOffset;
                     }
-                    result.Add(new ColumnInfo
+                    if(sortOrderList == null)
                     {
-                        Header = header,
-                        SortOrder = sortOrder,
-                        Index = index++,
-                        SortOrderLevels = colInfoSortOrderList,
-                        MemberInfo = member,
-                        NumberFormat = numberFormat,
-                        TotalsRowFunction = rowFunction,
-                        TotalsRowNumberFormat = totalsRowNumberFormat,
-                        TotalsRowLabel = totalsRowLabel,
-                        TotalsRowFormula = totalsRowFormula,
-                        Path = memberPath
-                    });
-                }
-            }
-            else
-            {
-                int index = 0;
-                result.AddRange(members
-                    .Where(x => !x.HasPropertyOfType<EpplusIgnore>())
-                    .Select(member => {
-                        string? h = default(string);
-                        string? mp = default(string);
-                        if (!string.IsNullOrEmpty(path))
+                        sortOrderList = new List<int>
                         {
-                            mp = $"{path}.{member.Name}";
-                        }
-                        List<int>? colInfoSortOrderList = new List<int>();
-                        int sortOrderColumnsIndex = this._sortOrderColumns?.IndexOf(mp) ?? -1;
-                        int sortOrder = sortOrderColumnsIndex > -1 ? sortOrderColumnsIndex : SortOrderOffset;
-                        List<int>? sortOrderList = CopyList(sortOrderListArg);
-                        EpplusTableColumnAttribute? epplusColumnAttr = member.GetFirstAttributeOfType<EpplusTableColumnAttribute>();
-                        if (epplusColumnAttr != null)
-                        {
-                            h = epplusColumnAttr.Header;
-                            sortOrder = sortOrderColumnsIndex > -1 ? sortOrderColumnsIndex : epplusColumnAttr.Order + SortOrderOffset;
-                        }
-                        else
-                        {
-                            h = member.Name;
-                        }
-
-                        if (sortOrderList != null && sortOrderList.Any())
-                        {
-                            if (sortOrderColumnsIndex > -1)
-                            {
-                                sortOrderList[0] = sortOrder;
-                            }
-                            colInfoSortOrderList.AddRange(sortOrderList);
-                        }
-                        
-                        if(!string.IsNullOrEmpty(headerPrefix))
-                        {
-                            h = $"{headerPrefix} {h}";
-                        }
-                        else
-                        {
-                            h = member.Name;
-                        }
-                        return new ColumnInfo { 
-                            Index = index++, 
-                            MemberInfo = member, 
-                            Path = mp, 
-                            Header = h,
-                            SortOrder = sortOrder,
-                            SortOrderLevels = colInfoSortOrderList
+                            attrOrder
                         };
-                    }));
-            }
-            IEnumerable<EpplusFormulaTableColumnAttribute>? formulaColumnAttributes = type.FindAttributesOfType<EpplusFormulaTableColumnAttribute>();
-            if (formulaColumnAttributes != null && formulaColumnAttributes.Any())
-            {
-                sort = true;
-                foreach (EpplusFormulaTableColumnAttribute? attr in formulaColumnAttributes)
-                {
-                    result.Add(new ColumnInfo
-                    {
-                        SortOrder = attr.Order + SortOrderOffset,
-                        Header = attr.Header,
-                        Formula = attr.Formula,
-                        FormulaR1C1 = attr.FormulaR1C1,
-                        NumberFormat = attr.NumberFormat,
-                        TotalsRowFunction = attr.TotalsRowFunction,
-                        TotalsRowNumberFormat = attr.TotalsRowNumberFormat
-                    });
-                }
-            }
-            return sort;
-        }
-
-        private static void ReindexAndSortColumns(List<ColumnInfo> result)
-        {
-            int index = 0;
-            //result.Sort((a, b) => a.SortOrder.CompareTo(b.SortOrder));
-            result.Sort((a, b) =>
-            {
-                List<int>? so1 = a.SortOrderLevels;
-                List<int>? so2 = b.SortOrderLevels;
-                if (so1 == null || so2 == null)
-                {
-                    if(a.SortOrder == b.SortOrder)
-                    {
-                        return a.Index.CompareTo(b.Index);
                     }
                     else
                     {
-                        return a.SortOrder.CompareTo(b.SortOrder);
+                        sortOrderList.Add(attrOrder);
+                        if (attrOrder < SortOrderOffset)
+                        {
+                            sortOrderList[0] = this._sortOrderColumns.IndexOf(memberPath);
+                        }
                     }
+
+                    this.SetupInternal(member.PropertyType, result, sortOrderList, memberPath, hPrefix);
+                    sortOrderList.RemoveAt(sortOrderList.Count - 1);
+                    continue;
                 }
-                else if (!so1.Any() || !so2.Any())
+                string? header = default(string);
+                int sortOrderColumnsIndex = this._sortOrderColumns?.IndexOf(memberPath) ?? -1;
+                int sortOrder = sortOrderColumnsIndex > -1 ? sortOrderColumnsIndex : SortOrderOffset;
+                string? numberFormat = string.Empty;
+                RowFunctions rowFunction = RowFunctions.None;
+                string? totalsRowNumberFormat = string.Empty;
+                string? totalsRowLabel = string.Empty;
+                string? totalsRowFormula = string.Empty;
+                List<int>? colInfoSortOrderList = new List<int>();
+                EpplusTableColumnAttribute? epplusColumnAttr = member.GetFirstAttributeOfType<EpplusTableColumnAttribute>();
+                if (epplusColumnAttr != null)
                 {
-                    return a.SortOrder.CompareTo(b.SortOrder);
+                    if(!string.IsNullOrEmpty(epplusColumnAttr.Header) && !string.IsNullOrEmpty(headerPrefix))
+                    {
+                        header = $"{headerPrefix} {epplusColumnAttr.Header}";
+                    }
+                    else
+                    {
+                        header = epplusColumnAttr.Header;
+                    }
+                    sortOrder = sortOrderColumnsIndex > -1 ? sortOrderColumnsIndex : epplusColumnAttr.Order + SortOrderOffset;
+                        
+                    if(sortOrderList != null && sortOrderList.Any())
+                    {
+                        if(sortOrderColumnsIndex > -1)
+                        {
+                            sortOrderList[0] = sortOrder;
+                        }    
+                        colInfoSortOrderList.AddRange(sortOrderList);
+                    }
+                    colInfoSortOrderList.Add(sortOrder < SortOrderOffset ? sortOrder : epplusColumnAttr.Order + SortOrderOffset);
+                    numberFormat = epplusColumnAttr.NumberFormat;
+                    rowFunction = epplusColumnAttr.TotalsRowFunction;
+                    totalsRowNumberFormat = epplusColumnAttr.TotalsRowNumberFormat;
+                    totalsRowLabel = epplusColumnAttr.TotalsRowLabel;
+                    totalsRowFormula = epplusColumnAttr.TotalsRowFormula;
+                }
+                else if(!string.IsNullOrEmpty(headerPrefix))
+                {
+                    header = string.IsNullOrEmpty(header) ? member.Name : header;
+                    header = $"{headerPrefix} {header}";
                 }
                 else
                 {
-                    int maxIx = so1.Count < so2.Count ? so1.Count : so2.Count;
-                    for(int ix = 0; ix < maxIx; ix++)
-                    {
-                        int aVal = so1[ix];
-                        int bVal = so2[ix];
-                        if (aVal.CompareTo(bVal) == 0)
-                        {
-                            continue;
-                        }
+                    header = string.IsNullOrEmpty(header) ? member.Name : header;
+                }
+                result.Add(new ColumnInfo
+                {
+                    Header = header,
+                    SortOrder = sortOrder,
+                    Index = index++,
+                    SortOrderLevels = colInfoSortOrderList,
+                    MemberInfo = member,
+                    NumberFormat = numberFormat,
+                    TotalsRowFunction = rowFunction,
+                    TotalsRowNumberFormat = totalsRowNumberFormat,
+                    TotalsRowLabel = totalsRowLabel,
+                    TotalsRowFormula = totalsRowFormula,
+                    Path = memberPath
+                });
+            }
+        }
+        else
+        {
+            int index = 0;
+            result.AddRange(members
+                            .Where(x => !x.HasPropertyOfType<EpplusIgnore>())
+                            .Select(member => {
+                                string? h = default(string);
+                                string? mp = default(string);
+                                if (!string.IsNullOrEmpty(path))
+                                {
+                                    mp = $"{path}.{member.Name}";
+                                }
+                                List<int>? colInfoSortOrderList = new List<int>();
+                                int sortOrderColumnsIndex = this._sortOrderColumns?.IndexOf(mp) ?? -1;
+                                int sortOrder = sortOrderColumnsIndex > -1 ? sortOrderColumnsIndex : SortOrderOffset;
+                                List<int>? sortOrderList = CopyList(sortOrderListArg);
+                                EpplusTableColumnAttribute? epplusColumnAttr = member.GetFirstAttributeOfType<EpplusTableColumnAttribute>();
+                                if (epplusColumnAttr != null)
+                                {
+                                    h = epplusColumnAttr.Header;
+                                    sortOrder = sortOrderColumnsIndex > -1 ? sortOrderColumnsIndex : epplusColumnAttr.Order + SortOrderOffset;
+                                }
+                                else
+                                {
+                                    h = member.Name;
+                                }
 
-                        return aVal.CompareTo(bVal);
-                    }
+                                if (sortOrderList != null && sortOrderList.Any())
+                                {
+                                    if (sortOrderColumnsIndex > -1)
+                                    {
+                                        sortOrderList[0] = sortOrder;
+                                    }
+                                    colInfoSortOrderList.AddRange(sortOrderList);
+                                }
+                        
+                                if(!string.IsNullOrEmpty(headerPrefix))
+                                {
+                                    h = $"{headerPrefix} {h}";
+                                }
+                                else
+                                {
+                                    h = member.Name;
+                                }
+                                return new ColumnInfo { 
+                                    Index = index++, 
+                                    MemberInfo = member, 
+                                    Path = mp, 
+                                    Header = h,
+                                    SortOrder = sortOrder,
+                                    SortOrderLevels = colInfoSortOrderList
+                                };
+                            }));
+        }
+        IEnumerable<EpplusFormulaTableColumnAttribute>? formulaColumnAttributes = type.FindAttributesOfType<EpplusFormulaTableColumnAttribute>();
+        if (formulaColumnAttributes != null && formulaColumnAttributes.Any())
+        {
+            sort = true;
+            foreach (EpplusFormulaTableColumnAttribute? attr in formulaColumnAttributes)
+            {
+                result.Add(new ColumnInfo
+                {
+                    SortOrder = attr.Order + SortOrderOffset,
+                    Header = attr.Header,
+                    Formula = attr.Formula,
+                    FormulaR1C1 = attr.FormulaR1C1,
+                    NumberFormat = attr.NumberFormat,
+                    TotalsRowFunction = attr.TotalsRowFunction,
+                    TotalsRowNumberFormat = attr.TotalsRowNumberFormat
+                });
+            }
+        }
+        return sort;
+    }
+
+    private static void ReindexAndSortColumns(List<ColumnInfo> result)
+    {
+        int index = 0;
+        //result.Sort((a, b) => a.SortOrder.CompareTo(b.SortOrder));
+        result.Sort((a, b) =>
+        {
+            List<int>? so1 = a.SortOrderLevels;
+            List<int>? so2 = b.SortOrderLevels;
+            if (so1 == null || so2 == null)
+            {
+                if(a.SortOrder == b.SortOrder)
+                {
                     return a.Index.CompareTo(b.Index);
                 }
-            });
-            result.ForEach(x => x.Index = index++);
-        }        
-    }
+                else
+                {
+                    return a.SortOrder.CompareTo(b.SortOrder);
+                }
+            }
+            else if (!so1.Any() || !so2.Any())
+            {
+                return a.SortOrder.CompareTo(b.SortOrder);
+            }
+            else
+            {
+                int maxIx = so1.Count < so2.Count ? so1.Count : so2.Count;
+                for(int ix = 0; ix < maxIx; ix++)
+                {
+                    int aVal = so1[ix];
+                    int bVal = so2[ix];
+                    if (aVal.CompareTo(bVal) == 0)
+                    {
+                        continue;
+                    }
+
+                    return aVal.CompareTo(bVal);
+                }
+                return a.Index.CompareTo(b.Index);
+            }
+        });
+        result.ForEach(x => x.Index = index++);
+    }        
 }

@@ -15,22 +15,21 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace OfficeOpenXml.Export.HtmlExport
-{
-    internal static class HtmlElements
-    {
-        public const string Body = "body";
+namespace OfficeOpenXml.Export.HtmlExport;
 
-        public const string Table = "table";
-        public const string Thead = "thead";
-        public const string TFoot = "tfoot";
-        public const string Tbody = "tbody";
-        public const string TableRow = "tr";
-        public const string TableHeader = "th";
-        public const string TableData = "td";
-        public const string A = "a";
-        public const string Span = "span";
-        public const string ColGroup = "colgroup";
-        public const string Img = "img";
-    }
+internal static class HtmlElements
+{
+    public const string Body = "body";
+
+    public const string Table = "table";
+    public const string Thead = "thead";
+    public const string TFoot = "tfoot";
+    public const string Tbody = "tbody";
+    public const string TableRow = "tr";
+    public const string TableHeader = "th";
+    public const string TableData = "td";
+    public const string A = "a";
+    public const string Span = "span";
+    public const string ColGroup = "colgroup";
+    public const string Img = "img";
 }

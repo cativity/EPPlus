@@ -15,13 +15,12 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace OfficeOpenXml.Drawing.Interfaces
-{
-    interface IDrawingChartErrorBars
-    {
-        void AddErrorBars(eErrorBarType barType, eErrorValueType valueType);
-        bool HasErrorBars();
-        ExcelChartErrorBars ErrorBars { get; }
+namespace OfficeOpenXml.Drawing.Interfaces;
 
-    }
+interface IDrawingChartErrorBars
+{
+    void AddErrorBars(eErrorBarType barType, eErrorValueType valueType);
+    bool HasErrorBars();
+    ExcelChartErrorBars ErrorBars { get; }
+
 }

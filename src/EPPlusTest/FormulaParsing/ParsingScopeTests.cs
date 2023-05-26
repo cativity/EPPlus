@@ -35,46 +35,45 @@ using OfficeOpenXml.FormulaParsing.ExcelUtilities;
 using OfficeOpenXml.FormulaParsing;
 using FakeItEasy;
 
-namespace EPPlusTest.FormulaParsing
+namespace EPPlusTest.FormulaParsing;
+
+[TestClass]
+public class ParsingScopeTests
 {
-    [TestClass]
-    public class ParsingScopeTests
+    private IParsingLifetimeEventHandler _lifeTimeEventHandler;
+    private ParsingScopes _parsingScopes;
+    private RangeAddressFactory _factory;
+
+    [TestInitialize]
+    public void Setup()
     {
-        private IParsingLifetimeEventHandler _lifeTimeEventHandler;
-        private ParsingScopes _parsingScopes;
-        private RangeAddressFactory _factory;
+        ExcelDataProvider? provider = A.Fake<ExcelDataProvider>();
+        this._factory = new RangeAddressFactory(provider);
+        this._lifeTimeEventHandler = A.Fake<IParsingLifetimeEventHandler>();
+        this._parsingScopes = A.Fake<ParsingScopes>();
+    }
 
-        [TestInitialize]
-        public void Setup()
-        {
-            ExcelDataProvider? provider = A.Fake<ExcelDataProvider>();
-            this._factory = new RangeAddressFactory(provider);
-            this._lifeTimeEventHandler = A.Fake<IParsingLifetimeEventHandler>();
-            this._parsingScopes = A.Fake<ParsingScopes>();
-        }
+    [TestMethod]
+    public void ConstructorShouldSetAddress()
+    {
+        RangeAddress? expectedAddress = this._factory.Create("A1");
+        ParsingScope? scope = new ParsingScope(this._parsingScopes, expectedAddress);
+        Assert.AreEqual(expectedAddress, scope.Address);
+    }
 
-        [TestMethod]
-        public void ConstructorShouldSetAddress()
-        {
-            RangeAddress? expectedAddress = this._factory.Create("A1");
-            ParsingScope? scope = new ParsingScope(this._parsingScopes, expectedAddress);
-            Assert.AreEqual(expectedAddress, scope.Address);
-        }
+    [TestMethod]
+    public void ConstructorShouldSetParent()
+    {
+        ParsingScope? parent = new ParsingScope(this._parsingScopes, this._factory.Create("A1"));
+        ParsingScope? scope = new ParsingScope(this._parsingScopes, parent, this._factory.Create("A2"));
+        Assert.AreEqual(parent, scope.Parent);
+    }
 
-        [TestMethod]
-        public void ConstructorShouldSetParent()
-        {
-            ParsingScope? parent = new ParsingScope(this._parsingScopes, this._factory.Create("A1"));
-            ParsingScope? scope = new ParsingScope(this._parsingScopes, parent, this._factory.Create("A2"));
-            Assert.AreEqual(parent, scope.Parent);
-        }
-
-        [TestMethod]
-        public void ScopeShouldCallKillScopeOnDispose()
-        {
-            ParsingScope? scope = new ParsingScope(this._parsingScopes, this._factory.Create("A1"));
-            ((IDisposable)scope).Dispose();
-           A.CallTo(() => this._parsingScopes.KillScope(scope)).MustHaveHappened();
-        }
+    [TestMethod]
+    public void ScopeShouldCallKillScopeOnDispose()
+    {
+        ParsingScope? scope = new ParsingScope(this._parsingScopes, this._factory.Create("A1"));
+        ((IDisposable)scope).Dispose();
+        A.CallTo(() => this._parsingScopes.KillScope(scope)).MustHaveHappened();
     }
 }

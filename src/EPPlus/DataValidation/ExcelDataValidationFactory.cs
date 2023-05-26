@@ -13,51 +13,50 @@
 using System;
 using System.Xml;
 
-namespace OfficeOpenXml.DataValidation
+namespace OfficeOpenXml.DataValidation;
+
+/// <summary>
+/// Factory class for ExcelDataValidation.
+/// </summary>
+internal static class ExcelDataValidationFactory
 {
     /// <summary>
-    /// Factory class for ExcelDataValidation.
+    /// Creates an instance of <see cref="ExcelDataValidation"/> out of the reader.
     /// </summary>
-    internal static class ExcelDataValidationFactory
+    /// <param name="xr"></param>
+    /// <returns>"</returns>
+    /// <exception cref="InvalidOperationException"></exception>
+    internal static ExcelDataValidation Create(XmlReader xr, ExcelWorksheet ws)
     {
-        /// <summary>
-        /// Creates an instance of <see cref="ExcelDataValidation"/> out of the reader.
-        /// </summary>
-        /// <param name="xr"></param>
-        /// <returns>"</returns>
-        /// <exception cref="InvalidOperationException"></exception>
-        internal static ExcelDataValidation Create(XmlReader xr, ExcelWorksheet ws)
-        {
-            string validationTypeName = xr.GetAttribute("type") == null ? "" : xr.GetAttribute("type");
+        string validationTypeName = xr.GetAttribute("type") == null ? "" : xr.GetAttribute("type");
 
-            switch (validationTypeName)
-            {
-                case "":
-                    return new ExcelDataValidationAny(xr, ws);
-                case "textLength":
-                    return new ExcelDataValidationInt(xr, ws, true);
-                case "whole":
-                    return new ExcelDataValidationInt(xr, ws);
-                case "decimal":
-                    return new ExcelDataValidationDecimal(xr, ws);
-                case "list":
-                    return new ExcelDataValidationList(xr, ws);
-                case "time":
-                    return new ExcelDataValidationTime(xr, ws);
-                case "date":
-                    return new ExcelDataValidationDateTime(xr, ws);
-                case "custom":
-                    return new ExcelDataValidationCustom(xr, ws);
-                default:
-                    throw new InvalidOperationException($"Non supported validationtype: {validationTypeName}");
-            }
-        }
-
-        static internal ExcelDataValidation CloneWithNewAdress(string address, ExcelDataValidation oldValidation, ExcelWorksheet added)
+        switch (validationTypeName)
         {
-            ExcelDataValidation? validation = oldValidation.GetClone(added);
-            validation.Address = new ExcelDatavalidationAddress(address, validation);
-            return validation;
+            case "":
+                return new ExcelDataValidationAny(xr, ws);
+            case "textLength":
+                return new ExcelDataValidationInt(xr, ws, true);
+            case "whole":
+                return new ExcelDataValidationInt(xr, ws);
+            case "decimal":
+                return new ExcelDataValidationDecimal(xr, ws);
+            case "list":
+                return new ExcelDataValidationList(xr, ws);
+            case "time":
+                return new ExcelDataValidationTime(xr, ws);
+            case "date":
+                return new ExcelDataValidationDateTime(xr, ws);
+            case "custom":
+                return new ExcelDataValidationCustom(xr, ws);
+            default:
+                throw new InvalidOperationException($"Non supported validationtype: {validationTypeName}");
         }
+    }
+
+    static internal ExcelDataValidation CloneWithNewAdress(string address, ExcelDataValidation oldValidation, ExcelWorksheet added)
+    {
+        ExcelDataValidation? validation = oldValidation.GetClone(added);
+        validation.Address = new ExcelDatavalidationAddress(address, validation);
+        return validation;
     }
 }

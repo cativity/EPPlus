@@ -18,28 +18,27 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance
-{
-    [FunctionMetadata(
-        Category = ExcelFunctionCategory.Financial,
-        EPPlusVersion = "5.2",
-        Description = "Calculates the number of periods required for an investment to reach a specified value",
-        IntroducedInExcelVersion = "2013")]
-    internal class Pduration : ExcelFunction
-    {
-        public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
-        {
-            ValidateArguments(arguments, 3);
-            double rate = this.ArgToDecimal(arguments, 0);
-            double pv = this.ArgToDecimal(arguments, 1);
-            double fv = this.ArgToDecimal(arguments, 2);
-            if (rate <= 0d || pv <= 0d || fv <= 0d)
-            {
-                return this.CreateResult(eErrorType.Num);
-            }
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance;
 
-            double retVal = (System.Math.Log(fv) - System.Math.Log(pv)) / System.Math.Log(1 + rate);
-            return this.CreateResult(retVal, DataType.Decimal);
+[FunctionMetadata(
+                     Category = ExcelFunctionCategory.Financial,
+                     EPPlusVersion = "5.2",
+                     Description = "Calculates the number of periods required for an investment to reach a specified value",
+                     IntroducedInExcelVersion = "2013")]
+internal class Pduration : ExcelFunction
+{
+    public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
+    {
+        ValidateArguments(arguments, 3);
+        double rate = this.ArgToDecimal(arguments, 0);
+        double pv = this.ArgToDecimal(arguments, 1);
+        double fv = this.ArgToDecimal(arguments, 2);
+        if (rate <= 0d || pv <= 0d || fv <= 0d)
+        {
+            return this.CreateResult(eErrorType.Num);
         }
+
+        double retVal = (System.Math.Log(fv) - System.Math.Log(pv)) / System.Math.Log(1 + rate);
+        return this.CreateResult(retVal, DataType.Decimal);
     }
 }

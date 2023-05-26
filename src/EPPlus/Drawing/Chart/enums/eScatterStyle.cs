@@ -10,20 +10,19 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
-namespace OfficeOpenXml.Drawing.Chart
+namespace OfficeOpenXml.Drawing.Chart;
+
+/// <summary>
+/// Smooth or lines markers
+/// </summary>
+public enum eScatterStyle
 {
     /// <summary>
-    /// Smooth or lines markers
+    /// Line and markers
     /// </summary>
-    public enum eScatterStyle
-    {
-        /// <summary>
-        /// Line and markers
-        /// </summary>
-        LineMarker,
-        /// <summary>
-        /// Smooth lines and markers
-        /// </summary>
-        SmoothMarker,
-     }
+    LineMarker,
+    /// <summary>
+    /// Smooth lines and markers
+    /// </summary>
+    SmoothMarker,
 }

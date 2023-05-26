@@ -15,42 +15,41 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace OfficeOpenXml.FormulaParsing.Utilities
+namespace OfficeOpenXml.FormulaParsing.Utilities;
+
+/// <summary>
+/// Represent a function argument to validate
+/// </summary>
+/// <typeparam name="T">Type of the argument to validate</typeparam>
+public class ArgumentInfo<T>
 {
     /// <summary>
-    /// Represent a function argument to validate
+    /// Constructor
     /// </summary>
-    /// <typeparam name="T">Type of the argument to validate</typeparam>
-    public class ArgumentInfo<T>
+    /// <param name="val">The argument to validate</param>
+    public ArgumentInfo(T val)
     {
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        /// <param name="val">The argument to validate</param>
-        public ArgumentInfo(T val)
-        {
-            this.Value = val;
-        }
+        this.Value = val;
+    }
 
-        /// <summary>
-        /// The argument to validate
-        /// </summary>
-        public T Value { get; private set; }
+    /// <summary>
+    /// The argument to validate
+    /// </summary>
+    public T Value { get; private set; }
 
-        /// <summary>
-        /// Variable name of the argument
-        /// </summary>
-        public string Name { get; private set; }
+    /// <summary>
+    /// Variable name of the argument
+    /// </summary>
+    public string Name { get; private set; }
 
-        /// <summary>
-        /// Sets the variable name of the argument.
-        /// </summary>
-        /// <param name="argName">The name</param>
-        /// <returns></returns>
-        public ArgumentInfo<T> Named(string argName)
-        {
-            this.Name = argName;
-            return this;
-        }
+    /// <summary>
+    /// Sets the variable name of the argument.
+    /// </summary>
+    /// <param name="argName">The name</param>
+    /// <returns></returns>
+    public ArgumentInfo<T> Named(string argName)
+    {
+        this.Name = argName;
+        return this;
     }
 }

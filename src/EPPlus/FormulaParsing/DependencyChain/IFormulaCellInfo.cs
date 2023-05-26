@@ -15,26 +15,25 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace OfficeOpenXml.FormulaParsing
+namespace OfficeOpenXml.FormulaParsing;
+
+/// <summary>
+/// Represents a formula cell
+/// </summary>
+public interface IFormulaCellInfo
 {
     /// <summary>
-    /// Represents a formula cell
+    /// The worksheet
     /// </summary>
-    public interface IFormulaCellInfo
-    {
-        /// <summary>
-        /// The worksheet
-        /// </summary>
-        string Worksheet { get; }
+    string Worksheet { get; }
 
-        /// <summary>
-        /// The address
-        /// </summary>
-        string Address { get; }
+    /// <summary>
+    /// The address
+    /// </summary>
+    string Address { get; }
 
-        /// <summary>
-        /// The formula
-        /// </summary>
-        string Formula { get; }
-    }
+    /// <summary>
+    /// The formula
+    /// </summary>
+    string Formula { get; }
 }

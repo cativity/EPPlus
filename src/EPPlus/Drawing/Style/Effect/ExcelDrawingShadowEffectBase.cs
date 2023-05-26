@@ -12,33 +12,32 @@
  *************************************************************************************************/
 using System.Xml;
 
-namespace OfficeOpenXml.Drawing.Style.Effect
-{
-    /// <summary>
-    /// Base class for shadow effects
-    /// </summary>
-    public abstract class ExcelDrawingShadowEffectBase : ExcelDrawingEffectBase 
-    {
-        private readonly string _distancePath = "{0}/@dist";
+namespace OfficeOpenXml.Drawing.Style.Effect;
 
-        internal ExcelDrawingShadowEffectBase(XmlNamespaceManager nameSpaceManager, XmlNode topNode, string[] schemaNodeOrder, string path) : base(nameSpaceManager, topNode, schemaNodeOrder, path)
-        {
-            this._distancePath = string.Format(this._distancePath, path);
-        }
-        
-        /// <summary>
-        /// How far to offset the shadow is in pixels
-        /// </summary>
-        public double Distance
-        {
-            get
-            {
-                return this.GetXmlNodeEmuToPt(this._distancePath);
-            }
-            set
-            {
-                this.SetXmlNodeEmuToPt(this._distancePath, value);
-            }
-        }        
+/// <summary>
+/// Base class for shadow effects
+/// </summary>
+public abstract class ExcelDrawingShadowEffectBase : ExcelDrawingEffectBase 
+{
+    private readonly string _distancePath = "{0}/@dist";
+
+    internal ExcelDrawingShadowEffectBase(XmlNamespaceManager nameSpaceManager, XmlNode topNode, string[] schemaNodeOrder, string path) : base(nameSpaceManager, topNode, schemaNodeOrder, path)
+    {
+        this._distancePath = string.Format(this._distancePath, path);
     }
+        
+    /// <summary>
+    /// How far to offset the shadow is in pixels
+    /// </summary>
+    public double Distance
+    {
+        get
+        {
+            return this.GetXmlNodeEmuToPt(this._distancePath);
+        }
+        set
+        {
+            this.SetXmlNodeEmuToPt(this._distancePath, value);
+        }
+    }        
 }

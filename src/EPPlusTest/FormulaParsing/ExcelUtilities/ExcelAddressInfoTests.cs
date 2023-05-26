@@ -33,64 +33,63 @@ using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OfficeOpenXml.FormulaParsing.ExcelUtilities;
 
-namespace EPPlusTest.ExcelUtilities
+namespace EPPlusTest.ExcelUtilities;
+
+[TestClass]
+public class ExcelAddressInfoTests
 {
-    [TestClass]
-    public class ExcelAddressInfoTests
+    [TestMethod, ExpectedException(typeof(ArgumentException))]
+    public void ParseShouldThrowIfAddressIsNull()
     {
-        [TestMethod, ExpectedException(typeof(ArgumentException))]
-        public void ParseShouldThrowIfAddressIsNull()
-        {
-            ExcelAddressInfo.Parse(null);
-        }
+        ExcelAddressInfo.Parse(null);
+    }
 
-        [TestMethod]
-        public void ParseShouldSetWorksheet()
-        {
-            ExcelAddressInfo? info = ExcelAddressInfo.Parse("Worksheet!A1");
-            Assert.AreEqual("Worksheet", info.Worksheet);
-        }
+    [TestMethod]
+    public void ParseShouldSetWorksheet()
+    {
+        ExcelAddressInfo? info = ExcelAddressInfo.Parse("Worksheet!A1");
+        Assert.AreEqual("Worksheet", info.Worksheet);
+    }
 
-        [TestMethod]
-        public void WorksheetIsSpecifiedShouldBeTrueWhenWorksheetIsSupplied()
-        {
-            ExcelAddressInfo? info = ExcelAddressInfo.Parse("Worksheet!A1");
-            Assert.IsTrue(info.WorksheetIsSpecified);
-        }
+    [TestMethod]
+    public void WorksheetIsSpecifiedShouldBeTrueWhenWorksheetIsSupplied()
+    {
+        ExcelAddressInfo? info = ExcelAddressInfo.Parse("Worksheet!A1");
+        Assert.IsTrue(info.WorksheetIsSpecified);
+    }
 
-        [TestMethod]
-        public void ShouldIndicateMultipleCellsWhenAddressContainsAColon()
-        {
-            ExcelAddressInfo? info = ExcelAddressInfo.Parse("A1:A2");
-            Assert.IsTrue(info.IsMultipleCells);
-        }
+    [TestMethod]
+    public void ShouldIndicateMultipleCellsWhenAddressContainsAColon()
+    {
+        ExcelAddressInfo? info = ExcelAddressInfo.Parse("A1:A2");
+        Assert.IsTrue(info.IsMultipleCells);
+    }
 
-        [TestMethod]
-        public void ShouldSetStartCell()
-        {
-            ExcelAddressInfo? info = ExcelAddressInfo.Parse("A1:A2");
-            Assert.AreEqual("A1", info.StartCell);
-        }
+    [TestMethod]
+    public void ShouldSetStartCell()
+    {
+        ExcelAddressInfo? info = ExcelAddressInfo.Parse("A1:A2");
+        Assert.AreEqual("A1", info.StartCell);
+    }
 
-        [TestMethod]
-        public void ShouldSetEndCell()
-        {
-            ExcelAddressInfo? info = ExcelAddressInfo.Parse("A1:A2");
-            Assert.AreEqual("A2", info.EndCell);
-        }
+    [TestMethod]
+    public void ShouldSetEndCell()
+    {
+        ExcelAddressInfo? info = ExcelAddressInfo.Parse("A1:A2");
+        Assert.AreEqual("A2", info.EndCell);
+    }
 
-        [TestMethod]
-        public void ParseShouldSetAddressOnSheet()
-        {
-            ExcelAddressInfo? info = ExcelAddressInfo.Parse("Worksheet!A1:A2");
-            Assert.AreEqual("A1:A2", info.AddressOnSheet);
-        }
+    [TestMethod]
+    public void ParseShouldSetAddressOnSheet()
+    {
+        ExcelAddressInfo? info = ExcelAddressInfo.Parse("Worksheet!A1:A2");
+        Assert.AreEqual("A1:A2", info.AddressOnSheet);
+    }
 
-        [TestMethod]
-        public void AddressOnSheetShouldBeSameAsAddressIfNoWorksheetIsSpecified()
-        {
-            ExcelAddressInfo? info = ExcelAddressInfo.Parse("A1:A2");
-            Assert.AreEqual("A1:A2", info.AddressOnSheet);
-        }
+    [TestMethod]
+    public void AddressOnSheetShouldBeSameAsAddressIfNoWorksheetIsSpecified()
+    {
+        ExcelAddressInfo? info = ExcelAddressInfo.Parse("A1:A2");
+        Assert.AreEqual("A1:A2", info.AddressOnSheet);
     }
 }

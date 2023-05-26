@@ -15,27 +15,26 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.Implementations
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.Implementations;
+
+internal abstract class Coupbase
 {
-    internal abstract class Coupbase
+    public Coupbase(FinancialDay settlement, FinancialDay maturity, int frequency, DayCountBasis basis)
     {
-        public Coupbase(FinancialDay settlement, FinancialDay maturity, int frequency, DayCountBasis basis)
-        {
-            this.Settlement = settlement;
-            this.Maturity = maturity;
-            this.Frequency = frequency;
-            this.Basis = basis;
-        }
+        this.Settlement = settlement;
+        this.Maturity = maturity;
+        this.Frequency = frequency;
+        this.Basis = basis;
+    }
 
-        protected FinancialDay Settlement { get; }
-        protected FinancialDay Maturity { get; }
-        protected int Frequency { get; }
-        protected DayCountBasis Basis { get; }
+    protected FinancialDay Settlement { get; }
+    protected FinancialDay Maturity { get; }
+    protected int Frequency { get; }
+    protected DayCountBasis Basis { get; }
 
-        protected FinancialDay GetCouponPeriodBySettlement()
-        {
-            IFinanicalDays? financialDays = FinancialDaysFactory.Create(this.Basis);
-            throw new NotImplementedException();
-        }
+    protected FinancialDay GetCouponPeriodBySettlement()
+    {
+        IFinanicalDays? financialDays = FinancialDaysFactory.Create(this.Basis);
+        throw new NotImplementedException();
     }
 }

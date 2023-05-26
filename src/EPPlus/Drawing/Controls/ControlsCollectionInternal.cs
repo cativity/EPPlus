@@ -16,33 +16,32 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml;
-namespace OfficeOpenXml
+namespace OfficeOpenXml;
+
+internal class ControlsCollectionInternal : XmlHelper, IEnumerable<ControlInternal>
 {
-    internal class ControlsCollectionInternal : XmlHelper, IEnumerable<ControlInternal>
+    private List<ControlInternal> _list=new List<ControlInternal>();
+    internal ControlsCollectionInternal(XmlNamespaceManager nameSpaceManager, XmlNode topNode) : base(nameSpaceManager, topNode)
     {
-        private List<ControlInternal> _list=new List<ControlInternal>();
-        internal ControlsCollectionInternal(XmlNamespaceManager nameSpaceManager, XmlNode topNode) : base(nameSpaceManager, topNode)
+        XmlNodeList? nodes = this.GetNodes("mc:AlternateContent/mc:Choice/d:controls/mc:AlternateContent/mc:Choice/d:control");
+        foreach(XmlNode node in nodes)
         {
-            XmlNodeList? nodes = this.GetNodes("mc:AlternateContent/mc:Choice/d:controls/mc:AlternateContent/mc:Choice/d:control");
-            foreach(XmlNode node in nodes)
-            {
-                this._list.Add(new ControlInternal(this.NameSpaceManager, node));
-            }
+            this._list.Add(new ControlInternal(this.NameSpaceManager, node));
         }
+    }
 
-        public IEnumerator<ControlInternal> GetEnumerator()
-        {
-            return this._list.GetEnumerator();
-        }
+    public IEnumerator<ControlInternal> GetEnumerator()
+    {
+        return this._list.GetEnumerator();
+    }
 
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return this._list.GetEnumerator();
-        }
+    IEnumerator IEnumerable.GetEnumerator()
+    {
+        return this._list.GetEnumerator();
+    }
 
-        internal ControlInternal GetControlByShapeId(int shapeId)
-        {
-            return this._list.FirstOrDefault(x => x.ShapeId == shapeId);
-        }
+    internal ControlInternal GetControlByShapeId(int shapeId)
+    {
+        return this._list.FirstOrDefault(x => x.ShapeId == shapeId);
     }
 }

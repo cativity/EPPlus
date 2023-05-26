@@ -13,32 +13,31 @@
 using OfficeOpenXml.Drawing.Style.Effect;
 using System.Xml;
 
-namespace OfficeOpenXml.Drawing.Chart.ChartEx
+namespace OfficeOpenXml.Drawing.Chart.ChartEx;
+
+/// <summary>
+/// A pareto line for a histogram chart
+/// </summary>
+public class ExcelChartExParetoLine : ExcelDrawingBorder
 {
-    /// <summary>
-    /// A pareto line for a histogram chart
-    /// </summary>
-    public class ExcelChartExParetoLine : ExcelDrawingBorder
+    private readonly ExcelChart _chart;
+    internal ExcelChartExParetoLine(ExcelChart chart, XmlNamespaceManager nsm, XmlNode node) : base(chart, nsm, node, "cx:spPr/a:ln", new string[] { "spPr", "axisId" })
     {
-        private readonly ExcelChart _chart;
-        internal ExcelChartExParetoLine(ExcelChart chart, XmlNamespaceManager nsm, XmlNode node) : base(chart, nsm, node, "cx:spPr/a:ln", new string[] { "spPr", "axisId" })
+        this._chart = chart;
+    }
+    ExcelDrawingEffectStyle _effect = null;
+    /// <summary>
+    /// Effects
+    /// </summary>
+    public ExcelDrawingEffectStyle Effect
+    {
+        get
         {
-            this._chart = chart;
-        }
-        ExcelDrawingEffectStyle _effect = null;
-        /// <summary>
-        /// Effects
-        /// </summary>
-        public ExcelDrawingEffectStyle Effect
-        {
-            get
-            {
-                return this._effect ??= new ExcelDrawingEffectStyle(this._chart,
-                                                                    this.NameSpaceManager,
-                                                                    this.TopNode,
-                                                                    "cx:spPr/a:effectLst",
-                                                                    this.SchemaNodeOrder);
-            }
+            return this._effect ??= new ExcelDrawingEffectStyle(this._chart,
+                                                                this.NameSpaceManager,
+                                                                this.TopNode,
+                                                                "cx:spPr/a:effectLst",
+                                                                this.SchemaNodeOrder);
         }
     }
 }

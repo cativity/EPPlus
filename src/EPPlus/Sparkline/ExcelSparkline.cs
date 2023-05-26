@@ -16,69 +16,68 @@ using System.Linq;
 using System.Text;
 using System.Xml;
 
-namespace OfficeOpenXml.Sparkline
+namespace OfficeOpenXml.Sparkline;
+
+/// <summary>
+/// Represents a single sparkline within the sparkline group
+/// </summary>
+public class ExcelSparkline : XmlHelper
 {
-    /// <summary>
-    /// Represents a single sparkline within the sparkline group
-    /// </summary>
-    public class ExcelSparkline : XmlHelper
+    internal ExcelSparkline(XmlNamespaceManager nsm, XmlNode topNode) : base(nsm, topNode)
     {
-        internal ExcelSparkline(XmlNamespaceManager nsm, XmlNode topNode) : base(nsm, topNode)
+        this.SchemaNodeOrder = new string[] { "f", "sqref" };
+    }   
+    const string _fPath = "xm:f";
+    /// <summary>
+    /// The datarange
+    /// </summary>
+    public ExcelAddressBase RangeAddress
+    {
+        get
         {
-            this.SchemaNodeOrder = new string[] { "f", "sqref" };
-        }   
-        const string _fPath = "xm:f";
-        /// <summary>
-        /// The datarange
-        /// </summary>
-        public ExcelAddressBase RangeAddress
-        {
-            get
+            string? v = this.GetXmlNodeString(_fPath);
+            if(string.IsNullOrEmpty(v))
             {
-                string? v = this.GetXmlNodeString(_fPath);
-                if(string.IsNullOrEmpty(v))
-                {
-                    return null;
-                }
-                else
-                {
-                    return new ExcelAddressBase(v);
-                }
+                return null;
             }
-            internal set
+            else
             {
-                if(value==null || value.Address=="#REF!")
-                {
-                    this.DeleteNode(_fPath);
-                }
-                else
-                {
-                    this.SetXmlNodeString(_fPath, value.FullAddress);
-                }
+                return new ExcelAddressBase(v);
             }
         }
-        const string _sqrefPath = "xm:sqref";
-        /// <summary>
-        /// Location of the sparkline
-        /// </summary>
-        public ExcelCellAddress Cell
+        internal set
         {
-            get
+            if(value==null || value.Address=="#REF!")
             {
-                return new ExcelCellAddress(this.GetXmlNodeString(_sqrefPath));
+                this.DeleteNode(_fPath);
             }
-            internal set
+            else
             {
-                this.SetXmlNodeString("xm:sqref", value.Address);
+                this.SetXmlNodeString(_fPath, value.FullAddress);
             }
         }
-        /// <summary>
-        /// Returns a string representation of the object
-        /// </summary>
-        /// <returns>The cell address and the range</returns>
-        public override string ToString()
+    }
+    const string _sqrefPath = "xm:sqref";
+    /// <summary>
+    /// Location of the sparkline
+    /// </summary>
+    public ExcelCellAddress Cell
+    {
+        get
         {
-            return this.Cell.Address + ", " + this.RangeAddress.Address;
+            return new ExcelCellAddress(this.GetXmlNodeString(_sqrefPath));
         }
+        internal set
+        {
+            this.SetXmlNodeString("xm:sqref", value.Address);
+        }
+    }
+    /// <summary>
+    /// Returns a string representation of the object
+    /// </summary>
+    /// <returns>The cell address and the range</returns>
+    public override string ToString()
+    {
+        return this.Cell.Address + ", " + this.RangeAddress.Address;
     }
 }

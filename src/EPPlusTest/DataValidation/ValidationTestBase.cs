@@ -35,79 +35,78 @@ using System.Text;
 using System.Xml;
 using OfficeOpenXml.DataValidation;
 
-namespace EPPlusTest.DataValidation
+namespace EPPlusTest.DataValidation;
+
+public abstract class ValidationTestBase : TestBase
 {
-    public abstract class ValidationTestBase : TestBase
+    protected ExcelPackage _package;
+    protected ExcelWorksheet _sheet;
+    protected XmlNode _dataValidationNode;
+    protected XmlNamespaceManager _namespaceManager;
+    protected CultureInfo _cultureInfo;
+
+    public void SetupTestData()
     {
-        protected ExcelPackage _package;
-        protected ExcelWorksheet _sheet;
-        protected XmlNode _dataValidationNode;
-        protected XmlNamespaceManager _namespaceManager;
-        protected CultureInfo _cultureInfo;
+        this._package = new ExcelPackage();
+        this._package.Compatibility.IsWorksheets1Based = true;
+        this._sheet = this._package.Workbook.Worksheets.Add("test");
+        this._cultureInfo = new CultureInfo("en-US");
+    }
 
-        public void SetupTestData()
+    public void CleanupTestData()
+    {
+        if (this._package != null)
         {
-            this._package = new ExcelPackage();
-            this._package.Compatibility.IsWorksheets1Based = true;
-            this._sheet = this._package.Workbook.Worksheets.Add("test");
-            this._cultureInfo = new CultureInfo("en-US");
+            this._package.Dispose();
         }
 
-        public void CleanupTestData()
-        {
-            if (this._package != null)
-            {
-                this._package.Dispose();
-            }
+        this._package = null;
+        this._sheet = null;
+        this._namespaceManager = null;
+    }
 
-            this._package = null;
-            this._sheet = null;
-            this._namespaceManager = null;
-        }
+    protected void LoadXmlTestData(string address, string validationType, string formula1Value)
+    {
+        XmlDocument? xmlDoc = new XmlDocument();
+        this._namespaceManager = new XmlNamespaceManager(xmlDoc.NameTable);
+        this._namespaceManager.AddNamespace("d", "urn:a");
+        this._namespaceManager.AddNamespace("xr", "urn:b");
+        StringBuilder? sb = new StringBuilder();
+        sb.AppendFormat("<dataValidation xmlns:d=\"urn:a\" type=\"{0}\" sqref=\"{1}\">", validationType, address);
+        sb.AppendFormat("<d:formula1>{0}</d:formula1>", formula1Value);
+        sb.Append("</dataValidation>");
+        xmlDoc.LoadXml(sb.ToString());
+        this._dataValidationNode = xmlDoc.DocumentElement;
+    }
 
-        protected void LoadXmlTestData(string address, string validationType, string formula1Value)
-        {
-            XmlDocument? xmlDoc = new XmlDocument();
-            this._namespaceManager = new XmlNamespaceManager(xmlDoc.NameTable);
-            this._namespaceManager.AddNamespace("d", "urn:a");
-            this._namespaceManager.AddNamespace("xr", "urn:b");
-            StringBuilder? sb = new StringBuilder();
-            sb.AppendFormat("<dataValidation xmlns:d=\"urn:a\" type=\"{0}\" sqref=\"{1}\">", validationType, address);
-            sb.AppendFormat("<d:formula1>{0}</d:formula1>", formula1Value);
-            sb.Append("</dataValidation>");
-            xmlDoc.LoadXml(sb.ToString());
-            this._dataValidationNode = xmlDoc.DocumentElement;
-        }
+    protected static IExcelDataValidationInt CreateSheetWithIntegerValidation(ExcelPackage package)
+    {
+        ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("NewSheet");
+        IExcelDataValidationInt? validation = sheet.DataValidations.AddIntegerValidation("A1");
+        validation.Formula.Value = 1;
+        validation.Formula2.Value = 1;
 
-        protected static IExcelDataValidationInt CreateSheetWithIntegerValidation(ExcelPackage package)
-        {
-            ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("NewSheet");
-            IExcelDataValidationInt? validation = sheet.DataValidations.AddIntegerValidation("A1");
-            validation.Formula.Value = 1;
-            validation.Formula2.Value = 1;
+        return validation;
+    }
 
-            return validation;
-        }
+    protected static ExcelPackage ReadPackageAsNewPackage(ExcelPackage package)
+    {
+        MemoryStream xmlStream = new MemoryStream();
+        package.SaveAs(xmlStream);
 
-        protected static ExcelPackage ReadPackageAsNewPackage(ExcelPackage package)
-        {
-            MemoryStream xmlStream = new MemoryStream();
-            package.SaveAs(xmlStream);
+        return new ExcelPackage(xmlStream);
+    }
 
-            return new ExcelPackage(xmlStream);
-        }
+    protected static IExcelDataValidationInt ReadIntValidation(ExcelPackage package)
+    {
+        return (IExcelDataValidationInt)ReadPackageAsNewPackage(package).Workbook.Worksheets[0].DataValidations[0];
+    }
 
-        protected static IExcelDataValidationInt ReadIntValidation(ExcelPackage package)
-        {
-            return (IExcelDataValidationInt)ReadPackageAsNewPackage(package).Workbook.Worksheets[0].DataValidations[0];
-        }
+    protected static T ReadTValidation<T>(ExcelPackage package)
+    {
+        ExcelDataValidation? validation = ReadPackageAsNewPackage(package).
+                                          Workbook.Worksheets[0].DataValidations[0];
 
-        protected static T ReadTValidation<T>(ExcelPackage package)
-        {
-            ExcelDataValidation? validation = ReadPackageAsNewPackage(package).
-                                              Workbook.Worksheets[0].DataValidations[0];
-
-            return (T)((Object)validation);
-        }
+        return (T)((Object)validation);
     }
 }

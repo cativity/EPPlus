@@ -13,25 +13,24 @@
 using OfficeOpenXml.Packaging;
 using System.Xml;
 
-namespace OfficeOpenXml.Drawing.Controls
+namespace OfficeOpenXml.Drawing.Controls;
+
+/// <summary>
+/// Represents a dialog form control. Unsupported
+/// </summary>
+public class ExcelControlDialog : ExcelControl
 {
-    /// <summary>
-    /// Represents a dialog form control. Unsupported
-    /// </summary>
-    public class ExcelControlDialog : ExcelControl
+    internal ExcelControlDialog(ExcelDrawings drawings, XmlElement drawNode, string name, ExcelGroupShape parent=null) : base(drawings, drawNode, name, parent)
     {
-        internal ExcelControlDialog(ExcelDrawings drawings, XmlElement drawNode, string name, ExcelGroupShape parent=null) : base(drawings, drawNode, name, parent)
-        {
-        }
-        internal ExcelControlDialog(ExcelDrawings drawings, XmlNode drawNode, ControlInternal control, ZipPackagePart part, XmlDocument controlPropertiesXml, ExcelGroupShape parent = null)
-            : base(drawings, drawNode, control, part, controlPropertiesXml, parent)
-        {
-        }
-
-        /// <summary>
-        /// The type of form control
-        /// </summary>
-        public override eControlType ControlType => eControlType.Dialog;
-
     }
+    internal ExcelControlDialog(ExcelDrawings drawings, XmlNode drawNode, ControlInternal control, ZipPackagePart part, XmlDocument controlPropertiesXml, ExcelGroupShape parent = null)
+        : base(drawings, drawNode, control, part, controlPropertiesXml, parent)
+    {
+    }
+
+    /// <summary>
+    /// The type of form control
+    /// </summary>
+    public override eControlType ControlType => eControlType.Dialog;
+
 }

@@ -34,67 +34,66 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OfficeOpenXml.Utils;
 using OfficeOpenXml;
 
-namespace EPPlusTest.Utils
+namespace EPPlusTest.Utils;
+
+[TestClass]
+public class AddressUtilityTests
 {
-    [TestClass]
-    public class AddressUtilityTests
+    [TestMethod]
+    public void ParseForEntireColumnSelections_ShouldAddMaxRows()
     {
-        [TestMethod]
-        public void ParseForEntireColumnSelections_ShouldAddMaxRows()
-        {
-            // Arrange
-            string? address = "A:A";
+        // Arrange
+        string? address = "A:A";
 
-            // Act
-            string? result = AddressUtility.ParseEntireColumnSelections(address);
+        // Act
+        string? result = AddressUtility.ParseEntireColumnSelections(address);
 
-            // Assert
-            Assert.AreEqual("A1:A" + ExcelPackage.MaxRows, result);
-        }
+        // Assert
+        Assert.AreEqual("A1:A" + ExcelPackage.MaxRows, result);
+    }
 
-        [TestMethod]
-        public void ParseForEntireColumnSelections_ShouldAddMaxRowsOnColumnsWithMultipleLetters()
-        {
-            // Arrange
-            string? address = "AB:AC";
+    [TestMethod]
+    public void ParseForEntireColumnSelections_ShouldAddMaxRowsOnColumnsWithMultipleLetters()
+    {
+        // Arrange
+        string? address = "AB:AC";
 
-            // Act
-            string? result = AddressUtility.ParseEntireColumnSelections(address);
+        // Act
+        string? result = AddressUtility.ParseEntireColumnSelections(address);
 
-            // Assert
-            Assert.AreEqual("AB1:AC" + ExcelPackage.MaxRows, result);
-        }
+        // Assert
+        Assert.AreEqual("AB1:AC" + ExcelPackage.MaxRows, result);
+    }
 
-        [TestMethod]
-        public void ParseForEntireColumnSelections_ShouldHandleMultipleRanges()
-        {
-            // Arrange
-            string? address = "A:A B:B";
-            string? expected = string.Format("A1:A{0} B1:B{0}", ExcelPackage.MaxRows);
+    [TestMethod]
+    public void ParseForEntireColumnSelections_ShouldHandleMultipleRanges()
+    {
+        // Arrange
+        string? address = "A:A B:B";
+        string? expected = string.Format("A1:A{0} B1:B{0}", ExcelPackage.MaxRows);
 
-            // Act
-            string? result = AddressUtility.ParseEntireColumnSelections(address);
+        // Act
+        string? result = AddressUtility.ParseEntireColumnSelections(address);
 
-            // Assert
-            Assert.AreEqual(expected, result);
-        }
+        // Assert
+        Assert.AreEqual(expected, result);
+    }
 
-        [TestMethod]
-        public void ShouldShiftRowInFormulaAddresses1()
-        {
-            string? formula = "SUM(A3:A4)";
-            string? ws = "test";
-            string? result = AddressUtility.ShiftAddressRowsInFormula(ws, formula, 3, -2);
-            Assert.AreEqual("SUM(A1:A2)", result);
-        }
+    [TestMethod]
+    public void ShouldShiftRowInFormulaAddresses1()
+    {
+        string? formula = "SUM(A3:A4)";
+        string? ws = "test";
+        string? result = AddressUtility.ShiftAddressRowsInFormula(ws, formula, 3, -2);
+        Assert.AreEqual("SUM(A1:A2)", result);
+    }
 
-        [TestMethod]
-        public void ShouldNotShiftRowInFormulaFixedAddresses()
-        {
-            string? formula = "SUM(A$3:A$4)";
-            string? ws = "test";
-            string? result = AddressUtility.ShiftAddressRowsInFormula(ws, formula, 3, -2);
-            Assert.AreEqual("SUM(A$3:A$4)", result);
-        }
+    [TestMethod]
+    public void ShouldNotShiftRowInFormulaFixedAddresses()
+    {
+        string? formula = "SUM(A$3:A$4)";
+        string? ws = "test";
+        string? result = AddressUtility.ShiftAddressRowsInFormula(ws, formula, 3, -2);
+        Assert.AreEqual("SUM(A$3:A$4)", result);
     }
 }

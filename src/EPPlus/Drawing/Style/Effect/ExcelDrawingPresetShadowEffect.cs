@@ -13,33 +13,31 @@
 using System;
 using System.Xml;
 
-namespace OfficeOpenXml.Drawing.Style.Effect
-{
+namespace OfficeOpenXml.Drawing.Style.Effect;
 
-    /// <summary>
-    /// A preset shadow types
-    /// </summary>
-    public class ExcelDrawingPresetShadowEffect : ExcelDrawingShadowEffect
+/// <summary>
+/// A preset shadow types
+/// </summary>
+public class ExcelDrawingPresetShadowEffect : ExcelDrawingShadowEffect
+{
+    private readonly string _typePath = "{0}/@prst";
+    internal ExcelDrawingPresetShadowEffect(XmlNamespaceManager nameSpaceManager, XmlNode topNode, string[] schemaNodeOrder, string path) : base(nameSpaceManager, topNode, schemaNodeOrder, path)
     {
-        private readonly string _typePath = "{0}/@prst";
-        internal ExcelDrawingPresetShadowEffect(XmlNamespaceManager nameSpaceManager, XmlNode topNode, string[] schemaNodeOrder, string path) : base(nameSpaceManager, topNode, schemaNodeOrder, path)
+        this._typePath = string.Format(this._typePath, path);
+    }
+    /// <summary>
+    /// The preset shadow type
+    /// </summary>
+    public ePresetShadowType Type
+    {
+        get
         {
-            this._typePath = string.Format(this._typePath, path);
+            return this.GetXmlNodeString(this._typePath).TranslatePresetShadowType();
         }
-        /// <summary>
-        /// The preset shadow type
-        /// </summary>
-        public ePresetShadowType Type
+        set
         {
-            get
-            {
-                return this.GetXmlNodeString(this._typePath).TranslatePresetShadowType();
-            }
-            set
-            {
-                this.SetXmlNodeString(this._typePath, value.TranslateString());
-                this.InitXml();
-            }
+            this.SetXmlNodeString(this._typePath, value.TranslateString());
+            this.InitXml();
         }
     }
 }

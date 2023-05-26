@@ -15,72 +15,71 @@ using System;
 using System.Globalization;
 using System.Xml;
 
-namespace OfficeOpenXml.Filter
+namespace OfficeOpenXml.Filter;
+
+/// <summary>
+/// A filter column filtered by icons
+/// </summary>
+/// <remarks>Note that EPPlus does not filter icon columns</remarks>
+public class ExcelIconFilterColumn : ExcelFilterColumn
 {
-    /// <summary>
-    /// A filter column filtered by icons
-    /// </summary>
-    /// <remarks>Note that EPPlus does not filter icon columns</remarks>
-    public class ExcelIconFilterColumn : ExcelFilterColumn
+    internal ExcelIconFilterColumn(XmlNamespaceManager namespaceManager, XmlNode topNode) : base(namespaceManager, topNode)
     {
-        internal ExcelIconFilterColumn(XmlNamespaceManager namespaceManager, XmlNode topNode) : base(namespaceManager, topNode)
-        {
 
-        }
-        /// <summary>
-        /// The icon Id within the icon set
-        /// </summary>
-        public int IconId
+    }
+    /// <summary>
+    /// The icon Id within the icon set
+    /// </summary>
+    public int IconId
+    {
+        get
         {
-            get
+            return this.GetXmlNodeInt("d:iconId");
+        }
+        set
+        {
+            if (value < 0)
             {
-                return this.GetXmlNodeInt("d:iconId");
+                throw (new ArgumentOutOfRangeException("iconId must not be negative"));
             }
-            set
-            {
-                if (value < 0)
-                {
-                    throw (new ArgumentOutOfRangeException("iconId must not be negative"));
-                }
 
-                this.SetXmlNodeString("d:iconId", value.ToString(CultureInfo.InvariantCulture));
-            }
+            this.SetXmlNodeString("d:iconId", value.ToString(CultureInfo.InvariantCulture));
         }
-        /// <summary>
-        /// The Iconset to filter by
-        /// </summary>
-        public eExcelconditionalFormattingIconsSetType IconSet
+    }
+    /// <summary>
+    /// The Iconset to filter by
+    /// </summary>
+    public eExcelconditionalFormattingIconsSetType IconSet
+    {
+        get
         {
-            get
+            string? v= this.GetXmlNodeString("d:iconSet");
+            v = v.Replace("3", "Three").Replace("4", "four").Replace("5", "Five");
+            try
             {
-                string? v= this.GetXmlNodeString("d:iconSet");
-                v = v.Replace("3", "Three").Replace("4", "four").Replace("5", "Five");
-                try
-                {
-                    eExcelconditionalFormattingIconsSetType r = (eExcelconditionalFormattingIconsSetType)Enum.Parse(typeof(eExcelconditionalFormattingIconsSetType), v);
-                    return r;
-                }
-                catch
-                {
-                    throw (new ArgumentException($"Unknown Iconset {v}"));
-                }
+                eExcelconditionalFormattingIconsSetType r = (eExcelconditionalFormattingIconsSetType)Enum.Parse(typeof(eExcelconditionalFormattingIconsSetType), v);
+                return r;
             }
-            set
+            catch
             {
-                string? v = value.ToString();
-                v = v.Replace("Three", "3").Replace("four", "4").Replace("Five", "5");
-                this.SetXmlNodeString("d:dxfId", v);
+                throw (new ArgumentException($"Unknown Iconset {v}"));
             }
         }
-
-        internal override bool Match(object value, string valueText)
+        set
         {
-            return true;
+            string? v = value.ToString();
+            v = v.Replace("Three", "3").Replace("four", "4").Replace("Five", "5");
+            this.SetXmlNodeString("d:dxfId", v);
         }
+    }
 
-        internal override void Save()
-        {
+    internal override bool Match(object value, string valueText)
+    {
+        return true;
+    }
+
+    internal override void Save()
+    {
             
-        }
     }
 }

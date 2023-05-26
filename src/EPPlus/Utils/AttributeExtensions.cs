@@ -16,75 +16,74 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 
-namespace OfficeOpenXml.Utils
+namespace OfficeOpenXml.Utils;
+
+internal static class AttributeExtensions
 {
-    internal static class AttributeExtensions
+    internal static bool HasPropertyOfType<T>(this MemberInfo member, bool? inherit = default(bool?))
     {
-        internal static bool HasPropertyOfType<T>(this MemberInfo member, bool? inherit = default(bool?))
-        {
-            //return member.GetCustomAttributes(typeof(T), false).FirstOrDefault() != null;
+        //return member.GetCustomAttributes(typeof(T), false).FirstOrDefault() != null;
 
 #if (NET35 || NET40)
             return member.GetCustomAttributes(typeof(T), inherit ?? false).FirstOrDefault() != null;
 #else
-            if (!inherit.HasValue)
-            {
-                return member.GetCustomAttributes(typeof(T)).FirstOrDefault() != null;
-            }
-            else
-            {
-                return member.GetCustomAttributes(typeof(T), inherit.Value).FirstOrDefault() != null;
-            }
-#endif
-        }
-
-        internal static T GetFirstAttributeOfType<T>(this MemberInfo member, bool? inherit = default(bool?))
-            where T : Attribute
+        if (!inherit.HasValue)
         {
+            return member.GetCustomAttributes(typeof(T)).FirstOrDefault() != null;
+        }
+        else
+        {
+            return member.GetCustomAttributes(typeof(T), inherit.Value).FirstOrDefault() != null;
+        }
+#endif
+    }
+
+    internal static T GetFirstAttributeOfType<T>(this MemberInfo member, bool? inherit = default(bool?))
+        where T : Attribute
+    {
 #if (NET35 || NET40)
             return member.GetCustomAttributes(typeof(T), inherit ?? false).FirstOrDefault() as T;
 #else
-            if (!inherit.HasValue)
-            {
-                return member.GetCustomAttributes(typeof(T)).FirstOrDefault() as T;
-            }
-            else
-            {
-                return member.GetCustomAttributes(typeof(T), inherit.Value).FirstOrDefault() as T;
-            }
+        if (!inherit.HasValue)
+        {
+            return member.GetCustomAttributes(typeof(T)).FirstOrDefault() as T;
+        }
+        else
+        {
+            return member.GetCustomAttributes(typeof(T), inherit.Value).FirstOrDefault() as T;
+        }
 #endif
-        }
+    }
 
-        internal static bool HasMemberWithPropertyOfType<T>(this Type type)
-            where T : Attribute
-        {
-            PropertyInfo[]? members = type.GetProperties();
-            return members.Any(x => x.GetCustomAttributes(typeof(T), false).FirstOrDefault() != null);
-        }
+    internal static bool HasMemberWithPropertyOfType<T>(this Type type)
+        where T : Attribute
+    {
+        PropertyInfo[]? members = type.GetProperties();
+        return members.Any(x => x.GetCustomAttributes(typeof(T), false).FirstOrDefault() != null);
+    }
 
-        internal static IEnumerable<T> FindAttributesOfType<T>(this Type type)
-            where T : Attribute
+    internal static IEnumerable<T> FindAttributesOfType<T>(this Type type)
+        where T : Attribute
+    {
+        object[]? attributes = type.GetCustomAttributes(true);
+        if(attributes == null || !attributes.Any())
         {
-            object[]? attributes = type.GetCustomAttributes(true);
-            if(attributes == null || !attributes.Any())
+            return Enumerable.Empty<T>();
+        }
+        List<T>? result = new List<T>();
+        foreach(object? attr in attributes)
+        {
+            T? typedAttr = attr as T;
+            if(typedAttr != null)
             {
-                return Enumerable.Empty<T>();
+                result.Add(typedAttr);
             }
-            List<T>? result = new List<T>();
-            foreach(object? attr in attributes)
-            {
-                T? typedAttr = attr as T;
-                if(typedAttr != null)
-                {
-                    result.Add(typedAttr);
-                }
-            }
-            return result;
         }
+        return result;
+    }
 
-        internal static bool IsComplexType(this Type type)
-        {
-            return type != typeof(string) && (type.IsClass || type.IsInterface);
-        }
+    internal static bool IsComplexType(this Type type)
+    {
+        return type != typeof(string) && (type.IsClass || type.IsInterface);
     }
 }

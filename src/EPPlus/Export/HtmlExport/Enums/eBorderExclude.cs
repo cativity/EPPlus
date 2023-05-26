@@ -12,33 +12,32 @@
  *************************************************************************************************/
 using System;
 
-namespace OfficeOpenXml.Export.HtmlExport
+namespace OfficeOpenXml.Export.HtmlExport;
+
+/// <summary>
+/// Exclude border properties in the css
+/// </summary>
+[Flags]
+public enum eBorderExclude
 {
     /// <summary>
-    /// Exclude border properties in the css
+    /// Exclude all border properties.
     /// </summary>
-    [Flags]
-    public enum eBorderExclude
-    {
-        /// <summary>
-        /// Exclude all border properties.
-        /// </summary>
-        All = 0x0F,
-        /// <summary>
-        /// Exclude top border properties
-        /// </summary>
-        Top = 0x01,
-        /// <summary>
-        /// Exclude bottom border properties
-        /// </summary>
-        Bottom = 0x02,
-        /// <summary>
-        /// Exclude left border properties
-        /// </summary>
-        Left = 0x04,
-        /// <summary>
-        /// Exclude right border properties
-        /// </summary>
-        Right = 0x08
-    }
+    All = 0x0F,
+    /// <summary>
+    /// Exclude top border properties
+    /// </summary>
+    Top = 0x01,
+    /// <summary>
+    /// Exclude bottom border properties
+    /// </summary>
+    Bottom = 0x02,
+    /// <summary>
+    /// Exclude left border properties
+    /// </summary>
+    Left = 0x04,
+    /// <summary>
+    /// Exclude right border properties
+    /// </summary>
+    Right = 0x08
 }

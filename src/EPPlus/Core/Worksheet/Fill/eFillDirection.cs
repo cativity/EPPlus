@@ -10,21 +10,20 @@
  *************************************************************************************************
     08/11/2021         EPPlus Software AB       EPPlus 5.8
  *************************************************************************************************/
-namespace OfficeOpenXml
+namespace OfficeOpenXml;
+
+/// <summary>
+/// If the fill is performed Down/Up (Column) or Left/Right (Row).
+/// Also see <see cref="eFillStartPosition"/>
+/// </summary>
+public enum eFillDirection
 {
     /// <summary>
-    /// If the fill is performed Down/Up (Column) or Left/Right (Row).
-    /// Also see <see cref="eFillStartPosition"/>
+    /// The fill is performed row-wise
     /// </summary>
-    public enum eFillDirection
-    {
-        /// <summary>
-        /// The fill is performed row-wise
-        /// </summary>
-        Row,
-        /// <summary>
-        /// The fill is performed column-wise
-        /// </summary>
-        Column
-    }
+    Row,
+    /// <summary>
+    /// The fill is performed column-wise
+    /// </summary>
+    Column
 }

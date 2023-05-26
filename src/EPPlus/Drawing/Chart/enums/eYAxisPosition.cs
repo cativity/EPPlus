@@ -10,20 +10,19 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
-namespace OfficeOpenXml.Drawing.Chart
+namespace OfficeOpenXml.Drawing.Chart;
+
+/// <summary>
+/// Position of the Y-Axis
+/// </summary>
+public enum eYAxisPosition
 {
     /// <summary>
-    /// Position of the Y-Axis
+    /// To the left
     /// </summary>
-    public enum eYAxisPosition
-    {
-        /// <summary>
-        /// To the left
-        /// </summary>
-        Left = 0,
-        /// <summary>
-        /// To the right
-        /// </summary>
-        Right = 2,
-    }
+    Left = 0,
+    /// <summary>
+    /// To the right
+    /// </summary>
+    Right = 2,
 }

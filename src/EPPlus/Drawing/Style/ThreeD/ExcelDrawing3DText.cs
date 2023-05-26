@@ -16,33 +16,32 @@ using System.Linq;
 using System.Text;
 using System.Xml;
 
-namespace OfficeOpenXml.Drawing.Style.ThreeD
-{
-    /// <summary>
-    /// 3D Text settings
-    /// </summary>
-    public class ExcelDrawing3DText : ExcelDrawing3D
-    {
-        private readonly string _flatTextZCoordinatePath = "{0}/a:flatTx/@z";
-        internal ExcelDrawing3DText(XmlNamespaceManager nameSpaceManager, XmlNode topNode, string[] schemaNodeOrder, string path) : base(nameSpaceManager, topNode, path, schemaNodeOrder)
-        {
-            this._flatTextZCoordinatePath = string.Format(this._flatTextZCoordinatePath, path);
-        }
+namespace OfficeOpenXml.Drawing.Style.ThreeD;
 
-        /// <summary>
-        /// The Z coordinate to be used when positioning the flat text within the 3D scene
-        /// </summary>
-        public double FlatTextZCoordinate
+/// <summary>
+/// 3D Text settings
+/// </summary>
+public class ExcelDrawing3DText : ExcelDrawing3D
+{
+    private readonly string _flatTextZCoordinatePath = "{0}/a:flatTx/@z";
+    internal ExcelDrawing3DText(XmlNamespaceManager nameSpaceManager, XmlNode topNode, string[] schemaNodeOrder, string path) : base(nameSpaceManager, topNode, path, schemaNodeOrder)
+    {
+        this._flatTextZCoordinatePath = string.Format(this._flatTextZCoordinatePath, path);
+    }
+
+    /// <summary>
+    /// The Z coordinate to be used when positioning the flat text within the 3D scene
+    /// </summary>
+    public double FlatTextZCoordinate
+    {
+        get
         {
-            get
-            {
-                return this.GetXmlNodeEmuToPtNull(this._flatTextZCoordinatePath) ?? 0;
-            }
-            set
-            {
-                this.InitXml(true);
-                this.SetXmlNodeEmuToPt(this._flatTextZCoordinatePath, value);
-            }
+            return this.GetXmlNodeEmuToPtNull(this._flatTextZCoordinatePath) ?? 0;
+        }
+        set
+        {
+            this.InitXml(true);
+            this.SetXmlNodeEmuToPt(this._flatTextZCoordinatePath, value);
         }
     }
 }

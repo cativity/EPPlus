@@ -14,62 +14,61 @@ using System;
 using System.Globalization;
 using System.Xml;
 
-namespace OfficeOpenXml.Filter
+namespace OfficeOpenXml.Filter;
+
+/// <summary>
+/// Represents a column filtered by colors.
+/// 
+/// </summary>
+public class ExcelColorFilterColumn : ExcelFilterColumn
 {
-    /// <summary>
-    /// Represents a column filtered by colors.
-    /// 
-    /// </summary>
-    public class ExcelColorFilterColumn : ExcelFilterColumn
+    internal ExcelColorFilterColumn(XmlNamespaceManager namespaceManager, XmlNode topNode) : base(namespaceManager, topNode)
     {
-        internal ExcelColorFilterColumn(XmlNamespaceManager namespaceManager, XmlNode topNode) : base(namespaceManager, topNode)
-        {
 
-        }
-        /// <summary>
-        /// Indicating whether or not to filter by the cell's fill color. 
-        /// True filters by cell fill. 
-        /// False filter by the cell's font color.
-        /// </summary>
-        public bool CellColor
+    }
+    /// <summary>
+    /// Indicating whether or not to filter by the cell's fill color. 
+    /// True filters by cell fill. 
+    /// False filter by the cell's font color.
+    /// </summary>
+    public bool CellColor
+    {
+        get
         {
-            get
-            {
-                return this.GetXmlNodeBool("d:cellColor");
-            }
-            set
-            {
-                this.SetXmlNodeBool("d:cellColor", value);
-            }
+            return this.GetXmlNodeBool("d:cellColor");
         }
-        /// <summary>
-        /// The differencial Style Id, referencing the DXF styles collection
-        /// </summary>
-        public int DxfId
+        set
         {
-            get
+            this.SetXmlNodeBool("d:cellColor", value);
+        }
+    }
+    /// <summary>
+    /// The differencial Style Id, referencing the DXF styles collection
+    /// </summary>
+    public int DxfId
+    {
+        get
+        {
+            return this.GetXmlNodeInt("d:dxfId");
+        }
+        set
+        {
+            if(value<0)
             {
-                return this.GetXmlNodeInt("d:dxfId");
+                throw (new ArgumentOutOfRangeException("DfxId must not be negative"));
             }
-            set
-            {
-                if(value<0)
-                {
-                    throw (new ArgumentOutOfRangeException("DfxId must not be negative"));
-                }
 
-                this.SetXmlNodeString("d:dxfId", value.ToString(CultureInfo.InvariantCulture));
-            }
+            this.SetXmlNodeString("d:dxfId", value.ToString(CultureInfo.InvariantCulture));
         }
+    }
 
-        internal override bool Match(object value, string valueText)
-        {
-            return true;
-        }
+    internal override bool Match(object value, string valueText)
+    {
+        return true;
+    }
 
-        internal override void Save()
-        {
+    internal override void Save()
+    {
             
-        }
     }
 }

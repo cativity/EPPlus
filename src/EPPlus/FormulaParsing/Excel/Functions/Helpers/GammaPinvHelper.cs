@@ -26,92 +26,91 @@ THE SOFTWARE.
   22/10/2022         EPPlus Software AB           Ported from JavaScript to C#
  *************************************************************************************************/
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Helpers
-{
-    internal class GammaPinvHelper
-    {
-        public static double gammapinv(double p, double a)
-        {
-            int j = 0;
-            double a1 = a - 1;
-            double EPS = 1e-8;
-            double gln = GammaHelper.logGamma(a);
-            double x;
-            double t;
-            double lna1 = 0;
-            double afac = 0;
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Helpers;
 
-            if (p >= 1)
+internal class GammaPinvHelper
+{
+    public static double gammapinv(double p, double a)
+    {
+        int j = 0;
+        double a1 = a - 1;
+        double EPS = 1e-8;
+        double gln = GammaHelper.logGamma(a);
+        double x;
+        double t;
+        double lna1 = 0;
+        double afac = 0;
+
+        if (p >= 1)
+        {
+            return System.Math.Max(100, a + 100 * System.Math.Sqrt(a));
+        }
+
+        if (p <= 0)
+        {
+            return 0;
+        }
+
+        if (a > 1)
+        {
+            lna1 = System.Math.Log(a1);
+            afac = System.Math.Exp(a1 * (lna1 - 1) - gln);
+            double pp = (p < 0.5) ? p : 1 - p;
+            t = System.Math.Sqrt(-2 * System.Math.Log(pp));
+            x = (2.30753 + t * 0.27061) / (1 + t * (0.99229 + t * 0.04481)) - t;
+            if (p < 0.5)
             {
-                return System.Math.Max(100, a + 100 * System.Math.Sqrt(a));
+                x = -x;
             }
 
-            if (p <= 0)
+            x = System.Math.Max(1e-3,
+                                a * System.Math.Pow(1 - 1 / (9 * a) - x / (3 * System.Math.Sqrt(a)), 3));
+        }
+        else
+        {
+            t = 1 - a * (0.253 + a * 0.12);
+            if (p < t)
+            {
+                x = System.Math.Pow(p / t, 1 / a);
+            }
+            else
+            {
+                x = 1 - System.Math.Log(1 - (p - t) / (1 - t));
+            }
+        }
+
+        for (; j < 12; j++)
+        {
+            if (x <= 0)
             {
                 return 0;
             }
 
+            double err = GammaHelper.regularizedGammaP(a, x, 1.0e-15, 10000) - p;
+
+            //err = jStat.lowRegGamma(a, x) - p;
             if (a > 1)
             {
-                lna1 = System.Math.Log(a1);
-                afac = System.Math.Exp(a1 * (lna1 - 1) - gln);
-                double pp = (p < 0.5) ? p : 1 - p;
-                t = System.Math.Sqrt(-2 * System.Math.Log(pp));
-                x = (2.30753 + t * 0.27061) / (1 + t * (0.99229 + t * 0.04481)) - t;
-                if (p < 0.5)
-                {
-                    x = -x;
-                }
-
-                x = System.Math.Max(1e-3,
-                                    a * System.Math.Pow(1 - 1 / (9 * a) - x / (3 * System.Math.Sqrt(a)), 3));
+                t = afac * System.Math.Exp(-(x - a1) + a1 * (System.Math.Log(x) - lna1));
             }
             else
             {
-                t = 1 - a * (0.253 + a * 0.12);
-                if (p < t)
-                {
-                    x = System.Math.Pow(p / t, 1 / a);
-                }
-                else
-                {
-                    x = 1 - System.Math.Log(1 - (p - t) / (1 - t));
-                }
+                t = System.Math.Exp(-x + a1 * System.Math.Log(x) - gln);
             }
 
-            for (; j < 12; j++)
+            double u = err / t;
+            x -= (t = u / (1 - 0.5 * System.Math.Min(1, u * ((a - 1) / x - 1))));
+            if (x <= 0)
             {
-                if (x <= 0)
-                {
-                    return 0;
-                }
-
-                double err = GammaHelper.regularizedGammaP(a, x, 1.0e-15, 10000) - p;
-
-                //err = jStat.lowRegGamma(a, x) - p;
-                if (a > 1)
-                {
-                    t = afac * System.Math.Exp(-(x - a1) + a1 * (System.Math.Log(x) - lna1));
-                }
-                else
-                {
-                    t = System.Math.Exp(-x + a1 * System.Math.Log(x) - gln);
-                }
-
-                double u = err / t;
-                x -= (t = u / (1 - 0.5 * System.Math.Min(1, u * ((a - 1) / x - 1))));
-                if (x <= 0)
-                {
-                    x = 0.5 * (x + t);
-                }
-
-                if (System.Math.Abs(t) < EPS * x)
-                {
-                    break;
-                }
+                x = 0.5 * (x + t);
             }
 
-            return x;
+            if (System.Math.Abs(t) < EPS * x)
+            {
+                break;
+            }
         }
+
+        return x;
     }
 }

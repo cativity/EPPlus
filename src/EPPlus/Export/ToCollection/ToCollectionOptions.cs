@@ -15,89 +15,88 @@ using OfficeOpenXml.FormulaParsing.Excel.Functions.Text;
 using OfficeOpenXml.Table;
 using System;
 
-namespace OfficeOpenXml
+namespace OfficeOpenXml;
+
+/// <summary>
+/// Settings for the ToCollection method.
+/// <see cref="ExcelRangeBase.ToCollection{T}()"/>
+/// </summary>
+public class ToCollectionRangeOptions : ToCollectionOptions
 {
     /// <summary>
-    /// Settings for the ToCollection method.
-    /// <see cref="ExcelRangeBase.ToCollection{T}()"/>
+    /// Constructor
     /// </summary>
-    public class ToCollectionRangeOptions : ToCollectionOptions
+    public ToCollectionRangeOptions()
     {
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        public ToCollectionRangeOptions()
-        {
 
-        }
-        internal ToCollectionRangeOptions(ToCollectionOptions options)
-        {
-            this.SetCustomHeaders(options.Headers);
-            this.ConversionFailureStrategy = options.ConversionFailureStrategy;
-        }
-        /// <summary>
-        /// 0-based index of the Header row in the range, if applicable. 
-        /// A null value means there is no header row.
-        /// See also: <seealso cref="ToCollectionOptions.SetCustomHeaders(string[])"/>
-        /// <seealso cref="DataStartRow"/>
-        /// </summary>
-        public int? HeaderRow { get; set; } = null;
-        /// <summary>
-        /// The data start row in the range.
-        /// A null value means the data rows starts direcly after the header row.
-        /// </summary>
-        public int? DataStartRow { get; set; } = null;
-        /// <summary>
-        /// A <see cref="ToCollectionRangeOptions"/> with default values.
-        /// </summary>
-        public static ToCollectionRangeOptions Default
-        {
-            get
-            {
-                return new ToCollectionRangeOptions();
-            }
-        }
+    }
+    internal ToCollectionRangeOptions(ToCollectionOptions options)
+    {
+        this.SetCustomHeaders(options.Headers);
+        this.ConversionFailureStrategy = options.ConversionFailureStrategy;
     }
     /// <summary>
-    /// Base class for settings to the ToCollection method.
-    /// <see cref="ExcelRangeBase.ToCollection{T}()"/>
-    /// <see cref="ExcelTable.ToCollection{T}()"/>
+    /// 0-based index of the Header row in the range, if applicable. 
+    /// A null value means there is no header row.
+    /// See also: <seealso cref="ToCollectionOptions.SetCustomHeaders(string[])"/>
+    /// <seealso cref="DataStartRow"/>
     /// </summary>
-    public abstract class ToCollectionOptions
+    public int? HeaderRow { get; set; } = null;
+    /// <summary>
+    /// The data start row in the range.
+    /// A null value means the data rows starts direcly after the header row.
+    /// </summary>
+    public int? DataStartRow { get; set; } = null;
+    /// <summary>
+    /// A <see cref="ToCollectionRangeOptions"/> with default values.
+    /// </summary>
+    public static ToCollectionRangeOptions Default
     {
-        /// <summary>
-        /// An array of column headers. If set, used instead of the header row. 
-        /// <see cref="SetCustomHeaders(string[])"/>
-        /// </summary>
-        internal string[] Headers { get; private set; } = null;
-        /// <summary>
-        /// Sets custom headers.  If set, used instead of the header row. 
-        /// </summary>
-        /// <param name="header"></param>
-        public void SetCustomHeaders(params string[] header)
+        get
         {
-            this.Headers = header;
+            return new ToCollectionRangeOptions();
         }
-        /// <summary>
-        /// How conversion failures should be handled when mapping properties.
-        /// </summary>
-        public ToCollectionConversionFailureStrategy ConversionFailureStrategy { get; set; }
+    }
+}
+/// <summary>
+/// Base class for settings to the ToCollection method.
+/// <see cref="ExcelRangeBase.ToCollection{T}()"/>
+/// <see cref="ExcelTable.ToCollection{T}()"/>
+/// </summary>
+public abstract class ToCollectionOptions
+{
+    /// <summary>
+    /// An array of column headers. If set, used instead of the header row. 
+    /// <see cref="SetCustomHeaders(string[])"/>
+    /// </summary>
+    internal string[] Headers { get; private set; } = null;
+    /// <summary>
+    /// Sets custom headers.  If set, used instead of the header row. 
+    /// </summary>
+    /// <param name="header"></param>
+    public void SetCustomHeaders(params string[] header)
+    {
+        this.Headers = header;
     }
     /// <summary>
-    /// Settings for the ToCollection method.
-    /// <see cref="ExcelTable.ToCollection{T}()"/>
+    /// How conversion failures should be handled when mapping properties.
     /// </summary>
-    public class ToCollectionTableOptions : ToCollectionOptions
+    public ToCollectionConversionFailureStrategy ConversionFailureStrategy { get; set; }
+}
+/// <summary>
+/// Settings for the ToCollection method.
+/// <see cref="ExcelTable.ToCollection{T}()"/>
+/// </summary>
+public class ToCollectionTableOptions : ToCollectionOptions
+{
+    /// <summary>
+    /// A <see cref="ToCollectionTableOptions"/> with default values.
+    /// </summary>
+    public static ToCollectionTableOptions Default
     {
-        /// <summary>
-        /// A <see cref="ToCollectionTableOptions"/> with default values.
-        /// </summary>
-        public static ToCollectionTableOptions Default
+        get
         {
-            get
-            {
-                return new ToCollectionTableOptions();
-            }
+            return new ToCollectionTableOptions();
         }
     }
 }

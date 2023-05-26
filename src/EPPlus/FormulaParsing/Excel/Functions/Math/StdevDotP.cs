@@ -15,13 +15,12 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
+
+[FunctionMetadata(
+                     Category = ExcelFunctionCategory.Statistical,
+                     EPPlusVersion = "4",
+                     Description = "Returns the standard deviation of a supplied set of values (which represent an entire population)")]
+internal class StdevDotP : StdevP
 {
-    [FunctionMetadata(
-        Category = ExcelFunctionCategory.Statistical,
-        EPPlusVersion = "4",
-        Description = "Returns the standard deviation of a supplied set of values (which represent an entire population)")]
-    internal class StdevDotP : StdevP
-    {
-    }
 }

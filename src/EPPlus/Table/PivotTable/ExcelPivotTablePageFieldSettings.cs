@@ -15,92 +15,91 @@ using System.Collections.Generic;
 using System.Text;
 using System.Xml;
 
-namespace OfficeOpenXml.Table.PivotTable
-{
-    /// <summary>
-    /// A page / report filter field
-    /// </summary>
-    public class ExcelPivotTablePageFieldSettings  : XmlHelper
-    {
-        internal ExcelPivotTableField _field;
-        internal ExcelPivotTablePageFieldSettings(XmlNamespaceManager ns, XmlNode topNode, ExcelPivotTableField field, int index) :
-            base(ns, topNode)
-        {
-            if (this.GetXmlNodeString("@hier")=="")
-            {
-                this.Hier = -1;
-            }
+namespace OfficeOpenXml.Table.PivotTable;
 
-            this._field = field;
-        }
-        internal int Index 
-        { 
-            get
-            {
-                return this.GetXmlNodeInt("@fld");
-            }
-            set
-            {
-                this.SetXmlNodeString("@fld",value.ToString());
-            }
-        }
-        /// <summary>
-        /// The Name of the field
-        /// </summary>
-        public string Name
+/// <summary>
+/// A page / report filter field
+/// </summary>
+public class ExcelPivotTablePageFieldSettings  : XmlHelper
+{
+    internal ExcelPivotTableField _field;
+    internal ExcelPivotTablePageFieldSettings(XmlNamespaceManager ns, XmlNode topNode, ExcelPivotTableField field, int index) :
+        base(ns, topNode)
+    {
+        if (this.GetXmlNodeString("@hier")=="")
         {
-            get
+            this.Hier = -1;
+        }
+
+        this._field = field;
+    }
+    internal int Index 
+    { 
+        get
+        {
+            return this.GetXmlNodeInt("@fld");
+        }
+        set
+        {
+            this.SetXmlNodeString("@fld",value.ToString());
+        }
+    }
+    /// <summary>
+    /// The Name of the field
+    /// </summary>
+    public string Name
+    {
+        get
+        {
+            return this.GetXmlNodeString("@name");
+        }
+        set
+        {
+            this.SetXmlNodeString("@name", value);
+        }
+    }
+    /***** Dont work. Need items to be populated. ****/
+    /// <summary>
+    /// The selected item 
+    /// </summary>
+    internal int SelectedItem
+    {
+        get
+        {
+            return this.GetXmlNodeInt("@item");
+        }
+        set
+        {
+            if (value < 0)
             {
-                return this.GetXmlNodeString("@name");
+                this.DeleteNode("@item");
             }
-            set
+            else
             {
-                this.SetXmlNodeString("@name", value);
+                this.SetXmlNodeString("@item", value.ToString());
             }
         }
-        /***** Dont work. Need items to be populated. ****/
-        /// <summary>
-        /// The selected item 
-        /// </summary>
-        internal int SelectedItem
+    }
+    internal int NumFmtId
+    {
+        get
         {
-            get
-            {
-                return this.GetXmlNodeInt("@item");
-            }
-            set
-            {
-                if (value < 0)
-                {
-                    this.DeleteNode("@item");
-                }
-                else
-                {
-                    this.SetXmlNodeString("@item", value.ToString());
-                }
-            }
+            return this.GetXmlNodeInt("@numFmtId");
         }
-        internal int NumFmtId
+        set
         {
-            get
-            {
-                return this.GetXmlNodeInt("@numFmtId");
-            }
-            set
-            {
-                this.SetXmlNodeString("@numFmtId", value.ToString());
-            }
+            this.SetXmlNodeString("@numFmtId", value.ToString());
         }
-        internal int Hier
+    }
+    internal int Hier
+    {
+        get
         {
-            get
-            {
-                return this.GetXmlNodeInt("@hier");
-            }
-            set
-            {
-                this.SetXmlNodeString("@hier", value.ToString());
-            }
+            return this.GetXmlNodeInt("@hier");
+        }
+        set
+        {
+            this.SetXmlNodeString("@hier", value.ToString());
         }
     }
 }

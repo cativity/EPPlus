@@ -16,31 +16,30 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace OfficeOpenXml.Drawing.Interfaces
+namespace OfficeOpenXml.Drawing.Interfaces;
+
+internal class HashInfo
 {
-    internal class HashInfo
+    public HashInfo(string relId)
     {
-        public HashInfo(string relId)
-        {
-            this.RelId = relId;
-        }
-        public string RelId { get; set; }
-        public int RefCount { get; set; }
+        this.RelId = relId;
     }
-    internal interface IPictureRelationDocument
-    {
-        ExcelPackage Package { get; }
-        Dictionary<string, HashInfo> Hashes { get; }
-        ZipPackagePart RelatedPart { get; }
-        Uri RelatedUri { get; }
-    }
-    internal interface IPictureContainer
-    {
-        IPictureRelationDocument RelationDocument { get; }
-        string ImageHash { get; set; }
-        Uri UriPic { get; set; }
-        ZipPackageRelationship RelPic { get; set; }
-        void RemoveImage();
-        void SetNewImage();
-    }
+    public string RelId { get; set; }
+    public int RefCount { get; set; }
+}
+internal interface IPictureRelationDocument
+{
+    ExcelPackage Package { get; }
+    Dictionary<string, HashInfo> Hashes { get; }
+    ZipPackagePart RelatedPart { get; }
+    Uri RelatedUri { get; }
+}
+internal interface IPictureContainer
+{
+    IPictureRelationDocument RelationDocument { get; }
+    string ImageHash { get; set; }
+    Uri UriPic { get; set; }
+    ZipPackageRelationship RelPic { get; set; }
+    void RemoveImage();
+    void SetNewImage();
 }

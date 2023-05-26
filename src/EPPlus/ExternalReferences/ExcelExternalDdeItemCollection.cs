@@ -12,12 +12,11 @@
  *************************************************************************************************/
 using OfficeOpenXml.Core;
 
-namespace OfficeOpenXml.ExternalReferences
+namespace OfficeOpenXml.ExternalReferences;
+
+/// <summary>
+/// A collection of <see cref="ExcelExternalDdeItem" />
+/// </summary>
+public class ExcelExternalDdeItemCollection : EPPlusReadOnlyList<ExcelExternalDdeItem>
 {
-    /// <summary>
-    /// A collection of <see cref="ExcelExternalDdeItem" />
-    /// </summary>
-    public class ExcelExternalDdeItemCollection : EPPlusReadOnlyList<ExcelExternalDdeItem>
-    {
-    }
 }

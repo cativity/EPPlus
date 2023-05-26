@@ -18,34 +18,33 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace OfficeOpenXml.Drawing.Interfaces
+namespace OfficeOpenXml.Drawing.Interfaces;
+
+/// <summary>
+/// Interface for handling data labels
+/// </summary>
+public interface IDrawingDataLabel
 {
     /// <summary>
-    /// Interface for handling data labels
+    /// Data labels
     /// </summary>
-    public interface IDrawingDataLabel
-    {
-        /// <summary>
-        /// Data labels
-        /// </summary>
-        ExcelChartDataLabel DataLabel { get; }
-        /// <summary>
-        /// If the chart part has data labels
-        /// </summary>
-        bool HasDataLabel { get; }
-    }
+    ExcelChartDataLabel DataLabel { get; }
     /// <summary>
-    /// Interface for handling data labels on a serie
+    /// If the chart part has data labels
     /// </summary>
-    public interface IDrawingSerieDataLabel
-    {
-        /// <summary>
-        /// Data labels
-        /// </summary>
-        ExcelChartSerieDataLabel DataLabel { get; }
-        /// <summary>
-        /// If the chart part has data labels
-        /// </summary>
-        bool HasDataLabel { get; }
-    }
+    bool HasDataLabel { get; }
+}
+/// <summary>
+/// Interface for handling data labels on a serie
+/// </summary>
+public interface IDrawingSerieDataLabel
+{
+    /// <summary>
+    /// Data labels
+    /// </summary>
+    ExcelChartSerieDataLabel DataLabel { get; }
+    /// <summary>
+    /// If the chart part has data labels
+    /// </summary>
+    bool HasDataLabel { get; }
 }

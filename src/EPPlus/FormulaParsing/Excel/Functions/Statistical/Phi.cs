@@ -17,21 +17,20 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Statistical
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Statistical;
+
+[FunctionMetadata(
+                     Category = ExcelFunctionCategory.Statistical,
+                     EPPlusVersion = "6.0",
+                     IntroducedInExcelVersion = "2013",
+                     Description = "Calculates the value of the density function for a standard normal distribution for a supplied number.")]
+internal class Phi : ExcelFunction
 {
-    [FunctionMetadata(
-            Category = ExcelFunctionCategory.Statistical,
-            EPPlusVersion = "6.0",
-            IntroducedInExcelVersion = "2013",
-            Description = "Calculates the value of the density function for a standard normal distribution for a supplied number.")]
-    internal class Phi : ExcelFunction
+    public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
     {
-        public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
-        {
-            ValidateArguments(arguments, 1);
-            double n = this.ArgToDecimal(arguments, 0);
-            double result = System.Math.Exp(-0.5 * System.Math.Pow(n, 2)) / System.Math.Sqrt(System.Math.PI * 2);
-            return this.CreateResult(result, DataType.Decimal);
-        }
+        ValidateArguments(arguments, 1);
+        double n = this.ArgToDecimal(arguments, 0);
+        double result = System.Math.Exp(-0.5 * System.Math.Pow(n, 2)) / System.Math.Sqrt(System.Math.PI * 2);
+        return this.CreateResult(result, DataType.Decimal);
     }
 }

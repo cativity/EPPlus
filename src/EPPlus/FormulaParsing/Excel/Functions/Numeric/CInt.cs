@@ -18,19 +18,18 @@ using OfficeOpenXml.FormulaParsing.ExpressionGraph;
 using System.Globalization;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Metadata;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Numeric
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Numeric;
+
+[FunctionMetadata(
+                     Category = ExcelFunctionCategory.MathAndTrig,
+                     EPPlusVersion = "4",
+                     Description = "Rounds a number down to the next integer")]
+internal class CInt : ExcelFunction
 {
-    [FunctionMetadata(
-        Category = ExcelFunctionCategory.MathAndTrig,
-        EPPlusVersion = "4",
-        Description = "Rounds a number down to the next integer")]
-    internal class CInt : ExcelFunction
+    public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
     {
-        public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
-        {
-            ValidateArguments(arguments, 1);
-            double num = this.ArgToDecimal(arguments, 0);
-            return this.CreateResult((int)System.Math.Floor(num), DataType.Integer);
-        }
+        ValidateArguments(arguments, 1);
+        double num = this.ArgToDecimal(arguments, 0);
+        return this.CreateResult((int)System.Math.Floor(num), DataType.Integer);
     }
 }

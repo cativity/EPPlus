@@ -15,66 +15,65 @@ using OfficeOpenXml.DataValidation.Formulas;
 using OfficeOpenXml.DataValidation.Formulas.Contracts;
 using System.Xml;
 
-namespace OfficeOpenXml.DataValidation
+namespace OfficeOpenXml.DataValidation;
+
+/// <summary>
+/// Custom validation, i.e. a formula.
+/// </summary>
+public class ExcelDataValidationCustom : ExcelDataValidationWithFormula<IExcelDataValidationFormula>, IExcelDataValidationCustom
 {
     /// <summary>
-    /// Custom validation, i.e. a formula.
+    /// Constructor
     /// </summary>
-    public class ExcelDataValidationCustom : ExcelDataValidationWithFormula<IExcelDataValidationFormula>, IExcelDataValidationCustom
+    /// <param name="worksheetName"></param>
+    /// <param name="uid">Uid of the data validation, format should be a Guid surrounded by curly braces.</param>
+    /// <param name="address"></param>
+    internal ExcelDataValidationCustom(string uid, string address, ExcelWorksheet ws)
+        : base(uid, address, ws)
     {
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        /// <param name="worksheetName"></param>
-        /// <param name="uid">Uid of the data validation, format should be a Guid surrounded by curly braces.</param>
-        /// <param name="address"></param>
-        internal ExcelDataValidationCustom(string uid, string address, ExcelWorksheet ws)
-            : base(uid, address, ws)
-        {
-            this.Formula = new ExcelDataValidationFormulaCustom(null, this.Uid, ws.Name, this.OnFormulaChanged);
-        }
+        this.Formula = new ExcelDataValidationFormulaCustom(null, this.Uid, ws.Name, this.OnFormulaChanged);
+    }
 
-        /// <summary>
-        /// Constructor for reading data
-        /// </summary>
-        /// <param name="xr">The XmlReader to read from</param>
-        internal ExcelDataValidationCustom(XmlReader xr, ExcelWorksheet ws)
-            : base(xr, ws)
-        {
-        }
+    /// <summary>
+    /// Constructor for reading data
+    /// </summary>
+    /// <param name="xr">The XmlReader to read from</param>
+    internal ExcelDataValidationCustom(XmlReader xr, ExcelWorksheet ws)
+        : base(xr, ws)
+    {
+    }
 
-        /// <summary>
-        /// Copy constructor
-        /// </summary>
-        /// <param name="copy"></param>
-        internal ExcelDataValidationCustom(ExcelDataValidationCustom copy, ExcelWorksheet ws) : base(copy, ws)
-        {
-            this.Formula = copy.Formula;
-        }
+    /// <summary>
+    /// Copy constructor
+    /// </summary>
+    /// <param name="copy"></param>
+    internal ExcelDataValidationCustom(ExcelDataValidationCustom copy, ExcelWorksheet ws) : base(copy, ws)
+    {
+        this.Formula = copy.Formula;
+    }
 
-        /// <summary>
-        /// Property for determining type of validation
-        /// </summary>
-        public override ExcelDataValidationType ValidationType => new ExcelDataValidationType(eDataValidationType.Custom);
+    /// <summary>
+    /// Property for determining type of validation
+    /// </summary>
+    public override ExcelDataValidationType ValidationType => new ExcelDataValidationType(eDataValidationType.Custom);
 
-        override internal IExcelDataValidationFormula DefineFormulaClassType(string formulaValue, string sheetName)
-        {
-            return new ExcelDataValidationFormulaCustom(formulaValue, this.Uid, sheetName, this.OnFormulaChanged);
+    override internal IExcelDataValidationFormula DefineFormulaClassType(string formulaValue, string sheetName)
+    {
+        return new ExcelDataValidationFormulaCustom(formulaValue, this.Uid, sheetName, this.OnFormulaChanged);
 
-        }
+    }
 
-        internal override ExcelDataValidation GetClone()
-        {
-            return new ExcelDataValidationCustom(this, this._ws);
-        }
-        internal override ExcelDataValidation GetClone(ExcelWorksheet copy)
-        {
-            return new ExcelDataValidationCustom(this, copy);
-        }
+    internal override ExcelDataValidation GetClone()
+    {
+        return new ExcelDataValidationCustom(this, this._ws);
+    }
+    internal override ExcelDataValidation GetClone(ExcelWorksheet copy)
+    {
+        return new ExcelDataValidationCustom(this, copy);
+    }
 
-        ExcelDataValidationAny Clone()
-        {
-            return (ExcelDataValidationAny)this.GetClone();
-        }
+    ExcelDataValidationAny Clone()
+    {
+        return (ExcelDataValidationAny)this.GetClone();
     }
 }

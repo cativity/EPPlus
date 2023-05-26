@@ -35,64 +35,63 @@ using OfficeOpenXml.FormulaParsing;
 using FakeItEasy;
 using OfficeOpenXml;
 
-namespace EPPlusTest.FormulaParsing.IntegrationTests
+namespace EPPlusTest.FormulaParsing.IntegrationTests;
+
+[TestClass]
+public class PrecedenceTests : FormulaParserTestBase
 {
-    [TestClass]
-    public class PrecedenceTests : FormulaParserTestBase
+
+    [TestInitialize]
+    public void Setup()
     {
+        this._excelPackage = new ExcelPackage();
+        this._parser = new FormulaParser(this._excelPackage);
+    }
 
-        [TestInitialize]
-        public void Setup()
-        {
-            this._excelPackage = new ExcelPackage();
-            this._parser = new FormulaParser(this._excelPackage);
-        }
+    [TestCleanup]
+    public void Cleanup()
+    {
+        this._excelPackage.Dispose();
+    }
 
-        [TestCleanup]
-        public void Cleanup()
-        {
-            this._excelPackage.Dispose();
-        }
+    [TestMethod]
+    public void ShouldCaluclateUsingPrecedenceMultiplyBeforeAdd()
+    {
+        object? result = this._parser.Parse("4 + 6 * 2");
+        Assert.AreEqual(16d, result);
+    }
 
-        [TestMethod]
-        public void ShouldCaluclateUsingPrecedenceMultiplyBeforeAdd()
-        {
-            object? result = this._parser.Parse("4 + 6 * 2");
-            Assert.AreEqual(16d, result);
-        }
+    [TestMethod]
+    public void ShouldCaluclateUsingPrecedenceDivideBeforeAdd()
+    {
+        object? result = this._parser.Parse("4 + 6 / 2");
+        Assert.AreEqual(7d, result);
+    }
 
-        [TestMethod]
-        public void ShouldCaluclateUsingPrecedenceDivideBeforeAdd()
-        {
-            object? result = this._parser.Parse("4 + 6 / 2");
-            Assert.AreEqual(7d, result);
-        }
+    [TestMethod]
+    public void ShouldCalculateTwoGroupsUsingDivideAndMultiplyBeforeSubtract()
+    {
+        object? result = this._parser.Parse("4/2 + 3 * 3");
+        Assert.AreEqual(11d, result);
+    }
 
-        [TestMethod]
-        public void ShouldCalculateTwoGroupsUsingDivideAndMultiplyBeforeSubtract()
-        {
-            object? result = this._parser.Parse("4/2 + 3 * 3");
-            Assert.AreEqual(11d, result);
-        }
+    [TestMethod]
+    public void ShouldCalculateExpressionWithinParenthesisBeforeMultiply()
+    {
+        object? result = this._parser.Parse("(2+4) * 2");
+        Assert.AreEqual(12d, result);
+    }
 
-        [TestMethod]
-        public void ShouldCalculateExpressionWithinParenthesisBeforeMultiply()
-        {
-            object? result = this._parser.Parse("(2+4) * 2");
-            Assert.AreEqual(12d, result);
-        }
+    [TestMethod]
+    public void ShouldConcatAfterAdd()
+    {
+        object? result = this._parser.Parse("2 + 4 & \"abc\"");
+        Assert.AreEqual("6abc", result);
+    }
 
-        [TestMethod]
-        public void ShouldConcatAfterAdd()
-        {
-            object? result = this._parser.Parse("2 + 4 & \"abc\"");
-            Assert.AreEqual("6abc", result);
-        }
-
-        [TestMethod]
-        public void Bugfixtest()
-        {
-            object? result = this._parser.Parse("(1+2)+3^2");
-        }
+    [TestMethod]
+    public void Bugfixtest()
+    {
+        object? result = this._parser.Parse("(1+2)+3^2");
     }
 }

@@ -14,53 +14,52 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Helpers
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Helpers;
+
+internal static class TwoComplementHelper
 {
-    internal static class TwoComplementHelper
+    private static bool IsNegativeNumber(string candidate, int fromBase)
     {
-        private static bool IsNegativeNumber(string candidate, int fromBase)
+        if (string.IsNullOrEmpty(candidate))
         {
-            if (string.IsNullOrEmpty(candidate))
-            {
-                return false;
-            }
-
-            return candidate.Length >= 10 && candidate.ToUpper().StartsWith(fromBase == 16 ? "F" : "7", StringComparison.OrdinalIgnoreCase);
+            return false;
         }
 
-        public static double ParseDecFromString(string number, int fromBase)
+        return candidate.Length >= 10 && candidate.ToUpper().StartsWith(fromBase == 16 ? "F" : "7", StringComparison.OrdinalIgnoreCase);
+    }
+
+    public static double ParseDecFromString(string number, int fromBase)
+    {
+        if(IsNegativeNumber(number, fromBase))
         {
-            if(IsNegativeNumber(number, fromBase))
-            {
-                return NegativeFromBase(number, fromBase) * -1;
-            }
-            return Convert.ToInt32(number, fromBase);
+            return NegativeFromBase(number, fromBase) * -1;
+        }
+        return Convert.ToInt32(number, fromBase);
+    }
+
+    private static double NegativeFromBase(string number, int fromBase)
+    {
+        if (string.IsNullOrEmpty(number))
+        {
+            return double.NaN;
         }
 
-        private static double NegativeFromBase(string number, int fromBase)
+        int len = number.Length;
+        char[]? numArr = number.ToCharArray();
+        string? result = string.Empty;
+        for (int x = len - 1; x >= 0; x--)
         {
-            if (string.IsNullOrEmpty(number))
+            int part = Convert.ToInt32(numArr[x].ToString(), fromBase);
+            if(fromBase == 16)
             {
-                return double.NaN;
+                result = (fromBase - 1 - part).ToString("X") + result;
             }
-
-            int len = number.Length;
-            char[]? numArr = number.ToCharArray();
-            string? result = string.Empty;
-            for (int x = len - 1; x >= 0; x--)
+            else
             {
-                int part = Convert.ToInt32(numArr[x].ToString(), fromBase);
-                if(fromBase == 16)
-                {
-                    result = (fromBase - 1 - part).ToString("X") + result;
-                }
-                else
-                {
-                    result = (fromBase - 1 - part).ToString() + result;
-                }
+                result = (fromBase - 1 - part).ToString() + result;
             }
-            int decResult = Convert.ToInt32(result, fromBase) + 1;
-            return decResult;
         }
+        int decResult = Convert.ToInt32(result, fromBase) + 1;
+        return decResult;
     }
 }

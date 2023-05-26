@@ -15,10 +15,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace OfficeOpenXml.Sorting.Internal
+namespace OfficeOpenXml.Sorting.Internal;
+
+internal class SortItemLeftToRight<T> : SortItemBase<T>
 {
-    internal class SortItemLeftToRight<T> : SortItemBase<T>
-    {
-        internal int Column { get; set; }
-    }
+    internal int Column { get; set; }
 }

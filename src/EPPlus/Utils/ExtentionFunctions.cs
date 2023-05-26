@@ -14,80 +14,79 @@ using System;
 using System.Drawing;
 using System.Linq;
 
-namespace OfficeOpenXml.Utils.Extensions
-{
-    internal static class EnumExtensions
-    {
-        /// <summary>
-        /// Returns the enum value with first char lower case
-        /// </summary>
-        /// <param name="enumValue"></param>
-        /// <returns></returns>
-        internal static string ToEnumString(this Enum enumValue)
-        {
-            string? s = enumValue.ToString();
-            return s.Substring(0, 1).ToLower() + s.Substring(1);
-        }
-        internal static T? ToEnum<T>(this string s) where T : struct
-        {
-            try
-            {
-                if (string.IsNullOrEmpty(s))
-                {
-                    return null;
-                }
+namespace OfficeOpenXml.Utils.Extensions;
 
-                if (!Enum.GetNames(typeof(T)).Any(x => x.Equals(s, StringComparison.OrdinalIgnoreCase)))
-                {
-                    return null;
-                }
-                return (T)Enum.Parse(typeof(T), s, true);
-            }
-            catch
+internal static class EnumExtensions
+{
+    /// <summary>
+    /// Returns the enum value with first char lower case
+    /// </summary>
+    /// <param name="enumValue"></param>
+    /// <returns></returns>
+    internal static string ToEnumString(this Enum enumValue)
+    {
+        string? s = enumValue.ToString();
+        return s.Substring(0, 1).ToLower() + s.Substring(1);
+    }
+    internal static T? ToEnum<T>(this string s) where T : struct
+    {
+        try
+        {
+            if (string.IsNullOrEmpty(s))
             {
                 return null;
             }
-        }
 
-        internal static T ToEnum<T>(this string s, T defaultValue) where T : struct
-        {
-            try
+            if (!Enum.GetNames(typeof(T)).Any(x => x.Equals(s, StringComparison.OrdinalIgnoreCase)))
             {
-                if (string.IsNullOrEmpty(s))
-                {
-                    return defaultValue;
-                }
-
-                return (T)Enum.Parse(typeof(T), s, true);
+                return null;
             }
-            catch
+            return (T)Enum.Parse(typeof(T), s, true);
+        }
+        catch
+        {
+            return null;
+        }
+    }
+
+    internal static T ToEnum<T>(this string s, T defaultValue) where T : struct
+    {
+        try
+        {
+            if (string.IsNullOrEmpty(s))
             {
                 return defaultValue;
             }
-        }
 
-        internal static string GetStringValueForXml(this bool boolValue)
-        {
-            return boolValue ? "1" : "0";
+            return (T)Enum.Parse(typeof(T), s, true);
         }
-        internal static bool IsInt(this string s)
+        catch
         {
-            return (!s.Any(x => x < '0' && x > '9'));
+            return defaultValue;
         }
-        internal static string ToColorString(this Color color)
+    }
+
+    internal static string GetStringValueForXml(this bool boolValue)
+    {
+        return boolValue ? "1" : "0";
+    }
+    internal static bool IsInt(this string s)
+    {
+        return (!s.Any(x => x < '0' && x > '9'));
+    }
+    internal static string ToColorString(this Color color)
+    {
+        return (color.ToArgb() & 0xFFFFFF).ToString("X").PadLeft(6, '0');
+    }
+    internal static string GetXmlAttributeValue(this bool value, string attribute, bool? defaultValue)
+    {
+        if (value == defaultValue)
         {
-            return (color.ToArgb() & 0xFFFFFF).ToString("X").PadLeft(6, '0');
+            return "";
         }
-        internal static string GetXmlAttributeValue(this bool value, string attribute, bool? defaultValue)
+        else
         {
-            if (value == defaultValue)
-            {
-                return "";
-            }
-            else
-            {
-                return $" {attribute}=\"{(value ? "1" : "0")}\"";
-            }
+            return $" {attribute}=\"{(value ? "1" : "0")}\"";
         }
     }
 }

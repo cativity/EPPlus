@@ -14,33 +14,32 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.FinancialDayCount
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.FinancialDayCount;
+
+internal class FinancialDays_Actual_365 : FinancialDaysBase, IFinanicalDays
 {
-    internal class FinancialDays_Actual_365 : FinancialDaysBase, IFinanicalDays
+
+    public double GetDaysBetweenDates(System.DateTime startDate, System.DateTime endDate)
     {
-
-        public double GetDaysBetweenDates(System.DateTime startDate, System.DateTime endDate)
-        {
-            FinancialDay? start = FinancialDayFactory.Create(startDate, DayCountBasis.Actual_365);
-            FinancialDay? end = FinancialDayFactory.Create(endDate, DayCountBasis.Actual_365);
-            return this.GetDaysBetweenDates(start, end, (int)this.DaysPerYear);
-        }
-
-        public double GetDaysBetweenDates(FinancialDay startDate, FinancialDay endDate)
-        {
-            return this.GetDaysBetweenDates(startDate, endDate, (int)this.DaysPerYear);
-        }
-
-        protected override double GetDaysBetweenDates(FinancialDay start, FinancialDay end, int basis)
-        {
-            return end.ToDateTime().Subtract(start.ToDateTime()).TotalDays;
-        }
-
-        public double GetCoupdays(FinancialDay start, FinancialDay end, int frequency)
-        {
-            return this.DaysPerYear / frequency;
-        }
-
-        public double DaysPerYear { get { return 365d; } }
+        FinancialDay? start = FinancialDayFactory.Create(startDate, DayCountBasis.Actual_365);
+        FinancialDay? end = FinancialDayFactory.Create(endDate, DayCountBasis.Actual_365);
+        return this.GetDaysBetweenDates(start, end, (int)this.DaysPerYear);
     }
+
+    public double GetDaysBetweenDates(FinancialDay startDate, FinancialDay endDate)
+    {
+        return this.GetDaysBetweenDates(startDate, endDate, (int)this.DaysPerYear);
+    }
+
+    protected override double GetDaysBetweenDates(FinancialDay start, FinancialDay end, int basis)
+    {
+        return end.ToDateTime().Subtract(start.ToDateTime()).TotalDays;
+    }
+
+    public double GetCoupdays(FinancialDay start, FinancialDay end, int frequency)
+    {
+        return this.DaysPerYear / frequency;
+    }
+
+    public double DaysPerYear { get { return 365d; } }
 }

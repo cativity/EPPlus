@@ -16,28 +16,27 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Text
-{
-    [FunctionMetadata(
-        Category = ExcelFunctionCategory.Text,
-        EPPlusVersion = "5.0",
-        Description = "Returns the number (code point) corresponding to the first character of a supplied text string",
-        IntroducedInExcelVersion = "2013")]
-    internal class Unicode : ExcelFunction
-    {
-        public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
-        {
-            ValidateArguments(arguments, 1);
-            string? arg = ArgToString(arguments, 0);
-            if (!IsString(arg, allowNullOrEmpty: false))
-            {
-                return this.CreateResult(ExcelErrorValue.Values.Value, DataType.ExcelError);
-            }
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Text;
 
-            string? firstChar = arg.Substring(0, 1);
-            byte[]? bytes = Encoding.UTF32.GetBytes(firstChar);
-            int code = BitConverter.ToInt32(bytes, 0);
-            return this.CreateResult(code, DataType.Integer);
+[FunctionMetadata(
+                     Category = ExcelFunctionCategory.Text,
+                     EPPlusVersion = "5.0",
+                     Description = "Returns the number (code point) corresponding to the first character of a supplied text string",
+                     IntroducedInExcelVersion = "2013")]
+internal class Unicode : ExcelFunction
+{
+    public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
+    {
+        ValidateArguments(arguments, 1);
+        string? arg = ArgToString(arguments, 0);
+        if (!IsString(arg, allowNullOrEmpty: false))
+        {
+            return this.CreateResult(ExcelErrorValue.Values.Value, DataType.ExcelError);
         }
+
+        string? firstChar = arg.Substring(0, 1);
+        byte[]? bytes = Encoding.UTF32.GetBytes(firstChar);
+        int code = BitConverter.ToInt32(bytes, 0);
+        return this.CreateResult(code, DataType.Integer);
     }
 }

@@ -12,57 +12,56 @@
  *************************************************************************************************/
 using System.Xml;
 
-namespace OfficeOpenXml.Drawing.Theme
+namespace OfficeOpenXml.Drawing.Theme;
+
+/// <summary>
+/// Defines the font scheme within the theme
+/// </summary>
+public class ExcelFontScheme : XmlHelper
 {
-    /// <summary>
-    /// Defines the font scheme within the theme
-    /// </summary>
-    public class ExcelFontScheme : XmlHelper
+    private ExcelPackage _pck;
+    internal ExcelFontScheme(ExcelPackage pck, XmlNamespaceManager nameSpaceManager, XmlNode topNode) : base(nameSpaceManager, topNode)
     {
-        private ExcelPackage _pck;
-        internal ExcelFontScheme(ExcelPackage pck, XmlNamespaceManager nameSpaceManager, XmlNode topNode) : base(nameSpaceManager, topNode)
+        this._pck = pck;
+    }
+    /// <summary>
+    /// The name of the font scheme
+    /// </summary>
+    public string Name
+    {
+        get
         {
-            this._pck = pck;
+            return this.GetXmlNodeString("@name");
         }
-        /// <summary>
-        /// The name of the font scheme
-        /// </summary>
-        public string Name
+        set
         {
-            get
-            {
-                return this.GetXmlNodeString("@name");
-            }
-            set
-            {
-                this.SetXmlNodeString("@name", value);
-            }
+            this.SetXmlNodeString("@name", value);
         }
-        ExcelThemeFontCollection _majorFont=null;
-        /// <summary>
-        /// A collection of major fonts
-        /// </summary>
-        public ExcelThemeFontCollection MajorFont
+    }
+    ExcelThemeFontCollection _majorFont=null;
+    /// <summary>
+    /// A collection of major fonts
+    /// </summary>
+    public ExcelThemeFontCollection MajorFont
+    {
+        get
         {
-            get
-            {
-                return this._majorFont ??= new ExcelThemeFontCollection(this._pck,
-                                                                        this.NameSpaceManager,
-                                                                        this.TopNode.SelectSingleNode("a:majorFont", this.NameSpaceManager));
-            }
+            return this._majorFont ??= new ExcelThemeFontCollection(this._pck,
+                                                                    this.NameSpaceManager,
+                                                                    this.TopNode.SelectSingleNode("a:majorFont", this.NameSpaceManager));
         }
-        ExcelThemeFontCollection _minorFont = null;
-        /// <summary>
-        /// A collection of minor fonts
-        /// </summary>
-        public ExcelThemeFontCollection MinorFont
+    }
+    ExcelThemeFontCollection _minorFont = null;
+    /// <summary>
+    /// A collection of minor fonts
+    /// </summary>
+    public ExcelThemeFontCollection MinorFont
+    {
+        get
         {
-            get
-            {
-                return this._minorFont ??= new ExcelThemeFontCollection(this._pck,
-                                                                        this.NameSpaceManager,
-                                                                        this.TopNode.SelectSingleNode("a:minorFont", this.NameSpaceManager));
-            }
+            return this._minorFont ??= new ExcelThemeFontCollection(this._pck,
+                                                                    this.NameSpaceManager,
+                                                                    this.TopNode.SelectSingleNode("a:minorFont", this.NameSpaceManager));
         }
     }
 }

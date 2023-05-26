@@ -19,96 +19,95 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance;
+
+[FunctionMetadata(
+                     Category = ExcelFunctionCategory.Financial,
+                     EPPlusVersion = "6.0",
+                     Description = "Calculates the accrued interest for a security that pays periodic interest.")]
+internal class Accrint : ExcelFunction
 {
-    [FunctionMetadata(
-        Category = ExcelFunctionCategory.Financial,
-        EPPlusVersion = "6.0",
-        Description = "Calculates the accrued interest for a security that pays periodic interest.")]
-    internal class Accrint : ExcelFunction
+    public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
     {
-        public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
+        ValidateArguments(arguments, 6);
+        // collect input
+        System.DateTime issueDate = System.DateTime.FromOADate(this.ArgToInt(arguments, 0));
+        System.DateTime firstInterestDate = System.DateTime.FromOADate(this.ArgToInt(arguments, 1));
+        System.DateTime settlementDate = System.DateTime.FromOADate(this.ArgToInt(arguments, 2));
+        double rate = this.ArgToDecimal(arguments, 3);
+        double par = this.ArgToDecimal(arguments, 4);
+        int frequency = this.ArgToInt(arguments, 5);
+        int basis = 0;
+        if(arguments.Count() >= 7)
         {
-            ValidateArguments(arguments, 6);
-            // collect input
-            System.DateTime issueDate = System.DateTime.FromOADate(this.ArgToInt(arguments, 0));
-            System.DateTime firstInterestDate = System.DateTime.FromOADate(this.ArgToInt(arguments, 1));
-            System.DateTime settlementDate = System.DateTime.FromOADate(this.ArgToInt(arguments, 2));
-            double rate = this.ArgToDecimal(arguments, 3);
-            double par = this.ArgToDecimal(arguments, 4);
-            int frequency = this.ArgToInt(arguments, 5);
-            int basis = 0;
-            if(arguments.Count() >= 7)
-            {
-                basis = this.ArgToInt(arguments, 6);
-            }
-            bool issueToSettlement = true;
-            if(arguments.Count() >= 8)
-            {
-                issueToSettlement = this.ArgToBool(arguments, 7);
-            }
-
-            // validate input
-            if (rate <= 0 || par <= 0)
-            {
-                return this.CreateResult(eErrorType.Num);
-            }
-
-            if (frequency != 1 && frequency != 2 && frequency != 4)
-            {
-                return this.CreateResult(eErrorType.Num);
-            }
-
-            if (basis < 0 || basis > 4)
-            {
-                return this.CreateResult(eErrorType.Num);
-            }
-
-            if (issueDate >= settlementDate)
-            {
-                return this.CreateResult(eErrorType.Num);
-            }
-
-            // calculation
-            DayCountBasis dayCountBasis = (DayCountBasis)basis;
-            IFinanicalDays? financialDays = FinancialDaysFactory.Create(dayCountBasis);
-            FinancialDay? issue = FinancialDayFactory.Create(issueDate, dayCountBasis);
-            FinancialDay? settlement = FinancialDayFactory.Create(settlementDate, dayCountBasis);
-            FinancialDay? firstInterest = FinancialDayFactory.Create(firstInterestDate.AddDays(firstInterestDate.Day * -1 + 1), dayCountBasis);
-            
-            if(issueToSettlement)
-            {
-                YearFracProvider? yearFrac = new YearFracProvider(context);
-                double r = yearFrac.GetYearFrac(issueDate, settlementDate, dayCountBasis) * rate * par;
-                return this.CreateResult(r, DataType.Decimal);
-            }
-            else
-            {
-                double r = CalculateInterest(issue, firstInterest, settlement, rate, par, frequency, dayCountBasis, context);
-                return this.CreateResult(r, DataType.Decimal);
-            }
+            basis = this.ArgToInt(arguments, 6);
+        }
+        bool issueToSettlement = true;
+        if(arguments.Count() >= 8)
+        {
+            issueToSettlement = this.ArgToBool(arguments, 7);
         }
 
-        private static double CalculateInterest(FinancialDay issue, FinancialDay firstInterest, FinancialDay settlement, double rate, double par, int frequency, DayCountBasis basis, ParsingContext context)
+        // validate input
+        if (rate <= 0 || par <= 0)
+        {
+            return this.CreateResult(eErrorType.Num);
+        }
+
+        if (frequency != 1 && frequency != 2 && frequency != 4)
+        {
+            return this.CreateResult(eErrorType.Num);
+        }
+
+        if (basis < 0 || basis > 4)
+        {
+            return this.CreateResult(eErrorType.Num);
+        }
+
+        if (issueDate >= settlementDate)
+        {
+            return this.CreateResult(eErrorType.Num);
+        }
+
+        // calculation
+        DayCountBasis dayCountBasis = (DayCountBasis)basis;
+        IFinanicalDays? financialDays = FinancialDaysFactory.Create(dayCountBasis);
+        FinancialDay? issue = FinancialDayFactory.Create(issueDate, dayCountBasis);
+        FinancialDay? settlement = FinancialDayFactory.Create(settlementDate, dayCountBasis);
+        FinancialDay? firstInterest = FinancialDayFactory.Create(firstInterestDate.AddDays(firstInterestDate.Day * -1 + 1), dayCountBasis);
+            
+        if(issueToSettlement)
         {
             YearFracProvider? yearFrac = new YearFracProvider(context);
-            IFinanicalDays? fds = FinancialDaysFactory.Create(basis);
-            int nAdditionalPeriods = frequency == 1 ? 0 : 1;
-            if(firstInterest <= settlement)
-            {
-                IEnumerable<FinancialPeriod>? p = fds.GetCalendarYearPeriodsBackwards(settlement, firstInterest, frequency, nAdditionalPeriods);
-                IEnumerable<FinancialPeriod>? p2 = fds.GetCalendarYearPeriodsBackwards(firstInterest, settlement, frequency, nAdditionalPeriods);
-                FinancialPeriod? firstPeriod = settlement >= firstInterest ? p.Last() : p.First();
-                double yearFrac2 = yearFrac.GetYearFrac(firstPeriod.Start.ToDateTime(), settlement.ToDateTime(), basis);
-                return yearFrac2 * rate * par;
-            }
-            else
-            {
-                IEnumerable<FinancialPeriod>? p2 = fds.GetCalendarYearPeriodsBackwards(firstInterest, settlement, frequency, nAdditionalPeriods);
-                FinancialPeriod? firstInterestPeriod = p2.FirstOrDefault(x => x.Start < firstInterest && x.End >= firstInterest);
-                double yearFrac2 = yearFrac.GetYearFrac(settlement.ToDateTime(), firstInterestPeriod.Start.ToDateTime(), basis) * -1;
-                return yearFrac2 * rate * par;
-            }
+            double r = yearFrac.GetYearFrac(issueDate, settlementDate, dayCountBasis) * rate * par;
+            return this.CreateResult(r, DataType.Decimal);
+        }
+        else
+        {
+            double r = CalculateInterest(issue, firstInterest, settlement, rate, par, frequency, dayCountBasis, context);
+            return this.CreateResult(r, DataType.Decimal);
+        }
+    }
+
+    private static double CalculateInterest(FinancialDay issue, FinancialDay firstInterest, FinancialDay settlement, double rate, double par, int frequency, DayCountBasis basis, ParsingContext context)
+    {
+        YearFracProvider? yearFrac = new YearFracProvider(context);
+        IFinanicalDays? fds = FinancialDaysFactory.Create(basis);
+        int nAdditionalPeriods = frequency == 1 ? 0 : 1;
+        if(firstInterest <= settlement)
+        {
+            IEnumerable<FinancialPeriod>? p = fds.GetCalendarYearPeriodsBackwards(settlement, firstInterest, frequency, nAdditionalPeriods);
+            IEnumerable<FinancialPeriod>? p2 = fds.GetCalendarYearPeriodsBackwards(firstInterest, settlement, frequency, nAdditionalPeriods);
+            FinancialPeriod? firstPeriod = settlement >= firstInterest ? p.Last() : p.First();
+            double yearFrac2 = yearFrac.GetYearFrac(firstPeriod.Start.ToDateTime(), settlement.ToDateTime(), basis);
+            return yearFrac2 * rate * par;
+        }
+        else
+        {
+            IEnumerable<FinancialPeriod>? p2 = fds.GetCalendarYearPeriodsBackwards(firstInterest, settlement, frequency, nAdditionalPeriods);
+            FinancialPeriod? firstInterestPeriod = p2.FirstOrDefault(x => x.Start < firstInterest && x.End >= firstInterest);
+            double yearFrac2 = yearFrac.GetYearFrac(settlement.ToDateTime(), firstInterestPeriod.Start.ToDateTime(), basis) * -1;
+            return yearFrac2 * rate * par;
         }
     }
 }

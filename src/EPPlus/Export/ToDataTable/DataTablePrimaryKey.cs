@@ -15,66 +15,65 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace OfficeOpenXml.Export.ToDataTable
+namespace OfficeOpenXml.Export.ToDataTable;
+
+internal class DataTablePrimaryKey
 {
-    internal class DataTablePrimaryKey
+    private readonly ToDataTableOptions _options;
+    private readonly HashSet<string> _keyNames = new HashSet<string>();
+
+    public DataTablePrimaryKey(ToDataTableOptions options)
     {
-        private readonly ToDataTableOptions _options;
-        private readonly HashSet<string> _keyNames = new HashSet<string>();
+        this._options = options;
+        this.Initialize();
+    }
 
-        public DataTablePrimaryKey(ToDataTableOptions options)
+    private void Initialize()
+    {
+        if(this._options.PrimaryKeyNames.Any())
         {
-            this._options = options;
-            this.Initialize();
-        }
-
-        private void Initialize()
-        {
-            if(this._options.PrimaryKeyNames.Any())
+            foreach(string? name in this._options.PrimaryKeyNames)
             {
-                foreach(string? name in this._options.PrimaryKeyNames)
-                {
-                    this.AddPrimaryKeyName(name);
-                }
+                this.AddPrimaryKeyName(name);
             }
-            else if(this._options.PrimaryKeyIndexes.Any())
+        }
+        else if(this._options.PrimaryKeyIndexes.Any())
+        {
+            foreach(int ix in this._options.PrimaryKeyIndexes)
             {
-                foreach(int ix in this._options.PrimaryKeyIndexes)
+                try
                 {
-                    try
-                    {
-                        DataColumnMapping? mapping = this._options.Mappings.GetByRangeIndex(ix);
-                        this.AddPrimaryKeyName(mapping.DataColumnName);
-                    }
-                    catch(ArgumentOutOfRangeException e)
-                    {
-                        throw new ArgumentOutOfRangeException("primary key index out of range: " + ix, e);
-                    }
+                    DataColumnMapping? mapping = this._options.Mappings.GetByRangeIndex(ix);
+                    this.AddPrimaryKeyName(mapping.DataColumnName);
+                }
+                catch(ArgumentOutOfRangeException e)
+                {
+                    throw new ArgumentOutOfRangeException("primary key index out of range: " + ix, e);
                 }
             }
         }
+    }
 
-        private void AddPrimaryKeyName(string name)
+    private void AddPrimaryKeyName(string name)
+    {
+        if (this._keyNames.Contains(name))
         {
-            if (this._keyNames.Contains(name))
-            {
-                throw new InvalidOperationException("Duplicate primary key name: " + name);
-            }
-            if (!this._options.Mappings.Exists(x => x.DataColumnName == name))
-            {
-                throw new InvalidOperationException("Invalid primary key name, no corresponding DataColumn: " + name);
-            }
-
-            this._keyNames.Add(name);
+            throw new InvalidOperationException("Duplicate primary key name: " + name);
+        }
+        if (!this._options.Mappings.Exists(x => x.DataColumnName == name))
+        {
+            throw new InvalidOperationException("Invalid primary key name, no corresponding DataColumn: " + name);
         }
 
-        internal IEnumerable<string> KeyNames => this._keyNames;
+        this._keyNames.Add(name);
+    }
 
-        internal bool HasKeys => this._keyNames.Any();
+    internal IEnumerable<string> KeyNames => this._keyNames;
 
-        internal bool ContainsKey(string key)
-        {
-            return this._keyNames.Contains(key);
-        }
+    internal bool HasKeys => this._keyNames.Any();
+
+    internal bool ContainsKey(string key)
+    {
+        return this._keyNames.Contains(key);
     }
 }

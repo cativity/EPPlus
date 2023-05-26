@@ -18,55 +18,54 @@ using OfficeOpenXml.FormulaParsing;
 using OfficeOpenXml.FormulaParsing.Utilities;
 using OfficeOpenXml.FormulaParsing.Exceptions;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions;
+
+public class IntArgumentParser : ArgumentParser
 {
-    public class IntArgumentParser : ArgumentParser
+    public override object Parse(object obj)
     {
-        public override object Parse(object obj)
+        return this.Parse(obj, RoundingMethod.Convert);
+    }
+
+    public override object Parse(object obj, RoundingMethod roundingMethod)
+    {
+        Require.That(obj).Named("argument").IsNotNull();
+
+        if (obj is IRangeInfo)
         {
-            return this.Parse(obj, RoundingMethod.Convert);
+            ICellInfo? r = ((IRangeInfo)obj).FirstOrDefault();
+            return r == null ? 0 : ConvertToInt(r.ValueDouble, roundingMethod);
         }
-
-        public override object Parse(object obj, RoundingMethod roundingMethod)
+        Type? objType = obj.GetType();
+        if (objType == typeof(int))
         {
-            Require.That(obj).Named("argument").IsNotNull();
-
-            if (obj is IRangeInfo)
-            {
-                ICellInfo? r = ((IRangeInfo)obj).FirstOrDefault();
-                return r == null ? 0 : ConvertToInt(r.ValueDouble, roundingMethod);
-            }
-            Type? objType = obj.GetType();
-            if (objType == typeof(int))
-            {
-                return (int)obj;
-            }
-            if (objType == typeof(double) || objType == typeof(decimal) || objType == typeof(bool))
-            {
-                return ConvertToInt(obj, roundingMethod);
-            }
-            if (!int.TryParse(obj.ToString(), out int result))
-            {
-                throw new ExcelErrorValueException(ExcelErrorValue.Create(eErrorType.Value));
-            }
-            return result;
+            return (int)obj;
         }
-
-        private static int ConvertToInt(object obj, RoundingMethod roundingMethod)
+        if (objType == typeof(double) || objType == typeof(decimal) || objType == typeof(bool))
         {
-            Type? objType = obj.GetType();
-            if (roundingMethod == RoundingMethod.Convert)
-            {
-                return Convert.ToInt32(obj);
-            }
-            else if (objType == typeof(double))
-            {
-                return Convert.ToInt32(System.Math.Floor((double)obj));
-            }
-            else
-            {
-                return Convert.ToInt32(System.Math.Floor((decimal)obj));
-            }
+            return ConvertToInt(obj, roundingMethod);
+        }
+        if (!int.TryParse(obj.ToString(), out int result))
+        {
+            throw new ExcelErrorValueException(ExcelErrorValue.Create(eErrorType.Value));
+        }
+        return result;
+    }
+
+    private static int ConvertToInt(object obj, RoundingMethod roundingMethod)
+    {
+        Type? objType = obj.GetType();
+        if (roundingMethod == RoundingMethod.Convert)
+        {
+            return Convert.ToInt32(obj);
+        }
+        else if (objType == typeof(double))
+        {
+            return Convert.ToInt32(System.Math.Floor((double)obj));
+        }
+        else
+        {
+            return Convert.ToInt32(System.Math.Floor((decimal)obj));
         }
     }
 }

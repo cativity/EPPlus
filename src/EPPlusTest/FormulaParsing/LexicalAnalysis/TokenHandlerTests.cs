@@ -31,38 +31,37 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OfficeOpenXml.FormulaParsing.LexicalAnalysis;
 using OfficeOpenXml.FormulaParsing;
 
-namespace EPPlusTest.FormulaParsing.LexicalAnalysis
+namespace EPPlusTest.FormulaParsing.LexicalAnalysis;
+
+[TestClass]
+public class TokenHandlerTests
 {
-    [TestClass]
-    public class TokenHandlerTests
+    private TokenizerContext _tokenizerContext;
+    private TokenHandler _handler;
+
+    [TestInitialize]
+    public void Init()
     {
-        private TokenizerContext _tokenizerContext;
-        private TokenHandler _handler;
+        ParsingContext? parsingContext = ParsingContext.Create();
+        TokenFactory? tokenFactory = new TokenFactory(parsingContext.Configuration.FunctionRepository, null);
+        this._tokenizerContext = new TokenizerContext("test", null, tokenFactory);
+        this._handler = this._tokenizerContext.CreateHandler(NameValueProvider.Empty);
+    }
 
-        [TestInitialize]
-        public void Init()
+
+    [TestMethod]
+    public void HasMoreTokensShouldBeTrueWhenTokensExists()
+    {
+        Assert.IsTrue(this._handler.HasMore());
+    }
+
+    [TestMethod]
+    public void HasMoreTokensShouldBeFalseWhenAllAreHandled()
+    {
+        for (int x = 0; x < "test".Length; x++ )
         {
-            ParsingContext? parsingContext = ParsingContext.Create();
-            TokenFactory? tokenFactory = new TokenFactory(parsingContext.Configuration.FunctionRepository, null);
-            this._tokenizerContext = new TokenizerContext("test", null, tokenFactory);
-            this._handler = this._tokenizerContext.CreateHandler(NameValueProvider.Empty);
+            this._handler.Next();
         }
-
-
-        [TestMethod]
-        public void HasMoreTokensShouldBeTrueWhenTokensExists()
-        {
-            Assert.IsTrue(this._handler.HasMore());
-        }
-
-        [TestMethod]
-        public void HasMoreTokensShouldBeFalseWhenAllAreHandled()
-        {
-            for (int x = 0; x < "test".Length; x++ )
-            {
-                this._handler.Next();
-            }
-            Assert.IsFalse(this._handler.HasMore());
-        }
+        Assert.IsFalse(this._handler.HasMore());
     }
 }

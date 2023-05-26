@@ -16,77 +16,76 @@ using System.Collections.Generic;
 using System.Text;
 using System.Xml;
 
-namespace OfficeOpenXml.Drawing.Chart
+namespace OfficeOpenXml.Drawing.Chart;
+
+/// <summary>
+/// A serie for a pie chart
+/// </summary>
+public sealed class ExcelPieChartSerie : ExcelChartStandardSerie, IDrawingSerieDataLabel, IDrawingChartDataPoints
 {
     /// <summary>
-    /// A serie for a pie chart
+    /// Default constructor
     /// </summary>
-    public sealed class ExcelPieChartSerie : ExcelChartStandardSerie, IDrawingSerieDataLabel, IDrawingChartDataPoints
+    /// <param name="chart">The chart</param>
+    /// <param name="ns">Namespacemanager</param>
+    /// <param name="node">Topnode</param>
+    /// <param name="isPivot">Is pivotchart</param>
+    internal ExcelPieChartSerie(ExcelChart chart, XmlNamespaceManager ns, XmlNode node, bool isPivot) :
+        base(chart, ns, node, isPivot)
     {
-        /// <summary>
-        /// Default constructor
-        /// </summary>
-        /// <param name="chart">The chart</param>
-        /// <param name="ns">Namespacemanager</param>
-        /// <param name="node">Topnode</param>
-        /// <param name="isPivot">Is pivotchart</param>
-        internal ExcelPieChartSerie(ExcelChart chart, XmlNamespaceManager ns, XmlNode node, bool isPivot) :
-            base(chart, ns, node, isPivot)
-        {
-
-        }
-        const string explosionPath = "c:explosion/@val";
-        /// <summary>
-        /// Explosion for Piecharts
-        /// </summary>
-        public int Explosion
-        {
-            get
-            {
-                return this.GetXmlNodeInt(explosionPath);
-            }
-            set
-            {
-                if (value < 0 || value > 400)
-                {
-                    throw(new ArgumentOutOfRangeException("Explosion range is 0-400"));
-                }
-
-                this.SetXmlNodeString(explosionPath, value.ToString());
-            }
-        }
-        ExcelChartSerieDataLabel _DataLabel = null;
-        /// <summary>
-        /// DataLabels
-        /// </summary>
-        public ExcelChartSerieDataLabel DataLabel
-        {
-            get
-            {
-                return this._DataLabel ??= new ExcelChartSerieDataLabel(this._chart, this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder);
-            }
-        }
-        /// <summary>
-        /// If the chart has datalabel
-        /// </summary>
-        public bool HasDataLabel
-        {
-            get
-            {
-                return this.TopNode.SelectSingleNode("c:dLbls", this.NameSpaceManager) != null;
-            }
-        }
-        ExcelChartDataPointCollection _dataPoints = null;
-        /// <summary>
-        /// A collection of the individual datapoints
-        /// </summary>
-        public ExcelChartDataPointCollection DataPoints
-        {
-            get
-            {
-                return this._dataPoints ??= new ExcelChartDataPointCollection(this._chart, this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder);
-            }
-        }
 
     }
+    const string explosionPath = "c:explosion/@val";
+    /// <summary>
+    /// Explosion for Piecharts
+    /// </summary>
+    public int Explosion
+    {
+        get
+        {
+            return this.GetXmlNodeInt(explosionPath);
+        }
+        set
+        {
+            if (value < 0 || value > 400)
+            {
+                throw(new ArgumentOutOfRangeException("Explosion range is 0-400"));
+            }
+
+            this.SetXmlNodeString(explosionPath, value.ToString());
+        }
+    }
+    ExcelChartSerieDataLabel _DataLabel = null;
+    /// <summary>
+    /// DataLabels
+    /// </summary>
+    public ExcelChartSerieDataLabel DataLabel
+    {
+        get
+        {
+            return this._DataLabel ??= new ExcelChartSerieDataLabel(this._chart, this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder);
+        }
+    }
+    /// <summary>
+    /// If the chart has datalabel
+    /// </summary>
+    public bool HasDataLabel
+    {
+        get
+        {
+            return this.TopNode.SelectSingleNode("c:dLbls", this.NameSpaceManager) != null;
+        }
+    }
+    ExcelChartDataPointCollection _dataPoints = null;
+    /// <summary>
+    /// A collection of the individual datapoints
+    /// </summary>
+    public ExcelChartDataPointCollection DataPoints
+    {
+        get
+        {
+            return this._dataPoints ??= new ExcelChartDataPointCollection(this._chart, this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder);
+        }
+    }
+
 }

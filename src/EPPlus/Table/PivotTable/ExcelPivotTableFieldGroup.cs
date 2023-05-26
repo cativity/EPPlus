@@ -12,37 +12,36 @@
  *************************************************************************************************/
 using System.Xml;
 
-namespace OfficeOpenXml.Table.PivotTable
+namespace OfficeOpenXml.Table.PivotTable;
+
+/// <summary>
+/// Base class for pivot table field groups
+/// </summary>
+public class ExcelPivotTableFieldGroup : XmlHelper
 {
-    /// <summary>
-    /// Base class for pivot table field groups
-    /// </summary>
-    public class ExcelPivotTableFieldGroup : XmlHelper
+    internal ExcelPivotTableFieldGroup(XmlNamespaceManager ns, XmlNode topNode) :
+        base(ns, topNode)
     {
-        internal ExcelPivotTableFieldGroup(XmlNamespaceManager ns, XmlNode topNode) :
-            base(ns, topNode)
-        {
             
-        }
-        /// <summary>
-        /// The index of the base field for this group field
-        /// </summary>
-        public int? BaseIndex
+    }
+    /// <summary>
+    /// The index of the base field for this group field
+    /// </summary>
+    public int? BaseIndex
+    {
+        get
         {
-            get
-            {
-                return this.GetXmlNodeIntNull("d:fieldGroup/@base");
-            }
+            return this.GetXmlNodeIntNull("d:fieldGroup/@base");
         }
-        /// <summary>
-        /// The index of the parent field from this group field
-        /// </summary>
-        public int? ParentIndex
+    }
+    /// <summary>
+    /// The index of the parent field from this group field
+    /// </summary>
+    public int? ParentIndex
+    {
+        get
         {
-            get
-            {
-                return this.GetXmlNodeIntNull("d:fieldGroup/@par");
-            }
+            return this.GetXmlNodeIntNull("d:fieldGroup/@par");
         }
     }
 }

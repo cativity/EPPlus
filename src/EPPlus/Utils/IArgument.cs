@@ -16,17 +16,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace OfficeOpenXml.Utils
+namespace OfficeOpenXml.Utils;
+
+/// <summary>
+/// An argument
+/// </summary>
+/// <typeparam name="T">Argument Type</typeparam>
+public interface IArgument<T>
 {
     /// <summary>
-    /// An argument
+    /// Value of the argument
     /// </summary>
-    /// <typeparam name="T">Argument Type</typeparam>
-    public interface IArgument<T>
-    {
-        /// <summary>
-        /// Value of the argument
-        /// </summary>
-        T Value { get; }
-    }
+    T Value { get; }
 }

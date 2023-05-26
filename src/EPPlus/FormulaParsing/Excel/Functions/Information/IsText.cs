@@ -17,22 +17,21 @@ using System.Text;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Metadata;
 using OfficeOpenXml.FormulaParsing.ExpressionGraph;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Information
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Information;
+
+[FunctionMetadata(
+                     Category = ExcelFunctionCategory.Information,
+                     EPPlusVersion = "4",
+                     Description = "Tests if a supplied value is text, and if so, returns TRUE; Otherwise, returns FALSE")]
+internal class IsText : ExcelFunction
 {
-    [FunctionMetadata(
-        Category = ExcelFunctionCategory.Information,
-        EPPlusVersion = "4",
-        Description = "Tests if a supplied value is text, and if so, returns TRUE; Otherwise, returns FALSE")]
-    internal class IsText : ExcelFunction
+    public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
     {
-        public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
+        ValidateArguments(arguments, 1);
+        if (arguments.Count() == 1 && arguments.ElementAt(0).Value != null)
         {
-            ValidateArguments(arguments, 1);
-            if (arguments.Count() == 1 && arguments.ElementAt(0).Value != null)
-            {
-                return this.CreateResult((GetFirstValue(arguments) is string), DataType.Boolean);
-            }
-            return this.CreateResult(false, DataType.Boolean);
+            return this.CreateResult((GetFirstValue(arguments) is string), DataType.Boolean);
         }
+        return this.CreateResult(false, DataType.Boolean);
     }
 }

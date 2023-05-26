@@ -19,18 +19,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance;
+
+[FunctionMetadata(
+                     Category = ExcelFunctionCategory.Financial,
+                     EPPlusVersion = "5.2",
+                     Description = "Returns the previous coupon date, before the settlement date")]
+internal class Couppcd : CoupFunctionBase<System.DateTime>
 {
-    [FunctionMetadata(
-        Category = ExcelFunctionCategory.Financial,
-        EPPlusVersion = "5.2",
-        Description = "Returns the previous coupon date, before the settlement date")]
-    internal class Couppcd : CoupFunctionBase<System.DateTime>
+    protected override FinanceCalcResult<System.DateTime> ExecuteFunction(FinancialDay settlementDate, FinancialDay maturityDate, int frequency, DayCountBasis basis = DayCountBasis.US_30_360)
     {
-        protected override FinanceCalcResult<System.DateTime> ExecuteFunction(FinancialDay settlementDate, FinancialDay maturityDate, int frequency, DayCountBasis basis = DayCountBasis.US_30_360)
-        {
-            CouppcdImpl? impl = new CouppcdImpl(settlementDate, maturityDate, frequency, basis);
-            return impl.GetCouppcd();
-        }
+        CouppcdImpl? impl = new CouppcdImpl(settlementDate, maturityDate, frequency, basis);
+        return impl.GetCouppcd();
     }
 }

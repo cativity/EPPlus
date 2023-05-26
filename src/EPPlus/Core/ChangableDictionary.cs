@@ -15,217 +15,216 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 
-namespace OfficeOpenXml.Core
+namespace OfficeOpenXml.Core;
+
+internal class ChangeableDictionary<T> : IEnumerable<T>
 {
-    internal class ChangeableDictionary<T> : IEnumerable<T>
+    internal int[][] _index;
+    internal List<T> _items;
+    internal int _count;
+    int _defaultSize;
+    internal ChangeableDictionary(int size = 8)
     {
-        internal int[][] _index;
-        internal List<T> _items;
-        internal int _count;
-        int _defaultSize;
-        internal ChangeableDictionary(int size = 8)
-        {
-            this._defaultSize = size;
-            this.Clear();
-        }
+        this._defaultSize = size;
+        this.Clear();
+    }
 
-        internal T this[int key]
-        {
-            get
-            {
-                int pos = Array.BinarySearch(this._index[0], 0, this._count, key);
-                if(pos>=0)
-                {
-                    return this._items[this._index[1][pos]];
-                }
-                else
-                {
-                    return default(T);
-                }
-            }
-        }
-
-        internal void InsertAndShift(int fromPosition, int add)
-        {
-            int pos = Array.BinarySearch(this._index[0], 0, this._count, fromPosition);
-            if(pos<0)
-            {
-                pos = ~pos;
-            }
-            Array.Copy(this._index[0], pos, this._index[0], pos + 1, this._count - pos);
-            Array.Copy(this._index[1], pos, this._index[1], pos + 1, this._count - pos);
-            this._count++;
-            for (int i=pos;i< this.Count;i++)
-            {
-                this._index[0][i] += add;
-            }
-        }
-        
-        internal int Count { get { return this._count; } }
-
-        public void Add(int key, T value)
+    internal T this[int key]
+    {
+        get
         {
             int pos = Array.BinarySearch(this._index[0], 0, this._count, key);
-            if (pos >= 0)
+            if(pos>=0)
             {
-                throw (new ArgumentException("Key already exists"));
-            }
-            pos = ~pos;
-            if (pos >= this._index[0].Length - 1)
-            {
-                Array.Resize(ref this._index[0], this._index[0].Length << 1);
-                Array.Resize(ref this._index[1], this._index[1].Length << 1);
-            }
-            if (pos < this.Count)
-            {
-                Array.Copy(this._index[0], pos, this._index[0], pos + 1, this._index[0].Length - pos - 1);
-                Array.Copy(this._index[1], pos, this._index[1], pos + 1, this._index[1].Length - pos - 1);
-            }
-
-            this._count++;
-            this._index[0][pos] = key;
-            this._index[1][pos] = this._items.Count;
-            this._items.Add(value);
-        }
-
-        internal void Move(int fromPosition, int toPosition, bool before)
-        {
-            if (this.Count <= 1 || fromPosition == toPosition)
-            {
-                return;
-            }
-
-            int listItem = this._index[1][fromPosition];
-            int insertPos = before ? toPosition : toPosition + 1;
-
-            if(insertPos>fromPosition)
-            {
-                this.InsertAndShift(insertPos, 1);
-                this.RemoveAndShift(fromPosition, false);
-                insertPos--;
+                return this._items[this._index[1][pos]];
             }
             else
             {
-                this.RemoveAndShift(fromPosition, false);
-                this.InsertAndShift(insertPos, 1);
+                return default(T);
             }
-
-            this._index[0][insertPos] = insertPos;
-            this._index[1][insertPos] = listItem;
-        }
-
-        public void Clear()
-        {
-            this._index = new int[2][];
-            this._index[0] = new int[this._defaultSize];
-            this._index[1] = new int[this._defaultSize];
-            this._items = new List<T>();
-        }
-
-        public bool ContainsKey(int key)
-        {
-            return Array.BinarySearch(this._index[0], 0, this._count, key) >= 0;
-        }
-    
-        public IEnumerator<T> GetEnumerator()
-        {
-            return new ChangeableDictionaryEnumerator<T>(this);
-        }
-
-        public bool RemoveAndShift(int key)
-        {
-            return this.RemoveAndShift(key, true);
-        }
-
-        private bool RemoveAndShift(int key, bool dispose)
-        {
-            int pos = Array.BinarySearch(this._index[0], 0, this._count, key);
-            if (pos >= 0)
-            {
-                if (dispose)
-                {
-                    (this._items[this._index[1][pos]] as IDisposable)?.Dispose();
-                    this._items[this._index[1][pos]] = default(T);
-                }
-
-                if (pos < this.Count)
-                {
-                    Array.Copy(this._index[0], pos + 1, this._index[0], pos, this.Count - pos - 1);
-                    Array.Copy(this._index[1], pos + 1, this._index[1], pos, this.Count - pos - 1);
-                }
-
-                this._count--;
-                for (int i = pos; i < this._count; i++)
-                {
-                    this._index[0][i]--;
-                }
-                return true;
-            }
-            return false;
-        }
-
-        public bool TryGetValue(int key, out T value)
-        {
-            int pos = Array.BinarySearch(this._index[0], 0, this._count, key);
-            if (pos >= 0)
-            {
-                value = this._items[pos];
-                return true;
-            }
-            else
-            {
-                value = default(T);
-                return false;
-            }
-        }
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return new ChangeableDictionaryEnumerator<T>(this);
         }
     }
-    internal class ChangeableDictionaryEnumerator<T> : IEnumerator<T>
+
+    internal void InsertAndShift(int fromPosition, int add)
     {
-        int _index=-1;
-        ChangeableDictionary<T> _ts;
-        public ChangeableDictionaryEnumerator(ChangeableDictionary<T> ts)
+        int pos = Array.BinarySearch(this._index[0], 0, this._count, fromPosition);
+        if(pos<0)
         {
-            this._ts = ts;
+            pos = ~pos;
         }
-        public T Current
+        Array.Copy(this._index[0], pos, this._index[0], pos + 1, this._count - pos);
+        Array.Copy(this._index[1], pos, this._index[1], pos + 1, this._count - pos);
+        this._count++;
+        for (int i=pos;i< this.Count;i++)
         {
-            get
+            this._index[0][i] += add;
+        }
+    }
+        
+    internal int Count { get { return this._count; } }
+
+    public void Add(int key, T value)
+    {
+        int pos = Array.BinarySearch(this._index[0], 0, this._count, key);
+        if (pos >= 0)
+        {
+            throw (new ArgumentException("Key already exists"));
+        }
+        pos = ~pos;
+        if (pos >= this._index[0].Length - 1)
+        {
+            Array.Resize(ref this._index[0], this._index[0].Length << 1);
+            Array.Resize(ref this._index[1], this._index[1].Length << 1);
+        }
+        if (pos < this.Count)
+        {
+            Array.Copy(this._index[0], pos, this._index[0], pos + 1, this._index[0].Length - pos - 1);
+            Array.Copy(this._index[1], pos, this._index[1], pos + 1, this._index[1].Length - pos - 1);
+        }
+
+        this._count++;
+        this._index[0][pos] = key;
+        this._index[1][pos] = this._items.Count;
+        this._items.Add(value);
+    }
+
+    internal void Move(int fromPosition, int toPosition, bool before)
+    {
+        if (this.Count <= 1 || fromPosition == toPosition)
+        {
+            return;
+        }
+
+        int listItem = this._index[1][fromPosition];
+        int insertPos = before ? toPosition : toPosition + 1;
+
+        if(insertPos>fromPosition)
+        {
+            this.InsertAndShift(insertPos, 1);
+            this.RemoveAndShift(fromPosition, false);
+            insertPos--;
+        }
+        else
+        {
+            this.RemoveAndShift(fromPosition, false);
+            this.InsertAndShift(insertPos, 1);
+        }
+
+        this._index[0][insertPos] = insertPos;
+        this._index[1][insertPos] = listItem;
+    }
+
+    public void Clear()
+    {
+        this._index = new int[2][];
+        this._index[0] = new int[this._defaultSize];
+        this._index[1] = new int[this._defaultSize];
+        this._items = new List<T>();
+    }
+
+    public bool ContainsKey(int key)
+    {
+        return Array.BinarySearch(this._index[0], 0, this._count, key) >= 0;
+    }
+    
+    public IEnumerator<T> GetEnumerator()
+    {
+        return new ChangeableDictionaryEnumerator<T>(this);
+    }
+
+    public bool RemoveAndShift(int key)
+    {
+        return this.RemoveAndShift(key, true);
+    }
+
+    private bool RemoveAndShift(int key, bool dispose)
+    {
+        int pos = Array.BinarySearch(this._index[0], 0, this._count, key);
+        if (pos >= 0)
+        {
+            if (dispose)
             {
-                if (this._index >= this._ts._count)
-                {
-                    return default(T);
-                }
-                else
-                {
-                    return this._ts._items[this._ts._index[1][this._index]];
-                }
+                (this._items[this._index[1][pos]] as IDisposable)?.Dispose();
+                this._items[this._index[1][pos]] = default(T);
             }
-        }
 
-        object IEnumerator.Current => this.Current;
-
-        public void Dispose()
-        {
-            this._ts = null;
-        }
-
-        public bool MoveNext()
-        {
-            this._index++;
-            if (this._ts.Count == this._index)
+            if (pos < this.Count)
             {
-                return false;
+                Array.Copy(this._index[0], pos + 1, this._index[0], pos, this.Count - pos - 1);
+                Array.Copy(this._index[1], pos + 1, this._index[1], pos, this.Count - pos - 1);
+            }
+
+            this._count--;
+            for (int i = pos; i < this._count; i++)
+            {
+                this._index[0][i]--;
             }
             return true;
         }
+        return false;
+    }
 
-        public void Reset()
+    public bool TryGetValue(int key, out T value)
+    {
+        int pos = Array.BinarySearch(this._index[0], 0, this._count, key);
+        if (pos >= 0)
         {
-            throw new NotImplementedException();
+            value = this._items[pos];
+            return true;
         }
+        else
+        {
+            value = default(T);
+            return false;
+        }
+    }
+    IEnumerator IEnumerable.GetEnumerator()
+    {
+        return new ChangeableDictionaryEnumerator<T>(this);
+    }
+}
+internal class ChangeableDictionaryEnumerator<T> : IEnumerator<T>
+{
+    int _index=-1;
+    ChangeableDictionary<T> _ts;
+    public ChangeableDictionaryEnumerator(ChangeableDictionary<T> ts)
+    {
+        this._ts = ts;
+    }
+    public T Current
+    {
+        get
+        {
+            if (this._index >= this._ts._count)
+            {
+                return default(T);
+            }
+            else
+            {
+                return this._ts._items[this._ts._index[1][this._index]];
+            }
+        }
+    }
+
+    object IEnumerator.Current => this.Current;
+
+    public void Dispose()
+    {
+        this._ts = null;
+    }
+
+    public bool MoveNext()
+    {
+        this._index++;
+        if (this._ts.Count == this._index)
+        {
+            return false;
+        }
+        return true;
+    }
+
+    public void Reset()
+    {
+        throw new NotImplementedException();
     }
 }

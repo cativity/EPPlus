@@ -16,19 +16,18 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
+
+[FunctionMetadata(
+                     Category = ExcelFunctionCategory.MathAndTrig,
+                     EPPlusVersion = "5.1",
+                     Description = "Converts Degrees to Radians")]
+internal class Radians : ExcelFunction
 {
-    [FunctionMetadata(
-        Category = ExcelFunctionCategory.MathAndTrig,
-        EPPlusVersion = "5.1",
-        Description = "Converts Degrees to Radians")]
-    internal class Radians : ExcelFunction
+    public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
     {
-        public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
-        {
-            ValidateArguments(arguments, 1);
-            double number = this.ArgToDecimal(arguments, 0);
-            return this.CreateResult(MathHelper.Radians(number), DataType.Decimal);
-        }
+        ValidateArguments(arguments, 1);
+        double number = this.ArgToDecimal(arguments, 0);
+        return this.CreateResult(MathHelper.Radians(number), DataType.Decimal);
     }
 }

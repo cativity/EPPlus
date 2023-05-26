@@ -10,20 +10,19 @@
  *************************************************************************************************
     04/15/2020         EPPlus Software AB       EPPlus 5.2
  *************************************************************************************************/
-namespace OfficeOpenXml.Drawing.Chart.ChartEx
+namespace OfficeOpenXml.Drawing.Chart.ChartEx;
+
+/// <summary>
+/// The quartile calculation methods
+/// </summary>
+public enum eQuartileMethod
 {
     /// <summary>
-    /// The quartile calculation methods
+    /// The quartile calculation includes the median when splitting the dataset into quartiles
     /// </summary>
-    public enum eQuartileMethod
-    {
-        /// <summary>
-        /// The quartile calculation includes the median when splitting the dataset into quartiles
-        /// </summary>
-        Inclusive,
-        /// <summary>
-        /// The quartile calculation excludes the median when splitting the dataset into quartiles
-        /// </summary>
-        Exclusive
-    }
+    Inclusive,
+    /// <summary>
+    /// The quartile calculation excludes the median when splitting the dataset into quartiles
+    /// </summary>
+    Exclusive
 }

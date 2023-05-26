@@ -14,11 +14,10 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.Implementations
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.Implementations;
+
+public enum PmtDue
 {
-    public enum PmtDue
-    {
-        EndOfPeriod = 0,
-        BeginningOfPeriod = 1
-    }
+    EndOfPeriod = 0,
+    BeginningOfPeriod = 1
 }

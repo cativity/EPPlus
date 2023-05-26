@@ -17,35 +17,34 @@ using System.Text;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Metadata;
 using OfficeOpenXml.FormulaParsing.ExpressionGraph;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
-{
-    [FunctionMetadata(
-        Category = ExcelFunctionCategory.MathAndTrig,
-        EPPlusVersion = "4",
-        Description = "Returns the product of a supplied list of numbers")]
-    internal class Product : HiddenValuesHandlingFunction
-    {
-        public Product()
-        {
-            this.IgnoreErrors = false;
-        }
-        public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
-        {
-            ValidateArguments(arguments, 1);
-            List<FunctionArgument>? args = arguments.ToList();
-            if(!this.IgnoreErrors && arguments.Any(x => x.ValueIsExcelError))
-            {
-                return this.CreateResult(arguments.First(x => x.ValueIsExcelError).ValueAsExcelErrorValue.Type);
-            }
-            args.RemoveAll(x => this.ShouldIgnore(x, context));
-            double result = 1d;
-            IEnumerable<object>? values = this.ArgsToObjectEnumerable(true, args, context);
-            foreach (object? obj in values.Where(x => x != null && IsNumeric(x)))
-            {
-                result *= Convert.ToDouble(obj);
-            }
-            return this.CreateResult(result, DataType.Decimal);
-        }
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
 
+[FunctionMetadata(
+                     Category = ExcelFunctionCategory.MathAndTrig,
+                     EPPlusVersion = "4",
+                     Description = "Returns the product of a supplied list of numbers")]
+internal class Product : HiddenValuesHandlingFunction
+{
+    public Product()
+    {
+        this.IgnoreErrors = false;
     }
+    public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
+    {
+        ValidateArguments(arguments, 1);
+        List<FunctionArgument>? args = arguments.ToList();
+        if(!this.IgnoreErrors && arguments.Any(x => x.ValueIsExcelError))
+        {
+            return this.CreateResult(arguments.First(x => x.ValueIsExcelError).ValueAsExcelErrorValue.Type);
+        }
+        args.RemoveAll(x => this.ShouldIgnore(x, context));
+        double result = 1d;
+        IEnumerable<object>? values = this.ArgsToObjectEnumerable(true, args, context);
+        foreach (object? obj in values.Where(x => x != null && IsNumeric(x)))
+        {
+            result *= Convert.ToDouble(obj);
+        }
+        return this.CreateResult(result, DataType.Decimal);
+    }
+
 }

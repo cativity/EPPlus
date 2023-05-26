@@ -16,104 +16,103 @@ using OfficeOpenXml.DataValidation.Formulas.Contracts;
 using System;
 using System.Xml;
 
-namespace OfficeOpenXml.DataValidation
+namespace OfficeOpenXml.DataValidation;
+
+/// <summary>
+/// This class represents an List data validation.
+/// </summary>
+public class ExcelDataValidationList : ExcelDataValidationWithFormula<IExcelDataValidationFormulaList>, IExcelDataValidationList
 {
+
     /// <summary>
-    /// This class represents an List data validation.
+    /// Constructor
     /// </summary>
-    public class ExcelDataValidationList : ExcelDataValidationWithFormula<IExcelDataValidationFormulaList>, IExcelDataValidationList
+    /// <param name="worksheet"></param>
+    /// <param name="uid">Uid of the data validation, format should be a Guid surrounded by curly braces.</param>
+    /// <param name="address"></param>
+    /// <param name="validationType"></param>
+    internal ExcelDataValidationList(string uid, string address, ExcelWorksheet ws)
+        : base(uid, address, ws)
     {
+        this.Formula = new ExcelDataValidationFormulaList(null, uid, ws.Name, this.OnFormulaChanged);
+    }
 
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        /// <param name="worksheet"></param>
-        /// <param name="uid">Uid of the data validation, format should be a Guid surrounded by curly braces.</param>
-        /// <param name="address"></param>
-        /// <param name="validationType"></param>
-        internal ExcelDataValidationList(string uid, string address, ExcelWorksheet ws)
-            : base(uid, address, ws)
+    /// <summary>
+    /// Constructor for reading data
+    /// </summary>
+    /// <param name="xr">The XmlReader to read from</param>
+    internal ExcelDataValidationList(XmlReader xr, ExcelWorksheet ws)
+        : base(xr, ws)
+    {
+    }
+
+    /// <summary>
+    /// Copy constructor
+    /// </summary>
+    /// <param name="copy"></param>
+    internal ExcelDataValidationList(ExcelDataValidationList copy, ExcelWorksheet ws)
+        : base(copy, ws)
+    {
+        this.Formula = copy.Formula;
+    }
+
+    /// <summary>
+    /// Read-Only property for seeing if this dataValidation type has an operator.
+    /// </summary>
+    public override bool AllowsOperator { get { return false; } }
+
+    /// <summary>
+    /// Property for determining type of validation
+    /// </summary>
+    public override ExcelDataValidationType ValidationType => new ExcelDataValidationType(eDataValidationType.List);
+
+    /// <summary>
+    /// True if an in-cell dropdown should be hidden.
+    /// </summary>
+    /// <remarks>
+    /// This property corresponds to the showDropDown attribute of a data validation in Office Open Xml. Strangely enough this
+    /// attributes hides the in-cell dropdown if it is true and shows the dropdown if it is not present or false. We have checked
+    /// this in both Ms Excel and Google sheets and it seems like this is how it is implemented in both applications. Hence why we have
+    /// renamed this property to HideDropDown since that better corresponds to the functionality.
+    /// </remarks>
+    public bool? HideDropDown { get; set; }
+
+    public override void Validate()
+    {
+        base.Validate();
+    }
+
+    internal override IExcelDataValidationFormulaList DefineFormulaClassType(string formulaValue, string sheetName)
+    {
+        return new ExcelDataValidationFormulaList(formulaValue, this.Uid, sheetName, this.OnFormulaChanged);
+    }
+
+    internal override void LoadXML(XmlReader xr)
+    {
+        base.LoadXML(xr);
+        string attribute = xr.GetAttribute("showDropDown");
+        if (string.IsNullOrEmpty(attribute))
         {
-            this.Formula = new ExcelDataValidationFormulaList(null, uid, ws.Name, this.OnFormulaChanged);
+            this.HideDropDown = false;
         }
-
-        /// <summary>
-        /// Constructor for reading data
-        /// </summary>
-        /// <param name="xr">The XmlReader to read from</param>
-        internal ExcelDataValidationList(XmlReader xr, ExcelWorksheet ws)
-            : base(xr, ws)
+        else
         {
+            this.HideDropDown = bool.Parse(xr.GetAttribute("showDropDown"));
         }
+    }
 
-        /// <summary>
-        /// Copy constructor
-        /// </summary>
-        /// <param name="copy"></param>
-        internal ExcelDataValidationList(ExcelDataValidationList copy, ExcelWorksheet ws)
-            : base(copy, ws)
-        {
-            this.Formula = copy.Formula;
-        }
+    internal override ExcelDataValidation GetClone()
+    {
+        return new ExcelDataValidationList(this, this._ws);
+    }
 
-        /// <summary>
-        /// Read-Only property for seeing if this dataValidation type has an operator.
-        /// </summary>
-        public override bool AllowsOperator { get { return false; } }
+    internal override ExcelDataValidation GetClone(ExcelWorksheet copy)
+    {
+        return new ExcelDataValidationList(this, copy);
+    }
 
-        /// <summary>
-        /// Property for determining type of validation
-        /// </summary>
-        public override ExcelDataValidationType ValidationType => new ExcelDataValidationType(eDataValidationType.List);
-
-        /// <summary>
-        /// True if an in-cell dropdown should be hidden.
-        /// </summary>
-        /// <remarks>
-        /// This property corresponds to the showDropDown attribute of a data validation in Office Open Xml. Strangely enough this
-        /// attributes hides the in-cell dropdown if it is true and shows the dropdown if it is not present or false. We have checked
-        /// this in both Ms Excel and Google sheets and it seems like this is how it is implemented in both applications. Hence why we have
-        /// renamed this property to HideDropDown since that better corresponds to the functionality.
-        /// </remarks>
-        public bool? HideDropDown { get; set; }
-
-        public override void Validate()
-        {
-            base.Validate();
-        }
-
-        internal override IExcelDataValidationFormulaList DefineFormulaClassType(string formulaValue, string sheetName)
-        {
-            return new ExcelDataValidationFormulaList(formulaValue, this.Uid, sheetName, this.OnFormulaChanged);
-        }
-
-        internal override void LoadXML(XmlReader xr)
-        {
-            base.LoadXML(xr);
-            string attribute = xr.GetAttribute("showDropDown");
-            if (string.IsNullOrEmpty(attribute))
-            {
-                this.HideDropDown = false;
-            }
-            else
-            {
-                this.HideDropDown = bool.Parse(xr.GetAttribute("showDropDown"));
-            }
-        }
-
-        internal override ExcelDataValidation GetClone()
-        {
-            return new ExcelDataValidationList(this, this._ws);
-        }
-
-        internal override ExcelDataValidation GetClone(ExcelWorksheet copy)
-        {
-            return new ExcelDataValidationList(this, copy);
-        }
-
-        ExcelDataValidationDecimal Clone()
-        {
-            return (ExcelDataValidationDecimal)this.GetClone();
-        }
+    ExcelDataValidationDecimal Clone()
+    {
+        return (ExcelDataValidationDecimal)this.GetClone();
     }
 }

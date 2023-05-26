@@ -10,20 +10,19 @@
  *************************************************************************************************
     08/11/2021         EPPlus Software AB       EPPlus 5.8
  *************************************************************************************************/
-namespace OfficeOpenXml
+namespace OfficeOpenXml;
+
+/// <summary>
+/// Calculation Method for number fill operations
+/// </summary>
+public enum eCalculationMethod
 {
     /// <summary>
-    /// Calculation Method for number fill operations
+    /// Add the value to the next fill
     /// </summary>
-    public enum eCalculationMethod
-    {
-        /// <summary>
-        /// Add the value to the next fill
-        /// </summary>
-        Add,
-        /// <summary>
-        /// Multiply the value to the next fill
-        /// </summary>
-        Multiply
-    }
+    Add,
+    /// <summary>
+    /// Multiply the value to the next fill
+    /// </summary>
+    Multiply
 }

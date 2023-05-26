@@ -14,22 +14,22 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace OfficeOpenXml
+namespace OfficeOpenXml;
+
+/// <summary>
+/// HyperlinkClass
+/// </summary>
+public class ExcelHyperLink : Uri
 {
     /// <summary>
-    /// HyperlinkClass
+    /// A new hyperlink with the specified URI
     /// </summary>
-    public class ExcelHyperLink : Uri
+    /// <param name="uriString">The URI</param>
+    public ExcelHyperLink(string uriString) :
+        base(uriString)
     {
-        /// <summary>
-        /// A new hyperlink with the specified URI
-        /// </summary>
-        /// <param name="uriString">The URI</param>
-        public ExcelHyperLink(string uriString) :
-            base(uriString)
-        {
-            this.OriginalUri = this;
-        }
+        this.OriginalUri = this;
+    }
 #if !Core
         /// <summary>
         /// A new hyperlink with the specified URI. This syntax is obsolete
@@ -43,110 +43,109 @@ namespace OfficeOpenXml
             OriginalUri = (Uri)this;
         }
 #endif
-        /// <summary>
-        /// A new hyperlink with the specified URI and kind
-        /// </summary>
-        /// <param name="uriString">The URI</param>
-        /// <param name="uriKind">Kind (absolute/relative or indeterminate)</param>
-        public ExcelHyperLink(string uriString, UriKind uriKind) :
-            base(uriString, uriKind)
-        {
-            this.OriginalUri = this;
-        }
-        /// <summary>
-        /// Sheet internal reference
-        /// </summary>
-        /// <param name="referenceAddress">Address</param>
-        /// <param name="display">Displayed text</param>
-        public ExcelHyperLink(string referenceAddress, string display) :
-            base("xl://internal")   //URI is not used on internal links so put a dummy uri here.
-        {
-            this._referenceAddress = referenceAddress;
-            this._display = display;
-        }
-
-        string _referenceAddress = null;
-        /// <summary>
-        /// The Excel address for internal links.
-        /// </summary>
-        public string ReferenceAddress
-        {
-            get
-            {
-                return this._referenceAddress;
-            }
-            set
-            {
-                this._referenceAddress = value;
-            }
-        }
-        string _display = "";
-        /// <summary>
-        /// Displayed text
-        /// </summary>
-        public string Display
-        {
-            get
-            {
-                return this._display;
-            }
-            set
-            {
-                this._display = value;
-            }
-        }
-        /// <summary>
-        /// Tooltip
-        /// </summary>
-        public string ToolTip
-        {
-            get;
-            set;
-        }
-        int _colSpann = 0;
-        /// <summary>
-        /// If the hyperlink spans multiple columns
-        /// </summary>
-        public int ColSpann
-        {
-            get
-            {
-                return this._colSpann;
-            }
-            set
-            {
-                this._colSpann = value;
-            }
-        }
-        int _rowSpann = 0;
-        /// <summary>
-        /// If the hyperlink spans multiple rows
-        /// </summary>
-        public int RowSpann
-        {
-            get
-            {
-                return this._rowSpann;
-            }
-            set
-            {
-                this._rowSpann = value;
-            }
-        }
-        /// <summary>
-        /// Used to handle non absolute URI's. 
-        /// Is used if IsAblsoluteUri is true. The base URI will have a dummy value of xl://nonAbsolute.
-        /// </summary>
-        public Uri OriginalUri
-        {
-            get;
-            internal set;
-        }
-        internal string RId
-        {
-            get;
-            set;
-        }
-        internal string Target { get; set; }
+    /// <summary>
+    /// A new hyperlink with the specified URI and kind
+    /// </summary>
+    /// <param name="uriString">The URI</param>
+    /// <param name="uriKind">Kind (absolute/relative or indeterminate)</param>
+    public ExcelHyperLink(string uriString, UriKind uriKind) :
+        base(uriString, uriKind)
+    {
+        this.OriginalUri = this;
     }
+    /// <summary>
+    /// Sheet internal reference
+    /// </summary>
+    /// <param name="referenceAddress">Address</param>
+    /// <param name="display">Displayed text</param>
+    public ExcelHyperLink(string referenceAddress, string display) :
+        base("xl://internal")   //URI is not used on internal links so put a dummy uri here.
+    {
+        this._referenceAddress = referenceAddress;
+        this._display = display;
+    }
+
+    string _referenceAddress = null;
+    /// <summary>
+    /// The Excel address for internal links.
+    /// </summary>
+    public string ReferenceAddress
+    {
+        get
+        {
+            return this._referenceAddress;
+        }
+        set
+        {
+            this._referenceAddress = value;
+        }
+    }
+    string _display = "";
+    /// <summary>
+    /// Displayed text
+    /// </summary>
+    public string Display
+    {
+        get
+        {
+            return this._display;
+        }
+        set
+        {
+            this._display = value;
+        }
+    }
+    /// <summary>
+    /// Tooltip
+    /// </summary>
+    public string ToolTip
+    {
+        get;
+        set;
+    }
+    int _colSpann = 0;
+    /// <summary>
+    /// If the hyperlink spans multiple columns
+    /// </summary>
+    public int ColSpann
+    {
+        get
+        {
+            return this._colSpann;
+        }
+        set
+        {
+            this._colSpann = value;
+        }
+    }
+    int _rowSpann = 0;
+    /// <summary>
+    /// If the hyperlink spans multiple rows
+    /// </summary>
+    public int RowSpann
+    {
+        get
+        {
+            return this._rowSpann;
+        }
+        set
+        {
+            this._rowSpann = value;
+        }
+    }
+    /// <summary>
+    /// Used to handle non absolute URI's. 
+    /// Is used if IsAblsoluteUri is true. The base URI will have a dummy value of xl://nonAbsolute.
+    /// </summary>
+    public Uri OriginalUri
+    {
+        get;
+        internal set;
+    }
+    internal string RId
+    {
+        get;
+        set;
+    }
+    internal string Target { get; set; }
 }

@@ -10,20 +10,19 @@
  *************************************************************************************************
   04/16/2020         EPPlus Software AB       EPPlus 5.2
  *************************************************************************************************/
-namespace OfficeOpenXml.Drawing.Chart.ChartEx
+namespace OfficeOpenXml.Drawing.Chart.ChartEx;
+
+/// <summary>
+/// How to color a region map chart serie
+/// </summary>
+public enum eColorBy
 {
     /// <summary>
-    /// How to color a region map chart serie
+    /// Region map chart is colored by values
     /// </summary>
-    public enum eColorBy
-    {
-        /// <summary>
-        /// Region map chart is colored by values
-        /// </summary>
-        Value,
-        /// <summary>
-        /// Region map chart is colored by secondary category names
-        /// </summary>
-        CategoryNames
-    }
+    Value,
+    /// <summary>
+    /// Region map chart is colored by secondary category names
+    /// </summary>
+    CategoryNames
 }

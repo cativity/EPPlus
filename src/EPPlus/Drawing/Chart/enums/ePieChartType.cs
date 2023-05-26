@@ -10,28 +10,27 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
-namespace OfficeOpenXml.Drawing.Chart
+namespace OfficeOpenXml.Drawing.Chart;
+
+/// <summary>
+/// Pie and Doughnut chart type
+/// </summary>
+public enum ePieChartType
 {
     /// <summary>
-    /// Pie and Doughnut chart type
+    /// A pie chart
     /// </summary>
-    public enum ePieChartType
-    {
-        /// <summary>
-        /// A pie chart
-        /// </summary>
-        Pie = 5,
-        /// <summary>
-        /// An exploded pie chart
-        /// </summary>
-        PieExploded = 69,
-        /// <summary>
-        /// A 3D pie chart
-        /// </summary>
-        Pie3D = -4102,
-        /// <summary>
-        /// A exploded 3D pie chart
-        /// </summary>
-        PieExploded3D = 70
-    }
+    Pie = 5,
+    /// <summary>
+    /// An exploded pie chart
+    /// </summary>
+    PieExploded = 69,
+    /// <summary>
+    /// A 3D pie chart
+    /// </summary>
+    Pie3D = -4102,
+    /// <summary>
+    /// A exploded 3D pie chart
+    /// </summary>
+    PieExploded3D = 70
 }

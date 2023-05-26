@@ -15,83 +15,82 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace OfficeOpenXml.FormulaParsing.LexicalAnalysis.TokenSeparatorHandlers
+namespace OfficeOpenXml.FormulaParsing.LexicalAnalysis.TokenSeparatorHandlers;
+
+/// <summary>
+/// Handles parsing of worksheet names
+/// </summary>
+internal class SheetnameHandler : SeparatorHandler
 {
     /// <summary>
-    /// Handles parsing of worksheet names
+    /// Handles characters and appends them to the sheetname
     /// </summary>
-    internal class SheetnameHandler : SeparatorHandler
+    /// <param name="c"></param>
+    /// <param name="tokenSeparator"></param>
+    /// <param name="context"></param>
+    /// <param name="tokenIndexProvider"></param>
+    /// <returns></returns>
+    public override bool Handle(char c, Token tokenSeparator, TokenizerContext context, ITokenIndexProvider tokenIndexProvider)
     {
-        /// <summary>
-        /// Handles characters and appends them to the sheetname
-        /// </summary>
-        /// <param name="c"></param>
-        /// <param name="tokenSeparator"></param>
-        /// <param name="context"></param>
-        /// <param name="tokenIndexProvider"></param>
-        /// <returns></returns>
-        public override bool Handle(char c, Token tokenSeparator, TokenizerContext context, ITokenIndexProvider tokenIndexProvider)
+        if (context.IsInSheetName)
         {
-            if (context.IsInSheetName)
+            if (IsDoubleQuote(tokenSeparator, tokenIndexProvider.Index, context))
             {
-                if (IsDoubleQuote(tokenSeparator, tokenIndexProvider.Index, context))
-                {
-                    tokenIndexProvider.MoveIndexPointerForward();
-                    context.AppendToCurrentToken(c);
-                    return true;
-                }
-                else if(IsDoubleSingleQuote(tokenSeparator, tokenIndexProvider.Index, context))
-                {
-                    tokenIndexProvider.MoveIndexPointerForward();
-                    // double single quotes inside a sheet name should be preserved
-                    context.AppendToCurrentToken(c);
-                    context.AppendToCurrentToken(c);
-                    return true;
-                }
-                if (!tokenSeparator.TokenTypeIsSet(TokenType.WorksheetName))
-                {
-                    context.AppendToCurrentToken(c);
-                    return true;
-                }
+                tokenIndexProvider.MoveIndexPointerForward();
+                context.AppendToCurrentToken(c);
+                return true;
             }
+            else if(IsDoubleSingleQuote(tokenSeparator, tokenIndexProvider.Index, context))
+            {
+                tokenIndexProvider.MoveIndexPointerForward();
+                // double single quotes inside a sheet name should be preserved
+                context.AppendToCurrentToken(c);
+                context.AppendToCurrentToken(c);
+                return true;
+            }
+            if (!tokenSeparator.TokenTypeIsSet(TokenType.WorksheetName))
+            {
+                context.AppendToCurrentToken(c);
+                return true;
+            }
+        }
 
-            if (tokenSeparator.TokenTypeIsSet(TokenType.WorksheetName))
-            {                
-                if (context.LastToken != null && context.LastToken.Value.TokenTypeIsSet(TokenType.WorksheetName))
-                {
-                    if (context.CurrentToken.StartsWith("!") && context.CurrentToken.EndsWith(":"))
-                    {                        
-                        context.AddToken(new Token(context.CurrentToken.Substring(0,context.CurrentToken.Length-1), TokenType.ExcelAddress));
-                        context.AddToken(new Token(":", TokenType.Colon));
-                        context.NewToken();
-                    }
-                    else
-                    {
-                        context.AddToken(!context.CurrentTokenHasValue
-                            ? new Token(string.Empty, TokenType.WorksheetNameContent)
-                            : new Token(context.CurrentToken, TokenType.WorksheetNameContent));
-                    }
-                }
-                else if(context.CurrentToken.EndsWith(":"))
-                {
-                    context.AddToken(new Token(context.CurrentToken.Substring(0, context.CurrentToken.Length - 1), TokenType.ExcelAddress));
+        if (tokenSeparator.TokenTypeIsSet(TokenType.WorksheetName))
+        {                
+            if (context.LastToken != null && context.LastToken.Value.TokenTypeIsSet(TokenType.WorksheetName))
+            {
+                if (context.CurrentToken.StartsWith("!") && context.CurrentToken.EndsWith(":"))
+                {                        
+                    context.AddToken(new Token(context.CurrentToken.Substring(0,context.CurrentToken.Length-1), TokenType.ExcelAddress));
                     context.AddToken(new Token(":", TokenType.Colon));
                     context.NewToken();
                 }
-                if (context.CurrentToken.StartsWith("[") &&
-                   context.CurrentToken.EndsWith("]"))
-                {
-                    context.AddToken(new Token(context.CurrentToken + "'", TokenType.WorksheetName)); //Append current token, as this can be an external reference index e.g [1]
-                }
                 else
                 {
-                    context.AddToken(new Token("'", TokenType.WorksheetName)); //Append current token, as this can be an external reference index e.g [1]
+                    context.AddToken(!context.CurrentTokenHasValue
+                                         ? new Token(string.Empty, TokenType.WorksheetNameContent)
+                                         : new Token(context.CurrentToken, TokenType.WorksheetNameContent));
                 }
-                context.ToggleIsInSheetName();
-                context.NewToken();
-                return true;
             }
-            return false;
+            else if(context.CurrentToken.EndsWith(":"))
+            {
+                context.AddToken(new Token(context.CurrentToken.Substring(0, context.CurrentToken.Length - 1), TokenType.ExcelAddress));
+                context.AddToken(new Token(":", TokenType.Colon));
+                context.NewToken();
+            }
+            if (context.CurrentToken.StartsWith("[") &&
+                context.CurrentToken.EndsWith("]"))
+            {
+                context.AddToken(new Token(context.CurrentToken + "'", TokenType.WorksheetName)); //Append current token, as this can be an external reference index e.g [1]
+            }
+            else
+            {
+                context.AddToken(new Token("'", TokenType.WorksheetName)); //Append current token, as this can be an external reference index e.g [1]
+            }
+            context.ToggleIsInSheetName();
+            context.NewToken();
+            return true;
         }
+        return false;
     }
 }

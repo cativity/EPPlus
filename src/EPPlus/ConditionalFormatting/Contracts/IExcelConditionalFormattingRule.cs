@@ -17,52 +17,51 @@ using System.Text;
 using System.Xml;
 using OfficeOpenXml.Style.Dxf;
 
-namespace OfficeOpenXml.ConditionalFormatting.Contracts
+namespace OfficeOpenXml.ConditionalFormatting.Contracts;
+
+/// <summary>
+/// Interface for conditional formatting rule
+/// </summary>
+public interface IExcelConditionalFormattingRule
 {
     /// <summary>
-    /// Interface for conditional formatting rule
+    /// The 'cfRule' XML node
     /// </summary>
-    public interface IExcelConditionalFormattingRule
-    {
-        /// <summary>
-        /// The 'cfRule' XML node
-        /// </summary>
-        XmlNode Node { get; }
+    XmlNode Node { get; }
 
-        /// <summary>
-        /// The type of conditional formatting rule.
-        /// </summary>
-        eExcelConditionalFormattingRuleType Type { get; }
+    /// <summary>
+    /// The type of conditional formatting rule.
+    /// </summary>
+    eExcelConditionalFormattingRuleType Type { get; }
 
-        /// <summary>
-        /// <para>The range over which these conditional formatting rules apply.</para>
-        /// </summary>
-        ExcelAddress Address { get; set; }
+    /// <summary>
+    /// <para>The range over which these conditional formatting rules apply.</para>
+    /// </summary>
+    ExcelAddress Address { get; set; }
 
-        /// <summary>
-        /// The priority of the rule. 
-        /// A lower values are higher priority than higher values, where 1 is the highest priority.
-        /// </summary>
-        int Priority { get; set; }
+    /// <summary>
+    /// The priority of the rule. 
+    /// A lower values are higher priority than higher values, where 1 is the highest priority.
+    /// </summary>
+    int Priority { get; set; }
 
-        /// <summary>
-        /// If this property is true, no rules with lower priority should be applied over this rule,
-        /// when this rule evaluates to true.
-        /// </summary>
-        bool StopIfTrue { get; set; }
+    /// <summary>
+    /// If this property is true, no rules with lower priority should be applied over this rule,
+    /// when this rule evaluates to true.
+    /// </summary>
+    bool StopIfTrue { get; set; }
 
-        /// <summary>
-        /// Gives access to the differencial styling (DXF) for the rule.
-        /// </summary>
-        ExcelDxfStyleConditionalFormatting Style { get; }
+    /// <summary>
+    /// Gives access to the differencial styling (DXF) for the rule.
+    /// </summary>
+    ExcelDxfStyleConditionalFormatting Style { get; }
 
-        /// <summary>
-        /// Indicates that the conditional formatting is associated with a PivotTable
-        /// </summary>
-        bool PivotTable { get; set; }
-        /// <summary>
-        /// Type case propterty for the base class.
-        /// </summary>
-        ExcelConditionalFormattingAsType As { get; }
-    }
+    /// <summary>
+    /// Indicates that the conditional formatting is associated with a PivotTable
+    /// </summary>
+    bool PivotTable { get; set; }
+    /// <summary>
+    /// Type case propterty for the base class.
+    /// </summary>
+    ExcelConditionalFormattingAsType As { get; }
 }

@@ -17,16 +17,15 @@ using System.Text;
 
 using OfficeOpenXml.ConditionalFormatting;
 
-namespace OfficeOpenXml.ConditionalFormatting.Contracts
-{
-  /// <summary>
-  /// IExcelConditionalFormattingEndsWith
-  /// </summary>
-  public interface IExcelConditionalFormattingEndsWith
+namespace OfficeOpenXml.ConditionalFormatting.Contracts;
+
+/// <summary>
+/// IExcelConditionalFormattingEndsWith
+/// </summary>
+public interface IExcelConditionalFormattingEndsWith
     : IExcelConditionalFormattingRule,
-    IExcelConditionalFormattingWithText
-  {
+      IExcelConditionalFormattingWithText
+{
     #region Public Properties
     #endregion Public Properties
-  }
 }

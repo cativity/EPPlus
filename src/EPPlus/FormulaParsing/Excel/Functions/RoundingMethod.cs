@@ -11,17 +11,16 @@
   03/10/2021         EPPlus Software AB       EPPlus 5.6
  *************************************************************************************************/
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions;
+
+public enum RoundingMethod
 {
-    public enum RoundingMethod
-    {
-        /// <summary>
-        /// Round decimal number to int using Convert.ToInt32
-        /// </summary>
-        Convert,
-        /// <summary>
-        /// Round decimal number to int using Math.Floor
-        /// </summary>
-        Floor
-    }
+    /// <summary>
+    /// Round decimal number to int using Convert.ToInt32
+    /// </summary>
+    Convert,
+    /// <summary>
+    /// Round decimal number to int using Math.Floor
+    /// </summary>
+    Floor
 }

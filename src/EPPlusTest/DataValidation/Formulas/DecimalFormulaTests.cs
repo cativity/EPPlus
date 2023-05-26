@@ -32,77 +32,76 @@ using OfficeOpenXml.DataValidation;
 using System.IO;
 using OfficeOpenXml.DataValidation.Contracts;
 
-namespace EPPlusTest.DataValidation.Formulas
+namespace EPPlusTest.DataValidation.Formulas;
+
+[TestClass]
+public class DecimalFormulaTests : ValidationTestBase
 {
-    [TestClass]
-    public class DecimalFormulaTests : ValidationTestBase
+    [TestMethod]
+    public void ValueIsRead()
     {
-        [TestMethod]
-        public void ValueIsRead()
-        {
-            ExcelPackage? package = new ExcelPackage(new MemoryStream());
-            ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("DecimalTest");
+        ExcelPackage? package = new ExcelPackage(new MemoryStream());
+        ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("DecimalTest");
 
-            IExcelDataValidationDecimal? validationOrig = sheet.DataValidations.AddDecimalValidation("A1");
+        IExcelDataValidationDecimal? validationOrig = sheet.DataValidations.AddDecimalValidation("A1");
 
-            validationOrig.Formula.Value = 13.5d;
-            validationOrig.Operator = ExcelDataValidationOperator.lessThanOrEqual;
+        validationOrig.Formula.Value = 13.5d;
+        validationOrig.Operator = ExcelDataValidationOperator.lessThanOrEqual;
 
-            ExcelDataValidationDecimal? validation = ReadTValidation<ExcelDataValidationDecimal>(package);
+        ExcelDataValidationDecimal? validation = ReadTValidation<ExcelDataValidationDecimal>(package);
 
-            Assert.AreEqual(13.5d, validation.Formula.Value);
-        }
+        Assert.AreEqual(13.5d, validation.Formula.Value);
+    }
 
-        [TestMethod]
-        public void ExcelFormulaIsRead()
-        {
-            ExcelPackage? package = new ExcelPackage(new MemoryStream());
-            ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("DecimalTest");
+    [TestMethod]
+    public void ExcelFormulaIsRead()
+    {
+        ExcelPackage? package = new ExcelPackage(new MemoryStream());
+        ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("DecimalTest");
 
-            IExcelDataValidationDecimal? validationOrig = sheet.DataValidations.AddDecimalValidation("A1");
+        IExcelDataValidationDecimal? validationOrig = sheet.DataValidations.AddDecimalValidation("A1");
 
-            validationOrig.Formula.ExcelFormula = "D1";
-            validationOrig.Operator = ExcelDataValidationOperator.lessThanOrEqual;
+        validationOrig.Formula.ExcelFormula = "D1";
+        validationOrig.Operator = ExcelDataValidationOperator.lessThanOrEqual;
 
-            ExcelDataValidationDecimal? validation = ReadTValidation<ExcelDataValidationDecimal>(package);
+        ExcelDataValidationDecimal? validation = ReadTValidation<ExcelDataValidationDecimal>(package);
 
-            Assert.AreEqual("D1", validation.Formula.ExcelFormula);
-        }
+        Assert.AreEqual("D1", validation.Formula.ExcelFormula);
+    }
 
-        [TestMethod]
-        public void FormulaSpecialSignsAreWrittenAndRead()
-        {
-            ExcelPackage? package = new ExcelPackage(new MemoryStream());
-            ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("DecimalTest");
+    [TestMethod]
+    public void FormulaSpecialSignsAreWrittenAndRead()
+    {
+        ExcelPackage? package = new ExcelPackage(new MemoryStream());
+        ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("DecimalTest");
 
-            IExcelDataValidationDecimal? lessThan = sheet.DataValidations.AddDecimalValidation("A1");
-            lessThan.Operator = ExcelDataValidationOperator.equal;
+        IExcelDataValidationDecimal? lessThan = sheet.DataValidations.AddDecimalValidation("A1");
+        lessThan.Operator = ExcelDataValidationOperator.equal;
 
-            sheet.Cells["B1"].Value = 1;
+        sheet.Cells["B1"].Value = 1;
 
-            lessThan.Formula.ExcelFormula = "=B1<5";
-            lessThan.ShowErrorMessage = true;
+        lessThan.Formula.ExcelFormula = "=B1<5";
+        lessThan.ShowErrorMessage = true;
 
 
-            IExcelDataValidationDecimal? greaterThan = sheet.DataValidations.AddDecimalValidation("A2");
+        IExcelDataValidationDecimal? greaterThan = sheet.DataValidations.AddDecimalValidation("A2");
 
-            sheet.Cells["B2"].Value = 6;
+        sheet.Cells["B2"].Value = 6;
 
-            greaterThan.Formula.ExcelFormula = "=B1>5";
-            greaterThan.ShowErrorMessage = true;
+        greaterThan.Formula.ExcelFormula = "=B1>5";
+        greaterThan.ShowErrorMessage = true;
 
-            greaterThan.Operator = ExcelDataValidationOperator.equal;
+        greaterThan.Operator = ExcelDataValidationOperator.equal;
 
-            MemoryStream stream = new MemoryStream();
-            package.SaveAs(stream);
+        MemoryStream stream = new MemoryStream();
+        package.SaveAs(stream);
 
-            ExcelPackage? loadedpkg = new ExcelPackage(stream);
-            ExcelWorksheet? loadedSheet = loadedpkg.Workbook.Worksheets[0];
+        ExcelPackage? loadedpkg = new ExcelPackage(stream);
+        ExcelWorksheet? loadedSheet = loadedpkg.Workbook.Worksheets[0];
 
-            ExcelDataValidationCollection? validations = loadedSheet.DataValidations;
+        ExcelDataValidationCollection? validations = loadedSheet.DataValidations;
 
-            Assert.AreEqual(((ExcelDataValidationDecimal)validations[0]).Formula.ExcelFormula, "=B1<5");
-            Assert.AreEqual(((ExcelDataValidationDecimal)validations[1]).Formula.ExcelFormula, "=B1>5");
-        }
+        Assert.AreEqual(((ExcelDataValidationDecimal)validations[0]).Formula.ExcelFormula, "=B1<5");
+        Assert.AreEqual(((ExcelDataValidationDecimal)validations[1]).Formula.ExcelFormula, "=B1>5");
     }
 }

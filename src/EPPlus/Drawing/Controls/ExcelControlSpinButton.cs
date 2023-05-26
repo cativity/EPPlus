@@ -14,108 +14,107 @@ using OfficeOpenXml.Packaging;
 using System;
 using System.Xml;
 
-namespace OfficeOpenXml.Drawing.Controls
+namespace OfficeOpenXml.Drawing.Controls;
+
+/// <summary>
+/// Represents a spin button form control
+/// </summary>
+public class ExcelControlSpinButton : ExcelControl
 {
-    /// <summary>
-    /// Represents a spin button form control
-    /// </summary>
-    public class ExcelControlSpinButton : ExcelControl
+    internal ExcelControlSpinButton(ExcelDrawings drawings, XmlElement drawNode, string name, ExcelGroupShape parent=null) : base(drawings, drawNode, name, parent)
     {
-        internal ExcelControlSpinButton(ExcelDrawings drawings, XmlElement drawNode, string name, ExcelGroupShape parent=null) : base(drawings, drawNode, name, parent)
+        this.SetSize(40, 80); //Default size
+    }
+
+    internal ExcelControlSpinButton(ExcelDrawings drawings, XmlNode drawNode, ControlInternal control, ZipPackagePart part, XmlDocument controlPropertiesXml, ExcelGroupShape parent = null)
+        : base(drawings, drawNode, control, part, controlPropertiesXml, parent)
+    {
+    }
+
+    /// <summary>
+    /// The type of form control
+    /// </summary>
+    public override eControlType ControlType => eControlType.SpinButton;
+    /// <summary>
+    /// How much the spin button is incremented for each click
+    /// </summary>
+    public int Increment
+    {
+        get
         {
-            this.SetSize(40, 80); //Default size
+            return this._ctrlProp.GetXmlNodeInt("@inc", 1);
         }
-
-        internal ExcelControlSpinButton(ExcelDrawings drawings, XmlNode drawNode, ControlInternal control, ZipPackagePart part, XmlDocument controlPropertiesXml, ExcelGroupShape parent = null)
-            : base(drawings, drawNode, control, part, controlPropertiesXml, parent)
+        set
         {
+            if (value < 0 || value > 30000)
+            {
+                throw (new ArgumentOutOfRangeException("Increment must be between 0 and 3000"));
+            }
+
+            this._ctrlProp.SetXmlNodeInt("@inc", value);
+            this._vmlProp.SetXmlNodeInt("x:Inc", value);
         }
-
-        /// <summary>
-        /// The type of form control
-        /// </summary>
-        public override eControlType ControlType => eControlType.SpinButton;
-        /// <summary>
-        /// How much the spin button is incremented for each click
-        /// </summary>
-        public int Increment
+    }
+    /// <summary>
+    /// The value when a spin button is at it's minimum
+    /// </summary>
+    public int MinValue
+    {
+        get
         {
-            get
-            {
-                return this._ctrlProp.GetXmlNodeInt("@inc", 1);
-            }
-            set
-            {
-                if (value < 0 || value > 30000)
-                {
-                    throw (new ArgumentOutOfRangeException("Increment must be between 0 and 3000"));
-                }
-
-                this._ctrlProp.SetXmlNodeInt("@inc", value);
-                this._vmlProp.SetXmlNodeInt("x:Inc", value);
-            }
+            return this._ctrlProp.GetXmlNodeInt("@min", 0);
         }
-        /// <summary>
-        /// The value when a spin button is at it's minimum
-        /// </summary>
-        public int MinValue
+        set
         {
-            get
+            if (value < 0 || value > 30000)
             {
-                return this._ctrlProp.GetXmlNodeInt("@min", 0);
+                throw (new ArgumentOutOfRangeException("MinValue must be between 0 and 3000"));
             }
-            set
-            {
-                if (value < 0 || value > 30000)
-                {
-                    throw (new ArgumentOutOfRangeException("MinValue must be between 0 and 3000"));
-                }
 
-                this._ctrlProp.SetXmlNodeInt("@min", value);
-                this._vmlProp.SetXmlNodeInt("x:Min", value);
-            }
+            this._ctrlProp.SetXmlNodeInt("@min", value);
+            this._vmlProp.SetXmlNodeInt("x:Min", value);
         }
-        /// <summary>
-        /// The value when a spin button is at it's maximum
-        /// </summary>
-        public int MaxValue
+    }
+    /// <summary>
+    /// The value when a spin button is at it's maximum
+    /// </summary>
+    public int MaxValue
+    {
+        get
         {
-            get
-            {
-                return this._ctrlProp.GetXmlNodeInt("@max", 30000);
-            }
-            set
-            {
-                if (value < 0 || value > 30000)
-                {
-                    throw (new ArgumentOutOfRangeException("MaxValue must be between 0 and 30000"));
-                }
-
-                this._ctrlProp.SetXmlNodeInt("@max", value);
-                this._vmlProp.SetXmlNodeInt("x:Max", value);
-            }
+            return this._ctrlProp.GetXmlNodeInt("@max", 30000);
         }
-        /// <summary>
-        /// The value when a spin button is at it's maximum
-        /// </summary>
-        public int Value
+        set
         {
-            get
+            if (value < 0 || value > 30000)
             {
-                return this._ctrlProp.GetXmlNodeInt("@val", 0);
+                throw (new ArgumentOutOfRangeException("MaxValue must be between 0 and 30000"));
             }
-            set
+
+            this._ctrlProp.SetXmlNodeInt("@max", value);
+            this._vmlProp.SetXmlNodeInt("x:Max", value);
+        }
+    }
+    /// <summary>
+    /// The value when a spin button is at it's maximum
+    /// </summary>
+    public int Value
+    {
+        get
+        {
+            return this._ctrlProp.GetXmlNodeInt("@val", 0);
+        }
+        set
+        {
+            if (value < 0 || value > 30000)
             {
-                if (value < 0 || value > 30000)
-                {
-                    throw (new ArgumentOutOfRangeException("Value must be between 0 and 30000"));
-                }
-
-                this._ctrlProp.SetXmlNodeInt("@val", value);
-                this._vmlProp.SetXmlNodeInt("x:Val", value);
-
-                this.SetLinkedCellValue(value);
+                throw (new ArgumentOutOfRangeException("Value must be between 0 and 30000"));
             }
+
+            this._ctrlProp.SetXmlNodeInt("@val", value);
+            this._vmlProp.SetXmlNodeInt("x:Val", value);
+
+            this.SetLinkedCellValue(value);
         }
     }
 }

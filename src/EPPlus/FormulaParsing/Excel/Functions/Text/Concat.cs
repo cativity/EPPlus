@@ -17,50 +17,49 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Text
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Text;
+
+[FunctionMetadata(
+                     Category = ExcelFunctionCategory.Text,
+                     EPPlusVersion = "5.0",
+                     Description = "Joins together two or more text strings",
+                     IntroducedInExcelVersion = "2016")]
+internal class Concat : ExcelFunction
 {
-    [FunctionMetadata(
-        Category = ExcelFunctionCategory.Text,
-        EPPlusVersion = "5.0",
-        Description = "Joins together two or more text strings",
-        IntroducedInExcelVersion = "2016")]
-    internal class Concat : ExcelFunction
+    public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
     {
-        public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
+        if (arguments == null)
         {
-            if (arguments == null)
-            {
-                return this.CreateResult(string.Empty, DataType.String);
-            }
-            else if(arguments.Count() > 254)
-            {
-                return this.CreateResult(ExcelErrorValue.Create(eErrorType.Value), DataType.ExcelAddress);
-            }
-            StringBuilder? sb = new StringBuilder();
-            foreach (FunctionArgument? arg in arguments)
-            {
-                if(arg.IsExcelRange)
-                {
-                    foreach(ICellInfo? cell in arg.ValueAsRangeInfo)
-                    {
-                        sb.Append(cell.Value);
-                    }
-                }
-                else
-                {
-                    object? v = arg.ValueFirst;
-                    if (v != null)
-                    {
-                        sb.Append(v);
-                    }
-                }
-            }
-            string? result = sb.ToString();
-            if(!string.IsNullOrEmpty(result) && result.Length > 32767)
-            {
-                return this.CreateResult(ExcelErrorValue.Create(eErrorType.Value), DataType.ExcelAddress);
-            }
-            return this.CreateResult(sb.ToString(), DataType.String);
+            return this.CreateResult(string.Empty, DataType.String);
         }
+        else if(arguments.Count() > 254)
+        {
+            return this.CreateResult(ExcelErrorValue.Create(eErrorType.Value), DataType.ExcelAddress);
+        }
+        StringBuilder? sb = new StringBuilder();
+        foreach (FunctionArgument? arg in arguments)
+        {
+            if(arg.IsExcelRange)
+            {
+                foreach(ICellInfo? cell in arg.ValueAsRangeInfo)
+                {
+                    sb.Append(cell.Value);
+                }
+            }
+            else
+            {
+                object? v = arg.ValueFirst;
+                if (v != null)
+                {
+                    sb.Append(v);
+                }
+            }
+        }
+        string? result = sb.ToString();
+        if(!string.IsNullOrEmpty(result) && result.Length > 32767)
+        {
+            return this.CreateResult(ExcelErrorValue.Create(eErrorType.Value), DataType.ExcelAddress);
+        }
+        return this.CreateResult(sb.ToString(), DataType.String);
     }
 }

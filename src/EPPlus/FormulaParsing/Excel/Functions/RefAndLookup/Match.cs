@@ -18,78 +18,77 @@ using OfficeOpenXml.FormulaParsing.ExpressionGraph;
 using OfficeOpenXml.FormulaParsing.ExcelUtilities;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Metadata;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions.RefAndLookup
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions.RefAndLookup;
+
+[FunctionMetadata(
+                     Category = ExcelFunctionCategory.LookupAndReference,
+                     EPPlusVersion = "4",
+                     Description = "Finds the relative position of a value in a supplied array")]
+internal class Match : LookupFunction
 {
-    [FunctionMetadata(
-        Category = ExcelFunctionCategory.LookupAndReference,
-        EPPlusVersion = "4",
-        Description = "Finds the relative position of a value in a supplied array")]
-    internal class Match : LookupFunction
+    private enum MatchType
     {
-        private enum MatchType
+        ClosestAbove = -1,
+        ExactMatch = 0,
+        ClosestBelow = 1
+    }
+
+    public Match()
+        : base(new WildCardValueMatcher(), new CompileResultFactory())
+    {
+
+    }
+
+    public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
+    {
+        ValidateArguments(arguments, 2);
+
+        object? searchedValue = arguments.ElementAt(0).Value;
+        string? address =  ArgToAddress(arguments,1, context); 
+        RangeAddressFactory? rangeAddressFactory = new RangeAddressFactory(context.ExcelDataProvider);
+        RangeAddress? rangeAddress = rangeAddressFactory.Create(address);
+        MatchType matchType = this.GetMatchType(arguments);
+        LookupArguments? args = new LookupArguments(searchedValue, address, 0, 0, false, arguments.ElementAt(1).ValueAsRangeInfo);
+        LookupDirection lookupDirection = GetLookupDirection(rangeAddress);
+        LookupNavigator? navigator = LookupNavigatorFactory.Create(lookupDirection, args, context);
+        int? lastValidIndex = null;
+        do
         {
-            ClosestAbove = -1,
-            ExactMatch = 0,
-            ClosestBelow = 1
-        }
+            int matchResult = this.IsMatch(searchedValue, navigator.CurrentValue);
 
-        public Match()
-            : base(new WildCardValueMatcher(), new CompileResultFactory())
-        {
-
-        }
-
-        public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
-        {
-            ValidateArguments(arguments, 2);
-
-            object? searchedValue = arguments.ElementAt(0).Value;
-            string? address =  ArgToAddress(arguments,1, context); 
-            RangeAddressFactory? rangeAddressFactory = new RangeAddressFactory(context.ExcelDataProvider);
-            RangeAddress? rangeAddress = rangeAddressFactory.Create(address);
-            MatchType matchType = this.GetMatchType(arguments);
-            LookupArguments? args = new LookupArguments(searchedValue, address, 0, 0, false, arguments.ElementAt(1).ValueAsRangeInfo);
-            LookupDirection lookupDirection = GetLookupDirection(rangeAddress);
-            LookupNavigator? navigator = LookupNavigatorFactory.Create(lookupDirection, args, context);
-            int? lastValidIndex = null;
-            do
+            // For all match types, if the match result indicated equality, return the index (1 based)
+            if (searchedValue != null && matchResult == 0)
             {
-                int matchResult = this.IsMatch(searchedValue, navigator.CurrentValue);
-
-                // For all match types, if the match result indicated equality, return the index (1 based)
-                if (searchedValue != null && matchResult == 0)
-                {
-                    return this.CreateResult(navigator.Index + 1, DataType.Integer);
-                }
-
-                if ((matchType == MatchType.ClosestBelow && matchResult < 0) || (matchType == MatchType.ClosestAbove && matchResult > 0))
-                {
-                    lastValidIndex = navigator.Index + 1;
-                }
-                // If matchType is ClosestBelow or ClosestAbove and the match result test failed, no more searching is required
-                else if (matchType == MatchType.ClosestBelow || matchType == MatchType.ClosestAbove)
-                {
-                    break;
-                }
-            }
-            while (navigator.MoveNext());
-
-            if (matchType == MatchType.ExactMatch && !lastValidIndex.HasValue)
-            {
-                return this.CreateResult(eErrorType.NA);
+                return this.CreateResult(navigator.Index + 1, DataType.Integer);
             }
 
-            return this.CreateResult(lastValidIndex, DataType.Integer);
+            if ((matchType == MatchType.ClosestBelow && matchResult < 0) || (matchType == MatchType.ClosestAbove && matchResult > 0))
+            {
+                lastValidIndex = navigator.Index + 1;
+            }
+            // If matchType is ClosestBelow or ClosestAbove and the match result test failed, no more searching is required
+            else if (matchType == MatchType.ClosestBelow || matchType == MatchType.ClosestAbove)
+            {
+                break;
+            }
+        }
+        while (navigator.MoveNext());
+
+        if (matchType == MatchType.ExactMatch && !lastValidIndex.HasValue)
+        {
+            return this.CreateResult(eErrorType.NA);
         }
 
-        private MatchType GetMatchType(IEnumerable<FunctionArgument> arguments)
+        return this.CreateResult(lastValidIndex, DataType.Integer);
+    }
+
+    private MatchType GetMatchType(IEnumerable<FunctionArgument> arguments)
+    {
+        MatchType matchType = MatchType.ClosestBelow;
+        if (arguments.Count() > 2)
         {
-            MatchType matchType = MatchType.ClosestBelow;
-            if (arguments.Count() > 2)
-            {
-                matchType = (MatchType)this.ArgToInt(arguments, 2);
-            }
-            return matchType;
+            matchType = (MatchType)this.ArgToInt(arguments, 2);
         }
+        return matchType;
     }
 }

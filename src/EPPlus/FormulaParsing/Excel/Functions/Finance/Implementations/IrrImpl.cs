@@ -14,186 +14,185 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.Implementations
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.Implementations;
+
+internal static class IrrImpl
 {
-    internal static class IrrImpl
+    private const double cnL_IT_STEP = 0.00001;
+    private const double cnL_IT_EPSILON = 0.0000001;
+
+    private static double OptPV2(ref double[] ValueArray, double Guess = 0.1)
     {
-        private const double cnL_IT_STEP = 0.00001;
-        private const double cnL_IT_EPSILON = 0.0000001;
+        int lLower = 0;
+        int lUpper = ValueArray.Length - 1;
 
-        private static double OptPV2(ref double[] ValueArray, double Guess = 0.1)
+        double dTotal = 0.0;
+        double divRate = 1.0 + Guess;
+
+        while ((lLower <= lUpper) && ValueArray[lLower] == 0.0)
         {
-            int lLower = 0;
-            int lUpper = ValueArray.Length - 1;
-
-            double dTotal = 0.0;
-            double divRate = 1.0 + Guess;
-
-            while ((lLower <= lUpper) && ValueArray[lLower] == 0.0)
-            {
-                lLower += 1;
-            }
-
-            for (int lIndex = lUpper; lIndex > lLower - 1; lIndex--)
-            {
-                dTotal /= divRate;
-                dTotal += ValueArray[lIndex];
-            }
-            return dTotal;
+            lLower += 1;
         }
 
-        internal static FinanceCalcResult<double> Irr(double[] ValueArray, double Guess = 0.1)
+        for (int lIndex = lUpper; lIndex > lLower - 1; lIndex--)
         {
-            double dTemp;
-            double dRate1;
-            int lIndex;
-            int lUpper = 0;
+            dTotal /= divRate;
+            dTotal += ValueArray[lIndex];
+        }
+        return dTotal;
+    }
 
-            // Compiler assures that rank of ValueArray is always 1, no need to check it.  
-            // WARSI Check for error codes returned by UBound. Check if they match with C code
-            try
+    internal static FinanceCalcResult<double> Irr(double[] ValueArray, double Guess = 0.1)
+    {
+        double dTemp;
+        double dRate1;
+        int lIndex;
+        int lUpper = 0;
+
+        // Compiler assures that rank of ValueArray is always 1, no need to check it.  
+        // WARSI Check for error codes returned by UBound. Check if they match with C code
+        try
+        {
+            //Needed to catch dynamic arrays which have not been constructed yet
+            lUpper = ValueArray.Length - 1;
+        }
+        catch (StackOverflowException)
+        {
+            return new FinanceCalcResult<double>(eErrorType.Value);
+        }
+        catch (OutOfMemoryException)
+        {
+            return new FinanceCalcResult<double>(eErrorType.Value);
+        }
+        catch (ArgumentException)
+        {
+            // return error due to invalid value array
+            return new FinanceCalcResult<double>(eErrorType.Value);
+        }
+
+        int lCVal = lUpper + 1;
+
+        //Function fails for invalid parameters
+        if (Guess <= -1.0)
+        {
+            return new FinanceCalcResult<double>(eErrorType.Num);
+        }
+        if (lCVal <= 1)
+        {
+            return new FinanceCalcResult<double>(eErrorType.Num);
+        }
+
+        //'We scale the epsilon depending on cash flow values. It is necessary
+        //'because even in max accuracy case where diff is in 16th digit it
+        //'would get scaled up.
+        if (ValueArray[0] > 0.0)
+        {
+            dTemp = ValueArray[0];
+        }
+        else
+        {
+            dTemp = -ValueArray[0];
+        }
+
+        for (lIndex = 0; lIndex <= lUpper; lIndex++)
+        {
+            //Get max of values in cash flow
+            if (ValueArray[lIndex] > dTemp)
             {
-                //Needed to catch dynamic arrays which have not been constructed yet
-                lUpper = ValueArray.Length - 1;
+                dTemp = ValueArray[lIndex];
             }
-            catch (StackOverflowException)
+            else if (-ValueArray[lIndex] > dTemp)
+            {
+                dTemp = -ValueArray[lIndex];
+            }
+        }
+
+        double dNpvEpsilon = dTemp * cnL_IT_EPSILON * 0.01;
+
+        // Set up the initial values for the secant method
+        double dRate0 = Guess;
+        double dNPv0 = OptPV2(ref ValueArray, dRate0);
+
+        if (dNPv0 > 0.0)
+        {
+            dRate1 = dRate0 + cnL_IT_STEP;
+        }
+        else
+        {
+            dRate1 = dRate0 - cnL_IT_STEP;
+        }
+
+        if (dRate1 <= -1.0)
+        {
+            return new FinanceCalcResult<double>(eErrorType.Num);
+        }
+
+        double dNpv1 = OptPV2(ref ValueArray, dRate1);
+
+        for (lIndex = 0; lIndex <= 39; lIndex++)
+        {
+            if (dNpv1 == dNPv0)
+            {
+                if (dRate1 > dRate0)
+                {
+                    dRate0 -= cnL_IT_STEP;
+                }
+                else
+                {
+                    dRate0 += cnL_IT_STEP;
+                }
+            }
+            dNPv0 = OptPV2(ref ValueArray, dRate0);
+            if (dNpv1 == dNPv0)
             {
                 return new FinanceCalcResult<double>(eErrorType.Value);
             }
-            catch (OutOfMemoryException)
+
+            dRate0 = dRate1 - (dRate1 - dRate0) * dNpv1 / (dNpv1 - dNPv0);
+
+            //Secant method of generating next approximation
+            if (dRate0 <= -1.0)
             {
-                return new FinanceCalcResult<double>(eErrorType.Value);
-            }
-            catch (ArgumentException)
-            {
-                // return error due to invalid value array
-                return new FinanceCalcResult<double>(eErrorType.Value);
+                dRate0 = (dRate1 - 1.0) * 0.5;
             }
 
-            int lCVal = lUpper + 1;
-
-            //Function fails for invalid parameters
-            if (Guess <= -1.0)
+            //Basically give the algorithm a second chance. Helps the
+            //algorithm when it starts to diverge to -ve side
+            dNPv0 = OptPV2(ref ValueArray, dRate0);
+            if (dRate0 > dRate1)
             {
-                return new FinanceCalcResult<double>(eErrorType.Num);
-            }
-            if (lCVal <= 1)
-            {
-                return new FinanceCalcResult<double>(eErrorType.Num);
-            }
-
-            //'We scale the epsilon depending on cash flow values. It is necessary
-            //'because even in max accuracy case where diff is in 16th digit it
-            //'would get scaled up.
-            if (ValueArray[0] > 0.0)
-            {
-                dTemp = ValueArray[0];
+                dTemp = dRate0 - dRate1;
             }
             else
             {
-                dTemp = -ValueArray[0];
+                dTemp = dRate1 - dRate0;
             }
 
-            for (lIndex = 0; lIndex <= lUpper; lIndex++)
-            {
-                //Get max of values in cash flow
-                if (ValueArray[lIndex] > dTemp)
-                {
-                    dTemp = ValueArray[lIndex];
-                }
-                else if (-ValueArray[lIndex] > dTemp)
-                {
-                    dTemp = -ValueArray[lIndex];
-                }
-            }
-
-            double dNpvEpsilon = dTemp * cnL_IT_EPSILON * 0.01;
-
-            // Set up the initial values for the secant method
-            double dRate0 = Guess;
-            double dNPv0 = OptPV2(ref ValueArray, dRate0);
+            double dTemp1;
 
             if (dNPv0 > 0.0)
             {
-                dRate1 = dRate0 + cnL_IT_STEP;
+                dTemp1 = dNPv0;
             }
             else
             {
-                dRate1 = dRate0 - cnL_IT_STEP;
+                dTemp1 = -dNPv0;
             }
 
-            if (dRate1 <= -1.0)
+            //Test : npv - > 0 and rate converges
+            if (dTemp1 < dNpvEpsilon && dTemp < cnL_IT_EPSILON)
             {
-                return new FinanceCalcResult<double>(eErrorType.Num);
+                return new FinanceCalcResult<double>(dRate0);
             }
 
-            double dNpv1 = OptPV2(ref ValueArray, dRate1);
-
-            for (lIndex = 0; lIndex <= 39; lIndex++)
-            {
-                if (dNpv1 == dNPv0)
-                {
-                    if (dRate1 > dRate0)
-                    {
-                        dRate0 -= cnL_IT_STEP;
-                    }
-                    else
-                    {
-                        dRate0 += cnL_IT_STEP;
-                    }
-                }
-                dNPv0 = OptPV2(ref ValueArray, dRate0);
-                if (dNpv1 == dNPv0)
-                {
-                    return new FinanceCalcResult<double>(eErrorType.Value);
-                }
-
-                dRate0 = dRate1 - (dRate1 - dRate0) * dNpv1 / (dNpv1 - dNPv0);
-
-                //Secant method of generating next approximation
-                if (dRate0 <= -1.0)
-                {
-                    dRate0 = (dRate1 - 1.0) * 0.5;
-                }
-
-                //Basically give the algorithm a second chance. Helps the
-                //algorithm when it starts to diverge to -ve side
-                dNPv0 = OptPV2(ref ValueArray, dRate0);
-                if (dRate0 > dRate1)
-                {
-                    dTemp = dRate0 - dRate1;
-                }
-                else
-                {
-                    dTemp = dRate1 - dRate0;
-                }
-
-                double dTemp1;
-
-                if (dNPv0 > 0.0)
-                {
-                    dTemp1 = dNPv0;
-                }
-                else
-                {
-                    dTemp1 = -dNPv0;
-                }
-
-                //Test : npv - > 0 and rate converges
-                if (dTemp1 < dNpvEpsilon && dTemp < cnL_IT_EPSILON)
-                {
-                    return new FinanceCalcResult<double>(dRate0);
-                }
-
-                //Exchange the values - store the new values in the 1's
-                dTemp = dNPv0;
-                dNPv0 = dNpv1;
-                dNpv1 = dTemp;
-                dTemp = dRate0;
-                dRate0 = dRate1;
-                dRate1 = dTemp;
-            }
-            return new FinanceCalcResult<double>(eErrorType.Value);
+            //Exchange the values - store the new values in the 1's
+            dTemp = dNPv0;
+            dNPv0 = dNpv1;
+            dNpv1 = dTemp;
+            dTemp = dRate0;
+            dRate0 = dRate1;
+            dRate1 = dTemp;
         }
+        return new FinanceCalcResult<double>(eErrorType.Value);
     }
 }

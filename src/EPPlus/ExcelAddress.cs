@@ -16,89 +16,88 @@ using System.Globalization;
 using System.Text;
 using System.Text.RegularExpressions;
 
-namespace OfficeOpenXml
+namespace OfficeOpenXml;
+
+/// <summary>
+/// Range address with the address property readonly
+/// </summary>
+public class ExcelAddress : ExcelAddressBase
 {
-    /// <summary>
-    /// Range address with the address property readonly
-    /// </summary>
-    public class ExcelAddress : ExcelAddressBase
+    internal ExcelAddress()
+        : base()
     {
-        internal ExcelAddress()
-            : base()
-        {
 
-        }
+    }
 
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        /// <param name="fromRow">From row</param>
-        /// <param name="fromCol">From column</param>
-        /// <param name="toRow">To row</param>
-        /// <param name="toColumn">To column</param>
-        public ExcelAddress(int fromRow, int fromCol, int toRow, int toColumn)
-            : base(fromRow, fromCol, toRow, toColumn)
-        {
-            this._ws = "";
-        }
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        /// <param name="address">The Excel address</param>
-        public ExcelAddress(string address)
-            : base(address)
-        {
-        }
+    /// <summary>
+    /// Constructor
+    /// </summary>
+    /// <param name="fromRow">From row</param>
+    /// <param name="fromCol">From column</param>
+    /// <param name="toRow">To row</param>
+    /// <param name="toColumn">To column</param>
+    public ExcelAddress(int fromRow, int fromCol, int toRow, int toColumn)
+        : base(fromRow, fromCol, toRow, toColumn)
+    {
+        this._ws = "";
+    }
+    /// <summary>
+    /// Constructor
+    /// </summary>
+    /// <param name="address">The Excel address</param>
+    public ExcelAddress(string address)
+        : base(address)
+    {
+    }
         
-        internal ExcelAddress(string ws, string address)
-            : base(address)
+    internal ExcelAddress(string ws, string address)
+        : base(address)
+    {
+        if (string.IsNullOrEmpty(this._ws))
         {
-            if (string.IsNullOrEmpty(this._ws))
-            {
-                this._ws = ws;
-            }
+            this._ws = ws;
         }
-        internal ExcelAddress(string ws, string address, bool isName)
-            : base(address, isName)
+    }
+    internal ExcelAddress(string ws, string address, bool isName)
+        : base(address, isName)
+    {
+        if (string.IsNullOrEmpty(this._ws))
         {
-            if (string.IsNullOrEmpty(this._ws))
-            {
-                this._ws = ws;
-            }
+            this._ws = ws;
         }
+    }
 
-        /// <summary>
-        /// Creates an Address object
-        /// </summary>
-        /// <remarks>Examples of addresses are "A1" "B1:C2" "A:A" "1:1" "A1:E2,G3:G5" </remarks>
-        /// <param name="Address">The Excel Address</param>
-        /// <param name="package">Reference to the package to find information about tables and names</param>
-        /// <param name="referenceAddress">The address</param>
-        public ExcelAddress(string Address, ExcelPackage package, ExcelAddressBase referenceAddress) :
-            base(Address, package, referenceAddress)
-        {
+    /// <summary>
+    /// Creates an Address object
+    /// </summary>
+    /// <remarks>Examples of addresses are "A1" "B1:C2" "A:A" "1:1" "A1:E2,G3:G5" </remarks>
+    /// <param name="Address">The Excel Address</param>
+    /// <param name="package">Reference to the package to find information about tables and names</param>
+    /// <param name="referenceAddress">The address</param>
+    public ExcelAddress(string Address, ExcelPackage package, ExcelAddressBase referenceAddress) :
+        base(Address, package, referenceAddress)
+    {
 
-        }
-        /// <summary>
-        /// The address for the range
-        /// </summary>
-        /// <remarks>Examples of addresses are "A1" "B1:C2" "A:A" "1:1" "A1:E2,G3:G5" </remarks>
-        public new string Address
+    }
+    /// <summary>
+    /// The address for the range
+    /// </summary>
+    /// <remarks>Examples of addresses are "A1" "B1:C2" "A:A" "1:1" "A1:E2,G3:G5" </remarks>
+    public new string Address
+    {
+        get
         {
-            get
+            if (string.IsNullOrEmpty(this._address) && this._fromRow>0)
             {
-                if (string.IsNullOrEmpty(this._address) && this._fromRow>0)
-                {
-                    this._address = GetAddress(this._fromRow, this._fromCol, this._toRow, this._toCol);
-                }
-                return this._address;
+                this._address = GetAddress(this._fromRow, this._fromCol, this._toRow, this._toCol);
             }
-            set
-            {
-                this.BeforeChangeAddress();
-                this.SetAddress(value, null, null);
-                this.ChangeAddress();
-            }
+            return this._address;
+        }
+        set
+        {
+            this.BeforeChangeAddress();
+            this.SetAddress(value, null, null);
+            this.ChangeAddress();
         }
     }
 }

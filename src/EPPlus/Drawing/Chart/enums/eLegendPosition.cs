@@ -10,32 +10,31 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
-namespace OfficeOpenXml.Drawing.Chart
+namespace OfficeOpenXml.Drawing.Chart;
+
+/// <summary>
+/// Position of the legend
+/// </summary>
+public enum eLegendPosition
 {
     /// <summary>
-    /// Position of the legend
+    /// Positioned over the chart area
     /// </summary>
-    public enum eLegendPosition
-    {
-        /// <summary>
-        /// Positioned over the chart area
-        /// </summary>
-        Top,
-        /// <summary>
-        /// Positioned to the left the chart area
-        /// </summary>
-        Left,
-        /// <summary>
-        /// Positioned to the right the chart area
-        /// </summary>
-        Right,
-        /// <summary>
-        /// Positioned below the chart area
-        /// </summary>
-        Bottom,
-        /// <summary>
-        /// Positioned to the top right of the chart area
-        /// </summary>
-        TopRight
-    }
+    Top,
+    /// <summary>
+    /// Positioned to the left the chart area
+    /// </summary>
+    Left,
+    /// <summary>
+    /// Positioned to the right the chart area
+    /// </summary>
+    Right,
+    /// <summary>
+    /// Positioned below the chart area
+    /// </summary>
+    Bottom,
+    /// <summary>
+    /// Positioned to the top right of the chart area
+    /// </summary>
+    TopRight
 }

@@ -13,42 +13,41 @@
 using System.Collections;
 using System.Collections.Generic;
 
-namespace OfficeOpenXml
+namespace OfficeOpenXml;
+
+/// <summary>
+/// A collection of rows in a worksheet.
+/// </summary>
+public class ExcelRowsCollection : ExcelRangeRow
 {
-    /// <summary>
-    /// A collection of rows in a worksheet.
-    /// </summary>
-    public class ExcelRowsCollection : ExcelRangeRow
+    ExcelWorksheet _worksheet;
+    internal ExcelRowsCollection(ExcelWorksheet worksheet) : base(worksheet, 1, ExcelPackage.MaxRows)
     {
-        ExcelWorksheet _worksheet;
-        internal ExcelRowsCollection(ExcelWorksheet worksheet) : base(worksheet, 1, ExcelPackage.MaxRows)
-        {
-            this._worksheet = worksheet;
-        }
-        /// <summary>
-        /// Indexer for the collection
-        /// </summary>
-        /// <param name="row">The row index</param>
-        /// <returns>The <see cref="ExcelRangeRow"/></returns>
-        public ExcelRangeRow this[int row]
-        {
-            get
-            {
-                return new ExcelRangeRow(this._worksheet, row, row);
-            }
-        }
-        /// <summary>
-        /// Indexer for the collection
-        /// </summary>
-        /// <param name="fromRow">The row index from which collection should start</param>
-        /// <param name="toRow">index from which collection should end</param>
-        /// <returns>The <see cref="ExcelRangeRow"/></returns>
-        public ExcelRangeRow this[int fromRow, int toRow]
-        {
-            get
-            {            
-                return new ExcelRangeRow(this._worksheet, fromRow, toRow);
-            }
-        }        
+        this._worksheet = worksheet;
     }
+    /// <summary>
+    /// Indexer for the collection
+    /// </summary>
+    /// <param name="row">The row index</param>
+    /// <returns>The <see cref="ExcelRangeRow"/></returns>
+    public ExcelRangeRow this[int row]
+    {
+        get
+        {
+            return new ExcelRangeRow(this._worksheet, row, row);
+        }
+    }
+    /// <summary>
+    /// Indexer for the collection
+    /// </summary>
+    /// <param name="fromRow">The row index from which collection should start</param>
+    /// <param name="toRow">index from which collection should end</param>
+    /// <returns>The <see cref="ExcelRangeRow"/></returns>
+    public ExcelRangeRow this[int fromRow, int toRow]
+    {
+        get
+        {            
+            return new ExcelRangeRow(this._worksheet, fromRow, toRow);
+        }
+    }        
 }

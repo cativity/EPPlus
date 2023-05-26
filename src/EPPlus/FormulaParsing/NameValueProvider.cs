@@ -15,58 +15,57 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace OfficeOpenXml.FormulaParsing
+namespace OfficeOpenXml.FormulaParsing;
+
+/// <summary>
+/// Provides access to static, preconfigured instances of <see cref="INameValueProvider"/>
+/// </summary>
+public class NameValueProvider : INameValueProvider
 {
-    /// <summary>
-    /// Provides access to static, preconfigured instances of <see cref="INameValueProvider"/>
-    /// </summary>
-    public class NameValueProvider : INameValueProvider
+    private NameValueProvider()
     {
-        private NameValueProvider()
-        {
 
-        }
+    }
 
-        /// <summary>
-        /// An empty <see cref="INameValueProvider"/>
-        /// </summary>
-        public static INameValueProvider Empty
-        {
-            get { return new NameValueProvider(); }
-        }
+    /// <summary>
+    /// An empty <see cref="INameValueProvider"/>
+    /// </summary>
+    public static INameValueProvider Empty
+    {
+        get { return new NameValueProvider(); }
+    }
 
-        /// <summary>
-        /// Implementation of the IsNamedValue function. In this case (Empty provider) it always return false.
-        /// </summary>
-        /// <param name="key"></param>
-        /// <param name="worksheet"></param>
-        /// <returns></returns>
-        public bool IsNamedValue(string key, string worksheet)
-        {
-            return false;
-        }
+    /// <summary>
+    /// Implementation of the IsNamedValue function. In this case (Empty provider) it always return false.
+    /// </summary>
+    /// <param name="key"></param>
+    /// <param name="worksheet"></param>
+    /// <returns></returns>
+    public bool IsNamedValue(string key, string worksheet)
+    {
+        return false;
+    }
 
-        /// <summary>
-        /// Implementation of the GetNamedValue function. In this case (Empty provider) it always return null.
-        /// </summary>
-        /// <param name="key"></param>
-        /// <returns></returns>
-        public object GetNamedValue(string key)
-        {
-            return null;
-        }
+    /// <summary>
+    /// Implementation of the GetNamedValue function. In this case (Empty provider) it always return null.
+    /// </summary>
+    /// <param name="key"></param>
+    /// <returns></returns>
+    public object GetNamedValue(string key)
+    {
+        return null;
+    }
 
-        /// <summary>
-        /// Implementation of the Reload function
-        /// </summary>
-        public void Reload()
-        {
+    /// <summary>
+    /// Implementation of the Reload function
+    /// </summary>
+    public void Reload()
+    {
             
-        }
+    }
 
-        public object GetNamedValue(string key, string worksheet)
-        {
-            return null;
-        }
+    public object GetNamedValue(string key, string worksheet)
+    {
+        return null;
     }
 }

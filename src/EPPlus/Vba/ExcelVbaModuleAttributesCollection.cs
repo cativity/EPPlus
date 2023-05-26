@@ -12,22 +12,21 @@
  *************************************************************************************************/
 using System.Text;
 
-namespace OfficeOpenXml.VBA
-{
-    /// <summary>
-    /// A collection of the module level attributes
-    /// </summary>
-    public class ExcelVbaModuleAttributesCollection : ExcelVBACollectionBase<ExcelVbaModuleAttribute>
-    {
-        internal string GetAttributeText()
-        {
-            StringBuilder sb=new StringBuilder();
+namespace OfficeOpenXml.VBA;
 
-            foreach (ExcelVbaModuleAttribute? attr in this)
-            {
-                sb.AppendFormat("Attribute {0} = {1}\r\n", attr.Name, attr.DataType==eAttributeDataType.String ? "\"" + attr.Value + "\"" : attr.Value);
-            }
-            return sb.ToString();
+/// <summary>
+/// A collection of the module level attributes
+/// </summary>
+public class ExcelVbaModuleAttributesCollection : ExcelVBACollectionBase<ExcelVbaModuleAttribute>
+{
+    internal string GetAttributeText()
+    {
+        StringBuilder sb=new StringBuilder();
+
+        foreach (ExcelVbaModuleAttribute? attr in this)
+        {
+            sb.AppendFormat("Attribute {0} = {1}\r\n", attr.Name, attr.DataType==eAttributeDataType.String ? "\"" + attr.Value + "\"" : attr.Value);
         }
+        return sb.ToString();
     }
 }

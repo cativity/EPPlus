@@ -17,24 +17,23 @@ using System.Text;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Metadata;
 using OfficeOpenXml.FormulaParsing.ExpressionGraph;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Text
-{
-    [FunctionMetadata(
-        Category = ExcelFunctionCategory.Text,
-        EPPlusVersion = "4",
-        Description = "Tests whether a supplied value is text and if so, returns the supplied text; If not, returns an empty text string.")]
-    internal class T : ExcelFunction
-    {
-        public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
-        {
-            ValidateArguments(arguments, 1);
-            object? val = arguments.ElementAt(0).ValueFirst;
-            if (val is string)
-            {
-                return this.CreateResult(val, DataType.String);
-            }
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Text;
 
-            return this.CreateResult(string.Empty, DataType.String);
+[FunctionMetadata(
+                     Category = ExcelFunctionCategory.Text,
+                     EPPlusVersion = "4",
+                     Description = "Tests whether a supplied value is text and if so, returns the supplied text; If not, returns an empty text string.")]
+internal class T : ExcelFunction
+{
+    public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
+    {
+        ValidateArguments(arguments, 1);
+        object? val = arguments.ElementAt(0).ValueFirst;
+        if (val is string)
+        {
+            return this.CreateResult(val, DataType.String);
         }
+
+        return this.CreateResult(string.Empty, DataType.String);
     }
 }

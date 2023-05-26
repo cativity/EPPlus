@@ -19,54 +19,53 @@ using System.Text.RegularExpressions;
 using OfficeOpenXml.FormulaParsing.Excel.Functions;
 using OfficeOpenXml.FormulaParsing.LexicalAnalysis.PostProcessing;
 
-namespace OfficeOpenXml.FormulaParsing.LexicalAnalysis
+namespace OfficeOpenXml.FormulaParsing.LexicalAnalysis;
+
+public class SourceCodeTokenizer : ISourceCodeTokenizer
 {
-    public class SourceCodeTokenizer : ISourceCodeTokenizer
+    public static ISourceCodeTokenizer Default
     {
-        public static ISourceCodeTokenizer Default
-        {
-            get { return new SourceCodeTokenizer(FunctionNameProvider.Empty, NameValueProvider.Empty, false); }
-        }
-        public static ISourceCodeTokenizer R1C1
-        {
-            get { return new SourceCodeTokenizer(FunctionNameProvider.Empty, NameValueProvider.Empty, true); }
-        }
+        get { return new SourceCodeTokenizer(FunctionNameProvider.Empty, NameValueProvider.Empty, false); }
+    }
+    public static ISourceCodeTokenizer R1C1
+    {
+        get { return new SourceCodeTokenizer(FunctionNameProvider.Empty, NameValueProvider.Empty, true); }
+    }
 
 
-        public SourceCodeTokenizer(IFunctionNameProvider functionRepository, INameValueProvider nameValueProvider, bool r1c1 = false)
-            : this(new TokenFactory(functionRepository, nameValueProvider, r1c1))
-        {
-            this._nameValueProvider = nameValueProvider;
-        }
-        public SourceCodeTokenizer(ITokenFactory tokenFactory)
-        {
-            this._tokenFactory = tokenFactory;
-        }
+    public SourceCodeTokenizer(IFunctionNameProvider functionRepository, INameValueProvider nameValueProvider, bool r1c1 = false)
+        : this(new TokenFactory(functionRepository, nameValueProvider, r1c1))
+    {
+        this._nameValueProvider = nameValueProvider;
+    }
+    public SourceCodeTokenizer(ITokenFactory tokenFactory)
+    {
+        this._tokenFactory = tokenFactory;
+    }
 
-        private readonly ITokenFactory _tokenFactory;
-        private readonly INameValueProvider _nameValueProvider;
+    private readonly ITokenFactory _tokenFactory;
+    private readonly INameValueProvider _nameValueProvider;
 
-        public IEnumerable<Token> Tokenize(string input)
+    public IEnumerable<Token> Tokenize(string input)
+    {
+        return this.Tokenize(input, null);
+    }
+    public IEnumerable<Token> Tokenize(string input, string worksheet)
+    {
+        if (string.IsNullOrEmpty(input))
         {
-            return this.Tokenize(input, null);
+            return new List<Token>();
         }
-        public IEnumerable<Token> Tokenize(string input, string worksheet)
+        // MA 1401: Ignore leading plus in formula.
+        input = input.TrimStart('+');
+        TokenizerContext? context = new TokenizerContext(input, worksheet, this._tokenFactory);
+        TokenHandler? handler = context.CreateHandler(this._nameValueProvider);
+        while (handler.HasMore())
         {
-            if (string.IsNullOrEmpty(input))
-            {
-                return new List<Token>();
-            }
-            // MA 1401: Ignore leading plus in formula.
-            input = input.TrimStart('+');
-            TokenizerContext? context = new TokenizerContext(input, worksheet, this._tokenFactory);
-            TokenHandler? handler = context.CreateHandler(this._nameValueProvider);
-            while (handler.HasMore())
-            {
-                handler.Next();
-            }
-            context.PostProcess();
+            handler.Next();
+        }
+        context.PostProcess();
 
-            return context.Result;
-        }
+        return context.Result;
     }
 }

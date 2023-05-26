@@ -21,116 +21,115 @@ using OfficeOpenXml.FormulaParsing.Excel.Functions;
 using OfficeOpenXml.FormulaParsing.Logging;
 using OfficeOpenXml.FormulaParsing.Utilities;
 
-namespace OfficeOpenXml.FormulaParsing
+namespace OfficeOpenXml.FormulaParsing;
+
+/// <summary>
+/// Configuration of a <see cref="FormulaParser"/>
+/// </summary>
+public class ParsingConfiguration
 {
     /// <summary>
-    /// Configuration of a <see cref="FormulaParser"/>
+    /// Configures the formula calc engine to allow circular references.
     /// </summary>
-    public class ParsingConfiguration
+    public bool AllowCircularReferences { get; internal set; }
+    /// <summary>
+    /// In some functions EPPlus will round double values to 15 significant figures before the value is handled. This is an option for Excel compatibility.
+    /// </summary>
+    public PrecisionAndRoundingStrategy PrecisionAndRoundingStrategy { get; internal set; }
+    /// <summary>
+    /// The <see cref="ILexer"/> of the parser
+    /// </summary>
+    public virtual ILexer Lexer { get; private set; }
+
+    /// <summary>
+    /// The <see cref="IFormulaParserLogger"/> of the parser
+    /// </summary>
+    public IFormulaParserLogger Logger { get; private set; }
+
+    /// <summary>
+    /// The <see cref="IExpressionGraphBuilder"/> of the parser
+    /// </summary>
+    internal IExpressionGraphBuilder GraphBuilder { get; private set; }
+
+    /// <summary>
+    /// The <see cref="IExpressionCompiler"/> of the parser
+    /// </summary>
+    public IExpressionCompiler ExpressionCompiler{ get; private set; }
+
+    /// <summary>
+    /// The <see cref="FunctionRepository"/> of the parser
+    /// </summary>
+    public FunctionRepository FunctionRepository{ get; private set; }
+
+    /// <summary>
+    /// Constructor
+    /// </summary>
+    private ParsingConfiguration() 
     {
-        /// <summary>
-        /// Configures the formula calc engine to allow circular references.
-        /// </summary>
-        public bool AllowCircularReferences { get; internal set; }
-        /// <summary>
-        /// In some functions EPPlus will round double values to 15 significant figures before the value is handled. This is an option for Excel compatibility.
-        /// </summary>
-        public PrecisionAndRoundingStrategy PrecisionAndRoundingStrategy { get; internal set; }
-        /// <summary>
-        /// The <see cref="ILexer"/> of the parser
-        /// </summary>
-        public virtual ILexer Lexer { get; private set; }
+        this.FunctionRepository = FunctionRepository.Create();
+    }
 
-        /// <summary>
-        /// The <see cref="IFormulaParserLogger"/> of the parser
-        /// </summary>
-        public IFormulaParserLogger Logger { get; private set; }
+    /// <summary>
+    /// Factory method that creates an instance of this class
+    /// </summary>
+    /// <returns></returns>
+    internal static ParsingConfiguration Create()
+    {
+        return new ParsingConfiguration();
+    }
 
-        /// <summary>
-        /// The <see cref="IExpressionGraphBuilder"/> of the parser
-        /// </summary>
-        internal IExpressionGraphBuilder GraphBuilder { get; private set; }
+    /// <summary>
+    /// Replaces the lexer with any instance implementing the <see cref="ILexer"/> interface.
+    /// </summary>
+    /// <param name="lexer"></param>
+    /// <returns></returns>
+    public ParsingConfiguration SetLexer(ILexer lexer)
+    {
+        this.Lexer = lexer;
+        return this;
+    }
 
-        /// <summary>
-        /// The <see cref="IExpressionCompiler"/> of the parser
-        /// </summary>
-        public IExpressionCompiler ExpressionCompiler{ get; private set; }
+    /// <summary>
+    /// Replaces the graphbuilder with any instance implementing the <see cref="IExpressionGraphBuilder"/> interface.
+    /// </summary>
+    /// <param name="graphBuilder"></param>
+    /// <returns></returns>
+    internal ParsingConfiguration SetGraphBuilder(IExpressionGraphBuilder graphBuilder)
+    {
+        this.GraphBuilder = graphBuilder;
+        return this;
+    }
 
-        /// <summary>
-        /// The <see cref="FunctionRepository"/> of the parser
-        /// </summary>
-        public FunctionRepository FunctionRepository{ get; private set; }
+    /// <summary>
+    /// Replaces the expression compiler with any instance implementing the <see cref="IExpressionCompiler"/> interface.
+    /// </summary>
+    /// <param name="expressionCompiler"></param>
+    /// <returns></returns>
+    public ParsingConfiguration SetExpresionCompiler(IExpressionCompiler expressionCompiler)
+    {
+        this.ExpressionCompiler = expressionCompiler;
+        return this;
+    }
 
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        private ParsingConfiguration() 
-        {
-            this.FunctionRepository = FunctionRepository.Create();
-        }
+    /// <summary>
+    /// Attaches a logger, errors and log entries will be written to the logger during the parsing process.
+    /// </summary>
+    /// <param name="logger"></param>
+    /// <returns></returns>
+    public ParsingConfiguration AttachLogger(IFormulaParserLogger logger)
+    {
+        Require.That(logger).Named("logger").IsNotNull();
+        this.Logger = logger;
+        return this;
+    }
 
-        /// <summary>
-        /// Factory method that creates an instance of this class
-        /// </summary>
-        /// <returns></returns>
-        internal static ParsingConfiguration Create()
-        {
-            return new ParsingConfiguration();
-        }
-
-        /// <summary>
-        /// Replaces the lexer with any instance implementing the <see cref="ILexer"/> interface.
-        /// </summary>
-        /// <param name="lexer"></param>
-        /// <returns></returns>
-        public ParsingConfiguration SetLexer(ILexer lexer)
-        {
-            this.Lexer = lexer;
-            return this;
-        }
-
-        /// <summary>
-        /// Replaces the graphbuilder with any instance implementing the <see cref="IExpressionGraphBuilder"/> interface.
-        /// </summary>
-        /// <param name="graphBuilder"></param>
-        /// <returns></returns>
-        internal ParsingConfiguration SetGraphBuilder(IExpressionGraphBuilder graphBuilder)
-        {
-            this.GraphBuilder = graphBuilder;
-            return this;
-        }
-
-        /// <summary>
-        /// Replaces the expression compiler with any instance implementing the <see cref="IExpressionCompiler"/> interface.
-        /// </summary>
-        /// <param name="expressionCompiler"></param>
-        /// <returns></returns>
-        public ParsingConfiguration SetExpresionCompiler(IExpressionCompiler expressionCompiler)
-        {
-            this.ExpressionCompiler = expressionCompiler;
-            return this;
-        }
-
-        /// <summary>
-        /// Attaches a logger, errors and log entries will be written to the logger during the parsing process.
-        /// </summary>
-        /// <param name="logger"></param>
-        /// <returns></returns>
-        public ParsingConfiguration AttachLogger(IFormulaParserLogger logger)
-        {
-            Require.That(logger).Named("logger").IsNotNull();
-            this.Logger = logger;
-            return this;
-        }
-
-        /// <summary>
-        /// if a logger is attached it will be removed.
-        /// </summary>
-        /// <returns></returns>
-        public ParsingConfiguration DetachLogger()
-        {
-            this.Logger = null;
-            return this;
-        }
+    /// <summary>
+    /// if a logger is attached it will be removed.
+    /// </summary>
+    /// <returns></returns>
+    public ParsingConfiguration DetachLogger()
+    {
+        this.Logger = null;
+        return this;
     }
 }

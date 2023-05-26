@@ -18,53 +18,52 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Engineering
-{
-    [FunctionMetadata(
-        Category = ExcelFunctionCategory.Engineering,
-        EPPlusVersion = "5.1",
-        Description = "Converts a binary number to hexadecimal")]
-    internal class Bin2Hex : ExcelFunction
-    {
-        public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
-        {
-            ValidateArguments(arguments, 1);
-            string? number = ArgToString(arguments, 0);
-            string? formatString = "X";
-            if(arguments.Count() > 1)
-            {
-                int padding = this.ArgToInt(arguments, 1);
-                if (padding < 0 ^ padding > 10)
-                {
-                    return this.CreateResult(eErrorType.Num);
-                }
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Engineering;
 
-                formatString += padding;
-            }
-            if (number.Length > 10)
+[FunctionMetadata(
+                     Category = ExcelFunctionCategory.Engineering,
+                     EPPlusVersion = "5.1",
+                     Description = "Converts a binary number to hexadecimal")]
+internal class Bin2Hex : ExcelFunction
+{
+    public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
+    {
+        ValidateArguments(arguments, 1);
+        string? number = ArgToString(arguments, 0);
+        string? formatString = "X";
+        if(arguments.Count() > 1)
+        {
+            int padding = this.ArgToInt(arguments, 1);
+            if (padding < 0 ^ padding > 10)
             {
                 return this.CreateResult(eErrorType.Num);
             }
 
-            if (number.Length < 10)
-            {
-                int n = Convert.ToInt32(number, 2);
-                return this.CreateResult(n.ToString(formatString), DataType.Decimal);
-            }
-            else
-            {
-                if (!BinaryHelper.TryParseBinaryToDecimal(number, 2, out int result))
-                {
-                    return this.CreateResult(eErrorType.Num);
-                }
+            formatString += padding;
+        }
+        if (number.Length > 10)
+        {
+            return this.CreateResult(eErrorType.Num);
+        }
 
-                string? hexStr = result.ToString(formatString);
-                if(result < 0)
-                {
-                    hexStr = PaddingHelper.EnsureLength(hexStr, 10, "F");
-                }
-                return this.CreateResult(hexStr, DataType.String);
+        if (number.Length < 10)
+        {
+            int n = Convert.ToInt32(number, 2);
+            return this.CreateResult(n.ToString(formatString), DataType.Decimal);
+        }
+        else
+        {
+            if (!BinaryHelper.TryParseBinaryToDecimal(number, 2, out int result))
+            {
+                return this.CreateResult(eErrorType.Num);
             }
+
+            string? hexStr = result.ToString(formatString);
+            if(result < 0)
+            {
+                hexStr = PaddingHelper.EnsureLength(hexStr, 10, "F");
+            }
+            return this.CreateResult(hexStr, DataType.String);
         }
     }
 }

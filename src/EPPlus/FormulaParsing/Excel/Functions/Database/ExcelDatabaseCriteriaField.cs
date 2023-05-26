@@ -15,31 +15,30 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Database
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Database;
+
+public class ExcelDatabaseCriteriaField
 {
-    public class ExcelDatabaseCriteriaField
+    public ExcelDatabaseCriteriaField(string fieldName)
     {
-        public ExcelDatabaseCriteriaField(string fieldName)
-        {
-            this.FieldName = fieldName;
-        }
-
-        public ExcelDatabaseCriteriaField(int fieldIndex)
-        {
-            this.FieldIndex = fieldIndex;
-        }
-
-        public override string ToString()
-        {
-            if (!string.IsNullOrEmpty(this.FieldName))
-            {
-                return this.FieldName;
-            }
-            return base.ToString();
-        }
-
-        public string FieldName { get; private set; }
-
-        public int? FieldIndex { get; private set; }
+        this.FieldName = fieldName;
     }
+
+    public ExcelDatabaseCriteriaField(int fieldIndex)
+    {
+        this.FieldIndex = fieldIndex;
+    }
+
+    public override string ToString()
+    {
+        if (!string.IsNullOrEmpty(this.FieldName))
+        {
+            return this.FieldName;
+        }
+        return base.ToString();
+    }
+
+    public string FieldName { get; private set; }
+
+    public int? FieldIndex { get; private set; }
 }

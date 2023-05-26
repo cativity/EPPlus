@@ -18,253 +18,252 @@ using OfficeOpenXml.Drawing.Style.Effect;
 using OfficeOpenXml.Drawing.Style.ThreeD;
 using OfficeOpenXml.Style;
 using OfficeOpenXml.Utils.Extensions;
-namespace OfficeOpenXml.Drawing.Chart
+namespace OfficeOpenXml.Drawing.Chart;
+
+/// <summary>
+/// The title of a chart
+/// </summary>
+public class ExcelChartErrorBars : XmlHelper, IDrawingStyleBase
 {
-    /// <summary>
-    /// The title of a chart
-    /// </summary>
-    public class ExcelChartErrorBars : XmlHelper, IDrawingStyleBase
+    readonly ExcelChartSerieWithErrorBars _chartSerie;
+    internal ExcelChartErrorBars(ExcelChartSerieWithErrorBars chartSerie) :
+        this(chartSerie, chartSerie.TopNode)
     {
-        readonly ExcelChartSerieWithErrorBars _chartSerie;
-        internal ExcelChartErrorBars(ExcelChartSerieWithErrorBars chartSerie) :
-            this(chartSerie, chartSerie.TopNode)
+    }
+    internal ExcelChartErrorBars(ExcelChartSerieWithErrorBars chartSerie, XmlNode topNode) :
+        base(chartSerie.NameSpaceManager, topNode)
+    {
+        this._chartSerie = chartSerie;
+        this.AddSchemaNodeOrder(new string[]{ "errDir", "errBarType", "errValType", "noEndCap", "plus", "minus", "val", "spPr" }, ExcelDrawing._schemaNodeOrderSpPr);
+        if (this.TopNode.LocalName != "errBars")
         {
+            this.TopNode = chartSerie.CreateNode("c:errBars", false, true);
         }
-        internal ExcelChartErrorBars(ExcelChartSerieWithErrorBars chartSerie, XmlNode topNode) :
-            base(chartSerie.NameSpaceManager, topNode)
+    }
+    string _directionPath = "c:errDir/@val";
+    /// <summary>
+    /// The directions for the error bars. For scatter-, bubble- and area charts this property can't be changed. Please use the ErrorBars property for Y direction and ErrorBarsX for the X direction.
+    /// </summary>
+    public eErrorBarDirection Direction
+    {
+        get
         {
-            this._chartSerie = chartSerie;
-            this.AddSchemaNodeOrder(new string[]{ "errDir", "errBarType", "errValType", "noEndCap", "plus", "minus", "val", "spPr" }, ExcelDrawing._schemaNodeOrderSpPr);
-            if (this.TopNode.LocalName != "errBars")
-            {
-                this.TopNode = chartSerie.CreateNode("c:errBars", false, true);
-            }
+            this.ValidateNotDeleted();
+            return this.GetXmlNodeString(this._directionPath).ToEnum(eErrorBarDirection.Y);
         }
-        string _directionPath = "c:errDir/@val";
-        /// <summary>
-        /// The directions for the error bars. For scatter-, bubble- and area charts this property can't be changed. Please use the ErrorBars property for Y direction and ErrorBarsX for the X direction.
-        /// </summary>
-        public eErrorBarDirection Direction
+        set
         {
-            get
+            this.ValidateNotDeleted();
+            if(this._chartSerie._chart.IsTypeBubble() || this._chartSerie._chart.IsTypeScatter() || this._chartSerie._chart.IsTypeArea())
             {
-                this.ValidateNotDeleted();
-                return this.GetXmlNodeString(this._directionPath).ToEnum(eErrorBarDirection.Y);
-            }
-            set
-            {
-                this.ValidateNotDeleted();
-                if(this._chartSerie._chart.IsTypeBubble() || this._chartSerie._chart.IsTypeScatter() || this._chartSerie._chart.IsTypeArea())
+                if(value!= this.Direction)
                 {
-                    if(value!= this.Direction)
-                    {
-                        throw new InvalidOperationException("Can't change direction for this chart type. Please use ErrorBars or ErrorBarsX property to determine the direction.");
-                    }
-                    return;
+                    throw new InvalidOperationException("Can't change direction for this chart type. Please use ErrorBars or ErrorBarsX property to determine the direction.");
                 }
+                return;
+            }
 
-                this.SetDirection(value);
-            }
+            this.SetDirection(value);
         }
+    }
 
-        internal void SetDirection(eErrorBarDirection value)
-        {
-            this.SetXmlNodeString(this._directionPath, value.ToEnumString());
-        }
+    internal void SetDirection(eErrorBarDirection value)
+    {
+        this.SetXmlNodeString(this._directionPath, value.ToEnumString());
+    }
 
-        string _barTypePath = "c:errBarType/@val";
-        /// <summary>
-        /// The ways to draw an error bar
-        /// </summary>
-        public eErrorBarType BarType
+    string _barTypePath = "c:errBarType/@val";
+    /// <summary>
+    /// The ways to draw an error bar
+    /// </summary>
+    public eErrorBarType BarType
+    {
+        get
         {
-            get
-            {
-                this.ValidateNotDeleted();
-                return this.GetXmlNodeString(this._barTypePath).ToEnum(eErrorBarType.Both);
-            }
-            set
-            {
-                this.ValidateNotDeleted();
-                this.SetXmlNodeString(this._barTypePath, value.ToEnumString());
-            }
+            this.ValidateNotDeleted();
+            return this.GetXmlNodeString(this._barTypePath).ToEnum(eErrorBarType.Both);
         }
-        string _valueTypePath = "c:errValType/@val";
-        /// <summary>
-        /// The ways to determine the length of the error bars
-        /// </summary>
-        public eErrorValueType ValueType
+        set
         {
-            get
-            {
-                this.ValidateNotDeleted();
-                return this.GetXmlNodeString(this._valueTypePath).TranslateErrorValueType();
-            }
-            set
-            {
-                this.ValidateNotDeleted();
-                this.SetXmlNodeString(this._valueTypePath, value.ToEnumString());
-            }
-        }        
-        string _noEndCapPath = "c:noEndCap/@val";
-        /// <summary>
-        /// If true, no end cap is drawn on the error bars 
-        /// </summary>
-        public bool NoEndCap
-        {
-            get
-            {
-                this.ValidateNotDeleted();
-                return this.GetXmlNodeBool(this._noEndCapPath, true);
-            }
-            set
-            {
-                this.ValidateNotDeleted();
-                this.SetXmlNodeBool(this._noEndCapPath, value, true);
-            }
+            this.ValidateNotDeleted();
+            this.SetXmlNodeString(this._barTypePath, value.ToEnumString());
         }
+    }
+    string _valueTypePath = "c:errValType/@val";
+    /// <summary>
+    /// The ways to determine the length of the error bars
+    /// </summary>
+    public eErrorValueType ValueType
+    {
+        get
+        {
+            this.ValidateNotDeleted();
+            return this.GetXmlNodeString(this._valueTypePath).TranslateErrorValueType();
+        }
+        set
+        {
+            this.ValidateNotDeleted();
+            this.SetXmlNodeString(this._valueTypePath, value.ToEnumString());
+        }
+    }        
+    string _noEndCapPath = "c:noEndCap/@val";
+    /// <summary>
+    /// If true, no end cap is drawn on the error bars 
+    /// </summary>
+    public bool NoEndCap
+    {
+        get
+        {
+            this.ValidateNotDeleted();
+            return this.GetXmlNodeBool(this._noEndCapPath, true);
+        }
+        set
+        {
+            this.ValidateNotDeleted();
+            this.SetXmlNodeBool(this._noEndCapPath, value, true);
+        }
+    }
 
-        string _valuePath = "c:val/@val";
-        /// <summary>
-        /// The value which used to determine the length of the error bars when <c>ValueType</c> is FixedValue
-        /// </summary>
-        public double? Value
+    string _valuePath = "c:val/@val";
+    /// <summary>
+    /// The value which used to determine the length of the error bars when <c>ValueType</c> is FixedValue
+    /// </summary>
+    public double? Value
+    {
+        get
         {
-            get
+            this.ValidateNotDeleted();
+            return this.GetXmlNodeDoubleNull(this._valuePath);
+        }
+        set
+        {
+            this.ValidateNotDeleted();
+            if (value == null)
             {
-                this.ValidateNotDeleted();
-                return this.GetXmlNodeDoubleNull(this._valuePath);
+                this.DeleteNode(this._valuePath, true);
             }
-            set
+            else
             {
-                this.ValidateNotDeleted();
-                if (value == null)
-                {
-                    this.DeleteNode(this._valuePath, true);
-                }
-                else
-                {
-                    this.SetXmlNodeString(this._valuePath, value.Value.ToString("R15", CultureInfo.InvariantCulture));
-                }
+                this.SetXmlNodeString(this._valuePath, value.Value.ToString("R15", CultureInfo.InvariantCulture));
             }
         }
-        string _plusNodePath = "c:plus";
-        ExcelChartNumericSource _plus=null;
-        /// <summary>
-        /// Numeric Source for plus errorbars when <c>ValueType</c> is set to Custom
-        /// </summary>
-        public ExcelChartNumericSource Plus
+    }
+    string _plusNodePath = "c:plus";
+    ExcelChartNumericSource _plus=null;
+    /// <summary>
+    /// Numeric Source for plus errorbars when <c>ValueType</c> is set to Custom
+    /// </summary>
+    public ExcelChartNumericSource Plus
+    {
+        get
         {
-            get
-            {
-                this.ValidateNotDeleted();
+            this.ValidateNotDeleted();
 
-                return this._plus ??= new ExcelChartNumericSource(this.NameSpaceManager, this.TopNode, this._plusNodePath, this.SchemaNodeOrder);
-            }
+            return this._plus ??= new ExcelChartNumericSource(this.NameSpaceManager, this.TopNode, this._plusNodePath, this.SchemaNodeOrder);
         }
-        string _minusNodePath = "c:minus";
-        ExcelChartNumericSource _minus = null;
-        /// <summary>
-        /// Numeric Source for minus errorbars when <c>ValueType</c> is set to Custom
-        /// </summary>
-        public ExcelChartNumericSource Minus
+    }
+    string _minusNodePath = "c:minus";
+    ExcelChartNumericSource _minus = null;
+    /// <summary>
+    /// Numeric Source for minus errorbars when <c>ValueType</c> is set to Custom
+    /// </summary>
+    public ExcelChartNumericSource Minus
+    {
+        get
         {
-            get
-            {
-                this.ValidateNotDeleted();
+            this.ValidateNotDeleted();
 
-                return this._minus ??= new ExcelChartNumericSource(this.NameSpaceManager, this.TopNode, this._minusNodePath, this.SchemaNodeOrder);
-            }
+            return this._minus ??= new ExcelChartNumericSource(this.NameSpaceManager, this.TopNode, this._minusNodePath, this.SchemaNodeOrder);
         }
-        ExcelDrawingFill _fill = null;
-        /// <summary>
-        /// Fill style
-        /// </summary>
-        public ExcelDrawingFill Fill
+    }
+    ExcelDrawingFill _fill = null;
+    /// <summary>
+    /// Fill style
+    /// </summary>
+    public ExcelDrawingFill Fill
+    {
+        get
         {
-            get
-            {
-                this.ValidateNotDeleted();
+            this.ValidateNotDeleted();
 
-                return this._fill ??= new ExcelDrawingFill(this._chartSerie._chart, this.NameSpaceManager, this.TopNode, "c:spPr", this.SchemaNodeOrder);
-            }
+            return this._fill ??= new ExcelDrawingFill(this._chartSerie._chart, this.NameSpaceManager, this.TopNode, "c:spPr", this.SchemaNodeOrder);
         }
-        ExcelDrawingBorder _border = null;
-        /// <summary>
-        /// Border style
-        /// </summary>
-        public ExcelDrawingBorder Border
+    }
+    ExcelDrawingBorder _border = null;
+    /// <summary>
+    /// Border style
+    /// </summary>
+    public ExcelDrawingBorder Border
+    {
+        get
         {
-            get
-            {
-                this.ValidateNotDeleted();
+            this.ValidateNotDeleted();
 
-                return this._border ??= new ExcelDrawingBorder(this._chartSerie._chart,
-                                                               this.NameSpaceManager,
-                                                               this.TopNode,
-                                                               "c:spPr/a:ln",
-                                                               this.SchemaNodeOrder);
-            }
+            return this._border ??= new ExcelDrawingBorder(this._chartSerie._chart,
+                                                           this.NameSpaceManager,
+                                                           this.TopNode,
+                                                           "c:spPr/a:ln",
+                                                           this.SchemaNodeOrder);
         }
+    }
 
-        ExcelDrawingEffectStyle _effect = null;
-        /// <summary>
-        /// Effects
-        /// </summary>
-        public ExcelDrawingEffectStyle Effect
+    ExcelDrawingEffectStyle _effect = null;
+    /// <summary>
+    /// Effects
+    /// </summary>
+    public ExcelDrawingEffectStyle Effect
+    {
+        get
         {
-            get
-            {
-                this.ValidateNotDeleted();
+            this.ValidateNotDeleted();
 
-                return this._effect ??= new ExcelDrawingEffectStyle(this._chartSerie._chart,
-                                                                    this.NameSpaceManager,
-                                                                    this.TopNode,
-                                                                    "c:spPr/a:effectLst",
-                                                                    this.SchemaNodeOrder);
-            }
+            return this._effect ??= new ExcelDrawingEffectStyle(this._chartSerie._chart,
+                                                                this.NameSpaceManager,
+                                                                this.TopNode,
+                                                                "c:spPr/a:effectLst",
+                                                                this.SchemaNodeOrder);
         }
-        ExcelDrawing3D _threeD = null;
-        /// <summary>
-        /// 3D properties
-        /// </summary>
-        public ExcelDrawing3D ThreeD
+    }
+    ExcelDrawing3D _threeD = null;
+    /// <summary>
+    /// 3D properties
+    /// </summary>
+    public ExcelDrawing3D ThreeD
+    {
+        get
         {
-            get
-            {
-                this.ValidateNotDeleted();
+            this.ValidateNotDeleted();
 
-                return this._threeD ??= new ExcelDrawing3D(this.NameSpaceManager, this.TopNode, "c:spPr", this.SchemaNodeOrder);
-            }
+            return this._threeD ??= new ExcelDrawing3D(this.NameSpaceManager, this.TopNode, "c:spPr", this.SchemaNodeOrder);
         }
-        private void ValidateNotDeleted()
+    }
+    private void ValidateNotDeleted()
+    {
+        if(this.TopNode==null)
         {
-            if(this.TopNode==null)
-            {
-                throw new InvalidOperationException("The error bar has been deleted.");
-            }
+            throw new InvalidOperationException("The error bar has been deleted.");
         }
-        void IDrawingStyleBase.CreatespPr()
-        {
-            this.CreatespPrNode();
-        }
+    }
+    void IDrawingStyleBase.CreatespPr()
+    {
+        this.CreatespPrNode();
+    }
 
-        /// <summary>
-        /// Remove the error bars
-        /// </summary>
-        public void Remove()
+    /// <summary>
+    /// Remove the error bars
+    /// </summary>
+    public void Remove()
+    {
+        this.DeleteNode(".");
+        if(this._chartSerie.ErrorBars==this)
         {
-            this.DeleteNode(".");
-            if(this._chartSerie.ErrorBars==this)
+            this._chartSerie.ErrorBars = null;
+        }
+        if(this._chartSerie is ExcelChartSerieWithHorizontalErrorBars errorBarsSerie)
+        {
+            if (errorBarsSerie.ErrorBarsX == this)
             {
-                this._chartSerie.ErrorBars = null;
-            }
-            if(this._chartSerie is ExcelChartSerieWithHorizontalErrorBars errorBarsSerie)
-            {
-                if (errorBarsSerie.ErrorBarsX == this)
-                {
-                    errorBarsSerie.ErrorBarsX = null;
-                }
+                errorBarsSerie.ErrorBarsX = null;
             }
         }
     }

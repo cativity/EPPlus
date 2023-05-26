@@ -18,48 +18,47 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance;
+
+[FunctionMetadata(
+                     Category = ExcelFunctionCategory.Financial,
+                     EPPlusVersion = "6.0",
+                     Description = "Calculates he accrued interest for a security that pays interest at maturity.")]
+internal class AccrintM : ExcelFunction
 {
-    [FunctionMetadata(
-        Category = ExcelFunctionCategory.Financial,
-        EPPlusVersion = "6.0",
-        Description = "Calculates he accrued interest for a security that pays interest at maturity.")]
-    internal class AccrintM : ExcelFunction
+    public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
     {
-        public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
+        ValidateArguments(arguments, 4);
+        // collect input
+        System.DateTime issueDate = System.DateTime.FromOADate(this.ArgToInt(arguments, 0));
+        System.DateTime settlementDate = System.DateTime.FromOADate(this.ArgToInt(arguments, 1));
+        double rate = this.ArgToDecimal(arguments, 2);
+        double par = this.ArgToDecimal(arguments, 3);
+        int basis = 0;
+        if (arguments.Count() > 4)
         {
-            ValidateArguments(arguments, 4);
-            // collect input
-            System.DateTime issueDate = System.DateTime.FromOADate(this.ArgToInt(arguments, 0));
-            System.DateTime settlementDate = System.DateTime.FromOADate(this.ArgToInt(arguments, 1));
-            double rate = this.ArgToDecimal(arguments, 2);
-            double par = this.ArgToDecimal(arguments, 3);
-            int basis = 0;
-            if (arguments.Count() > 4)
-            {
-                basis = this.ArgToInt(arguments, 4);
-            }
-
-            if (rate <= 0 || par <= 0)
-            {
-                return this.CreateResult(eErrorType.Num);
-            }
-
-            if (basis < 0 || basis > 4)
-            {
-                return this.CreateResult(eErrorType.Num);
-            }
-
-            if (issueDate >= settlementDate)
-            {
-                return this.CreateResult(eErrorType.Num);
-            }
-
-            DayCountBasis dayCountBasis = (DayCountBasis)basis;
-            IFinanicalDays? fd = FinancialDaysFactory.Create(dayCountBasis);
-            double result = fd.GetDaysBetweenDates(issueDate, settlementDate)/fd.DaysPerYear * rate * par;
-            return this.CreateResult(result, DataType.Decimal);
-
+            basis = this.ArgToInt(arguments, 4);
         }
+
+        if (rate <= 0 || par <= 0)
+        {
+            return this.CreateResult(eErrorType.Num);
+        }
+
+        if (basis < 0 || basis > 4)
+        {
+            return this.CreateResult(eErrorType.Num);
+        }
+
+        if (issueDate >= settlementDate)
+        {
+            return this.CreateResult(eErrorType.Num);
+        }
+
+        DayCountBasis dayCountBasis = (DayCountBasis)basis;
+        IFinanicalDays? fd = FinancialDaysFactory.Create(dayCountBasis);
+        double result = fd.GetDaysBetweenDates(issueDate, settlementDate)/fd.DaysPerYear * rate * par;
+        return this.CreateResult(result, DataType.Decimal);
+
     }
 }

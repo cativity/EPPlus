@@ -11,24 +11,23 @@
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions;
+
+public abstract class CompileResultValidator
 {
-    public abstract class CompileResultValidator
-    {
-        public abstract void Validate(object obj);
+    public abstract void Validate(object obj);
 
-        private static CompileResultValidator _empty;
-        public static CompileResultValidator Empty
-        {
-            get { return _empty ??= new EmptyCompileResultValidator(); }
-        }
+    private static CompileResultValidator _empty;
+    public static CompileResultValidator Empty
+    {
+        get { return _empty ??= new EmptyCompileResultValidator(); }
     }
+}
 
-    internal class EmptyCompileResultValidator : CompileResultValidator
+internal class EmptyCompileResultValidator : CompileResultValidator
+{
+    public override void Validate(object obj)
     {
-        public override void Validate(object obj)
-        {
-            // empty validator - do nothing
-        }
+        // empty validator - do nothing
     }
 }

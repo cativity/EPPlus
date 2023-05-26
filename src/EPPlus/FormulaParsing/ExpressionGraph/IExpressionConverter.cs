@@ -15,11 +15,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace OfficeOpenXml.FormulaParsing.ExpressionGraph
+namespace OfficeOpenXml.FormulaParsing.ExpressionGraph;
+
+public interface IExpressionConverter
 {
-    public interface IExpressionConverter
-    {
-        StringExpression ToStringExpression(Expression expression);
-        Expression FromCompileResult(CompileResult compileResult);
-    }
+    StringExpression ToStringExpression(Expression expression);
+    Expression FromCompileResult(CompileResult compileResult);
 }

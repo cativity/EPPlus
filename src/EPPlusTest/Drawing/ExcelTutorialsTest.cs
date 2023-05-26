@@ -37,47 +37,46 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
 
-namespace EPPlusTest.Drawing
-{
-    /// <summary>
-    /// This test class requires the Excel tuturiol charts to be copied to the msCharts folder in the templates folder.
-    /// Ignored if the folder or templates are missing.
-    /// </summary>
-    [TestClass]
-    public class ExcelTutorialsTest : TestBase
-    {       
-        [TestInitialize]
-        public void Initialize()
-        {
+namespace EPPlusTest.Drawing;
 
-        }
-        [TestMethod]
-        public void ReadBeyondPieChartsTutorial()
-        {
-            using ExcelPackage? p = OpenTemplatePackage(@"msCharts\Beyond pie charts tutorial.xlsx");
-            Assert.AreEqual(27, p.Workbook.Worksheets.Count);
-            Assert.AreEqual(2, p.Workbook.Worksheets[0 + p._worksheetAdd].Drawings.Count);
-            Assert.AreEqual(3, p.Workbook.Worksheets[1 + p._worksheetAdd].Drawings.Count);
-            ExcelGroupShape? grpShp = ((ExcelGroupShape)p.Workbook.Worksheets[1 + p._worksheetAdd].Drawings[0]);
-            Assert.AreEqual(4, grpShp.Drawings.Count);
-            Assert.AreEqual(eShapeStyle.Rect, ((ExcelShape)grpShp.Drawings[0]).Style);
-            Assert.AreEqual(6, p.Workbook.Worksheets[1 + p._worksheetAdd].Drawings[1].As.Chart.PieChart.StyleManager.ColorsManager.Colors.Count);
-        }
-        [TestMethod]
-        public void GetMoreOutOfPivotTables()
-        {
-            using ExcelPackage? p = OpenTemplatePackage(@"msCharts\Get more out of PivotTables.xltx");
-            Assert.AreEqual(26, p.Workbook.Worksheets.Count);
-            Assert.AreEqual(4, p.Workbook.Worksheets[0 + p._worksheetAdd].Drawings.Count);
-            Assert.AreEqual(6, p.Workbook.Worksheets[1 + p._worksheetAdd].Drawings.Count);
-        }
-        [TestMethod]    
-        public void FormulaTutorial()
-        {
-            using ExcelPackage? p = OpenTemplatePackage(@"msCharts\Formula tutorial.xltx");
-            Assert.AreEqual(13, p.Workbook.Worksheets.Count);
-            Assert.AreEqual(2, p.Workbook.Worksheets[0 + p._worksheetAdd].Drawings.Count);
-            Assert.AreEqual(37, p.Workbook.Worksheets[1 + p._worksheetAdd].Drawings.Count);
-        }
+/// <summary>
+/// This test class requires the Excel tuturiol charts to be copied to the msCharts folder in the templates folder.
+/// Ignored if the folder or templates are missing.
+/// </summary>
+[TestClass]
+public class ExcelTutorialsTest : TestBase
+{       
+    [TestInitialize]
+    public void Initialize()
+    {
+
+    }
+    [TestMethod]
+    public void ReadBeyondPieChartsTutorial()
+    {
+        using ExcelPackage? p = OpenTemplatePackage(@"msCharts\Beyond pie charts tutorial.xlsx");
+        Assert.AreEqual(27, p.Workbook.Worksheets.Count);
+        Assert.AreEqual(2, p.Workbook.Worksheets[0 + p._worksheetAdd].Drawings.Count);
+        Assert.AreEqual(3, p.Workbook.Worksheets[1 + p._worksheetAdd].Drawings.Count);
+        ExcelGroupShape? grpShp = ((ExcelGroupShape)p.Workbook.Worksheets[1 + p._worksheetAdd].Drawings[0]);
+        Assert.AreEqual(4, grpShp.Drawings.Count);
+        Assert.AreEqual(eShapeStyle.Rect, ((ExcelShape)grpShp.Drawings[0]).Style);
+        Assert.AreEqual(6, p.Workbook.Worksheets[1 + p._worksheetAdd].Drawings[1].As.Chart.PieChart.StyleManager.ColorsManager.Colors.Count);
+    }
+    [TestMethod]
+    public void GetMoreOutOfPivotTables()
+    {
+        using ExcelPackage? p = OpenTemplatePackage(@"msCharts\Get more out of PivotTables.xltx");
+        Assert.AreEqual(26, p.Workbook.Worksheets.Count);
+        Assert.AreEqual(4, p.Workbook.Worksheets[0 + p._worksheetAdd].Drawings.Count);
+        Assert.AreEqual(6, p.Workbook.Worksheets[1 + p._worksheetAdd].Drawings.Count);
+    }
+    [TestMethod]    
+    public void FormulaTutorial()
+    {
+        using ExcelPackage? p = OpenTemplatePackage(@"msCharts\Formula tutorial.xltx");
+        Assert.AreEqual(13, p.Workbook.Worksheets.Count);
+        Assert.AreEqual(2, p.Workbook.Worksheets[0 + p._worksheetAdd].Drawings.Count);
+        Assert.AreEqual(37, p.Workbook.Worksheets[1 + p._worksheetAdd].Drawings.Count);
     }
 }

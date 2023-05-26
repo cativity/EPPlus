@@ -10,40 +10,39 @@
  *************************************************************************************************
   11/18/2020         EPPlus Software AB       EPPlus 5.5
  *************************************************************************************************/
-namespace OfficeOpenXml.Drawing.Vml
+namespace OfficeOpenXml.Drawing.Vml;
+
+/// <summary>
+/// Type of fill style for a vml drawing.
+/// </summary>
+public enum eVmlFillType
 {
     /// <summary>
-    /// Type of fill style for a vml drawing.
+    /// No fill is applied.
     /// </summary>
-    public enum eVmlFillType
-    {
-        /// <summary>
-        /// No fill is applied.
-        /// </summary>
-        NoFill,
-        /// <summary>
-        /// The fill pattern is solid.Default
-        /// </summary>
-        Solid,
-        /// <summary>
-        /// The fill colors blend together in a linear gradient from bottom to top.
-        /// </summary>
-        Gradient,
-        /// <summary>
-        ///  The fill colors blend together in a radial gradient.
-        /// </summary>
-        GradientRadial,
-        /// <summary>
-        ///  The fill image is tiled.
-        /// </summary>
-        Tile,
-        /// <summary>
-        /// The image is used to create a pattern using the fill colors.
-        /// </summary>
-        Pattern,
-        /// <summary>
-        /// The image is stretched to fill the shape.
-        /// </summary>
-        Frame
-    }
+    NoFill,
+    /// <summary>
+    /// The fill pattern is solid.Default
+    /// </summary>
+    Solid,
+    /// <summary>
+    /// The fill colors blend together in a linear gradient from bottom to top.
+    /// </summary>
+    Gradient,
+    /// <summary>
+    ///  The fill colors blend together in a radial gradient.
+    /// </summary>
+    GradientRadial,
+    /// <summary>
+    ///  The fill image is tiled.
+    /// </summary>
+    Tile,
+    /// <summary>
+    /// The image is used to create a pattern using the fill colors.
+    /// </summary>
+    Pattern,
+    /// <summary>
+    /// The image is stretched to fill the shape.
+    /// </summary>
+    Frame
 }

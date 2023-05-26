@@ -22,99 +22,98 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Xml;
 
-namespace OfficeOpenXml.Drawing.Slicer
+namespace OfficeOpenXml.Drawing.Slicer;
+
+/// <summary>
+/// Represents a pivot table slicer cache.
+/// </summary>
+public class ExcelPivotTableSlicerCache : ExcelSlicerCache
 {
-    /// <summary>
-    /// Represents a pivot table slicer cache.
-    /// </summary>
-    public class ExcelPivotTableSlicerCache : ExcelSlicerCache
+    internal ExcelPivotTableField _field=null;
+    internal ExcelPivotTableSlicerCache(XmlNamespaceManager nameSpaceManager) : base(nameSpaceManager)
     {
-        internal ExcelPivotTableField _field=null;
-        internal ExcelPivotTableSlicerCache(XmlNamespaceManager nameSpaceManager) : base(nameSpaceManager)
+        this.PivotTables = new ExcelSlicerPivotTableCollection(this);
+    }
+
+    internal void Init(ExcelWorkbook wb, string name, ExcelPivotTableField field)
+    {
+        if(wb._slicerCaches==null)
         {
-            this.PivotTables = new ExcelSlicerPivotTableCollection(this);
+            wb.LoadSlicerCaches();
         }
 
-        internal void Init(ExcelWorkbook wb, string name, ExcelPivotTableField field)
+        this.CreatePart(wb);
+        this.TopNode = this.SlicerCacheXml.DocumentElement;
+        this.Name = "Slicer_" + ExcelAddressUtil.GetValidName(name);
+        this._field = field;
+        this.SourceName = this._field.Cache.Name;
+        wb.Names.AddFormula(this.Name, "#N/A");
+        this.PivotTables.Add(this._field._pivotTable);
+        this.CreateWorkbookReference(wb, ExtLstUris.WorkbookSlicerPivotTableUri);
+        this.SlicerCacheXml.Save(this.Part.GetStream());
+        this.Data.Items.Refresh();
+    }
+    /// <summary>
+    /// Init must be called before accessing any properties as it sets several properties.
+    /// </summary>
+    /// <param name="wb"></param>
+    internal override void Init(ExcelWorkbook wb)
+    {
+        foreach (XmlElement ptElement in this.GetNodes("x14:pivotTables/x14:pivotTable"))
         {
-            if(wb._slicerCaches==null)
-            {
-                wb.LoadSlicerCaches();
-            }
+            string? name = ptElement.GetAttribute("name");
+            string? tabId = ptElement.GetAttribute("tabId");
 
-            this.CreatePart(wb);
-            this.TopNode = this.SlicerCacheXml.DocumentElement;
-            this.Name = "Slicer_" + ExcelAddressUtil.GetValidName(name);
-            this._field = field;
-            this.SourceName = this._field.Cache.Name;
-            wb.Names.AddFormula(this.Name, "#N/A");
-            this.PivotTables.Add(this._field._pivotTable);
-            this.CreateWorkbookReference(wb, ExtLstUris.WorkbookSlicerPivotTableUri);
-            this.SlicerCacheXml.Save(this.Part.GetStream());
-            this.Data.Items.Refresh();
-        }
-        /// <summary>
-        /// Init must be called before accessing any properties as it sets several properties.
-        /// </summary>
-        /// <param name="wb"></param>
-        internal override void Init(ExcelWorkbook wb)
-        {
-            foreach (XmlElement ptElement in this.GetNodes("x14:pivotTables/x14:pivotTable"))
+            if(int.TryParse(tabId, out int sheetId))
             {
-                string? name = ptElement.GetAttribute("name");
-                string? tabId = ptElement.GetAttribute("tabId");
-
-                if(int.TryParse(tabId, out int sheetId))
+                ExcelWorksheet? ws = wb.Worksheets.GetBySheetID(sheetId);
+                ExcelPivotTable? pt = ws?.PivotTables[name];
+                if(pt!=null)
                 {
-                    ExcelWorksheet? ws = wb.Worksheets.GetBySheetID(sheetId);
-                    ExcelPivotTable? pt = ws?.PivotTables[name];
-                    if(pt!=null)
-                    {
-                        this._field ??= pt.Fields.Where(x => x.Cache.Name == this.SourceName).FirstOrDefault();
+                    this._field ??= pt.Fields.Where(x => x.Cache.Name == this.SourceName).FirstOrDefault();
 
-                        this.PivotTables._list.Add(pt);
-                    }
+                    this.PivotTables._list.Add(pt);
                 }
             }
         }
-        internal void Init(ExcelWorkbook wb, ExcelPivotTableSlicer slicer)
+    }
+    internal void Init(ExcelWorkbook wb, ExcelPivotTableSlicer slicer)
+    {
+        this._field = this.PivotTables[0].Fields.Where(x=>x.Cache.Name== this.SourceName).FirstOrDefault();
+        this.Init(wb);
+    }
+    /// <summary>
+    /// The source type of the slicer
+    /// </summary>
+    public override eSlicerSourceType SourceType
+    {
+        get
         {
-            this._field = this.PivotTables[0].Fields.Where(x=>x.Cache.Name== this.SourceName).FirstOrDefault();
-            this.Init(wb);
-        }
-        /// <summary>
-        /// The source type of the slicer
-        /// </summary>
-        public override eSlicerSourceType SourceType
-        {
-            get
-            {
-                return eSlicerSourceType.PivotTable;
-            }   
-        }
-        /// <summary>
-        /// A collection of pivot tables attached to the slicer cache.
-        /// </summary>
-        public ExcelSlicerPivotTableCollection PivotTables { get; }
-        ExcelPivotTableSlicerCacheTabularData _data=null;
-        /// <summary>
-        /// Tabular data for a pivot table slicer cache.
-        /// </summary>
-        public ExcelPivotTableSlicerCacheTabularData Data 
-        { 
-            get { return this._data ??= new ExcelPivotTableSlicerCacheTabularData(this.NameSpaceManager, this.TopNode, this); }
-        }
+            return eSlicerSourceType.PivotTable;
+        }   
+    }
+    /// <summary>
+    /// A collection of pivot tables attached to the slicer cache.
+    /// </summary>
+    public ExcelSlicerPivotTableCollection PivotTables { get; }
+    ExcelPivotTableSlicerCacheTabularData _data=null;
+    /// <summary>
+    /// Tabular data for a pivot table slicer cache.
+    /// </summary>
+    public ExcelPivotTableSlicerCacheTabularData Data 
+    { 
+        get { return this._data ??= new ExcelPivotTableSlicerCacheTabularData(this.NameSpaceManager, this.TopNode, this); }
+    }
 
-        internal void UpdateItemsXml()
+    internal void UpdateItemsXml()
+    {
+        StringBuilder? sb = new StringBuilder();
+        foreach(ExcelPivotTable? pt in this.PivotTables)
         {
-           StringBuilder? sb = new StringBuilder();
-            foreach(ExcelPivotTable? pt in this.PivotTables)
-            {
-                sb.Append($"<pivotTable name=\"{pt.Name}\" tabId=\"{pt.WorkSheet.SheetId}\"/>");
-            }
-            XmlNode? ptNode = this.CreateNode("x14:pivotTables");
-            ptNode.InnerXml = sb.ToString();
-            this.Data.UpdateItemsXml();
+            sb.Append($"<pivotTable name=\"{pt.Name}\" tabId=\"{pt.WorkSheet.SheetId}\"/>");
         }
+        XmlNode? ptNode = this.CreateNode("x14:pivotTables");
+        ptNode.InnerXml = sb.ToString();
+        this.Data.UpdateItemsXml();
     }
 }

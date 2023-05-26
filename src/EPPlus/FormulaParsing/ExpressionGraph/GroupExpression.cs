@@ -15,39 +15,38 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace OfficeOpenXml.FormulaParsing.ExpressionGraph
+namespace OfficeOpenXml.FormulaParsing.ExpressionGraph;
+
+internal class GroupExpression : Expression
 {
-    internal class GroupExpression : Expression
+    public GroupExpression(bool isNegated)
+        : this(isNegated, new ExpressionCompiler())
     {
-        public GroupExpression(bool isNegated)
-            : this(isNegated, new ExpressionCompiler())
+
+    }
+
+    public GroupExpression(bool isNegated, IExpressionCompiler expressionCompiler)
+    {
+        this._expressionCompiler = expressionCompiler;
+        this._isNegated = isNegated;
+    }
+
+    private readonly IExpressionCompiler _expressionCompiler;
+    private readonly bool _isNegated;
+
+
+    public override CompileResult Compile()
+    {
+        CompileResult? result = this._expressionCompiler.Compile(this.Children);
+        if (result.IsNumeric && this._isNegated)
         {
-
+            return new CompileResult(result.ResultNumeric * -1, result.DataType);
         }
+        return result;
+    }
 
-        public GroupExpression(bool isNegated, IExpressionCompiler expressionCompiler)
-        {
-            this._expressionCompiler = expressionCompiler;
-            this._isNegated = isNegated;
-        }
-
-        private readonly IExpressionCompiler _expressionCompiler;
-        private readonly bool _isNegated;
-
-
-        public override CompileResult Compile()
-        {
-            CompileResult? result = this._expressionCompiler.Compile(this.Children);
-            if (result.IsNumeric && this._isNegated)
-            {
-                return new CompileResult(result.ResultNumeric * -1, result.DataType);
-            }
-            return result;
-        }
-
-        public override bool IsGroupedExpression
-        {
-            get { return true; }
-        }
+    public override bool IsGroupedExpression
+    {
+        get { return true; }
     }
 }

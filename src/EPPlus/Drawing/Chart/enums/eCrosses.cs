@@ -10,24 +10,23 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
-namespace OfficeOpenXml.Drawing.Chart
+namespace OfficeOpenXml.Drawing.Chart;
+
+/// <summary>
+/// Where the axis cross. 
+/// </summary>
+public enum eCrosses
 {
     /// <summary>
-    /// Where the axis cross. 
+    /// The category axis crosses at the zero point of the valueaxis or the lowest or higest value if scale is over or below zero.
     /// </summary>
-    public enum eCrosses
-    {
-        /// <summary>
-        /// The category axis crosses at the zero point of the valueaxis or the lowest or higest value if scale is over or below zero.
-        /// </summary>
-        AutoZero,
-        /// <summary>
-        /// The axis crosses at the maximum value
-        /// </summary>
-        Max,
-        /// <summary>
-        /// Axis crosses at the minimum value
-        /// </summary>
-        Min
-    }
+    AutoZero,
+    /// <summary>
+    /// The axis crosses at the maximum value
+    /// </summary>
+    Max,
+    /// <summary>
+    /// Axis crosses at the minimum value
+    /// </summary>
+    Min
 }

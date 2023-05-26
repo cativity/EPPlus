@@ -18,68 +18,67 @@ using OfficeOpenXml.FormulaParsing.ExcelUtilities;
 using OfficeOpenXml.FormulaParsing.Utilities;
 using OfficeOpenXml.Utils;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Database
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Database;
+
+internal class RowMatcher
 {
-    internal class RowMatcher
+    private readonly WildCardValueMatcher _wildCardValueMatcher;
+    private readonly ExpressionEvaluator _expressionEvaluator;
+
+    public RowMatcher()
+        : this(new WildCardValueMatcher(), new ExpressionEvaluator())
     {
-        private readonly WildCardValueMatcher _wildCardValueMatcher;
-        private readonly ExpressionEvaluator _expressionEvaluator;
-
-        public RowMatcher()
-            : this(new WildCardValueMatcher(), new ExpressionEvaluator())
-        {
             
-        }
+    }
 
-        public RowMatcher(WildCardValueMatcher wildCardValueMatcher, ExpressionEvaluator expressionEvaluator)
-        {
-            this._wildCardValueMatcher = wildCardValueMatcher;
-            this._expressionEvaluator = expressionEvaluator;
-        }
+    public RowMatcher(WildCardValueMatcher wildCardValueMatcher, ExpressionEvaluator expressionEvaluator)
+    {
+        this._wildCardValueMatcher = wildCardValueMatcher;
+        this._expressionEvaluator = expressionEvaluator;
+    }
 
-        public bool IsMatch(ExcelDatabaseRow row, ExcelDatabaseCriteria criteria)
+    public bool IsMatch(ExcelDatabaseRow row, ExcelDatabaseCriteria criteria)
+    {
+        bool retVal = true;
+        foreach (KeyValuePair<ExcelDatabaseCriteriaField, object> c in criteria.Items)
         {
-            bool retVal = true;
-            foreach (KeyValuePair<ExcelDatabaseCriteriaField, object> c in criteria.Items)
+            object? candidate = c.Key.FieldIndex.HasValue ? row[c.Key.FieldIndex.Value] : row[c.Key.FieldName];
+            object? crit = c.Value;
+            if (candidate.IsNumeric() && crit.IsNumeric())
             {
-                object? candidate = c.Key.FieldIndex.HasValue ? row[c.Key.FieldIndex.Value] : row[c.Key.FieldName];
-                object? crit = c.Value;
-                if (candidate.IsNumeric() && crit.IsNumeric())
+                if(System.Math.Abs(ConvertUtil.GetValueDouble(candidate) - ConvertUtil.GetValueDouble(crit)) > double.Epsilon)
                 {
-                    if(System.Math.Abs(ConvertUtil.GetValueDouble(candidate) - ConvertUtil.GetValueDouble(crit)) > double.Epsilon)
-                    {
-                        return false;
-                    }
-                }
-                else
-                {
-                    string? criteriaString = crit.ToString();
-                    if (!this.Evaluate(candidate, criteriaString))
-                    {
-                        return false;
-                    }
+                    return false;
                 }
             }
-            return retVal;
+            else
+            {
+                string? criteriaString = crit.ToString();
+                if (!this.Evaluate(candidate, criteriaString))
+                {
+                    return false;
+                }
+            }
         }
+        return retVal;
+    }
 
-        private bool Evaluate(object obj, string expression)
+    private bool Evaluate(object obj, string expression)
+    {
+        if (obj == null)
         {
-            if (obj == null)
-            {
-                return false;
-            }
-
-            double? candidate = default(double?);
-            if (ConvertUtil.IsNumericOrDate(obj))
-            {
-                candidate = ConvertUtil.GetValueDouble(obj);
-            }
-            if (candidate.HasValue)
-            {
-                return this._expressionEvaluator.Evaluate(candidate.Value, expression);
-            }
-            return this._wildCardValueMatcher.IsMatch(expression, obj.ToString()) == 0;
+            return false;
         }
+
+        double? candidate = default(double?);
+        if (ConvertUtil.IsNumericOrDate(obj))
+        {
+            candidate = ConvertUtil.GetValueDouble(obj);
+        }
+        if (candidate.HasValue)
+        {
+            return this._expressionEvaluator.Evaluate(candidate.Value, expression);
+        }
+        return this._wildCardValueMatcher.IsMatch(expression, obj.ToString()) == 0;
     }
 }

@@ -16,49 +16,48 @@ using System.Collections.Generic;
 using System.Text;
 using System.Xml;
 
-namespace OfficeOpenXml.Drawing.Style.Effect
+namespace OfficeOpenXml.Drawing.Style.Effect;
+
+/// <summary>
+/// A color change effect
+/// </summary>
+public class ExcelDrawingColorChangeEffect : XmlHelper
 {
-    /// <summary>
-    /// A color change effect
-    /// </summary>
-    public class ExcelDrawingColorChangeEffect : XmlHelper
+    internal ExcelDrawingColorChangeEffect(XmlNamespaceManager nsm, XmlNode topNode) : base(nsm, topNode)
     {
-        internal ExcelDrawingColorChangeEffect(XmlNamespaceManager nsm, XmlNode topNode) : base(nsm, topNode)
-        {
 
-        }
-        private  ExcelDrawingColorManager _colorFrom;
-        /// <summary>
-        /// The color to transform from
-        /// </summary>
-        public ExcelDrawingColorManager ColorFrom
+    }
+    private  ExcelDrawingColorManager _colorFrom;
+    /// <summary>
+    /// The color to transform from
+    /// </summary>
+    public ExcelDrawingColorManager ColorFrom
+    {
+        get
         {
-            get
+            if (this._colorFrom == null)
             {
-                if (this._colorFrom == null)
-                {
-                    XmlNode? node = this.CreateNode("a:clrFrom");
-                    this._colorFrom = new ExcelDrawingColorManager(this.NameSpaceManager, node, "", this.SchemaNodeOrder);
-                }
-                return this._colorFrom;
+                XmlNode? node = this.CreateNode("a:clrFrom");
+                this._colorFrom = new ExcelDrawingColorManager(this.NameSpaceManager, node, "", this.SchemaNodeOrder);
             }
+            return this._colorFrom;
         }
-        private ExcelDrawingColorManager _colorTo;
-        /// <summary>
-        /// The color to transform to
-        /// </summary>
-        public ExcelDrawingColorManager ColorTo
+    }
+    private ExcelDrawingColorManager _colorTo;
+    /// <summary>
+    /// The color to transform to
+    /// </summary>
+    public ExcelDrawingColorManager ColorTo
+    {
+        get
         {
-            get
+            if (this._colorTo == null)
             {
-                if (this._colorTo == null)
-                {
-                    XmlNode? node = this.CreateNode("a:clrTo");
-                    this._colorTo = new ExcelDrawingColorManager(this.NameSpaceManager, node, "", this.SchemaNodeOrder);
-                }
-                return this._colorTo;
+                XmlNode? node = this.CreateNode("a:clrTo");
+                this._colorTo = new ExcelDrawingColorManager(this.NameSpaceManager, node, "", this.SchemaNodeOrder);
             }
+            return this._colorTo;
+        }
 
-        }
     }
 }

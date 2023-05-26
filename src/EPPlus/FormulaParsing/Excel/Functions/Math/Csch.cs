@@ -16,25 +16,24 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
-{
-    [FunctionMetadata(
-        Category = ExcelFunctionCategory.MathAndTrig,
-        EPPlusVersion = "5.1",
-        Description = "Returns the hyperbolic cosecant of an angle",
-        IntroducedInExcelVersion = "2013")]
-    internal class Csch : ExcelFunction
-    {
-        public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
-        {
-            ValidateArguments(arguments, 1);
-            double number = this.ArgToDecimal(arguments, 0);
-            if (number == 0)
-            {
-                return this.CreateResult(eErrorType.Div0);
-            }
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
 
-            return this.CreateResult(MathHelper.HCosec(number), DataType.Decimal);
+[FunctionMetadata(
+                     Category = ExcelFunctionCategory.MathAndTrig,
+                     EPPlusVersion = "5.1",
+                     Description = "Returns the hyperbolic cosecant of an angle",
+                     IntroducedInExcelVersion = "2013")]
+internal class Csch : ExcelFunction
+{
+    public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
+    {
+        ValidateArguments(arguments, 1);
+        double number = this.ArgToDecimal(arguments, 0);
+        if (number == 0)
+        {
+            return this.CreateResult(eErrorType.Div0);
         }
+
+        return this.CreateResult(MathHelper.HCosec(number), DataType.Decimal);
     }
 }

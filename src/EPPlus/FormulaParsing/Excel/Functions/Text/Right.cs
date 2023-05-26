@@ -17,26 +17,25 @@ using System.Text;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Metadata;
 using OfficeOpenXml.FormulaParsing.ExpressionGraph;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Text
-{
-    [FunctionMetadata(
-        Category = ExcelFunctionCategory.Text,
-        EPPlusVersion = "4",
-        Description = "Returns a specified number of characters from the end of a supplied text string")]
-    internal class Right : ExcelFunction
-    {
-        public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
-        {
-            ValidateArguments(arguments, 2);
-            string? str = ArgToString(arguments, 0);
-            int length = this.ArgToInt(arguments, 1);
-            int startIx = str.Length - length;
-            if (startIx < 0)
-            {
-                startIx = 0;
-            }
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Text;
 
-            return this.CreateResult(str.Substring(startIx, str.Length - startIx), DataType.String);
+[FunctionMetadata(
+                     Category = ExcelFunctionCategory.Text,
+                     EPPlusVersion = "4",
+                     Description = "Returns a specified number of characters from the end of a supplied text string")]
+internal class Right : ExcelFunction
+{
+    public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
+    {
+        ValidateArguments(arguments, 2);
+        string? str = ArgToString(arguments, 0);
+        int length = this.ArgToInt(arguments, 1);
+        int startIx = str.Length - length;
+        if (startIx < 0)
+        {
+            startIx = 0;
         }
+
+        return this.CreateResult(str.Substring(startIx, str.Length - startIx), DataType.String);
     }
 }

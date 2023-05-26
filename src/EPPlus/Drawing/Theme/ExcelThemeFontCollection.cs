@@ -18,178 +18,177 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Xml;
 
-namespace OfficeOpenXml.Drawing.Theme
+namespace OfficeOpenXml.Drawing.Theme;
+
+/// <summary>
+/// A collection of fonts in a theme
+/// </summary>
+public class ExcelThemeFontCollection : XmlHelper, IEnumerable<ExcelDrawingFontBase>
 {
-    /// <summary>
-    /// A collection of fonts in a theme
-    /// </summary>
-    public class ExcelThemeFontCollection : XmlHelper, IEnumerable<ExcelDrawingFontBase>
+    List<ExcelDrawingFontBase> _lst = new List<ExcelDrawingFontBase>();
+    ExcelPackage _pck;
+    internal ExcelThemeFontCollection(ExcelPackage pck, XmlNamespaceManager nameSpaceManager, XmlNode topNode) : base(nameSpaceManager,topNode)
     {
-        List<ExcelDrawingFontBase> _lst = new List<ExcelDrawingFontBase>();
-        ExcelPackage _pck;
-        internal ExcelThemeFontCollection(ExcelPackage pck, XmlNamespaceManager nameSpaceManager, XmlNode topNode) : base(nameSpaceManager,topNode)
+        this._pck = pck;
+        foreach (XmlNode node in topNode.ChildNodes)
         {
-            this._pck = pck;
-            foreach (XmlNode node in topNode.ChildNodes)
+            if(node.LocalName=="font")
             {
-                if(node.LocalName=="font")
-                {
-                    this._lst.Add(new ExcelDrawingFont(nameSpaceManager, node));
-                }
-                else
-                {
-                    this._lst.Add(new ExcelDrawingFontSpecial(nameSpaceManager, node));
-                }
+                this._lst.Add(new ExcelDrawingFont(nameSpaceManager, node));
+            }
+            else
+            {
+                this._lst.Add(new ExcelDrawingFontSpecial(nameSpaceManager, node));
             }
         }
-        /// <summary>
-        /// The collection index
-        /// </summary>
-        /// <param name="index">The index</param>
-        /// <returns></returns>
-        public ExcelDrawingFontBase this[int index]
+    }
+    /// <summary>
+    /// The collection index
+    /// </summary>
+    /// <param name="index">The index</param>
+    /// <returns></returns>
+    public ExcelDrawingFontBase this[int index]
+    {
+        get
         {
-            get
-            {
-                return (this._lst[index]);
-            }
+            return (this._lst[index]);
         }
-        /// <summary>
-        /// Adds a normal font to the collection
-        /// </summary>
-        /// <param name="typeface">The typeface, or name of the font</param>
-        /// <param name="script">The script, or language, in which the typeface is supposed to be used</param>
-        /// <returns>The font</returns>
-        public ExcelDrawingFont Add(string typeface, string script)
+    }
+    /// <summary>
+    /// Adds a normal font to the collection
+    /// </summary>
+    /// <param name="typeface">The typeface, or name of the font</param>
+    /// <param name="script">The script, or language, in which the typeface is supposed to be used</param>
+    /// <returns>The font</returns>
+    public ExcelDrawingFont Add(string typeface, string script)
+    {
+        XmlNode e= this.TopNode.OwnerDocument.CreateElement("a","font",ExcelPackage.schemaDrawings);
+        this.TopNode.AppendChild(e);
+        ExcelDrawingFont? f = new ExcelDrawingFont(this.NameSpaceManager, e) { Typeface=typeface, Script=script };
+        this._lst.Add(f);
+        return f;
+    }
+    /// <summary>
+    /// Removes the item from the collection
+    /// </summary>
+    /// <param name="index">The index of the item to remove</param>
+    public void RemoveAt(int index)
+    {
+        if (index < 0 || index >= this._lst.Count)
         {
-            XmlNode e= this.TopNode.OwnerDocument.CreateElement("a","font",ExcelPackage.schemaDrawings);
-            this.TopNode.AppendChild(e);
-            ExcelDrawingFont? f = new ExcelDrawingFont(this.NameSpaceManager, e) { Typeface=typeface, Script=script };
-            this._lst.Add(f);
-            return f;
-        }
-        /// <summary>
-        /// Removes the item from the collection
-        /// </summary>
-        /// <param name="index">The index of the item to remove</param>
-        public void RemoveAt(int index)
-        {
-            if (index < 0 || index >= this._lst.Count)
-            {
-                throw new IndexOutOfRangeException();
-            }
-
-            this.Remove(this._lst[index]);
-        }
-        /// <summary>
-        /// Removes the item from the collection
-        /// </summary>
-        /// <param name="item">The item to remove</param>
-        public void Remove(ExcelDrawingFontBase item)
-        {
-            if (item is ExcelDrawingFontSpecial sf)
-            {
-                throw new InvalidOperationException("Cant remove this type of font.");
-            }
-            item.TopNode.ParentNode.RemoveChild(item.TopNode);
-            this._lst.Remove(item);
+            throw new IndexOutOfRangeException();
         }
 
-        /// <summary>
-        /// Set the latin font of the collection
-        /// </summary>
-        /// <param name="typeface">The typeface, or name of the font</param>
-        public void SetLatinFont(string typeface)
+        this.Remove(this._lst[index]);
+    }
+    /// <summary>
+    /// Removes the item from the collection
+    /// </summary>
+    /// <param name="item">The item to remove</param>
+    public void Remove(ExcelDrawingFontBase item)
+    {
+        if (item is ExcelDrawingFontSpecial sf)
         {
-            if (this._pck.Workbook.Styles.Fonts.Count > 0 && string.IsNullOrEmpty(typeface)==false)
-            {
-                string? id = this._pck.Workbook.Styles.Fonts[0].Id;
-                this._pck.Workbook.Styles.Fonts[0].Name = typeface;
-                this._pck.Workbook.Styles.Fonts._dic.Remove(id);
-                this._pck.Workbook.Styles.Fonts._dic.Add(this._pck.Workbook.Styles.Fonts[0].Id, 0);
-            }
+            throw new InvalidOperationException("Cant remove this type of font.");
+        }
+        item.TopNode.ParentNode.RemoveChild(item.TopNode);
+        this._lst.Remove(item);
+    }
 
-            this.SetSpecialFont(typeface, eFontType.Latin);            
-        }
-        /// <summary>
-        /// Set the complex font of the collection
-        /// </summary>
-        /// <param name="typeface">The typeface, or name of the font</param>
-        public void SetComplexFont(string typeface)
+    /// <summary>
+    /// Set the latin font of the collection
+    /// </summary>
+    /// <param name="typeface">The typeface, or name of the font</param>
+    public void SetLatinFont(string typeface)
+    {
+        if (this._pck.Workbook.Styles.Fonts.Count > 0 && string.IsNullOrEmpty(typeface)==false)
         {
-            this.SetSpecialFont(typeface, eFontType.Complex);
-        }
-        /// <summary>
-        /// Set the East Asian font of the collection
-        /// </summary>
-        /// <param name="typeface">The typeface, or name of the font</param>
-        public void SetEastAsianFont(string typeface)
-        {
-            this.SetSpecialFont(typeface, eFontType.EastAsian);
+            string? id = this._pck.Workbook.Styles.Fonts[0].Id;
+            this._pck.Workbook.Styles.Fonts[0].Name = typeface;
+            this._pck.Workbook.Styles.Fonts._dic.Remove(id);
+            this._pck.Workbook.Styles.Fonts._dic.Add(this._pck.Workbook.Styles.Fonts[0].Id, 0);
         }
 
-        private void SetSpecialFont(string typeface, eFontType fontType)
-        {
-            ExcelDrawingFontBase? f = this._lst.Where((x => x is ExcelDrawingFontSpecial sf && sf.Type == fontType)).FirstOrDefault() ?? this.AddSpecialFont(fontType, typeface);
+        this.SetSpecialFont(typeface, eFontType.Latin);            
+    }
+    /// <summary>
+    /// Set the complex font of the collection
+    /// </summary>
+    /// <param name="typeface">The typeface, or name of the font</param>
+    public void SetComplexFont(string typeface)
+    {
+        this.SetSpecialFont(typeface, eFontType.Complex);
+    }
+    /// <summary>
+    /// Set the East Asian font of the collection
+    /// </summary>
+    /// <param name="typeface">The typeface, or name of the font</param>
+    public void SetEastAsianFont(string typeface)
+    {
+        this.SetSpecialFont(typeface, eFontType.EastAsian);
+    }
 
-            f.Typeface = typeface;
-        }
+    private void SetSpecialFont(string typeface, eFontType fontType)
+    {
+        ExcelDrawingFontBase? f = this._lst.Where((x => x is ExcelDrawingFontSpecial sf && sf.Type == fontType)).FirstOrDefault() ?? this.AddSpecialFont(fontType, typeface);
 
-        /// <summary>
-        /// Adds a special font to the fonts collection
-        /// </summary>
-        /// <param name="type">The font type</param>
-        /// <param name="typeface">The typeface, or name of the font</param>
-        /// <returns>The font</returns>
-        public ExcelDrawingFontSpecial AddSpecialFont(eFontType type, string typeface)
-        {
-            string typeName;
-            switch (type)
-            {
-                case eFontType.Complex:
-                    typeName = "cs";
-                    break;
-                case eFontType.EastAsian:
-                    typeName = "ea";
-                    break;
-                case eFontType.Latin:
-                    typeName = "latin";
-                    break;
-                case eFontType.Symbol:
-                    typeName = "sym";
-                    break;
-                default:
-                    throw (new ArgumentException("Please use the Add method to add normal fonts"));
-            }
-            XmlNode e = this.TopNode.OwnerDocument.CreateElement("a", typeName, ExcelPackage.schemaDrawings);
-            this.TopNode.AppendChild(e);
-            ExcelDrawingFontSpecial? f = new ExcelDrawingFontSpecial(this.NameSpaceManager, e) { Typeface=typeface };
-            this._lst.Add(f);
-            return f;
-        }
+        f.Typeface = typeface;
+    }
 
-        /// <summary>
-        /// Number of items in the collection
-        /// </summary>
-        public int Count
+    /// <summary>
+    /// Adds a special font to the fonts collection
+    /// </summary>
+    /// <param name="type">The font type</param>
+    /// <param name="typeface">The typeface, or name of the font</param>
+    /// <returns>The font</returns>
+    public ExcelDrawingFontSpecial AddSpecialFont(eFontType type, string typeface)
+    {
+        string typeName;
+        switch (type)
         {
-            get
-            {
-                return this._lst.Count;
-            }
+            case eFontType.Complex:
+                typeName = "cs";
+                break;
+            case eFontType.EastAsian:
+                typeName = "ea";
+                break;
+            case eFontType.Latin:
+                typeName = "latin";
+                break;
+            case eFontType.Symbol:
+                typeName = "sym";
+                break;
+            default:
+                throw (new ArgumentException("Please use the Add method to add normal fonts"));
         }
-        /// <summary>
-        /// Gets an enumerator for the collection
-        /// </summary>
-        /// <returns>The enumerator</returns>
-        public IEnumerator<ExcelDrawingFontBase> GetEnumerator()
-        {
-            return this._lst.GetEnumerator();
-        }
+        XmlNode e = this.TopNode.OwnerDocument.CreateElement("a", typeName, ExcelPackage.schemaDrawings);
+        this.TopNode.AppendChild(e);
+        ExcelDrawingFontSpecial? f = new ExcelDrawingFontSpecial(this.NameSpaceManager, e) { Typeface=typeface };
+        this._lst.Add(f);
+        return f;
+    }
 
-        IEnumerator IEnumerable.GetEnumerator()
+    /// <summary>
+    /// Number of items in the collection
+    /// </summary>
+    public int Count
+    {
+        get
         {
-            return this._lst.GetEnumerator();
+            return this._lst.Count;
         }
+    }
+    /// <summary>
+    /// Gets an enumerator for the collection
+    /// </summary>
+    /// <returns>The enumerator</returns>
+    public IEnumerator<ExcelDrawingFontBase> GetEnumerator()
+    {
+        return this._lst.GetEnumerator();
+    }
+
+    IEnumerator IEnumerable.GetEnumerator()
+    {
+        return this._lst.GetEnumerator();
     }
 }

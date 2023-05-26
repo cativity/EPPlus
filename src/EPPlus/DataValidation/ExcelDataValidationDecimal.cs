@@ -15,68 +15,67 @@ using OfficeOpenXml.DataValidation.Formulas;
 using OfficeOpenXml.DataValidation.Formulas.Contracts;
 using System.Xml;
 
-namespace OfficeOpenXml.DataValidation
+namespace OfficeOpenXml.DataValidation;
+
+/// <summary>
+/// Data validation for decimal values
+/// </summary>
+public class ExcelDataValidationDecimal : ExcelDataValidationWithFormula2<IExcelDataValidationFormulaDecimal>, IExcelDataValidationDecimal
 {
     /// <summary>
-    /// Data validation for decimal values
+    /// Constructor
     /// </summary>
-    public class ExcelDataValidationDecimal : ExcelDataValidationWithFormula2<IExcelDataValidationFormulaDecimal>, IExcelDataValidationDecimal
+    /// <param name="worksheetName"></param>
+    /// <param name="uid">Uid of the data validation, format should be a Guid surrounded by curly braces.</param>
+    /// <param name="address"></param>
+    internal ExcelDataValidationDecimal(string uid, string address, ExcelWorksheet ws)
+        : base(uid, address, ws)
     {
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        /// <param name="worksheetName"></param>
-        /// <param name="uid">Uid of the data validation, format should be a Guid surrounded by curly braces.</param>
-        /// <param name="address"></param>
-        internal ExcelDataValidationDecimal(string uid, string address, ExcelWorksheet ws)
-            : base(uid, address, ws)
-        {
-            this.Formula = new ExcelDataValidationFormulaDecimal(null, uid, ws.Name, this.OnFormulaChanged);
-            this.Formula2 = new ExcelDataValidationFormulaDecimal(null, uid, ws.Name, this.OnFormulaChanged);
-        }
+        this.Formula = new ExcelDataValidationFormulaDecimal(null, uid, ws.Name, this.OnFormulaChanged);
+        this.Formula2 = new ExcelDataValidationFormulaDecimal(null, uid, ws.Name, this.OnFormulaChanged);
+    }
 
-        /// <summary>
-        /// Constructor for reading data
-        /// </summary>
-        /// <param name="xr">The XmlReader to read from</param>
-        internal ExcelDataValidationDecimal(XmlReader xr, ExcelWorksheet ws)
-            : base(xr, ws)
-        {
-        }
+    /// <summary>
+    /// Constructor for reading data
+    /// </summary>
+    /// <param name="xr">The XmlReader to read from</param>
+    internal ExcelDataValidationDecimal(XmlReader xr, ExcelWorksheet ws)
+        : base(xr, ws)
+    {
+    }
 
-        /// <summary>
-        /// Copy constructor
-        /// </summary>
-        /// <param name="copy"></param>
-        internal ExcelDataValidationDecimal(ExcelDataValidationDecimal copy, ExcelWorksheet ws) : base(copy, ws)
-        {
-            this.Formula = copy.Formula;
-            this.Formula2 = copy.Formula2;
-        }
+    /// <summary>
+    /// Copy constructor
+    /// </summary>
+    /// <param name="copy"></param>
+    internal ExcelDataValidationDecimal(ExcelDataValidationDecimal copy, ExcelWorksheet ws) : base(copy, ws)
+    {
+        this.Formula = copy.Formula;
+        this.Formula2 = copy.Formula2;
+    }
 
-        /// <summary>
-        /// Property for determining type of validation
-        /// </summary>
-        public override ExcelDataValidationType ValidationType => new ExcelDataValidationType(eDataValidationType.Decimal);
+    /// <summary>
+    /// Property for determining type of validation
+    /// </summary>
+    public override ExcelDataValidationType ValidationType => new ExcelDataValidationType(eDataValidationType.Decimal);
 
-        internal override IExcelDataValidationFormulaDecimal DefineFormulaClassType(string formulaValue, string sheetName)
-        {
-            return new ExcelDataValidationFormulaDecimal(formulaValue, this.Uid, sheetName, this.OnFormulaChanged);
-        }
+    internal override IExcelDataValidationFormulaDecimal DefineFormulaClassType(string formulaValue, string sheetName)
+    {
+        return new ExcelDataValidationFormulaDecimal(formulaValue, this.Uid, sheetName, this.OnFormulaChanged);
+    }
 
-        internal override ExcelDataValidation GetClone()
-        {
-            return new ExcelDataValidationDecimal(this, this._ws);
-        }
+    internal override ExcelDataValidation GetClone()
+    {
+        return new ExcelDataValidationDecimal(this, this._ws);
+    }
 
-        internal override ExcelDataValidation GetClone(ExcelWorksheet copy)
-        {
-            return new ExcelDataValidationDecimal(this, copy);
-        }
+    internal override ExcelDataValidation GetClone(ExcelWorksheet copy)
+    {
+        return new ExcelDataValidationDecimal(this, copy);
+    }
 
-        ExcelDataValidationDecimal Clone()
-        {
-            return (ExcelDataValidationDecimal)this.GetClone();
-        }
+    ExcelDataValidationDecimal Clone()
+    {
+        return (ExcelDataValidationDecimal)this.GetClone();
     }
 }

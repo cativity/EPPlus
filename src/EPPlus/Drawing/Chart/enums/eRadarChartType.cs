@@ -10,24 +10,23 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
-namespace OfficeOpenXml.Drawing.Chart
+namespace OfficeOpenXml.Drawing.Chart;
+
+/// <summary>
+/// Radar chart types
+/// </summary>
+public enum eRadarChartType
 {
     /// <summary>
-    /// Radar chart types
+    /// A radar chart
     /// </summary>
-    public enum eRadarChartType
-    {
-        /// <summary>
-        /// A radar chart
-        /// </summary>
-        Radar = -4151,
-        /// <summary>
-        /// A filled radar chart
-        /// </summary>
-        RadarFilled = 82,
-        /// <summary>
-        /// A radar chart with markers
-        /// </summary>
-        RadarMarkers = 81,
-    }
+    Radar = -4151,
+    /// <summary>
+    /// A filled radar chart
+    /// </summary>
+    RadarFilled = 82,
+    /// <summary>
+    /// A radar chart with markers
+    /// </summary>
+    RadarMarkers = 81,
 }

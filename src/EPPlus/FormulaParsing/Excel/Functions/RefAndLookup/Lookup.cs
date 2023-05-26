@@ -21,76 +21,75 @@ using System.Text.RegularExpressions;
 using static OfficeOpenXml.FormulaParsing.EpplusExcelDataProvider;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Metadata;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions.RefAndLookup
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions.RefAndLookup;
+
+[FunctionMetadata(
+                     Category = ExcelFunctionCategory.LookupAndReference,
+                     EPPlusVersion = "4",
+                     Description = "Searches for a specific value in one data vector, and returns a value from the corresponding position of a second data vector")]
+internal class Lookup : LookupFunction
 {
-    [FunctionMetadata(
-        Category = ExcelFunctionCategory.LookupAndReference,
-        EPPlusVersion = "4",
-        Description = "Searches for a specific value in one data vector, and returns a value from the corresponding position of a second data vector")]
-    internal class Lookup : LookupFunction
+    public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
     {
-        public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
+        ValidateArguments(arguments, 2);
+        if (HaveTwoRanges(arguments))
         {
-            ValidateArguments(arguments, 2);
-            if (HaveTwoRanges(arguments))
-            {
-                return this.HandleTwoRanges(arguments, context);
-            }
-            return this.HandleSingleRange(arguments, context);
+            return this.HandleTwoRanges(arguments, context);
+        }
+        return this.HandleSingleRange(arguments, context);
+    }
+
+    private static bool HaveTwoRanges(IEnumerable<FunctionArgument> arguments)
+    {
+        if (arguments.Count() < 3)
+        {
+            return false;
         }
 
-        private static bool HaveTwoRanges(IEnumerable<FunctionArgument> arguments)
-        {
-            if (arguments.Count() < 3)
-            {
-                return false;
-            }
+        return (arguments.ElementAt(2).Value is RangeInfo);
+    }
 
-            return (arguments.ElementAt(2).Value is RangeInfo);
-        }
-
-        private CompileResult HandleSingleRange(IEnumerable<FunctionArgument> arguments, ParsingContext context)
+    private CompileResult HandleSingleRange(IEnumerable<FunctionArgument> arguments, ParsingContext context)
+    {
+        object? searchedValue = arguments.ElementAt(0).Value;
+        Require.That(arguments.ElementAt(1).Value).Named("firstAddress").IsNotNull();
+        string? firstAddress = ArgToAddress(arguments, 1, context);
+        RangeAddressFactory? rangeAddressFactory = new RangeAddressFactory(context.ExcelDataProvider);
+        RangeAddress? address = rangeAddressFactory.Create(firstAddress);
+        int nRows = address.ToRow - address.FromRow;
+        int nCols = address.ToCol - address.FromCol;
+        int lookupIndex = nCols + 1;
+        LookupDirection lookupDirection = LookupDirection.Vertical;
+        if (nCols > nRows)
         {
-            object? searchedValue = arguments.ElementAt(0).Value;
-            Require.That(arguments.ElementAt(1).Value).Named("firstAddress").IsNotNull();
-            string? firstAddress = ArgToAddress(arguments, 1, context);
-            RangeAddressFactory? rangeAddressFactory = new RangeAddressFactory(context.ExcelDataProvider);
-            RangeAddress? address = rangeAddressFactory.Create(firstAddress);
-            int nRows = address.ToRow - address.FromRow;
-            int nCols = address.ToCol - address.FromCol;
-            int lookupIndex = nCols + 1;
-            LookupDirection lookupDirection = LookupDirection.Vertical;
-            if (nCols > nRows)
-            {
-                lookupIndex = nRows + 1;
-                lookupDirection = LookupDirection.Horizontal;
-            }
-            LookupArguments? lookupArgs = new LookupArguments(searchedValue, firstAddress, lookupIndex, 0, true, arguments.ElementAt(1).ValueAsRangeInfo);
-            LookupNavigator? navigator = LookupNavigatorFactory.Create(lookupDirection, lookupArgs, context);
-            return this.Lookup(navigator, lookupArgs);
+            lookupIndex = nRows + 1;
+            lookupDirection = LookupDirection.Horizontal;
         }
+        LookupArguments? lookupArgs = new LookupArguments(searchedValue, firstAddress, lookupIndex, 0, true, arguments.ElementAt(1).ValueAsRangeInfo);
+        LookupNavigator? navigator = LookupNavigatorFactory.Create(lookupDirection, lookupArgs, context);
+        return this.Lookup(navigator, lookupArgs);
+    }
 
-        private CompileResult HandleTwoRanges(IEnumerable<FunctionArgument> arguments, ParsingContext context)
+    private CompileResult HandleTwoRanges(IEnumerable<FunctionArgument> arguments, ParsingContext context)
+    {
+        object? searchedValue = arguments.ElementAt(0).Value;
+        Require.That(arguments.ElementAt(1).Value).Named("firstAddress").IsNotNull();
+        Require.That(arguments.ElementAt(2).Value).Named("secondAddress").IsNotNull();
+        string? firstAddress = ArgToAddress(arguments, 1, context);
+        string? secondAddress = ArgToAddress(arguments, 2, context);
+        RangeAddressFactory? rangeAddressFactory = new RangeAddressFactory(context.ExcelDataProvider);
+        RangeAddress? address1 = rangeAddressFactory.Create(firstAddress);
+        RangeAddress? address2 = rangeAddressFactory.Create(secondAddress);
+        int lookupIndex = (address2.FromCol - address1.FromCol) + 1;
+        int lookupOffset = address2.FromRow - address1.FromRow;
+        LookupDirection lookupDirection = GetLookupDirection(address1);
+        if (lookupDirection == LookupDirection.Horizontal)
         {
-            object? searchedValue = arguments.ElementAt(0).Value;
-            Require.That(arguments.ElementAt(1).Value).Named("firstAddress").IsNotNull();
-            Require.That(arguments.ElementAt(2).Value).Named("secondAddress").IsNotNull();
-            string? firstAddress = ArgToAddress(arguments, 1, context);
-            string? secondAddress = ArgToAddress(arguments, 2, context);
-            RangeAddressFactory? rangeAddressFactory = new RangeAddressFactory(context.ExcelDataProvider);
-            RangeAddress? address1 = rangeAddressFactory.Create(firstAddress);
-            RangeAddress? address2 = rangeAddressFactory.Create(secondAddress);
-            int lookupIndex = (address2.FromCol - address1.FromCol) + 1;
-            int lookupOffset = address2.FromRow - address1.FromRow;
-            LookupDirection lookupDirection = GetLookupDirection(address1);
-            if (lookupDirection == LookupDirection.Horizontal)
-            {
-                lookupIndex = (address2.FromRow - address1.FromRow) + 1;
-                lookupOffset = address2.FromCol - address1.FromCol;
-            }
-            LookupArguments? lookupArgs = new LookupArguments(searchedValue, firstAddress, lookupIndex, lookupOffset,  true, arguments.ElementAt(1).ValueAsRangeInfo);
-            LookupNavigator? navigator = LookupNavigatorFactory.Create(lookupDirection, lookupArgs, context);
-            return this.Lookup(navigator, lookupArgs);
+            lookupIndex = (address2.FromRow - address1.FromRow) + 1;
+            lookupOffset = address2.FromCol - address1.FromCol;
         }
+        LookupArguments? lookupArgs = new LookupArguments(searchedValue, firstAddress, lookupIndex, lookupOffset,  true, arguments.ElementAt(1).ValueAsRangeInfo);
+        LookupNavigator? navigator = LookupNavigatorFactory.Create(lookupDirection, lookupArgs, context);
+        return this.Lookup(navigator, lookupArgs);
     }
 }

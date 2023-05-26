@@ -12,20 +12,19 @@
  *************************************************************************************************/
 using OfficeOpenXml.Core;
 
-namespace OfficeOpenXml.ExternalReferences
+namespace OfficeOpenXml.ExternalReferences;
+
+/// <summary>
+/// A collection of <see cref="ExcelExternalDdeValue" />
+/// </summary>
+public class ExcelExternalDdeValueCollection : EPPlusReadOnlyList<ExcelExternalDdeValue>
 {
     /// <summary>
-    /// A collection of <see cref="ExcelExternalDdeValue" />
+    /// The number of rows returned by the server for this dde item.
     /// </summary>
-    public class ExcelExternalDdeValueCollection : EPPlusReadOnlyList<ExcelExternalDdeValue>
-    {
-        /// <summary>
-        /// The number of rows returned by the server for this dde item.
-        /// </summary>
-        public int Rows { get; set; }
-        /// <summary>
-        /// The number of columns returned by the server for this dde item.
-        /// </summary>
-        public int Columns { get; set; }
-    }
+    public int Rows { get; set; }
+    /// <summary>
+    /// The number of columns returned by the server for this dde item.
+    /// </summary>
+    public int Columns { get; set; }
 }

@@ -15,13 +15,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace OfficeOpenXml.Export.HtmlExport
+namespace OfficeOpenXml.Export.HtmlExport;
+
+internal static class HtmlAttributes
 {
-    internal static class HtmlAttributes
-    {
-        public static string Class = "class";
-        public static string Id = "id";
-        public static string Target = "target";
-        public static string Href = "href";
-    }
+    public static string Class = "class";
+    public static string Id = "id";
+    public static string Target = "target";
+    public static string Href = "href";
 }

@@ -11,24 +11,23 @@
   05/11/2021         EPPlus Software AB           ExcelTable Html Export
  *************************************************************************************************/
 
-namespace OfficeOpenXml.Export.HtmlExport
+namespace OfficeOpenXml.Export.HtmlExport;
+
+/// <summary>
+/// If the Picture is absolut or relative to the table cell
+/// </summary>
+public enum ePicturePosition
 {
     /// <summary>
-    /// If the Picture is absolut or relative to the table cell
+    /// No CSS is added for Position
     /// </summary>
-    public enum ePicturePosition
-    {
-        /// <summary>
-        /// No CSS is added for Position
-        /// </summary>
-        DontSet,
-        /// <summary>
-        /// Position is Absolute in the CSS
-        /// </summary>
-        Absolute,
-        /// <summary>
-        /// Position is Relative in the CSS
-        /// </summary>
-        Relative
-    }
+    DontSet,
+    /// <summary>
+    /// Position is Absolute in the CSS
+    /// </summary>
+    Absolute,
+    /// <summary>
+    /// Position is Relative in the CSS
+    /// </summary>
+    Relative
 }

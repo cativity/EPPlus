@@ -17,32 +17,31 @@ using System.Text;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Metadata;
 using OfficeOpenXml.FormulaParsing.ExpressionGraph;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
-{
-    [FunctionMetadata(
-        Category = ExcelFunctionCategory.Statistical,
-        EPPlusVersion = "4",
-        Description = "Returns the Kth SMALLEST value from a list of supplied numbers, for a given value K")]
-    internal class Small : HiddenValuesHandlingFunction
-    {
-        public Small()
-        {
-            this.IgnoreHiddenValues = false;
-            this.IgnoreErrors = false;
-        }
-        public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
-        {
-            ValidateArguments(arguments, 2);
-            FunctionArgument? args = arguments.ElementAt(0);
-            int index = this.ArgToInt(arguments, 1, this.IgnoreErrors) - 1;
-            IEnumerable<ExcelDoubleCellValue>? values = this.ArgsToDoubleEnumerable(new List<FunctionArgument> { args }, context);
-            if (index < 0 || index >= values.Count())
-            {
-                return this.CreateResult(eErrorType.Num);
-            }
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
 
-            ExcelDoubleCellValue result = values.OrderBy(x => x).ElementAt(index);
-            return this.CreateResult(result, DataType.Decimal);
+[FunctionMetadata(
+                     Category = ExcelFunctionCategory.Statistical,
+                     EPPlusVersion = "4",
+                     Description = "Returns the Kth SMALLEST value from a list of supplied numbers, for a given value K")]
+internal class Small : HiddenValuesHandlingFunction
+{
+    public Small()
+    {
+        this.IgnoreHiddenValues = false;
+        this.IgnoreErrors = false;
+    }
+    public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
+    {
+        ValidateArguments(arguments, 2);
+        FunctionArgument? args = arguments.ElementAt(0);
+        int index = this.ArgToInt(arguments, 1, this.IgnoreErrors) - 1;
+        IEnumerable<ExcelDoubleCellValue>? values = this.ArgsToDoubleEnumerable(new List<FunctionArgument> { args }, context);
+        if (index < 0 || index >= values.Count())
+        {
+            return this.CreateResult(eErrorType.Num);
         }
+
+        ExcelDoubleCellValue result = values.OrderBy(x => x).ElementAt(index);
+        return this.CreateResult(result, DataType.Decimal);
     }
 }

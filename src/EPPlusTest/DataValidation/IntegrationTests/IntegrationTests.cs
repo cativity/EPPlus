@@ -32,208 +32,207 @@ using OfficeOpenXml.DataValidation;
 using System.Linq;
 using OfficeOpenXml.DataValidation.Contracts;
 
-namespace EPPlusTest.DataValidation.IntegrationTests
+namespace EPPlusTest.DataValidation.IntegrationTests;
+
+/// <summary>
+/// Remove the Ignore attributes from the testmethods if you want to run any of these tests
+/// </summary>
+[TestClass]
+public class IntegrationTests : TestBase
 {
-    /// <summary>
-    /// Remove the Ignore attributes from the testmethods if you want to run any of these tests
-    /// </summary>
-    [TestClass]
-    public class IntegrationTests : TestBase
+    static ExcelPackage _package;
+    private ExcelPackage _unitTestPackage;
+    [ClassInitialize]
+    public static void Init(TestContext context)
     {
-        static ExcelPackage _package;
-        private ExcelPackage _unitTestPackage;
-        [ClassInitialize]
-        public static void Init(TestContext context)
-        {
-            _package = OpenPackage("DatavalidationIntegrationTests.xlsx", true);
-        }
+        _package = OpenPackage("DatavalidationIntegrationTests.xlsx", true);
+    }
 
 
-        [ClassCleanup]
-        public static void Cleanup()
-        {
-            SaveAndCleanup(_package);
-        }
+    [ClassCleanup]
+    public static void Cleanup()
+    {
+        SaveAndCleanup(_package);
+    }
 
-        [TestInitialize]
-        public void TestInitialize()
-        {
-            this._unitTestPackage = new ExcelPackage();
-        }
+    [TestInitialize]
+    public void TestInitialize()
+    {
+        this._unitTestPackage = new ExcelPackage();
+    }
 
-        [TestCleanup]
-        public void TestCleanup()
-        {
-            this._unitTestPackage.Dispose();
-        }
+    [TestCleanup]
+    public void TestCleanup()
+    {
+        this._unitTestPackage.Dispose();
+    }
 
-        [TestMethod]
-        public void DataValidations_AddOneValidationOfTypeWhole()
-        {
-            ExcelWorksheet? ws = _package.Workbook.Worksheets.Add("AddOneValidationOfTypeWhole");
-            ws.Cells["B1"].Value = 2;
-            IExcelDataValidationInt? validation = ws.DataValidations.AddIntegerValidation("A1");
-            validation.ShowErrorMessage = true;
-            validation.ErrorStyle = ExcelDataValidationWarningStyle.stop;
-            validation.ErrorTitle = "Invalid value was entered";
-            validation.PromptTitle = "Enter value here";
-            validation.Operator = ExcelDataValidationOperator.greaterThan;
-            //validation.Value.Value = 3;
-            validation.Formula.ExcelFormula = "B1";
-        }
-        [TestMethod]
-        public void DataValidations_AddOneValidationOfTypeDecimal()
-        {
-            ExcelWorksheet? ws = _package.Workbook.Worksheets.Add("AddOneValidationOfTypeDecimal");
-            IExcelDataValidationDecimal? validation = ws.DataValidations.AddDecimalValidation("A1");
-            validation.ShowErrorMessage = true;
-            validation.ErrorStyle = ExcelDataValidationWarningStyle.stop;
-            validation.ErrorTitle = "Invalid value was entered";
-            validation.Error = "Value must be greater than 1.4";
-            validation.PromptTitle = "Enter value here";
-            validation.Prompt = "Enter a value that is greater than 1.4";
-            validation.ShowInputMessage = true;
-            validation.Operator = ExcelDataValidationOperator.greaterThan;
-            validation.Formula.Value = 1.4;
-        }
+    [TestMethod]
+    public void DataValidations_AddOneValidationOfTypeWhole()
+    {
+        ExcelWorksheet? ws = _package.Workbook.Worksheets.Add("AddOneValidationOfTypeWhole");
+        ws.Cells["B1"].Value = 2;
+        IExcelDataValidationInt? validation = ws.DataValidations.AddIntegerValidation("A1");
+        validation.ShowErrorMessage = true;
+        validation.ErrorStyle = ExcelDataValidationWarningStyle.stop;
+        validation.ErrorTitle = "Invalid value was entered";
+        validation.PromptTitle = "Enter value here";
+        validation.Operator = ExcelDataValidationOperator.greaterThan;
+        //validation.Value.Value = 3;
+        validation.Formula.ExcelFormula = "B1";
+    }
+    [TestMethod]
+    public void DataValidations_AddOneValidationOfTypeDecimal()
+    {
+        ExcelWorksheet? ws = _package.Workbook.Worksheets.Add("AddOneValidationOfTypeDecimal");
+        IExcelDataValidationDecimal? validation = ws.DataValidations.AddDecimalValidation("A1");
+        validation.ShowErrorMessage = true;
+        validation.ErrorStyle = ExcelDataValidationWarningStyle.stop;
+        validation.ErrorTitle = "Invalid value was entered";
+        validation.Error = "Value must be greater than 1.4";
+        validation.PromptTitle = "Enter value here";
+        validation.Prompt = "Enter a value that is greater than 1.4";
+        validation.ShowInputMessage = true;
+        validation.Operator = ExcelDataValidationOperator.greaterThan;
+        validation.Formula.Value = 1.4;
+    }
 
-        [TestMethod]
-        public void DataValidations_AddOneValidationOfTypeListOfTypeList()
-        {
-            ExcelWorksheet? ws = _package.Workbook.Worksheets.Add("AddOneValidationOfTypeList");
-            IExcelDataValidationList? validation = ws.DataValidations.AddListValidation("A:A");
-            validation.ShowErrorMessage = true;
-            validation.ShowInputMessage = true;
-            validation.Formula.Values.Add("1");
-            validation.Formula.Values.Add("2");
-            validation.Formula.Values.Add("3");
-            validation.Validate();
-        }
+    [TestMethod]
+    public void DataValidations_AddOneValidationOfTypeListOfTypeList()
+    {
+        ExcelWorksheet? ws = _package.Workbook.Worksheets.Add("AddOneValidationOfTypeList");
+        IExcelDataValidationList? validation = ws.DataValidations.AddListValidation("A:A");
+        validation.ShowErrorMessage = true;
+        validation.ShowInputMessage = true;
+        validation.Formula.Values.Add("1");
+        validation.Formula.Values.Add("2");
+        validation.Formula.Values.Add("3");
+        validation.Validate();
+    }
 
-        [TestMethod]
-        public void DataValidations_AddOneValidationOfTypeListOfTypeTime()
-        {
-            ExcelWorksheet? ws = _package.Workbook.Worksheets.Add("AddOneValidationOfTypeTime");
-            IExcelDataValidationTime? validation = ws.DataValidations.AddTimeValidation("A1");
-            validation.ShowErrorMessage = true;
-            validation.ShowInputMessage = true;
-            validation.Formula.Value.Hour = 14;
-            validation.Formula.Value.Minute = 30;
-            validation.Operator = ExcelDataValidationOperator.greaterThan;
-            validation.Prompt = "Enter a time greater than 14:30";
-            validation.Error = "Invalid time was entered";
-            validation.Validate();
-        }
+    [TestMethod]
+    public void DataValidations_AddOneValidationOfTypeListOfTypeTime()
+    {
+        ExcelWorksheet? ws = _package.Workbook.Worksheets.Add("AddOneValidationOfTypeTime");
+        IExcelDataValidationTime? validation = ws.DataValidations.AddTimeValidation("A1");
+        validation.ShowErrorMessage = true;
+        validation.ShowInputMessage = true;
+        validation.Formula.Value.Hour = 14;
+        validation.Formula.Value.Minute = 30;
+        validation.Operator = ExcelDataValidationOperator.greaterThan;
+        validation.Prompt = "Enter a time greater than 14:30";
+        validation.Error = "Invalid time was entered";
+        validation.Validate();
+    }
 
-        [TestMethod]
-        public void ShouldMoveIntValidationToExtListWhenReferringOtherWorksheet()
-        {
-            ExcelWorksheet? sheet1 = this._unitTestPackage.Workbook.Worksheets.Add("extlist_sheet1");
-            ExcelWorksheet? sheet2 = this._unitTestPackage.Workbook.Worksheets.Add("extlist_sheet2");
+    [TestMethod]
+    public void ShouldMoveIntValidationToExtListWhenReferringOtherWorksheet()
+    {
+        ExcelWorksheet? sheet1 = this._unitTestPackage.Workbook.Worksheets.Add("extlist_sheet1");
+        ExcelWorksheet? sheet2 = this._unitTestPackage.Workbook.Worksheets.Add("extlist_sheet2");
 
-            IExcelDataValidationInt? v = sheet1.Cells["A1"].DataValidation.AddIntegerDataValidation();
-            v.Formula.ExcelFormula = "extlist_sheet2!A1";
-            v.Formula2.ExcelFormula = "B2";
-            v.Operator = ExcelDataValidationOperator.between;
-            v.ShowErrorMessage = true;
-            v.ShowInputMessage = true;
-            v.AllowBlank = true;
+        IExcelDataValidationInt? v = sheet1.Cells["A1"].DataValidation.AddIntegerDataValidation();
+        v.Formula.ExcelFormula = "extlist_sheet2!A1";
+        v.Formula2.ExcelFormula = "B2";
+        v.Operator = ExcelDataValidationOperator.between;
+        v.ShowErrorMessage = true;
+        v.ShowInputMessage = true;
+        v.AllowBlank = true;
 
-            sheet2.Cells["A1"].Value = 1;
-            sheet1.Cells["A2"].Value = 3;
+        sheet2.Cells["A1"].Value = 1;
+        sheet1.Cells["A2"].Value = 3;
 
-            SaveWorkbook("MoveToExtLstInt.xlsx", this._unitTestPackage);
-        }
+        SaveWorkbook("MoveToExtLstInt.xlsx", this._unitTestPackage);
+    }
 
-        [TestMethod]
-        public void ShouldMoveListValidationToExtListWhenReferringOtherWorksheet()
-        {
-            ExcelWorksheet? sheet1 = this._unitTestPackage.Workbook.Worksheets.Add("extlist_sheet1");
-            ExcelWorksheet? sheet2 = this._unitTestPackage.Workbook.Worksheets.Add("extlist_sheet2");
+    [TestMethod]
+    public void ShouldMoveListValidationToExtListWhenReferringOtherWorksheet()
+    {
+        ExcelWorksheet? sheet1 = this._unitTestPackage.Workbook.Worksheets.Add("extlist_sheet1");
+        ExcelWorksheet? sheet2 = this._unitTestPackage.Workbook.Worksheets.Add("extlist_sheet2");
 
-            IExcelDataValidationList? v = sheet1.Cells["A1"].DataValidation.AddListDataValidation();
-            v.ShowErrorMessage = true;
-            v.ShowInputMessage = true;
-            v.AllowBlank = true;
-            v.Formula.ExcelFormula = "extlist_sheet2!A1:A2";
+        IExcelDataValidationList? v = sheet1.Cells["A1"].DataValidation.AddListDataValidation();
+        v.ShowErrorMessage = true;
+        v.ShowInputMessage = true;
+        v.AllowBlank = true;
+        v.Formula.ExcelFormula = "extlist_sheet2!A1:A2";
 
-            sheet2.Cells["A1"].Value = "option1";
-            sheet2.Cells["A2"].Value = "option2";
+        sheet2.Cells["A1"].Value = "option1";
+        sheet2.Cells["A2"].Value = "option2";
 
-            SaveWorkbook("MoveToExtLst.xlsx", this._unitTestPackage);
-        }
+        SaveWorkbook("MoveToExtLst.xlsx", this._unitTestPackage);
+    }
 
-        [TestMethod]
-        public void ShouldMoveCustomValidationToExtListWhenReferringOtherWorksheet()
-        {
-            ExcelWorksheet? sheet1 = this._unitTestPackage.Workbook.Worksheets.Add("Sheet1");
-            ExcelWorksheet? sheet2 = this._unitTestPackage.Workbook.Worksheets.Add("Sheet2");
+    [TestMethod]
+    public void ShouldMoveCustomValidationToExtListWhenReferringOtherWorksheet()
+    {
+        ExcelWorksheet? sheet1 = this._unitTestPackage.Workbook.Worksheets.Add("Sheet1");
+        ExcelWorksheet? sheet2 = this._unitTestPackage.Workbook.Worksheets.Add("Sheet2");
 
-            sheet1.Cells["A1"].Value = "Bar";
-            sheet2.Cells["A1"].Value = "Foo";
-            IExcelDataValidationCustom? v = sheet1.Cells["A1"].DataValidation.AddCustomDataValidation();
-            v.ShowErrorMessage = true;
-            v.ShowInputMessage = true;
-            v.AllowBlank = false;
-            v.Formula.ExcelFormula = "IF(AND(Sheet2!A1=\"Foo\",A1=\"Bar\"),TRUE,FALSE)";
+        sheet1.Cells["A1"].Value = "Bar";
+        sheet2.Cells["A1"].Value = "Foo";
+        IExcelDataValidationCustom? v = sheet1.Cells["A1"].DataValidation.AddCustomDataValidation();
+        v.ShowErrorMessage = true;
+        v.ShowInputMessage = true;
+        v.AllowBlank = false;
+        v.Formula.ExcelFormula = "IF(AND(Sheet2!A1=\"Foo\",A1=\"Bar\"),TRUE,FALSE)";
 
 
-            SaveWorkbook("MoveToExtLst_Custom.xlsx", this._unitTestPackage);
-        }
+        SaveWorkbook("MoveToExtLst_Custom.xlsx", this._unitTestPackage);
+    }
 
-        [TestMethod]
-        public void ShoulAddListValidationOnSameWorksheet()
-        {
-            ExcelWorksheet? sheet1 = _package.Workbook.Worksheets.Add("extlist_sheet1");
+    [TestMethod]
+    public void ShoulAddListValidationOnSameWorksheet()
+    {
+        ExcelWorksheet? sheet1 = _package.Workbook.Worksheets.Add("extlist_sheet1");
 
-            IExcelDataValidationList? v = sheet1.Cells["A1"].DataValidation.AddListDataValidation();
-            v.Formula.ExcelFormula = "B1:B2";
-            v.ShowErrorMessage = true;
-            v.ShowInputMessage = true;
-            v.AllowBlank = true;
+        IExcelDataValidationList? v = sheet1.Cells["A1"].DataValidation.AddListDataValidation();
+        v.Formula.ExcelFormula = "B1:B2";
+        v.ShowErrorMessage = true;
+        v.ShowInputMessage = true;
+        v.AllowBlank = true;
 
-            sheet1.Cells["B1"].Value = "option1";
-            sheet1.Cells["B2"].Value = "option2";
+        sheet1.Cells["B1"].Value = "option1";
+        sheet1.Cells["B2"].Value = "option2";
 
-            SaveWorkbook("DvSameWorksheet.xlsx", this._unitTestPackage);
-        }
+        SaveWorkbook("DvSameWorksheet.xlsx", this._unitTestPackage);
+    }
 
-        [TestMethod]
-        public void ShouldMoveListValidationToExtListAndBack()
-        {
-            ExcelWorksheet? sheet1 = this._unitTestPackage.Workbook.Worksheets.Add("extlist_sheet1");
-            ExcelWorksheet? sheet2 = this._unitTestPackage.Workbook.Worksheets.Add("extlist_sheet2");
+    [TestMethod]
+    public void ShouldMoveListValidationToExtListAndBack()
+    {
+        ExcelWorksheet? sheet1 = this._unitTestPackage.Workbook.Worksheets.Add("extlist_sheet1");
+        ExcelWorksheet? sheet2 = this._unitTestPackage.Workbook.Worksheets.Add("extlist_sheet2");
 
-            IExcelDataValidationList? v = sheet1.Cells["A1"].DataValidation.AddListDataValidation();
-            v.ShowErrorMessage = true;
-            v.ShowInputMessage = true;
-            v.AllowBlank = true;
-            v.Formula.ExcelFormula = "extlist_sheet2!A1:A2";
-            v.Formula.ExcelFormula = "B1:B2";
+        IExcelDataValidationList? v = sheet1.Cells["A1"].DataValidation.AddListDataValidation();
+        v.ShowErrorMessage = true;
+        v.ShowInputMessage = true;
+        v.AllowBlank = true;
+        v.Formula.ExcelFormula = "extlist_sheet2!A1:A2";
+        v.Formula.ExcelFormula = "B1:B2";
 
-            sheet1.Cells["B1"].Value = "option1";
-            sheet1.Cells["B2"].Value = "option2";
+        sheet1.Cells["B1"].Value = "option1";
+        sheet1.Cells["B2"].Value = "option2";
 
-            SaveWorkbook("MoveToExtLst.xlsx", this._unitTestPackage);
-        }
+        SaveWorkbook("MoveToExtLst.xlsx", this._unitTestPackage);
+    }
 
-        [TestMethod]
-        public void RemoveDataValidation()
-        {
-            using ExcelPackage? p1 = new ExcelPackage();
-            ExcelWorksheet? sheet = p1.Workbook.Worksheets.Add("test");
-            IExcelDataValidationInt? validation = sheet.DataValidations.AddIntegerValidation("A1");
-            validation.Formula.Value = 1;
-            validation.Formula2.Value = 2;
-            validation.ShowErrorMessage = true;
-            validation.Error = "Error!";
+    [TestMethod]
+    public void RemoveDataValidation()
+    {
+        using ExcelPackage? p1 = new ExcelPackage();
+        ExcelWorksheet? sheet = p1.Workbook.Worksheets.Add("test");
+        IExcelDataValidationInt? validation = sheet.DataValidations.AddIntegerValidation("A1");
+        validation.Formula.Value = 1;
+        validation.Formula2.Value = 2;
+        validation.ShowErrorMessage = true;
+        validation.Error = "Error!";
 
-            p1.Save();
-            using ExcelPackage? p2 = new ExcelPackage(p1.Stream);
-            sheet = p2.Workbook.Worksheets.First();
-            IExcelDataValidation? dv = sheet.DataValidations.First();
-            sheet.DataValidations.Remove(dv);
-            SaveWorkbook("RemoveDataValidation.xlsx", p2);
-        }
+        p1.Save();
+        using ExcelPackage? p2 = new ExcelPackage(p1.Stream);
+        sheet = p2.Workbook.Worksheets.First();
+        IExcelDataValidation? dv = sheet.DataValidations.First();
+        sheet.DataValidations.Remove(dv);
+        SaveWorkbook("RemoveDataValidation.xlsx", p2);
     }
 }

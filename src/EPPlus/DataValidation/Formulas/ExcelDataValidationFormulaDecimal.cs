@@ -15,32 +15,31 @@ using OfficeOpenXml.DataValidation.Formulas.Contracts;
 using System;
 using System.Globalization;
 
-namespace OfficeOpenXml.DataValidation.Formulas
+namespace OfficeOpenXml.DataValidation.Formulas;
+
+/// <summary>
+/// 
+/// </summary>
+internal class ExcelDataValidationFormulaDecimal : ExcelDataValidationFormulaValue<double?>, IExcelDataValidationFormulaDecimal
 {
-    /// <summary>
-    /// 
-    /// </summary>
-    internal class ExcelDataValidationFormulaDecimal : ExcelDataValidationFormulaValue<double?>, IExcelDataValidationFormulaDecimal
+    public ExcelDataValidationFormulaDecimal(string formula, string validationUid, string sheetName, Action<OnFormulaChangedEventArgs> extHandler)
+        : base(validationUid, sheetName, extHandler)
     {
-        public ExcelDataValidationFormulaDecimal(string formula, string validationUid, string sheetName, Action<OnFormulaChangedEventArgs> extHandler)
-            : base(validationUid, sheetName, extHandler)
+        if (!string.IsNullOrEmpty(formula))
         {
-            if (!string.IsNullOrEmpty(formula))
+            if (double.TryParse(formula, NumberStyles.Any, CultureInfo.InvariantCulture, out double dValue))
             {
-                if (double.TryParse(formula, NumberStyles.Any, CultureInfo.InvariantCulture, out double dValue))
-                {
-                    this.Value = dValue;
-                }
-                else
-                {
-                    this.ExcelFormula = formula;
-                }
+                this.Value = dValue;
+            }
+            else
+            {
+                this.ExcelFormula = formula;
             }
         }
+    }
 
-        protected override string GetValueAsString()
-        {
-            return this.Value.HasValue ? this.Value.Value.ToString("R15", CultureInfo.InvariantCulture) : string.Empty;
-        }
+    protected override string GetValueAsString()
+    {
+        return this.Value.HasValue ? this.Value.Value.ToString("R15", CultureInfo.InvariantCulture) : string.Empty;
     }
 }

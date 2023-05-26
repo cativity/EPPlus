@@ -17,24 +17,23 @@ using System.Text;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Metadata;
 using OfficeOpenXml.FormulaParsing.ExpressionGraph;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance;
+
+[FunctionMetadata(
+                     Category = ExcelFunctionCategory.Financial,
+                     EPPlusVersion = "5.2",
+                     Description = "Returns the interest paid during a specified period of an investment")]
+internal class IsPmt : ExcelFunction
 {
-    [FunctionMetadata(
-        Category = ExcelFunctionCategory.Financial,
-        EPPlusVersion = "5.2",
-        Description = "Returns the interest paid during a specified period of an investment")]
-    internal class IsPmt : ExcelFunction
+    public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
     {
-        public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
-        {
-            ValidateArguments(arguments, 4);
-            double rate = this.ArgToDecimal(arguments, 0);
-            int per = this.ArgToInt(arguments, 1);
-            int nper = this.ArgToInt(arguments, 2);
-            double pv = this.ArgToDecimal(arguments, 3);
-            double result = -pv * rate;
-            result -= result / nper * per;
-            return this.CreateResult(result, DataType.Decimal);
-        }
+        ValidateArguments(arguments, 4);
+        double rate = this.ArgToDecimal(arguments, 0);
+        int per = this.ArgToInt(arguments, 1);
+        int nper = this.ArgToInt(arguments, 2);
+        double pv = this.ArgToDecimal(arguments, 3);
+        double result = -pv * rate;
+        result -= result / nper * per;
+        return this.CreateResult(result, DataType.Decimal);
     }
 }

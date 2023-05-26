@@ -16,181 +16,180 @@ using System;
 using System.Security.Cryptography;
 using System.Xml;
 
-namespace OfficeOpenXml
+namespace OfficeOpenXml;
+
+/// <summary>
+/// File sharing settings for the workbook.
+/// </summary>
+public class ExcelWriteProtection : XmlHelper
 {
-    /// <summary>
-    /// File sharing settings for the workbook.
-    /// </summary>
-    public class ExcelWriteProtection : XmlHelper
+    internal ExcelWriteProtection(XmlNamespaceManager nameSpaceManager, XmlNode topNode, string[] schemaNodeOrder) : base(nameSpaceManager, topNode)
     {
-        internal ExcelWriteProtection(XmlNamespaceManager nameSpaceManager, XmlNode topNode, string[] schemaNodeOrder) : base(nameSpaceManager, topNode)
+        this.SchemaNodeOrder = schemaNodeOrder;
+    }
+    /// <summary>
+    /// Writes protectes the workbook with a password. 
+    /// EPPlus uses SHA-512 as hash algorithm with a spin count of 100000.
+    /// </summary>
+    /// <param name="userName">The name of the person enforcing the write protection</param>
+    /// <param name="password">The password. Setting the password to null or empty will remove the read-only mode.</param>
+    public void SetReadOnly(string userName, string password)
+    {
+        this.UserName = userName;
+        if (string.IsNullOrEmpty(password?.Trim()))
         {
-            this.SchemaNodeOrder = schemaNodeOrder;
-        }
-        /// <summary>
-        /// Writes protectes the workbook with a password. 
-        /// EPPlus uses SHA-512 as hash algorithm with a spin count of 100000.
-        /// </summary>
-        /// <param name="userName">The name of the person enforcing the write protection</param>
-        /// <param name="password">The password. Setting the password to null or empty will remove the read-only mode.</param>
-        public void SetReadOnly(string userName, string password)
-        {
-            this.UserName = userName;
-            if (string.IsNullOrEmpty(password?.Trim()))
-            {
-                this.RemovePasswordAttributes();
-                return;
-            }
-
-            this.HashAlgorithm = eHashAlgorithm.SHA512;
-
-            byte[]? s = new byte[16];
-            RandomNumberGenerator? rnd = RandomNumberGenerator.Create();
-            rnd.GetBytes(s);
-            this.SaltValue = s;
-            this.SpinCount = 100000;
-
-            this.HashValue = EncryptedPackageHandler.GetPasswordHashSpinAppending(SHA512.Create(), this.SaltValue, password, this.SpinCount, 64);
+            this.RemovePasswordAttributes();
+            return;
         }
 
-        private void RemovePasswordAttributes()
-        {
-            XmlElement? node = (XmlElement)this.GetNode("d:fileSharing");            
-            node.RemoveAttribute("spinCount");
-            node.RemoveAttribute("saltValue");
-            node.RemoveAttribute("hashValue");
-        }
-        /// <summary>
-        /// Remove any write protection set on the workbook
-        /// </summary>
-        public void RemoveReadOnly()
-        {
-            this.DeleteNode("d:fileSharing");
-        }
-        internal eHashAlgorithm HashAlgorithm
-        {
-            get
-            {
-                return GetHashAlogorithm(this.GetXmlNodeString("d:fileSharing/@algorithmName"));
-            }
-            private set
-            {
-                this.SetXmlNodeString("d:fileSharing/@algorithmName", SetHashAlogorithm(value));
-            }
-        }
+        this.HashAlgorithm = eHashAlgorithm.SHA512;
 
-        private static string SetHashAlogorithm(eHashAlgorithm value)
-        {
-            switch(value)
-            {
-                case eHashAlgorithm.SHA512:
-                    return "SHA-512";
-                default:
-                    throw new NotSupportedException("EPPlus only support SHA 512 hashing for file sharing");
-            }
-        }
+        byte[]? s = new byte[16];
+        RandomNumberGenerator? rnd = RandomNumberGenerator.Create();
+        rnd.GetBytes(s);
+        this.SaltValue = s;
+        this.SpinCount = 100000;
 
-        private static eHashAlgorithm GetHashAlogorithm(string v)
-        {
-            switch (v)
-            {
-                case "RIPEMD-128":
-                    return eHashAlgorithm.RIPEMD128;
-                case "RIPEMD-160":
-                    return eHashAlgorithm.RIPEMD160;
-                case "SHA-1":
-                    return eHashAlgorithm.SHA1;
-                case "SHA-256":
-                    return eHashAlgorithm.SHA256;
-                case "SHA-384":
-                    return eHashAlgorithm.SHA384;
-                case "SHA-512":
-                    return eHashAlgorithm.SHA512;
-                default:
-                    return v.ToEnum(eHashAlgorithm.SHA512);
-            }
-        }
+        this.HashValue = EncryptedPackageHandler.GetPasswordHashSpinAppending(SHA512.Create(), this.SaltValue, password, this.SpinCount, 64);
+    }
 
-        internal int SpinCount
+    private void RemovePasswordAttributes()
+    {
+        XmlElement? node = (XmlElement)this.GetNode("d:fileSharing");            
+        node.RemoveAttribute("spinCount");
+        node.RemoveAttribute("saltValue");
+        node.RemoveAttribute("hashValue");
+    }
+    /// <summary>
+    /// Remove any write protection set on the workbook
+    /// </summary>
+    public void RemoveReadOnly()
+    {
+        this.DeleteNode("d:fileSharing");
+    }
+    internal eHashAlgorithm HashAlgorithm
+    {
+        get
         {
-            get
-            {
-                return this.GetXmlNodeInt("d:fileSharing/@spinCount");
-            }
-            set
-            {
-                this.SetXmlNodeInt("d:fileSharing/@spinCount", value);
-            }
+            return GetHashAlogorithm(this.GetXmlNodeString("d:fileSharing/@algorithmName"));
         }
-        internal byte[] SaltValue
+        private set
         {
-            get
-            {
-                string? s = this.GetXmlNodeString("d:fileSharing/@saltValue");
-                if (!string.IsNullOrEmpty(s))
-                {
-                    return Convert.FromBase64String(s);
-                }
-                return null;
-            }
-            set
-            {
-                this.SetXmlNodeString("d:fileSharing/@saltValue", Convert.ToBase64String(value));
-            }
+            this.SetXmlNodeString("d:fileSharing/@algorithmName", SetHashAlogorithm(value));
         }
-        internal byte[] HashValue
+    }
+
+    private static string SetHashAlogorithm(eHashAlgorithm value)
+    {
+        switch(value)
         {
-            get
-            {
-                string? s = this.GetXmlNodeString("d:fileSharing/@hashValue");
-                if (!string.IsNullOrEmpty(s))
-                {
-                    return Convert.FromBase64String(s);
-                }
-                return null;
-            }
-            set
-            {
-                this.SetXmlNodeString("d:fileSharing/@hashValue", Convert.ToBase64String(value));
-            }
+            case eHashAlgorithm.SHA512:
+                return "SHA-512";
+            default:
+                throw new NotSupportedException("EPPlus only support SHA 512 hashing for file sharing");
         }
-        /// <summary>
-        /// If the workbook is set to readonly and has a password set.
-        /// </summary>
-        public bool IsReadOnly
+    }
+
+    private static eHashAlgorithm GetHashAlogorithm(string v)
+    {
+        switch (v)
         {
-            get
-            {
-                return this.ExistsNode("d:fileSharing/@hashValue");
-            }
+            case "RIPEMD-128":
+                return eHashAlgorithm.RIPEMD128;
+            case "RIPEMD-160":
+                return eHashAlgorithm.RIPEMD160;
+            case "SHA-1":
+                return eHashAlgorithm.SHA1;
+            case "SHA-256":
+                return eHashAlgorithm.SHA256;
+            case "SHA-384":
+                return eHashAlgorithm.SHA384;
+            case "SHA-512":
+                return eHashAlgorithm.SHA512;
+            default:
+                return v.ToEnum(eHashAlgorithm.SHA512);
         }
-        /// <summary>
-        /// The name of the person enforcing the write protection.
-        /// </summary>
-        public string UserName
+    }
+
+    internal int SpinCount
+    {
+        get
         {
-            get
-            {
-                return this.GetXmlNodeString("d:fileSharing/@userName");
-            }
-            set
-            {
-                this.SetXmlNodeString("d:fileSharing/@userName", value);
-            }
+            return this.GetXmlNodeInt("d:fileSharing/@spinCount");
         }
-        /// <summary>
-        /// If the author recommends that you open the workbook in read-only mode.
-        /// </summary>
-        public bool ReadOnlyRecommended
+        set
         {
-            get
+            this.SetXmlNodeInt("d:fileSharing/@spinCount", value);
+        }
+    }
+    internal byte[] SaltValue
+    {
+        get
+        {
+            string? s = this.GetXmlNodeString("d:fileSharing/@saltValue");
+            if (!string.IsNullOrEmpty(s))
             {
-                return this.GetXmlNodeBool("d:fileSharing/@readOnlyRecommended");
+                return Convert.FromBase64String(s);
             }
-            set
+            return null;
+        }
+        set
+        {
+            this.SetXmlNodeString("d:fileSharing/@saltValue", Convert.ToBase64String(value));
+        }
+    }
+    internal byte[] HashValue
+    {
+        get
+        {
+            string? s = this.GetXmlNodeString("d:fileSharing/@hashValue");
+            if (!string.IsNullOrEmpty(s))
             {
-                this.SetXmlNodeBool("d:fileSharing/@readOnlyRecommended", value);
+                return Convert.FromBase64String(s);
             }
+            return null;
+        }
+        set
+        {
+            this.SetXmlNodeString("d:fileSharing/@hashValue", Convert.ToBase64String(value));
+        }
+    }
+    /// <summary>
+    /// If the workbook is set to readonly and has a password set.
+    /// </summary>
+    public bool IsReadOnly
+    {
+        get
+        {
+            return this.ExistsNode("d:fileSharing/@hashValue");
+        }
+    }
+    /// <summary>
+    /// The name of the person enforcing the write protection.
+    /// </summary>
+    public string UserName
+    {
+        get
+        {
+            return this.GetXmlNodeString("d:fileSharing/@userName");
+        }
+        set
+        {
+            this.SetXmlNodeString("d:fileSharing/@userName", value);
+        }
+    }
+    /// <summary>
+    /// If the author recommends that you open the workbook in read-only mode.
+    /// </summary>
+    public bool ReadOnlyRecommended
+    {
+        get
+        {
+            return this.GetXmlNodeBool("d:fileSharing/@readOnlyRecommended");
+        }
+        set
+        {
+            this.SetXmlNodeBool("d:fileSharing/@readOnlyRecommended", value);
         }
     }
 }

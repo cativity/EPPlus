@@ -13,28 +13,27 @@
  *************************************************************************************************/
 using System;
 using System.Xml;
-namespace OfficeOpenXml.Style.Dxf
+namespace OfficeOpenXml.Style.Dxf;
+
+/// <summary>
+/// Differential formatting record used in conditional formatting
+/// </summary>
+public class ExcelDxfSlicerStyle : ExcelDxfStyleFont
 {
-    /// <summary>
-    /// Differential formatting record used in conditional formatting
-    /// </summary>
-    public class ExcelDxfSlicerStyle : ExcelDxfStyleFont
+    internal ExcelDxfSlicerStyle(XmlNamespaceManager nameSpaceManager, XmlNode topNode, ExcelStyles styles, Action<eStyleClass, eStyleProperty, object> callback)
+        : base(nameSpaceManager, topNode, styles, callback)
     {
-        internal ExcelDxfSlicerStyle(XmlNamespaceManager nameSpaceManager, XmlNode topNode, ExcelStyles styles, Action<eStyleClass, eStyleProperty, object> callback)
-            : base(nameSpaceManager, topNode, styles, callback)
-        {
-        }
-        internal override DxfStyleBase Clone()
-        {
-            ExcelDxfSlicerStyle? s = new ExcelDxfSlicerStyle(this._helper.NameSpaceManager, null, this._styles, this._callback)
-            {
-                Font = (ExcelDxfFont)this.Font.Clone(),
-                Fill = (ExcelDxfFill)this.Fill.Clone(),
-                Border = (ExcelDxfBorderBase)this.Border.Clone(),
-            };
-
-            return s;
-        }
-
     }
+    internal override DxfStyleBase Clone()
+    {
+        ExcelDxfSlicerStyle? s = new ExcelDxfSlicerStyle(this._helper.NameSpaceManager, null, this._styles, this._callback)
+        {
+            Font = (ExcelDxfFont)this.Font.Clone(),
+            Fill = (ExcelDxfFill)this.Fill.Clone(),
+            Border = (ExcelDxfBorderBase)this.Border.Clone(),
+        };
+
+        return s;
+    }
+
 }

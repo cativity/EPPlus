@@ -37,42 +37,41 @@ using System.Drawing;
 using System.IO;
 using System.Xml;
 
-namespace EPPlusTest.Drawing.Chart.Styling
+namespace EPPlusTest.Drawing.Chart.Styling;
+
+[TestClass]
+public class ChartTemplateTests : TestBase
 {
-    [TestClass]
-    public class ChartTemplateTests : TestBase
+    static ExcelPackage _pck;
+    [ClassInitialize]
+    public static void Init(TestContext context)
     {
-        static ExcelPackage _pck;
-        [ClassInitialize]
-        public static void Init(TestContext context)
-        {
-            _pck = OpenPackage("ChartTemplate.xlsx", true);
-        }
-        [ClassCleanup]
-        public static void Cleanup()
-        {
-            SaveAndCleanup(_pck);
-        }
-        [TestMethod]
-        public void LoadChartStyle()
-        {
-            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("ChartTemplate");
-            LoadTestdata(ws);
+        _pck = OpenPackage("ChartTemplate.xlsx", true);
+    }
+    [ClassCleanup]
+    public static void Cleanup()
+    {
+        SaveAndCleanup(_pck);
+    }
+    [TestMethod]
+    public void LoadChartStyle()
+    {
+        ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("ChartTemplate");
+        LoadTestdata(ws);
 
-            ExcelLineChart? chart=ws.Drawings.AddLineChart("LineChart1", eLineChartType.Line);
-            ExcelLineChartSerie? serie = chart.Series.Add("D2:D100", "A2:A100");
+        ExcelLineChart? chart=ws.Drawings.AddLineChart("LineChart1", eLineChartType.Line);
+        ExcelLineChartSerie? serie = chart.Series.Add("D2:D100", "A2:A100");
 
-            chart.StyleManager.LoadTemplateStyles(Resources.TestLine3Crtx);
-        }
-        [TestMethod]
-        public void AddChartFromTemplate()
-        {
-            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("NewChartFromTemplate");
-            LoadTestdata(ws);            
-            ExcelChart? chart = ws.Drawings.AddChartFromTemplate(Resources.TestLine3Crtx, "LineChart1", null);
-            chart.Series.Add("D2:D100","A2:A100");
-            chart.Series.Add("c2:c100", "A2:A100");
-            chart.StyleManager.ApplyStyles();
-        }
+        chart.StyleManager.LoadTemplateStyles(Resources.TestLine3Crtx);
+    }
+    [TestMethod]
+    public void AddChartFromTemplate()
+    {
+        ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("NewChartFromTemplate");
+        LoadTestdata(ws);            
+        ExcelChart? chart = ws.Drawings.AddChartFromTemplate(Resources.TestLine3Crtx, "LineChart1", null);
+        chart.Series.Add("D2:D100","A2:A100");
+        chart.Series.Add("c2:c100", "A2:A100");
+        chart.StyleManager.ApplyStyles();
     }
 }

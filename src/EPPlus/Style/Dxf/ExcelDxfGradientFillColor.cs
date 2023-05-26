@@ -13,77 +13,76 @@
 using System;
 using System.Xml;
 
-namespace OfficeOpenXml.Style.Dxf
+namespace OfficeOpenXml.Style.Dxf;
+
+/// <summary>
+/// Represents a position of a color in a gradient list for differencial styles.
+/// </summary>
+public class ExcelDxfGradientFillColor : DxfStyleBase
 {
-    /// <summary>
-    /// Represents a position of a color in a gradient list for differencial styles.
-    /// </summary>
-    public class ExcelDxfGradientFillColor : DxfStyleBase
+    internal ExcelDxfGradientFillColor(ExcelStyles styles, double position, Action<eStyleClass, eStyleProperty, object> callback)
+        : base(styles, callback)
     {
-        internal ExcelDxfGradientFillColor(ExcelStyles styles, double position, Action<eStyleClass, eStyleProperty, object> callback)
-            : base(styles, callback)
-        {
-            this.Position = position;
-            eStyleClass styleClass = position==0 ? eStyleClass.FillGradientColor1 : eStyleClass.FillGradientColor2;
-            this.Color = new ExcelDxfColor(styles, styleClass, callback);
-        }
-        /// <summary>
-        /// The position of the color 
-        /// </summary>
-        public double Position 
-        {
-            get;
-        }
-        /// <summary>
-        /// The color to use at the position
-        /// </summary>
-        public ExcelDxfColor Color { get; internal set; }
+        this.Position = position;
+        eStyleClass styleClass = position==0 ? eStyleClass.FillGradientColor1 : eStyleClass.FillGradientColor2;
+        this.Color = new ExcelDxfColor(styles, styleClass, callback);
+    }
+    /// <summary>
+    /// The position of the color 
+    /// </summary>
+    public double Position 
+    {
+        get;
+    }
+    /// <summary>
+    /// The color to use at the position
+    /// </summary>
+    public ExcelDxfColor Color { get; internal set; }
 
-        /// <summary>
-        /// If the object has any properties set
-        /// </summary>
-        public override bool HasValue
+    /// <summary>
+    /// If the object has any properties set
+    /// </summary>
+    public override bool HasValue
+    {
+        get
         {
-            get
-            {
-                return this.Color.HasValue;
-            }
+            return this.Color.HasValue;
         }
+    }
 
-        internal override string Id
+    internal override string Id
+    {
+        get
         {
-            get
-            {
-                return this.Position.ToString() + "|" + this.Color.Id;
-            }
+            return this.Position.ToString() + "|" + this.Color.Id;
         }
+    }
 
-        /// <summary>
-        /// Clears all colors
-        /// </summary>
-        public override void Clear()
-        {
-            this.Color.Clear();
-        }
+    /// <summary>
+    /// Clears all colors
+    /// </summary>
+    public override void Clear()
+    {
+        this.Color.Clear();
+    }
 
-        internal override DxfStyleBase Clone()
+    internal override DxfStyleBase Clone()
+    {
+        return new ExcelDxfGradientFillColor(this._styles, this.Position, this._callback)
         {
-            return new ExcelDxfGradientFillColor(this._styles, this.Position, this._callback)
-            {
-                Color = (ExcelDxfColor)this.Color.Clone()
-            };
-        }
+            Color = (ExcelDxfColor)this.Color.Clone()
+        };
+    }
 
-        internal override void CreateNodes(XmlHelper helper, string path)
-        {
-            XmlNode? node = helper.CreateNode(path + "d:stop", false, true);
-            XmlHelper? stopHelper = XmlHelperFactory.Create(helper.NameSpaceManager, node);
-            SetValue(stopHelper, "@position", this.Position / 100);
-            SetValueColor(stopHelper, "d:color", this.Color);
-        }
-        internal override void SetStyle()
-        {
-            this.Color.SetStyle();
-        }
+    internal override void CreateNodes(XmlHelper helper, string path)
+    {
+        XmlNode? node = helper.CreateNode(path + "d:stop", false, true);
+        XmlHelper? stopHelper = XmlHelperFactory.Create(helper.NameSpaceManager, node);
+        SetValue(stopHelper, "@position", this.Position / 100);
+        SetValueColor(stopHelper, "d:color", this.Color);
+    }
+    internal override void SetStyle()
+    {
+        this.Color.SetStyle();
     }
 }

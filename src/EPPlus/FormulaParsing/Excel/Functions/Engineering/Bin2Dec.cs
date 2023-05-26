@@ -17,33 +17,32 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Engineering
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Engineering;
+
+[FunctionMetadata(
+                     Category = ExcelFunctionCategory.Engineering,
+                     EPPlusVersion = "5.1",
+                     Description = "Converts a binary number to a decimal")]
+internal class Bin2Dec : ExcelFunction
 {
-    [FunctionMetadata(
-        Category = ExcelFunctionCategory.Engineering,
-        EPPlusVersion = "5.1",
-        Description = "Converts a binary number to a decimal")]
-    internal class Bin2Dec : ExcelFunction
+    public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
     {
-        public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
+        ValidateArguments(arguments, 1);
+        string? number = ArgToString(arguments, 0);
+        if (number.Length > 10)
         {
-            ValidateArguments(arguments, 1);
-            string? number = ArgToString(arguments, 0);
-            if (number.Length > 10)
-            {
-                return this.CreateResult(eErrorType.Num);
-            }
-
-            if (number.Length < 10)
-            {
-                return this.CreateResult(Convert.ToInt32(number, 2), DataType.Decimal);
-            }
-            if (!BinaryHelper.TryParseBinaryToDecimal(number, 2, out int result))
-            {
-                return this.CreateResult(eErrorType.Num);
-            }
-
-            return this.CreateResult(result, DataType.Integer);
+            return this.CreateResult(eErrorType.Num);
         }
+
+        if (number.Length < 10)
+        {
+            return this.CreateResult(Convert.ToInt32(number, 2), DataType.Decimal);
+        }
+        if (!BinaryHelper.TryParseBinaryToDecimal(number, 2, out int result))
+        {
+            return this.CreateResult(eErrorType.Num);
+        }
+
+        return this.CreateResult(result, DataType.Integer);
     }
 }

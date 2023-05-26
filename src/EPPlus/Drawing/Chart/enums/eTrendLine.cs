@@ -10,36 +10,35 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
-namespace OfficeOpenXml.Drawing.Chart
+namespace OfficeOpenXml.Drawing.Chart;
+
+/// <summary>
+/// Type of Trendline for a chart
+/// </summary>
+public enum eTrendLine
 {
     /// <summary>
-    /// Type of Trendline for a chart
+    /// The trendline will be an exponential curve. y = abx
     /// </summary>
-    public enum eTrendLine
-    {
-        /// <summary>
-        /// The trendline will be an exponential curve. y = abx
-        /// </summary>
-        Exponential,
-        /// <summary>
-        /// The trendline will be a linear curve. y = mx + b
-        /// </summary>
-        Linear,
-        /// <summary>
-        /// The trendline will be a logarithmic curve y = a log x + b
-        /// </summary>
-        Logarithmic,
-        /// <summary>
-        /// The trendline will be the moving average.
-        /// </summary>
-        MovingAvgerage,
-        /// <summary>
-        /// The trendline will be a polynomial curve.
-        /// </summary>
-        Polynomial,
-        /// <summary>
-        /// The trendline will be a power curve. y = axb
-        /// </summary>
-        Power
-    }
+    Exponential,
+    /// <summary>
+    /// The trendline will be a linear curve. y = mx + b
+    /// </summary>
+    Linear,
+    /// <summary>
+    /// The trendline will be a logarithmic curve y = a log x + b
+    /// </summary>
+    Logarithmic,
+    /// <summary>
+    /// The trendline will be the moving average.
+    /// </summary>
+    MovingAvgerage,
+    /// <summary>
+    /// The trendline will be a polynomial curve.
+    /// </summary>
+    Polynomial,
+    /// <summary>
+    /// The trendline will be a power curve. y = axb
+    /// </summary>
+    Power
 }

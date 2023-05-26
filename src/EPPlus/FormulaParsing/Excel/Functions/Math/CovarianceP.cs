@@ -16,13 +16,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
+
+[FunctionMetadata(
+                     Category = ExcelFunctionCategory.Statistical,
+                     EPPlusVersion = "5.5",
+                     Description = "Returns covariance, the average of the products of deviations for each data point pair in two data sets.")]
+internal class CovarianceP : Covar
 {
-    [FunctionMetadata(
-        Category = ExcelFunctionCategory.Statistical,
-        EPPlusVersion = "5.5",
-        Description = "Returns covariance, the average of the products of deviations for each data point pair in two data sets.")]
-    internal class CovarianceP : Covar
-    {
-    }
 }

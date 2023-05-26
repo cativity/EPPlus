@@ -15,41 +15,40 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace OfficeOpenXml.FormulaParsing.ExpressionGraph
+namespace OfficeOpenXml.FormulaParsing.ExpressionGraph;
+
+public class EnumerableExpression : Expression
 {
-    public class EnumerableExpression : Expression
+    public EnumerableExpression()
+        : this(new ExpressionCompiler())
     {
-        public EnumerableExpression()
-            : this(new ExpressionCompiler())
+
+    }
+
+    public EnumerableExpression(IExpressionCompiler expressionCompiler)
+    {
+        this._expressionCompiler = expressionCompiler;
+    }
+
+    private readonly IExpressionCompiler _expressionCompiler;
+
+    public override bool IsGroupedExpression
+    {
+        get { return false; }
+    }
+
+    public override Expression PrepareForNextChild()
+    {
+        return this;
+    }
+
+    public override CompileResult Compile()
+    {
+        List<object>? result = new List<object>();
+        foreach (Expression? childExpression in this.Children)
         {
-
+            result.Add(this._expressionCompiler.Compile(new List<Expression>{ childExpression }).Result);
         }
-
-        public EnumerableExpression(IExpressionCompiler expressionCompiler)
-        {
-            this._expressionCompiler = expressionCompiler;
-        }
-
-        private readonly IExpressionCompiler _expressionCompiler;
-
-        public override bool IsGroupedExpression
-        {
-            get { return false; }
-        }
-
-        public override Expression PrepareForNextChild()
-        {
-            return this;
-        }
-
-        public override CompileResult Compile()
-        {
-            List<object>? result = new List<object>();
-            foreach (Expression? childExpression in this.Children)
-            {
-                result.Add(this._expressionCompiler.Compile(new List<Expression>{ childExpression }).Result);
-            }
-            return new CompileResult(result, DataType.Enumerable);
-        }
+        return new CompileResult(result, DataType.Enumerable);
     }
 }

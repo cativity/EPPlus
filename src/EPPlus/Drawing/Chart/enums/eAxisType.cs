@@ -10,25 +10,24 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
-namespace OfficeOpenXml.Drawing.Chart
+namespace OfficeOpenXml.Drawing.Chart;
+
+internal enum eAxisType
 {
-    internal enum eAxisType
-    {
-        /// <summary>
-        /// Value axis
-        /// </summary>
-        Val,
-        /// <summary>
-        /// Category axis
-        /// </summary>
-        Cat,
-        /// <summary>
-        /// Date axis
-        /// </summary>
-        Date,
-        /// <summary>
-        /// Series axis
-        /// </summary>
-        Serie
-    }
+    /// <summary>
+    /// Value axis
+    /// </summary>
+    Val,
+    /// <summary>
+    /// Category axis
+    /// </summary>
+    Cat,
+    /// <summary>
+    /// Date axis
+    /// </summary>
+    Date,
+    /// <summary>
+    /// Series axis
+    /// </summary>
+    Serie
 }

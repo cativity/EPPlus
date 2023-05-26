@@ -1,9 +1,8 @@
 ﻿using System;
 
-namespace OfficeOpenXml.DataValidation.Events
+namespace OfficeOpenXml.DataValidation.Events;
+
+public class OnFormulaChangedEventArgs : EventArgs
 {
-    public class OnFormulaChangedEventArgs : EventArgs
-    {
-        internal bool isExt = false;
-    }
+    internal bool isExt = false;
 }

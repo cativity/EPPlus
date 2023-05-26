@@ -22,381 +22,380 @@ using System.Text;
  using OfficeOpenXml.Table.PivotTable;
  using static OfficeOpenXml.ExcelAddressBase;
 
-namespace OfficeOpenXml.Core.Worksheet
+namespace OfficeOpenXml.Core.Worksheet;
+
+internal static class WorksheetRangeHelper
 {
-    internal static class WorksheetRangeHelper
+    internal static void FixMergedCells(ExcelWorksheet ws, ExcelRangeBase range, eShiftTypeInsert shift)
     {
-        internal static void FixMergedCells(ExcelWorksheet ws, ExcelRangeBase range, eShiftTypeInsert shift)
+        if(shift==eShiftTypeInsert.Down)
         {
-            if(shift==eShiftTypeInsert.Down)
-            {
-                FixMergedCellsRow(ws, range._fromRow, range.Rows, false, range._fromCol, range._toCol);
-            }
-            else
-            {
-                FixMergedCellsColumn(ws, range._fromCol, range.Columns, false, range._fromRow, range._toRow);
-            }
+            FixMergedCellsRow(ws, range._fromRow, range.Rows, false, range._fromCol, range._toCol);
         }
-        internal static void FixMergedCells(ExcelWorksheet ws, ExcelRangeBase range, eShiftTypeDelete shift)
+        else
         {
-            if (shift == eShiftTypeDelete.Up)
-            {
-                FixMergedCellsRow(ws, range._fromRow, range.Rows, true, range._fromCol, range._toCol);
-            }
-            else
-            {
-                FixMergedCellsColumn(ws, range._fromCol, range.Columns, true, range._fromRow, range._toRow);
-            }
+            FixMergedCellsColumn(ws, range._fromCol, range.Columns, false, range._fromRow, range._toRow);
         }
+    }
+    internal static void FixMergedCells(ExcelWorksheet ws, ExcelRangeBase range, eShiftTypeDelete shift)
+    {
+        if (shift == eShiftTypeDelete.Up)
+        {
+            FixMergedCellsRow(ws, range._fromRow, range.Rows, true, range._fromCol, range._toCol);
+        }
+        else
+        {
+            FixMergedCellsColumn(ws, range._fromCol, range.Columns, true, range._fromRow, range._toRow);
+        }
+    }
 
-        internal static void FixMergedCellsRow(ExcelWorksheet ws, int row, int rows, bool delete, int fromCol=1, int toCol=ExcelPackage.MaxColumns)
+    internal static void FixMergedCellsRow(ExcelWorksheet ws, int row, int rows, bool delete, int fromCol=1, int toCol=ExcelPackage.MaxColumns)
+    {
+        List<int> removeIndex = new List<int>();
+        for (int i = 0; i < ws._mergedCells.Count; i++)
         {
-            List<int> removeIndex = new List<int>();
-            for (int i = 0; i < ws._mergedCells.Count; i++)
+            if (!string.IsNullOrEmpty(ws._mergedCells[i]))
             {
-                if (!string.IsNullOrEmpty(ws._mergedCells[i]))
+                ExcelAddressBase addr = new ExcelAddressBase(ws._mergedCells[i]);
+
+                if (addr._fromCol >= fromCol && addr._toCol <= toCol)
                 {
-                    ExcelAddressBase addr = new ExcelAddressBase(ws._mergedCells[i]);
+                    ExcelAddressBase newAddr;
 
-                    if (addr._fromCol >= fromCol && addr._toCol <= toCol)
+                    if (delete)
                     {
-                        ExcelAddressBase newAddr;
-
-                        if (delete)
+                        newAddr = addr.DeleteRow(row, rows);
+                        if (newAddr == null)
                         {
-                            newAddr = addr.DeleteRow(row, rows);
-                            if (newAddr == null)
-                            {
-                                removeIndex.Add(i);
-                                continue;
-                            }
+                            removeIndex.Add(i);
+                            continue;
                         }
-                        else
-                        {
-                            newAddr = addr.AddRow(row, rows);
-                            if (newAddr.Address != addr.Address)
-                            {
-                                ws._mergedCells.SetIndex(newAddr, i);
-                            }
-                        }
-
+                    }
+                    else
+                    {
+                        newAddr = addr.AddRow(row, rows);
                         if (newAddr.Address != addr.Address)
                         {
-                            ws._mergedCells._list[i] = newAddr._address;
+                            ws._mergedCells.SetIndex(newAddr, i);
                         }
+                    }
+
+                    if (newAddr.Address != addr.Address)
+                    {
+                        ws._mergedCells._list[i] = newAddr._address;
                     }
                 }
             }
-            for (int i = removeIndex.Count - 1; i >= 0; i--)
-            {
-                ws._mergedCells._list[removeIndex[i]] = null;
-            }
         }
-        internal static void FixMergedCellsColumn(ExcelWorksheet ws, int column, int columns, bool delete, int fromRow = 1, int toRow = ExcelPackage.MaxRows)
+        for (int i = removeIndex.Count - 1; i >= 0; i--)
         {
-            List<int> removeIndex = new List<int>();
-            for (int i = 0; i < ws._mergedCells.Count; i++)
+            ws._mergedCells._list[removeIndex[i]] = null;
+        }
+    }
+    internal static void FixMergedCellsColumn(ExcelWorksheet ws, int column, int columns, bool delete, int fromRow = 1, int toRow = ExcelPackage.MaxRows)
+    {
+        List<int> removeIndex = new List<int>();
+        for (int i = 0; i < ws._mergedCells.Count; i++)
+        {
+            if (!string.IsNullOrEmpty(ws._mergedCells[i]))
             {
-                if (!string.IsNullOrEmpty(ws._mergedCells[i]))
+                ExcelAddressBase addr = new ExcelAddressBase(ws._mergedCells[i]);
+
+                if (addr._fromRow >= fromRow && addr._toRow <= toRow)
                 {
-                    ExcelAddressBase addr = new ExcelAddressBase(ws._mergedCells[i]);
+                    ExcelAddressBase newAddr;
 
-                    if (addr._fromRow >= fromRow && addr._toRow <= toRow)
+                    if (delete)
                     {
-                        ExcelAddressBase newAddr;
-
-                        if (delete)
+                        newAddr = addr.DeleteColumn(column, columns);
+                        if (newAddr == null)
                         {
-                            newAddr = addr.DeleteColumn(column, columns);
-                            if (newAddr == null)
-                            {
-                                removeIndex.Add(i);
-                                continue;
-                            }
+                            removeIndex.Add(i);
+                            continue;
                         }
-                        else
-                        {
-                            newAddr = addr.AddColumn(column, columns);
-                            if (newAddr.Address != addr.Address)
-                            {
-                                ws._mergedCells.SetIndex(newAddr, i);
-                            }
-                        }
-
+                    }
+                    else
+                    {
+                        newAddr = addr.AddColumn(column, columns);
                         if (newAddr.Address != addr.Address)
                         {
-                            ws._mergedCells._list[i] = newAddr._address;
+                            ws._mergedCells.SetIndex(newAddr, i);
                         }
                     }
+
+                    if (newAddr.Address != addr.Address)
+                    {
+                        ws._mergedCells._list[i] = newAddr._address;
+                    }
                 }
-            }
-            for (int i = removeIndex.Count - 1; i >= 0; i--)
-            {
-                ws._mergedCells._list[removeIndex[i]]=null;
             }
         }
-        internal static void AdjustDrawingsRow(ExcelWorksheet ws, int rowFrom, int rows, int colFrom=0, int colTo=ExcelPackage.MaxColumns)
+        for (int i = removeIndex.Count - 1; i >= 0; i--)
         {
-            List<ExcelDrawing>? deletedDrawings = new List<ExcelDrawing>();
-            foreach (ExcelDrawing drawing in ws.Drawings)
+            ws._mergedCells._list[removeIndex[i]]=null;
+        }
+    }
+    internal static void AdjustDrawingsRow(ExcelWorksheet ws, int rowFrom, int rows, int colFrom=0, int colTo=ExcelPackage.MaxColumns)
+    {
+        List<ExcelDrawing>? deletedDrawings = new List<ExcelDrawing>();
+        foreach (ExcelDrawing drawing in ws.Drawings)
+        {
+
+            if (!drawing.IsWithinColumnRange(colFrom, colTo))
             {
-
-                if (!drawing.IsWithinColumnRange(colFrom, colTo))
-                {
-                    continue;
-                }
-
-                if(drawing.CellAnchor == eEditAs.TwoCell && 
-                    rows < 0 && drawing.From.Row>=rowFrom-1 && 
-                    ((drawing.To.Row<=(rowFrom-rows-1) && drawing.To.RowOff==0) || drawing.To.Row <= (rowFrom - rows - 2))) //If delete and the entire drawing is withing the deleted range, remove it.
-                {
-                    deletedDrawings.Add(drawing);
-                    continue;
-                }
-                if (drawing.EditAs != eEditAs.Absolute)
-                {
-                    if (drawing.From.Row >= rowFrom-1)
-                    {                       
-                        if (drawing.From.Row + rows < rowFrom - 1)
-                        {
-                            drawing.From.Row = rowFrom - 1;
-                            drawing.From.RowOff = 0;
-                        }
-                        else
-                        {
-                            drawing.From.Row += rows;
-                        }
-
-                        if (drawing.CellAnchor == eEditAs.TwoCell)
-                        {
-                            if (drawing.To.Row >= rowFrom-1)
-                            {
-                                drawing.To.Row += rows;
-                            }
-                        }
-                    }
-                    else if (drawing.To != null && drawing.To.Row >= rowFrom-1)
-                    {
-                        if (drawing.EditAs == eEditAs.TwoCell)
-                        {
-                            if (drawing.To.Row + rows < rowFrom - 1)
-                            {
-                                drawing.To.Row = rowFrom - 1;
-                                drawing.To.RowOff = 0;
-                            }
-                            else
-                            {
-                                drawing.To.Row += rows;
-                            }
-                        }
-                    }
-                    if (drawing.From.Row < 0)
-                    {
-                        drawing.From.Row = 0;
-                    }
-
-                    drawing.AdjustPositionAndSize();
-                }
+                continue;
             }
 
-            deletedDrawings.ForEach(d => ws.Drawings.Remove(d));
-        }
-        internal static void AdjustDrawingsColumn(ExcelWorksheet ws, int columnFrom, int columns, int rowFrom = 0, int rowTo = ExcelPackage.MaxRows)
-        {
-            List<ExcelDrawing>? deletedDrawings = new List<ExcelDrawing>();
-            foreach (ExcelDrawing drawing in ws.Drawings)
+            if(drawing.CellAnchor == eEditAs.TwoCell && 
+               rows < 0 && drawing.From.Row>=rowFrom-1 && 
+               ((drawing.To.Row<=(rowFrom-rows-1) && drawing.To.RowOff==0) || drawing.To.Row <= (rowFrom - rows - 2))) //If delete and the entire drawing is withing the deleted range, remove it.
             {
-                if(!drawing.IsWithinRowRange(rowFrom, rowTo))
-                {
-                    continue;
-                }
-
-                if (drawing.CellAnchor==eEditAs.TwoCell && 
-                    columns < 0 && drawing.From.Column >= columnFrom - 1 &&
-                    ((drawing.To.Column <= (columnFrom - columns - 1) && drawing.To.ColumnOff == 0) || drawing.To.Column <= (columnFrom - columns - 2))) //If delete and the entire drawing is withing the deleted range, remove it.
-                {
-                    deletedDrawings.Add(drawing);
-                    continue;
-                }
-                if (drawing.EditAs != eEditAs.Absolute)
-                {
-                    if (drawing.From.Column >= columnFrom - 1)
+                deletedDrawings.Add(drawing);
+                continue;
+            }
+            if (drawing.EditAs != eEditAs.Absolute)
+            {
+                if (drawing.From.Row >= rowFrom-1)
+                {                       
+                    if (drawing.From.Row + rows < rowFrom - 1)
                     {
-                        if (drawing.From.Column + columns < columnFrom - 1)
-                        {
-                            drawing.From.Column = columnFrom - 1;
-                            drawing.From.ColumnOff = 0;
-                        }
-                        else
-                        {
-                            drawing.From.Column += columns;
-                        }
+                        drawing.From.Row = rowFrom - 1;
+                        drawing.From.RowOff = 0;
+                    }
+                    else
+                    {
+                        drawing.From.Row += rows;
+                    }
 
-                        if (drawing.EditAs == eEditAs.TwoCell)
+                    if (drawing.CellAnchor == eEditAs.TwoCell)
+                    {
+                        if (drawing.To.Row >= rowFrom-1)
                         {
-                            if (drawing.To.Column >= columnFrom - 1)
-                            {
-                                drawing.To.Column += columns;
-                            }
+                            drawing.To.Row += rows;
                         }
                     }
-                    else if (drawing.To!=null && drawing.To.Column >= columnFrom - 1)
+                }
+                else if (drawing.To != null && drawing.To.Row >= rowFrom-1)
+                {
+                    if (drawing.EditAs == eEditAs.TwoCell)
                     {
-                        if (drawing.To.Column + columns < columnFrom - 1)
+                        if (drawing.To.Row + rows < rowFrom - 1)
                         {
-                            drawing.To.Column = columnFrom - 1;
-                            drawing.To.ColumnOff = 0;
+                            drawing.To.Row = rowFrom - 1;
+                            drawing.To.RowOff = 0;
                         }
                         else
+                        {
+                            drawing.To.Row += rows;
+                        }
+                    }
+                }
+                if (drawing.From.Row < 0)
+                {
+                    drawing.From.Row = 0;
+                }
+
+                drawing.AdjustPositionAndSize();
+            }
+        }
+
+        deletedDrawings.ForEach(d => ws.Drawings.Remove(d));
+    }
+    internal static void AdjustDrawingsColumn(ExcelWorksheet ws, int columnFrom, int columns, int rowFrom = 0, int rowTo = ExcelPackage.MaxRows)
+    {
+        List<ExcelDrawing>? deletedDrawings = new List<ExcelDrawing>();
+        foreach (ExcelDrawing drawing in ws.Drawings)
+        {
+            if(!drawing.IsWithinRowRange(rowFrom, rowTo))
+            {
+                continue;
+            }
+
+            if (drawing.CellAnchor==eEditAs.TwoCell && 
+                columns < 0 && drawing.From.Column >= columnFrom - 1 &&
+                ((drawing.To.Column <= (columnFrom - columns - 1) && drawing.To.ColumnOff == 0) || drawing.To.Column <= (columnFrom - columns - 2))) //If delete and the entire drawing is withing the deleted range, remove it.
+            {
+                deletedDrawings.Add(drawing);
+                continue;
+            }
+            if (drawing.EditAs != eEditAs.Absolute)
+            {
+                if (drawing.From.Column >= columnFrom - 1)
+                {
+                    if (drawing.From.Column + columns < columnFrom - 1)
+                    {
+                        drawing.From.Column = columnFrom - 1;
+                        drawing.From.ColumnOff = 0;
+                    }
+                    else
+                    {
+                        drawing.From.Column += columns;
+                    }
+
+                    if (drawing.EditAs == eEditAs.TwoCell)
+                    {
+                        if (drawing.To.Column >= columnFrom - 1)
                         {
                             drawing.To.Column += columns;
                         }
                     }
-                    if (drawing.From.Column < 0)
-                    {
-                        drawing.From.Column = 0;
-                    }
-
-                    drawing.AdjustPositionAndSize();
                 }
-            }
-
-            deletedDrawings.ForEach(d => ws.Drawings.Remove(d));
-        }
-        internal static void ConvertEffectedSharedFormulasToCellFormulas(ExcelWorksheet wsUpdate, ExcelAddressBase range)
-        {
-            foreach (ExcelWorksheet? ws in wsUpdate.Workbook.Worksheets)
-            {
-                bool isCurrentWs = wsUpdate.Name.Equals(ws.Name, StringComparison.CurrentCultureIgnoreCase);
-                List<int>? deletedSf = new List<int>();
-                foreach (ExcelWorksheet.Formulas? sf in ws._sharedFormulas.Values)
+                else if (drawing.To!=null && drawing.To.Column >= columnFrom - 1)
                 {
-                    //Do not convert array formulas.
-                    if (sf.FormulaType == ExcelWorksheet.FormulaType.Shared && (isCurrentWs || sf.Formula.IndexOf(wsUpdate.Name, StringComparison.CurrentCultureIgnoreCase) >= 0))
+                    if (drawing.To.Column + columns < columnFrom - 1)
                     {
-                        if (ConvertEffectedSharedFormulaIfReferenceWithinRange(ws, range, sf, wsUpdate.Name))
-                        {
-                            deletedSf.Add(sf.Index);
-                        }
+                        drawing.To.Column = columnFrom - 1;
+                        drawing.To.ColumnOff = 0;
+                    }
+                    else
+                    {
+                        drawing.To.Column += columns;
                     }
                 }
-                deletedSf.ForEach(x => ws._sharedFormulas.Remove(x));
+                if (drawing.From.Column < 0)
+                {
+                    drawing.From.Column = 0;
+                }
+
+                drawing.AdjustPositionAndSize();
             }
         }
-        private static bool ConvertEffectedSharedFormulaIfReferenceWithinRange(ExcelWorksheet ws, ExcelAddressBase delRange, ExcelWorksheet.Formulas sf, string wsName)
+
+        deletedDrawings.ForEach(d => ws.Drawings.Remove(d));
+    }
+    internal static void ConvertEffectedSharedFormulasToCellFormulas(ExcelWorksheet wsUpdate, ExcelAddressBase range)
+    {
+        foreach (ExcelWorksheet? ws in wsUpdate.Workbook.Worksheets)
         {
-            bool doConvertSF = false;
-            ExcelAddressBase? sfAddress = new ExcelAddressBase(sf.Address);
-            sf.SetTokens(ws.Name);
-            foreach (Token token in sf.Tokens)
+            bool isCurrentWs = wsUpdate.Name.Equals(ws.Name, StringComparison.CurrentCultureIgnoreCase);
+            List<int>? deletedSf = new List<int>();
+            foreach (ExcelWorksheet.Formulas? sf in ws._sharedFormulas.Values)
             {
-                if (token.TokenTypeIsSet(TokenType.ExcelAddress))
+                //Do not convert array formulas.
+                if (sf.FormulaType == ExcelWorksheet.FormulaType.Shared && (isCurrentWs || sf.Formula.IndexOf(wsUpdate.Name, StringComparison.CurrentCultureIgnoreCase) >= 0))
                 {
-                    //Check if the address for the entire shared formula collides with the deleted address.
-                    ExcelAddressBase? tokenAddress = new ExcelAddressBase(token.Value);
-                    if ((ws.Name.Equals(wsName, StringComparison.CurrentCultureIgnoreCase) && string.IsNullOrEmpty(tokenAddress.WorkSheetName)) ||
-                        (!string.IsNullOrEmpty(tokenAddress.WorkSheetName) && tokenAddress.WorkSheetName.Equals(wsName, StringComparison.CurrentCultureIgnoreCase)))
+                    if (ConvertEffectedSharedFormulaIfReferenceWithinRange(ws, range, sf, wsUpdate.Name))
                     {
-                        if (tokenAddress._toRowFixed == false)
-                        {
-                            tokenAddress._toRow += (sfAddress.Rows - 1);
-                        }
-
-                        if (tokenAddress._toColFixed == false)
-                        {
-                            tokenAddress._toCol += (sfAddress.Columns - 1);
-                        }
-
-                        if (tokenAddress.Collide(delRange, true) != eAddressCollition.No)  //Shared Formula address is effected.
-                        {
-                            doConvertSF = true;
-                            break;
-                        }
+                        deletedSf.Add(sf.Index);
                     }
                 }
             }
-            if (doConvertSF)
-            {
-                ConvertSharedFormulaToCellFormula(ws, sf, sfAddress);
-            }
-            return doConvertSF;
+            deletedSf.ForEach(x => ws._sharedFormulas.Remove(x));
         }
-        private static void ConvertSharedFormulaToCellFormula(ExcelWorksheet ws, ExcelWorksheet.Formulas sf, ExcelAddressBase sfAddress)
+    }
+    private static bool ConvertEffectedSharedFormulaIfReferenceWithinRange(ExcelWorksheet ws, ExcelAddressBase delRange, ExcelWorksheet.Formulas sf, string wsName)
+    {
+        bool doConvertSF = false;
+        ExcelAddressBase? sfAddress = new ExcelAddressBase(sf.Address);
+        sf.SetTokens(ws.Name);
+        foreach (Token token in sf.Tokens)
         {
-            for (int r = 0; r < sfAddress.Rows; r++)
+            if (token.TokenTypeIsSet(TokenType.ExcelAddress))
             {
-                for (int c = 0; c < sfAddress.Columns; c++)
+                //Check if the address for the entire shared formula collides with the deleted address.
+                ExcelAddressBase? tokenAddress = new ExcelAddressBase(token.Value);
+                if ((ws.Name.Equals(wsName, StringComparison.CurrentCultureIgnoreCase) && string.IsNullOrEmpty(tokenAddress.WorkSheetName)) ||
+                    (!string.IsNullOrEmpty(tokenAddress.WorkSheetName) && tokenAddress.WorkSheetName.Equals(wsName, StringComparison.CurrentCultureIgnoreCase)))
                 {
-                    int row = sf.StartRow + r;
-                    int col = sf.StartCol + c;
-                    ws._formulas.SetValue(row, col, ws.GetFormula(row, col));
-                }
-            }
-        }
-        internal static void ValidateIfInsertDeleteIsPossible(ExcelRangeBase range, ExcelAddressBase effectedAddress, ExcelAddressBase effectedAddressTable, bool insert)
-        {
-            //Validate autofilter
-            if (range.Worksheet.AutoFilterAddress!=null && 
-                effectedAddress.Collide(range.Worksheet.AutoFilterAddress) == eAddressCollition.Partly 
-                    &&
-                    range.Worksheet.AutoFilterAddress.CollideFullRowOrColumn(range) == false)
-            {
-                throw new InvalidOperationException($"Can't {(insert ? "insert into" : "delete from")} the range. Cells collide with the worksheets autofilter.");
-            }
-
-            //Validate merged Cells
-            foreach (string? a in range.Worksheet.MergedCells)
-            {
-                if (!string.IsNullOrEmpty(a))
-                {
-                    ExcelAddressBase? mc = new ExcelAddressBase(a);
-                    if (effectedAddress.Collide(mc) == eAddressCollition.Partly)
+                    if (tokenAddress._toRowFixed == false)
                     {
-                        throw new InvalidOperationException($"Can't {(insert ? "insert into" : "delete from")} the range. Cells collide with merged range {a}");
+                        tokenAddress._toRow += (sfAddress.Rows - 1);
+                    }
+
+                    if (tokenAddress._toColFixed == false)
+                    {
+                        tokenAddress._toCol += (sfAddress.Columns - 1);
+                    }
+
+                    if (tokenAddress.Collide(delRange, true) != eAddressCollition.No)  //Shared Formula address is effected.
+                    {
+                        doConvertSF = true;
+                        break;
                     }
                 }
             }
-
-            //Validate pivot tables Cells
-            foreach (ExcelPivotTable? pt in range.Worksheet.PivotTables)
-            {
-                if (effectedAddress.Collide(pt.Address) == eAddressCollition.Partly)
-                {
-                    throw new InvalidOperationException($"Can't {(insert ? "insert into" : "delete from")} the range. Cells collide with pivot table {pt.Name}");
-                }
-            }
-
-            //Validate tables Cells
-            foreach (ExcelTable? t in range.Worksheet.Tables)
-            {
-                if (effectedAddressTable.Collide(t.Address) == eAddressCollition.Partly &&
-                    effectedAddress.Collide(t.Address) != eAddressCollition.No)
-                {
-                    throw new InvalidOperationException($"Can't {(insert ? "insert into" : "delete from")} the range. Cells collide with table {t.Name}");
-                }
-            }
-
         }
-        internal static string AdjustStartCellForFormula(string formula, ExcelAddress address, ExcelAddressBase newAddress)
+        if (doConvertSF)
         {
-            SourceCodeTokenizer? sct = new SourceCodeTokenizer(FunctionNameProvider.Empty, NameValueProvider.Empty);
-            IEnumerable<Token>? tokens = sct.Tokenize(formula);
-            StringBuilder? sb = new StringBuilder();
-            string? firstCell = address.FirstCellAddressRelative;
-            foreach (Token t in tokens)
+            ConvertSharedFormulaToCellFormula(ws, sf, sfAddress);
+        }
+        return doConvertSF;
+    }
+    private static void ConvertSharedFormulaToCellFormula(ExcelWorksheet ws, ExcelWorksheet.Formulas sf, ExcelAddressBase sfAddress)
+    {
+        for (int r = 0; r < sfAddress.Rows; r++)
+        {
+            for (int c = 0; c < sfAddress.Columns; c++)
             {
-                if (t.TokenTypeIsSet(TokenType.ExcelAddress) && t.Value == firstCell) //If the first cell has been change we adjust any formula that reference it. This will not adjust custom formulas.
+                int row = sf.StartRow + r;
+                int col = sf.StartCol + c;
+                ws._formulas.SetValue(row, col, ws.GetFormula(row, col));
+            }
+        }
+    }
+    internal static void ValidateIfInsertDeleteIsPossible(ExcelRangeBase range, ExcelAddressBase effectedAddress, ExcelAddressBase effectedAddressTable, bool insert)
+    {
+        //Validate autofilter
+        if (range.Worksheet.AutoFilterAddress!=null && 
+            effectedAddress.Collide(range.Worksheet.AutoFilterAddress) == eAddressCollition.Partly 
+            &&
+            range.Worksheet.AutoFilterAddress.CollideFullRowOrColumn(range) == false)
+        {
+            throw new InvalidOperationException($"Can't {(insert ? "insert into" : "delete from")} the range. Cells collide with the worksheets autofilter.");
+        }
+
+        //Validate merged Cells
+        foreach (string? a in range.Worksheet.MergedCells)
+        {
+            if (!string.IsNullOrEmpty(a))
+            {
+                ExcelAddressBase? mc = new ExcelAddressBase(a);
+                if (effectedAddress.Collide(mc) == eAddressCollition.Partly)
                 {
-                    sb.Append(newAddress.FirstCellAddressRelative);
-                }
-                else
-                {
-                    sb.Append(t.Value);
+                    throw new InvalidOperationException($"Can't {(insert ? "insert into" : "delete from")} the range. Cells collide with merged range {a}");
                 }
             }
-            return sb.ToString();
+        }
 
+        //Validate pivot tables Cells
+        foreach (ExcelPivotTable? pt in range.Worksheet.PivotTables)
+        {
+            if (effectedAddress.Collide(pt.Address) == eAddressCollition.Partly)
+            {
+                throw new InvalidOperationException($"Can't {(insert ? "insert into" : "delete from")} the range. Cells collide with pivot table {pt.Name}");
+            }
+        }
+
+        //Validate tables Cells
+        foreach (ExcelTable? t in range.Worksheet.Tables)
+        {
+            if (effectedAddressTable.Collide(t.Address) == eAddressCollition.Partly &&
+                effectedAddress.Collide(t.Address) != eAddressCollition.No)
+            {
+                throw new InvalidOperationException($"Can't {(insert ? "insert into" : "delete from")} the range. Cells collide with table {t.Name}");
+            }
         }
 
     }
+    internal static string AdjustStartCellForFormula(string formula, ExcelAddress address, ExcelAddressBase newAddress)
+    {
+        SourceCodeTokenizer? sct = new SourceCodeTokenizer(FunctionNameProvider.Empty, NameValueProvider.Empty);
+        IEnumerable<Token>? tokens = sct.Tokenize(formula);
+        StringBuilder? sb = new StringBuilder();
+        string? firstCell = address.FirstCellAddressRelative;
+        foreach (Token t in tokens)
+        {
+            if (t.TokenTypeIsSet(TokenType.ExcelAddress) && t.Value == firstCell) //If the first cell has been change we adjust any formula that reference it. This will not adjust custom formulas.
+            {
+                sb.Append(newAddress.FirstCellAddressRelative);
+            }
+            else
+            {
+                sb.Append(t.Value);
+            }
+        }
+        return sb.ToString();
+
+    }
+
 }

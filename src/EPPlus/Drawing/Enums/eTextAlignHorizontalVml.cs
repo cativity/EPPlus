@@ -10,24 +10,23 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
-namespace OfficeOpenXml.Drawing.Vml
+namespace OfficeOpenXml.Drawing.Vml;
+
+/// <summary>
+/// Horizontal Alingment
+/// </summary>
+public enum eTextAlignHorizontalVml
 {
     /// <summary>
-    /// Horizontal Alingment
+    /// Left alignment
     /// </summary>
-    public enum eTextAlignHorizontalVml
-    {
-        /// <summary>
-        /// Left alignment
-        /// </summary>
-        Left,
-        /// <summary>
-        /// Center alignment
-        /// </summary>
-        Center,
-        /// <summary>
-        /// Right alignment
-        /// </summary>
-        Right
-    }
+    Left,
+    /// <summary>
+    /// Center alignment
+    /// </summary>
+    Center,
+    /// <summary>
+    /// Right alignment
+    /// </summary>
+    Right
 }

@@ -10,20 +10,19 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
-namespace OfficeOpenXml.Drawing
+namespace OfficeOpenXml.Drawing;
+
+/// <summary>
+/// Specifies the text vertical overflow
+/// </summary>
+public enum eTextHorizontalOverflow
 {
     /// <summary>
-    /// Specifies the text vertical overflow
+    /// When a character doesn't fit into a line, clip it at the end.
     /// </summary>
-    public enum eTextHorizontalOverflow
-    {
-        /// <summary>
-        /// When a character doesn't fit into a line, clip it at the end.
-        /// </summary>
-        Clip,
-        /// <summary>
-        /// When a character doesn't fit into a line, allow an overflow.
-        /// </summary>
-        Overflow
-    }
+    Clip,
+    /// <summary>
+    /// When a character doesn't fit into a line, allow an overflow.
+    /// </summary>
+    Overflow
 }

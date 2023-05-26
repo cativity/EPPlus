@@ -7,61 +7,59 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EPPlusTest.GlobalConfiguration
-{
+namespace EPPlusTest.GlobalConfiguration;
 #if (Core)
-    [TestClass]
-    public class ConfigurePackageTests
+[TestClass]
+public class ConfigurePackageTests
+{
+    [TestMethod]
+    public void ShouldSetSuppressInitExceptions()
     {
-        [TestMethod]
-        public void ShouldSetSuppressInitExceptions()
+        lock(typeof(ExcelPackage))
         {
-            lock(typeof(ExcelPackage))
-            {
 
-                try
-                {
-                    ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
-                    ExcelPackage.Configure(x => { 
-                        x.SuppressInitializationExceptions = true;
-                        x.JsonConfigFileName = "asdf";
-                        x.JsonConfigBasePath = "JKLÖ";
-                    });
-                    using ExcelPackage? package = new ExcelPackage();
-                    Assert.IsTrue(package.InitializationErrors.Count() > 0);
-                    Assert.AreEqual(1, package.InitializationErrors.Count());
-                }
-                finally
-                {
-                    ExcelPackage.Configure(x => x.Reset());
-                }
-            }
-        }
-
-        [TestMethod, ExpectedException(typeof(ArgumentException))]
-        public void ShouldThrowArgumentExceptionIfErrorsAreNotSuppressed()
-        {
-            lock(typeof(ExcelPackage))
+            try
             {
                 ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
                 ExcelPackage.Configure(x => { 
-                    x.SuppressInitializationExceptions = false;
+                    x.SuppressInitializationExceptions = true;
                     x.JsonConfigFileName = "asdf";
                     x.JsonConfigBasePath = "JKLÖ";
                 });
-                try
-                {
-                    using ExcelPackage? package = new ExcelPackage();
-                    Assert.IsTrue(package.InitializationErrors.Count() > 0);
-                    Assert.AreEqual(1, package.InitializationErrors.Count());
-                }
-                finally
-                {
-                    ExcelPackage.Configure(x => x.Reset());
-                }
-            
+                using ExcelPackage? package = new ExcelPackage();
+                Assert.IsTrue(package.InitializationErrors.Count() > 0);
+                Assert.AreEqual(1, package.InitializationErrors.Count());
+            }
+            finally
+            {
+                ExcelPackage.Configure(x => x.Reset());
             }
         }
     }
-#endif
+
+    [TestMethod, ExpectedException(typeof(ArgumentException))]
+    public void ShouldThrowArgumentExceptionIfErrorsAreNotSuppressed()
+    {
+        lock(typeof(ExcelPackage))
+        {
+            ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+            ExcelPackage.Configure(x => { 
+                x.SuppressInitializationExceptions = false;
+                x.JsonConfigFileName = "asdf";
+                x.JsonConfigBasePath = "JKLÖ";
+            });
+            try
+            {
+                using ExcelPackage? package = new ExcelPackage();
+                Assert.IsTrue(package.InitializationErrors.Count() > 0);
+                Assert.AreEqual(1, package.InitializationErrors.Count());
+            }
+            finally
+            {
+                ExcelPackage.Configure(x => x.Reset());
+            }
+            
+        }
+    }
 }
+#endif

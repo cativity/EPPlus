@@ -11,12 +11,11 @@
   09/05/2022         EPPlus Software AB       EPPlus 6.1
  *************************************************************************************************/
 
-namespace OfficeOpenXml.VBA
+namespace OfficeOpenXml.VBA;
+
+internal static class VbaSchemaRelations
 {
-    internal static class VbaSchemaRelations
-    {
-        public const string Legacy = "http://schemas.microsoft.com/office/2006/relationships/vbaProjectSignature";
-        public const string Agile = "http://schemas.microsoft.com/office/2014/relationships/vbaProjectSignatureAgile";
-        public const string V3 = "http://schemas.microsoft.com/office/2020/07/relationships/vbaProjectSignatureV3";
-    }
+    public const string Legacy = "http://schemas.microsoft.com/office/2006/relationships/vbaProjectSignature";
+    public const string Agile = "http://schemas.microsoft.com/office/2014/relationships/vbaProjectSignatureAgile";
+    public const string V3 = "http://schemas.microsoft.com/office/2020/07/relationships/vbaProjectSignatureV3";
 }

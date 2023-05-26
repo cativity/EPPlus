@@ -17,102 +17,101 @@ using System.Linq;
 using System.Text;
 using System.Xml;
 
-namespace OfficeOpenXml.Sorting
+namespace OfficeOpenXml.Sorting;
+
+/// <summary>
+/// A collection of <see cref="SortCondition"/>s.
+/// </summary>
+public class SortConditionCollection : XmlHelper, IEnumerable<SortCondition>
 {
-    /// <summary>
-    /// A collection of <see cref="SortCondition"/>s.
-    /// </summary>
-    public class SortConditionCollection : XmlHelper, IEnumerable<SortCondition>
+    internal SortConditionCollection(XmlNamespaceManager nameSpaceManager, XmlNode topNode) : base(nameSpaceManager, topNode)
     {
-        internal SortConditionCollection(XmlNamespaceManager nameSpaceManager, XmlNode topNode) : base(nameSpaceManager, topNode)
+        XmlNodeList? conditionNodes = topNode.SelectNodes("//d:sortCondition", nameSpaceManager);
+        if(conditionNodes != null)
         {
-            XmlNodeList? conditionNodes = topNode.SelectNodes("//d:sortCondition", nameSpaceManager);
-            if(conditionNodes != null)
+            foreach(object? node in conditionNodes)
             {
-                foreach(object? node in conditionNodes)
-                {
-                    SortCondition? condition = new SortCondition(nameSpaceManager, (XmlNode)node);
-                    this._sortConditions.Add(condition);
-                }
+                SortCondition? condition = new SortCondition(nameSpaceManager, (XmlNode)node);
+                this._sortConditions.Add(condition);
             }
         }
+    }
 
-        private readonly List<SortCondition> _sortConditions = new List<SortCondition>();
-        private readonly string _sortConditionPath = "d:sortCondition";
-        /// <summary>
-        /// Returns an enumerator that iterates through the collection.
-        /// </summary>
-        /// <returns>An enumerator that can be used to iterate through the collection.</returns>
-        public IEnumerator<SortCondition> GetEnumerator()
+    private readonly List<SortCondition> _sortConditions = new List<SortCondition>();
+    private readonly string _sortConditionPath = "d:sortCondition";
+    /// <summary>
+    /// Returns an enumerator that iterates through the collection.
+    /// </summary>
+    /// <returns>An enumerator that can be used to iterate through the collection.</returns>
+    public IEnumerator<SortCondition> GetEnumerator()
+    {
+        return this._sortConditions.GetEnumerator();
+    }
+
+    /// <summary>
+    /// Returns an enumerator that iterates through the collection.
+    /// </summary>
+    /// <returns>An enumerator that can be used to iterate through the collection.</returns>
+    IEnumerator IEnumerable.GetEnumerator()
+    {
+        return this._sortConditions.GetEnumerator();
+    }
+
+    /// <summary>
+    /// Adds a new condition to the collection.
+    /// </summary>
+    /// <param name="ref">Address of the range used by this condition.</param>
+    /// <param name="decending">If true - descending sort order, if false or null - ascending sort order.</param>
+    internal void Add(string @ref, bool? decending = null)
+    {
+        if (this._sortConditions.Count > 63)
         {
-            return this._sortConditions.GetEnumerator();
+            throw new ArgumentException("Too many sort conditions added, max number of conditions is 64");
         }
 
-        /// <summary>
-        /// Returns an enumerator that iterates through the collection.
-        /// </summary>
-        /// <returns>An enumerator that can be used to iterate through the collection.</returns>
-        IEnumerator IEnumerable.GetEnumerator()
+        XmlNode? node = this.CreateNode(this.TopNode, this._sortConditionPath, true);
+        SortCondition? condition = new SortCondition(this.NameSpaceManager, node);
+        condition.Ref = @ref;
+        if(decending.HasValue)
         {
-            return this._sortConditions.GetEnumerator();
+            condition.Descending = decending.Value;
         }
 
-        /// <summary>
-        /// Adds a new condition to the collection.
-        /// </summary>
-        /// <param name="ref">Address of the range used by this condition.</param>
-        /// <param name="decending">If true - descending sort order, if false or null - ascending sort order.</param>
-        internal void Add(string @ref, bool? decending = null)
+        this.TopNode.AppendChild(condition.TopNode);
+        this._sortConditions.Add(condition);
+    }
+
+    /// <summary>
+    /// Adds a new condition to the collection.
+    /// </summary>
+    /// <param name="ref">Address of the range used by this condition.</param>
+    /// <param name="decending">If true - descending sort order, if false or null - ascending sort order.</param>
+    /// <param name="customList">A custom list of strings that defines the sort order for this condition.</param>
+    internal void Add(string @ref, bool? decending, string[] customList = null)
+    {
+        if (this._sortConditions.Count > 63)
         {
-            if (this._sortConditions.Count > 63)
-            {
-                throw new ArgumentException("Too many sort conditions added, max number of conditions is 64");
-            }
-
-            XmlNode? node = this.CreateNode(this.TopNode, this._sortConditionPath, true);
-            SortCondition? condition = new SortCondition(this.NameSpaceManager, node);
-            condition.Ref = @ref;
-            if(decending.HasValue)
-            {
-                condition.Descending = decending.Value;
-            }
-
-            this.TopNode.AppendChild(condition.TopNode);
-            this._sortConditions.Add(condition);
+            throw new ArgumentException("Too many sort conditions added, max number of conditions is 64");
         }
 
-        /// <summary>
-        /// Adds a new condition to the collection.
-        /// </summary>
-        /// <param name="ref">Address of the range used by this condition.</param>
-        /// <param name="decending">If true - descending sort order, if false or null - ascending sort order.</param>
-        /// <param name="customList">A custom list of strings that defines the sort order for this condition.</param>
-        internal void Add(string @ref, bool? decending, string[] customList = null)
+        XmlNode? node = this.CreateNode(this.TopNode, this._sortConditionPath, true);
+        SortCondition? condition = new SortCondition(this.NameSpaceManager, node);
+        condition.Ref = @ref;
+        if (decending.HasValue)
         {
-            if (this._sortConditions.Count > 63)
-            {
-                throw new ArgumentException("Too many sort conditions added, max number of conditions is 64");
-            }
-
-            XmlNode? node = this.CreateNode(this.TopNode, this._sortConditionPath, true);
-            SortCondition? condition = new SortCondition(this.NameSpaceManager, node);
-            condition.Ref = @ref;
-            if (decending.HasValue)
-            {
-                condition.Descending = decending.Value;
-            }
-            condition.CustomList = customList;
-            this.TopNode.AppendChild(condition.TopNode);
-            this._sortConditions.Add(condition);
+            condition.Descending = decending.Value;
         }
+        condition.CustomList = customList;
+        this.TopNode.AppendChild(condition.TopNode);
+        this._sortConditions.Add(condition);
+    }
 
-        /// <summary>
-        /// Removes all sort conditions
-        /// </summary>
-        internal void Clear()
-        {
-            this._sortConditions.Clear();
-            this.TopNode.RemoveAll();
-        }
+    /// <summary>
+    /// Removes all sort conditions
+    /// </summary>
+    internal void Clear()
+    {
+        this._sortConditions.Clear();
+        this.TopNode.RemoveAll();
     }
 }

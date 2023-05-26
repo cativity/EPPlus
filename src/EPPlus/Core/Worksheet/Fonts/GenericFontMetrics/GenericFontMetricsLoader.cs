@@ -19,38 +19,37 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 
-namespace OfficeOpenXml.Core.Worksheet.Core.Worksheet.Fonts.GenericMeasurements
+namespace OfficeOpenXml.Core.Worksheet.Core.Worksheet.Fonts.GenericMeasurements;
+
+/// <summary>
+/// Loads serialized font metrics
+/// </summary>
+internal static class GenericFontMetricsLoader
 {
     /// <summary>
-    /// Loads serialized font metrics
+    /// Loads all serialized font metrics from the resources/SerializedFonts.zip archive
     /// </summary>
-    internal static class GenericFontMetricsLoader
+    internal static Dictionary<uint, SerializedFontMetrics> LoadFontMetrics()
     {
-        /// <summary>
-        /// Loads all serialized font metrics from the resources/SerializedFonts.zip archive
-        /// </summary>
-        internal static Dictionary<uint, SerializedFontMetrics> LoadFontMetrics()
+        Dictionary<uint, SerializedFontMetrics>? fonts = new Dictionary<uint, SerializedFontMetrics>();
+        Assembly? assembly = Assembly.GetExecutingAssembly();
+        using (Stream? stream = assembly.GetManifestResourceStream("OfficeOpenXml.resources.TextMetrics.zip"))
         {
-            Dictionary<uint, SerializedFontMetrics>? fonts = new Dictionary<uint, SerializedFontMetrics>();
-            Assembly? assembly = Assembly.GetExecutingAssembly();
-            using (Stream? stream = assembly.GetManifestResourceStream("OfficeOpenXml.resources.TextMetrics.zip"))
+            ZipInputStream? zipStream = new ZipInputStream(stream);
+            ZipEntry entry;
+            while ((entry = zipStream.GetNextEntry()) != null)
             {
-                ZipInputStream? zipStream = new ZipInputStream(stream);
-                ZipEntry entry;
-                while ((entry = zipStream.GetNextEntry()) != null)
+                if (!entry.IsDirectory && Path.GetExtension(entry.FileName) == ".fmtr")
                 {
-                    if (!entry.IsDirectory && Path.GetExtension(entry.FileName) == ".fmtr")
-                    {
-                        byte[]? bytes = new byte[entry.UncompressedSize];
-                        int size = zipStream.Read(bytes, 0, (int)entry.UncompressedSize);
-                        using MemoryStream? ms = RecyclableMemory.GetStream(bytes);
-                        SerializedFontMetrics? fnt = GenericFontMetricsSerializer.Deserialize(ms);
-                        fonts.Add(fnt.GetKey(), fnt);
+                    byte[]? bytes = new byte[entry.UncompressedSize];
+                    int size = zipStream.Read(bytes, 0, (int)entry.UncompressedSize);
+                    using MemoryStream? ms = RecyclableMemory.GetStream(bytes);
+                    SerializedFontMetrics? fnt = GenericFontMetricsSerializer.Deserialize(ms);
+                    fonts.Add(fnt.GetKey(), fnt);
 
-                    }
-                }  
-            }
-            return fonts;
+                }
+            }  
         }
+        return fonts;
     }
 }

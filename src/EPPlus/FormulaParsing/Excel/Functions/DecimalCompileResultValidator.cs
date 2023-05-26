@@ -17,17 +17,16 @@ using System.Text;
 using OfficeOpenXml.FormulaParsing.Exceptions;
 using OfficeOpenXml.Utils;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions;
+
+public class DecimalCompileResultValidator : CompileResultValidator
 {
-    public class DecimalCompileResultValidator : CompileResultValidator
+    public override void Validate(object obj)
     {
-        public override void Validate(object obj)
+        double num = ConvertUtil.GetValueDouble(obj);
+        if (double.IsNaN(num) || double.IsInfinity(num))
         {
-            double num = ConvertUtil.GetValueDouble(obj);
-            if (double.IsNaN(num) || double.IsInfinity(num))
-            {
-                throw new ExcelErrorValueException(eErrorType.Num);
-            }
+            throw new ExcelErrorValueException(eErrorType.Num);
         }
     }
 }

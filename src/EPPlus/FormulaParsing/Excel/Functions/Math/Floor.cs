@@ -17,30 +17,29 @@ using System.Text;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Metadata;
 using OfficeOpenXml.FormulaParsing.ExpressionGraph;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
+
+[FunctionMetadata(
+                     Category = ExcelFunctionCategory.MathAndTrig,
+                     EPPlusVersion = "4",
+                     Description = "Rounds a number towards zero, (i.e. rounds a positive number down and a negative number up), to a multiple of significance")]
+internal class Floor : ExcelFunction
 {
-    [FunctionMetadata(
-        Category = ExcelFunctionCategory.MathAndTrig,
-        EPPlusVersion = "4",
-        Description = "Rounds a number towards zero, (i.e. rounds a positive number down and a negative number up), to a multiple of significance")]
-    internal class Floor : ExcelFunction
+    public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
     {
-        public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
+        ValidateArguments(arguments, 2);
+        if (arguments.ElementAt(0).Value == null)
         {
-            ValidateArguments(arguments, 2);
-            if (arguments.ElementAt(0).Value == null)
-            {
-                return this.CreateResult(0d, DataType.Decimal);
-            }
-
-            double number = this.ArgToDecimal(arguments, 0, context.Configuration.PrecisionAndRoundingStrategy);
-            double significance = this.ArgToDecimal(arguments, 1);
-            if (RoundingHelper.IsInvalidNumberAndSign(number, significance))
-            {
-                return this.CreateResult(eErrorType.Num);
-            }
-
-            return this.CreateResult(RoundingHelper.Round(number, significance, RoundingHelper.Direction.Down), DataType.Decimal);
+            return this.CreateResult(0d, DataType.Decimal);
         }
+
+        double number = this.ArgToDecimal(arguments, 0, context.Configuration.PrecisionAndRoundingStrategy);
+        double significance = this.ArgToDecimal(arguments, 1);
+        if (RoundingHelper.IsInvalidNumberAndSign(number, significance))
+        {
+            return this.CreateResult(eErrorType.Num);
+        }
+
+        return this.CreateResult(RoundingHelper.Round(number, significance, RoundingHelper.Direction.Down), DataType.Decimal);
     }
 }

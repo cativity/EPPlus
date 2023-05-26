@@ -19,61 +19,60 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
+
+[FunctionMetadata(
+                     Category = ExcelFunctionCategory.MathAndTrig,
+                     EPPlusVersion = "5.1",
+                     Description = "Returns a text string depicting the roman numeral for a given number")]
+internal class Roman : ExcelFunction
 {
-    [FunctionMetadata(
-        Category = ExcelFunctionCategory.MathAndTrig,
-        EPPlusVersion = "5.1",
-        Description = "Returns a text string depicting the roman numeral for a given number")]
-    internal class Roman : ExcelFunction
+    public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
     {
-        public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
+        ValidateArguments(arguments, 1);
+        int number = this.ArgToInt(arguments, 0, RoundingMethod.Floor);
+        int type = arguments.Count() > 1 ? this.FirstArgumentToInt(arguments) : 0;
+        if (type < 0 || type > 4)
         {
-            ValidateArguments(arguments, 1);
-            int number = this.ArgToInt(arguments, 0, RoundingMethod.Floor);
-            int type = arguments.Count() > 1 ? this.FirstArgumentToInt(arguments) : 0;
-            if (type < 0 || type > 4)
-            {
-                return this.CreateResult(eErrorType.Value);
-            }
-
-            if (number < 0 || number > 3999)
-            {
-                return this.CreateResult(eErrorType.Value);
-            }
-
-            RomanBase func = new RomanClassic();
-            switch (type)
-            {
-                case 1:
-                    func = new RomanForm1();
-                    break;
-                case 2:
-                    func = new RomanForm2();
-                    break;
-                case 3:
-                    func = new RomanForm3();
-                    break;
-                case 4:
-                    func = new RomanSimplified();
-                    break;
-                default:
-                    break;
-            }
-            return this.CreateResult(func.Execute(number), DataType.String);
+            return this.CreateResult(eErrorType.Value);
         }
 
-        private int FirstArgumentToInt(IEnumerable<FunctionArgument> arguments)
+        if (number < 0 || number > 3999)
         {
-            FunctionArgument? arg = arguments.ElementAt(1);
-
-            if (arg.DataType == DataType.Boolean
-                && arg.ValueFirst is bool boolValue)
-            {
-                return boolValue ? 0 : 4;
-            }
-
-            return this.ArgToInt(arguments, 1);
+            return this.CreateResult(eErrorType.Value);
         }
+
+        RomanBase func = new RomanClassic();
+        switch (type)
+        {
+            case 1:
+                func = new RomanForm1();
+                break;
+            case 2:
+                func = new RomanForm2();
+                break;
+            case 3:
+                func = new RomanForm3();
+                break;
+            case 4:
+                func = new RomanSimplified();
+                break;
+            default:
+                break;
+        }
+        return this.CreateResult(func.Execute(number), DataType.String);
+    }
+
+    private int FirstArgumentToInt(IEnumerable<FunctionArgument> arguments)
+    {
+        FunctionArgument? arg = arguments.ElementAt(1);
+
+        if (arg.DataType == DataType.Boolean
+            && arg.ValueFirst is bool boolValue)
+        {
+            return boolValue ? 0 : 4;
+        }
+
+        return this.ArgToInt(arguments, 1);
     }
 }

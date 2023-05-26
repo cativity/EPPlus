@@ -15,90 +15,89 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Xml;
 
-namespace OfficeOpenXml
-{
-    /// <summary>
-    /// A collection of ignored errors per range for a worksheet
-    /// </summary>
-    public class ExcelIgnoredErrorCollection : IEnumerable<ExcelIgnoredError>, IDisposable
-    {
-        private ExcelPackage _package;
-        private ExcelWorksheet _excelWorksheet;
-        private XmlNamespaceManager _nameSpaceManager;
-        private List<ExcelIgnoredError> _list = new List<ExcelIgnoredError>();
-        internal ExcelIgnoredErrorCollection(ExcelPackage package, ExcelWorksheet excelWorksheet, XmlNamespaceManager nameSpaceManager)
-        {
-            this._package = package;
-            this._excelWorksheet = excelWorksheet;
-            this._nameSpaceManager = nameSpaceManager;
-        }
-        /// <summary>
-        /// Indexer for the collection
-        /// </summary>
-        /// <param name="Index">This index</param>
-        /// <returns></returns>
-        public ExcelIgnoredError this[int Index]
-        {
-            get
-            {
-                if(Index<0 || Index> this._list.Count)
-                {
-                    throw new ArgumentOutOfRangeException("Index");
-                }
-                return this._list[Index];
-            }
-        }
-        /// <summary>
-        /// Number of items in the collection
-        /// </summary>
-        public int Count
-        {
-            get
-            {
-                return this._list.Count;
-            }
-        }
-        /// <summary>
-        /// Gets the enumerator for the collection
-        /// </summary>
-        /// <returns>The enumerator</returns>
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return this._list.GetEnumerator();
-        }
-        /// <summary>
-        /// Adds an IgnoreError item to the collection
-        /// </summary>
-        /// <param name="address">The address to add</param>
-        /// <returns>The IgnoreError Item</returns>
-        public ExcelIgnoredError Add(ExcelAddressBase address)
-        {
+namespace OfficeOpenXml;
 
-            XmlElement? node = this._excelWorksheet.WorksheetXml.CreateElement("ignoredError", ExcelPackage.schemaMain);
-            this.TopNode.AppendChild(node);
-            ExcelIgnoredError? item = new ExcelIgnoredError(this._nameSpaceManager, node, address);
-            this._list.Add(item);
-            return item;
-        }
-        XmlNode _topNode=null;
-        internal XmlNode TopNode
+/// <summary>
+/// A collection of ignored errors per range for a worksheet
+/// </summary>
+public class ExcelIgnoredErrorCollection : IEnumerable<ExcelIgnoredError>, IDisposable
+{
+    private ExcelPackage _package;
+    private ExcelWorksheet _excelWorksheet;
+    private XmlNamespaceManager _nameSpaceManager;
+    private List<ExcelIgnoredError> _list = new List<ExcelIgnoredError>();
+    internal ExcelIgnoredErrorCollection(ExcelPackage package, ExcelWorksheet excelWorksheet, XmlNamespaceManager nameSpaceManager)
+    {
+        this._package = package;
+        this._excelWorksheet = excelWorksheet;
+        this._nameSpaceManager = nameSpaceManager;
+    }
+    /// <summary>
+    /// Indexer for the collection
+    /// </summary>
+    /// <param name="Index">This index</param>
+    /// <returns></returns>
+    public ExcelIgnoredError this[int Index]
+    {
+        get
         {
-            get { return this._topNode ??= this._excelWorksheet.CreateNode("d:ignoredErrors"); }
+            if(Index<0 || Index> this._list.Count)
+            {
+                throw new ArgumentOutOfRangeException("Index");
+            }
+            return this._list[Index];
         }
-        /// <summary>
-        /// Gets the enumerator for the collection
-        /// </summary>
-        /// <returns>The enumerator</returns>
-        IEnumerator<ExcelIgnoredError> IEnumerable<ExcelIgnoredError>.GetEnumerator()
+    }
+    /// <summary>
+    /// Number of items in the collection
+    /// </summary>
+    public int Count
+    {
+        get
         {
-            return this._list.GetEnumerator();
+            return this._list.Count;
         }
-        /// <summary>
-        /// Called when the class is disposed.
-        /// </summary>
-        public void Dispose()
-        {
+    }
+    /// <summary>
+    /// Gets the enumerator for the collection
+    /// </summary>
+    /// <returns>The enumerator</returns>
+    IEnumerator IEnumerable.GetEnumerator()
+    {
+        return this._list.GetEnumerator();
+    }
+    /// <summary>
+    /// Adds an IgnoreError item to the collection
+    /// </summary>
+    /// <param name="address">The address to add</param>
+    /// <returns>The IgnoreError Item</returns>
+    public ExcelIgnoredError Add(ExcelAddressBase address)
+    {
+
+        XmlElement? node = this._excelWorksheet.WorksheetXml.CreateElement("ignoredError", ExcelPackage.schemaMain);
+        this.TopNode.AppendChild(node);
+        ExcelIgnoredError? item = new ExcelIgnoredError(this._nameSpaceManager, node, address);
+        this._list.Add(item);
+        return item;
+    }
+    XmlNode _topNode=null;
+    internal XmlNode TopNode
+    {
+        get { return this._topNode ??= this._excelWorksheet.CreateNode("d:ignoredErrors"); }
+    }
+    /// <summary>
+    /// Gets the enumerator for the collection
+    /// </summary>
+    /// <returns>The enumerator</returns>
+    IEnumerator<ExcelIgnoredError> IEnumerable<ExcelIgnoredError>.GetEnumerator()
+    {
+        return this._list.GetEnumerator();
+    }
+    /// <summary>
+    /// Called when the class is disposed.
+    /// </summary>
+    public void Dispose()
+    {
             
-        }
     }
 }

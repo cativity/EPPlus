@@ -15,35 +15,34 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace OfficeOpenXml.FormulaParsing.LexicalAnalysis.TokenSeparatorHandlers
-{
-    internal class BracketHandler : SeparatorHandler
-    {
-        public override bool Handle(char c, Token tokenSeparator, TokenizerContext context, ITokenIndexProvider tokenIndexProvider)
-        {
-            if (context.IsInSheetName || context.IsInSheetName)
-            {
-                return false;
-            }
+namespace OfficeOpenXml.FormulaParsing.LexicalAnalysis.TokenSeparatorHandlers;
 
-            if (tokenSeparator.TokenTypeIsSet(TokenType.OpeningBracket))
-            {
-                context.AppendToCurrentToken(c);
-                context.BracketCount++;
-                return true;
-            }
-            if (tokenSeparator.TokenTypeIsSet(TokenType.ClosingBracket))
-            {
-                context.AppendToCurrentToken(c);
-                context.BracketCount--;
-                return true;
-            }
-            if (context.BracketCount > 0)
-            {
-                context.AppendToCurrentToken(c);
-                return true;
-            }
+internal class BracketHandler : SeparatorHandler
+{
+    public override bool Handle(char c, Token tokenSeparator, TokenizerContext context, ITokenIndexProvider tokenIndexProvider)
+    {
+        if (context.IsInSheetName || context.IsInSheetName)
+        {
             return false;
         }
+
+        if (tokenSeparator.TokenTypeIsSet(TokenType.OpeningBracket))
+        {
+            context.AppendToCurrentToken(c);
+            context.BracketCount++;
+            return true;
+        }
+        if (tokenSeparator.TokenTypeIsSet(TokenType.ClosingBracket))
+        {
+            context.AppendToCurrentToken(c);
+            context.BracketCount--;
+            return true;
+        }
+        if (context.BracketCount > 0)
+        {
+            context.AppendToCurrentToken(c);
+            return true;
+        }
+        return false;
     }
 }

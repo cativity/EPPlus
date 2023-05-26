@@ -12,111 +12,110 @@
  *************************************************************************************************/
 using System.Xml;
 
-namespace OfficeOpenXml.Drawing
+namespace OfficeOpenXml.Drawing;
+
+/// <summary>
+/// Position of the a drawing.
+/// </summary>
+public class ExcelPosition : XmlHelper
 {
-    /// <summary>
-    /// Position of the a drawing.
-    /// </summary>
-    public class ExcelPosition : XmlHelper
+    internal delegate void SetWidthCallback();
+    XmlNode _node;
+    XmlNamespaceManager _ns;
+    SetWidthCallback _setWidthCallback;
+    internal ExcelPosition(XmlNamespaceManager ns, XmlNode node, SetWidthCallback setWidthCallback) :
+        base(ns, node)
     {
-        internal delegate void SetWidthCallback();
-        XmlNode _node;
-        XmlNamespaceManager _ns;
-        SetWidthCallback _setWidthCallback;
-        internal ExcelPosition(XmlNamespaceManager ns, XmlNode node, SetWidthCallback setWidthCallback) :
-            base(ns, node)
+        this._node = node;
+        this._ns = ns;
+        this._setWidthCallback = setWidthCallback;
+        this.Load();
+    }
+    const string colPath = "xdr:col";
+    int _column, _row, _columnOff, _rowOff;        
+    /// <summary>
+    /// The column
+    /// </summary>
+    public int Column
+    {
+        get
         {
-            this._node = node;
-            this._ns = ns;
-            this._setWidthCallback = setWidthCallback;
-            this.Load();
+            return this._column;
         }
-        const string colPath = "xdr:col";
-        int _column, _row, _columnOff, _rowOff;        
-        /// <summary>
-        /// The column
-        /// </summary>
-        public int Column
+        set
         {
-            get
-            {
-                return this._column;
-            }
-            set
-            {
-                this._column = value;
-                this._setWidthCallback?.Invoke();
-            }
+            this._column = value;
+            this._setWidthCallback?.Invoke();
         }
-        const string rowPath = "xdr:row";
-        /// <summary>
-        /// The row
-        /// </summary>
-        public int Row
+    }
+    const string rowPath = "xdr:row";
+    /// <summary>
+    /// The row
+    /// </summary>
+    public int Row
+    {
+        get
         {
-            get
-            {
-                return this._row;
-            }
-            set
-            {
-                this._row = value;
-                this._setWidthCallback?.Invoke();
-            }
+            return this._row;
         }
-        const string colOffPath = "xdr:colOff";
-        /// <summary>
-        /// Column Offset in EMU
-        /// ss
-        /// EMU units   1cm         =   1/360000 
-        ///             1US inch    =   1/914400
-        ///             1pixel      =   1/9525
-        /// </summary>
-        public int ColumnOff
+        set
         {
-            get
-            {
-                return this._columnOff;
-            }
-            set
-            {
-                this._columnOff = value;
-                this._setWidthCallback?.Invoke();
-            }
+            this._row = value;
+            this._setWidthCallback?.Invoke();
         }
-        const string rowOffPath = "xdr:rowOff";
-        /// <summary>
-        /// Row Offset in EMU
-        /// 
-        /// EMU units   1cm         =   1/360000 
-        ///             1US inch    =   1/914400
-        ///             1pixel      =   1/9525
-        /// </summary>
-        public int RowOff
+    }
+    const string colOffPath = "xdr:colOff";
+    /// <summary>
+    /// Column Offset in EMU
+    /// ss
+    /// EMU units   1cm         =   1/360000 
+    ///             1US inch    =   1/914400
+    ///             1pixel      =   1/9525
+    /// </summary>
+    public int ColumnOff
+    {
+        get
         {
-            get
-            {
-                return this._rowOff;
-            }
-            set
-            {
-                this._rowOff = value;
-                this._setWidthCallback?.Invoke();
-            }
+            return this._columnOff;
         }
-        public void Load()
+        set
         {
-            this._column = this.GetXmlNodeInt(colPath);
-            this._columnOff = this.GetXmlNodeInt(colOffPath);
-            this._row = this.GetXmlNodeInt(rowPath);
-            this._rowOff = this.GetXmlNodeInt(rowOffPath);
+            this._columnOff = value;
+            this._setWidthCallback?.Invoke();
         }
-        public void UpdateXml()
+    }
+    const string rowOffPath = "xdr:rowOff";
+    /// <summary>
+    /// Row Offset in EMU
+    /// 
+    /// EMU units   1cm         =   1/360000 
+    ///             1US inch    =   1/914400
+    ///             1pixel      =   1/9525
+    /// </summary>
+    public int RowOff
+    {
+        get
         {
-            this.SetXmlNodeString(colPath, this._column.ToString());
-            this.SetXmlNodeString(colOffPath, this._columnOff.ToString());
-            this.SetXmlNodeString(rowPath, this._row.ToString());
-            this.SetXmlNodeString(rowOffPath, this._rowOff.ToString());
+            return this._rowOff;
         }
+        set
+        {
+            this._rowOff = value;
+            this._setWidthCallback?.Invoke();
+        }
+    }
+    public void Load()
+    {
+        this._column = this.GetXmlNodeInt(colPath);
+        this._columnOff = this.GetXmlNodeInt(colOffPath);
+        this._row = this.GetXmlNodeInt(rowPath);
+        this._rowOff = this.GetXmlNodeInt(rowOffPath);
+    }
+    public void UpdateXml()
+    {
+        this.SetXmlNodeString(colPath, this._column.ToString());
+        this.SetXmlNodeString(colOffPath, this._columnOff.ToString());
+        this.SetXmlNodeString(rowPath, this._row.ToString());
+        this.SetXmlNodeString(rowOffPath, this._rowOff.ToString());
     }
 }

@@ -17,49 +17,48 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace OfficeOpenXml.Export.HtmlExport.Exporters
+namespace OfficeOpenXml.Export.HtmlExport.Exporters;
+
+internal abstract class CssRangeExporterBase : AbstractHtmlExporter
 {
-    internal abstract class CssRangeExporterBase : AbstractHtmlExporter
+    public CssRangeExporterBase(HtmlExportSettings settings, ExcelRangeBase range)
     {
-        public CssRangeExporterBase(HtmlExportSettings settings, ExcelRangeBase range)
-        {
-            this.Settings = settings;
-            Require.Argument(range).IsNotNull("range");
-            this._ranges = new EPPlusReadOnlyList<ExcelRangeBase>();
+        this.Settings = settings;
+        Require.Argument(range).IsNotNull("range");
+        this._ranges = new EPPlusReadOnlyList<ExcelRangeBase>();
 
-            if (range.Addresses == null)
+        if (range.Addresses == null)
+        {
+            this.AddRange(range);
+        }
+        else
+        {
+            foreach (ExcelAddressBase? address in range.Addresses)
             {
-                this.AddRange(range);
-            }
-            else
-            {
-                foreach (ExcelAddressBase? address in range.Addresses)
-                {
-                    this.AddRange(range.Worksheet.Cells[address.Address]);
-                }
+                this.AddRange(range.Worksheet.Cells[address.Address]);
             }
         }
+    }
 
-        public CssRangeExporterBase(HtmlRangeExportSettings settings, EPPlusReadOnlyList<ExcelRangeBase> ranges)
+    public CssRangeExporterBase(HtmlRangeExportSettings settings, EPPlusReadOnlyList<ExcelRangeBase> ranges)
+    {
+        this.Settings = settings;
+        Require.Argument(ranges).IsNotNull("ranges");
+        this._ranges = ranges;
+    }
+
+    protected HtmlExportSettings Settings;
+    protected EPPlusReadOnlyList<ExcelRangeBase> _ranges = new EPPlusReadOnlyList<ExcelRangeBase>();
+
+    private void AddRange(ExcelRangeBase range)
+    {
+        if (range.IsFullColumn && range.IsFullRow)
         {
-            this.Settings = settings;
-            Require.Argument(ranges).IsNotNull("ranges");
-            this._ranges = ranges;
+            this._ranges.Add(new ExcelRangeBase(range.Worksheet, range.Worksheet.Dimension.Address));
         }
-
-        protected HtmlExportSettings Settings;
-        protected EPPlusReadOnlyList<ExcelRangeBase> _ranges = new EPPlusReadOnlyList<ExcelRangeBase>();
-
-        private void AddRange(ExcelRangeBase range)
+        else
         {
-            if (range.IsFullColumn && range.IsFullRow)
-            {
-                this._ranges.Add(new ExcelRangeBase(range.Worksheet, range.Worksheet.Dimension.Address));
-            }
-            else
-            {
-                this._ranges.Add(range);
-            }
+            this._ranges.Add(range);
         }
     }
 }

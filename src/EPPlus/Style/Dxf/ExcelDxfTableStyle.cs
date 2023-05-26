@@ -12,21 +12,20 @@
  *************************************************************************************************/
 using System;
 using System.Xml;
-namespace OfficeOpenXml.Style.Dxf
-{
-    /// <summary>
-    /// Differential formatting record used for table styles
-    /// </summary>
-    public class ExcelDxfTableStyle : ExcelDxfStyleLimitedFont
-    {
-        internal ExcelDxfTableStyle(XmlNamespaceManager nameSpaceManager, XmlNode topNode, ExcelStyles styles) 
-            : this(nameSpaceManager,topNode, styles, null)
-        {
-        }
-        internal ExcelDxfTableStyle(XmlNamespaceManager nameSpaceManager, XmlNode topNode, ExcelStyles styles, Action<eStyleClass, eStyleProperty, object> callback)
-            : base(nameSpaceManager, topNode, styles, callback)
-        {
+namespace OfficeOpenXml.Style.Dxf;
 
-        }
+/// <summary>
+/// Differential formatting record used for table styles
+/// </summary>
+public class ExcelDxfTableStyle : ExcelDxfStyleLimitedFont
+{
+    internal ExcelDxfTableStyle(XmlNamespaceManager nameSpaceManager, XmlNode topNode, ExcelStyles styles) 
+        : this(nameSpaceManager,topNode, styles, null)
+    {
+    }
+    internal ExcelDxfTableStyle(XmlNamespaceManager nameSpaceManager, XmlNode topNode, ExcelStyles styles, Action<eStyleClass, eStyleProperty, object> callback)
+        : base(nameSpaceManager, topNode, styles, callback)
+    {
+
     }
 }

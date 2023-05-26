@@ -17,48 +17,47 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Statistical
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Statistical;
+
+[FunctionMetadata(
+                     Category = ExcelFunctionCategory.Statistical,
+                     EPPlusVersion = "6.0",
+                     Description = "Calculates the point at which a line will intersect the y-axis by using existing x-values and y-values.")]
+internal class Intercept : ExcelFunction
 {
-    [FunctionMetadata(
-        Category = ExcelFunctionCategory.Statistical,
-        EPPlusVersion = "6.0",
-        Description = "Calculates the point at which a line will intersect the y-axis by using existing x-values and y-values.")]
-    internal class Intercept : ExcelFunction
+    public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
     {
-        public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
+        ValidateArguments(arguments, 2);
+        FunctionArgument? arg1 = arguments.ElementAt(0);
+        FunctionArgument? arg2 = arguments.ElementAt(1);
+        double[]? knownYs = this.ArgsToDoubleEnumerable(false, false, new FunctionArgument[] { arg1 }, context).Select(x => x.Value).ToArray();
+        double[]? knownXs = this.ArgsToDoubleEnumerable(false, false, new FunctionArgument[] { arg2 }, context).Select(x => x.Value).ToArray();
+        if (knownYs.Count() != knownXs.Count())
         {
-            ValidateArguments(arguments, 2);
-            FunctionArgument? arg1 = arguments.ElementAt(0);
-            FunctionArgument? arg2 = arguments.ElementAt(1);
-            double[]? knownYs = this.ArgsToDoubleEnumerable(false, false, new FunctionArgument[] { arg1 }, context).Select(x => x.Value).ToArray();
-            double[]? knownXs = this.ArgsToDoubleEnumerable(false, false, new FunctionArgument[] { arg2 }, context).Select(x => x.Value).ToArray();
-            if (knownYs.Count() != knownXs.Count())
-            {
-                return this.CreateResult(eErrorType.NA);
-            }
-
-            if (!knownYs.Any())
-            {
-                return this.CreateResult(eErrorType.NA);
-            }
-
-            double result = InterceptImpl(0, knownYs, knownXs);
-            return this.CreateResult(result, DataType.Decimal);
+            return this.CreateResult(eErrorType.NA);
         }
 
-        internal static double InterceptImpl(double x, double[] arrayY, double[] arrayX)
+        if (!knownYs.Any())
         {
-            double avgY = arrayY.Average();
-            double avgX = arrayX.Average();
-            int nItems = arrayY.Length;
-            double upperEquationPart = 0d;
-            double lowerEquationPart = 0d;
-            for (int ix = 0; ix < nItems; ix++)
-            {
-                upperEquationPart += (arrayX[ix] - avgX) * (arrayY[ix] - avgY);
-                lowerEquationPart += System.Math.Pow(arrayX[ix] - avgX, 2);
-            }
-            return avgY - (upperEquationPart / lowerEquationPart) * avgX;
+            return this.CreateResult(eErrorType.NA);
         }
+
+        double result = InterceptImpl(0, knownYs, knownXs);
+        return this.CreateResult(result, DataType.Decimal);
+    }
+
+    internal static double InterceptImpl(double x, double[] arrayY, double[] arrayX)
+    {
+        double avgY = arrayY.Average();
+        double avgX = arrayX.Average();
+        int nItems = arrayY.Length;
+        double upperEquationPart = 0d;
+        double lowerEquationPart = 0d;
+        for (int ix = 0; ix < nItems; ix++)
+        {
+            upperEquationPart += (arrayX[ix] - avgX) * (arrayY[ix] - avgY);
+            lowerEquationPart += System.Math.Pow(arrayX[ix] - avgX, 2);
+        }
+        return avgY - (upperEquationPart / lowerEquationPart) * avgX;
     }
 }

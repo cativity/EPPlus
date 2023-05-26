@@ -17,36 +17,35 @@ using System.Text;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Metadata;
 using OfficeOpenXml.FormulaParsing.ExpressionGraph;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
-{
-    [FunctionMetadata(
-        Category = ExcelFunctionCategory.MathAndTrig,
-        EPPlusVersion = "4",
-        Description = "Returns a random number between two given integers")]
-    internal class RandBetween : ExcelFunction
-    {
-        public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
-        {
-            ValidateArguments(arguments, 2);
-            double low = this.ArgToDecimal(arguments, 0);
-            double high = this.ArgToDecimal(arguments, 1);
-            object? rand = new Rand().Execute(new FunctionArgument[0], context).Result;
-            double randPart = (CalulateDiff(high, low) * (double)rand) + 1;
-            randPart = System.Math.Floor(randPart);
-            return this.CreateResult(low + randPart, DataType.Integer);
-        }
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
 
-        private static double CalulateDiff(double high, double low)
+[FunctionMetadata(
+                     Category = ExcelFunctionCategory.MathAndTrig,
+                     EPPlusVersion = "4",
+                     Description = "Returns a random number between two given integers")]
+internal class RandBetween : ExcelFunction
+{
+    public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
+    {
+        ValidateArguments(arguments, 2);
+        double low = this.ArgToDecimal(arguments, 0);
+        double high = this.ArgToDecimal(arguments, 1);
+        object? rand = new Rand().Execute(new FunctionArgument[0], context).Result;
+        double randPart = (CalulateDiff(high, low) * (double)rand) + 1;
+        randPart = System.Math.Floor(randPart);
+        return this.CreateResult(low + randPart, DataType.Integer);
+    }
+
+    private static double CalulateDiff(double high, double low)
+    {
+        if (high > 0 && low < 0)
         {
-            if (high > 0 && low < 0)
-            {
-                return high + low * - 1;
-            }
-            else if (high < 0 && low < 0)
-            {
-                return high * -1 - low * -1;
-            }
-            return high - low;
+            return high + low * - 1;
         }
+        else if (high < 0 && low < 0)
+        {
+            return high * -1 - low * -1;
+        }
+        return high - low;
     }
 }

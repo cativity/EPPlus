@@ -10,25 +10,23 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
-namespace OfficeOpenXml.Drawing
+namespace OfficeOpenXml.Drawing;
+
+/// <summary>
+/// Specifies the cap types of the text
+/// </summary>
+public enum eTextCapsType
 {
     /// <summary>
-    /// Specifies the cap types of the text
+    /// Apply all caps on the text. All lower case letters are converted to upper case, but stored without change.
     /// </summary>
-    public enum eTextCapsType
-    {
-        /// <summary>
-        /// Apply all caps on the text. All lower case letters are converted to upper case, but stored without change.
-        /// </summary>
-        All,
-        /// <summary>
-        /// None
-        /// </summary>
-        None,
-        /// <summary>
-        /// Apply small caps to the text. Letters are converted to lower case.
-        /// </summary>
-        Small
-    }
+    All,
+    /// <summary>
+    /// None
+    /// </summary>
+    None,
+    /// <summary>
+    /// Apply small caps to the text. Letters are converted to lower case.
+    /// </summary>
+    Small
 }
-    

@@ -11,37 +11,36 @@
   05/11/2021         EPPlus Software AB           ExcelTable Html Export
  *************************************************************************************************/
 
-namespace OfficeOpenXml.Export.HtmlExport
+namespace OfficeOpenXml.Export.HtmlExport;
+
+/// <summary>
+/// Settings for css export for tables
+/// </summary>
+public class CssRangeExportSettings : CssExportSettings
 {
-    /// <summary>
-    /// Settings for css export for tables
-    /// </summary>
-    public class CssRangeExportSettings : CssExportSettings
+    internal CssRangeExportSettings()
     {
-        internal CssRangeExportSettings()
-        {
-            this.ResetToDefault();
-        }
-        /// <summary>
-        /// Settings to exclude specific styles from the css.
-        /// </summary>
-        public CssExclude CssExclude { get; } = new CssExclude();
-        /// <summary>
-        /// Reset the settings to it's default values.
-        /// </summary>
-        public void ResetToDefault()
-        {
-            this.CssExclude.ResetToDefault();
-            this.ResetToDefaultInternal();
-        }
-        /// <summary>
-        /// Copy the values from another settings object.
-        /// </summary>
-        /// <param name="copy">The object to copy.</param>
-        public void Copy(CssRangeExportSettings copy)
-        {
-            this.CssExclude.Copy(copy.CssExclude);
-            this.CopyInternal(copy);
-        }
+        this.ResetToDefault();
+    }
+    /// <summary>
+    /// Settings to exclude specific styles from the css.
+    /// </summary>
+    public CssExclude CssExclude { get; } = new CssExclude();
+    /// <summary>
+    /// Reset the settings to it's default values.
+    /// </summary>
+    public void ResetToDefault()
+    {
+        this.CssExclude.ResetToDefault();
+        this.ResetToDefaultInternal();
+    }
+    /// <summary>
+    /// Copy the values from another settings object.
+    /// </summary>
+    /// <param name="copy">The object to copy.</param>
+    public void Copy(CssRangeExportSettings copy)
+    {
+        this.CssExclude.Copy(copy.CssExclude);
+        this.CopyInternal(copy);
     }
 }

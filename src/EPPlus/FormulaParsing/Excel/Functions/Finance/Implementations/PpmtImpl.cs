@@ -14,35 +14,34 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.Implementations
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.Implementations;
+
+internal static class PpmtImpl
 {
-    internal static class PpmtImpl
+    internal static FinanceCalcResult<double> Ppmt(double Rate, double Per, double NPer, double PV, double FV = 0, PmtDue Due = PmtDue.EndOfPeriod)
     {
-        internal static FinanceCalcResult<double> Ppmt(double Rate, double Per, double NPer, double PV, double FV = 0, PmtDue Due = PmtDue.EndOfPeriod)
+        //   Checking for error conditions
+        if ((Per <= 0.0) || (Per >= (NPer + 1)))
         {
-            //   Checking for error conditions
-            if ((Per <= 0.0) || (Per >= (NPer + 1)))
-            {
-                return new FinanceCalcResult<double>(eErrorType.Num);
-            }
-
-            FinanceCalcResult<double>? pmtResult = InternalMethods.PMT_Internal(Rate, NPer, PV, FV, Due);
-            if (pmtResult.HasError)
-            {
-                return new FinanceCalcResult<double>(pmtResult.ExcelErrorType);
-            }
-
-            double Pmt = pmtResult.Result;
-
-            FinanceCalcResult<double>? iPmtResult = IPmtImpl.Ipmt(Rate, Per, NPer, PV, FV, Due);
-            if (iPmtResult.HasError)
-            {
-                return new FinanceCalcResult<double>(iPmtResult.ExcelErrorType);
-            }
-
-            double dIPMT = iPmtResult.Result;
-
-            return new FinanceCalcResult<double>(Pmt - dIPMT);
+            return new FinanceCalcResult<double>(eErrorType.Num);
         }
+
+        FinanceCalcResult<double>? pmtResult = InternalMethods.PMT_Internal(Rate, NPer, PV, FV, Due);
+        if (pmtResult.HasError)
+        {
+            return new FinanceCalcResult<double>(pmtResult.ExcelErrorType);
+        }
+
+        double Pmt = pmtResult.Result;
+
+        FinanceCalcResult<double>? iPmtResult = IPmtImpl.Ipmt(Rate, Per, NPer, PV, FV, Due);
+        if (iPmtResult.HasError)
+        {
+            return new FinanceCalcResult<double>(iPmtResult.ExcelErrorType);
+        }
+
+        double dIPMT = iPmtResult.Result;
+
+        return new FinanceCalcResult<double>(Pmt - dIPMT);
     }
 }

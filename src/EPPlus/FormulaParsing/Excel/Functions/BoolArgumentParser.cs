@@ -17,42 +17,41 @@ using System.Text;
 using OfficeOpenXml.FormulaParsing.Utilities;
 using OfficeOpenXml.FormulaParsing;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions;
+
+public class BoolArgumentParser : ArgumentParser
 {
-    public class BoolArgumentParser : ArgumentParser
+    public override object Parse(object obj)
     {
-        public override object Parse(object obj)
+        if (obj is IRangeInfo)
         {
-            if (obj is IRangeInfo)
-            {
-                ICellInfo? r = ((IRangeInfo)obj).FirstOrDefault();
-                obj = (r == null ? null : r.Value);
-            }
-            if (obj == null)
-            {
-                return false;
-            }
+            ICellInfo? r = ((IRangeInfo)obj).FirstOrDefault();
+            obj = (r == null ? null : r.Value);
+        }
+        if (obj == null)
+        {
+            return false;
+        }
 
-            if (obj is bool)
-            {
-                return (bool)obj;
-            }
+        if (obj is bool)
+        {
+            return (bool)obj;
+        }
 
-            if (obj.IsNumeric())
-            {
-                return Convert.ToBoolean(obj);
-            }
+        if (obj.IsNumeric())
+        {
+            return Convert.ToBoolean(obj);
+        }
 
-            if (bool.TryParse(obj.ToString(), out bool result))
-            {
-                return result;
-            }
+        if (bool.TryParse(obj.ToString(), out bool result))
+        {
             return result;
         }
+        return result;
+    }
 
-        public override object Parse(object obj, RoundingMethod roundingMethod)
-        {
-            return this.Parse(obj);
-        }
+    public override object Parse(object obj, RoundingMethod roundingMethod)
+    {
+        return this.Parse(obj);
     }
 }

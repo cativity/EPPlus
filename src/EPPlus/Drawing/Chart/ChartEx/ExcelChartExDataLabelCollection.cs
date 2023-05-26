@@ -16,71 +16,70 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Xml;
 
-namespace OfficeOpenXml.Drawing.Chart.ChartEx
-{
-    /// <summary>
-    /// A collection of individual data labels
-    /// </summary>
-    public class ExcelChartExDataLabelCollection : ExcelChartExDataLabel, IDrawingStyle, IEnumerable<ExcelChartExDataLabelItem>
-    {
-        SortedDictionary<int, ExcelChartExDataLabelItem> _dic=new SortedDictionary<int, ExcelChartExDataLabelItem>();
-        internal ExcelChartExDataLabelCollection(ExcelChartExSerie serie, XmlNamespaceManager ns, XmlNode node, string[] schemaNodeOrder) : 
-            base(serie, ns, node)
-        {
-            this._chart = serie._chart;
-            this.AddSchemaNodeOrder(schemaNodeOrder, new string[]{ "numFmt","spPr", "txPr", "visibility", "separator"});
-            foreach (XmlNode pointNode in this.TopNode.SelectNodes(_dataLabelPath, ns))
-            {
-                ExcelChartExDataLabelItem? item = new ExcelChartExDataLabelItem(serie, ns, pointNode);
-                this._dic.Add(item.Index, item);
-            }
-        }
-        void IDrawingStyleBase.CreatespPr()
-        {
-            this.CreatespPrNode("cx:spPr");
-        }
-        /// <summary>
-        /// Adds an individual data label for customization.
-        /// </summary>
-        /// <param name="index">The zero based index</param>
-        /// <returns></returns>
-        public ExcelChartExDataLabelItem Add(int index)
-        {
-            if(this._dic.ContainsKey(index))
-            {
-                throw new InvalidOperationException($"Data label with index {index} already exists.");
-            }
-            XmlNode? node = this._serie.CreateNode("cx:dataLabels/cx:dataLabel", false, true);
-            return new ExcelChartExDataLabelItem(this._serie, this.NameSpaceManager, node, index);
-        }
-        /// <summary>
-        /// Returns tje data label at the specific position.  
-        /// </summary>
-        /// <param name="index">The index of the datalabel. 0-base.</param>
-        /// <returns>Returns null if the data label does not exist in the collection</returns>
-        public ExcelChartExDataLabel this[int index]
-        {
-            get
-            {
-                if (this._dic.ContainsKey(index))
-                {
-                    return this._dic[index];
-                }
-                return null;
-            }
-        }
-        /// <summary>
-        /// Get the enumerator
-        /// </summary>
-        /// <returns></returns>
-        public IEnumerator<ExcelChartExDataLabelItem> GetEnumerator()
-        {
-            return this._dic.Values.GetEnumerator();
-        }
+namespace OfficeOpenXml.Drawing.Chart.ChartEx;
 
-        IEnumerator IEnumerable.GetEnumerator()
+/// <summary>
+/// A collection of individual data labels
+/// </summary>
+public class ExcelChartExDataLabelCollection : ExcelChartExDataLabel, IDrawingStyle, IEnumerable<ExcelChartExDataLabelItem>
+{
+    SortedDictionary<int, ExcelChartExDataLabelItem> _dic=new SortedDictionary<int, ExcelChartExDataLabelItem>();
+    internal ExcelChartExDataLabelCollection(ExcelChartExSerie serie, XmlNamespaceManager ns, XmlNode node, string[] schemaNodeOrder) : 
+        base(serie, ns, node)
+    {
+        this._chart = serie._chart;
+        this.AddSchemaNodeOrder(schemaNodeOrder, new string[]{ "numFmt","spPr", "txPr", "visibility", "separator"});
+        foreach (XmlNode pointNode in this.TopNode.SelectNodes(_dataLabelPath, ns))
         {
-            return this._dic.Values.GetEnumerator();
+            ExcelChartExDataLabelItem? item = new ExcelChartExDataLabelItem(serie, ns, pointNode);
+            this._dic.Add(item.Index, item);
         }
+    }
+    void IDrawingStyleBase.CreatespPr()
+    {
+        this.CreatespPrNode("cx:spPr");
+    }
+    /// <summary>
+    /// Adds an individual data label for customization.
+    /// </summary>
+    /// <param name="index">The zero based index</param>
+    /// <returns></returns>
+    public ExcelChartExDataLabelItem Add(int index)
+    {
+        if(this._dic.ContainsKey(index))
+        {
+            throw new InvalidOperationException($"Data label with index {index} already exists.");
+        }
+        XmlNode? node = this._serie.CreateNode("cx:dataLabels/cx:dataLabel", false, true);
+        return new ExcelChartExDataLabelItem(this._serie, this.NameSpaceManager, node, index);
+    }
+    /// <summary>
+    /// Returns tje data label at the specific position.  
+    /// </summary>
+    /// <param name="index">The index of the datalabel. 0-base.</param>
+    /// <returns>Returns null if the data label does not exist in the collection</returns>
+    public ExcelChartExDataLabel this[int index]
+    {
+        get
+        {
+            if (this._dic.ContainsKey(index))
+            {
+                return this._dic[index];
+            }
+            return null;
+        }
+    }
+    /// <summary>
+    /// Get the enumerator
+    /// </summary>
+    /// <returns></returns>
+    public IEnumerator<ExcelChartExDataLabelItem> GetEnumerator()
+    {
+        return this._dic.Values.GetEnumerator();
+    }
+
+    IEnumerator IEnumerable.GetEnumerator()
+    {
+        return this._dic.Values.GetEnumerator();
     }
 }

@@ -16,74 +16,73 @@ using OfficeOpenXml.Utils.Extensions;
 using System;
 using System.Xml;
 
-namespace OfficeOpenXml.Drawing.Style.Effect
+namespace OfficeOpenXml.Drawing.Style.Effect;
+
+/// <summary>
+/// The fill overlay effect. 
+/// A fill overlay can be used to specify an additional fill for a drawing and blend the two together.
+/// </summary>
+public class ExcelDrawingFillOverlayEffect : ExcelDrawingEffectBase
 {
-    /// <summary>
-    /// The fill overlay effect. 
-    /// A fill overlay can be used to specify an additional fill for a drawing and blend the two together.
-    /// </summary>
-    public class ExcelDrawingFillOverlayEffect : ExcelDrawingEffectBase
+    private readonly IPictureRelationDocument _pictureRelationDocument;
+    internal ExcelDrawingFillOverlayEffect(IPictureRelationDocument pictureRelationDocument, XmlNamespaceManager nameSpaceManager, XmlNode topNode, string[] schemaNodeOrder, string path) : base(nameSpaceManager, topNode, schemaNodeOrder, path)
     {
-        private readonly IPictureRelationDocument _pictureRelationDocument;
-        internal ExcelDrawingFillOverlayEffect(IPictureRelationDocument pictureRelationDocument, XmlNamespaceManager nameSpaceManager, XmlNode topNode, string[] schemaNodeOrder, string path) : base(nameSpaceManager, topNode, schemaNodeOrder, path)
-        {
-            this._pictureRelationDocument = pictureRelationDocument;
-        }
-        /// <summary>
-        /// The fill to blend with
-        /// </summary>
-        public ExcelDrawingFill Fill
-        {
-            get;
-            private set;
-        }
-        /// <summary>
-        /// How to blend the overlay
-        /// Default is Over
-        /// </summary>
-        public eBlendMode Blend
-        {
-            get
-            {
-                return this.GetXmlNodeString(this._path+"/@blend").ToEnum(eBlendMode.Over);
-            }
-            set
-            {
-                if(this.Fill==null)
-                {
-                    this.Create();
-                }
-
-                this.SetXmlNodeString(this._path + "/@blend", value.ToString().ToLowerInvariant());
-            }
-        }
-        /// <summary>
-        /// Creates a fill overlay with BlendMode = Over
-        /// </summary>
-        public void Create()
-        {
-            if (this.Fill == null)
-            {
-                this.Fill = new ExcelDrawingFill(this._pictureRelationDocument, this.NameSpaceManager, this.TopNode, this._path, this.SchemaNodeOrder);
-                if(this.Fill._fillTypeNode==null)
-                {
-                    this.Fill.Style = eFillStyle.NoFill;
-                }
-            }
-
-            if (!this.ExistsNode($"{this._path}/@blend"))
-            {
-                this.Blend = eBlendMode.Over;
-            }
-        }
-        /// <summary>
-        /// Removes any fill overlay
-        /// </summary>
-        public void Remove()
-        {
-            this.DeleteNode($"{this._path}");
-            this.Fill = null;
-        }
-
+        this._pictureRelationDocument = pictureRelationDocument;
     }
+    /// <summary>
+    /// The fill to blend with
+    /// </summary>
+    public ExcelDrawingFill Fill
+    {
+        get;
+        private set;
+    }
+    /// <summary>
+    /// How to blend the overlay
+    /// Default is Over
+    /// </summary>
+    public eBlendMode Blend
+    {
+        get
+        {
+            return this.GetXmlNodeString(this._path+"/@blend").ToEnum(eBlendMode.Over);
+        }
+        set
+        {
+            if(this.Fill==null)
+            {
+                this.Create();
+            }
+
+            this.SetXmlNodeString(this._path + "/@blend", value.ToString().ToLowerInvariant());
+        }
+    }
+    /// <summary>
+    /// Creates a fill overlay with BlendMode = Over
+    /// </summary>
+    public void Create()
+    {
+        if (this.Fill == null)
+        {
+            this.Fill = new ExcelDrawingFill(this._pictureRelationDocument, this.NameSpaceManager, this.TopNode, this._path, this.SchemaNodeOrder);
+            if(this.Fill._fillTypeNode==null)
+            {
+                this.Fill.Style = eFillStyle.NoFill;
+            }
+        }
+
+        if (!this.ExistsNode($"{this._path}/@blend"))
+        {
+            this.Blend = eBlendMode.Over;
+        }
+    }
+    /// <summary>
+    /// Removes any fill overlay
+    /// </summary>
+    public void Remove()
+    {
+        this.DeleteNode($"{this._path}");
+        this.Fill = null;
+    }
+
 }

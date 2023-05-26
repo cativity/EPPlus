@@ -16,36 +16,35 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 
-namespace OfficeOpenXml.FormulaParsing.ExpressionGraph
+namespace OfficeOpenXml.FormulaParsing.ExpressionGraph;
+
+public class IntegerExpression : AtomicExpression
 {
-    public class IntegerExpression : AtomicExpression
+    private double? _compiledValue;
+    private bool _negate;
+
+    public IntegerExpression(string expression)
+        : this(expression, false)
     {
-        private double? _compiledValue;
-        private bool _negate;
 
-        public IntegerExpression(string expression)
-            : this(expression, false)
-        {
+    }
 
-        }
+    public IntegerExpression(string expression, bool negate)
+        : base(expression)
+    {
+        this._negate = negate;
+    }
 
-        public IntegerExpression(string expression, bool negate)
-            : base(expression)
-        {
-            this._negate = negate;
-        }
+    public IntegerExpression(double val)
+        : base(val.ToString(CultureInfo.InvariantCulture))
+    {
+        this._compiledValue = Math.Floor(val);
+    }
 
-        public IntegerExpression(double val)
-            : base(val.ToString(CultureInfo.InvariantCulture))
-        {
-            this._compiledValue = Math.Floor(val);
-        }
-
-        public override CompileResult Compile()
-        {
-            double result = this._compiledValue ?? double.Parse(this.ExpressionString, CultureInfo.InvariantCulture);
-            result = this._negate ? result * -1 : result;
-            return new CompileResult(result, DataType.Integer);
-        }
+    public override CompileResult Compile()
+    {
+        double result = this._compiledValue ?? double.Parse(this.ExpressionString, CultureInfo.InvariantCulture);
+        result = this._negate ? result * -1 : result;
+        return new CompileResult(result, DataType.Integer);
     }
 }

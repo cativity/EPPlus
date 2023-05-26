@@ -17,35 +17,34 @@ using System.Text;
 using OfficeOpenXml.FormulaParsing.Excel;
 using OfficeOpenXml.FormulaParsing.Excel.Functions;
 
-namespace OfficeOpenXml.FormulaParsing.ExpressionGraph.FunctionCompilers
+namespace OfficeOpenXml.FormulaParsing.ExpressionGraph.FunctionCompilers;
+
+public class DefaultCompiler : FunctionCompiler
 {
-    public class DefaultCompiler : FunctionCompiler
+    public DefaultCompiler(ExcelFunction function, ParsingContext context)
+        : base(function, context)
     {
-        public DefaultCompiler(ExcelFunction function, ParsingContext context)
-            : base(function, context)
-        {
 
-        }
+    }
 
-        public override CompileResult Compile(IEnumerable<Expression> children)
+    public override CompileResult Compile(IEnumerable<Expression> children)
+    {
+        List<FunctionArgument>? args = new List<FunctionArgument>();
+        this.Function.BeforeInvoke(this.Context);
+        foreach (Expression? child in children)
         {
-            List<FunctionArgument>? args = new List<FunctionArgument>();
-            this.Function.BeforeInvoke(this.Context);
-            foreach (Expression? child in children)
+            CompileResult? compileResult = child.Compile();
+            if (compileResult.IsResultOfSubtotal)
             {
-                CompileResult? compileResult = child.Compile();
-                if (compileResult.IsResultOfSubtotal)
-                {
-                    FunctionArgument? arg = new FunctionArgument(compileResult.Result, compileResult.DataType);
-                    arg.SetExcelStateFlag(ExcelCellState.IsResultOfSubtotal);
-                    args.Add(arg);
-                }
-                else
-                {
-                    BuildFunctionArguments(compileResult, args);     
-                }
+                FunctionArgument? arg = new FunctionArgument(compileResult.Result, compileResult.DataType);
+                arg.SetExcelStateFlag(ExcelCellState.IsResultOfSubtotal);
+                args.Add(arg);
             }
-            return this.Function.Execute(args, this.Context);
+            else
+            {
+                BuildFunctionArguments(compileResult, args);     
+            }
         }
+        return this.Function.Execute(args, this.Context);
     }
 }

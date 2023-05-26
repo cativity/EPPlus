@@ -10,24 +10,23 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
-namespace OfficeOpenXml.Drawing
+namespace OfficeOpenXml.Drawing;
+
+/// <summary>
+/// The shape that lines joined together have
+/// </summary>
+public enum eLineJoin
 {
     /// <summary>
-    /// The shape that lines joined together have
+    /// A bevel join
     /// </summary>
-    public enum eLineJoin
-    {
-        /// <summary>
-        /// A bevel join
-        /// </summary>
-        Bevel,
-        /// <summary>
-        /// A round join
-        /// </summary>
-        Round,
-        /// <summary>
-        /// A Mitered join
-        /// </summary>
-        Miter
-    }
+    Bevel,
+    /// <summary>
+    /// A round join
+    /// </summary>
+    Round,
+    /// <summary>
+    /// A Mitered join
+    /// </summary>
+    Miter
 }

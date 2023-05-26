@@ -18,41 +18,40 @@ using OfficeOpenXml.FormulaParsing;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Metadata;
 using OfficeOpenXml.FormulaParsing.ExpressionGraph;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Information
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Information;
+
+[FunctionMetadata(
+                     Category = ExcelFunctionCategory.Information,
+                     EPPlusVersion = "4",
+                     Description = "Tests if a supplied cell is blank (empty), and if so, returns TRUE; Otherwise, returns FALSE")]
+internal class IsBlank : ExcelFunction
 {
-    [FunctionMetadata(
-        Category = ExcelFunctionCategory.Information,
-        EPPlusVersion = "4",
-        Description = "Tests if a supplied cell is blank (empty), and if so, returns TRUE; Otherwise, returns FALSE")]
-    internal class IsBlank : ExcelFunction
+    public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
     {
-        public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
+        if (arguments == null || arguments.Count() == 0)
         {
-            if (arguments == null || arguments.Count() == 0)
-            {
-                return this.CreateResult(true, DataType.Boolean);
-            }
-            bool result = true;
-            foreach (FunctionArgument? arg in arguments)
-            {
-                if (arg.Value is IRangeInfo)
-                {                    
-                    IRangeInfo? r=(IRangeInfo)arg.Value;
-                    if (r.GetValue(r.Address._fromRow, r.Address._fromCol) != null)
-                    {
-                        result = false;
-                    }
-                }
-                else
-                {
-                    if (arg.Value != null && (arg.Value.ToString() != string.Empty))
-                    {
-                        result = false;
-                        break;
-                    }
-                }
-            }
-            return this.CreateResult(result, DataType.Boolean);
+            return this.CreateResult(true, DataType.Boolean);
         }
+        bool result = true;
+        foreach (FunctionArgument? arg in arguments)
+        {
+            if (arg.Value is IRangeInfo)
+            {                    
+                IRangeInfo? r=(IRangeInfo)arg.Value;
+                if (r.GetValue(r.Address._fromRow, r.Address._fromCol) != null)
+                {
+                    result = false;
+                }
+            }
+            else
+            {
+                if (arg.Value != null && (arg.Value.ToString() != string.Empty))
+                {
+                    result = false;
+                    break;
+                }
+            }
+        }
+        return this.CreateResult(result, DataType.Boolean);
     }
 }

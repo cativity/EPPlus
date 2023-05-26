@@ -16,254 +16,253 @@ using System.Linq;
 using System.Text;
 using System.Xml;
 
-namespace OfficeOpenXml.ThreadedComments
+namespace OfficeOpenXml.ThreadedComments;
+
+/// <summary>
+/// Represents a comment in a thread of ThreadedComments
+/// </summary>
+public class ExcelThreadedComment : XmlHelper
 {
-    /// <summary>
-    /// Represents a comment in a thread of ThreadedComments
-    /// </summary>
-    public class ExcelThreadedComment : XmlHelper
+    internal ExcelThreadedComment(XmlNode topNode, XmlNamespaceManager namespaceManager, ExcelWorkbook workbook)
+        : this(topNode, namespaceManager, workbook, null)
     {
-        internal ExcelThreadedComment(XmlNode topNode, XmlNamespaceManager namespaceManager, ExcelWorkbook workbook)
-            : this(topNode, namespaceManager, workbook, null)
-        {
-        }
+    }
 
-        internal ExcelThreadedComment(XmlNode topNode, XmlNamespaceManager namespaceManager, ExcelWorkbook workbook, ExcelThreadedCommentThread thread)
-            : base(namespaceManager, topNode)
-        {
-            this.SchemaNodeOrder = new string[] { "text", "mentions" };
-            this._workbook = workbook;
-            this._thread = thread;
-        }
+    internal ExcelThreadedComment(XmlNode topNode, XmlNamespaceManager namespaceManager, ExcelWorkbook workbook, ExcelThreadedCommentThread thread)
+        : base(namespaceManager, topNode)
+    {
+        this.SchemaNodeOrder = new string[] { "text", "mentions" };
+        this._workbook = workbook;
+        this._thread = thread;
+    }
 
-        private readonly ExcelWorkbook _workbook;
-        private ExcelThreadedCommentThread _thread;
-        internal ExcelThreadedCommentThread Thread
+    private readonly ExcelWorkbook _workbook;
+    private ExcelThreadedCommentThread _thread;
+    internal ExcelThreadedCommentThread Thread
+    {
+        set
         {
-            set
-            {
-                this._thread = value ?? throw new ArgumentNullException("Thread");
-            }
+            this._thread = value ?? throw new ArgumentNullException("Thread");
         }
+    }
 
-        internal static string NewId()
-        {
-            Guid guid = Guid.NewGuid();
-            return "{" + guid.ToString().ToUpper() + "}";
-        }
+    internal static string NewId()
+    {
+        Guid guid = Guid.NewGuid();
+        return "{" + guid.ToString().ToUpper() + "}";
+    }
 
-        /// <summary>
-        /// Indicates whether the Text contains mentions. If so the
-        /// Mentions property will contain data about those mentions.
-        /// </summary>
-        public bool ContainsMentions
+    /// <summary>
+    /// Indicates whether the Text contains mentions. If so the
+    /// Mentions property will contain data about those mentions.
+    /// </summary>
+    public bool ContainsMentions
+    {
+        get
         {
-            get
-            {
-                return this.Mentions != null && this.Mentions.Any();
-            }
+            return this.Mentions != null && this.Mentions.Any();
         }
+    }
 
-        /// <summary>
-        /// Address of the cell in the A1 format
-        /// </summary>
-        internal string Ref
+    /// <summary>
+    /// Address of the cell in the A1 format
+    /// </summary>
+    internal string Ref
+    {
+        get
         {
-            get
-            {
-                return this.GetXmlNodeString("@ref");
-            }
-            set
-            {
-                this.SetXmlNodeString("@ref", value);
-            }
+            return this.GetXmlNodeString("@ref");
         }
-        private ExcelCellAddress _cellAddress=null;
-        /// <summary>
-        /// The location of the threaded comment
-        /// </summary>
-        public ExcelCellAddress CellAddress
+        set
         {
-            get { return this._cellAddress ??= new ExcelCellAddress(this.Ref); }
-            internal set
-            {
-                this._cellAddress = value;
-                this.Ref = this.CellAddress.Address;
-            }
+            this.SetXmlNodeString("@ref", value);
         }
-        /// <summary>
-        /// Timestamp for when the comment was created
-        /// </summary>
-        public DateTime DateCreated
+    }
+    private ExcelCellAddress _cellAddress=null;
+    /// <summary>
+    /// The location of the threaded comment
+    /// </summary>
+    public ExcelCellAddress CellAddress
+    {
+        get { return this._cellAddress ??= new ExcelCellAddress(this.Ref); }
+        internal set
         {
-            get
-            {
-                string? dt = this.GetXmlNodeString("@dT");
-                if(DateTime.TryParse(dt, out DateTime result))
-                {
-                    return result;
-                }
-                throw new InvalidCastException("Could not cast datetime for threaded comment");
-            }
-            set
-            {
-                this.SetXmlNodeString("@dT", value.ToString("yyyy-MM-ddTHH:mm:ss.ff"));
-            }
+            this._cellAddress = value;
+            this.Ref = this.CellAddress.Address;
         }
+    }
+    /// <summary>
+    /// Timestamp for when the comment was created
+    /// </summary>
+    public DateTime DateCreated
+    {
+        get
+        {
+            string? dt = this.GetXmlNodeString("@dT");
+            if(DateTime.TryParse(dt, out DateTime result))
+            {
+                return result;
+            }
+            throw new InvalidCastException("Could not cast datetime for threaded comment");
+        }
+        set
+        {
+            this.SetXmlNodeString("@dT", value.ToString("yyyy-MM-ddTHH:mm:ss.ff"));
+        }
+    }
 
-        /// <summary>
-        /// Unique id
-        /// </summary>
-        public string Id
+    /// <summary>
+    /// Unique id
+    /// </summary>
+    public string Id
+    {
+        get
         {
-            get
-            {
-                return this.GetXmlNodeString("@id");
-            }
-            internal set
-            {
-                this.SetXmlNodeString("@id", value);
-            }
+            return this.GetXmlNodeString("@id");
         }
-
-        /// <summary>
-        /// Id of the <see cref="ExcelThreadedCommentPerson"/> who wrote the comment
-        /// </summary>
-        public string PersonId
+        internal set
         {
-            get
-            {
-                return this.GetXmlNodeString("@personId");
-            }
-            set
-            {
-                this.SetXmlNodeString("@personId", value);
-                this._thread.OnCommentThreadChanged();
-            }
+            this.SetXmlNodeString("@id", value);
         }
+    }
 
-        /// <summary>
-        /// Author of the comment
-        /// </summary>
-        public ExcelThreadedCommentPerson Author
+    /// <summary>
+    /// Id of the <see cref="ExcelThreadedCommentPerson"/> who wrote the comment
+    /// </summary>
+    public string PersonId
+    {
+        get
         {
-            get
-            {
-                return this._workbook.ThreadedCommentPersons[this.PersonId];
-            }
+            return this.GetXmlNodeString("@personId");
         }
-
-        /// <summary>
-        /// Id of the first comment in the thread
-        /// </summary>
-        public string ParentId
+        set
         {
-            get
-            {
-                return this.GetXmlNodeString("@parentId");
-            }
-            set
-            {
-                this.SetXmlNodeString("@parentId", value);
-                this._thread.OnCommentThreadChanged();
-            }
-        }
-
-        internal bool? Done
-        {
-            get
-            {
-                string? val = this.GetXmlNodeString("@done");
-                if(string.IsNullOrEmpty(val))
-                {
-                    return null;
-                }
-                if (val == "1")
-                {
-                    return true;
-                }
-
-                return false;
-            }
-            set
-            {
-                if(value.HasValue && value.Value)
-                {
-                    this.SetXmlNodeInt("@done", 1);
-                }
-                else if(value.HasValue && !value.Value)
-                {
-                    this.SetXmlNodeInt("@done", 0);
-                }
-                else
-                {
-                    this.SetXmlNodeInt("@done", null);
-                }
-            }
-        }
-
-        /// <summary>
-        /// Text of the comment. To edit the text on an existing comment, use the EditText function.
-        /// </summary>
-        public string Text
-        {
-            get
-            {
-                return this.GetXmlNodeString("tc:text");
-            }
-            internal set
-            {
-                this.SetXmlNodeString("tc:text", value);
-                this._thread.OnCommentThreadChanged();
-            }
-        }
-
-        /// <summary>
-        /// Edit the Text of an existing comment
-        /// </summary>
-        /// <param name="newText"></param>
-        public void EditText(string newText)
-        {
-            this.Mentions.Clear();
-            this.Text = newText;
+            this.SetXmlNodeString("@personId", value);
             this._thread.OnCommentThreadChanged();
         }
+    }
 
-        /// <summary>
-        /// Edit the Text of an existing comment with mentions
-        /// </summary>
-        /// <param name="newTextWithFormats">A string with format placeholders - same as in string.Format. Index in these should correspond to an index in the <paramref name="personsToMention"/> array.</param>
-        /// <param name="personsToMention">A params array of <see cref="ExcelThreadedCommentPerson"/>. Their DisplayName property will be used to replace the format placeholders.</param>
-        public void EditText(string newTextWithFormats, params ExcelThreadedCommentPerson[] personsToMention)
+    /// <summary>
+    /// Author of the comment
+    /// </summary>
+    public ExcelThreadedCommentPerson Author
+    {
+        get
         {
-            this.Mentions.Clear();
-            MentionsHelper.InsertMentions(this, newTextWithFormats, personsToMention);
+            return this._workbook.ThreadedCommentPersons[this.PersonId];
+        }
+    }
+
+    /// <summary>
+    /// Id of the first comment in the thread
+    /// </summary>
+    public string ParentId
+    {
+        get
+        {
+            return this.GetXmlNodeString("@parentId");
+        }
+        set
+        {
+            this.SetXmlNodeString("@parentId", value);
             this._thread.OnCommentThreadChanged();
         }
+    }
 
-        private ExcelThreadedCommentMentionCollection _mentions;
-
-        /// <summary>
-        /// Mentions in this comment. Will return null if no mentions exists.
-        /// </summary>
-        public ExcelThreadedCommentMentionCollection Mentions
+    internal bool? Done
+    {
+        get
         {
-            get
+            string? val = this.GetXmlNodeString("@done");
+            if(string.IsNullOrEmpty(val))
             {
-                if(this._mentions == null)
-                {
-                    XmlNode? mentionsNode = this.TopNode.SelectSingleNode("tc:mentions", this.NameSpaceManager);
-                    if (mentionsNode == null)
-                    {
-                        mentionsNode = this.TopNode.OwnerDocument.CreateElement("mentions", ExcelPackage.schemaThreadedComments);
-                        this.TopNode.AppendChild(mentionsNode);
-                    }
+                return null;
+            }
+            if (val == "1")
+            {
+                return true;
+            }
 
-                    this._mentions = new ExcelThreadedCommentMentionCollection(this.NameSpaceManager, mentionsNode);
+            return false;
+        }
+        set
+        {
+            if(value.HasValue && value.Value)
+            {
+                this.SetXmlNodeInt("@done", 1);
+            }
+            else if(value.HasValue && !value.Value)
+            {
+                this.SetXmlNodeInt("@done", 0);
+            }
+            else
+            {
+                this.SetXmlNodeInt("@done", null);
+            }
+        }
+    }
+
+    /// <summary>
+    /// Text of the comment. To edit the text on an existing comment, use the EditText function.
+    /// </summary>
+    public string Text
+    {
+        get
+        {
+            return this.GetXmlNodeString("tc:text");
+        }
+        internal set
+        {
+            this.SetXmlNodeString("tc:text", value);
+            this._thread.OnCommentThreadChanged();
+        }
+    }
+
+    /// <summary>
+    /// Edit the Text of an existing comment
+    /// </summary>
+    /// <param name="newText"></param>
+    public void EditText(string newText)
+    {
+        this.Mentions.Clear();
+        this.Text = newText;
+        this._thread.OnCommentThreadChanged();
+    }
+
+    /// <summary>
+    /// Edit the Text of an existing comment with mentions
+    /// </summary>
+    /// <param name="newTextWithFormats">A string with format placeholders - same as in string.Format. Index in these should correspond to an index in the <paramref name="personsToMention"/> array.</param>
+    /// <param name="personsToMention">A params array of <see cref="ExcelThreadedCommentPerson"/>. Their DisplayName property will be used to replace the format placeholders.</param>
+    public void EditText(string newTextWithFormats, params ExcelThreadedCommentPerson[] personsToMention)
+    {
+        this.Mentions.Clear();
+        MentionsHelper.InsertMentions(this, newTextWithFormats, personsToMention);
+        this._thread.OnCommentThreadChanged();
+    }
+
+    private ExcelThreadedCommentMentionCollection _mentions;
+
+    /// <summary>
+    /// Mentions in this comment. Will return null if no mentions exists.
+    /// </summary>
+    public ExcelThreadedCommentMentionCollection Mentions
+    {
+        get
+        {
+            if(this._mentions == null)
+            {
+                XmlNode? mentionsNode = this.TopNode.SelectSingleNode("tc:mentions", this.NameSpaceManager);
+                if (mentionsNode == null)
+                {
+                    mentionsNode = this.TopNode.OwnerDocument.CreateElement("mentions", ExcelPackage.schemaThreadedComments);
+                    this.TopNode.AppendChild(mentionsNode);
                 }
 
-                return this._mentions;
+                this._mentions = new ExcelThreadedCommentMentionCollection(this.NameSpaceManager, mentionsNode);
             }
+
+            return this._mentions;
         }
     }
 }

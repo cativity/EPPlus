@@ -36,60 +36,60 @@ using System.IO;
 using System.Text;
 using System.Xml;
 
-namespace EPPlusTest.Drawing.Chart.Styling
+namespace EPPlusTest.Drawing.Chart.Styling;
+
+[TestClass]
+public class LineChartStylingTest : TestBase
 {
-    [TestClass]
-    public class LineChartStylingTest : TestBase
+    static ExcelPackage _pck;
+    [ClassInitialize]
+    public static void Init(TestContext context)
     {
-        static ExcelPackage _pck;
-        [ClassInitialize]
-        public static void Init(TestContext context)
-        {
-            _pck = OpenPackage("LineChartStyling.xlsx", true);
-        }
-        [ClassCleanup]
-        public static void Cleanup()
-        {
-            SaveAndCleanup(_pck);
-        }
-        [TestMethod]
-        public void LineChart_Styles()
-        {
-            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("LineChartStyles");
-            LoadTestdata(ws);
+        _pck = OpenPackage("LineChartStyling.xlsx", true);
+    }
+    [ClassCleanup]
+    public static void Cleanup()
+    {
+        SaveAndCleanup(_pck);
+    }
+    [TestMethod]
+    public void LineChart_Styles()
+    {
+        ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("LineChartStyles");
+        LoadTestdata(ws);
 
-            StyleLineChart(ws, eLineChartType.Line);
-        }
-        [TestMethod]
-        public void LineChartStacked_Styles()
-        {
-            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("LineStackedChartStyles");
-            LoadTestdata(ws);
+        StyleLineChart(ws, eLineChartType.Line);
+    }
+    [TestMethod]
+    public void LineChartStacked_Styles()
+    {
+        ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("LineStackedChartStyles");
+        LoadTestdata(ws);
 
-            StyleLineChart(ws, eLineChartType.LineStacked);
-        }
+        StyleLineChart(ws, eLineChartType.LineStacked);
+    }
 
-        [TestMethod]
-        public void LineChart3D_Styles()
-        {
-            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("Line3DChartStyles");
-            LoadTestdata(ws);
+    [TestMethod]
+    public void LineChart3D_Styles()
+    {
+        ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("Line3DChartStyles");
+        LoadTestdata(ws);
 
-            StyleLine3dChart(ws, eLineChartType.Line3D);
-        }
-        [TestMethod]
-        public void LineMarkersChartStacked_Styles()
-        {
-            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("LineMarkersChartStyles");
-            LoadTestdata(ws);
+        StyleLine3dChart(ws, eLineChartType.Line3D);
+    }
+    [TestMethod]
+    public void LineMarkersChartStacked_Styles()
+    {
+        ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("LineMarkersChartStyles");
+        LoadTestdata(ws);
 
-            StyleLineChart(ws, eLineChartType.LineMarkers);
-        }
+        StyleLineChart(ws, eLineChartType.LineMarkers);
+    }
 
-        private static void StyleLineChart(ExcelWorksheet ws, eLineChartType chartType)
-        {
-            //Style 1
-            AddLine(ws, chartType, "ColumnChartStyle1", 0, 5, ePresetChartStyle.LineChartStyle1,
+    private static void StyleLineChart(ExcelWorksheet ws, eLineChartType chartType)
+    {
+        //Style 1
+        AddLine(ws, chartType, "ColumnChartStyle1", 0, 5, ePresetChartStyle.LineChartStyle1,
                 c =>
                 {
                     c.Legend.Position = eLegendPosition.Bottom;
@@ -99,8 +99,8 @@ namespace EPPlusTest.Drawing.Chart.Styling
                     c.Axis[1].MinorTickMark = eAxisTickMark.None;
                 });
 
-            //Style 2
-            AddLine(ws, chartType, "ColumnChartStyle2", 0, 18, ePresetChartStyle.LineChartStyle2,
+        //Style 2
+        AddLine(ws, chartType, "ColumnChartStyle2", 0, 18, ePresetChartStyle.LineChartStyle2,
                 c =>
                 {
                     c.Legend.Position = eLegendPosition.Bottom;
@@ -126,111 +126,111 @@ namespace EPPlusTest.Drawing.Chart.Styling
                     }
                 });
 
-            //Style 3
-            AddLine(ws, chartType, "ColumnChartStyle3", 0, 31, ePresetChartStyle.LineChartStyle3,
-            c =>
-            {
-                c.DataLabel.ShowPercent = true;
-                c.DataLabel.Position = eLabelPosition.Center;
-                c.AddDropLines();
-            });
+        //Style 3
+        AddLine(ws, chartType, "ColumnChartStyle3", 0, 31, ePresetChartStyle.LineChartStyle3,
+                c =>
+                {
+                    c.DataLabel.ShowPercent = true;
+                    c.DataLabel.Position = eLabelPosition.Center;
+                    c.AddDropLines();
+                });
 
-            //Style 4
-            AddLine(ws, chartType, "ColumnChartStyle4", 22, 5, ePresetChartStyle.LineChartStyle4,
+        //Style 4
+        AddLine(ws, chartType, "ColumnChartStyle4", 22, 5, ePresetChartStyle.LineChartStyle4,
                 c =>
                 {
                     c.Legend.Position = eLegendPosition.Bottom;
                 });
 
-            //Style 5
-            AddLine(ws, chartType, "ColumnChartStyle5", 22, 18, ePresetChartStyle.LineChartStyle5,
+        //Style 5
+        AddLine(ws, chartType, "ColumnChartStyle5", 22, 18, ePresetChartStyle.LineChartStyle5,
                 c =>
                 {
                     c.Legend.Position = eLegendPosition.Bottom;
                 });
 
-            //Style 6
-            AddLine(ws, chartType, "ColumnChartStyle6", 22, 31, ePresetChartStyle.LineChartStyle6,
+        //Style 6
+        AddLine(ws, chartType, "ColumnChartStyle6", 22, 31, ePresetChartStyle.LineChartStyle6,
                 c =>
                 {
                 });
 
 
-            //Style 7
-            AddLine(ws, chartType, "ColumnChartStyle7", 44, 5, ePresetChartStyle.LineChartStyle7,
-                c =>
-                {
-                    c.Legend.Position = eLegendPosition.Bottom;
-                });
-
-            //Style 8
-            AddLine(ws, chartType, "ColumnChartStyle8", 44, 18, ePresetChartStyle.LineChartStyle8,
+        //Style 7
+        AddLine(ws, chartType, "ColumnChartStyle7", 44, 5, ePresetChartStyle.LineChartStyle7,
                 c =>
                 {
                     c.Legend.Position = eLegendPosition.Bottom;
                 });
 
-            //Style 9
-            AddLine(ws, chartType, "ColumnChartStyle9", 44, 31, ePresetChartStyle.LineChartStyle9,
-                c =>
-                {
-                });
-
-            //Style 10
-            AddLine(ws, chartType, "ColumnChartStyle10", 66, 5, ePresetChartStyle.LineChartStyle10,
+        //Style 8
+        AddLine(ws, chartType, "ColumnChartStyle8", 44, 18, ePresetChartStyle.LineChartStyle8,
                 c =>
                 {
                     c.Legend.Position = eLegendPosition.Bottom;
                 });
 
-            //Style 11
-            AddLine(ws, chartType, "ColumnChartStyle11", 66, 18, ePresetChartStyle.LineChartStyle11,
+        //Style 9
+        AddLine(ws, chartType, "ColumnChartStyle9", 44, 31, ePresetChartStyle.LineChartStyle9,
+                c =>
+                {
+                });
+
+        //Style 10
+        AddLine(ws, chartType, "ColumnChartStyle10", 66, 5, ePresetChartStyle.LineChartStyle10,
                 c =>
                 {
                     c.Legend.Position = eLegendPosition.Bottom;
                 });
 
-            //Style 12
-            AddLine(ws, chartType, "ColumnChartStyle12", 66, 31, ePresetChartStyle.LineChartStyle12,
-                c =>
-                {
-                });
-
-            //Style 13
-            AddLine(ws, chartType, "ColumnChartStyle13", 88, 5, ePresetChartStyle.LineChartStyle13,
+        //Style 11
+        AddLine(ws, chartType, "ColumnChartStyle11", 66, 18, ePresetChartStyle.LineChartStyle11,
                 c =>
                 {
                     c.Legend.Position = eLegendPosition.Bottom;
                 });
 
-            //Style 14
-            AddLine(ws, chartType, "ColumnChartStyle14", 88, 18, ePresetChartStyle.LineChartStyle14,
+        //Style 12
+        AddLine(ws, chartType, "ColumnChartStyle12", 66, 31, ePresetChartStyle.LineChartStyle12,
+                c =>
+                {
+                });
+
+        //Style 13
+        AddLine(ws, chartType, "ColumnChartStyle13", 88, 5, ePresetChartStyle.LineChartStyle13,
                 c =>
                 {
                     c.Legend.Position = eLegendPosition.Bottom;
                 });
 
-            //Style 15
-            AddLine(ws, chartType, "ColumnChartStyle15", 88, 31, ePresetChartStyle.LineChartStyle15,
-                c =>
-                {
-                });
-        }
-        private static void StyleLine3dChart(ExcelWorksheet ws, eLineChartType chartType)
-        {
-            //Style 1
-            AddLine3D(ws, chartType, "Line3dChartStyle1", 0, 5, ePresetChartStyle.Line3dChartStyle1,
+        //Style 14
+        AddLine(ws, chartType, "ColumnChartStyle14", 88, 18, ePresetChartStyle.LineChartStyle14,
                 c =>
                 {
                     c.Legend.Position = eLegendPosition.Bottom;
-                    c.Axis[0].MajorTickMark = eAxisTickMark.None;
-                    c.Axis[0].MinorTickMark = eAxisTickMark.None;
-                    c.Axis[1].MajorTickMark = eAxisTickMark.None;
-                    c.Axis[1].MinorTickMark = eAxisTickMark.None;
                 });
 
-            //Style 2
-            AddLine(ws, chartType, "Line3dChartStyle2", 0, 18, ePresetChartStyle.Line3dChartStyle2,
+        //Style 15
+        AddLine(ws, chartType, "ColumnChartStyle15", 88, 31, ePresetChartStyle.LineChartStyle15,
+                c =>
+                {
+                });
+    }
+    private static void StyleLine3dChart(ExcelWorksheet ws, eLineChartType chartType)
+    {
+        //Style 1
+        AddLine3D(ws, chartType, "Line3dChartStyle1", 0, 5, ePresetChartStyle.Line3dChartStyle1,
+                  c =>
+                  {
+                      c.Legend.Position = eLegendPosition.Bottom;
+                      c.Axis[0].MajorTickMark = eAxisTickMark.None;
+                      c.Axis[0].MinorTickMark = eAxisTickMark.None;
+                      c.Axis[1].MajorTickMark = eAxisTickMark.None;
+                      c.Axis[1].MinorTickMark = eAxisTickMark.None;
+                  });
+
+        //Style 2
+        AddLine(ws, chartType, "Line3dChartStyle2", 0, 18, ePresetChartStyle.Line3dChartStyle2,
                 c =>
                 {
                     c.Legend.Position = eLegendPosition.Bottom;
@@ -256,45 +256,44 @@ namespace EPPlusTest.Drawing.Chart.Styling
                     //}
                 });
 
-            //Style 3
-            AddLine(ws, chartType, "ColumnChartStyle3", 0, 31, ePresetChartStyle.Line3dChartStyle3,
-            c =>
-            {
-            });
-
-            //Style 4
-            AddLine(ws, chartType, "ColumnChartStyle4", 22, 5, ePresetChartStyle.Line3dChartStyle4,
+        //Style 3
+        AddLine(ws, chartType, "ColumnChartStyle3", 0, 31, ePresetChartStyle.Line3dChartStyle3,
                 c =>
                 {
                 });
 
-        }
-        private static ExcelLineChart AddLine(ExcelWorksheet ws, eLineChartType type, string name, int row, int col, ePresetChartStyle style, Action<ExcelLineChart> SetProperties)    
-        {
-            ExcelLineChart? chart = ws.Drawings.AddLineChart(name, type);
-            chart.SetPosition(row, 0, col, 0);
-            chart.To.Column = col+12;
-            chart.To.ColumnOff = 0;
-            chart.To.Row = row + 18;
-            chart.To.RowOff = 0;
-            ExcelLineChartSerie? serie = chart.Series.Add("D2:D50", "A2:A50");
-            SetProperties(chart);
-            chart.StyleManager.SetChartStyle(style);
+        //Style 4
+        AddLine(ws, chartType, "ColumnChartStyle4", 22, 5, ePresetChartStyle.Line3dChartStyle4,
+                c =>
+                {
+                });
 
-            return chart;
-        }
-        private static ExcelLineChart AddLine3D(ExcelWorksheet ws, eLineChartType type, string name, int row, int col, ePresetChartStyle style, Action<ExcelLineChart> SetProperties)
-        {
-            ExcelLineChart? chart = ws.Drawings.AddLineChart(name, type);
-            chart.SetPosition(row, 0, col, 0);
-            chart.To.Column = col + 12;
-            chart.To.ColumnOff = 0;
-            chart.To.Row = row + 18;
-            chart.To.RowOff = 0;
-            ExcelLineChartSerie? serie = chart.Series.Add("D2:D50", "A2:A50");
-            SetProperties(chart);
-            chart.StyleManager.SetChartStyle(style);
-            return chart;
-        }
+    }
+    private static ExcelLineChart AddLine(ExcelWorksheet ws, eLineChartType type, string name, int row, int col, ePresetChartStyle style, Action<ExcelLineChart> SetProperties)    
+    {
+        ExcelLineChart? chart = ws.Drawings.AddLineChart(name, type);
+        chart.SetPosition(row, 0, col, 0);
+        chart.To.Column = col+12;
+        chart.To.ColumnOff = 0;
+        chart.To.Row = row + 18;
+        chart.To.RowOff = 0;
+        ExcelLineChartSerie? serie = chart.Series.Add("D2:D50", "A2:A50");
+        SetProperties(chart);
+        chart.StyleManager.SetChartStyle(style);
+
+        return chart;
+    }
+    private static ExcelLineChart AddLine3D(ExcelWorksheet ws, eLineChartType type, string name, int row, int col, ePresetChartStyle style, Action<ExcelLineChart> SetProperties)
+    {
+        ExcelLineChart? chart = ws.Drawings.AddLineChart(name, type);
+        chart.SetPosition(row, 0, col, 0);
+        chart.To.Column = col + 12;
+        chart.To.ColumnOff = 0;
+        chart.To.Row = row + 18;
+        chart.To.RowOff = 0;
+        ExcelLineChartSerie? serie = chart.Series.Add("D2:D50", "A2:A50");
+        SetProperties(chart);
+        chart.StyleManager.SetChartStyle(style);
+        return chart;
     }
 }

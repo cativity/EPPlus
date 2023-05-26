@@ -12,35 +12,34 @@
  *************************************************************************************************/
 using OfficeOpenXml.Compatibility;
 using System;
-namespace OfficeOpenXml.FormulaParsing.Utilities
+namespace OfficeOpenXml.FormulaParsing.Utilities;
+
+internal static class ExtensionMethods
 {
-    internal static class ExtensionMethods
+    internal static void IsNotNullOrEmpty(this ArgumentInfo<string> val)
     {
-        internal static void IsNotNullOrEmpty(this ArgumentInfo<string> val)
+        if (string.IsNullOrEmpty(val.Value))
         {
-            if (string.IsNullOrEmpty(val.Value))
-            {
-                throw new ArgumentException(val.Name + " cannot be null or empty");
-            }
+            throw new ArgumentException(val.Name + " cannot be null or empty");
+        }
+    }
+
+    internal static void IsNotNull<T>(this ArgumentInfo<T> val)
+        where T : class
+    {
+        if (val.Value == null)
+        {
+            throw new ArgumentNullException(val.Name);
+        }
+    }
+
+    internal static bool IsNumeric(this object obj)
+    {
+        if (obj == null)
+        {
+            return false;
         }
 
-        internal static void IsNotNull<T>(this ArgumentInfo<T> val)
-            where T : class
-        {
-            if (val.Value == null)
-            {
-                throw new ArgumentNullException(val.Name);
-            }
-        }
-
-        internal static bool IsNumeric(this object obj)
-        {
-            if (obj == null)
-            {
-                return false;
-            }
-
-            return (TypeCompat.IsPrimitive(obj) || obj is double || obj is decimal || obj is DateTime || obj is TimeSpan);
-        }
+        return (TypeCompat.IsPrimitive(obj) || obj is double || obj is decimal || obj is DateTime || obj is TimeSpan);
     }
 }

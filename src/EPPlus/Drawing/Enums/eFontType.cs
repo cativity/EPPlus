@@ -10,28 +10,27 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
-namespace OfficeOpenXml.Drawing
+namespace OfficeOpenXml.Drawing;
+
+/// <summary>
+/// Type of font
+/// </summary>
+public enum eFontType
 {
     /// <summary>
-    /// Type of font
+    /// A latin font
     /// </summary>
-    public enum eFontType
-    {
-        /// <summary>
-        /// A latin font
-        /// </summary>
-        Latin,
-        /// <summary>
-        /// An East Asian font
-        /// </summary>
-        EastAsian,
-        /// <summary>
-        /// An complex font
-        /// </summary>
-        Complex,
-        /// <summary>
-        /// A symbol font
-        /// </summary>
-        Symbol
-    }
+    Latin,
+    /// <summary>
+    /// An East Asian font
+    /// </summary>
+    EastAsian,
+    /// <summary>
+    /// An complex font
+    /// </summary>
+    Complex,
+    /// <summary>
+    /// A symbol font
+    /// </summary>
+    Symbol
 }

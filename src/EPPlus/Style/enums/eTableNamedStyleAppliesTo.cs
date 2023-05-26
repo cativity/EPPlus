@@ -10,24 +10,23 @@
  *************************************************************************************************
   01/08/2021         EPPlus Software AB       Table Styling - EPPlus 5.6
  *************************************************************************************************/
-namespace OfficeOpenXml
+namespace OfficeOpenXml;
+
+/// <summary>
+/// Defines if a table style applies to a Table / PivotTable or Both
+/// </summary>
+public enum eTableNamedStyleAppliesTo
 {
     /// <summary>
-    /// Defines if a table style applies to a Table / PivotTable or Both
+    /// The named style applies to tables only
     /// </summary>
-    public enum eTableNamedStyleAppliesTo
-    {
-        /// <summary>
-        /// The named style applies to tables only
-        /// </summary>
-        Tables,
-        /// <summary>
-        /// The named style applies to pivot tables only
-        /// </summary>
-        PivotTables,
-        /// <summary>
-        /// The named style can be applied to both tables and pivot tables
-        /// </summary>
-        TablesAndPivotTables
-    }
+    Tables,
+    /// <summary>
+    /// The named style applies to pivot tables only
+    /// </summary>
+    PivotTables,
+    /// <summary>
+    /// The named style can be applied to both tables and pivot tables
+    /// </summary>
+    TablesAndPivotTables
 }

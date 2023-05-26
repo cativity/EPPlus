@@ -14,32 +14,31 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace OfficeOpenXml.Drawing
+namespace OfficeOpenXml.Drawing;
+
+/// <summary>
+/// The ways to determine the length of the error bars
+/// </summary>
+public enum eErrorValueType
 {
     /// <summary>
-    /// The ways to determine the length of the error bars
+    /// The length of the error bars will be determined by the Plus and Minus properties.
     /// </summary>
-    public enum eErrorValueType
-    {
-        /// <summary>
-        /// The length of the error bars will be determined by the Plus and Minus properties.
-        /// </summary>
-        Custom,
-        /// <summary>
-        /// The length of the error bars will be the fixed value determined by Error Bar Value property.
-        /// </summary>
-        FixedValue,
-        /// <summary>
-        /// The length of the error bars will be Error Bar Value percent of the data.
-        /// </summary>
-        Percentage,
-        /// <summary>
-        /// The length of the error bars will be Error Bar Value standard deviations of the data.
-        /// </summary>
-        StandardDeviation,
-        /// <summary>
-        /// The length of the error bars will be Error Bar Value standard errors of the data.
-        /// </summary>
-        StandardError
-    }
+    Custom,
+    /// <summary>
+    /// The length of the error bars will be the fixed value determined by Error Bar Value property.
+    /// </summary>
+    FixedValue,
+    /// <summary>
+    /// The length of the error bars will be Error Bar Value percent of the data.
+    /// </summary>
+    Percentage,
+    /// <summary>
+    /// The length of the error bars will be Error Bar Value standard deviations of the data.
+    /// </summary>
+    StandardDeviation,
+    /// <summary>
+    /// The length of the error bars will be Error Bar Value standard errors of the data.
+    /// </summary>
+    StandardError
 }

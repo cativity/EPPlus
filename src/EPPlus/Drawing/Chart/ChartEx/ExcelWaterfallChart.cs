@@ -25,35 +25,34 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Xml;
-namespace OfficeOpenXml.Drawing.Chart.ChartEx
-{
-    /// <summary>
-    /// Represents an Waterfall Chart
-    /// </summary>
-    public class ExcelWaterfallChart : ExcelChartEx
-    {
-        internal ExcelWaterfallChart(ExcelDrawings drawings, XmlNode node, ExcelGroupShape parent) :
-            base(drawings, node, parent)
-        {
-        }
+namespace OfficeOpenXml.Drawing.Chart.ChartEx;
 
-        internal ExcelWaterfallChart(ExcelDrawings drawings, XmlNode drawingsNode, eChartType? type, XmlDocument chartXml = null, ExcelGroupShape parent = null) :
-            base(drawings, drawingsNode, type, chartXml, parent)
-        {
-            this.Series.Init(this, this.NameSpaceManager, this.TopNode, false, base.Series._list);
-            this.StyleManager.SetChartStyle(Chart.Style.ePresetChartStyle.WaterfallChartStyle1);
-        }
-        internal ExcelWaterfallChart(ExcelDrawings drawings, XmlNode node, Uri uriChart, ZipPackagePart part, XmlDocument chartXml, XmlNode chartNode, ExcelGroupShape parent = null) :
-            base(drawings, node, uriChart, part, chartXml, chartNode, parent)
-        {
-            this.Series.Init(this, this.NameSpaceManager, this.TopNode, false, base.Series._list);
-        }
-        /// <summary>
-        /// The series for a waterfall chart
-        /// </summary>
-        public new ExcelChartSeries<ExcelWaterfallChartSerie> Series
-        {
-            get;
-        } = new ExcelChartSeries<ExcelWaterfallChartSerie>();
+/// <summary>
+/// Represents an Waterfall Chart
+/// </summary>
+public class ExcelWaterfallChart : ExcelChartEx
+{
+    internal ExcelWaterfallChart(ExcelDrawings drawings, XmlNode node, ExcelGroupShape parent) :
+        base(drawings, node, parent)
+    {
     }
+
+    internal ExcelWaterfallChart(ExcelDrawings drawings, XmlNode drawingsNode, eChartType? type, XmlDocument chartXml = null, ExcelGroupShape parent = null) :
+        base(drawings, drawingsNode, type, chartXml, parent)
+    {
+        this.Series.Init(this, this.NameSpaceManager, this.TopNode, false, base.Series._list);
+        this.StyleManager.SetChartStyle(Chart.Style.ePresetChartStyle.WaterfallChartStyle1);
+    }
+    internal ExcelWaterfallChart(ExcelDrawings drawings, XmlNode node, Uri uriChart, ZipPackagePart part, XmlDocument chartXml, XmlNode chartNode, ExcelGroupShape parent = null) :
+        base(drawings, node, uriChart, part, chartXml, chartNode, parent)
+    {
+        this.Series.Init(this, this.NameSpaceManager, this.TopNode, false, base.Series._list);
+    }
+    /// <summary>
+    /// The series for a waterfall chart
+    /// </summary>
+    public new ExcelChartSeries<ExcelWaterfallChartSerie> Series
+    {
+        get;
+    } = new ExcelChartSeries<ExcelWaterfallChartSerie>();
 }

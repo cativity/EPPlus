@@ -10,32 +10,31 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
-namespace OfficeOpenXml.Drawing
+namespace OfficeOpenXml.Drawing;
+
+/// <summary>
+/// Text anchoring
+/// </summary>
+public enum eTextAnchoringType  
 {
     /// <summary>
-    /// Text anchoring
+    /// Anchor the text to the bottom
     /// </summary>
-    public enum eTextAnchoringType  
-    {
-        /// <summary>
-        /// Anchor the text to the bottom
-        /// </summary>
-        Bottom,
-        /// <summary>
-        /// Anchor the text to the center
-        /// </summary>
-        Center,
-        /// <summary>
-        /// Anchor the text so that it is distributed vertically.
-        /// </summary>
-        Distributed,
-        /// <summary>
-        /// Anchor the text so that it is justified vertically.
-        /// </summary>
-        Justify,
-        /// <summary>
-        /// Anchor the text to the top
-        /// </summary>
-        Top
-    }
+    Bottom,
+    /// <summary>
+    /// Anchor the text to the center
+    /// </summary>
+    Center,
+    /// <summary>
+    /// Anchor the text so that it is distributed vertically.
+    /// </summary>
+    Distributed,
+    /// <summary>
+    /// Anchor the text so that it is justified vertically.
+    /// </summary>
+    Justify,
+    /// <summary>
+    /// Anchor the text to the top
+    /// </summary>
+    Top
 }

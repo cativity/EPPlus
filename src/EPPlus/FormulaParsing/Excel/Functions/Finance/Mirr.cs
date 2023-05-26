@@ -18,27 +18,26 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance
-{
-    [FunctionMetadata(
-        Category = ExcelFunctionCategory.Financial,
-        EPPlusVersion = "5.2",
-        Description = "Calculates the internal rate of return for a series of periodic cash flows, considering the cost of the investment and the interest on the reinvestment of cash")]
-    internal class Mirr : ExcelFunction
-    {
-        public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
-        {
-            ValidateArguments(arguments, 3);
-            IEnumerable<ExcelDoubleCellValue>? values = this.ArgsToDoubleEnumerable(new List<FunctionArgument> { arguments.ElementAt(0) }, context);
-            double financeRate = this.ArgToDecimal(arguments, 1);
-            double reinvestState = this.ArgToDecimal(arguments, 2);
-            FinanceCalcResult<double>? result = MirrImpl.MIRR(values.Select(x => (double)x).ToArray(), financeRate, reinvestState);
-            if (result.HasError)
-            {
-                return this.CreateResult(result.ExcelErrorType);
-            }
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance;
 
-            return this.CreateResult(result.Result, DataType.Decimal);
+[FunctionMetadata(
+                     Category = ExcelFunctionCategory.Financial,
+                     EPPlusVersion = "5.2",
+                     Description = "Calculates the internal rate of return for a series of periodic cash flows, considering the cost of the investment and the interest on the reinvestment of cash")]
+internal class Mirr : ExcelFunction
+{
+    public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
+    {
+        ValidateArguments(arguments, 3);
+        IEnumerable<ExcelDoubleCellValue>? values = this.ArgsToDoubleEnumerable(new List<FunctionArgument> { arguments.ElementAt(0) }, context);
+        double financeRate = this.ArgToDecimal(arguments, 1);
+        double reinvestState = this.ArgToDecimal(arguments, 2);
+        FinanceCalcResult<double>? result = MirrImpl.MIRR(values.Select(x => (double)x).ToArray(), financeRate, reinvestState);
+        if (result.HasError)
+        {
+            return this.CreateResult(result.ExcelErrorType);
         }
+
+        return this.CreateResult(result.Result, DataType.Decimal);
     }
 }

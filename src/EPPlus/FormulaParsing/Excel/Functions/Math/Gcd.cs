@@ -17,19 +17,18 @@ using System.Text;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Metadata;
 using OfficeOpenXml.FormulaParsing.ExpressionGraph;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
+
+[FunctionMetadata(
+                     Category = ExcelFunctionCategory.MathAndTrig,
+                     EPPlusVersion = "5.1",
+                     Description = "Returns the Greatest Common Divisor of two or more supplied numbers")]
+internal class Gcd : ExcelFunction
 {
-    [FunctionMetadata(
-        Category = ExcelFunctionCategory.MathAndTrig,
-        EPPlusVersion = "5.1",
-        Description = "Returns the Greatest Common Divisor of two or more supplied numbers")]
-    internal class Gcd : ExcelFunction
+    public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
     {
-        public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
-        {
-            ValidateArguments(arguments, 1);
-            IEnumerable<int>? numbers = this.ArgsToDoubleEnumerable(arguments, context).Select(x => (int)x);
-            return this.CreateResult(MathHelper.GreatestCommonDevisor(numbers.ToArray()), DataType.Integer);
-        }
+        ValidateArguments(arguments, 1);
+        IEnumerable<int>? numbers = this.ArgsToDoubleEnumerable(arguments, context).Select(x => (int)x);
+        return this.CreateResult(MathHelper.GreatestCommonDevisor(numbers.ToArray()), DataType.Integer);
     }
 }

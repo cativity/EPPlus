@@ -15,29 +15,28 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace OfficeOpenXml.FormulaParsing.ExpressionGraph
+namespace OfficeOpenXml.FormulaParsing.ExpressionGraph;
+
+public static class ConstantExpressions
 {
-    public static class ConstantExpressions
+    public static Expression Percent
     {
-        public static Expression Percent
-        {
-            get { return new ConstantExpression("Percent", () => new CompileResult(0.01, DataType.Decimal)); }
-        }
+        get { return new ConstantExpression("Percent", () => new CompileResult(0.01, DataType.Decimal)); }
+    }
+}
+
+public class ConstantExpression : AtomicExpression
+{
+    private readonly Func<CompileResult> _factoryMethod;
+
+    public ConstantExpression(string title, Func<CompileResult> factoryMethod)
+        : base(title)
+    {
+        this._factoryMethod = factoryMethod;
     }
 
-    public class ConstantExpression : AtomicExpression
+    public override CompileResult Compile()
     {
-        private readonly Func<CompileResult> _factoryMethod;
-
-        public ConstantExpression(string title, Func<CompileResult> factoryMethod)
-            : base(title)
-        {
-            this._factoryMethod = factoryMethod;
-        }
-
-        public override CompileResult Compile()
-        {
-            return this._factoryMethod();
-        }
+        return this._factoryMethod();
     }
 }

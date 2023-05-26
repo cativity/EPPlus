@@ -17,28 +17,27 @@ using System.Text;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Metadata;
 using OfficeOpenXml.FormulaParsing.ExpressionGraph;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
-{
-    [FunctionMetadata(
-        Category = ExcelFunctionCategory.MathAndTrig,
-        EPPlusVersion = "4",
-        Description = "Rounds a number away from zero (i.e. rounds a positive number up and a negative number down), to a given number of digits")]
-    internal class Roundup : ExcelFunction
-    {
-        public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
-        {
-            ValidateArguments(arguments, 2);
-            if (arguments.ElementAt(0).Value == null)
-            {
-                return this.CreateResult(0d, DataType.Decimal);
-            }
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
 
-            double number = this.ArgToDecimal(arguments, 0, context.Configuration.PrecisionAndRoundingStrategy);
-            int nDigits = this.ArgToInt(arguments, 1);
-            double result = (number >= 0) 
-                ? System.Math.Ceiling(number * System.Math.Pow(10, nDigits)) / System.Math.Pow(10, nDigits)
-                : System.Math.Floor(number * System.Math.Pow(10, nDigits)) / System.Math.Pow(10, nDigits);
-            return this.CreateResult(result, DataType.Decimal);
+[FunctionMetadata(
+                     Category = ExcelFunctionCategory.MathAndTrig,
+                     EPPlusVersion = "4",
+                     Description = "Rounds a number away from zero (i.e. rounds a positive number up and a negative number down), to a given number of digits")]
+internal class Roundup : ExcelFunction
+{
+    public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
+    {
+        ValidateArguments(arguments, 2);
+        if (arguments.ElementAt(0).Value == null)
+        {
+            return this.CreateResult(0d, DataType.Decimal);
         }
+
+        double number = this.ArgToDecimal(arguments, 0, context.Configuration.PrecisionAndRoundingStrategy);
+        int nDigits = this.ArgToInt(arguments, 1);
+        double result = (number >= 0) 
+                            ? System.Math.Ceiling(number * System.Math.Pow(10, nDigits)) / System.Math.Pow(10, nDigits)
+                            : System.Math.Floor(number * System.Math.Pow(10, nDigits)) / System.Math.Pow(10, nDigits);
+        return this.CreateResult(result, DataType.Decimal);
     }
 }

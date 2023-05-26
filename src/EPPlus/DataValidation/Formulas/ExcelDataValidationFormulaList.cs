@@ -17,207 +17,206 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 
-namespace OfficeOpenXml.DataValidation.Formulas
+namespace OfficeOpenXml.DataValidation.Formulas;
+
+internal class ExcelDataValidationFormulaList : ExcelDataValidationFormula, IExcelDataValidationFormulaList
 {
-    internal class ExcelDataValidationFormulaList : ExcelDataValidationFormula, IExcelDataValidationFormulaList
+    #region class DataValidationList
+    private class DataValidationList : IList<string>, ICollection
     {
-        #region class DataValidationList
-        private class DataValidationList : IList<string>, ICollection
+        private IList<string> _items = new List<string>();
+        private EventHandler<EventArgs> _listChanged;
+
+        public event EventHandler<EventArgs> ListChanged
         {
-            private IList<string> _items = new List<string>();
-            private EventHandler<EventArgs> _listChanged;
+            add { this._listChanged += value; }
+            remove { this._listChanged -= value; }
+        }
 
-            public event EventHandler<EventArgs> ListChanged
+        private void OnListChanged()
+        {
+            if (this._listChanged != null)
             {
-                add { this._listChanged += value; }
-                remove { this._listChanged -= value; }
+                this._listChanged(this, EventArgs.Empty);
             }
+        }
 
-            private void OnListChanged()
+        #region IList members
+        int IList<string>.IndexOf(string item)
+        {
+            return this._items.IndexOf(item);
+        }
+
+        void IList<string>.Insert(int index, string item)
+        {
+            this._items.Insert(index, item);
+            this.OnListChanged();
+        }
+
+        void IList<string>.RemoveAt(int index)
+        {
+            this._items.RemoveAt(index);
+            this.OnListChanged();
+        }
+
+        string IList<string>.this[int index]
+        {
+            get
             {
-                if (this._listChanged != null)
-                {
-                    this._listChanged(this, EventArgs.Empty);
-                }
+                return this._items[index];
             }
-
-            #region IList members
-            int IList<string>.IndexOf(string item)
+            set
             {
-                return this._items.IndexOf(item);
-            }
-
-            void IList<string>.Insert(int index, string item)
-            {
-                this._items.Insert(index, item);
+                this._items[index] = value;
                 this.OnListChanged();
             }
+        }
 
-            void IList<string>.RemoveAt(int index)
-            {
-                this._items.RemoveAt(index);
-                this.OnListChanged();
-            }
+        void ICollection<string>.Add(string item)
+        {
+            this._items.Add(item);
+            this.OnListChanged();
+        }
 
-            string IList<string>.this[int index]
-            {
-                get
-                {
-                    return this._items[index];
-                }
-                set
-                {
-                    this._items[index] = value;
-                    this.OnListChanged();
-                }
-            }
+        void ICollection<string>.Clear()
+        {
+            this._items.Clear();
+            this.OnListChanged();
+        }
 
-            void ICollection<string>.Add(string item)
-            {
-                this._items.Add(item);
-                this.OnListChanged();
-            }
+        bool ICollection<string>.Contains(string item)
+        {
+            return this._items.Contains(item);
+        }
 
-            void ICollection<string>.Clear()
-            {
-                this._items.Clear();
-                this.OnListChanged();
-            }
+        void ICollection<string>.CopyTo(string[] array, int arrayIndex)
+        {
+            this._items.CopyTo(array, arrayIndex);
+        }
 
-            bool ICollection<string>.Contains(string item)
-            {
-                return this._items.Contains(item);
-            }
+        int ICollection<string>.Count
+        {
+            get { return this._items.Count; }
+        }
 
-            void ICollection<string>.CopyTo(string[] array, int arrayIndex)
-            {
-                this._items.CopyTo(array, arrayIndex);
-            }
+        bool ICollection<string>.IsReadOnly
+        {
+            get { return false; }
+        }
 
-            int ICollection<string>.Count
-            {
-                get { return this._items.Count; }
-            }
+        bool ICollection<string>.Remove(string item)
+        {
+            bool retVal = this._items.Remove(item);
+            this.OnListChanged();
+            return retVal;
+        }
 
-            bool ICollection<string>.IsReadOnly
-            {
-                get { return false; }
-            }
+        IEnumerator<string> IEnumerable<string>.GetEnumerator()
+        {
+            return this._items.GetEnumerator();
+        }
 
-            bool ICollection<string>.Remove(string item)
-            {
-                bool retVal = this._items.Remove(item);
-                this.OnListChanged();
-                return retVal;
-            }
-
-            IEnumerator<string> IEnumerable<string>.GetEnumerator()
-            {
-                return this._items.GetEnumerator();
-            }
-
-            IEnumerator IEnumerable.GetEnumerator()
-            {
-                return this._items.GetEnumerator();
-            }
-            #endregion
-
-            public void CopyTo(Array array, int index)
-            {
-                this._items.CopyTo((string[])array, index);
-            }
-
-            int ICollection.Count
-            {
-                get { return this._items.Count; }
-            }
-
-            public bool IsSynchronized
-            {
-                get { return ((ICollection)this._items).IsSynchronized; }
-            }
-
-            public object SyncRoot
-            {
-                get { return ((ICollection)this._items).SyncRoot; }
-            }
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return this._items.GetEnumerator();
         }
         #endregion
 
-        public ExcelDataValidationFormulaList(string formula, string uid, string sheetName, Action<OnFormulaChangedEventArgs> extListHandler)
-            : base(uid, sheetName, extListHandler)
+        public void CopyTo(Array array, int index)
         {
-            DataValidationList? values = new DataValidationList();
-            values.ListChanged += new EventHandler<EventArgs>(this.values_ListChanged);
-            this.Values = values;
-            this._inputFormula = formula;
-            this.SetInitialValues();
+            this._items.CopyTo((string[])array, index);
         }
 
-        private string _inputFormula;
-
-        private void SetInitialValues()
+        int ICollection.Count
         {
-            string? @value = this._inputFormula;
-            if (!string.IsNullOrEmpty(@value))
-            {
-                if (@value.StartsWith("\"", StringComparison.OrdinalIgnoreCase) && @value.EndsWith("\"", StringComparison.OrdinalIgnoreCase))
-                {
-                    @value = @value.TrimStart('"').TrimEnd('"');
-                    string[]? items = @value.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
-                    foreach (string? item in items)
-                    {
-                        this.Values.Add(item);
-                    }
-                }
-                else
-                {
-                    this.ExcelFormula = @value;
-                }
-            }
+            get { return this._items.Count; }
         }
 
-        void values_ListChanged(object sender, EventArgs e)
+        public bool IsSynchronized
         {
-            if (this.Values.Count > 0)
-            {
-                this.State = FormulaState.Value;
-            }
-            string? valuesAsString = this.GetValueAsString();
-            // Excel supports max 255 characters in this field.
-            if (valuesAsString.Length > 255)
-            {
-                throw new InvalidOperationException("The total length of a DataValidation list cannot exceed 255 characters");
-            }
-        }
-        public IList<string> Values
-        {
-            get;
-            private set;
+            get { return ((ICollection)this._items).IsSynchronized; }
         }
 
-        protected override string GetValueAsString()
+        public object SyncRoot
         {
-            StringBuilder? sb = new StringBuilder();
-            foreach (string? val in this.Values)
+            get { return ((ICollection)this._items).SyncRoot; }
+        }
+    }
+    #endregion
+
+    public ExcelDataValidationFormulaList(string formula, string uid, string sheetName, Action<OnFormulaChangedEventArgs> extListHandler)
+        : base(uid, sheetName, extListHandler)
+    {
+        DataValidationList? values = new DataValidationList();
+        values.ListChanged += new EventHandler<EventArgs>(this.values_ListChanged);
+        this.Values = values;
+        this._inputFormula = formula;
+        this.SetInitialValues();
+    }
+
+    private string _inputFormula;
+
+    private void SetInitialValues()
+    {
+        string? @value = this._inputFormula;
+        if (!string.IsNullOrEmpty(@value))
+        {
+            if (@value.StartsWith("\"", StringComparison.OrdinalIgnoreCase) && @value.EndsWith("\"", StringComparison.OrdinalIgnoreCase))
             {
-                if (sb.Length == 0)
+                @value = @value.TrimStart('"').TrimEnd('"');
+                string[]? items = @value.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                foreach (string? item in items)
                 {
-                    sb.Append("\"");
-                    sb.Append(val);
-                }
-                else
-                {
-                    sb.AppendFormat(",{0}", val);
+                    this.Values.Add(item);
                 }
             }
-            sb.Append("\"");
-            return sb.ToString();
+            else
+            {
+                this.ExcelFormula = @value;
+            }
         }
+    }
 
-        internal override void ResetValue()
+    void values_ListChanged(object sender, EventArgs e)
+    {
+        if (this.Values.Count > 0)
         {
-            this.Values.Clear();
+            this.State = FormulaState.Value;
         }
+        string? valuesAsString = this.GetValueAsString();
+        // Excel supports max 255 characters in this field.
+        if (valuesAsString.Length > 255)
+        {
+            throw new InvalidOperationException("The total length of a DataValidation list cannot exceed 255 characters");
+        }
+    }
+    public IList<string> Values
+    {
+        get;
+        private set;
+    }
+
+    protected override string GetValueAsString()
+    {
+        StringBuilder? sb = new StringBuilder();
+        foreach (string? val in this.Values)
+        {
+            if (sb.Length == 0)
+            {
+                sb.Append("\"");
+                sb.Append(val);
+            }
+            else
+            {
+                sb.AppendFormat(",{0}", val);
+            }
+        }
+        sb.Append("\"");
+        return sb.ToString();
+    }
+
+    internal override void ResetValue()
+    {
+        this.Values.Clear();
     }
 }

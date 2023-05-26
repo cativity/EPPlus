@@ -17,19 +17,18 @@ using System.Text;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Metadata;
 using OfficeOpenXml.FormulaParsing.ExpressionGraph;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Logical
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Logical;
+
+[FunctionMetadata(
+                     Category = ExcelFunctionCategory.Logical,
+                     EPPlusVersion = "4",
+                     Description = "Returns a logical value that is the opposite of a user supplied logical value or expression (i.e.returns FALSE is the supplied argument is TRUE and returns TRUE if the supplied argument is FALSE)")]
+internal class Not : ExcelFunction
 {
-    [FunctionMetadata(
-        Category = ExcelFunctionCategory.Logical,
-        EPPlusVersion = "4",
-        Description = "Returns a logical value that is the opposite of a user supplied logical value or expression (i.e.returns FALSE is the supplied argument is TRUE and returns TRUE if the supplied argument is FALSE)")]
-    internal class Not : ExcelFunction
+    public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
     {
-        public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
-        {
-            ValidateArguments(arguments, 1);
-            bool result = !this.ArgToBool(arguments, 0);
-            return new CompileResult(result, DataType.Boolean);
-        }
+        ValidateArguments(arguments, 1);
+        bool result = !this.ArgToBool(arguments, 0);
+        return new CompileResult(result, DataType.Boolean);
     }
 }

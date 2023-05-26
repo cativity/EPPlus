@@ -17,36 +17,35 @@ using System.Text;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Metadata;
 using OfficeOpenXml.FormulaParsing.ExpressionGraph;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Text
-{
-    [FunctionMetadata(
-        Category = ExcelFunctionCategory.Text,
-        EPPlusVersion = "4",
-        Description = "Substitutes all occurrences of a search text string, within an original text string, with the supplied replacement text")]
-    internal class Substitute : ExcelFunction
-    {
-        public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
-        {
-            ValidateArguments(arguments, 3);
-            string? text = ArgToString(arguments, 0);
-            string? find = ArgToString(arguments, 1);
-            string? replaceWith = ArgToString(arguments, 2);
-            string? result = arguments.Count() > 3 ? ReplaceFirst(text, find, replaceWith, this.ArgToInt(arguments, 3)) : text.Replace(find, replaceWith);
-            return this.CreateResult(result, DataType.String);
-        }
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Text;
 
-        private static string ReplaceFirst(string text, string search, string replace, int instanceNumber)
+[FunctionMetadata(
+                     Category = ExcelFunctionCategory.Text,
+                     EPPlusVersion = "4",
+                     Description = "Substitutes all occurrences of a search text string, within an original text string, with the supplied replacement text")]
+internal class Substitute : ExcelFunction
+{
+    public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
+    {
+        ValidateArguments(arguments, 3);
+        string? text = ArgToString(arguments, 0);
+        string? find = ArgToString(arguments, 1);
+        string? replaceWith = ArgToString(arguments, 2);
+        string? result = arguments.Count() > 3 ? ReplaceFirst(text, find, replaceWith, this.ArgToInt(arguments, 3)) : text.Replace(find, replaceWith);
+        return this.CreateResult(result, DataType.String);
+    }
+
+    private static string ReplaceFirst(string text, string search, string replace, int instanceNumber)
+    {
+        int pos = -1;
+        for (int i = 0; i < instanceNumber; i++)
         {
-            int pos = -1;
-            for (int i = 0; i < instanceNumber; i++)
+            pos = text.IndexOf(search, pos + 1);
+            if (pos < 0)
             {
-                pos = text.IndexOf(search, pos + 1);
-                if (pos < 0)
-                {
-                    break;
-                }
+                break;
             }
-            return pos < 0 ? text : text.Substring(0, pos) + replace + text.Substring(pos + search.Length);
         }
+        return pos < 0 ? text : text.Substring(0, pos) + replace + text.Substring(pos + search.Length);
     }
 }

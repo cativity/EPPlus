@@ -17,30 +17,29 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace OfficeOpenXml.Core.Worksheet.Core.Worksheet.Fonts.GenericMeasurements
+namespace OfficeOpenXml.Core.Worksheet.Core.Worksheet.Fonts.GenericMeasurements;
+
+internal class GenericFontMetricsTextMeasurer : GenericFontMetricsTextMeasurerBase, ITextMeasurer
 {
-    internal class GenericFontMetricsTextMeasurer : GenericFontMetricsTextMeasurerBase, ITextMeasurer
+    /// <summary>
+    /// Measures the supplied text
+    /// </summary>
+    /// <param name="text">The text to measure</param>
+    /// <param name="font">Font of the text to measure</param>
+    /// <returns>A <see cref="TextMeasurement"/></returns>
+    public TextMeasurement MeasureText(string text, MeasurementFont font)
     {
-        /// <summary>
-        /// Measures the supplied text
-        /// </summary>
-        /// <param name="text">The text to measure</param>
-        /// <param name="font">Font of the text to measure</param>
-        /// <returns>A <see cref="TextMeasurement"/></returns>
-        public TextMeasurement MeasureText(string text, MeasurementFont font)
+        uint fontKey = GetKey(font.FontFamily, font.Style);
+        if (!IsValidFont(fontKey))
         {
-            uint fontKey = GetKey(font.FontFamily, font.Style);
-            if (!IsValidFont(fontKey))
-            {
-                return TextMeasurement.Empty;
-            }
-
-            return this.MeasureTextInternal(text, fontKey, font.Style, font.Size);
+            return TextMeasurement.Empty;
         }
 
-        public bool ValidForEnvironment()
-        {
-            return true;
-        }
+        return this.MeasureTextInternal(text, fontKey, font.Style, font.Size);
+    }
+
+    public bool ValidForEnvironment()
+    {
+        return true;
     }
 }

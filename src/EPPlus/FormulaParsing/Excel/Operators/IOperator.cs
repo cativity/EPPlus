@@ -16,14 +16,13 @@ using System.Linq;
 using System.Text;
 using OfficeOpenXml.FormulaParsing.ExpressionGraph;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Operators
+namespace OfficeOpenXml.FormulaParsing.Excel.Operators;
+
+public interface IOperator
 {
-    public interface IOperator
-    {
-        Operators Operator { get; }
+    Operators Operator { get; }
 
-        CompileResult Apply(CompileResult left, CompileResult right);
+    CompileResult Apply(CompileResult left, CompileResult right);
 
-        int Precedence { get; }
-    }
+    int Precedence { get; }
 }

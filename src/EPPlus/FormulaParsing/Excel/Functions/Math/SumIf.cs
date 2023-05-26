@@ -21,130 +21,129 @@ using OfficeOpenXml.FormulaParsing.Utilities;
 using OfficeOpenXml.Utils;
 using Require = OfficeOpenXml.FormulaParsing.Utilities.Require;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
+
+[FunctionMetadata(
+                     Category = ExcelFunctionCategory.MathAndTrig,
+                     EPPlusVersion = "4",
+                     Description = "Adds the cells in a supplied range, that satisfy a given criteria")]
+internal class SumIf : HiddenValuesHandlingFunction
 {
-    [FunctionMetadata(
-        Category = ExcelFunctionCategory.MathAndTrig,
-        EPPlusVersion = "4",
-        Description = "Adds the cells in a supplied range, that satisfy a given criteria")]
-    internal class SumIf : HiddenValuesHandlingFunction
+    private readonly ExpressionEvaluator _evaluator;
+
+    public SumIf()
+        : this(new ExpressionEvaluator())
     {
-        private readonly ExpressionEvaluator _evaluator;
 
-        public SumIf()
-            : this(new ExpressionEvaluator())
+    }
+
+    public SumIf(ExpressionEvaluator evaluator)
+    {
+        Require.That(evaluator).Named("evaluator").IsNotNull();
+        this._evaluator = evaluator;
+    }
+
+    public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
+    {
+        ValidateArguments(arguments, 2);
+        IRangeInfo? argRange = ArgToRangeInfo(arguments, 0);
+
+        // Criteria can either be a string or an array of strings
+        IEnumerable<string>? criteria = GetCriteria(arguments.ElementAt(1));
+        double retVal = 0d;
+        if (argRange == null)
         {
-
-        }
-
-        public SumIf(ExpressionEvaluator evaluator)
-        {
-            Require.That(evaluator).Named("evaluator").IsNotNull();
-            this._evaluator = evaluator;
-        }
-
-        public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
-        {
-            ValidateArguments(arguments, 2);
-            IRangeInfo? argRange = ArgToRangeInfo(arguments, 0);
-
-            // Criteria can either be a string or an array of strings
-            IEnumerable<string>? criteria = GetCriteria(arguments.ElementAt(1));
-            double retVal = 0d;
-            if (argRange == null)
+            object? val = arguments.ElementAt(0).Value;
+            if (this._evaluator.Evaluate(val, criteria))
             {
-                object? val = arguments.ElementAt(0).Value;
-                if (this._evaluator.Evaluate(val, criteria))
+                if (arguments.Count() > 2)
                 {
-                    if (arguments.Count() > 2)
-                    {
-                        IRangeInfo? sumRange = ArgToRangeInfo(arguments, 2);
-                        retVal = sumRange.First().ValueDouble;
-                    }
-                    else
-                    {
-                        retVal = ConvertUtil.GetValueDouble(val, true);
-                    }
+                    IRangeInfo? sumRange = ArgToRangeInfo(arguments, 2);
+                    retVal = sumRange.First().ValueDouble;
+                }
+                else
+                {
+                    retVal = ConvertUtil.GetValueDouble(val, true);
                 }
             }
-            else if (arguments.Count() > 2)
-            {
-                IRangeInfo? sumRange = ArgToRangeInfo(arguments, 2);
-                retVal = this.CalculateWithSumRange(argRange, criteria, sumRange, context);
-            }
-            else
-            {
-                retVal = this.CalculateSingleRange(argRange, criteria, context);
-            }
-            return this.CreateResult(retVal, DataType.Decimal);
         }
-
-        internal static IEnumerable<string> GetCriteria(FunctionArgument criteriaArg)
+        else if (arguments.Count() > 2)
         {
-            List<string>? criteria = new List<string>();
-            if (criteriaArg.IsEnumerableOfFuncArgs)
-            {
-                foreach (FunctionArgument? arg in criteriaArg.ValueAsEnumerableOfFuncArgs)
-                {
-                    criteria.Add(arg.ValueFirstString);
-                }
-            }
-            else if (criteriaArg.IsExcelRange)
-            {
-                foreach (ICellInfo? cell in criteriaArg.ValueAsRangeInfo)
-                {
-                    if (cell.Value != null)
-                    {
-                        criteria.Add(cell.Value.ToString());
-                    }
-                }
-            }
-            else
-            {
-                criteria.Add(criteriaArg.ValueFirst != null ? criteriaArg.ValueFirst.ToString() : null);
-            }
-            return criteria;
+            IRangeInfo? sumRange = ArgToRangeInfo(arguments, 2);
+            retVal = this.CalculateWithSumRange(argRange, criteria, sumRange, context);
         }
-
-        private double CalculateWithSumRange(IRangeInfo range, IEnumerable<string> criteria, IRangeInfo sumRange, ParsingContext context)
+        else
         {
-            double retVal = 0d;
-            foreach (ICellInfo? cell in range)
-            {
-                if (this._evaluator.Evaluate(cell.Value, criteria))
-                {
-                    int rowOffset = cell.Row - range.Address._fromRow;
-                    int columnOffset = cell.Column - range.Address._fromCol;
-                    if (sumRange.Address._fromRow + rowOffset <= sumRange.Address._toRow &&
-                       sumRange.Address._fromCol + columnOffset <= sumRange.Address._toCol)
-                    {
-                        object? val = sumRange.GetOffset(rowOffset, columnOffset);
-                        if (val is ExcelErrorValue)
-                        {
-                            ThrowExcelErrorValueException((ExcelErrorValue)val);
-                        }
-                        retVal += ConvertUtil.GetValueDouble(val, true);
-                    }
-                }
-            }
-            return retVal;
+            retVal = this.CalculateSingleRange(argRange, criteria, context);
         }
+        return this.CreateResult(retVal, DataType.Decimal);
+    }
 
-        private double CalculateSingleRange(IRangeInfo range, IEnumerable<string> expressions, ParsingContext context)
+    internal static IEnumerable<string> GetCriteria(FunctionArgument criteriaArg)
+    {
+        List<string>? criteria = new List<string>();
+        if (criteriaArg.IsEnumerableOfFuncArgs)
         {
-            double retVal = 0d;
-            foreach (ICellInfo? candidate in range)
+            foreach (FunctionArgument? arg in criteriaArg.ValueAsEnumerableOfFuncArgs)
             {
-                if (IsNumeric(candidate.Value) && this._evaluator.Evaluate(candidate.Value, expressions) && IsNumeric(candidate.Value))
+                criteria.Add(arg.ValueFirstString);
+            }
+        }
+        else if (criteriaArg.IsExcelRange)
+        {
+            foreach (ICellInfo? cell in criteriaArg.ValueAsRangeInfo)
+            {
+                if (cell.Value != null)
                 {
-                    if (candidate.IsExcelError)
-                    {
-                        ThrowExcelErrorValueException((ExcelErrorValue)candidate.Value);
-                    }
-                    retVal += candidate.ValueDouble;
+                    criteria.Add(cell.Value.ToString());
                 }
             }
-            return retVal;
         }
+        else
+        {
+            criteria.Add(criteriaArg.ValueFirst != null ? criteriaArg.ValueFirst.ToString() : null);
+        }
+        return criteria;
+    }
+
+    private double CalculateWithSumRange(IRangeInfo range, IEnumerable<string> criteria, IRangeInfo sumRange, ParsingContext context)
+    {
+        double retVal = 0d;
+        foreach (ICellInfo? cell in range)
+        {
+            if (this._evaluator.Evaluate(cell.Value, criteria))
+            {
+                int rowOffset = cell.Row - range.Address._fromRow;
+                int columnOffset = cell.Column - range.Address._fromCol;
+                if (sumRange.Address._fromRow + rowOffset <= sumRange.Address._toRow &&
+                    sumRange.Address._fromCol + columnOffset <= sumRange.Address._toCol)
+                {
+                    object? val = sumRange.GetOffset(rowOffset, columnOffset);
+                    if (val is ExcelErrorValue)
+                    {
+                        ThrowExcelErrorValueException((ExcelErrorValue)val);
+                    }
+                    retVal += ConvertUtil.GetValueDouble(val, true);
+                }
+            }
+        }
+        return retVal;
+    }
+
+    private double CalculateSingleRange(IRangeInfo range, IEnumerable<string> expressions, ParsingContext context)
+    {
+        double retVal = 0d;
+        foreach (ICellInfo? candidate in range)
+        {
+            if (IsNumeric(candidate.Value) && this._evaluator.Evaluate(candidate.Value, expressions) && IsNumeric(candidate.Value))
+            {
+                if (candidate.IsExcelError)
+                {
+                    ThrowExcelErrorValueException((ExcelErrorValue)candidate.Value);
+                }
+                retVal += candidate.ValueDouble;
+            }
+        }
+        return retVal;
     }
 }

@@ -12,12 +12,11 @@
  *************************************************************************************************/
 using static OfficeOpenXml.FormulaParsing.ExcelDataProvider;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
-{
-    public class RangeOrValue
-    {
-        public object Value { get; set; }
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
 
-        public IRangeInfo Range { get; set; }
-    }
+public class RangeOrValue
+{
+    public object Value { get; set; }
+
+    public IRangeInfo Range { get; set; }
 }

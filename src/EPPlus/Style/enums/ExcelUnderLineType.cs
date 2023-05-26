@@ -10,32 +10,31 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
-namespace OfficeOpenXml.Style
+namespace OfficeOpenXml.Style;
+
+/// <summary>
+/// Font-Underlinestyle for 
+/// </summary>
+public enum ExcelUnderLineType
 {
     /// <summary>
-    /// Font-Underlinestyle for 
+    /// No underline
     /// </summary>
-    public enum ExcelUnderLineType
-    {
-        /// <summary>
-        /// No underline
-        /// </summary>
-        None,
-        /// <summary>
-        /// Single underline
-        /// </summary>
-        Single,
-        /// <summary>
-        /// Double underline
-        /// </summary>
-        Double,
-        /// <summary>
-        /// Single line accounting. The underline is drawn under characters such as j and g
-        /// </summary>
-        SingleAccounting,
-        /// <summary>
-        /// Double line accounting. The underline is drawn under of characters such as j and g
-        /// </summary>
-        DoubleAccounting
-    }
+    None,
+    /// <summary>
+    /// Single underline
+    /// </summary>
+    Single,
+    /// <summary>
+    /// Double underline
+    /// </summary>
+    Double,
+    /// <summary>
+    /// Single line accounting. The underline is drawn under characters such as j and g
+    /// </summary>
+    SingleAccounting,
+    /// <summary>
+    /// Double line accounting. The underline is drawn under of characters such as j and g
+    /// </summary>
+    DoubleAccounting
 }

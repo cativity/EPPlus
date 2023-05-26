@@ -31,35 +31,34 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace OfficeOpenXml.FormulaParsing.ExpressionGraph.UnrecognizedFunctionsPipeline.Handlers
+namespace OfficeOpenXml.FormulaParsing.ExpressionGraph.UnrecognizedFunctionsPipeline.Handlers;
+
+/// <summary>
+/// Handles a range, where the second argument is a call to the OFFSET function
+/// Example: A1:OFFSET(B2, 2, 0).
+/// </summary>
+internal class RangeOffsetFunctionHandler : UnrecognizedFunctionsHandler
 {
-    /// <summary>
-    /// Handles a range, where the second argument is a call to the OFFSET function
-    /// Example: A1:OFFSET(B2, 2, 0).
-    /// </summary>
-    internal class RangeOffsetFunctionHandler : UnrecognizedFunctionsHandler
+    public override bool Handle(string funcName, IEnumerable<Expression> children, ParsingContext context, out ExcelFunction function)
     {
-        public override bool Handle(string funcName, IEnumerable<Expression> children, ParsingContext context, out ExcelFunction function)
+        function = null;
+        if(funcName.Contains(":OFFSET"))
         {
-            function = null;
-            if(funcName.Contains(":OFFSET"))
+            FunctionCompilerFactory? functionCompilerFactory = new FunctionCompilerFactory(context.Configuration.FunctionRepository, context);
+            string? startRange = funcName.Split(':')[0];
+            ParsingScope? c = context.Scopes.Current;
+            IRangeInfo? resultRange = context.ExcelDataProvider.GetRange(c.Address.Worksheet, c.Address.FromRow, c.Address.FromCol, startRange);
+            RangeOffset? rangeOffset = new RangeOffset
             {
-                FunctionCompilerFactory? functionCompilerFactory = new FunctionCompilerFactory(context.Configuration.FunctionRepository, context);
-                string? startRange = funcName.Split(':')[0];
-                ParsingScope? c = context.Scopes.Current;
-                IRangeInfo? resultRange = context.ExcelDataProvider.GetRange(c.Address.Worksheet, c.Address.FromRow, c.Address.FromCol, startRange);
-                RangeOffset? rangeOffset = new RangeOffset
-                {
-                    StartRange = resultRange
-                };
-                FunctionCompiler? compiler = functionCompilerFactory.Create(new Offset());
-                children.First().Children.First().IgnoreCircularReference = true;
-                CompileResult? compileResult = compiler.Compile(children);
-                rangeOffset.EndRange = compileResult.Result as IRangeInfo;
-                function = rangeOffset;
-                return true;
-            }
-            return false;
+                StartRange = resultRange
+            };
+            FunctionCompiler? compiler = functionCompilerFactory.Create(new Offset());
+            children.First().Children.First().IgnoreCircularReference = true;
+            CompileResult? compileResult = compiler.Compile(children);
+            rangeOffset.EndRange = compileResult.Result as IRangeInfo;
+            function = rangeOffset;
+            return true;
         }
+        return false;
     }
 }

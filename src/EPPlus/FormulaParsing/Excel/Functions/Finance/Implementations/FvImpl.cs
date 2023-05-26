@@ -14,13 +14,12 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.Implementations
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.Implementations;
+
+internal static class FvImpl
 {
-    internal static class FvImpl
+    internal static FinanceCalcResult<double> Fv(double Rate, double NPer, double Pmt, double PV = 0, PmtDue Due = PmtDue.EndOfPeriod)
     {
-        internal static FinanceCalcResult<double> Fv(double Rate, double NPer, double Pmt, double PV = 0, PmtDue Due = PmtDue.EndOfPeriod)
-        {
-            return new FinanceCalcResult<double>(InternalMethods.FV_Internal(Rate, NPer, Pmt, PV, Due));
-        }
+        return new FinanceCalcResult<double>(InternalMethods.FV_Internal(Rate, NPer, Pmt, PV, Due));
     }
 }

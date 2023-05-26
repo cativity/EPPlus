@@ -4,21 +4,20 @@ using System.Linq;
 using System.Text;
 using OfficeOpenXml.FormulaParsing;
 
-namespace OfficeOpenXml.FormulaParsing.ExpressionGraph
+namespace OfficeOpenXml.FormulaParsing.ExpressionGraph;
+
+public class ExcelRangeExpression : Expression
 {
-    public class ExcelRangeExpression : Expression
+    public ExcelRangeExpression(IRangeInfo rangeInfo)
     {
-        public ExcelRangeExpression(IRangeInfo rangeInfo)
-        {
-            this._rangeInfo = rangeInfo;
-        }
+        this._rangeInfo = rangeInfo;
+    }
 
-        private readonly IRangeInfo _rangeInfo;
-        public override bool IsGroupedExpression => false;
+    private readonly IRangeInfo _rangeInfo;
+    public override bool IsGroupedExpression => false;
 
-        public override CompileResult Compile()
-        {
-            return new CompileResult(this._rangeInfo, DataType.Enumerable);
-        }
+    public override CompileResult Compile()
+    {
+        return new CompileResult(this._rangeInfo, DataType.Enumerable);
     }
 }

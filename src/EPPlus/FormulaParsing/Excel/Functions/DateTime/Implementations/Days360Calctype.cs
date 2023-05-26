@@ -12,11 +12,10 @@
  *************************************************************************************************/
 using System;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime.Implementations
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime.Implementations;
+
+internal enum Days360Calctype
 {
-    internal enum Days360Calctype
-    {
-        European,
-        Us
-    }
+    European,
+    Us
 }

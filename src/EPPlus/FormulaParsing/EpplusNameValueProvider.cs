@@ -16,60 +16,59 @@ using System.Linq;
 using System.Text;
 using OfficeOpenXml.FormulaParsing;
 
-namespace OfficeOpenXml.FormulaParsing
+namespace OfficeOpenXml.FormulaParsing;
+
+internal class EpplusNameValueProvider : INameValueProvider
 {
-    internal class EpplusNameValueProvider : INameValueProvider
+    private ExcelDataProvider _excelDataProvider;
+    private ExcelNamedRangeCollection _values;
+
+    internal EpplusNameValueProvider(ExcelDataProvider excelDataProvider)
     {
-        private ExcelDataProvider _excelDataProvider;
-        private ExcelNamedRangeCollection _values;
+        this._excelDataProvider = excelDataProvider;
+        this._values = this._excelDataProvider.GetWorkbookNameValues();
+    }
 
-        internal EpplusNameValueProvider(ExcelDataProvider excelDataProvider)
+    public virtual bool IsNamedValue(string key, string ws)
+    {
+        if (key.StartsWith("[0]"))
         {
-            this._excelDataProvider = excelDataProvider;
-            this._values = this._excelDataProvider.GetWorkbookNameValues();
-        }
-
-        public virtual bool IsNamedValue(string key, string ws)
-        {
-            if (key.StartsWith("[0]"))
+            if(key.Length>3&&key[3]=='!')
             {
-                if(key.Length>3&&key[3]=='!')
-                {
-                    key = key.Substring(4);
-                }
-                else
-                {
-                    key = key.Substring(3);
-                }
+                key = key.Substring(4);
             }
-            if (key.StartsWith("["))
+            else
             {
-                return this._excelDataProvider.IsExternalName(key);
+                key = key.Substring(3);
             }
-            else if (ws!=null)
+        }
+        if (key.StartsWith("["))
+        {
+            return this._excelDataProvider.IsExternalName(key);
+        }
+        else if (ws!=null)
+        {
+            ExcelNamedRangeCollection? wsNames = this._excelDataProvider.GetWorksheetNames(ws);
+            if (wsNames != null && wsNames.ContainsKey(key))
             {
-                ExcelNamedRangeCollection? wsNames = this._excelDataProvider.GetWorksheetNames(ws);
-                if (wsNames != null && wsNames.ContainsKey(key))
-                {
-                    return true;
-                }
+                return true;
             }
-            return this._values != null && this._values.ContainsKey(key);
         }
+        return this._values != null && this._values.ContainsKey(key);
+    }
 
-        public virtual object GetNamedValue(string key)
-        {
-            return this._values[key];
-        }
+    public virtual object GetNamedValue(string key)
+    {
+        return this._values[key];
+    }
 
-        public virtual object GetNamedValue(string key, string worksheet)
-        {
-            return this._excelDataProvider.GetName(worksheet, key)?.Value;
-        }
+    public virtual object GetNamedValue(string key, string worksheet)
+    {
+        return this._excelDataProvider.GetName(worksheet, key)?.Value;
+    }
 
-        public virtual void Reload()
-        {
-            this._values = this._excelDataProvider.GetWorkbookNameValues();
-        }
+    public virtual void Reload()
+    {
+        this._values = this._excelDataProvider.GetWorkbookNameValues();
     }
 }

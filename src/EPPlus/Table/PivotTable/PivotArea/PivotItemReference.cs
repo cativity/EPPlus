@@ -11,20 +11,19 @@
   12/28/2020         EPPlus Software AB       Pivot Table Styling - EPPlus 5.6
  *************************************************************************************************/
 
-namespace OfficeOpenXml.Table.PivotTable
+namespace OfficeOpenXml.Table.PivotTable;
+
+/// <summary>
+/// A reference to a pivot table value item
+/// </summary>
+public struct PivotItemReference
 {
     /// <summary>
-    /// A reference to a pivot table value item
+    /// The index of the item in items of the pivot table field
     /// </summary>
-    public struct PivotItemReference
-    {
-        /// <summary>
-        /// The index of the item in items of the pivot table field
-        /// </summary>
-        public int Index { get; internal set; }
-        /// <summary>
-        /// The value of the item
-        /// </summary>
-        public object Value { get; internal set; }
-    }
+    public int Index { get; internal set; }
+    /// <summary>
+    /// The value of the item
+    /// </summary>
+    public object Value { get; internal set; }
 }

@@ -16,54 +16,53 @@ using System.Linq;
 using System.Text;
 using System.Xml;
 
-namespace OfficeOpenXml.Drawing.Style.Fill
+namespace OfficeOpenXml.Drawing.Style.Fill;
+
+/// <summary>
+/// The drawing has no fill
+/// </summary>
+public class ExcelDrawingNoFill : ExcelDrawingFillBase
 {
-    /// <summary>
-    /// The drawing has no fill
-    /// </summary>
-    public class ExcelDrawingNoFill : ExcelDrawingFillBase
+    internal ExcelDrawingNoFill(ExcelDrawing drawing) : base ()
     {
-        internal ExcelDrawingNoFill(ExcelDrawing drawing) : base ()
-        {
 
+    }
+    /// <summary>
+    /// The type of fill
+    /// </summary>
+    public override eFillStyle Style
+    {
+        get
+        {
+            return eFillStyle.NoFill;
         }
-        /// <summary>
-        /// The type of fill
-        /// </summary>
-        public override eFillStyle Style
+    }
+
+    internal override string NodeName
+    {
+        get
         {
-            get
-            {
-                return eFillStyle.NoFill;
-            }
+            return "a:noFill";
         }
+    }
 
-        internal override string NodeName
+    internal override void GetXml()
+    {
+
+    }
+
+    internal override void SetXml(XmlNamespaceManager nsm, XmlNode node)
+    {
+        if (this._xml == null)
         {
-            get
-            {
-                return "a:noFill";
-            }
-        }
-
-        internal override void GetXml()
-        {
-
-        }
-
-        internal override void SetXml(XmlNamespaceManager nsm, XmlNode node)
-        {
-            if (this._xml == null)
-            {
-                this.InitXml(nsm, node.FirstChild, "");
-            }
-
-            this.CheckTypeChange(this.NodeName);
+            this.InitXml(nsm, node.FirstChild, "");
         }
 
-        internal override void UpdateXml()
-        {
+        this.CheckTypeChange(this.NodeName);
+    }
+
+    internal override void UpdateXml()
+    {
             
-        }
     }
 }

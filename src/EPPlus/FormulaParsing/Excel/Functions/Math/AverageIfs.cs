@@ -17,63 +17,62 @@ using System.Text;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Metadata;
 using OfficeOpenXml.FormulaParsing.ExpressionGraph;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
+
+[FunctionMetadata(
+                     Category = ExcelFunctionCategory.Statistical,
+                     EPPlusVersion = "4",
+                     Description = "Calculates the Average of the cells in a supplied range, that satisfy multiple criteria",
+                     IntroducedInExcelVersion = "2007")]
+internal class AverageIfs : MultipleRangeCriteriasFunction
 {
-    [FunctionMetadata(
-        Category = ExcelFunctionCategory.Statistical,
-        EPPlusVersion = "4",
-        Description = "Calculates the Average of the cells in a supplied range, that satisfy multiple criteria",
-        IntroducedInExcelVersion = "2007")]
-    internal class AverageIfs : MultipleRangeCriteriasFunction
+    private static string GetCriteraFromArgsByIndex(FunctionArgument[] arguments, int index)
     {
-        private static string GetCriteraFromArgsByIndex(FunctionArgument[] arguments, int index)
+        return arguments[index + 1].Value != null ? arguments[index + 1].Value.ToString() : null;
+    }
+
+    public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
+    {
+        FunctionArgument[]? functionArguments = arguments as FunctionArgument[] ?? arguments.ToArray();
+        ValidateArguments(functionArguments, 3);
+        List<ExcelDoubleCellValue>? sumRange = this.ArgsToDoubleEnumerable(false, new List<FunctionArgument> { functionArguments[0] }, context).ToList();
+        List<RangeOrValue>? argRanges = new List<RangeOrValue>();
+        List<string>? criterias = new List<string>();
+        for (int ix = 1; ix < 31; ix += 2)
         {
-            return arguments[index + 1].Value != null ? arguments[index + 1].Value.ToString() : null;
+            if (functionArguments.Length <= ix)
+            {
+                break;
+            }
+
+            FunctionArgument? arg = functionArguments[ix];
+            if (arg.IsExcelRange)
+            {
+                IRangeInfo? rangeInfo = arg.ValueAsRangeInfo;
+                argRanges.Add(new RangeOrValue { Range = rangeInfo });
+            }
+            else
+            {
+                argRanges.Add(new RangeOrValue { Value = arg.Value });
+            }
+            string? v = GetCriteraFromArgsByIndex(functionArguments, ix);
+            criterias.Add(v);
+        }
+        IEnumerable<int> matchIndexes = this.GetMatchIndexes(argRanges[0], criterias[0]);
+        IList<int>? enumerable = matchIndexes as IList<int> ?? matchIndexes.ToList();
+        for (int ix = 1; ix < argRanges.Count && enumerable.Any(); ix++)
+        {
+            List<int>? indexes = this.GetMatchIndexes(argRanges[ix], criterias[ix], false);
+            matchIndexes = matchIndexes.Intersect(indexes);
         }
 
-        public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
+        if (matchIndexes.Count() == 0)
         {
-            FunctionArgument[]? functionArguments = arguments as FunctionArgument[] ?? arguments.ToArray();
-            ValidateArguments(functionArguments, 3);
-            List<ExcelDoubleCellValue>? sumRange = this.ArgsToDoubleEnumerable(false, new List<FunctionArgument> { functionArguments[0] }, context).ToList();
-            List<RangeOrValue>? argRanges = new List<RangeOrValue>();
-            List<string>? criterias = new List<string>();
-            for (int ix = 1; ix < 31; ix += 2)
-            {
-                if (functionArguments.Length <= ix)
-                {
-                    break;
-                }
-
-                FunctionArgument? arg = functionArguments[ix];
-                if (arg.IsExcelRange)
-                {
-                    IRangeInfo? rangeInfo = arg.ValueAsRangeInfo;
-                    argRanges.Add(new RangeOrValue { Range = rangeInfo });
-                }
-                else
-                {
-                    argRanges.Add(new RangeOrValue { Value = arg.Value });
-                }
-                string? v = GetCriteraFromArgsByIndex(functionArguments, ix);
-                criterias.Add(v);
-            }
-            IEnumerable<int> matchIndexes = this.GetMatchIndexes(argRanges[0], criterias[0]);
-            IList<int>? enumerable = matchIndexes as IList<int> ?? matchIndexes.ToList();
-            for (int ix = 1; ix < argRanges.Count && enumerable.Any(); ix++)
-            {
-                List<int>? indexes = this.GetMatchIndexes(argRanges[ix], criterias[ix], false);
-                matchIndexes = matchIndexes.Intersect(indexes);
-            }
-
-            if (matchIndexes.Count() == 0)
-            {
-                return this.CreateResult(eErrorType.Div0);
-            }
-
-            double result = matchIndexes.Average(index => sumRange[index]);
-
-            return this.CreateResult(result, DataType.Decimal);
+            return this.CreateResult(eErrorType.Div0);
         }
+
+        double result = matchIndexes.Average(index => sumRange[index]);
+
+        return this.CreateResult(result, DataType.Decimal);
     }
 }

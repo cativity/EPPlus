@@ -10,21 +10,20 @@
  *************************************************************************************************
     08/11/2021         EPPlus Software AB       EPPlus 5.8
  *************************************************************************************************/
-namespace OfficeOpenXml
+namespace OfficeOpenXml;
+
+/// <summary>
+/// If the fill starts from the top-left cell or the bottom-right cell.
+/// Also see <seealso cref="eFillDirection"/>
+/// </summary>
+public enum eFillStartPosition
 {
     /// <summary>
-    /// If the fill starts from the top-left cell or the bottom-right cell.
-    /// Also see <seealso cref="eFillDirection"/>
+    /// The fill starts from the top-left cell and fills to the left and down depending on the <see cref="eFillDirection"/>
     /// </summary>
-    public enum eFillStartPosition
-    {
-        /// <summary>
-        /// The fill starts from the top-left cell and fills to the left and down depending on the <see cref="eFillDirection"/>
-        /// </summary>
-        TopLeft,
-        /// <summary>
-        /// The fill starts from the bottom-right cell and fills to the right and up depending on the <see cref="eFillDirection"/>
-        /// </summary>
-        BottomRight
-    }
+    TopLeft,
+    /// <summary>
+    /// The fill starts from the bottom-right cell and fills to the right and up depending on the <see cref="eFillDirection"/>
+    /// </summary>
+    BottomRight
 }

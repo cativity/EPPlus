@@ -14,22 +14,21 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.FinancialDayCount
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.FinancialDayCount;
+
+internal class FinancialPeriod
 {
-    internal class FinancialPeriod
+    public FinancialPeriod(FinancialDay start, FinancialDay end)
     {
-        public FinancialPeriod(FinancialDay start, FinancialDay end)
-        {
-            this.Start = start;
-            this.End = end;
-        }
-        internal FinancialDay Start { get; }
+        this.Start = start;
+        this.End = end;
+    }
+    internal FinancialDay Start { get; }
 
-        internal FinancialDay End { get; }
+    internal FinancialDay End { get; }
 
-        public override string ToString()
-        {
-            return $"{this.Start.ToString()} - {this.End.ToString()}";
-        }
+    public override string ToString()
+    {
+        return $"{this.Start.ToString()} - {this.End.ToString()}";
     }
 }

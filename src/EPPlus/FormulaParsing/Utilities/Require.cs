@@ -15,22 +15,21 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace OfficeOpenXml.FormulaParsing.Utilities
+namespace OfficeOpenXml.FormulaParsing.Utilities;
+
+/// <summary>
+/// Utility for validation in functions.
+/// </summary>
+public static class Require
 {
     /// <summary>
-    /// Utility for validation in functions.
+    /// Represent an argument to the function where the validation is implemented.
     /// </summary>
-    public static class Require
+    /// <typeparam name="T"></typeparam>
+    /// <param name="arg">The argument to validate</param>
+    /// <returns></returns>
+    public static ArgumentInfo<T> That<T>(T arg)
     {
-        /// <summary>
-        /// Represent an argument to the function where the validation is implemented.
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="arg">The argument to validate</param>
-        /// <returns></returns>
-        public static ArgumentInfo<T> That<T>(T arg)
-        {
-            return new ArgumentInfo<T>(arg);
-        }
+        return new ArgumentInfo<T>(arg);
     }
 }

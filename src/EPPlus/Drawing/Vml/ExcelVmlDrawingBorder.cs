@@ -14,99 +14,98 @@ using OfficeOpenXml.Utils;
 using OfficeOpenXml.Utils.Extensions;
 using System;
 using System.Xml;
-namespace OfficeOpenXml.Drawing.Vml
+namespace OfficeOpenXml.Drawing.Vml;
+
+/// <summary>
+/// Border line settings for a vml drawing
+/// </summary>
+public class ExcelVmlDrawingBorder : XmlHelper
 {
-    /// <summary>
-    /// Border line settings for a vml drawing
-    /// </summary>
-    public class ExcelVmlDrawingBorder : XmlHelper
+    internal ExcelVmlDrawingBorder(ExcelDrawings drawings, XmlNamespaceManager ns, XmlNode topNode, string[] schemaNodeOrder) :
+        base(ns, topNode)
     {
-        internal ExcelVmlDrawingBorder(ExcelDrawings drawings, XmlNamespaceManager ns, XmlNode topNode, string[] schemaNodeOrder) :
-            base(ns, topNode)
+        this.SchemaNodeOrder = schemaNodeOrder;
+    }
+    /// <summary>
+    /// The style of the border
+    /// </summary>
+    public eVmlLineStyle LineStyle 
+    { 
+        get
         {
-            this.SchemaNodeOrder = schemaNodeOrder;
+            return this.GetXmlNodeString("v:stroke/@linestyle").ToEnum(eVmlLineStyle.NoLine);
         }
-        /// <summary>
-        /// The style of the border
-        /// </summary>
-        public eVmlLineStyle LineStyle 
-        { 
-            get
-            {
-                return this.GetXmlNodeString("v:stroke/@linestyle").ToEnum(eVmlLineStyle.NoLine);
-            }
-            set
-            {
-                if (value == eVmlLineStyle.NoLine)
-                {
-                    this.DeleteNode("v:stroke/@linestyle");
-                    this.SetXmlNodeString("@stroked", "f");
-                    this.DeleteNode("@strokeweight");
-                }
-                else
-                {
-                    this.SetXmlNodeString("v:stroke/@linestyle", value.ToEnumString());
-                    this.DeleteNode("@stroked");
-                }
-            }
-        }
-        /// <summary>
-        /// Dash style for the border 
-        /// </summary>
-        public eVmlDashStyle DashStyle 
-        { 
-            get
-            {
-                return this.CustomDashStyle.ToEnum(eVmlDashStyle.Custom);
-            }
-            set
-            {
-                this.CustomDashStyle = value.ToEnumString();
-            }
-        }
-        /// <summary>
-        /// Custom dash style.
-        /// A series on numbers representing the width followed by the space between.        
-        /// Example 1 : 8 2 1 2 1 2 --> Long dash dot dot. Space is twice the line width (2). LongDash (8) Dot (1). 
-        /// Example 2 : 0 2 --> 0 implies a circular dot. 2 is the space between.
-        /// </summary>
-        public string CustomDashStyle
+        set
         {
-            get
+            if (value == eVmlLineStyle.NoLine)
             {
-                return this.GetXmlNodeString("v:stroke/@dashstyle");
+                this.DeleteNode("v:stroke/@linestyle");
+                this.SetXmlNodeString("@stroked", "f");
+                this.DeleteNode("@strokeweight");
             }
-            set
+            else
             {
-                this.SetXmlNodeString("v:stroke/@dashstyle", value);
+                this.SetXmlNodeString("v:stroke/@linestyle", value.ToEnumString());
+                this.DeleteNode("@stroked");
             }
         }
-        ExcelVmlMeasurementUnit _width = null;
-        /// <summary>
-        /// The width of the border
-        /// </summary>
-        public ExcelVmlMeasurementUnit Width
+    }
+    /// <summary>
+    /// Dash style for the border 
+    /// </summary>
+    public eVmlDashStyle DashStyle 
+    { 
+        get
         {
-            get { return this._width ??= new ExcelVmlMeasurementUnit(this.GetXmlNodeString("@strokeweight")); }
+            return this.CustomDashStyle.ToEnum(eVmlDashStyle.Custom);
         }
+        set
+        {
+            this.CustomDashStyle = value.ToEnumString();
+        }
+    }
+    /// <summary>
+    /// Custom dash style.
+    /// A series on numbers representing the width followed by the space between.        
+    /// Example 1 : 8 2 1 2 1 2 --> Long dash dot dot. Space is twice the line width (2). LongDash (8) Dot (1). 
+    /// Example 2 : 0 2 --> 0 implies a circular dot. 2 is the space between.
+    /// </summary>
+    public string CustomDashStyle
+    {
+        get
+        {
+            return this.GetXmlNodeString("v:stroke/@dashstyle");
+        }
+        set
+        {
+            this.SetXmlNodeString("v:stroke/@dashstyle", value);
+        }
+    }
+    ExcelVmlMeasurementUnit _width = null;
+    /// <summary>
+    /// The width of the border
+    /// </summary>
+    public ExcelVmlMeasurementUnit Width
+    {
+        get { return this._width ??= new ExcelVmlMeasurementUnit(this.GetXmlNodeString("@strokeweight")); }
+    }
 
-        internal void UpdateXml()
+    internal void UpdateXml()
+    {
+        if (this._width != null)
         {
-            if (this._width != null)
+            if (this.Width.Value == 0)
             {
-                if (this.Width.Value == 0)
+                this.DeleteNode("@strokeweight");
+            }
+            else
+            {
+                if (this.LineStyle == eVmlLineStyle.NoLine)
                 {
-                    this.DeleteNode("@strokeweight");
+                    this.LineStyle = eVmlLineStyle.Single;
                 }
-                else
-                {
-                    if (this.LineStyle == eVmlLineStyle.NoLine)
-                    {
-                        this.LineStyle = eVmlLineStyle.Single;
-                    }
 
-                    this.SetXmlNodeString("@strokeweight", this._width.GetValueString());
-                }
+                this.SetXmlNodeString("@strokeweight", this._width.GetValueString());
             }
         }
     }

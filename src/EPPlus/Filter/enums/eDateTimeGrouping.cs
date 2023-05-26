@@ -10,36 +10,35 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
-namespace OfficeOpenXml.Filter
+namespace OfficeOpenXml.Filter;
+
+/// <summary>
+/// Date grouping for a filter
+/// </summary>
+public enum eDateTimeGrouping
 {
     /// <summary>
-    /// Date grouping for a filter
+    /// Group by day
     /// </summary>
-    public enum eDateTimeGrouping
-    {
-        /// <summary>
-        /// Group by day
-        /// </summary>
-        Day,
-        /// <summary>
-        /// Group by hour
-        /// </summary>
-        Hour,
-        /// <summary>
-        /// Group by minute
-        /// </summary>
-        Minute,
-        /// <summary>
-        /// Group by month
-        /// </summary>
-        Month,
-        /// <summary>
-        /// Group by second
-        /// </summary>
-        Second,
-        /// <summary>
-        /// Group by year
-        /// </summary>
-        Year
-    }
+    Day,
+    /// <summary>
+    /// Group by hour
+    /// </summary>
+    Hour,
+    /// <summary>
+    /// Group by minute
+    /// </summary>
+    Minute,
+    /// <summary>
+    /// Group by month
+    /// </summary>
+    Month,
+    /// <summary>
+    /// Group by second
+    /// </summary>
+    Second,
+    /// <summary>
+    /// Group by year
+    /// </summary>
+    Year
 }

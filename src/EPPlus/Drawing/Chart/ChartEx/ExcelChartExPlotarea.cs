@@ -15,33 +15,32 @@ using System.Collections.Generic;
 using System.Text;
 using System.Xml;
 
-namespace OfficeOpenXml.Drawing.Chart.ChartEx
+namespace OfficeOpenXml.Drawing.Chart.ChartEx;
+
+/// <summary>
+/// A plotarea for an extended chart
+/// </summary>
+public sealed class ExcelChartExPlotarea : ExcelChartPlotArea
 {
-    /// <summary>
-    /// A plotarea for an extended chart
-    /// </summary>
-    public sealed class ExcelChartExPlotarea : ExcelChartPlotArea
+    internal ExcelChartExPlotarea(XmlNamespaceManager ns, XmlNode node, ExcelChart chart) : base(ns, node, chart, "cx")
     {
-        internal ExcelChartExPlotarea(XmlNamespaceManager ns, XmlNode node, ExcelChart chart) : base(ns, node, chart, "cx")
-        {
-            this.SchemaNodeOrder = new string[] { "plotAreaRegion","axis","spPr" };
-        }
-        /// <summary>
-        /// Not applicable on extended charts. Will throw <see cref="InvalidOperationException"/>
-        /// </summary>
-        /// <exception cref="InvalidOperationException">Will always be thrown</exception>
-        /// <returns></returns>
-        public override ExcelChartDataTable CreateDataTable()
-        {
-            throw new InvalidOperationException("Extensions charts cannot have a data tables");
-        }
-        /// <summary>
-        /// Not applicable on extended charts. Will throw <see cref="InvalidOperationException"/>
-        /// </summary>
-        /// <exception cref="InvalidOperationException">Will always be thrown</exception>
-        public override void RemoveDataTable()
-        {
-            throw (new InvalidOperationException("Extensions charts cannot have a data tables"));
-        }
+        this.SchemaNodeOrder = new string[] { "plotAreaRegion","axis","spPr" };
+    }
+    /// <summary>
+    /// Not applicable on extended charts. Will throw <see cref="InvalidOperationException"/>
+    /// </summary>
+    /// <exception cref="InvalidOperationException">Will always be thrown</exception>
+    /// <returns></returns>
+    public override ExcelChartDataTable CreateDataTable()
+    {
+        throw new InvalidOperationException("Extensions charts cannot have a data tables");
+    }
+    /// <summary>
+    /// Not applicable on extended charts. Will throw <see cref="InvalidOperationException"/>
+    /// </summary>
+    /// <exception cref="InvalidOperationException">Will always be thrown</exception>
+    public override void RemoveDataTable()
+    {
+        throw (new InvalidOperationException("Extensions charts cannot have a data tables"));
     }
 }

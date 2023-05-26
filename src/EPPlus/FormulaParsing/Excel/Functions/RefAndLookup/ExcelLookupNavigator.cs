@@ -17,103 +17,102 @@ using System.Text;
 using OfficeOpenXml.FormulaParsing.Utilities;
 using OfficeOpenXml.FormulaParsing.ExcelUtilities;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions.RefAndLookup
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions.RefAndLookup;
+
+internal class ExcelLookupNavigator : LookupNavigator
 {
-    internal class ExcelLookupNavigator : LookupNavigator
+    private int _currentRow;
+    private int _currentCol;
+    private object _currentValue;
+    private RangeAddress _rangeAddress;
+    private int _index;
+
+    public ExcelLookupNavigator(LookupDirection direction, LookupArguments arguments, ParsingContext parsingContext)
+        : base(direction, arguments, parsingContext)
     {
-        private int _currentRow;
-        private int _currentCol;
-        private object _currentValue;
-        private RangeAddress _rangeAddress;
-        private int _index;
+        this.Initialize();
+    }
 
-        public ExcelLookupNavigator(LookupDirection direction, LookupArguments arguments, ParsingContext parsingContext)
-            : base(direction, arguments, parsingContext)
+    private void Initialize()
+    {
+        this._index = 0;
+        RangeAddressFactory? factory = new RangeAddressFactory(this.ParsingContext.ExcelDataProvider);
+        if (this.Arguments.RangeInfo == null)
         {
-            this.Initialize();
+            this._rangeAddress = factory.Create(this.ParsingContext.Scopes.Current.Address.Worksheet, this.Arguments.RangeAddress);
+        }
+        else
+        {
+            this._rangeAddress = factory.Create(this.Arguments.RangeInfo.Address.WorkSheetName, this.Arguments.RangeInfo.Address.Address);
         }
 
-        private void Initialize()
-        {
-            this._index = 0;
-            RangeAddressFactory? factory = new RangeAddressFactory(this.ParsingContext.ExcelDataProvider);
-            if (this.Arguments.RangeInfo == null)
-            {
-                this._rangeAddress = factory.Create(this.ParsingContext.Scopes.Current.Address.Worksheet, this.Arguments.RangeAddress);
-            }
-            else
-            {
-                this._rangeAddress = factory.Create(this.Arguments.RangeInfo.Address.WorkSheetName, this.Arguments.RangeInfo.Address.Address);
-            }
+        this._currentCol = this._rangeAddress.FromCol;
+        this._currentRow = this._rangeAddress.FromRow;
+        this.SetCurrentValue();
+    }
 
-            this._currentCol = this._rangeAddress.FromCol;
-            this._currentRow = this._rangeAddress.FromRow;
-            this.SetCurrentValue();
+    private void SetCurrentValue()
+    {
+        this._currentValue = this.ParsingContext.ExcelDataProvider.GetCellValue(this._rangeAddress.Worksheet, this._currentRow, this._currentCol);
+    }
+
+    private bool HasNext()
+    {
+        if (this.Direction == LookupDirection.Vertical)
+        {
+            return this._currentRow < this._rangeAddress.ToRow;
+        }
+        else
+        {
+            return this._currentCol < this._rangeAddress.ToCol;
+        }
+    }
+
+    public override int Index
+    {
+        get { return this._index; }
+    }
+
+    public override bool MoveNext()
+    {
+        if (!this.HasNext())
+        {
+            return false;
         }
 
-        private void SetCurrentValue()
+        if (this.Direction == LookupDirection.Vertical)
         {
-            this._currentValue = this.ParsingContext.ExcelDataProvider.GetCellValue(this._rangeAddress.Worksheet, this._currentRow, this._currentCol);
+            this._currentRow++;
+        }
+        else
+        {
+            this._currentCol++;
         }
 
-        private bool HasNext()
+        this._index++;
+        this.SetCurrentValue();
+        return true;
+    }
+
+    public override object CurrentValue
+    {
+        get { return this._currentValue; }
+    }
+
+    public override object GetLookupValue()
+    {
+        int row = this._currentRow;
+        int col = this._currentCol;
+        if (this.Direction == LookupDirection.Vertical)
         {
-            if (this.Direction == LookupDirection.Vertical)
-            {
-                return this._currentRow < this._rangeAddress.ToRow;
-            }
-            else
-            {
-                return this._currentCol < this._rangeAddress.ToCol;
-            }
+            col += this.Arguments.LookupIndex - 1;
+            row += this.Arguments.LookupOffset;
         }
-
-        public override int Index
+        else
         {
-            get { return this._index; }
+            row += this.Arguments.LookupIndex - 1;
+            col += this.Arguments.LookupOffset;
         }
-
-        public override bool MoveNext()
-        {
-            if (!this.HasNext())
-            {
-                return false;
-            }
-
-            if (this.Direction == LookupDirection.Vertical)
-            {
-                this._currentRow++;
-            }
-            else
-            {
-                this._currentCol++;
-            }
-
-            this._index++;
-            this.SetCurrentValue();
-            return true;
-        }
-
-        public override object CurrentValue
-        {
-            get { return this._currentValue; }
-        }
-
-        public override object GetLookupValue()
-        {
-            int row = this._currentRow;
-            int col = this._currentCol;
-            if (this.Direction == LookupDirection.Vertical)
-            {
-                col += this.Arguments.LookupIndex - 1;
-                row += this.Arguments.LookupOffset;
-            }
-            else
-            {
-                row += this.Arguments.LookupIndex - 1;
-                col += this.Arguments.LookupOffset;
-            }
-            return this.ParsingContext.ExcelDataProvider.GetCellValue(this._rangeAddress.Worksheet, row, col); 
-        }
+        return this.ParsingContext.ExcelDataProvider.GetCellValue(this._rangeAddress.Worksheet, row, col); 
     }
 }

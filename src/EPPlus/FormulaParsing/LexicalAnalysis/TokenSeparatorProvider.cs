@@ -16,91 +16,90 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 
-namespace OfficeOpenXml.FormulaParsing.LexicalAnalysis
+namespace OfficeOpenXml.FormulaParsing.LexicalAnalysis;
+
+public class TokenSeparatorProvider : ITokenSeparatorProvider
 {
-    public class TokenSeparatorProvider : ITokenSeparatorProvider
+    private static readonly Dictionary<string, Token> _tokens;
+
+    static TokenSeparatorProvider()
     {
-       private static readonly Dictionary<string, Token> _tokens;
-
-        static TokenSeparatorProvider()
-        {
-            _tokens = new Dictionary<string, Token>();
-            _tokens.Add("+", new Token("+", TokenType.Operator));
-            _tokens.Add("-", new Token("-", TokenType.Operator));
-            _tokens.Add("*", new Token("*", TokenType.Operator));
-            _tokens.Add("/", new Token("/", TokenType.Operator));
-            _tokens.Add("^", new Token("^", TokenType.Operator));
-            _tokens.Add("&", new Token("&", TokenType.Operator));
-            _tokens.Add(">", new Token(">", TokenType.Operator));
-            _tokens.Add("<", new Token("<", TokenType.Operator));
-            _tokens.Add("=", new Token("=", TokenType.Operator));
-            _tokens.Add("<=", new Token("<=", TokenType.Operator));
-            _tokens.Add(">=", new Token(">=", TokenType.Operator));
-            _tokens.Add("<>", new Token("<>", TokenType.Operator));
-            _tokens.Add("(", new Token("(", TokenType.OpeningParenthesis));
-            _tokens.Add(")", new Token(")", TokenType.ClosingParenthesis));
-            _tokens.Add("{", new Token("{", TokenType.OpeningEnumerable));
-            _tokens.Add("}", new Token("}", TokenType.ClosingEnumerable));
-            _tokens.Add("'", new Token("'", TokenType.WorksheetName));
-            _tokens.Add("\"", new Token("\"", TokenType.String));
-            _tokens.Add(",", new Token(",", TokenType.Comma));
-            _tokens.Add(";", new Token(";", TokenType.SemiColon));
-            _tokens.Add("[", new Token("[", TokenType.OpeningBracket));
-            _tokens.Add("]", new Token("]", TokenType.ClosingBracket));
-            _tokens.Add("%", new Token("%", TokenType.Percent));
-            _tokens.Add(":", new Token(":", TokenType.Colon));
-        }
-
-        IDictionary<string, Token> ITokenSeparatorProvider.Tokens
-        {
-            get { return _tokens; }
-        }
-
-        /// <summary>
-        /// Returns true if the item is an operator, otherwise false.
-        /// </summary>
-        /// <param name="item"></param>
-        /// <returns></returns>
-        public bool IsOperator(string item)
-        {
-            if (_tokens.TryGetValue(item, out Token token))
-            {
-                if (token.TokenTypeIsSet(TokenType.Operator))
-                {
-                    return true;
-                }
-            }
-            return false;
-        }
-
-        /// <summary>
-        /// Returns true if the <paramref name="part"/> could be part of a multichar operator, such as != or &lt;&gt;
-        /// </summary>
-        /// <param name="part"></param>
-        /// <returns></returns>
-        public bool IsPossibleLastPartOfMultipleCharOperator(string part)
-        {
-            return part == "=" || part == ">";
-        }
-
-        /// <summary>
-        /// Returns a separator <see cref="Token"/> by its string representation.
-        /// </summary>
-        /// <param name="candidate">The separator candidate</param>
-        /// <returns>A <see cref="Token"/> instance or null/default(Token?)</returns>
-        public Token? GetToken(string candidate)
-        {
-            if (_tokens.ContainsKey(candidate))
-            {
-                return _tokens[candidate];
-            }
-
-            return default(Token?);
-        }
-
-        /// <summary>
-        /// Instance of the <see cref="ITokenSeparatorProvider"/>
-        /// </summary>
-        public static ITokenSeparatorProvider Instance { get; } = new TokenSeparatorProvider();
+        _tokens = new Dictionary<string, Token>();
+        _tokens.Add("+", new Token("+", TokenType.Operator));
+        _tokens.Add("-", new Token("-", TokenType.Operator));
+        _tokens.Add("*", new Token("*", TokenType.Operator));
+        _tokens.Add("/", new Token("/", TokenType.Operator));
+        _tokens.Add("^", new Token("^", TokenType.Operator));
+        _tokens.Add("&", new Token("&", TokenType.Operator));
+        _tokens.Add(">", new Token(">", TokenType.Operator));
+        _tokens.Add("<", new Token("<", TokenType.Operator));
+        _tokens.Add("=", new Token("=", TokenType.Operator));
+        _tokens.Add("<=", new Token("<=", TokenType.Operator));
+        _tokens.Add(">=", new Token(">=", TokenType.Operator));
+        _tokens.Add("<>", new Token("<>", TokenType.Operator));
+        _tokens.Add("(", new Token("(", TokenType.OpeningParenthesis));
+        _tokens.Add(")", new Token(")", TokenType.ClosingParenthesis));
+        _tokens.Add("{", new Token("{", TokenType.OpeningEnumerable));
+        _tokens.Add("}", new Token("}", TokenType.ClosingEnumerable));
+        _tokens.Add("'", new Token("'", TokenType.WorksheetName));
+        _tokens.Add("\"", new Token("\"", TokenType.String));
+        _tokens.Add(",", new Token(",", TokenType.Comma));
+        _tokens.Add(";", new Token(";", TokenType.SemiColon));
+        _tokens.Add("[", new Token("[", TokenType.OpeningBracket));
+        _tokens.Add("]", new Token("]", TokenType.ClosingBracket));
+        _tokens.Add("%", new Token("%", TokenType.Percent));
+        _tokens.Add(":", new Token(":", TokenType.Colon));
     }
+
+    IDictionary<string, Token> ITokenSeparatorProvider.Tokens
+    {
+        get { return _tokens; }
+    }
+
+    /// <summary>
+    /// Returns true if the item is an operator, otherwise false.
+    /// </summary>
+    /// <param name="item"></param>
+    /// <returns></returns>
+    public bool IsOperator(string item)
+    {
+        if (_tokens.TryGetValue(item, out Token token))
+        {
+            if (token.TokenTypeIsSet(TokenType.Operator))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /// <summary>
+    /// Returns true if the <paramref name="part"/> could be part of a multichar operator, such as != or &lt;&gt;
+    /// </summary>
+    /// <param name="part"></param>
+    /// <returns></returns>
+    public bool IsPossibleLastPartOfMultipleCharOperator(string part)
+    {
+        return part == "=" || part == ">";
+    }
+
+    /// <summary>
+    /// Returns a separator <see cref="Token"/> by its string representation.
+    /// </summary>
+    /// <param name="candidate">The separator candidate</param>
+    /// <returns>A <see cref="Token"/> instance or null/default(Token?)</returns>
+    public Token? GetToken(string candidate)
+    {
+        if (_tokens.ContainsKey(candidate))
+        {
+            return _tokens[candidate];
+        }
+
+        return default(Token?);
+    }
+
+    /// <summary>
+    /// Instance of the <see cref="ITokenSeparatorProvider"/>
+    /// </summary>
+    public static ITokenSeparatorProvider Instance { get; } = new TokenSeparatorProvider();
 }

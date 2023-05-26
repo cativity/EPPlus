@@ -17,124 +17,123 @@ using System.Text;
 using System.IO;
 using System.Xml;
 using OfficeOpenXml.Packaging.Ionic.Zlib;
-namespace OfficeOpenXml.Packaging
+namespace OfficeOpenXml.Packaging;
+
+/// <summary>
+/// Baseclass for a relation ship between two parts in a package
+/// </summary>
+public abstract class ZipPackagePartBase
 {
     /// <summary>
-    /// Baseclass for a relation ship between two parts in a package
+    /// Relationships collection
     /// </summary>
-    public abstract class ZipPackagePartBase
+    protected internal ZipPackageRelationshipCollection _rels = new ZipPackageRelationshipCollection();        
+    int maxRId = 1;
+    internal void DeleteRelationship(string id)
     {
-        /// <summary>
-        /// Relationships collection
-        /// </summary>
-        protected internal ZipPackageRelationshipCollection _rels = new ZipPackageRelationshipCollection();        
-        int maxRId = 1;
-        internal void DeleteRelationship(string id)
+        this._rels.Remove(id);
+        UpdateMaxRId(id, ref this.maxRId);
+    }
+    /// <summary>
+    /// Updates the maximum id for the relationship
+    /// </summary>
+    /// <param name="id">The Id</param>
+    /// <param name="maxRId">Return the maximum relation id</param>
+    protected internal static void UpdateMaxRId(string id, ref int maxRId)
+    {
+        if (id.StartsWith("rId"))
         {
-            this._rels.Remove(id);
-            UpdateMaxRId(id, ref this.maxRId);
-        }
-        /// <summary>
-        /// Updates the maximum id for the relationship
-        /// </summary>
-        /// <param name="id">The Id</param>
-        /// <param name="maxRId">Return the maximum relation id</param>
-        protected internal static void UpdateMaxRId(string id, ref int maxRId)
-        {
-            if (id.StartsWith("rId"))
+            if (int.TryParse(id.Substring(3), out int num))
             {
-                if (int.TryParse(id.Substring(3), out int num))
+                if (num == maxRId - 1)
                 {
-                    if (num == maxRId - 1)
-                    {
-                        maxRId--;
-                    }
+                    maxRId--;
                 }
             }
         }
-        internal virtual ZipPackageRelationship CreateRelationship(Uri targetUri, TargetMode targetMode, string relationshipType)
-        {
-            ZipPackageRelationship? rel = new ZipPackageRelationship();
-            rel.TargetUri = targetUri;
-            rel.TargetMode = targetMode;
-            rel.RelationshipType = relationshipType;
-            rel.Id = "rId" + (this.maxRId++).ToString();
-            this._rels.Add(rel);
-            return rel;
-        }
-        internal virtual ZipPackageRelationship CreateRelationship(string target, TargetMode targetMode, string relationshipType)
-        {
-            ZipPackageRelationship? rel = new ZipPackageRelationship();
-            rel.Target = target;
-            rel.TargetMode = targetMode;
-            rel.RelationshipType = relationshipType;
-            rel.Id = "rId" + (this.maxRId++).ToString();
-            this._rels.Add(rel);
-            return rel;
-        }
+    }
+    internal virtual ZipPackageRelationship CreateRelationship(Uri targetUri, TargetMode targetMode, string relationshipType)
+    {
+        ZipPackageRelationship? rel = new ZipPackageRelationship();
+        rel.TargetUri = targetUri;
+        rel.TargetMode = targetMode;
+        rel.RelationshipType = relationshipType;
+        rel.Id = "rId" + (this.maxRId++).ToString();
+        this._rels.Add(rel);
+        return rel;
+    }
+    internal virtual ZipPackageRelationship CreateRelationship(string target, TargetMode targetMode, string relationshipType)
+    {
+        ZipPackageRelationship? rel = new ZipPackageRelationship();
+        rel.Target = target;
+        rel.TargetMode = targetMode;
+        rel.RelationshipType = relationshipType;
+        rel.Id = "rId" + (this.maxRId++).ToString();
+        this._rels.Add(rel);
+        return rel;
+    }
 
-        internal bool RelationshipExists(string id)
-        {
-            return this._rels.ContainsKey(id);
-        }
-        internal ZipPackageRelationshipCollection GetRelationshipsByType(string schema)
-        {
-            return this._rels.GetRelationshipsByType(schema);
-        }
-        internal ZipPackageRelationshipCollection GetRelationships()
-        {
-            return this._rels;
-        }
-        internal ZipPackageRelationship GetRelationship(string id)
-        {
-            return this._rels[id];
-        }
-        internal void ReadRelation(string xml, string source)
-        {
-            XmlDocument? doc = new XmlDocument();
-            XmlHelper.LoadXmlSafe(doc, xml, Encoding.UTF8);
+    internal bool RelationshipExists(string id)
+    {
+        return this._rels.ContainsKey(id);
+    }
+    internal ZipPackageRelationshipCollection GetRelationshipsByType(string schema)
+    {
+        return this._rels.GetRelationshipsByType(schema);
+    }
+    internal ZipPackageRelationshipCollection GetRelationships()
+    {
+        return this._rels;
+    }
+    internal ZipPackageRelationship GetRelationship(string id)
+    {
+        return this._rels[id];
+    }
+    internal void ReadRelation(string xml, string source)
+    {
+        XmlDocument? doc = new XmlDocument();
+        XmlHelper.LoadXmlSafe(doc, xml, Encoding.UTF8);
 
-            foreach (XmlElement c in doc.DocumentElement.ChildNodes)
+        foreach (XmlElement c in doc.DocumentElement.ChildNodes)
+        {
+            string? target = c.GetAttribute("Target");
+            ZipPackageRelationship? rel = new ZipPackageRelationship();
+            rel.Id = c.GetAttribute("Id");
+            rel.RelationshipType = c.GetAttribute("Type");
+            rel.TargetMode = c.GetAttribute("TargetMode").Equals("external",StringComparison.OrdinalIgnoreCase) ? TargetMode.External : TargetMode.Internal;
+            if(target.StartsWith("#"))
             {
-                string? target = c.GetAttribute("Target");
-                ZipPackageRelationship? rel = new ZipPackageRelationship();
-                rel.Id = c.GetAttribute("Id");
-                rel.RelationshipType = c.GetAttribute("Type");
-                rel.TargetMode = c.GetAttribute("TargetMode").Equals("external",StringComparison.OrdinalIgnoreCase) ? TargetMode.External : TargetMode.Internal;
-                if(target.StartsWith("#"))
+                rel.Target = c.GetAttribute("Target");
+            }
+            else
+            {                    
+                try
                 {
+                    rel.TargetUri = new Uri(c.GetAttribute("Target"), UriKind.RelativeOrAbsolute);
+                }
+                catch
+                {
+                    //The URI is not a valid URI. Encode it to make i valid.
+                    rel.TargetUri = new Uri("Invalid:URI "+ Uri.EscapeDataString(c.GetAttribute("Target")), UriKind.RelativeOrAbsolute);
                     rel.Target = c.GetAttribute("Target");
                 }
-                else
-                {                    
-                    try
-                    {
-                        rel.TargetUri = new Uri(c.GetAttribute("Target"), UriKind.RelativeOrAbsolute);
-                    }
-                    catch
-                    {
-                        //The URI is not a valid URI. Encode it to make i valid.
-                        rel.TargetUri = new Uri("Invalid:URI "+ Uri.EscapeDataString(c.GetAttribute("Target")), UriKind.RelativeOrAbsolute);
-                        rel.Target = c.GetAttribute("Target");
-                    }
-                }
-                if (!string.IsNullOrEmpty(source))
-                {
-                    rel.SourceUri = new Uri(source, UriKind.Relative);
-                }
-                if (rel.Id.StartsWith("rid", StringComparison.OrdinalIgnoreCase))
-                {
-                    if (int.TryParse(rel.Id.Substring(3), out int id))
-                    {
-                        if (id >= this.maxRId && id < int.MaxValue - 10000) //Not likly to have this high id's but make sure we have space to avoid overflow.
-                        {
-                            this.maxRId = id + 1;
-                        }
-                    }
-                }
-
-                this._rels.Add(rel);
             }
+            if (!string.IsNullOrEmpty(source))
+            {
+                rel.SourceUri = new Uri(source, UriKind.Relative);
+            }
+            if (rel.Id.StartsWith("rid", StringComparison.OrdinalIgnoreCase))
+            {
+                if (int.TryParse(rel.Id.Substring(3), out int id))
+                {
+                    if (id >= this.maxRId && id < int.MaxValue - 10000) //Not likly to have this high id's but make sure we have space to avoid overflow.
+                    {
+                        this.maxRId = id + 1;
+                    }
+                }
+            }
+
+            this._rels.Add(rel);
         }
     }
 }

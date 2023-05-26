@@ -31,162 +31,161 @@ using System.Globalization;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OfficeOpenXml.DataValidation;
 
-namespace EPPlusTest.DataValidation
+namespace EPPlusTest.DataValidation;
+
+[TestClass]
+public class ExcelTimeTests
 {
-    [TestClass]
-    public class ExcelTimeTests
+    private ExcelTime _time;
+    private readonly decimal SecondsPerHour = 3600;
+    // private readonly decimal HoursPerDay = 24;
+    private readonly decimal SecondsPerDay = 3600 * 24;
+
+    private static decimal Round(decimal value)
     {
-        private ExcelTime _time;
-        private readonly decimal SecondsPerHour = 3600;
-       // private readonly decimal HoursPerDay = 24;
-        private readonly decimal SecondsPerDay = 3600 * 24;
+        return Math.Round(value, ExcelTime.NumberOfDecimals);
+    }
 
-        private static decimal Round(decimal value)
-        {
-            return Math.Round(value, ExcelTime.NumberOfDecimals);
-        }
+    [TestInitialize]
+    public void Setup()
+    {
+        this._time = new ExcelTime();
+    }
 
-        [TestInitialize]
-        public void Setup()
-        {
-            this._time = new ExcelTime();
-        }
+    [TestCleanup]
+    public void Cleanup()
+    {
+        this._time = null;
+    }
 
-        [TestCleanup]
-        public void Cleanup()
-        {
-            this._time = null;
-        }
+    [TestMethod, ExpectedException(typeof(ArgumentException))]
+    public void ExcelTimeTests_ConstructorWithValue_ShouldThrowIfValueIsLessThan0()
+    {
+        new ExcelTime(-1);
+    }
 
-        [TestMethod, ExpectedException(typeof(ArgumentException))]
-        public void ExcelTimeTests_ConstructorWithValue_ShouldThrowIfValueIsLessThan0()
-        {
-            new ExcelTime(-1);
-        }
+    [TestMethod, ExpectedException(typeof(ArgumentException))]
+    public void ExcelTimeTests_ConstructorWithValue_ShouldThrowIfValueIsEqualToOrGreaterThan1()
+    {
+        new ExcelTime(1);
+    }
 
-        [TestMethod, ExpectedException(typeof(ArgumentException))]
-        public void ExcelTimeTests_ConstructorWithValue_ShouldThrowIfValueIsEqualToOrGreaterThan1()
-        {
-            new ExcelTime(1);
-        }
+    [TestMethod, ExpectedException(typeof(InvalidOperationException))]
+    public void ExcelTimeTests_Hour_ShouldThrowIfNegativeValue()
+    {
+        this._time.Hour = -1;
+    }
 
-        [TestMethod, ExpectedException(typeof(InvalidOperationException))]
-        public void ExcelTimeTests_Hour_ShouldThrowIfNegativeValue()
-        {
-            this._time.Hour = -1;
-        }
+    [TestMethod, ExpectedException(typeof(InvalidOperationException))]
+    public void ExcelTimeTests_Minute_ShouldThrowIfNegativeValue()
+    {
+        this._time.Minute = -1;
+    }
 
-        [TestMethod, ExpectedException(typeof(InvalidOperationException))]
-        public void ExcelTimeTests_Minute_ShouldThrowIfNegativeValue()
-        {
-            this._time.Minute = -1;
-        }
+    [TestMethod, ExpectedException(typeof(InvalidOperationException))]
+    public void ExcelTimeTests_Minute_ShouldThrowIValueIsGreaterThan59()
+    {
+        this._time.Minute = 60;
+    }
 
-        [TestMethod, ExpectedException(typeof(InvalidOperationException))]
-        public void ExcelTimeTests_Minute_ShouldThrowIValueIsGreaterThan59()
-        {
-            this._time.Minute = 60;
-        }
+    [TestMethod, ExpectedException(typeof(InvalidOperationException))]
+    public void ExcelTimeTests_Second_ShouldThrowIfNegativeValue()
+    {
+        this._time.Second = -1;
+    }
 
-        [TestMethod, ExpectedException(typeof(InvalidOperationException))]
-        public void ExcelTimeTests_Second_ShouldThrowIfNegativeValue()
-        {
-            this._time.Second = -1;
-        }
+    [TestMethod, ExpectedException(typeof(InvalidOperationException))]
+    public void ExcelTimeTests_Second_ShouldThrowIValueIsGreaterThan59()
+    {
+        this._time.Second = 60;
+    }
 
-        [TestMethod, ExpectedException(typeof(InvalidOperationException))]
-        public void ExcelTimeTests_Second_ShouldThrowIValueIsGreaterThan59()
-        {
-            this._time.Second = 60;
-        }
-
-        [TestMethod]
-        public void ExcelTimeTests_ToExcelTime_HourIsSet()
-        {
-            // Act
-            this._time.Hour = 1;
+    [TestMethod]
+    public void ExcelTimeTests_ToExcelTime_HourIsSet()
+    {
+        // Act
+        this._time.Hour = 1;
             
-            // Assert
-            Assert.AreEqual(Round(this.SecondsPerHour/ this.SecondsPerDay), this._time.ToExcelTime());
-        }
+        // Assert
+        Assert.AreEqual(Round(this.SecondsPerHour/ this.SecondsPerDay), this._time.ToExcelTime());
+    }
 
-        [TestMethod]
-        public void ExcelTimeTests_ToExcelTime_MinuteIsSet()
-        {
-            // Arrange
-            decimal expected = this.SecondsPerHour + (20M * 60M);
-            // Act
-            this._time.Hour = 1;
-            this._time.Minute = 20;
+    [TestMethod]
+    public void ExcelTimeTests_ToExcelTime_MinuteIsSet()
+    {
+        // Arrange
+        decimal expected = this.SecondsPerHour + (20M * 60M);
+        // Act
+        this._time.Hour = 1;
+        this._time.Minute = 20;
 
-            // Assert
-            Assert.AreEqual(Round(expected/ this.SecondsPerDay), this._time.ToExcelTime());
-        }
+        // Assert
+        Assert.AreEqual(Round(expected/ this.SecondsPerDay), this._time.ToExcelTime());
+    }
 
-        [TestMethod]
-        public void ExcelTimeTests_ToExcelTime_SecondIsSet()
-        {
-            // Arrange
-            decimal expected = this.SecondsPerHour + (20M * 60M) + 10M;
-            // Act
-            this._time.Hour = 1;
-            this._time.Minute = 20;
-            this._time.Second = 10;
+    [TestMethod]
+    public void ExcelTimeTests_ToExcelTime_SecondIsSet()
+    {
+        // Arrange
+        decimal expected = this.SecondsPerHour + (20M * 60M) + 10M;
+        // Act
+        this._time.Hour = 1;
+        this._time.Minute = 20;
+        this._time.Second = 10;
 
-            // Assert
-            Assert.AreEqual(Round(expected / this.SecondsPerDay), this._time.ToExcelTime());
-        }
+        // Assert
+        Assert.AreEqual(Round(expected / this.SecondsPerDay), this._time.ToExcelTime());
+    }
 
-        [TestMethod]
-        public void ExcelTimeTests_ConstructorWithValue_ShouldSetHour()
-        {
-            // Arrange
-            decimal value = 3660M/(decimal)this.SecondsPerDay;
+    [TestMethod]
+    public void ExcelTimeTests_ConstructorWithValue_ShouldSetHour()
+    {
+        // Arrange
+        decimal value = 3660M/(decimal)this.SecondsPerDay;
 
-            // Act
-            ExcelTime? time = new ExcelTime(value);
+        // Act
+        ExcelTime? time = new ExcelTime(value);
 
-            // Assert
-            Assert.AreEqual(1, time.Hour);
-        }
+        // Assert
+        Assert.AreEqual(1, time.Hour);
+    }
 
-        [TestMethod]
-        public void ExcelTimeTests_ConstructorWithValue_ShouldSetMinute()
-        {
-            // Arrange
-            decimal value = 3660M / (decimal)this.SecondsPerDay;
+    [TestMethod]
+    public void ExcelTimeTests_ConstructorWithValue_ShouldSetMinute()
+    {
+        // Arrange
+        decimal value = 3660M / (decimal)this.SecondsPerDay;
 
-            // Act
-            ExcelTime? time = new ExcelTime(value);
+        // Act
+        ExcelTime? time = new ExcelTime(value);
 
-            // Assert
-            Assert.AreEqual(1, time.Minute);
-        }
+        // Assert
+        Assert.AreEqual(1, time.Minute);
+    }
 
-        [TestMethod]
-        public void ExcelTimeTests_ConstructorWithValue_ShouldSetSecond()
-        {
-            // Arrange
-            decimal value = 3662M / (decimal)this.SecondsPerDay;
+    [TestMethod]
+    public void ExcelTimeTests_ConstructorWithValue_ShouldSetSecond()
+    {
+        // Arrange
+        decimal value = 3662M / (decimal)this.SecondsPerDay;
 
-            // Act
-            ExcelTime? time = new ExcelTime(value);
+        // Act
+        ExcelTime? time = new ExcelTime(value);
 
-            // Assert
-            Assert.AreEqual(2, time.Second);
-        }
+        // Assert
+        Assert.AreEqual(2, time.Second);
+    }
 
-        [TestMethod]
-        public void ExcelTimeTests_HourRoundingCheck()
-        {
-            decimal hour1 = decimal.Parse("0.416666666666667",CultureInfo.InvariantCulture);
-            decimal hour2 = decimal.Parse("0.458333333333333",CultureInfo.InvariantCulture);
+    [TestMethod]
+    public void ExcelTimeTests_HourRoundingCheck()
+    {
+        decimal hour1 = decimal.Parse("0.416666666666667",CultureInfo.InvariantCulture);
+        decimal hour2 = decimal.Parse("0.458333333333333",CultureInfo.InvariantCulture);
 
-            ExcelTime? time1 = new ExcelTime(hour1);
-            ExcelTime? time2 = new ExcelTime(hour2);
+        ExcelTime? time1 = new ExcelTime(hour1);
+        ExcelTime? time2 = new ExcelTime(hour2);
 
-            Assert.AreEqual(10, time1.Hour);
-            Assert.AreEqual(11, time2.Hour);
-        }
+        Assert.AreEqual(10, time1.Hour);
+        Assert.AreEqual(11, time2.Hour);
     }
 }

@@ -10,36 +10,35 @@
  *************************************************************************************************
   11/23/2020         EPPlus Software AB       EPPlus 5.5
  *************************************************************************************************/
-namespace OfficeOpenXml
+namespace OfficeOpenXml;
+
+/// <summary>
+/// The line style of a vml drawing
+/// </summary>
+public enum eVmlLineStyle
 {
     /// <summary>
-    /// The line style of a vml drawing
+    /// No line style
     /// </summary>
-    public enum eVmlLineStyle
-    {
-        /// <summary>
-        /// No line style
-        /// </summary>
-        NoLine,
-        /// <summary>
-        /// A single line
-        /// </summary>
-        Single,
-        /// <summary>
-        /// Thin thin line style
-        /// </summary>
-        ThinThin,
-        /// <summary>
-        /// Thin thick line style
-        /// </summary>
-        ThinThick,
-        /// <summary>
-        /// Thick thin line style
-        /// </summary>
-        ThickThin,
-        /// <summary>
-        /// Thick between thin line style
-        /// </summary>
-        ThickBetweenThin
-    }
+    NoLine,
+    /// <summary>
+    /// A single line
+    /// </summary>
+    Single,
+    /// <summary>
+    /// Thin thin line style
+    /// </summary>
+    ThinThin,
+    /// <summary>
+    /// Thin thick line style
+    /// </summary>
+    ThinThick,
+    /// <summary>
+    /// Thick thin line style
+    /// </summary>
+    ThickThin,
+    /// <summary>
+    /// Thick between thin line style
+    /// </summary>
+    ThickBetweenThin
 }

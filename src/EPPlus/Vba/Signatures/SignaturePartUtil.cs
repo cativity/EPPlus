@@ -15,71 +15,70 @@ using OfficeOpenXml.Utils;
 using System;
 using System.Linq;
 
-namespace OfficeOpenXml.VBA.Signatures
+namespace OfficeOpenXml.VBA.Signatures;
+
+internal static class SignaturePartUtil
 {
-    internal static class SignaturePartUtil
+    internal static ZipPackagePart GetPart(ExcelVbaProject proj, EPPlusVbaSignature signature)
     {
-        internal static ZipPackagePart GetPart(ExcelVbaProject proj, EPPlusVbaSignature signature)
+        ZipPackageRelationship? rel = (ZipPackageRelationship)proj.Part.GetRelationshipsByType(signature.SchemaRelation).FirstOrDefault();
+        ZipPackagePart? part = signature.Part;
+        Uri? uri = default(Uri);
+        if (part == null)
         {
-            ZipPackageRelationship? rel = (ZipPackageRelationship)proj.Part.GetRelationshipsByType(signature.SchemaRelation).FirstOrDefault();
-            ZipPackagePart? part = signature.Part;
-            Uri? uri = default(Uri);
-            if (part == null)
+            if (rel != null)
             {
-                if (rel != null)
-                {
-                    uri = rel.TargetUri;
-                    part = proj._pck.GetPart(rel.TargetUri);
-                }
-                else
-                {
-                    uri = GetUriByType(signature.Context.SignatureType, UriKind.Relative);
+                uri = rel.TargetUri;
+                part = proj._pck.GetPart(rel.TargetUri);
+            }
+            else
+            {
+                uri = GetUriByType(signature.Context.SignatureType, UriKind.Relative);
                     
-                    part = proj._pck.CreatePart(uri, signature.ContentType);
-                }
-            }
-            if (rel == null)
-            {
-                proj.Part.CreateRelationship(UriHelper.ResolvePartUri(proj.Uri, uri), TargetMode.Internal, signature.SchemaRelation);
-            }
-            return part;
-        }
-        internal static void DeleteParts(params ZipPackagePart[] parts)
-        {
-            foreach (ZipPackagePart? part in parts)
-            {
-                if (part != null)
-                {
-                    DeletePartAndRelations(part);
-                }
+                part = proj._pck.CreatePart(uri, signature.ContentType);
             }
         }
-
-        internal static void DeletePartAndRelations(ZipPackagePart part)
+        if (rel == null)
         {
-            if (part == null)
+            proj.Part.CreateRelationship(UriHelper.ResolvePartUri(proj.Uri, uri), TargetMode.Internal, signature.SchemaRelation);
+        }
+        return part;
+    }
+    internal static void DeleteParts(params ZipPackagePart[] parts)
+    {
+        foreach (ZipPackagePart? part in parts)
+        {
+            if (part != null)
             {
-                return;
+                DeletePartAndRelations(part);
             }
+        }
+    }
 
-            foreach (ZipPackageRelationship? r in part.GetRelationships())
-            {
-                part.DeleteRelationship(r.Id);
-            }
-            part.Package.DeletePart(part.Uri);
+    internal static void DeletePartAndRelations(ZipPackagePart part)
+    {
+        if (part == null)
+        {
+            return;
         }
 
-        private static Uri GetUriByType(ExcelVbaSignatureType signatureType, UriKind uriKind)
+        foreach (ZipPackageRelationship? r in part.GetRelationships())
         {
-            switch (signatureType)
-            {
-                case ExcelVbaSignatureType.Agile:
-                    return new Uri("/xl/vbaProjectSignatureAgile.bin", uriKind);
-                case ExcelVbaSignatureType.V3:
-                    return new Uri("/xl/vbaProjectSignatureV3.bin", uriKind);
-                default:
-                    return new Uri("/xl/vbaProjectSignature.bin", uriKind);
-            }
+            part.DeleteRelationship(r.Id);
+        }
+        part.Package.DeletePart(part.Uri);
+    }
+
+    private static Uri GetUriByType(ExcelVbaSignatureType signatureType, UriKind uriKind)
+    {
+        switch (signatureType)
+        {
+            case ExcelVbaSignatureType.Agile:
+                return new Uri("/xl/vbaProjectSignatureAgile.bin", uriKind);
+            case ExcelVbaSignatureType.V3:
+                return new Uri("/xl/vbaProjectSignatureV3.bin", uriKind);
+            default:
+                return new Uri("/xl/vbaProjectSignature.bin", uriKind);
         }
     }
 }

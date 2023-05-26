@@ -18,89 +18,88 @@ using OfficeOpenXml.FormulaParsing.ExcelUtilities;
 using OfficeOpenXml.FormulaParsing.ExpressionGraph;
 using OfficeOpenXml.FormulaParsing.Exceptions;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions.RefAndLookup
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions.RefAndLookup;
+
+internal abstract class LookupFunction : ExcelFunction
 {
-    internal abstract class LookupFunction : ExcelFunction
+    private readonly ValueMatcher _valueMatcher;
+    private readonly CompileResultFactory _compileResultFactory;
+
+    public LookupFunction()
+        : this(new LookupValueMatcher(), new CompileResultFactory())
     {
-        private readonly ValueMatcher _valueMatcher;
-        private readonly CompileResultFactory _compileResultFactory;
 
-        public LookupFunction()
-            : this(new LookupValueMatcher(), new CompileResultFactory())
+    }
+
+    public LookupFunction(ValueMatcher valueMatcher, CompileResultFactory compileResultFactory)
+    {
+        this._valueMatcher = valueMatcher;
+        this._compileResultFactory = compileResultFactory;
+    }
+
+    public override bool IsLookupFuction
+    {
+        get
         {
-
+            return true;
         }
+    }
 
-        public LookupFunction(ValueMatcher valueMatcher, CompileResultFactory compileResultFactory)
+    protected int IsMatch(object searchedValue, object candidate)
+    {
+        return this._valueMatcher.IsMatch(searchedValue, candidate);
+    }
+
+    protected static LookupDirection GetLookupDirection(RangeAddress rangeAddress)
+    {
+        int nRows = rangeAddress.ToRow - rangeAddress.FromRow;
+        int nCols = rangeAddress.ToCol - rangeAddress.FromCol;
+        return nCols > nRows ? LookupDirection.Horizontal : LookupDirection.Vertical;
+    }
+
+    protected CompileResult Lookup(LookupNavigator navigator, LookupArguments lookupArgs)
+    {
+        object lastValue = null;
+        object lastLookupValue = null;
+        int? lastMatchResult = null;
+        if (lookupArgs.SearchedValue == null)
         {
-            this._valueMatcher = valueMatcher;
-            this._compileResultFactory = compileResultFactory;
+            return new CompileResult(eErrorType.NA);
         }
-
-        public override bool IsLookupFuction
+        do
         {
-            get
+            int matchResult = this.IsMatch(lookupArgs.SearchedValue, navigator.CurrentValue);
+            if (matchResult != 0)
             {
-                return true;
-            }
-        }
-
-        protected int IsMatch(object searchedValue, object candidate)
-        {
-            return this._valueMatcher.IsMatch(searchedValue, candidate);
-        }
-
-        protected static LookupDirection GetLookupDirection(RangeAddress rangeAddress)
-        {
-            int nRows = rangeAddress.ToRow - rangeAddress.FromRow;
-            int nCols = rangeAddress.ToCol - rangeAddress.FromCol;
-            return nCols > nRows ? LookupDirection.Horizontal : LookupDirection.Vertical;
-        }
-
-        protected CompileResult Lookup(LookupNavigator navigator, LookupArguments lookupArgs)
-        {
-            object lastValue = null;
-            object lastLookupValue = null;
-            int? lastMatchResult = null;
-            if (lookupArgs.SearchedValue == null)
-            {
-                return new CompileResult(eErrorType.NA);
-            }
-            do
-            {
-                int matchResult = this.IsMatch(lookupArgs.SearchedValue, navigator.CurrentValue);
-                if (matchResult != 0)
+                if (lastValue != null && navigator.CurrentValue == null)
                 {
-                    if (lastValue != null && navigator.CurrentValue == null)
-                    {
-                        break;
-                    }
-
-                    if (!lookupArgs.RangeLookup)
-                    {
-                        continue;
-                    }
-
-                    if (lastValue == null && matchResult > 0)
-                    {
-                        return new CompileResult(eErrorType.NA);
-                    }
-                    if (lastValue != null && matchResult > 0 && lastMatchResult < 0)
-                    {
-                        return this._compileResultFactory.Create(lastLookupValue);
-                    }
-                    lastMatchResult = matchResult;
-                    lastValue = navigator.CurrentValue;
-                    lastLookupValue = navigator.GetLookupValue();
+                    break;
                 }
-                else
+
+                if (!lookupArgs.RangeLookup)
                 {
-                    return this._compileResultFactory.Create(navigator.GetLookupValue());
+                    continue;
                 }
-            }
-            while (navigator.MoveNext());
 
-            return lookupArgs.RangeLookup ? this._compileResultFactory.Create(lastLookupValue) : new CompileResult(eErrorType.NA);
+                if (lastValue == null && matchResult > 0)
+                {
+                    return new CompileResult(eErrorType.NA);
+                }
+                if (lastValue != null && matchResult > 0 && lastMatchResult < 0)
+                {
+                    return this._compileResultFactory.Create(lastLookupValue);
+                }
+                lastMatchResult = matchResult;
+                lastValue = navigator.CurrentValue;
+                lastLookupValue = navigator.GetLookupValue();
+            }
+            else
+            {
+                return this._compileResultFactory.Create(navigator.GetLookupValue());
+            }
         }
+        while (navigator.MoveNext());
+
+        return lookupArgs.RangeLookup ? this._compileResultFactory.Create(lastLookupValue) : new CompileResult(eErrorType.NA);
     }
 }

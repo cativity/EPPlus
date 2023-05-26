@@ -17,25 +17,24 @@ using System.Text;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Metadata;
 using OfficeOpenXml.FormulaParsing.ExpressionGraph;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Text
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Text;
+
+[FunctionMetadata(
+                     Category = ExcelFunctionCategory.Text,
+                     EPPlusVersion = "4",
+                     Description = "Returns a string consisting of a supplied text string, repeated a specified number of times")]
+internal class Rept : ExcelFunction
 {
-    [FunctionMetadata(
-        Category = ExcelFunctionCategory.Text,
-        EPPlusVersion = "4",
-        Description = "Returns a string consisting of a supplied text string, repeated a specified number of times")]
-    internal class Rept : ExcelFunction
+    public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
     {
-        public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
+        ValidateArguments(arguments, 2);
+        string? str = ArgToString(arguments, 0);
+        int n = this.ArgToInt(arguments, 1);
+        StringBuilder? sb = new StringBuilder();
+        for (int x = 0; x < n; x++)
         {
-            ValidateArguments(arguments, 2);
-            string? str = ArgToString(arguments, 0);
-            int n = this.ArgToInt(arguments, 1);
-            StringBuilder? sb = new StringBuilder();
-            for (int x = 0; x < n; x++)
-            {
-                sb.Append(str);
-            }
-            return this.CreateResult(sb.ToString(), DataType.String);
+            sb.Append(str);
         }
+        return this.CreateResult(sb.ToString(), DataType.String);
     }
 }

@@ -17,16 +17,15 @@ using System.Text;
 
 using OfficeOpenXml.ConditionalFormatting;
 
-namespace OfficeOpenXml.ConditionalFormatting.Contracts
-{
-  /// <summary>
-  /// IExcelConditionalFormattingNotBetween
-  /// </summary>
-  public interface IExcelConditionalFormattingNotBetween
+namespace OfficeOpenXml.ConditionalFormatting.Contracts;
+
+/// <summary>
+/// IExcelConditionalFormattingNotBetween
+/// </summary>
+public interface IExcelConditionalFormattingNotBetween
     : IExcelConditionalFormattingRule,
-    IExcelConditionalFormattingWithFormula2
-  {
+      IExcelConditionalFormattingWithFormula2
+{
     #region Public Properties
     #endregion Public Properties
-  }
 }

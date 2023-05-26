@@ -10,27 +10,26 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
-namespace OfficeOpenXml.Drawing.Style.Coloring
+namespace OfficeOpenXml.Drawing.Style.Coloring;
+
+/// <summary>
+/// A tranformation operation for a color
+/// </summary>
+internal class ExcelColorTransformSimpleItem : IColorTransformItem, ISource
 {
     /// <summary>
-    /// A tranformation operation for a color
+    /// Type of tranformation
     /// </summary>
-    internal class ExcelColorTransformSimpleItem : IColorTransformItem, ISource
-    {
-        /// <summary>
-        /// Type of tranformation
-        /// </summary>
-        public eColorTransformType Type { get; set; }
+    public eColorTransformType Type { get; set; }
 
-        /// <summary>
-        /// The datatype of the value
-        /// </summary>
-        public eColorTransformDataType DataType { get; set; }
-        /// <summary>
-        /// The value
-        /// </summary>
-        public double Value { get; set; }
+    /// <summary>
+    /// The datatype of the value
+    /// </summary>
+    public eColorTransformDataType DataType { get; set; }
+    /// <summary>
+    /// The value
+    /// </summary>
+    public double Value { get; set; }
 
-        bool ISource._fromStyleTemplate { get; set; } = false;
-    }
+    bool ISource._fromStyleTemplate { get; set; } = false;
 }

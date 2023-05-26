@@ -13,84 +13,83 @@
  *************************************************************************************************/
 using System;
 using System.Xml;
-namespace OfficeOpenXml.Style.Dxf
+namespace OfficeOpenXml.Style.Dxf;
+
+/// <summary>
+/// Differential formatting record used in conditional formatting
+/// </summary>
+public class ExcelDxfStyleConditionalFormatting : ExcelDxfStyleLimitedFont
 {
-    /// <summary>
-    /// Differential formatting record used in conditional formatting
-    /// </summary>
-    public class ExcelDxfStyleConditionalFormatting : ExcelDxfStyleLimitedFont
+    internal ExcelDxfStyleConditionalFormatting(XmlNamespaceManager nameSpaceManager, XmlNode topNode, ExcelStyles styles, Action<eStyleClass, eStyleProperty, object> callback)
+        : base(nameSpaceManager, topNode, styles, callback)
     {
-        internal ExcelDxfStyleConditionalFormatting(XmlNamespaceManager nameSpaceManager, XmlNode topNode, ExcelStyles styles, Action<eStyleClass, eStyleProperty, object> callback)
-            : base(nameSpaceManager, topNode, styles, callback)
+        this.NumberFormat = new ExcelDxfNumberFormat(this._styles, callback);
+        if (topNode != null)
         {
-            this.NumberFormat = new ExcelDxfNumberFormat(this._styles, callback);
-            if (topNode != null)
-            {
-                this.NumberFormat.SetValuesFromXml(this._helper);
-            }
-         }
-        /// <summary>
-        /// Number format settings
-        /// </summary>
-        public ExcelDxfNumberFormat NumberFormat { get; internal set; }
-        internal override string Id
-        {
-            get
-            {
-                return base.Id + this.NumberFormat.Id;
-            }
+            this.NumberFormat.SetValuesFromXml(this._helper);
         }
-        /// <summary>
-        /// If the object has any properties set
-        /// </summary>
-        public override bool HasValue
+    }
+    /// <summary>
+    /// Number format settings
+    /// </summary>
+    public ExcelDxfNumberFormat NumberFormat { get; internal set; }
+    internal override string Id
+    {
+        get
         {
-            get
-            {
-                return base.HasValue || this.NumberFormat.HasValue;
-            }
+            return base.Id + this.NumberFormat.Id;
         }
-        internal override DxfStyleBase Clone()
+    }
+    /// <summary>
+    /// If the object has any properties set
+    /// </summary>
+    public override bool HasValue
+    {
+        get
         {
-            ExcelDxfStyleConditionalFormatting? s = new ExcelDxfStyleConditionalFormatting(this._helper.NameSpaceManager, null, this._styles, this._callback)
-            {
-                Font = (ExcelDxfFontBase)this.Font.Clone(),
-                Fill = (ExcelDxfFill)this.Fill.Clone(),
-                Border = (ExcelDxfBorderBase)this.Border.Clone(),
-                NumberFormat = (ExcelDxfNumberFormat)this.NumberFormat.Clone(),
-            };
+            return base.HasValue || this.NumberFormat.HasValue;
+        }
+    }
+    internal override DxfStyleBase Clone()
+    {
+        ExcelDxfStyleConditionalFormatting? s = new ExcelDxfStyleConditionalFormatting(this._helper.NameSpaceManager, null, this._styles, this._callback)
+        {
+            Font = (ExcelDxfFontBase)this.Font.Clone(),
+            Fill = (ExcelDxfFill)this.Fill.Clone(),
+            Border = (ExcelDxfBorderBase)this.Border.Clone(),
+            NumberFormat = (ExcelDxfNumberFormat)this.NumberFormat.Clone(),
+        };
 
-            return s;
-        }
-        internal override void CreateNodes(XmlHelper helper, string path)
+        return s;
+    }
+    internal override void CreateNodes(XmlHelper helper, string path)
+    {
+        if (this.Font.HasValue)
         {
-            if (this.Font.HasValue)
-            {
-                this.Font.CreateNodes(helper, "d:font");
-            }
-
-            if (this.NumberFormat.HasValue)
-            {
-                this.NumberFormat.CreateNodes(helper, "d:numFmt");
-            }
-
-            base.CreateNodes(helper, path);
+            this.Font.CreateNodes(helper, "d:font");
         }
-        internal override void SetStyle()
+
+        if (this.NumberFormat.HasValue)
         {
-            if (this._callback != null)
-            {
-                base.SetStyle();
-                this.NumberFormat.SetStyle();
-            }
+            this.NumberFormat.CreateNodes(helper, "d:numFmt");
         }
-        /// <summary>
-        /// Clears all properties
-        /// </summary>
-        public override void Clear()
-        {            
-            base.Clear();
-            this.NumberFormat.Clear();
+
+        base.CreateNodes(helper, path);
+    }
+    internal override void SetStyle()
+    {
+        if (this._callback != null)
+        {
+            base.SetStyle();
+            this.NumberFormat.SetStyle();
         }
+    }
+    /// <summary>
+    /// Clears all properties
+    /// </summary>
+    public override void Clear()
+    {            
+        base.Clear();
+        this.NumberFormat.Clear();
     }
 }

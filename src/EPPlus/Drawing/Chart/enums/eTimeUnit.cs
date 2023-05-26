@@ -10,24 +10,23 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
-namespace OfficeOpenXml.Drawing.Chart
+namespace OfficeOpenXml.Drawing.Chart;
+
+/// <summary>
+/// The time unit of major and minor datetime axis values
+/// </summary>
+public enum eTimeUnit
 {
     /// <summary>
-    /// The time unit of major and minor datetime axis values
+    /// Years
     /// </summary>
-    public enum eTimeUnit
-    {
-        /// <summary>
-        /// Years
-        /// </summary>
-        Years,
-        /// <summary>
-        /// Months
-        /// </summary>
-        Months,
-        /// <summary>
-        /// Days
-        /// </summary>
-        Days,
-    }
+    Years,
+    /// <summary>
+    /// Months
+    /// </summary>
+    Months,
+    /// <summary>
+    /// Days
+    /// </summary>
+    Days,
 }

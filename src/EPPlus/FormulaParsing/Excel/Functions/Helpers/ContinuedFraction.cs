@@ -23,105 +23,104 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Helpers
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Helpers;
+
+internal class ContinuedFraction
 {
-    internal class ContinuedFraction
+    private const double DEFAULT_EPSILON = 10e-9;
+
+    public Func<int, double, double> GetA
     {
-        private const double DEFAULT_EPSILON = 10e-9;
+        get; set;
+    }
 
-        public Func<int, double, double> GetA
+    public Func<int, double, double> GetB
+    {
+        get; set;
+    }
+
+    private static bool PrecisionEquals(double x, double y, double eps)
+    {
+        double diff = System.Math.Abs(x * eps);
+        return System.Math.Abs(x - y) <= diff;
+    }
+
+    /// <summary>
+    /// Evaluates the continued fraction at the value x
+    /// </summary>
+    /// <param name="x"></param>
+    /// <returns></returns>
+    public double Evaluate(double x)
+    {
+        return this.Evaluate(x, DEFAULT_EPSILON, int.MaxValue);
+    }
+
+    public double Evaluate(double x, int maxIterations)
+    {
+        return this.Evaluate(x, DEFAULT_EPSILON, maxIterations);
+    }
+
+    public double Evaluate(double x, double epsilon, int maxIterations)
+    {
+        const double small = 1e-50;
+        double hPrev = this.GetA.Invoke(0, x);
+
+        // use the value of small as epsilon criteria for zero checks
+        if (PrecisionEquals(hPrev, 0.0, small))
         {
-            get; set;
+            hPrev = small;
         }
 
-        public Func<int, double, double> GetB
-        {
-            get; set;
-        }
+        int n = 1;
+        double dPrev = 0.0;
+        double cPrev = hPrev;
+        double hN = hPrev;
 
-        private static bool PrecisionEquals(double x, double y, double eps)
+        while (n < maxIterations)
         {
-            double diff = System.Math.Abs(x * eps);
-            return System.Math.Abs(x - y) <= diff;
-        }
+            double a = this.GetA.Invoke(n, x);
+            double b = this.GetB.Invoke(n, x);
 
-        /// <summary>
-        /// Evaluates the continued fraction at the value x
-        /// </summary>
-        /// <param name="x"></param>
-        /// <returns></returns>
-        public double Evaluate(double x)
-        {
-            return this.Evaluate(x, DEFAULT_EPSILON, int.MaxValue);
-        }
-
-        public double Evaluate(double x, int maxIterations)
-        {
-            return this.Evaluate(x, DEFAULT_EPSILON, maxIterations);
-        }
-
-        public double Evaluate(double x, double epsilon, int maxIterations)
-        {
-            const double small = 1e-50;
-            double hPrev = this.GetA.Invoke(0, x);
-
-            // use the value of small as epsilon criteria for zero checks
-            if (PrecisionEquals(hPrev, 0.0, small))
+            double dN = a + b * dPrev;
+            if (PrecisionEquals(dN, 0.0, small))
             {
-                hPrev = small;
+                dN = small;
+            }
+            double cN = a + b / cPrev;
+            if (PrecisionEquals(cN, 0.0, small))
+            {
+                cN = small;
             }
 
-            int n = 1;
-            double dPrev = 0.0;
-            double cPrev = hPrev;
-            double hN = hPrev;
+            dN = 1 / dN;
+            double deltaN = cN * dN;
+            hN = hPrev * deltaN;
 
-            while (n < maxIterations)
+            if (double.IsInfinity(hN))
             {
-                double a = this.GetA.Invoke(n, x);
-                double b = this.GetB.Invoke(n, x);
-
-                double dN = a + b * dPrev;
-                if (PrecisionEquals(dN, 0.0, small))
-                {
-                    dN = small;
-                }
-                double cN = a + b / cPrev;
-                if (PrecisionEquals(cN, 0.0, small))
-                {
-                    cN = small;
-                }
-
-                dN = 1 / dN;
-                double deltaN = cN * dN;
-                hN = hPrev * deltaN;
-
-                if (double.IsInfinity(hN))
-                {
-                    throw new Exception("Continued fraction infinity divergence: " + x);
-                }
-                if (double.IsNaN(hN))
-                {
-                    throw new Exception("Continued fraction NAN divergence: " + x);
-                }
-
-                if (System.Math.Abs(deltaN - 1.0) < epsilon)
-                {
-                    break;
-                }
-
-                dPrev = dN;
-                cPrev = cN;
-                hPrev = hN;
-                n++;
+                throw new Exception("Continued fraction infinity divergence: " + x);
+            }
+            if (double.IsNaN(hN))
+            {
+                throw new Exception("Continued fraction NAN divergence: " + x);
             }
 
-            if (n >= maxIterations)
+            if (System.Math.Abs(deltaN - 1.0) < epsilon)
             {
-                throw new Exception("Non convergent continued fraction: " + x);
+                break;
             }
 
-            return hN;
+            dPrev = dN;
+            cPrev = cN;
+            hPrev = hN;
+            n++;
         }
+
+        if (n >= maxIterations)
+        {
+            throw new Exception("Non convergent continued fraction: " + x);
+        }
+
+        return hN;
     }
 }

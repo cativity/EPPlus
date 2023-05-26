@@ -17,25 +17,24 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Statistical
-{
-    [FunctionMetadata(
-        Category = ExcelFunctionCategory.Statistical,
-        EPPlusVersion = "6.0",
-        Description = "Returns the Fisher transformation at x. This transformation produces a function that is normally distributed rather than skewed.")]
-    internal class Fisher : ExcelFunction
-    {
-        public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
-        {
-            ValidateArguments(arguments, 1);
-            double x = this.ArgToDecimal(arguments, 0);
-            if (x <= 0d || x >= 1d)
-            {
-                return this.CreateResult(eErrorType.Num);
-            }
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Statistical;
 
-            double result = System.Math.Log((1 + x) / (1 - x)) / 2;
-            return this.CreateResult(result, DataType.Decimal);
+[FunctionMetadata(
+                     Category = ExcelFunctionCategory.Statistical,
+                     EPPlusVersion = "6.0",
+                     Description = "Returns the Fisher transformation at x. This transformation produces a function that is normally distributed rather than skewed.")]
+internal class Fisher : ExcelFunction
+{
+    public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
+    {
+        ValidateArguments(arguments, 1);
+        double x = this.ArgToDecimal(arguments, 0);
+        if (x <= 0d || x >= 1d)
+        {
+            return this.CreateResult(eErrorType.Num);
         }
+
+        double result = System.Math.Log((1 + x) / (1 - x)) / 2;
+        return this.CreateResult(result, DataType.Decimal);
     }
 }

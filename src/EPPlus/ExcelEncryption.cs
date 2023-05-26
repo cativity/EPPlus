@@ -17,182 +17,182 @@ using System.IO;
 using System.Text;
 using OfficeOpenXml.Encryption;
 
-namespace OfficeOpenXml
+namespace OfficeOpenXml;
+
+/// <summary>
+/// Encryption Algorithm
+/// </summary>
+public enum EncryptionAlgorithm
 {
     /// <summary>
-    /// Encryption Algorithm
+    /// 128-bit AES. Default
     /// </summary>
-    public enum EncryptionAlgorithm
+    AES128,
+    /// <summary>
+    /// 192-bit AES.
+    /// </summary>
+    AES192,
+    /// <summary>
+    /// 256-bit AES. 
+    /// </summary>
+    AES256
+}
+/// <summary>
+/// The major version of the Encryption 
+/// </summary>
+public enum EncryptionVersion
+{
+    /// <summary>
+    /// Standard Encryption.
+    /// Used in Excel 2007 and previous version with compatibility pack.
+    /// <remarks>Default AES 128 with SHA-1 as the hash algorithm. Spincount is hardcoded to 50000</remarks>
+    /// </summary>
+    Standard,
+    /// <summary>
+    /// Agile Encryption.
+    /// Used in Excel 2010-
+    /// Default.
+    /// </summary>
+    Agile
+}
+/// <summary>
+/// How and if the workbook is encrypted
+///<seealso cref="ExcelProtection"/> 
+///<seealso cref="ExcelSheetProtection"/> 
+/// </summary>
+public class ExcelEncryption
+{
+    /// <summary>
+    /// Constructor
+    /// <remarks>Default AES 256 with SHA-512 as the hash algorithm. Spincount is set to 100000</remarks>
+    /// </summary>
+    internal ExcelEncryption()
     {
-        /// <summary>
-        /// 128-bit AES. Default
-        /// </summary>
-        AES128,
-        /// <summary>
-        /// 192-bit AES.
-        /// </summary>
-        AES192,
-        /// <summary>
-        /// 256-bit AES. 
-        /// </summary>
-        AES256
+        this.Algorithm = EncryptionAlgorithm.AES256;
     }
     /// <summary>
-    /// The major version of the Encryption 
+    /// Constructor
     /// </summary>
-    public enum EncryptionVersion
+    /// <param name="encryptionAlgorithm">Algorithm used to encrypt the package. Default is AES128</param>
+    internal ExcelEncryption(EncryptionAlgorithm encryptionAlgorithm)
     {
-        /// <summary>
-        /// Standard Encryption.
-        /// Used in Excel 2007 and previous version with compatibility pack.
-        /// <remarks>Default AES 128 with SHA-1 as the hash algorithm. Spincount is hardcoded to 50000</remarks>
-        /// </summary>
-        Standard,
-        /// <summary>
-        /// Agile Encryption.
-        /// Used in Excel 2010-
-        /// Default.
-        /// </summary>
-        Agile
+        this.Algorithm = encryptionAlgorithm;
     }
+    bool _isEncrypted = false;
     /// <summary>
-    /// How and if the workbook is encrypted
-    ///<seealso cref="ExcelProtection"/> 
-    ///<seealso cref="ExcelSheetProtection"/> 
+    /// Is the package encrypted
     /// </summary>
-    public class ExcelEncryption
+    public bool IsEncrypted
     {
-        /// <summary>
-        /// Constructor
-        /// <remarks>Default AES 256 with SHA-512 as the hash algorithm. Spincount is set to 100000</remarks>
-        /// </summary>
-        internal ExcelEncryption()
+        get
         {
-            this.Algorithm = EncryptionAlgorithm.AES256;
+            return this._isEncrypted;
         }
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        /// <param name="encryptionAlgorithm">Algorithm used to encrypt the package. Default is AES128</param>
-        internal ExcelEncryption(EncryptionAlgorithm encryptionAlgorithm)
+        set
         {
-            this.Algorithm = encryptionAlgorithm;
-        }
-        bool _isEncrypted = false;
-        /// <summary>
-        /// Is the package encrypted
-        /// </summary>
-        public bool IsEncrypted
-        {
-            get
+            this._isEncrypted = value;
+            if (this._isEncrypted)
             {
-                return this._isEncrypted;
+                this._password ??= "";
             }
-            set
+            else
             {
-                this._isEncrypted = value;
-                if (this._isEncrypted)
+                this._password = null;
+            }
+        }
+    }
+    string _password = null;
+    /// <summary>
+    /// The password used to encrypt the workbook.
+    /// </summary>
+    public string Password
+    {
+        get
+        {
+            return this._password;
+        }
+        set
+        {
+            this._password = value;
+            this._isEncrypted = (value != null);
+        }
+    }
+    /// <summary>
+    /// Algorithm used for encrypting the package. Default is AES 128-bit for standard and AES 256 for agile
+    /// </summary>
+    public EncryptionAlgorithm Algorithm { get; set; }
+    private EncryptionVersion _version = EncryptionVersion.Agile;
+    /// <summary>
+    /// The version of the encryption.        
+    /// </summary>
+    public EncryptionVersion Version
+    {
+        get
+        {
+            return this._version;
+        }
+        set
+        {
+            if (value != this.Version)
+            {
+                if (value == EncryptionVersion.Agile)
                 {
-                    this._password ??= "";
+                    this.Algorithm = EncryptionAlgorithm.AES256;
                 }
                 else
                 {
-                    this._password = null;
+                    this.Algorithm = EncryptionAlgorithm.AES128;
                 }
-            }
-        }
-        string _password = null;
-        /// <summary>
-        /// The password used to encrypt the workbook.
-        /// </summary>
-        public string Password
-        {
-            get
-            {
-                return this._password;
-            }
-            set
-            {
-                this._password = value;
-                this._isEncrypted = (value != null);
-            }
-        }
-        /// <summary>
-        /// Algorithm used for encrypting the package. Default is AES 128-bit for standard and AES 256 for agile
-        /// </summary>
-        public EncryptionAlgorithm Algorithm { get; set; }
-        private EncryptionVersion _version = EncryptionVersion.Agile;
-        /// <summary>
-        /// The version of the encryption.        
-        /// </summary>
-        public EncryptionVersion Version
-        {
-            get
-            {
-                return this._version;
-            }
-            set
-            {
-                if (value != this.Version)
-                {
-                    if (value == EncryptionVersion.Agile)
-                    {
-                        this.Algorithm = EncryptionAlgorithm.AES256;
-                    }
-                    else
-                    {
-                        this.Algorithm = EncryptionAlgorithm.AES128;
-                    }
 
-                    this._version = value;
-                }
+                this._version = value;
             }
         }
-        /// <summary>
-        /// Encrypts a stream using the office encryption.
-        /// </summary>
-        /// <param name="stream">The stream containing the non-encrypted package.</param>
-        /// <param name="password">The password to encrypt with</param>
-        /// <param name="encryptionVersion">The encryption version</param>
-        /// <param name="algorithm">The algorithm to use for the encryption</param>
-        /// <returns>A MemoryStream containing the encypted package</returns>
-        public static MemoryStream EncryptPackage(Stream stream, string password, EncryptionVersion encryptionVersion=EncryptionVersion.Agile, EncryptionAlgorithm algorithm = EncryptionAlgorithm.AES256)
+    }
+    /// <summary>
+    /// Encrypts a stream using the office encryption.
+    /// </summary>
+    /// <param name="stream">The stream containing the non-encrypted package.</param>
+    /// <param name="password">The password to encrypt with</param>
+    /// <param name="encryptionVersion">The encryption version</param>
+    /// <param name="algorithm">The algorithm to use for the encryption</param>
+    /// <returns>A MemoryStream containing the encypted package</returns>
+    public static MemoryStream EncryptPackage(Stream stream, string password, EncryptionVersion encryptionVersion=EncryptionVersion.Agile, EncryptionAlgorithm algorithm = EncryptionAlgorithm.AES256)
+    {
+        EncryptedPackageHandler? e = new EncryptedPackageHandler();
+        if(stream.CanRead==false)
         {
-            EncryptedPackageHandler? e = new EncryptedPackageHandler();
-            if(stream.CanRead==false)
-            {
-                throw new InvalidOperationException("Stream must be readable");
-            }
-            if (stream.CanSeek)
-            {
-                stream.Seek(0, SeekOrigin.Begin);
-            }
+            throw new InvalidOperationException("Stream must be readable");
+        }
+        if (stream.CanSeek)
+        {
+            stream.Seek(0, SeekOrigin.Begin);
+        }
             
-            byte[]? b = new byte[stream.Length];
-            stream.Read(b, 0, (int)stream.Length);
-            return e.EncryptPackage(b, new ExcelEncryption { Password = password, Algorithm = algorithm, Version = encryptionVersion });
-        }
-        /// <summary>
-        /// Decrypts a stream using the office encryption.
-        /// </summary>
-        /// <param name="stream">The stream containing the encrypted package.</param>
-        /// <param name="password">The password to decrypt with</param>
-        /// <returns>A memorystream with the encypted package</returns>
-        public static MemoryStream DecryptPackage(Stream stream, string password)
+        byte[]? b = new byte[stream.Length];
+        stream.Read(b, 0, (int)stream.Length);
+        return e.EncryptPackage(b, new ExcelEncryption { Password = password, Algorithm = algorithm, Version = encryptionVersion });
+    }
+    /// <summary>
+    /// Decrypts a stream using the office encryption.
+    /// </summary>
+    /// <param name="stream">The stream containing the encrypted package.</param>
+    /// <param name="password">The password to decrypt with</param>
+    /// <returns>A memorystream with the encypted package</returns>
+    public static MemoryStream DecryptPackage(Stream stream, string password)
+    {
+        EncryptedPackageHandler? e = new EncryptedPackageHandler();
+        if(stream==null)
         {
-            EncryptedPackageHandler? e = new EncryptedPackageHandler();
-            if(stream==null)
-            {
-                throw new ArgumentNullException("Stream must not be null");
-            }
-            if (stream.CanRead == false)
-            {
-                throw new InvalidOperationException("Stream must be readable");
-            }
-            if (stream.CanSeek)
-            {
-                stream.Seek(0, SeekOrigin.Begin);
-            }
+            throw new ArgumentNullException("Stream must not be null");
+        }
+        if (stream.CanRead == false)
+        {
+            throw new InvalidOperationException("Stream must be readable");
+        }
+        if (stream.CanSeek)
+        {
+            stream.Seek(0, SeekOrigin.Begin);
+        }
 #if (NET35)
             else
             {
@@ -200,24 +200,23 @@ namespace OfficeOpenXml
             }
 #endif
 
-            MemoryStream ms;
-            if(stream is MemoryStream)
-            {
-                ms = (MemoryStream)stream;
-            }
-            else
-            {
+        MemoryStream ms;
+        if(stream is MemoryStream)
+        {
+            ms = (MemoryStream)stream;
+        }
+        else
+        {
 #if (NET35)
                 var b = new byte[stream.Length];
                 stream.Read(b, 0, (int)stream.Length);
                 ms = new MemoryStream(b);
 #else
-                ms = RecyclableMemory.GetStream();
-                stream.CopyTo(ms);
+            ms = RecyclableMemory.GetStream();
+            stream.CopyTo(ms);
 #endif
-            }
-            return e.DecryptPackage(ms, new ExcelEncryption() { Password = password, _isEncrypted=true });
         }
-
+        return e.DecryptPackage(ms, new ExcelEncryption() { Password = password, _isEncrypted=true });
     }
+
 }

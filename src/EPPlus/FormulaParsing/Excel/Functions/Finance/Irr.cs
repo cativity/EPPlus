@@ -18,34 +18,33 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance
-{
-    [FunctionMetadata(
-        Category = ExcelFunctionCategory.Financial,
-        EPPlusVersion = "5.2",
-        Description = "Calculates the internal rate of return for a series of periodic cash flows")]
-    internal class Irr : ExcelFunction
-    {
-        public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
-        {
-            ValidateArguments(arguments, 1);
-            IEnumerable<ExcelDoubleCellValue>? values = this.ArgsToDoubleEnumerable(new List<FunctionArgument> { arguments.ElementAt(0) }, context);
-            FinanceCalcResult<double>? result = default(FinanceCalcResult<double>);
-            if(arguments.Count() == 1)
-            {
-                result = IrrImpl.Irr(values.Select(x => (double)x).ToArray());
-            }
-            else
-            {
-                double guess = this.ArgToDecimal(arguments, 1);
-                result = IrrImpl.Irr(values.Select(x => (double)x).ToArray(), guess);
-            }
-            if (result.HasError)
-            {
-                return this.CreateResult(result.ExcelErrorType);
-            }
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance;
 
-            return this.CreateResult(result.Result, DataType.Decimal);
+[FunctionMetadata(
+                     Category = ExcelFunctionCategory.Financial,
+                     EPPlusVersion = "5.2",
+                     Description = "Calculates the internal rate of return for a series of periodic cash flows")]
+internal class Irr : ExcelFunction
+{
+    public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
+    {
+        ValidateArguments(arguments, 1);
+        IEnumerable<ExcelDoubleCellValue>? values = this.ArgsToDoubleEnumerable(new List<FunctionArgument> { arguments.ElementAt(0) }, context);
+        FinanceCalcResult<double>? result = default(FinanceCalcResult<double>);
+        if(arguments.Count() == 1)
+        {
+            result = IrrImpl.Irr(values.Select(x => (double)x).ToArray());
         }
+        else
+        {
+            double guess = this.ArgToDecimal(arguments, 1);
+            result = IrrImpl.Irr(values.Select(x => (double)x).ToArray(), guess);
+        }
+        if (result.HasError)
+        {
+            return this.CreateResult(result.ExcelErrorType);
+        }
+
+        return this.CreateResult(result.Result, DataType.Decimal);
     }
 }

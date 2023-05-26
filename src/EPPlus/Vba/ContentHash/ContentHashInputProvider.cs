@@ -18,47 +18,46 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace OfficeOpenXml.Vba.ContentHash
+namespace OfficeOpenXml.Vba.ContentHash;
+
+internal abstract class ContentHashInputProvider
 {
-    internal abstract class ContentHashInputProvider
+    public ContentHashInputProvider(ExcelVbaProject project)
     {
-        public ContentHashInputProvider(ExcelVbaProject project)
-        {
-            this._project = project;
-            this._hashEncoding = Encoding.GetEncoding(this.Project.CodePage);
-        }
+        this._project = project;
+        this._hashEncoding = Encoding.GetEncoding(this.Project.CodePage);
+    }
 
-        private readonly ExcelVbaProject _project;
-        private readonly Encoding _hashEncoding; 
+    private readonly ExcelVbaProject _project;
+    private readonly Encoding _hashEncoding; 
 
-        protected ExcelVbaProject Project => this._project;
-        protected Encoding HashEncoding => this._hashEncoding;
+    protected ExcelVbaProject Project => this._project;
+    protected Encoding HashEncoding => this._hashEncoding;
 
-        public void CreateHashInput(MemoryStream ms)
-        {
-            ms ??= RecyclableMemory.GetStream();
+    public void CreateHashInput(MemoryStream ms)
+    {
+        ms ??= RecyclableMemory.GetStream();
 
-            this.CreateHashInputInternal(ms);
-        }
+        this.CreateHashInputInternal(ms);
+    }
 
-        protected abstract void CreateHashInputInternal(MemoryStream s);
+    protected abstract void CreateHashInputInternal(MemoryStream s);
 
-        public static void GetContentNormalizedDataHashInput(ExcelVbaProject project, MemoryStream ms)
-        {
-            ContentNormalizedDataHashInputProvider? provider = new ContentNormalizedDataHashInputProvider(project);
-            provider.CreateHashInput(ms);
-        }
+    public static void GetContentNormalizedDataHashInput(ExcelVbaProject project, MemoryStream ms)
+    {
+        ContentNormalizedDataHashInputProvider? provider = new ContentNormalizedDataHashInputProvider(project);
+        provider.CreateHashInput(ms);
+    }
 
-        public static void GetFormsNormalizedDataHashInput(ExcelVbaProject project, MemoryStream ms)
-        {
-            FormsNormalizedDataHashInputProvider? provider = new FormsNormalizedDataHashInputProvider(project);
-            provider.CreateHashInput(ms);
-        }
+    public static void GetFormsNormalizedDataHashInput(ExcelVbaProject project, MemoryStream ms)
+    {
+        FormsNormalizedDataHashInputProvider? provider = new FormsNormalizedDataHashInputProvider(project);
+        provider.CreateHashInput(ms);
+    }
 
-        public static void GetV3ContentNormalizedDataHashInput(ExcelVbaProject project, MemoryStream ms)
-        {
-            V3NormalizedDataHashInputProvider? provider = new V3NormalizedDataHashInputProvider(project);
-            provider.CreateHashInput(ms);
-        }
+    public static void GetV3ContentNormalizedDataHashInput(ExcelVbaProject project, MemoryStream ms)
+    {
+        V3NormalizedDataHashInputProvider? provider = new V3NormalizedDataHashInputProvider(project);
+        provider.CreateHashInput(ms);
     }
 }

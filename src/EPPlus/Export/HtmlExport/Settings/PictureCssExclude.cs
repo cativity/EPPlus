@@ -11,42 +11,41 @@
   05/11/2021         EPPlus Software AB           ExcelTable Html Export
  *************************************************************************************************/
 
-namespace OfficeOpenXml.Export.HtmlExport
+namespace OfficeOpenXml.Export.HtmlExport;
+
+/// <summary>
+/// HTML Settings for excluding picture css settings.
+/// </summary>
+public class PictureCssExclude
 {
-    /// <summary>
-    /// HTML Settings for excluding picture css settings.
-    /// </summary>
-    public class PictureCssExclude
+    internal PictureCssExclude()
     {
-        internal PictureCssExclude()
-        {
 
-        }
-        /// <summary>
-        /// Exclude image border CSS
-        /// </summary>
-        public bool Border { get; set; }
-        /// <summary>
-        /// Exclude image alignment CSS
-        /// </summary>
-        public bool Alignment { get; set; }
+    }
+    /// <summary>
+    /// Exclude image border CSS
+    /// </summary>
+    public bool Border { get; set; }
+    /// <summary>
+    /// Exclude image alignment CSS
+    /// </summary>
+    public bool Alignment { get; set; }
 
-        /// <summary>
-        /// Reset the setting to it's default values.
-        /// </summary>
-        public void ResetToDefault()
-        {
-            this.Border = false;
-            this.Alignment = false;
-        }
-        /// <summary>
-        /// Copy the values from another settings object.
-        /// </summary>
-        /// <param name="copy">The object to copy.</param>
-        public void Copy(PictureCssExclude copy)
-        {
-            this.Border = copy.Border;
-            this.Alignment = copy.Alignment;
-        }
+    /// <summary>
+    /// Reset the setting to it's default values.
+    /// </summary>
+    public void ResetToDefault()
+    {
+        this.Border = false;
+        this.Alignment = false;
+    }
+    /// <summary>
+    /// Copy the values from another settings object.
+    /// </summary>
+    /// <param name="copy">The object to copy.</param>
+    public void Copy(PictureCssExclude copy)
+    {
+        this.Border = copy.Border;
+        this.Alignment = copy.Alignment;
     }
 }

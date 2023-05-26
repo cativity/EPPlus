@@ -16,122 +16,121 @@ using System;
 using System.Globalization;
 using System.Xml;
 
-namespace OfficeOpenXml.Filter
+namespace OfficeOpenXml.Filter;
+
+/// <summary>
+/// Various filters that are set depending on the filter <c>Type</c>
+/// <see cref="Type"/>
+/// </summary>
+public class ExcelDynamicFilterColumn : ExcelFilterColumn
 {
-    /// <summary>
-    /// Various filters that are set depending on the filter <c>Type</c>
-    /// <see cref="Type"/>
-    /// </summary>
-    public class ExcelDynamicFilterColumn : ExcelFilterColumn
+    internal ExcelDynamicFilterColumn(XmlNamespaceManager namespaceManager, XmlNode topNode) : base(namespaceManager, topNode)
     {
-        internal ExcelDynamicFilterColumn(XmlNamespaceManager namespaceManager, XmlNode topNode) : base(namespaceManager, topNode)
+        DynamicDateFilterMatcher.SetMatchDates(this);
+    }
+
+    /// <summary>
+    /// Type of filter
+    /// </summary>
+    public eDynamicFilterType Type { get; set; }
+    /// <summary>
+    /// The value of the filter. Can be the Average or minimum value depending on the type
+    /// </summary>
+    public double? Value { get; internal set; }
+    /// <summary>
+    /// The maximum value for for a daterange, for example ThisMonth
+    /// </summary>
+    public double? MaxValue { get; internal set; }
+        
+    internal override bool Match(object value, string valueText)
+    {
+        if (this.Type == eDynamicFilterType.AboveAverage)
+        {
+            return ConvertUtil.GetValueDouble(value) > this.Value;
+        }
+        else if (this.Type == eDynamicFilterType.BelowAverage)
+        {
+            return ConvertUtil.GetValueDouble(value) < this.Value;
+        }
+        else
+        {
+            DateTime? date = ConvertUtil.GetValueDate(value);
+            if (date.HasValue == false)
+            {
+                return false;
+            }
+
+            return DynamicDateFilterMatcher.Match(this, date);
+        }
+    }
+
+    internal override void Save()
+    {
+        XmlElement? node = (XmlElement)this.CreateNode("d:dynamicFilter");
+        node.RemoveAll();
+        string? type = this.Type.ToEnumString();
+        if (type.Length <= 3)
+        {
+            type = type.ToUpper();    //For M1, M12, Q1 etc
+        }
+
+        node.SetAttribute("type", GetTypeForXml(this.Type));
+        if(this.Value.HasValue)
+        {
+            node.SetAttribute("val", this.Value.Value.ToString("R15", CultureInfo.InvariantCulture));
+        }
+
+        if(this.MaxValue.HasValue)
+        {
+            node.SetAttribute("maxVal", this.MaxValue.Value.ToString("R15", CultureInfo.InvariantCulture));
+        }
+    }
+    private static string GetTypeForXml(eDynamicFilterType type)
+    {
+        if(type.ToString().Length>3)
+        {
+            return type.ToEnumString();
+        }
+        else
+        {
+            return type.ToString();
+        }
+    }
+
+    internal override void SetFilterValue(ExcelWorksheet worksheet, ExcelAddressBase address)
+    {
+        if (this.Type == eDynamicFilterType.AboveAverage || this.Type == eDynamicFilterType.BelowAverage)
+        {
+            this.Value = this.GetAvg(worksheet, address);
+            this.MaxValue = null;
+        }
+        else
         {
             DynamicDateFilterMatcher.SetMatchDates(this);
         }
+    }
 
-        /// <summary>
-        /// Type of filter
-        /// </summary>
-        public eDynamicFilterType Type { get; set; }
-        /// <summary>
-        /// The value of the filter. Can be the Average or minimum value depending on the type
-        /// </summary>
-        public double? Value { get; internal set; }
-        /// <summary>
-        /// The maximum value for for a daterange, for example ThisMonth
-        /// </summary>
-        public double? MaxValue { get; internal set; }
-        
-        internal override bool Match(object value, string valueText)
+    private double GetAvg(ExcelWorksheet worksheet, ExcelAddressBase address)
+    {
+        int count = 0;
+        double sum = 0;
+        int col = address._fromCol + this.Position;
+        for (int row = address._fromRow + 1; row <= address._toRow; row++)
         {
-            if (this.Type == eDynamicFilterType.AboveAverage)
+            object? v = worksheet.GetValue(row, col);
+            if (ConvertUtil.IsNumericOrDate(v))
             {
-                return ConvertUtil.GetValueDouble(value) > this.Value;
-            }
-            else if (this.Type == eDynamicFilterType.BelowAverage)
-            {
-                return ConvertUtil.GetValueDouble(value) < this.Value;
-            }
-            else
-            {
-                DateTime? date = ConvertUtil.GetValueDate(value);
-                if (date.HasValue == false)
-                {
-                    return false;
-                }
-
-                return DynamicDateFilterMatcher.Match(this, date);
+                sum += ConvertUtil.GetValueDouble(v);
+                count++;
             }
         }
-
-        internal override void Save()
+        if(count==0)
         {
-            XmlElement? node = (XmlElement)this.CreateNode("d:dynamicFilter");
-            node.RemoveAll();
-            string? type = this.Type.ToEnumString();
-            if (type.Length <= 3)
-            {
-                type = type.ToUpper();    //For M1, M12, Q1 etc
-            }
-
-            node.SetAttribute("type", GetTypeForXml(this.Type));
-            if(this.Value.HasValue)
-            {
-                node.SetAttribute("val", this.Value.Value.ToString("R15", CultureInfo.InvariantCulture));
-            }
-
-            if(this.MaxValue.HasValue)
-            {
-                node.SetAttribute("maxVal", this.MaxValue.Value.ToString("R15", CultureInfo.InvariantCulture));
-            }
+            return 0;
         }
-        private static string GetTypeForXml(eDynamicFilterType type)
+        else
         {
-            if(type.ToString().Length>3)
-            {
-                return type.ToEnumString();
-            }
-            else
-            {
-                return type.ToString();
-            }
-        }
-
-        internal override void SetFilterValue(ExcelWorksheet worksheet, ExcelAddressBase address)
-        {
-            if (this.Type == eDynamicFilterType.AboveAverage || this.Type == eDynamicFilterType.BelowAverage)
-            {
-                this.Value = this.GetAvg(worksheet, address);
-                this.MaxValue = null;
-            }
-            else
-            {
-                DynamicDateFilterMatcher.SetMatchDates(this);
-            }
-        }
-
-        private double GetAvg(ExcelWorksheet worksheet, ExcelAddressBase address)
-        {
-            int count = 0;
-            double sum = 0;
-            int col = address._fromCol + this.Position;
-            for (int row = address._fromRow + 1; row <= address._toRow; row++)
-            {
-                object? v = worksheet.GetValue(row, col);
-                if (ConvertUtil.IsNumericOrDate(v))
-                {
-                    sum += ConvertUtil.GetValueDouble(v);
-                    count++;
-                }
-            }
-            if(count==0)
-            {
-                return 0;
-            }
-            else
-            {
-                return sum / count;
-            }
+            return sum / count;
         }
     }
 }

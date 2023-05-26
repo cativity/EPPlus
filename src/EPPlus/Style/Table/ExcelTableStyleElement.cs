@@ -15,47 +15,46 @@ using OfficeOpenXml.Utils.Extensions;
 using System;
 using System.Xml;
 
-namespace OfficeOpenXml.Style
-{
-    /// <summary>
-    /// A style element for a custom table style 
-    /// </summary>
-    public class ExcelTableStyleElement : XmlHelper
-    {
-        ExcelStyles _styles;
-        internal ExcelTableStyleElement(XmlNamespaceManager nameSpaceManager, XmlNode topNode, ExcelStyles styles, eTableStyleElement type) : base(nameSpaceManager, topNode)
-        {
-            this._styles = styles;
-            this.Type = type;
-        }
-        ExcelDxfStyleLimitedFont _style = null;
-        /// <summary>
-        /// Access to style properties
-        /// </summary>
-        public ExcelDxfStyleLimitedFont Style
-        {
-            get { return this._style ??= this._styles.GetDxfLimitedFont(this.GetXmlNodeIntNull("@dxfId")); }
-            internal set
-            {
-                this._style = value;
-            }
-        }
-        /// <summary>
-        /// The type of table style element for a custom table style.
-        /// </summary>
-        public eTableStyleElement Type
-        {
-            get;
-        }
-        internal virtual void CreateNode()
-        {
-            if(this.TopNode.LocalName!= "tableStyleElement")
-            {
-                this.TopNode = this.CreateNode("d:tableStyleElement", false, true);
-            }
+namespace OfficeOpenXml.Style;
 
-            this.SetXmlNodeString("@type", this.Type.ToEnumString());
-            this.SetXmlNodeInt("@dxfId", this.Style.DxfId);
+/// <summary>
+/// A style element for a custom table style 
+/// </summary>
+public class ExcelTableStyleElement : XmlHelper
+{
+    ExcelStyles _styles;
+    internal ExcelTableStyleElement(XmlNamespaceManager nameSpaceManager, XmlNode topNode, ExcelStyles styles, eTableStyleElement type) : base(nameSpaceManager, topNode)
+    {
+        this._styles = styles;
+        this.Type = type;
+    }
+    ExcelDxfStyleLimitedFont _style = null;
+    /// <summary>
+    /// Access to style properties
+    /// </summary>
+    public ExcelDxfStyleLimitedFont Style
+    {
+        get { return this._style ??= this._styles.GetDxfLimitedFont(this.GetXmlNodeIntNull("@dxfId")); }
+        internal set
+        {
+            this._style = value;
         }
+    }
+    /// <summary>
+    /// The type of table style element for a custom table style.
+    /// </summary>
+    public eTableStyleElement Type
+    {
+        get;
+    }
+    internal virtual void CreateNode()
+    {
+        if(this.TopNode.LocalName!= "tableStyleElement")
+        {
+            this.TopNode = this.CreateNode("d:tableStyleElement", false, true);
+        }
+
+        this.SetXmlNodeString("@type", this.Type.ToEnumString());
+        this.SetXmlNodeInt("@dxfId", this.Style.DxfId);
     }
 }

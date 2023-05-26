@@ -21,118 +21,117 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace OfficeOpenXml.Export.HtmlExport.Exporters
+namespace OfficeOpenXml.Export.HtmlExport.Exporters;
+
+internal class CssRangeExporterSync : CssRangeExporterBase
 {
-    internal class CssRangeExporterSync : CssRangeExporterBase
+    public CssRangeExporterSync(HtmlRangeExportSettings settings, EPPlusReadOnlyList<ExcelRangeBase> ranges)
+        : base(settings, ranges)
     {
-        public CssRangeExporterSync(HtmlRangeExportSettings settings, EPPlusReadOnlyList<ExcelRangeBase> ranges)
-            : base(settings, ranges)
+        this._settings = settings;
+    }
+
+    public CssRangeExporterSync(HtmlRangeExportSettings settings, ExcelRangeBase range)
+        : base(settings, range)
+    {
+        this._settings = settings;
+    }
+
+    private readonly HtmlRangeExportSettings _settings;
+    /// <summary>
+    /// Exports an <see cref="ExcelTable"/> to a html string
+    /// </summary>
+    /// <returns>A html table</returns>
+    public string GetCssString()
+    {
+        using MemoryStream? ms = RecyclableMemory.GetStream();
+        this.RenderCss(ms);
+        ms.Position = 0;
+        using StreamReader? sr = new StreamReader(ms);
+        return sr.ReadToEnd();
+    }
+    /// <summary>
+    /// Exports the css part of the html export.
+    /// </summary>
+    /// <param name="stream">The stream to write the css to.</param>
+    /// <exception cref="IOException"></exception>
+    public void RenderCss(Stream stream)
+    {
+        if (!stream.CanWrite)
         {
-            this._settings = settings;
+            throw new IOException("Parameter stream must be a writable System.IO.Stream");
         }
 
-        public CssRangeExporterSync(HtmlRangeExportSettings settings, ExcelRangeBase range)
-            : base(settings, range)
-        {
-            this._settings = settings;
-        }
+        //if (_datatypes.Count == 0) GetDataTypes();
+        StreamWriter? sw = new StreamWriter(stream);
+        this.RenderCellCss(sw);
+    }
 
-        private readonly HtmlRangeExportSettings _settings;
-        /// <summary>
-        /// Exports an <see cref="ExcelTable"/> to a html string
-        /// </summary>
-        /// <returns>A html table</returns>
-        public string GetCssString()
+    private void RenderCellCss(StreamWriter sw)
+    {
+        EpplusCssWriter? styleWriter = new EpplusCssWriter(sw, this._ranges._list, this._settings, this._settings.Css, this._settings.Css.CssExclude, this._styleCache);
+
+        styleWriter.RenderAdditionalAndFontCss(TableClass);
+        HashSet<TableStyles>? addedTableStyles = new HashSet<TableStyles>();
+        foreach (ExcelRangeBase? range in this._ranges._list)
         {
-            using MemoryStream? ms = RecyclableMemory.GetStream();
-            this.RenderCss(ms);
-            ms.Position = 0;
-            using StreamReader? sr = new StreamReader(ms);
-            return sr.ReadToEnd();
-        }
-        /// <summary>
-        /// Exports the css part of the html export.
-        /// </summary>
-        /// <param name="stream">The stream to write the css to.</param>
-        /// <exception cref="IOException"></exception>
-        public void RenderCss(Stream stream)
-        {
-            if (!stream.CanWrite)
+            ExcelWorksheet? ws = range.Worksheet;
+            ExcelStyles? styles = ws.Workbook.Styles;
+            CellStoreEnumerator<ExcelValue>? ce = new CellStoreEnumerator<ExcelValue>(range.Worksheet._values, range._fromRow, range._fromCol, range._toRow, range._toCol);
+            ExcelAddressBase address = null;
+            while (ce.Next())
             {
-                throw new IOException("Parameter stream must be a writable System.IO.Stream");
-            }
-
-            //if (_datatypes.Count == 0) GetDataTypes();
-            StreamWriter? sw = new StreamWriter(stream);
-            this.RenderCellCss(sw);
-        }
-
-        private void RenderCellCss(StreamWriter sw)
-        {
-            EpplusCssWriter? styleWriter = new EpplusCssWriter(sw, this._ranges._list, this._settings, this._settings.Css, this._settings.Css.CssExclude, this._styleCache);
-
-            styleWriter.RenderAdditionalAndFontCss(TableClass);
-            HashSet<TableStyles>? addedTableStyles = new HashSet<TableStyles>();
-            foreach (ExcelRangeBase? range in this._ranges._list)
-            {
-                ExcelWorksheet? ws = range.Worksheet;
-                ExcelStyles? styles = ws.Workbook.Styles;
-                CellStoreEnumerator<ExcelValue>? ce = new CellStoreEnumerator<ExcelValue>(range.Worksheet._values, range._fromRow, range._fromCol, range._toRow, range._toCol);
-                ExcelAddressBase address = null;
-                while (ce.Next())
+                if (ce.Value._styleId > 0 && ce.Value._styleId < styles.CellXfs.Count)
                 {
-                    if (ce.Value._styleId > 0 && ce.Value._styleId < styles.CellXfs.Count)
+                    string? ma = ws.MergedCells[ce.Row, ce.Column];
+                    if (ma != null)
                     {
-                        string? ma = ws.MergedCells[ce.Row, ce.Column];
-                        if (ma != null)
+                        if (address == null || address.Address != ma)
                         {
-                            if (address == null || address.Address != ma)
-                            {
-                                address = new ExcelAddressBase(ma);
-                            }
-                            int fromRow = address._fromRow < range._fromRow ? range._fromRow : address._fromRow;
-                            int fromCol = address._fromCol < range._fromCol ? range._fromCol : address._fromCol;
-
-                            if (fromRow != ce.Row || fromCol != ce.Column) //Only add the style for the top-left cell in the merged range.
-                            {
-                                continue;
-                            }
-
-                            ExcelAddressBase? mAdr = new ExcelAddressBase(ma);
-                            int bottomStyleId = range.Worksheet._values.GetValue(mAdr._toRow, mAdr._fromCol)._styleId;
-                            int rightStyleId = range.Worksheet._values.GetValue(mAdr._fromRow, mAdr._toCol)._styleId;
-                            styleWriter.AddToCss(styles, ce.Value._styleId, bottomStyleId, rightStyleId, this.Settings.StyleClassPrefix, this.Settings.CellStyleClassName);
+                            address = new ExcelAddressBase(ma);
                         }
-                        else
+                        int fromRow = address._fromRow < range._fromRow ? range._fromRow : address._fromRow;
+                        int fromCol = address._fromCol < range._fromCol ? range._fromCol : address._fromCol;
+
+                        if (fromRow != ce.Row || fromCol != ce.Column) //Only add the style for the top-left cell in the merged range.
                         {
-                            styleWriter.AddToCss(styles, ce.Value._styleId, this.Settings.StyleClassPrefix, this.Settings.CellStyleClassName);
+                            continue;
                         }
+
+                        ExcelAddressBase? mAdr = new ExcelAddressBase(ma);
+                        int bottomStyleId = range.Worksheet._values.GetValue(mAdr._toRow, mAdr._fromCol)._styleId;
+                        int rightStyleId = range.Worksheet._values.GetValue(mAdr._fromRow, mAdr._toCol)._styleId;
+                        styleWriter.AddToCss(styles, ce.Value._styleId, bottomStyleId, rightStyleId, this.Settings.StyleClassPrefix, this.Settings.CellStyleClassName);
                     }
-                }
-
-                if (this.Settings.TableStyle == eHtmlRangeTableInclude.Include)
-                {
-                    ExcelTable? table = range.GetTable();
-                    if (table != null &&
-                       table.TableStyle != TableStyles.None &&
-                       addedTableStyles.Contains(table.TableStyle) == false)
+                    else
                     {
-                        HtmlTableExportSettings? settings = new HtmlTableExportSettings() { Minify = this.Settings.Minify };
-                        HtmlExportTableUtil.RenderTableCss(sw, table, settings, this._styleCache, this._dataTypes);
-                        addedTableStyles.Add(table.TableStyle);
+                        styleWriter.AddToCss(styles, ce.Value._styleId, this.Settings.StyleClassPrefix, this.Settings.CellStyleClassName);
                     }
                 }
             }
 
-            if (this.Settings.Pictures.Include == ePictureInclude.Include)
+            if (this.Settings.TableStyle == eHtmlRangeTableInclude.Include)
             {
-                this.LoadRangeImages(this._ranges._list);
-                foreach (HtmlImage? p in this._rangePictures)
+                ExcelTable? table = range.GetTable();
+                if (table != null &&
+                    table.TableStyle != TableStyles.None &&
+                    addedTableStyles.Contains(table.TableStyle) == false)
                 {
-                    styleWriter.AddPictureToCss(p);
+                    HtmlTableExportSettings? settings = new HtmlTableExportSettings() { Minify = this.Settings.Minify };
+                    HtmlExportTableUtil.RenderTableCss(sw, table, settings, this._styleCache, this._dataTypes);
+                    addedTableStyles.Add(table.TableStyle);
                 }
             }
-            styleWriter.FlushStream();
         }
+
+        if (this.Settings.Pictures.Include == ePictureInclude.Include)
+        {
+            this.LoadRangeImages(this._ranges._list);
+            foreach (HtmlImage? p in this._rangePictures)
+            {
+                styleWriter.AddPictureToCss(p);
+            }
+        }
+        styleWriter.FlushStream();
     }
 }

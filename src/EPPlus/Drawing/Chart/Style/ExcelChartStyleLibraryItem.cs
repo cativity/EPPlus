@@ -13,36 +13,35 @@
 using System.Text;
 using System.Xml;
 
-namespace OfficeOpenXml.Drawing.Chart.Style
+namespace OfficeOpenXml.Drawing.Chart.Style;
+
+/// <summary>
+/// Represents a chart style xml document in the style library
+/// </summary>
+public class ExcelChartStyleLibraryItem
 {
     /// <summary>
-    /// Represents a chart style xml document in the style library
+    /// The id of the style
     /// </summary>
-    public class ExcelChartStyleLibraryItem
+    public int Id { get; internal set; }
+    /// <summary>
+    /// The Xml as string
+    /// </summary>
+    public string XmlString { get; set; }
+    XmlDocument _xmlDoc=null;
+    /// <summary>
+    /// The style xml document
+    /// </summary>
+    public XmlDocument XmlDocument
     {
-        /// <summary>
-        /// The id of the style
-        /// </summary>
-        public int Id { get; internal set; }
-        /// <summary>
-        /// The Xml as string
-        /// </summary>
-        public string XmlString { get; set; }
-        XmlDocument _xmlDoc=null;
-        /// <summary>
-        /// The style xml document
-        /// </summary>
-        public XmlDocument XmlDocument
+        get
         {
-            get
+            if(this._xmlDoc==null)
             {
-                if(this._xmlDoc==null)
-                {
-                    this._xmlDoc = new XmlDocument();
-                    XmlHelper.LoadXmlSafe(this._xmlDoc, this.XmlString, Encoding.UTF8);
-                }
-                return this._xmlDoc;
+                this._xmlDoc = new XmlDocument();
+                XmlHelper.LoadXmlSafe(this._xmlDoc, this.XmlString, Encoding.UTF8);
             }
+            return this._xmlDoc;
         }
     }
 }

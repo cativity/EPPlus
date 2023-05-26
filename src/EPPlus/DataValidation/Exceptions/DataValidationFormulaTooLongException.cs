@@ -15,19 +15,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace OfficeOpenXml.DataValidation.Exceptions
+namespace OfficeOpenXml.DataValidation.Exceptions;
+
+/// <summary>
+/// Thrown if a formula exceeds the maximum number of characters.
+/// </summary>
+public class DataValidationFormulaTooLongException : InvalidOperationException
 {
     /// <summary>
-    /// Thrown if a formula exceeds the maximum number of characters.
+    /// Initiaize a new <see cref="DataValidationFormulaTooLongException"/>
     /// </summary>
-    public class DataValidationFormulaTooLongException : InvalidOperationException
+    /// <param name="message">The exception message</param>
+    public DataValidationFormulaTooLongException(string message) : base(message)
     {
-        /// <summary>
-        /// Initiaize a new <see cref="DataValidationFormulaTooLongException"/>
-        /// </summary>
-        /// <param name="message">The exception message</param>
-        public DataValidationFormulaTooLongException(string message) : base(message)
-        {
-        }
     }
 }

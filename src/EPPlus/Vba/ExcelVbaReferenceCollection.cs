@@ -10,24 +10,23 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
-namespace OfficeOpenXml.VBA
-{
-    /// <summary>
-    /// A collection of the vba projects references
-    /// </summary>
-    public class ExcelVbaReferenceCollection : ExcelVBACollectionBase<ExcelVbaReference>
-    {        
-        internal ExcelVbaReferenceCollection()
-        {
+namespace OfficeOpenXml.VBA;
 
-        }
-        /// <summary>
-        /// Adds a new reference 
-        /// </summary>
-        /// <param name="Item">The reference object</param>
-        public void Add(ExcelVbaReference Item)
-        {
-            this._list.Add(Item);
-        }
+/// <summary>
+/// A collection of the vba projects references
+/// </summary>
+public class ExcelVbaReferenceCollection : ExcelVBACollectionBase<ExcelVbaReference>
+{        
+    internal ExcelVbaReferenceCollection()
+    {
+
+    }
+    /// <summary>
+    /// Adds a new reference 
+    /// </summary>
+    /// <param name="Item">The reference object</param>
+    public void Add(ExcelVbaReference Item)
+    {
+        this._list.Add(Item);
     }
 }

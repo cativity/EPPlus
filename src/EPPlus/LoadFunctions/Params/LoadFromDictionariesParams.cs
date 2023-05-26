@@ -15,40 +15,39 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Text;
 
-namespace OfficeOpenXml.LoadFunctions.Params
+namespace OfficeOpenXml.LoadFunctions.Params;
+
+/// <summary>
+/// Parameters for the LoadFromDictionaries method
+/// </summary>
+public class LoadFromDictionariesParams : LoadFunctionFunctionParamsBase
 {
     /// <summary>
-    /// Parameters for the LoadFromDictionaries method
+    /// If set, only these keys will be included in the dataset
     /// </summary>
-    public class LoadFromDictionariesParams : LoadFunctionFunctionParamsBase
+    public IEnumerable<string> Keys { get; private set; }
+
+    /// <summary>
+    /// The keys supplied to this function will be included in the dataset, all others will be ignored.
+    /// </summary>
+    /// <param name="keys">The keys to include</param>
+    public void SetKeys(params string[] keys)
     {
-        /// <summary>
-        /// If set, only these keys will be included in the dataset
-        /// </summary>
-        public IEnumerable<string> Keys { get; private set; }
-
-        /// <summary>
-        /// The keys supplied to this function will be included in the dataset, all others will be ignored.
-        /// </summary>
-        /// <param name="keys">The keys to include</param>
-        public void SetKeys(params string[] keys)
-        {
-            this.Keys = keys;
-        }
-
-        /// <summary>
-        /// Culture to be used when reading numbers/dates.
-        /// </summary>
-        public CultureInfo Culture { get; set; }
-
-        /// <summary>
-        /// Sets how headers should be parsed before added to the worksheet, see <see cref="HeaderParsingTypes"/>
-        /// </summary>
-        public HeaderParsingTypes HeaderParsingType { get; set; } = HeaderParsingTypes.UnderscoreToSpace;
-
-        /// <summary>
-        /// Data types used when setting data in the spreadsheet range (defined from left to right per column).
-        /// </summary>
-        public eDataTypes[] DataTypes { get; set; }
+        this.Keys = keys;
     }
+
+    /// <summary>
+    /// Culture to be used when reading numbers/dates.
+    /// </summary>
+    public CultureInfo Culture { get; set; }
+
+    /// <summary>
+    /// Sets how headers should be parsed before added to the worksheet, see <see cref="HeaderParsingTypes"/>
+    /// </summary>
+    public HeaderParsingTypes HeaderParsingType { get; set; } = HeaderParsingTypes.UnderscoreToSpace;
+
+    /// <summary>
+    /// Data types used when setting data in the spreadsheet range (defined from left to right per column).
+    /// </summary>
+    public eDataTypes[] DataTypes { get; set; }
 }

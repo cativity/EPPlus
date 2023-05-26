@@ -12,148 +12,147 @@
  *************************************************************************************************/
 using System.Xml;
 
-namespace OfficeOpenXml.Drawing.Vml
-{
-    /// <summary>
-    /// Drawing object used for comments
-    /// </summary>
-    public class ExcelVmlDrawingBase : XmlHelper
-    {
-        internal ExcelVmlDrawingBase(XmlNode topNode, XmlNamespaceManager ns) :
-            base(ns, topNode)
-        {
-            this.SchemaNodeOrder = new string[] { "fill", "stroke", "shadow", "path", "textbox", "ClientData", "MoveWithCells", "SizeWithCells", "Anchor", "Locked", "AutoFill", "LockText", "TextHAlign", "TextVAlign", "Row", "Column", "Visible" };
-        }
-        /// <summary>
-        /// The Id of the vml drawing
-        /// </summary>
-        public string Id 
-        {
-            get
-            {
-                return this.GetXmlNodeString("@id");
-            }
-            set
-            {
-                this.SetXmlNodeString("@id",value);
-            }
-        }
-        /// <summary>
-        /// The Id of the shape drawing
-        /// </summary>
-        internal string SpId
-        {
-            get
-            {
-                return this.GetXmlNodeString("@o:spid");
-            }
-            set
-            {
-                this.SetXmlNodeString("@o:spid", value);
-            }
-        }
-        /// <summary>
-        /// Alternative text to be displayed instead of a graphic.
-        /// </summary>
-        public string AlternativeText
-        {
-            get
-            {
-                return this.GetXmlNodeString("@alt");
-            }
-            set
-            {
-                this.SetXmlNodeString("@alt", value);
-            }
-        }
-        /// <summary>
-        /// Anchor coordinates for the drawing
-        /// </summary>
-        internal string Anchor
-        {
-            get
-            {
-                return this.GetXmlNodeString("x:ClientData/x:Anchor");
-            }
-            set
-            {
-                this.SetXmlNodeString("x:ClientData/x:Anchor", value);
-            }
-        }
+namespace OfficeOpenXml.Drawing.Vml;
 
-        #region "Style Handling methods"
-        /// <summary>
-        /// Gets a style from the semi-colo separated list with the specifik key
-        /// </summary>
-        /// <param name="style">The list</param>
-        /// <param name="key">The key to search for</param>
-        /// <param name="value">The value to return</param>
-        /// <returns>True if found</returns>
-        protected static bool GetStyle(string style, string key, out string value)
+/// <summary>
+/// Drawing object used for comments
+/// </summary>
+public class ExcelVmlDrawingBase : XmlHelper
+{
+    internal ExcelVmlDrawingBase(XmlNode topNode, XmlNamespaceManager ns) :
+        base(ns, topNode)
+    {
+        this.SchemaNodeOrder = new string[] { "fill", "stroke", "shadow", "path", "textbox", "ClientData", "MoveWithCells", "SizeWithCells", "Anchor", "Locked", "AutoFill", "LockText", "TextHAlign", "TextVAlign", "Row", "Column", "Visible" };
+    }
+    /// <summary>
+    /// The Id of the vml drawing
+    /// </summary>
+    public string Id 
+    {
+        get
         {
-            string[]styles = style.Split(';');
-            foreach(string s in styles)
+            return this.GetXmlNodeString("@id");
+        }
+        set
+        {
+            this.SetXmlNodeString("@id",value);
+        }
+    }
+    /// <summary>
+    /// The Id of the shape drawing
+    /// </summary>
+    internal string SpId
+    {
+        get
+        {
+            return this.GetXmlNodeString("@o:spid");
+        }
+        set
+        {
+            this.SetXmlNodeString("@o:spid", value);
+        }
+    }
+    /// <summary>
+    /// Alternative text to be displayed instead of a graphic.
+    /// </summary>
+    public string AlternativeText
+    {
+        get
+        {
+            return this.GetXmlNodeString("@alt");
+        }
+        set
+        {
+            this.SetXmlNodeString("@alt", value);
+        }
+    }
+    /// <summary>
+    /// Anchor coordinates for the drawing
+    /// </summary>
+    internal string Anchor
+    {
+        get
+        {
+            return this.GetXmlNodeString("x:ClientData/x:Anchor");
+        }
+        set
+        {
+            this.SetXmlNodeString("x:ClientData/x:Anchor", value);
+        }
+    }
+
+    #region "Style Handling methods"
+    /// <summary>
+    /// Gets a style from the semi-colo separated list with the specifik key
+    /// </summary>
+    /// <param name="style">The list</param>
+    /// <param name="key">The key to search for</param>
+    /// <param name="value">The value to return</param>
+    /// <returns>True if found</returns>
+    protected static bool GetStyle(string style, string key, out string value)
+    {
+        string[]styles = style.Split(';');
+        foreach(string s in styles)
+        {
+            if (s.IndexOf(':') > 0)
             {
-                if (s.IndexOf(':') > 0)
+                string[] split = s.Split(':');
+                if (split[0] == key)
                 {
-                    string[] split = s.Split(':');
-                    if (split[0] == key)
-                    {
-                        value=split[1];
-                        return true;
-                    }
-                }
-                else if (s == key)
-                {
-                    value="";
+                    value=split[1];
                     return true;
                 }
             }
-            value="";
-            return false;
+            else if (s == key)
+            {
+                value="";
+                return true;
+            }
         }
-        /// <summary>
-        /// Sets the style in a semicolon separated list
-        /// </summary>
-        /// <param name="style">The list</param>
-        /// <param name="key">The key</param>
-        /// <param name="value">The value</param>
-        /// <returns>The new list</returns>
-        protected internal static string SetStyle(string style, string key, string value)
-        {
-            string[] styles = style.Split(';');
-            string newStyle="";
-            bool changed = false;
-            foreach (string s in styles)
-            {
-                if (!string.IsNullOrEmpty(s))
-                {
-                    string[] split = s.Split(':');
-                    if (split[0].Trim() == key)
-                    {
-                        if (value.Trim() != "") //If blank remove the item
-                        {
-                            newStyle += key + ':' + value;
-                        }
-                        changed = true;
-                    }
-                    else
-                    {
-                        newStyle += s;
-                    }
-                    newStyle += ';';
-                }
-            }
-            if (!changed)
-            {
-                newStyle += key + ':' + value;
-            }
-            else
-            {
-                newStyle = newStyle.Substring(0, newStyle.Length - 1);
-            }
-            return newStyle;
-        }
-        #endregion
+        value="";
+        return false;
     }
+    /// <summary>
+    /// Sets the style in a semicolon separated list
+    /// </summary>
+    /// <param name="style">The list</param>
+    /// <param name="key">The key</param>
+    /// <param name="value">The value</param>
+    /// <returns>The new list</returns>
+    protected internal static string SetStyle(string style, string key, string value)
+    {
+        string[] styles = style.Split(';');
+        string newStyle="";
+        bool changed = false;
+        foreach (string s in styles)
+        {
+            if (!string.IsNullOrEmpty(s))
+            {
+                string[] split = s.Split(':');
+                if (split[0].Trim() == key)
+                {
+                    if (value.Trim() != "") //If blank remove the item
+                    {
+                        newStyle += key + ':' + value;
+                    }
+                    changed = true;
+                }
+                else
+                {
+                    newStyle += s;
+                }
+                newStyle += ';';
+            }
+        }
+        if (!changed)
+        {
+            newStyle += key + ':' + value;
+        }
+        else
+        {
+            newStyle = newStyle.Substring(0, newStyle.Length - 1);
+        }
+        return newStyle;
+    }
+    #endregion
 }

@@ -14,95 +14,94 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace OfficeOpenXml.Utils.TypeConversion
+namespace OfficeOpenXml.Utils.TypeConversion;
+
+internal class ValueWrapper
 {
-    internal class ValueWrapper
+    private readonly object _object;
+
+    public ValueWrapper(object obj)
     {
-        private readonly object _object;
+        this._object = obj;
+    }
 
-        public ValueWrapper(object obj)
+    public bool IsString
+    {
+        get
         {
-            this._object = obj;
-        }
-
-        public bool IsString
-        {
-            get
+            if (this._object == null)
             {
-                if (this._object == null)
-                {
-                    return false;
-                }
-
-                return this._object is string;
+                return false;
             }
-        }
 
-        public bool IsEmptyString
+            return this._object is string;
+        }
+    }
+
+    public bool IsEmptyString
+    {
+        get
         {
-            get
+            if (this._object == null)
             {
-                if (this._object == null)
-                {
-                    return false;
-                }
-
-                return this._object is string && this._object.ToString().Trim() == string.Empty;
+                return false;
             }
-        }
 
-        public bool IsNumeric
+            return this._object is string && this._object.ToString().Trim() == string.Empty;
+        }
+    }
+
+    public bool IsNumeric
+    {
+        get
         {
-            get
+            if(this._object == null)
             {
-                if(this._object == null)
-                {
-                    return false;
-                }
-
-                return NumericTypeConversions.IsNumeric(this._object.GetType());
+                return false;
             }
-        }
 
-        public bool IsDateTime
-        {
-            get
-            {
-                return this._object is DateTime;
-            }
+            return NumericTypeConversions.IsNumeric(this._object.GetType());
         }
+    }
 
-        public bool IsTimeSpan
+    public bool IsDateTime
+    {
+        get
         {
-            get
-            {
-                return this._object is TimeSpan;
-            }
+            return this._object is DateTime;
         }
+    }
 
-        public DateTime ToDateTime()
+    public bool IsTimeSpan
+    {
+        get
         {
-            return (DateTime)this._object;
+            return this._object is TimeSpan;
         }
+    }
 
-        public TimeSpan ToTimeSpan()
-        {
-            return (TimeSpan)this._object;
-        }
+    public DateTime ToDateTime()
+    {
+        return (DateTime)this._object;
+    }
 
-        public double ToDouble()
-        {
-            return Convert.ToDouble(this._object);
-        }
+    public TimeSpan ToTimeSpan()
+    {
+        return (TimeSpan)this._object;
+    }
 
-        public override string ToString()
-        {
-            return this._object.ToString();
-        }
+    public double ToDouble()
+    {
+        return Convert.ToDouble(this._object);
+    }
 
-        public object Object
-        {
-            get { return this._object; }
-        }
+    public override string ToString()
+    {
+        return this._object.ToString();
+    }
+
+    public object Object
+    {
+        get { return this._object; }
     }
 }

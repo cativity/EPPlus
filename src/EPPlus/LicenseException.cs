@@ -14,16 +14,15 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace OfficeOpenXml
-{
-    /// <summary>
-    /// An exception thrown when the license context of EPPlus hasn't been set.
-    /// </summary>
-    public class LicenseException : Exception
-    {
-        internal LicenseException(string message) : base(message)
-        {
+namespace OfficeOpenXml;
 
-        }
+/// <summary>
+/// An exception thrown when the license context of EPPlus hasn't been set.
+/// </summary>
+public class LicenseException : Exception
+{
+    internal LicenseException(string message) : base(message)
+    {
+
     }
 }

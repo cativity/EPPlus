@@ -10,28 +10,27 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
-namespace OfficeOpenXml.VBA
+namespace OfficeOpenXml.VBA;
+
+/// <summary>
+/// Type of system where the VBA project was created.
+/// </summary>
+public enum eSyskind
 {
-        /// <summary>
-        /// Type of system where the VBA project was created.
-        /// </summary>
-        public enum eSyskind
-        {
-            /// <summary>
-            /// Windows 16-bit
-            /// </summary>
-            Win16 = 0,
-            /// <summary>
-            /// Windows 32-bit
-            /// </summary>
-            Win32 = 1,
-            /// <summary>
-            /// Mac
-            /// </summary>
-            Macintosh = 2,
-            /// <summary>
-            /// Windows 64-bit
-            /// </summary>
-            Win64 = 3
-        }
+    /// <summary>
+    /// Windows 16-bit
+    /// </summary>
+    Win16 = 0,
+    /// <summary>
+    /// Windows 32-bit
+    /// </summary>
+    Win32 = 1,
+    /// <summary>
+    /// Mac
+    /// </summary>
+    Macintosh = 2,
+    /// <summary>
+    /// Windows 64-bit
+    /// </summary>
+    Win64 = 3
 }

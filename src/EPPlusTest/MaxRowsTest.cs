@@ -2,48 +2,47 @@
 using OfficeOpenXml;
 using System;
 
-namespace EPPlusTest
+namespace EPPlusTest;
+
+[TestClass]
+public class MaxRowsTest : TestBase
 {
-    [TestClass]
-    public class MaxRowsTest : TestBase
+    [TestMethod]
+    public void DeletingAtMaxRowsOfExcelSheetShouldNotThrow()
     {
-        [TestMethod]
-        public void DeletingAtMaxRowsOfExcelSheetShouldNotThrow()
-        {
-            ExcelPackage? package = new ExcelPackage();
+        ExcelPackage? package = new ExcelPackage();
 
-            ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("DeletingAtMaxSheet");
+        ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("DeletingAtMaxSheet");
 
-            sheet.Cells["A1048576"].Value = 5;
+        sheet.Cells["A1048576"].Value = 5;
 
-            //Verify end and start of sheet are as expected.
-            Assert.AreEqual(1048576, sheet.Dimension.End.Row);
-            Assert.AreEqual(1, sheet.Dimension.Start.Column);
-            Assert.AreEqual(5, sheet.Cells[sheet.Dimension.End.Row, sheet.Dimension.Start.Column].Value);
+        //Verify end and start of sheet are as expected.
+        Assert.AreEqual(1048576, sheet.Dimension.End.Row);
+        Assert.AreEqual(1, sheet.Dimension.Start.Column);
+        Assert.AreEqual(5, sheet.Cells[sheet.Dimension.End.Row, sheet.Dimension.Start.Column].Value);
 
-            sheet.DeleteRow(ExcelPackage.MaxRows);
+        sheet.DeleteRow(ExcelPackage.MaxRows);
 
-            Assert.IsNull(sheet.Dimension);
-            Assert.IsNull(sheet.Cells["A1048576"].Value);
-        }
+        Assert.IsNull(sheet.Dimension);
+        Assert.IsNull(sheet.Cells["A1048576"].Value);
+    }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
-        public void DeletingAtMaxRowsOfExcelSheetShouldThrow()
-        {
-            ExcelPackage? package = new ExcelPackage();
+    [TestMethod]
+    [ExpectedException(typeof(ArgumentException))]
+    public void DeletingAtMaxRowsOfExcelSheetShouldThrow()
+    {
+        ExcelPackage? package = new ExcelPackage();
 
-            ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("DeletingAtMaxSheet");
+        ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("DeletingAtMaxSheet");
 
 
-            sheet.Cells["A1048576"].Value = 5;
+        sheet.Cells["A1048576"].Value = 5;
 
-            //Verify end and start of sheet are as expected.
-            Assert.AreEqual(1048576, sheet.Dimension.End.Row);
-            Assert.AreEqual(1, sheet.Dimension.Start.Column);
-            Assert.AreEqual(5, sheet.Cells[sheet.Dimension.End.Row, sheet.Dimension.Start.Column].Value);
+        //Verify end and start of sheet are as expected.
+        Assert.AreEqual(1048576, sheet.Dimension.End.Row);
+        Assert.AreEqual(1, sheet.Dimension.Start.Column);
+        Assert.AreEqual(5, sheet.Cells[sheet.Dimension.End.Row, sheet.Dimension.Start.Column].Value);
 
-            sheet.DeleteRow(ExcelPackage.MaxRows, 2);
-        }
+        sheet.DeleteRow(ExcelPackage.MaxRows, 2);
     }
 }

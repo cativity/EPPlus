@@ -20,33 +20,32 @@ using OfficeOpenXml.FormulaParsing.ExpressionGraph;
 using OfficeOpenXml.FormulaParsing.ExcelUtilities;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Metadata;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions.RefAndLookup
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions.RefAndLookup;
+
+[FunctionMetadata(
+                     Category = ExcelFunctionCategory.LookupAndReference,
+                     EPPlusVersion = "4",
+                     Description = "Returns the number of columns in a supplied range")]
+internal class Columns : LookupFunction
 {
-    [FunctionMetadata(
-        Category = ExcelFunctionCategory.LookupAndReference,
-        EPPlusVersion = "4",
-        Description = "Returns the number of columns in a supplied range")]
-    internal class Columns : LookupFunction
+    public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
     {
-        public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
+        ValidateArguments(arguments, 1);
+        IRangeInfo? r=arguments.ElementAt(0).ValueAsRangeInfo;
+        if (r != null)
         {
-            ValidateArguments(arguments, 1);
-            IRangeInfo? r=arguments.ElementAt(0).ValueAsRangeInfo;
-            if (r != null)
-            {
-                return this.CreateResult(r.Address._toCol - r.Address._fromCol + 1, DataType.Integer);
-            }
-            else
-            {
-                string? range = ArgToAddress(arguments, 0, context);
-                if (ExcelAddressUtil.IsValidAddress(range))
-                {
-                    RangeAddressFactory? factory = new RangeAddressFactory(context.ExcelDataProvider);
-                    RangeAddress? address = factory.Create(range);
-                    return this.CreateResult(address.ToCol - address.FromCol + 1, DataType.Integer);
-                }
-            }
-            throw new ArgumentException("Invalid range supplied");
+            return this.CreateResult(r.Address._toCol - r.Address._fromCol + 1, DataType.Integer);
         }
+        else
+        {
+            string? range = ArgToAddress(arguments, 0, context);
+            if (ExcelAddressUtil.IsValidAddress(range))
+            {
+                RangeAddressFactory? factory = new RangeAddressFactory(context.ExcelDataProvider);
+                RangeAddress? address = factory.Create(range);
+                return this.CreateResult(address.ToCol - address.FromCol + 1, DataType.Integer);
+            }
+        }
+        throw new ArgumentException("Invalid range supplied");
     }
 }

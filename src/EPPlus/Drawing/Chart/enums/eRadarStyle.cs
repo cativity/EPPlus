@@ -10,24 +10,23 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
-namespace OfficeOpenXml.Drawing.Chart
+namespace OfficeOpenXml.Drawing.Chart;
+
+/// <summary>
+/// Radar chart type
+/// </summary>
+public enum eRadarStyle
 {
     /// <summary>
-    /// Radar chart type
+    /// The radar chart will be filled and have lines, but will not have markers.
     /// </summary>
-    public enum eRadarStyle
-    {
-        /// <summary>
-        /// The radar chart will be filled and have lines, but will not have markers.
-        /// </summary>
-        Filled,
-        /// <summary>
-        /// The radar chart will have lines and markers, but will not be filled.
-        /// </summary>
-        Marker,
-        /// <summary>
-        /// The radar chart will have lines, but no markers and no filling.
-        /// </summary>
-        Standard 
-    }
+    Filled,
+    /// <summary>
+    /// The radar chart will have lines and markers, but will not be filled.
+    /// </summary>
+    Marker,
+    /// <summary>
+    /// The radar chart will have lines, but no markers and no filling.
+    /// </summary>
+    Standard 
 }

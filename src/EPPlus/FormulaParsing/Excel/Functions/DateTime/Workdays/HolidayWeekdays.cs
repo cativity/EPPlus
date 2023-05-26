@@ -17,49 +17,67 @@ using System.Text;
 using OfficeOpenXml.Utils;
 using OfficeOpenXml.FormulaParsing;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime.Workdays
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime.Workdays;
+
+public class HolidayWeekdays
 {
-    public class HolidayWeekdays
+    private readonly List<DayOfWeek> _holidayDays = new List<DayOfWeek>();
+
+    public HolidayWeekdays()
+        :this(DayOfWeek.Saturday, DayOfWeek.Sunday)
     {
-        private readonly List<DayOfWeek> _holidayDays = new List<DayOfWeek>();
-
-        public HolidayWeekdays()
-            :this(DayOfWeek.Saturday, DayOfWeek.Sunday)
-        {
             
+    }
+
+    public int NumberOfWorkdaysPerWeek => 7 - this._holidayDays.Count;
+
+    public HolidayWeekdays(params DayOfWeek[] holidayDays)
+    {
+        foreach (DayOfWeek dayOfWeek in holidayDays)
+        {
+            this._holidayDays.Add(dayOfWeek);
+        }
+    }
+
+    public bool IsHolidayWeekday(System.DateTime dateTime)
+    {
+        return this._holidayDays.Contains(dateTime.DayOfWeek);
+    }
+
+    public System.DateTime AdjustResultWithHolidays(System.DateTime resultDate,
+                                                    IEnumerable<FunctionArgument> arguments)
+    {
+        if (arguments.Count() == 2)
+        {
+            return resultDate;
         }
 
-        public int NumberOfWorkdaysPerWeek => 7 - this._holidayDays.Count;
-
-        public HolidayWeekdays(params DayOfWeek[] holidayDays)
+        IEnumerable<FunctionArgument>? holidays = arguments.ElementAt(2).Value as IEnumerable<FunctionArgument>;
+        if (holidays != null)
         {
-            foreach (DayOfWeek dayOfWeek in holidayDays)
+            foreach (FunctionArgument? arg in holidays)
             {
-                this._holidayDays.Add(dayOfWeek);
-            }
-        }
-
-        public bool IsHolidayWeekday(System.DateTime dateTime)
-        {
-            return this._holidayDays.Contains(dateTime.DayOfWeek);
-        }
-
-        public System.DateTime AdjustResultWithHolidays(System.DateTime resultDate,
-                                                         IEnumerable<FunctionArgument> arguments)
-        {
-            if (arguments.Count() == 2)
-            {
-                return resultDate;
-            }
-
-            IEnumerable<FunctionArgument>? holidays = arguments.ElementAt(2).Value as IEnumerable<FunctionArgument>;
-            if (holidays != null)
-            {
-                foreach (FunctionArgument? arg in holidays)
+                if (ConvertUtil.IsNumericOrDate(arg.Value))
                 {
-                    if (ConvertUtil.IsNumericOrDate(arg.Value))
+                    double dateSerial = ConvertUtil.GetValueDouble(arg.Value);
+                    System.DateTime holidayDate = System.DateTime.FromOADate(dateSerial);
+                    if (!this.IsHolidayWeekday(holidayDate))
                     {
-                        double dateSerial = ConvertUtil.GetValueDouble(arg.Value);
+                        resultDate = resultDate.AddDays(1);
+                    }
+                }
+            }
+        }
+        else
+        {
+            IRangeInfo? range = arguments.ElementAt(2).Value as IRangeInfo;
+            if (range != null)
+            {
+                foreach (ICellInfo? cell in range)
+                {
+                    if (ConvertUtil.IsNumericOrDate(cell.Value))
+                    {
+                        double dateSerial = ConvertUtil.GetValueDouble(cell.Value);
                         System.DateTime holidayDate = System.DateTime.FromOADate(dateSerial);
                         if (!this.IsHolidayWeekday(holidayDate))
                         {
@@ -68,37 +86,18 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime.Workdays
                     }
                 }
             }
-            else
-            {
-                IRangeInfo? range = arguments.ElementAt(2).Value as IRangeInfo;
-                if (range != null)
-                {
-                    foreach (ICellInfo? cell in range)
-                    {
-                        if (ConvertUtil.IsNumericOrDate(cell.Value))
-                        {
-                            double dateSerial = ConvertUtil.GetValueDouble(cell.Value);
-                            System.DateTime holidayDate = System.DateTime.FromOADate(dateSerial);
-                            if (!this.IsHolidayWeekday(holidayDate))
-                            {
-                                resultDate = resultDate.AddDays(1);
-                            }
-                        }
-                    }
-                }
-            }
-            return resultDate;
         }
+        return resultDate;
+    }
 
-        public System.DateTime GetNextWorkday(System.DateTime date, WorkdayCalculationDirection direction = WorkdayCalculationDirection.Forward)
+    public System.DateTime GetNextWorkday(System.DateTime date, WorkdayCalculationDirection direction = WorkdayCalculationDirection.Forward)
+    {
+        int changeParam = (int)direction;
+        System.DateTime tmpDate = date.AddDays(changeParam);
+        while (this.IsHolidayWeekday(tmpDate))
         {
-            int changeParam = (int)direction;
-            System.DateTime tmpDate = date.AddDays(changeParam);
-            while (this.IsHolidayWeekday(tmpDate))
-            {
-                tmpDate = tmpDate.AddDays(changeParam);
-            }
-            return tmpDate;
+            tmpDate = tmpDate.AddDays(changeParam);
         }
+        return tmpDate;
     }
 }

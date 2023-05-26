@@ -18,41 +18,40 @@ using OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.Implementations;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Metadata;
 using OfficeOpenXml.FormulaParsing.ExpressionGraph;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance;
+
+[FunctionMetadata(
+                     Category = ExcelFunctionCategory.Financial,
+                     EPPlusVersion = "5.2",
+                     Description = "Calculates the cumulative principal paid on a loan, between two specified periods")]
+internal class Cumprinc : ExcelFunction
 {
-    [FunctionMetadata(
-        Category = ExcelFunctionCategory.Financial,
-        EPPlusVersion = "5.2",
-        Description = "Calculates the cumulative principal paid on a loan, between two specified periods")]
-    internal class Cumprinc : ExcelFunction
+    public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
     {
-        public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
+        ValidateArguments(arguments, 6);
+        double rate = this.ArgToDecimal(arguments, 0);
+        double nPer = this.ArgToDecimal(arguments, 1);
+        double presentValue = this.ArgToDecimal(arguments, 2);
+        int startPeriod = this.ArgToInt(arguments, 3);
+        int endPeriod = this.ArgToInt(arguments, 4);
+        int t = this.ArgToInt(arguments, 5);
+        if (t < 0 || t > 1)
         {
-            ValidateArguments(arguments, 6);
-            double rate = this.ArgToDecimal(arguments, 0);
-            double nPer = this.ArgToDecimal(arguments, 1);
-            double presentValue = this.ArgToDecimal(arguments, 2);
-            int startPeriod = this.ArgToInt(arguments, 3);
-            int endPeriod = this.ArgToInt(arguments, 4);
-            int t = this.ArgToInt(arguments, 5);
-            if (t < 0 || t > 1)
-            {
-                return this.CreateResult(eErrorType.Num);
-            }
-
-            CumprincImpl? func = new CumprincImpl(new PmtProvider(), new FvProvider());
-            FinanceCalcResult<double>? result = func.GetCumprinc(rate, nPer, presentValue, startPeriod, endPeriod, (PmtDue)t);
-            if (result.HasError)
-            {
-                return this.CreateResult(result.ExcelErrorType);
-            }
-
-            return this.CreateResult(result.Result, DataType.Decimal);
+            return this.CreateResult(eErrorType.Num);
         }
 
-        private static double GetInterest(double rate, double remainingAmount)
+        CumprincImpl? func = new CumprincImpl(new PmtProvider(), new FvProvider());
+        FinanceCalcResult<double>? result = func.GetCumprinc(rate, nPer, presentValue, startPeriod, endPeriod, (PmtDue)t);
+        if (result.HasError)
         {
-            return remainingAmount * rate;
+            return this.CreateResult(result.ExcelErrorType);
         }
+
+        return this.CreateResult(result.Result, DataType.Decimal);
+    }
+
+    private static double GetInterest(double rate, double remainingAmount)
+    {
+        return remainingAmount * rate;
     }
 }

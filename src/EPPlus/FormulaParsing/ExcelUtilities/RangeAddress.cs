@@ -16,55 +16,54 @@ using System.Linq;
 using System.Text;
 using OfficeOpenXml.FormulaParsing.Utilities;
 
-namespace OfficeOpenXml.FormulaParsing.ExcelUtilities
+namespace OfficeOpenXml.FormulaParsing.ExcelUtilities;
+
+public class RangeAddress
 {
-    public class RangeAddress
+    public RangeAddress()
     {
-        public RangeAddress()
+        this.Address = string.Empty;
+    }
+
+    internal string Address { get; set; }
+
+    public string Worksheet { get; internal set; }
+
+    public int FromCol { get; internal set; }
+
+    public int ToCol { get; internal set; }
+
+    public int FromRow { get; internal set; }
+
+    public int ToRow { get; internal set; }
+
+    public override string ToString()
+    {
+        return this.Address;
+    }
+
+    private static RangeAddress _empty = new RangeAddress();
+    public static RangeAddress Empty
+    {
+        get { return _empty; }
+    }
+
+    /// <summary>
+    /// Returns true if this range collides (full or partly) with the supplied range
+    /// </summary>
+    /// <param name="other">The range to check</param>
+    /// <returns></returns>
+    public bool CollidesWith(RangeAddress other)
+    {
+        if (other.Worksheet != this.Worksheet)
         {
-            this.Address = string.Empty;
+            return false;
         }
-
-        internal string Address { get; set; }
-
-        public string Worksheet { get; internal set; }
-
-        public int FromCol { get; internal set; }
-
-        public int ToCol { get; internal set; }
-
-        public int FromRow { get; internal set; }
-
-        public int ToRow { get; internal set; }
-
-        public override string ToString()
+        if (other.FromRow > this.ToRow || other.FromCol > this.ToCol
+                                       || this.FromRow > other.ToRow || this.FromCol > other.ToCol)
         {
-            return this.Address;
+            return false;
         }
-
-        private static RangeAddress _empty = new RangeAddress();
-        public static RangeAddress Empty
-        {
-            get { return _empty; }
-        }
-
-        /// <summary>
-        /// Returns true if this range collides (full or partly) with the supplied range
-        /// </summary>
-        /// <param name="other">The range to check</param>
-        /// <returns></returns>
-        public bool CollidesWith(RangeAddress other)
-        {
-            if (other.Worksheet != this.Worksheet)
-            {
-                return false;
-            }
-            if (other.FromRow > this.ToRow || other.FromCol > this.ToCol
-                                           || this.FromRow > other.ToRow || this.FromCol > other.ToCol)
-            {
-                return false;
-            }
-            return true;
-        }
+        return true;
     }
 }

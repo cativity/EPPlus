@@ -35,68 +35,67 @@ using OfficeOpenXml.Drawing.Style.Coloring;
 using OfficeOpenXml.Drawing.Theme;
 using System.Drawing;
 
-namespace EPPlusTest.Drawing.Chart
+namespace EPPlusTest.Drawing.Chart;
+
+[TestClass]
+public class DataPointsTest : TestBase
 {
-    [TestClass]
-    public class DataPointsTest : TestBase
+    static ExcelPackage _pck;
+    [ClassInitialize]
+    public static void Init(TestContext context)
     {
-        static ExcelPackage _pck;
-        [ClassInitialize]
-        public static void Init(TestContext context)
-        {
-            _pck = OpenPackage("DataPoints.xlsx", true);
-        }
-        [ClassCleanup]
-        public static void Cleanup()
-        {
-            SaveAndCleanup(_pck);
-        }
+        _pck = OpenPackage("DataPoints.xlsx", true);
+    }
+    [ClassCleanup]
+    public static void Cleanup()
+    {
+        SaveAndCleanup(_pck);
+    }
 
-        [TestMethod]
-        public void LineChart()
-        {
-            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("LineChart");
-            LoadTestdata(ws);
+    [TestMethod]
+    public void LineChart()
+    {
+        ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("LineChart");
+        LoadTestdata(ws);
 
-            ExcelLineChart? chart=ws.Drawings.AddLineChart("LineChart1", eLineChartType.Line);
-            ExcelLineChartSerie? serie = chart.Series.Add("D2:D100", "A2:A100");
-            ExcelChartDataPoint? point = serie.DataPoints.Add(3);
-            point.Border.Fill.Color = Color.Red;
-            point.Border.Fill.Style = eFillStyle.SolidFill;
-            point.Fill.Color = Color.Green;
-            chart.SetPosition(1, 0, 5, 0);
-        }
-        [TestMethod]
-        public void PieChart()
-        {
-            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("PieChart");
-            LoadTestdata(ws);
+        ExcelLineChart? chart=ws.Drawings.AddLineChart("LineChart1", eLineChartType.Line);
+        ExcelLineChartSerie? serie = chart.Series.Add("D2:D100", "A2:A100");
+        ExcelChartDataPoint? point = serie.DataPoints.Add(3);
+        point.Border.Fill.Color = Color.Red;
+        point.Border.Fill.Style = eFillStyle.SolidFill;
+        point.Fill.Color = Color.Green;
+        chart.SetPosition(1, 0, 5, 0);
+    }
+    [TestMethod]
+    public void PieChart()
+    {
+        ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("PieChart");
+        LoadTestdata(ws);
 
-            ExcelPieChart? chart = ws.Drawings.AddPieChart("PieChart1", ePieChartType.Pie);
-            ExcelPieChartSerie? serie = chart.Series.Add("D2:D6", "A2:A6");
-            ExcelChartDataPoint? point = serie.DataPoints.Add(0);
-            point.Border.Fill.Color = Color.Red;
-            point.Border.Fill.Style = eFillStyle.SolidFill;
-            point.Fill.Color = Color.Green;
-            chart.SetPosition(1, 0, 5, 0);
-        }
-        [TestMethod]
-        public void BarChart()  
-        {
-            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("BarChart");
-            LoadTestdata(ws);
+        ExcelPieChart? chart = ws.Drawings.AddPieChart("PieChart1", ePieChartType.Pie);
+        ExcelPieChartSerie? serie = chart.Series.Add("D2:D6", "A2:A6");
+        ExcelChartDataPoint? point = serie.DataPoints.Add(0);
+        point.Border.Fill.Color = Color.Red;
+        point.Border.Fill.Style = eFillStyle.SolidFill;
+        point.Fill.Color = Color.Green;
+        chart.SetPosition(1, 0, 5, 0);
+    }
+    [TestMethod]
+    public void BarChart()  
+    {
+        ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("BarChart");
+        LoadTestdata(ws);
 
-            ExcelBarChart? chart = ws.Drawings.AddBarChart("BarChart1", eBarChartType.Column3D);
-            ExcelBarChartSerie? serie = chart.Series.Add("D2:D5", "A2:A5");
-            ExcelChartDataPoint? point = serie.DataPoints.Add(0);
-            point.Border.Fill.Color = Color.Blue;
-            point.Border.Fill.Style = eFillStyle.SolidFill;
-            point.Fill.Style = eFillStyle.SolidFill;
-            point.Fill.SolidFill.Color.SetRgbColor(Color.Yellow);
-            point.Fill.Transparancy = 5;            
-            Assert.AreEqual(eColorTransformType.Alpha, point.Fill.SolidFill.Color.Transforms[0].Type);
-            Assert.AreEqual(95, point.Fill.SolidFill.Color.Transforms[0].Value);
-            chart.SetPosition(1, 0, 5, 0);
-        }
+        ExcelBarChart? chart = ws.Drawings.AddBarChart("BarChart1", eBarChartType.Column3D);
+        ExcelBarChartSerie? serie = chart.Series.Add("D2:D5", "A2:A5");
+        ExcelChartDataPoint? point = serie.DataPoints.Add(0);
+        point.Border.Fill.Color = Color.Blue;
+        point.Border.Fill.Style = eFillStyle.SolidFill;
+        point.Fill.Style = eFillStyle.SolidFill;
+        point.Fill.SolidFill.Color.SetRgbColor(Color.Yellow);
+        point.Fill.Transparancy = 5;            
+        Assert.AreEqual(eColorTransformType.Alpha, point.Fill.SolidFill.Color.Transforms[0].Type);
+        Assert.AreEqual(95, point.Fill.SolidFill.Color.Transforms[0].Value);
+        chart.SetPosition(1, 0, 5, 0);
     }
 }

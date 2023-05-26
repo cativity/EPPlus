@@ -18,39 +18,39 @@ using System.Drawing;
 using System.Xml;
 using OfficeOpenXml.ConditionalFormatting.Contracts;
 
-namespace OfficeOpenXml.ConditionalFormatting
-{
-  /// <summary>
-  /// ExcelConditionalFormattingAboveStdDev
-  /// </summary>
-  public class ExcelConditionalFormattingAboveStdDev
+namespace OfficeOpenXml.ConditionalFormatting;
+
+/// <summary>
+/// ExcelConditionalFormattingAboveStdDev
+/// </summary>
+public class ExcelConditionalFormattingAboveStdDev
     : ExcelConditionalFormattingRule,
-    IExcelConditionalFormattingStdDevGroup
-  {
+      IExcelConditionalFormattingStdDevGroup
+{
     /****************************************************************************************/
 
     #region Constructors
     /// <summary>
     /// 
     /// </summary>
-      /// <param name="address"></param>
-      /// <param name="priority"></param>
-      /// <param name="worksheet"></param>
+    /// <param name="address"></param>
+    /// <param name="priority"></param>
+    /// <param name="worksheet"></param>
     /// <param name="itemElementNode"></param>
     /// <param name="namespaceManager"></param>
     internal ExcelConditionalFormattingAboveStdDev(
-      ExcelAddress address,
-      int priority,
-      ExcelWorksheet worksheet,
-      XmlNode itemElementNode,
-      XmlNamespaceManager namespaceManager)
-      : base(
-        eExcelConditionalFormattingRuleType.AboveStdDev,
-        address,
-        priority,
-        worksheet,
-        itemElementNode,
-        (namespaceManager == null) ? worksheet.NameSpaceManager : namespaceManager)
+        ExcelAddress address,
+        int priority,
+        ExcelWorksheet worksheet,
+        XmlNode itemElementNode,
+        XmlNamespaceManager namespaceManager)
+        : base(
+               eExcelConditionalFormattingRuleType.AboveStdDev,
+               address,
+               priority,
+               worksheet,
+               itemElementNode,
+               (namespaceManager == null) ? worksheet.NameSpaceManager : namespaceManager)
     {
         if (itemElementNode==null) //Set default values and create attributes if needed
         {
@@ -67,16 +67,16 @@ namespace OfficeOpenXml.ConditionalFormatting
     /// <param name="worksheet"></param>
     /// <param name="itemElementNode"></param>
     internal ExcelConditionalFormattingAboveStdDev(
-      ExcelAddress address,
-      int priority,
-      ExcelWorksheet worksheet,
-      XmlNode itemElementNode)
-      : this(
-        address,
-        priority,
-        worksheet,
-        itemElementNode,
-        null)
+        ExcelAddress address,
+        int priority,
+        ExcelWorksheet worksheet,
+        XmlNode itemElementNode)
+        : this(
+               address,
+               priority,
+               worksheet,
+               itemElementNode,
+               null)
     {
     }
 
@@ -87,19 +87,18 @@ namespace OfficeOpenXml.ConditionalFormatting
     /// <param name="address"></param>
     /// <param name="worksheet"></param>
     internal ExcelConditionalFormattingAboveStdDev(
-      ExcelAddress address,
-      int priority,
-      ExcelWorksheet worksheet)
-      : this(
-        address,
-        priority,
-        worksheet,
-        null,
-        null)
+        ExcelAddress address,
+        int priority,
+        ExcelWorksheet worksheet)
+        : this(
+               address,
+               priority,
+               worksheet,
+               null,
+               null)
     {
     }
     #endregion Constructors
 
     /****************************************************************************************/
-  }
 }

@@ -18,35 +18,34 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance;
+
+[FunctionMetadata(
+                     Category = ExcelFunctionCategory.Financial,
+                     EPPlusVersion = "5.2",
+                     Description = "Calculates the cumulative interest paid between two specified periods")]
+internal class Cumipmt : ExcelFunction
 {
-    [FunctionMetadata(
-        Category = ExcelFunctionCategory.Financial,
-        EPPlusVersion = "5.2",
-        Description = "Calculates the cumulative interest paid between two specified periods")]
-    internal class Cumipmt : ExcelFunction
+    public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
     {
-        public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
+        ValidateArguments(arguments, 6);
+        double rate = this.ArgToDecimal(arguments, 0);
+        int nper = this.ArgToInt(arguments, 1);
+        double pv = this.ArgToDecimal(arguments, 2);
+        int startPeriod = this.ArgToInt(arguments, 3);
+        int endPeriod = this.ArgToInt(arguments, 4);
+        int type = this.ArgToInt(arguments, 5);
+        if (type < 0 || type > 1)
         {
-            ValidateArguments(arguments, 6);
-            double rate = this.ArgToDecimal(arguments, 0);
-            int nper = this.ArgToInt(arguments, 1);
-            double pv = this.ArgToDecimal(arguments, 2);
-            int startPeriod = this.ArgToInt(arguments, 3);
-            int endPeriod = this.ArgToInt(arguments, 4);
-            int type = this.ArgToInt(arguments, 5);
-            if (type < 0 || type > 1)
-            {
-                return this.CreateResult(eErrorType.Value);
-            }
-
-            FinanceCalcResult<double>? result = CumipmtImpl.GetCumipmt(rate, nper, pv, startPeriod, endPeriod, (PmtDue)type);
-            if (result.HasError)
-            {
-                return this.CreateResult(result.ExcelErrorType);
-            }
-
-            return this.CreateResult(result.Result, DataType.Decimal);
+            return this.CreateResult(eErrorType.Value);
         }
+
+        FinanceCalcResult<double>? result = CumipmtImpl.GetCumipmt(rate, nper, pv, startPeriod, endPeriod, (PmtDue)type);
+        if (result.HasError)
+        {
+            return this.CreateResult(result.ExcelErrorType);
+        }
+
+        return this.CreateResult(result.Result, DataType.Decimal);
     }
 }

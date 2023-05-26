@@ -14,20 +14,19 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace OfficeOpenXml.Drawing
+namespace OfficeOpenXml.Drawing;
+
+/// <summary>
+/// The possible directions for error bars
+/// </summary>
+public enum eErrorBarDirection
 {
     /// <summary>
-    /// The possible directions for error bars
+    /// Error bars will be shown in the x direction
     /// </summary>
-    public enum eErrorBarDirection
-    {
-        /// <summary>
-        /// Error bars will be shown in the x direction
-        /// </summary>
-        X,
-        /// <summary>
-        /// Error bars will be shown in the y direction
-        /// </summary>
-        Y
-    }
+    X,
+    /// <summary>
+    /// Error bars will be shown in the y direction
+    /// </summary>
+    Y
 }

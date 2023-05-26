@@ -10,24 +10,23 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
-namespace OfficeOpenXml.Drawing
+namespace OfficeOpenXml.Drawing;
+
+/// <summary>
+/// Lend end size
+/// </summary>
+public enum eEndSize
 {
     /// <summary>
-    /// Lend end size
+    /// Small
     /// </summary>
-    public enum eEndSize
-    {
-        /// <summary>
-        /// Small
-        /// </summary>
-        Small,
-        /// <summary>
-        /// Medium
-        /// </summary>
-        Medium,
-        /// <summary>
-        /// Large
-        /// </summary>
-        Large
-    }
+    Small,
+    /// <summary>
+    /// Medium
+    /// </summary>
+    Medium,
+    /// <summary>
+    /// Large
+    /// </summary>
+    Large
 }

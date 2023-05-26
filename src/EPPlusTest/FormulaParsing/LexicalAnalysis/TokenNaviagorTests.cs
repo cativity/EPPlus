@@ -33,159 +33,158 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace EPPlusTest.FormulaParsing.LexicalAnalysis
+namespace EPPlusTest.FormulaParsing.LexicalAnalysis;
+
+[TestClass]
+public class TokenNaviagorTests
 {
-    [TestClass]
-    public class TokenNaviagorTests
+    [TestMethod]
+    public void ShouldNotHaveNextWhenOnlyOneToken()
     {
-        [TestMethod]
-        public void ShouldNotHaveNextWhenOnlyOneToken()
+        List<Token>? tokens = new List<Token>
         {
-            List<Token>? tokens = new List<Token>
-            {
-                new Token("1", TokenType.Decimal)
-            };
-            TokenNavigator? navigator = new TokenNavigator(tokens);
+            new Token("1", TokenType.Decimal)
+        };
+        TokenNavigator? navigator = new TokenNavigator(tokens);
 
-            Assert.IsFalse(navigator.HasNext());
-        }
+        Assert.IsFalse(navigator.HasNext());
+    }
 
-        [TestMethod]
-        public void ShouldHaveNextWhenMoreTokens()
+    [TestMethod]
+    public void ShouldHaveNextWhenMoreTokens()
+    {
+        List<Token>? tokens = new List<Token>
         {
-            List<Token>? tokens = new List<Token>
-            {
-                new Token("1", TokenType.Decimal),
-                new Token("2", TokenType.Decimal)
-            };
-            TokenNavigator? navigator = new TokenNavigator(tokens);
+            new Token("1", TokenType.Decimal),
+            new Token("2", TokenType.Decimal)
+        };
+        TokenNavigator? navigator = new TokenNavigator(tokens);
 
-            Assert.IsTrue(navigator.HasNext());
-        }
+        Assert.IsTrue(navigator.HasNext());
+    }
 
-        [TestMethod]
-        public void ShouldNotHavePrevWheFirstToken()
+    [TestMethod]
+    public void ShouldNotHavePrevWheFirstToken()
+    {
+        List<Token>? tokens = new List<Token>
         {
-            List<Token>? tokens = new List<Token>
-            {
-                new Token("1", TokenType.Decimal),
-                new Token("2", TokenType.Decimal)
-            };
-            TokenNavigator? navigator = new TokenNavigator(tokens);
+            new Token("1", TokenType.Decimal),
+            new Token("2", TokenType.Decimal)
+        };
+        TokenNavigator? navigator = new TokenNavigator(tokens);
 
-            Assert.AreEqual(0, navigator.Index, "Index was not 0 but " + navigator.Index);
-            Assert.IsFalse(navigator.HasPrev(), "HasPrev() was not false");
-        }
+        Assert.AreEqual(0, navigator.Index, "Index was not 0 but " + navigator.Index);
+        Assert.IsFalse(navigator.HasPrev(), "HasPrev() was not false");
+    }
 
-        [TestMethod]
-        public void IndexShouldIncreaseWhenMoveNext()
+    [TestMethod]
+    public void IndexShouldIncreaseWhenMoveNext()
+    {
+        List<Token>? tokens = new List<Token>
         {
-            List<Token>? tokens = new List<Token>
-            {
-                new Token("1", TokenType.Decimal),
-                new Token("2", TokenType.Decimal)
-            };
-            TokenNavigator? navigator = new TokenNavigator(tokens);
-            navigator.MoveNext();
+            new Token("1", TokenType.Decimal),
+            new Token("2", TokenType.Decimal)
+        };
+        TokenNavigator? navigator = new TokenNavigator(tokens);
+        navigator.MoveNext();
 
-            Assert.AreEqual(1, navigator.Index, "Index was not 1 but " + navigator.Index);
-        }
+        Assert.AreEqual(1, navigator.Index, "Index was not 1 but " + navigator.Index);
+    }
 
-        [TestMethod]
-        public void NextTokenShouldBeReturned()
+    [TestMethod]
+    public void NextTokenShouldBeReturned()
+    {
+        List<Token>? tokens = new List<Token>
         {
-            List<Token>? tokens = new List<Token>
-            {
-                new Token("1", TokenType.Decimal),
-                new Token("2", TokenType.Decimal)
-            };
-            TokenNavigator? navigator = new TokenNavigator(tokens);
+            new Token("1", TokenType.Decimal),
+            new Token("2", TokenType.Decimal)
+        };
+        TokenNavigator? navigator = new TokenNavigator(tokens);
 
-            Assert.AreEqual("2", navigator.NextToken.Value);
-        }
+        Assert.AreEqual("2", navigator.NextToken.Value);
+    }
 
-        [TestMethod]
-        public void MoveToNextAndReturnPrevToken()
+    [TestMethod]
+    public void MoveToNextAndReturnPrevToken()
+    {
+        List<Token>? tokens = new List<Token>
         {
-            List<Token>? tokens = new List<Token>
-            {
-                new Token("1", TokenType.Decimal),
-                new Token("2", TokenType.Decimal)
-            };
-            TokenNavigator? navigator = new TokenNavigator(tokens);
-            navigator.MoveNext();
+            new Token("1", TokenType.Decimal),
+            new Token("2", TokenType.Decimal)
+        };
+        TokenNavigator? navigator = new TokenNavigator(tokens);
+        navigator.MoveNext();
 
-            Assert.AreEqual("1", navigator.PreviousToken.Value.Value);
-        }
+        Assert.AreEqual("1", navigator.PreviousToken.Value.Value);
+    }
 
-        [TestMethod]
-        public void GetRelativeForward()
+    [TestMethod]
+    public void GetRelativeForward()
+    {
+        List<Token>? tokens = new List<Token>
         {
-            List<Token>? tokens = new List<Token>
-            {
-                new Token("1", TokenType.Decimal),
-                new Token("2", TokenType.Decimal),
-                new Token("3", TokenType.Decimal)
-            };
-            TokenNavigator? navigator = new TokenNavigator(tokens);
-            Token token = navigator.GetTokenAtRelativePosition(2);
-            Assert.AreEqual("3", token.Value);
-        }
+            new Token("1", TokenType.Decimal),
+            new Token("2", TokenType.Decimal),
+            new Token("3", TokenType.Decimal)
+        };
+        TokenNavigator? navigator = new TokenNavigator(tokens);
+        Token token = navigator.GetTokenAtRelativePosition(2);
+        Assert.AreEqual("3", token.Value);
+    }
 
-        [TestMethod]
-        public void NumberOfRemainingTokensShouldBeCorrect()
+    [TestMethod]
+    public void NumberOfRemainingTokensShouldBeCorrect()
+    {
+        List<Token>? tokens = new List<Token>
         {
-            List<Token>? tokens = new List<Token>
-            {
-                new Token("1", TokenType.Decimal),
-                new Token("2", TokenType.Decimal),
-                new Token("3", TokenType.Decimal)
-            };
-            TokenNavigator? navigator = new TokenNavigator(tokens);
+            new Token("1", TokenType.Decimal),
+            new Token("2", TokenType.Decimal),
+            new Token("3", TokenType.Decimal)
+        };
+        TokenNavigator? navigator = new TokenNavigator(tokens);
 
-            Assert.AreEqual(2, navigator.NbrOfRemainingTokens);
-            navigator.MoveNext();
-            Assert.AreEqual(1, navigator.NbrOfRemainingTokens);
-        }
+        Assert.AreEqual(2, navigator.NbrOfRemainingTokens);
+        navigator.MoveNext();
+        Assert.AreEqual(1, navigator.NbrOfRemainingTokens);
+    }
 
-        [TestMethod]
-        public void MoveIndexShouldSetNewPosition()
+    [TestMethod]
+    public void MoveIndexShouldSetNewPosition()
+    {
+        List<Token>? tokens = new List<Token>
         {
-            List<Token>? tokens = new List<Token>
-            {
-                new Token("1", TokenType.Decimal),
-                new Token("2", TokenType.Decimal),
-                new Token("3", TokenType.Decimal)
-            };
-            TokenNavigator? navigator = new TokenNavigator(tokens);
-            navigator.MoveIndex(1);
-            Assert.AreEqual("2", navigator.CurrentToken.Value);
-        }
+            new Token("1", TokenType.Decimal),
+            new Token("2", TokenType.Decimal),
+            new Token("3", TokenType.Decimal)
+        };
+        TokenNavigator? navigator = new TokenNavigator(tokens);
+        navigator.MoveIndex(1);
+        Assert.AreEqual("2", navigator.CurrentToken.Value);
+    }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
-        public void ShouldThrowWhenIndexMovedOutOfRange()
+    [TestMethod]
+    [ExpectedException(typeof(ArgumentOutOfRangeException))]
+    public void ShouldThrowWhenIndexMovedOutOfRange()
+    {
+        List<Token>? tokens = new List<Token>
         {
-            List<Token>? tokens = new List<Token>
-            {
-                new Token("1", TokenType.Decimal),
-                new Token("2", TokenType.Decimal),
-                new Token("3", TokenType.Decimal)
-            };
-            TokenNavigator? navigator = new TokenNavigator(tokens);
-            navigator.MoveIndex(3);
-        }
+            new Token("1", TokenType.Decimal),
+            new Token("2", TokenType.Decimal),
+            new Token("3", TokenType.Decimal)
+        };
+        TokenNavigator? navigator = new TokenNavigator(tokens);
+        navigator.MoveIndex(3);
+    }
 
-        [TestMethod]
-        [ExpectedException(typeof(InvalidOperationException))]
-        public void ShouldThrowWhenGetPreviousOutOfRange()
+    [TestMethod]
+    [ExpectedException(typeof(InvalidOperationException))]
+    public void ShouldThrowWhenGetPreviousOutOfRange()
+    {
+        List<Token>? tokens = new List<Token>
         {
-            List<Token>? tokens = new List<Token>
-            {
-                new Token("1", TokenType.Decimal)
-            };
-            TokenNavigator? navigator = new TokenNavigator(tokens);
-            Token token = navigator.PreviousToken.Value;
-        }
+            new Token("1", TokenType.Decimal)
+        };
+        TokenNavigator? navigator = new TokenNavigator(tokens);
+        Token token = navigator.PreviousToken.Value;
     }
 }

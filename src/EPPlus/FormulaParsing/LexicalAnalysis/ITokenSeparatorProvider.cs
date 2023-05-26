@@ -15,17 +15,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace OfficeOpenXml.FormulaParsing.LexicalAnalysis
+namespace OfficeOpenXml.FormulaParsing.LexicalAnalysis;
+
+public interface ITokenSeparatorProvider
 {
-    public interface ITokenSeparatorProvider
-    {
-        IDictionary<string, Token> Tokens { get; }
+    IDictionary<string, Token> Tokens { get; }
 
-        bool IsOperator(string item);
+    bool IsOperator(string item);
 
-        bool IsPossibleLastPartOfMultipleCharOperator(string part);
+    bool IsPossibleLastPartOfMultipleCharOperator(string part);
 
-        Token? GetToken(string candidate);
+    Token? GetToken(string candidate);
 
-    }
 }

@@ -15,21 +15,20 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace OfficeOpenXml.FormulaParsing.Exceptions
+namespace OfficeOpenXml.FormulaParsing.Exceptions;
+
+/// <summary>
+/// Represents a circular reference errors that occur during formula calculation.
+/// </summary>
+public class CircularReferenceException : Exception
 {
     /// <summary>
-    /// Represents a circular reference errors that occur during formula calculation.
+    /// Initializes a new instance of the CircularReferenceException
     /// </summary>
-    public class CircularReferenceException : Exception
+    /// <param name="message">The message that describes the error</param>
+    public CircularReferenceException(string message)
+        : base(message)
     {
-        /// <summary>
-        /// Initializes a new instance of the CircularReferenceException
-        /// </summary>
-        /// <param name="message">The message that describes the error</param>
-        public CircularReferenceException(string message)
-            : base(message)
-        {
 
-        }
     }
 }

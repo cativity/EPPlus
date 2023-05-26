@@ -13,159 +13,158 @@
 using System;
 using System.Xml;
 
-namespace OfficeOpenXml.Drawing
+namespace OfficeOpenXml.Drawing;
+
+/// <summary>
+/// Properties for drawing line ends
+/// </summary>
+public sealed class ExcelDrawingLineEnd:XmlHelper
 {
-    /// <summary>
-    /// Properties for drawing line ends
-    /// </summary>
-    public sealed class ExcelDrawingLineEnd:XmlHelper
+    string _linePath;
+    private readonly Action _init;
+    internal ExcelDrawingLineEnd(XmlNamespaceManager nameSpaceManager, XmlNode topNode, string linePath, Action init) : 
+        base(nameSpaceManager, topNode)
     {
-         string _linePath;
-        private readonly Action _init;
-        internal ExcelDrawingLineEnd(XmlNamespaceManager nameSpaceManager, XmlNode topNode, string linePath, Action init) : 
-            base(nameSpaceManager, topNode)
+        this._linePath = linePath;
+        this._init = init;
+        this.SchemaNodeOrder = new string[] { "noFill","solidFill","gradFill","pattFill","prstDash", "custDash", "round","bevel", "miter", "headEnd", "tailEnd" };
+    }
+    string _stylePath = "/@type";
+    /// <summary>
+    /// The shapes line end decoration
+    /// </summary>
+    public eEndStyle? Style
+    {
+        get
         {
-            this._linePath = linePath;
-            this._init = init;
-            this.SchemaNodeOrder = new string[] { "noFill","solidFill","gradFill","pattFill","prstDash", "custDash", "round","bevel", "miter", "headEnd", "tailEnd" };
+            return TranslateEndStyle(this.GetXmlNodeString(this._linePath + this._stylePath));
         }
-        string _stylePath = "/@type";
-        /// <summary>
-        /// The shapes line end decoration
-        /// </summary>
-        public eEndStyle? Style
+        set
         {
-            get
+            this._init();
+            if (value == null)
             {
-                return TranslateEndStyle(this.GetXmlNodeString(this._linePath + this._stylePath));
-            }
-            set
-            {
-                this._init();
-                if (value == null)
-                {
-                    this.DeleteNode(this._linePath + this._stylePath);
-                }
-                else
-                {
-                    this.SetXmlNodeString(this._linePath + this._stylePath, TranslateEndStyleText(value.Value));
-                }
-            }
-        }
-
-        string _widthPath = "/@w";
-        /// <summary>
-        /// The line start/end width in relation to the line width
-        /// </summary>
-        public eEndSize? Width
-        {
-            get
-            {
-                return TranslateEndSize(this.GetXmlNodeString(this._linePath + this._widthPath));
-            }
-            set
-            {
-                this._init();
-                if (value == null)
-                {
-                    this.DeleteNode(this._linePath + this._widthPath);
-                }
-                else
-                {
-                    this.SetXmlNodeString(this._linePath + this._widthPath, TranslateEndSizeText(value.Value));
-                }
-            }
-        }
-
-        string _heightPath = "/@len";
-        /// <summary>
-        /// The line start/end height in relation to the line height
-        /// </summary>
-        public eEndSize? Height
-        {
-            get
-            {
-                return TranslateEndSize(this.GetXmlNodeString(this._linePath + this._heightPath));
-            }
-            set
-            {
-                this._init();
-                if (value == null)
-                {
-                    this.DeleteNode(this._linePath + this._heightPath);
-                }
-                else
-                {
-                    this.SetXmlNodeString(this._linePath + this._heightPath, TranslateEndSizeText(value.Value));
-                }
-            }
-        }
-        #region "Translate Enum functions"
-        private static string TranslateEndStyleText(eEndStyle value)
-        {
-            return value.ToString().ToLower();
-        }
-        private static eEndStyle? TranslateEndStyle(string text)
-        {
-            switch (text)
-            {
-                case "none":
-                case "arrow":
-                case "diamond":
-                case "oval":
-                case "stealth":
-                case "triangle":
-                    return (eEndStyle)Enum.Parse(typeof(eEndStyle), text, true);
-                default:
-                    return null;
-            }
-        }
-        private string GetCreateLinePath(bool doCreate)
-        {
-            if (string.IsNullOrEmpty(this._linePath))
-            {
-                return "";
+                this.DeleteNode(this._linePath + this._stylePath);
             }
             else
             {
-                if(doCreate)
-                {
-                    this.CreateNode(this._linePath, false);
-                }
-
-                return this._linePath + "/";
+                this.SetXmlNodeString(this._linePath + this._stylePath, TranslateEndStyleText(value.Value));
             }
         }
-
-        private static string TranslateEndSizeText(eEndSize value)
-        {
-            string text = value.ToString();
-            switch (value)
-            {
-                case eEndSize.Small:
-                    return "sm";
-                case eEndSize.Medium:
-                    return "med";
-                case eEndSize.Large:
-                    return "lg";
-                default:
-                    return null;
-            }
-        }
-        private static eEndSize? TranslateEndSize(string text)
-        {
-            switch (text)
-            {
-                case "sm":
-                    return eEndSize.Small;
-                case "med":
-                    return eEndSize.Medium;
-                case "lg":
-                    return eEndSize.Large;
-                default:
-                    return null;
-            }
-        }
-        #endregion
     }
+
+    string _widthPath = "/@w";
+    /// <summary>
+    /// The line start/end width in relation to the line width
+    /// </summary>
+    public eEndSize? Width
+    {
+        get
+        {
+            return TranslateEndSize(this.GetXmlNodeString(this._linePath + this._widthPath));
+        }
+        set
+        {
+            this._init();
+            if (value == null)
+            {
+                this.DeleteNode(this._linePath + this._widthPath);
+            }
+            else
+            {
+                this.SetXmlNodeString(this._linePath + this._widthPath, TranslateEndSizeText(value.Value));
+            }
+        }
+    }
+
+    string _heightPath = "/@len";
+    /// <summary>
+    /// The line start/end height in relation to the line height
+    /// </summary>
+    public eEndSize? Height
+    {
+        get
+        {
+            return TranslateEndSize(this.GetXmlNodeString(this._linePath + this._heightPath));
+        }
+        set
+        {
+            this._init();
+            if (value == null)
+            {
+                this.DeleteNode(this._linePath + this._heightPath);
+            }
+            else
+            {
+                this.SetXmlNodeString(this._linePath + this._heightPath, TranslateEndSizeText(value.Value));
+            }
+        }
+    }
+    #region "Translate Enum functions"
+    private static string TranslateEndStyleText(eEndStyle value)
+    {
+        return value.ToString().ToLower();
+    }
+    private static eEndStyle? TranslateEndStyle(string text)
+    {
+        switch (text)
+        {
+            case "none":
+            case "arrow":
+            case "diamond":
+            case "oval":
+            case "stealth":
+            case "triangle":
+                return (eEndStyle)Enum.Parse(typeof(eEndStyle), text, true);
+            default:
+                return null;
+        }
+    }
+    private string GetCreateLinePath(bool doCreate)
+    {
+        if (string.IsNullOrEmpty(this._linePath))
+        {
+            return "";
+        }
+        else
+        {
+            if(doCreate)
+            {
+                this.CreateNode(this._linePath, false);
+            }
+
+            return this._linePath + "/";
+        }
+    }
+
+    private static string TranslateEndSizeText(eEndSize value)
+    {
+        string text = value.ToString();
+        switch (value)
+        {
+            case eEndSize.Small:
+                return "sm";
+            case eEndSize.Medium:
+                return "med";
+            case eEndSize.Large:
+                return "lg";
+            default:
+                return null;
+        }
+    }
+    private static eEndSize? TranslateEndSize(string text)
+    {
+        switch (text)
+        {
+            case "sm":
+                return eEndSize.Small;
+            case "med":
+                return eEndSize.Medium;
+            case "lg":
+                return eEndSize.Large;
+            default:
+                return null;
+        }
+    }
+    #endregion
 }

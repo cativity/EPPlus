@@ -33,11 +33,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EPPlusTest.FormulaParsing.LexicalAnalysis
-{
-    [TestClass]
-    public class CharHandlerTests
-    {
+namespace EPPlusTest.FormulaParsing.LexicalAnalysis;
 
-    }
+[TestClass]
+public class CharHandlerTests
+{
+
 }

@@ -17,51 +17,50 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Statistical
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Statistical;
+
+[FunctionMetadata(
+                     Category = ExcelFunctionCategory.Statistical,
+                     EPPlusVersion = "6.0",
+                     Description = "Calculate, or predict, a future value by using existing values. The future value is a y-value for a given x-value.")]
+internal class Forecast : ExcelFunction
 {
-    [FunctionMetadata(
-        Category = ExcelFunctionCategory.Statistical,
-        EPPlusVersion = "6.0",
-        Description = "Calculate, or predict, a future value by using existing values. The future value is a y-value for a given x-value.")]
-    internal class Forecast : ExcelFunction
+    public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
     {
-        public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
+        ValidateArguments(arguments, 3);
+        double x = this.ArgToDecimal(arguments, 0);
+        FunctionArgument? arg1 = arguments.ElementAt(1);
+        FunctionArgument? arg2 = arguments.ElementAt(2);
+        double[]? arrayY = this.ArgsToDoubleEnumerable(false, false, new FunctionArgument[] { arg1 }, context).Select(a => a.Value).ToArray();
+        double[]? arrayX = this.ArgsToDoubleEnumerable(false, false, new FunctionArgument[] { arg2 }, context).Select(b => b.Value).ToArray();
+        if (arrayY.Count() != arrayX.Count())
         {
-            ValidateArguments(arguments, 3);
-            double x = this.ArgToDecimal(arguments, 0);
-            FunctionArgument? arg1 = arguments.ElementAt(1);
-            FunctionArgument? arg2 = arguments.ElementAt(2);
-            double[]? arrayY = this.ArgsToDoubleEnumerable(false, false, new FunctionArgument[] { arg1 }, context).Select(a => a.Value).ToArray();
-            double[]? arrayX = this.ArgsToDoubleEnumerable(false, false, new FunctionArgument[] { arg2 }, context).Select(b => b.Value).ToArray();
-            if (arrayY.Count() != arrayX.Count())
-            {
-                return this.CreateResult(eErrorType.NA);
-            }
-
-            if (!arrayY.Any())
-            {
-                return this.CreateResult(eErrorType.NA);
-            }
-
-            double result = ForecastImpl(x, arrayY, arrayX);
-            return this.CreateResult(result, DataType.Decimal);
+            return this.CreateResult(eErrorType.NA);
         }
 
-        internal static double ForecastImpl(double x, double[] arrayY, double[] arrayX)
+        if (!arrayY.Any())
         {
-            double avgY = arrayY.Average();
-            double avgX = arrayX.Average();
-            int nItems = arrayY.Length;
-            double upperEquationPart = 0d;
-            double lowerEquationPart = 0d;
-            for (int ix = 0; ix < nItems; ix++)
-            {
-                upperEquationPart += (arrayX[ix] - avgX) * (arrayY[ix] - avgY);
-                lowerEquationPart += System.Math.Pow(arrayX[ix] - avgX, 2);
-            }
-            double b = upperEquationPart / lowerEquationPart;
-            double a = avgY - b * avgX;
-            return a + b * x;
+            return this.CreateResult(eErrorType.NA);
         }
+
+        double result = ForecastImpl(x, arrayY, arrayX);
+        return this.CreateResult(result, DataType.Decimal);
+    }
+
+    internal static double ForecastImpl(double x, double[] arrayY, double[] arrayX)
+    {
+        double avgY = arrayY.Average();
+        double avgX = arrayX.Average();
+        int nItems = arrayY.Length;
+        double upperEquationPart = 0d;
+        double lowerEquationPart = 0d;
+        for (int ix = 0; ix < nItems; ix++)
+        {
+            upperEquationPart += (arrayX[ix] - avgX) * (arrayY[ix] - avgY);
+            lowerEquationPart += System.Math.Pow(arrayX[ix] - avgX, 2);
+        }
+        double b = upperEquationPart / lowerEquationPart;
+        double a = avgY - b * avgX;
+        return a + b * x;
     }
 }

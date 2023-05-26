@@ -14,23 +14,22 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.FinancialDayCount
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.FinancialDayCount;
+
+internal class FinancialDay_Us_30_360 : FinancialDay
 {
-    internal class FinancialDay_Us_30_360 : FinancialDay
+    public FinancialDay_Us_30_360(System.DateTime date) : base(date)
     {
-        public FinancialDay_Us_30_360(System.DateTime date) : base(date)
-        {
-        }
+    }
 
-        public FinancialDay_Us_30_360(int year, int month, int day) : base(year, month, day)
-        {
-        }
+    public FinancialDay_Us_30_360(int year, int month, int day) : base(year, month, day)
+    {
+    }
 
-        protected override DayCountBasis Basis => DayCountBasis.US_30_360;
+    protected override DayCountBasis Basis => DayCountBasis.US_30_360;
 
-        protected override FinancialDay Factory(short year, short month, short day)
-        {
-            return new FinancialDay_Us_30_360(year, month, day);
-        }
+    protected override FinancialDay Factory(short year, short month, short day)
+    {
+        return new FinancialDay_Us_30_360(year, month, day);
     }
 }

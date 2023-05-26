@@ -15,21 +15,20 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace OfficeOpenXml.FormulaParsing.LexicalAnalysis.TokenSeparatorHandlers
+namespace OfficeOpenXml.FormulaParsing.LexicalAnalysis.TokenSeparatorHandlers;
+
+internal abstract class SeparatorHandler
 {
-    internal abstract class SeparatorHandler
+    protected static bool IsDoubleQuote(Token tokenSeparator, int formulaCharIndex, TokenizerContext context)
     {
-        protected static bool IsDoubleQuote(Token tokenSeparator, int formulaCharIndex, TokenizerContext context)
-        {
-            return tokenSeparator.TokenTypeIsSet(TokenType.String) && formulaCharIndex + 1 < context.FormulaChars.Length && context.FormulaChars[formulaCharIndex + 1] == '\"';
-        }
-
-        protected static bool IsDoubleSingleQuote(Token tokenSeparator, int formulaCharIndex, TokenizerContext context)
-        {
-            return tokenSeparator.TokenTypeIsSet(TokenType.WorksheetName) && formulaCharIndex + 1 < context.FormulaChars.Length && context.FormulaChars[formulaCharIndex + 1] == '\'';
-        }
-
-        public abstract bool Handle(char c, Token tokenSeparator, TokenizerContext context, ITokenIndexProvider tokenIndexProvider);
-
+        return tokenSeparator.TokenTypeIsSet(TokenType.String) && formulaCharIndex + 1 < context.FormulaChars.Length && context.FormulaChars[formulaCharIndex + 1] == '\"';
     }
+
+    protected static bool IsDoubleSingleQuote(Token tokenSeparator, int formulaCharIndex, TokenizerContext context)
+    {
+        return tokenSeparator.TokenTypeIsSet(TokenType.WorksheetName) && formulaCharIndex + 1 < context.FormulaChars.Length && context.FormulaChars[formulaCharIndex + 1] == '\'';
+    }
+
+    public abstract bool Handle(char c, Token tokenSeparator, TokenizerContext context, ITokenIndexProvider tokenIndexProvider);
+
 }

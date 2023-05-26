@@ -16,71 +16,70 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 
-namespace OfficeOpenXml.FormulaParsing.ExcelUtilities
-{
-    public class WildCardValueMatcher : ValueMatcher
-    {
-        protected override int CompareStringToString(string searchedValue, string candidate)
-        {
-            if (searchedValue.Contains("*") || searchedValue.Contains("?"))
-            {
-                string? regexPattern = BuildRegex(searchedValue, candidate);
-                if (Regex.IsMatch(candidate, regexPattern))
-                {
-                    return 0;
-                }
-            }
-            return base.CompareStringToString(candidate, searchedValue);
-        }
+namespace OfficeOpenXml.FormulaParsing.ExcelUtilities;
 
-        private static string BuildRegex(string searchedValue, string candidate)
+public class WildCardValueMatcher : ValueMatcher
+{
+    protected override int CompareStringToString(string searchedValue, string candidate)
+    {
+        if (searchedValue.Contains("*") || searchedValue.Contains("?"))
         {
-            StringBuilder? result = new StringBuilder();
-            string? regexPattern = Regex.Escape(searchedValue);
-            regexPattern = regexPattern.Replace("\\*", "*");
-            regexPattern = regexPattern.Replace("\\?", "?");
-            regexPattern = string.Format("^{0}$", regexPattern);
-            bool lastIsTilde = false;
-            foreach(char ch in regexPattern)
+            string? regexPattern = BuildRegex(searchedValue, candidate);
+            if (Regex.IsMatch(candidate, regexPattern))
             {
-                if(ch == '~')
+                return 0;
+            }
+        }
+        return base.CompareStringToString(candidate, searchedValue);
+    }
+
+    private static string BuildRegex(string searchedValue, string candidate)
+    {
+        StringBuilder? result = new StringBuilder();
+        string? regexPattern = Regex.Escape(searchedValue);
+        regexPattern = regexPattern.Replace("\\*", "*");
+        regexPattern = regexPattern.Replace("\\?", "?");
+        regexPattern = string.Format("^{0}$", regexPattern);
+        bool lastIsTilde = false;
+        foreach(char ch in regexPattern)
+        {
+            if(ch == '~')
+            {
+                lastIsTilde = true;
+                continue;
+            }
+            if(ch == '*')
+            {
+                if(lastIsTilde)
                 {
-                    lastIsTilde = true;
-                    continue;
-                }
-                if(ch == '*')
-                {
-                    if(lastIsTilde)
-                    {
-                        result.Append("\\*");
-                    }
-                    else
-                    {
-                        result.Append(".*");
-                    }
-                }
-                else if(ch == '?')
-                {
-                    if (lastIsTilde)
-                    {
-                        result.Append("\\?");
-                    }
-                    else
-                    {
-                        result.Append('.');
-                    }
-                }
-                else if(lastIsTilde)
-                {
-                    result.Append("~" + ch);
+                    result.Append("\\*");
                 }
                 else
                 {
-                    result.Append(ch);
+                    result.Append(".*");
                 }
-                lastIsTilde = false;
             }
-            return result.ToString();
+            else if(ch == '?')
+            {
+                if (lastIsTilde)
+                {
+                    result.Append("\\?");
+                }
+                else
+                {
+                    result.Append('.');
+                }
+            }
+            else if(lastIsTilde)
+            {
+                result.Append("~" + ch);
+            }
+            else
+            {
+                result.Append(ch);
+            }
+            lastIsTilde = false;
         }
+        return result.ToString();
     }
 }

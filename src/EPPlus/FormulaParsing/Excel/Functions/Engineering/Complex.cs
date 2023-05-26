@@ -17,35 +17,34 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Engineering
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Engineering;
+
+[FunctionMetadata(
+                     Category = ExcelFunctionCategory.Engineering,
+                     EPPlusVersion = "5.5",
+                     Description = "Converts user-supplied real and imaginary coefficients into a complex number")]
+internal class Complex : ExcelFunction
 {
-    [FunctionMetadata(
-        Category = ExcelFunctionCategory.Engineering,
-        EPPlusVersion = "5.5",
-        Description = "Converts user-supplied real and imaginary coefficients into a complex number")]
-    internal class Complex : ExcelFunction
+    public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
     {
-        public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
+        ValidateArguments(arguments, 2);
+        double real = this.ArgToDecimal(arguments, 0);
+        double img = this.ArgToDecimal(arguments, 1);
+        string? suffix = "i";
+        if(arguments.Count() > 2)
         {
-            ValidateArguments(arguments, 2);
-            double real = this.ArgToDecimal(arguments, 0);
-            double img = this.ArgToDecimal(arguments, 1);
-            string? suffix = "i";
-            if(arguments.Count() > 2)
+            suffix = ArgToString(arguments, 2);
+            if (suffix != "i" && suffix != "j")
             {
-                suffix = ArgToString(arguments, 2);
-                if (suffix != "i" && suffix != "j")
-                {
-                    return this.CreateResult(eErrorType.Value);
-                }
+                return this.CreateResult(eErrorType.Value);
             }
-            string? result = real.ToString();
-            if(img > 0)
-            {
-                result += "+";
-            }
-            result += img.ToString() + suffix;
-            return this.CreateResult(result, DataType.String);
         }
+        string? result = real.ToString();
+        if(img > 0)
+        {
+            result += "+";
+        }
+        result += img.ToString() + suffix;
+        return this.CreateResult(result, DataType.String);
     }
 }

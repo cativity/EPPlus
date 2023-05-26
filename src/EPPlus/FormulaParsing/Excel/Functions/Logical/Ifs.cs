@@ -17,28 +17,27 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Logical
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Logical;
+
+[FunctionMetadata(
+                     Category = ExcelFunctionCategory.Logical,
+                     EPPlusVersion = "5.0",
+                     Description = "Returns the largest numeric value that meets one or more criteria in a range of values",
+                     IntroducedInExcelVersion = "2019")]
+internal class Ifs : ExcelFunction
 {
-    [FunctionMetadata(
-        Category = ExcelFunctionCategory.Logical,
-        EPPlusVersion = "5.0",
-        Description = "Returns the largest numeric value that meets one or more criteria in a range of values",
-        IntroducedInExcelVersion = "2019")]
-    internal class Ifs : ExcelFunction
+    public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
     {
-        public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
+        ValidateArguments(arguments, 2);
+        CompileResultFactory? crf = new CompileResultFactory();
+        int maxArgs = arguments.Count() < (127 * 2) ? arguments.Count() : 127 * 2; 
+        for(int x = 0; x < maxArgs; x += 2)
         {
-            ValidateArguments(arguments, 2);
-            CompileResultFactory? crf = new CompileResultFactory();
-            int maxArgs = arguments.Count() < (127 * 2) ? arguments.Count() : 127 * 2; 
-            for(int x = 0; x < maxArgs; x += 2)
+            if (System.Math.Round(this.ArgToDecimal(arguments, x), 15) != 0d)
             {
-                if (System.Math.Round(this.ArgToDecimal(arguments, x), 15) != 0d)
-                {
-                    return crf.Create(arguments.ElementAt(x + 1).Value);
-                }
+                return crf.Create(arguments.ElementAt(x + 1).Value);
             }
-            return this.CreateResult(ExcelErrorValue.Create(eErrorType.NA), DataType.ExcelError);
         }
+        return this.CreateResult(ExcelErrorValue.Create(eErrorType.NA), DataType.ExcelError);
     }
 }

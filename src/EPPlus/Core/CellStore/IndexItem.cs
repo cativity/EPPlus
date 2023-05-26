@@ -12,13 +12,12 @@
  *************************************************************************************************/
 using System;
 
-namespace OfficeOpenXml.Core.CellStore
+namespace OfficeOpenXml.Core.CellStore;
+
+// To reduce memory usages, we use a struct here instead of a class.
+internal struct IndexItem
 {
-    // To reduce memory usages, we use a struct here instead of a class.
-    internal struct IndexItem
-    {
-        internal int IndexPointer { get; set; }
-        internal short Index { get; set; }
+    internal int IndexPointer { get; set; }
+    internal short Index { get; set; }
         
-    }
 }

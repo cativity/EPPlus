@@ -18,48 +18,47 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 
-namespace OfficeOpenXml.LoadFunctions
+namespace OfficeOpenXml.LoadFunctions;
+
+[DebuggerDisplay("Header: {Header}, SortOrder: {SortOrder}, Index: {Index}")]
+internal class ColumnInfo
 {
-    [DebuggerDisplay("Header: {Header}, SortOrder: {SortOrder}, Index: {Index}")]
-    internal class ColumnInfo
+    public ColumnInfo()
     {
-        public ColumnInfo()
+        this.TotalsRowFunction = RowFunctions.None;
+    }
+
+    public int SortOrder { get; set; }
+
+    public List<int> SortOrderLevels { get; set; }
+    public int Index { get; set; }
+
+    public MemberInfo MemberInfo { get; set; }
+
+    public string Formula { get; set; }
+
+    public string FormulaR1C1 { get; set; }
+
+    public string Header { get; set; }
+
+    public string NumberFormat { get; set; }
+
+    public RowFunctions TotalsRowFunction { get; set; }
+
+    public string TotalsRowFormula { get; set; }
+
+    public string TotalsRowNumberFormat { get; set; }
+
+    public string TotalsRowLabel { get; set; }
+
+    internal string Path { get; set; }
+
+    public override string ToString()
+    {
+        if(!string.IsNullOrEmpty(this.Header))
         {
-            this.TotalsRowFunction = RowFunctions.None;
+            return this.Header;
         }
-
-        public int SortOrder { get; set; }
-
-        public List<int> SortOrderLevels { get; set; }
-        public int Index { get; set; }
-
-        public MemberInfo MemberInfo { get; set; }
-
-        public string Formula { get; set; }
-
-        public string FormulaR1C1 { get; set; }
-
-        public string Header { get; set; }
-
-        public string NumberFormat { get; set; }
-
-        public RowFunctions TotalsRowFunction { get; set; }
-
-        public string TotalsRowFormula { get; set; }
-
-        public string TotalsRowNumberFormat { get; set; }
-
-        public string TotalsRowLabel { get; set; }
-
-        internal string Path { get; set; }
-
-        public override string ToString()
-        {
-            if(!string.IsNullOrEmpty(this.Header))
-            {
-                return this.Header;
-            }
-            return base.ToString();
-        }
+        return base.ToString();
     }
 }

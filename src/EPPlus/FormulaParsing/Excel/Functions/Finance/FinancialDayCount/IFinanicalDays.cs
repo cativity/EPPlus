@@ -15,25 +15,24 @@ using System.Collections.Generic;
 using System.Text;
 using SDateTime = System.DateTime;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.FinancialDayCount
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.FinancialDayCount;
+
+internal interface IFinanicalDays
 {
-    internal interface IFinanicalDays
-    {
-        double GetDaysBetweenDates(SDateTime startDate, SDateTime endDate);
+    double GetDaysBetweenDates(SDateTime startDate, SDateTime endDate);
 
-        double GetDaysBetweenDates(FinancialDay startDate, FinancialDay endDate);
+    double GetDaysBetweenDates(FinancialDay startDate, FinancialDay endDate);
 
-        IEnumerable<FinancialPeriod> GetCouponPeriodsBackwards(FinancialDay settlement, FinancialDay date, int frequency);
+    IEnumerable<FinancialPeriod> GetCouponPeriodsBackwards(FinancialDay settlement, FinancialDay date, int frequency);
 
-        IEnumerable<FinancialPeriod> GetCalendarYearPeriodsBackwards(FinancialDay settlement, FinancialDay date, int frequency);
-        IEnumerable<FinancialPeriod> GetCalendarYearPeriodsBackwards(FinancialDay settlement, FinancialDay date, int frequency, int additionalPeriods);
+    IEnumerable<FinancialPeriod> GetCalendarYearPeriodsBackwards(FinancialDay settlement, FinancialDay date, int frequency);
+    IEnumerable<FinancialPeriod> GetCalendarYearPeriodsBackwards(FinancialDay settlement, FinancialDay date, int frequency, int additionalPeriods);
 
-        FinancialPeriod GetCouponPeriod(FinancialDay settlementDate, FinancialDay maturityDate, int frequency);
+    FinancialPeriod GetCouponPeriod(FinancialDay settlementDate, FinancialDay maturityDate, int frequency);
 
-        int GetNumberOfCouponPeriods(FinancialDay settlementDate, FinancialDay maturityDate, int frequency);
+    int GetNumberOfCouponPeriods(FinancialDay settlementDate, FinancialDay maturityDate, int frequency);
 
-        double GetCoupdays(FinancialDay startDate, FinancialDay endDate, int frequency);
+    double GetCoupdays(FinancialDay startDate, FinancialDay endDate, int frequency);
 
-        double DaysPerYear { get; }
-    }
+    double DaysPerYear { get; }
 }

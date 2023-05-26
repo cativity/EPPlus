@@ -15,17 +15,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace OfficeOpenXml.FormulaParsing.LexicalAnalysis
+namespace OfficeOpenXml.FormulaParsing.LexicalAnalysis;
+
+/// <summary>
+/// Interface for analysing parsed tokens.
+/// </summary>
+public interface ISyntacticAnalyzer
 {
     /// <summary>
-    /// Interface for analysing parsed tokens.
+    /// Method for analyzing parsed tokens.
     /// </summary>
-    public interface ISyntacticAnalyzer
-    {
-        /// <summary>
-        /// Method for analyzing parsed tokens.
-        /// </summary>
-        /// <param name="tokens"></param>
-        void Analyze(IEnumerable<Token> tokens);
-    }
+    /// <param name="tokens"></param>
+    void Analyze(IEnumerable<Token> tokens);
 }

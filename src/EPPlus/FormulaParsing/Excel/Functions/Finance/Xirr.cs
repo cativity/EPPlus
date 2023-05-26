@@ -18,31 +18,30 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance
-{
-    [FunctionMetadata(
-        Category = ExcelFunctionCategory.Financial,
-        EPPlusVersion = "5.2",
-        Description = "Calculates the internal rate of return for a schedule of cash flows occurring at a series of supplied dates")]
-    internal class Xirr : ExcelFunction
-    {
-        public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
-        {
-            ValidateArguments(arguments, 2);
-            IEnumerable<double>? values = this.ArgsToDoubleEnumerable(new List<FunctionArgument> { arguments.ElementAt(0) }, context).Select(x => (double)x);
-            IEnumerable<System.DateTime>? dates = this.ArgsToDoubleEnumerable(new List<FunctionArgument> { arguments.ElementAt(1) }, context).Select(x => System.DateTime.FromOADate(x));
-            double guess = 0.1;
-            if(arguments.Count() > 2)
-            {
-                guess = this.ArgToDecimal(arguments, 2);
-            }
-            FinanceCalcResult<double>? result = XirrImpl.GetXirr(values, dates, guess);
-            if (result.HasError)
-            {
-                return this.CreateResult(result.ExcelErrorType);
-            }
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance;
 
-            return this.CreateResult(result.Result, DataType.Decimal);
+[FunctionMetadata(
+                     Category = ExcelFunctionCategory.Financial,
+                     EPPlusVersion = "5.2",
+                     Description = "Calculates the internal rate of return for a schedule of cash flows occurring at a series of supplied dates")]
+internal class Xirr : ExcelFunction
+{
+    public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
+    {
+        ValidateArguments(arguments, 2);
+        IEnumerable<double>? values = this.ArgsToDoubleEnumerable(new List<FunctionArgument> { arguments.ElementAt(0) }, context).Select(x => (double)x);
+        IEnumerable<System.DateTime>? dates = this.ArgsToDoubleEnumerable(new List<FunctionArgument> { arguments.ElementAt(1) }, context).Select(x => System.DateTime.FromOADate(x));
+        double guess = 0.1;
+        if(arguments.Count() > 2)
+        {
+            guess = this.ArgToDecimal(arguments, 2);
         }
+        FinanceCalcResult<double>? result = XirrImpl.GetXirr(values, dates, guess);
+        if (result.HasError)
+        {
+            return this.CreateResult(result.ExcelErrorType);
+        }
+
+        return this.CreateResult(result.Result, DataType.Decimal);
     }
 }

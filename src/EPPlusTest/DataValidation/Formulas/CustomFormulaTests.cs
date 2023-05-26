@@ -32,62 +32,61 @@ using OfficeOpenXml.DataValidation;
 using System.IO;
 using OfficeOpenXml.DataValidation.Contracts;
 
-namespace EPPlusTest.DataValidation.Formulas
+namespace EPPlusTest.DataValidation.Formulas;
+
+[TestClass]
+public class CustomFormulaTests : ValidationTestBase
 {
-    [TestClass]
-    public class CustomFormulaTests : ValidationTestBase
+    [TestMethod]
+    public void FormulaIsReadInConstructor()
     {
-        [TestMethod]
-        public void FormulaIsReadInConstructor()
-        {
-            ExcelPackage? package = new ExcelPackage(new MemoryStream());
-            ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("CustomTest");
+        ExcelPackage? package = new ExcelPackage(new MemoryStream());
+        ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("CustomTest");
 
-            IExcelDataValidationCustom? validationOrig = sheet.DataValidations.AddCustomValidation("A1");
-            validationOrig.Formula.ExcelFormula = "A1";
+        IExcelDataValidationCustom? validationOrig = sheet.DataValidations.AddCustomValidation("A1");
+        validationOrig.Formula.ExcelFormula = "A1";
 
-            ExcelDataValidationCustom? validation = ReadTValidation<ExcelDataValidationCustom>(package);
+        ExcelDataValidationCustom? validation = ReadTValidation<ExcelDataValidationCustom>(package);
 
-            Assert.AreEqual("A1", validation.Formula.ExcelFormula);
-        }
+        Assert.AreEqual("A1", validation.Formula.ExcelFormula);
+    }
 
-        [TestMethod]
-        public void FormulaSpecialSignsAreWrittenAndRead()
-        {
-            ExcelPackage? package = new ExcelPackage(new MemoryStream());
-            ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("CustomTest");
+    [TestMethod]
+    public void FormulaSpecialSignsAreWrittenAndRead()
+    {
+        ExcelPackage? package = new ExcelPackage(new MemoryStream());
+        ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("CustomTest");
 
-            IExcelDataValidationCustom? validationAmpersand = sheet.DataValidations.AddCustomValidation("A1");
+        IExcelDataValidationCustom? validationAmpersand = sheet.DataValidations.AddCustomValidation("A1");
 
-            sheet.Cells["B1"].Value = "EP";
-            sheet.Cells["C1"].Value = "Plus";
+        sheet.Cells["B1"].Value = "EP";
+        sheet.Cells["C1"].Value = "Plus";
 
-            validationAmpersand.Formula.ExcelFormula = "=B1&C1=A1";
-            validationAmpersand.ShowErrorMessage = true;
+        validationAmpersand.Formula.ExcelFormula = "=B1&C1=A1";
+        validationAmpersand.ShowErrorMessage = true;
 
-            IExcelDataValidationCustom? lessThan = sheet.DataValidations.AddCustomValidation("A2");
+        IExcelDataValidationCustom? lessThan = sheet.DataValidations.AddCustomValidation("A2");
 
-            sheet.Cells["B2"].Value = 1;
-            sheet.Cells["C2"].Value = 2;
+        sheet.Cells["B2"].Value = 1;
+        sheet.Cells["C2"].Value = 2;
 
-            lessThan.Formula.ExcelFormula = "B2<C2";
-            lessThan.ShowErrorMessage = true;
+        lessThan.Formula.ExcelFormula = "B2<C2";
+        lessThan.ShowErrorMessage = true;
 
-            IExcelDataValidationCustom? largerThan = sheet.DataValidations.AddCustomValidation("A3");
-            largerThan.Formula.ExcelFormula = "C2>B2";
-            largerThan.ShowErrorMessage = true;
+        IExcelDataValidationCustom? largerThan = sheet.DataValidations.AddCustomValidation("A3");
+        largerThan.Formula.ExcelFormula = "C2>B2";
+        largerThan.ShowErrorMessage = true;
 
-            MemoryStream stream = new MemoryStream();
-            package.SaveAs(stream);
+        MemoryStream stream = new MemoryStream();
+        package.SaveAs(stream);
 
-            ExcelPackage? loadedpkg = new ExcelPackage(stream);
-            ExcelWorksheet? loadedSheet = loadedpkg.Workbook.Worksheets[0];
+        ExcelPackage? loadedpkg = new ExcelPackage(stream);
+        ExcelWorksheet? loadedSheet = loadedpkg.Workbook.Worksheets[0];
 
-            ExcelDataValidationCollection? validations = loadedSheet.DataValidations;
+        ExcelDataValidationCollection? validations = loadedSheet.DataValidations;
 
-            Assert.AreEqual(((ExcelDataValidationCustom)validations[0]).Formula.ExcelFormula, "=B1&C1=A1");
-            Assert.AreEqual(((ExcelDataValidationCustom)validations[1]).Formula.ExcelFormula, "B2<C2");
-            Assert.AreEqual(((ExcelDataValidationCustom)validations[2]).Formula.ExcelFormula, "C2>B2");
-        }
+        Assert.AreEqual(((ExcelDataValidationCustom)validations[0]).Formula.ExcelFormula, "=B1&C1=A1");
+        Assert.AreEqual(((ExcelDataValidationCustom)validations[1]).Formula.ExcelFormula, "B2<C2");
+        Assert.AreEqual(((ExcelDataValidationCustom)validations[2]).Formula.ExcelFormula, "C2>B2");
     }
 }

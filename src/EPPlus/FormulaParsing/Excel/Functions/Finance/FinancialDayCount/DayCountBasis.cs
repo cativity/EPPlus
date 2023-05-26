@@ -14,14 +14,13 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.FinancialDayCount
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.FinancialDayCount;
+
+public enum DayCountBasis
 {
-    public enum DayCountBasis
-    {
-        US_30_360 = 0,
-        Actual_Actual = 1,
-        Actual_360 = 2,
-        Actual_365 = 3,
-        European_30_360 = 4
-    }
+    US_30_360 = 0,
+    Actual_Actual = 1,
+    Actual_360 = 2,
+    Actual_365 = 3,
+    European_30_360 = 4
 }

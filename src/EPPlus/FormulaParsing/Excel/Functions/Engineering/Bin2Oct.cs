@@ -18,52 +18,51 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Engineering
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Engineering;
+
+[FunctionMetadata(
+                     Category = ExcelFunctionCategory.Engineering,
+                     EPPlusVersion = "5.1",
+                     Description = "Converts a binary number to octal")]
+internal class Bin2Oct : ExcelFunction
 {
-    [FunctionMetadata(
-        Category = ExcelFunctionCategory.Engineering,
-        EPPlusVersion = "5.1",
-        Description = "Converts a binary number to octal")]
-    internal class Bin2Oct : ExcelFunction
+    public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
     {
-        public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
+        ValidateArguments(arguments, 1);
+        string? number = ArgToString(arguments, 0);
+        int? padding = default(int?);
+        if(arguments.Count() > 1)
         {
-            ValidateArguments(arguments, 1);
-            string? number = ArgToString(arguments, 0);
-            int? padding = default(int?);
-            if(arguments.Count() > 1)
+            padding = this.ArgToInt(arguments, 1);
+            if (padding.Value < 0 ^ padding.Value > 10)
             {
-                padding = this.ArgToInt(arguments, 1);
-                if (padding.Value < 0 ^ padding.Value > 10)
-                {
-                    return this.CreateResult(eErrorType.Num);
-                }
+                return this.CreateResult(eErrorType.Num);
             }
-            if (number.Length > 10)
+        }
+        if (number.Length > 10)
+        {
+            return this.CreateResult(eErrorType.Num);
+        }
+
+        string? octStr = string.Empty;
+        if (number.Length < 10)
+        {
+            int n = Convert.ToInt32(number, 2);
+            octStr = Convert.ToString(n, 8);
+        }
+        else
+        {
+            if (!BinaryHelper.TryParseBinaryToDecimal(number, 2, out int result))
             {
                 return this.CreateResult(eErrorType.Num);
             }
 
-            string? octStr = string.Empty;
-            if (number.Length < 10)
-            {
-                int n = Convert.ToInt32(number, 2);
-                octStr = Convert.ToString(n, 8);
-            }
-            else
-            {
-                if (!BinaryHelper.TryParseBinaryToDecimal(number, 2, out int result))
-                {
-                    return this.CreateResult(eErrorType.Num);
-                }
-
-                octStr = Convert.ToString(result, 8);
-            }
-            if(padding.HasValue)
-            {
-                octStr = PaddingHelper.EnsureLength(octStr, 10, "0");
-            }
-            return this.CreateResult(octStr, DataType.String);
+            octStr = Convert.ToString(result, 8);
         }
+        if(padding.HasValue)
+        {
+            octStr = PaddingHelper.EnsureLength(octStr, 10, "0");
+        }
+        return this.CreateResult(octStr, DataType.String);
     }
 }

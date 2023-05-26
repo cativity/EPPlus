@@ -40,159 +40,156 @@ using OfficeOpenXml.Drawing.Slicer;
 using OfficeOpenXml.Drawing.Slicer.Style;
 using OfficeOpenXml.Table;
 
-namespace EPPlusTest.Style
+namespace EPPlusTest.Style;
+
+[TestClass]
+public class SlicerStyleTests : TestBase
 {
-    [TestClass]
-    public class SlicerStyleTests : TestBase
+    static ExcelPackage _pck;
+
+    [ClassInitialize]
+    public static void Init(TestContext context)
     {
-        static ExcelPackage _pck;
+        _pck = OpenPackage("SlicerStyle.xlsx", true);
+    }
+    [ClassCleanup]
+    public static void Cleanup()
+    {
+        string? dirName = _pck.File.DirectoryName;
+        string? fileName = _pck.File.FullName;
 
-        [ClassInitialize]
-        public static void Init(TestContext context)
+        SaveAndCleanup(_pck);
+        if (File.Exists(fileName))
         {
-            _pck = OpenPackage("SlicerStyle.xlsx", true);
-        }
-        [ClassCleanup]
-        public static void Cleanup()
-        {
-            string? dirName = _pck.File.DirectoryName;
-            string? fileName = _pck.File.FullName;
-
-            SaveAndCleanup(_pck);
-            if (File.Exists(fileName))
-            {
-                File.Copy(fileName, dirName + "\\SlicerStyleRead.xlsx", true);
-            }
-        }
-        [TestMethod]
-        public void AddSlicerStyle()
-        {
-            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("SlicerStyleAdd");
-            ExcelSlicerNamedStyle? s=_pck.Workbook.Styles.CreateSlicerStyle("CustomSlicerStyle1");
-            s.WholeTable.Style.Font.Color.SetColor(Color.LightGray);
-            s.HeaderRow.Style.Fill.BackgroundColor.SetColor(Color.DarkGray);
-
-            s.SelectedItemWithData.Style.Font.Bold=true;
-            s.SelectedItemWithData.Style.Border.Top.Style = ExcelBorderStyle.Dotted;
-            s.SelectedItemWithData.Style.Border.Bottom.Style = ExcelBorderStyle.Hair;
-            s.SelectedItemWithData.Style.Border.Bottom.Color.SetColor(Color.Green);
-            s.SelectedItemWithData.Style.Border.Left.Style = ExcelBorderStyle.DashDotDot;
-            s.SelectedItemWithData.Style.Border.Right.Style = ExcelBorderStyle.None;
-            s.HoveredSelectedItemWithData.Style.Fill.BackgroundColor.SetColor(eThemeSchemeColor.Accent4);
-            s.HoveredUnselectedItemWithData.Style.Fill.BackgroundColor.SetColor(Color.LightGoldenrodYellow);
-
-            LoadTestdata(ws);
-            ExcelTable? tbl=ws.Tables.Add(ws.Cells["A1:D101"], "Table1");
-            ExcelTableSlicer? slicer = tbl.Columns[0].AddSlicer();
-            slicer.SetPosition(100, 100);
-            slicer.StyleName = "CustomSlicerStyle1";
-            
-            //Assert
-            Assert.AreEqual("CustomSlicerStyle1", slicer.StyleName);
-            Assert.AreEqual(Color.LightGray.ToArgb(), s.WholeTable.Style.Font.Color.Color.Value.ToArgb());
-            Assert.AreEqual(Color.DarkGray.ToArgb(), s.HeaderRow.Style.Fill.BackgroundColor.Color.Value.ToArgb());
-
-            Assert.IsTrue(s.SelectedItemWithData.Style.Font.Bold.Value);
-            Assert.AreEqual(ExcelBorderStyle.Dotted, s.SelectedItemWithData.Style.Border.Top.Style);
-            Assert.AreEqual(ExcelBorderStyle.Hair, s.SelectedItemWithData.Style.Border.Bottom.Style);
-            Assert.AreEqual(ExcelBorderStyle.DashDotDot, s.SelectedItemWithData.Style.Border.Left.Style);
-            Assert.AreEqual(ExcelBorderStyle.None, s.SelectedItemWithData.Style.Border.Right.Style);
-            Assert.AreEqual(eThemeSchemeColor.Accent4, s.HoveredSelectedItemWithData.Style.Fill.BackgroundColor.Theme);
-            Assert.AreEqual(Color.LightGoldenrodYellow.ToArgb(), s.HoveredUnselectedItemWithData.Style.Fill.BackgroundColor.Color.Value.ToArgb());
-        }
-        [TestMethod]
-        public void AddSlicerStyleFromTemplate()
-        {
-            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("SlicerStyleTemplate");
-            ExcelSlicerNamedStyle? s = _pck.Workbook.Styles.CreateSlicerStyle("CustomSlicerStyleFromTemplate", eSlicerStyle.Dark1);
-
-            s.WholeTable.Style.Font.Name = "Arial";
-            s.HeaderRow.Style.Font.Italic = true;
-
-            LoadTestdata(ws);
-            ExcelTable? tbl = ws.Tables.Add(ws.Cells["A1:D101"], "Table2");
-            ExcelTableSlicer? slicer = tbl.Columns[0].AddSlicer();
-            slicer.SetPosition(100, 100);
-            slicer.StyleName = "CustomSlicerStyleFromTemplate";
-
-            //Assert
-            Assert.AreEqual(eDxfFillStyle.GradientFill, s.HoveredSelectedItemWithData.Style.Fill.Style);
-            Assert.AreEqual(2, s.HoveredSelectedItemWithData.Style.Fill.Gradient.Colors.Count);
-            Assert.AreEqual(0, s.HoveredSelectedItemWithData.Style.Fill.Gradient.Colors[0].Position);
-            Assert.AreEqual(Color.FromArgb(0xFF, 0XF8, 0XE1, 0X62), s.HoveredSelectedItemWithData.Style.Fill.Gradient.Colors[0].Color.Color);
-            Assert.AreEqual(Color.FromArgb(0xFF, 0XFC, 0XF7, 0XE0), s.HoveredSelectedItemWithData.Style.Fill.Gradient.Colors[1].Color.Color);
-            Assert.AreEqual(100, s.HoveredSelectedItemWithData.Style.Fill.Gradient.Colors[1].Position);
-        }
-        [TestMethod]
-        public void AddSlicerStyleFromOther()
-        {
-            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("SlicerStyleCopyOther");
-            ExcelSlicerNamedStyle? s = _pck.Workbook.Styles.CreateSlicerStyle("CustomSlicerStyleToCopy", eSlicerStyle.Other2);
-
-            ExcelSlicerNamedStyle? sc= _pck.Workbook.Styles.CreateSlicerStyle("CustomSlicerStyleCopy", s);
-
-            sc.SelectedItemWithData.Style.Fill.Style = eDxfFillStyle.PatternFill;
-            sc.SelectedItemWithData.Style.Fill.BackgroundColor.SetColor(eThemeSchemeColor.Background2);
-            sc.SelectedItemWithData.Style.Fill.PatternType = ExcelFillStyle.LightGray;
-
-            LoadTestdata(ws);
-            ExcelTable? tbl = ws.Tables.Add(ws.Cells["A1:D100"], "Table3");
-            ExcelTableSlicer? slicer = tbl.Columns[0].AddSlicer();
-            slicer.SetPosition(100, 100);
-            slicer.StyleName = "CustomSlicerStyleCopy";
-
-            Assert.AreEqual(eThemeSchemeColor.Background2, sc.SelectedItemWithData.Style.Fill.BackgroundColor.Theme);
-            Assert.AreEqual(ExcelFillStyle.LightGray, sc.SelectedItemWithData.Style.Fill.PatternType);
-        }
-
-        [TestMethod]
-        public void AddSlicerStyleFromOtherNewPackage()
-        {
-            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("SlicerStyleCopyOtherPck");
-            ExcelSlicerNamedStyle? s = _pck.Workbook.Styles.CreateSlicerStyle("CustomSlicerStyleToCopyOther", eSlicerStyle.Other2);
-
-            s.WholeTable.Style.Font.Name = "Arial";
-
-            using ExcelPackage? p = new ExcelPackage();
-            ExcelSlicerNamedStyle? sc = p.Workbook.Styles.CreateSlicerStyle("CustomSlicerStyleCopyPck", s);
-            ws = p.Workbook.Worksheets.Add("CopiedSlicerStyle");
-            LoadTestdata(ws);
-            ExcelTable? tbl = ws.Tables.Add(ws.Cells["A1:D100"], "Table3");
-            ExcelTableSlicer? slicer = tbl.Columns[0].AddSlicer();
-            slicer.SetPosition(100, 100);
-            slicer.StyleName = "CustomSlicerStyleCopyPck";
-
-            //  Assert.AreEqual(fmt, sc.HoveredUnselectedItemWithNoData.Style.NumberFormat.Format);
-
-            SaveWorkbook("SlicerStyleNewPackage.Xlsx", p);
-        }
-
-
-        [TestMethod]
-        public void ReadSlicerStyle()
-        {
-            using ExcelPackage? p = OpenTemplatePackage("SlicerStyleRead.xlsx");
-            ExcelSlicerNamedStyle? s = p.Workbook.Styles.SlicerStyles["CustomSlicerStyle1"];
-            if (s == null)
-            {
-                Assert.Inconclusive("Custom style does not exists");
-            }
-
-            Assert.AreEqual("CustomSlicerStyle1", s.Name);
-
-            //Assert
-            Assert.AreEqual(Color.LightGray.ToArgb(), s.WholeTable.Style.Font.Color.Color.Value.ToArgb());
-            Assert.AreEqual(Color.DarkGray.ToArgb(), s.HeaderRow.Style.Fill.BackgroundColor.Color.Value.ToArgb());
-
-            Assert.IsTrue(s.SelectedItemWithData.Style.Font.Bold.Value);
-            Assert.AreEqual(ExcelBorderStyle.Dotted, s.SelectedItemWithData.Style.Border.Top.Style);
-            Assert.AreEqual(ExcelBorderStyle.Hair, s.SelectedItemWithData.Style.Border.Bottom.Style);
-            Assert.AreEqual(ExcelBorderStyle.DashDotDot, s.SelectedItemWithData.Style.Border.Left.Style);
-            Assert.AreEqual(ExcelBorderStyle.None, s.SelectedItemWithData.Style.Border.Right.Style);
-            Assert.AreEqual(eThemeSchemeColor.Accent4, s.HoveredSelectedItemWithData.Style.Fill.BackgroundColor.Theme);
-            Assert.AreEqual(Color.LightGoldenrodYellow.ToArgb(), s.HoveredUnselectedItemWithData.Style.Fill.BackgroundColor.Color.Value.ToArgb());
+            File.Copy(fileName, dirName + "\\SlicerStyleRead.xlsx", true);
         }
     }
+    [TestMethod]
+    public void AddSlicerStyle()
+    {
+        ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("SlicerStyleAdd");
+        ExcelSlicerNamedStyle? s=_pck.Workbook.Styles.CreateSlicerStyle("CustomSlicerStyle1");
+        s.WholeTable.Style.Font.Color.SetColor(Color.LightGray);
+        s.HeaderRow.Style.Fill.BackgroundColor.SetColor(Color.DarkGray);
+
+        s.SelectedItemWithData.Style.Font.Bold=true;
+        s.SelectedItemWithData.Style.Border.Top.Style = ExcelBorderStyle.Dotted;
+        s.SelectedItemWithData.Style.Border.Bottom.Style = ExcelBorderStyle.Hair;
+        s.SelectedItemWithData.Style.Border.Bottom.Color.SetColor(Color.Green);
+        s.SelectedItemWithData.Style.Border.Left.Style = ExcelBorderStyle.DashDotDot;
+        s.SelectedItemWithData.Style.Border.Right.Style = ExcelBorderStyle.None;
+        s.HoveredSelectedItemWithData.Style.Fill.BackgroundColor.SetColor(eThemeSchemeColor.Accent4);
+        s.HoveredUnselectedItemWithData.Style.Fill.BackgroundColor.SetColor(Color.LightGoldenrodYellow);
+
+        LoadTestdata(ws);
+        ExcelTable? tbl=ws.Tables.Add(ws.Cells["A1:D101"], "Table1");
+        ExcelTableSlicer? slicer = tbl.Columns[0].AddSlicer();
+        slicer.SetPosition(100, 100);
+        slicer.StyleName = "CustomSlicerStyle1";
+            
+        //Assert
+        Assert.AreEqual("CustomSlicerStyle1", slicer.StyleName);
+        Assert.AreEqual(Color.LightGray.ToArgb(), s.WholeTable.Style.Font.Color.Color.Value.ToArgb());
+        Assert.AreEqual(Color.DarkGray.ToArgb(), s.HeaderRow.Style.Fill.BackgroundColor.Color.Value.ToArgb());
+
+        Assert.IsTrue(s.SelectedItemWithData.Style.Font.Bold.Value);
+        Assert.AreEqual(ExcelBorderStyle.Dotted, s.SelectedItemWithData.Style.Border.Top.Style);
+        Assert.AreEqual(ExcelBorderStyle.Hair, s.SelectedItemWithData.Style.Border.Bottom.Style);
+        Assert.AreEqual(ExcelBorderStyle.DashDotDot, s.SelectedItemWithData.Style.Border.Left.Style);
+        Assert.AreEqual(ExcelBorderStyle.None, s.SelectedItemWithData.Style.Border.Right.Style);
+        Assert.AreEqual(eThemeSchemeColor.Accent4, s.HoveredSelectedItemWithData.Style.Fill.BackgroundColor.Theme);
+        Assert.AreEqual(Color.LightGoldenrodYellow.ToArgb(), s.HoveredUnselectedItemWithData.Style.Fill.BackgroundColor.Color.Value.ToArgb());
+    }
+    [TestMethod]
+    public void AddSlicerStyleFromTemplate()
+    {
+        ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("SlicerStyleTemplate");
+        ExcelSlicerNamedStyle? s = _pck.Workbook.Styles.CreateSlicerStyle("CustomSlicerStyleFromTemplate", eSlicerStyle.Dark1);
+
+        s.WholeTable.Style.Font.Name = "Arial";
+        s.HeaderRow.Style.Font.Italic = true;
+
+        LoadTestdata(ws);
+        ExcelTable? tbl = ws.Tables.Add(ws.Cells["A1:D101"], "Table2");
+        ExcelTableSlicer? slicer = tbl.Columns[0].AddSlicer();
+        slicer.SetPosition(100, 100);
+        slicer.StyleName = "CustomSlicerStyleFromTemplate";
+
+        //Assert
+        Assert.AreEqual(eDxfFillStyle.GradientFill, s.HoveredSelectedItemWithData.Style.Fill.Style);
+        Assert.AreEqual(2, s.HoveredSelectedItemWithData.Style.Fill.Gradient.Colors.Count);
+        Assert.AreEqual(0, s.HoveredSelectedItemWithData.Style.Fill.Gradient.Colors[0].Position);
+        Assert.AreEqual(Color.FromArgb(0xFF, 0XF8, 0XE1, 0X62), s.HoveredSelectedItemWithData.Style.Fill.Gradient.Colors[0].Color.Color);
+        Assert.AreEqual(Color.FromArgb(0xFF, 0XFC, 0XF7, 0XE0), s.HoveredSelectedItemWithData.Style.Fill.Gradient.Colors[1].Color.Color);
+        Assert.AreEqual(100, s.HoveredSelectedItemWithData.Style.Fill.Gradient.Colors[1].Position);
+    }
+    [TestMethod]
+    public void AddSlicerStyleFromOther()
+    {
+        ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("SlicerStyleCopyOther");
+        ExcelSlicerNamedStyle? s = _pck.Workbook.Styles.CreateSlicerStyle("CustomSlicerStyleToCopy", eSlicerStyle.Other2);
+
+        ExcelSlicerNamedStyle? sc= _pck.Workbook.Styles.CreateSlicerStyle("CustomSlicerStyleCopy", s);
+
+        sc.SelectedItemWithData.Style.Fill.Style = eDxfFillStyle.PatternFill;
+        sc.SelectedItemWithData.Style.Fill.BackgroundColor.SetColor(eThemeSchemeColor.Background2);
+        sc.SelectedItemWithData.Style.Fill.PatternType = ExcelFillStyle.LightGray;
+
+        LoadTestdata(ws);
+        ExcelTable? tbl = ws.Tables.Add(ws.Cells["A1:D100"], "Table3");
+        ExcelTableSlicer? slicer = tbl.Columns[0].AddSlicer();
+        slicer.SetPosition(100, 100);
+        slicer.StyleName = "CustomSlicerStyleCopy";
+
+        Assert.AreEqual(eThemeSchemeColor.Background2, sc.SelectedItemWithData.Style.Fill.BackgroundColor.Theme);
+        Assert.AreEqual(ExcelFillStyle.LightGray, sc.SelectedItemWithData.Style.Fill.PatternType);
+    }
+
+    [TestMethod]
+    public void AddSlicerStyleFromOtherNewPackage()
+    {
+        ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("SlicerStyleCopyOtherPck");
+        ExcelSlicerNamedStyle? s = _pck.Workbook.Styles.CreateSlicerStyle("CustomSlicerStyleToCopyOther", eSlicerStyle.Other2);
+
+        s.WholeTable.Style.Font.Name = "Arial";
+
+        using ExcelPackage? p = new ExcelPackage();
+        ExcelSlicerNamedStyle? sc = p.Workbook.Styles.CreateSlicerStyle("CustomSlicerStyleCopyPck", s);
+        ws = p.Workbook.Worksheets.Add("CopiedSlicerStyle");
+        LoadTestdata(ws);
+        ExcelTable? tbl = ws.Tables.Add(ws.Cells["A1:D100"], "Table3");
+        ExcelTableSlicer? slicer = tbl.Columns[0].AddSlicer();
+        slicer.SetPosition(100, 100);
+        slicer.StyleName = "CustomSlicerStyleCopyPck";
+
+        //  Assert.AreEqual(fmt, sc.HoveredUnselectedItemWithNoData.Style.NumberFormat.Format);
+
+        SaveWorkbook("SlicerStyleNewPackage.Xlsx", p);
+    }
+
+
+    [TestMethod]
+    public void ReadSlicerStyle()
+    {
+        using ExcelPackage? p = OpenTemplatePackage("SlicerStyleRead.xlsx");
+        ExcelSlicerNamedStyle? s = p.Workbook.Styles.SlicerStyles["CustomSlicerStyle1"];
+        if (s == null)
+        {
+            Assert.Inconclusive("Custom style does not exists");
+        }
+
+        Assert.AreEqual("CustomSlicerStyle1", s.Name);
+
+        //Assert
+        Assert.AreEqual(Color.LightGray.ToArgb(), s.WholeTable.Style.Font.Color.Color.Value.ToArgb());
+        Assert.AreEqual(Color.DarkGray.ToArgb(), s.HeaderRow.Style.Fill.BackgroundColor.Color.Value.ToArgb());
+
+        Assert.IsTrue(s.SelectedItemWithData.Style.Font.Bold.Value);
+        Assert.AreEqual(ExcelBorderStyle.Dotted, s.SelectedItemWithData.Style.Border.Top.Style);
+        Assert.AreEqual(ExcelBorderStyle.Hair, s.SelectedItemWithData.Style.Border.Bottom.Style);
+        Assert.AreEqual(ExcelBorderStyle.DashDotDot, s.SelectedItemWithData.Style.Border.Left.Style);
+        Assert.AreEqual(ExcelBorderStyle.None, s.SelectedItemWithData.Style.Border.Right.Style);
+        Assert.AreEqual(eThemeSchemeColor.Accent4, s.HoveredSelectedItemWithData.Style.Fill.BackgroundColor.Theme);
+        Assert.AreEqual(Color.LightGoldenrodYellow.ToArgb(), s.HoveredUnselectedItemWithData.Style.Fill.BackgroundColor.Color.Value.ToArgb());
+    }
 }
-
-

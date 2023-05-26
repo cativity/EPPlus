@@ -24,195 +24,194 @@ using OfficeOpenXml;
 using OfficeOpenXml.Utils;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
 
-namespace OfficeOpenXml.FormulaParsing.LexicalAnalysis
+namespace OfficeOpenXml.FormulaParsing.LexicalAnalysis;
+
+internal class TokenFactory : ITokenFactory
 {
-    internal class TokenFactory : ITokenFactory
+    public TokenFactory(IFunctionNameProvider functionRepository, INameValueProvider nameValueProvider, bool r1c1=false)
+        : this(new TokenSeparatorProvider(), nameValueProvider, functionRepository, r1c1)
     {
-        public TokenFactory(IFunctionNameProvider functionRepository, INameValueProvider nameValueProvider, bool r1c1=false)
-            : this(new TokenSeparatorProvider(), nameValueProvider, functionRepository, r1c1)
-        {
 
-        }
+    }
 
-        public TokenFactory(ITokenSeparatorProvider tokenSeparatorProvider, INameValueProvider nameValueProvider, IFunctionNameProvider functionNameProvider, bool r1c1)
-        {
-            this._tokenSeparatorProvider = tokenSeparatorProvider;
-            this._functionNameProvider = functionNameProvider;
-            this._nameValueProvider = nameValueProvider;
-            this._r1c1 = r1c1;
-        }
+    public TokenFactory(ITokenSeparatorProvider tokenSeparatorProvider, INameValueProvider nameValueProvider, IFunctionNameProvider functionNameProvider, bool r1c1)
+    {
+        this._tokenSeparatorProvider = tokenSeparatorProvider;
+        this._functionNameProvider = functionNameProvider;
+        this._nameValueProvider = nameValueProvider;
+        this._r1c1 = r1c1;
+    }
 
-        private readonly ITokenSeparatorProvider _tokenSeparatorProvider;
-        private readonly IFunctionNameProvider _functionNameProvider;
-        private readonly INameValueProvider _nameValueProvider;
-        private bool _r1c1;
-        public Token Create(IEnumerable<Token> tokens, string token)
+    private readonly ITokenSeparatorProvider _tokenSeparatorProvider;
+    private readonly IFunctionNameProvider _functionNameProvider;
+    private readonly INameValueProvider _nameValueProvider;
+    private bool _r1c1;
+    public Token Create(IEnumerable<Token> tokens, string token)
+    {
+        return this.Create(tokens, token, null);
+    }
+    public Token Create(IEnumerable<Token> tokens, string token, string worksheet)
+    {
+        Token tokenSeparator = default(Token);
+        if (this._tokenSeparatorProvider.Tokens.TryGetValue(token, out tokenSeparator))
         {
-            return this.Create(tokens, token, null);
+            return tokenSeparator;
         }
-        public Token Create(IEnumerable<Token> tokens, string token, string worksheet)
+        List<Token>? tokenList = tokens.ToList();
+        //Address with worksheet-string before  /JK
+        if (token.StartsWith("!", StringComparison.OrdinalIgnoreCase) && tokenList[tokenList.Count - 1].TokenTypeIsSet(TokenType.String))
         {
-            Token tokenSeparator = default(Token);
-            if (this._tokenSeparatorProvider.Tokens.TryGetValue(token, out tokenSeparator))
+            int i = tokenList.Count - 2;
+            if (i > 0)
             {
-                return tokenSeparator;
-            }
-            List<Token>? tokenList = tokens.ToList();
-            //Address with worksheet-string before  /JK
-            if (token.StartsWith("!", StringComparison.OrdinalIgnoreCase) && tokenList[tokenList.Count - 1].TokenTypeIsSet(TokenType.String))
-            {
-                int i = tokenList.Count - 2;
-                if (i > 0)
+                string addr = "";
+
+                if (tokenList[i].TokenTypeIsSet(TokenType.StringContent))
                 {
-                    string addr = "";
-
-                    if (tokenList[i].TokenTypeIsSet(TokenType.StringContent))
-                    {
-                        addr = "'" + tokenList[i].Value.Replace("'", "''") + "'";
-                    }
-                    else
-                    {
-                        throw (new ArgumentException(string.Format("Invalid formula token sequence near {0}", token)));
-                    }
-                    //Remove the string tokens and content
-                    tokenList.RemoveAt(tokenList.Count - 1);
-                    tokenList.RemoveAt(tokenList.Count - 1);
-                    tokenList.RemoveAt(tokenList.Count - 1);
-
-                    return new Token(addr + token, TokenType.ExcelAddress);
+                    addr = "'" + tokenList[i].Value.Replace("'", "''") + "'";
                 }
                 else
                 {
                     throw (new ArgumentException(string.Format("Invalid formula token sequence near {0}", token)));
                 }
+                //Remove the string tokens and content
+                tokenList.RemoveAt(tokenList.Count - 1);
+                tokenList.RemoveAt(tokenList.Count - 1);
+                tokenList.RemoveAt(tokenList.Count - 1);
 
+                return new Token(addr + token, TokenType.ExcelAddress);
             }
-            if (string.IsNullOrEmpty(worksheet) && tokenList.Count>0)
+            else
             {
-                if (tokenList[tokenList.Count - 1].TokenTypeIsSet(TokenType.WorksheetNameContent))
-                {
-                    worksheet = tokenList[tokenList.Count - 1].Value;
-                }
-                else if(tokenList.Count > 1 && tokenList[tokenList.Count - 1].TokenTypeIsSet(TokenType.WorksheetName) && tokenList[tokenList.Count - 2].TokenTypeIsSet(TokenType.WorksheetNameContent))
-                {
-                    worksheet = tokenList[tokenList.Count - 2].Value;
-                }
+                throw (new ArgumentException(string.Format("Invalid formula token sequence near {0}", token)));
             }
-            if (tokens.Any() && tokens.Last().TokenTypeIsSet(TokenType.String))
-            {
-                return new Token(token, TokenType.StringContent);
-            }
-            if (!string.IsNullOrEmpty(token))
-            {
-                token = token.Trim();
-            }
-            if (IsNumeric(token, false))
-            {
-                return new Token(token, TokenType.Integer);
-            }
-            if (IsNumeric(token, true))
-            {
-                return new Token(token, TokenType.Decimal);
-            }
-            if (token.Equals("true", StringComparison.InvariantCultureIgnoreCase) || token.Equals("false", StringComparison.InvariantCultureIgnoreCase))
-            {
-                return new Token(token, TokenType.Boolean);
-            }
-            if (token.ToUpper(CultureInfo.InvariantCulture).Contains("#REF!"))
-            {
-                return new Token(token, TokenType.InvalidReference);
-            }
-            if (token.ToUpper(CultureInfo.InvariantCulture) == "#NUM!")
-            {
-                return new Token(token, TokenType.NumericError);
-            }
-            if (token.ToUpper(CultureInfo.InvariantCulture) == "#VALUE!")
-            {
-                return new Token(token, TokenType.ValueDataTypeError);
-            }
-            if (token.ToUpper(CultureInfo.InvariantCulture) == "#NULL!")
-            {
-                return new Token(token, TokenType.Null);
-            }
-            if (this._nameValueProvider != null && this._nameValueProvider.IsNamedValue(token, worksheet))
-            {
-                return new Token(token, TokenType.NameValue);
-            }
-            if (this._functionNameProvider.IsFunctionName(token))
-            {
-                return new Token(token, TokenType.Function);
-            }
-            if (tokenList.Count > 0 && tokenList[tokenList.Count - 1].TokenTypeIsSet(TokenType.OpeningEnumerable))
-            {
-                return new Token(token, TokenType.Enumerable);
-            }
-            ExcelAddressBase.AddressType at = ExcelAddressBase.IsValid(token, this._r1c1);
-            if (at==ExcelAddressBase.AddressType.InternalAddress || at == ExcelAddressBase.AddressType.ExternalAddress)
-            {
-                return new Token(token, TokenType.ExcelAddress);
-            } 
-            else if (at == ExcelAddressBase.AddressType.R1C1)
-            {
-                return new Token(token, TokenType.ExcelAddressR1C1);
-            }
-            else if(at==ExcelAddressBase.AddressType.InternalName || at == ExcelAddressBase.AddressType.ExternalName)
-            {
-                return new Token(token, TokenType.NameValue);
-            }
-            return new Token(token, TokenType.Unrecognized);
 
         }
-
-        public static bool IsNumeric(string value, bool allowDecimal)
+        if (string.IsNullOrEmpty(worksheet) && tokenList.Count>0)
         {
-            int nExp = 0;
-            int nDot = 0;
-            int nMinus = 0;
-            int nPlus = 0;
-            foreach(char c in value)
+            if (tokenList[tokenList.Count - 1].TokenTypeIsSet(TokenType.WorksheetNameContent))
             {
-                if ((c < '0' || c > '9') && (allowDecimal == false || c != '.') && c != 'E' && (c != '-' && c != '+'))
-                {
-                    return false;
-                }
-                if (c == 'E')
-                {
-                    nExp++;
-                }
-
-                if (c == '.')
-                {
-                    nDot++;
-                }
-
-                if (c == '-')
-                {
-                    nMinus++;
-                }
-
-                if (c == '+')
-                {
-                    nPlus ++;
-                }
+                worksheet = tokenList[tokenList.Count - 1].Value;
             }
-            if(nExp == 0 && nMinus == 0)
+            else if(tokenList.Count > 1 && tokenList[tokenList.Count - 1].TokenTypeIsSet(TokenType.WorksheetName) && tokenList[tokenList.Count - 2].TokenTypeIsSet(TokenType.WorksheetNameContent))
             {
-                return true;
+                worksheet = tokenList[tokenList.Count - 2].Value;
             }
-            else if(allowDecimal && nExp == 1 && nDot == 1 && (nMinus == 1 || nPlus == 1))
-            {
-                return double.TryParse(value, NumberStyles.AllowDecimalPoint | NumberStyles.AllowExponent, CultureInfo.InvariantCulture, out double r);
-            }
-            else if (!allowDecimal && nExp == 1 && (nMinus == 1 || nPlus == 1))
-            {
-                return double.TryParse(value, NumberStyles.AllowExponent, CultureInfo.InvariantCulture, out double r);
-            }
-            return false;
         }
-
-        public Token Create(string token, TokenType explicitTokenType)
+        if (tokens.Any() && tokens.Last().TokenTypeIsSet(TokenType.String))
         {
-            return new Token(token, explicitTokenType);
+            return new Token(token, TokenType.StringContent);
         }
+        if (!string.IsNullOrEmpty(token))
+        {
+            token = token.Trim();
+        }
+        if (IsNumeric(token, false))
+        {
+            return new Token(token, TokenType.Integer);
+        }
+        if (IsNumeric(token, true))
+        {
+            return new Token(token, TokenType.Decimal);
+        }
+        if (token.Equals("true", StringComparison.InvariantCultureIgnoreCase) || token.Equals("false", StringComparison.InvariantCultureIgnoreCase))
+        {
+            return new Token(token, TokenType.Boolean);
+        }
+        if (token.ToUpper(CultureInfo.InvariantCulture).Contains("#REF!"))
+        {
+            return new Token(token, TokenType.InvalidReference);
+        }
+        if (token.ToUpper(CultureInfo.InvariantCulture) == "#NUM!")
+        {
+            return new Token(token, TokenType.NumericError);
+        }
+        if (token.ToUpper(CultureInfo.InvariantCulture) == "#VALUE!")
+        {
+            return new Token(token, TokenType.ValueDataTypeError);
+        }
+        if (token.ToUpper(CultureInfo.InvariantCulture) == "#NULL!")
+        {
+            return new Token(token, TokenType.Null);
+        }
+        if (this._nameValueProvider != null && this._nameValueProvider.IsNamedValue(token, worksheet))
+        {
+            return new Token(token, TokenType.NameValue);
+        }
+        if (this._functionNameProvider.IsFunctionName(token))
+        {
+            return new Token(token, TokenType.Function);
+        }
+        if (tokenList.Count > 0 && tokenList[tokenList.Count - 1].TokenTypeIsSet(TokenType.OpeningEnumerable))
+        {
+            return new Token(token, TokenType.Enumerable);
+        }
+        ExcelAddressBase.AddressType at = ExcelAddressBase.IsValid(token, this._r1c1);
+        if (at==ExcelAddressBase.AddressType.InternalAddress || at == ExcelAddressBase.AddressType.ExternalAddress)
+        {
+            return new Token(token, TokenType.ExcelAddress);
+        } 
+        else if (at == ExcelAddressBase.AddressType.R1C1)
+        {
+            return new Token(token, TokenType.ExcelAddressR1C1);
+        }
+        else if(at==ExcelAddressBase.AddressType.InternalName || at == ExcelAddressBase.AddressType.ExternalName)
+        {
+            return new Token(token, TokenType.NameValue);
+        }
+        return new Token(token, TokenType.Unrecognized);
+
+    }
+
+    public static bool IsNumeric(string value, bool allowDecimal)
+    {
+        int nExp = 0;
+        int nDot = 0;
+        int nMinus = 0;
+        int nPlus = 0;
+        foreach(char c in value)
+        {
+            if ((c < '0' || c > '9') && (allowDecimal == false || c != '.') && c != 'E' && (c != '-' && c != '+'))
+            {
+                return false;
+            }
+            if (c == 'E')
+            {
+                nExp++;
+            }
+
+            if (c == '.')
+            {
+                nDot++;
+            }
+
+            if (c == '-')
+            {
+                nMinus++;
+            }
+
+            if (c == '+')
+            {
+                nPlus ++;
+            }
+        }
+        if(nExp == 0 && nMinus == 0)
+        {
+            return true;
+        }
+        else if(allowDecimal && nExp == 1 && nDot == 1 && (nMinus == 1 || nPlus == 1))
+        {
+            return double.TryParse(value, NumberStyles.AllowDecimalPoint | NumberStyles.AllowExponent, CultureInfo.InvariantCulture, out double r);
+        }
+        else if (!allowDecimal && nExp == 1 && (nMinus == 1 || nPlus == 1))
+        {
+            return double.TryParse(value, NumberStyles.AllowExponent, CultureInfo.InvariantCulture, out double r);
+        }
+        return false;
+    }
+
+    public Token Create(string token, TokenType explicitTokenType)
+    {
+        return new Token(token, explicitTokenType);
     }
 }

@@ -16,83 +16,82 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace OfficeOpenXml.Attributes
+namespace OfficeOpenXml.Attributes;
+
+/// <summary>
+/// Attribute used by <see cref="ExcelRangeBase.LoadFromCollection{T}(IEnumerable{T})" /> to configure parameters for the functions/>
+/// </summary>
+[AttributeUsage(AttributeTargets.Class | AttributeTargets.Interface)]
+public class EpplusTableAttribute : Attribute
 {
     /// <summary>
-    /// Attribute used by <see cref="ExcelRangeBase.LoadFromCollection{T}(IEnumerable{T})" /> to configure parameters for the functions/>
+    /// Constructor
     /// </summary>
-    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Interface)]
-    public class EpplusTableAttribute : Attribute
+    public EpplusTableAttribute()
     {
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        public EpplusTableAttribute()
-        {
-            this.TableStyle = TableStyles.None;
-        }
-        /// <summary>
-        /// Table style
-        /// </summary>
-        public TableStyles TableStyle
-        {
-            get;
-            set;
-        }
+        this.TableStyle = TableStyles.None;
+    }
+    /// <summary>
+    /// Table style
+    /// </summary>
+    public TableStyles TableStyle
+    {
+        get;
+        set;
+    }
 
-        /// <summary>
-        /// If true, there will be a header row with column names over the data
-        /// </summary>
-        public bool PrintHeaders
-        {
-            get;
-            set;
-        }
+    /// <summary>
+    /// If true, there will be a header row with column names over the data
+    /// </summary>
+    public bool PrintHeaders
+    {
+        get;
+        set;
+    }
 
-        /// <summary>
-        /// If true, the first column of the table is highlighted
-        /// </summary>
-        public bool ShowFirstColumn
-        {
-            get;
-            set;
-        }
+    /// <summary>
+    /// If true, the first column of the table is highlighted
+    /// </summary>
+    public bool ShowFirstColumn
+    {
+        get;
+        set;
+    }
 
-        /// <summary>
-        /// If true, the last column of the table is highlighted
-        /// </summary>
-        public bool ShowLastColumn
-        {
-            get;
-            set;
-        }
+    /// <summary>
+    /// If true, the last column of the table is highlighted
+    /// </summary>
+    public bool ShowLastColumn
+    {
+        get;
+        set;
+    }
 
-        /// <summary>
-        /// If true, a totals row will be added under the table data. This should be used in combination with <see cref="EpplusTableColumnAttributeBase.TotalsRowFunction"/> on the column attributes.
-        /// </summary>
-        public bool ShowTotal
-        {
-            get;
-            set;
-        }
+    /// <summary>
+    /// If true, a totals row will be added under the table data. This should be used in combination with <see cref="EpplusTableColumnAttributeBase.TotalsRowFunction"/> on the column attributes.
+    /// </summary>
+    public bool ShowTotal
+    {
+        get;
+        set;
+    }
 
-        /// <summary>
-        /// If true, column width will be adjusted to cell content
-        /// </summary>
-        public bool AutofitColumns
-        {
-            get;
-            set;
-        }
+    /// <summary>
+    /// If true, column width will be adjusted to cell content
+    /// </summary>
+    public bool AutofitColumns
+    {
+        get;
+        set;
+    }
 
-        /// <summary>
-        /// If true, EPPlus will calculate the table range when the data has been read into the spreadsheet and store the results
-        /// in the Value property of each cell.
-        /// </summary>
-        public bool AutoCalculate
-        {
-            get;
-            set;
-        }
+    /// <summary>
+    /// If true, EPPlus will calculate the table range when the data has been read into the spreadsheet and store the results
+    /// in the Value property of each cell.
+    /// </summary>
+    public bool AutoCalculate
+    {
+        get;
+        set;
     }
 }

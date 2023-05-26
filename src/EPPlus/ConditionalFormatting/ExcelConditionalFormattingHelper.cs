@@ -20,35 +20,35 @@ using System.Drawing;
 using System.Globalization;
 using System.Xml;
 
-namespace OfficeOpenXml.ConditionalFormatting
+namespace OfficeOpenXml.ConditionalFormatting;
+
+/// <summary>
+/// Conditional formatting helper
+/// </summary>
+internal static class ExcelConditionalFormattingHelper
 {
-  /// <summary>
-  /// Conditional formatting helper
-  /// </summary>
-  internal static class ExcelConditionalFormattingHelper
-  {
     /// <summary>
     /// Check and fix an address (string address)
     /// </summary>
     /// <param name="address"></param>
     /// <returns></returns>
     public static string CheckAndFixRangeAddress(
-      string address)
+        string address)
     {
-      if (address.Contains(','))
-      {
-        throw new FormatException(
-          ExcelConditionalFormattingConstants.Errors.CommaSeparatedAddresses);
-      }
+        if (address.Contains(','))
+        {
+            throw new FormatException(
+                                      ExcelConditionalFormattingConstants.Errors.CommaSeparatedAddresses);
+        }
 
-      address = ConvertUtil._invariantTextInfo.ToUpper(address);
+        address = ConvertUtil._invariantTextInfo.ToUpper(address);
 
-      if (Regex.IsMatch(address, @"[A-Z]+:[A-Z]+"))
-      {
-        address = AddressUtility.ParseEntireColumnSelections(address);
-      }
+        if (Regex.IsMatch(address, @"[A-Z]+:[A-Z]+"))
+        {
+            address = AddressUtility.ParseEntireColumnSelections(address);
+        }
 
-      return address;
+        return address;
     }
     /// <summary>
     /// Convert a color code to Color Object
@@ -56,17 +56,17 @@ namespace OfficeOpenXml.ConditionalFormatting
     /// <param name="colorCode">Color Code (Ex. "#FFB43C53" or "FFB43C53")</param>
     /// <returns></returns>
     public static Color ConvertFromColorCode(
-      string colorCode)
+        string colorCode)
     {
-      try
-      {
-        return Color.FromArgb(Int32.Parse(colorCode.Replace("#", ""), NumberStyles.HexNumber));
-      }
-      catch
-      {
-        // Assume white is the default color (instead of giving an error)
-        return Color.White;
-      }
+        try
+        {
+            return Color.FromArgb(Int32.Parse(colorCode.Replace("#", ""), NumberStyles.HexNumber));
+        }
+        catch
+        {
+            // Assume white is the default color (instead of giving an error)
+            return Color.White;
+        }
     }
 
     /// <summary>
@@ -76,18 +76,18 @@ namespace OfficeOpenXml.ConditionalFormatting
     /// <param name="attribute"></param>
     /// <returns></returns>
     public static string GetAttributeString(
-      XmlNode node,
-      string attribute)
+        XmlNode node,
+        string attribute)
     {
-      try
-      {
-        string? value = node.Attributes[attribute].Value;
-        return (value == null) ? string.Empty : value;
-      }
-      catch
-      {
-        return string.Empty;
-      }
+        try
+        {
+            string? value = node.Attributes[attribute].Value;
+            return (value == null) ? string.Empty : value;
+        }
+        catch
+        {
+            return string.Empty;
+        }
     }
 
     /// <summary>
@@ -97,18 +97,18 @@ namespace OfficeOpenXml.ConditionalFormatting
     /// <param name="attribute"></param>
     /// <returns></returns>
     public static int GetAttributeInt(
-      XmlNode node,
-      string attribute)
+        XmlNode node,
+        string attribute)
     {
-      try
-      {
-        string? value = node.Attributes[attribute].Value;
-        return int.Parse(value, NumberStyles.Integer, CultureInfo.InvariantCulture);
-      }
-      catch
-      {
-        return int.MinValue;
-      }
+        try
+        {
+            string? value = node.Attributes[attribute].Value;
+            return int.Parse(value, NumberStyles.Integer, CultureInfo.InvariantCulture);
+        }
+        catch
+        {
+            return int.MinValue;
+        }
     }
 
     /// <summary>
@@ -118,25 +118,25 @@ namespace OfficeOpenXml.ConditionalFormatting
     /// <param name="attribute"></param>
     /// <returns></returns>
     public static int? GetAttributeIntNullable(
-      XmlNode node,
-      string attribute)
+        XmlNode node,
+        string attribute)
     {
-      try
-      {
-          if (node.Attributes[attribute] == null)
-          {
-              return null;
-          }
-          else
-          {
-              string? value = node.Attributes[attribute].Value;
-              return int.Parse(value, NumberStyles.Integer, CultureInfo.InvariantCulture);
-          }
-      }
-      catch
-      {
-        return null;
-      }
+        try
+        {
+            if (node.Attributes[attribute] == null)
+            {
+                return null;
+            }
+            else
+            {
+                string? value = node.Attributes[attribute].Value;
+                return int.Parse(value, NumberStyles.Integer, CultureInfo.InvariantCulture);
+            }
+        }
+        catch
+        {
+            return null;
+        }
     }
 
     /// <summary>
@@ -146,18 +146,18 @@ namespace OfficeOpenXml.ConditionalFormatting
     /// <param name="attribute"></param>
     /// <returns></returns>
     public static bool GetAttributeBool(
-      XmlNode node,
-      string attribute)
+        XmlNode node,
+        string attribute)
     {
-      try
-      {
-        string? value = node.Attributes[attribute].Value;
-        return (value == "1" || value == "-1" || value.Equals("TRUE", StringComparison.OrdinalIgnoreCase));
-      }
-      catch
-      {
-        return false;
-      }
+        try
+        {
+            string? value = node.Attributes[attribute].Value;
+            return (value == "1" || value == "-1" || value.Equals("TRUE", StringComparison.OrdinalIgnoreCase));
+        }
+        catch
+        {
+            return false;
+        }
     }
 
     /// <summary>
@@ -167,25 +167,25 @@ namespace OfficeOpenXml.ConditionalFormatting
     /// <param name="attribute"></param>
     /// <returns></returns>
     public static bool? GetAttributeBoolNullable(
-      XmlNode node,
-      string attribute)
+        XmlNode node,
+        string attribute)
     {
-      try
-      {
-          if (node.Attributes[attribute] == null)
-          {
-              return null;
-          }
-          else
-          {
-              string? value = node.Attributes[attribute].Value;
-              return (value == "1" || value == "-1" || value.Equals("TRUE",StringComparison.OrdinalIgnoreCase));
-          }
-      }
-      catch
-      {
-        return null;
-      }
+        try
+        {
+            if (node.Attributes[attribute] == null)
+            {
+                return null;
+            }
+            else
+            {
+                string? value = node.Attributes[attribute].Value;
+                return (value == "1" || value == "-1" || value.Equals("TRUE",StringComparison.OrdinalIgnoreCase));
+            }
+        }
+        catch
+        {
+            return null;
+        }
     }
 
     /// <summary>
@@ -195,18 +195,18 @@ namespace OfficeOpenXml.ConditionalFormatting
     /// <param name="attribute"></param>
     /// <returns></returns>
     public static double GetAttributeDouble(
-      XmlNode node,
-      string attribute)
+        XmlNode node,
+        string attribute)
     {
-      try
-      {
-        string? value = node.Attributes[attribute].Value;
-        return double.Parse(value, NumberStyles.Number, CultureInfo.InvariantCulture);
-      }
-      catch
-      {
-        return double.NaN;
-      }
+        try
+        {
+            string? value = node.Attributes[attribute].Value;
+            return double.Parse(value, NumberStyles.Number, CultureInfo.InvariantCulture);
+        }
+        catch
+        {
+            return double.NaN;
+        }
     }
 
     /// <summary>
@@ -216,18 +216,18 @@ namespace OfficeOpenXml.ConditionalFormatting
     /// <param name="attribute"></param>
     /// <returns></returns>
     public static decimal GetAttributeDecimal(
-      XmlNode node,
-      string attribute)
+        XmlNode node,
+        string attribute)
     {
-      try
-      {
-        string? value = node.Attributes[attribute].Value;
-        return decimal.Parse(value, NumberStyles.Any, CultureInfo.InvariantCulture);
-      }
-      catch
-      {
-        return decimal.MinValue;
-      }
+        try
+        {
+            string? value = node.Attributes[attribute].Value;
+            return decimal.Parse(value, NumberStyles.Any, CultureInfo.InvariantCulture);
+        }
+        catch
+        {
+            return decimal.MinValue;
+        }
     }
 
     /// <summary>
@@ -236,9 +236,9 @@ namespace OfficeOpenXml.ConditionalFormatting
     /// <param name="s"></param>
     /// <returns></returns>
     public static string EncodeXML(
-      this string s)
+        this string s)
     {
-      return s.Replace("&", "&amp;").Replace("<", "&lt;").Replace(">", "&gt;").Replace("\"", "&quot;").Replace("'", "&apos;");
+        return s.Replace("&", "&amp;").Replace("<", "&lt;").Replace(">", "&gt;").Replace("\"", "&quot;").Replace("'", "&apos;");
     }
 
     /// <summary>
@@ -247,9 +247,8 @@ namespace OfficeOpenXml.ConditionalFormatting
     /// <param name="s"></param>
     /// <returns></returns>
     public static string DecodeXML(
-      this string s)
+        this string s)
     {
-      return s.Replace("'", "&apos;").Replace("\"", "&quot;").Replace(">", "&gt;").Replace("<", "&lt;").Replace("&", "&amp;");
+        return s.Replace("'", "&apos;").Replace("\"", "&quot;").Replace(">", "&gt;").Replace("<", "&lt;").Replace("&", "&amp;");
     }
-  }
 }

@@ -32,77 +32,76 @@ using OfficeOpenXml.DataValidation;
 using System.IO;
 using OfficeOpenXml.DataValidation.Contracts;
 
-namespace EPPlusTest.DataValidation.Formulas
+namespace EPPlusTest.DataValidation.Formulas;
+
+[TestClass]
+public class IntegerFormulaTests : ValidationTestBase
 {
-    [TestClass]
-    public class IntegerFormulaTests : ValidationTestBase
+    [TestMethod]
+    public void ValueIsRead()
     {
-        [TestMethod]
-        public void ValueIsRead()
-        {
-            ExcelPackage? package = new ExcelPackage(new MemoryStream());
-            ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("IntegerTest");
+        ExcelPackage? package = new ExcelPackage(new MemoryStream());
+        ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("IntegerTest");
 
-            IExcelDataValidationInt? validationOrig = sheet.DataValidations.AddIntegerValidation("A1");
+        IExcelDataValidationInt? validationOrig = sheet.DataValidations.AddIntegerValidation("A1");
 
-            validationOrig.Formula.Value = 12;
-            validationOrig.Operator = ExcelDataValidationOperator.lessThanOrEqual;
+        validationOrig.Formula.Value = 12;
+        validationOrig.Operator = ExcelDataValidationOperator.lessThanOrEqual;
 
-            ExcelDataValidationInt? validation = ReadTValidation<ExcelDataValidationInt>(package);
+        ExcelDataValidationInt? validation = ReadTValidation<ExcelDataValidationInt>(package);
 
-            Assert.AreEqual(12, validation.Formula.Value);
-        }
+        Assert.AreEqual(12, validation.Formula.Value);
+    }
 
-        [TestMethod]
-        public void ExcelFormulaIsRead()
-        {
-            ExcelPackage? package = new ExcelPackage(new MemoryStream());
-            ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("IntegerTest");
+    [TestMethod]
+    public void ExcelFormulaIsRead()
+    {
+        ExcelPackage? package = new ExcelPackage(new MemoryStream());
+        ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("IntegerTest");
 
-            IExcelDataValidationInt? validationOrig = sheet.DataValidations.AddIntegerValidation("A1");
+        IExcelDataValidationInt? validationOrig = sheet.DataValidations.AddIntegerValidation("A1");
 
-            validationOrig.Formula.ExcelFormula = "D1";
-            validationOrig.Operator = ExcelDataValidationOperator.lessThanOrEqual;
+        validationOrig.Formula.ExcelFormula = "D1";
+        validationOrig.Operator = ExcelDataValidationOperator.lessThanOrEqual;
 
-            ExcelDataValidationInt? validation = ReadTValidation<ExcelDataValidationInt>(package);
+        ExcelDataValidationInt? validation = ReadTValidation<ExcelDataValidationInt>(package);
 
-            Assert.AreEqual("D1", validation.Formula.ExcelFormula);
-        }
+        Assert.AreEqual("D1", validation.Formula.ExcelFormula);
+    }
 
-        [TestMethod]
-        public void FormulaSpecialSignsAreWrittenAndRead()
-        {
-            ExcelPackage? package = new ExcelPackage(new MemoryStream());
-            ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("IntegerTest");
+    [TestMethod]
+    public void FormulaSpecialSignsAreWrittenAndRead()
+    {
+        ExcelPackage? package = new ExcelPackage(new MemoryStream());
+        ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("IntegerTest");
 
-            IExcelDataValidationInt? lessThan = sheet.DataValidations.AddIntegerValidation("A1");
-            lessThan.Operator = ExcelDataValidationOperator.equal;
+        IExcelDataValidationInt? lessThan = sheet.DataValidations.AddIntegerValidation("A1");
+        lessThan.Operator = ExcelDataValidationOperator.equal;
 
-            sheet.Cells["B1"].Value = 1;
+        sheet.Cells["B1"].Value = 1;
 
-            lessThan.Formula.ExcelFormula = "=B1<5";
-            lessThan.ShowErrorMessage= true;
+        lessThan.Formula.ExcelFormula = "=B1<5";
+        lessThan.ShowErrorMessage= true;
 
 
-            IExcelDataValidationInt? greaterThan = sheet.DataValidations.AddIntegerValidation("A2");
+        IExcelDataValidationInt? greaterThan = sheet.DataValidations.AddIntegerValidation("A2");
 
-            sheet.Cells["B2"].Value = 6;
+        sheet.Cells["B2"].Value = 6;
 
-            greaterThan.Formula.ExcelFormula = "=B1>5";
-            greaterThan.ShowErrorMessage = true;
+        greaterThan.Formula.ExcelFormula = "=B1>5";
+        greaterThan.ShowErrorMessage = true;
 
-            greaterThan.Operator = ExcelDataValidationOperator.equal;
+        greaterThan.Operator = ExcelDataValidationOperator.equal;
 
-            MemoryStream stream = new MemoryStream();
-            package.SaveAs(stream);
+        MemoryStream stream = new MemoryStream();
+        package.SaveAs(stream);
 
-            ExcelPackage? loadedpkg = new ExcelPackage(stream);
-            ExcelWorksheet? loadedSheet = loadedpkg.Workbook.Worksheets[0];
+        ExcelPackage? loadedpkg = new ExcelPackage(stream);
+        ExcelWorksheet? loadedSheet = loadedpkg.Workbook.Worksheets[0];
 
-            ExcelDataValidationCollection? validations = loadedSheet.DataValidations;
+        ExcelDataValidationCollection? validations = loadedSheet.DataValidations;
 
-            Assert.AreEqual(((ExcelDataValidationInt)validations[0]).Formula.ExcelFormula, "=B1<5");
-            Assert.AreEqual(((ExcelDataValidationInt)validations[1]).Formula.ExcelFormula, "=B1>5");
-        }
+        Assert.AreEqual(((ExcelDataValidationInt)validations[0]).Formula.ExcelFormula, "=B1<5");
+        Assert.AreEqual(((ExcelDataValidationInt)validations[1]).Formula.ExcelFormula, "=B1>5");
     }
 }

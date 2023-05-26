@@ -18,28 +18,27 @@ using OfficeOpenXml.Drawing.Interfaces;
 using OfficeOpenXml.Drawing.Style.Effect;
 using OfficeOpenXml.Style;
 
-namespace OfficeOpenXml.Drawing.Chart
+namespace OfficeOpenXml.Drawing.Chart;
+
+/// <summary>
+/// Datalabel properties
+/// </summary>
+public sealed class ExcelChartSerieDataLabel : ExcelChartDataLabelStandard
 {
-    /// <summary>
-    /// Datalabel properties
-    /// </summary>
-    public sealed class ExcelChartSerieDataLabel : ExcelChartDataLabelStandard
+    internal ExcelChartSerieDataLabel(ExcelChart chart, XmlNamespaceManager ns, XmlNode node, string[] schemaNodeOrder)
+        : base(chart, ns,node,"dLbls", schemaNodeOrder)
     {
-       internal ExcelChartSerieDataLabel(ExcelChart chart, XmlNamespaceManager ns, XmlNode node, string[] schemaNodeOrder)
-           : base(chart, ns,node,"dLbls", schemaNodeOrder)
-       {
-           this.Position = eLabelPosition.Center;
-        }
-        ExcelChartDataLabelCollection _dataLabels = null;
-        /// <summary>
-        /// Individually formatted datalabels.
-        /// </summary>
-        public ExcelChartDataLabelCollection DataLabels
+        this.Position = eLabelPosition.Center;
+    }
+    ExcelChartDataLabelCollection _dataLabels = null;
+    /// <summary>
+    /// Individually formatted datalabels.
+    /// </summary>
+    public ExcelChartDataLabelCollection DataLabels
+    {
+        get
         {
-            get
-            {
-                return this._dataLabels ??= new ExcelChartDataLabelCollection(this._chart, this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder);
-            }
+            return this._dataLabels ??= new ExcelChartDataLabelCollection(this._chart, this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder);
         }
     }
 }

@@ -16,128 +16,127 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 
-namespace OfficeOpenXml.Utils
+namespace OfficeOpenXml.Utils;
+
+/// <summary>
+/// A utility to work with Excel addresses
+/// </summary>
+public static class AddressUtility
 {
     /// <summary>
-    /// A utility to work with Excel addresses
+    /// Parse an entire column selection, e.g A:A
     /// </summary>
-    public static class AddressUtility
+    /// <param name="address">The entire address</param>
+    /// <returns></returns>
+    public static string ParseEntireColumnSelections(string address)
     {
-        /// <summary>
-        /// Parse an entire column selection, e.g A:A
-        /// </summary>
-        /// <param name="address">The entire address</param>
-        /// <returns></returns>
-        public static string ParseEntireColumnSelections(string address)
+        string parsedAddress = address;
+        MatchCollection? matches = Regex.Matches(address, "[A-Z]+:[A-Z]+");
+        foreach (Match match in matches)
         {
-            string parsedAddress = address;
-            MatchCollection? matches = Regex.Matches(address, "[A-Z]+:[A-Z]+");
-            foreach (Match match in matches)
-            {
-                AddRowNumbersToEntireColumnRange(ref parsedAddress, match.Value);
-            }
-            return parsedAddress;
+            AddRowNumbersToEntireColumnRange(ref parsedAddress, match.Value);
         }
-        /// <summary>
-        /// Add row number to entire column range
-        /// </summary>
-        /// <param name="address">The address</param>
-        /// <param name="range">The full column range</param>
-        private static void AddRowNumbersToEntireColumnRange(ref string address, string range)
+        return parsedAddress;
+    }
+    /// <summary>
+    /// Add row number to entire column range
+    /// </summary>
+    /// <param name="address">The address</param>
+    /// <param name="range">The full column range</param>
+    private static void AddRowNumbersToEntireColumnRange(ref string address, string range)
+    {
+        string? parsedRange = string.Format("{0}{1}", range, ExcelPackage.MaxRows);
+        string[]? splitArr = parsedRange.Split(new char[] { ':' });
+        address = address.Replace(range, string.Format("{0}1:{1}", splitArr[0], splitArr[1]));
+    }
+
+    internal static string ShiftAddressRowsInFormula(string worksheetName, string formula, int currentRow, int newRow)
+    {
+        if (string.IsNullOrEmpty(formula))
         {
-            string? parsedRange = string.Format("{0}{1}", range, ExcelPackage.MaxRows);
-            string[]? splitArr = parsedRange.Split(new char[] { ':' });
-            address = address.Replace(range, string.Format("{0}1:{1}", splitArr[0], splitArr[1]));
+            return formula;
         }
 
-        internal static string ShiftAddressRowsInFormula(string worksheetName, string formula, int currentRow, int newRow)
+        IEnumerable<Token>? tokens = SourceCodeTokenizer.Default.Tokenize(formula, worksheetName);
+        if (!tokens.Any(x => x.TokenTypeIsSet(TokenType.ExcelAddress)))
         {
-            if (string.IsNullOrEmpty(formula))
-            {
-                return formula;
-            }
+            return formula;
+        }
 
-            IEnumerable<Token>? tokens = SourceCodeTokenizer.Default.Tokenize(formula, worksheetName);
-            if (!tokens.Any(x => x.TokenTypeIsSet(TokenType.ExcelAddress)))
+        List<Token>? resultTokens = new List<Token>();
+        foreach (Token token in tokens)
+        {
+            if (!token.TokenTypeIsSet(TokenType.ExcelAddress))
             {
-                return formula;
+                resultTokens.Add(token);
             }
-
-            List<Token>? resultTokens = new List<Token>();
-            foreach (Token token in tokens)
+            else
             {
-                if (!token.TokenTypeIsSet(TokenType.ExcelAddress))
+                List<ExcelCellAddress>? addresses = new List<ExcelCellAddress>();
+                ExcelAddressBase? adr = new ExcelAddressBase(token.Value);
+                // if the formula is a table formula (relative) keep it as it is
+                if (adr.Table == null)
                 {
-                    resultTokens.Add(token);
+                    ExcelAddressBase? newAdr = adr.AddRow(currentRow, newRow, true);
+                    Token newToken = new Token(newAdr.FullAddress, TokenType.ExcelAddress);
+                    resultTokens.Add(newToken);
                 }
                 else
                 {
-                    List<ExcelCellAddress>? addresses = new List<ExcelCellAddress>();
-                    ExcelAddressBase? adr = new ExcelAddressBase(token.Value);
-                    // if the formula is a table formula (relative) keep it as it is
-                    if (adr.Table == null)
-                    {
-                        ExcelAddressBase? newAdr = adr.AddRow(currentRow, newRow, true);
-                        Token newToken = new Token(newAdr.FullAddress, TokenType.ExcelAddress);
-                        resultTokens.Add(newToken);
-                    }
-                    else
-                    {
-                        resultTokens.Add(token);
-                    }
+                    resultTokens.Add(token);
                 }
             }
-            StringBuilder? result = new StringBuilder();
-            foreach (Token token in resultTokens)
-            {
-                result.Append(token.Value);
-            }
-            return result.ToString();
+        }
+        StringBuilder? result = new StringBuilder();
+        foreach (Token token in resultTokens)
+        {
+            result.Append(token.Value);
+        }
+        return result.ToString();
+    }
+
+    internal static string ShiftAddressColumnsInFormula(string worksheetName, string formula, int currentColumn, int newColumn)
+    {
+        if (string.IsNullOrEmpty(formula))
+        {
+            return formula;
         }
 
-        internal static string ShiftAddressColumnsInFormula(string worksheetName, string formula, int currentColumn, int newColumn)
+        IEnumerable<Token>? tokens = SourceCodeTokenizer.Default.Tokenize(formula, worksheetName);
+        if (!tokens.Any(x => x.TokenTypeIsSet(TokenType.ExcelAddress)))
         {
-            if (string.IsNullOrEmpty(formula))
-            {
-                return formula;
-            }
+            return formula;
+        }
 
-            IEnumerable<Token>? tokens = SourceCodeTokenizer.Default.Tokenize(formula, worksheetName);
-            if (!tokens.Any(x => x.TokenTypeIsSet(TokenType.ExcelAddress)))
+        List<Token>? resultTokens = new List<Token>();
+        foreach (Token token in tokens)
+        {
+            if (!token.TokenTypeIsSet(TokenType.ExcelAddress))
             {
-                return formula;
+                resultTokens.Add(token);
             }
-
-            List<Token>? resultTokens = new List<Token>();
-            foreach (Token token in tokens)
+            else
             {
-                if (!token.TokenTypeIsSet(TokenType.ExcelAddress))
+                List<ExcelCellAddress>? addresses = new List<ExcelCellAddress>();
+                ExcelAddressBase? adr = new ExcelAddressBase(token.Value);
+                // if the formula is a table formula (relative) keep it as it is
+                if (adr.Table == null)
                 {
-                    resultTokens.Add(token);
+                    ExcelAddressBase? newAdr = adr.AddColumn(currentColumn, newColumn, true);
+                    Token newToken = new Token(newAdr.FullAddress, TokenType.ExcelAddress);
+                    resultTokens.Add(newToken);
                 }
                 else
                 {
-                    List<ExcelCellAddress>? addresses = new List<ExcelCellAddress>();
-                    ExcelAddressBase? adr = new ExcelAddressBase(token.Value);
-                    // if the formula is a table formula (relative) keep it as it is
-                    if (adr.Table == null)
-                    {
-                        ExcelAddressBase? newAdr = adr.AddColumn(currentColumn, newColumn, true);
-                        Token newToken = new Token(newAdr.FullAddress, TokenType.ExcelAddress);
-                        resultTokens.Add(newToken);
-                    }
-                    else
-                    {
-                        resultTokens.Add(token);
-                    }
+                    resultTokens.Add(token);
                 }
             }
-            StringBuilder? result = new StringBuilder();
-            foreach (Token token in resultTokens)
-            {
-                result.Append(token.Value);
-            }
-            return result.ToString();
         }
+        StringBuilder? result = new StringBuilder();
+        foreach (Token token in resultTokens)
+        {
+            result.Append(token.Value);
+        }
+        return result.ToString();
     }
 }

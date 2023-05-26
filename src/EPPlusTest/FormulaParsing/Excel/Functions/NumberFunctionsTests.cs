@@ -37,47 +37,46 @@ using EPPlusTest.FormulaParsing.TestHelpers;
 using OfficeOpenXml.FormulaParsing.Excel.Functions;
 using OfficeOpenXml.FormulaParsing.ExpressionGraph;
 
-namespace EPPlusTest.Excel.Functions
+namespace EPPlusTest.Excel.Functions;
+
+[TestClass]
+public class NumberFunctionsTests
 {
-    [TestClass]
-    public class NumberFunctionsTests
+    private ParsingContext _parsingContext = ParsingContext.Create();
+
+    [TestMethod]
+    public void CIntShouldConvertTextToInteger()
     {
-        private ParsingContext _parsingContext = ParsingContext.Create();
+        CInt? func = new CInt();
+        IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs("2");
+        CompileResult? result = func.Execute(args, this._parsingContext);
+        Assert.AreEqual(2, result.Result);
+    }
 
-        [TestMethod]
-        public void CIntShouldConvertTextToInteger()
-        {
-            CInt? func = new CInt();
-            IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs("2");
-            CompileResult? result = func.Execute(args, this._parsingContext);
-            Assert.AreEqual(2, result.Result);
-        }
+    [TestMethod]
+    public void IntShouldConvertDecimalToInteger()
+    {
+        CInt? func = new CInt();
+        IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(2.88m);
+        CompileResult? result = func.Execute(args, this._parsingContext);
+        Assert.AreEqual(2, result.Result);
+    }
 
-        [TestMethod]
-        public void IntShouldConvertDecimalToInteger()
-        {
-            CInt? func = new CInt();
-            IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(2.88m);
-            CompileResult? result = func.Execute(args, this._parsingContext);
-            Assert.AreEqual(2, result.Result);
-        }
+    [TestMethod]
+    public void IntShouldConvertNegativeDecimalToInteger()
+    {
+        CInt? func = new CInt();
+        IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(-2.88m);
+        CompileResult? result = func.Execute(args, this._parsingContext);
+        Assert.AreEqual(-3, result.Result);
+    }
 
-        [TestMethod]
-        public void IntShouldConvertNegativeDecimalToInteger()
-        {
-            CInt? func = new CInt();
-            IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(-2.88m);
-            CompileResult? result = func.Execute(args, this._parsingContext);
-            Assert.AreEqual(-3, result.Result);
-        }
-
-        [TestMethod]
-        public void IntShouldConvertStringToInteger()
-        {
-            CInt? func = new CInt();
-            IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs("-2.88");
-            CompileResult? result = func.Execute(args, this._parsingContext);
-            Assert.AreEqual(-3, result.Result);
-        }
+    [TestMethod]
+    public void IntShouldConvertStringToInteger()
+    {
+        CInt? func = new CInt();
+        IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs("-2.88");
+        CompileResult? result = func.Execute(args, this._parsingContext);
+        Assert.AreEqual(-3, result.Result);
     }
 }

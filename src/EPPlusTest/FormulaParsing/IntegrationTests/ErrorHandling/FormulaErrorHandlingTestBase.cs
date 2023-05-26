@@ -31,29 +31,28 @@ using System.IO;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OfficeOpenXml;
 
-namespace EPPlusTest.FormulaParsing.IntegrationTests
-{
-    [TestClass]
-    public class FormulaErrorHandlingTestBase
-    {
-        protected ExcelPackage Package;
-        protected ExcelWorksheet Worksheet;
+namespace EPPlusTest.FormulaParsing.IntegrationTests;
 
-        public void BaseInitialize()
-        {
+[TestClass]
+public class FormulaErrorHandlingTestBase
+{
+    protected ExcelPackage Package;
+    protected ExcelWorksheet Worksheet;
+
+    public void BaseInitialize()
+    {
 #if !Core
             var dir = AppDomain.CurrentDomain.BaseDirectory;
 #else
-            string? dir = AppContext.BaseDirectory;
+        string? dir = AppContext.BaseDirectory;
 #endif
-            ExcelPackage? Package = new ExcelPackage(new FileInfo(Path.Combine(dir, "Workbooks", "FormulaTest.xlsx")));
-            this.Worksheet = Package.Workbook.Worksheets["ValidateFormulas"];
-            Package.Workbook.Calculate();
-        }
+        ExcelPackage? Package = new ExcelPackage(new FileInfo(Path.Combine(dir, "Workbooks", "FormulaTest.xlsx")));
+        this.Worksheet = Package.Workbook.Worksheets["ValidateFormulas"];
+        Package.Workbook.Calculate();
+    }
 
-        public void BaseCleanup()
-        {
-            this.Package.Dispose();
-        }
+    public void BaseCleanup()
+    {
+        this.Package.Dispose();
     }
 }

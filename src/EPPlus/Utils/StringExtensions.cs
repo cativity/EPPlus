@@ -1,7 +1,6 @@
-﻿namespace OfficeOpenXml.Utils
+﻿namespace OfficeOpenXml.Utils;
+
+internal static class StringExtensions
 {
-    internal static class StringExtensions
-    {
-        internal static string NullIfWhiteSpace(this string s) { return s == "" ? null : s; }
-    }
+    internal static string NullIfWhiteSpace(this string s) { return s == "" ? null : s; }
 }

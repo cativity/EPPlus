@@ -10,20 +10,19 @@
  *************************************************************************************************
   06/29/2020         EPPlus Software AB       EPPlus 5.3
  *************************************************************************************************/
-namespace OfficeOpenXml
+namespace OfficeOpenXml;
+
+/// <summary>
+/// Sorting
+/// </summary>
+public enum eSortOrder
 {
     /// <summary>
-    /// Sorting
+    /// Sort ascending, default
     /// </summary>
-    public enum eSortOrder
-    {
-        /// <summary>
-        /// Sort ascending, default
-        /// </summary>
-        Ascending,
-        /// <summary>
-        /// Sort descending
-        /// </summary>
-        Descending
-    }
+    Ascending,
+    /// <summary>
+    /// Sort descending
+    /// </summary>
+    Descending
 }

@@ -10,24 +10,23 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
-namespace OfficeOpenXml.Drawing
+namespace OfficeOpenXml.Drawing;
+
+/// <summary>
+/// How autofit handles text.
+/// </summary>
+public enum eTextAutofit
 {
     /// <summary>
-    /// How autofit handles text.
+    /// No autofit
     /// </summary>
-    public enum eTextAutofit
-    {
-        /// <summary>
-        /// No autofit
-        /// </summary>
-        NoAutofit,
-        /// <summary>
-        /// Text within the text body will be normally autofit
-        /// </summary>
-        NormalAutofit,
-        /// <summary>
-        /// A shape will be autofit to fully contain the text within it
-        /// </summary>
-        ShapeAutofit
-    }
+    NoAutofit,
+    /// <summary>
+    /// Text within the text body will be normally autofit
+    /// </summary>
+    NormalAutofit,
+    /// <summary>
+    /// A shape will be autofit to fully contain the text within it
+    /// </summary>
+    ShapeAutofit
 }

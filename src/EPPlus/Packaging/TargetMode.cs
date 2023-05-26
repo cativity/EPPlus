@@ -10,20 +10,19 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
-namespace OfficeOpenXml.Packaging
+namespace OfficeOpenXml.Packaging;
+
+/// <summary>
+/// Specifies whether the target is inside or outside the Package.
+/// </summary>
+public enum TargetMode
 {
     /// <summary>
-    /// Specifies whether the target is inside or outside the Package.
+    /// The relationship references a part that is inside the package.
     /// </summary>
-    public enum TargetMode
-    {
-        /// <summary>
-        /// The relationship references a part that is inside the package.
-        /// </summary>
-        Internal = 0,
-        /// <summary>
-        /// The relationship references a resource that is external to the package.
-        /// </summary>
-        External = 1,
-    }
+    Internal = 0,
+    /// <summary>
+    /// The relationship references a resource that is external to the package.
+    /// </summary>
+    External = 1,
 }

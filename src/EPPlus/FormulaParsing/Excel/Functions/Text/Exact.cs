@@ -17,31 +17,30 @@ using System.Text;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Metadata;
 using OfficeOpenXml.FormulaParsing.ExpressionGraph;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Text
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Text;
+
+[FunctionMetadata(
+                     Category = ExcelFunctionCategory.Text,
+                     EPPlusVersion = "4",
+                     Description = "Tests if two supplied text strings are exactly the same and if so, returns TRUE; Otherwise, returns FALSE. (case-sensitive)")]
+internal class Exact : ExcelFunction
 {
-    [FunctionMetadata(
-        Category = ExcelFunctionCategory.Text,
-        EPPlusVersion = "4",
-        Description = "Tests if two supplied text strings are exactly the same and if so, returns TRUE; Otherwise, returns FALSE. (case-sensitive)")]
-    internal class Exact : ExcelFunction
+    public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
     {
-        public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
+        ValidateArguments(arguments, 2);
+        object? val1 = arguments.ElementAt(0).ValueFirst;
+        object? val2 = arguments.ElementAt(1).ValueFirst;
+
+        if (val1 == null && val2 == null)
         {
-            ValidateArguments(arguments, 2);
-            object? val1 = arguments.ElementAt(0).ValueFirst;
-            object? val2 = arguments.ElementAt(1).ValueFirst;
-
-            if (val1 == null && val2 == null)
-            {
-                return this.CreateResult(true, DataType.Boolean);
-            }
-            else if ((val1 == null && val2 != null) || (val1 != null && val2 == null))
-            {
-                return this.CreateResult(false, DataType.Boolean);
-            }
-
-            int result = string.Compare(val1.ToString(), val2.ToString(), StringComparison.Ordinal);
-            return this.CreateResult(result == 0, DataType.Boolean);
+            return this.CreateResult(true, DataType.Boolean);
         }
+        else if ((val1 == null && val2 != null) || (val1 != null && val2 == null))
+        {
+            return this.CreateResult(false, DataType.Boolean);
+        }
+
+        int result = string.Compare(val1.ToString(), val2.ToString(), StringComparison.Ordinal);
+        return this.CreateResult(result == 0, DataType.Boolean);
     }
 }

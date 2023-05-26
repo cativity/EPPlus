@@ -14,108 +14,107 @@
 using System;
 using System.Xml;
 
-namespace OfficeOpenXml.Drawing.Chart.ChartEx
-{
-    /// <summary>
-    /// The data used as source for the chart. Only spreadsheet internal data is supported at this point.
-    /// </summary>
-    public abstract class ExcelChartExData : XmlHelper
-    {
-        string _worksheetName;
-        internal ExcelChartExData(string worksheetName, XmlNamespaceManager nsm, XmlNode topNode) : base(nsm, topNode)
-        {
-            this._worksheetName = worksheetName;
-        }
-        /// <summary>
-        /// Data formula
-        /// </summary>
-        public string Formula 
-        { 
-            get
-            {
-                return this.GetXmlNodeString("cx:f");
-            }
-            set
-            {
-                if (ExcelCellBase.IsValidAddress(value))
-                {
-                    this.SetXmlNodeString("cx:f", ExcelCellBase.GetFullAddress(this._worksheetName, value));
-                }
-                else
-                {
-                    this.SetXmlNodeString("cx:f", value);
-                }
-            }
-        }
-        /// <summary>
-        /// The direction of the formula
-        /// </summary>
-        public eFormulaDirection FormulaDirection
-        {
-            get
-            {
-                return this.GetXmlNodeString("cx:f/@dir").ToEnum(eFormulaDirection.Column);
-            }
-            set
-            {
-                this.SetXmlNodeString("cx:f/@dir", value.ToEnumString());
-            }
-        }
+namespace OfficeOpenXml.Drawing.Chart.ChartEx;
 
-        /// <summary>
-        /// The dimensions name formula. Return null if the element does not exist
-        /// </summary>
-        public string NameFormula
+/// <summary>
+/// The data used as source for the chart. Only spreadsheet internal data is supported at this point.
+/// </summary>
+public abstract class ExcelChartExData : XmlHelper
+{
+    string _worksheetName;
+    internal ExcelChartExData(string worksheetName, XmlNamespaceManager nsm, XmlNode topNode) : base(nsm, topNode)
+    {
+        this._worksheetName = worksheetName;
+    }
+    /// <summary>
+    /// Data formula
+    /// </summary>
+    public string Formula 
+    { 
+        get
         {
-            get
+            return this.GetXmlNodeString("cx:f");
+        }
+        set
+        {
+            if (ExcelCellBase.IsValidAddress(value))
             {
-                if(this.ExistsNode("cx:nf"))
-                {
-                    return this.GetXmlNodeString("cx:nf");
-                }
-                else
-                {
-                    return null;
-                }
+                this.SetXmlNodeString("cx:f", ExcelCellBase.GetFullAddress(this._worksheetName, value));
             }
-            set
+            else
             {
-                if(ExcelCellBase.IsValidAddress(value))
-                {
-                    this.SetXmlNodeString("cx:nf", ExcelCellBase.GetFullAddress(this._worksheetName, value), true);
-                }
-                else
-                {
-                    this.SetXmlNodeString("cx:nf", value, true);
-                }
+                this.SetXmlNodeString("cx:f", value);
             }
         }
-        /// <summary>
-        /// Direction for the name formula
-        /// </summary>
-        public eFormulaDirection? NameFormulaDirection 
-        { 
-            get
+    }
+    /// <summary>
+    /// The direction of the formula
+    /// </summary>
+    public eFormulaDirection FormulaDirection
+    {
+        get
+        {
+            return this.GetXmlNodeString("cx:f/@dir").ToEnum(eFormulaDirection.Column);
+        }
+        set
+        {
+            this.SetXmlNodeString("cx:f/@dir", value.ToEnumString());
+        }
+    }
+
+    /// <summary>
+    /// The dimensions name formula. Return null if the element does not exist
+    /// </summary>
+    public string NameFormula
+    {
+        get
+        {
+            if(this.ExistsNode("cx:nf"))
             {
-                if (this.ExistsNode("cx:nf"))
-                {
-                    return this.GetXmlNodeString("cx:nf/@dir").ToEnum<eFormulaDirection>(eFormulaDirection.Column);
-                }
-                else
-                {
-                    return null;
-                }
+                return this.GetXmlNodeString("cx:nf");
             }
-            set
+            else
             {
-                if(value==null)
-                {
-                    this.DeleteNode("cx:nf/@dir");
-                }
-                else
-                {
-                    this.SetXmlNodeString("cx:nf/@dir", value.ToEnumString());
-                }
+                return null;
+            }
+        }
+        set
+        {
+            if(ExcelCellBase.IsValidAddress(value))
+            {
+                this.SetXmlNodeString("cx:nf", ExcelCellBase.GetFullAddress(this._worksheetName, value), true);
+            }
+            else
+            {
+                this.SetXmlNodeString("cx:nf", value, true);
+            }
+        }
+    }
+    /// <summary>
+    /// Direction for the name formula
+    /// </summary>
+    public eFormulaDirection? NameFormulaDirection 
+    { 
+        get
+        {
+            if (this.ExistsNode("cx:nf"))
+            {
+                return this.GetXmlNodeString("cx:nf/@dir").ToEnum<eFormulaDirection>(eFormulaDirection.Column);
+            }
+            else
+            {
+                return null;
+            }
+        }
+        set
+        {
+            if(value==null)
+            {
+                this.DeleteNode("cx:nf/@dir");
+            }
+            else
+            {
+                this.SetXmlNodeString("cx:nf/@dir", value.ToEnumString());
             }
         }
     }

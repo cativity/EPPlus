@@ -36,60 +36,59 @@ using OfficeOpenXml.FormulaParsing.ExpressionGraph;
 using OfficeOpenXml.FormulaParsing;
 using OfficeOpenXml.FormulaParsing.LexicalAnalysis;
 
-namespace EPPlusTest.FormulaParsing.ExpressionGraph
+namespace EPPlusTest.FormulaParsing.ExpressionGraph;
+
+[TestClass]
+public class ExpressionFactoryTests
 {
-    [TestClass]
-    public class ExpressionFactoryTests
+    private IExpressionFactory _factory;
+    private ParsingContext _parsingContext;
+
+    [TestInitialize]
+    public void Setup()
     {
-        private IExpressionFactory _factory;
-        private ParsingContext _parsingContext;
+        this._parsingContext = ParsingContext.Create();
+        ExcelDataProvider? provider = A.Fake<ExcelDataProvider>();
+        this._factory = new ExpressionFactory(provider, this._parsingContext);
+    }
 
-        [TestInitialize]
-        public void Setup()
-        {
-            this._parsingContext = ParsingContext.Create();
-            ExcelDataProvider? provider = A.Fake<ExcelDataProvider>();
-            this._factory = new ExpressionFactory(provider, this._parsingContext);
-        }
+    [TestMethod]
+    public void ShouldReturnIntegerExpressionWhenTokenIsInteger()
+    {
+        Token token = new Token("2", TokenType.Integer);
+        Expression? expression = this._factory.Create(token);
+        Assert.IsInstanceOfType(expression, typeof(IntegerExpression));
+    }
 
-        [TestMethod]
-        public void ShouldReturnIntegerExpressionWhenTokenIsInteger()
-        {
-            Token token = new Token("2", TokenType.Integer);
-            Expression? expression = this._factory.Create(token);
-            Assert.IsInstanceOfType(expression, typeof(IntegerExpression));
-        }
+    [TestMethod]
+    public void ShouldReturnBooleanExpressionWhenTokenIsBoolean()
+    {
+        Token token = new Token("true", TokenType.Boolean);
+        Expression? expression = this._factory.Create(token);
+        Assert.IsInstanceOfType(expression, typeof(BooleanExpression));
+    }
 
-        [TestMethod]
-        public void ShouldReturnBooleanExpressionWhenTokenIsBoolean()
-        {
-            Token token = new Token("true", TokenType.Boolean);
-            Expression? expression = this._factory.Create(token);
-            Assert.IsInstanceOfType(expression, typeof(BooleanExpression));
-        }
+    [TestMethod]
+    public void ShouldReturnDecimalExpressionWhenTokenIsDecimal()
+    {
+        Token token = new Token("2.5", TokenType.Decimal);
+        Expression? expression = this._factory.Create(token);
+        Assert.IsInstanceOfType(expression, typeof(DecimalExpression));
+    }
 
-        [TestMethod]
-        public void ShouldReturnDecimalExpressionWhenTokenIsDecimal()
-        {
-            Token token = new Token("2.5", TokenType.Decimal);
-            Expression? expression = this._factory.Create(token);
-            Assert.IsInstanceOfType(expression, typeof(DecimalExpression));
-        }
+    [TestMethod]
+    public void ShouldReturnExcelRangeExpressionWhenTokenIsExcelAddress()
+    {
+        Token token = new Token("A1", TokenType.ExcelAddress);
+        Expression? expression = this._factory.Create(token);
+        Assert.IsInstanceOfType(expression, typeof(ExcelAddressExpression));
+    }
 
-        [TestMethod]
-        public void ShouldReturnExcelRangeExpressionWhenTokenIsExcelAddress()
-        {
-            Token token = new Token("A1", TokenType.ExcelAddress);
-            Expression? expression = this._factory.Create(token);
-            Assert.IsInstanceOfType(expression, typeof(ExcelAddressExpression));
-        }
-
-        [TestMethod]
-        public void ShouldReturnNamedValueExpressionWhenTokenIsNamedValue()
-        {
-            Token token = new Token("NamedValue", TokenType.NameValue);
-            Expression? expression = this._factory.Create(token);
-            Assert.IsInstanceOfType(expression, typeof(NamedValueExpression));
-        }
+    [TestMethod]
+    public void ShouldReturnNamedValueExpressionWhenTokenIsNamedValue()
+    {
+        Token token = new Token("NamedValue", TokenType.NameValue);
+        Expression? expression = this._factory.Create(token);
+        Assert.IsInstanceOfType(expression, typeof(NamedValueExpression));
     }
 }

@@ -16,33 +16,32 @@ using System.Linq;
 using System.Text;
 using OfficeOpenXml.FormulaParsing.Excel.Operators;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Database
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Database;
+
+public class ExcelDatabaseRow
 {
-    public class ExcelDatabaseRow
+    private Dictionary<int, string> _fieldIndexes = new Dictionary<int, string>();
+    private readonly Dictionary<string, object> _items = new Dictionary<string, object>();
+    private int _colIndex = 1;
+    public object this[string field]
     {
-        private Dictionary<int, string> _fieldIndexes = new Dictionary<int, string>();
-        private readonly Dictionary<string, object> _items = new Dictionary<string, object>();
-        private int _colIndex = 1;
-        public object this[string field]
-        {
-            get { return this._items[field]; }
+        get { return this._items[field]; }
 
-            set
-            {
-                this._items[field] = value;
-                this._fieldIndexes[this._colIndex++] = field;
-            }
-        }
-
-        public object this[int index]
+        set
         {
-            get
-            {
-                string? field = this._fieldIndexes[index];
-                return this._items[field];
-            }
+            this._items[field] = value;
+            this._fieldIndexes[this._colIndex++] = field;
         }
-        
-        
     }
+
+    public object this[int index]
+    {
+        get
+        {
+            string? field = this._fieldIndexes[index];
+            return this._items[field];
+        }
+    }
+        
+        
 }

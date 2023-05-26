@@ -18,44 +18,43 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Information
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Information;
+
+[FunctionMetadata(
+                     Category = ExcelFunctionCategory.Information,
+                     EPPlusVersion = "4",
+                     Description = "Returns information about the data type of a supplied value")]
+internal class TypeFunction : ExcelFunction
 {
-    [FunctionMetadata(
-        Category = ExcelFunctionCategory.Information,
-        EPPlusVersion = "4",
-        Description = "Returns information about the data type of a supplied value")]
-    internal class TypeFunction : ExcelFunction
+    public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
     {
-        public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
+        ValidateArguments(arguments, 1);
+        object? val = arguments.ElementAt(0).Value;
+        if (val is bool)
         {
-            ValidateArguments(arguments, 1);
-            object? val = arguments.ElementAt(0).Value;
-            if (val is bool)
-            {
-                return this.CreateResult(4, DataType.Integer);
-            }
-
-            if (IsNumeric(val) || val == null)
-            {
-                return this.CreateResult(1, DataType.Integer);
-            }
-
-            if (ExcelErrorValue.Values.IsErrorValue(val))
-            {
-                return this.CreateResult(16, DataType.Integer);
-            }
-
-            if (val is string)
-            {
-                return this.CreateResult(2, DataType.Integer);
-            }
-
-            if (val.GetType().IsArray || val is IEnumerable)
-            {
-                return this.CreateResult(64, DataType.Integer);
-            }
-
-            return new CompileResult(eErrorType.Value);
+            return this.CreateResult(4, DataType.Integer);
         }
+
+        if (IsNumeric(val) || val == null)
+        {
+            return this.CreateResult(1, DataType.Integer);
+        }
+
+        if (ExcelErrorValue.Values.IsErrorValue(val))
+        {
+            return this.CreateResult(16, DataType.Integer);
+        }
+
+        if (val is string)
+        {
+            return this.CreateResult(2, DataType.Integer);
+        }
+
+        if (val.GetType().IsArray || val is IEnumerable)
+        {
+            return this.CreateResult(64, DataType.Integer);
+        }
+
+        return new CompileResult(eErrorType.Value);
     }
 }

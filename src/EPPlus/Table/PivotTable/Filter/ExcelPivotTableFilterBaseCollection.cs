@@ -17,104 +17,103 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Xml;
 
-namespace OfficeOpenXml.Table.PivotTable.Filter
+namespace OfficeOpenXml.Table.PivotTable.Filter;
+
+/// <summary>
+/// The base collection for pivot table filters
+/// </summary>
+public abstract class ExcelPivotTableFilterBaseCollection : IEnumerable<ExcelPivotTableFilter>
 {
-    /// <summary>
-    /// The base collection for pivot table filters
-    /// </summary>
-    public abstract class ExcelPivotTableFilterBaseCollection : IEnumerable<ExcelPivotTableFilter>
+    internal List<ExcelPivotTableFilter> _filters = new List<ExcelPivotTableFilter>();
+    internal readonly ExcelPivotTable _table;
+    internal readonly ExcelPivotTableField _field;
+    internal ExcelPivotTableFilterBaseCollection(ExcelPivotTable table)
     {
-        internal List<ExcelPivotTableFilter> _filters = new List<ExcelPivotTableFilter>();
-        internal readonly ExcelPivotTable _table;
-        internal readonly ExcelPivotTableField _field;
-        internal ExcelPivotTableFilterBaseCollection(ExcelPivotTable table)
+        this._table = table;
+        XmlNode? filtersNode = this._table.GetNode("d:filters");
+        if (filtersNode != null)
         {
-            this._table = table;
-            XmlNode? filtersNode = this._table.GetNode("d:filters");
-            if (filtersNode != null)
+            foreach (XmlNode node in filtersNode.ChildNodes)
             {
-                foreach (XmlNode node in filtersNode.ChildNodes)
-                {
-                    ExcelPivotTableFilter? f =new ExcelPivotTableFilter(this._table.NameSpaceManager, node, this._table.WorkSheet.Workbook.Date1904);
-                    table.SetNewFilterId(f.Id);
-                    this._filters.Add(f);
-                }
+                ExcelPivotTableFilter? f =new ExcelPivotTableFilter(this._table.NameSpaceManager, node, this._table.WorkSheet.Workbook.Date1904);
+                table.SetNewFilterId(f.Id);
+                this._filters.Add(f);
             }
         }
-        internal ExcelPivotTableFilterBaseCollection(ExcelPivotTableField field)
-        {
-            this._field = field;
-            this._table = field._pivotTable;
+    }
+    internal ExcelPivotTableFilterBaseCollection(ExcelPivotTableField field)
+    {
+        this._field = field;
+        this._table = field._pivotTable;
 
-            foreach(ExcelPivotTableFilter? filter in this._table.Filters)
+        foreach(ExcelPivotTableFilter? filter in this._table.Filters)
+        {
+            if(filter.Fld==field.Index)
             {
-                if(filter.Fld==field.Index)
-                {
-                    this._filters.Add(filter);
-                }
+                this._filters.Add(filter);
             }
         }
-        /// <summary>
-        /// Returns an enumerator that iterates through the collection.
-        /// </summary>
-        /// <returns>An enumerator that can be used to iterate through the collection.</returns>
-        public IEnumerator<ExcelPivotTableFilter> GetEnumerator()
-        {
-            return this._filters.GetEnumerator();
-        }
+    }
+    /// <summary>
+    /// Returns an enumerator that iterates through the collection.
+    /// </summary>
+    /// <returns>An enumerator that can be used to iterate through the collection.</returns>
+    public IEnumerator<ExcelPivotTableFilter> GetEnumerator()
+    {
+        return this._filters.GetEnumerator();
+    }
 
-        /// <summary>
-        /// Returns an enumerator that iterates through the collection.
-        /// </summary>
-        /// <returns>An enumerator that can be used to iterate through the collection.</returns>
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return this._filters.GetEnumerator();
-        }
+    /// <summary>
+    /// Returns an enumerator that iterates through the collection.
+    /// </summary>
+    /// <returns>An enumerator that can be used to iterate through the collection.</returns>
+    IEnumerator IEnumerable.GetEnumerator()
+    {
+        return this._filters.GetEnumerator();
+    }
 
-        internal XmlNode GetOrCreateFiltersNode()
+    internal XmlNode GetOrCreateFiltersNode()
+    {
+        return this._table.CreateNode("d:filters");
+    }
+    internal ExcelPivotTableFilter CreateFilter()
+    {
+        XmlNode? topNode = this.GetOrCreateFiltersNode();
+        XmlElement? filterNode = topNode.OwnerDocument.CreateElement("filter", ExcelPackage.schemaMain);
+        topNode.AppendChild(filterNode);
+        ExcelPivotTableFilter? filter = new ExcelPivotTableFilter(this._field.NameSpaceManager, filterNode, this._table.WorkSheet.Workbook.Date1904)
         {
-            return this._table.CreateNode("d:filters");
-        }
-        internal ExcelPivotTableFilter CreateFilter()
+            EvalOrder = -1,
+            Fld = this._field.Index,
+            Id = this._table.GetNewFilterId()
+        };
+        return filter;
+    }
+    /// <summary>
+    /// Number of items in the collection
+    /// </summary>
+    public int Count 
+    { 
+        get
         {
-            XmlNode? topNode = this.GetOrCreateFiltersNode();
-            XmlElement? filterNode = topNode.OwnerDocument.CreateElement("filter", ExcelPackage.schemaMain);
-            topNode.AppendChild(filterNode);
-            ExcelPivotTableFilter? filter = new ExcelPivotTableFilter(this._field.NameSpaceManager, filterNode, this._table.WorkSheet.Workbook.Date1904)
-            {
-                EvalOrder = -1,
-                Fld = this._field.Index,
-                Id = this._table.GetNewFilterId()
-            };
-            return filter;
+            return this._filters.Count;
         }
-        /// <summary>
-        /// Number of items in the collection
-        /// </summary>
-        public int Count 
-        { 
-            get
+    }
+    /// <summary>
+    /// The indexer for the collection
+    /// </summary>
+    /// <param name="index">The index</param>
+    /// <returns></returns>
+    public ExcelPivotTableFilter this[int index]
+    {
+        get
+        {
+            if (index < 0 || index >= this._filters.Count)
             {
-                return this._filters.Count;
+                throw (new ArgumentOutOfRangeException());
             }
-        }
-        /// <summary>
-        /// The indexer for the collection
-        /// </summary>
-        /// <param name="index">The index</param>
-        /// <returns></returns>
-        public ExcelPivotTableFilter this[int index]
-        {
-            get
-            {
-                if (index < 0 || index >= this._filters.Count)
-                {
-                    throw (new ArgumentOutOfRangeException());
-                }
 
-                return this._filters[index];
-            }
+            return this._filters[index];
         }
     }
 }

@@ -15,70 +15,69 @@ using OfficeOpenXml.DataValidation.Formulas;
 using OfficeOpenXml.DataValidation.Formulas.Contracts;
 using System.Xml;
 
-namespace OfficeOpenXml.DataValidation
+namespace OfficeOpenXml.DataValidation;
+
+/// <summary>
+/// Validation for times (<see cref="OfficeOpenXml.DataValidation.ExcelTime"/>).
+/// </summary>
+public class ExcelDataValidationTime : ExcelDataValidationWithFormula2<IExcelDataValidationFormulaTime>, IExcelDataValidationTime
 {
     /// <summary>
-    /// Validation for times (<see cref="OfficeOpenXml.DataValidation.ExcelTime"/>).
+    /// Constructor
     /// </summary>
-    public class ExcelDataValidationTime : ExcelDataValidationWithFormula2<IExcelDataValidationFormulaTime>, IExcelDataValidationTime
+    /// <param name="worksheet"></param>
+    /// <param name="uid">Uid of the data validation, format should be a Guid surrounded by curly braces.</param>
+    /// <param name="address"></param>
+    /// <param name="validationType"></param>
+    internal ExcelDataValidationTime(string uid, string address, ExcelWorksheet ws)
+        : base(uid, address, ws)
     {
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        /// <param name="worksheet"></param>
-        /// <param name="uid">Uid of the data validation, format should be a Guid surrounded by curly braces.</param>
-        /// <param name="address"></param>
-        /// <param name="validationType"></param>
-        internal ExcelDataValidationTime(string uid, string address, ExcelWorksheet ws)
-            : base(uid, address, ws)
-        {
-            this.Formula = new ExcelDataValidationFormulaTime(null, uid, ws.Name, this.OnFormulaChanged);
-            this.Formula2 = new ExcelDataValidationFormulaTime(null, uid, ws.Name, this.OnFormulaChanged);
-        }
+        this.Formula = new ExcelDataValidationFormulaTime(null, uid, ws.Name, this.OnFormulaChanged);
+        this.Formula2 = new ExcelDataValidationFormulaTime(null, uid, ws.Name, this.OnFormulaChanged);
+    }
 
-        /// <summary>
-        /// Constructor for reading data
-        /// </summary>
-        /// <param name="xr">The XmlReader to read from</param>
-        internal ExcelDataValidationTime(XmlReader xr, ExcelWorksheet ws)
-            : base(xr, ws)
-        {
-        }
+    /// <summary>
+    /// Constructor for reading data
+    /// </summary>
+    /// <param name="xr">The XmlReader to read from</param>
+    internal ExcelDataValidationTime(XmlReader xr, ExcelWorksheet ws)
+        : base(xr, ws)
+    {
+    }
 
-        /// <summary>
-        /// Copy constructor
-        /// </summary>
-        /// <param name="copy"></param>
-        internal ExcelDataValidationTime(ExcelDataValidationTime copy, ExcelWorksheet ws) 
-            : base(copy, ws)
-        {
-            this.Formula = copy.Formula;
-            this.Formula2 = copy.Formula2;
-        }
+    /// <summary>
+    /// Copy constructor
+    /// </summary>
+    /// <param name="copy"></param>
+    internal ExcelDataValidationTime(ExcelDataValidationTime copy, ExcelWorksheet ws) 
+        : base(copy, ws)
+    {
+        this.Formula = copy.Formula;
+        this.Formula2 = copy.Formula2;
+    }
 
-        /// <summary>
-        /// Property for determining type of validation
-        /// </summary>
-        public override ExcelDataValidationType ValidationType => new ExcelDataValidationType(eDataValidationType.Time);
+    /// <summary>
+    /// Property for determining type of validation
+    /// </summary>
+    public override ExcelDataValidationType ValidationType => new ExcelDataValidationType(eDataValidationType.Time);
 
-        internal override IExcelDataValidationFormulaTime DefineFormulaClassType(string formulaValue, string sheetName)
-        {
-            return new ExcelDataValidationFormulaTime(formulaValue, this.Uid, sheetName, this.OnFormulaChanged);
-        }
+    internal override IExcelDataValidationFormulaTime DefineFormulaClassType(string formulaValue, string sheetName)
+    {
+        return new ExcelDataValidationFormulaTime(formulaValue, this.Uid, sheetName, this.OnFormulaChanged);
+    }
 
-        internal override ExcelDataValidation GetClone()
-        {
-            return new ExcelDataValidationTime(this, this._ws);
-        }
+    internal override ExcelDataValidation GetClone()
+    {
+        return new ExcelDataValidationTime(this, this._ws);
+    }
 
-        internal override ExcelDataValidation GetClone(ExcelWorksheet copy)
-        {
-            return new ExcelDataValidationTime(this, copy);
-        }
+    internal override ExcelDataValidation GetClone(ExcelWorksheet copy)
+    {
+        return new ExcelDataValidationTime(this, copy);
+    }
 
-        ExcelDataValidationTime Clone()
-        {
-            return (ExcelDataValidationTime)this.GetClone();
-        }
+    ExcelDataValidationTime Clone()
+    {
+        return (ExcelDataValidationTime)this.GetClone();
     }
 }

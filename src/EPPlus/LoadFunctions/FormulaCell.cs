@@ -15,23 +15,22 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace OfficeOpenXml.LoadFunctions
+namespace OfficeOpenXml.LoadFunctions;
+
+internal class FormulaCell
 {
-    internal class FormulaCell
+    public string Formula
     {
-        public string Formula
-        {
-            get; set;
-        }
+        get; set;
+    }
 
-        public string FormulaR1C1
-        {
-            get; set;
-        }
+    public string FormulaR1C1
+    {
+        get; set;
+    }
 
-        public string NumberFormat
-        {
-            get; set;
-        }
+    public string NumberFormat
+    {
+        get; set;
     }
 }

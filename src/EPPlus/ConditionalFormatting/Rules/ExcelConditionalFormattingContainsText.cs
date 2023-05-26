@@ -18,15 +18,15 @@ using System.Drawing;
 using System.Xml;
 using OfficeOpenXml.ConditionalFormatting.Contracts;
 
-namespace OfficeOpenXml.ConditionalFormatting
-{
-  /// <summary>
-  /// ExcelConditionalFormattingContainsText
-  /// </summary>
-  public class ExcelConditionalFormattingContainsText
+namespace OfficeOpenXml.ConditionalFormatting;
+
+/// <summary>
+/// ExcelConditionalFormattingContainsText
+/// </summary>
+public class ExcelConditionalFormattingContainsText
     : ExcelConditionalFormattingRule,
-    IExcelConditionalFormattingContainsText
-  {
+      IExcelConditionalFormattingContainsText
+{
     /****************************************************************************************/
 
     #region Constructors
@@ -39,18 +39,18 @@ namespace OfficeOpenXml.ConditionalFormatting
     /// <param name="itemElementNode"></param>
     /// <param name="namespaceManager"></param>
     internal ExcelConditionalFormattingContainsText(
-      ExcelAddress address,
-      int priority,
-      ExcelWorksheet worksheet,
-      XmlNode itemElementNode,
-      XmlNamespaceManager namespaceManager)
-      : base(
-        eExcelConditionalFormattingRuleType.ContainsText,
-        address,
-        priority,
-        worksheet,
-        itemElementNode,
-        (namespaceManager == null) ? worksheet.NameSpaceManager : namespaceManager)
+        ExcelAddress address,
+        int priority,
+        ExcelWorksheet worksheet,
+        XmlNode itemElementNode,
+        XmlNamespaceManager namespaceManager)
+        : base(
+               eExcelConditionalFormattingRuleType.ContainsText,
+               address,
+               priority,
+               worksheet,
+               itemElementNode,
+               (namespaceManager == null) ? worksheet.NameSpaceManager : namespaceManager)
     {
         if (itemElementNode==null) //Set default values and create attributes if needed
         {
@@ -67,16 +67,16 @@ namespace OfficeOpenXml.ConditionalFormatting
     /// <param name="worksheet"></param>
     /// <param name="itemElementNode"></param>
     internal ExcelConditionalFormattingContainsText(
-      ExcelAddress address,
-      int priority,
-      ExcelWorksheet worksheet,
-      XmlNode itemElementNode)
-      : this(
-        address,
-        priority,
-        worksheet,
-        itemElementNode,
-        null)
+        ExcelAddress address,
+        int priority,
+        ExcelWorksheet worksheet,
+        XmlNode itemElementNode)
+        : this(
+               address,
+               priority,
+               worksheet,
+               itemElementNode,
+               null)
     {
     }
 
@@ -87,15 +87,15 @@ namespace OfficeOpenXml.ConditionalFormatting
     /// <param name="address"></param>
     /// <param name="worksheet"></param>
     internal ExcelConditionalFormattingContainsText(
-      ExcelAddress address,
-      int priority,
-      ExcelWorksheet worksheet)
-      : this(
-        address,
-        priority,
-        worksheet,
-        null,
-        null)
+        ExcelAddress address,
+        int priority,
+        ExcelWorksheet worksheet)
+        : this(
+               address,
+               priority,
+               worksheet,
+               null,
+               null)
     {
     }
     #endregion Constructors
@@ -108,25 +108,24 @@ namespace OfficeOpenXml.ConditionalFormatting
     /// </summary>
     public string Text
     {
-      get
-      {
-        return this.GetXmlNodeString(
-                                     ExcelConditionalFormattingConstants.Paths.TextAttribute);
-      }
-      set
-      {
-          this.SetXmlNodeString(
-                                ExcelConditionalFormattingConstants.Paths.TextAttribute,
-                                value);
+        get
+        {
+            return this.GetXmlNodeString(
+                                         ExcelConditionalFormattingConstants.Paths.TextAttribute);
+        }
+        set
+        {
+            this.SetXmlNodeString(
+                                  ExcelConditionalFormattingConstants.Paths.TextAttribute,
+                                  value);
 
-          this.Formula = string.Format(
-                                       "NOT(ISERROR(SEARCH(\"{1}\",{0})))",
-                                       this.Address.Start.Address,
-                                       value.Replace("\"", "\"\""));
-      }
+            this.Formula = string.Format(
+                                         "NOT(ISERROR(SEARCH(\"{1}\",{0})))",
+                                         this.Address.Start.Address,
+                                         value.Replace("\"", "\"\""));
+        }
     }
     #endregion Exposed Properties
 
     /****************************************************************************************/
-  }
 }

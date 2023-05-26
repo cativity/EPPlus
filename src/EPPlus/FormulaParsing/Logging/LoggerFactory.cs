@@ -16,21 +16,20 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace OfficeOpenXml.FormulaParsing.Logging
+namespace OfficeOpenXml.FormulaParsing.Logging;
+
+/// <summary>
+/// Create loggers that can be used for logging the formula parser.
+/// </summary>
+public static class LoggerFactory
 {
     /// <summary>
-    /// Create loggers that can be used for logging the formula parser.
+    /// Creates a logger that logs to a simple textfile.
     /// </summary>
-    public static class LoggerFactory
+    /// <param name="file"></param>
+    /// <returns></returns>
+    public static IFormulaParserLogger CreateTextFileLogger(FileInfo file)
     {
-        /// <summary>
-        /// Creates a logger that logs to a simple textfile.
-        /// </summary>
-        /// <param name="file"></param>
-        /// <returns></returns>
-        public static IFormulaParserLogger CreateTextFileLogger(FileInfo file)
-        {
-            return new TextFileLogger(file);
-        }
+        return new TextFileLogger(file);
     }
 }

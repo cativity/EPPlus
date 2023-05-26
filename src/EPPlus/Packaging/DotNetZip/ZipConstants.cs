@@ -25,10 +25,10 @@
 
 using System;
 
-namespace OfficeOpenXml.Packaging.Ionic.Zip
-{
-  static class ZipConstants
-  {      
+namespace OfficeOpenXml.Packaging.Ionic.Zip;
+
+static class ZipConstants
+{      
     public const UInt32 PackedToRemovableMedia = 0x30304b50;
     public const UInt32 Zip64EndOfCentralDirectoryRecordSignature = 0x06064b50;
     public const UInt32 Zip64EndOfCentralDirectoryLocatorSignature = 0x07064b50;
@@ -47,5 +47,4 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
     public const UInt16 AesAlgId192 = 0x660F; 
     public const UInt16 AesAlgId256 = 0x6610; 
 
-  }
 }

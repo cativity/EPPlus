@@ -17,28 +17,27 @@ using System.Text;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Metadata;
 using OfficeOpenXml.FormulaParsing.ExpressionGraph;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
+
+[FunctionMetadata(
+                     Category = ExcelFunctionCategory.MathAndTrig,
+                     EPPlusVersion = "4",
+                     Description = "Returns the sign (+1, -1 or 0) of a supplied number")]
+internal class Sign : ExcelFunction
 {
-    [FunctionMetadata(
-        Category = ExcelFunctionCategory.MathAndTrig,
-        EPPlusVersion = "4",
-        Description = "Returns the sign (+1, -1 or 0) of a supplied number")]
-    internal class Sign : ExcelFunction
+    public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
     {
-        public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
+        ValidateArguments(arguments, 1);
+        double result = 0d;
+        double val = this.ArgToDecimal(arguments, 0);
+        if (val < 0)
         {
-            ValidateArguments(arguments, 1);
-            double result = 0d;
-            double val = this.ArgToDecimal(arguments, 0);
-            if (val < 0)
-            {
-                result = -1;
-            }
-            else if (val > 0)
-            {
-                result = 1;
-            }
-            return this.CreateResult(result, DataType.Decimal);
+            result = -1;
         }
+        else if (val > 0)
+        {
+            result = 1;
+        }
+        return this.CreateResult(result, DataType.Decimal);
     }
 }

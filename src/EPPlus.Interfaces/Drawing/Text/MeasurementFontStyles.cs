@@ -12,30 +12,29 @@
  *************************************************************************************************/
 using System;
 
-namespace OfficeOpenXml.Interfaces.Drawing.Text
+namespace OfficeOpenXml.Interfaces.Drawing.Text;
+
+[Flags]
+public enum MeasurementFontStyles
 {
-    [Flags]
-    public enum MeasurementFontStyles
-    {
-        //
-        // Summary:
-        //     Normal text.
-        Regular = 0,
-        //
-        // Summary:
-        //     Bold text.
-        Bold = 1,
-        //
-        // Summary:
-        //     Italic text.
-        Italic = 2,
-        //
-        // Summary:
-        //     Underlined text.
-        Underline = 4,
-        //
-        // Summary:
-        //     Text with a line through the middle.
-        Strikeout = 8
-    }
+    //
+    // Summary:
+    //     Normal text.
+    Regular = 0,
+    //
+    // Summary:
+    //     Bold text.
+    Bold = 1,
+    //
+    // Summary:
+    //     Italic text.
+    Italic = 2,
+    //
+    // Summary:
+    //     Underlined text.
+    Underline = 4,
+    //
+    // Summary:
+    //     Text with a line through the middle.
+    Strikeout = 8
 }

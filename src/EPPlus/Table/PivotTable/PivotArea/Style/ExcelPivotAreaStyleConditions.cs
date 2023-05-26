@@ -13,53 +13,52 @@
 using System;
 using System.Xml;
 
-namespace OfficeOpenXml.Table.PivotTable
+namespace OfficeOpenXml.Table.PivotTable;
+
+/// <summary>
+/// Conditions for a pivot table area style.
+/// </summary>
+public class ExcelPivotAreaStyleConditions
 {
-    /// <summary>
-    /// Conditions for a pivot table area style.
-    /// </summary>
-    public class ExcelPivotAreaStyleConditions
+    internal ExcelPivotAreaStyleConditions(XmlNamespaceManager nsm, XmlNode topNode, ExcelPivotTable pt)
     {
-        internal ExcelPivotAreaStyleConditions(XmlNamespaceManager nsm, XmlNode topNode, ExcelPivotTable pt)
+        this.Fields = new ExcelPivotAreaReferenceCollection(nsm, topNode, pt);
+        XmlHelper? xh = XmlHelperFactory.Create(nsm, topNode);
+        foreach (XmlElement n in xh.GetNodes("d:references/d:reference"))
         {
-            this.Fields = new ExcelPivotAreaReferenceCollection(nsm, topNode, pt);
-            XmlHelper? xh = XmlHelperFactory.Create(nsm, topNode);
-            foreach (XmlElement n in xh.GetNodes("d:references/d:reference"))
+            if (n.GetAttribute("field") == "4294967294")
             {
-                if (n.GetAttribute("field") == "4294967294")
-                {
-                    this.DataFields = new ExcelPivotAreaDataFieldReference(nsm, n, pt, -2);
-                }
-                else
-                {
-                    this.Fields.Add(new ExcelPivotAreaReference(nsm, n, pt));
-                }
+                this.DataFields = new ExcelPivotAreaDataFieldReference(nsm, n, pt, -2);
             }
-
-            this.DataFields ??= new ExcelPivotAreaDataFieldReference(nsm, topNode, pt, -2);
-        }
-        /// <summary>
-        /// Row and column fields that the conditions will apply to. 
-        /// </summary>
-        public ExcelPivotAreaReferenceCollection Fields 
-        { 
-            get;  
-        }
-        /// <summary>
-        /// The data field that the conditions will apply to. 
-        /// </summary>
-        public ExcelPivotAreaDataFieldReference DataFields
-        {
-            get;
+            else
+            {
+                this.Fields.Add(new ExcelPivotAreaReference(nsm, n, pt));
+            }
         }
 
-        internal void UpdateXml()
+        this.DataFields ??= new ExcelPivotAreaDataFieldReference(nsm, topNode, pt, -2);
+    }
+    /// <summary>
+    /// Row and column fields that the conditions will apply to. 
+    /// </summary>
+    public ExcelPivotAreaReferenceCollection Fields 
+    { 
+        get;  
+    }
+    /// <summary>
+    /// The data field that the conditions will apply to. 
+    /// </summary>
+    public ExcelPivotAreaDataFieldReference DataFields
+    {
+        get;
+    }
+
+    internal void UpdateXml()
+    {
+        this.DataFields.UpdateXml();
+        foreach (ExcelPivotAreaReference r in this.Fields)
         {
-            this.DataFields.UpdateXml();
-            foreach (ExcelPivotAreaReference r in this.Fields)
-            {
-                r.UpdateXml();
-            }
+            r.UpdateXml();
         }
     }
 }

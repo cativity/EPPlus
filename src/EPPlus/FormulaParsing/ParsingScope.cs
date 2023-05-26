@@ -16,65 +16,64 @@ using System.Linq;
 using System.Text;
 using OfficeOpenXml.FormulaParsing.ExcelUtilities;
 
-namespace OfficeOpenXml.FormulaParsing
+namespace OfficeOpenXml.FormulaParsing;
+
+/// <summary>
+/// Represents a parsing of a single input or workbook addrses.
+/// </summary>
+public class ParsingScope : IDisposable
 {
+    private readonly ParsingScopes _parsingScopes;
+
     /// <summary>
-    /// Represents a parsing of a single input or workbook addrses.
+    /// Constructor
     /// </summary>
-    public class ParsingScope : IDisposable
+    /// <param name="parsingScopes"></param>
+    /// <param name="address"></param>
+    public ParsingScope(ParsingScopes parsingScopes, RangeAddress address)
+        : this(parsingScopes, null, address)
     {
-        private readonly ParsingScopes _parsingScopes;
+    }
 
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        /// <param name="parsingScopes"></param>
-        /// <param name="address"></param>
-        public ParsingScope(ParsingScopes parsingScopes, RangeAddress address)
-            : this(parsingScopes, null, address)
-        {
-        }
+    /// <summary>
+    /// Constructor
+    /// </summary>
+    /// <param name="parsingScopes"></param>
+    /// <param name="parent"></param>
+    /// <param name="address"></param>
+    public ParsingScope(ParsingScopes parsingScopes, ParsingScope parent, RangeAddress address)
+    {
+        this._parsingScopes = parsingScopes;
+        this.Parent = parent;
+        this.Address = address;
+        this.ScopeId = Guid.NewGuid();
+    }
 
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        /// <param name="parsingScopes"></param>
-        /// <param name="parent"></param>
-        /// <param name="address"></param>
-        public ParsingScope(ParsingScopes parsingScopes, ParsingScope parent, RangeAddress address)
-        {
-            this._parsingScopes = parsingScopes;
-            this.Parent = parent;
-            this.Address = address;
-            this.ScopeId = Guid.NewGuid();
-        }
+    /// <summary>
+    /// Id of the scope.
+    /// </summary>
+    public Guid ScopeId { get; private set; }
 
-        /// <summary>
-        /// Id of the scope.
-        /// </summary>
-        public Guid ScopeId { get; private set; }
+    /// <summary>
+    /// The calling scope.
+    /// </summary>
+    public ParsingScope Parent { get; private set; }
 
-        /// <summary>
-        /// The calling scope.
-        /// </summary>
-        public ParsingScope Parent { get; private set; }
+    /// <summary>
+    /// The address of the cell currently beeing parsed.
+    /// </summary>
+    public RangeAddress Address { get; private set; }
 
-        /// <summary>
-        /// The address of the cell currently beeing parsed.
-        /// </summary>
-        public RangeAddress Address { get; private set; }
+    /// <summary>
+    /// True if the current scope is a Subtotal function being executed.
+    /// </summary>
+    public bool IsSubtotal { get; set; }
 
-        /// <summary>
-        /// True if the current scope is a Subtotal function being executed.
-        /// </summary>
-        public bool IsSubtotal { get; set; }
-
-        /// <summary>
-        /// Disposes this instance
-        /// </summary>
-        public void Dispose()
-        {
-            this._parsingScopes.KillScope(this);
-        }
+    /// <summary>
+    /// Disposes this instance
+    /// </summary>
+    public void Dispose()
+    {
+        this._parsingScopes.KillScope(this);
     }
 }

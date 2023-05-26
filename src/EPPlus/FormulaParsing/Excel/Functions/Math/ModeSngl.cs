@@ -15,13 +15,12 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
+
+[FunctionMetadata(
+                     Category = ExcelFunctionCategory.Statistical,
+                     EPPlusVersion = "5.2",
+                     Description = "Returns the Mode (the most frequently occurring value) of a list of supplied numbers ")]
+internal class ModeSngl : Mode
 {
-    [FunctionMetadata(
-        Category = ExcelFunctionCategory.Statistical,
-        EPPlusVersion = "5.2",
-        Description = "Returns the Mode (the most frequently occurring value) of a list of supplied numbers ")]
-    internal class ModeSngl : Mode
-    {
-    }
 }

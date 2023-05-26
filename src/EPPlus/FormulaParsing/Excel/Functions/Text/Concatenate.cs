@@ -17,30 +17,29 @@ using System.Text;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Metadata;
 using OfficeOpenXml.FormulaParsing.ExpressionGraph;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Text
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Text;
+
+[FunctionMetadata(
+                     Category = ExcelFunctionCategory.Text,
+                     EPPlusVersion = "4",
+                     Description = "Joins together two or more text strings")]
+internal class Concatenate : ExcelFunction
 {
-    [FunctionMetadata(
-        Category = ExcelFunctionCategory.Text,
-        EPPlusVersion = "4",
-        Description = "Joins together two or more text strings")]
-    internal class Concatenate : ExcelFunction
+    public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
     {
-        public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
+        if (arguments == null)
         {
-            if (arguments == null)
-            {
-                return this.CreateResult(string.Empty, DataType.String);
-            }
-            StringBuilder? sb = new StringBuilder();
-            foreach (FunctionArgument? arg in arguments)
-            {
-                object? v = arg.ValueFirst;
-                if (v != null)
-                {
-                    sb.Append(v);
-                }
-            }
-            return this.CreateResult(sb.ToString(), DataType.String);
+            return this.CreateResult(string.Empty, DataType.String);
         }
+        StringBuilder? sb = new StringBuilder();
+        foreach (FunctionArgument? arg in arguments)
+        {
+            object? v = arg.ValueFirst;
+            if (v != null)
+            {
+                sb.Append(v);
+            }
+        }
+        return this.CreateResult(sb.ToString(), DataType.String);
     }
 }

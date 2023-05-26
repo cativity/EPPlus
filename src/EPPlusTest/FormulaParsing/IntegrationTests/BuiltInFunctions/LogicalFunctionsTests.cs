@@ -35,94 +35,93 @@ using OfficeOpenXml.FormulaParsing;
 using FakeItEasy;
 using OfficeOpenXml;
 
-namespace EPPlusTest.FormulaParsing.IntegrationTests.BuiltInFunctions
+namespace EPPlusTest.FormulaParsing.IntegrationTests.BuiltInFunctions;
+
+[TestClass]
+public class LogicalFunctionsTests : FormulaParserTestBase
 {
-    [TestClass]
-    public class LogicalFunctionsTests : FormulaParserTestBase
+    [TestInitialize]
+    public void Setup()
     {
-        [TestInitialize]
-        public void Setup()
-        {
-            this._excelPackage = new ExcelPackage();
-            this._parser = new FormulaParser(this._excelPackage);
-        }
+        this._excelPackage = new ExcelPackage();
+        this._parser = new FormulaParser(this._excelPackage);
+    }
 
-        [TestCleanup]
-        public void Cleanup()
-        {
-            this._excelPackage.Dispose();
-        }
+    [TestCleanup]
+    public void Cleanup()
+    {
+        this._excelPackage.Dispose();
+    }
 
-        [TestMethod]
-        public void IfShouldReturnCorrectResult()
-        {
-            object? result = this._parser.Parse("If(2 < 3, 1, 2)");
-            Assert.AreEqual(1d, result);
-        }
+    [TestMethod]
+    public void IfShouldReturnCorrectResult()
+    {
+        object? result = this._parser.Parse("If(2 < 3, 1, 2)");
+        Assert.AreEqual(1d, result);
+    }
 
-        [TestMethod]
-        public void IIfShouldReturnCorrectResultWhenInnerFunctionExists()
-        {
-            object? result = this._parser.Parse("If(NOT(Or(true, FALSE)), 1, 2)");
-            Assert.AreEqual(2d, result);
-        }
+    [TestMethod]
+    public void IIfShouldReturnCorrectResultWhenInnerFunctionExists()
+    {
+        object? result = this._parser.Parse("If(NOT(Or(true, FALSE)), 1, 2)");
+        Assert.AreEqual(2d, result);
+    }
 
-        [TestMethod]
-        public void IIfShouldReturnCorrectResultWhenTrueConditionIsCoercedFromAString()
-        {
-            object? result = this._parser.Parse(@"If(""true"", 1, 2)");
-            Assert.AreEqual(1d, result);
-        }
+    [TestMethod]
+    public void IIfShouldReturnCorrectResultWhenTrueConditionIsCoercedFromAString()
+    {
+        object? result = this._parser.Parse(@"If(""true"", 1, 2)");
+        Assert.AreEqual(1d, result);
+    }
 
-        [TestMethod]
-        public void IIfShouldReturnCorrectResultWhenFalseConditionIsCoercedFromAString()
-        {
-            object? result = this._parser.Parse(@"If(""false"", 1, 2)");
-            Assert.AreEqual(2d, result);
-        }
+    [TestMethod]
+    public void IIfShouldReturnCorrectResultWhenFalseConditionIsCoercedFromAString()
+    {
+        object? result = this._parser.Parse(@"If(""false"", 1, 2)");
+        Assert.AreEqual(2d, result);
+    }
 
-        [TestMethod]
-        public void NotShouldReturnCorrectResult()
-        {
-            object? result = this._parser.Parse("not(true)");
-            Assert.IsFalse((bool)result);
+    [TestMethod]
+    public void NotShouldReturnCorrectResult()
+    {
+        object? result = this._parser.Parse("not(true)");
+        Assert.IsFalse((bool)result);
 
-            result = this._parser.Parse("NOT(false)");
-            Assert.IsTrue((bool)result);
-        }
+        result = this._parser.Parse("NOT(false)");
+        Assert.IsTrue((bool)result);
+    }
 
-        [TestMethod]
-        public void AndShouldReturnCorrectResult()
-        {
-            object? result = this._parser.Parse("And(true, 1)");
-            Assert.IsTrue((bool)result);
+    [TestMethod]
+    public void AndShouldReturnCorrectResult()
+    {
+        object? result = this._parser.Parse("And(true, 1)");
+        Assert.IsTrue((bool)result);
 
-            result = this._parser.Parse("AND(true, true, 1, false)");
-            Assert.IsFalse((bool)result);
-        }
+        result = this._parser.Parse("AND(true, true, 1, false)");
+        Assert.IsFalse((bool)result);
+    }
 
-        [TestMethod]
-        public void OrShouldReturnCorrectResult()
-        {
-            object? result = this._parser.Parse("Or(FALSE, 0)");
-            Assert.IsFalse((bool)result);
+    [TestMethod]
+    public void OrShouldReturnCorrectResult()
+    {
+        object? result = this._parser.Parse("Or(FALSE, 0)");
+        Assert.IsFalse((bool)result);
 
-            result = this._parser.Parse("OR(true, true, 1, false)");
-            Assert.IsTrue((bool)result);
-        }
+        result = this._parser.Parse("OR(true, true, 1, false)");
+        Assert.IsTrue((bool)result);
+    }
 
-        [TestMethod]
-        public void TrueShouldReturnCorrectResult()
-        {
-            object? result = this._parser.Parse("True()");
-            Assert.IsTrue((bool)result);
-        }
+    [TestMethod]
+    public void TrueShouldReturnCorrectResult()
+    {
+        object? result = this._parser.Parse("True()");
+        Assert.IsTrue((bool)result);
+    }
 
-        [TestMethod]
-        public void FalseShouldReturnCorrectResult()
-        {
-            object? result = this._parser.Parse("False()");
-            Assert.IsFalse((bool)result);
-        }
+    [TestMethod]
+    public void FalseShouldReturnCorrectResult()
+    {
+        object? result = this._parser.Parse("False()");
+        Assert.IsFalse((bool)result);
     }
 }

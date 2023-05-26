@@ -11,59 +11,58 @@
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
 using OfficeOpenXml.Utils.Extensions;
-namespace OfficeOpenXml.Drawing.Style.Fill
+namespace OfficeOpenXml.Drawing.Style.Fill;
+
+/// <summary>
+/// A BLIP will be tiled to fill the available space
+/// </summary>
+public class ExcelDrawingBlipFillTile
 {
-    /// <summary>
-    /// A BLIP will be tiled to fill the available space
-    /// </summary>
-    public class ExcelDrawingBlipFillTile
+    internal ExcelDrawingBlipFillTile()
     {
-        internal ExcelDrawingBlipFillTile()
-        {
 
-        }
-        internal ExcelDrawingBlipFillTile(XmlHelper xml)
-        {
-            string? v = xml.GetXmlNodeString("a:tile/@algn");
-            if(!string.IsNullOrEmpty(v))
-            {
-                this.Alignment = v.TranslateRectangleAlignment();
-            }
-            else
-            {
-                this.Alignment = null;
-            }
-
-            this.FlipMode =  xml.GetXmlNodeString("a:tile/@flip").ToEnum(eTileFlipMode.None);
-            this.HorizontalRatio = xml.GetXmlNodePercentage("a:tile/@sx") ?? 0;
-            this.VerticalRatio = xml.GetXmlNodePercentage("a:tile/@sy") ?? 0;
-            this.HorizontalOffset = (xml.GetXmlNodeDoubleNull("a:tile/@tx") ?? 0) / ExcelDrawing.EMU_PER_PIXEL;
-            this.VerticalOffset = (xml.GetXmlNodeDoubleNull("a:tile/@ty") ?? 0) / ExcelDrawing.EMU_PER_PIXEL;
-        }
-
-        /// <summary>
-        /// The direction(s) in which to flip the image.
-        /// </summary>
-        public eTileFlipMode? FlipMode { get; set; }
-        /// <summary>
-        /// Where to align the first tile with respect to the shape.
-        /// </summary>
-        public eRectangleAlignment? Alignment { get; set; }
-        /// <summary>
-        /// The ratio for horizontally scale
-        /// </summary>
-        public double HorizontalRatio { get; set; }
-        /// <summary>
-        /// The ratio for vertically scale
-        /// </summary>
-        public double VerticalRatio { get; set; }
-        /// <summary>
-        /// The horizontal offset after alignment
-        /// </summary>
-        public double HorizontalOffset { get; set; }
-        /// <summary>
-        /// The vertical offset after alignment
-        /// </summary>
-        public double VerticalOffset { get; set; }
     }
+    internal ExcelDrawingBlipFillTile(XmlHelper xml)
+    {
+        string? v = xml.GetXmlNodeString("a:tile/@algn");
+        if(!string.IsNullOrEmpty(v))
+        {
+            this.Alignment = v.TranslateRectangleAlignment();
+        }
+        else
+        {
+            this.Alignment = null;
+        }
+
+        this.FlipMode =  xml.GetXmlNodeString("a:tile/@flip").ToEnum(eTileFlipMode.None);
+        this.HorizontalRatio = xml.GetXmlNodePercentage("a:tile/@sx") ?? 0;
+        this.VerticalRatio = xml.GetXmlNodePercentage("a:tile/@sy") ?? 0;
+        this.HorizontalOffset = (xml.GetXmlNodeDoubleNull("a:tile/@tx") ?? 0) / ExcelDrawing.EMU_PER_PIXEL;
+        this.VerticalOffset = (xml.GetXmlNodeDoubleNull("a:tile/@ty") ?? 0) / ExcelDrawing.EMU_PER_PIXEL;
+    }
+
+    /// <summary>
+    /// The direction(s) in which to flip the image.
+    /// </summary>
+    public eTileFlipMode? FlipMode { get; set; }
+    /// <summary>
+    /// Where to align the first tile with respect to the shape.
+    /// </summary>
+    public eRectangleAlignment? Alignment { get; set; }
+    /// <summary>
+    /// The ratio for horizontally scale
+    /// </summary>
+    public double HorizontalRatio { get; set; }
+    /// <summary>
+    /// The ratio for vertically scale
+    /// </summary>
+    public double VerticalRatio { get; set; }
+    /// <summary>
+    /// The horizontal offset after alignment
+    /// </summary>
+    public double HorizontalOffset { get; set; }
+    /// <summary>
+    /// The vertical offset after alignment
+    /// </summary>
+    public double VerticalOffset { get; set; }
 }

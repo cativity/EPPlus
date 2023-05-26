@@ -15,11 +15,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace OfficeOpenXml.FormulaParsing.LexicalAnalysis
+namespace OfficeOpenXml.FormulaParsing.LexicalAnalysis;
+
+public interface ILexer
 {
-    public interface ILexer
-    {
-        IEnumerable<Token> Tokenize(string input);
-        IEnumerable<Token> Tokenize(string input, string worksheet);
-    }
+    IEnumerable<Token> Tokenize(string input);
+    IEnumerable<Token> Tokenize(string input, string worksheet);
 }

@@ -17,27 +17,26 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Statistical
-{
-    [FunctionMetadata(
-        Category = ExcelFunctionCategory.Statistical,
-        EPPlusVersion = "5.5",
-        Description = "Returns the average of the absolute deviations of data points from their mean")]
-    internal class Avedev : ExcelFunction
-    {
-        public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
-        {
-            ValidateArguments(arguments, 1);
-            IEnumerable<ExcelDoubleCellValue>? arr = this.ArgsToDoubleEnumerable(arguments, context);
-            if (!arr.Any())
-            {
-                return this.CreateResult(eErrorType.Div0);
-            }
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Statistical;
 
-            IEnumerable<double>? dArr = arr.Select(x => (double)x);
-            double mean = dArr.Average();
-            double result = dArr.Aggregate(0d, (val, x) => val += System.Math.Abs(x - mean)) / dArr.Count();
-            return this.CreateResult(result, DataType.Decimal);
+[FunctionMetadata(
+                     Category = ExcelFunctionCategory.Statistical,
+                     EPPlusVersion = "5.5",
+                     Description = "Returns the average of the absolute deviations of data points from their mean")]
+internal class Avedev : ExcelFunction
+{
+    public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
+    {
+        ValidateArguments(arguments, 1);
+        IEnumerable<ExcelDoubleCellValue>? arr = this.ArgsToDoubleEnumerable(arguments, context);
+        if (!arr.Any())
+        {
+            return this.CreateResult(eErrorType.Div0);
         }
+
+        IEnumerable<double>? dArr = arr.Select(x => (double)x);
+        double mean = dArr.Average();
+        double result = dArr.Aggregate(0d, (val, x) => val += System.Math.Abs(x - mean)) / dArr.Count();
+        return this.CreateResult(result, DataType.Decimal);
     }
 }

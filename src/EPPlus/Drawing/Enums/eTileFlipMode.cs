@@ -10,28 +10,27 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
-namespace OfficeOpenXml.Drawing
+namespace OfficeOpenXml.Drawing;
+
+/// <summary>
+/// Specifies the direction(s) in which to flip the gradient while tiling
+/// </summary>
+public enum eTileFlipMode
 {
     /// <summary>
-    /// Specifies the direction(s) in which to flip the gradient while tiling
+    /// Tiles are not flipped
     /// </summary>
-    public enum eTileFlipMode
-    {
-        /// <summary>
-        /// Tiles are not flipped
-        /// </summary>
-        None,
-        /// <summary>
-        /// Tiles are flipped horizontally.
-        /// </summary>
-        X,
-        /// <summary>
-        /// Tiles are flipped horizontally and Vertically
-        /// </summary>
-        XY,
-        /// <summary>
-        /// Tiles are flipped vertically.
-        /// </summary>
-        Y
-    }
+    None,
+    /// <summary>
+    /// Tiles are flipped horizontally.
+    /// </summary>
+    X,
+    /// <summary>
+    /// Tiles are flipped horizontally and Vertically
+    /// </summary>
+    XY,
+    /// <summary>
+    /// Tiles are flipped vertically.
+    /// </summary>
+    Y
 }

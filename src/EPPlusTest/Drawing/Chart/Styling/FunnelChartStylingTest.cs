@@ -38,113 +38,112 @@ using System.Reflection;
 using System.Text;
 using System.Xml;
 
-namespace EPPlusTest.Drawing.Chart.Styling
+namespace EPPlusTest.Drawing.Chart.Styling;
+
+[TestClass]
+public class FunnelChartStylingTest : TestBase
 {
-    [TestClass]
-    public class FunnelChartStylingTest : TestBase
+    static ExcelPackage _pck;
+    [ClassInitialize]
+    public static void Init(TestContext context)
     {
-        static ExcelPackage _pck;
-        [ClassInitialize]
-        public static void Init(TestContext context)
-        {
-            _pck = OpenPackage("FunnelChartStyling.xlsx", true);
-        }
-        [ClassCleanup]
-        public static void Cleanup()
-        {
-            SaveAndCleanup(_pck);
-        }
-        [TestMethod]
-        public void FunnelChart_Styles()
-        {
-            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("FunnelChart");
-            LoadTestdata(ws);
-            FunnelChartStyle(ws);
-        }
-        private static void FunnelChartStyle(ExcelWorksheet ws)
-        {
-            //Funnel Chart styles
+        _pck = OpenPackage("FunnelChartStyling.xlsx", true);
+    }
+    [ClassCleanup]
+    public static void Cleanup()
+    {
+        SaveAndCleanup(_pck);
+    }
+    [TestMethod]
+    public void FunnelChart_Styles()
+    {
+        ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("FunnelChart");
+        LoadTestdata(ws);
+        FunnelChartStyle(ws);
+    }
+    private static void FunnelChartStyle(ExcelWorksheet ws)
+    {
+        //Funnel Chart styles
 
-            //Funnel chart Style 1
-            AddChart(ws, ePresetChartStyle.FunnelChartStyle1, "FunnelChartStyle1", 0, 5,
-                c =>
-                {
-                    c.Title.Text = "Funnel 1";
-                    c.Legend.Position = eLegendPosition.Bottom;
-                });
+        //Funnel chart Style 1
+        AddChart(ws, ePresetChartStyle.FunnelChartStyle1, "FunnelChartStyle1", 0, 5,
+                 c =>
+                 {
+                     c.Title.Text = "Funnel 1";
+                     c.Legend.Position = eLegendPosition.Bottom;
+                 });
 
-            //Funnel chart Style 2
-            AddChart(ws, ePresetChartStyle.FunnelChartStyle2, "FunnelChartStyle2", 0, 18,
-                c =>
-                {
-                    c.Legend.Position = eLegendPosition.Bottom;
-                });
+        //Funnel chart Style 2
+        AddChart(ws, ePresetChartStyle.FunnelChartStyle2, "FunnelChartStyle2", 0, 18,
+                 c =>
+                 {
+                     c.Legend.Position = eLegendPosition.Bottom;
+                 });
 
-            //Funnel chart Style 3
-            AddChart(ws, ePresetChartStyle.FunnelChartStyle3, "FunnelChartStyle3", 0, 31,
-                c =>
-                {
-                    c.Legend.Position = eLegendPosition.Bottom;
-                });
+        //Funnel chart Style 3
+        AddChart(ws, ePresetChartStyle.FunnelChartStyle3, "FunnelChartStyle3", 0, 31,
+                 c =>
+                 {
+                     c.Legend.Position = eLegendPosition.Bottom;
+                 });
 
-            //Funnel chart Style 4
-            AddChart(ws, ePresetChartStyle.FunnelChartStyle4, "FunnelChartStyle4", 20, 5,
-                c =>
-                {
-                    c.Legend.Position = eLegendPosition.Bottom;
-                });
+        //Funnel chart Style 4
+        AddChart(ws, ePresetChartStyle.FunnelChartStyle4, "FunnelChartStyle4", 20, 5,
+                 c =>
+                 {
+                     c.Legend.Position = eLegendPosition.Bottom;
+                 });
 
-            //Funnel chart Style 5
-            AddChart(ws, ePresetChartStyle.FunnelChartStyle5, "FunnelChartStyle5", 20, 18,
-                c =>
-                {
-                    c.Legend.Position = eLegendPosition.Bottom;
-                });
+        //Funnel chart Style 5
+        AddChart(ws, ePresetChartStyle.FunnelChartStyle5, "FunnelChartStyle5", 20, 18,
+                 c =>
+                 {
+                     c.Legend.Position = eLegendPosition.Bottom;
+                 });
 
-            //Funnel chart Style 6
-            AddChart(ws, ePresetChartStyle.FunnelChartStyle6, "FunnelChartStyle6", 20, 31,
-                c =>
-                {
-                    c.Legend.Position = eLegendPosition.Bottom;
-                });
+        //Funnel chart Style 6
+        AddChart(ws, ePresetChartStyle.FunnelChartStyle6, "FunnelChartStyle6", 20, 31,
+                 c =>
+                 {
+                     c.Legend.Position = eLegendPosition.Bottom;
+                 });
 
-            //Funnel chart Style 7
-            AddChart(ws, ePresetChartStyle.FunnelChartStyle7, "FunnelChartStyle7", 40, 5,
-                c =>
-                {
-                    c.Legend.Position = eLegendPosition.Bottom;
-                });
+        //Funnel chart Style 7
+        AddChart(ws, ePresetChartStyle.FunnelChartStyle7, "FunnelChartStyle7", 40, 5,
+                 c =>
+                 {
+                     c.Legend.Position = eLegendPosition.Bottom;
+                 });
 
-            //Funnel chart Style 8
-            AddChart(ws, ePresetChartStyle.FunnelChartStyle8, "FunnelChartStyle8", 40, 18,
-                c =>
-                {
-                    c.Legend.Position = eLegendPosition.Bottom;
-                });
+        //Funnel chart Style 8
+        AddChart(ws, ePresetChartStyle.FunnelChartStyle8, "FunnelChartStyle8", 40, 18,
+                 c =>
+                 {
+                     c.Legend.Position = eLegendPosition.Bottom;
+                 });
 
-            //Funnel chart Style 9
-            AddChart(ws, ePresetChartStyle.FunnelChartStyle9, "FunnelChartStyle9", 40, 31,
-                c =>
-                {
-                    c.Legend.Position = eLegendPosition.Bottom;
-                });
-        }
+        //Funnel chart Style 9
+        AddChart(ws, ePresetChartStyle.FunnelChartStyle9, "FunnelChartStyle9", 40, 31,
+                 c =>
+                 {
+                     c.Legend.Position = eLegendPosition.Bottom;
+                 });
+    }
 
 
-        private static ExcelFunnelChart AddChart(ExcelWorksheet ws, ePresetChartStyle style, string name, int row, int col, Action<ExcelFunnelChart> SetProperties)
-        {
-            ExcelFunnelChart? chart = ws.Drawings.AddFunnelChart(name);
-            chart.SetPosition(row, 0, col, 0);
-            chart.To.Column = col+12;
-            chart.To.ColumnOff = 0;
-            chart.To.Row = row + 18;
-            chart.To.RowOff = 0;
-            chart.Series.Add("D2:D8", "A2:A8");
+    private static ExcelFunnelChart AddChart(ExcelWorksheet ws, ePresetChartStyle style, string name, int row, int col, Action<ExcelFunnelChart> SetProperties)
+    {
+        ExcelFunnelChart? chart = ws.Drawings.AddFunnelChart(name);
+        chart.SetPosition(row, 0, col, 0);
+        chart.To.Column = col+12;
+        chart.To.ColumnOff = 0;
+        chart.To.Row = row + 18;
+        chart.To.RowOff = 0;
+        chart.Series.Add("D2:D8", "A2:A8");
 
-            SetProperties(chart);
+        SetProperties(chart);
 
-            chart.StyleManager.SetChartStyle(style);
-            return chart;
-        }
+        chart.StyleManager.SetChartStyle(style);
+        return chart;
     }
 }

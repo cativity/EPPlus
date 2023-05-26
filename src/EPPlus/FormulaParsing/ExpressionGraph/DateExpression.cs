@@ -16,20 +16,19 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 
-namespace OfficeOpenXml.FormulaParsing.ExpressionGraph
+namespace OfficeOpenXml.FormulaParsing.ExpressionGraph;
+
+public class DateExpression : AtomicExpression
 {
-    public class DateExpression : AtomicExpression
+    public DateExpression(string expression)
+        : base(expression)
     {
-        public DateExpression(string expression)
-            : base(expression)
-        {
 
-        }
+    }
 
-        public override CompileResult Compile()
-        {
-            double date = double.Parse(this.ExpressionString);
-            return new CompileResult(DateTime.FromOADate(date), DataType.Date);
-        }
+    public override CompileResult Compile()
+    {
+        double date = double.Parse(this.ExpressionString);
+        return new CompileResult(DateTime.FromOADate(date), DataType.Date);
     }
 }

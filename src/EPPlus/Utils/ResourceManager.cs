@@ -16,38 +16,37 @@ using System.IO;
 using System.Reflection;
 using System.Text;
 
-namespace OfficeOpenXml.Utils
+namespace OfficeOpenXml.Utils;
+
+internal class StyleResourceManager
 {
-    internal class StyleResourceManager
+    internal static string GetItem(string name)
     {
-        internal static string GetItem(string name)
+        Assembly? assembly = Assembly.GetExecutingAssembly();
+        Stream? stream=assembly.GetManifestResourceStream("OfficeOpenXml.resources.DefaultChartStyles.ecs");
+
+        using (stream)
         {
-            Assembly? assembly = Assembly.GetExecutingAssembly();
-            Stream? stream=assembly.GetManifestResourceStream("OfficeOpenXml.resources.DefaultChartStyles.ecs");
-
-            using (stream)
+            ZipInputStream? zipStream = new ZipInputStream(stream);
+            ZipEntry entry;
+            while ((entry = zipStream.GetNextEntry()) != null)
             {
-                ZipInputStream? zipStream = new ZipInputStream(stream);
-                ZipEntry entry;
-                while ((entry = zipStream.GetNextEntry()) != null)
+                if (entry.IsDirectory || !entry.FileName.EndsWith(".xml") || entry.UncompressedSize <= 0)
                 {
-                    if (entry.IsDirectory || !entry.FileName.EndsWith(".xml") || entry.UncompressedSize <= 0)
-                    {
-                        continue;
-                    }
+                    continue;
+                }
 
-                    string? fileName = new FileInfo(entry.FileName).Name;
+                string? fileName = new FileInfo(entry.FileName).Name;
 
-                    if(fileName.Equals(name, StringComparison.InvariantCultureIgnoreCase))
-                    {
-                        //Extract and set
-                        byte[]? content = new byte[entry.UncompressedSize];
-                        int size = zipStream.Read(content, 0, (int)entry.UncompressedSize);
-                        return Encoding.UTF8.GetString(content);
-                    }
+                if(fileName.Equals(name, StringComparison.InvariantCultureIgnoreCase))
+                {
+                    //Extract and set
+                    byte[]? content = new byte[entry.UncompressedSize];
+                    int size = zipStream.Read(content, 0, (int)entry.UncompressedSize);
+                    return Encoding.UTF8.GetString(content);
                 }
             }
-            return null;
         }
+        return null;
     }
 }

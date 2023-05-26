@@ -14,54 +14,53 @@ using System;
 using System.Globalization;
 using System.Xml;
 
-namespace OfficeOpenXml.Drawing.Chart.Style
+namespace OfficeOpenXml.Drawing.Chart.Style;
+
+/// <summary>
+/// A color for a chart style entry reference
+/// </summary>
+public class ExcelChartStyleColor : XmlHelper
 {
-    /// <summary>
-    /// A color for a chart style entry reference
-    /// </summary>
-    public class ExcelChartStyleColor : XmlHelper
+    internal ExcelChartStyleColor(XmlNamespaceManager nsm, XmlNode topNode) : base(nsm, topNode)
     {
-        internal ExcelChartStyleColor(XmlNamespaceManager nsm, XmlNode topNode) : base(nsm, topNode)
-        {
 
-        }
-        /// <summary>
-        /// Color is automatic
-        /// </summary>
-        public bool Auto
+    }
+    /// <summary>
+    /// Color is automatic
+    /// </summary>
+    public bool Auto
+    {
+        get
         {
-            get
-            {
-                string? v = this.GetXmlNodeString("@val");
-                return v == "auto";                    
-            }
+            string? v = this.GetXmlNodeString("@val");
+            return v == "auto";                    
         }
-        /// <summary>
-        /// The index, maps to the style matrix in the theme
-        /// </summary>
-        public int? Index
+    }
+    /// <summary>
+    /// The index, maps to the style matrix in the theme
+    /// </summary>
+    public int? Index
+    {
+        get
         {
-            get
-            {
-                return this.GetXmlNodeIntNull("@val");
-            }
+            return this.GetXmlNodeIntNull("@val");
         }
-        internal void SetValue(bool isAuto, int index)
+    }
+    internal void SetValue(bool isAuto, int index)
+    {
+        if(this.Auto)
         {
-            if(this.Auto)
+            this.SetXmlNodeString("@val", "auto");
+        }
+        else
+        {
+            if (index < 0)
             {
-                this.SetXmlNodeString("@val", "auto");
-            }
-            else
-            {
-                if (index < 0)
-                {
-                    throw new ArgumentOutOfRangeException("index", "Index can't be negative");
-                }
-
-                this.SetXmlNodeString("@val", index.ToString(CultureInfo.InvariantCulture));
+                throw new ArgumentOutOfRangeException("index", "Index can't be negative");
             }
 
+            this.SetXmlNodeString("@val", index.ToString(CultureInfo.InvariantCulture));
         }
-    }   
+
+    }
 }

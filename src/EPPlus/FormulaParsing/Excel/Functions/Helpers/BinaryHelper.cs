@@ -14,46 +14,45 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Helpers
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Helpers;
+
+internal static class BinaryHelper
 {
-    internal static class BinaryHelper
+    public static bool TryParseBinaryToDecimal(string number, int raiseToBase, out int result)
     {
-        public static bool TryParseBinaryToDecimal(string number, int raiseToBase, out int result)
+        char[]? chars = number.ToCharArray();
+        bool isNegative = chars[0] == '1';
+        bool negativeUsed = false;
+        result = 0;
+        for (int x = 1; x < 10; x++)
         {
-            char[]? chars = number.ToCharArray();
-            bool isNegative = chars[0] == '1';
-            bool negativeUsed = false;
-            result = 0;
-            for (int x = 1; x < 10; x++)
+            char c = chars[x];
+            int current = 0;
+            if (c != '0' && c != '1')
             {
-                char c = chars[x];
-                int current = 0;
-                if (c != '0' && c != '1')
-                {
-                    return false;
-                }
-
-                if (x == 9)
-                {
-                    current = c == '1' ? 1 : 0;
-                    if (isNegative && !negativeUsed)
-                    {
-                        current *= -1;
-                    }
-                }
-                else if (c == '1')
-                {
-                    current = (int)System.Math.Pow(raiseToBase, 9 - x);
-                    if (isNegative && !negativeUsed)
-                    {
-                        current *= -1;
-                    }
-
-                    negativeUsed = true;
-                }
-                result += current;
+                return false;
             }
-            return true;
+
+            if (x == 9)
+            {
+                current = c == '1' ? 1 : 0;
+                if (isNegative && !negativeUsed)
+                {
+                    current *= -1;
+                }
+            }
+            else if (c == '1')
+            {
+                current = (int)System.Math.Pow(raiseToBase, 9 - x);
+                if (isNegative && !negativeUsed)
+                {
+                    current *= -1;
+                }
+
+                negativeUsed = true;
+            }
+            result += current;
         }
+        return true;
     }
 }

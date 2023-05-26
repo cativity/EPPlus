@@ -12,30 +12,29 @@
  *************************************************************************************************/
 using OfficeOpenXml.Utils.Extensions;
 using System.Xml;
-namespace OfficeOpenXml.Drawing.Chart.ChartEx
-{
-    /// <summary>
-    /// A series for an Treemap Chart
-    /// </summary>
-    public class ExcelTreemapChartSerie : ExcelChartExSerie
-    {
-        internal ExcelTreemapChartSerie(ExcelChartEx chart, XmlNamespaceManager ns, XmlNode node) : base(chart, ns, node)
-        {
+namespace OfficeOpenXml.Drawing.Chart.ChartEx;
 
-        }
-        /// <summary>
-        /// The layout type for the parent labels
-        /// </summary>
-        public eParentLabelLayout ParentLabelLayout
+/// <summary>
+/// A series for an Treemap Chart
+/// </summary>
+public class ExcelTreemapChartSerie : ExcelChartExSerie
+{
+    internal ExcelTreemapChartSerie(ExcelChartEx chart, XmlNamespaceManager ns, XmlNode node) : base(chart, ns, node)
+    {
+
+    }
+    /// <summary>
+    /// The layout type for the parent labels
+    /// </summary>
+    public eParentLabelLayout ParentLabelLayout
+    {
+        get
         {
-            get
-            {
-                return this.GetXmlNodeString("cx:layoutPr/cx:parentLabelLayout/@val").ToEnum(eParentLabelLayout.None);
-            }
-            set
-            {
-                this.SetXmlNodeString("cx:layoutPr/cx:parentLabelLayout/@val", value.ToEnumString());
-            }
+            return this.GetXmlNodeString("cx:layoutPr/cx:parentLabelLayout/@val").ToEnum(eParentLabelLayout.None);
+        }
+        set
+        {
+            this.SetXmlNodeString("cx:layoutPr/cx:parentLabelLayout/@val", value.ToEnumString());
         }
     }
 }

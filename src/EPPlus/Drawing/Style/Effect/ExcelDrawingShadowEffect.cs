@@ -14,53 +14,51 @@ using OfficeOpenXml.Drawing.Style.Coloring;
 using System;
 using System.Xml;
 
-namespace OfficeOpenXml.Drawing.Style.Effect
-{
+namespace OfficeOpenXml.Drawing.Style.Effect;
 
-    /// <summary>
-    /// The shadow effect applied to a drawing
-    /// </summary>
-    public abstract class ExcelDrawingShadowEffect : ExcelDrawingShadowEffectBase
+/// <summary>
+/// The shadow effect applied to a drawing
+/// </summary>
+public abstract class ExcelDrawingShadowEffect : ExcelDrawingShadowEffectBase
+{
+    private readonly string _directionPath = "{0}/@dir";
+    internal ExcelDrawingShadowEffect(XmlNamespaceManager nameSpaceManager, XmlNode topNode, string[] schemaNodeOrder, string path) : base(nameSpaceManager, topNode, schemaNodeOrder, path)
     {
-        private readonly string _directionPath = "{0}/@dir";
-        internal ExcelDrawingShadowEffect(XmlNamespaceManager nameSpaceManager, XmlNode topNode, string[] schemaNodeOrder, string path) : base(nameSpaceManager, topNode, schemaNodeOrder, path)
+        this._directionPath = string.Format(this._directionPath, path);
+    }
+    ExcelDrawingColorManager _color =null;
+    /// <summary>
+    /// The color of the shadow effect
+    /// </summary>
+    public ExcelDrawingColorManager Color
+    {
+        get { return this._color ??= new ExcelDrawingColorManager(this.NameSpaceManager, this.TopNode, this._path, this.SchemaNodeOrder); }
+    }
+    /// <summary>
+    /// The direction angle to offset the shadow.
+    /// Ranges from 0 to 360
+    /// </summary>
+    public double? Direction
+    {
+        get
         {
-            this._directionPath = string.Format(this._directionPath, path);
+            return this.GetXmlNodeAngel(this._directionPath);
         }
-        ExcelDrawingColorManager _color =null;
-        /// <summary>
-        /// The color of the shadow effect
-        /// </summary>
-        public ExcelDrawingColorManager Color
+        set
         {
-            get { return this._color ??= new ExcelDrawingColorManager(this.NameSpaceManager, this.TopNode, this._path, this.SchemaNodeOrder); }
+            this.InitXml();
+            this.SetXmlNodeAngel(this._directionPath, value, "Direction");
         }
-        /// <summary>
-        /// The direction angle to offset the shadow.
-        /// Ranges from 0 to 360
-        /// </summary>
-        public double? Direction
+    }
+    /// <summary>
+    /// Inizialize the xml
+    /// </summary>
+    protected internal void InitXml()
+    {
+        if (this._color == null)
         {
-            get
-            {
-                return this.GetXmlNodeAngel(this._directionPath);
-            }
-            set
-            {
-                this.InitXml();
-                this.SetXmlNodeAngel(this._directionPath, value, "Direction");
-            }
-        }
-        /// <summary>
-        /// Inizialize the xml
-        /// </summary>
-        protected internal void InitXml()
-        {
-            if (this._color == null)
-            {
-                this.Color.SetPresetColor(ePresetColor.Black);
-                this.Color.Transforms.AddAlpha(50);
-            }
+            this.Color.SetPresetColor(ePresetColor.Black);
+            this.Color.Transforms.AddAlpha(50);
         }
     }
 }

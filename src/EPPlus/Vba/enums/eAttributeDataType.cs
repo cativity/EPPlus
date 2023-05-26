@@ -10,20 +10,19 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
-namespace OfficeOpenXml.VBA
+namespace OfficeOpenXml.VBA;
+
+/// <summary>
+/// To determine if the attribute uses double quotes around the value
+/// </summary>
+public enum eAttributeDataType
 {
     /// <summary>
-    /// To determine if the attribute uses double quotes around the value
+    /// A string
     /// </summary>
-    public enum eAttributeDataType
-    {
-        /// <summary>
-        /// A string
-        /// </summary>
-        String=0,
-        /// <summary>
-        /// Not a string
-        /// </summary>
-        NonString=1
-    }
+    String=0,
+    /// <summary>
+    /// Not a string
+    /// </summary>
+    NonString=1
 }

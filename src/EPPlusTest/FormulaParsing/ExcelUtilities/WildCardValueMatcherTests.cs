@@ -33,83 +33,82 @@ using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OfficeOpenXml.FormulaParsing.ExcelUtilities;
 
-namespace EPPlusTest.ExcelUtilities
+namespace EPPlusTest.ExcelUtilities;
+
+[TestClass]
+public class WildCardValueMatcherTests
 {
-    [TestClass]
-    public class WildCardValueMatcherTests
+    private WildCardValueMatcher _matcher;
+
+    [TestInitialize]
+    public void Setup()
     {
-        private WildCardValueMatcher _matcher;
+        this._matcher = new WildCardValueMatcher();
+    }
 
-        [TestInitialize]
-        public void Setup()
-        {
-            this._matcher = new WildCardValueMatcher();
-        }
+    [TestMethod]
+    public void IsMatchShouldReturn0WhenSingleCharWildCardMatches()
+    {
+        string? string1 = "a?c?";
+        string? string2 = "abcd";
+        int result = this._matcher.IsMatch(string1, string2);
+        Assert.AreEqual(0, result);
+    }
 
-        [TestMethod]
-        public void IsMatchShouldReturn0WhenSingleCharWildCardMatches()
-        {
-            string? string1 = "a?c?";
-            string? string2 = "abcd";
-            int result = this._matcher.IsMatch(string1, string2);
-            Assert.AreEqual(0, result);
-        }
+    [TestMethod]
+    public void IsMatchShouldReturn0WhenMultipleCharWildCardMatches()
+    {
+        string? string1 = "a*c.";
+        string? string2 = "abcc.";
+        int result = this._matcher.IsMatch(string1, string2);
+        Assert.AreEqual(0, result);
+    }
 
-        [TestMethod]
-        public void IsMatchShouldReturn0WhenMultipleCharWildCardMatches()
-        {
-            string? string1 = "a*c.";
-            string? string2 = "abcc.";
-            int result = this._matcher.IsMatch(string1, string2);
-            Assert.AreEqual(0, result);
-        }
+    [TestMethod]
+    public void ShouldHandleTildeAndAsterisk1()
+    {
+        string? string1 = "a*c";
+        string? string2 = "abc";
+        int result1 = this._matcher.IsMatch("a~*c", string1);
+        Assert.AreEqual(0, result1);
+        int result2 = this._matcher.IsMatch("a~*c", string2);
 
-        [TestMethod]
-        public void ShouldHandleTildeAndAsterisk1()
-        {
-            string? string1 = "a*c";
-            string? string2 = "abc";
-            int result1 = this._matcher.IsMatch("a~*c", string1);
-            Assert.AreEqual(0, result1);
-            int result2 = this._matcher.IsMatch("a~*c", string2);
+        Assert.AreEqual(-1, result2);
+    }
 
-            Assert.AreEqual(-1, result2);
-        }
+    [TestMethod]
+    public void ShouldHandleTildeAndAsterisk2()
+    {
+        string? string1 = "a*cde";
+        string? string2 = "abcd";
+        int result1 = this._matcher.IsMatch("a~*c*", string1);
+        Assert.AreEqual(0, result1);
+        int result2 = this._matcher.IsMatch("a~*c*", string2);
 
-        [TestMethod]
-        public void ShouldHandleTildeAndAsterisk2()
-        {
-            string? string1 = "a*cde";
-            string? string2 = "abcd";
-            int result1 = this._matcher.IsMatch("a~*c*", string1);
-            Assert.AreEqual(0, result1);
-            int result2 = this._matcher.IsMatch("a~*c*", string2);
+        Assert.AreEqual(-1, result2);
+    }
 
-            Assert.AreEqual(-1, result2);
-        }
+    [TestMethod]
+    public void ShouldHandleTildeAndQuestionMark1()
+    {
+        string? string1 = "a?c";
+        string? string2 = "abc";
+        int result1 = this._matcher.IsMatch("a~?c", string1);
+        Assert.AreEqual(0, result1);
+        int result2 = this._matcher.IsMatch("a~?c", string2);
 
-        [TestMethod]
-        public void ShouldHandleTildeAndQuestionMark1()
-        {
-            string? string1 = "a?c";
-            string? string2 = "abc";
-            int result1 = this._matcher.IsMatch("a~?c", string1);
-            Assert.AreEqual(0, result1);
-            int result2 = this._matcher.IsMatch("a~?c", string2);
+        Assert.AreEqual(-1, result2);
+    }
 
-            Assert.AreEqual(-1, result2);
-        }
+    [TestMethod]
+    public void ShouldHandleTildeAndQuestionMark2()
+    {
+        string? string1 = "a?cde";
+        string? string2 = "abcde";
+        int result1 = this._matcher.IsMatch("a~?c?e", string1);
+        Assert.AreEqual(0, result1);
+        int result2 = this._matcher.IsMatch("a~?c?e", string2);
 
-        [TestMethod]
-        public void ShouldHandleTildeAndQuestionMark2()
-        {
-            string? string1 = "a?cde";
-            string? string2 = "abcde";
-            int result1 = this._matcher.IsMatch("a~?c?e", string1);
-            Assert.AreEqual(0, result1);
-            int result2 = this._matcher.IsMatch("a~?c?e", string2);
-
-            Assert.AreEqual(-1, result2);
-        }
+        Assert.AreEqual(-1, result2);
     }
 }

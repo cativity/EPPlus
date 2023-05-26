@@ -17,29 +17,28 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Logical
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Logical;
+
+[FunctionMetadata(
+                     Category = ExcelFunctionCategory.Logical,
+                     EPPlusVersion = "5.3",
+                     Description = "Returns the smallest numeric value that meets one or more criteria in a range of values.",
+                     IntroducedInExcelVersion = "2019")]
+internal class MinIfs : IfsWithMultipleMatchesBase
 {
-    [FunctionMetadata(
-        Category = ExcelFunctionCategory.Logical,
-        EPPlusVersion = "5.3",
-        Description = "Returns the smallest numeric value that meets one or more criteria in a range of values.",
-        IntroducedInExcelVersion = "2019")]
-    internal class MinIfs : IfsWithMultipleMatchesBase
+    public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
     {
-        public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
+        IEnumerable<double>? matches = this.GetMatches("MINIFS", arguments, out CompileResult errorResult);
+        if (errorResult != null)
         {
-            IEnumerable<double>? matches = this.GetMatches("MINIFS", arguments, out CompileResult errorResult);
-            if (errorResult != null)
-            {
-                return errorResult;
-            }
-
-            if (matches.Count() == 0)
-            {
-                return CompileResult.ZeroDecimal;
-            }
-
-            return this.CreateResult(matches.Min(), DataType.Decimal);
+            return errorResult;
         }
+
+        if (matches.Count() == 0)
+        {
+            return CompileResult.ZeroDecimal;
+        }
+
+        return this.CreateResult(matches.Min(), DataType.Decimal);
     }
 }

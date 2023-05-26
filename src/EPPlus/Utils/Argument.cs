@@ -15,20 +15,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace OfficeOpenXml.Utils
+namespace OfficeOpenXml.Utils;
+
+internal class Argument<T> : IArgument<T>
 {
-    internal class Argument<T> : IArgument<T>
+    public Argument(T @value)
     {
-        public Argument(T @value)
-        {
-            this._value = @value;
-        }
+        this._value = @value;
+    }
 
-        private T _value;
+    private T _value;
 
-        T IArgument<T>.Value
-        {
-            get { return this._value; }
-        }
+    T IArgument<T>.Value
+    {
+        get { return this._value; }
     }
 }

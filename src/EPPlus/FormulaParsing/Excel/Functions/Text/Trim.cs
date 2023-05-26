@@ -17,24 +17,23 @@ using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Text
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Text;
+
+[FunctionMetadata(
+                     Category = ExcelFunctionCategory.Text,
+                     EPPlusVersion = "4",
+                     Description = "Removes duplicate spaces, and spaces at the start and end of a text string")]
+internal class Trim : ExcelFunction
 {
-    [FunctionMetadata(
-        Category = ExcelFunctionCategory.Text,
-        EPPlusVersion = "4",
-        Description = "Removes duplicate spaces, and spaces at the start and end of a text string")]
-    internal class Trim : ExcelFunction
+    public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
     {
-        public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
+        ValidateArguments(arguments, 1);
+        string? str = ArgToString(arguments, 0);
+        if(!string.IsNullOrEmpty(str))
         {
-            ValidateArguments(arguments, 1);
-            string? str = ArgToString(arguments, 0);
-            if(!string.IsNullOrEmpty(str))
-            {
-                str = str.Trim();
-                str = Regex.Replace(str, "[ ]+", " ");
-            }
-            return this.CreateResult(str, DataType.String);
+            str = str.Trim();
+            str = Regex.Replace(str, "[ ]+", " ");
         }
+        return this.CreateResult(str, DataType.String);
     }
 }

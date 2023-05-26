@@ -12,10 +12,9 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.Implementations
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.Implementations;
+
+public interface IYearFracProvider
 {
-    public interface IYearFracProvider
-    {
-        double GetYearFrac(System.DateTime date1, System.DateTime date2, DayCountBasis basis);
-    }
+    double GetYearFrac(System.DateTime date1, System.DateTime date2, DayCountBasis basis);
 }

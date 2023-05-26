@@ -17,97 +17,96 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Xml;
 
-namespace OfficeOpenXml.Drawing.Theme
+namespace OfficeOpenXml.Drawing.Theme;
+
+/// <summary>
+/// Defines fill styles for a theme.
+/// </summary>
+public class ExcelThemeFillStyles : XmlHelper, IEnumerable<ExcelDrawingFill>
 {
-    /// <summary>
-    /// Defines fill styles for a theme.
-    /// </summary>
-    public class ExcelThemeFillStyles : XmlHelper, IEnumerable<ExcelDrawingFill>
+    private readonly List<ExcelDrawingFill> _list;
+    internal ExcelThemeFillStyles(XmlNamespaceManager nameSpaceManager, XmlNode topNode, ExcelThemeBase theme) : base(nameSpaceManager, topNode)
     {
-        private readonly List<ExcelDrawingFill> _list;
-        internal ExcelThemeFillStyles(XmlNamespaceManager nameSpaceManager, XmlNode topNode, ExcelThemeBase theme) : base(nameSpaceManager, topNode)
+        this._list = new List<ExcelDrawingFill>();
+        foreach (XmlNode node in topNode.ChildNodes)
         {
-            this._list = new List<ExcelDrawingFill>();
-            foreach (XmlNode node in topNode.ChildNodes)
-            {
-                this._list.Add(new ExcelDrawingFill(theme, nameSpaceManager, node, "", this.SchemaNodeOrder));
-            }
+            this._list.Add(new ExcelDrawingFill(theme, nameSpaceManager, node, "", this.SchemaNodeOrder));
         }
-        /// <summary>
-        /// Get the enumerator for the Theme
-        /// </summary>
-        /// <returns>The enumerator</returns>
-        public IEnumerator<ExcelDrawingFill> GetEnumerator()
+    }
+    /// <summary>
+    /// Get the enumerator for the Theme
+    /// </summary>
+    /// <returns>The enumerator</returns>
+    public IEnumerator<ExcelDrawingFill> GetEnumerator()
+    {
+        return this._list.GetEnumerator();
+    }
+
+    IEnumerator IEnumerable.GetEnumerator()
+    {
+        return this._list.GetEnumerator();
+    }
+    /// <summary>
+    /// Indexer for the collection
+    /// </summary>
+    /// <param name="index">The index</param>
+    /// <returns>The fill</returns>
+    public ExcelDrawingFill this[int index]
+    {
+        get
         {
-            return this._list.GetEnumerator();
+            return this._list[index];
+        }
+    }
+    /// <summary>
+    /// Adds a new fill to the collection
+    /// </summary>
+    /// <param name="style">The fill style</param>
+    /// <returns>The fill</returns>
+    public ExcelDrawingFill Add(eFillStyle style)
+    {            
+        XmlElement? node = this.TopNode.OwnerDocument.CreateElement("a",ExcelDrawingFillBasic.GetStyleText(style),  ExcelPackage.schemaMain);
+        this.TopNode.AppendChild(node);
+        return new ExcelDrawingFill(null, this.NameSpaceManager, this.TopNode, "", this.SchemaNodeOrder);
+    }
+    /// <summary>
+    /// Remove a fill item
+    /// </summary>
+    /// <param name="item">The item</param>
+    public void Remove(ExcelDrawingFill item)
+    {
+        if(this._list.Count==3)
+        {
+            throw (new InvalidOperationException("Collection must contain at least 3 items"));
         }
 
-        IEnumerator IEnumerable.GetEnumerator()
+        if (this._list.Contains(item))
         {
-            return this._list.GetEnumerator();
+            this._list.Remove(item);
+            item.TopNode.ParentNode.RemoveChild(item.TopNode);
         }
-        /// <summary>
-        /// Indexer for the collection
-        /// </summary>
-        /// <param name="index">The index</param>
-        /// <returns>The fill</returns>
-        public ExcelDrawingFill this[int index]
+    }
+    /// <summary>
+    /// Remove the item at the specified index
+    /// </summary>
+    /// <param name="Index"></param>
+    public void Remove(int Index)
+    {
+        if(Index >= this._list.Count)
         {
-            get
-            {
-                return this._list[index];
-            }
+            throw new ArgumentException("Index", "Index out of range");
         }
-        /// <summary>
-        /// Adds a new fill to the collection
-        /// </summary>
-        /// <param name="style">The fill style</param>
-        /// <returns>The fill</returns>
-        public ExcelDrawingFill Add(eFillStyle style)
-        {            
-            XmlElement? node = this.TopNode.OwnerDocument.CreateElement("a",ExcelDrawingFillBasic.GetStyleText(style),  ExcelPackage.schemaMain);
-            this.TopNode.AppendChild(node);
-            return new ExcelDrawingFill(null, this.NameSpaceManager, this.TopNode, "", this.SchemaNodeOrder);
-        }
-        /// <summary>
-        /// Remove a fill item
-        /// </summary>
-        /// <param name="item">The item</param>
-        public void Remove(ExcelDrawingFill item)
-        {
-            if(this._list.Count==3)
-            {
-                throw (new InvalidOperationException("Collection must contain at least 3 items"));
-            }
 
-            if (this._list.Contains(item))
-            {
-                this._list.Remove(item);
-                item.TopNode.ParentNode.RemoveChild(item.TopNode);
-            }
-        }
-        /// <summary>
-        /// Remove the item at the specified index
-        /// </summary>
-        /// <param name="Index"></param>
-        public void Remove(int Index)
+        this._list.Remove(this._list[Index]);            
+    }
+    /// <summary>
+    /// Number of items in the collection
+    /// </summary>
+    public int Count
+    {
+        get
         {
-            if(Index >= this._list.Count)
-            {
-                throw new ArgumentException("Index", "Index out of range");
-            }
-
-            this._list.Remove(this._list[Index]);            
-        }
-        /// <summary>
-        /// Number of items in the collection
-        /// </summary>
-        public int Count
-        {
-            get
-            {
-                return this._list.Count;
-            }
+            return this._list.Count;
         }
     }
 }

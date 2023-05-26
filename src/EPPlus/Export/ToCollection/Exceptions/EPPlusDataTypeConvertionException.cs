@@ -1,12 +1,11 @@
 ﻿using System;
 
-namespace OfficeOpenXml.Export.ToCollection.Exceptions
+namespace OfficeOpenXml.Export.ToCollection.Exceptions;
+
+public class EPPlusDataTypeConvertionException : Exception
 {
-    public class EPPlusDataTypeConvertionException : Exception
+    internal EPPlusDataTypeConvertionException(string msg, Exception innerException) : base(msg, innerException)
     {
-        internal EPPlusDataTypeConvertionException(string msg, Exception innerException) : base(msg, innerException)
-        {
             
-        }
     }
 }

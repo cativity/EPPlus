@@ -10,20 +10,19 @@
  *************************************************************************************************
   06/29/2020         EPPlus Software AB       EPPlus 5.3
  *************************************************************************************************/
-namespace OfficeOpenXml
+namespace OfficeOpenXml;
+
+/// <summary>
+/// The source of the slicer data
+/// </summary>
+public enum eSlicerSourceType
 {
     /// <summary>
-    /// The source of the slicer data
+    /// A pivot table
     /// </summary>
-    public enum eSlicerSourceType
-    {
-        /// <summary>
-        /// A pivot table
-        /// </summary>
-        PivotTable,
-        /// <summary>
-        /// A table
-        /// </summary>
-        Table
-    }
+    PivotTable,
+    /// <summary>
+    /// A table
+    /// </summary>
+    Table
 }

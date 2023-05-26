@@ -20,192 +20,191 @@ using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 
-namespace OfficeOpenXml.LoadFunctions
-{
-    internal class LoadFromDictionaries : LoadFunctionBase
-    {
-#if !NET35 && !NET40
-        public LoadFromDictionaries(ExcelRangeBase range, IEnumerable<dynamic> items, LoadFromDictionariesParams parameters)
-            : this(range, ConvertToDictionaries(items), parameters)
-        {
+namespace OfficeOpenXml.LoadFunctions;
 
-        }
+internal class LoadFromDictionaries : LoadFunctionBase
+{
+#if !NET35 && !NET40
+    public LoadFromDictionaries(ExcelRangeBase range, IEnumerable<dynamic> items, LoadFromDictionariesParams parameters)
+        : this(range, ConvertToDictionaries(items), parameters)
+    {
+
+    }
 #endif
 
-        public LoadFromDictionaries(ExcelRangeBase range, IEnumerable<IDictionary<string, object>> items, LoadFromDictionariesParams parameters) 
-            : base(range, parameters)
+    public LoadFromDictionaries(ExcelRangeBase range, IEnumerable<IDictionary<string, object>> items, LoadFromDictionariesParams parameters) 
+        : base(range, parameters)
+    {
+        this._items = items;
+        this._keys = parameters.Keys;
+        this._headerParsingType = parameters.HeaderParsingType;
+        this._cultureInfo = parameters.Culture ?? CultureInfo.CurrentCulture;
+        if (items == null || !items.Any())
         {
-            this._items = items;
-            this._keys = parameters.Keys;
-            this._headerParsingType = parameters.HeaderParsingType;
-            this._cultureInfo = parameters.Culture ?? CultureInfo.CurrentCulture;
-            if (items == null || !items.Any())
+            this._keys = Enumerable.Empty<string>();
+        }
+        else
+        {
+            IDictionary<string, object>? firstItem = items.First();
+            if (this._keys == null || !this._keys.Any())
             {
-                this._keys = Enumerable.Empty<string>();
+                this._keys = firstItem.Keys;
             }
             else
             {
-                IDictionary<string, object>? firstItem = items.First();
-                if (this._keys == null || !this._keys.Any())
-                {
-                    this._keys = firstItem.Keys;
-                }
-                else
-                {
-                    this._keys = parameters.Keys;
-                }
+                this._keys = parameters.Keys;
             }
-
-            this._dataTypes = parameters.DataTypes ?? new eDataTypes[0];
         }
 
-        private readonly IEnumerable<IDictionary<string, object>> _items;
-        private readonly IEnumerable<string> _keys;
-        private readonly eDataTypes[] _dataTypes;
-        private readonly HeaderParsingTypes _headerParsingType;
-        private readonly CultureInfo _cultureInfo;
+        this._dataTypes = parameters.DataTypes ?? new eDataTypes[0];
+    }
+
+    private readonly IEnumerable<IDictionary<string, object>> _items;
+    private readonly IEnumerable<string> _keys;
+    private readonly eDataTypes[] _dataTypes;
+    private readonly HeaderParsingTypes _headerParsingType;
+    private readonly CultureInfo _cultureInfo;
 
 #if !NET35 && !NET40
-        private static IEnumerable<IDictionary<string, object>> ConvertToDictionaries(IEnumerable<dynamic> items)
+    private static IEnumerable<IDictionary<string, object>> ConvertToDictionaries(IEnumerable<dynamic> items)
+    {
+        List<Dictionary<string, object>>? result = new List<Dictionary<string, object>>();
+        foreach(dynamic? item in items)
         {
-            List<Dictionary<string, object>>? result = new List<Dictionary<string, object>>();
-            foreach(dynamic? item in items)
+            object? obj = item as object;
+            if(obj != null)
             {
-                object? obj = item as object;
-                if(obj != null)
+                Dictionary<string, object>? dict = new Dictionary<string, object>();
+                MemberInfo[]? members = obj.GetType().GetMembers();
+                foreach(MemberInfo? member in members)
                 {
-                    Dictionary<string, object>? dict = new Dictionary<string, object>();
-                    MemberInfo[]? members = obj.GetType().GetMembers();
-                    foreach(MemberInfo? member in members)
+                    string? key = member.Name;
+                    object value = null;
+                    if (member is PropertyInfo)
                     {
-                        string? key = member.Name;
-                        object value = null;
-                        if (member is PropertyInfo)
-                        {
-                            value = ((PropertyInfo)member).GetValue(obj);
-                            dict.Add(key, value);
-                        }
-                        else if (member is FieldInfo)
-                        {
-                            value = ((FieldInfo)member).GetValue(obj);
-                            dict.Add(key, value);
-                        }
+                        value = ((PropertyInfo)member).GetValue(obj);
+                        dict.Add(key, value);
+                    }
+                    else if (member is FieldInfo)
+                    {
+                        value = ((FieldInfo)member).GetValue(obj);
+                        dict.Add(key, value);
+                    }
                         
-                    }
-                    if(dict.Count > 0)
-                    {
-                        result.Add(dict);
-                    }
+                }
+                if(dict.Count > 0)
+                {
+                    result.Add(dict);
                 }
             }
-            return result;
         }
+        return result;
+    }
 
 #endif        
 
-        protected override void LoadInternal(object[,] values, out Dictionary<int, FormulaCell> formulaCells, out Dictionary<int, string> columnFormats)
+    protected override void LoadInternal(object[,] values, out Dictionary<int, FormulaCell> formulaCells, out Dictionary<int, string> columnFormats)
+    {
+        columnFormats = new Dictionary<int, string>();
+        formulaCells = new Dictionary<int, FormulaCell>();
+        int col = 0, row = 0;
+        if (this.PrintHeaders && this._keys.Count() > 0)
         {
-            columnFormats = new Dictionary<int, string>();
-            formulaCells = new Dictionary<int, FormulaCell>();
-            int col = 0, row = 0;
-            if (this.PrintHeaders && this._keys.Count() > 0)
+            foreach (string? key in this._keys)
             {
-                foreach (string? key in this._keys)
-                {
-                    values[row, col++] = this.ParseHeader(key);
-                }
-                row++;
+                values[row, col++] = this.ParseHeader(key);
             }
-            foreach (IDictionary<string, object>? item in this._items)
+            row++;
+        }
+        foreach (IDictionary<string, object>? item in this._items)
+        {
+            col = 0;
+            foreach (string? key in this._keys)
             {
-                col = 0;
-                foreach (string? key in this._keys)
+                if (item.ContainsKey(key))
                 {
-                    if (item.ContainsKey(key))
+                    object? v = item[key];
+                    if(col < this._dataTypes.Length && v != null)
                     {
-                        object? v = item[key];
-                        if(col < this._dataTypes.Length && v != null)
+                        eDataTypes dataType = this._dataTypes[col];
+                        switch(dataType)
                         {
-                            eDataTypes dataType = this._dataTypes[col];
-                            switch(dataType)
-                            {
-                                case eDataTypes.Percent:
-                                case eDataTypes.Number:
-                                    if(double.TryParse(v.ToString(), NumberStyles.Float | NumberStyles.Number, this._cultureInfo, out double d))
+                            case eDataTypes.Percent:
+                            case eDataTypes.Number:
+                                if(double.TryParse(v.ToString(), NumberStyles.Float | NumberStyles.Number, this._cultureInfo, out double d))
+                                {
+                                    if(dataType == eDataTypes.Percent)
                                     {
-                                        if(dataType == eDataTypes.Percent)
-                                        {
-                                            d /= 100d;
-                                        }
-                                        values[row, col] = d;
+                                        d /= 100d;
                                     }
-                                    break;
-                                case eDataTypes.DateTime:
-                                    if(DateTime.TryParse(v.ToString(), out DateTime dt))
-                                    {
-                                        values[row, col] = dt;
-                                    }
-                                    break;
-                                case eDataTypes.String:
-                                    values[row, col] = v.ToString();
-                                    break;
-                                default:
-                                    values[row, col] = v;
-                                    break;
+                                    values[row, col] = d;
+                                }
+                                break;
+                            case eDataTypes.DateTime:
+                                if(DateTime.TryParse(v.ToString(), out DateTime dt))
+                                {
+                                    values[row, col] = dt;
+                                }
+                                break;
+                            case eDataTypes.String:
+                                values[row, col] = v.ToString();
+                                break;
+                            default:
+                                values[row, col] = v;
+                                break;
 
-                            }
                         }
-                        else
-                        {
-                            values[row, col] = item[key];
-                        }
-                        col++;
                     }
                     else
                     {
-                        col++;
+                        values[row, col] = item[key];
                     }
+                    col++;
                 }
-                row++;
+                else
+                {
+                    col++;
+                }
             }
+            row++;
+        }
+    }
+
+    protected override int GetNumberOfRows()
+    {
+        if (this._items == null)
+        {
+            return 0;
         }
 
-        protected override int GetNumberOfRows()
-        {
-            if (this._items == null)
-            {
-                return 0;
-            }
+        return this._items.Count();
+    }
 
-            return this._items.Count();
+    protected override int GetNumberOfColumns()
+    {
+        if (this._keys == null)
+        {
+            return 0;
         }
 
-        protected override int GetNumberOfColumns()
-        {
-            if (this._keys == null)
-            {
-                return 0;
-            }
+        return this._keys.Count();
+    }
 
-            return this._keys.Count();
-        }
-
-        private string ParseHeader(string header)
+    private string ParseHeader(string header)
+    {
+        switch (this._headerParsingType)
         {
-            switch (this._headerParsingType)
-            {
-                case HeaderParsingTypes.Preserve:
-                    return header;
-                case HeaderParsingTypes.UnderscoreToSpace:
-                    return header.Replace("_", " ");
-                case HeaderParsingTypes.CamelCaseToSpace:
-                    return Regex.Replace(header, "([A-Z])", " $1", RegexOptions.Compiled).Trim();
-                case HeaderParsingTypes.UnderscoreAndCamelCaseToSpace:
-                    header = Regex.Replace(header, "([A-Z])", " $1", RegexOptions.Compiled).Trim();
-                    return header.Replace("_ ", "_").Replace("_", " ");
-                default:
-                    return header;
-            }
+            case HeaderParsingTypes.Preserve:
+                return header;
+            case HeaderParsingTypes.UnderscoreToSpace:
+                return header.Replace("_", " ");
+            case HeaderParsingTypes.CamelCaseToSpace:
+                return Regex.Replace(header, "([A-Z])", " $1", RegexOptions.Compiled).Trim();
+            case HeaderParsingTypes.UnderscoreAndCamelCaseToSpace:
+                header = Regex.Replace(header, "([A-Z])", " $1", RegexOptions.Compiled).Trim();
+                return header.Replace("_ ", "_").Replace("_", " ");
+            default:
+                return header;
         }
     }
 }

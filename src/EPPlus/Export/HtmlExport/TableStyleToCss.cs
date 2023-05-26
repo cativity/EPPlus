@@ -22,23 +22,22 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace OfficeOpenXml.Export.HtmlExport
+namespace OfficeOpenXml.Export.HtmlExport;
+
+internal class TableStyleToCss
 {
-    internal class TableStyleToCss
+    ExcelTable _table;
+    internal TableStyleToCss(ExcelTable table)
     {
-        ExcelTable _table;
-        internal TableStyleToCss(ExcelTable table)
-        {
-            this._table = table;
-        }
-        internal void Render(StreamWriter sw)
-        {
-            if(this._table.TableStyle==TableStyles.None)
-            {
-                return;
-            }
-        }
-
-
+        this._table = table;
     }
+    internal void Render(StreamWriter sw)
+    {
+        if(this._table.TableStyle==TableStyles.None)
+        {
+            return;
+        }
+    }
+
+
 }

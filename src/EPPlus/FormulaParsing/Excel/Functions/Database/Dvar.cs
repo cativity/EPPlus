@@ -18,36 +18,35 @@ using OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Metadata;
 using OfficeOpenXml.FormulaParsing.ExpressionGraph;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Database
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Database;
+
+[FunctionMetadata(
+                     Category = ExcelFunctionCategory.Database,
+                     EPPlusVersion = "4",
+                     Description = "Calculates the variance (based on a sample of a population) of values in a field of a list or database, that satisfy specified conditions")]
+internal class Dvar : DatabaseFunction
 {
-    [FunctionMetadata(
-        Category = ExcelFunctionCategory.Database,
-        EPPlusVersion = "4",
-        Description = "Calculates the variance (based on a sample of a population) of values in a field of a list or database, that satisfy specified conditions")]
-    internal class Dvar : DatabaseFunction
+    public Dvar()
+        : this(new RowMatcher())
     {
-         public Dvar()
-            : this(new RowMatcher())
-        {
 
+    }
+
+    public Dvar(RowMatcher rowMatcher)
+        : base(rowMatcher)
+    {
+
+    }
+
+    public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
+    {
+        ValidateArguments(arguments, 3);
+        IEnumerable<double>? values = this.GetMatchingValues(arguments, context);
+        if (!values.Any())
+        {
+            return this.CreateResult(0d, DataType.Integer);
         }
 
-         public Dvar(RowMatcher rowMatcher)
-            : base(rowMatcher)
-        {
-
-        }
-
-        public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
-        {
-            ValidateArguments(arguments, 3);
-            IEnumerable<double>? values = this.GetMatchingValues(arguments, context);
-            if (!values.Any())
-            {
-                return this.CreateResult(0d, DataType.Integer);
-            }
-
-            return this.CreateResult(VarMethods.Var(values), DataType.Integer);
-        }
+        return this.CreateResult(VarMethods.Var(values), DataType.Integer);
     }
 }

@@ -18,82 +18,81 @@ using System.Linq;
 using OfficeOpenXml.Core;
 using System.Collections;
 
-namespace OfficeOpenXml.Table.PivotTable
+namespace OfficeOpenXml.Table.PivotTable;
+
+/// <summary>
+/// A reference to a field in a pivot area 
+/// </summary>
+public class ExcelPivotAreaReference : ExcelPivotAreaReferenceBase
 {
-    /// <summary>
-    /// A reference to a field in a pivot area 
-    /// </summary>
-    public class ExcelPivotAreaReference : ExcelPivotAreaReferenceBase
+    internal ExcelPivotAreaReference(XmlNamespaceManager nsm, XmlNode topNode, ExcelPivotTable pt, int fieldIndex = -1) : base(nsm, topNode, pt)
     {
-        internal ExcelPivotAreaReference(XmlNamespaceManager nsm, XmlNode topNode, ExcelPivotTable pt, int fieldIndex = -1) : base(nsm, topNode, pt)
+        this.Items = new ExcelPivotAreaReferenceItems(this);
+        if (fieldIndex != -1)
         {
-            this.Items = new ExcelPivotAreaReferenceItems(this);
-            if (fieldIndex != -1)
+            this.FieldIndex = fieldIndex;
+        }
+        if (this.FieldIndex >= 0)
+        {
+            foreach (XmlNode n in topNode.ChildNodes)
             {
-                this.FieldIndex = fieldIndex;
+                if (n.LocalName == "x")
+                {
+                    int ix = int.Parse(n.Attributes["v"].Value);
+                    if (ix < this.Field.Items.Count)
+                    {
+                        this.Items.Add(new PivotItemReference() { Index = ix, Value = this.Field.Items[ix].Value });
+                    }
+                }
             }
+        }
+    }
+    /// <summary>
+    /// The pivot table field referenced
+    /// </summary>
+    public ExcelPivotTableField Field
+    {
+        get
+        {
             if (this.FieldIndex >= 0)
             {
-                foreach (XmlNode n in topNode.ChildNodes)
-                {
-                    if (n.LocalName == "x")
-                    {
-                        int ix = int.Parse(n.Attributes["v"].Value);
-                        if (ix < this.Field.Items.Count)
-                        {
-                            this.Items.Add(new PivotItemReference() { Index = ix, Value = this.Field.Items[ix].Value });
-                        }
-                    }
-                }
+                return this._pt.Fields[this.FieldIndex];
+            }
+            return null;
+        }
+    }
+    /// <summary>
+    /// References to the pivot table cache or within the table.
+    /// </summary>
+    public ExcelPivotAreaReferenceItems Items { get; }
+    internal override void UpdateXml()
+    {
+        //Remove reference, so they can be re-written 
+        if (this.TopNode.LocalName == "reference")
+        {
+            while (this.TopNode.ChildNodes.Count > 0)
+            {
+                this.TopNode.RemoveChild(this.TopNode.ChildNodes[0]);
             }
         }
-        /// <summary>
-        /// The pivot table field referenced
-        /// </summary>
-        public ExcelPivotTableField Field
-        {
-            get
-            {
-                if (this.FieldIndex >= 0)
-                {
-                    return this._pt.Fields[this.FieldIndex];
-                }
-                return null;
-            }
-        }
-        /// <summary>
-        /// References to the pivot table cache or within the table.
-        /// </summary>
-        public ExcelPivotAreaReferenceItems Items { get; }
-        internal override void UpdateXml()
-        {
-            //Remove reference, so they can be re-written 
-            if (this.TopNode.LocalName == "reference")
-            {
-                while (this.TopNode.ChildNodes.Count > 0)
-                {
-                    this.TopNode.RemoveChild(this.TopNode.ChildNodes[0]);
-                }
-            }
 
-            if (this.FieldIndex >= 0 && this.FieldIndex < this._pt.Fields.Count)
+        if (this.FieldIndex >= 0 && this.FieldIndex < this._pt.Fields.Count)
+        {
+            ExcelPivotTableFieldItemsCollection? items = this.Field.Items;
+            foreach (PivotItemReference r in this.Items)
             {
-                ExcelPivotTableFieldItemsCollection? items = this.Field.Items;
-                foreach (PivotItemReference r in this.Items)
+                if (r.Index >= 0 && r.Index < items.Count && r.Value.Equals(items[r.Index]))
                 {
-                    if (r.Index >= 0 && r.Index < items.Count && r.Value.Equals(items[r.Index]))
+                    XmlElement? n = (XmlElement)this.CreateNode("d:x", false, true);
+                    n.SetAttribute("v", r.Index.ToString(CultureInfo.InvariantCulture));
+                }
+                else
+                {
+                    int ix = items._list.FindIndex(x => (x.Value != null && (x.Value.Equals(r.Value)) || (x.Text != null && x.Text.Equals(r.Value))));
+                    if (ix >= 0)
                     {
                         XmlElement? n = (XmlElement)this.CreateNode("d:x", false, true);
-                        n.SetAttribute("v", r.Index.ToString(CultureInfo.InvariantCulture));
-                    }
-                    else
-                    {
-                        int ix = items._list.FindIndex(x => (x.Value != null && (x.Value.Equals(r.Value)) || (x.Text != null && x.Text.Equals(r.Value))));
-                        if (ix >= 0)
-                        {
-                            XmlElement? n = (XmlElement)this.CreateNode("d:x", false, true);
-                            n.SetAttribute("v", ix.ToString(CultureInfo.InvariantCulture));
-                        }
+                        n.SetAttribute("v", ix.ToString(CultureInfo.InvariantCulture));
                     }
                 }
             }

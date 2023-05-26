@@ -18,20 +18,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Engineering
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Engineering;
+
+[FunctionMetadata(
+                     Category = ExcelFunctionCategory.Engineering,
+                     EPPlusVersion = "5.1",
+                     Description = "Converts octal number to a decimal")]
+internal class Oct2Dec : ExcelFunction
 {
-    [FunctionMetadata(
-        Category = ExcelFunctionCategory.Engineering,
-        EPPlusVersion = "5.1",
-        Description = "Converts octal number to a decimal")]
-    internal class Oct2Dec : ExcelFunction
+    public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
     {
-        public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
-        {
-            ValidateArguments(arguments, 1);
-            string? number = ArgToString(arguments, 0);
-            double result = TwoComplementHelper.ParseDecFromString(number, 8);
-            return this.CreateResult(result, DataType.Integer);
-        }
+        ValidateArguments(arguments, 1);
+        string? number = ArgToString(arguments, 0);
+        double result = TwoComplementHelper.ParseDecFromString(number, 8);
+        return this.CreateResult(result, DataType.Integer);
     }
 }

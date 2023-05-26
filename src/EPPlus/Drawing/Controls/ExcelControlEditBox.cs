@@ -14,25 +14,24 @@ using OfficeOpenXml.Packaging;
 using System;
 using System.Xml;
 
-namespace OfficeOpenXml.Drawing.Controls
+namespace OfficeOpenXml.Drawing.Controls;
+
+/// <summary>
+/// Represents an edit box form control. Unsupported.
+/// </summary>
+public class ExcelControlEditBox : ExcelControlWithText
 {
-    /// <summary>
-    /// Represents an edit box form control. Unsupported.
-    /// </summary>
-    public class ExcelControlEditBox : ExcelControlWithText
+    internal ExcelControlEditBox(ExcelDrawings drawings, XmlElement drawNode, string name, ExcelGroupShape parent=null) : base(drawings, drawNode, name, parent)
     {
-        internal ExcelControlEditBox(ExcelDrawings drawings, XmlElement drawNode, string name, ExcelGroupShape parent=null) : base(drawings, drawNode, name, parent)
-        {
-        }
-        internal ExcelControlEditBox(ExcelDrawings drawings, XmlNode drawNode, ControlInternal control, ZipPackagePart part, XmlDocument controlPropertiesXml, ExcelGroupShape parent = null)
-            : base(drawings, drawNode, control, part, controlPropertiesXml, parent)
-        {
-        }
-
-        /// <summary>
-        /// The type of form control
-        /// </summary>
-        public override eControlType ControlType => eControlType.EditBox;
-
     }
+    internal ExcelControlEditBox(ExcelDrawings drawings, XmlNode drawNode, ControlInternal control, ZipPackagePart part, XmlDocument controlPropertiesXml, ExcelGroupShape parent = null)
+        : base(drawings, drawNode, control, part, controlPropertiesXml, parent)
+    {
+    }
+
+    /// <summary>
+    /// The type of form control
+    /// </summary>
+    public override eControlType ControlType => eControlType.EditBox;
+
 }

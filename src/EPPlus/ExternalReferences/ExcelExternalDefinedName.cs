@@ -11,32 +11,31 @@
   04/16/2021         EPPlus Software AB       EPPlus 5.7
  *************************************************************************************************/
 
-namespace OfficeOpenXml.ExternalReferences
+namespace OfficeOpenXml.ExternalReferences;
+
+/// <summary>
+/// Represents a defined name in an external workbook
+/// </summary>
+public class ExcelExternalDefinedName : IExcelExternalNamedItem
 {
     /// <summary>
-    /// Represents a defined name in an external workbook
+    /// The name
     /// </summary>
-    public class ExcelExternalDefinedName : IExcelExternalNamedItem
+    public string Name { get; internal set; }
+    /// <summary>
+    /// The address that the defined name referes to
+    /// </summary>
+    public string RefersTo { get; internal set; }
+    /// <summary>
+    /// The sheet id
+    /// </summary>
+    public int SheetId { get; internal set; }
+    /// <summary>
+    /// The string representation of the name
+    /// </summary>
+    /// <returns></returns>
+    public override string ToString()
     {
-        /// <summary>
-        /// The name
-        /// </summary>
-        public string Name { get; internal set; }
-        /// <summary>
-        /// The address that the defined name referes to
-        /// </summary>
-        public string RefersTo { get; internal set; }
-        /// <summary>
-        /// The sheet id
-        /// </summary>
-        public int SheetId { get; internal set; }
-        /// <summary>
-        /// The string representation of the name
-        /// </summary>
-        /// <returns></returns>
-        public override string ToString()
-        {
-            return this.Name;
-        }
+        return this.Name;
     }
 }

@@ -16,13 +16,13 @@ using System.Linq;
 using System.Text;
 using System.Xml;
 
-namespace OfficeOpenXml.ConditionalFormatting
+namespace OfficeOpenXml.ConditionalFormatting;
+
+/// <summary>
+/// Enum for Conditional Format Type ST_CfType §18.18.12. With some changes.
+/// </summary>
+public enum eExcelConditionalFormattingRuleType
 {
-  /// <summary>
-  /// Enum for Conditional Format Type ST_CfType §18.18.12. With some changes.
-  /// </summary>
-  public enum eExcelConditionalFormattingRuleType
-  {
     #region Average
     /// <summary>
     /// Highlights cells that are above the average for all values in the range.
@@ -47,7 +47,7 @@ namespace OfficeOpenXml.ConditionalFormatting
     /// </summary>
     /// <remarks>AboveAverage Excel CF Rule Type</remarks>
     BelowOrEqualAverage,
-        #endregion
+    #endregion
 
     #region StdDev
     /// <summary>
@@ -348,13 +348,13 @@ namespace OfficeOpenXml.ConditionalFormatting
     /// <remarks>DataBar Excel CF Rule Type</remarks>
     DataBar
     #endregion
-  }
+}
 
-  /// <summary>
-  /// Enum for Conditional Format Value Object Type ST_CfvoType §18.18.13
-  /// </summary>
-  public enum eExcelConditionalFormattingValueObjectType
-  {
+/// <summary>
+/// Enum for Conditional Format Value Object Type ST_CfvoType §18.18.13
+/// </summary>
+public enum eExcelConditionalFormattingValueObjectType
+{
     /// <summary>
     /// Formula
     /// </summary>
@@ -384,13 +384,13 @@ namespace OfficeOpenXml.ConditionalFormatting
     /// Percentile
     /// </summary>
     Percentile
-  }
+}
 
-  /// <summary>
-  /// Enum for Conditional Formatting Value Object Position
-  /// </summary>
-  public enum eExcelConditionalFormattingValueObjectPosition
-  {
+/// <summary>
+/// Enum for Conditional Formatting Value Object Position
+/// </summary>
+public enum eExcelConditionalFormattingValueObjectPosition
+{
     /// <summary>
     /// The lower position for both TwoColorScale and ThreeColorScale
     /// </summary>
@@ -405,13 +405,13 @@ namespace OfficeOpenXml.ConditionalFormatting
     /// The highest position for both TwoColorScale and ThreeColorScale
     /// </summary>
     High
-  }
+}
 
-  /// <summary>
-  /// Enum for Conditional Formatting Value Object Node Type
-  /// </summary>
-  public enum eExcelConditionalFormattingValueObjectNodeType
-  {
+/// <summary>
+/// Enum for Conditional Formatting Value Object Node Type
+/// </summary>
+public enum eExcelConditionalFormattingValueObjectNodeType
+{
     /// <summary>
     /// 'cfvo' node
     /// </summary>
@@ -421,13 +421,13 @@ namespace OfficeOpenXml.ConditionalFormatting
     /// 'color' node
     /// </summary>
     Color
-  }
+}
 
-  /// <summary>
-  /// Enum for Conditional Formatting Operartor Type ST_ConditionalFormattingOperator §18.18.15
-  /// </summary>
-  public enum eExcelConditionalFormattingOperatorType
-  {
+/// <summary>
+/// Enum for Conditional Formatting Operartor Type ST_ConditionalFormattingOperator §18.18.15
+/// </summary>
+public enum eExcelConditionalFormattingOperatorType
+{
     /// <summary>
     /// Begins With. 'Begins with' operator
     /// </summary>
@@ -487,13 +487,13 @@ namespace OfficeOpenXml.ConditionalFormatting
     /// Not Equal. 'Not equal to' operator
     /// </summary>
     NotEqual
-  }
+}
 
-  /// <summary>
-  /// Enum for Conditional Formatting Time Period Type ST_TimePeriod §18.18.82
-  /// </summary>
-  public enum eExcelConditionalFormattingTimePeriodType
-  {
+/// <summary>
+/// Enum for Conditional Formatting Time Period Type ST_TimePeriod §18.18.82
+/// </summary>
+public enum eExcelConditionalFormattingTimePeriodType
+{
     /// <summary>
     /// Last 7 Days. A date in the last seven days.
     /// </summary>
@@ -543,13 +543,13 @@ namespace OfficeOpenXml.ConditionalFormatting
     /// Yesterday. Yesterday's date.
     /// </summary>
     Yesterday
-  }
+}
 
-  /// <summary>
-  /// 18.18.42 ST_IconSetType (Icon Set Type) - Only 3 icons
-  /// </summary>
-  public enum eExcelconditionalFormatting3IconsSetType
-  {
+/// <summary>
+/// 18.18.42 ST_IconSetType (Icon Set Type) - Only 3 icons
+/// </summary>
+public enum eExcelconditionalFormatting3IconsSetType
+{
     /// <summary>
     /// 3 arrows icon set.
     /// </summary>
@@ -589,13 +589,13 @@ namespace OfficeOpenXml.ConditionalFormatting
     /// 3 traffic lights icon set with thick black border.
     /// </summary>
     TrafficLights2
-  }
+}
 
-  /// <summary>
-  /// 18.18.42 ST_IconSetType (Icon Set Type) - Only 4 icons
-  /// </summary>
-  public enum eExcelconditionalFormatting4IconsSetType
-  {
+/// <summary>
+/// 18.18.42 ST_IconSetType (Icon Set Type) - Only 4 icons
+/// </summary>
+public enum eExcelconditionalFormatting4IconsSetType
+{
     /// <summary>
     /// (4 Arrows) 4 arrows icon set.
     /// </summary>
@@ -620,13 +620,13 @@ namespace OfficeOpenXml.ConditionalFormatting
     /// (4 Traffic Lights) 4 traffic lights icon set.
     /// </summary>
     TrafficLights
-  }
+}
 
-  /// <summary>
-  /// 18.18.42 ST_IconSetType (Icon Set Type) - Only 5 icons
-  /// </summary>
-  public enum eExcelconditionalFormatting5IconsSetType
-  {
+/// <summary>
+/// 18.18.42 ST_IconSetType (Icon Set Type) - Only 5 icons
+/// </summary>
+public enum eExcelconditionalFormatting5IconsSetType
+{
     /// <summary>
     /// 5 arrows icon set.
     /// </summary>
@@ -646,51 +646,51 @@ namespace OfficeOpenXml.ConditionalFormatting
     /// 5 rating icon set.
     /// </summary>
     Rating
-  }
-  /// <summary>
-  /// 18.18.42 ST_IconSetType (Icon Set Type)
-  /// </summary>
-  public enum eExcelconditionalFormattingIconsSetType
-  {
-      /// <summary>
-      /// 3 arrows icon set
-      /// </summary>
-      ThreeArrows,
+}
+/// <summary>
+/// 18.18.42 ST_IconSetType (Icon Set Type)
+/// </summary>
+public enum eExcelconditionalFormattingIconsSetType
+{
+    /// <summary>
+    /// 3 arrows icon set
+    /// </summary>
+    ThreeArrows,
 
-      /// <summary>
-      /// 3 gray arrows icon set
-      /// </summary>
-      ThreeArrowsGray,
+    /// <summary>
+    /// 3 gray arrows icon set
+    /// </summary>
+    ThreeArrowsGray,
 
-      /// <summary>
-      /// 3 flags icon set. 
-      /// </summary>
-      ThreeFlags,
+    /// <summary>
+    /// 3 flags icon set. 
+    /// </summary>
+    ThreeFlags,
 
-      /// <summary>
-      /// 3 signs icon set.
-      /// </summary>
-      ThreeSigns,
+    /// <summary>
+    /// 3 signs icon set.
+    /// </summary>
+    ThreeSigns,
 
-      /// <summary>
-      /// 3 symbols icon set.
-      /// </summary>
-      ThreeSymbols,
+    /// <summary>
+    /// 3 symbols icon set.
+    /// </summary>
+    ThreeSymbols,
 
-      /// <summary>
-      /// 3 Symbols icon set.
-      /// </summary>
-      ThreeSymbols2,
+    /// <summary>
+    /// 3 Symbols icon set.
+    /// </summary>
+    ThreeSymbols2,
 
-      /// <summary>
-      /// 3 traffic lights icon set (#1).
-      /// </summary>
-      ThreeTrafficLights1,
+    /// <summary>
+    /// 3 traffic lights icon set (#1).
+    /// </summary>
+    ThreeTrafficLights1,
 
-      /// <summary>
-      /// 3 traffic lights icon set with thick black border.
-      /// </summary>
-      ThreeTrafficLights2,
+    /// <summary>
+    /// 3 traffic lights icon set with thick black border.
+    /// </summary>
+    ThreeTrafficLights2,
  
     /// <summary>
     /// 4 arrows icon set.
@@ -736,5 +736,4 @@ namespace OfficeOpenXml.ConditionalFormatting
     /// 5 rating icon set.
     /// </summary>
     FiveRating
-}
 }

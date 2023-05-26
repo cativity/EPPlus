@@ -16,26 +16,25 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance
-{
-    [FunctionMetadata(
-        Category = ExcelFunctionCategory.Financial,
-        EPPlusVersion = "5.2",
-        Description = "Calculates the annual nominal interest rate from a supplied Effective interest rate and number of periods")]
-    internal class Nominal : ExcelFunction
-    {
-        public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
-        {
-            ValidateArguments(arguments, 2);
-            double effectRate = this.ArgToDecimal(arguments, 0);
-            int npery = this.ArgToInt(arguments, 1);
-            if (effectRate <= 0 || npery < 1)
-            {
-                return this.CreateResult(eErrorType.Num);
-            }
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance;
 
-            double result = (System.Math.Pow(effectRate + 1d, 1d / npery) - 1d) * npery;
-            return this.CreateResult(result, DataType.Decimal);
+[FunctionMetadata(
+                     Category = ExcelFunctionCategory.Financial,
+                     EPPlusVersion = "5.2",
+                     Description = "Calculates the annual nominal interest rate from a supplied Effective interest rate and number of periods")]
+internal class Nominal : ExcelFunction
+{
+    public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
+    {
+        ValidateArguments(arguments, 2);
+        double effectRate = this.ArgToDecimal(arguments, 0);
+        int npery = this.ArgToInt(arguments, 1);
+        if (effectRate <= 0 || npery < 1)
+        {
+            return this.CreateResult(eErrorType.Num);
         }
+
+        double result = (System.Math.Pow(effectRate + 1d, 1d / npery) - 1d) * npery;
+        return this.CreateResult(result, DataType.Decimal);
     }
 }

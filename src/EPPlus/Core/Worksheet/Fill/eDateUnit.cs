@@ -11,44 +11,43 @@
     08/11/2021         EPPlus Software AB       EPPlus 5.8
  *************************************************************************************************/
 
-namespace OfficeOpenXml
+namespace OfficeOpenXml;
+
+/// <summary>
+/// The date units for date fill operations
+/// </summary>
+public enum eDateTimeUnit
 {
     /// <summary>
-    /// The date units for date fill operations
+    /// Adds a Year
     /// </summary>
-    public enum eDateTimeUnit
-    {
-        /// <summary>
-        /// Adds a Year
-        /// </summary>
-        Year,
-        /// <summary>
-        /// Adds a Month
-        /// </summary>
-        Month,
-        /// <summary>
-        /// Adds 7 Days
-        /// </summary>
-        Week,
-        /// <summary>
-        /// Adds a Day
-        /// </summary>
-        Day,
-        /// <summary>
-        /// Adds an Hour
-        /// </summary>
-        Hour,
-        /// <summary>
-        /// Adds a Minute
-        /// </summary>
-        Minute,
-        /// <summary>
-        /// Adds a Second
-        /// </summary>
-        Second,
-        /// <summary>
-        /// Adds ticks
-        /// </summary>
-        Ticks
-    }
+    Year,
+    /// <summary>
+    /// Adds a Month
+    /// </summary>
+    Month,
+    /// <summary>
+    /// Adds 7 Days
+    /// </summary>
+    Week,
+    /// <summary>
+    /// Adds a Day
+    /// </summary>
+    Day,
+    /// <summary>
+    /// Adds an Hour
+    /// </summary>
+    Hour,
+    /// <summary>
+    /// Adds a Minute
+    /// </summary>
+    Minute,
+    /// <summary>
+    /// Adds a Second
+    /// </summary>
+    Second,
+    /// <summary>
+    /// Adds ticks
+    /// </summary>
+    Ticks
 }

@@ -18,70 +18,69 @@ using static OfficeOpenXml.FormulaParsing.EpplusExcelDataProvider;
 using OfficeOpenXml.FormulaParsing;
 using OfficeOpenXml.Table;
 
-namespace OfficeOpenXml.FormulaParsing.ExpressionGraph
+namespace OfficeOpenXml.FormulaParsing.ExpressionGraph;
+
+public class NamedValueExpression : AtomicExpression
 {
-    public class NamedValueExpression : AtomicExpression
+    public NamedValueExpression(string expression, ParsingContext parsingContext)
+        : base(expression)
     {
-        public NamedValueExpression(string expression, ParsingContext parsingContext)
-            : base(expression)
+        this._parsingContext = parsingContext;
+    }
+
+    private readonly ParsingContext _parsingContext;
+
+    public override CompileResult Compile()
+    {
+        ParsingScope? c = this._parsingContext.Scopes.Current;
+        INameInfo? name = this._parsingContext.ExcelDataProvider.GetName(c.Address.Worksheet, this.ExpressionString);
+            
+        ExcelAddressCache? cache = this._parsingContext.AddressCache;
+        int cacheId = cache.GetNewId();
+            
+        if (name == null)
         {
-            this._parsingContext = parsingContext;
+            // check if there is a table with the name
+            ExcelTable? table = this._parsingContext.ExcelDataProvider.GetExcelTable(this.ExpressionString);
+            if(table != null)
+            {
+                RangeInfo? ri = new RangeInfo(table.WorkSheet, table.Address);
+                cache.Add(cacheId, ri.Address.FullAddress);
+                return new CompileResult(ri, DataType.Enumerable, cacheId);
+            }
+
+            return new CompileResult(eErrorType.Name);
         }
-
-        private readonly ParsingContext _parsingContext;
-
-        public override CompileResult Compile()
+        if (name.Value==null)
         {
-            ParsingScope? c = this._parsingContext.Scopes.Current;
-            INameInfo? name = this._parsingContext.ExcelDataProvider.GetName(c.Address.Worksheet, this.ExpressionString);
-            
-            ExcelAddressCache? cache = this._parsingContext.AddressCache;
-            int cacheId = cache.GetNewId();
-            
-            if (name == null)
+            return new CompileResult(null, DataType.Empty, cacheId);
+        }
+        if (name.Value is IRangeInfo)
+        {
+            IRangeInfo? range = (IRangeInfo)name.Value;
+            cache.Add(cacheId, range.Address.FullAddress);
+            if (range.IsMulti)
             {
-                // check if there is a table with the name
-                ExcelTable? table = this._parsingContext.ExcelDataProvider.GetExcelTable(this.ExpressionString);
-                if(table != null)
-                {
-                    RangeInfo? ri = new RangeInfo(table.WorkSheet, table.Address);
-                    cache.Add(cacheId, ri.Address.FullAddress);
-                    return new CompileResult(ri, DataType.Enumerable, cacheId);
-                }
-
-                return new CompileResult(eErrorType.Name);
-            }
-            if (name.Value==null)
-            {
-                return new CompileResult(null, DataType.Empty, cacheId);
-            }
-            if (name.Value is IRangeInfo)
-            {
-                IRangeInfo? range = (IRangeInfo)name.Value;
-                cache.Add(cacheId, range.Address.FullAddress);
-                if (range.IsMulti)
-                {
-                    return new CompileResult(name.Value, DataType.Enumerable, cacheId);
-                }
-                else
-                {                    
-                    if (range.IsEmpty)
-                    {
-                        return new CompileResult(null, DataType.Empty, cacheId);
-                    }
-                    CompileResultFactory? factory = new CompileResultFactory();
-                    return factory.Create(range.First().Value, cacheId);
-                }
+                return new CompileResult(name.Value, DataType.Enumerable, cacheId);
             }
             else
-            {                
+            {                    
+                if (range.IsEmpty)
+                {
+                    return new CompileResult(null, DataType.Empty, cacheId);
+                }
                 CompileResultFactory? factory = new CompileResultFactory();
-                return factory.Create(name.Value, cacheId);
+                return factory.Create(range.First().Value, cacheId);
             }
+        }
+        else
+        {                
+            CompileResultFactory? factory = new CompileResultFactory();
+            return factory.Create(name.Value, cacheId);
+        }
 
             
             
-            //return new CompileResultFactory().Create(result);
-        }
+        //return new CompileResultFactory().Create(result);
     }
 }

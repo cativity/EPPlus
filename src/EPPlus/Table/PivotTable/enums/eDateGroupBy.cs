@@ -12,41 +12,40 @@
  *************************************************************************************************/
 using System;
 
-namespace OfficeOpenXml.Table.PivotTable
+namespace OfficeOpenXml.Table.PivotTable;
+
+/// <summary>
+/// Data grouping
+/// </summary>
+[Flags]
+public enum eDateGroupBy
 {
     /// <summary>
-    /// Data grouping
+    /// Group by years
     /// </summary>
-    [Flags]
-    public enum eDateGroupBy
-    {
-        /// <summary>
-        /// Group by years
-        /// </summary>
-        Years = 1,
-        /// <summary>
-        /// Group by  quarters
-        /// </summary>
-        Quarters = 2,
-        /// <summary>
-        /// Group by months
-        /// </summary>
-        Months = 4,
-        /// <summary>
-        /// Group by days
-        /// </summary>
-        Days = 8,
-        /// <summary>
-        /// Group by hours
-        /// </summary>
-        Hours = 16,
-        /// <summary>
-        /// Group by minutes
-        /// </summary>
-        Minutes = 32,
-        /// <summary>
-        /// Group by seconds
-        /// </summary>
-        Seconds = 64
-    }
+    Years = 1,
+    /// <summary>
+    /// Group by  quarters
+    /// </summary>
+    Quarters = 2,
+    /// <summary>
+    /// Group by months
+    /// </summary>
+    Months = 4,
+    /// <summary>
+    /// Group by days
+    /// </summary>
+    Days = 8,
+    /// <summary>
+    /// Group by hours
+    /// </summary>
+    Hours = 16,
+    /// <summary>
+    /// Group by minutes
+    /// </summary>
+    Minutes = 32,
+    /// <summary>
+    /// Group by seconds
+    /// </summary>
+    Seconds = 64
 }

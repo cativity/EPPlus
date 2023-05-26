@@ -15,11 +15,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace OfficeOpenXml.Sorting.Internal
+namespace OfficeOpenXml.Sorting.Internal;
+
+internal class SortItem<T> : SortItemBase<T>
 {
-    internal class SortItem<T> : SortItemBase<T>
-    {
-        internal int Row { get; set; }
+    internal int Row { get; set; }
         
-    }
 }

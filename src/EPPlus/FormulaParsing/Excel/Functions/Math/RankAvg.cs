@@ -15,18 +15,17 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
-{
-    [FunctionMetadata(
-        Category = ExcelFunctionCategory.Statistical,
-        EPPlusVersion = "4",
-        Description = "Returns the statistical rank of a given value, within a supplied array of values (if more than one value has same rank, the average rank is returned) ")]
-    internal class RankAvg : Rank
-    {
-        public RankAvg()
-            : base(true)
-        {
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
 
-        }
+[FunctionMetadata(
+                     Category = ExcelFunctionCategory.Statistical,
+                     EPPlusVersion = "4",
+                     Description = "Returns the statistical rank of a given value, within a supplied array of values (if more than one value has same rank, the average rank is returned) ")]
+internal class RankAvg : Rank
+{
+    public RankAvg()
+        : base(true)
+    {
+
     }
 }

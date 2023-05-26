@@ -35,30 +35,29 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EPPlusTest.FormulaParsing
+namespace EPPlusTest.FormulaParsing;
+
+[TestClass, Ignore]
+public class WorkbookNamesTests : TestBase
 {
-    [TestClass, Ignore]
-    public class WorkbookNamesTests : TestBase
+    private ExcelPackage _package;
+
+    [TestInitialize]
+    public void Initialize()
     {
-        private ExcelPackage _package;
+        this._package = OpenTemplatePackage("workbook-offset-name.xlsx");
+    }
 
-        [TestInitialize]
-        public void Initialize()
-        {
-            this._package = OpenTemplatePackage("workbook-offset-name.xlsx");
-        }
+    [TestCleanup]
+    public void Cleanup()
+    {
+        this._package.Dispose();
+    }
 
-        [TestCleanup]
-        public void Cleanup()
-        {
-            this._package.Dispose();
-        }
-
-        [TestMethod]
-        public void ShouldCalculateOffsetName()
-        {
-            this._package.Workbook.Calculate(x => x.AllowCircularReferences = true);
-            Assert.AreEqual(3d, this._package.Workbook.Worksheets.First().Cells["A1"].Value);
-        }
+    [TestMethod]
+    public void ShouldCalculateOffsetName()
+    {
+        this._package.Workbook.Calculate(x => x.AllowCircularReferences = true);
+        Assert.AreEqual(3d, this._package.Workbook.Worksheets.First().Cells["A1"].Value);
     }
 }

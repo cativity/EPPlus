@@ -12,52 +12,51 @@
  *************************************************************************************************/
 using System.Xml;
 
-namespace OfficeOpenXml.Drawing.Chart.ChartEx
-{
-    /// <summary>
-    /// String data reference for an extended chart
-    /// </summary>
-    public class ExcelChartExStringData : ExcelChartExData
-    {
-        internal ExcelChartExStringData(string worksheetName, XmlNamespaceManager nsm, XmlNode topNode) : base(worksheetName, nsm, topNode)
-        {
-        }
-        /// <summary>
-        /// The type of data
-        /// </summary>
-        public eStringDataType Type 
-        {
-            get
-            {
-                string? s = this.GetXmlNodeString("@type");
-                switch (s)
-                {
-                    case "entityId":
-                        return eStringDataType.EntityId;
-                    case "colorStr":
-                        return eStringDataType.ColorString;
-                    default:
-                        return eStringDataType.Category;
-                }
-            }
-            set
-            {
-                string s;
-                switch (value)
-                {
-                    case eStringDataType.EntityId:
-                        s = "entityId";
-                        break;
-                    case eStringDataType.ColorString:
-                        s = "colorStr";
-                        break;
-                    default:
-                        s = "cat";
-                        break;
-                }
+namespace OfficeOpenXml.Drawing.Chart.ChartEx;
 
-                this.SetXmlNodeString("@type", s);
+/// <summary>
+/// String data reference for an extended chart
+/// </summary>
+public class ExcelChartExStringData : ExcelChartExData
+{
+    internal ExcelChartExStringData(string worksheetName, XmlNamespaceManager nsm, XmlNode topNode) : base(worksheetName, nsm, topNode)
+    {
+    }
+    /// <summary>
+    /// The type of data
+    /// </summary>
+    public eStringDataType Type 
+    {
+        get
+        {
+            string? s = this.GetXmlNodeString("@type");
+            switch (s)
+            {
+                case "entityId":
+                    return eStringDataType.EntityId;
+                case "colorStr":
+                    return eStringDataType.ColorString;
+                default:
+                    return eStringDataType.Category;
             }
+        }
+        set
+        {
+            string s;
+            switch (value)
+            {
+                case eStringDataType.EntityId:
+                    s = "entityId";
+                    break;
+                case eStringDataType.ColorString:
+                    s = "colorStr";
+                    break;
+                default:
+                    s = "cat";
+                    break;
+            }
+
+            this.SetXmlNodeString("@type", s);
         }
     }
 }

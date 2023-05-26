@@ -16,36 +16,35 @@ using System.Linq;
 using System.Text;
 using OfficeOpenXml.FormulaParsing.LexicalAnalysis;
 
-namespace OfficeOpenXml.FormulaParsing.ExcelUtilities
+namespace OfficeOpenXml.FormulaParsing.ExcelUtilities;
+
+public class CellReferenceProvider
 {
-    public class CellReferenceProvider
+    public virtual IEnumerable<string> GetReferencedAddresses(string cellFormula, ParsingContext context)
     {
-        public virtual IEnumerable<string> GetReferencedAddresses(string cellFormula, ParsingContext context)
+        List<string>? resultCells = new List<string>();
+        IEnumerable<Token>? r = context.Configuration.Lexer.Tokenize(cellFormula, context.Scopes.Current.Address.Worksheet);
+        IEnumerable<Token>? toAddresses = r.Where(x => x.TokenTypeIsSet(TokenType.ExcelAddress));
+        foreach (Token toAddress in toAddresses)
         {
-            List<string>? resultCells = new List<string>();
-            IEnumerable<Token>? r = context.Configuration.Lexer.Tokenize(cellFormula, context.Scopes.Current.Address.Worksheet);
-            IEnumerable<Token>? toAddresses = r.Where(x => x.TokenTypeIsSet(TokenType.ExcelAddress));
-            foreach (Token toAddress in toAddresses)
+            RangeAddress? rangeAddress = context.RangeAddressFactory.Create(toAddress.Value);
+            List<string>? rangeCells = new List<string>();
+            if (rangeAddress.FromRow < rangeAddress.ToRow || rangeAddress.FromCol < rangeAddress.ToCol)
             {
-                RangeAddress? rangeAddress = context.RangeAddressFactory.Create(toAddress.Value);
-                List<string>? rangeCells = new List<string>();
-                if (rangeAddress.FromRow < rangeAddress.ToRow || rangeAddress.FromCol < rangeAddress.ToCol)
+                for (int col = rangeAddress.FromCol; col <= rangeAddress.ToCol; col++)
                 {
-                    for (int col = rangeAddress.FromCol; col <= rangeAddress.ToCol; col++)
+                    for (int row = rangeAddress.FromRow; row <= rangeAddress.ToRow; row++)
                     {
-                        for (int row = rangeAddress.FromRow; row <= rangeAddress.ToRow; row++)
-                        {
-                            resultCells.Add(context.RangeAddressFactory.Create(col, row).Address);
-                        }
+                        resultCells.Add(context.RangeAddressFactory.Create(col, row).Address);
                     }
                 }
-                else
-                {
-                    rangeCells.Add(toAddress.Value);
-                }
-                resultCells.AddRange(rangeCells);
             }
-            return resultCells;
+            else
+            {
+                rangeCells.Add(toAddress.Value);
+            }
+            resultCells.AddRange(rangeCells);
         }
+        return resultCells;
     }
 }

@@ -15,22 +15,21 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace OfficeOpenXml.Export.HtmlExport.Accessibility
+namespace OfficeOpenXml.Export.HtmlExport.Accessibility;
+
+/// <summary>
+/// This class contains settings for usage of accessibility/ARIA attributes in the exported html.
+/// </summary>
+public class AccessibilitySettings
 {
-    /// <summary>
-    /// This class contains settings for usage of accessibility/ARIA attributes in the exported html.
-    /// </summary>
-    public class AccessibilitySettings
+    internal AccessibilitySettings()
     {
-        internal AccessibilitySettings()
-        {
-            this.TableSettings.ResetToDefault();
-        }
-
-        /// <summary>
-        /// Settings for a html table
-        /// </summary>
-        public TableAccessibilitySettings TableSettings { get; private set; } = new TableAccessibilitySettings();
-
+        this.TableSettings.ResetToDefault();
     }
+
+    /// <summary>
+    /// Settings for a html table
+    /// </summary>
+    public TableAccessibilitySettings TableSettings { get; private set; } = new TableAccessibilitySettings();
+
 }

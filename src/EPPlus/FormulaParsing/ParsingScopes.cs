@@ -16,67 +16,66 @@ using System.Linq;
 using System.Text;
 using OfficeOpenXml.FormulaParsing.ExcelUtilities;
 
-namespace OfficeOpenXml.FormulaParsing
+namespace OfficeOpenXml.FormulaParsing;
+
+/// <summary>
+/// This class implements a stack on which instances of <see cref="ParsingScope"/>
+/// are put. Each ParsingScope represents the parsing of an address in the workbook.
+/// </summary>
+public class ParsingScopes
 {
+    private readonly IParsingLifetimeEventHandler _lifetimeEventHandler;
+
     /// <summary>
-    /// This class implements a stack on which instances of <see cref="ParsingScope"/>
-    /// are put. Each ParsingScope represents the parsing of an address in the workbook.
+    /// Constructor
     /// </summary>
-    public class ParsingScopes
+    /// <param name="lifetimeEventHandler">An instance of a <see cref="IParsingLifetimeEventHandler"/></param>
+    public ParsingScopes(IParsingLifetimeEventHandler lifetimeEventHandler)
     {
-        private readonly IParsingLifetimeEventHandler _lifetimeEventHandler;
+        this._lifetimeEventHandler = lifetimeEventHandler;
+    }
+    private Stack<ParsingScope> _scopes = new Stack<ParsingScope>();
 
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        /// <param name="lifetimeEventHandler">An instance of a <see cref="IParsingLifetimeEventHandler"/></param>
-        public ParsingScopes(IParsingLifetimeEventHandler lifetimeEventHandler)
+    /// <summary>
+    /// Creates a new <see cref="ParsingScope"/> and puts it on top of the stack.
+    /// </summary>
+    /// <param name="address"></param>
+    /// <returns></returns>
+    public virtual ParsingScope NewScope(RangeAddress address)
+    {
+        ParsingScope scope;
+        if (this._scopes.Count() > 0)
         {
-            this._lifetimeEventHandler = lifetimeEventHandler;
+            scope = new ParsingScope(this, this._scopes.Peek(), address);
         }
-        private Stack<ParsingScope> _scopes = new Stack<ParsingScope>();
-
-        /// <summary>
-        /// Creates a new <see cref="ParsingScope"/> and puts it on top of the stack.
-        /// </summary>
-        /// <param name="address"></param>
-        /// <returns></returns>
-        public virtual ParsingScope NewScope(RangeAddress address)
+        else
         {
-            ParsingScope scope;
-            if (this._scopes.Count() > 0)
-            {
-                scope = new ParsingScope(this, this._scopes.Peek(), address);
-            }
-            else
-            {
-                scope = new ParsingScope(this, address);
-            }
-
-            this._scopes.Push(scope);
-            return scope;
+            scope = new ParsingScope(this, address);
         }
 
+        this._scopes.Push(scope);
+        return scope;
+    }
 
-        /// <summary>
-        /// The current parsing scope.
-        /// </summary>
-        public virtual ParsingScope Current
-        {
-            get { return this._scopes.Count() > 0 ? this._scopes.Peek() : null; }
-        }
 
-        /// <summary>
-        /// Removes the current scope, setting the calling scope to current.
-        /// </summary>
-        /// <param name="parsingScope"></param>
-        public virtual void KillScope(ParsingScope parsingScope)
+    /// <summary>
+    /// The current parsing scope.
+    /// </summary>
+    public virtual ParsingScope Current
+    {
+        get { return this._scopes.Count() > 0 ? this._scopes.Peek() : null; }
+    }
+
+    /// <summary>
+    /// Removes the current scope, setting the calling scope to current.
+    /// </summary>
+    /// <param name="parsingScope"></param>
+    public virtual void KillScope(ParsingScope parsingScope)
+    {
+        this._scopes.Pop();
+        if (this._scopes.Count() == 0)
         {
-            this._scopes.Pop();
-            if (this._scopes.Count() == 0)
-            {
-                this._lifetimeEventHandler.ParsingCompleted();
-            }
+            this._lifetimeEventHandler.ParsingCompleted();
         }
     }
 }

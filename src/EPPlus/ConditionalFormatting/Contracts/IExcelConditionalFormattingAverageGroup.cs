@@ -17,15 +17,14 @@ using System.Text;
 
 using OfficeOpenXml.ConditionalFormatting;
 
-namespace OfficeOpenXml.ConditionalFormatting.Contracts
-{
-  /// <summary>
-  /// IExcelConditionalFormattingAverageGroup
-  /// </summary>
-  public interface IExcelConditionalFormattingAverageGroup
+namespace OfficeOpenXml.ConditionalFormatting.Contracts;
+
+/// <summary>
+/// IExcelConditionalFormattingAverageGroup
+/// </summary>
+public interface IExcelConditionalFormattingAverageGroup
     : IExcelConditionalFormattingRule
-  {
+{
     #region Public Properties
     #endregion Public Properties
-  }
 }

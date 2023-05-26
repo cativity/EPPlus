@@ -17,34 +17,33 @@ using System.Text;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Metadata;
 using OfficeOpenXml.FormulaParsing.ExpressionGraph;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime;
+
+/// <summary>
+/// Simple implementation of TimeValue function, just using .NET built-in
+/// function System.DateTime.TryParse, based on current culture
+/// </summary>
+[FunctionMetadata(
+                     Category = ExcelFunctionCategory.DateAndTime,
+                     EPPlusVersion = "4",
+                     Description = "Converts a text string showing a time, to a decimal that represents the time in Excel")]
+internal class TimeValue : ExcelFunction
 {
-    /// <summary>
-    /// Simple implementation of TimeValue function, just using .NET built-in
-    /// function System.DateTime.TryParse, based on current culture
-    /// </summary>
-    [FunctionMetadata(
-        Category = ExcelFunctionCategory.DateAndTime,
-        EPPlusVersion = "4",
-        Description = "Converts a text string showing a time, to a decimal that represents the time in Excel")]
-    internal class TimeValue : ExcelFunction
+    public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
     {
-        public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
-        {
-            ValidateArguments(arguments, 1);
-            string? dateString = ArgToString(arguments, 0);
-            return this.Execute(dateString);
-        }
+        ValidateArguments(arguments, 1);
+        string? dateString = ArgToString(arguments, 0);
+        return this.Execute(dateString);
+    }
 
-        internal CompileResult Execute(string dateString)
-        {
-            System.DateTime.TryParse(dateString, out System.DateTime result);
-            return result != System.DateTime.MinValue ? this.CreateResult(GetTimeValue(result), DataType.Date) : this.CreateResult(ExcelErrorValue.Create(eErrorType.Value), DataType.ExcelError);
-        }
+    internal CompileResult Execute(string dateString)
+    {
+        System.DateTime.TryParse(dateString, out System.DateTime result);
+        return result != System.DateTime.MinValue ? this.CreateResult(GetTimeValue(result), DataType.Date) : this.CreateResult(ExcelErrorValue.Create(eErrorType.Value), DataType.ExcelError);
+    }
 
-        private static double GetTimeValue(System.DateTime result)
-        {
-            return (int)result.TimeOfDay.TotalSeconds == 0 ? 0d : result.TimeOfDay.TotalSeconds/ (3600 * 24);
-        }
+    private static double GetTimeValue(System.DateTime result)
+    {
+        return (int)result.TimeOfDay.TotalSeconds == 0 ? 0d : result.TimeOfDay.TotalSeconds/ (3600 * 24);
     }
 }

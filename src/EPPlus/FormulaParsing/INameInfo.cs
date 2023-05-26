@@ -16,15 +16,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace OfficeOpenXml.FormulaParsing
+namespace OfficeOpenXml.FormulaParsing;
+
+public interface INameInfo
 {
-    public interface INameInfo
-    {
-        ulong Id { get; set; }
-        string Worksheet { get; set; }
-        string Name { get; set; }
-        string Formula { get; set; }
-        IList<Token> Tokens { get; }
-        object Value { get; set; }
-    }
+    ulong Id { get; set; }
+    string Worksheet { get; set; }
+    string Name { get; set; }
+    string Formula { get; set; }
+    IList<Token> Tokens { get; }
+    object Value { get; set; }
 }

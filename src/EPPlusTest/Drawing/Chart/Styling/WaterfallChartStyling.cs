@@ -39,126 +39,125 @@ using System.Reflection;
 using System.Text;
 using System.Xml;
 
-namespace EPPlusTest.Drawing.Chart.Styling
+namespace EPPlusTest.Drawing.Chart.Styling;
+
+[TestClass]
+public class WaterfallChartStylingTest : TestBase
 {
-    [TestClass]
-    public class WaterfallChartStylingTest : TestBase
+    static ExcelPackage _pck;
+    [ClassInitialize]
+    public static void Init(TestContext context)
     {
-        static ExcelPackage _pck;
-        [ClassInitialize]
-        public static void Init(TestContext context)
-        {
-            _pck = OpenPackage("WaterfallChartStyling.xlsx", true);
-        }
-        [ClassCleanup]
-        public static void Cleanup()
-        {
-            SaveAndCleanup(_pck);
-        }
-        [TestMethod]
-        public void WaterfallChart_Styles()
-        {
-            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("WaterfallChart");
-            LoadTestdata(ws);
-            WaterfallChartStyle(ws);
-        }
-        private static void WaterfallChartStyle(ExcelWorksheet ws)
-        {
-            //Waterfall Chart styles
+        _pck = OpenPackage("WaterfallChartStyling.xlsx", true);
+    }
+    [ClassCleanup]
+    public static void Cleanup()
+    {
+        SaveAndCleanup(_pck);
+    }
+    [TestMethod]
+    public void WaterfallChart_Styles()
+    {
+        ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("WaterfallChart");
+        LoadTestdata(ws);
+        WaterfallChartStyle(ws);
+    }
+    private static void WaterfallChartStyle(ExcelWorksheet ws)
+    {
+        //Waterfall Chart styles
 
-            //Waterfall chart Style 1
-            AddChartEx(ws, ePresetChartStyle.WaterfallChartStyle1, "WaterfallChartStyle1", 0, 5, 
-                c =>
-                {
-                    c.Legend.Position = eLegendPosition.Bottom;
-                    c.Legend.PositionAlignment = ePositionAlign.Min;
-                    c.Series[0].DataPoints.Add(0).SubTotal = true;
-                    c.Series[0].DataPoints.Add(6).SubTotal = true;
+        //Waterfall chart Style 1
+        AddChartEx(ws, ePresetChartStyle.WaterfallChartStyle1, "WaterfallChartStyle1", 0, 5, 
+                   c =>
+                   {
+                       c.Legend.Position = eLegendPosition.Bottom;
+                       c.Legend.PositionAlignment = ePositionAlign.Min;
+                       c.Series[0].DataPoints.Add(0).SubTotal = true;
+                       c.Series[0].DataPoints.Add(6).SubTotal = true;
 
-                    c.Title.Text = "Waterfall 1";
-                    c.YAxis.Title.Text = "Waterfall 1 Y-Axis";
-                    c.XAxis.Title.Text = "Waterfall 1 X-Axis";
+                       c.Title.Text = "Waterfall 1";
+                       c.YAxis.Title.Text = "Waterfall 1 Y-Axis";
+                       c.XAxis.Title.Text = "Waterfall 1 X-Axis";
                     
-                    c.YAxis.AddGridlines(true, true);
-                    c.YAxis.MajorTickMark = eAxisTickMark.Out;
-                });
+                       c.YAxis.AddGridlines(true, true);
+                       c.YAxis.MajorTickMark = eAxisTickMark.Out;
+                   });
 
-            //Waterfall chart Style 2
-            AddChartEx(ws, ePresetChartStyle.WaterfallChartStyle2, "WaterfallChartStyle2", 0, 18, 
-                c =>
-                {
-                    c.Legend.Position = eLegendPosition.Bottom;
-                    c.Title.Text = "Waterfall 2";
-                    ExcelChartExDataLabelItem? dl = c.Series[0].DataLabel.DataLabels.Add(1);
-                    dl.Format = "#,##0.00";
-                    dl = c.Series[0].DataLabel.DataLabels.Add(0);
-                    dl.Border.Width = 1;
-                    dl.Border.Fill.Style = eFillStyle.SolidFill;
-                    dl.Border.Fill.SolidFill.Color.SetPresetColor(ePresetColor.DarkCyan);
-                    dl.Position = eLabelPosition.Top;
-                    dl.ShowSeriesName = true;
-                    dl.ShowValue = true;
-                    dl.ShowCategory = true;
-                });
+        //Waterfall chart Style 2
+        AddChartEx(ws, ePresetChartStyle.WaterfallChartStyle2, "WaterfallChartStyle2", 0, 18, 
+                   c =>
+                   {
+                       c.Legend.Position = eLegendPosition.Bottom;
+                       c.Title.Text = "Waterfall 2";
+                       ExcelChartExDataLabelItem? dl = c.Series[0].DataLabel.DataLabels.Add(1);
+                       dl.Format = "#,##0.00";
+                       dl = c.Series[0].DataLabel.DataLabels.Add(0);
+                       dl.Border.Width = 1;
+                       dl.Border.Fill.Style = eFillStyle.SolidFill;
+                       dl.Border.Fill.SolidFill.Color.SetPresetColor(ePresetColor.DarkCyan);
+                       dl.Position = eLabelPosition.Top;
+                       dl.ShowSeriesName = true;
+                       dl.ShowValue = true;
+                       dl.ShowCategory = true;
+                   });
 
-            //Waterfall chart Style 3
-            AddChartEx(ws, ePresetChartStyle.WaterfallChartStyle3, "WaterfallChartStyle3", 0, 31, 
-                c =>
-                {
-                    c.Legend.Position = eLegendPosition.Bottom;
-                    c.Series[0].ShowConnectorLines = true;
-                });
+        //Waterfall chart Style 3
+        AddChartEx(ws, ePresetChartStyle.WaterfallChartStyle3, "WaterfallChartStyle3", 0, 31, 
+                   c =>
+                   {
+                       c.Legend.Position = eLegendPosition.Bottom;
+                       c.Series[0].ShowConnectorLines = true;
+                   });
 
-            //Waterfall chart Style 4
-            AddChartEx(ws, ePresetChartStyle.WaterfallChartStyle4, "WaterfallChartStyle4", 20, 5, 
-                c =>
-                {
-                    c.Legend.Position = eLegendPosition.Bottom;
-                });
+        //Waterfall chart Style 4
+        AddChartEx(ws, ePresetChartStyle.WaterfallChartStyle4, "WaterfallChartStyle4", 20, 5, 
+                   c =>
+                   {
+                       c.Legend.Position = eLegendPosition.Bottom;
+                   });
 
-            //Waterfall chart Style 5
-            AddChartEx(ws, ePresetChartStyle.WaterfallChartStyle5, "WaterfallChartStyle5", 20, 18, 
-                c =>
-                {
-                    c.Legend.Position = eLegendPosition.Bottom;
-                });
+        //Waterfall chart Style 5
+        AddChartEx(ws, ePresetChartStyle.WaterfallChartStyle5, "WaterfallChartStyle5", 20, 18, 
+                   c =>
+                   {
+                       c.Legend.Position = eLegendPosition.Bottom;
+                   });
 
-            //Waterfall chart Style 6
-            AddChartEx(ws, ePresetChartStyle.WaterfallChartStyle6, "WaterfallChartStyle6", 20, 31, 
-                c =>
-                {
-                    c.Legend.Position = eLegendPosition.Bottom;
-                });
+        //Waterfall chart Style 6
+        AddChartEx(ws, ePresetChartStyle.WaterfallChartStyle6, "WaterfallChartStyle6", 20, 31, 
+                   c =>
+                   {
+                       c.Legend.Position = eLegendPosition.Bottom;
+                   });
 
-            //Waterfall chart Style 7
-            AddChartEx(ws, ePresetChartStyle.WaterfallChartStyle7, "WaterfallChartStyle7", 40, 5,
-                c =>
-                {
-                    c.Legend.Position = eLegendPosition.Bottom;
-                });
+        //Waterfall chart Style 7
+        AddChartEx(ws, ePresetChartStyle.WaterfallChartStyle7, "WaterfallChartStyle7", 40, 5,
+                   c =>
+                   {
+                       c.Legend.Position = eLegendPosition.Bottom;
+                   });
 
-            //Waterfall chart Style 8
-            AddChartEx(ws, ePresetChartStyle.WaterfallChartStyle8, "WaterfallChartStyle8", 40, 18,
-                c =>
-                {
-                    c.Legend.Position = eLegendPosition.Bottom;
-                });
+        //Waterfall chart Style 8
+        AddChartEx(ws, ePresetChartStyle.WaterfallChartStyle8, "WaterfallChartStyle8", 40, 18,
+                   c =>
+                   {
+                       c.Legend.Position = eLegendPosition.Bottom;
+                   });
 
-        }
-        private static ExcelWaterfallChart AddChartEx(ExcelWorksheet ws, ePresetChartStyle style, string name, int row, int col,Action<ExcelWaterfallChart> SetProperties)
-        {
-            ExcelWaterfallChart? chart = ws.Drawings.AddWaterfallChart(name);
-            chart.SetPosition(row, 0, col, 0);
-            chart.To.Column = col+12;
-            chart.To.ColumnOff = 0;
-            chart.To.Row = row + 18;
-            chart.To.RowOff = 0;
-            chart.Series.Add("D2:D8", "A2:A8");
+    }
+    private static ExcelWaterfallChart AddChartEx(ExcelWorksheet ws, ePresetChartStyle style, string name, int row, int col,Action<ExcelWaterfallChart> SetProperties)
+    {
+        ExcelWaterfallChart? chart = ws.Drawings.AddWaterfallChart(name);
+        chart.SetPosition(row, 0, col, 0);
+        chart.To.Column = col+12;
+        chart.To.ColumnOff = 0;
+        chart.To.Row = row + 18;
+        chart.To.RowOff = 0;
+        chart.Series.Add("D2:D8", "A2:A8");
 
-            SetProperties(chart);
+        SetProperties(chart);
 
-            chart.StyleManager.SetChartStyle(style);
-            return chart;
-        }
+        chart.StyleManager.SetChartStyle(style);
+        return chart;
     }
 }

@@ -12,24 +12,23 @@
  *************************************************************************************************/
 using System.Xml;
 
-namespace OfficeOpenXml.Table.PivotTable
+namespace OfficeOpenXml.Table.PivotTable;
+
+/// <summary>
+/// Defines sorting for a pivot table area within a pivot table.
+/// </summary>
+public class ExcelPivotAreaAutoSort : ExcelPivotArea
 {
-    /// <summary>
-    /// Defines sorting for a pivot table area within a pivot table.
-    /// </summary>
-    public class ExcelPivotAreaAutoSort : ExcelPivotArea
+    internal ExcelPivotAreaAutoSort(XmlNamespaceManager nsm, XmlNode topNode, ExcelPivotTable pt) :
+        base(nsm, topNode, pt)
     {
-        internal ExcelPivotAreaAutoSort(XmlNamespaceManager nsm, XmlNode topNode, ExcelPivotTable pt) :
-            base(nsm, topNode, pt)
-        {
-            this.Conditions = new ExcelPivotAreaStyleConditions(nsm, topNode, pt);
-        }
-        /// <summary>
-        /// Conditions for the auto sort scope. Conditions can be set for specific data fields. Specify labels, data grand totals and more.
-        /// </summary>
-        public ExcelPivotAreaStyleConditions Conditions
-        {
-            get;
-        }
+        this.Conditions = new ExcelPivotAreaStyleConditions(nsm, topNode, pt);
+    }
+    /// <summary>
+    /// Conditions for the auto sort scope. Conditions can be set for specific data fields. Specify labels, data grand totals and more.
+    /// </summary>
+    public ExcelPivotAreaStyleConditions Conditions
+    {
+        get;
     }
 }

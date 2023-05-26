@@ -15,37 +15,36 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace OfficeOpenXml.Packaging
+namespace OfficeOpenXml.Packaging;
+
+/// <summary>
+/// A relation ship between two parts in a package
+/// </summary>
+public class ZipPackageRelationship
 {
     /// <summary>
-    /// A relation ship between two parts in a package
+    /// The uri to the source part
     /// </summary>
-    public class ZipPackageRelationship
-    {
-        /// <summary>
-        /// The uri to the source part
-        /// </summary>
-        public Uri SourceUri { get; internal set; }
-        /// <summary>
-        /// The relationship type
-        /// </summary>
-        public string RelationshipType { get; internal set; }
-        /// <summary>
-        /// Target, internal or external
-        /// </summary>
-        public TargetMode TargetMode { get; internal set; }
-        /// <summary>
-        /// The relationship Id
-        /// </summary>
-        public string Id { get; internal set; }
-        /// <summary>
-        /// The uri to the target part
-        /// </summary>
-        public Uri TargetUri { get; set; }
-        /// <summary>
-        /// The target if it's not a valid uri, for example an internal reference to a cell withing the package.
-        /// </summary>
-        public string Target { get; internal set; }
+    public Uri SourceUri { get; internal set; }
+    /// <summary>
+    /// The relationship type
+    /// </summary>
+    public string RelationshipType { get; internal set; }
+    /// <summary>
+    /// Target, internal or external
+    /// </summary>
+    public TargetMode TargetMode { get; internal set; }
+    /// <summary>
+    /// The relationship Id
+    /// </summary>
+    public string Id { get; internal set; }
+    /// <summary>
+    /// The uri to the target part
+    /// </summary>
+    public Uri TargetUri { get; set; }
+    /// <summary>
+    /// The target if it's not a valid uri, for example an internal reference to a cell withing the package.
+    /// </summary>
+    public string Target { get; internal set; }
 
-    }
 }

@@ -16,26 +16,25 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace OfficeOpenXml.Sorting.Internal
+namespace OfficeOpenXml.Sorting.Internal;
+
+internal static class SortItemFactory
 {
-    internal static class SortItemFactory
+    internal static List<SortItem<ExcelValue>> Create(ExcelRangeBase range)
     {
-        internal static List<SortItem<ExcelValue>> Create(ExcelRangeBase range)
+        CellStoreEnumerator<ExcelValue>? e = new CellStoreEnumerator<ExcelValue>(range.Worksheet._values, range._fromRow, range._fromCol, range._toRow, range._toCol);
+        List<SortItem<ExcelValue>>? sortItems = new List<SortItem<ExcelValue>>();
+        SortItem<ExcelValue> item = new SortItem<ExcelValue>();
+        int cols = range._toCol - range._fromCol + 1;
+        while (e.Next())
         {
-            CellStoreEnumerator<ExcelValue>? e = new CellStoreEnumerator<ExcelValue>(range.Worksheet._values, range._fromRow, range._fromCol, range._toRow, range._toCol);
-            List<SortItem<ExcelValue>>? sortItems = new List<SortItem<ExcelValue>>();
-            SortItem<ExcelValue> item = new SortItem<ExcelValue>();
-            int cols = range._toCol - range._fromCol + 1;
-            while (e.Next())
+            if (sortItems.Count == 0 || sortItems[sortItems.Count - 1].Row != e.Row)
             {
-                if (sortItems.Count == 0 || sortItems[sortItems.Count - 1].Row != e.Row)
-                {
-                    item = new SortItem<ExcelValue>() { Row = e.Row, Items = new ExcelValue[cols] };
-                    sortItems.Add(item);
-                }
-                item.Items[e.Column - range._fromCol] = e.Value;
+                item = new SortItem<ExcelValue>() { Row = e.Row, Items = new ExcelValue[cols] };
+                sortItems.Add(item);
             }
-            return sortItems;
+            item.Items[e.Column - range._fromCol] = e.Value;
         }
+        return sortItems;
     }
 }

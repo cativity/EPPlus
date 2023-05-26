@@ -16,30 +16,29 @@ using System.Linq;
 using System.Text;
 using System.Xml;
 
-namespace OfficeOpenXml.Drawing.Style.Effect
-{
-    /// <summary>
-    /// Base class for all drawing effects
-    /// </summary>
-    public abstract class ExcelDrawingEffectBase : XmlHelper
-    {
-        internal string _path;
-        internal ExcelDrawingEffectBase(XmlNamespaceManager nameSpaceManager, XmlNode topNode, string[] schemaNodeOrder, string path) : base(nameSpaceManager, topNode)
-        {
-            this._path = path;
-            this.SchemaNodeOrder = schemaNodeOrder;
-        }
+namespace OfficeOpenXml.Drawing.Style.Effect;
 
-        /// <summary>
-        /// Completely remove the xml node, resetting the properties to it's default values.
-        /// </summary>
-        public void Delete()
+/// <summary>
+/// Base class for all drawing effects
+/// </summary>
+public abstract class ExcelDrawingEffectBase : XmlHelper
+{
+    internal string _path;
+    internal ExcelDrawingEffectBase(XmlNamespaceManager nameSpaceManager, XmlNode topNode, string[] schemaNodeOrder, string path) : base(nameSpaceManager, topNode)
+    {
+        this._path = path;
+        this.SchemaNodeOrder = schemaNodeOrder;
+    }
+
+    /// <summary>
+    /// Completely remove the xml node, resetting the properties to it's default values.
+    /// </summary>
+    public void Delete()
+    {
+        XmlNode? node = this.GetNode(this._path);
+        if (node != null)
         {
-            XmlNode? node = this.GetNode(this._path);
-            if (node != null)
-            {
-                this.TopNode.RemoveChild(node);
-            }
+            this.TopNode.RemoveChild(node);
         }
     }
 }

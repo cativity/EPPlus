@@ -15,14 +15,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace OfficeOpenXml.Export.HtmlExport
+namespace OfficeOpenXml.Export.HtmlExport;
+
+internal class EpplusHtmlAttribute
 {
-    internal class EpplusHtmlAttribute
-    {
-        public string AttributeName { get; set; }
+    public string AttributeName { get; set; }
 
-        public string Value { get; set; }
+    public string Value { get; set; }
 
-        public string Href { get; set; }
-    }
+    public string Href { get; set; }
 }

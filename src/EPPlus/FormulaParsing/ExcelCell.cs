@@ -15,24 +15,23 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace OfficeOpenXml.FormulaParsing
+namespace OfficeOpenXml.FormulaParsing;
+
+public class ExcelCell
 {
-    public class ExcelCell
+    public ExcelCell(object val, string formula, int colIndex, int rowIndex)
     {
-        public ExcelCell(object val, string formula, int colIndex, int rowIndex)
-        {
-            this.Value = val;
-            this.Formula = formula;
-            this.ColIndex = colIndex;
-            this.RowIndex = rowIndex;
-        }
-
-        public int ColIndex { get; private set; }
-
-        public int RowIndex { get; private set; }
-
-        public object Value { get; private set; }
-
-        public string Formula { get; private set; }
+        this.Value = val;
+        this.Formula = formula;
+        this.ColIndex = colIndex;
+        this.RowIndex = rowIndex;
     }
+
+    public int ColIndex { get; private set; }
+
+    public int RowIndex { get; private set; }
+
+    public object Value { get; private set; }
+
+    public string Formula { get; private set; }
 }

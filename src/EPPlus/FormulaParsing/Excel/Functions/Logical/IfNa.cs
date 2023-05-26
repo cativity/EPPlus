@@ -17,20 +17,19 @@ using System.Text;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Metadata;
 using OfficeOpenXml.FormulaParsing.ExpressionGraph;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Logical
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Logical;
+
+[FunctionMetadata(
+                     Category = ExcelFunctionCategory.Logical,
+                     EPPlusVersion = "4",
+                     Description = "Tests if an expression returns the #N/A error and if so, returns an alternative specified value; Otherwise the function returns the value of the supplied expression. ",
+                     IntroducedInExcelVersion = "2019")]
+internal class IfNa : ExcelFunction
 {
-    [FunctionMetadata(
-        Category = ExcelFunctionCategory.Logical,
-        EPPlusVersion = "4",
-        Description = "Tests if an expression returns the #N/A error and if so, returns an alternative specified value; Otherwise the function returns the value of the supplied expression. ",
-        IntroducedInExcelVersion = "2019")]
-    internal class IfNa : ExcelFunction
+    public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
     {
-        public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
-        {
-            ValidateArguments(arguments, 1);
-            FunctionArgument? firstArg = arguments.First();
-            return this.GetResultByObject(firstArg.Value);
-        }
+        ValidateArguments(arguments, 1);
+        FunctionArgument? firstArg = arguments.First();
+        return this.GetResultByObject(firstArg.Value);
     }
 }

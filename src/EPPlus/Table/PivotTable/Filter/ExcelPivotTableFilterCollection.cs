@@ -19,15 +19,14 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Xml;
 
-namespace OfficeOpenXml.Table.PivotTable.Filter
+namespace OfficeOpenXml.Table.PivotTable.Filter;
+
+/// <summary>
+/// A collection of pivot filters for a pivot table
+/// </summary>
+public class ExcelPivotTableFilterCollection : ExcelPivotTableFilterBaseCollection
 {
-    /// <summary>
-    /// A collection of pivot filters for a pivot table
-    /// </summary>
-    public class ExcelPivotTableFilterCollection : ExcelPivotTableFilterBaseCollection
+    internal ExcelPivotTableFilterCollection(ExcelPivotTable table) : base(table)
     {
-        internal ExcelPivotTableFilterCollection(ExcelPivotTable table) : base(table)
-        {
-        }
     }
 }

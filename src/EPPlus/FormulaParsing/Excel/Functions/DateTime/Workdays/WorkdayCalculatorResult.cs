@@ -16,23 +16,22 @@ using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime.Workdays
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime.Workdays;
+
+public class WorkdayCalculatorResult
 {
-    public class WorkdayCalculatorResult
+    public WorkdayCalculatorResult(int numberOfWorkdays, System.DateTime startDate, System.DateTime endDate, WorkdayCalculationDirection direction)
     {
-        public WorkdayCalculatorResult(int numberOfWorkdays, System.DateTime startDate, System.DateTime endDate, WorkdayCalculationDirection direction)
-        {
-            this.NumberOfWorkdays = numberOfWorkdays;
-            this.StartDate = startDate;
-            this.EndDate = endDate;
-            this.Direction = direction;
-        }
-
-        public int NumberOfWorkdays { get; }
-
-        public System.DateTime StartDate { get; }
-
-        public System.DateTime EndDate { get; }
-        public WorkdayCalculationDirection Direction { get; set; }
+        this.NumberOfWorkdays = numberOfWorkdays;
+        this.StartDate = startDate;
+        this.EndDate = endDate;
+        this.Direction = direction;
     }
+
+    public int NumberOfWorkdays { get; }
+
+    public System.DateTime StartDate { get; }
+
+    public System.DateTime EndDate { get; }
+    public WorkdayCalculationDirection Direction { get; set; }
 }

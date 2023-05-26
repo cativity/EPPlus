@@ -15,56 +15,55 @@ using System;
 using System.Globalization;
 using System.Xml;
 
-namespace OfficeOpenXml.Drawing.Chart.Style
+namespace OfficeOpenXml.Drawing.Chart.Style;
+
+/// <summary>
+/// A layout the marker of the chart
+/// </summary>
+public class ExcelChartStyleMarkerLayout : XmlHelper
 {
-    /// <summary>
-    /// A layout the marker of the chart
-    /// </summary>
-    public class ExcelChartStyleMarkerLayout : XmlHelper
+
+    internal ExcelChartStyleMarkerLayout(XmlNamespaceManager ns, XmlNode topNode) : base(ns, topNode)
     {
 
-        internal ExcelChartStyleMarkerLayout(XmlNamespaceManager ns, XmlNode topNode) : base(ns, topNode)
+    }
+    /// <summary>
+    /// The marker style
+    /// </summary>
+    public eMarkerStyle Style
+    {
+        get
         {
-
+            return this.GetXmlNodeString("@symbol").ToEnum(eMarkerStyle.None);
         }
-        /// <summary>
-        /// The marker style
-        /// </summary>
-        public eMarkerStyle Style
+        set
         {
-            get
-            {
-                return this.GetXmlNodeString("@symbol").ToEnum(eMarkerStyle.None);
-            }
-            set
-            {
-                this.SetXmlNodeString("@symbol", value.ToEnumString());
-            }
+            this.SetXmlNodeString("@symbol", value.ToEnumString());
         }
-        /// <summary>
-        /// The size of the marker.
-        /// Ranges from 2 to 72
-        /// </summary>
-        public int Size
+    }
+    /// <summary>
+    /// The size of the marker.
+    /// Ranges from 2 to 72
+    /// </summary>
+    public int Size
+    {
+        get
         {
-            get
+            int v = this.GetXmlNodeInt("@size");
+            if (v < 0)
             {
-                int v = this.GetXmlNodeInt("@size");
-                if (v < 0)
-                {
-                    return 5;   //Default value;
-                }
-                return v;
+                return 5;   //Default value;
             }
-            set
+            return v;
+        }
+        set
+        {
+            if (value < 2 || value > 72)
             {
-                if (value < 2 || value > 72)
-                {
-                    throw (new ArgumentOutOfRangeException("Marker size must be between 2 and 72"));
-                }
+                throw (new ArgumentOutOfRangeException("Marker size must be between 2 and 72"));
+            }
 
-                this.SetXmlNodeString("@size", value.ToString(CultureInfo.InvariantCulture));
-            }
+            this.SetXmlNodeString("@size", value.ToString(CultureInfo.InvariantCulture));
         }
     }
 }

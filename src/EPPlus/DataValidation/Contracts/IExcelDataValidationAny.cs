@@ -16,12 +16,11 @@ using System.Linq;
 using System.Text;
 using OfficeOpenXml.DataValidation.Formulas.Contracts;
 
-namespace OfficeOpenXml.DataValidation.Contracts
+namespace OfficeOpenXml.DataValidation.Contracts;
+
+/// <summary>
+/// Data validation interface for Any value validation.
+/// </summary>
+public interface IExcelDataValidationAny : IExcelDataValidation
 {
-    /// <summary>
-    /// Data validation interface for Any value validation.
-    /// </summary>
-    public interface IExcelDataValidationAny : IExcelDataValidation
-    {
-    }
 }

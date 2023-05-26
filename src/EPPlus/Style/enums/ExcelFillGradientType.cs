@@ -10,24 +10,23 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
-namespace OfficeOpenXml.Style
+namespace OfficeOpenXml.Style;
+
+/// <summary>
+/// Type of gradient fill
+/// </summary>
+public enum ExcelFillGradientType
 {
     /// <summary>
-    /// Type of gradient fill
+    /// No gradient fill. 
     /// </summary>
-    public enum ExcelFillGradientType
-    {
-        /// <summary>
-        /// No gradient fill. 
-        /// </summary>
-        None,
-        /// <summary>
-        /// Linear gradient type. Linear gradient type means that the transition from one color to the next is along a line.
-        /// </summary>
-        Linear,
-        /// <summary>
-        /// Path gradient type. Path gradient type means the that the transition from one color to the next is a rectangle, defined by coordinates.
-        /// </summary>
-        Path
-    }
+    None,
+    /// <summary>
+    /// Linear gradient type. Linear gradient type means that the transition from one color to the next is along a line.
+    /// </summary>
+    Linear,
+    /// <summary>
+    /// Path gradient type. Path gradient type means the that the transition from one color to the next is a rectangle, defined by coordinates.
+    /// </summary>
+    Path
 }

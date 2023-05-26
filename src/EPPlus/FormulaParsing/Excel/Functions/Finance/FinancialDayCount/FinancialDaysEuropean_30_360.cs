@@ -14,38 +14,37 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.FinancialDayCount
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.FinancialDayCount;
+
+internal class FinancialDaysEuropean_30_360 : FinancialDaysBase, IFinanicalDays
 {
-    internal class FinancialDaysEuropean_30_360 : FinancialDaysBase, IFinanicalDays
+
+    public double GetDaysBetweenDates(System.DateTime startDate, System.DateTime endDate)
     {
-
-        public double GetDaysBetweenDates(System.DateTime startDate, System.DateTime endDate)
-        {
-            FinancialDay? start = FinancialDayFactory.Create(startDate, DayCountBasis.Actual_Actual);
-            FinancialDay? end = FinancialDayFactory.Create(endDate, DayCountBasis.Actual_Actual);
-            return this.GetDaysBetweenDates(start, end, (int)this.DaysPerYear);
-        }
-
-        public double GetDaysBetweenDates(FinancialDay startDate, FinancialDay endDate)
-        {
-            if (startDate.Day == 31)
-            {
-                startDate.Day = 30;
-            }
-
-            if (endDate.Day == 31)
-            {
-                endDate.Day = 30;
-            }
-
-            return this.GetDaysBetweenDates(startDate, endDate, (int)this.DaysPerYear);
-        }
-
-        public double GetCoupdays(FinancialDay start, FinancialDay end, int frequency)
-        {
-            return this.DaysPerYear / frequency;
-        }
-
-        public double DaysPerYear { get { return 360d; } }
+        FinancialDay? start = FinancialDayFactory.Create(startDate, DayCountBasis.Actual_Actual);
+        FinancialDay? end = FinancialDayFactory.Create(endDate, DayCountBasis.Actual_Actual);
+        return this.GetDaysBetweenDates(start, end, (int)this.DaysPerYear);
     }
+
+    public double GetDaysBetweenDates(FinancialDay startDate, FinancialDay endDate)
+    {
+        if (startDate.Day == 31)
+        {
+            startDate.Day = 30;
+        }
+
+        if (endDate.Day == 31)
+        {
+            endDate.Day = 30;
+        }
+
+        return this.GetDaysBetweenDates(startDate, endDate, (int)this.DaysPerYear);
+    }
+
+    public double GetCoupdays(FinancialDay start, FinancialDay end, int frequency)
+    {
+        return this.DaysPerYear / frequency;
+    }
+
+    public double DaysPerYear { get { return 360d; } }
 }

@@ -39,222 +39,222 @@ using FakeItEasy;
 using System.IO;
 using System.Threading;
 
-namespace EPPlusTest.FormulaParsing.IntegrationTests.BuiltInFunctions
+namespace EPPlusTest.FormulaParsing.IntegrationTests.BuiltInFunctions;
+
+[TestClass]
+public class DateAndTimeFunctionsTests : FormulaParserTestBase
 {
-    [TestClass]
-    public class DateAndTimeFunctionsTests : FormulaParserTestBase
+    [TestInitialize]
+    public void Setup()
     {
-        [TestInitialize]
-        public void Setup()
-        {
-            this._excelPackage = new ExcelPackage();
-            this._parser = new FormulaParser(this._excelPackage);
-        }
+        this._excelPackage = new ExcelPackage();
+        this._parser = new FormulaParser(this._excelPackage);
+    }
 
-        [TestCleanup]
-        public void Cleanup()
-        {
-            this._excelPackage.Dispose();
-        }
+    [TestCleanup]
+    public void Cleanup()
+    {
+        this._excelPackage.Dispose();
+    }
 
-        [TestMethod]
-        public void DateShouldReturnCorrectResult()
-        {
-            object? result = this._parser.Parse("Date(2012, 2, 2)");
-            Assert.AreEqual(new DateTime(2012, 2, 2).ToOADate(), result);
-        }
+    [TestMethod]
+    public void DateShouldReturnCorrectResult()
+    {
+        object? result = this._parser.Parse("Date(2012, 2, 2)");
+        Assert.AreEqual(new DateTime(2012, 2, 2).ToOADate(), result);
+    }
 
-        [TestMethod]
-        public void DateShouldHandleCellReference()
-        {
-            using ExcelPackage? pck = new ExcelPackage();
-            ExcelWorksheet? sheet = pck.Workbook.Worksheets.Add("test");
-            sheet.Cells["A1"].Value = 2012d;
-            sheet.Cells["A2"].Formula = "Date(A1, 2, 2)";
-            sheet.Calculate();
-            object? result = sheet.Cells["A2"].Value;
-            Assert.AreEqual(new DateTime(2012, 2, 2).ToOADate(), result);
+    [TestMethod]
+    public void DateShouldHandleCellReference()
+    {
+        using ExcelPackage? pck = new ExcelPackage();
+        ExcelWorksheet? sheet = pck.Workbook.Worksheets.Add("test");
+        sheet.Cells["A1"].Value = 2012d;
+        sheet.Cells["A2"].Formula = "Date(A1, 2, 2)";
+        sheet.Calculate();
+        object? result = sheet.Cells["A2"].Value;
+        Assert.AreEqual(new DateTime(2012, 2, 2).ToOADate(), result);
 
-        }
+    }
 
-        [TestMethod]
-        public void TodayShouldReturnAResult()
-        {
-            object? result = this._parser.Parse("Today()");
-            Assert.IsInstanceOfType(DateTime.FromOADate((double)result), typeof(DateTime));
-        }
+    [TestMethod]
+    public void TodayShouldReturnAResult()
+    {
+        object? result = this._parser.Parse("Today()");
+        Assert.IsInstanceOfType(DateTime.FromOADate((double)result), typeof(DateTime));
+    }
 
-        [TestMethod]
-        public void NowShouldReturnAResult()
-        {
-            object? result = this._parser.Parse("now()");
-            Assert.IsInstanceOfType(DateTime.FromOADate((double)result), typeof(DateTime));
-        }
+    [TestMethod]
+    public void NowShouldReturnAResult()
+    {
+        object? result = this._parser.Parse("now()");
+        Assert.IsInstanceOfType(DateTime.FromOADate((double)result), typeof(DateTime));
+    }
 
-        [TestMethod]
-        public void DayShouldReturnCorrectResult()
-        {
-            object? result = this._parser.Parse("Day(Date(2012, 4, 2))");
-            Assert.AreEqual(2, result);
-        }
+    [TestMethod]
+    public void DayShouldReturnCorrectResult()
+    {
+        object? result = this._parser.Parse("Day(Date(2012, 4, 2))");
+        Assert.AreEqual(2, result);
+    }
 
-        [TestMethod]
-        public void MonthShouldReturnCorrectResult()
-        {
-            object? result = this._parser.Parse("Month(Date(2012, 4, 2))");
-            Assert.AreEqual(4, result);
-        }
+    [TestMethod]
+    public void MonthShouldReturnCorrectResult()
+    {
+        object? result = this._parser.Parse("Month(Date(2012, 4, 2))");
+        Assert.AreEqual(4, result);
+    }
 
-        [TestMethod]
-        public void YearShouldReturnCorrectResult()
-        {
-            object? result = this._parser.Parse("Year(Date(2012, 2, 2))");
-            Assert.AreEqual(2012, result);
-        }
+    [TestMethod]
+    public void YearShouldReturnCorrectResult()
+    {
+        object? result = this._parser.Parse("Year(Date(2012, 2, 2))");
+        Assert.AreEqual(2012, result);
+    }
 
-        [TestMethod]
-        public void TimeShouldReturnCorrectResult()
-        {
-            double expectedResult = ((double)(12 * 60 * 60 + 13 * 60 + 14))/((double)(24 * 60 * 60));
-            object? result = this._parser.Parse("Time(12, 13, 14)");
-            Assert.AreEqual(expectedResult, result);
-        }
+    [TestMethod]
+    public void TimeShouldReturnCorrectResult()
+    {
+        double expectedResult = ((double)(12 * 60 * 60 + 13 * 60 + 14))/((double)(24 * 60 * 60));
+        object? result = this._parser.Parse("Time(12, 13, 14)");
+        Assert.AreEqual(expectedResult, result);
+    }
 
-        [TestMethod]
-        public void HourShouldReturnCorrectResult()
-        {
-            object? result = this._parser.Parse("HOUR(Time(12, 13, 14))");
-            Assert.AreEqual(12, result);
-        }
+    [TestMethod]
+    public void HourShouldReturnCorrectResult()
+    {
+        object? result = this._parser.Parse("HOUR(Time(12, 13, 14))");
+        Assert.AreEqual(12, result);
+    }
 
-        [TestMethod]
-        public void MinuteShouldReturnCorrectResult()
-        {
-            object? result = this._parser.Parse("minute(Time(12, 13, 14))");
-            Assert.AreEqual(13, result);
-        }
+    [TestMethod]
+    public void MinuteShouldReturnCorrectResult()
+    {
+        object? result = this._parser.Parse("minute(Time(12, 13, 14))");
+        Assert.AreEqual(13, result);
+    }
 
-        [TestMethod]
-        public void SecondShouldReturnCorrectResult()
-        {
-            object? result = this._parser.Parse("Second(Time(12, 13, 59))");
-            Assert.AreEqual(59, result);
-        }
+    [TestMethod]
+    public void SecondShouldReturnCorrectResult()
+    {
+        object? result = this._parser.Parse("Second(Time(12, 13, 59))");
+        Assert.AreEqual(59, result);
+    }
 
-        [TestMethod]
-        public void SecondShouldReturnCorrectResultWhenParsingString()
-        {
-            object? result = this._parser.Parse("Second(\"10:12:14\")");
-            Assert.AreEqual(14, result);
-        }
+    [TestMethod]
+    public void SecondShouldReturnCorrectResultWhenParsingString()
+    {
+        object? result = this._parser.Parse("Second(\"10:12:14\")");
+        Assert.AreEqual(14, result);
+    }
 
-        [TestMethod]
-        public void MinuteShouldReturnCorrectResultWhenParsingString()
-        {
-            object? result = this._parser.Parse("Minute(\"10:12:14 AM\")");
-            Assert.AreEqual(12, result);
-        }
+    [TestMethod]
+    public void MinuteShouldReturnCorrectResultWhenParsingString()
+    {
+        object? result = this._parser.Parse("Minute(\"10:12:14 AM\")");
+        Assert.AreEqual(12, result);
+    }
 
-        [TestMethod]
-        public void HourShouldReturnCorrectResultWhenParsingString()
-        {
-            object? result = this._parser.Parse("Hour(\"10:12:14\")");
-            Assert.AreEqual(10, result);
-        }
+    [TestMethod]
+    public void HourShouldReturnCorrectResultWhenParsingString()
+    {
+        object? result = this._parser.Parse("Hour(\"10:12:14\")");
+        Assert.AreEqual(10, result);
+    }
 
-        [TestMethod]
-        public void DaysShouldReturnCorrectResult()
-        {
-            object? result = this._parser.Parse("Days(Date(2015, 2, 2), Date(2015, 1, 1))");
-            Assert.AreEqual(32d, result);
-        }
+    [TestMethod]
+    public void DaysShouldReturnCorrectResult()
+    {
+        object? result = this._parser.Parse("Days(Date(2015, 2, 2), Date(2015, 1, 1))");
+        Assert.AreEqual(32d, result);
+    }
 
-        [TestMethod]
-        public void Day360ShouldReturnCorrectResult()
-        {
-            object? result = this._parser.Parse("Days360(Date(2012, 4, 2), Date(2012, 5, 2))");
-            Assert.AreEqual(30, result);
-        }
+    [TestMethod]
+    public void Day360ShouldReturnCorrectResult()
+    {
+        object? result = this._parser.Parse("Days360(Date(2012, 4, 2), Date(2012, 5, 2))");
+        Assert.AreEqual(30, result);
+    }
 
-        [TestMethod]
-        public void YearfracShouldReturnAResult()
-        {
-            object? result = this._parser.Parse("Yearfrac(Date(2012, 4, 2), Date(2012, 5, 2))");
-            Assert.IsInstanceOfType(result, typeof(double));
-        }
+    [TestMethod]
+    public void YearfracShouldReturnAResult()
+    {
+        object? result = this._parser.Parse("Yearfrac(Date(2012, 4, 2), Date(2012, 5, 2))");
+        Assert.IsInstanceOfType(result, typeof(double));
+    }
 
-        [TestMethod]
-        public void IsoWeekNumShouldReturnAResult()
-        {
-            object? result = this._parser.Parse("IsoWeekNum(Date(2012, 4, 2))");
-            Assert.IsInstanceOfType(result, typeof(int));
-        }
+    [TestMethod]
+    public void IsoWeekNumShouldReturnAResult()
+    {
+        object? result = this._parser.Parse("IsoWeekNum(Date(2012, 4, 2))");
+        Assert.IsInstanceOfType(result, typeof(int));
+    }
 
-        [TestMethod]
-        public void EomonthShouldReturnAResult()
-        {
-            object? result = this._parser.Parse("Eomonth(Date(2013, 2, 2), 3)");
-            Assert.IsInstanceOfType(result, typeof(double));
-        }
+    [TestMethod]
+    public void EomonthShouldReturnAResult()
+    {
+        object? result = this._parser.Parse("Eomonth(Date(2013, 2, 2), 3)");
+        Assert.IsInstanceOfType(result, typeof(double));
+    }
 
-        [TestMethod]
-        public void WorkdayShouldReturnAResult()
-        {
-            object? result = this._parser.Parse("Workday(Date(2013, 2, 2), 3)");
-            Assert.IsInstanceOfType(result, typeof(double));
-        }
+    [TestMethod]
+    public void WorkdayShouldReturnAResult()
+    {
+        object? result = this._parser.Parse("Workday(Date(2013, 2, 2), 3)");
+        Assert.IsInstanceOfType(result, typeof(double));
+    }
 
-        [TestMethod]
-        public void DateNotEqualToStringShouldBeTrue()
-        {
-            object? result = this._parser.Parse("TODAY() <> \"\"");
-            Assert.IsTrue((bool)result);
-        }
+    [TestMethod]
+    public void DateNotEqualToStringShouldBeTrue()
+    {
+        object? result = this._parser.Parse("TODAY() <> \"\"");
+        Assert.IsTrue((bool)result);
+    }
 
-        [TestMethod]
-        public void Calculation5()
-        {
-            ExcelPackage? pck = new ExcelPackage();
-            ExcelWorksheet? ws = pck.Workbook.Worksheets.Add("Calc1");
-            ws.Cells["A1"].Value = "John";
-            ws.Cells["B1"].Value = "Doe";
-            ws.Cells["C1"].Formula = "B1&\", \"&A1";
-            ws.Calculate();
-            Assert.AreEqual("Doe, John", ws.Cells["C1"].Value);
-        }
+    [TestMethod]
+    public void Calculation5()
+    {
+        ExcelPackage? pck = new ExcelPackage();
+        ExcelWorksheet? ws = pck.Workbook.Worksheets.Add("Calc1");
+        ws.Cells["A1"].Value = "John";
+        ws.Cells["B1"].Value = "Doe";
+        ws.Cells["C1"].Formula = "B1&\", \"&A1";
+        ws.Calculate();
+        Assert.AreEqual("Doe, John", ws.Cells["C1"].Value);
+    }
 
-        [TestMethod]
-        public void HourWithExcelReference()
-        {
-            ExcelPackage? pck = new ExcelPackage();
-            ExcelWorksheet? ws = pck.Workbook.Worksheets.Add("Calc1");
-            ws.Cells["A1"].Value = new DateTime(2014, 1, 1, 10, 11, 12).ToOADate();
-            ws.Cells["B1"].Formula = "HOUR(A1)";
-            ws.Calculate();
-            Assert.AreEqual(10, ws.Cells["B1"].Value);
-        }
+    [TestMethod]
+    public void HourWithExcelReference()
+    {
+        ExcelPackage? pck = new ExcelPackage();
+        ExcelWorksheet? ws = pck.Workbook.Worksheets.Add("Calc1");
+        ws.Cells["A1"].Value = new DateTime(2014, 1, 1, 10, 11, 12).ToOADate();
+        ws.Cells["B1"].Formula = "HOUR(A1)";
+        ws.Calculate();
+        Assert.AreEqual(10, ws.Cells["B1"].Value);
+    }
 
-        [TestMethod]
-        public void MinuteWithExcelReference()
-        {
-            ExcelPackage? pck = new ExcelPackage();
-            ExcelWorksheet? ws = pck.Workbook.Worksheets.Add("Calc1");
-            ws.Cells["A1"].Value = new DateTime(2014, 1, 1, 10, 11, 12).ToOADate();
-            ws.Cells["B1"].Formula = "MINUTE(A1)";
-            ws.Calculate();
-            Assert.AreEqual(11, ws.Cells["B1"].Value);
-        }
+    [TestMethod]
+    public void MinuteWithExcelReference()
+    {
+        ExcelPackage? pck = new ExcelPackage();
+        ExcelWorksheet? ws = pck.Workbook.Worksheets.Add("Calc1");
+        ws.Cells["A1"].Value = new DateTime(2014, 1, 1, 10, 11, 12).ToOADate();
+        ws.Cells["B1"].Formula = "MINUTE(A1)";
+        ws.Calculate();
+        Assert.AreEqual(11, ws.Cells["B1"].Value);
+    }
 
-        [TestMethod]
-        public void SecondWithExcelReference()
-        {
-            ExcelPackage? pck = new ExcelPackage();
-            ExcelWorksheet? ws = pck.Workbook.Worksheets.Add("Calc1");
-            ws.Cells["A1"].Value = new DateTime(2014, 1, 1, 10, 11, 12).ToOADate();
-            ws.Cells["B1"].Formula = "SECOND(A1)";
-            ws.Calculate();
-            Assert.AreEqual(12, ws.Cells["B1"].Value);
-        }
+    [TestMethod]
+    public void SecondWithExcelReference()
+    {
+        ExcelPackage? pck = new ExcelPackage();
+        ExcelWorksheet? ws = pck.Workbook.Worksheets.Add("Calc1");
+        ws.Cells["A1"].Value = new DateTime(2014, 1, 1, 10, 11, 12).ToOADate();
+        ws.Cells["B1"].Formula = "SECOND(A1)";
+        ws.Calculate();
+        Assert.AreEqual(12, ws.Cells["B1"].Value);
+    }
 #if (!Core)
         [TestMethod]
         public void DateValueTest1()
@@ -350,5 +350,4 @@ namespace EPPlusTest.FormulaParsing.IntegrationTests.BuiltInFunctions
             Thread.CurrentThread.CurrentCulture = ci;
         }
 #endif
-    }
 }

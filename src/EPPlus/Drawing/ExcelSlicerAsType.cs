@@ -12,41 +12,40 @@
  *************************************************************************************************/
 using OfficeOpenXml.Drawing.Slicer;
 
-namespace OfficeOpenXml.Drawing
+namespace OfficeOpenXml.Drawing;
+
+/// <summary>
+/// Provides easy type cast for slicer drawings.
+/// </summary>
+public class ExcelSlicerAsType
 {
-    /// <summary>
-    /// Provides easy type cast for slicer drawings.
-    /// </summary>
-    public class ExcelSlicerAsType
+    ExcelDrawing _drawing;
+    internal ExcelSlicerAsType(ExcelDrawing drawing)
     {
-        ExcelDrawing _drawing;
-        internal ExcelSlicerAsType(ExcelDrawing drawing)
+        this._drawing = drawing;
+    }
+    /// <summary>
+    /// Returns the drawing as table slicer . 
+    /// If this drawing is not a table slicer, null will be returned
+    /// </summary>
+    /// <returns>The drawing as a table slicer</returns>
+    public ExcelTableSlicer TableSlicer
+    {
+        get
         {
-            this._drawing = drawing;
+            return this._drawing as ExcelTableSlicer;
         }
-        /// <summary>
-        /// Returns the drawing as table slicer . 
-        /// If this drawing is not a table slicer, null will be returned
-        /// </summary>
-        /// <returns>The drawing as a table slicer</returns>
-        public ExcelTableSlicer TableSlicer
+    }
+    /// <summary>
+    /// Returns the drawing as pivot table slicer . 
+    /// If this drawing is not a pivot table slicer, null will be returned
+    /// </summary>
+    /// <returns>The drawing as a pivot table slicer</returns>
+    public ExcelPivotTableSlicer PivotTableSlicer
+    {
+        get
         {
-            get
-            {
-                return this._drawing as ExcelTableSlicer;
-            }
-        }
-        /// <summary>
-        /// Returns the drawing as pivot table slicer . 
-        /// If this drawing is not a pivot table slicer, null will be returned
-        /// </summary>
-        /// <returns>The drawing as a pivot table slicer</returns>
-        public ExcelPivotTableSlicer PivotTableSlicer
-        {
-            get
-            {
-                return this._drawing as ExcelPivotTableSlicer;
-            }
+            return this._drawing as ExcelPivotTableSlicer;
         }
     }
 }

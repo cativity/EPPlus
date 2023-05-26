@@ -13,19 +13,18 @@
 using OfficeOpenXml.Packaging;
 using OfficeOpenXml.Drawing.Chart;
 
-namespace OfficeOpenXml.Drawing.Theme
-{
-    /// <summary>
-    ///  Defines a Theme override for a chart
-    /// </summary>
-    public class ExcelThemeOverride : ExcelThemeBase
-    {
-        ExcelChart _chart;
+namespace OfficeOpenXml.Drawing.Theme;
 
-        internal ExcelThemeOverride(ExcelChart chart, ZipPackageRelationship rel)
-            : base(chart._drawings._package, chart.NameSpaceManager, rel,"")
-        {
-            this._chart = chart;
-        }
+/// <summary>
+///  Defines a Theme override for a chart
+/// </summary>
+public class ExcelThemeOverride : ExcelThemeBase
+{
+    ExcelChart _chart;
+
+    internal ExcelThemeOverride(ExcelChart chart, ZipPackageRelationship rel)
+        : base(chart._drawings._package, chart.NameSpaceManager, rel,"")
+    {
+        this._chart = chart;
     }
 }

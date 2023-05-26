@@ -10,34 +10,32 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
-namespace OfficeOpenXml.Table.PivotTable
+namespace OfficeOpenXml.Table.PivotTable;
+
+/// <summary>
+/// Defines the axis for a PivotTable
+/// </summary>
+public enum ePivotFieldAxis
 {
-    
     /// <summary>
-    /// Defines the axis for a PivotTable
+    /// None
     /// </summary>
-    public enum ePivotFieldAxis
-    {
-        /// <summary>
-        /// None
-        /// </summary>
-        None=-1,
-        /// <summary>
-        /// Column axis
-        /// </summary>
-        Column,
-        /// <summary>
-        /// Page axis (Include Count Filter) 
-        /// 
-        /// </summary>
-        Page,
-        /// <summary>
-        /// Row axis
-        /// </summary>
-        Row,
-        /// <summary>
-        /// Values axis
-        /// </summary>
-        Values 
-    }
+    None=-1,
+    /// <summary>
+    /// Column axis
+    /// </summary>
+    Column,
+    /// <summary>
+    /// Page axis (Include Count Filter) 
+    /// 
+    /// </summary>
+    Page,
+    /// <summary>
+    /// Row axis
+    /// </summary>
+    Row,
+    /// <summary>
+    /// Values axis
+    /// </summary>
+    Values 
 }

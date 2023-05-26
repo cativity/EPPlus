@@ -18,25 +18,24 @@ using OfficeOpenXml.FormulaParsing.Excel.Functions.Metadata;
 using OfficeOpenXml.FormulaParsing.Exceptions;
 using OfficeOpenXml.FormulaParsing.ExpressionGraph;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
+
+[FunctionMetadata(
+                     Category = ExcelFunctionCategory.MathAndTrig,
+                     EPPlusVersion = "4",
+                     Description = "Truncates a number towards zero (i.e. rounds a positive number down and a negative number up), to the next integer.")]
+internal class Trunc : ExcelFunction
 {
-    [FunctionMetadata(
-        Category = ExcelFunctionCategory.MathAndTrig,
-        EPPlusVersion = "4",
-        Description = "Truncates a number towards zero (i.e. rounds a positive number down and a negative number up), to the next integer.")]
-    internal class Trunc : ExcelFunction
+    public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
     {
-        public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
+        ValidateArguments(arguments, 1);
+        double number = this.ArgToDecimal(arguments, 0);
+        if (arguments.Count() == 1)
         {
-            ValidateArguments(arguments, 1);
-            double number = this.ArgToDecimal(arguments, 0);
-            if (arguments.Count() == 1)
-            {
-                return this.CreateResult(System.Math.Truncate(number), DataType.Decimal);
-            }
-            int nDigits = this.ArgToInt(arguments, 1);
-            ExcelFunction? func = context.Configuration.FunctionRepository.GetFunction("rounddown");
-            return func.Execute(arguments, context);
+            return this.CreateResult(System.Math.Truncate(number), DataType.Decimal);
         }
+        int nDigits = this.ArgToInt(arguments, 1);
+        ExcelFunction? func = context.Configuration.FunctionRepository.GetFunction("rounddown");
+        return func.Execute(arguments, context);
     }
 }

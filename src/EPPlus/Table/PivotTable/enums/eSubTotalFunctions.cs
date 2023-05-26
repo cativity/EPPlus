@@ -12,65 +12,64 @@
  *************************************************************************************************/
 using System;
 
-namespace OfficeOpenXml.Table.PivotTable
+namespace OfficeOpenXml.Table.PivotTable;
+
+/// <summary>
+/// Built-in subtotal functions
+/// </summary>
+[Flags]
+public enum eSubTotalFunctions
 {
     /// <summary>
-    /// Built-in subtotal functions
+    /// None
     /// </summary>
-    [Flags]
-    public enum eSubTotalFunctions
-    {
-        /// <summary>
-        /// None
-        /// </summary>
-        None = 1,
-        /// <summary>
-        /// Count
-        /// </summary>
-        Count = 2,
-        /// <summary>
-        /// Count, numbers
-        /// </summary>
-        CountA = 4,
-        /// <summary>
-        /// Average
-        /// </summary>
-        Avg = 8,
-        /// <summary>
-        /// Default, total
-        /// </summary>
-        Default = 16,
-        /// <summary>
-        /// Minimum
-        /// </summary>
-        Min = 32,
-        /// <summary>
-        /// Maximum
-        /// </summary>
-        Max = 64,
-        /// <summary>
-        /// Product
-        /// </summary>
-        Product = 128,
-        /// <summary>
-        /// Standard deviation
-        /// </summary>
-        StdDev = 256,
-        /// <summary>
-        /// Standard deviation of a population
-        /// </summary>
-        StdDevP = 512,
-        /// <summary>
-        /// Summary
-        /// </summary>
-        Sum = 1024,
-        /// <summary>
-        /// Variation
-        /// </summary>
-        Var = 2048,
-        /// <summary>
-        /// Variation of a population
-        /// </summary>
-        VarP = 4096
-    }
+    None = 1,
+    /// <summary>
+    /// Count
+    /// </summary>
+    Count = 2,
+    /// <summary>
+    /// Count, numbers
+    /// </summary>
+    CountA = 4,
+    /// <summary>
+    /// Average
+    /// </summary>
+    Avg = 8,
+    /// <summary>
+    /// Default, total
+    /// </summary>
+    Default = 16,
+    /// <summary>
+    /// Minimum
+    /// </summary>
+    Min = 32,
+    /// <summary>
+    /// Maximum
+    /// </summary>
+    Max = 64,
+    /// <summary>
+    /// Product
+    /// </summary>
+    Product = 128,
+    /// <summary>
+    /// Standard deviation
+    /// </summary>
+    StdDev = 256,
+    /// <summary>
+    /// Standard deviation of a population
+    /// </summary>
+    StdDevP = 512,
+    /// <summary>
+    /// Summary
+    /// </summary>
+    Sum = 1024,
+    /// <summary>
+    /// Variation
+    /// </summary>
+    Var = 2048,
+    /// <summary>
+    /// Variation of a population
+    /// </summary>
+    VarP = 4096
 }

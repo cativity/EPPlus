@@ -17,31 +17,30 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
-{
-    [FunctionMetadata(
-    Category = ExcelFunctionCategory.Statistical,
-    EPPlusVersion = "5.2",
-    Description = "Returns the K'th percentile of values in a supplied range, where K is in the range 0 - 1 (inclusive)")]
-    internal class Percentile : ExcelFunction
-    {
-        public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
-        {
-            ValidateArguments(arguments, 2);
-            List<double>? arr = this.ArgsToDoubleEnumerable(arguments.Take(1), context).Select(x => (double)x).ToList();
-            double percentile = this.ArgToDecimal(arguments, 1);
-            if (percentile < 0 || percentile > 1)
-            {
-                return this.CreateResult(eErrorType.Num);
-            }
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
 
-            arr.Sort();
-            int nElements = arr.Count;
-            double dIx = percentile * (nElements - 1);
-            int ix = (int)dIx;
-            double rest = dIx - ix;
-            double result = ix < (nElements - 1) ? arr[ix] + (arr[ix + 1] - arr[ix]) * rest : arr.Last();
-            return this.CreateResult(result, DataType.Decimal);
+[FunctionMetadata(
+                     Category = ExcelFunctionCategory.Statistical,
+                     EPPlusVersion = "5.2",
+                     Description = "Returns the K'th percentile of values in a supplied range, where K is in the range 0 - 1 (inclusive)")]
+internal class Percentile : ExcelFunction
+{
+    public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
+    {
+        ValidateArguments(arguments, 2);
+        List<double>? arr = this.ArgsToDoubleEnumerable(arguments.Take(1), context).Select(x => (double)x).ToList();
+        double percentile = this.ArgToDecimal(arguments, 1);
+        if (percentile < 0 || percentile > 1)
+        {
+            return this.CreateResult(eErrorType.Num);
         }
+
+        arr.Sort();
+        int nElements = arr.Count;
+        double dIx = percentile * (nElements - 1);
+        int ix = (int)dIx;
+        double rest = dIx - ix;
+        double result = ix < (nElements - 1) ? arr[ix] + (arr[ix + 1] - arr[ix]) * rest : arr.Last();
+        return this.CreateResult(result, DataType.Decimal);
     }
 }

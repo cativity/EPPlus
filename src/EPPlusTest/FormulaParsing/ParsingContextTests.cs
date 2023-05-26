@@ -33,23 +33,22 @@ using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OfficeOpenXml.FormulaParsing;
 
-namespace EPPlusTest.FormulaParsing
-{
-    [TestClass]
-    public class ParsingContextTests
-    {
-        [TestMethod]
-        public void ConfigurationShouldBeSetByFactoryMethod()
-        {
-            ParsingContext? context = ParsingContext.Create();
-            Assert.IsNotNull(context.Configuration);
-        }
+namespace EPPlusTest.FormulaParsing;
 
-        [TestMethod]
-        public void ScopesShouldBeSetByFactoryMethod()
-        {
-            ParsingContext? context = ParsingContext.Create();
-            Assert.IsNotNull(context.Scopes);
-        }
+[TestClass]
+public class ParsingContextTests
+{
+    [TestMethod]
+    public void ConfigurationShouldBeSetByFactoryMethod()
+    {
+        ParsingContext? context = ParsingContext.Create();
+        Assert.IsNotNull(context.Configuration);
+    }
+
+    [TestMethod]
+    public void ScopesShouldBeSetByFactoryMethod()
+    {
+        ParsingContext? context = ParsingContext.Create();
+        Assert.IsNotNull(context.Scopes);
     }
 }

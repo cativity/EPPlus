@@ -12,10 +12,9 @@
  *************************************************************************************************/
 using System;
 
-namespace OfficeOpenXml.Core.CellStore
+namespace OfficeOpenXml.Core.CellStore;
+
+internal class IndexBase
 {
-    internal class IndexBase
-    {
-        public short Index { get; set; }
-    }
-}   
+    public short Index { get; set; }
+}

@@ -10,60 +10,59 @@
  *************************************************************************************************
   01/27/2022         EPPlus Software AB       EPPlus 6
  *********************************************s****************************************************/
-namespace OfficeOpenXml.Drawing
+namespace OfficeOpenXml.Drawing;
+
+/// <summary>
+/// The type of image a stream contains.
+/// </summary>
+public enum ePictureType
 {
     /// <summary>
-    /// The type of image a stream contains.
+    /// A bitmap image
     /// </summary>
-    public enum ePictureType
-    {
-        /// <summary>
-        /// A bitmap image
-        /// </summary>
-        Bmp,
-        /// <summary>
-        /// A jpeg image
-        /// </summary>
-        Jpg,
-        /// <summary>
-        /// A gif image
-        /// </summary>
-        Gif,
-        /// <summary>
-        /// A png image
-        /// </summary>
-        Png,
-        /// <summary>
-        /// An Enhanced MetaFile image
-        /// </summary>
-        Emf,
-        /// <summary>
-        /// A Tiff image
-        /// </summary>
-        Tif,
-        /// <summary>
-        /// A windows metafile image
-        /// </summary>
-        Wmf,
-        /// <summary>
-        /// A Svg image
-        /// </summary>
-        Svg,
-        /// <summary>
-        /// A WebP image
-        /// </summary>
-        WebP,
-        /// <summary>
-        /// A Windows icon
-        /// </summary>
-        Ico,
-        /// <summary>
-        /// A compressed Enhanced MetaFile image
-        /// </summary>
-        Emz,
-        /// <summary>
-        /// A compressed Windows MetaFile image
-        /// </summary>
-        Wmz
-    }
+    Bmp,
+    /// <summary>
+    /// A jpeg image
+    /// </summary>
+    Jpg,
+    /// <summary>
+    /// A gif image
+    /// </summary>
+    Gif,
+    /// <summary>
+    /// A png image
+    /// </summary>
+    Png,
+    /// <summary>
+    /// An Enhanced MetaFile image
+    /// </summary>
+    Emf,
+    /// <summary>
+    /// A Tiff image
+    /// </summary>
+    Tif,
+    /// <summary>
+    /// A windows metafile image
+    /// </summary>
+    Wmf,
+    /// <summary>
+    /// A Svg image
+    /// </summary>
+    Svg,
+    /// <summary>
+    /// A WebP image
+    /// </summary>
+    WebP,
+    /// <summary>
+    /// A Windows icon
+    /// </summary>
+    Ico,
+    /// <summary>
+    /// A compressed Enhanced MetaFile image
+    /// </summary>
+    Emz,
+    /// <summary>
+    /// A compressed Windows MetaFile image
+    /// </summary>
+    Wmz
 }

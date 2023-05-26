@@ -16,13 +16,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Statistical
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Statistical;
+
+[FunctionMetadata(
+                     Category = ExcelFunctionCategory.Statistical,
+                     EPPlusVersion = "5.5",
+                     Description = "Returns the confidence interval for a population mean, using a normal distribution")]
+internal class Confidence : ConfidenceNorm
 {
-    [FunctionMetadata(
-        Category = ExcelFunctionCategory.Statistical,
-        EPPlusVersion = "5.5",
-        Description = "Returns the confidence interval for a population mean, using a normal distribution")]
-    internal class Confidence : ConfidenceNorm
-    {
-    }
 }

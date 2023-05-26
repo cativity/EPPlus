@@ -18,33 +18,32 @@ using System.Text;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Metadata;
 using OfficeOpenXml.FormulaParsing.ExpressionGraph;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Text
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Text;
+
+[FunctionMetadata(
+                     Category = ExcelFunctionCategory.Text,
+                     EPPlusVersion = "4",
+                     Description = "Converts all characters in a supplied text string to proper case (i.e. letters that do not follow another letter are upper case and all other characters are lower case)")]
+internal class Proper : ExcelFunction
 {
-    [FunctionMetadata(
-        Category = ExcelFunctionCategory.Text,
-        EPPlusVersion = "4",
-        Description = "Converts all characters in a supplied text string to proper case (i.e. letters that do not follow another letter are upper case and all other characters are lower case)")]
-    internal class Proper : ExcelFunction
+    public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
     {
-        public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
+        ValidateArguments(arguments, 1);
+        string? text = ArgToString(arguments, 0).ToLower(CultureInfo.InvariantCulture);
+        StringBuilder? sb = new StringBuilder();
+        char previousChar = '.';
+        foreach (char ch in text)
         {
-            ValidateArguments(arguments, 1);
-            string? text = ArgToString(arguments, 0).ToLower(CultureInfo.InvariantCulture);
-            StringBuilder? sb = new StringBuilder();
-            char previousChar = '.';
-            foreach (char ch in text)
+            if (!char.IsLetter(previousChar))
             {
-                if (!char.IsLetter(previousChar))
-                {
-                    sb.Append(Utils.ConvertUtil._invariantTextInfo.ToUpper(ch.ToString()));
-                }
-                else
-                {
-                    sb.Append(ch);
-                }
-                previousChar = ch;
+                sb.Append(Utils.ConvertUtil._invariantTextInfo.ToUpper(ch.ToString()));
             }
-            return this.CreateResult(sb.ToString(), DataType.String);
+            else
+            {
+                sb.Append(ch);
+            }
+            previousChar = ch;
         }
+        return this.CreateResult(sb.ToString(), DataType.String);
     }
 }

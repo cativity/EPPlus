@@ -18,15 +18,15 @@ using System.Drawing;
 using System.Xml;
 using OfficeOpenXml.ConditionalFormatting.Contracts;
 
-namespace OfficeOpenXml.ConditionalFormatting
-{
-  /// <summary>
-  /// ExcelConditionalFormattingAverageGroup
-  /// </summary>
-  public class ExcelConditionalFormattingAverageGroup
+namespace OfficeOpenXml.ConditionalFormatting;
+
+/// <summary>
+/// ExcelConditionalFormattingAverageGroup
+/// </summary>
+public class ExcelConditionalFormattingAverageGroup
     : ExcelConditionalFormattingRule,
-    IExcelConditionalFormattingAverageGroup
-  {
+      IExcelConditionalFormattingAverageGroup
+{
     /****************************************************************************************/
 
     #region Constructors
@@ -40,19 +40,19 @@ namespace OfficeOpenXml.ConditionalFormatting
     /// <param name="itemElementNode"></param>
     /// <param name="namespaceManager"></param>
     internal ExcelConditionalFormattingAverageGroup(
-      eExcelConditionalFormattingRuleType type,
-      ExcelAddress address,
-      int priority,
-      ExcelWorksheet worksheet,
-      XmlNode itemElementNode,
-      XmlNamespaceManager namespaceManager)
-      : base(
-        type,
-        address,
-        priority,
-        worksheet,
-        itemElementNode,
-        (namespaceManager == null) ? worksheet.NameSpaceManager : namespaceManager)
+        eExcelConditionalFormattingRuleType type,
+        ExcelAddress address,
+        int priority,
+        ExcelWorksheet worksheet,
+        XmlNode itemElementNode,
+        XmlNamespaceManager namespaceManager)
+        : base(
+               type,
+               address,
+               priority,
+               worksheet,
+               itemElementNode,
+               (namespaceManager == null) ? worksheet.NameSpaceManager : namespaceManager)
     {
     }
 
@@ -65,18 +65,18 @@ namespace OfficeOpenXml.ConditionalFormatting
     /// <param name="worksheet"></param>
     /// <param name="itemElementNode"></param>
     internal ExcelConditionalFormattingAverageGroup(
-      eExcelConditionalFormattingRuleType type,
-      ExcelAddress address,
-      int priority,
-      ExcelWorksheet worksheet,
-      XmlNode itemElementNode)
-      : this(
-        type,
-        address,
-        priority,
-        worksheet,
-        itemElementNode,
-        null)
+        eExcelConditionalFormattingRuleType type,
+        ExcelAddress address,
+        int priority,
+        ExcelWorksheet worksheet,
+        XmlNode itemElementNode)
+        : this(
+               type,
+               address,
+               priority,
+               worksheet,
+               itemElementNode,
+               null)
     {
     }
 
@@ -88,21 +88,20 @@ namespace OfficeOpenXml.ConditionalFormatting
     /// <param name="address"></param>
     /// <param name="worksheet"></param>
     internal ExcelConditionalFormattingAverageGroup(
-      eExcelConditionalFormattingRuleType type,
-      ExcelAddress address,
-      int priority,
-      ExcelWorksheet worksheet)
-      : this(
-        type,
-        address,
-        priority,
-        worksheet,
-        null,
-        null)
+        eExcelConditionalFormattingRuleType type,
+        ExcelAddress address,
+        int priority,
+        ExcelWorksheet worksheet)
+        : this(
+               type,
+               address,
+               priority,
+               worksheet,
+               null,
+               null)
     {
     }
     #endregion Constructors
 
     /****************************************************************************************/
-  }
 }

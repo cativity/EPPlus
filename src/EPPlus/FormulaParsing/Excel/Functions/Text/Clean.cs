@@ -16,32 +16,31 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Text
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Text;
+
+[FunctionMetadata(
+                     Category = ExcelFunctionCategory.Text,
+                     EPPlusVersion = "5.0",
+                     Description = "Removes all non-printable characters from a supplied text string")]
+internal class Clean : ExcelFunction
 {
-    [FunctionMetadata(
-        Category = ExcelFunctionCategory.Text,
-        EPPlusVersion = "5.0",
-        Description = "Removes all non-printable characters from a supplied text string")]
-    internal class Clean : ExcelFunction
+    public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
     {
-        public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
+        ValidateArguments(arguments, 1);
+        string? str = ArgToString(arguments, 0);
+        if(!string.IsNullOrEmpty(str))
         {
-            ValidateArguments(arguments, 1);
-            string? str = ArgToString(arguments, 0);
-            if(!string.IsNullOrEmpty(str))
+            StringBuilder? sb = new StringBuilder();
+            byte[]? arr = Encoding.ASCII.GetBytes(str);
+            foreach(byte c in arr)
             {
-                StringBuilder? sb = new StringBuilder();
-                byte[]? arr = Encoding.ASCII.GetBytes(str);
-                foreach(byte c in arr)
+                if (c > 31)
                 {
-                    if (c > 31)
-                    {
-                        sb.Append((char)c);
-                    }
+                    sb.Append((char)c);
                 }
-                str = sb.ToString();
             }
-            return this.CreateResult(str, DataType.String);
+            str = sb.ToString();
         }
+        return this.CreateResult(str, DataType.String);
     }
 }

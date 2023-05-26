@@ -11,16 +11,15 @@
   04/16/2021         EPPlus Software AB       EPPlus 5.7
  *************************************************************************************************/
 
-namespace OfficeOpenXml.ExternalReferences
+namespace OfficeOpenXml.ExternalReferences;
+
+/// <summary>
+/// An interface for an external object that contains a name
+/// </summary>
+public interface IExcelExternalNamedItem
 {
     /// <summary>
-    /// An interface for an external object that contains a name
+    /// The name
     /// </summary>
-    public interface IExcelExternalNamedItem
-    {
-        /// <summary>
-        /// The name
-        /// </summary>
-        string Name { get; }
-    }
+    string Name { get; }
 }

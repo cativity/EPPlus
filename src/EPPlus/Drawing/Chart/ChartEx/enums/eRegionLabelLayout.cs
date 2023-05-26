@@ -10,24 +10,23 @@
  *************************************************************************************************
     04/15/2020         EPPlus Software AB       EPPlus 5.2
  *************************************************************************************************/
-namespace OfficeOpenXml.Drawing.Chart.ChartEx
+namespace OfficeOpenXml.Drawing.Chart.ChartEx;
+
+/// <summary>
+/// The layout type for region labels of a geospatial series
+/// </summary>
+public enum eRegionLabelLayout
 {
     /// <summary>
-    /// The layout type for region labels of a geospatial series
+    /// No region labels appear in a geospatial series
     /// </summary>
-    public enum eRegionLabelLayout
-    {
-        /// <summary>
-        /// No region labels appear in a geospatial series
-        /// </summary>
-        None,
-        /// <summary>
-        /// Region labels only appear if they can fit in their respective containing geometries in a geospatial series
-        /// </summary>
-        BestFitOnly,
-        /// <summary>
-        /// All region labels appear
-        /// </summary>
-        All
-    }
+    None,
+    /// <summary>
+    /// Region labels only appear if they can fit in their respective containing geometries in a geospatial series
+    /// </summary>
+    BestFitOnly,
+    /// <summary>
+    /// All region labels appear
+    /// </summary>
+    All
 }

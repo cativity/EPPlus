@@ -15,16 +15,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace OfficeOpenXml.FormulaParsing
+namespace OfficeOpenXml.FormulaParsing;
+
+public interface INameValueProvider
 {
-    public interface INameValueProvider
-    {
-        bool IsNamedValue(string key, string worksheet);
+    bool IsNamedValue(string key, string worksheet);
 
-        object GetNamedValue(string key);
+    object GetNamedValue(string key);
 
-        object GetNamedValue(string key, string worksheet);
+    object GetNamedValue(string key, string worksheet);
 
-        void Reload();
-    }
+    void Reload();
 }

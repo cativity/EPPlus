@@ -15,28 +15,27 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace OfficeOpenXml.FormulaParsing.ExpressionGraph
+namespace OfficeOpenXml.FormulaParsing.ExpressionGraph;
+
+public class BooleanExpression : AtomicExpression
 {
-    public class BooleanExpression : AtomicExpression
+    private bool? _precompiledValue;
+
+    public BooleanExpression(string expression)
+        : base(expression)
     {
-        private bool? _precompiledValue;
 
-        public BooleanExpression(string expression)
-            : base(expression)
-        {
+    }
 
-        }
+    public BooleanExpression(bool value)
+        : base(value ? "true" : "false")
+    {
+        this._precompiledValue = value;
+    }
 
-        public BooleanExpression(bool value)
-            : base(value ? "true" : "false")
-        {
-            this._precompiledValue = value;
-        }
-
-        public override CompileResult Compile()
-        {
-            bool result = this._precompiledValue ?? bool.Parse(this.ExpressionString);
-            return new CompileResult(result, DataType.Boolean);
-        }
+    public override CompileResult Compile()
+    {
+        bool result = this._precompiledValue ?? bool.Parse(this.ExpressionString);
+        return new CompileResult(result, DataType.Boolean);
     }
 }

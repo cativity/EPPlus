@@ -14,30 +14,29 @@ using OfficeOpenXml.DataValidation.Events;
 using OfficeOpenXml.DataValidation.Formulas.Contracts;
 using System;
 using System.Globalization;
-namespace OfficeOpenXml.DataValidation.Formulas
+namespace OfficeOpenXml.DataValidation.Formulas;
+
+internal class ExcelDataValidationFormulaDateTime : ExcelDataValidationFormulaValue<DateTime?>, IExcelDataValidationFormulaDateTime
 {
-    internal class ExcelDataValidationFormulaDateTime : ExcelDataValidationFormulaValue<DateTime?>, IExcelDataValidationFormulaDateTime
+    public ExcelDataValidationFormulaDateTime(string formula, string validationUid, string sheetName, Action<OnFormulaChangedEventArgs> evtHandler)
+        : base(validationUid, sheetName, evtHandler)
     {
-        public ExcelDataValidationFormulaDateTime(string formula, string validationUid, string sheetName, Action<OnFormulaChangedEventArgs> evtHandler)
-            : base(validationUid, sheetName, evtHandler)
+        if (!string.IsNullOrEmpty(formula))
         {
-            if (!string.IsNullOrEmpty(formula))
+            if (double.TryParse(formula, NumberStyles.Any, CultureInfo.InvariantCulture, out double oADate))
             {
-                if (double.TryParse(formula, NumberStyles.Any, CultureInfo.InvariantCulture, out double oADate))
-                {
-                    this.Value = DateTime.FromOADate(oADate);
-                }
-                else
-                {
-                    this.ExcelFormula = formula;
-                }
+                this.Value = DateTime.FromOADate(oADate);
+            }
+            else
+            {
+                this.ExcelFormula = formula;
             }
         }
-
-        protected override string GetValueAsString()
-        {
-            return this.Value.HasValue ? this.Value.Value.ToOADate().ToString(CultureInfo.InvariantCulture) : string.Empty;
-        }
-
     }
+
+    protected override string GetValueAsString()
+    {
+        return this.Value.HasValue ? this.Value.Value.ToOADate().ToString(CultureInfo.InvariantCulture) : string.Empty;
+    }
+
 }

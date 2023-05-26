@@ -12,33 +12,32 @@
  *************************************************************************************************/
 using System.Globalization;
 
-namespace OfficeOpenXml.Filter
+namespace OfficeOpenXml.Filter;
+
+/// <summary>
+/// Base class for filter items
+/// </summary>
+public abstract class ExcelFilterItem
+{
+
+}
+/// <summary>
+/// A filter item for a value filter
+/// </summary>
+public class ExcelFilterValueItem : ExcelFilterItem
 {
     /// <summary>
-    /// Base class for filter items
+    /// Inizialize the filter item
     /// </summary>
-    public abstract class ExcelFilterItem
+    /// <param name="value">The value to be filtered.</param>
+    public ExcelFilterValueItem(string value)
     {
-
+        this.Value = value;
+        Utils.ConvertUtil.TryParseNumericString(value, out this._valueDouble, CultureInfo.InvariantCulture);
     }
     /// <summary>
-    /// A filter item for a value filter
+    /// A value to be filtered.
     /// </summary>
-    public class ExcelFilterValueItem : ExcelFilterItem
-    {
-        /// <summary>
-        /// Inizialize the filter item
-        /// </summary>
-        /// <param name="value">The value to be filtered.</param>
-        public ExcelFilterValueItem(string value)
-        {
-            this.Value = value;
-            Utils.ConvertUtil.TryParseNumericString(value, out this._valueDouble, CultureInfo.InvariantCulture);
-            }
-        /// <summary>
-        /// A value to be filtered.
-        /// </summary>
-        public string Value { get; }
-        internal double _valueDouble;
-    }
+    public string Value { get; }
+    internal double _valueDouble;
 }

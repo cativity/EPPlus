@@ -12,21 +12,20 @@
  *************************************************************************************************/
 using System;
 
-namespace OfficeOpenXml.Drawing
+namespace OfficeOpenXml.Drawing;
+
+/// <summary>
+/// Modifiers for a style entry
+/// </summary>
+[Flags]
+public enum eStyleEntryModifier
 {
     /// <summary>
-    /// Modifiers for a style entry
+    /// This style entry can be replaced with no fill
     /// </summary>
-    [Flags]
-    public enum eStyleEntryModifier
-    {
-        /// <summary>
-        /// This style entry can be replaced with no fill
-        /// </summary>
-        AllowNoFillOverride = 1,
-        /// <summary>
-        /// This style entry can be replaced with no line
-        /// </summary>
-        AllowNoLineOverride = 2,
-    }
+    AllowNoFillOverride = 1,
+    /// <summary>
+    /// This style entry can be replaced with no line
+    /// </summary>
+    AllowNoLineOverride = 2,
 }

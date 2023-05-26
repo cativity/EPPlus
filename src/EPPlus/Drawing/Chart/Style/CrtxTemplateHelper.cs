@@ -19,54 +19,53 @@ using System.Linq;
 using System.Text;
 using System.Xml;
 
-namespace OfficeOpenXml.Drawing.Chart.Style
-{
-    internal class CrtxTemplateHelper
-    {
-        internal class RelationShipWithContent
-        {
-        }
-        internal static void LoadCrtx(Stream stream, out XmlDocument chartXml, out XmlDocument styleXml, out XmlDocument colorsXml, out ZipPackagePart themePart, string fileName)
-        {           
-            chartXml = null;
-            styleXml = null;
-            colorsXml = null;
-            themePart = null;
-            try
-            {
-                ZipPackage p = new ZipPackage(stream);
+namespace OfficeOpenXml.Drawing.Chart.Style;
 
-                ZipPackageRelationship? chartRel = p.GetRelationshipsByType("http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument").FirstOrDefault();
-                if (chartRel != null)
+internal class CrtxTemplateHelper
+{
+    internal class RelationShipWithContent
+    {
+    }
+    internal static void LoadCrtx(Stream stream, out XmlDocument chartXml, out XmlDocument styleXml, out XmlDocument colorsXml, out ZipPackagePart themePart, string fileName)
+    {           
+        chartXml = null;
+        styleXml = null;
+        colorsXml = null;
+        themePart = null;
+        try
+        {
+            ZipPackage p = new ZipPackage(stream);
+
+            ZipPackageRelationship? chartRel = p.GetRelationshipsByType("http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument").FirstOrDefault();
+            if (chartRel != null)
+            {
+                ZipPackagePart? chartPart = p.GetPart(chartRel.TargetUri);
+                chartXml = new XmlDocument();
+                chartXml.Load(chartPart.GetStream());
+                ZipPackageRelationshipCollection? rels = chartPart.GetRelationships();
+                foreach (ZipPackageRelationship? rel in rels)
                 {
-                    ZipPackagePart? chartPart = p.GetPart(chartRel.TargetUri);
-                    chartXml = new XmlDocument();
-                    chartXml.Load(chartPart.GetStream());
-                    ZipPackageRelationshipCollection? rels = chartPart.GetRelationships();
-                    foreach (ZipPackageRelationship? rel in rels)
+                    ZipPackagePart? part = p.GetPart(UriHelper.ResolvePartUri(rel.SourceUri, rel.TargetUri));
+                    switch (rel.RelationshipType)
                     {
-                        ZipPackagePart? part = p.GetPart(UriHelper.ResolvePartUri(rel.SourceUri, rel.TargetUri));
-                        switch (rel.RelationshipType)
-                        {
-                            case ExcelPackage.schemaThemeOverrideRelationships:
-                                themePart = part;
-                                break;
-                            case ExcelPackage.schemaChartStyleRelationships:
-                                styleXml = new XmlDocument();
-                                styleXml.Load(part.GetStream());
-                                break;
-                            case ExcelPackage.schemaChartColorStyleRelationships:
-                                colorsXml = new XmlDocument();
-                                colorsXml.Load(part.GetStream());
-                                break;
-                        }
+                        case ExcelPackage.schemaThemeOverrideRelationships:
+                            themePart = part;
+                            break;
+                        case ExcelPackage.schemaChartStyleRelationships:
+                            styleXml = new XmlDocument();
+                            styleXml.Load(part.GetStream());
+                            break;
+                        case ExcelPackage.schemaChartColorStyleRelationships:
+                            colorsXml = new XmlDocument();
+                            colorsXml.Load(part.GetStream());
+                            break;
                     }
                 }
             }
-            catch(Exception ex)
-            {
-                throw new InvalidDataException($"{fileName} has an invalid format", ex);
-            }
+        }
+        catch(Exception ex)
+        {
+            throw new InvalidDataException($"{fileName} has an invalid format", ex);
         }
     }
 }

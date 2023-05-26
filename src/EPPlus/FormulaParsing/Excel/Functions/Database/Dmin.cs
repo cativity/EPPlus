@@ -17,35 +17,34 @@ using System.Text;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Metadata;
 using OfficeOpenXml.FormulaParsing.ExpressionGraph;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Database
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Database;
+
+[FunctionMetadata(
+                     Category = ExcelFunctionCategory.Database,
+                     EPPlusVersion = "4",
+                     Description = "Returns the minimum value from a field of a list or database, that satisfy specified conditions")]
+internal class Dmin : DatabaseFunction
 {
-    [FunctionMetadata(
-        Category = ExcelFunctionCategory.Database,
-        EPPlusVersion = "4",
-        Description = "Returns the minimum value from a field of a list or database, that satisfy specified conditions")]
-    internal class Dmin : DatabaseFunction
+    public Dmin()
+        : this(new RowMatcher())
     {
-        public Dmin()
-            : this(new RowMatcher())
-        {
 
+    }
+
+    public Dmin(RowMatcher rowMatcher)
+        : base(rowMatcher)
+    {
+
+    }
+    public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
+    {
+        ValidateArguments(arguments, 3);
+        IEnumerable<double>? values = this.GetMatchingValues(arguments, context);
+        if (!values.Any())
+        {
+            return this.CreateResult(0d, DataType.Integer);
         }
 
-        public Dmin(RowMatcher rowMatcher)
-            : base(rowMatcher)
-        {
-
-        }
-        public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
-        {
-            ValidateArguments(arguments, 3);
-            IEnumerable<double>? values = this.GetMatchingValues(arguments, context);
-            if (!values.Any())
-            {
-                return this.CreateResult(0d, DataType.Integer);
-            }
-
-            return this.CreateResult(values.Min(), DataType.Integer);
-        }
+        return this.CreateResult(values.Min(), DataType.Integer);
     }
 }

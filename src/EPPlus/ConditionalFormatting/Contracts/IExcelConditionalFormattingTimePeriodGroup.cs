@@ -17,15 +17,14 @@ using System.Text;
 
 using OfficeOpenXml.ConditionalFormatting;
 
-namespace OfficeOpenXml.ConditionalFormatting.Contracts
+namespace OfficeOpenXml.ConditionalFormatting.Contracts;
+
+/// <summary>
+/// IExcelConditionalFormattingTimePeriod
+/// </summary>
+public interface IExcelConditionalFormattingTimePeriodGroup
+    : IExcelConditionalFormattingRule
 {
-	/// <summary>
-	/// IExcelConditionalFormattingTimePeriod
-	/// </summary>
-	public interface IExcelConditionalFormattingTimePeriodGroup
-		: IExcelConditionalFormattingRule
-	{
-		#region Public Properties
-		#endregion Public Properties
-	}
+    #region Public Properties
+    #endregion Public Properties
 }

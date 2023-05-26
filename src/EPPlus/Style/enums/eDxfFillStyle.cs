@@ -10,20 +10,19 @@
  *************************************************************************************************
   01/29/2021         EPPlus Software AB       EPPlus 5.6
  *************************************************************************************************/
-namespace OfficeOpenXml.Style
+namespace OfficeOpenXml.Style;
+
+/// <summary>
+/// Fill style for a differential style
+/// </summary>
+public enum eDxfFillStyle
 {
     /// <summary>
-    /// Fill style for a differential style
+    /// Fill using the selected pattern and color
     /// </summary>
-    public enum eDxfFillStyle
-    {
-        /// <summary>
-        /// Fill using the selected pattern and color
-        /// </summary>
-        PatternFill,
-        /// <summary>
-        /// A gradient fill using multiple colors.        
-        /// </summary>
-        GradientFill
-    }
+    PatternFill,
+    /// <summary>
+    /// A gradient fill using multiple colors.        
+    /// </summary>
+    GradientFill
 }

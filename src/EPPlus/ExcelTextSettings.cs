@@ -16,80 +16,79 @@ using OfficeOpenXml.Interfaces.Drawing.Text;
 using OfficeOpenXml.SystemDrawing.Text;
 using System;
 
-namespace OfficeOpenXml
+namespace OfficeOpenXml;
+
+/// <summary>
+/// This class contains settings for text measurement.
+/// </summary>
+public class ExcelTextSettings
 {
-    /// <summary>
-    /// This class contains settings for text measurement.
-    /// </summary>
-    public class ExcelTextSettings
+    internal ExcelTextSettings()
     {
-        internal ExcelTextSettings()
+        if(Environment.OSVersion.Platform==PlatformID.Unix ||
+           Environment.OSVersion.Platform==PlatformID.MacOSX)
         {
-            if(Environment.OSVersion.Platform==PlatformID.Unix ||
-               Environment.OSVersion.Platform==PlatformID.MacOSX)
+            this.PrimaryTextMeasurer = new GenericFontMetricsTextMeasurer();
+            try
             {
-                this.PrimaryTextMeasurer = new GenericFontMetricsTextMeasurer();
-                try
-                {
-                    this.FallbackTextMeasurer = new SystemDrawingTextMeasurer();
-                }
-                catch
-                {
-                    this.FallbackTextMeasurer = null;
-                }
+                this.FallbackTextMeasurer = new SystemDrawingTextMeasurer();
             }
-            else
+            catch
             {
-                try
+                this.FallbackTextMeasurer = null;
+            }
+        }
+        else
+        {
+            try
+            {
+                SystemDrawingTextMeasurer? m = new SystemDrawingTextMeasurer();
+                if (m.ValidForEnvironment())
                 {
-                    SystemDrawingTextMeasurer? m = new SystemDrawingTextMeasurer();
-                    if (m.ValidForEnvironment())
-                    {
-                        this.PrimaryTextMeasurer = m;
-                        this.FallbackTextMeasurer = new GenericFontMetricsTextMeasurer();
-                    }
-                    else
-                    {
-                        this.PrimaryTextMeasurer = new GenericFontMetricsTextMeasurer();
-                    }
+                    this.PrimaryTextMeasurer = m;
+                    this.FallbackTextMeasurer = new GenericFontMetricsTextMeasurer();
                 }
-                catch
+                else
                 {
                     this.PrimaryTextMeasurer = new GenericFontMetricsTextMeasurer();
                 }
             }
-
-            this.AutofitScaleFactor = 1f;
-        }
-
-        /// <summary>
-        /// This is the primary text measurer
-        /// </summary>
-        public ITextMeasurer PrimaryTextMeasurer { get; set; }
-
-        /// <summary>
-        /// If the primary text measurer fails to measure the text, this one will be used.
-        /// </summary>
-        public ITextMeasurer FallbackTextMeasurer { get; set; }
-
-        /// <summary>
-        /// All measurements of texts will be multiplied with this value. Default is 1.
-        /// </summary>
-        public float AutofitScaleFactor { get; set; }
-        /// <summary>
-        /// Returns an instance of the internal generic text measurer
-        /// </summary>
-        public static ITextMeasurer GenericTextMeasurer
-        {
-            get
+            catch
             {
-                return new GenericFontMetricsTextMeasurer();
+                this.PrimaryTextMeasurer = new GenericFontMetricsTextMeasurer();
             }
         }
 
-        /// <summary>
-        /// Measures a text with default settings when there is no other option left...
-        /// </summary>
-        internal DefaultTextMeasurer DefaultTextMeasurer { get; set; }
+        this.AutofitScaleFactor = 1f;
     }
+
+    /// <summary>
+    /// This is the primary text measurer
+    /// </summary>
+    public ITextMeasurer PrimaryTextMeasurer { get; set; }
+
+    /// <summary>
+    /// If the primary text measurer fails to measure the text, this one will be used.
+    /// </summary>
+    public ITextMeasurer FallbackTextMeasurer { get; set; }
+
+    /// <summary>
+    /// All measurements of texts will be multiplied with this value. Default is 1.
+    /// </summary>
+    public float AutofitScaleFactor { get; set; }
+    /// <summary>
+    /// Returns an instance of the internal generic text measurer
+    /// </summary>
+    public static ITextMeasurer GenericTextMeasurer
+    {
+        get
+        {
+            return new GenericFontMetricsTextMeasurer();
+        }
+    }
+
+    /// <summary>
+    /// Measures a text with default settings when there is no other option left...
+    /// </summary>
+    internal DefaultTextMeasurer DefaultTextMeasurer { get; set; }
 }

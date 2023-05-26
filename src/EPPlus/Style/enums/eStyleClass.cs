@@ -10,25 +10,24 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
-namespace OfficeOpenXml.Style
+namespace OfficeOpenXml.Style;
+
+internal enum eStyleClass
 {
-    internal enum eStyleClass
-    {
-        Numberformat,
-        Font,    
-        Border,
-        BorderTop,
-        BorderLeft,
-        BorderBottom,
-        BorderRight,
-        BorderDiagonal,
-        Fill,
-        GradientFill,
-        FillBackgroundColor,
-        FillPatternColor,
-        FillGradientColor1,
-        FillGradientColor2,
-        NamedStyle,
-        Style
-    };
-}
+    Numberformat,
+    Font,    
+    Border,
+    BorderTop,
+    BorderLeft,
+    BorderBottom,
+    BorderRight,
+    BorderDiagonal,
+    Fill,
+    GradientFill,
+    FillBackgroundColor,
+    FillPatternColor,
+    FillGradientColor1,
+    FillGradientColor2,
+    NamedStyle,
+    Style
+};

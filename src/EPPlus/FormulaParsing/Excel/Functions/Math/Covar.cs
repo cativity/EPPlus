@@ -17,38 +17,37 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
+
+[FunctionMetadata(
+                     Category = ExcelFunctionCategory.Statistical,
+                     EPPlusVersion = "5.5",
+                     Description = "Returns covariance, the average of the products of deviations for each data point pair in two data sets.")]
+internal class Covar : ExcelFunction
 {
-    [FunctionMetadata(
-        Category = ExcelFunctionCategory.Statistical,
-        EPPlusVersion = "5.5",
-        Description = "Returns covariance, the average of the products of deviations for each data point pair in two data sets.")]
-    internal class Covar : ExcelFunction
+    public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
     {
-        public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
+        ValidateArguments(arguments, 2);
+        ExcelDoubleCellValue[]? array1 = this.ArgsToDoubleEnumerable(arguments.Take(1), context).ToArray();
+        ExcelDoubleCellValue[]? array2 = this.ArgsToDoubleEnumerable(arguments.Skip(1).Take(1), context).ToArray();
+        if (array1.Length != array2.Length)
         {
-            ValidateArguments(arguments, 2);
-            ExcelDoubleCellValue[]? array1 = this.ArgsToDoubleEnumerable(arguments.Take(1), context).ToArray();
-            ExcelDoubleCellValue[]? array2 = this.ArgsToDoubleEnumerable(arguments.Skip(1).Take(1), context).ToArray();
-            if (array1.Length != array2.Length)
-            {
-                return this.CreateResult(eErrorType.NA);
-            }
-
-            if (array1.Length == 0)
-            {
-                return this.CreateResult(eErrorType.Div0);
-            }
-
-            double avg1 = array1.Select(x => x.Value).Average();
-            double avg2 = array2.Select(x => x.Value).Average();
-            double result = 0d;
-            for(int x = 0; x < array1.Length; x++)
-            {
-                result += (array1[x] - avg1) * (array2[x] - avg2);
-            }
-            result /= array1.Length;
-            return this.CreateResult(result, DataType.Decimal);
+            return this.CreateResult(eErrorType.NA);
         }
+
+        if (array1.Length == 0)
+        {
+            return this.CreateResult(eErrorType.Div0);
+        }
+
+        double avg1 = array1.Select(x => x.Value).Average();
+        double avg2 = array2.Select(x => x.Value).Average();
+        double result = 0d;
+        for(int x = 0; x < array1.Length; x++)
+        {
+            result += (array1[x] - avg1) * (array2[x] - avg2);
+        }
+        result /= array1.Length;
+        return this.CreateResult(result, DataType.Decimal);
     }
 }

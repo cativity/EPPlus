@@ -21,61 +21,60 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace OfficeOpenXml
+namespace OfficeOpenXml;
+
+/// <summary>
+/// This class contains settings for text measurement.
+/// </summary>
+public class ExcelImageSettings
 {
-    /// <summary>
-    /// This class contains settings for text measurement.
-    /// </summary>
-    public class ExcelImageSettings
+    internal ExcelImageSettings()
     {
-        internal ExcelImageSettings()
+        SystemDrawingImageHandler? m=new SystemDrawingImageHandler();
+        if(m.ValidForEnvironment())
         {
-            SystemDrawingImageHandler? m=new SystemDrawingImageHandler();
-            if(m.ValidForEnvironment())
-            {
-                this.PrimaryImageHandler = m;
-                this.SecondaryImageHandler = new GenericImageHandler();
-                this.TertiaryImageHandler = null;
-            }
-            else
-            {
-                this.PrimaryImageHandler = new GenericImageHandler();
-                this.SecondaryImageHandler = null;
-                this.TertiaryImageHandler = null;
-            }
+            this.PrimaryImageHandler = m;
+            this.SecondaryImageHandler = new GenericImageHandler();
+            this.TertiaryImageHandler = null;
         }
-
-        /// <summary>
-        /// This is the primary handler for images.
-        /// </summary>
-        public IImageHandler PrimaryImageHandler { get; set; }
-
-        /// <summary>
-        /// If the primary handler fails to measure the image, this one will be used.
-        /// </summary>
-        public IImageHandler SecondaryImageHandler { get; set; }
-
-        /// <summary>
-        /// If the secondary handler fails to measure the image, this one will be used.
-        /// </summary>
-        public IImageHandler TertiaryImageHandler { get; set; } = null;
-
-        internal bool GetImageBounds(MemoryStream ms, ePictureType type, out double width, out double height, out double horizontalResolution, out double verticalResolution)
+        else
         {
-            if(this.PrimaryImageHandler.SupportedTypes.Contains(type) && this.PrimaryImageHandler.GetImageBounds(ms, type,out width, out height, out horizontalResolution, out verticalResolution))
-            {
-                return true;
-            }
-            if (this.SecondaryImageHandler != null && this.SecondaryImageHandler.SupportedTypes.Contains(type) && this.SecondaryImageHandler.GetImageBounds(ms, type, out width, out height, out horizontalResolution, out verticalResolution))
-            {
-                return true;
-            }
-            if (this.TertiaryImageHandler != null && this.TertiaryImageHandler.SupportedTypes.Contains(type) && this.TertiaryImageHandler.GetImageBounds(ms, type, out width, out height, out horizontalResolution, out verticalResolution))
-            {
-                return true;
-            }
-            width = height = horizontalResolution = verticalResolution = 0;
-            return false;
+            this.PrimaryImageHandler = new GenericImageHandler();
+            this.SecondaryImageHandler = null;
+            this.TertiaryImageHandler = null;
         }
+    }
+
+    /// <summary>
+    /// This is the primary handler for images.
+    /// </summary>
+    public IImageHandler PrimaryImageHandler { get; set; }
+
+    /// <summary>
+    /// If the primary handler fails to measure the image, this one will be used.
+    /// </summary>
+    public IImageHandler SecondaryImageHandler { get; set; }
+
+    /// <summary>
+    /// If the secondary handler fails to measure the image, this one will be used.
+    /// </summary>
+    public IImageHandler TertiaryImageHandler { get; set; } = null;
+
+    internal bool GetImageBounds(MemoryStream ms, ePictureType type, out double width, out double height, out double horizontalResolution, out double verticalResolution)
+    {
+        if(this.PrimaryImageHandler.SupportedTypes.Contains(type) && this.PrimaryImageHandler.GetImageBounds(ms, type,out width, out height, out horizontalResolution, out verticalResolution))
+        {
+            return true;
+        }
+        if (this.SecondaryImageHandler != null && this.SecondaryImageHandler.SupportedTypes.Contains(type) && this.SecondaryImageHandler.GetImageBounds(ms, type, out width, out height, out horizontalResolution, out verticalResolution))
+        {
+            return true;
+        }
+        if (this.TertiaryImageHandler != null && this.TertiaryImageHandler.SupportedTypes.Contains(type) && this.TertiaryImageHandler.GetImageBounds(ms, type, out width, out height, out horizontalResolution, out verticalResolution))
+        {
+            return true;
+        }
+        width = height = horizontalResolution = verticalResolution = 0;
+        return false;
     }
 }

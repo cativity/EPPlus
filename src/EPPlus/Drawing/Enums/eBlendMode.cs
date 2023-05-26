@@ -10,32 +10,31 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
-namespace OfficeOpenXml.Drawing
+namespace OfficeOpenXml.Drawing;
+
+/// <summary>
+/// How to render effects one on top of another
+/// </summary>
+public enum eBlendMode
 {
     /// <summary>
-    /// How to render effects one on top of another
+    /// Overlay
     /// </summary>
-    public enum eBlendMode
-    {
-        /// <summary>
-        /// Overlay
-        /// </summary>
-        Over,
-        /// <summary>
-        /// Multiply
-        /// </summary>
-        Mult,
-        /// <summary>
-        /// Screen
-        /// </summary>
-        Screen,
-        /// <summary>
-        /// Darken
-        /// </summary>
-        Darken,
-        /// <summary>
-        /// Lighten
-        /// </summary>
-        Lighten
-    }
+    Over,
+    /// <summary>
+    /// Multiply
+    /// </summary>
+    Mult,
+    /// <summary>
+    /// Screen
+    /// </summary>
+    Screen,
+    /// <summary>
+    /// Darken
+    /// </summary>
+    Darken,
+    /// <summary>
+    /// Lighten
+    /// </summary>
+    Lighten
 }

@@ -33,65 +33,64 @@ using OfficeOpenXml;
 using OfficeOpenXml.FormulaParsing;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Database;
 
-namespace EPPlusTest.FormulaParsing.Excel.Functions.Database
+namespace EPPlusTest.FormulaParsing.Excel.Functions.Database;
+
+[TestClass]
+public class ExcelDatabaseTests
 {
-    [TestClass]
-    public class ExcelDatabaseTests
+    [TestMethod]
+    public void DatabaseShouldReadFields()
     {
-        [TestMethod]
-        public void DatabaseShouldReadFields()
-        {
-            using ExcelPackage? package = new ExcelPackage();
-            ExcelDatabase? database = GetDatabase(package);
+        using ExcelPackage? package = new ExcelPackage();
+        ExcelDatabase? database = GetDatabase(package);
 
-            Assert.AreEqual(2, database.Fields.Count(), "count was not 2");
-            Assert.AreEqual("col1", database.Fields.First().FieldName, "first fieldname was not 'col1'");
-            Assert.AreEqual("col2", database.Fields.Last().FieldName, "last fieldname was not 'col12'");
-        }
+        Assert.AreEqual(2, database.Fields.Count(), "count was not 2");
+        Assert.AreEqual("col1", database.Fields.First().FieldName, "first fieldname was not 'col1'");
+        Assert.AreEqual("col2", database.Fields.Last().FieldName, "last fieldname was not 'col12'");
+    }
 
-        [TestMethod]
-        public void HasMoreRowsShouldBeTrueWhenInitialized()
-        {
-            using ExcelPackage? package = new ExcelPackage();
-            ExcelDatabase? database = GetDatabase(package);
+    [TestMethod]
+    public void HasMoreRowsShouldBeTrueWhenInitialized()
+    {
+        using ExcelPackage? package = new ExcelPackage();
+        ExcelDatabase? database = GetDatabase(package);
 
-            Assert.IsTrue(database.HasMoreRows);
+        Assert.IsTrue(database.HasMoreRows);
 
-        }
+    }
 
-        [TestMethod]
-        public void HasMoreRowsShouldBeFalseWhenLastRowIsRead()
-        {
-            using ExcelPackage? package = new ExcelPackage();
-            ExcelDatabase? database = GetDatabase(package);
-            database.Read();
+    [TestMethod]
+    public void HasMoreRowsShouldBeFalseWhenLastRowIsRead()
+    {
+        using ExcelPackage? package = new ExcelPackage();
+        ExcelDatabase? database = GetDatabase(package);
+        database.Read();
 
-            Assert.IsFalse(database.HasMoreRows);
+        Assert.IsFalse(database.HasMoreRows);
 
-        }
+    }
 
-        [TestMethod]
-        public void DatabaseShouldReadFieldsInRow()
-        {
-            using ExcelPackage? package = new ExcelPackage();
-            ExcelDatabase? database = GetDatabase(package);
-            ExcelDatabaseRow? row = database.Read();
+    [TestMethod]
+    public void DatabaseShouldReadFieldsInRow()
+    {
+        using ExcelPackage? package = new ExcelPackage();
+        ExcelDatabase? database = GetDatabase(package);
+        ExcelDatabaseRow? row = database.Read();
 
-            Assert.AreEqual(1, row["col1"]);
-            Assert.AreEqual(2, row["col2"]);
+        Assert.AreEqual(1, row["col1"]);
+        Assert.AreEqual(2, row["col2"]);
 
-        }
+    }
 
-        private static ExcelDatabase GetDatabase(ExcelPackage package)
-        {
-            EpplusExcelDataProvider? provider = new EpplusExcelDataProvider(package);
-            ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
-            sheet.Cells["A1"].Value = "col1";
-            sheet.Cells["A2"].Value = 1;
-            sheet.Cells["B1"].Value = "col2";
-            sheet.Cells["B2"].Value = 2;
-            ExcelDatabase? database = new ExcelDatabase(provider, "A1:B2");
-            return database;
-        }
+    private static ExcelDatabase GetDatabase(ExcelPackage package)
+    {
+        EpplusExcelDataProvider? provider = new EpplusExcelDataProvider(package);
+        ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
+        sheet.Cells["A1"].Value = "col1";
+        sheet.Cells["A2"].Value = 1;
+        sheet.Cells["B1"].Value = "col2";
+        sheet.Cells["B2"].Value = 2;
+        ExcelDatabase? database = new ExcelDatabase(provider, "A1:B2");
+        return database;
     }
 }

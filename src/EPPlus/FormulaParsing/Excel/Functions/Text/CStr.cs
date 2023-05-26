@@ -16,14 +16,13 @@ using System.Linq;
 using System.Text;
 using OfficeOpenXml.FormulaParsing.ExpressionGraph;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Text
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Text;
+
+internal class CStr : ExcelFunction
 {
-    internal class CStr : ExcelFunction
+    public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
     {
-        public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
-        {
-            ValidateArguments(arguments, 1);
-            return this.CreateResult(ArgToString(arguments, 0), DataType.String);
-        }
+        ValidateArguments(arguments, 1);
+        return this.CreateResult(ArgToString(arguments, 0), DataType.String);
     }
 }

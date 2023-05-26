@@ -33,82 +33,81 @@ using OfficeOpenXml.Drawing.Chart;
 using System;
 using System.Xml;
 
-namespace EPPlusTest.Drawing.Chart.Styling
+namespace EPPlusTest.Drawing.Chart.Styling;
+
+[TestClass]
+public class LineChartTest : TestBase
 {
-    [TestClass]
-    public class LineChartTest : TestBase
+    static ExcelPackage _pck;
+    [ClassInitialize]
+    public static void Init(TestContext context)
     {
-        static ExcelPackage _pck;
-        [ClassInitialize]
-        public static void Init(TestContext context)
-        {
-            _pck = OpenPackage("LineChart.xlsx", true);
-        }
-        [ClassCleanup]
-        public static void Cleanup()
-        {
-            SaveAndCleanup(_pck);
-        }
-        [TestMethod]
-        public void DropLines()
-        {
-            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("DropLines");
-            LoadTestdata(ws);
+        _pck = OpenPackage("LineChart.xlsx", true);
+    }
+    [ClassCleanup]
+    public static void Cleanup()
+    {
+        SaveAndCleanup(_pck);
+    }
+    [TestMethod]
+    public void DropLines()
+    {
+        ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("DropLines");
+        LoadTestdata(ws);
 
-            ExcelLineChart? chart = AddLine(ws, eLineChartType.Line, "line1", 0, 0);
-            ExcelChartStyleItem? dl=chart.AddDropLines();
-            dl.Border.Fill.Style = eFillStyle.SolidFill;
-            dl.Border.Fill.SolidFill.Color.SetSchemeColor(eSchemeColor.Accent2);
+        ExcelLineChart? chart = AddLine(ws, eLineChartType.Line, "line1", 0, 0);
+        ExcelChartStyleItem? dl=chart.AddDropLines();
+        dl.Border.Fill.Style = eFillStyle.SolidFill;
+        dl.Border.Fill.SolidFill.Color.SetSchemeColor(eSchemeColor.Accent2);
 
-            Assert.IsNotNull(chart.DropLine);
-            Assert.AreEqual(eFillStyle.SolidFill, dl.Border.Fill.Style);
-            Assert.AreEqual(eSchemeColor.Accent2, dl.Border.Fill.SolidFill.Color.SchemeColor.Color);
-        }
-        [TestMethod]
-        public void UpDownBars()
-        {
-            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("UpDownBars");
-            LoadTestdata(ws);
+        Assert.IsNotNull(chart.DropLine);
+        Assert.AreEqual(eFillStyle.SolidFill, dl.Border.Fill.Style);
+        Assert.AreEqual(eSchemeColor.Accent2, dl.Border.Fill.SolidFill.Color.SchemeColor.Color);
+    }
+    [TestMethod]
+    public void UpDownBars()
+    {
+        ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("UpDownBars");
+        LoadTestdata(ws);
 
-            ExcelLineChart? chart = AddLine(ws, eLineChartType.Line, "line1", 0, 0);
-            chart.Series.Add("B2:B50", "D2:D50");
-            chart.Series.Add("C2:C50", "D2:D50");
-            chart.AddUpDownBars();
-            chart.UpDownBarGapWidth = 4;
-            chart.DownBar.Border.Fill.Style = eFillStyle.SolidFill;
-            chart.DownBar.Border.Fill.SolidFill.Color.SetPresetColor(ePresetColor.DarkRed);
-            chart.UpBar.Border.Fill.Style = eFillStyle.SolidFill;
-            chart.UpBar.Border.Fill.SolidFill.Color.SetSystemColor(eSystemColor.CaptionText);
+        ExcelLineChart? chart = AddLine(ws, eLineChartType.Line, "line1", 0, 0);
+        chart.Series.Add("B2:B50", "D2:D50");
+        chart.Series.Add("C2:C50", "D2:D50");
+        chart.AddUpDownBars();
+        chart.UpDownBarGapWidth = 4;
+        chart.DownBar.Border.Fill.Style = eFillStyle.SolidFill;
+        chart.DownBar.Border.Fill.SolidFill.Color.SetPresetColor(ePresetColor.DarkRed);
+        chart.UpBar.Border.Fill.Style = eFillStyle.SolidFill;
+        chart.UpBar.Border.Fill.SolidFill.Color.SetSystemColor(eSystemColor.CaptionText);
 
-            Assert.AreEqual(eFillStyle.SolidFill, chart.DownBar.Border.Fill.Style);
-            Assert.AreEqual(ePresetColor.DarkRed, chart.DownBar.Border.Fill.SolidFill.Color.PresetColor.Color);
+        Assert.AreEqual(eFillStyle.SolidFill, chart.DownBar.Border.Fill.Style);
+        Assert.AreEqual(ePresetColor.DarkRed, chart.DownBar.Border.Fill.SolidFill.Color.PresetColor.Color);
 
-            Assert.AreEqual(eFillStyle.SolidFill, chart.UpBar.Border.Fill.Style);
-            Assert.AreEqual(eSystemColor.CaptionText, chart.UpBar.Border.Fill.SolidFill.Color.SystemColor.Color);
-        }
-        [TestMethod]
-        public void HighLowLines()
-        {
-            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("HighLowLines");
-            LoadTestdata(ws);
+        Assert.AreEqual(eFillStyle.SolidFill, chart.UpBar.Border.Fill.Style);
+        Assert.AreEqual(eSystemColor.CaptionText, chart.UpBar.Border.Fill.SolidFill.Color.SystemColor.Color);
+    }
+    [TestMethod]
+    public void HighLowLines()
+    {
+        ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("HighLowLines");
+        LoadTestdata(ws);
 
-            ExcelLineChart? chart = AddLine(ws, eLineChartType.Line, "line1", 0, 0);
-            chart.Series.Add("B2:B50", "D2:D50");
-            chart.Series.Add("C2:C50", "D2:D50");
-            chart.AddHighLowLines();
-            chart.HighLowLine.Border.Fill.Style = eFillStyle.SolidFill;
-            chart.HighLowLine.Border.Fill.SolidFill.Color.SetPresetColor(ePresetColor.Red);
-        }
-        private static ExcelLineChart AddLine(ExcelWorksheet ws, eLineChartType type, string name, int row, int col)    
-        {
-            ExcelLineChart? chart = ws.Drawings.AddLineChart(name, type);
-            chart.SetPosition(row, 0, col, 0);
-            chart.To.Column = col+12;
-            chart.To.ColumnOff = 0;
-            chart.To.Row = row + 18;
-            chart.To.RowOff = 0;
-            chart.Series.Add("D2:D50", "A2:A50");
-            return chart;
-        }
+        ExcelLineChart? chart = AddLine(ws, eLineChartType.Line, "line1", 0, 0);
+        chart.Series.Add("B2:B50", "D2:D50");
+        chart.Series.Add("C2:C50", "D2:D50");
+        chart.AddHighLowLines();
+        chart.HighLowLine.Border.Fill.Style = eFillStyle.SolidFill;
+        chart.HighLowLine.Border.Fill.SolidFill.Color.SetPresetColor(ePresetColor.Red);
+    }
+    private static ExcelLineChart AddLine(ExcelWorksheet ws, eLineChartType type, string name, int row, int col)    
+    {
+        ExcelLineChart? chart = ws.Drawings.AddLineChart(name, type);
+        chart.SetPosition(row, 0, col, 0);
+        chart.To.Column = col+12;
+        chart.To.ColumnOff = 0;
+        chart.To.Row = row + 18;
+        chart.To.RowOff = 0;
+        chart.Series.Add("D2:D50", "A2:A50");
+        return chart;
     }
 }

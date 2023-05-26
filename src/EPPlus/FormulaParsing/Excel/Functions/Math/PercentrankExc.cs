@@ -17,33 +17,32 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
-{
-    [FunctionMetadata(
-        Category = ExcelFunctionCategory.Statistical,
-        EPPlusVersion = "5.5",
-        IntroducedInExcelVersion = "2010",
-        Description = "Returns the rank of a value in a data set, as a percentage (0 - 1 exclusive)")]
-    internal class PercentrankExc : RankFunctionBase
-    {
-        public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
-        {
-            ValidateArguments(arguments, 2);
-            double[]? array = this.GetNumbersFromArgs(arguments, 0, context);
-            double number = this.ArgToDecimal(arguments, 1);
-            if (number < array.First() || number > array.Last())
-            {
-                return this.CreateResult(eErrorType.NA);
-            }
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
 
-            int significance = 3;
-            if (arguments.Count() > 2)
-            {
-                significance = this.ArgToInt(arguments, 2);
-            }
-            double result = PercentRankExcImpl(array, number);
-            result = RoundResult(result, significance);
-            return this.CreateResult(result, DataType.Decimal);
+[FunctionMetadata(
+                     Category = ExcelFunctionCategory.Statistical,
+                     EPPlusVersion = "5.5",
+                     IntroducedInExcelVersion = "2010",
+                     Description = "Returns the rank of a value in a data set, as a percentage (0 - 1 exclusive)")]
+internal class PercentrankExc : RankFunctionBase
+{
+    public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
+    {
+        ValidateArguments(arguments, 2);
+        double[]? array = this.GetNumbersFromArgs(arguments, 0, context);
+        double number = this.ArgToDecimal(arguments, 1);
+        if (number < array.First() || number > array.Last())
+        {
+            return this.CreateResult(eErrorType.NA);
         }
+
+        int significance = 3;
+        if (arguments.Count() > 2)
+        {
+            significance = this.ArgToInt(arguments, 2);
+        }
+        double result = PercentRankExcImpl(array, number);
+        result = RoundResult(result, significance);
+        return this.CreateResult(result, DataType.Decimal);
     }
 }

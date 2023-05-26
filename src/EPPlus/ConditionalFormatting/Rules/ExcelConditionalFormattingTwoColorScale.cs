@@ -18,15 +18,15 @@ using System.Drawing;
 using System.Xml;
 using OfficeOpenXml.ConditionalFormatting.Contracts;
 
-namespace OfficeOpenXml.ConditionalFormatting
-{
-  /// <summary>
-  /// ExcelConditionalFormattingTwoColorScale
-  /// </summary>
-  public class ExcelConditionalFormattingTwoColorScale
+namespace OfficeOpenXml.ConditionalFormatting;
+
+/// <summary>
+/// ExcelConditionalFormattingTwoColorScale
+/// </summary>
+public class ExcelConditionalFormattingTwoColorScale
     : ExcelConditionalFormattingRule,
-    IExcelConditionalFormattingTwoColorScale
-  {
+      IExcelConditionalFormattingTwoColorScale
+{
     /****************************************************************************************/
 
     #region Private Properties
@@ -53,74 +53,74 @@ namespace OfficeOpenXml.ConditionalFormatting
     /// <param name="itemElementNode"></param>
     /// <param name="namespaceManager"></param>
     internal ExcelConditionalFormattingTwoColorScale(
-      ExcelAddress address,
-      int priority,
-      ExcelWorksheet worksheet,
-      XmlNode itemElementNode,
-      XmlNamespaceManager namespaceManager)
-      : base(
-        eExcelConditionalFormattingRuleType.TwoColorScale,
-        address,
-        priority,
-        worksheet,
-        itemElementNode,
-        (namespaceManager == null) ? worksheet.NameSpaceManager : namespaceManager)
+        ExcelAddress address,
+        int priority,
+        ExcelWorksheet worksheet,
+        XmlNode itemElementNode,
+        XmlNamespaceManager namespaceManager)
+        : base(
+               eExcelConditionalFormattingRuleType.TwoColorScale,
+               address,
+               priority,
+               worksheet,
+               itemElementNode,
+               (namespaceManager == null) ? worksheet.NameSpaceManager : namespaceManager)
     {
-            // If the node is not null, parse values out of it instead of clobbering it.
-            if (itemElementNode == null)
-            {
-                // Create the <colorScale> node inside the <cfRule> node
-                this.CreateComplexNode(this.TopNode,
-                                       ExcelConditionalFormattingConstants.Paths.ColorScale);
-            }
-            else
-            {
-                itemElementNode = itemElementNode.ChildNodes[0];
-            }   
-            // LowValue default
-            this.LowValue = new ExcelConditionalFormattingColorScaleValue(
-                                                                          eExcelConditionalFormattingValueObjectPosition.Low,
-                                                                          eExcelConditionalFormattingValueObjectType.Min,
-                                                                          ExcelConditionalFormattingConstants.Colors.CfvoLowValue,
-                                                                          eExcelConditionalFormattingRuleType.TwoColorScale,
-                                                                          address,
-                                                                          priority,
-                                                                          worksheet,
-                                                                          itemElementNode,
-                                                                          this.NameSpaceManager);
-
-            // HighValue default
-            this.HighValue = new ExcelConditionalFormattingColorScaleValue(
-                                                                           eExcelConditionalFormattingValueObjectPosition.High,
-                                                                           eExcelConditionalFormattingValueObjectType.Max,
-                                                                           ExcelConditionalFormattingConstants.Colors.CfvoHighValue,
-                                                                           eExcelConditionalFormattingRuleType.TwoColorScale,
-                                                                           address,
-                                                                           priority,
-                                                                           worksheet,
-                                                                           itemElementNode,
-                                                                           this.NameSpaceManager);
-
+        // If the node is not null, parse values out of it instead of clobbering it.
+        if (itemElementNode == null)
+        {
+            // Create the <colorScale> node inside the <cfRule> node
+            this.CreateComplexNode(this.TopNode,
+                                   ExcelConditionalFormattingConstants.Paths.ColorScale);
         }
+        else
+        {
+            itemElementNode = itemElementNode.ChildNodes[0];
+        }   
+        // LowValue default
+        this.LowValue = new ExcelConditionalFormattingColorScaleValue(
+                                                                      eExcelConditionalFormattingValueObjectPosition.Low,
+                                                                      eExcelConditionalFormattingValueObjectType.Min,
+                                                                      ExcelConditionalFormattingConstants.Colors.CfvoLowValue,
+                                                                      eExcelConditionalFormattingRuleType.TwoColorScale,
+                                                                      address,
+                                                                      priority,
+                                                                      worksheet,
+                                                                      itemElementNode,
+                                                                      this.NameSpaceManager);
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="priority"></param>
-        /// <param name="address"></param>
-        /// <param name="worksheet"></param>
-        /// <param name="itemElementNode"></param>
-        internal ExcelConditionalFormattingTwoColorScale(
-      ExcelAddress address,
-      int priority,
-      ExcelWorksheet worksheet,
-      XmlNode itemElementNode)
-      : this(
-        address,
-        priority,
-        worksheet,
-        itemElementNode,
-        null)
+        // HighValue default
+        this.HighValue = new ExcelConditionalFormattingColorScaleValue(
+                                                                       eExcelConditionalFormattingValueObjectPosition.High,
+                                                                       eExcelConditionalFormattingValueObjectType.Max,
+                                                                       ExcelConditionalFormattingConstants.Colors.CfvoHighValue,
+                                                                       eExcelConditionalFormattingRuleType.TwoColorScale,
+                                                                       address,
+                                                                       priority,
+                                                                       worksheet,
+                                                                       itemElementNode,
+                                                                       this.NameSpaceManager);
+
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="priority"></param>
+    /// <param name="address"></param>
+    /// <param name="worksheet"></param>
+    /// <param name="itemElementNode"></param>
+    internal ExcelConditionalFormattingTwoColorScale(
+        ExcelAddress address,
+        int priority,
+        ExcelWorksheet worksheet,
+        XmlNode itemElementNode)
+        : this(
+               address,
+               priority,
+               worksheet,
+               itemElementNode,
+               null)
     {
     }
 
@@ -131,15 +131,15 @@ namespace OfficeOpenXml.ConditionalFormatting
     /// <param name="address"></param>
     /// <param name="worksheet"></param>
     internal ExcelConditionalFormattingTwoColorScale(
-      ExcelAddress address,
-      int priority,
-      ExcelWorksheet worksheet)
-      : this(
-        address,
-        priority,
-        worksheet,
-        null,
-        null)
+        ExcelAddress address,
+        int priority,
+        ExcelWorksheet worksheet)
+        : this(
+               address,
+               priority,
+               worksheet,
+               null,
+               null)
     {
     }
     #endregion Constructors
@@ -152,8 +152,8 @@ namespace OfficeOpenXml.ConditionalFormatting
     /// </summary>
     public ExcelConditionalFormattingColorScaleValue LowValue
     {
-      get { return this._lowValue; }
-      set { this._lowValue = value; }
+        get { return this._lowValue; }
+        set { this._lowValue = value; }
     }
 
     /// <summary>
@@ -161,11 +161,10 @@ namespace OfficeOpenXml.ConditionalFormatting
     /// </summary>
     public ExcelConditionalFormattingColorScaleValue HighValue
     {
-      get { return this._highValue; }
-      set { this._highValue = value; }
+        get { return this._highValue; }
+        set { this._highValue = value; }
     }
     #endregion Public Properties
 
     /****************************************************************************************/
-  }
 }

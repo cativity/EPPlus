@@ -17,43 +17,42 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Logical
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Logical;
+
+[FunctionMetadata(
+                     Category = ExcelFunctionCategory.Logical,
+                     EPPlusVersion = "5.5",
+                     Description = "Returns a logical Exclusive Or of all arguments",
+                     IntroducedInExcelVersion = "2013")]
+internal class Xor : ExcelFunction
 {
-    [FunctionMetadata(
-            Category = ExcelFunctionCategory.Logical,
-            EPPlusVersion = "5.5",
-            Description = "Returns a logical Exclusive Or of all arguments",
-            IntroducedInExcelVersion = "2013")]
-    internal class Xor : ExcelFunction
+    public Xor()
+        : this(new DoubleEnumerableArgConverter())
     {
-        public Xor()
-            : this(new DoubleEnumerableArgConverter())
+
+    }
+
+    public Xor(DoubleEnumerableArgConverter converter)
+    {
+        this._converter = converter;
+    }
+
+    private readonly DoubleEnumerableArgConverter _converter;
+
+    public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
+    {
+        ValidateArguments(arguments, 1);
+        List<bool>? results = new List<bool>();
+        IEnumerable<ExcelDoubleCellValue>? values = this._converter.ConvertArgsIncludingOtherTypes(arguments, false);
+        int nTrue = 0;
+        foreach(ExcelDoubleCellValue val in values)
         {
-
-        }
-
-        public Xor(DoubleEnumerableArgConverter converter)
-        {
-            this._converter = converter;
-        }
-
-        private readonly DoubleEnumerableArgConverter _converter;
-
-        public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
-        {
-            ValidateArguments(arguments, 1);
-            List<bool>? results = new List<bool>();
-            IEnumerable<ExcelDoubleCellValue>? values = this._converter.ConvertArgsIncludingOtherTypes(arguments, false);
-            int nTrue = 0;
-            foreach(ExcelDoubleCellValue val in values)
+            if(val != 0d)
             {
-                if(val != 0d)
-                {
-                    nTrue++;
-                }
+                nTrue++;
             }
-            bool result = (System.Math.Abs(nTrue) & 1) != 0;
-            return this.CreateResult(result, DataType.Boolean);
         }
+        bool result = (System.Math.Abs(nTrue) & 1) != 0;
+        return this.CreateResult(result, DataType.Boolean);
     }
 }

@@ -16,34 +16,33 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace OfficeOpenXml.Sorting.Internal
-{
-    internal static class SortItemLeftToRightFactory
-    {
-        internal static List<SortItemLeftToRight<ExcelValue>> Create(ExcelRangeBase range)
-        {
-            List<SortItemLeftToRight<ExcelValue>>? sortItems = new List<SortItemLeftToRight<ExcelValue>>();
-            int nRows = range._toRow - range._fromRow + 1;
-            int col = range._fromCol;
+namespace OfficeOpenXml.Sorting.Internal;
 
-            while (col <= range._toCol)
+internal static class SortItemLeftToRightFactory
+{
+    internal static List<SortItemLeftToRight<ExcelValue>> Create(ExcelRangeBase range)
+    {
+        List<SortItemLeftToRight<ExcelValue>>? sortItems = new List<SortItemLeftToRight<ExcelValue>>();
+        int nRows = range._toRow - range._fromRow + 1;
+        int col = range._fromCol;
+
+        while (col <= range._toCol)
+        {
+            int currentRow = 0;
+            SortItemLeftToRight<ExcelValue>? sortItem = new SortItemLeftToRight<ExcelValue> { Column = col, Items = new ExcelValue[nRows] };
+            while(currentRow < nRows)
             {
-                int currentRow = 0;
-                SortItemLeftToRight<ExcelValue>? sortItem = new SortItemLeftToRight<ExcelValue> { Column = col, Items = new ExcelValue[nRows] };
-                while(currentRow < nRows)
-                {
-                    int row = currentRow + range._fromRow;
-                    ExcelRange? cell = range.Worksheet.Cells[row, col, row, col];
-                    ExcelValue v = new ExcelValue();
-                    v._styleId = cell.StyleID;
-                    v._value = cell.Value;
-                    sortItem.Items[currentRow] = v;
-                    currentRow++;
-                }
-                sortItems.Add(sortItem);
-                col++;
+                int row = currentRow + range._fromRow;
+                ExcelRange? cell = range.Worksheet.Cells[row, col, row, col];
+                ExcelValue v = new ExcelValue();
+                v._styleId = cell.StyleID;
+                v._value = cell.Value;
+                sortItem.Items[currentRow] = v;
+                currentRow++;
             }
-            return sortItems;
+            sortItems.Add(sortItem);
+            col++;
         }
+        return sortItems;
     }
 }

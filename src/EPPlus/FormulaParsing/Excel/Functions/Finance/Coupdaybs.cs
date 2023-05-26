@@ -19,18 +19,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance;
+
+[FunctionMetadata(
+                     Category = ExcelFunctionCategory.Financial,
+                     EPPlusVersion = "5.2",
+                     Description = "Calculates the number of days from the beginning of the coupon period to the settlement date")]
+internal class Coupdaybs : CoupFunctionBase<int>
 {
-    [FunctionMetadata(
-        Category = ExcelFunctionCategory.Financial,
-        EPPlusVersion = "5.2",
-        Description = "Calculates the number of days from the beginning of the coupon period to the settlement date")]
-    internal class Coupdaybs : CoupFunctionBase<int>
+    protected override FinanceCalcResult<int> ExecuteFunction(FinancialDay settlementDate, FinancialDay maturityDate, int frequency, DayCountBasis basis = DayCountBasis.US_30_360)
     {
-        protected override FinanceCalcResult<int> ExecuteFunction(FinancialDay settlementDate, FinancialDay maturityDate, int frequency, DayCountBasis basis = DayCountBasis.US_30_360)
-        {
-            CoupdaybsImpl? impl = new CoupdaybsImpl(settlementDate, maturityDate, frequency, basis);
-            return impl.Coupdaybs();
-        }
+        CoupdaybsImpl? impl = new CoupdaybsImpl(settlementDate, maturityDate, frequency, basis);
+        return impl.Coupdaybs();
     }
 }

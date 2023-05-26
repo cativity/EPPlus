@@ -18,55 +18,54 @@ using System.Text;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Metadata;
 using OfficeOpenXml.FormulaParsing.ExpressionGraph;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Database
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Database;
+
+[FunctionMetadata(
+                     Category = ExcelFunctionCategory.Database,
+                     EPPlusVersion = "4",
+                     Description = "Returns a single value from a field of a list or database, that satisfy specified conditions")]
+internal class Dget : DatabaseFunction
 {
-    [FunctionMetadata(
-        Category = ExcelFunctionCategory.Database,
-        EPPlusVersion = "4",
-        Description = "Returns a single value from a field of a list or database, that satisfy specified conditions")]
-    internal class Dget : DatabaseFunction
+
+    public Dget()
+        : this(new RowMatcher())
+    {
+            
+    }
+
+    public Dget(RowMatcher rowMatcher)
+        : base(rowMatcher)
     {
 
-        public Dget()
-            : this(new RowMatcher())
+    }
+
+    public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
+    {
+        ValidateArguments(arguments, 3);
+        string? dbAddress = arguments.ElementAt(0).ValueAsRangeInfo.Address.Address;
+        string? field = ArgToString(arguments, 1).ToLower(CultureInfo.InvariantCulture);
+        string? criteriaRange = arguments.ElementAt(2).ValueAsRangeInfo.Address.Address;
+
+        ExcelDatabase? db = new ExcelDatabase(context.ExcelDataProvider, dbAddress);
+        ExcelDatabaseCriteria? criteria = new ExcelDatabaseCriteria(context.ExcelDataProvider, criteriaRange);
+
+        int nHits = 0;
+        object retVal = null;
+        while (db.HasMoreRows)
         {
-            
-        }
-
-        public Dget(RowMatcher rowMatcher)
-            : base(rowMatcher)
-        {
-
-        }
-
-        public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
-        {
-            ValidateArguments(arguments, 3);
-            string? dbAddress = arguments.ElementAt(0).ValueAsRangeInfo.Address.Address;
-            string? field = ArgToString(arguments, 1).ToLower(CultureInfo.InvariantCulture);
-            string? criteriaRange = arguments.ElementAt(2).ValueAsRangeInfo.Address.Address;
-
-            ExcelDatabase? db = new ExcelDatabase(context.ExcelDataProvider, dbAddress);
-            ExcelDatabaseCriteria? criteria = new ExcelDatabaseCriteria(context.ExcelDataProvider, criteriaRange);
-
-            int nHits = 0;
-            object retVal = null;
-            while (db.HasMoreRows)
+            ExcelDatabaseRow? dataRow = db.Read();
+            if (!this.RowMatcher.IsMatch(dataRow, criteria))
             {
-                ExcelDatabaseRow? dataRow = db.Read();
-                if (!this.RowMatcher.IsMatch(dataRow, criteria))
-                {
-                    continue;
-                }
-
-                if(++nHits > 1)
-                {
-                    return this.CreateResult(ExcelErrorValue.Values.Num, DataType.ExcelError);
-                }
-
-                retVal = dataRow[field];
+                continue;
             }
-            return new CompileResultFactory().Create(retVal);
+
+            if(++nHits > 1)
+            {
+                return this.CreateResult(ExcelErrorValue.Values.Num, DataType.ExcelError);
+            }
+
+            retVal = dataRow[field];
         }
+        return new CompileResultFactory().Create(retVal);
     }
 }

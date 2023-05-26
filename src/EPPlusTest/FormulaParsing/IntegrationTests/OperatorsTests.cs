@@ -31,43 +31,42 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OfficeOpenXml;
 using OfficeOpenXml.FormulaParsing.Exceptions;
 
-namespace EPPlusTest.FormulaParsing.IntegrationTests
+namespace EPPlusTest.FormulaParsing.IntegrationTests;
+
+[TestClass]
+public class OperatorsTests
 {
-    [TestClass]
-    public class OperatorsTests
+    private ExcelPackage _package;
+    private ExcelWorksheet _ws;
+    private readonly ExcelErrorValue DivByZero = ExcelErrorValue.Create(eErrorType.Div0);
+
+    [TestInitialize]
+    public void Initialize()
     {
-        private ExcelPackage _package;
-        private ExcelWorksheet _ws;
-        private readonly ExcelErrorValue DivByZero = ExcelErrorValue.Create(eErrorType.Div0);
+        this._package = new ExcelPackage();
+        this._ws = this._package.Workbook.Worksheets.Add("test");
+    }
 
-        [TestInitialize]
-        public void Initialize()
-        {
-            this._package = new ExcelPackage();
-            this._ws = this._package.Workbook.Worksheets.Add("test");
-        }
+    [TestCleanup]
+    public void Cleanup()
+    {
+        this._package.Dispose();
+    }
 
-        [TestCleanup]
-        public void Cleanup()
-        {
-            this._package.Dispose();
-        }
+    [TestMethod]
+    public void DivByZeroShouldReturnError()
+    {
+        object? result = this._ws.Calculate("10/0 + 3");
+        Assert.AreEqual(this.DivByZero, result);
+    }
 
-        [TestMethod]
-        public void DivByZeroShouldReturnError()
-        {
-            object? result = this._ws.Calculate("10/0 + 3");
-            Assert.AreEqual(this.DivByZero, result);
-        }
+    [TestMethod]
+    public void ConcatShouldUseFormatG15()
+    {
+        object? result = this._ws.Calculate("14.000000000000002 & \"%\"");
+        Assert.AreEqual("14%", result);
 
-        [TestMethod]
-        public void ConcatShouldUseFormatG15()
-        {
-            object? result = this._ws.Calculate("14.000000000000002 & \"%\"");
-            Assert.AreEqual("14%", result);
-
-            result = this._ws.Calculate("\"%\" & 14.000000000000002");
-            Assert.AreEqual("%14", result);
-        }
+        result = this._ws.Calculate("\"%\" & 14.000000000000002");
+        Assert.AreEqual("%14", result);
     }
 }

@@ -13,34 +13,33 @@
 using OfficeOpenXml.Core;
 using System.Collections.Generic;
 
-namespace OfficeOpenXml.ExternalReferences
+namespace OfficeOpenXml.ExternalReferences;
+
+/// <summary>
+/// A collection of external worksheets
+/// </summary>
+public class ExcelExternalWorksheetCollection : EPPlusReadOnlyList<ExcelExternalWorksheet>
 {
+    Dictionary<string, int> _sheetNames=new Dictionary<string, int>();
     /// <summary>
-    /// A collection of external worksheets
+    /// The indexer to reference the external worksheet objects 
     /// </summary>
-    public class ExcelExternalWorksheetCollection : EPPlusReadOnlyList<ExcelExternalWorksheet>
+    /// <param name="name">The name of the worksheet</param>
+    /// <returns></returns>
+    public ExcelExternalWorksheet this[string name]
     {
-        Dictionary<string, int> _sheetNames=new Dictionary<string, int>();
-        /// <summary>
-        /// The indexer to reference the external worksheet objects 
-        /// </summary>
-        /// <param name="name">The name of the worksheet</param>
-        /// <returns></returns>
-        public ExcelExternalWorksheet this[string name]
+        get
         {
-            get
+            if (this._sheetNames.ContainsKey(name))
             {
-                if (this._sheetNames.ContainsKey(name))
-                {
-                    return this._list[this._sheetNames[name]];
-                }
-                return null;
+                return this._list[this._sheetNames[name]];
             }
+            return null;
         }
-        internal override void Add(ExcelExternalWorksheet item)
-        {
-            this._sheetNames.Add(item.Name, this._list.Count);
-            base.Add(item);
-        }
+    }
+    internal override void Add(ExcelExternalWorksheet item)
+    {
+        this._sheetNames.Add(item.Name, this._list.Count);
+        base.Add(item);
     }
 }

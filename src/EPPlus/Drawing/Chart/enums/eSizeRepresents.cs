@@ -10,20 +10,19 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
-namespace OfficeOpenXml.Drawing.Chart
+namespace OfficeOpenXml.Drawing.Chart;
+
+/// <summary>
+/// How to represent data as bubble chart sizes
+/// </summary>
+public enum eSizeRepresents
 {
     /// <summary>
-    /// How to represent data as bubble chart sizes
+    /// The area of the bubbles will be proportional to the bubble size.
     /// </summary>
-    public enum eSizeRepresents
-    {
-        /// <summary>
-        /// The area of the bubbles will be proportional to the bubble size.
-        /// </summary>
-        Area,
-        /// <summary>
-        /// The radius of the bubbles will be proportional to the bubble size.
-        /// </summary>
-        Width
-    }
+    Area,
+    /// <summary>
+    /// The radius of the bubbles will be proportional to the bubble size.
+    /// </summary>
+    Width
 }

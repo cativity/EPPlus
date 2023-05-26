@@ -17,28 +17,27 @@ using System.Text;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Metadata;
 using OfficeOpenXml.FormulaParsing.ExpressionGraph;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
-{
-    [FunctionMetadata(
-        Category = ExcelFunctionCategory.Statistical,
-        EPPlusVersion = "4",
-        Description = "Returns the smallest value from a list of supplied numbers")]
-    internal class Min : HiddenValuesHandlingFunction
-    {
-        public Min() : base()
-        {
-            this.IgnoreErrors = false;
-        }
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
 
-        public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
+[FunctionMetadata(
+                     Category = ExcelFunctionCategory.Statistical,
+                     EPPlusVersion = "4",
+                     Description = "Returns the smallest value from a list of supplied numbers")]
+internal class Min : HiddenValuesHandlingFunction
+{
+    public Min() : base()
+    {
+        this.IgnoreErrors = false;
+    }
+
+    public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
+    {
+        ValidateArguments(arguments, 1);
+        IEnumerable<ExcelDoubleCellValue>? values = this.ArgsToDoubleEnumerable(this.IgnoreHiddenValues, this.IgnoreErrors, arguments, context, true);
+        if(!values.Any())
         {
-            ValidateArguments(arguments, 1);
-            IEnumerable<ExcelDoubleCellValue>? values = this.ArgsToDoubleEnumerable(this.IgnoreHiddenValues, this.IgnoreErrors, arguments, context, true);
-            if(!values.Any())
-            {
-                return this.CreateResult(0d, DataType.Decimal);
-            }
-            return this.CreateResult(values.Min(), DataType.Decimal);
+            return this.CreateResult(0d, DataType.Decimal);
         }
+        return this.CreateResult(values.Min(), DataType.Decimal);
     }
 }

@@ -17,62 +17,61 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
+
+[FunctionMetadata(
+                     Category = ExcelFunctionCategory.Statistical,
+                     EPPlusVersion = "5.2",
+                     Description = "Returns the Mode (the most frequently occurring value) of a list of supplied numbers ")]
+internal class Mode : HiddenValuesHandlingFunction
 {
-    [FunctionMetadata(
-    Category = ExcelFunctionCategory.Statistical,
-    EPPlusVersion = "5.2",
-    Description = "Returns the Mode (the most frequently occurring value) of a list of supplied numbers ")]
-    internal class Mode : HiddenValuesHandlingFunction
+    public Mode()
     {
-        public Mode()
+        this.IgnoreErrors = false;
+    }
+    public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
+    {
+        ValidateArguments(arguments, 1);
+        if (arguments.Count() > 255)
         {
-            this.IgnoreErrors = false;
+            return this.CreateResult(eErrorType.Value);
         }
-        public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
+
+        IEnumerable<ExcelDoubleCellValue>? numbers = this.ArgsToDoubleEnumerable(this.IgnoreHiddenValues, this.IgnoreErrors, arguments, context);
+        Dictionary<double, int>? counts = new Dictionary<double, int>();
+        double? maxCountValue = default;
+        foreach(ExcelDoubleCellValue number in numbers)
         {
-            ValidateArguments(arguments, 1);
-            if (arguments.Count() > 255)
+            if (!counts.ContainsKey(number))
             {
-                return this.CreateResult(eErrorType.Value);
+                counts[number] = 1;
+            }
+            else
+            {
+                counts[number] += 1;
             }
 
-            IEnumerable<ExcelDoubleCellValue>? numbers = this.ArgsToDoubleEnumerable(this.IgnoreHiddenValues, this.IgnoreErrors, arguments, context);
-            Dictionary<double, int>? counts = new Dictionary<double, int>();
-            double? maxCountValue = default;
-            foreach(ExcelDoubleCellValue number in numbers)
+            if(counts[number] > 1 && (!maxCountValue.HasValue || counts[number] >= counts[maxCountValue.Value]))
             {
-                if (!counts.ContainsKey(number))
+                if(!maxCountValue.HasValue)
                 {
-                    counts[number] = 1;
+                    maxCountValue = number;
                 }
-                else
+                else if (counts[number] == counts[maxCountValue.Value] && number < maxCountValue)
                 {
-                    counts[number] += 1;
+                    maxCountValue = number;
                 }
-
-                if(counts[number] > 1 && (!maxCountValue.HasValue || counts[number] >= counts[maxCountValue.Value]))
+                else if (counts[number] > counts[maxCountValue.Value])
                 {
-                    if(!maxCountValue.HasValue)
-                    {
-                        maxCountValue = number;
-                    }
-                    else if (counts[number] == counts[maxCountValue.Value] && number < maxCountValue)
-                    {
-                        maxCountValue = number;
-                    }
-                    else if (counts[number] > counts[maxCountValue.Value])
-                    {
-                        maxCountValue = number;
-                    }
+                    maxCountValue = number;
                 }
             }
-            if (!maxCountValue.HasValue)
-            {
-                return this.CreateResult(eErrorType.Num);
-            }
-
-            return this.CreateResult(maxCountValue.Value, DataType.Decimal);
         }
+        if (!maxCountValue.HasValue)
+        {
+            return this.CreateResult(eErrorType.Num);
+        }
+
+        return this.CreateResult(maxCountValue.Value, DataType.Decimal);
     }
 }

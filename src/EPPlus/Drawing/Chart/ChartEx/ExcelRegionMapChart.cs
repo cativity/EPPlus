@@ -13,28 +13,27 @@
 using OfficeOpenXml.Packaging;
 using System;
 using System.Xml;
-namespace OfficeOpenXml.Drawing.Chart.ChartEx
-{
-    /// <summary>
-    /// Represents a Region Map Chart
-    /// </summary>
-    public class ExcelRegionMapChart : ExcelChartEx
-    {
+namespace OfficeOpenXml.Drawing.Chart.ChartEx;
 
-        internal ExcelRegionMapChart(ExcelDrawings drawings, XmlNode drawingsNode, eChartType? type, XmlDocument chartXml = null, ExcelGroupShape parent = null) :
-            base(drawings, drawingsNode, type, chartXml, parent)
-        {
-            this.Series.Init(this, this.NameSpaceManager, this.TopNode, false, base.Series._list);
-            this.StyleManager.SetChartStyle(Chart.Style.ePresetChartStyle.RegionMapChartStyle1);
-        }
-        internal ExcelRegionMapChart(ExcelDrawings drawings, XmlNode node, Uri uriChart, ZipPackagePart part, XmlDocument chartXml, XmlNode chartNode, ExcelGroupShape parent = null) :
-            base(drawings, node, uriChart, part, chartXml, chartNode, parent)
-        {
-            this.Series.Init(this, this.NameSpaceManager, this.TopNode, false, base.Series._list);
-        }
-        /// <summary>
-        /// The series for a region map chart
-        /// </summary>
-        public new ExcelChartSeries<ExcelRegionMapChartSerie> Series { get; } = new ExcelChartSeries<ExcelRegionMapChartSerie>();
+/// <summary>
+/// Represents a Region Map Chart
+/// </summary>
+public class ExcelRegionMapChart : ExcelChartEx
+{
+
+    internal ExcelRegionMapChart(ExcelDrawings drawings, XmlNode drawingsNode, eChartType? type, XmlDocument chartXml = null, ExcelGroupShape parent = null) :
+        base(drawings, drawingsNode, type, chartXml, parent)
+    {
+        this.Series.Init(this, this.NameSpaceManager, this.TopNode, false, base.Series._list);
+        this.StyleManager.SetChartStyle(Chart.Style.ePresetChartStyle.RegionMapChartStyle1);
     }
+    internal ExcelRegionMapChart(ExcelDrawings drawings, XmlNode node, Uri uriChart, ZipPackagePart part, XmlDocument chartXml, XmlNode chartNode, ExcelGroupShape parent = null) :
+        base(drawings, node, uriChart, part, chartXml, chartNode, parent)
+    {
+        this.Series.Init(this, this.NameSpaceManager, this.TopNode, false, base.Series._list);
+    }
+    /// <summary>
+    /// The series for a region map chart
+    /// </summary>
+    public new ExcelChartSeries<ExcelRegionMapChartSerie> Series { get; } = new ExcelChartSeries<ExcelRegionMapChartSerie>();
 }

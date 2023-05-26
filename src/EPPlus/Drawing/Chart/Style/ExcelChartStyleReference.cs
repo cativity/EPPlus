@@ -14,60 +14,59 @@ using System;
 using System.Globalization;
 using System.Xml;
 
-namespace OfficeOpenXml.Drawing.Chart.Style
-{
-    /// <summary>
-    /// A reference from a chart style to the theme collection
-    /// </summary>
-    public class ExcelChartStyleReference : XmlHelper
-    {
-        string _path;
-        internal ExcelChartStyleReference(XmlNamespaceManager nsm, XmlNode topNode, string path) : base(nsm, topNode)
-        {
-            this._path = path;            
-        }
-        /// <summary>
-        /// The index to the theme style matrix.
-        /// <seealso cref="ExcelWorkbook.ThemeManager"/>
-        /// </summary>
-        public int Index
-        {
-            get
-            {
-                return this.GetXmlNodeInt($"{this._path}/@idx");
-            }
-            set
-            {
-                if (value < 0)
-                {
-                    throw new ArgumentOutOfRangeException("Index", "Can't be negative");
-                }
+namespace OfficeOpenXml.Drawing.Chart.Style;
 
-                this.SetXmlNodeString($"{this._path}/@idx", value.ToString(CultureInfo.InvariantCulture));
-            }   
-        }
-        ExcelChartStyleColorManager _color = null;
-        /// <summary>
-        /// The color to be used for the reference. 
-        /// This will replace any the StyleClr node in the chart style xml.
-        /// </summary>
-        public ExcelChartStyleColorManager Color
+/// <summary>
+/// A reference from a chart style to the theme collection
+/// </summary>
+public class ExcelChartStyleReference : XmlHelper
+{
+    string _path;
+    internal ExcelChartStyleReference(XmlNamespaceManager nsm, XmlNode topNode, string path) : base(nsm, topNode)
+    {
+        this._path = path;            
+    }
+    /// <summary>
+    /// The index to the theme style matrix.
+    /// <seealso cref="ExcelWorkbook.ThemeManager"/>
+    /// </summary>
+    public int Index
+    {
+        get
         {
-            get
-            {
-                return this._color ??= new ExcelChartStyleColorManager(this.NameSpaceManager, this.TopNode, this._path, this.SchemaNodeOrder);
-            }
+            return this.GetXmlNodeInt($"{this._path}/@idx");
         }
-        /// <summary>
-        /// If the reference has a color
-        /// </summary>
-        public bool HasColor
+        set
         {
-            get
+            if (value < 0)
             {
-                XmlNode? node = this.GetNode(this._path);
-                return node!=null && node.HasChildNodes;
+                throw new ArgumentOutOfRangeException("Index", "Can't be negative");
             }
+
+            this.SetXmlNodeString($"{this._path}/@idx", value.ToString(CultureInfo.InvariantCulture));
+        }   
+    }
+    ExcelChartStyleColorManager _color = null;
+    /// <summary>
+    /// The color to be used for the reference. 
+    /// This will replace any the StyleClr node in the chart style xml.
+    /// </summary>
+    public ExcelChartStyleColorManager Color
+    {
+        get
+        {
+            return this._color ??= new ExcelChartStyleColorManager(this.NameSpaceManager, this.TopNode, this._path, this.SchemaNodeOrder);
+        }
+    }
+    /// <summary>
+    /// If the reference has a color
+    /// </summary>
+    public bool HasColor
+    {
+        get
+        {
+            XmlNode? node = this.GetNode(this._path);
+            return node!=null && node.HasChildNodes;
         }
     }
 }

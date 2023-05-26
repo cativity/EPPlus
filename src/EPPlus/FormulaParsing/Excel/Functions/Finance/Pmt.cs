@@ -18,44 +18,43 @@ using OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.Implementations;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Metadata;
 using OfficeOpenXml.FormulaParsing.ExpressionGraph;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance;
+
+[FunctionMetadata(
+                     Category = ExcelFunctionCategory.Financial,
+                     EPPlusVersion = "4",
+                     Description = "Calculates the payments required to reduce a loan, from a supplied present value to a specified future value")]
+internal class Pmt : ExcelFunction
 {
-    [FunctionMetadata(
-        Category = ExcelFunctionCategory.Financial,
-        EPPlusVersion = "4",
-        Description = "Calculates the payments required to reduce a loan, from a supplied present value to a specified future value")]
-    internal class Pmt : ExcelFunction
+    public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
     {
-        public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
+        ValidateArguments(arguments, 3);
+        double rate = this.ArgToDecimal(arguments, 0);
+        int nPer = this.ArgToInt(arguments, 1);
+        double presentValue = this.ArgToDecimal(arguments, 2);
+        int payEndOfPeriod = 0;
+        double futureValue = 0d;
+        if (arguments.Count() > 3)
         {
-            ValidateArguments(arguments, 3);
-            double rate = this.ArgToDecimal(arguments, 0);
-            int nPer = this.ArgToInt(arguments, 1);
-            double presentValue = this.ArgToDecimal(arguments, 2);
-            int payEndOfPeriod = 0;
-            double futureValue = 0d;
-            if (arguments.Count() > 3)
-            {
-                futureValue = this.ArgToDecimal(arguments, 3);
-            }
-
-            if (arguments.Count() > 4)
-            {
-                payEndOfPeriod = this.ArgToInt(arguments, 4);
-            }
-
-            FinanceCalcResult<double>? result = InternalMethods.PMT_Internal(rate, nPer, presentValue, futureValue, payEndOfPeriod == 0 ? PmtDue.EndOfPeriod : PmtDue.BeginningOfPeriod);
-            if (result.HasError)
-            {
-                return this.CreateResult(result.ExcelErrorType);
-            }
-
-            return this.CreateResult(result.Result, DataType.Decimal);
+            futureValue = this.ArgToDecimal(arguments, 3);
         }
 
-        private static double GetInterest(double rate, double remainingAmount)
+        if (arguments.Count() > 4)
         {
-            return remainingAmount * rate;
+            payEndOfPeriod = this.ArgToInt(arguments, 4);
         }
+
+        FinanceCalcResult<double>? result = InternalMethods.PMT_Internal(rate, nPer, presentValue, futureValue, payEndOfPeriod == 0 ? PmtDue.EndOfPeriod : PmtDue.BeginningOfPeriod);
+        if (result.HasError)
+        {
+            return this.CreateResult(result.ExcelErrorType);
+        }
+
+        return this.CreateResult(result.Result, DataType.Decimal);
+    }
+
+    private static double GetInterest(double rate, double remainingAmount)
+    {
+        return remainingAmount * rate;
     }
 }

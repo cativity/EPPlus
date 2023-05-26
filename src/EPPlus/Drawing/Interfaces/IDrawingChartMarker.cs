@@ -15,11 +15,10 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace OfficeOpenXml.Drawing.Interfaces
+namespace OfficeOpenXml.Drawing.Interfaces;
+
+interface IDrawingChartMarker
 {
-    interface IDrawingChartMarker
-    {
-        bool HasMarker();
-        ExcelChartMarker Marker { get; }
-    }
+    bool HasMarker();
+    ExcelChartMarker Marker { get; }
 }

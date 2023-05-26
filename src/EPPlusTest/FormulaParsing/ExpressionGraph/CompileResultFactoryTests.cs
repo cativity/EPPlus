@@ -31,11 +31,11 @@ using System.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OfficeOpenXml.FormulaParsing.ExpressionGraph;
 
-namespace EPPlusTest.FormulaParsing.ExpressionGraph
+namespace EPPlusTest.FormulaParsing.ExpressionGraph;
+
+[TestClass]
+public class CompileResultFactoryTests
 {
-    [TestClass]
-    public class CompileResultFactoryTests
-    {
 #if (!Core)
         [TestMethod]
         public void CalculateUsingEuropeanDates()
@@ -55,5 +55,4 @@ namespace EPPlusTest.FormulaParsing.ExpressionGraph
             Thread.CurrentThread.CurrentCulture = ci;
         }
 #endif
-    }
 }

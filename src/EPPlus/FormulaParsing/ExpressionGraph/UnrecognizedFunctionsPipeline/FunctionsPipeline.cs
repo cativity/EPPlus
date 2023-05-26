@@ -16,47 +16,46 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace OfficeOpenXml.FormulaParsing.ExpressionGraph.UnrecognizedFunctionsPipeline
+namespace OfficeOpenXml.FormulaParsing.ExpressionGraph.UnrecognizedFunctionsPipeline;
+
+/// <summary>
+/// A pipeline where handlers for unrecognized function names are registred.
+/// </summary>
+internal class FunctionsPipeline
 {
-    /// <summary>
-    /// A pipeline where handlers for unrecognized function names are registred.
-    /// </summary>
-    internal class FunctionsPipeline
+    public FunctionsPipeline(ParsingContext context, IEnumerable<Expression> children)
+        : this(context, children, new RangeOffsetFunctionHandler())
     {
-        public FunctionsPipeline(ParsingContext context, IEnumerable<Expression> children)
-            : this(context, children, new RangeOffsetFunctionHandler())
-        {
-
-        }
-
-        public FunctionsPipeline(ParsingContext context, IEnumerable<Expression> children, params UnrecognizedFunctionsHandler[] handlers)
-        {
-            this._context = context;
-            this._handlers = handlers;
-            this._children = children;
-        }
-
-        private IEnumerable<UnrecognizedFunctionsHandler> _handlers;
-        private readonly ParsingContext _context;
-        private readonly IEnumerable<Expression> _children;
-
-        /// <summary>
-        /// Tries to find a registred handler that can handle the function name
-        /// If success this <see cref="ExcelFunction"/> are returned.
-        /// </summary>
-        /// <param name="funcName">The unrecognized function name</param>
-        /// <returns>An <see cref="ExcelFunction"/> that can handle the function call</returns>
-        internal ExcelFunction FindFunction(string funcName)
-        {
-            foreach(UnrecognizedFunctionsHandler? handler in this._handlers)
-            {
-                if(handler.Handle(funcName, this._children, this._context, out ExcelFunction function))
-                {
-                    return function;
-                }
-            }
-            return default;
-        }
 
     }
+
+    public FunctionsPipeline(ParsingContext context, IEnumerable<Expression> children, params UnrecognizedFunctionsHandler[] handlers)
+    {
+        this._context = context;
+        this._handlers = handlers;
+        this._children = children;
+    }
+
+    private IEnumerable<UnrecognizedFunctionsHandler> _handlers;
+    private readonly ParsingContext _context;
+    private readonly IEnumerable<Expression> _children;
+
+    /// <summary>
+    /// Tries to find a registred handler that can handle the function name
+    /// If success this <see cref="ExcelFunction"/> are returned.
+    /// </summary>
+    /// <param name="funcName">The unrecognized function name</param>
+    /// <returns>An <see cref="ExcelFunction"/> that can handle the function call</returns>
+    internal ExcelFunction FindFunction(string funcName)
+    {
+        foreach(UnrecognizedFunctionsHandler? handler in this._handlers)
+        {
+            if(handler.Handle(funcName, this._children, this._context, out ExcelFunction function))
+            {
+                return function;
+            }
+        }
+        return default;
+    }
+
 }

@@ -17,86 +17,85 @@ using System.Linq;
 using System.Text;
 using System.Xml;
 
-namespace OfficeOpenXml.Drawing
+namespace OfficeOpenXml.Drawing;
+
+/// <summary>
+/// A connection point between a shape and a connection shape
+/// </summary>
+public class ExcelDrawingConnectionPoint : XmlHelper
 {
-    /// <summary>
-    /// A connection point between a shape and a connection shape
-    /// </summary>
-    public class ExcelDrawingConnectionPoint : XmlHelper
+    private readonly ExcelDrawings _drawings;
+    string _path = "xdr:cxnSp/xdr:nvCxnSpPr/xdr:cNvCxnSpPr/{0}";
+    internal ExcelDrawingConnectionPoint(ExcelDrawings drawings, XmlNode topNode, string elementName, string[] schemaNodeOrder) : base(drawings.NameSpaceManager, topNode)
     {
-        private readonly ExcelDrawings _drawings;
-        string _path = "xdr:cxnSp/xdr:nvCxnSpPr/xdr:cNvCxnSpPr/{0}";
-        internal ExcelDrawingConnectionPoint(ExcelDrawings drawings, XmlNode topNode, string elementName, string[] schemaNodeOrder) : base(drawings.NameSpaceManager, topNode)
+        this._path = string.Format(this._path, elementName);
+        this._drawings = drawings;
+        this.SchemaNodeOrder = schemaNodeOrder;
+    }
+    /// <summary>
+    /// The index the connection point
+    /// </summary>
+    public int Index
+    {
+        get
         {
-            this._path = string.Format(this._path, elementName);
-            this._drawings = drawings;
-            this.SchemaNodeOrder = schemaNodeOrder;
+            return this.GetXmlNodeIntNull(this._path + "/@idx") ?? 0;
         }
-        /// <summary>
-        /// The index the connection point
-        /// </summary>
-        public int Index
+        set
         {
-            get
+            if (value <= 0)
             {
-                return this.GetXmlNodeIntNull(this._path + "/@idx") ?? 0;
+                throw (new ArgumentOutOfRangeException("Index", "Index can't be negative."));
             }
-            set
+            if (this._shape == null)
             {
-                if (value <= 0)
-                {
-                    throw (new ArgumentOutOfRangeException("Index", "Index can't be negative."));
-                }
-                if (this._shape == null)
-                {
-                    throw (new InvalidOperationException("Can't set Index when Shape is null"));
-                }
+                throw (new InvalidOperationException("Can't set Index when Shape is null"));
+            }
 
-                this.SetIndex(value);
-            }
+            this.SetIndex(value);
         }
+    }
 
-        ExcelShape _shape=null;
-        /// <summary>
-        /// The shape to connect
-        /// </summary>
-        public ExcelShape Shape
+    ExcelShape _shape=null;
+    /// <summary>
+    /// The shape to connect
+    /// </summary>
+    public ExcelShape Shape
+    {
+        get
         {
-            get
+            if(this._shape==null)
+            {
+                int? id = this.GetXmlNodeIntNull(this._path + "/@id");
+                if (id.HasValue)
+                {
+                    this._shape = this._drawings.GetById(id.Value) as ExcelShape;
+                }
+            }
+            return this._shape; 
+        }
+        set
+        {
+            if(value==null)
+            {
+                this.DeleteNode(this._path);
+            }
+            else
             {
                 if(this._shape==null)
                 {
-                    int? id = this.GetXmlNodeIntNull(this._path + "/@id");
-                    if (id.HasValue)
-                    {
-                        this._shape = this._drawings.GetById(id.Value) as ExcelShape;
-                    }
+                    this.SetIndex(1);
                 }
-                return this._shape; 
+
+                this.SetXmlNodeString(this._path + "/@id", value.Id.ToString(CultureInfo.InvariantCulture));
             }
-            set
-            {
-                if(value==null)
-                {
-                    this.DeleteNode(this._path);
-                }
-                else
-                {
-                    if(this._shape==null)
-                    {
-                        this.SetIndex(1);
-                    }
 
-                    this.SetXmlNodeString(this._path + "/@id", value.Id.ToString(CultureInfo.InvariantCulture));
-                }
-
-                this._shape = value;
-            }
+            this._shape = value;
         }
-        private void SetIndex(int value)
-        {
-            this.SetXmlNodeString(this._path + "/@idx", value.ToString(CultureInfo.InvariantCulture));
-        }
-
     }
+    private void SetIndex(int value)
+    {
+        this.SetXmlNodeString(this._path + "/@idx", value.ToString(CultureInfo.InvariantCulture));
+    }
+
 }

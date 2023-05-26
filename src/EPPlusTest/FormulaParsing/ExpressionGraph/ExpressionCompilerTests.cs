@@ -35,71 +35,70 @@ using OfficeOpenXml.FormulaParsing.ExpressionGraph;
 using ExpGraph = OfficeOpenXml.FormulaParsing.ExpressionGraph.ExpressionGraph;
 using OfficeOpenXml.FormulaParsing.Excel.Operators;
 
-namespace EPPlusTest.FormulaParsing.ExpressionGraph
+namespace EPPlusTest.FormulaParsing.ExpressionGraph;
+
+[TestClass]
+public class ExpressionCompilerTests
 {
-    [TestClass]
-    public class ExpressionCompilerTests
-    {
-        private IExpressionCompiler _expressionCompiler;
-        private ExpGraph _graph;
+    private IExpressionCompiler _expressionCompiler;
+    private ExpGraph _graph;
         
-        [TestInitialize]
-        public void Setup()
-        {
-            this._expressionCompiler = new ExpressionCompiler();
-            this._graph = new ExpGraph();
-        }
+    [TestInitialize]
+    public void Setup()
+    {
+        this._expressionCompiler = new ExpressionCompiler();
+        this._graph = new ExpGraph();
+    }
 
-        [TestMethod]
-        public void ShouldCompileTwoInterExpressionsToCorrectResult()
-        {
-            IntegerExpression? exp1 = new IntegerExpression("2");
-            exp1.Operator = Operator.Plus;
-            this._graph.Add(exp1);
-            IntegerExpression? exp2 = new IntegerExpression("2");
-            this._graph.Add(exp2);
+    [TestMethod]
+    public void ShouldCompileTwoInterExpressionsToCorrectResult()
+    {
+        IntegerExpression? exp1 = new IntegerExpression("2");
+        exp1.Operator = Operator.Plus;
+        this._graph.Add(exp1);
+        IntegerExpression? exp2 = new IntegerExpression("2");
+        this._graph.Add(exp2);
 
-            CompileResult? result = this._expressionCompiler.Compile(this._graph.Expressions);
+        CompileResult? result = this._expressionCompiler.Compile(this._graph.Expressions);
 
-            Assert.AreEqual(4d, result.Result);
-        }
+        Assert.AreEqual(4d, result.Result);
+    }
 
 
-        [TestMethod]
-        public void CompileShouldMultiplyGroupExpressionWithFollowingIntegerExpression()
-        {
-            GroupExpression? groupExpression = new GroupExpression(false);
-            groupExpression.AddChild(new IntegerExpression("2"));
-            groupExpression.Children.First().Operator = Operator.Plus;
-            groupExpression.AddChild(new IntegerExpression("3"));
-            groupExpression.Operator = Operator.Multiply;
+    [TestMethod]
+    public void CompileShouldMultiplyGroupExpressionWithFollowingIntegerExpression()
+    {
+        GroupExpression? groupExpression = new GroupExpression(false);
+        groupExpression.AddChild(new IntegerExpression("2"));
+        groupExpression.Children.First().Operator = Operator.Plus;
+        groupExpression.AddChild(new IntegerExpression("3"));
+        groupExpression.Operator = Operator.Multiply;
 
-            this._graph.Add(groupExpression);
-            this._graph.Add(new IntegerExpression("2"));
+        this._graph.Add(groupExpression);
+        this._graph.Add(new IntegerExpression("2"));
 
-            CompileResult? result = this._expressionCompiler.Compile(this._graph.Expressions);
+        CompileResult? result = this._expressionCompiler.Compile(this._graph.Expressions);
 
-            Assert.AreEqual(10d, result.Result);
-        }
+        Assert.AreEqual(10d, result.Result);
+    }
 
-        [TestMethod]
-        public void CompileShouldCalculateMultipleExpressionsAccordingToPrecedence()
-        {
-            IntegerExpression? exp1 = new IntegerExpression("2");
-            exp1.Operator = Operator.Multiply;
-            this._graph.Add(exp1);
-            IntegerExpression? exp2 = new IntegerExpression("2");
-            exp2.Operator = Operator.Plus;
-            this._graph.Add(exp2);
-            IntegerExpression? exp3 = new IntegerExpression("2");
-            exp3.Operator = Operator.Multiply;
-            this._graph.Add(exp3);
-            IntegerExpression? exp4 = new IntegerExpression("2");
-            this._graph.Add(exp4);
+    [TestMethod]
+    public void CompileShouldCalculateMultipleExpressionsAccordingToPrecedence()
+    {
+        IntegerExpression? exp1 = new IntegerExpression("2");
+        exp1.Operator = Operator.Multiply;
+        this._graph.Add(exp1);
+        IntegerExpression? exp2 = new IntegerExpression("2");
+        exp2.Operator = Operator.Plus;
+        this._graph.Add(exp2);
+        IntegerExpression? exp3 = new IntegerExpression("2");
+        exp3.Operator = Operator.Multiply;
+        this._graph.Add(exp3);
+        IntegerExpression? exp4 = new IntegerExpression("2");
+        this._graph.Add(exp4);
 
-            CompileResult? result = this._expressionCompiler.Compile(this._graph.Expressions);
+        CompileResult? result = this._expressionCompiler.Compile(this._graph.Expressions);
 
-            Assert.AreEqual(8d, result.Result);
-        }
+        Assert.AreEqual(8d, result.Result);
     }
 }

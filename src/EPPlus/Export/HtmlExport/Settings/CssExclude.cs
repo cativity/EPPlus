@@ -11,78 +11,77 @@
   05/11/2021         EPPlus Software AB           ExcelTable Html Export
  *************************************************************************************************/
 
-namespace OfficeOpenXml.Export.HtmlExport
+namespace OfficeOpenXml.Export.HtmlExport;
+
+/// <summary>
+/// Css settings to exclude individual styles.
+/// </summary>
+public class CssExclude
 {
-    /// <summary>
-    /// Css settings to exclude individual styles.
-    /// </summary>
-    public class CssExclude
+    internal CssExclude()
     {
-        internal CssExclude()
-        {
 
-        }
-        /// <summary>
-        /// Exclude Font styles.
-        /// </summary>
-        public eFontExclude Font { get; set; }
-        /// <summary>
-        /// Exclude Border styles
-        /// </summary>
-        public eBorderExclude Border { get; set; }
-        /// <summary>
-        /// Exclude Fill styles
-        /// </summary>
-        public bool Fill { get; set; }
-        /// <summary>
-        /// Exclude vertical alignment.
-        /// </summary>
-        public bool VerticalAlignment { get; set; }
-        /// <summary>
-        /// Exclude horizontal alignment.
-        /// </summary>
-        public bool HorizontalAlignment { get; set; }
-        /// <summary>
-        /// Exclude Wrap Text
-        /// </summary>
-        public bool WrapText { get; set; }
-        /// <summary>
-        /// Exclude Text Rotation
-        /// </summary>
-        public bool TextRotation { get; set; }
-        /// <summary>
-        /// Exclude Indent.
-        /// </summary>
-        public bool Indent { get; set; }
-
-        /// <summary>
-        /// Reset the settings to it's default values.
-        /// </summary>
-        public void ResetToDefault()
-        {
-            this.Font = 0;
-            this.Border = 0;
-            this.Fill = false;
-            this.VerticalAlignment = false;
-            this.HorizontalAlignment = false;
-            this.WrapText = false;
-            this.TextRotation = false;
-            this.Indent = false;
-        }
-        /// <summary>
-        /// Copy the values from another settings object.
-        /// </summary>
-        /// <param name="copy">The object to copy.</param>
-        public void Copy(CssExclude copy)
-        {
-            this.Font = copy.Font;
-            this.Border = copy.Border;
-            this.Fill = copy.Fill;
-            this.VerticalAlignment = copy.VerticalAlignment;
-            this.HorizontalAlignment = copy.HorizontalAlignment;
-            this.WrapText = copy.WrapText;
-            this.TextRotation = copy.TextRotation;
-            this.Indent = copy.Indent;
-        }        
     }
+    /// <summary>
+    /// Exclude Font styles.
+    /// </summary>
+    public eFontExclude Font { get; set; }
+    /// <summary>
+    /// Exclude Border styles
+    /// </summary>
+    public eBorderExclude Border { get; set; }
+    /// <summary>
+    /// Exclude Fill styles
+    /// </summary>
+    public bool Fill { get; set; }
+    /// <summary>
+    /// Exclude vertical alignment.
+    /// </summary>
+    public bool VerticalAlignment { get; set; }
+    /// <summary>
+    /// Exclude horizontal alignment.
+    /// </summary>
+    public bool HorizontalAlignment { get; set; }
+    /// <summary>
+    /// Exclude Wrap Text
+    /// </summary>
+    public bool WrapText { get; set; }
+    /// <summary>
+    /// Exclude Text Rotation
+    /// </summary>
+    public bool TextRotation { get; set; }
+    /// <summary>
+    /// Exclude Indent.
+    /// </summary>
+    public bool Indent { get; set; }
+
+    /// <summary>
+    /// Reset the settings to it's default values.
+    /// </summary>
+    public void ResetToDefault()
+    {
+        this.Font = 0;
+        this.Border = 0;
+        this.Fill = false;
+        this.VerticalAlignment = false;
+        this.HorizontalAlignment = false;
+        this.WrapText = false;
+        this.TextRotation = false;
+        this.Indent = false;
+    }
+    /// <summary>
+    /// Copy the values from another settings object.
+    /// </summary>
+    /// <param name="copy">The object to copy.</param>
+    public void Copy(CssExclude copy)
+    {
+        this.Font = copy.Font;
+        this.Border = copy.Border;
+        this.Fill = copy.Fill;
+        this.VerticalAlignment = copy.VerticalAlignment;
+        this.HorizontalAlignment = copy.HorizontalAlignment;
+        this.WrapText = copy.WrapText;
+        this.TextRotation = copy.TextRotation;
+        this.Indent = copy.Indent;
+    }        
 }

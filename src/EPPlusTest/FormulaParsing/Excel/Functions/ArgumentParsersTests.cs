@@ -34,18 +34,17 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OfficeOpenXml.FormulaParsing.Excel.Functions;
 using OfficeOpenXml.FormulaParsing.ExpressionGraph;
 
-namespace EPPlusTest.Excel.Functions
+namespace EPPlusTest.Excel.Functions;
+
+[TestClass]
+public class ArgumentParsersTests
 {
-    [TestClass]
-    public class ArgumentParsersTests
+    [TestMethod]
+    public void ShouldReturnSameInstanceOfIntParserWhenCalledTwice()
     {
-        [TestMethod]
-        public void ShouldReturnSameInstanceOfIntParserWhenCalledTwice()
-        {
-            ArgumentParsers? parsers = new ArgumentParsers();
-            ArgumentParser? parser1 = parsers.GetParser(DataType.Integer);
-            ArgumentParser? parser2 = parsers.GetParser(DataType.Integer);
-            Assert.AreEqual(parser1, parser2);
-        }
+        ArgumentParsers? parsers = new ArgumentParsers();
+        ArgumentParser? parser1 = parsers.GetParser(DataType.Integer);
+        ArgumentParser? parser2 = parsers.GetParser(DataType.Integer);
+        Assert.AreEqual(parser1, parser2);
     }
 }

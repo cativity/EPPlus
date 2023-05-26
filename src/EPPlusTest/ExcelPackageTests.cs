@@ -33,23 +33,22 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
-namespace EPPlusTest
-{
-    [TestClass]
-    public class ExcelPackageTests
-    {
-        [TestMethod, Ignore]
-        public void ConstructorWithStringPath()
-        {
-            string? path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Test.xlsx");
-            using ExcelPackage? package = new ExcelPackage(path);
-        }
+namespace EPPlusTest;
 
-        [TestMethod, Ignore]
-        public void ConstructorWithStringPathAndPassword()
-        {
-            string? path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Test.xlsx");
-            using ExcelPackage? package = new ExcelPackage(path, "pwd123");
-        }
+[TestClass]
+public class ExcelPackageTests
+{
+    [TestMethod, Ignore]
+    public void ConstructorWithStringPath()
+    {
+        string? path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Test.xlsx");
+        using ExcelPackage? package = new ExcelPackage(path);
+    }
+
+    [TestMethod, Ignore]
+    public void ConstructorWithStringPathAndPassword()
+    {
+        string? path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Test.xlsx");
+        using ExcelPackage? package = new ExcelPackage(path, "pwd123");
     }
 }

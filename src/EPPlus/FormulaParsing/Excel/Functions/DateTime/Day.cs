@@ -17,21 +17,20 @@ using System.Text;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Metadata;
 using OfficeOpenXml.FormulaParsing.ExpressionGraph;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime
-{
-    [FunctionMetadata(
-        Category = ExcelFunctionCategory.DateAndTime,
-        EPPlusVersion = "4",
-        Description = "Returns the day (of the month) from a user-supplied date")]
-    internal class Day : DateParsingFunction
-    {
-        public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
-        {
-            ValidateArguments(arguments, 1);
-            object? dateObj = GetFirstValue(arguments);
-            System.DateTime date = this.ParseDate(arguments, dateObj);
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime;
 
-            return this.CreateResult(date.Day, DataType.Integer);
-        }
+[FunctionMetadata(
+                     Category = ExcelFunctionCategory.DateAndTime,
+                     EPPlusVersion = "4",
+                     Description = "Returns the day (of the month) from a user-supplied date")]
+internal class Day : DateParsingFunction
+{
+    public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
+    {
+        ValidateArguments(arguments, 1);
+        object? dateObj = GetFirstValue(arguments);
+        System.DateTime date = this.ParseDate(arguments, dateObj);
+
+        return this.CreateResult(date.Day, DataType.Integer);
     }
 }

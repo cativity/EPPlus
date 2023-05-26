@@ -17,67 +17,66 @@ using System.Text;
 using OfficeOpenXml.FormulaParsing;
 using OfficeOpenXml.FormulaParsing.Utilities;
 
-namespace OfficeOpenXml.FormulaParsing.ExcelUtilities
+namespace OfficeOpenXml.FormulaParsing.ExcelUtilities;
+
+internal class IndexToAddressTranslator
 {
-    internal class IndexToAddressTranslator
+    internal IndexToAddressTranslator(ExcelDataProvider excelDataProvider)
+        : this(excelDataProvider, ExcelReferenceType.AbsoluteRowAndColumn)
     {
-        internal IndexToAddressTranslator(ExcelDataProvider excelDataProvider)
-            : this(excelDataProvider, ExcelReferenceType.AbsoluteRowAndColumn)
-        {
 
+    }
+
+    internal IndexToAddressTranslator(ExcelDataProvider excelDataProvider, ExcelReferenceType referenceType)
+    {
+        Require.That(excelDataProvider).Named("excelDataProvider").IsNotNull();
+        this._excelDataProvider = excelDataProvider;
+        this._excelReferenceType = referenceType;
+    }
+
+    private readonly ExcelDataProvider _excelDataProvider;
+    private readonly ExcelReferenceType _excelReferenceType;
+
+    protected internal static string GetColumnLetter(int iColumnNumber, bool fixedCol)
+    {
+
+        if (iColumnNumber < 1)
+        {
+            //throw new Exception("Column number is out of range");
+            return "#REF!";
         }
 
-        internal IndexToAddressTranslator(ExcelDataProvider excelDataProvider, ExcelReferenceType referenceType)
+        string sCol = "";
+        do
         {
-            Require.That(excelDataProvider).Named("excelDataProvider").IsNotNull();
-            this._excelDataProvider = excelDataProvider;
-            this._excelReferenceType = referenceType;
+            sCol = ((char)('A' + ((iColumnNumber - 1) % 26))) + sCol;
+            iColumnNumber = (iColumnNumber - ((iColumnNumber - 1) % 26)) / 26;
         }
+        while (iColumnNumber > 0);
+        return fixedCol ? "$" + sCol : sCol;
+    }
 
-        private readonly ExcelDataProvider _excelDataProvider;
-        private readonly ExcelReferenceType _excelReferenceType;
+    public string ToAddress(int col, int row)
+    {
+        bool fixedCol = this._excelReferenceType == ExcelReferenceType.AbsoluteRowAndColumn || this._excelReferenceType == ExcelReferenceType.RelativeRowAbsolutColumn;
+        string? colString = GetColumnLetter(col, fixedCol);
+        return colString + this.GetRowNumber(row);
+    }
 
-        protected internal static string GetColumnLetter(int iColumnNumber, bool fixedCol)
+    private string GetRowNumber(int rowNo)
+    {
+        string? retVal = rowNo < (this._excelDataProvider.ExcelMaxRows) ? rowNo.ToString() : string.Empty;
+        if (!string.IsNullOrEmpty(retVal))
         {
-
-            if (iColumnNumber < 1)
+            switch (this._excelReferenceType)
             {
-                //throw new Exception("Column number is out of range");
-                return "#REF!";
+                case ExcelReferenceType.AbsoluteRowAndColumn:
+                case ExcelReferenceType.AbsoluteRowRelativeColumn:
+                    return "$" + retVal;
+                default:
+                    return retVal;
             }
-
-            string sCol = "";
-            do
-            {
-                sCol = ((char)('A' + ((iColumnNumber - 1) % 26))) + sCol;
-                iColumnNumber = (iColumnNumber - ((iColumnNumber - 1) % 26)) / 26;
-            }
-            while (iColumnNumber > 0);
-            return fixedCol ? "$" + sCol : sCol;
         }
-
-        public string ToAddress(int col, int row)
-        {
-            bool fixedCol = this._excelReferenceType == ExcelReferenceType.AbsoluteRowAndColumn || this._excelReferenceType == ExcelReferenceType.RelativeRowAbsolutColumn;
-            string? colString = GetColumnLetter(col, fixedCol);
-            return colString + this.GetRowNumber(row);
-        }
-
-        private string GetRowNumber(int rowNo)
-        {
-            string? retVal = rowNo < (this._excelDataProvider.ExcelMaxRows) ? rowNo.ToString() : string.Empty;
-            if (!string.IsNullOrEmpty(retVal))
-            {
-                switch (this._excelReferenceType)
-                {
-                    case ExcelReferenceType.AbsoluteRowAndColumn:
-                    case ExcelReferenceType.AbsoluteRowRelativeColumn:
-                        return "$" + retVal;
-                    default:
-                        return retVal;
-                }
-            }
-            return retVal;
-        }
+        return retVal;
     }
 }

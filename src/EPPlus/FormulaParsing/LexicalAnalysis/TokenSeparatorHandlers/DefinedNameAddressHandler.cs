@@ -16,52 +16,51 @@ using System.Linq;
 using System.Text;
 using OfficeOpenXml.FormulaParsing;
 
-namespace OfficeOpenXml.FormulaParsing.LexicalAnalysis.TokenSeparatorHandlers
+namespace OfficeOpenXml.FormulaParsing.LexicalAnalysis.TokenSeparatorHandlers;
+
+internal class DefinedNameAddressHandler : SeparatorHandler
 {
-    internal class DefinedNameAddressHandler : SeparatorHandler
+    INameValueProvider _nameValueProvider;
+
+    public DefinedNameAddressHandler(INameValueProvider nameValueProvider)
     {
-        INameValueProvider _nameValueProvider;
-
-        public DefinedNameAddressHandler(INameValueProvider nameValueProvider)
+        this._nameValueProvider = nameValueProvider;
+    }
+    public override bool Handle(char c, Token tokenSeparator, TokenizerContext context, ITokenIndexProvider tokenIndexProvider)
+    {
+        if (context.IsInDefinedNameAddress && (c == ')' || c == ','))
         {
-            this._nameValueProvider = nameValueProvider;
-        }
-        public override bool Handle(char c, Token tokenSeparator, TokenizerContext context, ITokenIndexProvider tokenIndexProvider)
-        {
-            if (context.IsInDefinedNameAddress && (c == ')' || c == ','))
+            if (context.IsInDefinedNameAddress)
             {
-                if (context.IsInDefinedNameAddress)
+                context.IsInDefinedNameAddress = false;
+                // the first name is already resolved to an address followed by a dot
+                string? tokenValue = context.CurrentToken?.ToString();
+                if (!string.IsNullOrEmpty(tokenValue))
                 {
-                    context.IsInDefinedNameAddress = false;
-                    // the first name is already resolved to an address followed by a dot
-                    string? tokenValue = context.CurrentToken?.ToString();
-                    if (!string.IsNullOrEmpty(tokenValue))
+                    string[]? parts = tokenValue.Split(':');
+                    if (parts.Length < 2)
                     {
-                        string[]? parts = tokenValue.Split(':');
-                        if (parts.Length < 2)
-                        {
-                            return false;
-                        }
+                        return false;
+                    }
 
-                        string? part1 = parts[0];
-                        string? name = parts[1];
-                        object? nameValue = this._nameValueProvider.GetNamedValue(name, context.Worksheet);
-                        if (nameValue != null)
+                    string? part1 = parts[0];
+                    string? name = parts[1];
+                    object? nameValue = this._nameValueProvider.GetNamedValue(name, context.Worksheet);
+                    if (nameValue != null)
+                    {
+                        if (nameValue is IRangeInfo rangeInfo)
                         {
-                            if (nameValue is IRangeInfo rangeInfo)
-                            {
-                                string? address = part1 + ":" + rangeInfo.Address.Address;
-                                Token addressToken = new Token(address, TokenType.ExcelAddress);
-                                context.AddToken(addressToken);
-                                context.AddToken(tokenSeparator);
-                                context.NewToken();
-                                return true;
-                            }
+                            string? address = part1 + ":" + rangeInfo.Address.Address;
+                            Token addressToken = new Token(address, TokenType.ExcelAddress);
+                            context.AddToken(addressToken);
+                            context.AddToken(tokenSeparator);
+                            context.NewToken();
+                            return true;
                         }
                     }
                 }
             }
-            return false;
         }
+        return false;
     }
 }

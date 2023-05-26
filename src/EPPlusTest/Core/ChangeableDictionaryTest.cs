@@ -30,65 +30,64 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OfficeOpenXml.Core;
 using System.Diagnostics;
 
-namespace EPPlusTest.Core
+namespace EPPlusTest.Core;
+
+[TestClass]
+public class ChangeableDictionaryTest
 {
-    [TestClass]
-    public class ChangeableDictionaryTest
+    [TestMethod]
+    public void Add()
     {
-        [TestMethod]
-        public void Add()
+        ChangeableDictionary<int> d = Setup();
+
+        //Validate order
+        int prev = -1;
+        foreach (int item in d)
         {
-            ChangeableDictionary<int> d = Setup();
-
-            //Validate order
-            int prev = -1;
-            foreach (int item in d)
-            {
-                Assert.IsTrue(prev < item);
-            }
-
-            //Validate values
-            Assert.AreEqual(20, d[2]);
-            Assert.AreEqual(60, d[6]);
-            Assert.AreEqual(90, d[9]);
-        }
-        [TestMethod]
-        public void Insert()
-        {
-            ChangeableDictionary<int> d = Setup();
-
-            d.InsertAndShift(5, 1);
-            d.Add(5, 500);
-            Assert.AreEqual(500, d[5]);
-            Assert.AreEqual(50, d[6]);
-            Assert.AreEqual(80, d[9]);
-            Assert.AreEqual(90, d[10]);
-        }
-        [TestMethod]
-        public void Remove()
-        {
-            ChangeableDictionary<int> d = Setup();
-
-            d.RemoveAndShift(5);
-            Assert.AreEqual(20, d[2]);
-            Assert.AreEqual(40, d[4]);
-            Assert.AreEqual(60, d[5]);
-            Assert.AreEqual(70, d[6]);
+            Assert.IsTrue(prev < item);
         }
 
-        private static ChangeableDictionary<int> Setup()
-        {
-            ChangeableDictionary<int>? d = new ChangeableDictionary<int>();
-            d.Add(2, 20);
-            d.Add(8, 80);
-            d.Add(5, 50);
-            d.Add(0, 0);
-            d.Add(3, 30);
-            d.Add(6, 60);
-            d.Add(4, 40);
-            d.Add(7, 70);
-            d.Add(9, 90);
-            return d;
-        }
+        //Validate values
+        Assert.AreEqual(20, d[2]);
+        Assert.AreEqual(60, d[6]);
+        Assert.AreEqual(90, d[9]);
+    }
+    [TestMethod]
+    public void Insert()
+    {
+        ChangeableDictionary<int> d = Setup();
+
+        d.InsertAndShift(5, 1);
+        d.Add(5, 500);
+        Assert.AreEqual(500, d[5]);
+        Assert.AreEqual(50, d[6]);
+        Assert.AreEqual(80, d[9]);
+        Assert.AreEqual(90, d[10]);
+    }
+    [TestMethod]
+    public void Remove()
+    {
+        ChangeableDictionary<int> d = Setup();
+
+        d.RemoveAndShift(5);
+        Assert.AreEqual(20, d[2]);
+        Assert.AreEqual(40, d[4]);
+        Assert.AreEqual(60, d[5]);
+        Assert.AreEqual(70, d[6]);
+    }
+
+    private static ChangeableDictionary<int> Setup()
+    {
+        ChangeableDictionary<int>? d = new ChangeableDictionary<int>();
+        d.Add(2, 20);
+        d.Add(8, 80);
+        d.Add(5, 50);
+        d.Add(0, 0);
+        d.Add(3, 30);
+        d.Add(6, 60);
+        d.Add(4, 40);
+        d.Add(7, 70);
+        d.Add(9, 90);
+        return d;
     }
 }

@@ -11,62 +11,61 @@
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
 using System.Xml;
-namespace OfficeOpenXml.Drawing.Style.Coloring
-{
-    /// <summary>
-    /// A color using the red, green, blue RGB color model.
-    /// Each component, red, green, and blue is expressed as a percentage from 0% to 100%.
-    /// A linear gamma of 1.0 is assumed
-    /// </summary>
-    public class ExcelDrawingRgbPercentageColor : XmlHelper
-    {
-        internal ExcelDrawingRgbPercentageColor(XmlNamespaceManager nsm, XmlNode topNode) : base(nsm, topNode)
-        {
+namespace OfficeOpenXml.Drawing.Style.Coloring;
 
-        }
-        /// <summary>
-        /// The percentage of red.
-        /// </summary>
-        public double RedPercentage 
-        {
-            get
-            {
-                return (double)this.GetXmlNodePercentage("@r");
-            }
-            set
-            {
-                this.SetXmlNodePercentage("@r", value, false);
-                
-            }
-        }
-        /// <summary>
-        /// The percentage of green.
-        /// </summary>
-        public double GreenPercentage
-        {
-            get
-            {
-                return (double)this.GetXmlNodePercentage("@g");
-            }
-            set
-            {
-                this.SetXmlNodePercentage("@g", value, false);
-            }
-        }
-        /// <summary>
-        /// The percentage of blue.
-        /// </summary>
-        public double BluePercentage
-        {
-            get
-            {
-                return (double)this.GetXmlNodePercentage("@b");
-            }
-            set
-            {
-                this.SetXmlNodePercentage("@b", value, false);
-            }
-        }
-        internal const string NodeName = "a:scrgbClr";
+/// <summary>
+/// A color using the red, green, blue RGB color model.
+/// Each component, red, green, and blue is expressed as a percentage from 0% to 100%.
+/// A linear gamma of 1.0 is assumed
+/// </summary>
+public class ExcelDrawingRgbPercentageColor : XmlHelper
+{
+    internal ExcelDrawingRgbPercentageColor(XmlNamespaceManager nsm, XmlNode topNode) : base(nsm, topNode)
+    {
+
     }
+    /// <summary>
+    /// The percentage of red.
+    /// </summary>
+    public double RedPercentage 
+    {
+        get
+        {
+            return (double)this.GetXmlNodePercentage("@r");
+        }
+        set
+        {
+            this.SetXmlNodePercentage("@r", value, false);
+                
+        }
+    }
+    /// <summary>
+    /// The percentage of green.
+    /// </summary>
+    public double GreenPercentage
+    {
+        get
+        {
+            return (double)this.GetXmlNodePercentage("@g");
+        }
+        set
+        {
+            this.SetXmlNodePercentage("@g", value, false);
+        }
+    }
+    /// <summary>
+    /// The percentage of blue.
+    /// </summary>
+    public double BluePercentage
+    {
+        get
+        {
+            return (double)this.GetXmlNodePercentage("@b");
+        }
+        set
+        {
+            this.SetXmlNodePercentage("@b", value, false);
+        }
+    }
+    internal const string NodeName = "a:scrgbClr";
 }

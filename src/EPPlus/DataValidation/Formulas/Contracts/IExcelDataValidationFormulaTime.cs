@@ -16,12 +16,11 @@ using System.Linq;
 using System.Text;
 using OfficeOpenXml.DataValidation;
 
-namespace OfficeOpenXml.DataValidation.Formulas.Contracts
+namespace OfficeOpenXml.DataValidation.Formulas.Contracts;
+
+/// <summary>
+/// Interface for a time data validation
+/// </summary>
+public interface IExcelDataValidationFormulaTime : IExcelDataValidationFormulaWithValue<ExcelTime>
 {
-    /// <summary>
-    /// Interface for a time data validation
-    /// </summary>
-    public interface IExcelDataValidationFormulaTime : IExcelDataValidationFormulaWithValue<ExcelTime>
-    {
-    }
 }

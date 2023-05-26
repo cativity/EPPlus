@@ -15,17 +15,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace OfficeOpenXml.Attributes
+namespace OfficeOpenXml.Attributes;
+
+/// <summary>
+/// Attribute used by <see cref="ExcelRangeBase.LoadFromCollection{T}(IEnumerable{T})" /> to configure sorting of properties for the functions. Overrides any other configured sort order./>
+/// </summary>
+[AttributeUsage(AttributeTargets.Class | AttributeTargets.Interface, AllowMultiple = true)]
+public class EPPlusTableColumnSortOrderAttribute : Attribute
 {
     /// <summary>
-    /// Attribute used by <see cref="ExcelRangeBase.LoadFromCollection{T}(IEnumerable{T})" /> to configure sorting of properties for the functions. Overrides any other configured sort order./>
+    /// Property names used for the sort.
     /// </summary>
-    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Interface, AllowMultiple = true)]
-    public class EPPlusTableColumnSortOrderAttribute : Attribute
-    {
-        /// <summary>
-        /// Property names used for the sort.
-        /// </summary>
-        public string[] Properties { get; set; }
-    }
+    public string[] Properties { get; set; }
 }

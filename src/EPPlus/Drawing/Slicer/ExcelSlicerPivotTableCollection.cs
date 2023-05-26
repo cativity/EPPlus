@@ -15,75 +15,74 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
-namespace OfficeOpenXml.Drawing.Slicer
+namespace OfficeOpenXml.Drawing.Slicer;
+
+/// <summary>
+/// A collection of pivot tables attached to a slicer 
+/// </summary>
+public class ExcelSlicerPivotTableCollection : IEnumerable<ExcelPivotTable>
 {
-    /// <summary>
-    /// A collection of pivot tables attached to a slicer 
-    /// </summary>
-    public class ExcelSlicerPivotTableCollection : IEnumerable<ExcelPivotTable>
+    ExcelPivotTableSlicerCache _slicerCache;
+    internal ExcelSlicerPivotTableCollection(ExcelPivotTableSlicerCache slicerCache)
     {
-        ExcelPivotTableSlicerCache _slicerCache;
-        internal ExcelSlicerPivotTableCollection(ExcelPivotTableSlicerCache slicerCache)
+        this._slicerCache = slicerCache;
+    }
+    internal List<ExcelPivotTable> _list=new List<ExcelPivotTable>();
+    /// <summary>
+    /// Get an Enumerator for the collection.
+    /// </summary>
+    /// <returns>The Enumerator</returns>
+    public IEnumerator<ExcelPivotTable> GetEnumerator()
+    {
+        return this._list.GetEnumerator();
+    }
+
+    /// <summary>
+    /// Get an Enumerator for the collection.
+    /// </summary>
+    /// <returns>The Enumerator</returns>
+    IEnumerator IEnumerable.GetEnumerator()
+    {
+        return this._list.GetEnumerator();
+    }
+    /// <summary>
+    /// The indexer for the collection
+    /// </summary>
+    /// <param name="index">The index</param>
+    /// <returns>The pivot table at the specified index</returns>
+    public ExcelPivotTable this[int index]
+    {
+        get
         {
-            this._slicerCache = slicerCache;
+            if(index < 0 || index >= this._list.Count)
+            {
+                throw new IndexOutOfRangeException("Index for pivot table out of range");
+            }
+            return this._list[index];
         }
-        internal List<ExcelPivotTable> _list=new List<ExcelPivotTable>();
-        /// <summary>
-        /// Get an Enumerator for the collection.
-        /// </summary>
-        /// <returns>The Enumerator</returns>
-        public IEnumerator<ExcelPivotTable> GetEnumerator()
+    }
+    /// <summary>
+    /// Adds a new pivot table to the collection. All pivot table in this collection must share the same cache.
+    /// </summary>
+    /// <param name="pivotTable">The pivot table to add</param>
+    public void Add(ExcelPivotTable pivotTable)
+    {
+        if(this._list.Count > 0 && this._list[0].CacheId != pivotTable.CacheId)
         {
-            return this._list.GetEnumerator();
+            throw (new InvalidOperationException("Multiple Pivot tables added to a slicer must refer to the same cache."));
         }
 
-        /// <summary>
-        /// Get an Enumerator for the collection.
-        /// </summary>
-        /// <returns>The Enumerator</returns>
-        IEnumerator IEnumerable.GetEnumerator()
+        this._list.Add(pivotTable);
+        this._slicerCache.UpdateItemsXml();
+    }
+    /// <summary>
+    /// Number of items in the collection
+    /// </summary>
+    public int Count
+    {
+        get
         {
-            return this._list.GetEnumerator();
-        }
-        /// <summary>
-        /// The indexer for the collection
-        /// </summary>
-        /// <param name="index">The index</param>
-        /// <returns>The pivot table at the specified index</returns>
-        public ExcelPivotTable this[int index]
-        {
-            get
-            {
-                if(index < 0 || index >= this._list.Count)
-                {
-                    throw new IndexOutOfRangeException("Index for pivot table out of range");
-                }
-                return this._list[index];
-            }
-        }
-        /// <summary>
-        /// Adds a new pivot table to the collection. All pivot table in this collection must share the same cache.
-        /// </summary>
-        /// <param name="pivotTable">The pivot table to add</param>
-        public void Add(ExcelPivotTable pivotTable)
-        {
-            if(this._list.Count > 0 && this._list[0].CacheId != pivotTable.CacheId)
-            {
-                throw (new InvalidOperationException("Multiple Pivot tables added to a slicer must refer to the same cache."));
-            }
-
-            this._list.Add(pivotTable);
-            this._slicerCache.UpdateItemsXml();
-        }
-        /// <summary>
-        /// Number of items in the collection
-        /// </summary>
-        public int Count
-        {
-            get
-            {
-                return this._list.Count;
-            }
+            return this._list.Count;
         }
     }
 }

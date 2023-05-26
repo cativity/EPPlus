@@ -17,33 +17,32 @@ using System.Text;
 using OfficeOpenXml.FormulaParsing.Excel.Functions;
 //using OfficeOpenXml.FormulaParsing.Excel.Functions;
 
-namespace OfficeOpenXml.FormulaParsing.LexicalAnalysis
+namespace OfficeOpenXml.FormulaParsing.LexicalAnalysis;
+
+public class Lexer : ILexer
 {
-    public class Lexer : ILexer
+    public Lexer(FunctionRepository functionRepository, INameValueProvider nameValueProvider)
+        :this(new SourceCodeTokenizer(functionRepository, nameValueProvider), new SyntacticAnalyzer())
     {
-        public Lexer(FunctionRepository functionRepository, INameValueProvider nameValueProvider)
-            :this(new SourceCodeTokenizer(functionRepository, nameValueProvider), new SyntacticAnalyzer())
-        {
 
-        }
+    }
 
-        public Lexer(ISourceCodeTokenizer tokenizer, ISyntacticAnalyzer analyzer)
-        {
-            this._tokenizer = tokenizer;
-            this._analyzer = analyzer;
-        }
+    public Lexer(ISourceCodeTokenizer tokenizer, ISyntacticAnalyzer analyzer)
+    {
+        this._tokenizer = tokenizer;
+        this._analyzer = analyzer;
+    }
 
-        private readonly ISourceCodeTokenizer _tokenizer;
-        private readonly ISyntacticAnalyzer _analyzer;
-        public IEnumerable<Token> Tokenize(string input)
-        {
-            return this.Tokenize(input, null);
-        }
-        public IEnumerable<Token> Tokenize(string input, string worksheet)
-        {
-            IEnumerable<Token>? tokens = this._tokenizer.Tokenize(input, worksheet);
-            this._analyzer.Analyze(tokens);
-            return tokens;
-        }
+    private readonly ISourceCodeTokenizer _tokenizer;
+    private readonly ISyntacticAnalyzer _analyzer;
+    public IEnumerable<Token> Tokenize(string input)
+    {
+        return this.Tokenize(input, null);
+    }
+    public IEnumerable<Token> Tokenize(string input, string worksheet)
+    {
+        IEnumerable<Token>? tokens = this._tokenizer.Tokenize(input, worksheet);
+        this._analyzer.Analyze(tokens);
+        return tokens;
     }
 }

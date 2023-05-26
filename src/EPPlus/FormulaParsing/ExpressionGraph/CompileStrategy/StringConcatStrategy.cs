@@ -15,30 +15,29 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace OfficeOpenXml.FormulaParsing.ExpressionGraph.CompileStrategy
-{
-    public class StringConcatStrategy : CompileStrategy
-    {
-        public StringConcatStrategy(Expression expression)
-            : base(expression)
-        {
-           
-        }
+namespace OfficeOpenXml.FormulaParsing.ExpressionGraph.CompileStrategy;
 
-        public override Expression Compile()
+public class StringConcatStrategy : CompileStrategy
+{
+    public StringConcatStrategy(Expression expression)
+        : base(expression)
+    {
+           
+    }
+
+    public override Expression Compile()
+    {
+        Expression? newExp = this._expression is ExcelAddressExpression ? this._expression : ExpressionConverter.Instance.ToStringExpression(this._expression);
+        newExp.Prev = this._expression.Prev;
+        newExp.Next = this._expression.Next;
+        if (this._expression.Prev != null)
         {
-            Expression? newExp = this._expression is ExcelAddressExpression ? this._expression : ExpressionConverter.Instance.ToStringExpression(this._expression);
-            newExp.Prev = this._expression.Prev;
-            newExp.Next = this._expression.Next;
-            if (this._expression.Prev != null)
-            {
-                this._expression.Prev.Next = newExp;
-            }
-            if (this._expression.Next != null)
-            {
-                this._expression.Next.Prev = newExp;
-            }
-            return newExp.MergeWithNext();
+            this._expression.Prev.Next = newExp;
         }
+        if (this._expression.Next != null)
+        {
+            this._expression.Next.Prev = newExp;
+        }
+        return newExp.MergeWithNext();
     }
 }

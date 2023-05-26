@@ -20,141 +20,140 @@ using System.Xml;
 using System.Globalization;
 using OfficeOpenXml.Drawing;
 
-namespace OfficeOpenXml.Sparkline
+namespace OfficeOpenXml.Sparkline;
+
+/// <summary>
+/// Sparkline colors
+/// </summary>
+public class ExcelSparklineColor : XmlHelper, IColor
 {
-    /// <summary>
-    /// Sparkline colors
-    /// </summary>
-    public class ExcelSparklineColor : XmlHelper, IColor
+    internal ExcelSparklineColor(XmlNamespaceManager ns, XmlNode node) : base(ns, node)
     {
-        internal ExcelSparklineColor(XmlNamespaceManager ns, XmlNode node) : base(ns, node)
-        {
 
-        }
-        /// <summary>
-        /// Indexed color
-        /// </summary>
-        public int Indexed
+    }
+    /// <summary>
+    /// Indexed color
+    /// </summary>
+    public int Indexed
+    {
+        get => this.GetXmlNodeInt("@indexed");
+        set
         {
-            get => this.GetXmlNodeInt("@indexed");
-            set
+            if (value < 0 || value > 65)
             {
-                if (value < 0 || value > 65)
-                {
-                    throw (new ArgumentOutOfRangeException("Index out of range"));
-                }
+                throw (new ArgumentOutOfRangeException("Index out of range"));
+            }
 
-                this.ClearValues();
-                this.SetXmlNodeString("@indexed", value.ToString(CultureInfo.InvariantCulture));
+            this.ClearValues();
+            this.SetXmlNodeString("@indexed", value.ToString(CultureInfo.InvariantCulture));
+        }
+    }
+
+    /// <summary>
+    /// RGB 
+    /// </summary>
+    public string Rgb
+    {
+        get => this.GetXmlNodeString("@rgb");
+        internal set
+        {
+            this.ClearValues();
+            this.SetXmlNodeString("@rgb", value);
+        }
+    }
+    /// <summary>
+    /// The theme color
+    /// </summary>
+    public eThemeSchemeColor? Theme 
+    {
+        get
+        {
+            int? v = this.GetXmlNodeIntNull("@theme");
+            if(v.HasValue)
+            {
+                return (eThemeSchemeColor)v;
+            }
+            else
+            {
+                return null;
             }
         }
+        internal set
+        {
+            this.ClearValues();
 
-        /// <summary>
-        /// RGB 
-        /// </summary>
-        public string Rgb
-        {
-            get => this.GetXmlNodeString("@rgb");
-            internal set
-            {
-                this.ClearValues();
-                this.SetXmlNodeString("@rgb", value);
-            }
+            this.SetXmlNodeString("@theme", ((int)value.Value).ToString(CultureInfo.InvariantCulture));
         }
-        /// <summary>
-        /// The theme color
-        /// </summary>
-        public eThemeSchemeColor? Theme 
-        {
-            get
-            {
-                int? v = this.GetXmlNodeIntNull("@theme");
-                if(v.HasValue)
-                {
-                    return (eThemeSchemeColor)v;
-                }
-                else
-                {
-                    return null;
-                }
-            }
-            internal set
-            {
-                this.ClearValues();
+    }
 
-                this.SetXmlNodeString("@theme", ((int)value.Value).ToString(CultureInfo.InvariantCulture));
-            }
-        }
+    private void ClearValues()
+    {
+        this.DeleteNode("@rgb");
+        this.DeleteNode("@indexed");
+        this.DeleteNode("@theme");
+        this.DeleteNode("@auto");
+    }
 
-        private void ClearValues()
+    /// <summary>
+    /// The tint value
+    /// </summary>
+    public decimal Tint
+    {
+        get=> this.GetXmlNodeDecimal("@tint");
+        set
         {
-            this.DeleteNode("@rgb");
-            this.DeleteNode("@indexed");
-            this.DeleteNode("@theme");
-            this.DeleteNode("@auto");
-        }
+            if (value > 1 || value < -1)
+            {
+                throw (new ArgumentOutOfRangeException("Value must be between -1 and 1"));
+            }
 
-        /// <summary>
-        /// The tint value
-        /// </summary>
-        public decimal Tint
-        {
-            get=> this.GetXmlNodeDecimal("@tint");
-            set
-            {
-                if (value > 1 || value < -1)
-                {
-                    throw (new ArgumentOutOfRangeException("Value must be between -1 and 1"));
-                }
-
-                this.SetXmlNodeString("@tint", value.ToString(CultureInfo.InvariantCulture));
-            }
+            this.SetXmlNodeString("@tint", value.ToString(CultureInfo.InvariantCulture));
         }
-        /// <summary>
-        /// Color is set to automatic
-        /// </summary>
-        public bool Auto
+    }
+    /// <summary>
+    /// Color is set to automatic
+    /// </summary>
+    public bool Auto
+    {
+        get
         {
-            get
-            {
-                return this.GetXmlNodeBool("@auto");
-            }
-            internal set
-            {
-                this.ClearValues();
-                this.SetXmlNodeBool("@auto", value);
-            }
+            return this.GetXmlNodeBool("@auto");
         }
-        /// <summary>
-        /// Sets a color
-        /// </summary>
-        /// <param name="color">The color</param>
-        public void SetColor(Color color)
+        internal set
         {
-            this.Rgb = color.ToArgb().ToString("X");
+            this.ClearValues();
+            this.SetXmlNodeBool("@auto", value);
         }
-        /// <summary>
-        /// Sets a theme color
-        /// </summary>
-        /// <param name="color">The color</param>
-        public void SetColor(eThemeSchemeColor color)
-        {
-            this.Theme=color;
-        }
-        /// <summary>
-        /// Sets an indexed color
-        /// </summary>
-        /// <param name="color">The color</param>
-        public void SetColor(ExcelIndexedColor color)
-        {
-            this.Indexed = (int)color;
-        }
-        /// <summary>
-        /// Sets the color to auto
-        /// </summary>
-        public void SetAuto()
-        {
-            this.Auto = true;
-        }
+    }
+    /// <summary>
+    /// Sets a color
+    /// </summary>
+    /// <param name="color">The color</param>
+    public void SetColor(Color color)
+    {
+        this.Rgb = color.ToArgb().ToString("X");
+    }
+    /// <summary>
+    /// Sets a theme color
+    /// </summary>
+    /// <param name="color">The color</param>
+    public void SetColor(eThemeSchemeColor color)
+    {
+        this.Theme=color;
+    }
+    /// <summary>
+    /// Sets an indexed color
+    /// </summary>
+    /// <param name="color">The color</param>
+    public void SetColor(ExcelIndexedColor color)
+    {
+        this.Indexed = (int)color;
+    }
+    /// <summary>
+    /// Sets the color to auto
+    /// </summary>
+    public void SetAuto()
+    {
+        this.Auto = true;
     }
 }

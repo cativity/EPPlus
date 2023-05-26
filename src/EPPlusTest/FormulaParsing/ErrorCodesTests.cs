@@ -6,19 +6,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EPPlusTest.FormulaParsing
+namespace EPPlusTest.FormulaParsing;
+
+[TestClass]
+public class ErrorCodesTests
 {
-    [TestClass]
-    public class ErrorCodesTests
+    [TestMethod]
+    public void ShouldSetDiv0InFunctions()
     {
-        [TestMethod]
-        public void ShouldSetDiv0InFunctions()
-        {
-            using ExcelPackage? package = new ExcelPackage();
-            ExcelWorksheet? ws = package.Workbook.Worksheets.Add("test");
-            ws.Cells["A1"].Formula = "ROUND(2.3 + 1/0, 2)";
-            ws.Calculate();
-            Assert.AreEqual("#DIV/0!", ws.Cells["A1"].Value.ToString());
-        }
+        using ExcelPackage? package = new ExcelPackage();
+        ExcelWorksheet? ws = package.Workbook.Worksheets.Add("test");
+        ws.Cells["A1"].Formula = "ROUND(2.3 + 1/0, 2)";
+        ws.Calculate();
+        Assert.AreEqual("#DIV/0!", ws.Cells["A1"].Value.ToString());
     }
 }

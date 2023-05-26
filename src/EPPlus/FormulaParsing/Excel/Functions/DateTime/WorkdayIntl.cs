@@ -19,46 +19,45 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime;
+
+[FunctionMetadata(
+                     Category = ExcelFunctionCategory.DateAndTime,
+                     EPPlusVersion = "5.0",
+                     Description = "Returns a date that is a supplied number of working days (excluding weekends & holidays) ahead of a given start date, using supplied parameters to specify weekend days",
+                     IntroducedInExcelVersion = "2010")]
+internal class WorkdayIntl : ExcelFunction
 {
-    [FunctionMetadata(
-        Category = ExcelFunctionCategory.DateAndTime,
-        EPPlusVersion = "5.0",
-        Description = "Returns a date that is a supplied number of working days (excluding weekends & holidays) ahead of a given start date, using supplied parameters to specify weekend days",
-        IntroducedInExcelVersion = "2010")]
-    internal class WorkdayIntl : ExcelFunction
+    public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
     {
-        public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
+        FunctionArgument[]? functionArguments = arguments as FunctionArgument[] ?? arguments.ToArray();
+        ValidateArguments(functionArguments, 2);
+        System.DateTime startDate = System.DateTime.FromOADate(this.ArgToInt(functionArguments, 0));
+        int nWorkDays = this.ArgToInt(functionArguments, 1);
+        WorkdayCalculator calculator = new WorkdayCalculator();
+        HolidayWeekdaysFactory? weekdayFactory = new HolidayWeekdaysFactory();
+        if (functionArguments.Length > 2)
         {
-            FunctionArgument[]? functionArguments = arguments as FunctionArgument[] ?? arguments.ToArray();
-            ValidateArguments(functionArguments, 2);
-            System.DateTime startDate = System.DateTime.FromOADate(this.ArgToInt(functionArguments, 0));
-            int nWorkDays = this.ArgToInt(functionArguments, 1);
-            WorkdayCalculator calculator = new WorkdayCalculator();
-            HolidayWeekdaysFactory? weekdayFactory = new HolidayWeekdaysFactory();
-            if (functionArguments.Length > 2)
+            object? holidayArg = functionArguments[2].Value;
+            if (Regex.IsMatch(holidayArg.ToString(), "^[01]{7}"))
             {
-                object? holidayArg = functionArguments[2].Value;
-                if (Regex.IsMatch(holidayArg.ToString(), "^[01]{7}"))
-                {
-                    calculator = new WorkdayCalculator(weekdayFactory.Create(holidayArg.ToString()));
-                }
-                else if (IsNumeric(holidayArg))
-                {
-                    int holidayCode = Convert.ToInt32(holidayArg);
-                    calculator = new WorkdayCalculator(HolidayWeekdaysFactory.Create(holidayCode));
-                }
-                else
-                {
-                    return new CompileResult(eErrorType.Value);
-                }
+                calculator = new WorkdayCalculator(weekdayFactory.Create(holidayArg.ToString()));
             }
-            WorkdayCalculatorResult? result = calculator.CalculateWorkday(startDate, nWorkDays);
-            if (functionArguments.Length > 3)
+            else if (IsNumeric(holidayArg))
             {
-                result = calculator.AdjustResultWithHolidays(result, functionArguments[3]);
+                int holidayCode = Convert.ToInt32(holidayArg);
+                calculator = new WorkdayCalculator(HolidayWeekdaysFactory.Create(holidayCode));
             }
-            return new CompileResult(result.EndDate.ToOADate(), DataType.Integer);
+            else
+            {
+                return new CompileResult(eErrorType.Value);
+            }
         }
+        WorkdayCalculatorResult? result = calculator.CalculateWorkday(startDate, nWorkDays);
+        if (functionArguments.Length > 3)
+        {
+            result = calculator.AdjustResultWithHolidays(result, functionArguments[3]);
+        }
+        return new CompileResult(result.EndDate.ToOADate(), DataType.Integer);
     }
 }

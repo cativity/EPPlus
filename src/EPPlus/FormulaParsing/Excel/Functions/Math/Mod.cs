@@ -17,20 +17,19 @@ using System.Text;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Metadata;
 using OfficeOpenXml.FormulaParsing.ExpressionGraph;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
+
+[FunctionMetadata(
+                     Category = ExcelFunctionCategory.MathAndTrig,
+                     EPPlusVersion = "4",
+                     Description = "Returns the remainder from a division between two supplied numbers")]
+internal class Mod : ExcelFunction
 {
-    [FunctionMetadata(
-        Category = ExcelFunctionCategory.MathAndTrig,
-        EPPlusVersion = "4",
-        Description = "Returns the remainder from a division between two supplied numbers")]
-    internal class Mod : ExcelFunction
+    public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
     {
-        public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
-        {
-            ValidateArguments(arguments, 2);
-            double n1 = this.ArgToDecimal(arguments, 0);
-            double n2 = this.ArgToDecimal(arguments, 1);
-            return new CompileResult(n1 % n2, DataType.Decimal);
-        }
+        ValidateArguments(arguments, 2);
+        double n1 = this.ArgToDecimal(arguments, 0);
+        double n2 = this.ArgToDecimal(arguments, 1);
+        return new CompileResult(n1 % n2, DataType.Decimal);
     }
 }

@@ -21,125 +21,124 @@ using OfficeOpenXml.FormulaParsing.Utilities;
 using OfficeOpenXml.Utils;
 using Require = OfficeOpenXml.FormulaParsing.Utilities.Require;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
+
+[FunctionMetadata(
+                     Category = ExcelFunctionCategory.Statistical,
+                     EPPlusVersion = "4",
+                     Description = "Calculates the Average of the cells in a supplied range, that satisfy a given criteria",
+                     IntroducedInExcelVersion = "2007")]
+internal class AverageIf : HiddenValuesHandlingFunction
 {
-    [FunctionMetadata(
-        Category = ExcelFunctionCategory.Statistical,
-        EPPlusVersion = "4",
-        Description = "Calculates the Average of the cells in a supplied range, that satisfy a given criteria",
-        IntroducedInExcelVersion = "2007")]
-    internal class AverageIf : HiddenValuesHandlingFunction
+    private readonly ExpressionEvaluator _expressionEvaluator;
+
+    public AverageIf()
+        : this(new ExpressionEvaluator())
     {
-        private readonly ExpressionEvaluator _expressionEvaluator;
 
-        public AverageIf()
-            : this(new ExpressionEvaluator())
+    }
+
+    public AverageIf(ExpressionEvaluator evaluator)
+    {
+        Require.That(evaluator).Named("evaluator").IsNotNull();
+        this._expressionEvaluator = evaluator;
+    }
+
+    private bool Evaluate(object obj, string expression)
+    {
+        double? candidate = default(double?);
+        if (IsNumeric(obj))
         {
-
+            candidate = ConvertUtil.GetValueDouble(obj);
         }
-
-        public AverageIf(ExpressionEvaluator evaluator)
+        if (candidate.HasValue)
         {
-            Require.That(evaluator).Named("evaluator").IsNotNull();
-            this._expressionEvaluator = evaluator;
+            return this._expressionEvaluator.Evaluate(candidate.Value, expression);
         }
+        return this._expressionEvaluator.Evaluate(obj, expression);
+    }
 
-        private bool Evaluate(object obj, string expression)
-        {
-            double? candidate = default(double?);
-            if (IsNumeric(obj))
-            {
-                candidate = ConvertUtil.GetValueDouble(obj);
-            }
-            if (candidate.HasValue)
-            {
-                return this._expressionEvaluator.Evaluate(candidate.Value, expression);
-            }
-            return this._expressionEvaluator.Evaluate(obj, expression);
-        }
+    private static string GetCriteraFromArg(IEnumerable<FunctionArgument> arguments)
+    {
+        return arguments.ElementAt(1).ValueFirst != null ? ArgToString(arguments, 1) : null;
+    }
 
-        private static string GetCriteraFromArg(IEnumerable<FunctionArgument> arguments)
+    public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
+    {
+        ValidateArguments(arguments, 2);
+        IRangeInfo? argRange = ArgToRangeInfo(arguments, 0);
+        string? criteria = GetCriteraFromArg(arguments);
+        double returnValue;
+        if (argRange == null)
         {
-            return arguments.ElementAt(1).ValueFirst != null ? ArgToString(arguments, 1) : null;
-        }
-
-        public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
-        {
-            ValidateArguments(arguments, 2);
-            IRangeInfo? argRange = ArgToRangeInfo(arguments, 0);
-            string? criteria = GetCriteraFromArg(arguments);
-            double returnValue;
-            if (argRange == null)
-            {
-                object? val = arguments.ElementAt(0).Value;
-                if (criteria != null && this.Evaluate(val, criteria))
-                {
-                    IRangeInfo? lookupRange = ArgToRangeInfo(arguments, 2);
-                    returnValue = arguments.Count() > 2
-                        ? lookupRange.First().ValueDouble
-                        : ConvertUtil.GetValueDouble(val, true);
-                }
-                else
-                {
-                    throw new ExcelErrorValueException(eErrorType.Div0);
-                }
-            }
-            else if (arguments.Count() > 2)
+            object? val = arguments.ElementAt(0).Value;
+            if (criteria != null && this.Evaluate(val, criteria))
             {
                 IRangeInfo? lookupRange = ArgToRangeInfo(arguments, 2);
-                returnValue = this.CalculateWithLookupRange(argRange, criteria, lookupRange, context);
+                returnValue = arguments.Count() > 2
+                                  ? lookupRange.First().ValueDouble
+                                  : ConvertUtil.GetValueDouble(val, true);
             }
             else
             {
-                returnValue = this.CalculateSingleRange(argRange, criteria, context);
+                throw new ExcelErrorValueException(eErrorType.Div0);
             }
-            return this.CreateResult(returnValue, DataType.Decimal);
         }
-
-        private double CalculateWithLookupRange(IRangeInfo argRange, string criteria, IRangeInfo sumRange, ParsingContext context)
+        else if (arguments.Count() > 2)
         {
-            double returnValue = 0d;
-            int nMatches = 0;
-            foreach (ICellInfo? cell in argRange)
-            {
-                if (criteria != null && this.Evaluate(cell.Value, criteria))
-                {
-                    int rowOffset = cell.Row - argRange.Address._fromRow;
-                    int columnOffset = cell.Column - argRange.Address._fromCol;
-                    if (sumRange.Address._fromRow + rowOffset <= sumRange.Address._toRow &&
-                       sumRange.Address._fromCol + columnOffset <= sumRange.Address._toCol)
-                    {
-                        object? val = sumRange.GetOffset(rowOffset, columnOffset);
-                        if (val is ExcelErrorValue)
-                        {
-                            ThrowExcelErrorValueException(((ExcelErrorValue)val));
-                        }
-                        nMatches++;
-                        returnValue += ConvertUtil.GetValueDouble(val, true);
-                    }
-                }
-            }
-            return Divide(returnValue, nMatches);
+            IRangeInfo? lookupRange = ArgToRangeInfo(arguments, 2);
+            returnValue = this.CalculateWithLookupRange(argRange, criteria, lookupRange, context);
         }
-
-        private double CalculateSingleRange(IRangeInfo range, string expression, ParsingContext context)
+        else
         {
-            double returnValue = 0d;
-            int nMatches = 0;
-            foreach (ICellInfo? candidate in range)
+            returnValue = this.CalculateSingleRange(argRange, criteria, context);
+        }
+        return this.CreateResult(returnValue, DataType.Decimal);
+    }
+
+    private double CalculateWithLookupRange(IRangeInfo argRange, string criteria, IRangeInfo sumRange, ParsingContext context)
+    {
+        double returnValue = 0d;
+        int nMatches = 0;
+        foreach (ICellInfo? cell in argRange)
+        {
+            if (criteria != null && this.Evaluate(cell.Value, criteria))
             {
-                if (expression != null && IsNumeric(candidate.Value) && this.Evaluate(candidate.Value, expression))
+                int rowOffset = cell.Row - argRange.Address._fromRow;
+                int columnOffset = cell.Column - argRange.Address._fromCol;
+                if (sumRange.Address._fromRow + rowOffset <= sumRange.Address._toRow &&
+                    sumRange.Address._fromCol + columnOffset <= sumRange.Address._toCol)
                 {
-                    
-                    if (candidate.IsExcelError)
+                    object? val = sumRange.GetOffset(rowOffset, columnOffset);
+                    if (val is ExcelErrorValue)
                     {
-                        ThrowExcelErrorValueException(((ExcelErrorValue)candidate.Value));
+                        ThrowExcelErrorValueException(((ExcelErrorValue)val));
                     }
-                    returnValue += candidate.ValueDouble;
                     nMatches++;
+                    returnValue += ConvertUtil.GetValueDouble(val, true);
                 }
             }
-            return Divide(returnValue, nMatches);
         }
+        return Divide(returnValue, nMatches);
+    }
+
+    private double CalculateSingleRange(IRangeInfo range, string expression, ParsingContext context)
+    {
+        double returnValue = 0d;
+        int nMatches = 0;
+        foreach (ICellInfo? candidate in range)
+        {
+            if (expression != null && IsNumeric(candidate.Value) && this.Evaluate(candidate.Value, expression))
+            {
+                    
+                if (candidate.IsExcelError)
+                {
+                    ThrowExcelErrorValueException(((ExcelErrorValue)candidate.Value));
+                }
+                returnValue += candidate.ValueDouble;
+                nMatches++;
+            }
+        }
+        return Divide(returnValue, nMatches);
     }
 }

@@ -17,19 +17,18 @@ using System.Text;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Metadata;
 using OfficeOpenXml.FormulaParsing.ExpressionGraph;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
+
+[FunctionMetadata(
+                     Category = ExcelFunctionCategory.MathAndTrig,
+                     EPPlusVersion = "4",
+                     Description = "Returns the Inverse Hyperbolic Sine of a number")]
+internal class Asinh : ExcelFunction
 {
-    [FunctionMetadata(
-        Category = ExcelFunctionCategory.MathAndTrig,
-        EPPlusVersion = "4",
-        Description = "Returns the Inverse Hyperbolic Sine of a number")]
-    internal class Asinh : ExcelFunction
+    public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
     {
-        public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
-        {
-            ValidateArguments(arguments, 1);
-            double arg = this.ArgToDecimal(arguments, 0);
-            return this.CreateResult(MathHelper.HArcsin(arg), DataType.Decimal);
-        }
+        ValidateArguments(arguments, 1);
+        double arg = this.ArgToDecimal(arguments, 0);
+        return this.CreateResult(MathHelper.HArcsin(arg), DataType.Decimal);
     }
 }

@@ -14,79 +14,78 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace OfficeOpenXml.Utils.TypeConversion
+namespace OfficeOpenXml.Utils.TypeConversion;
+
+/// <summary>
+/// Provides functionality for analyzing the properties of a type.
+/// </summary>
+/// <typeparam name="T">The type to analyze</typeparam>
+public class ReturnTypeWrapper<T>
 {
+    private readonly Type _returnType;
+    private readonly Type _underlyingType;
+
     /// <summary>
-    /// Provides functionality for analyzing the properties of a type.
+    /// Constructor
     /// </summary>
-    /// <typeparam name="T">The type to analyze</typeparam>
-    public class ReturnTypeWrapper<T>
+    public ReturnTypeWrapper()
     {
-        private readonly Type _returnType;
-        private readonly Type _underlyingType;
+        this._returnType = typeof(T);
+        this._underlyingType = Nullable.GetUnderlyingType(this._returnType);
+    }
 
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        public ReturnTypeWrapper()
+    /// <summary>
+    /// The type to analyze
+    /// </summary>
+    public Type Type
+    {
+        get
         {
-            this._returnType = typeof(T);
-            this._underlyingType = Nullable.GetUnderlyingType(this._returnType);
+            return this.IsNullable ? this._underlyingType : this._returnType;
         }
+    }
 
-        /// <summary>
-        /// The type to analyze
-        /// </summary>
-        public Type Type
+    /// <summary>
+    /// Returns true if the type to analyze is numeric.
+    /// </summary>
+    public bool IsNumeric
+    {
+        get
         {
-            get
-            {
-                return this.IsNullable ? this._underlyingType : this._returnType;
-            }
+            return NumericTypeConversions.IsNumeric(this.Type);
         }
+    }
 
-        /// <summary>
-        /// Returns true if the type to analyze is numeric.
-        /// </summary>
-        public bool IsNumeric
+    /// <summary>
+    /// Returns true if the type to analyze is nullable.
+    /// </summary>
+    public bool IsNullable
+    {
+        get
         {
-            get
-            {
-                return NumericTypeConversions.IsNumeric(this.Type);
-            }
+            return this._underlyingType != null;
         }
+    }
 
-        /// <summary>
-        /// Returns true if the type to analyze is nullable.
-        /// </summary>
-        public bool IsNullable
+    /// <summary>
+    /// Returns true if the type to analyze equalse the <see cref="DateTime"/> type.
+    /// </summary>
+    public bool IsDateTime
+    {
+        get
         {
-            get
-            {
-                return this._underlyingType != null;
-            }
+            return this.Type == typeof(DateTime);
         }
+    }
 
-        /// <summary>
-        /// Returns true if the type to analyze equalse the <see cref="DateTime"/> type.
-        /// </summary>
-        public bool IsDateTime
+    /// <summary>
+    /// Returns true if the type to analyze equalse the <see cref="TimeSpan"/> type.
+    /// </summary>
+    public bool IsTimeSpan
+    {
+        get
         {
-            get
-            {
-                return this.Type == typeof(DateTime);
-            }
-        }
-
-        /// <summary>
-        /// Returns true if the type to analyze equalse the <see cref="TimeSpan"/> type.
-        /// </summary>
-        public bool IsTimeSpan
-        {
-            get
-            {
-                return this.Type == typeof(TimeSpan);
-            }
+            return this.Type == typeof(TimeSpan);
         }
     }
 }

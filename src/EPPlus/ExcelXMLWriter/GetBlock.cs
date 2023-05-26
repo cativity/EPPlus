@@ -12,35 +12,34 @@
  *************************************************************************************************/
 using System.Text.RegularExpressions;
 
-namespace OfficeOpenXml.ExcelXMLWriter
+namespace OfficeOpenXml.ExcelXMLWriter;
+
+internal static class GetBlock
 {
-    internal static class GetBlock
+    internal static void Pos(string xml, string tag, ref int start, ref int end)
     {
-        internal static void Pos(string xml, string tag, ref int start, ref int end)
+        Match startmMatch = Regex.Match(xml.Substring(start), string.Format("(<[^>]*{0}[^>]*>)", tag)); //"<[a-zA-Z:]*" + tag + "[?]*>");
+
+        if (!startmMatch.Success) //Not found
         {
-            Match startmMatch = Regex.Match(xml.Substring(start), string.Format("(<[^>]*{0}[^>]*>)", tag)); //"<[a-zA-Z:]*" + tag + "[?]*>");
-
-            if (!startmMatch.Success) //Not found
-            {
-                start = -1;
-                end = -1;
-                return;
-            }
-            int startPos = startmMatch.Index + start;
-            if (startmMatch.Value.Substring(startmMatch.Value.Length - 2, 1) == "/")
-            {
-                end = startPos + startmMatch.Length;
-            }
-            else
-            {
-                Match endMatch = Regex.Match(xml.Substring(start), string.Format("(</[^>]*{0}[^>]*>)", tag));
-
-                if (endMatch.Success)
-                {
-                    end = endMatch.Index + endMatch.Length + start;
-                }
-            }
-            start = startPos;
+            start = -1;
+            end = -1;
+            return;
         }
+        int startPos = startmMatch.Index + start;
+        if (startmMatch.Value.Substring(startmMatch.Value.Length - 2, 1) == "/")
+        {
+            end = startPos + startmMatch.Length;
+        }
+        else
+        {
+            Match endMatch = Regex.Match(xml.Substring(start), string.Format("(</[^>]*{0}[^>]*>)", tag));
+
+            if (endMatch.Success)
+            {
+                end = endMatch.Index + endMatch.Length + start;
+            }
+        }
+        start = startPos;
     }
 }

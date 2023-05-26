@@ -10,32 +10,31 @@
  *************************************************************************************************
     10/21/2020         EPPlus Software AB           Controls 
  *************************************************************************************************/
-namespace OfficeOpenXml.Drawing.Controls
+namespace OfficeOpenXml.Drawing.Controls;
+
+/// <summary>
+/// Horizontal alignment for a form control. Unused in Excel 2010, so internal for now.
+/// </summary>
+internal enum eHorizontalAlignmentControl
 {
     /// <summary>
-    /// Horizontal alignment for a form control. Unused in Excel 2010, so internal for now.
+    /// Left alignment
     /// </summary>
-    internal enum eHorizontalAlignmentControl
-    {
-        /// <summary>
-        /// Left alignment
-        /// </summary>
-        Left,
-        /// <summary>
-        /// Center alignment
-        /// </summary>
-        Center,
-        /// <summary>
-        /// Right alignment
-        /// </summary>
-        Right,
-        /// <summary>
-        /// Justify alignment
-        /// </summary>
-        Justify,
-        /// <summary>
-        /// Distributed alignment
-        /// </summary>
-        Distributed
-    }
+    Left,
+    /// <summary>
+    /// Center alignment
+    /// </summary>
+    Center,
+    /// <summary>
+    /// Right alignment
+    /// </summary>
+    Right,
+    /// <summary>
+    /// Justify alignment
+    /// </summary>
+    Justify,
+    /// <summary>
+    /// Distributed alignment
+    /// </summary>
+    Distributed
 }

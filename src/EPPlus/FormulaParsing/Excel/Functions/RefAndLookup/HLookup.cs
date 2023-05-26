@@ -18,25 +18,24 @@ using OfficeOpenXml.FormulaParsing.ExpressionGraph;
 using OfficeOpenXml.FormulaParsing.Exceptions;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Metadata;
 
-namespace OfficeOpenXml.FormulaParsing.Excel.Functions.RefAndLookup
-{
-    [FunctionMetadata(
-        Category = ExcelFunctionCategory.LookupAndReference,
-        EPPlusVersion = "4",
-        Description = "Looks up a supplied value in the first row of a table, and returns the corresponding value from another row")]
-    internal class HLookup : LookupFunction
-    {
-        public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
-        {
-            ValidateArguments(arguments, 3);
-            LookupArguments? lookupArgs = new LookupArguments(arguments, context);
-            if (lookupArgs.LookupIndex < 1)
-            {
-                return this.CreateResult(eErrorType.Value);
-            }
+namespace OfficeOpenXml.FormulaParsing.Excel.Functions.RefAndLookup;
 
-            LookupNavigator? navigator = LookupNavigatorFactory.Create(LookupDirection.Horizontal, lookupArgs, context);
-            return this.Lookup(navigator, lookupArgs);
+[FunctionMetadata(
+                     Category = ExcelFunctionCategory.LookupAndReference,
+                     EPPlusVersion = "4",
+                     Description = "Looks up a supplied value in the first row of a table, and returns the corresponding value from another row")]
+internal class HLookup : LookupFunction
+{
+    public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
+    {
+        ValidateArguments(arguments, 3);
+        LookupArguments? lookupArgs = new LookupArguments(arguments, context);
+        if (lookupArgs.LookupIndex < 1)
+        {
+            return this.CreateResult(eErrorType.Value);
         }
+
+        LookupNavigator? navigator = LookupNavigatorFactory.Create(LookupDirection.Horizontal, lookupArgs, context);
+        return this.Lookup(navigator, lookupArgs);
     }
 }

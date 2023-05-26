@@ -11,24 +11,23 @@
   05/11/2021         EPPlus Software AB           ExcelTable Html Export
  *************************************************************************************************/
 
-namespace OfficeOpenXml.Export.HtmlExport
+namespace OfficeOpenXml.Export.HtmlExport;
+
+/// <summary>
+/// How the text alignment is handled when the style is set to General
+/// </summary>
+public enum eHtmlGeneralAlignmentHandling
 {
     /// <summary>
-    /// How the text alignment is handled when the style is set to General
+    /// Dont set any alignment when alignment is set to general
     /// </summary>
-    public enum eHtmlGeneralAlignmentHandling
-    {
-        /// <summary>
-        /// Dont set any alignment when alignment is set to general
-        /// </summary>
-        DontSet,
-        /// <summary>
-        /// If the column data type is numeric or date, alignment will be right otherwise left.
-        /// </summary>
-        ColumnDataType,
-        /// <summary>
-        /// If the cell value data type is numeric or date, alignment will be right otherwise left.
-        /// </summary>
-        CellDataType
-    }
+    DontSet,
+    /// <summary>
+    /// If the column data type is numeric or date, alignment will be right otherwise left.
+    /// </summary>
+    ColumnDataType,
+    /// <summary>
+    /// If the cell value data type is numeric or date, alignment will be right otherwise left.
+    /// </summary>
+    CellDataType
 }

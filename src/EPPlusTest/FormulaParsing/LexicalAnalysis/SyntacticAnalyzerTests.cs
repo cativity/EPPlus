@@ -35,94 +35,93 @@ using OfficeOpenXml.FormulaParsing.LexicalAnalysis;
 using OfficeOpenXml.FormulaParsing.Exceptions;
 using OfficeOpenXml;
 
-namespace EPPlusTest.FormulaParsing.LexicalAnalysis
+namespace EPPlusTest.FormulaParsing.LexicalAnalysis;
+
+[TestClass]
+public class SyntacticAnalyzerTests
 {
-    [TestClass]
-    public class SyntacticAnalyzerTests
+    private ISyntacticAnalyzer _analyser;
+
+    [TestInitialize]
+    public void Setup()
     {
-        private ISyntacticAnalyzer _analyser;
+        this._analyser = new SyntacticAnalyzer();
+    }
 
-        [TestInitialize]
-        public void Setup()
+    [TestMethod]
+    public void ShouldPassIfParenthesisAreWellformed()
+    {
+        List<Token>? input = new List<Token>
         {
-            this._analyser = new SyntacticAnalyzer();
-        }
+            new Token("(", TokenType.OpeningParenthesis),
+            new Token("1", TokenType.Integer),
+            new Token("+", TokenType.Operator),
+            new Token("2", TokenType.Integer),
+            new Token(")", TokenType.ClosingParenthesis)
+        };
 
-        [TestMethod]
-        public void ShouldPassIfParenthesisAreWellformed()
+        this._analyser.Analyze(input);
+    }
+
+    [TestMethod, ExpectedException(typeof(FormatException))]
+    public void ShouldThrowExceptionIfParenthesesAreNotWellformed()
+    {
+        List<Token>? input = new List<Token>
         {
-            List<Token>? input = new List<Token>
-            {
-                new Token("(", TokenType.OpeningParenthesis),
-                new Token("1", TokenType.Integer),
-                new Token("+", TokenType.Operator),
-                new Token("2", TokenType.Integer),
-                new Token(")", TokenType.ClosingParenthesis)
-            };
+            new Token("(", TokenType.OpeningParenthesis),
+            new Token("1", TokenType.Integer),
+            new Token("+", TokenType.Operator),
+            new Token("2", TokenType.Integer)
+        };
 
-            this._analyser.Analyze(input);
-        }
+        this._analyser.Analyze(input);
+    }
 
-        [TestMethod, ExpectedException(typeof(FormatException))]
-        public void ShouldThrowExceptionIfParenthesesAreNotWellformed()
+    [TestMethod]
+    public void ShouldPassIfStringIsWellformed()
+    {
+        List<Token>? input = new List<Token>
         {
-            List<Token>? input = new List<Token>
-            {
-                new Token("(", TokenType.OpeningParenthesis),
-                new Token("1", TokenType.Integer),
-                new Token("+", TokenType.Operator),
-                new Token("2", TokenType.Integer)
-            };
+            new Token("'", TokenType.String),
+            new Token("abc123", TokenType.StringContent),
+            new Token("'", TokenType.String)
+        };
 
-            this._analyser.Analyze(input);
-        }
+        this._analyser.Analyze(input);
+    }
 
-        [TestMethod]
-        public void ShouldPassIfStringIsWellformed()
+    [TestMethod, ExpectedException(typeof(FormatException))]
+    public void ShouldThrowExceptionIfStringHasNotClosing()
+    {
+        List<Token>? input = new List<Token>
         {
-            List<Token>? input = new List<Token>
-            {
-                new Token("'", TokenType.String),
-                new Token("abc123", TokenType.StringContent),
-                new Token("'", TokenType.String)
-            };
+            new Token("'", TokenType.String),
+            new Token("abc123", TokenType.StringContent)
+        };
 
-            this._analyser.Analyze(input);
-        }
+        this._analyser.Analyze(input);
+    }
 
-        [TestMethod, ExpectedException(typeof(FormatException))]
-        public void ShouldThrowExceptionIfStringHasNotClosing()
+
+    [TestMethod, ExpectedException(typeof(UnrecognizedTokenException))]
+    public void ShouldThrowExceptionIfThereIsAnUnrecognizedToken()
+    {
+        List<Token>? input = new List<Token>
         {
-            List<Token>? input = new List<Token>
-            {
-                new Token("'", TokenType.String),
-                new Token("abc123", TokenType.StringContent)
-            };
+            new Token("abc123", TokenType.Unrecognized)
+        };
 
-            this._analyser.Analyze(input);
-        }
+        this._analyser.Analyze(input);
+    }
 
-
-        [TestMethod, ExpectedException(typeof(UnrecognizedTokenException))]
-        public void ShouldThrowExceptionIfThereIsAnUnrecognizedToken()
-        {
-            List<Token>? input = new List<Token>
-            {
-                new Token("abc123", TokenType.Unrecognized)
-            };
-
-            this._analyser.Analyze(input);
-        }
-
-        [TestMethod]
-        public void DoubleQuoteSharedFormulasTest()
-        {
-            ExcelPackage? pck = new ExcelPackage();
-            ExcelWorksheet? ws = pck.Workbook.Worksheets.Add("s");
-            ws.Cells["A1:A3"].Formula = @"IF(TRUE,"""""""")";
-            ws.Calculate();
-            Assert.AreEqual("\"", ws.Cells["A1"].Value);
-            Assert.AreEqual("\"", ws.Cells["A3"].Value);
-        }
+    [TestMethod]
+    public void DoubleQuoteSharedFormulasTest()
+    {
+        ExcelPackage? pck = new ExcelPackage();
+        ExcelWorksheet? ws = pck.Workbook.Worksheets.Add("s");
+        ws.Cells["A1:A3"].Formula = @"IF(TRUE,"""""""")";
+        ws.Calculate();
+        Assert.AreEqual("\"", ws.Cells["A1"].Value);
+        Assert.AreEqual("\"", ws.Cells["A3"].Value);
     }
 }

@@ -12,34 +12,32 @@
  *************************************************************************************************/
 using System.Xml;
 
-namespace OfficeOpenXml.Drawing.Style.Effect
+namespace OfficeOpenXml.Drawing.Style.Effect;
+
+/// <summary>
+/// The inner shadow effect. A shadow is applied within the edges of the drawing.
+/// </summary>
+public class ExcelDrawingInnerShadowEffect : ExcelDrawingShadowEffect
 {
+    private readonly string _blurRadPath = "{0}/@blurRad";
 
-    /// <summary>
-    /// The inner shadow effect. A shadow is applied within the edges of the drawing.
-    /// </summary>
-    public class ExcelDrawingInnerShadowEffect : ExcelDrawingShadowEffect
+    internal ExcelDrawingInnerShadowEffect(XmlNamespaceManager nameSpaceManager, XmlNode topNode, string[] schemaNodeOrder, string path) : base(nameSpaceManager, topNode, schemaNodeOrder, path)
     {
-        private readonly string _blurRadPath = "{0}/@blurRad";
-
-        internal ExcelDrawingInnerShadowEffect(XmlNamespaceManager nameSpaceManager, XmlNode topNode, string[] schemaNodeOrder, string path) : base(nameSpaceManager, topNode, schemaNodeOrder, path)
+        this._blurRadPath = string.Format(this._blurRadPath, path);
+    }
+    /// <summary>
+    /// The blur radius.
+    /// </summary>
+    public double? BlurRadius
+    {
+        get
         {
-            this._blurRadPath = string.Format(this._blurRadPath, path);
+            return this.GetXmlNodeEmuToPt(this._blurRadPath);
         }
-        /// <summary>
-        /// The blur radius.
-        /// </summary>
-        public double? BlurRadius
+        set
         {
-            get
-            {
-                return this.GetXmlNodeEmuToPt(this._blurRadPath);
-            }
-            set
-            {
-                this.SetXmlNodeEmuToPt(this._blurRadPath, value);
-                this.InitXml();
-            }
+            this.SetXmlNodeEmuToPt(this._blurRadPath, value);
+            this.InitXml();
         }
     }
 }

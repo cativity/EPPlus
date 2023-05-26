@@ -19,93 +19,92 @@ using System.Security;
 using OfficeOpenXml.Packaging.Ionic.Zip;
 using OfficeOpenXml.Utils;
 
-namespace OfficeOpenXml.Packaging
+namespace OfficeOpenXml.Packaging;
+
+/// <summary>
+/// A collection of package relationships
+/// </summary>
+public class ZipPackageRelationshipCollection : IEnumerable<ZipPackageRelationship>
 {
     /// <summary>
-    /// A collection of package relationships
+    /// Relationships dictionary
     /// </summary>
-    public class ZipPackageRelationshipCollection : IEnumerable<ZipPackageRelationship>
+    internal protected Dictionary<string, ZipPackageRelationship> _rels = new Dictionary<string, ZipPackageRelationship>(StringComparer.OrdinalIgnoreCase);
+    internal void Add(ZipPackageRelationship item)
     {
-        /// <summary>
-        /// Relationships dictionary
-        /// </summary>
-        internal protected Dictionary<string, ZipPackageRelationship> _rels = new Dictionary<string, ZipPackageRelationship>(StringComparer.OrdinalIgnoreCase);
-        internal void Add(ZipPackageRelationship item)
-        {
-            this._rels.Add(item.Id, item);
-        }
-        /// <summary>
-        /// Gets the enumerator for the collection
-        /// </summary>
-        /// <returns>the enumerator</returns>
-        public IEnumerator<ZipPackageRelationship> GetEnumerator()
-        {
-            return this._rels.Values.GetEnumerator();
-        }
+        this._rels.Add(item.Id, item);
+    }
+    /// <summary>
+    /// Gets the enumerator for the collection
+    /// </summary>
+    /// <returns>the enumerator</returns>
+    public IEnumerator<ZipPackageRelationship> GetEnumerator()
+    {
+        return this._rels.Values.GetEnumerator();
+    }
 
-        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
-        {
-            return this._rels.Values.GetEnumerator();
-        }
+    System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+    {
+        return this._rels.Values.GetEnumerator();
+    }
 
-        internal void Remove(string id)
+    internal void Remove(string id)
+    {
+        this._rels.Remove(id);
+    }
+    internal bool ContainsKey(string id)
+    {
+        return this._rels.ContainsKey(id);
+    }
+    internal ZipPackageRelationship this[string id]
+    {
+        get
         {
-            this._rels.Remove(id);
+            return this._rels[id];
         }
-        internal bool ContainsKey(string id)
+    }
+    internal ZipPackageRelationshipCollection GetRelationshipsByType(string relationshipType)
+    {
+        ZipPackageRelationshipCollection? ret = new ZipPackageRelationshipCollection();
+        foreach (ZipPackageRelationship? rel in this._rels.Values)
         {
-            return this._rels.ContainsKey(id);
-        }
-        internal ZipPackageRelationship this[string id]
-        {
-            get
+            if (rel.RelationshipType == relationshipType)
             {
-                return this._rels[id];
+                ret.Add(rel);
             }
         }
-        internal ZipPackageRelationshipCollection GetRelationshipsByType(string relationshipType)
+        return ret;
+    }
+
+    internal void WriteZip(ZipOutputStream os, string fileName)
+    {
+        StringBuilder xml = new StringBuilder("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><Relationships xmlns=\"http://schemas.openxmlformats.org/package/2006/relationships\">");
+        foreach (ZipPackageRelationship? rel in this._rels.Values)
         {
-            ZipPackageRelationshipCollection? ret = new ZipPackageRelationshipCollection();
-            foreach (ZipPackageRelationship? rel in this._rels.Values)
+            if(rel.TargetUri==null || rel.TargetUri.OriginalString.StartsWith("Invalid:URI", StringComparison.OrdinalIgnoreCase))
             {
-                if (rel.RelationshipType == relationshipType)
-                {
-                    ret.Add(rel);
-                }
+                xml.AppendFormat("<Relationship Id=\"{0}\" Type=\"{1}\" Target=\"{2}\"{3}/>", SecurityElement.Escape(rel.Id), rel.RelationshipType, ConvertUtil.CropString(SecurityElement.Escape(rel.Target), 2079), rel.TargetMode == TargetMode.External ? " TargetMode=\"External\"" : "");
             }
-            return ret;
+            else
+            {
+                xml.AppendFormat("<Relationship Id=\"{0}\" Type=\"{1}\" Target=\"{2}\"{3}/>", SecurityElement.Escape(rel.Id), rel.RelationshipType, ConvertUtil.CropString(SecurityElement.Escape(rel.TargetUri.OriginalString), 2079), rel.TargetMode == TargetMode.External ? " TargetMode=\"External\"" : "");
+            }
         }
+        xml.Append("</Relationships>");
 
-        internal void WriteZip(ZipOutputStream os, string fileName)
+        os.PutNextEntry(fileName);
+        byte[] b = Encoding.UTF8.GetBytes(xml.ToString());
+        os.Write(b, 0, b.Length);
+    }
+
+    /// <summary>
+    /// Number of items in the collection
+    /// </summary>
+    public int Count
+    {
+        get
         {
-            StringBuilder xml = new StringBuilder("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><Relationships xmlns=\"http://schemas.openxmlformats.org/package/2006/relationships\">");
-            foreach (ZipPackageRelationship? rel in this._rels.Values)
-            {
-                if(rel.TargetUri==null || rel.TargetUri.OriginalString.StartsWith("Invalid:URI", StringComparison.OrdinalIgnoreCase))
-                {
-                    xml.AppendFormat("<Relationship Id=\"{0}\" Type=\"{1}\" Target=\"{2}\"{3}/>", SecurityElement.Escape(rel.Id), rel.RelationshipType, ConvertUtil.CropString(SecurityElement.Escape(rel.Target), 2079), rel.TargetMode == TargetMode.External ? " TargetMode=\"External\"" : "");
-                }
-                else
-                {
-                    xml.AppendFormat("<Relationship Id=\"{0}\" Type=\"{1}\" Target=\"{2}\"{3}/>", SecurityElement.Escape(rel.Id), rel.RelationshipType, ConvertUtil.CropString(SecurityElement.Escape(rel.TargetUri.OriginalString), 2079), rel.TargetMode == TargetMode.External ? " TargetMode=\"External\"" : "");
-                }
-            }
-            xml.Append("</Relationships>");
-
-            os.PutNextEntry(fileName);
-            byte[] b = Encoding.UTF8.GetBytes(xml.ToString());
-            os.Write(b, 0, b.Length);
-        }
-
-        /// <summary>
-        /// Number of items in the collection
-        /// </summary>
-        public int Count
-        {
-            get
-            {
-                return this._rels.Count;
-            }
+            return this._rels.Count;
         }
     }
 }

@@ -21,30 +21,29 @@ using System.Linq;
 using System.Text;
 using System.Xml;
 
-namespace OfficeOpenXml.Drawing.Chart
+namespace OfficeOpenXml.Drawing.Chart;
+
+/// <summary>
+/// Represents an individual datalabel
+/// </summary>
+public class ExcelChartDataLabelItem : ExcelChartDataLabelStandard
 {
-    /// <summary>
-    /// Represents an individual datalabel
-    /// </summary>
-    public class ExcelChartDataLabelItem : ExcelChartDataLabelStandard
+    internal ExcelChartDataLabelItem(ExcelChart chart, XmlNamespaceManager ns, XmlNode node, string nodeName, string[] schemaNodeOrder)
+        : base(chart, ns, node, nodeName, schemaNodeOrder)
     {
-        internal ExcelChartDataLabelItem(ExcelChart chart, XmlNamespaceManager ns, XmlNode node, string nodeName, string[] schemaNodeOrder)
-           : base(chart, ns, node, nodeName, schemaNodeOrder)
+    }
+    /// <summary>
+    /// The index of an individual datalabel
+    /// </summary>
+    public int Index
+    {
+        get
         {
+            return this.GetXmlNodeInt("c:idx/@val");
         }
-        /// <summary>
-        /// The index of an individual datalabel
-        /// </summary>
-        public int Index
+        set
         {
-            get
-            {
-                return this.GetXmlNodeInt("c:idx/@val");
-            }
-            set
-            {
-                this.SetXmlNodeString("c:idx/@val", value.ToString(CultureInfo.InvariantCulture));
-            }
+            this.SetXmlNodeString("c:idx/@val", value.ToString(CultureInfo.InvariantCulture));
         }
     }
 }

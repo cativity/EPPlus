@@ -17,18 +17,17 @@ using System.Text;
 
 using OfficeOpenXml.ConditionalFormatting;
 
-namespace OfficeOpenXml.ConditionalFormatting.Contracts
+namespace OfficeOpenXml.ConditionalFormatting.Contracts;
+
+/// <summary>
+/// IExcelConditionalFormattingWithReverse
+/// </summary>
+public interface IExcelConditionalFormattingWithReverse
 {
-  /// <summary>
-  /// IExcelConditionalFormattingWithReverse
-  /// </summary>
-  public interface IExcelConditionalFormattingWithReverse
-  {
     #region Public Properties
     /// <summary>
     /// Reverse Attribute
     /// </summary>
     bool Reverse { get; set; }
     #endregion Public Properties
-  }
 }

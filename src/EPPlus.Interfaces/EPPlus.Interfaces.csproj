@@ -12,6 +12,7 @@
     <RootNamespace>OfficeOpenXml.Interfaces</RootNamespace>
     <PackageReadmeFile>readme.md</PackageReadmeFile>
     <PackageIcon>EPPlusLogo.png</PackageIcon>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
   
   <PropertyGroup Condition=" '$(TargetFramework)' == 'netstandard2.0'">

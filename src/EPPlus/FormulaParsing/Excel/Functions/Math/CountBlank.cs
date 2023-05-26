@@ -17,6 +17,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using OfficeOpenXml.FormulaParsing.ExcelUtilities;
 using static OfficeOpenXml.FormulaParsing.ExcelDataProvider;
 
 namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
@@ -30,13 +31,13 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
         public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
         {
             ValidateArguments(arguments, 1);
-            var arg = arguments.First();
+            FunctionArgument? arg = arguments.First();
             if(!arg.IsExcelRange && arg.ExcelAddressReferenceId <= 0)
             {
                 throw new InvalidOperationException("CountBlank only support ranges as arguments");
             }
 
-            var result = 0;
+            int result = 0;
             IRangeInfo range;
             if(arg.IsExcelRange)
             {
@@ -45,10 +46,10 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
             }
             else
             {
-                var currentCell = context.Scopes.Current.Address;
-                var worksheet = currentCell.Worksheet;
-                var address = context.AddressCache.Get(arg.ExcelAddressReferenceId);
-                var excelAddress = new ExcelAddressBase(address);
+                RangeAddress? currentCell = context.Scopes.Current.Address;
+                string? worksheet = currentCell.Worksheet;
+                string? address = context.AddressCache.Get(arg.ExcelAddressReferenceId);
+                ExcelAddressBase? excelAddress = new ExcelAddressBase(address);
                 if(!string.IsNullOrEmpty(excelAddress.WorkSheetName))
                 {
                     worksheet = excelAddress.WorkSheetName;
@@ -56,7 +57,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
                 range = context.ExcelDataProvider.GetRange(worksheet, currentCell.FromRow, currentCell.FromCol, excelAddress.Address);
                 result = range.GetNCells();
             }
-            foreach (var cell in range)
+            foreach (ICellInfo? cell in range)
             {
                 if (!(cell.Value == null || cell.Value.ToString() == string.Empty))
                 {

@@ -45,7 +45,7 @@ namespace OfficeOpenXml.LoadFunctions
             }
             else
             {
-                var firstItem = items.First();
+                IDictionary<string, object>? firstItem = items.First();
                 if (_keys == null || !_keys.Any())
                 {
                     _keys = firstItem.Keys;
@@ -67,17 +67,17 @@ namespace OfficeOpenXml.LoadFunctions
 #if !NET35 && !NET40
         private static IEnumerable<IDictionary<string, object>> ConvertToDictionaries(IEnumerable<dynamic> items)
         {
-            var result = new List<Dictionary<string, object>>();
-            foreach(var item in items)
+            List<Dictionary<string, object>>? result = new List<Dictionary<string, object>>();
+            foreach(dynamic? item in items)
             {
-                var obj = item as object;
+                object? obj = item as object;
                 if(obj != null)
                 {
-                    var dict = new Dictionary<string, object>();
-                    var members = obj.GetType().GetMembers();
-                    foreach(var member in members)
+                    Dictionary<string, object>? dict = new Dictionary<string, object>();
+                    MemberInfo[]? members = obj.GetType().GetMembers();
+                    foreach(MemberInfo? member in members)
                     {
-                        var key = member.Name;
+                        string? key = member.Name;
                         object value = null;
                         if (member is PropertyInfo)
                         {
@@ -109,23 +109,23 @@ namespace OfficeOpenXml.LoadFunctions
             int col = 0, row = 0;
             if (PrintHeaders && _keys.Count() > 0)
             {
-                foreach (var key in _keys)
+                foreach (string? key in _keys)
                 {
                     values[row, col++] = ParseHeader(key);
                 }
                 row++;
             }
-            foreach (var item in _items)
+            foreach (IDictionary<string, object>? item in _items)
             {
                 col = 0;
-                foreach (var key in _keys)
+                foreach (string? key in _keys)
                 {
                     if (item.ContainsKey(key))
                     {
-                        var v = item[key];
+                        object? v = item[key];
                         if(col < _dataTypes.Length && v != null)
                         {
-                            var dataType = _dataTypes[col];
+                            eDataTypes dataType = _dataTypes[col];
                             switch(dataType)
                             {
                                 case eDataTypes.Percent:

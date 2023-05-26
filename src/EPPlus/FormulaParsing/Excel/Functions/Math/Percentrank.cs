@@ -28,19 +28,19 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
         public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
         {
             ValidateArguments(arguments, 2);
-            var array = GetNumbersFromArgs(arguments, 0, context);
-            var number = ArgToDecimal(arguments, 1);
+            double[]? array = GetNumbersFromArgs(arguments, 0, context);
+            double number = ArgToDecimal(arguments, 1);
             if (number < array.First() || number > array.Last())
             {
                 return this.CreateResult(eErrorType.NA);
             }
 
-            var significance = 3;
+            int significance = 3;
             if (arguments.Count() > 2)
             {
                 significance = ArgToInt(arguments, 2);
             }
-            var result = PercentRankIncImpl(array, number);
+            double result = PercentRankIncImpl(array, number);
             result = RoundResult(result, significance);
             return CreateResult(result, DataType.Decimal);
         }

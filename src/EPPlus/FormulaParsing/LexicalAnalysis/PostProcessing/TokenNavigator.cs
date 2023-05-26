@@ -102,7 +102,7 @@ namespace OfficeOpenXml.FormulaParsing.LexicalAnalysis.PostProcessing
         /// <param name="relativePosition">The requested position relative to current</param>
         public void MoveIndex(int relativePosition)
         {
-            var newPosition = Index + relativePosition;
+            int newPosition = Index + relativePosition;
             if (newPosition < 0 || newPosition >= _tokens.Count)
             {
                 throw new ArgumentOutOfRangeException("MoveIndex: new index out of range");
@@ -118,7 +118,7 @@ namespace OfficeOpenXml.FormulaParsing.LexicalAnalysis.PostProcessing
         /// <returns>The <see cref="Token"/> of the requested position</returns>
         public Token GetTokenAtRelativePosition(int relativePosition)
         {
-            var newPosition = Index + relativePosition;
+            int newPosition = Index + relativePosition;
             if (newPosition < 0 || newPosition >= _tokens.Count)
             {
                 throw new ArgumentOutOfRangeException("¨GetTokenAtRelativePosition: new index out of range");

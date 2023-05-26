@@ -38,7 +38,7 @@ namespace OfficeOpenXml.FormulaParsing.ExpressionGraph
             set
             {
                 base.IgnoreCircularReference = value;
-                foreach(var childExpression in Children)
+                foreach(Expression? childExpression in Children)
                 {
                     childExpression.IgnoreCircularReference = value;
                 }

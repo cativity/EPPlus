@@ -29,7 +29,7 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             if(type==eChartType.StockVHLC || type==eChartType.StockVOHLC)
             {
-                var barChart = new ExcelBarChart(this, _chartNode.PreviousSibling, parent);
+                ExcelBarChart? barChart = new ExcelBarChart(this, _chartNode.PreviousSibling, parent);
                 barChart.Direction = eDirection.Column;
                 _plotArea = new ExcelChartPlotArea(NameSpaceManager, ChartXml.SelectSingleNode("c:chartSpace/c:chart/c:plotArea", NameSpaceManager), barChart, "c", this);
             }
@@ -40,7 +40,7 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             if(chartNode.LocalName=="barChart")
             {
-                var barChart = new ExcelBarChart(this, chartNode, parent);
+                ExcelBarChart? barChart = new ExcelBarChart(this, chartNode, parent);
                 barChart.Direction = eDirection.Column;
                 _plotArea = new ExcelChartPlotArea(NameSpaceManager, ChartXml.SelectSingleNode("c:chartSpace/c:chart/c:plotArea", NameSpaceManager), barChart, "c", this);
                 _chartNode = chartNode.NextSibling;

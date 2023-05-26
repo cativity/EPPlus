@@ -62,16 +62,16 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions.RefAndLookup
         [TestMethod]
         public void Should_Return_ExcelLookupNavigator_When_Range_Is_Set()
         {
-            var args = new LookupArguments(FunctionsHelper.CreateArgs(8, "A:B", 1), ParsingContext.Create());
-            var navigator = LookupNavigatorFactory.Create(LookupDirection.Horizontal, args, _context);
+            LookupArguments? args = new LookupArguments(FunctionsHelper.CreateArgs(8, "A:B", 1), ParsingContext.Create());
+            LookupNavigator? navigator = LookupNavigatorFactory.Create(LookupDirection.Horizontal, args, _context);
             Assert.IsInstanceOfType(navigator, typeof(ExcelLookupNavigator));
         }
 
         [TestMethod]
         public void Should_Return_ArrayLookupNavigator_When_Array_Is_Supplied()
         {
-            var args = new LookupArguments(FunctionsHelper.CreateArgs(8, FunctionsHelper.CreateArgs(1,2), 1), ParsingContext.Create());
-            var navigator = LookupNavigatorFactory.Create(LookupDirection.Horizontal, args, _context);
+            LookupArguments? args = new LookupArguments(FunctionsHelper.CreateArgs(8, FunctionsHelper.CreateArgs(1,2), 1), ParsingContext.Create());
+            LookupNavigator? navigator = LookupNavigatorFactory.Create(LookupDirection.Horizontal, args, _context);
             Assert.IsInstanceOfType(navigator, typeof(ArrayLookupNavigator));
         }
     }

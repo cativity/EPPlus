@@ -56,8 +56,8 @@ namespace EPPlusTest.Drawing.Chart.Styling
         [TestMethod]
         public void StockChartHLC_Styles()
         {
-            var ws = _pck.Workbook.Worksheets.Add("StockHLCChartStyling");
-            var members = new MemberInfo[] 
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("StockHLCChartStyling");
+            MemberInfo[]? members = new MemberInfo[] 
             {
                 typeof(PeriodData).GetProperty("Date"),
                 typeof(PeriodData).GetProperty("HighPrice"),
@@ -72,8 +72,8 @@ namespace EPPlusTest.Drawing.Chart.Styling
         [TestMethod]
         public void StockChartOHLC_Styles()
         {
-            var ws = _pck.Workbook.Worksheets.Add("StockOHLCChartStyling");
-            var members = new MemberInfo[]
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("StockOHLCChartStyling");
+            MemberInfo[]? members = new MemberInfo[]
             {
                 typeof(PeriodData).GetProperty("Date"),
                 typeof(PeriodData).GetProperty("OpeningPrice"),
@@ -89,8 +89,8 @@ namespace EPPlusTest.Drawing.Chart.Styling
         [TestMethod]
         public void StockChartVHLC_Styles()
         {
-            var ws = _pck.Workbook.Worksheets.Add("StockVHLCChartStyling");
-            var members = new MemberInfo[]
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("StockVHLCChartStyling");
+            MemberInfo[]? members = new MemberInfo[]
             {
                 typeof(PeriodData).GetProperty("Date"),
                 typeof(PeriodData).GetProperty("Volume"),
@@ -106,8 +106,8 @@ namespace EPPlusTest.Drawing.Chart.Styling
         [TestMethod]
         public void StockChartVOHLC_Styles()
         {
-            var ws = _pck.Workbook.Worksheets.Add("StockVOHLCChartStyling");
-            var members = new MemberInfo[]
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("StockVOHLCChartStyling");
+            MemberInfo[]? members = new MemberInfo[]
             {
                 typeof(PeriodData).GetProperty("Date"),
                 typeof(PeriodData).GetProperty("Volume"),
@@ -228,20 +228,20 @@ namespace EPPlusTest.Drawing.Chart.Styling
 
         private static ExcelStockChart AddStockChartStyleManager(ExcelWorksheet ws, eStockChartType type, ePresetChartStyle style, string name, int row, int col, ExcelRange range, Action<ExcelStockChart> SetProperties)
         {
-            var chart = AddStockChart(ws, type, name, row, col, range, SetProperties);
+            ExcelStockChart? chart = AddStockChart(ws, type, name, row, col, range, SetProperties);
             chart.StyleManager.SetChartStyle(style);
             return chart;
         }
         private static ExcelStockChart AddStockChartStyle(ExcelWorksheet ws, eStockChartType type, eChartStyle style, string name, int row, int col, ExcelRange range, Action<ExcelStockChart> SetProperties)
         {
-            var chart = AddStockChart(ws, type, name, row, col, range, SetProperties);
+            ExcelStockChart? chart = AddStockChart(ws, type, name, row, col, range, SetProperties);
             chart.Style= style;
             return chart;
         }
 
         private static ExcelStockChart AddStockChart(ExcelWorksheet ws, eStockChartType type, string name, int row, int col,ExcelRange range, Action<ExcelStockChart> SetProperties)    
         {
-            var chart = ws.Drawings.AddStockChart(name, type, range);
+            ExcelStockChart? chart = ws.Drawings.AddStockChart(name, type, range);
             chart.SetPosition(row, 0, col, 0);
             chart.To.Column = col+12;
             chart.To.ColumnOff = 0;

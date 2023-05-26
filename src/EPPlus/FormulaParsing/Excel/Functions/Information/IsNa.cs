@@ -32,7 +32,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Information
                 return CreateResult(false, DataType.Boolean);
             }
 
-            var v = GetFirstValue(arguments);
+            object? v = GetFirstValue(arguments);
 
             if (v is ExcelErrorValue && ((ExcelErrorValue)v).Type==eErrorType.NA)
             {

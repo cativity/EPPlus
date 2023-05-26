@@ -30,19 +30,19 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
             SchemaNodeOrder = schemaNodeOrder;
             foreach (XmlNode pointNode in TopNode.SelectNodes(ExcelChartExDataPoint.dataPtPath, ns))
             {
-                var item = new ExcelChartExDataPoint(serie, ns, pointNode, SchemaNodeOrder);
+                ExcelChartExDataPoint? item = new ExcelChartExDataPoint(serie, ns, pointNode, SchemaNodeOrder);
                 _dic.Add(item.Index, item);
             }
             foreach (XmlElement stNode in TopNode.SelectNodes(ExcelChartExDataPoint.SubTotalPath, ns))
             {
-                var ix = int.Parse(stNode.GetAttribute("val"));
+                int ix = int.Parse(stNode.GetAttribute("val"));
                 if(_dic.ContainsKey(ix))
                 {
                     _dic[ix].SubTotal = true;
                 }
                 else
                 {
-                    var item = new ExcelChartExDataPoint(serie, ns, TopNode, ix, SchemaNodeOrder);
+                    ExcelChartExDataPoint? item = new ExcelChartExDataPoint(serie, ns, TopNode, ix, SchemaNodeOrder);
                     _dic.Add(item.Index, item);
                 }
             }
@@ -65,7 +65,7 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
                 throw (new ArgumentException($"Data point with index {idx} already exists"));
             }
             
-            var dp = new ExcelChartExDataPoint(_serie, NameSpaceManager, TopNode, idx, SchemaNodeOrder);
+            ExcelChartExDataPoint? dp = new ExcelChartExDataPoint(_serie, NameSpaceManager, TopNode, idx, SchemaNodeOrder);
 
             _dic.Add(idx, dp);
 

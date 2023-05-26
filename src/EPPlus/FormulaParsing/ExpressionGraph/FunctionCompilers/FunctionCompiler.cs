@@ -46,19 +46,19 @@ namespace OfficeOpenXml.FormulaParsing.ExpressionGraph.FunctionCompilers
         {
             if (compileResult.Result is IEnumerable<object> && !(compileResult.Result is IRangeInfo))
             {
-                var compileResultFactory = new CompileResultFactory();
-                var argList = new List<FunctionArgument>();
-                var objects = compileResult.Result as IEnumerable<object>;
-                foreach (var arg in objects)
+                CompileResultFactory? compileResultFactory = new CompileResultFactory();
+                List<FunctionArgument>? argList = new List<FunctionArgument>();
+                IEnumerable<object>? objects = compileResult.Result as IEnumerable<object>;
+                foreach (object? arg in objects)
                 {
-                    var cr = compileResultFactory.Create(arg);
+                    CompileResult? cr = compileResultFactory.Create(arg);
                     BuildFunctionArguments(cr, dataType, argList);
                 }
                 args.Add(new FunctionArgument(argList));
             }
             else
             {
-                var funcArg = new FunctionArgument(compileResult.Result, dataType);
+                FunctionArgument? funcArg = new FunctionArgument(compileResult.Result, dataType);
                 funcArg.ExcelAddressReferenceId = compileResult.ExcelAddressReferenceId;
                 if(compileResult.IsHiddenCell)
                 {

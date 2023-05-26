@@ -87,7 +87,7 @@ namespace OfficeOpenXml.Drawing.Style.Coloring
                     break;
             }
             //Variations should be added first, so temporary store the transforms and add the again
-            var trans = Transforms.Where(x=>((ISource)x)._fromStyleTemplate==false).ToList();
+            List<IColorTransformItem>? trans = Transforms.Where(x=>((ISource)x)._fromStyleTemplate==false).ToList();
             Transforms.Clear();
             if (variation != null)
             {
@@ -99,7 +99,7 @@ namespace OfficeOpenXml.Drawing.Style.Coloring
 
         private void ApplyNewTransform(IEnumerable<IColorTransformItem> transforms, bool isSourceStyleTemplate=false)
         {
-            foreach (var t in transforms)
+            foreach (IColorTransformItem? t in transforms)
             {
                 switch(t.Type)
                 {

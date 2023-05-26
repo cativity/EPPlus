@@ -28,16 +28,16 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance
         public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
         {
             ValidateArguments(arguments, 5);
-            var durationResult = base.Execute(arguments, context);
+            CompileResult? durationResult = base.Execute(arguments, context);
             if (durationResult.DataType == DataType.ExcelError)
             {
                 return durationResult;
             }
 
-            var dur = durationResult.ResultNumeric;
-            var yield = ArgToDecimal(arguments, 3);
-            var frequency = ArgToDecimal(arguments, 4);
-            var result = dur / (1d + (yield / frequency));
+            double dur = durationResult.ResultNumeric;
+            double yield = ArgToDecimal(arguments, 3);
+            double frequency = ArgToDecimal(arguments, 4);
+            double result = dur / (1d + (yield / frequency));
             return CreateResult(result, DataType.Decimal);
         }
     }

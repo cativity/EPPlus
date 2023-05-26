@@ -43,7 +43,7 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions
         [TestMethod]
         public void LoadModulePopulatesFunctionsAndCustomCompilers()
         {
-            var functionRepository = FunctionRepository.Create();
+            FunctionRepository? functionRepository = FunctionRepository.Create();
             Assert.IsFalse(functionRepository.IsFunctionName(MyFunction.Name));
             Assert.IsFalse(functionRepository.CustomCompilers.ContainsKey(typeof(MyFunction)));
             functionRepository.LoadModule(new TestFunctionModule());
@@ -59,8 +59,8 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions
         {
             public TestFunctionModule()
             {
-                var myFunction = new MyFunction();
-                var customCompiler = new MyFunctionCompiler(myFunction, ParsingContext.Create());
+                MyFunction? myFunction = new MyFunction();
+                MyFunctionCompiler? customCompiler = new MyFunctionCompiler(myFunction, ParsingContext.Create());
                 base.Functions.Add(MyFunction.Name, myFunction);
                 base.CustomCompilers.Add(typeof(MyFunction), customCompiler);
             }

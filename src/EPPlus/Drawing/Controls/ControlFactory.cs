@@ -17,6 +17,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Xml;
+using OfficeOpenXml.Packaging;
 
 namespace OfficeOpenXml.Drawing.Controls
 {
@@ -63,13 +64,13 @@ namespace OfficeOpenXml.Drawing.Controls
 
         internal static ExcelDrawing GetControl(ExcelDrawings drawings, XmlElement drawNode, ControlInternal control, ExcelGroupShape parent)
         {
-            var rel = drawings.Worksheet.Part.GetRelationship(control.RelationshipId);
-            var controlUri = UriHelper.ResolvePartUri(rel.SourceUri, rel.TargetUri);
-            var part = drawings.Worksheet._package.ZipPackage.GetPart(controlUri);
-            var controlPropertiesXml = new XmlDocument();
+            ZipPackageRelationship? rel = drawings.Worksheet.Part.GetRelationship(control.RelationshipId);
+            Uri? controlUri = UriHelper.ResolvePartUri(rel.SourceUri, rel.TargetUri);
+            ZipPackagePart? part = drawings.Worksheet._package.ZipPackage.GetPart(controlUri);
+            XmlDocument? controlPropertiesXml = new XmlDocument();
             XmlHelper.LoadXmlSafe(controlPropertiesXml, part.GetStream());
-            var objectType = controlPropertiesXml.DocumentElement.Attributes["objectType"]?.Value;
-            var controlType = GetControlType(objectType);
+            string? objectType = controlPropertiesXml.DocumentElement.Attributes["objectType"]?.Value;
+            eControlType controlType = GetControlType(objectType);
             
             XmlNode node;            
             if(parent==null)

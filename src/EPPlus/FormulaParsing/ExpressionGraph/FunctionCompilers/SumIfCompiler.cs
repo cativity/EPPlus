@@ -31,28 +31,28 @@ namespace OfficeOpenXml.FormulaParsing.ExpressionGraph.FunctionCompilers
 
         public override CompileResult Compile(IEnumerable<Expression> children)
         {
-            var args = new List<FunctionArgument>();
+            List<FunctionArgument>? args = new List<FunctionArgument>();
             Function.BeforeInvoke(Context);
             if(children.Count() == 3 && children.ElementAt(2).HasChildren)
             {
-                var lastExp = children.ElementAt(2).Children.First();
+                Expression? lastExp = children.ElementAt(2).Children.First();
                 lastExp.IgnoreCircularReference = true;
-                var currentAdr = Context.Scopes.Current.Address;
-                var sumRangeAdr = new ExcelAddress(lastExp.ExpressionString);
-                var sumRangeWs = string.IsNullOrEmpty(sumRangeAdr.WorkSheetName) ? currentAdr.Worksheet : sumRangeAdr.WorkSheetName;
+                RangeAddress? currentAdr = Context.Scopes.Current.Address;
+                ExcelAddress? sumRangeAdr = new ExcelAddress(lastExp.ExpressionString);
+                string? sumRangeWs = string.IsNullOrEmpty(sumRangeAdr.WorkSheetName) ? currentAdr.Worksheet : sumRangeAdr.WorkSheetName;
                 if(currentAdr.Worksheet == sumRangeWs && sumRangeAdr.Collide(new ExcelAddress(currentAdr.Address)) != ExcelAddressBase.eAddressCollition.No)
                 {
-                    var candidateArg = children.ElementAt(1)?.Children.FirstOrDefault()?.Compile().Result;
+                    object? candidateArg = children.ElementAt(1)?.Children.FirstOrDefault()?.Compile().Result;
                     if(children.ElementAt(0).HasChildren)
                     {
-                        var functionRowIndex = (currentAdr.FromRow - sumRangeAdr._fromRow);
-                        var functionColIndex = (currentAdr.FromCol - sumRangeAdr._fromCol);
-                        var firstRangeResult = children.ElementAt(0).Children.First().Compile().Result as IRangeInfo;
+                        int functionRowIndex = (currentAdr.FromRow - sumRangeAdr._fromRow);
+                        int functionColIndex = (currentAdr.FromCol - sumRangeAdr._fromCol);
+                        IRangeInfo? firstRangeResult = children.ElementAt(0).Children.First().Compile().Result as IRangeInfo;
                         if(firstRangeResult != null)
                         {
-                            var candidateRowIndex = firstRangeResult.Address._fromRow + functionRowIndex;
-                            var candidateColIndex = firstRangeResult.Address._fromCol + functionColIndex;
-                            var candidateValue = firstRangeResult.GetValue(candidateRowIndex, candidateColIndex);
+                            int candidateRowIndex = firstRangeResult.Address._fromRow + functionRowIndex;
+                            int candidateColIndex = firstRangeResult.Address._fromCol + functionColIndex;
+                            object? candidateValue = firstRangeResult.GetValue(candidateRowIndex, candidateColIndex);
                             if(_evaluator.Evaluate(candidateArg, candidateValue.ToString()))
                             {
                                 if(Context.Configuration.AllowCircularReferences)
@@ -67,12 +67,12 @@ namespace OfficeOpenXml.FormulaParsing.ExpressionGraph.FunctionCompilers
                 }
                 // todo: check circular ref for the actual cell where the SumIf formula resides (currentAdr).
             }
-            foreach (var child in children)
+            foreach (Expression? child in children)
             {
-                var compileResult = child.Compile();
+                CompileResult? compileResult = child.Compile();
                 if (compileResult.IsResultOfSubtotal)
                 {
-                    var arg = new FunctionArgument(compileResult.Result, compileResult.DataType);
+                    FunctionArgument? arg = new FunctionArgument(compileResult.Result, compileResult.DataType);
                     arg.SetExcelStateFlag(ExcelCellState.IsResultOfSubtotal);
                     args.Add(arg);
                 }

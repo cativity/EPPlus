@@ -422,7 +422,7 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions.Engineering.Convert
             _worksheet.Cells["A1"].Value = 1;
             _worksheet.Cells["A2"].Formula = "CONVERT(A1,\"yr\",\"day\")";
             _worksheet.Cells["A2"].Calculate();
-            var result = System.Math.Round((double)_worksheet.Cells["A2"].Value, 5);
+            double result = System.Math.Round((double)_worksheet.Cells["A2"].Value, 5);
             Assert.AreEqual(365.25d, result, "1 yr was not 365.25 d");
 
             _worksheet.Cells["A1"].Value = 3600;
@@ -438,7 +438,7 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions.Engineering.Convert
             _worksheet.Cells["A1"].Value = 36;
             _worksheet.Cells["A2"].Formula = "CONVERT(A1,\"kg\",\"g\")";
             _worksheet.Cells["A2"].Calculate();
-            var result = System.Math.Round((double)_worksheet.Cells["A2"].Value, 5);
+            double result = System.Math.Round((double)_worksheet.Cells["A2"].Value, 5);
             Assert.AreEqual(36000d, result, "36 kg was not 36000 g");
 
             _worksheet.Cells["A1"].Value = 2;
@@ -454,7 +454,7 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions.Engineering.Convert
             _worksheet.Cells["A1"].Value = 36;
             _worksheet.Cells["A2"].Formula = "CONVERT(A1,\"km/h\",\"m/s\")";
             _worksheet.Cells["A2"].Calculate();
-            var result = System.Math.Round((double)_worksheet.Cells["A2"].Value, 5);
+            double result = System.Math.Round((double)_worksheet.Cells["A2"].Value, 5);
             Assert.AreEqual(10d, result, "36 km/h was not 10 m/s");
 
             _worksheet.Cells["A1"].Value = 1;
@@ -470,7 +470,7 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions.Engineering.Convert
             _worksheet.Cells["A1"].Value = 36;
             _worksheet.Cells["A2"].Formula = "CONVERT(A1,\"ha\",\"us_acre\")";
             _worksheet.Cells["A2"].Calculate();
-            var result = System.Math.Round((double)_worksheet.Cells["A2"].Value, 5);
+            double result = System.Math.Round((double)_worksheet.Cells["A2"].Value, 5);
             Assert.AreEqual(88.95758d, result, "16 ha was not 88.95758 us_acre");
 
             _worksheet.Cells["A1"].Value = 1;
@@ -486,7 +486,7 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions.Engineering.Convert
             _worksheet.Cells["A1"].Value = 36;
             _worksheet.Cells["A2"].Formula = "CONVERT(A1,\"pt\",\"lt\")";
             _worksheet.Cells["A2"].Calculate();
-            var result = System.Math.Round((double)_worksheet.Cells["A2"].Value, 5);
+            double result = System.Math.Round((double)_worksheet.Cells["A2"].Value, 5);
             Assert.AreEqual(17.03435d, result, "36 pt was not 17.03436 lt");
 
             _worksheet.Cells["A1"].Value = 1;
@@ -508,7 +508,7 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions.Engineering.Convert
             _worksheet.Cells["A1"].Value = 190;
             _worksheet.Cells["A2"].Formula = "CONVERT(A1,\"HP\",\"kw\")";
             _worksheet.Cells["A2"].Calculate();
-            var result = System.Math.Round((double)_worksheet.Cells["A2"].Value, 6);
+            double result = System.Math.Round((double)_worksheet.Cells["A2"].Value, 6);
             Assert.AreEqual(141.682976d, result, "190 horsepowers was not 141.682976 kw");
         }
 
@@ -518,7 +518,7 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions.Engineering.Convert
             _worksheet.Cells["A1"].Value = 1;
             _worksheet.Cells["A2"].Formula = "CONVERT(A1,\"T\",\"ga\")";
             _worksheet.Cells["A2"].Calculate();
-            var result = System.Math.Round((double)_worksheet.Cells["A2"].Value, 6);
+            double result = System.Math.Round((double)_worksheet.Cells["A2"].Value, 6);
             Assert.AreEqual(10000d, result, "1 tesla was not 10000 gauss");
 
             _worksheet.Cells["A1"].Value = 1;
@@ -534,7 +534,7 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions.Engineering.Convert
             _worksheet.Cells["A1"].Value = 3;
             _worksheet.Cells["A2"].Formula = "CONVERT(A1,\"mmHg\",\"Torr\")";
             _worksheet.Cells["A2"].Calculate();
-            var result = System.Math.Round((double)_worksheet.Cells["A2"].Value, 5);
+            double result = System.Math.Round((double)_worksheet.Cells["A2"].Value, 5);
             Assert.AreEqual(2.99999, result, "3 mmHg was not 2.99999 Torr");
 
             _worksheet.Cells["A1"].Value = 3000;
@@ -550,7 +550,7 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions.Engineering.Convert
             _worksheet.Cells["A1"].Value = 25;
             _worksheet.Cells["A2"].Formula = "CONVERT(A1,\"C\",\"F\")";
             _worksheet.Cells["A2"].Calculate();
-            var result = System.Math.Round((double)_worksheet.Cells["A2"].Value, 5);
+            double result = System.Math.Round((double)_worksheet.Cells["A2"].Value, 5);
             Assert.AreEqual(77d, result, "25 C was not 77 F");
 
             _worksheet.Cells["A1"].Value = 25;
@@ -572,7 +572,7 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions.Engineering.Convert
             _worksheet.Cells["A1"].Value = 1;
             _worksheet.Cells["A2"].Formula = "CONVERT(A1,\"J\",\"e\")";
             _worksheet.Cells["A2"].Calculate();
-            var result = System.Math.Round((double)_worksheet.Cells["A2"].Value, 6);
+            double result = System.Math.Round((double)_worksheet.Cells["A2"].Value, 6);
             Assert.AreEqual(10000000d, result, "1 J was not 10000000 e");
 
             _worksheet.Cells["A1"].Value = 1;
@@ -588,7 +588,7 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions.Engineering.Convert
             _worksheet.Cells["A1"].Value = 1;
             _worksheet.Cells["A2"].Formula = "CONVERT(A1,\"bit\",\"byte\")";
             _worksheet.Cells["A2"].Calculate();
-            var result = System.Math.Round((double)_worksheet.Cells["A2"].Value, 6);
+            double result = System.Math.Round((double)_worksheet.Cells["A2"].Value, 6);
             Assert.AreEqual(0.125d, result, "1 bit was not 0.125 bytes");
 
             _worksheet.Cells["A1"].Value = 2;

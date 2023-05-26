@@ -37,13 +37,13 @@ namespace EPPlusTest.Core.Worksheet
         [TestMethod]
         public void SaveCharToCellShouldBeWrittenAsString()
         {
-            using (var p1 = new ExcelPackage())
+            using (ExcelPackage? p1 = new ExcelPackage())
             {
-                var ws = p1.Workbook.Worksheets.Add("CharTest");
+                ExcelWorksheet? ws = p1.Workbook.Worksheets.Add("CharTest");
                 ws.Cells["A1"].Value = 'A';
                 p1.Save();
 
-                using (var p2 = new ExcelPackage(p1.Stream))
+                using (ExcelPackage? p2 = new ExcelPackage(p1.Stream))
                 {
                     ws = p2.Workbook.Worksheets[0];
                     Assert.AreEqual("A", ws.Cells["A1"].Value);
@@ -53,9 +53,9 @@ namespace EPPlusTest.Core.Worksheet
         [TestMethod]
         public void ValidateAutoFitDontShowHiddenColumns()
         {
-            using (var p = new ExcelPackage())
+            using (ExcelPackage? p = new ExcelPackage())
             {
-                var ws = p.Workbook.Worksheets.Add("AutoFitHidden");
+                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("AutoFitHidden");
                 LoadTestdata(ws);
 
                 ws.Column(2).Hidden = true;
@@ -69,9 +69,9 @@ namespace EPPlusTest.Core.Worksheet
         [TestMethod]
         public void ValidateAutoFitMinWidthRange()
         {
-            using (var p = new ExcelPackage())
+            using (ExcelPackage? p = new ExcelPackage())
             {
-                var ws = p.Workbook.Worksheets.Add("AutoFitMinWidth");
+                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("AutoFitMinWidth");
                 LoadTestdata(ws);
 
                 ws.Cells["A:B"].AutoFitColumns(500);
@@ -84,9 +84,9 @@ namespace EPPlusTest.Core.Worksheet
         [TestMethod]
         public void RichTextFlagShouldBeCleanedWhenOverwritingValue()
         {
-            using (var p = new ExcelPackage())
+            using (ExcelPackage? p = new ExcelPackage())
             {
-                var ws = p.Workbook.Worksheets.Add("RichTextOverwriteValue");
+                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("RichTextOverwriteValue");
 
                 ws.Cells["A1:B2"].RichText.Add("RichText");
 
@@ -102,9 +102,9 @@ namespace EPPlusTest.Core.Worksheet
         [TestMethod]
         public void RichTextFlagShouldBeCleanedWhenOverwritingValueAddress()
         {
-            using (var p = new ExcelPackage())
+            using (ExcelPackage? p = new ExcelPackage())
             {
-                var ws = p.Workbook.Worksheets.Add("RichTextOverwriteAddress");
+                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("RichTextOverwriteAddress");
 
                 ws.Cells["A1:B2"].RichText.Add("RichText");
                 Assert.IsTrue(ws.Cells["A1"].IsRichText);
@@ -119,9 +119,9 @@ namespace EPPlusTest.Core.Worksheet
         [TestMethod]
         public void RichTextFlagShouldBeCleanedWhenOverwritingWithArray()
         {
-            using (var p = new ExcelPackage())
+            using (ExcelPackage? p = new ExcelPackage())
             {
-                var ws = p.Workbook.Worksheets.Add("RichTextOverwrite");
+                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("RichTextOverwrite");
 
                 ws.Cells["A1:C3"].RichText.Add("RichText");
                 Assert.IsTrue(ws.Cells["A1"].IsRichText);
@@ -138,9 +138,9 @@ namespace EPPlusTest.Core.Worksheet
         [TestMethod]
         public void FormulaShouldBeCleanedWhenOverwritingWithArray()
         {
-            using (var p = new ExcelPackage())
+            using (ExcelPackage? p = new ExcelPackage())
             {
-                var ws = p.Workbook.Worksheets.Add("RichTextOverwrite");
+                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("RichTextOverwrite");
 
                 ws.Cells["A1:C3"].FormulaR1C1 = "RC";
                 Assert.IsFalse(ws.Cells["A1"].Formula==null);
@@ -152,9 +152,9 @@ namespace EPPlusTest.Core.Worksheet
         [TestMethod]
         public void AddAutofilterForMergedCells()
         {
-            using (var p = OpenPackage("AutofilterMerge.xlsx", true))
+            using (ExcelPackage? p = OpenPackage("AutofilterMerge.xlsx", true))
             {
-                var ws = p.Workbook.Worksheets.Add("AutoFilter");
+                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("AutoFilter");
                 ws.Cells["A1"].Value = "Col1";
                 ws.Cells["B1"].Value = "Col2";
                 ws.Cells["C1"].Value = "Col3";

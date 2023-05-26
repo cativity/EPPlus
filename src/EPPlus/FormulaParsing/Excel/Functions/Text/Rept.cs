@@ -28,10 +28,10 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Text
         public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
         {
             ValidateArguments(arguments, 2);
-            var str = ArgToString(arguments, 0);
-            var n = ArgToInt(arguments, 1);
-            var sb = new StringBuilder();
-            for (var x = 0; x < n; x++)
+            string? str = ArgToString(arguments, 0);
+            int n = ArgToInt(arguments, 1);
+            StringBuilder? sb = new StringBuilder();
+            for (int x = 0; x < n; x++)
             {
                 sb.Append(str);
             }

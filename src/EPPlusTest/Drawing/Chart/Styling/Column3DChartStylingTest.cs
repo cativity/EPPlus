@@ -55,7 +55,7 @@ namespace EPPlusTest.Drawing.Chart.Styling
         [TestMethod]
         public void ColumnChart3D_Styles()
         {
-            var ws = _pck.Workbook.Worksheets.Add("ColumnClustered3D");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("ColumnClustered3D");
             LoadTestdata(ws);
 
             StyleColumn3DChart(ws, eBarChartType.ColumnClustered3D);
@@ -63,7 +63,7 @@ namespace EPPlusTest.Drawing.Chart.Styling
         [TestMethod]
         public void ColumnChart3D_Styles_MultiSeries()
         {
-            var ws = _pck.Workbook.Worksheets.Add("ColumnClustered3D_MultiSeries");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("ColumnClustered3D_MultiSeries");
             LoadTestdata(ws);
 
             StyleColumn3DChart_MultiSeries(ws, eBarChartType.ColumnClustered3D);
@@ -71,7 +71,7 @@ namespace EPPlusTest.Drawing.Chart.Styling
         [TestMethod]
         public void ColumnStackedChart3D_Styles()
         {
-            var ws = _pck.Workbook.Worksheets.Add("ColumnStackedClustered3D");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("ColumnStackedClustered3D");
             LoadTestdata(ws);
 
             StyleColumnStacked3DChart(ws, eBarChartType.ColumnStacked3D);
@@ -79,7 +79,7 @@ namespace EPPlusTest.Drawing.Chart.Styling
         [TestMethod]
         public void ColumnStacked100Chart3D_Styles()
         {
-            var ws = _pck.Workbook.Worksheets.Add("ColumnStacked100Clustered3D");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("ColumnStacked100Clustered3D");
             LoadTestdata(ws);
 
             StyleColumnStacked3DChart(ws, eBarChartType.ColumnStacked1003D);
@@ -87,7 +87,7 @@ namespace EPPlusTest.Drawing.Chart.Styling
         [TestMethod]
         public void PyramidColChart3D_Styles()
         {
-            var ws = _pck.Workbook.Worksheets.Add("PyramidClustered");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("PyramidClustered");
             LoadTestdata(ws);
 
             StyleColumn3DChart(ws, eBarChartType.PyramidColClustered);
@@ -95,7 +95,7 @@ namespace EPPlusTest.Drawing.Chart.Styling
         [TestMethod]
         public void PyramidColChart3D_Styles_MultiSeries()
         {
-            var ws = _pck.Workbook.Worksheets.Add("PyramidClustered_MultiSeries");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("PyramidClustered_MultiSeries");
             LoadTestdata(ws);
 
             StyleColumn3DChart_MultiSeries(ws, eBarChartType.PyramidColClustered);
@@ -103,7 +103,7 @@ namespace EPPlusTest.Drawing.Chart.Styling
         [TestMethod]
         public void PyramidBarChart3D_Styles()
         {
-            var ws = _pck.Workbook.Worksheets.Add("PyramidColStacked");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("PyramidColStacked");
             LoadTestdata(ws);
 
             StyleColumnStacked3DChart(ws, eBarChartType.PyramidColStacked);
@@ -111,7 +111,7 @@ namespace EPPlusTest.Drawing.Chart.Styling
         [TestMethod]
         public void PyramidBarStackedChart3D_Styles()
         {
-            var ws = _pck.Workbook.Worksheets.Add("PyramidColumnStacked100");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("PyramidColumnStacked100");
             LoadTestdata(ws);
 
             StyleColumnStacked3DChart(ws, eBarChartType.PyramidColStacked100);
@@ -130,18 +130,18 @@ namespace EPPlusTest.Drawing.Chart.Styling
                 }); ;
 
             //Style 2
-            var chart2 = AddColumnMulti(ws, chartType, "Column3DChartStyle2", 0, 18, ePresetChartStyleMultiSeries.Column3dChartStyle2,
-                c =>
-                {
-                    c.Legend.Position = eLegendPosition.Top;
-                });
+            ExcelBarChart? chart2 = AddColumnMulti(ws, chartType, "Column3DChartStyle2", 0, 18, ePresetChartStyleMultiSeries.Column3dChartStyle2,
+                                                   c =>
+                                                   {
+                                                       c.Legend.Position = eLegendPosition.Top;
+                                                   });
 
             //Style 3
-            var chart3 = AddColumnMulti(ws, chartType, "Column3DChartStyle3", 0, 31, ePresetChartStyleMultiSeries.Column3dChartStyle3,
-            c =>
-            {
-                c.DataLabel.ShowPercent = true;
-            });
+            ExcelBarChart? chart3 = AddColumnMulti(ws, chartType, "Column3DChartStyle3", 0, 31, ePresetChartStyleMultiSeries.Column3dChartStyle3,
+                                                   c =>
+                                                   {
+                                                       c.DataLabel.ShowPercent = true;
+                                                   });
 
             //Style 4
             AddColumnMulti(ws, chartType, "Column3DChartStyle4", 22, 5, ePresetChartStyleMultiSeries.Column3dChartStyle4,
@@ -210,18 +210,18 @@ namespace EPPlusTest.Drawing.Chart.Styling
                 });
 
             //Style 2
-            var chart2 = AddColumn(ws, chartType, "Column3DChartStyle2", 0, 18, ePresetChartStyle.Column3dChartStyle2,
-                c =>
-                {
-                    c.Legend.Position = eLegendPosition.Top;
-                });
+            ExcelBarChart? chart2 = AddColumn(ws, chartType, "Column3DChartStyle2", 0, 18, ePresetChartStyle.Column3dChartStyle2,
+                                              c =>
+                                              {
+                                                  c.Legend.Position = eLegendPosition.Top;
+                                              });
 
             //Style 3
-            var chart3 = AddColumn(ws, chartType, "Column3DChartStyle3", 0, 31, ePresetChartStyle.Column3dChartStyle3,
-            c =>
-            {
-                c.DataLabel.ShowPercent = true;
-            });
+            ExcelBarChart? chart3 = AddColumn(ws, chartType, "Column3DChartStyle3", 0, 31, ePresetChartStyle.Column3dChartStyle3,
+                                              c =>
+                                              {
+                                                  c.DataLabel.ShowPercent = true;
+                                              });
 
             //Style 4
             AddColumn(ws, chartType, "Column3DChartStyle4", 22, 5, ePresetChartStyle.Column3dChartStyle4,
@@ -299,18 +299,18 @@ namespace EPPlusTest.Drawing.Chart.Styling
                 });
 
             //Style 2
-            var chart2 = AddColumn(ws, chartType, "Column3DChartStyle2", 0, 18, ePresetChartStyle.StackedColumn3dChartStyle2,
-                c =>
-                {
-                    c.Legend.Position = eLegendPosition.Top;
-                });
+            ExcelBarChart? chart2 = AddColumn(ws, chartType, "Column3DChartStyle2", 0, 18, ePresetChartStyle.StackedColumn3dChartStyle2,
+                                              c =>
+                                              {
+                                                  c.Legend.Position = eLegendPosition.Top;
+                                              });
 
             //Style 3
-            var chart3 = AddColumn(ws, chartType, "Column3DChartStyle3", 0, 31, ePresetChartStyle.StackedColumn3dChartStyle3,
-            c =>
-            {
-                c.DataLabel.ShowPercent = true;
-            });
+            ExcelBarChart? chart3 = AddColumn(ws, chartType, "Column3DChartStyle3", 0, 31, ePresetChartStyle.StackedColumn3dChartStyle3,
+                                              c =>
+                                              {
+                                                  c.DataLabel.ShowPercent = true;
+                                              });
 
             //Style 4
             AddColumn(ws, chartType, "Column3DChartStyle4", 22, 5, ePresetChartStyle.StackedColumn3dChartStyle4,
@@ -348,13 +348,13 @@ namespace EPPlusTest.Drawing.Chart.Styling
 
         private static ExcelBarChart AddColumn(ExcelWorksheet ws, eBarChartType type, string name, int row, int col, ePresetChartStyle style, Action<ExcelBarChart> SetProperties)    
         {
-            var chart = ws.Drawings.AddBarChart(name, type);
+            ExcelBarChart? chart = ws.Drawings.AddBarChart(name, type);
             chart.SetPosition(row, 0, col, 0);
             chart.To.Column = col+12;
             chart.To.ColumnOff = 0;
             chart.To.Row = row + 18;
             chart.To.RowOff = 0;
-            var serie = chart.Series.Add("D2:D8", "A2:A8");
+            ExcelBarChartSerie? serie = chart.Series.Add("D2:D8", "A2:A8");
             SetProperties(chart);
 
             chart.StyleManager.SetChartStyle(style);
@@ -362,14 +362,14 @@ namespace EPPlusTest.Drawing.Chart.Styling
         }
         private static ExcelBarChart AddColumnMulti(ExcelWorksheet ws, eBarChartType type, string name, int row, int col, ePresetChartStyleMultiSeries style, Action<ExcelBarChart> SetProperties)
         {
-            var chart = ws.Drawings.AddBarChart(name, type);
+            ExcelBarChart? chart = ws.Drawings.AddBarChart(name, type);
             chart.SetPosition(row, 0, col, 0);
             chart.To.Column = col + 12;
             chart.To.ColumnOff = 0;
             chart.To.Row = row + 18;
             chart.To.RowOff = 0;
-            var serie = chart.Series.Add("D2:D8", "A2:A8");
-            var serie2 = chart.Series.Add("B2:B8", "A2:A8");
+            ExcelBarChartSerie? serie = chart.Series.Add("D2:D8", "A2:A8");
+            ExcelBarChartSerie? serie2 = chart.Series.Add("B2:B8", "A2:A8");
             SetProperties(chart);
 
             chart.StyleManager.SetChartStyle(style);

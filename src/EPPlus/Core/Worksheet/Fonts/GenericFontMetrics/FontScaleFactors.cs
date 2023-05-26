@@ -181,7 +181,7 @@ namespace OfficeOpenXml.Core.Worksheet.Fonts.GenericFontMetrics
             {
                 return 1f;
             }
-            var factor = _fonts[key];
+            FontScaleFactor? factor = _fonts[key];
             return factor.Calculate(width);
         }
     }

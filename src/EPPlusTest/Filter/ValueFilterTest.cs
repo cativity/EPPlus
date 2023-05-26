@@ -54,11 +54,11 @@ namespace EPPlusTest.Filter
         [TestMethod]
         public void ValuesFilter()
         {
-            var ws = _pck.Workbook.Worksheets.Add("ValueFilter");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("ValueFilter");
             LoadTestdata(ws);
             
             ws.AutoFilterAddress = ws.Cells["A1:D100"];
-            var col=ws.AutoFilter.Columns.AddValueFilterColumn(1);
+            ExcelValueFilterColumn? col=ws.AutoFilter.Columns.AddValueFilterColumn(1);
             col.Filters.Add("7");
             col.Filters.Add("14");
             col.Filters.Add("88");
@@ -80,16 +80,16 @@ namespace EPPlusTest.Filter
         [TestMethod]
         public void DateFilterYear()
         {
-            var ws = _pck.Workbook.Worksheets.Add("DateYear");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("DateYear");
             LoadTestdata(ws, 200);
 
             ws.AutoFilterAddress = ws.Cells["A1:D200"];
-            var col = ws.AutoFilter.Columns.AddValueFilterColumn(0);
-            var year = DateTime.Today.Year - 1;
+            ExcelValueFilterColumn? col = ws.AutoFilter.Columns.AddValueFilterColumn(0);
+            int year = DateTime.Today.Year - 1;
             col.Filters.Add(new ExcelFilterDateGroupItem(year));
             ws.AutoFilter.ApplyFilter();
 
-            var row = GetRowFromDate(new DateTime(year, 12, 15));
+            int row = GetRowFromDate(new DateTime(year, 12, 15));
             Assert.AreEqual(false, ws.Row(row).Hidden);
             row = GetRowFromDate(new DateTime(year, 12, 31));
             Assert.AreEqual(false, ws.Row(row).Hidden);
@@ -99,16 +99,16 @@ namespace EPPlusTest.Filter
         [TestMethod]
         public void DateFilterMonth()
         {
-            var ws = _pck.Workbook.Worksheets.Add("DateMonth");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("DateMonth");
             LoadTestdata(ws, 200);
 
             ws.AutoFilterAddress = ws.Cells["A1:D200"];
-            var col = ws.AutoFilter.Columns.AddValueFilterColumn(0);
-            var year = DateTime.Today.Year;
+            ExcelValueFilterColumn? col = ws.AutoFilter.Columns.AddValueFilterColumn(0);
+            int year = DateTime.Today.Year;
             col.Filters.Add(new ExcelFilterDateGroupItem(year,1));
             ws.AutoFilter.ApplyFilter();
 
-            var row = GetRowFromDate(new DateTime(year-1, 12, 31));
+            int row = GetRowFromDate(new DateTime(year-1, 12, 31));
             Assert.AreEqual(true, ws.Row(row).Hidden);
             row = GetRowFromDate(new DateTime(year, 1, 1));
             Assert.AreEqual(false, ws.Row(row).Hidden);
@@ -120,16 +120,16 @@ namespace EPPlusTest.Filter
         [TestMethod]
         public void DateFilterDay()
         {
-            var ws = _pck.Workbook.Worksheets.Add("DateDay");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("DateDay");
             LoadTestdata(ws, 200);
 
             ws.AutoFilterAddress = ws.Cells["A1:D200"];
-            var col = ws.AutoFilter.Columns.AddValueFilterColumn(0);
-            var year = DateTime.Today.Year;
+            ExcelValueFilterColumn? col = ws.AutoFilter.Columns.AddValueFilterColumn(0);
+            int year = DateTime.Today.Year;
             col.Filters.Add(new ExcelFilterDateGroupItem(year, 1, 12));
             ws.AutoFilter.ApplyFilter();
 
-            var row = GetRowFromDate(new DateTime(year, 1, 11));
+            int row = GetRowFromDate(new DateTime(year, 1, 11));
             Assert.AreEqual(true, ws.Row(row).Hidden);
             row = GetRowFromDate(new DateTime(year, 1, 12));
             Assert.AreEqual(false, ws.Row(row).Hidden);
@@ -139,17 +139,17 @@ namespace EPPlusTest.Filter
         [TestMethod]
         public void DateFilterHour()
         {
-            var ws = _pck.Workbook.Worksheets.Add("DateHour");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("DateHour");
             LoadTestdata(ws, 200);
-            var year = DateTime.Today.Year;
+            int year = DateTime.Today.Year;
             ws.SetValue("A82", new DateTime(year, 1, 20, 12, 11, 33));
             ws.SetValue("A83", new DateTime(year, 1, 20, 13, 11, 33));
             ws.AutoFilterAddress = ws.Cells["A1:D200"];
-            var col = ws.AutoFilter.Columns.AddValueFilterColumn(0);
+            ExcelValueFilterColumn? col = ws.AutoFilter.Columns.AddValueFilterColumn(0);
             col.Filters.Add(new ExcelFilterDateGroupItem(year, 1, 20, 12));
             ws.AutoFilter.ApplyFilter();
 
-            var row = GetRowFromDate(new DateTime(year, 1, 19));
+            int row = GetRowFromDate(new DateTime(year, 1, 19));
             Assert.AreEqual(true, ws.Row(row).Hidden);
             row++;
             Assert.AreEqual(false, ws.Row(row).Hidden);
@@ -159,17 +159,17 @@ namespace EPPlusTest.Filter
         [TestMethod]
         public void DateFilterMinute()
         {
-            var ws = _pck.Workbook.Worksheets.Add("DateMinute");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("DateMinute");
             LoadTestdata(ws, 200);
-            var year = DateTime.Today.Year;
+            int year = DateTime.Today.Year;
             ws.SetValue("A82", new DateTime(year, 1, 20, 12, 11, 33));
             ws.SetValue("A83", new DateTime(year, 1, 20, 12, 12, 33));
             ws.AutoFilterAddress = ws.Cells["A1:D200"];
-            var col = ws.AutoFilter.Columns.AddValueFilterColumn(0);
+            ExcelValueFilterColumn? col = ws.AutoFilter.Columns.AddValueFilterColumn(0);
             col.Filters.Add(new ExcelFilterDateGroupItem(year, 1, 20, 12, 11));
             ws.AutoFilter.ApplyFilter();
 
-            var row = GetRowFromDate(new DateTime(year, 1, 19));
+            int row = GetRowFromDate(new DateTime(year, 1, 19));
             Assert.AreEqual(true, ws.Row(row).Hidden);
             row++;
             Assert.AreEqual(false, ws.Row(row).Hidden);
@@ -179,17 +179,17 @@ namespace EPPlusTest.Filter
         [TestMethod]
         public void DateFilterSecond()
         {
-            var ws = _pck.Workbook.Worksheets.Add("DateSecond");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("DateSecond");
             LoadTestdata(ws, 200);
-            var year = DateTime.Today.Year;
+            int year = DateTime.Today.Year;
             ws.SetValue("A82", new DateTime(year, 1, 20, 12, 11, 33));
             ws.SetValue("A83", new DateTime(year, 1, 20, 12, 11, 35));
             ws.AutoFilterAddress = ws.Cells["A1:D200"];
-            var col = ws.AutoFilter.Columns.AddValueFilterColumn(0);
+            ExcelValueFilterColumn? col = ws.AutoFilter.Columns.AddValueFilterColumn(0);
             col.Filters.Add(new ExcelFilterDateGroupItem(year, 1, 20, 12, 11, 33));
             ws.AutoFilter.ApplyFilter();
 
-            var row = GetRowFromDate(new DateTime(year, 1, 19));
+            int row = GetRowFromDate(new DateTime(year, 1, 19));
             Assert.AreEqual(true, ws.Row(row).Hidden);
             row++;
             Assert.AreEqual(false, ws.Row(row).Hidden);
@@ -199,12 +199,12 @@ namespace EPPlusTest.Filter
         [TestMethod]
         public void TextFilter()
         {
-            var ws = _pck.Workbook.Worksheets.Add("Text");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("Text");
             LoadTestdata(ws);
             SetDateValues(ws);
 
             ws.AutoFilterAddress = ws.Cells["A1:D102"];
-            var col = ws.AutoFilter.Columns.AddValueFilterColumn(2);
+            ExcelValueFilterColumn? col = ws.AutoFilter.Columns.AddValueFilterColumn(2);
             col.Filters.Add("Value 8");
             col.Filters.Add("Value 55");
             col.Filters.Add("Value 33");
@@ -227,14 +227,14 @@ namespace EPPlusTest.Filter
         [TestMethod]
         public void NumericFormattedFilter()
         {
-            var ws = _pck.Workbook.Worksheets.Add("NumericFormatted");
-            var currentCulture = Thread.CurrentThread.CurrentCulture;
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("NumericFormatted");
+            CultureInfo? currentCulture = Thread.CurrentThread.CurrentCulture;
             Thread.CurrentThread.CurrentCulture = new CultureInfo("sv-SE");
             LoadTestdata(ws);
             SetDateValues(ws);
 
             ws.AutoFilterAddress = ws.Cells["A1:D102"];
-            var col = ws.AutoFilter.Columns.AddValueFilterColumn(3);
+            ExcelValueFilterColumn? col = ws.AutoFilter.Columns.AddValueFilterColumn(3);
             col.Filters.Add("66,00");
             col.Filters.Add("3 003,00");
             col.Filters.Add("3 036,00");

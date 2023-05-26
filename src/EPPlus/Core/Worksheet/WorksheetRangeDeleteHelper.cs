@@ -22,6 +22,7 @@ using OfficeOpenXml.Table.PivotTable;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Xml;
 
 namespace OfficeOpenXml.Core.Worksheet
 {
@@ -33,12 +34,12 @@ namespace OfficeOpenXml.Core.Worksheet
             ValidateRow(ws, rowFrom, rows);
             lock (ws)
             {
-                var delRange = new ExcelAddressBase(rowFrom, 1, rowFrom + rows - 1, ExcelPackage.MaxColumns);
+                ExcelAddressBase? delRange = new ExcelAddressBase(rowFrom, 1, rowFrom + rows - 1, ExcelPackage.MaxColumns);
                 WorksheetRangeHelper.ConvertEffectedSharedFormulasToCellFormulas(ws, delRange);
 
                 DeleteCellStores(ws, rowFrom, 0, rows, ExcelPackage.MaxColumns + 1);
 
-                foreach (var wsToUpdate in ws.Workbook.Worksheets)
+                foreach (ExcelWorksheet? wsToUpdate in ws.Workbook.Worksheets)
                 {
                     FixFormulasDeleteRow(wsToUpdate, rowFrom, rows, ws.Name);
                 }
@@ -49,8 +50,8 @@ namespace OfficeOpenXml.Core.Worksheet
                 DeleteRowTable(ws, rowFrom, rows);
                 DeleteRowPivotTable(ws, rowFrom, rows);
 
-                var range = ws.Cells[rowFrom, 1, rowFrom + rows - 1, ExcelPackage.MaxColumns];
-                var effectedAddress = GetAffectedRange(range, eShiftTypeDelete.Up);
+                ExcelRange? range = ws.Cells[rowFrom, 1, rowFrom + rows - 1, ExcelPackage.MaxColumns];
+                ExcelAddressBase? effectedAddress = GetAffectedRange(range, eShiftTypeDelete.Up);
                 DeleteDataValidations(range, eShiftTypeDelete.Up, ws, effectedAddress);
                 DeleteConditionalFormatting(range, eShiftTypeDelete.Up, ws, effectedAddress);
                 DeleteFilterAddress(range, effectedAddress, eShiftTypeDelete.Up);
@@ -64,7 +65,7 @@ namespace OfficeOpenXml.Core.Worksheet
 
         private static void DeleteRowPivotTable(ExcelWorksheet ws, int rowFrom, int rows)
         {
-            foreach (var ptbl in ws.PivotTables)
+            foreach (ExcelPivotTable? ptbl in ws.PivotTables)
             {
                 if (ptbl.Address.Start.Row > rowFrom + rows)
                 {
@@ -75,10 +76,10 @@ namespace OfficeOpenXml.Core.Worksheet
 
         private static void DeleteRowTable(ExcelWorksheet ws, int rowFrom, int rows)
         {
-            foreach (var tbl in ws.Tables)
+            foreach (ExcelTable? tbl in ws.Tables)
             {
                 tbl.Address = tbl.Address.DeleteRow(rowFrom, rows);
-                foreach (var col in tbl.Columns)
+                foreach (ExcelTableColumn? col in tbl.Columns)
                 {
                     if (string.IsNullOrEmpty(col.CalculatedColumnFormula) == false)
                     {
@@ -94,12 +95,12 @@ namespace OfficeOpenXml.Core.Worksheet
             lock (ws)
             {
                 AdjustColumnMinMaxDelete(ws, columnFrom, columns);
-                var delRange = new ExcelAddressBase(1, columnFrom, ExcelPackage.MaxRows, columnFrom + columns - 1);
+                ExcelAddressBase? delRange = new ExcelAddressBase(1, columnFrom, ExcelPackage.MaxRows, columnFrom + columns - 1);
                 WorksheetRangeHelper.ConvertEffectedSharedFormulasToCellFormulas(ws, delRange);
 
                 DeleteCellStores(ws, 0, columnFrom, 0, columns);
 
-                foreach (var wsToUpdate in ws.Workbook.Worksheets)
+                foreach (ExcelWorksheet? wsToUpdate in ws.Workbook.Worksheets)
                 {
                     FixFormulasDeleteColumn(wsToUpdate, columnFrom, columns, ws.Name);
                 }
@@ -108,7 +109,7 @@ namespace OfficeOpenXml.Core.Worksheet
 
                 DeleteColumnTable(ws, columnFrom, columns);
 
-                foreach (var ptbl in ws.PivotTables)
+                foreach (ExcelPivotTable? ptbl in ws.PivotTables)
                 {
                     if (ptbl.Address.Start.Column >= columnFrom + columns)
                     {
@@ -121,8 +122,8 @@ namespace OfficeOpenXml.Core.Worksheet
                     }
                 }
 
-                var range = ws.Cells[1, columnFrom, ExcelPackage.MaxRows, columnFrom + columns - 1];
-                var effectedAddress = GetAffectedRange(range, eShiftTypeDelete.Left);
+                ExcelRange? range = ws.Cells[1, columnFrom, ExcelPackage.MaxRows, columnFrom + columns - 1];
+                ExcelAddressBase? effectedAddress = GetAffectedRange(range, eShiftTypeDelete.Left);
                 DeleteDataValidations(range, eShiftTypeDelete.Left, ws, effectedAddress);
                 DeleteConditionalFormatting(range, eShiftTypeDelete.Left, ws, effectedAddress);
 
@@ -138,12 +139,12 @@ namespace OfficeOpenXml.Core.Worksheet
 
         private static void DeleteColumnTable(ExcelWorksheet ws, int columnFrom, int columns)
         {
-            foreach (var tbl in ws.Tables)
+            foreach (ExcelTable? tbl in ws.Tables)
             {
                 if (columnFrom >= tbl.Address.Start.Column && columnFrom <= tbl.Address.End.Column)
                 {
-                    var node = tbl.Columns[0].TopNode.ParentNode;
-                    var ix = columnFrom - tbl.Address.Start.Column;
+                    XmlNode? node = tbl.Columns[0].TopNode.ParentNode;
+                    int ix = columnFrom - tbl.Address.Start.Column;
                     for (int i = 0; i < columns; i++)
                     {
                         if (node.ChildNodes.Count > ix)
@@ -158,7 +159,7 @@ namespace OfficeOpenXml.Core.Worksheet
 
                 if (columnFrom <= tbl.Address._toCol)
                 {
-                    foreach (var col in tbl.Columns)
+                    foreach (ExcelTableColumn? col in tbl.Columns)
                     {
                         if (string.IsNullOrEmpty(col.CalculatedColumnFormula) == false)
                         {
@@ -174,8 +175,8 @@ namespace OfficeOpenXml.Core.Worksheet
             ExcelColumn col = ws.GetValueInner(0, columnFrom) as ExcelColumn;
             if (col == null)
             {
-                var r = 0;
-                var c = columnFrom;
+                int r = 0;
+                int c = columnFrom;
                 if (ws._values.PrevCell(ref r, ref c))
                 {
                     col = ws.GetValueInner(0, c) as ExcelColumn;
@@ -185,12 +186,12 @@ namespace OfficeOpenXml.Core.Worksheet
                     }
                 }
             }
-            var toCol = columnFrom + columns - 1;
-            var moveValue = new ExcelValue { _styleId = int.MaxValue };
-            var cse = new CellStoreEnumerator<ExcelValue>(ws._values, 0, columnFrom, 0, ExcelPackage.MaxColumns);
+            int toCol = columnFrom + columns - 1;
+            ExcelValue moveValue = new ExcelValue { _styleId = int.MaxValue };
+            CellStoreEnumerator<ExcelValue>? cse = new CellStoreEnumerator<ExcelValue>(ws._values, 0, columnFrom, 0, ExcelPackage.MaxColumns);
             while (cse.MoveNext())
             {
-                var column = cse.Value._value as ExcelColumn;
+                ExcelColumn? column = cse.Value._value as ExcelColumn;
                 if (column != null && column._columnMax > toCol)
                 {
                     if (column.ColumnMin > toCol)
@@ -229,7 +230,7 @@ namespace OfficeOpenXml.Core.Worksheet
                 throw (new ArgumentException("rowFrom", "Row out of range. Spans from 1 to " + ExcelPackage.MaxRows.ToString(CultureInfo.InvariantCulture)));
             }
 
-            var deleteRange = new ExcelAddressBase(rowFrom, columnFrom, rowFrom + rows - 1, columnFrom + columns - 1);
+            ExcelAddressBase? deleteRange = new ExcelAddressBase(rowFrom, columnFrom, rowFrom + rows - 1, columnFrom + columns - 1);
             FormulaDataTableValidation.HasPartlyFormulaDataTable(ws, deleteRange, true, "Can't delete a part of a data table function");
         }
         private static void ValidateColumn(ExcelWorksheet ws, int columnFrom, int columns, int rowFrom = 1, int rows = ExcelPackage.MaxRows)
@@ -239,7 +240,7 @@ namespace OfficeOpenXml.Core.Worksheet
                 throw (new ArgumentException("columnFrom", "Column out of range. Spans from 1 to " + ExcelPackage.MaxColumns.ToString(CultureInfo.InvariantCulture)));
             }
 
-            var deleteRange = new ExcelAddressBase(rowFrom, columnFrom, rowFrom + rows - 1, columnFrom + columns - 1);
+            ExcelAddressBase? deleteRange = new ExcelAddressBase(rowFrom, columnFrom, rowFrom + rows - 1, columnFrom + columns - 1);
             FormulaDataTableValidation.HasPartlyFormulaDataTable(ws, deleteRange, true, "Can't delete into a part of a data table function.");
         }
 
@@ -297,13 +298,13 @@ namespace OfficeOpenXml.Core.Worksheet
         }
         private static void AdjustColumnMinMax(ExcelWorksheet ws, int columnFrom, int columns)
         {
-            var csec = new CellStoreEnumerator<ExcelValue>(ws._values, 0, columnFrom, 0, columnFrom + columns - 1);
-            foreach (var val in csec)
+            CellStoreEnumerator<ExcelValue>? csec = new CellStoreEnumerator<ExcelValue>(ws._values, 0, columnFrom, 0, columnFrom + columns - 1);
+            foreach (ExcelValue val in csec)
             {
-                var column = val._value;
+                object? column = val._value;
                 if (column is ExcelColumn)
                 {
-                    var c = (ExcelColumn)column;
+                    ExcelColumn? c = (ExcelColumn)column;
                     if (c._columnMin >= columnFrom)
                     {
                         c._columnMin += columns;
@@ -314,12 +315,12 @@ namespace OfficeOpenXml.Core.Worksheet
         }
         static void FixFormulasDeleteRow(ExcelWorksheet ws, int rowFrom, int rows, string workSheetName)
         {
-            var delSF = new List<int>();
-            foreach (var sf in ws._sharedFormulas.Values)
+            List<int>? delSF = new List<int>();
+            foreach (ExcelWorksheet.Formulas? sf in ws._sharedFormulas.Values)
             {
                 if (workSheetName == ws.Name)
                 {
-                    var a = new ExcelAddress(sf.Address).DeleteRow(rowFrom, rows);
+                    ExcelAddressBase? a = new ExcelAddress(sf.Address).DeleteRow(rowFrom, rows);
                     if (a == null)
                     {
                         delSF.Add(sf.Index);
@@ -330,7 +331,7 @@ namespace OfficeOpenXml.Core.Worksheet
                         sf.Formula = ExcelCellBase.UpdateFormulaReferences(sf.Formula, -rows, 0, rowFrom, 0, ws.Name, workSheetName);
                         if (sf.StartRow >= rowFrom)
                         {
-                            var r = Math.Max(rowFrom, sf.StartRow - rows);
+                            int r = Math.Max(rowFrom, sf.StartRow - rows);
                             sf.StartRow = r;
                         }
                     }
@@ -341,11 +342,11 @@ namespace OfficeOpenXml.Core.Worksheet
                 }
             }
 
-            foreach (var ix in delSF)
+            foreach (int ix in delSF)
             {
                 ws._sharedFormulas.Remove(ix);
             }
-            var cse = new CellStoreEnumerator<object>(ws._formulas, 1, 1, ExcelPackage.MaxRows, ExcelPackage.MaxColumns);
+            CellStoreEnumerator<object>? cse = new CellStoreEnumerator<object>(ws._formulas, 1, 1, ExcelPackage.MaxRows, ExcelPackage.MaxColumns);
             while (cse.Next())
             {
                 if (cse.Value is string v)
@@ -359,13 +360,13 @@ namespace OfficeOpenXml.Core.Worksheet
         }
         internal static void FixFormulasDeleteColumn(ExcelWorksheet ws, int columnFrom, int columns, string workSheetName)
         {
-            var delSF = new List<int>();
-            foreach (var sf in ws._sharedFormulas.Values)
+            List<int>? delSF = new List<int>();
+            foreach (ExcelWorksheet.Formulas? sf in ws._sharedFormulas.Values)
             {
 
                 if (workSheetName == ws.Name)
                 {
-                    var a = new ExcelAddress(sf.Address).DeleteColumn(columnFrom, columns);
+                    ExcelAddressBase? a = new ExcelAddress(sf.Address).DeleteColumn(columnFrom, columns);
                     if (a == null)
                     {
                         delSF.Add(sf.Index);
@@ -377,7 +378,7 @@ namespace OfficeOpenXml.Core.Worksheet
 
                         if (sf.StartCol > columnFrom)
                         {
-                            var c = Math.Max(columnFrom, sf.StartCol - columns);
+                            int c = Math.Max(columnFrom, sf.StartCol - columns);
                             sf.StartCol -= c;
                         }
                     }
@@ -387,12 +388,12 @@ namespace OfficeOpenXml.Core.Worksheet
                     sf.Formula = ExcelCellBase.UpdateFormulaReferences(sf.Formula, 0, -columns, 0, columnFrom, ws.Name, workSheetName);
                 }
             }
-            foreach (var ix in delSF)
+            foreach (int ix in delSF)
             {
                 ws._sharedFormulas.Remove(ix);
             }
 
-            var cse = new CellStoreEnumerator<object>(ws._formulas, 1, 1, ExcelPackage.MaxRows, ExcelPackage.MaxColumns);
+            CellStoreEnumerator<object>? cse = new CellStoreEnumerator<object>(ws._formulas, 1, 1, ExcelPackage.MaxRows, ExcelPackage.MaxColumns);
             while (cse.Next())
             {
                 if (cse.Value is string v)
@@ -409,10 +410,10 @@ namespace OfficeOpenXml.Core.Worksheet
         {
             ValidateDelete(range.Worksheet, range, shift);
 
-            var effectedAddress = GetAffectedRange(range, shift);
+            ExcelAddressBase? effectedAddress = GetAffectedRange(range, shift);
             WorksheetRangeHelper.ValidateIfInsertDeleteIsPossible(range, effectedAddress, GetAffectedRange(range, shift, 1), false);
 
-            var ws = range.Worksheet;
+            ExcelWorksheet? ws = range.Worksheet;
             lock (ws)
             {
                 WorksheetRangeHelper.ConvertEffectedSharedFormulasToCellFormulas(ws, effectedAddress);
@@ -442,8 +443,8 @@ namespace OfficeOpenXml.Core.Worksheet
         }
         private static void DeleteSparkLinesAddress(ExcelRangeBase range, eShiftTypeDelete shift, ExcelAddressBase effectedAddress)
         {
-            var delSparklineGroups = new List<ExcelSparklineGroup>();
-            foreach (var slg in range.Worksheet.SparklineGroups)
+            List<ExcelSparklineGroup>? delSparklineGroups = new List<ExcelSparklineGroup>();
+            foreach (ExcelSparklineGroup? slg in range.Worksheet.SparklineGroups)
             {
                 if (slg.DateAxisRange != null && effectedAddress.Collide(slg.DateAxisRange) >= ExcelAddressBase.eAddressCollition.Inside)
                 {
@@ -460,8 +461,8 @@ namespace OfficeOpenXml.Core.Worksheet
                     slg.DateAxisRange = address == null ? null : range.Worksheet.Cells[address];
                 }
 
-                var delSparklines = new List<ExcelSparkline>();
-                foreach (var sl in slg.Sparklines)
+                List<ExcelSparkline>? delSparklines = new List<ExcelSparkline>();
+                foreach (ExcelSparkline? sl in slg.Sparklines)
                 {
                     if (range.Collide(sl.Cell.Row, sl.Cell.Column) >= ExcelAddressBase.eAddressCollition.Inside)
                     {
@@ -506,10 +507,10 @@ namespace OfficeOpenXml.Core.Worksheet
         }
         private static void DeleteFilterAddress(ExcelRangeBase range, ExcelAddressBase effectedAddress, eShiftTypeDelete shift)
         {
-            var ws = range.Worksheet;
+            ExcelWorksheet? ws = range.Worksheet;
             if (ws.AutoFilterAddress != null && effectedAddress.Collide(ws.AutoFilterAddress) != ExcelAddressBase.eAddressCollition.No)
             {
-                var firstRow = new ExcelAddress(ws.AutoFilterAddress._fromRow, ws.AutoFilterAddress._fromCol, ws.AutoFilterAddress._fromRow, ws.AutoFilterAddress._toCol);
+                ExcelAddress? firstRow = new ExcelAddress(ws.AutoFilterAddress._fromRow, ws.AutoFilterAddress._fromCol, ws.AutoFilterAddress._fromRow, ws.AutoFilterAddress._toCol);
                 if (range.Collide(firstRow, true) >= ExcelAddressBase.eAddressCollition.Inside)
                 {
                     ws.AutoFilterAddress = null;
@@ -556,10 +557,10 @@ namespace OfficeOpenXml.Core.Worksheet
         private static void DeleteConditionalFormatting(ExcelRangeBase range, eShiftTypeDelete shift, ExcelWorksheet ws, ExcelAddressBase effectedAddress)
         {
             //Update Conditional formatting references
-            var deletedCF = new List<IExcelConditionalFormattingRule>();
-            foreach (var cf in ws.ConditionalFormatting)
+            List<IExcelConditionalFormattingRule>? deletedCF = new List<IExcelConditionalFormattingRule>();
+            foreach (IExcelConditionalFormattingRule? cf in ws.ConditionalFormatting)
             {
-                var newAddress = DeleteSplitAddress(cf.Address, range, effectedAddress, shift);
+                ExcelAddressBase? newAddress = DeleteSplitAddress(cf.Address, range, effectedAddress, shift);
                 if (newAddress == null)
                 {
                     deletedCF.Add(cf);
@@ -570,7 +571,7 @@ namespace OfficeOpenXml.Core.Worksheet
                     {
                         if (cf.Address.FirstCellAddressRelative != newAddress.FirstCellAddressRelative)
                         {
-                            var cfr = ((ExcelConditionalFormattingRule)cf);
+                            ExcelConditionalFormattingRule? cfr = ((ExcelConditionalFormattingRule)cf);
                             cfr.Formula = WorksheetRangeHelper.AdjustStartCellForFormula(cfr.Formula, cf.Address, newAddress);
                             cfr.Formula2 = WorksheetRangeHelper.AdjustStartCellForFormula(cfr.Formula2, cf.Address, newAddress);
                         }
@@ -586,10 +587,10 @@ namespace OfficeOpenXml.Core.Worksheet
         private static void DeleteDataValidations(ExcelRangeBase range, eShiftTypeDelete shift, ExcelWorksheet ws, ExcelAddressBase effectedAddress)
         {
             //Update data validation references
-            var deletedDV = new List<ExcelDataValidation>();
+            List<ExcelDataValidation>? deletedDV = new List<ExcelDataValidation>();
             foreach (ExcelDataValidation dv in ws.DataValidations)
             {
-                var newAddress = DeleteSplitAddress(dv.Address, range, effectedAddress, shift);
+                ExcelAddressBase? newAddress = DeleteSplitAddress(dv.Address, range, effectedAddress, shift);
                 if (newAddress == null)
                 {
                     deletedDV.Add(dv);
@@ -618,10 +619,10 @@ namespace OfficeOpenXml.Core.Worksheet
             }
             else
             {
-                var newAddress = "";
-                foreach (var a in address.Addresses)
+                string? newAddress = "";
+                foreach (ExcelAddressBase? a in address.Addresses)
                 {
-                    var na = DeleteSplitIndividualAddress(a, range, effectedAddress, shift);
+                    ExcelAddressBase? na = DeleteSplitIndividualAddress(a, range, effectedAddress, shift);
                     if (na != null)
                     {
                         newAddress += na.Address + ",";
@@ -659,19 +660,19 @@ namespace OfficeOpenXml.Core.Worksheet
             }
             else
             {
-                var collide = effectedAddress.Collide(address);
+                ExcelAddressBase.eAddressCollition collide = effectedAddress.Collide(address);
                 if (collide == ExcelAddressBase.eAddressCollition.Partly)
                 {
-                    var addressToShift = effectedAddress.Intersect(address);
-                    var shiftedAddress = ShiftAddress(addressToShift, range, shift);
-                    var newAddress = "";
+                    ExcelAddressBase? addressToShift = effectedAddress.Intersect(address);
+                    ExcelAddressBase? shiftedAddress = ShiftAddress(addressToShift, range, shift);
+                    string? newAddress = "";
                     if (address._fromRow < addressToShift._fromRow)
                     {
                         newAddress = ExcelCellBase.GetAddress(address._fromRow, address._fromCol, addressToShift._fromRow - 1, address._toCol) + ",";
                     }
                     if (address._fromCol < addressToShift._fromCol)
                     {
-                        var fromRow = Math.Max(address._fromRow, addressToShift._fromRow);
+                        int fromRow = Math.Max(address._fromRow, addressToShift._fromRow);
                         newAddress += ExcelCellBase.GetAddress(fromRow, address._fromCol, address._toRow, addressToShift._fromCol - 1) + ",";
                     }
 
@@ -711,8 +712,8 @@ namespace OfficeOpenXml.Core.Worksheet
         }
         private static void DeletePivottableAddresses(ExcelWorksheet ws, ExcelRangeBase range, eShiftTypeDelete shift, ExcelAddressBase effectedAddress)
         {
-            var deletedPt = new List<ExcelPivotTable>();
-            foreach (var ptbl in ws.PivotTables)
+            List<ExcelPivotTable>? deletedPt = new List<ExcelPivotTable>();
+            foreach (ExcelPivotTable? ptbl in ws.PivotTables)
             {
                 if (shift == eShiftTypeDelete.Up)
                 {
@@ -734,16 +735,16 @@ namespace OfficeOpenXml.Core.Worksheet
                 }
                 else
                 {
-                    foreach (var wsSource in ws.Workbook.Worksheets)
+                    foreach (ExcelWorksheet? wsSource in ws.Workbook.Worksheets)
                     {
                         if (ptbl.CacheDefinition.SourceRange.Worksheet == wsSource)
                         {
-                            var address = ptbl.CacheDefinition.SourceRange;
+                            ExcelRangeBase? address = ptbl.CacheDefinition.SourceRange;
                             if (shift == eShiftTypeDelete.Up)
                             {
                                 if (address._fromCol >= range._fromCol && address._toCol <= range._toCol)
                                 {
-                                    var deletedRange = ws.Cells[address.DeleteRow(range._fromRow, range.Rows).Address];
+                                    ExcelRange? deletedRange = ws.Cells[address.DeleteRow(range._fromRow, range.Rows).Address];
                                     if (deletedRange != null)
                                     {
                                         ptbl.CacheDefinition.SourceRange = deletedRange;
@@ -754,7 +755,7 @@ namespace OfficeOpenXml.Core.Worksheet
                             {
                                 if (address._fromRow >= range._fromRow && address._toRow <= range._toRow)
                                 {
-                                    var deletedRange = ws.Cells[address.DeleteColumn(range._fromCol, range.Columns).Address];
+                                    ExcelRange? deletedRange = ws.Cells[address.DeleteColumn(range._fromCol, range.Columns).Address];
                                     if (deletedRange != null)
                                     {
                                         ptbl.CacheDefinition.SourceRange = deletedRange;
@@ -771,8 +772,8 @@ namespace OfficeOpenXml.Core.Worksheet
 
         private static void DeleteTableAddresses(ExcelWorksheet ws, ExcelRangeBase range, eShiftTypeDelete shift, ExcelAddressBase effectedAddress)
         {
-            var deletedTbl = new List<ExcelTable>();
-            foreach (var tbl in ws.Tables)
+            List<ExcelTable>? deletedTbl = new List<ExcelTable>();
+            foreach (ExcelTable? tbl in ws.Tables)
             {
                 if (shift == eShiftTypeDelete.Up)
                 {
@@ -796,7 +797,7 @@ namespace OfficeOpenXml.Core.Worksheet
                 else
                 {
                     //Update CalculatedColumnFormula
-                    foreach (var col in tbl.Columns)
+                    foreach (ExcelTableColumn? col in tbl.Columns)
                     {
                         if (string.IsNullOrEmpty(col.CalculatedColumnFormula) == false)
                         {
@@ -810,12 +811,12 @@ namespace OfficeOpenXml.Core.Worksheet
         }
         private static void FixFormulasDelete(ExcelRangeBase range, ExcelAddressBase effectedRange, eShiftTypeDelete shift)
         {
-            foreach (var ws in range.Worksheet.Workbook.Worksheets)
+            foreach (ExcelWorksheet? ws in range.Worksheet.Workbook.Worksheets)
             {
-                var workSheetName = range.WorkSheetName;
+                string? workSheetName = range.WorkSheetName;
 
-                var delSF = new List<int>();
-                foreach (var sf in ws._sharedFormulas.Values)
+                List<int>? delSF = new List<int>();
+                foreach (ExcelWorksheet.Formulas? sf in ws._sharedFormulas.Values)
                 {
                     if (workSheetName == ws.Name)
                     {
@@ -824,23 +825,23 @@ namespace OfficeOpenXml.Core.Worksheet
                             ExcelAddressBase a;
                             if (shift == eShiftTypeDelete.Up)
                             {
-                                var rowFrom = range._fromRow;
-                                var rows = range.Rows;
+                                int rowFrom = range._fromRow;
+                                int rows = range.Rows;
                                 a = new ExcelAddress(sf.Address).DeleteRow(range._fromRow, rows);
                                 if (sf.StartRow >= rowFrom)
                                 {
-                                    var r = Math.Max(rowFrom, sf.StartRow - rows);
+                                    int r = Math.Max(rowFrom, sf.StartRow - rows);
                                     sf.StartRow = r;
                                 }
                             }
                             else
                             {
-                                var colFrom = range._fromCol;
-                                var cols = range.Columns;
+                                int colFrom = range._fromCol;
+                                int cols = range.Columns;
                                 a = new ExcelAddress(sf.Address).DeleteColumn(range._fromCol, cols);
                                 if (sf.StartCol >= colFrom)
                                 {
-                                    var c = Math.Max(colFrom, sf.StartCol - cols);
+                                    int c = Math.Max(colFrom, sf.StartCol - cols);
                                     sf.StartCol = c;
                                 }
                             }
@@ -863,11 +864,11 @@ namespace OfficeOpenXml.Core.Worksheet
                     }
                 }
 
-                foreach (var ix in delSF)
+                foreach (int ix in delSF)
                 {
                     ws._sharedFormulas.Remove(ix);
                 }
-                var cse = new CellStoreEnumerator<object>(ws._formulas, 1, 1, ExcelPackage.MaxRows, ExcelPackage.MaxColumns);
+                CellStoreEnumerator<object>? cse = new CellStoreEnumerator<object>(ws._formulas, 1, 1, ExcelPackage.MaxRows, ExcelPackage.MaxColumns);
                 while (cse.Next())
                 {
                     if (cse.Value is string v)

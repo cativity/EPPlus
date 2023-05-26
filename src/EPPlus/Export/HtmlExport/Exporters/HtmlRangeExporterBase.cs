@@ -21,6 +21,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
+using OfficeOpenXml.Core.CellStore;
 
 namespace OfficeOpenXml.Export.HtmlExport.Exporters
 {
@@ -38,7 +39,7 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
             }
             else
             {
-                foreach (var address in range.Addresses)
+                foreach (ExcelAddressBase? address in range.Addresses)
                 {
                     AddRange(range.Worksheet.Cells[address.Address]);
                 }
@@ -70,11 +71,11 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
 
         protected void LoadVisibleColumns(ExcelRangeBase range)
         {
-            var ws = range.Worksheet;
+            ExcelWorksheet? ws = range.Worksheet;
             _columns = new List<int>();
             for (int col = range._fromCol; col <= range._toCol; col++)
             {
-                var c = ws.GetColumn(col);
+                ExcelColumn? c = ws.GetColumn(col);
                 if (c == null || (c.Hidden == false && c.Width > 0))
                 {
                     _columns.Add(col);
@@ -108,7 +109,7 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
         {
             if (Settings.HiddenRows != eHiddenState.Include)
             {
-                var r = ws.Row(row);
+                ExcelRow? r = ws.Row(row);
                 if (r.Hidden || r.Height == 0)
                 {
                     if (Settings.HiddenRows == eHiddenState.IncludeButHide)
@@ -128,7 +129,7 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
 
         internal void AddRowHeightStyle(EpplusHtmlWriter writer, ExcelRangeBase range, int row, string styleClassPrefix, bool isMultiSheet)
         {
-            var r = range.Worksheet._values.GetValue(row, 0);
+            ExcelValue r = range.Worksheet._values.GetValue(row, 0);
             if (r._value is RowInternal rowInternal)
             {
                 if (rowInternal.Height != -1 && rowInternal.Height != range.Worksheet.DefaultRowHeight)
@@ -138,15 +139,15 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
                 }
             }
 
-            var clsName = HtmlExportTableUtil.GetWorksheetClassName(styleClassPrefix, "drh", range.Worksheet, isMultiSheet);
+            string? clsName = HtmlExportTableUtil.GetWorksheetClassName(styleClassPrefix, "drh", range.Worksheet, isMultiSheet);
             writer.AddAttribute("class", clsName); //Default row height
         }
 
         protected string GetPictureName(HtmlImage p)
         {
-            var hash = ((IPictureContainer)p.Picture).ImageHash;
-            var fi = new FileInfo(p.Picture.Part.Uri.OriginalString);
-            var name = fi.Name.Substring(0, fi.Name.Length - fi.Extension.Length);
+            string? hash = ((IPictureContainer)p.Picture).ImageHash;
+            FileInfo? fi = new FileInfo(p.Picture.Part.Uri.OriginalString);
+            string? name = fi.Name.Substring(0, fi.Name.Length - fi.Extension.Length);
 
             return HtmlExportTableUtil.GetClassName(name, hash);
         }
@@ -155,7 +156,7 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
         {
             for (int i = 0; i < _mergedCells.Count; i++)
             {
-                var adr = _mergedCells[i];
+                ExcelAddressBase? adr = _mergedCells[i];
                 if (adr._toRow < row || (adr._toRow == row && adr._toCol < col))
                 {
                     _mergedCells.RemoveAt(i);
@@ -177,16 +178,16 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
         {
             if (cell.Merge)
             {
-                var address = cell.Worksheet.MergedCells[cell._fromRow, cell._fromCol];
+                string? address = cell.Worksheet.MergedCells[cell._fromRow, cell._fromCol];
                 if (address != null)
                 {
-                    var ma = new ExcelAddressBase(address);
+                    ExcelAddressBase? ma = new ExcelAddressBase(address);
                     bool added = false;
                     //ColSpan
                     if (ma._fromCol == cell._fromCol || range._fromCol == cell._fromCol)
                     {
-                        var maxCol = Math.Min(ma._toCol, range._toCol);
-                        var colSpan = maxCol - ma._fromCol + 1;
+                        int maxCol = Math.Min(ma._toCol, range._toCol);
+                        int colSpan = maxCol - ma._fromCol + 1;
                         if (colSpan > 1)
                         {
                             writer.AddAttribute("colspan", colSpan.ToString(CultureInfo.InvariantCulture));
@@ -197,8 +198,8 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
                     //RowSpan
                     if (ma._fromRow == cell._fromRow || range._fromRow == cell._fromRow)
                     {
-                        var maxRow = Math.Min(ma._toRow, range._toRow);
-                        var rowSpan = maxRow - ma._fromRow + 1;
+                        int maxRow = Math.Min(ma._toRow, range._toRow);
+                        int rowSpan = maxRow - ma._fromRow + 1;
                         if (rowSpan > 1)
                         {
                             writer.AddAttribute("rowspan", rowSpan.ToString(CultureInfo.InvariantCulture));
@@ -299,14 +300,14 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
 
         protected void AddClassesAttributes(EpplusHtmlWriter writer, ExcelTable table, string tableId, List<string> additionalTableClassNames)
         {
-            var tableClasses = TableClass;
+            string? tableClasses = TableClass;
             if (table != null)
             {
                 tableClasses += " " + HtmlExportTableUtil.GetTableClasses(table); //Add classes for the table styles if the range corresponds to a table.
             }
             if (additionalTableClassNames != null && additionalTableClassNames.Count > 0)
             {
-                foreach (var cls in additionalTableClassNames)
+                foreach (string? cls in additionalTableClassNames)
                 {
                     tableClasses += $" {cls}";
                 }

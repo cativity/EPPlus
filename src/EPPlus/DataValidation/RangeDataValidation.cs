@@ -40,19 +40,19 @@ namespace OfficeOpenXml.DataValidation
         /// <exception cref="InvalidOperationException"></exception>
         public void ClearDataValidation(bool deleteIfEmpty = false)
         {
-            var address = new ExcelAddress(_address);
-            var validations = _worksheet.DataValidations._validationsRD.GetValuesFromRange(address._fromRow, address._fromCol, address._toRow, address._toCol);
+            ExcelAddress? address = new ExcelAddress(_address);
+            List<ExcelDataValidation>? validations = _worksheet.DataValidations._validationsRD.GetValuesFromRange(address._fromRow, address._fromCol, address._toRow, address._toCol);
 
-            foreach( var validation in validations)
+            foreach( ExcelDataValidation? validation in validations)
             {
-                var excelAddress = new ExcelAddressBase(validation.Address.Address.Replace(" ", ","));
-                var addresses = excelAddress.GetAllAddresses();
+                ExcelAddressBase? excelAddress = new ExcelAddressBase(validation.Address.Address.Replace(" ", ","));
+                List<ExcelAddressBase>? addresses = excelAddress.GetAllAddresses();
 
                 string newAddress = "";
 
-                foreach (var validationAddress in addresses)
+                foreach (ExcelAddressBase? validationAddress in addresses)
                 {
-                    var nullOrAddress = validationAddress.IntersectReversed(address);
+                    ExcelAddressBase? nullOrAddress = validationAddress.IntersectReversed(address);
                     
                     if (nullOrAddress != null)
                     {

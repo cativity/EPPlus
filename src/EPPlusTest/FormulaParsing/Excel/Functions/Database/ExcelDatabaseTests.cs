@@ -41,9 +41,9 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions.Database
         [TestMethod]
         public void DatabaseShouldReadFields()
         {
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var database = GetDatabase(package);
+                ExcelDatabase? database = GetDatabase(package);
 
                 Assert.AreEqual(2, database.Fields.Count(), "count was not 2");
                 Assert.AreEqual("col1", database.Fields.First().FieldName, "first fieldname was not 'col1'");
@@ -54,9 +54,9 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions.Database
         [TestMethod]
         public void HasMoreRowsShouldBeTrueWhenInitialized()
         {
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var database = GetDatabase(package);
+                ExcelDatabase? database = GetDatabase(package);
 
                 Assert.IsTrue(database.HasMoreRows);
             }
@@ -66,9 +66,9 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions.Database
         [TestMethod]
         public void HasMoreRowsShouldBeFalseWhenLastRowIsRead()
         {
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var database = GetDatabase(package);
+                ExcelDatabase? database = GetDatabase(package);
                 database.Read();
 
                 Assert.IsFalse(database.HasMoreRows);
@@ -79,10 +79,10 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions.Database
         [TestMethod]
         public void DatabaseShouldReadFieldsInRow()
         {
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var database = GetDatabase(package);
-                var row = database.Read();
+                ExcelDatabase? database = GetDatabase(package);
+                ExcelDatabaseRow? row = database.Read();
 
                 Assert.AreEqual(1, row["col1"]);
                 Assert.AreEqual(2, row["col2"]);
@@ -92,13 +92,13 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions.Database
 
         private static ExcelDatabase GetDatabase(ExcelPackage package)
         {
-            var provider = new EpplusExcelDataProvider(package);
-            var sheet = package.Workbook.Worksheets.Add("test");
+            EpplusExcelDataProvider? provider = new EpplusExcelDataProvider(package);
+            ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
             sheet.Cells["A1"].Value = "col1";
             sheet.Cells["A2"].Value = 1;
             sheet.Cells["B1"].Value = "col2";
             sheet.Cells["B2"].Value = 2;
-            var database = new ExcelDatabase(provider, "A1:B2");
+            ExcelDatabase? database = new ExcelDatabase(provider, "A1:B2");
             return database;
         }
     }

@@ -17,6 +17,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Xml;
+using OfficeOpenXml.Packaging;
 
 namespace OfficeOpenXml.ExternalReferences
 {
@@ -80,8 +81,8 @@ namespace OfficeOpenXml.ExternalReferences
             {
                 throw (new FileNotFoundException("The file does not exist."));
             }
-            var p = new ExcelPackage(file);
-            var ewb = new ExcelExternalWorkbook(_wb, p);
+            ExcelPackage? p = new ExcelPackage(file);
+            ExcelExternalWorkbook? ewb = new ExcelExternalWorkbook(_wb, p);
             _list.Add(ewb);
             return ewb;
         }
@@ -93,9 +94,9 @@ namespace OfficeOpenXml.ExternalReferences
                 foreach (XmlElement elem in nl)
                 {
                     string rID = elem.GetAttribute("r:id");
-                    var rel = _wb.Part.GetRelationship(rID);
-                    var part = _wb._package.ZipPackage.GetPart(UriHelper.ResolvePartUri(rel.SourceUri, rel.TargetUri));
-                    var xr = new XmlTextReader(part.GetStream());
+                    ZipPackageRelationship? rel = _wb.Part.GetRelationship(rID);
+                    ZipPackagePart? part = _wb._package.ZipPackage.GetPart(UriHelper.ResolvePartUri(rel.SourceUri, rel.TargetUri));
+                    XmlTextReader? xr = new XmlTextReader(part.GetStream());
                     while (xr.Read())
                     {
                         if (xr.NodeType == XmlNodeType.Element)
@@ -141,7 +142,7 @@ namespace OfficeOpenXml.ExternalReferences
         /// <param name="externalLink"></param>
         public void Remove(ExcelExternalLink externalLink)
         {
-            var ix = _list.IndexOf(externalLink);
+            int ix = _list.IndexOf(externalLink);
             
             _wb._package.ZipPackage.DeletePart(externalLink.Part.Uri);
 
@@ -150,7 +151,7 @@ namespace OfficeOpenXml.ExternalReferences
                 ExternalLinksHandler.BreakFormulaLinks(_wb, ix, true);
             }
 
-            var extRefs = externalLink.WorkbookElement.ParentNode;
+            XmlNode? extRefs = externalLink.WorkbookElement.ParentNode;
             extRefs?.RemoveChild(externalLink.WorkbookElement);
             if(extRefs?.ChildNodes.Count==0)
             {
@@ -168,7 +169,7 @@ namespace OfficeOpenXml.ExternalReferences
                 return;
             }
 
-            var extRefs = _list[0].WorkbookElement.ParentNode;
+            XmlNode? extRefs = _list[0].WorkbookElement.ParentNode;
 
             ExternalLinksHandler.BreakAllFormulaLinks(_wb);
             while (_list.Count>0)
@@ -194,11 +195,11 @@ namespace OfficeOpenXml.ExternalReferences
         public bool LoadWorkbooks()
         {
             bool ret = true;
-            foreach (var link in _list)
+            foreach (ExcelExternalLink? link in _list)
             {
                 if(link.ExternalLinkType==eExternalLinkType.ExternalWorkbook)
                 {
-                    var externalWb = link.As.ExternalWorkbook;
+                    ExcelExternalWorkbook? externalWb = link.As.ExternalWorkbook;
                     if(externalWb.Package==null)
                     {
                         if(externalWb.Load() == false)
@@ -241,16 +242,16 @@ namespace OfficeOpenXml.ExternalReferences
                 int ret = -1;
                 try
                 {
-                    var fi = new FileInfo(extRef);
+                    FileInfo? fi = new FileInfo(extRef);
                     for (int ix = 0; ix < _list.Count; ix++)
                     {
                         if (_list[ix].ExternalLinkType == eExternalLinkType.ExternalWorkbook)
                         {
 
-                            var wb = _list[ix].As.ExternalWorkbook;
+                            ExcelExternalWorkbook? wb = _list[ix].As.ExternalWorkbook;
                             if (wb.File == null)
                             {
-                                var fileName = wb.ExternalLinkUri?.OriginalString;
+                                string? fileName = wb.ExternalLinkUri?.OriginalString;
                                 if (ExcelExternalLink.HasWebProtocol(fileName))
                                 {
                                     if (fileName.Equals(extRef, StringComparison.OrdinalIgnoreCase))
@@ -276,7 +277,7 @@ namespace OfficeOpenXml.ExternalReferences
             }
             else
             {
-                var ix = int.Parse(extRef)-1;
+                int ix = int.Parse(extRef)-1;
                 if(ix<_list.Count)
                 {
                     return ix;
@@ -294,8 +295,8 @@ namespace OfficeOpenXml.ExternalReferences
         /// <returns>True if all updates succeeded, otherwise false. Any errors can be found on the External links. <seealso cref="ExcelExternalLink.ErrorLog"/></returns>
         public bool UpdateCaches()
         {
-            var ret = true;
-            foreach(var er in _list)
+            bool ret = true;
+            foreach(ExcelExternalLink? er in _list)
             {
                 if(er.ExternalLinkType==eExternalLinkType.ExternalWorkbook)
                 {

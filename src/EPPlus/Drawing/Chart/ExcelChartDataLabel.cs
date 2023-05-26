@@ -234,10 +234,10 @@ namespace OfficeOpenXml.Drawing.Chart
             {
                 if (!ExistsNode($"{_nsPrefix}:spPr"))
                 {
-                    var spNode = CreateNode($"{_nsPrefix}:spPr");
+                    XmlNode? spNode = CreateNode($"{_nsPrefix}:spPr");
                     spNode.InnerXml = "<a:noFill/><a:ln><a:noFill/></a:ln><a:effectLst/>";
                 }
-                var node = CreateNode($"{_nsPrefix}:txPr");
+                XmlNode? node = CreateNode($"{_nsPrefix}:txPr");
                 node.InnerXml = "<a:bodyPr anchorCtr=\"1\" anchor=\"ctr\" bIns=\"19050\" rIns=\"38100\" tIns=\"19050\" lIns=\"38100\" wrap=\"square\" vert=\"horz\" vertOverflow=\"ellipsis\" spcFirstLastPara=\"1\" rot=\"0\"><a:spAutoFit/></a:bodyPr><a:lstStyle/>";
             }
             

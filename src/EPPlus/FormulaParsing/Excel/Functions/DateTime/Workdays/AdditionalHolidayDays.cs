@@ -34,18 +34,18 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime.Workdays
 
         private void Initialize()
         {
-            var holidays = _holidayArg.Value as IEnumerable<FunctionArgument>;
+            IEnumerable<FunctionArgument>? holidays = _holidayArg.Value as IEnumerable<FunctionArgument>;
             if (holidays != null)
             {
-                foreach (var holidayDate in from arg in holidays where ConvertUtil.IsNumericOrDate(arg.Value) select ConvertUtil.GetValueDouble(arg.Value) into dateSerial select System.DateTime.FromOADate(dateSerial))
+                foreach (System.DateTime holidayDate in from arg in holidays where ConvertUtil.IsNumericOrDate(arg.Value) select ConvertUtil.GetValueDouble(arg.Value) into dateSerial select System.DateTime.FromOADate(dateSerial))
                 {
                     _holidayDates.Add(holidayDate);
                 }
             }
-            var range = _holidayArg.Value as IRangeInfo;
+            IRangeInfo? range = _holidayArg.Value as IRangeInfo;
             if (range != null)
             {
-                foreach (var holidayDate in from cell in range where ConvertUtil.IsNumericOrDate(cell.Value) select ConvertUtil.GetValueDouble(cell.Value) into dateSerial select System.DateTime.FromOADate(dateSerial))
+                foreach (System.DateTime holidayDate in from cell in range where ConvertUtil.IsNumericOrDate(cell.Value) select ConvertUtil.GetValueDouble(cell.Value) into dateSerial select System.DateTime.FromOADate(dateSerial))
                 {
                     _holidayDates.Add(holidayDate);
                 }

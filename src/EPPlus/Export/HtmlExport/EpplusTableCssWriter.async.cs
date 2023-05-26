@@ -38,13 +38,13 @@ namespace OfficeOpenXml.Export.HtmlExport
         internal async Task RenderAdditionalAndFontCssAsync()
         {
             await WriteClassAsync($"table.{AbstractHtmlExporter.TableClass}{{", _settings.Minify);
-            var ns = _table.WorkSheet.Workbook.Styles.GetNormalStyle();
+            ExcelNamedStyleXml? ns = _table.WorkSheet.Workbook.Styles.GetNormalStyle();
             if (ns != null)
             {
                 await WriteCssItemAsync($"font-family:{ns.Style.Font.Name};", _settings.Minify);
                 await WriteCssItemAsync($"font-size:{ns.Style.Font.Size.ToString("g", CultureInfo.InvariantCulture)}pt;", _settings.Minify);
             }
-            foreach (var item in _settings.Css.AdditionalCssElements)
+            foreach (KeyValuePair<string, string> item in _settings.Css.AdditionalCssElements)
             {
                 await WriteCssItemAsync($"{item.Key}:{item.Value};", _settings.Minify);
             }
@@ -53,16 +53,16 @@ namespace OfficeOpenXml.Export.HtmlExport
 
         internal async Task AddAlignmentToCssAsync(string name, List<string> dataTypes)
         {
-            var row = _table.ShowHeader ? _table.Address._fromRow + 1 : _table.Address._fromRow;
+            int row = _table.ShowHeader ? _table.Address._fromRow + 1 : _table.Address._fromRow;
             for (int c=0;c < _table.Columns.Count;c++)
             {
-                var col = _table.Address._fromCol + c;
-                var styleId = _table.WorkSheet.GetStyleInner(row, col);
+                int col = _table.Address._fromCol + c;
+                int styleId = _table.WorkSheet.GetStyleInner(row, col);
                 string hAlign = "";
                 string vAlign = "";
                 if(styleId>0)
                 {
-                    var xfs = _table.WorkSheet.Workbook.Styles.CellXfs[styleId];
+                    ExcelXfs? xfs = _table.WorkSheet.Workbook.Styles.CellXfs[styleId];
                     if(xfs.ApplyAlignment??true)
                     {
                         hAlign = GetHorizontalAlignment(xfs);
@@ -92,7 +92,7 @@ namespace OfficeOpenXml.Export.HtmlExport
         }
         internal async Task AddToCssAsync(string name, ExcelTableStyleElement element, string htmlElement)
         {
-            var s = element.Style;
+            ExcelDxfStyleLimitedFont? s = element.Style;
             if (s.HasValue == false)
             {
                 return; //Dont add empty elements
@@ -114,7 +114,7 @@ namespace OfficeOpenXml.Export.HtmlExport
 
         internal async Task AddToCssBorderVHAsync(string name, ExcelTableStyleElement element, string htmlElement)
         {
-            var s = element.Style;
+            ExcelDxfStyleLimitedFont? s = element.Style;
             if (s.Border.Vertical.HasValue == false && s.Border.Horizontal.HasValue==false)
             {
                 return; //Dont add empty elements
@@ -152,7 +152,7 @@ namespace OfficeOpenXml.Export.HtmlExport
 
         private async Task WriteDxfGradientAsync(ExcelDxfGradientFill gradient)
         {
-            var sb = new StringBuilder();
+            StringBuilder? sb = new StringBuilder();
             if(gradient.GradientType==eDxfGradientFillType.Linear)
             {
                 sb.Append($"background: linear-gradient({(gradient.Degree+90)%360}deg");
@@ -161,7 +161,7 @@ namespace OfficeOpenXml.Export.HtmlExport
             {
                 sb.Append($"background:radial-gradient(ellipse {(gradient.Right??0)*100}% {(gradient.Bottom ?? 0) * 100}%");
             }
-            foreach (var color in gradient.Colors)
+            foreach (ExcelDxfGradientFillColor? color in gradient.Colors)
             {
                 sb.Append($",{GetDxfColor(color.Color)} {color.Position.ToString("F", CultureInfo.InvariantCulture)}%");
             }
@@ -171,7 +171,7 @@ namespace OfficeOpenXml.Export.HtmlExport
         }
         private async Task WriteFontStylesAsync(ExcelDxfFontBase f)
         {
-            var flags = _settings.Css.Exclude.TableStyle.Font;
+            eFontExclude flags = _settings.Css.Exclude.TableStyle.Font;
             if (f.Color.HasValue && EnumUtil.HasNotFlag(flags, eFontExclude.Color))
             {
                 await WriteCssItemAsync($"color:{GetDxfColor(f.Color)};", _settings.Minify);
@@ -207,7 +207,7 @@ namespace OfficeOpenXml.Export.HtmlExport
         {
             if (b.HasValue)
             {
-                var flags = _settings.Css.Exclude.TableStyle.Border;
+                eBorderExclude flags = _settings.Css.Exclude.TableStyle.Border;
                 if(EnumUtil.HasNotFlag(flags, eBorderExclude.Top))
                 {
                     await this.WriteBorderItemAsync(b.Top, "top");
@@ -233,7 +233,7 @@ namespace OfficeOpenXml.Export.HtmlExport
         {
             if (b.HasValue)
             {
-                var flags = _settings.Css.Exclude.TableStyle.Border;
+                eBorderExclude flags = _settings.Css.Exclude.TableStyle.Border;
                 if (EnumUtil.HasNotFlag(flags, eBorderExclude.Top))
                 {
                     await this.WriteBorderItemAsync(b.Horizontal, "top");
@@ -260,7 +260,7 @@ namespace OfficeOpenXml.Export.HtmlExport
         {
             if (bi.HasValue && bi.Style != ExcelBorderStyle.None)
             {
-                var sb = new StringBuilder();
+                StringBuilder? sb = new StringBuilder();
                 sb.Append(GetBorderItemLine(bi.Style.Value, suffix));
                 if (bi.Color.HasValue)
                 {

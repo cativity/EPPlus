@@ -50,7 +50,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
             // FileShare.Delete is not defined for the Compact Framework
             fs |= FileShare.Delete;
 #endif
-            using (var s = File.Open(fileName, FileMode.Open, FileAccess.Read, fs))
+            using (FileStream? s = File.Open(fileName, FileMode.Open, FileAccess.Read, fs))
             {
                 fileLength = s.Length;
             }

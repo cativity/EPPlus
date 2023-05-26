@@ -2,6 +2,7 @@
 using OfficeOpenXml;
 using OfficeOpenXml.Drawing;
 using System.IO;
+using OfficeOpenXml.Style;
 
 namespace EPPlusTest.Drawing
 {
@@ -21,8 +22,8 @@ namespace EPPlusTest.Drawing
             [ClassCleanup]
             public static void Cleanup()
             {
-                var dirName = _pck.File.DirectoryName;
-                var fileName = _pck.File.FullName;
+                string? dirName = _pck.File.DirectoryName;
+                string? fileName = _pck.File.FullName;
 
                 SaveAndCleanup(_pck);
 
@@ -32,9 +33,9 @@ namespace EPPlusTest.Drawing
             [TestMethod]
             public void AddThreeParagraphsAndValidate()
             {
-                var shape = _ws.Drawings.AddShape("shape1", eShapeStyle.Rect);
+                ExcelShape? shape = _ws.Drawings.AddShape("shape1", eShapeStyle.Rect);
                 shape.RichText.Add("Line1");
-                var r2=shape.RichText.Add("L", true);
+                ExcelParagraph? r2=shape.RichText.Add("L", true);
                 r2.Fill.Style = eFillStyle.SolidFill;
                 r2.Fill.SolidFill.Color.SetSchemeColor(eSchemeColor.Accent2);
                 r2 = shape.RichText.Add("i");
@@ -51,7 +52,7 @@ namespace EPPlusTest.Drawing
                 r2.Fill.SolidFill.Color.SetSchemeColor(eSchemeColor.Accent6);
 
 
-                var r3=shape.RichText.Add("Line3", true);
+                ExcelParagraph? r3=shape.RichText.Add("Line3", true);
                 r3.Bold = true;
                 r3.Italic = true;
                 r3.LatinFont = "Times New Roman";
@@ -80,9 +81,9 @@ namespace EPPlusTest.Drawing
             public void ReadThreeParagraphsAndValidate()
             {
                 AssertIfNotExists("DrawingRichTextRead.xlsx");
-                using (var p = OpenPackage("DrawingRichTextRead.xlsx"))
+                using (ExcelPackage? p = OpenPackage("DrawingRichTextRead.xlsx"))
                 {
-                    var shape = (ExcelShape)p.Workbook.Worksheets[0].Drawings["shape1"];
+                    ExcelShape? shape = (ExcelShape)p.Workbook.Worksheets[0].Drawings["shape1"];
                     Assert.AreEqual("Line1\r\nLine2\r\nLine3", shape.Text);
                     Assert.AreEqual("Line1\r\nLine2\r\nLine3", shape.RichText.Text);
 
@@ -106,11 +107,11 @@ namespace EPPlusTest.Drawing
             [TestMethod]
             public void AddEmptyParagraphFirst()
             {
-                var shape = _ws.Drawings.AddShape("shape2", eShapeStyle.Rect);
+                ExcelShape? shape = _ws.Drawings.AddShape("shape2", eShapeStyle.Rect);
                 shape.SetPosition(20, 0, 0, 0);
                 shape.RichText.Add("", true);
                 shape.RichText.Add("SecondLine", true);
-                var r2 = shape.RichText.Add("    ", true);
+                ExcelParagraph? r2 = shape.RichText.Add("    ", true);
                 r2.UnderLine = OfficeOpenXml.Style.eUnderLineType.Single;
                 Assert.AreEqual(3, shape.RichText.Count);
                 Assert.AreEqual("", shape.RichText[0].Text);

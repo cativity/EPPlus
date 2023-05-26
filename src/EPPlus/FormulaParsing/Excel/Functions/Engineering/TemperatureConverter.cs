@@ -28,13 +28,13 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Engineering
 
         private static double Fah2Kel(double f)
         {
-            var c = Fah2Cel(f);
+            double c = Fah2Cel(f);
             return Cel2Kel(c);
         }
 
         private static double Kel2Fah(double k)
         {
-            var c = Kel2Cel(k);
+            double c = Kel2Cel(k);
             return Cel2Fah(c);
         }
 

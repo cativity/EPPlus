@@ -29,8 +29,8 @@ namespace OfficeOpenXml.Export.HtmlExport
                 return ColumnDataTypeManager.HtmlDataTypes.String;
             }
 
-            var t = value.GetType();
-            var tc = Type.GetTypeCode(t);
+            Type? t = value.GetType();
+            TypeCode tc = Type.GetTypeCode(t);
             switch (tc)
             {
                 case TypeCode.String:
@@ -61,15 +61,15 @@ namespace OfficeOpenXml.Export.HtmlExport
         }
         internal static string GetRawValue(object value)
         {
-            var t = value.GetType();
-            var tc = Type.GetTypeCode(t);
+            Type? t = value.GetType();
+            TypeCode tc = Type.GetTypeCode(t);
             if (tc == TypeCode.Empty)
             {
                 return string.Empty;
             }
             else
             {
-                var type = GetHtmlDataTypeFromValue(value);
+                string? type = GetHtmlDataTypeFromValue(value);
                 return GetRawValue(value, type);
             }
         }
@@ -80,12 +80,12 @@ namespace OfficeOpenXml.Export.HtmlExport
                 case ColumnDataTypeManager.HtmlDataTypes.Boolean:
                     return (ConvertUtil.GetTypedCellValueInner<bool?>(value, true)??false) ? "1" : "0";
                 case ColumnDataTypeManager.HtmlDataTypes.Number:
-                    var v = ConvertUtil.GetTypedCellValueInner<double?>(value, true)?.ToString(CultureInfo.InvariantCulture);
+                    string? v = ConvertUtil.GetTypedCellValueInner<double?>(value, true)?.ToString(CultureInfo.InvariantCulture);
                     return v;
                 case ColumnDataTypeManager.HtmlDataTypes.TimeSpan:
                     return ((TimeSpan)value).TotalMilliseconds.ToString(CultureInfo.InvariantCulture);
                 case ColumnDataTypeManager.HtmlDataTypes.DateTime:
-                    var dt = ConvertUtil.GetTypedCellValueInner<DateTime?>(value, true);
+                    DateTime? dt = ConvertUtil.GetTypedCellValueInner<DateTime?>(value, true);
                     if(dt != null && dt.HasValue)
                     {
                         return dt.Value.Subtract(JsBaseDate).TotalMilliseconds.ToString(CultureInfo.InvariantCulture);

@@ -25,8 +25,8 @@ namespace EPPlusTest.Drawing.Chart
         [ClassCleanup]
         public static void Cleanup()
         {
-            var dirName = _pck.File.DirectoryName;
-            var fileName = _pck.File.FullName;
+            string? dirName = _pck.File.DirectoryName;
+            string? fileName = _pck.File.FullName;
             SaveAndCleanup(_pck);
             if (File.Exists(fileName))
             {
@@ -36,16 +36,16 @@ namespace EPPlusTest.Drawing.Chart
         [TestMethod]
         public void AddLineChartWithTextTitle()
         {
-            var ws = _pck.Workbook.Worksheets.Add("LineChartTextTitle");
-            var chart = ws.Drawings.AddLineChart("lineChart1", eLineChartType.Line);
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("LineChartTextTitle");
+            ExcelLineChart? chart = ws.Drawings.AddLineChart("lineChart1", eLineChartType.Line);
             chart.Title.Text = "LineChart - Text";
             chart.Series.Add("Data!N1:N10", "Data!K1:K10");
         }
         [TestMethod]
         public void AddLineChartWithCellLinkTitle()
         {
-            var ws = _pck.Workbook.Worksheets.Add("LineChartCellLinkTitle");
-            var chart = ws.Drawings.AddLineChart("lineChart2", eLineChartType.Line);
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("LineChartCellLinkTitle");
+            ExcelLineChart? chart = ws.Drawings.AddLineChart("lineChart2", eLineChartType.Line);
             ws.Cells["A1"].Value = "Linked Cell Title";
             chart.Title.LinkedCell = ws.Cells["A1"];
             chart.Series.Add("Data!N1:N10", "Data!K1:K10");
@@ -54,8 +54,8 @@ namespace EPPlusTest.Drawing.Chart
         [TestMethod]
         public void AddLineChart_With_Text_Then_CellLink_Title()
         {
-            var ws = _pck.Workbook.Worksheets.Add("LineChartLinkTitleOverride");
-            var chart = ws.Drawings.AddLineChart("lineChart3", eLineChartType.Line);
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("LineChartLinkTitleOverride");
+            ExcelLineChart? chart = ws.Drawings.AddLineChart("lineChart3", eLineChartType.Line);
             chart.Title.Text = "Line Chart - Text";
             _wsData.Cells["A1"].Value = "Linked Cell Title-DataSheet";            
             chart.Title.LinkedCell = _wsData.Cells["A1"];
@@ -65,8 +65,8 @@ namespace EPPlusTest.Drawing.Chart
         [TestMethod]
         public void AddLineChart_With_CellLink_Then_Text_Title()
         {
-            var ws = _pck.Workbook.Worksheets.Add("LineTextTitleOverride");
-            var chart = ws.Drawings.AddLineChart("lineChart4", eLineChartType.Line);
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("LineTextTitleOverride");
+            ExcelLineChart? chart = ws.Drawings.AddLineChart("lineChart4", eLineChartType.Line);
             ws.Cells["A1"].Value = "Linked Cell Title";
             chart.Title.LinkedCell = ws.Cells["A1"];
             chart.Title.Text = "Line Chart - Text";
@@ -76,16 +76,16 @@ namespace EPPlusTest.Drawing.Chart
         [TestMethod]
         public void AddBarChartWithAxisTextTitle()
         {
-            var ws = _pck.Workbook.Worksheets.Add("BarChartTextTitle");
-            var chart = ws.Drawings.AddBarChart("barChart1", eBarChartType.BarClustered);
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("BarChartTextTitle");
+            ExcelBarChart? chart = ws.Drawings.AddBarChart("barChart1", eBarChartType.BarClustered);
             chart.Series.Add("Data!N1:N10", "Data!K1:K10");
             chart.XAxis.AddTitle("Linked Cell Title");
         }
         [TestMethod]
         public void AddBarChartWithAxisLinkedTitle()
         {
-            var ws = _pck.Workbook.Worksheets.Add("BarChartLinkedCellTitle");
-            var chart = ws.Drawings.AddBarChart("barChart1", eBarChartType.BarClustered);
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("BarChartLinkedCellTitle");
+            ExcelBarChart? chart = ws.Drawings.AddBarChart("barChart1", eBarChartType.BarClustered);
             ws.Cells["A1"].Value = "Linked Cell Title";
             chart.Series.Add("Data!N1:N10", "Data!K1:K10");
             chart.XAxis.AddTitle(ws.Cells["A1"]);

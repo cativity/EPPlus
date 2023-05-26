@@ -60,7 +60,7 @@ namespace EPPlusTest.FormulaParsing.IntegrationTests.BuiltInFunctions.ExcelRange
         {
             _worksheet.Cells["A4"].Formula = "ABS(A2)";
             _worksheet.Calculate();
-            var result = _worksheet.Cells["A4"].Value;
+            object? result = _worksheet.Cells["A4"].Value;
             Assert.AreEqual(3d, result);
         }
 
@@ -69,7 +69,7 @@ namespace EPPlusTest.FormulaParsing.IntegrationTests.BuiltInFunctions.ExcelRange
         {
             _worksheet.Cells["A4"].Formula = "COUNT(A1:A3)";
             _worksheet.Calculate();
-            var result = _worksheet.Cells["A4"].Value;
+            object? result = _worksheet.Cells["A4"].Value;
             Assert.AreEqual(3d, result);
         }
 
@@ -79,7 +79,7 @@ namespace EPPlusTest.FormulaParsing.IntegrationTests.BuiltInFunctions.ExcelRange
             _worksheet.Cells["A2"].Value = null;
             _worksheet.Cells["A4"].Formula = "COUNT(A1:A3)";
             _worksheet.Calculate();
-            var result = _worksheet.Cells["A4"].Value;
+            object? result = _worksheet.Cells["A4"].Value;
             Assert.AreEqual(2d, result);
         }
 
@@ -88,7 +88,7 @@ namespace EPPlusTest.FormulaParsing.IntegrationTests.BuiltInFunctions.ExcelRange
         {
             _worksheet.Cells["A4"].Formula = "COUNTA(A1:A3)";
             _worksheet.Calculate();
-            var result = _worksheet.Cells["A4"].Value;
+            object? result = _worksheet.Cells["A4"].Value;
             Assert.AreEqual(3d, result);
         }
 
@@ -97,19 +97,19 @@ namespace EPPlusTest.FormulaParsing.IntegrationTests.BuiltInFunctions.ExcelRange
         {
             _worksheet.Cells["A4"].Formula = "COUNTIF(A1:A3, \">2\")";
             _worksheet.Calculate();
-            var result = _worksheet.Cells["A4"].Value;
+            object? result = _worksheet.Cells["A4"].Value;
             Assert.AreEqual(2d, result);
         }
 
         [TestMethod]
         public void CountIfsShouldIncludeMultipleRanges()
         {
-            var ages = new int[] { 61, 32, 92, 40, 42, 26, 53, 30, 79, 55, 38, 51, 38, 51 };
-            var points = new int[] { 1, 1, 1, 1, 10, 10, 15, 15, 20, 20, 20, 30, 30, 30 };
+            int[]? ages = new int[] { 61, 32, 92, 40, 42, 26, 53, 30, 79, 55, 38, 51, 38, 51 };
+            int[]? points = new int[] { 1, 1, 1, 1, 10, 10, 15, 15, 20, 20, 20, 30, 30, 30 };
             _worksheet.Cells["A1"].Value = "CustomerAge";
             _worksheet.Cells["B1"].Value = "SiteName";
             _worksheet.Cells["C1"].Value = "Points";
-            for(var i = 0; i < ages.Length; i++)
+            for(int i = 0; i < ages.Length; i++)
             {
                 _worksheet.Cells["A" + (i + 2)].Value = ages[i];
                 _worksheet.Cells["B" + (i + 2)].Value = "MyCompany";
@@ -125,7 +125,7 @@ namespace EPPlusTest.FormulaParsing.IntegrationTests.BuiltInFunctions.ExcelRange
         {
             _worksheet.Cells["A4"].Formula = "Max(A1:A3)";
             _worksheet.Calculate();
-            var result = _worksheet.Cells["A4"].Value;
+            object? result = _worksheet.Cells["A4"].Value;
             Assert.AreEqual(6d, result);
         }
 
@@ -134,7 +134,7 @@ namespace EPPlusTest.FormulaParsing.IntegrationTests.BuiltInFunctions.ExcelRange
         {
             _worksheet.Cells["A4"].Formula = "Min(A1:A3)";
             _worksheet.Calculate();
-            var result = _worksheet.Cells["A4"].Value;
+            object? result = _worksheet.Cells["A4"].Value;
             Assert.AreEqual(1d, result);
         }
 
@@ -143,7 +143,7 @@ namespace EPPlusTest.FormulaParsing.IntegrationTests.BuiltInFunctions.ExcelRange
         {
             _worksheet.Cells["A4"].Formula = "Average(A1:A3)";
             _worksheet.Calculate();
-            var result = _worksheet.Cells["A4"].Value;
+            object? result = _worksheet.Cells["A4"].Value;
             Assert.AreEqual(3d + (1d/3d), result);
         }
 
@@ -238,7 +238,7 @@ namespace EPPlusTest.FormulaParsing.IntegrationTests.BuiltInFunctions.ExcelRange
             _worksheet.Cells["B3"].Value = 4;
             _worksheet.Cells["A4"].Formula = "SUMPRODUCT(A1:A3,B1:B3)";
             _worksheet.Calculate();
-            var result = _worksheet.Cells["A4"].Value;
+            object? result = _worksheet.Cells["A4"].Value;
             Assert.AreEqual(29d, result);
         }
 
@@ -253,7 +253,7 @@ namespace EPPlusTest.FormulaParsing.IntegrationTests.BuiltInFunctions.ExcelRange
             _worksheet.Cells["B3"].Value = 4;
             _worksheet.Cells["A4"].Formula = "SUMPRODUCT(A1:A3,B1:B3,{2,4,1})";
             _worksheet.Calculate();
-            var result = _worksheet.Cells["A4"].Value;
+            object? result = _worksheet.Cells["A4"].Value;
             Assert.AreEqual(70d, result);
         }
 
@@ -262,7 +262,7 @@ namespace EPPlusTest.FormulaParsing.IntegrationTests.BuiltInFunctions.ExcelRange
         {
             _worksheet.Cells["A4"].Formula = "SIGN(A1)";
             _worksheet.Calculate();
-            var result = _worksheet.Cells["A4"].Value;
+            object? result = _worksheet.Cells["A4"].Value;
             Assert.AreEqual(1d, result);
         }
 
@@ -272,7 +272,7 @@ namespace EPPlusTest.FormulaParsing.IntegrationTests.BuiltInFunctions.ExcelRange
             _worksheet.Row(2).Hidden = true;
             _worksheet.Cells["A4"].Formula = "SUBTOTAL(109,A1:A3)";
             _worksheet.Calculate();
-            var result = _worksheet.Cells["A4"].Value;
+            object? result = _worksheet.Cells["A4"].Value;
             Assert.AreEqual(7d, result);
         }
 
@@ -283,7 +283,7 @@ namespace EPPlusTest.FormulaParsing.IntegrationTests.BuiltInFunctions.ExcelRange
             _worksheet.Cells["A2"].Value = 2;
             _worksheet.Cells["A4"].Formula = "SUMPRODUCT(A1:A1, A2:A2)";
             _worksheet.Calculate();
-            var result = _worksheet.Cells["A4"].Value;
+            object? result = _worksheet.Cells["A4"].Value;
             Assert.AreEqual(2d, result);
         }
 
@@ -292,14 +292,14 @@ namespace EPPlusTest.FormulaParsing.IntegrationTests.BuiltInFunctions.ExcelRange
         {
             _worksheet.Cells["B3"].Formula = "C4 + D4";
             _worksheet.Calculate();
-            var result = _worksheet.Cells["B3"].Value;
+            object? result = _worksheet.Cells["B3"].Value;
             Assert.AreEqual(0d, result);
         }
 
         [TestMethod]
         public void ProductShouldCalculateCorrectly1()
         {
-            var values = new int[] { 7, 11, 13 };
+            int[]? values = new int[] { 7, 11, 13 };
 
             _worksheet.Cells["A1"].Value = values[0];
             _worksheet.Cells["A2"].Value = values[1];
@@ -325,7 +325,7 @@ namespace EPPlusTest.FormulaParsing.IntegrationTests.BuiltInFunctions.ExcelRange
         [TestMethod]
         public void ProductShouldCalculateCorrectly2()
         {
-            var values = new int[] { 7, 11, 0 };
+            int[]? values = new int[] { 7, 11, 0 };
 
             _worksheet.Cells["A1"].Value = values[0];
             _worksheet.Cells["A2"].Value = values[1];

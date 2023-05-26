@@ -29,8 +29,8 @@ namespace OfficeOpenXml.VBA.Signatures
         internal static SignatureInfo ReadSignature(ZipPackagePart part, ExcelVbaSignatureType signatureType, EPPlusSignatureContext ctx)
         {
             // [MS-OSHARED] 2.3.2.1 DigSigInfoSerialized
-            var si = new SignatureInfo();
-            var stream = part.GetStream();
+            SignatureInfo? si = new SignatureInfo();
+            Stream? stream = part.GetStream();
             BinaryReader br = new BinaryReader(stream);
             si.cbSignature = br.ReadUInt32();
             si.signatureOffset = br.ReadUInt32();     //44 ??
@@ -80,63 +80,63 @@ namespace OfficeOpenXml.VBA.Signatures
 
         internal static void ReadSignedData(byte[] data, EPPlusSignatureContext ctx)
         {
-            var ms = RecyclableMemory.GetStream(data);
-            var br = new BinaryReader(ms);            
-            var totallength = ReadSequence(br);
-            var lengthSpcIndirectDataContent = ReadSequence(br);
-            var indirectDataContentOid = ReadOId(br);
-            var digestValue = ReadOctStringBytes(br);
+            MemoryStream? ms = RecyclableMemory.GetStream(data);
+            BinaryReader? br = new BinaryReader(ms);            
+            int totallength = ReadSequence(br);
+            int lengthSpcIndirectDataContent = ReadSequence(br);
+            string? indirectDataContentOid = ReadOId(br);
+            byte[]? digestValue = ReadOctStringBytes(br);
 
-            var lengthDigestInfo = ReadSequence(br);
-            var lengthAlgorithmIdentifier = ReadSequence(br);
+            int lengthDigestInfo = ReadSequence(br);
+            int lengthAlgorithmIdentifier = ReadSequence(br);
             ctx.AlgorithmIdentifierOId = ReadOId(br);
 
             //Parameter is null
-            var nullTypeIdentifyer = br.ReadByte();   //Null type identifier
-            var nullLength = br.ReadByte();   //Null length
+            byte nullTypeIdentifyer = br.ReadByte();   //Null type identifier
+            byte nullLength = br.ReadByte();   //Null length
 
             if (indirectDataContentOid == IndirectDataContentOidV2) //V2
             {
                 //Read
-                var SigFormatDescriptorV1_size = BitConverter.ToInt32(digestValue, 0);    //12
-                var SigFormatDescriptorV1_version = BitConverter.ToInt32(digestValue, 4); //1
-                var SigFormatDescriptorV1_format = BitConverter.ToInt32(digestValue, 8);  //1
+                int SigFormatDescriptorV1_size = BitConverter.ToInt32(digestValue, 0);    //12
+                int SigFormatDescriptorV1_version = BitConverter.ToInt32(digestValue, 4); //1
+                int SigFormatDescriptorV1_format = BitConverter.ToInt32(digestValue, 8);  //1
 
                 //var sigDataV1Serialized = ReadOctStringBytes(br); //SigDataV1Serialized
-                var id = br.ReadByte();  //4
-                var octstringSize = br.ReadByte();
-                var sigDataV1Serialized_algorithmIdSize = br.ReadInt32();
-                var sigDataV1Serialized_compiledHashSize = br.ReadInt32();
-                var sigDataV1Serialized_sourceHashSize = br.ReadInt32();
-                var sigDataV1Serialized_algorithmIdOffset = br.ReadInt32();
-                var sigDataV1Serialized_compiledHashOffset = br.ReadInt32();
-                var sigDataV1Serialized_sourceHashOffset = br.ReadInt32();
+                byte id = br.ReadByte();  //4
+                byte octstringSize = br.ReadByte();
+                int sigDataV1Serialized_algorithmIdSize = br.ReadInt32();
+                int sigDataV1Serialized_compiledHashSize = br.ReadInt32();
+                int sigDataV1Serialized_sourceHashSize = br.ReadInt32();
+                int sigDataV1Serialized_algorithmIdOffset = br.ReadInt32();
+                int sigDataV1Serialized_compiledHashOffset = br.ReadInt32();
+                int sigDataV1Serialized_sourceHashOffset = br.ReadInt32();
 
-                var sigDataV1Serialized_algorithmId = br.ReadBytes(sigDataV1Serialized_algorithmIdSize);    //As a string here apparently. Should match the AlgorithmIdentifierOId above.
-                var algId = Encoding.ASCII.GetString(sigDataV1Serialized_algorithmId, 0, sigDataV1Serialized_algorithmIdSize - 1); //Skip ending \0
-                var sigDataV1Serialized_compiledHash = br.ReadBytes(sigDataV1Serialized_compiledHashSize);
-                var sigDataV1Serialized_sourceHash = br.ReadBytes(sigDataV1Serialized_sourceHashSize); //ReadOctStringBytes(br);
+                byte[]? sigDataV1Serialized_algorithmId = br.ReadBytes(sigDataV1Serialized_algorithmIdSize);    //As a string here apparently. Should match the AlgorithmIdentifierOId above.
+                string? algId = Encoding.ASCII.GetString(sigDataV1Serialized_algorithmId, 0, sigDataV1Serialized_algorithmIdSize - 1); //Skip ending \0
+                byte[]? sigDataV1Serialized_compiledHash = br.ReadBytes(sigDataV1Serialized_compiledHashSize);
+                byte[]? sigDataV1Serialized_sourceHash = br.ReadBytes(sigDataV1Serialized_sourceHashSize); //ReadOctStringBytes(br);
                 ctx.AlgorithmIdentifierOId = algId;
                 ctx.CompiledHash = sigDataV1Serialized_compiledHash;
                 ctx.SourceHash = sigDataV1Serialized_sourceHash;
             }
             else  //V1
             {
-                var hash = ReadOctStringBytes(br);
+                byte[]? hash = ReadOctStringBytes(br);
                 ctx.SourceHash = hash;
             }
         }
 
         private static int ReadSequence(BinaryReader br)
         {
-            var id = br.ReadByte();
+            byte id = br.ReadByte();
             if (id == 0x30)
             {
-                var b = br.ReadByte();
+                byte b = br.ReadByte();
                 if (b > 0x80)
                 {
-                    var bl = (b & 0x80) >> 7;
-                    var lengthBytes = br.ReadBytes(bl);
+                    int bl = (b & 0x80) >> 7;
+                    byte[]? lengthBytes = br.ReadBytes(bl);
                     if (lengthBytes.Length == 1)
                     {
                         return lengthBytes[0];
@@ -157,11 +157,11 @@ namespace OfficeOpenXml.VBA.Signatures
 
         private static byte[] ReadOctStringBytes(BinaryReader bw)
         {
-            var s = "";
-            var id = bw.ReadByte();   //Octet String Tag Identifier
+            string? s = "";
+            byte id = bw.ReadByte();   //Octet String Tag Identifier
             if (id == 4)
             {
-                var octetStringLength = bw.ReadByte();   //Zero length
+                byte octetStringLength = bw.ReadByte();   //Zero length
 
                 if (octetStringLength > 0)
                 {
@@ -207,11 +207,11 @@ namespace OfficeOpenXml.VBA.Signatures
 
         internal static string ReadOId(BinaryReader bw)
         {
-            var oIdIdentifyer = bw.ReadByte();
+            byte oIdIdentifyer = bw.ReadByte();
             if (oIdIdentifyer == 6)
             {
-                var length = bw.ReadByte();
-                var oidData = bw.ReadBytes(length);
+                byte length = bw.ReadByte();
+                byte[]? oidData = bw.ReadBytes(length);
                 return ReadHash(oidData, 0);
             }
             return null;

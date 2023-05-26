@@ -39,8 +39,8 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Engineering
                 return this.CreateResult(eErrorType.Num);
             }
 
-            var number = ArgToInt(arguments, 0);
-            var shiftAmount = ArgToInt(arguments, 1);
+            int number = ArgToInt(arguments, 0);
+            int shiftAmount = ArgToInt(arguments, 1);
             if (number < 0 || shiftAmount < 0)
             {
                 return this.CreateResult(eErrorType.Num);

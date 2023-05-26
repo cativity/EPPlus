@@ -53,7 +53,7 @@ namespace OfficeOpenXml
         }
         internal ExcelSlicerXmlSource GetOrCreateSource(eSlicerSourceType sourceType)
         {
-            var src = GetSources(sourceType).FirstOrDefault();
+            ExcelSlicerXmlSource? src = GetSources(sourceType).FirstOrDefault();
             if(src==null)
             {
                 switch(sourceType)
@@ -73,9 +73,9 @@ namespace OfficeOpenXml
         }
         internal XmlNode GetSource(string name, eSlicerSourceType sourceType, out ExcelSlicerXmlSource source)
         {
-            foreach (var s in GetSources(sourceType))
+            foreach (ExcelSlicerXmlSource? s in GetSources(sourceType))
             {
-                var n = s.XmlDocument.DocumentElement.SelectSingleNode($"x14:slicer[@name=\"{name}\"]", NameSpaceManager);
+                XmlNode? n = s.XmlDocument.DocumentElement.SelectSingleNode($"x14:slicer[@name=\"{name}\"]", NameSpaceManager);
                 if (n != null)
                 {
                     source = s;
@@ -93,9 +93,9 @@ namespace OfficeOpenXml
 
         internal void Save()
         {
-            foreach(var xs in _list)
+            foreach(ExcelSlicerXmlSource? xs in _list)
             {
-                var stream = new StreamWriter(xs.Part.GetStream(FileMode.Create, FileAccess.Write));
+                StreamWriter? stream = new StreamWriter(xs.Part.GetStream(FileMode.Create, FileAccess.Write));
                 xs.XmlDocument.Save(stream);                
             }
         }
@@ -123,7 +123,7 @@ namespace OfficeOpenXml
                 Uri = XmlHelper.GetNewUri(relPart.Package, "/xl/slicers/slicer{0}.xml");
                 Part = relPart.Package.CreatePart(Uri, "application/vnd.ms-excel.slicer+xml", CompressionLevel.Default);
                 Rel = relPart.CreateRelationship(UriHelper.GetRelativeUri(relPart.Uri, Uri), TargetMode.Internal, ExcelPackage.schemaRelationshipsSlicer);
-                var xml = new XmlDocument();
+                XmlDocument? xml = new XmlDocument();
                 XmlHelper.LoadXmlSafe(xml, "<slicers xmlns:xr10=\"http://schemas.microsoft.com/office/spreadsheetml/2016/revision10\" xmlns:x=\"http://schemas.openxmlformats.org/spreadsheetml/2006/main\" mc:Ignorable=\"x xr10\" xmlns:mc=\"http://schemas.openxmlformats.org/markup-compatibility/2006\" xmlns=\"http://schemas.microsoft.com/office/spreadsheetml/2009/9/main\" />", Encoding.UTF8);
                 XmlDocument = xml;
             }
@@ -133,7 +133,7 @@ namespace OfficeOpenXml
                 Uri = UriHelper.ResolvePartUri(relPart.Uri, Rel.TargetUri);
                 Part = relPart.Package.GetPart(Uri);
 
-                var xml = new XmlDocument();
+                XmlDocument? xml = new XmlDocument();
                 XmlHelper.LoadXmlSafe(xml, Part.GetStream());
                 XmlDocument = xml;
             }

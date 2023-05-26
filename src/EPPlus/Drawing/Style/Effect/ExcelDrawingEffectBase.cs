@@ -35,7 +35,7 @@ namespace OfficeOpenXml.Drawing.Style.Effect
         /// </summary>
         public void Delete()
         {
-            var node = GetNode(_path);
+            XmlNode? node = GetNode(_path);
             if (node != null)
             {   
                 TopNode.RemoveChild(node);

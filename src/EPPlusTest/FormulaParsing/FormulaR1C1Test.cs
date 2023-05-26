@@ -176,7 +176,7 @@ namespace EPPlusTest.FormulaParsing
         public void SimpleRelativeR1C1()
         {
             string fR1C1 = "R[-1]C[-5]";
-            var c = _sheet.Cells[7, 7];
+            ExcelRange? c = _sheet.Cells[7, 7];
             c.FormulaR1C1 = fR1C1;
             string f = c.Formula;
             Assert.AreEqual("B6", f);
@@ -187,7 +187,7 @@ namespace EPPlusTest.FormulaParsing
         public void SimpleAbsR1C1()
         {
             string fR1C1 = "R1C5";
-            var c = _sheet.Cells[8, 8];
+            ExcelRange? c = _sheet.Cells[8, 8];
             c.FormulaR1C1 = fR1C1;
             string f = c.Formula;
             Assert.AreEqual("$E$1", f);
@@ -198,7 +198,7 @@ namespace EPPlusTest.FormulaParsing
         public void FullTwoColumn()
         {
             string formula = "VLOOKUP(C2,A:B,1,0)";
-            var c = _sheet.Cells["D2"];
+            ExcelRange? c = _sheet.Cells["D2"];
             c.Formula = formula;
             Assert.AreEqual(c.FormulaR1C1, "VLOOKUP(RC[-1],C[-3]:C[-2],1,0)");
             c.FormulaR1C1 = c.FormulaR1C1;
@@ -208,7 +208,7 @@ namespace EPPlusTest.FormulaParsing
         public void FullColumn()
         {
             string formula = "VLOOKUP(C2,A:A,1,0)";
-            var c = _sheet.Cells["D2"];
+            ExcelRange? c = _sheet.Cells["D2"];
             c.Formula = formula;
             Assert.AreEqual(c.FormulaR1C1, "VLOOKUP(RC[-1],C[-3],1,0)");
             c.FormulaR1C1 = c.FormulaR1C1;
@@ -218,7 +218,7 @@ namespace EPPlusTest.FormulaParsing
         public void FullTwoRow()
         {
             string formula = "VLOOKUP(C3,1:2,1,0)";
-            var c = _sheet.Cells["D3"];
+            ExcelRange? c = _sheet.Cells["D3"];
             c.Formula = formula;
             Assert.AreEqual(c.FormulaR1C1, "VLOOKUP(RC[-1],R[-2]:R[-1],1,0)");
             c.FormulaR1C1 = c.FormulaR1C1;
@@ -228,7 +228,7 @@ namespace EPPlusTest.FormulaParsing
         public void FullRow()
         {
             string formula = "VLOOKUP(C3,1:1,1,0)";
-            var c = _sheet.Cells["D3"];
+            ExcelRange? c = _sheet.Cells["D3"];
             c.Formula = formula;
             Assert.AreEqual(c.FormulaR1C1, "VLOOKUP(RC[-1],R[-2],1,0)");
             c.FormulaR1C1 = c.FormulaR1C1;

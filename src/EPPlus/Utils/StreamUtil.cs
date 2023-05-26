@@ -42,7 +42,7 @@ namespace OfficeOpenXml.Utils
             }
 
             const int bufferLength = 8096;
-            var buffer = new Byte[bufferLength];
+            byte[]? buffer = new Byte[bufferLength];
             lock (_lock)
             {
                 int bytesRead = inputStream.Read(buffer, 0, bufferLength);
@@ -78,8 +78,8 @@ namespace OfficeOpenXml.Utils
             }
 
             const int bufferLength = 8096;
-            var buffer = new byte[bufferLength];
-            var bytesRead = await inputStream.ReadAsync(buffer, 0, bufferLength, cancellationToken).ConfigureAwait(false);
+            byte[]? buffer = new byte[bufferLength];
+            int bytesRead = await inputStream.ReadAsync(buffer, 0, bufferLength, cancellationToken).ConfigureAwait(false);
             // write the required bytes
             while (bytesRead > 0)
             {

@@ -36,7 +36,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
         {
             ValidateArguments(arguments, 1, eErrorType.Div0);
             double nValues = 0d, result = 0d;
-            foreach (var arg in arguments)
+            foreach (FunctionArgument? arg in arguments)
             {
                 if (ShouldIgnore(arg, context))
                 {
@@ -56,14 +56,14 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
             }
             if (arg.Value is IEnumerable<FunctionArgument>)
             {
-                foreach (var item in (IEnumerable<FunctionArgument>)arg.Value)
+                foreach (FunctionArgument? item in (IEnumerable<FunctionArgument>)arg.Value)
                 {
                     Calculate(item, context, ref retVal, ref nValues, true);
                 }
             }
             else if (arg.IsExcelRange)
             {
-                foreach (var c in arg.ValueAsRangeInfo)
+                foreach (ICellInfo? c in arg.ValueAsRangeInfo)
                 {
                     if (ShouldIgnore(c, context))
                     {
@@ -82,7 +82,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
             }
             else
             {
-                var numericValue = GetNumericValue(arg.Value, isInArray);
+                double? numericValue = GetNumericValue(arg.Value, isInArray);
 				if (numericValue.HasValue)
 				{
 					nValues++;

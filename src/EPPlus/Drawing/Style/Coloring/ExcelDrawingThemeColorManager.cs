@@ -250,9 +250,9 @@ namespace OfficeOpenXml.Drawing.Style.Coloring
         {
             if(_colorNode==null)
             {
-                var xml = XmlHelperFactory.Create(_nameSpaceManager, _topNode);
+                XmlHelper? xml = XmlHelperFactory.Create(_nameSpaceManager, _topNode);
                 xml.SchemaNodeOrder = _schemaNodeOrder;
-                var colorPath = string.IsNullOrEmpty(_path) ? newNodeName : _path + "/" + newNodeName;
+                string? colorPath = string.IsNullOrEmpty(_path) ? newNodeName : _path + "/" + newNodeName;
                 _colorNode = xml.CreateNode(colorPath);
                 _initMethod?.Invoke();
             }
@@ -277,12 +277,12 @@ namespace OfficeOpenXml.Drawing.Style.Coloring
         {
             if(_topNode==_colorNode)
             {
-                var xh = XmlHelperFactory.Create(_nameSpaceManager, _topNode);
+                XmlHelper? xh = XmlHelperFactory.Create(_nameSpaceManager, _topNode);
                 xh.ReplaceElement(_colorNode, type);
             }
             else
             {
-                var p = _colorNode.ParentNode;
+                XmlNode? p = _colorNode.ParentNode;
                 p.InnerXml = $"<{type} />";
                 _colorNode = p.FirstChild;
             }

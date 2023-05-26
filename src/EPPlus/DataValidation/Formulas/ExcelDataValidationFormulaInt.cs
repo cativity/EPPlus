@@ -22,7 +22,7 @@ namespace OfficeOpenXml.DataValidation.Formulas
         public ExcelDataValidationFormulaInt(string formula, string validationUid, string worksheetName, Action<OnFormulaChangedEventArgs> extListHandler)
             : base(validationUid, worksheetName, extListHandler)
         {
-            var value = formula;
+            string? value = formula;
             if (!string.IsNullOrEmpty(value))
             {
                 int intValue = default(int);

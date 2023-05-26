@@ -22,10 +22,10 @@ namespace OfficeOpenXml.Sorting.Internal
     {
         internal static List<SortItem<ExcelValue>> Create(ExcelRangeBase range)
         {
-            var e = new CellStoreEnumerator<ExcelValue>(range.Worksheet._values, range._fromRow, range._fromCol, range._toRow, range._toCol);
-            var sortItems = new List<SortItem<ExcelValue>>();
+            CellStoreEnumerator<ExcelValue>? e = new CellStoreEnumerator<ExcelValue>(range.Worksheet._values, range._fromRow, range._fromCol, range._toRow, range._toCol);
+            List<SortItem<ExcelValue>>? sortItems = new List<SortItem<ExcelValue>>();
             SortItem<ExcelValue> item = new SortItem<ExcelValue>();
-            var cols = range._toCol - range._fromCol + 1;
+            int cols = range._toCol - range._fromCol + 1;
             while (e.Next())
             {
                 if (sortItems.Count == 0 || sortItems[sortItems.Count - 1].Row != e.Row)

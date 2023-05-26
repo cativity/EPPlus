@@ -31,7 +31,7 @@ namespace OfficeOpenXml.Drawing.Chart
             if (_chart.Axis.Length == 2)
             {
                 //Add pareto axis
-                var axis2 = (XmlElement)_chart._chartXmlHelper.CreateNode("cx:plotArea/cx:axis", false, true);
+                XmlElement? axis2 = (XmlElement)_chart._chartXmlHelper.CreateNode("cx:plotArea/cx:axis", false, true);
                 axis2.SetAttribute("id", "2");
                 axis2.InnerXml = "<cx:valScaling min=\"0\" max=\"1\"/><cx:units unit=\"percentage\"/><cx:tickLabels/>";
             }

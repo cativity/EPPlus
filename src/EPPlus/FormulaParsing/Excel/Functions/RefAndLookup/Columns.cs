@@ -31,18 +31,18 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.RefAndLookup
         public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
         {
             ValidateArguments(arguments, 1);
-            var r=arguments.ElementAt(0).ValueAsRangeInfo;
+            IRangeInfo? r=arguments.ElementAt(0).ValueAsRangeInfo;
             if (r != null)
             {
                 return CreateResult(r.Address._toCol - r.Address._fromCol + 1, DataType.Integer);
             }
             else
             {
-                var range = ArgToAddress(arguments, 0, context);
+                string? range = ArgToAddress(arguments, 0, context);
                 if (ExcelAddressUtil.IsValidAddress(range))
                 {
-                    var factory = new RangeAddressFactory(context.ExcelDataProvider);
-                    var address = factory.Create(range);
+                    RangeAddressFactory? factory = new RangeAddressFactory(context.ExcelDataProvider);
+                    RangeAddress? address = factory.Create(range);
                     return CreateResult(address.ToCol - address.FromCol + 1, DataType.Integer);
                 }
             }

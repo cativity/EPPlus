@@ -256,7 +256,7 @@ namespace OfficeOpenXml.Drawing.Controls
 
         internal void DeleteMe()
         {
-            var node = TopNode.ParentNode?.ParentNode;
+            XmlNode? node = TopNode.ParentNode?.ParentNode;
             if (node?.LocalName=="AlternateContent")
             {
                 node.ParentNode.RemoveChild(node);

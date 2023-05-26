@@ -42,7 +42,7 @@ namespace OfficeOpenXml
             {
                 try
                 {
-                    var m = new SystemDrawingTextMeasurer();
+                    SystemDrawingTextMeasurer? m = new SystemDrawingTextMeasurer();
                     if (m.ValidForEnvironment())
                     {
                         PrimaryTextMeasurer = m;

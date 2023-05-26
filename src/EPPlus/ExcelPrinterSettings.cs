@@ -564,7 +564,7 @@ namespace OfficeOpenXml
                     throw new InvalidOperationException("Address must span full columns only (for ex. Address=\"A:A\" for the first column). Multi addresses is not allowed.");
                 }
 
-                var vertAddr = RepeatColumns;
+                ExcelAddress? vertAddr = RepeatColumns;
                 string addr;
                 if (vertAddr == null)
                 {
@@ -624,7 +624,7 @@ namespace OfficeOpenXml
                     throw new InvalidOperationException("Address must span rows only (for ex. Address=\"1:1\" for the first row). Multi addresses is not allowed.");
                 }
 
-                var horAddr = RepeatRows;
+                ExcelAddress? horAddr = RepeatRows;
                 string addr;
                 if (horAddr == null)
                 {

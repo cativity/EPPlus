@@ -50,7 +50,7 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions
             _worksheet.Cells["A10"].Formula = "NPV(A1, A2:A7)";
             _worksheet.Calculate();
 
-            var result = System.Math.Round((double)_worksheet.Cells["A10"].Value, 2);
+            double result = System.Math.Round((double)_worksheet.Cells["A10"].Value, 2);
             Assert.AreEqual(196.88d, result);
 
             _worksheet.Cells["A1"].Value = 0.05;
@@ -74,7 +74,7 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions
             _worksheet.Cells["A1"].Formula = "FV(5 %/ 12, 60, -1000)";
             _worksheet.Calculate();
 
-            var result = System.Math.Round((double)_worksheet.Cells["A1"].Value, 2);
+            double result = System.Math.Round((double)_worksheet.Cells["A1"].Value, 2);
             Assert.AreEqual(68006.08d, result);
 
             _worksheet.Cells["A1"].Formula = "FV( 10%/4, 16, -2000, 0, 1 )";
@@ -96,7 +96,7 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions
             _worksheet.Cells["A1"].Formula = "PV(5 %/ 12, 60, 1000)";
             _worksheet.Calculate();
 
-            var result = System.Math.Round((double)_worksheet.Cells["A1"].Value, 2);
+            double result = System.Math.Round((double)_worksheet.Cells["A1"].Value, 2);
             Assert.AreEqual(-52990.71, result);
 
             _worksheet.Cells["A1"].Formula = "PV( 10%/4, 16, 2000, 0, 1 )";
@@ -112,7 +112,7 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions
             _worksheet.Cells["A1"].Formula = "RATE( 60, -1000, 50000 )";
             _worksheet.Calculate();
 
-            var result = System.Math.Round((double)_worksheet.Cells["A1"].Value, 4);
+            double result = System.Math.Round((double)_worksheet.Cells["A1"].Value, 4);
             Assert.AreEqual(0.0062, result);
 
             _worksheet.Cells["A1"].Formula = "RATE( 24, -800, 0, 20000, 1 )";
@@ -128,7 +128,7 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions
             _worksheet.Cells["A1"].Formula = "NPER( 4%, -6000, 50000 )";
             _worksheet.Calculate();
 
-            var result = System.Math.Round((double)_worksheet.Cells["A1"].Value, 2);
+            double result = System.Math.Round((double)_worksheet.Cells["A1"].Value, 2);
             Assert.AreEqual(10.34, result);
 
             _worksheet.Cells["A1"].Formula = "NPER( 6%/4, -2000, 60000, 30000, 1 )";
@@ -150,7 +150,7 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions
 
             _worksheet.Cells["C2"].Formula = "IRR(B1:B4)";
             _worksheet.Calculate();
-            var result = System.Math.Round((double)_worksheet.Cells["C2"].Value, 2);
+            double result = System.Math.Round((double)_worksheet.Cells["C2"].Value, 2);
             Assert.AreEqual(-0.14, result);
 
             _worksheet.Cells["C2"].Formula = "IRR(B1:B6)";
@@ -171,7 +171,7 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions
 
             _worksheet.Cells["C2"].Formula = "MIRR( B2:B6, 5.5%, 5% )";
             _worksheet.Calculate();
-            var result = System.Math.Round((double)_worksheet.Cells["C2"].Value, 4);
+            double result = System.Math.Round((double)_worksheet.Cells["C2"].Value, 4);
             Assert.AreEqual(0.0254, result);
 
             _worksheet.Cells["C2"].Formula = "MIRR( B2:B7, 5.5%, 5% )";
@@ -199,7 +199,7 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions
 
             _worksheet.Cells["D2"].Formula = "XIRR(B2:B5, C2:C5)";
             _worksheet.Calculate();
-            var result = System.Math.Round((double)_worksheet.Cells["D2"].Value, 4);
+            double result = System.Math.Round((double)_worksheet.Cells["D2"].Value, 4);
             Assert.AreEqual(-0.1967, result);
 
             _worksheet.Cells["D4"].Formula = "XIRR(B2:B7, C2:C7)";
@@ -225,7 +225,7 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions
 
             _worksheet.Cells["D2"].Formula = "XIRR(A3:A7, B3:B7, 0.1)";
             _worksheet.Calculate();
-            var result = System.Math.Round((double)_worksheet.Cells["D2"].Value, 4);
+            double result = System.Math.Round((double)_worksheet.Cells["D2"].Value, 4);
             Assert.AreEqual(0.3734, result);
         }
 
@@ -235,7 +235,7 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions
             _worksheet.Cells["A1"].Formula = "IPMT( 5%/12, 1, 60, 50000 )";
             _worksheet.Calculate();
 
-            var result = System.Math.Round((double)_worksheet.Cells["A1"].Value, 2);
+            double result = System.Math.Round((double)_worksheet.Cells["A1"].Value, 2);
             Assert.AreEqual(-208.33, result);
 
             _worksheet.Cells["A1"].Formula = "IPMT( 5%/12, 2, 60, 50000 )";
@@ -263,7 +263,7 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions
             _worksheet.Cells["A1"].Formula = "CUMIPMT( 5%/12, 60, 50000, 1, 12, 0 )";
             _worksheet.Calculate();
 
-            var result = System.Math.Round((double)_worksheet.Cells["A1"].Value, 2);
+            double result = System.Math.Round((double)_worksheet.Cells["A1"].Value, 2);
             Assert.AreEqual(-2294.98, result);
 
             _worksheet.Cells["A1"].Formula = "CUMIPMT( 5%/12, 60, 50000, 13, 24, 0 )";
@@ -285,7 +285,7 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions
             _worksheet.Cells["A1"].Formula = "CUMPRINC( 5%/12, 60, 50000, 1, 12, 0  )";
             _worksheet.Calculate();
 
-            var result = System.Math.Round((double)_worksheet.Cells["A1"].Value, 4);
+            double result = System.Math.Round((double)_worksheet.Cells["A1"].Value, 4);
             Assert.AreEqual(-9027.7626, result);
 
             _worksheet.Cells["A1"].Formula = "CUMPRINC( 5%/12, 60, 50000, 13, 24, 0 )";
@@ -301,7 +301,7 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions
             _worksheet.Cells["A1"].Formula = "ISPMT( 5%/12, 1, 60, 50000 )";
             _worksheet.Calculate();
 
-            var result = System.Math.Round((double)_worksheet.Cells["A1"].Value, 2);
+            double result = System.Math.Round((double)_worksheet.Cells["A1"].Value, 2);
             Assert.AreEqual(-204.86, result);
 
             _worksheet.Cells["A1"].Formula = "ISPMT( 5%/12, 2, 60, 50000 )";
@@ -314,14 +314,14 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions
         [TestMethod]
         public void TestWorksheet()
         {
-            using(var package = new ExcelPackage())
+            using(ExcelPackage? package = new ExcelPackage())
             {
                 package.Workbook.Worksheets.Add("$Unit");
-                var sheet = package.Workbook.Worksheets["$Unit"];
+                ExcelWorksheet? sheet = package.Workbook.Worksheets["$Unit"];
                 Assert.IsNotNull(sheet);
 
                 package.Workbook.Worksheets.Add("Unit1$");
-                var sheet2 = package.Workbook.Worksheets["Unit1$"];
+                ExcelWorksheet? sheet2 = package.Workbook.Worksheets["Unit1$"];
                 Assert.IsNotNull(sheet2);
             }
         }
@@ -332,7 +332,7 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions
             _worksheet.Cells["A1"].Formula = "PPMT( 5%/12, 1, 60, 50000 )";
             _worksheet.Calculate();
 
-            var result = System.Math.Round((double)_worksheet.Cells["A1"].Value, 2);
+            double result = System.Math.Round((double)_worksheet.Cells["A1"].Value, 2);
             Assert.AreEqual(-735.23, result);
 
             _worksheet.Cells["A1"].Formula = "PPMT( 5%/12, 2, 60, 50000 )";
@@ -360,7 +360,7 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions
             _worksheet.Cells["A1"].Formula = "SYD( 10000, 1000, 5, 1 )";
             _worksheet.Calculate();
 
-            var result = System.Math.Round((double)_worksheet.Cells["A1"].Value, 2);
+            double result = System.Math.Round((double)_worksheet.Cells["A1"].Value, 2);
             Assert.AreEqual(3000d, result);
 
             _worksheet.Cells["A1"].Formula = "SYD( 10000, 1000, 5, 2 )";
@@ -376,7 +376,7 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions
             _worksheet.Cells["A1"].Formula = "SLN( 10000, 1000, 5 )";
             _worksheet.Calculate();
 
-            var result = System.Math.Round((double)_worksheet.Cells["A1"].Value, 2);
+            double result = System.Math.Round((double)_worksheet.Cells["A1"].Value, 2);
             Assert.AreEqual(1800d, result);
 
             _worksheet.Cells["A1"].Formula = "SLN( 500, 100, 8 )";
@@ -392,7 +392,7 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions
             _worksheet.Cells["A1"].Formula = "DDB( 10000, 1000, 5, 1 )";
             _worksheet.Calculate();
 
-            var result = System.Math.Round((double)_worksheet.Cells["A1"].Value, 2);
+            double result = System.Math.Round((double)_worksheet.Cells["A1"].Value, 2);
             Assert.AreEqual(4000d, result);
 
             _worksheet.Cells["A1"].Formula = "DDB( 10000, 1000, 5, 4 )";
@@ -408,7 +408,7 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions
             _worksheet.Cells["A1"].Formula = "DB( 10000, 1000, 5, 1, 6 )";
             _worksheet.Calculate();
 
-            var result = System.Math.Round((double)_worksheet.Cells["A1"].Value, 2);
+            double result = System.Math.Round((double)_worksheet.Cells["A1"].Value, 2);
             Assert.AreEqual(1845d, result);
 
             _worksheet.Cells["A1"].Formula = "DB( 10000, 1000, 5, 5, 6 )";
@@ -435,7 +435,7 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions
             _worksheet.Cells["A1"].Formula = "FVSCHEDULE( 10000, B2:B6 )";
             _worksheet.Calculate();
 
-            var result = System.Math.Round((double)_worksheet.Cells["A1"].Value, 2);
+            double result = System.Math.Round((double)_worksheet.Cells["A1"].Value, 2);
             Assert.AreEqual(12223.61, result);
 
             _worksheet.Cells["A1"].Formula = "FVSCHEDULE( 1000, {0.02, 0.03, 0.04, 0.05} )";
@@ -451,7 +451,7 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions
             _worksheet.Cells["A1"].Formula = "PDURATION(4%, 10000, 15000)";
             _worksheet.Calculate();
 
-            var result = System.Math.Round((double)_worksheet.Cells["A1"].Value, 2);
+            double result = System.Math.Round((double)_worksheet.Cells["A1"].Value, 2);
             Assert.AreEqual(10.34, result);
 
             _worksheet.Cells["A1"].Formula = "PDURATION(0.025/12,1000,1200)";
@@ -467,7 +467,7 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions
             _worksheet.Cells["A1"].Formula = "RRI(10, 10000, 15000)";
             _worksheet.Calculate();
 
-            var result = System.Math.Round((double)_worksheet.Cells["A1"].Value, 4);
+            double result = System.Math.Round((double)_worksheet.Cells["A1"].Value, 4);
             Assert.AreEqual(0.0414, result);
         }
 
@@ -477,7 +477,7 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions
             _worksheet.Cells["A1"].Formula = "NOMINAL( 10%, 4 )";
             _worksheet.Calculate();
 
-            var result = System.Math.Round((double)_worksheet.Cells["A1"].Value, 4);
+            double result = System.Math.Round((double)_worksheet.Cells["A1"].Value, 4);
             Assert.AreEqual(0.0965d, result);
 
             _worksheet.Cells["A1"].Formula = "NOMINAL( 2.5%, 12 )";
@@ -493,7 +493,7 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions
             _worksheet.Cells["A1"].Formula = "EFFECT( 10%, 4 )";
             _worksheet.Calculate();
 
-            var result = System.Math.Round((double)_worksheet.Cells["A1"].Value, 4);
+            double result = System.Math.Round((double)_worksheet.Cells["A1"].Value, 4);
             Assert.AreEqual(0.1038d, result);
 
             _worksheet.Cells["A1"].Formula = "EFFECT( 2.5%, 2 )";
@@ -525,7 +525,7 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions
             _worksheet.Cells["A1"].Formula = "XNPV( B1, B2:B7, A2:A7 )";
             _worksheet.Calculate();
 
-            var result = System.Math.Round((double)_worksheet.Cells["A1"].Value, 2);
+            double result = System.Math.Round((double)_worksheet.Cells["A1"].Value, 2);
             Assert.AreEqual(4447.94, result);
         }
 
@@ -537,7 +537,7 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions
             _worksheet.Cells["A1"].Formula = "PRICE( B1, B2, 12%, 10%, 100, 2 )";
             _worksheet.Calculate();
 
-            var result = System.Math.Round((double)_worksheet.Cells["A1"].Value, 4);
+            double result = System.Math.Round((double)_worksheet.Cells["A1"].Value, 4);
             Assert.AreEqual(110.8345, result);
 
             _worksheet.Cells["B1"].Value = new DateTime(2012, 04, 01);
@@ -557,7 +557,7 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions
             _worksheet.Cells["A1"].Formula = "YIELD( B1, B2, 10%, 101, 100, 4 )";
             _worksheet.Calculate();
 
-            var result = System.Math.Round((double)_worksheet.Cells["A1"].Value, 4);
+            double result = System.Math.Round((double)_worksheet.Cells["A1"].Value, 4);
             Assert.AreEqual(0.0966, result);
 
             _worksheet.Cells["B1"].Value = new DateTime(2012, 01, 01);
@@ -578,7 +578,7 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions
             _worksheet.Cells["A1"].Formula = "YIELDMAT( B1, B2, B3, 6.25%, 100.0123, 0 )";
             _worksheet.Calculate();
 
-            var result = System.Math.Round((double)_worksheet.Cells["A1"].Value, 6);
+            double result = System.Math.Round((double)_worksheet.Cells["A1"].Value, 6);
             Assert.AreEqual(0.060954, result);
         }
 
@@ -590,7 +590,7 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions
             _worksheet.Cells["A1"].Formula = "DURATION( B1, B2, 10%, 8%, 4 )";
             _worksheet.Calculate();
 
-            var result = System.Math.Round((double)_worksheet.Cells["A1"].Value, 2);
+            double result = System.Math.Round((double)_worksheet.Cells["A1"].Value, 2);
             Assert.AreEqual(6.67, result);
         }
 
@@ -602,7 +602,7 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions
             _worksheet.Cells["A1"].Formula = "MDURATION( B1, B2, 8%, 9%, 2 )";
             _worksheet.Calculate();
 
-            var result = System.Math.Round((double)_worksheet.Cells["A1"].Value, 3);
+            double result = System.Math.Round((double)_worksheet.Cells["A1"].Value, 3);
             Assert.AreEqual(5.736, result);
         }
 
@@ -614,7 +614,7 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions
             _worksheet.Cells["A1"].Formula = "DISC( B1, B2, 95, 100 )";
             _worksheet.Calculate();
 
-            var result = System.Math.Round((double)_worksheet.Cells["A1"].Value, 2);
+            double result = System.Math.Round((double)_worksheet.Cells["A1"].Value, 2);
             Assert.AreEqual(0.01, result);
 
             _worksheet.Cells["B1"].Value = new DateTime(2018, 07, 01);
@@ -631,7 +631,7 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions
         {
             _worksheet.Cells["A1"].Formula = "DOLLARDE(1.99, 23)";
             _worksheet.Calculate();
-            var result = System.Math.Round((double)_worksheet.Cells["A1"].Value, 6);
+            double result = System.Math.Round((double)_worksheet.Cells["A1"].Value, 6);
             Assert.AreEqual(5.304348, result);
 
             _worksheet.Cells["A1"].Formula = "DOLLARDE(1.01, 16)";
@@ -645,7 +645,7 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions
         {
             _worksheet.Cells["A1"].Formula = "DOLLARFR(1.0625, 16)";
             _worksheet.Calculate();
-            var result = System.Math.Round((double)_worksheet.Cells["A1"].Value, 6);
+            double result = System.Math.Round((double)_worksheet.Cells["A1"].Value, 6);
             Assert.AreEqual(1.01, result);
 
             _worksheet.Cells["A1"].Formula = "DOLLARFR(1.09375, 32)";
@@ -661,7 +661,7 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions
             _worksheet.Cells["A2"].Value = new DateTime(2008, 5, 15);
             _worksheet.Cells["A3"].Formula = "INTRATE(A1, A2,1000000, 1014420, 2)";
             _worksheet.Calculate();
-            var result = System.Math.Round((double)_worksheet.Cells["A3"].Value, 6);
+            double result = System.Math.Round((double)_worksheet.Cells["A3"].Value, 6);
             Assert.AreEqual(0.05768, result);
         }
 
@@ -672,7 +672,7 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions
             _worksheet.Cells["A2"].Value = new DateTime(2007, 3, 31);
             _worksheet.Cells["A3"].Formula = "INTRATE(A1, A2, 1000, 2125)";
             _worksheet.Calculate();
-            var result = System.Math.Round((double)_worksheet.Cells["A3"].Value, 5);
+            double result = System.Math.Round((double)_worksheet.Cells["A3"].Value, 5);
             Assert.AreEqual(0.5625, result);
         }
 
@@ -684,7 +684,7 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions
             _worksheet.Cells["A3"].Formula = "9.14%";
             _worksheet.Cells["A4"].Formula = "TBILLEQ(A1, A2, A3)";
             _worksheet.Calculate();
-            var result = _worksheet.Cells["A4"].Value;
+            object? result = _worksheet.Cells["A4"].Value;
 
             Assert.AreEqual(0.09415149, System.Math.Round((double)result, 8));
         }
@@ -697,7 +697,7 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions
             _worksheet.Cells["A3"].Formula = "9.14%";
             _worksheet.Cells["A4"].Formula = "TBILLEQ(A1, A2, A3)";
             _worksheet.Calculate();
-            var result = _worksheet.Cells["A4"].Value;
+            object? result = _worksheet.Cells["A4"].Value;
 
             Assert.AreEqual(0.09800968, System.Math.Round((double)result, 8));
         }
@@ -710,7 +710,7 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions
             _worksheet.Cells["A3"].Formula = "9.14%";
             _worksheet.Cells["A4"].Formula = "TBILLPRICE(A1, A2, A3)";
             _worksheet.Calculate();
-            var result = _worksheet.Cells["A4"].Value;
+            object? result = _worksheet.Cells["A4"].Value;
 
             Assert.AreEqual(98.42588889, System.Math.Round((double)result, 8));
         }
@@ -723,7 +723,7 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions
             _worksheet.Cells["A3"].Formula = "9.14%";
             _worksheet.Cells["A4"].Formula = "TBILLPRICE(A1, A2, A3)";
             _worksheet.Calculate();
-            var result = _worksheet.Cells["A4"].Value;
+            object? result = _worksheet.Cells["A4"].Value;
 
             Assert.AreEqual(93.01805556, System.Math.Round((double)result, 8));
         }
@@ -736,7 +736,7 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions
             _worksheet.Cells["A3"].Value = 98.45;
             _worksheet.Cells["A4"].Formula = "TBILLYIELD(A1, A2, A3)";
             _worksheet.Calculate();
-            var result = _worksheet.Cells["A4"].Value;
+            object? result = _worksheet.Cells["A4"].Value;
 
             Assert.AreEqual(0.09141696, System.Math.Round((double)result, 8));
         }
@@ -749,7 +749,7 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions
             _worksheet.Cells["A3"].Value = 98.45;
             _worksheet.Cells["A4"].Formula = "TBILLYIELD(A1, A2, A3)";
             _worksheet.Calculate();
-            var result = _worksheet.Cells["A4"].Value;
+            object? result = _worksheet.Cells["A4"].Value;
 
             Assert.AreEqual(0.02061037, System.Math.Round((double)result, 8));
         }
@@ -765,9 +765,9 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions
         [DataRow(2009, 1, 1, 2009, 12, 1, 2010, 4, 1, 125d, 1)]
         public void AccrintTestCalcFirstInterest(int iYear, int iMonth, int iDay, int fiYear, int fiMonth, int fiDay, int sYear, int sMonth, int sDay, double expectedResult, int frequency)
         {
-            var issue = new DateTime(iYear, iMonth, iDay);
-            var firstInterest = new DateTime(fiYear, fiMonth, fiDay);
-            var settlement = new DateTime(sYear, sMonth, sDay);
+            DateTime issue = new DateTime(iYear, iMonth, iDay);
+            DateTime firstInterest = new DateTime(fiYear, fiMonth, fiDay);
+            DateTime settlement = new DateTime(sYear, sMonth, sDay);
             _worksheet.Cells["A1"].Value = issue;
             _worksheet.Cells["A2"].Value = firstInterest;
             _worksheet.Cells["A3"].Value = settlement;
@@ -777,7 +777,7 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions
             _worksheet.Cells["A7"].Value = 0;
             _worksheet.Cells["A9"].Formula = "ACCRINT(A1, A2, A3, A4, A5, A6, A7, 0)";
             _worksheet.Calculate();
-            var result = _worksheet.Cells["A9"].Value;
+            object? result = _worksheet.Cells["A9"].Value;
 
             Assert.AreEqual(expectedResult, System.Math.Round((double)result, 8));
         }
@@ -788,9 +788,9 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions
         [DataRow(2009, 2, 15, 2009, 12, 1, 2009, 4, 2, 13.05555556d, 4)]
         public void AccrintIssueToSettlementTest(int iYear, int iMonth, int iDay, int fiYear, int fiMonth, int fiDay, int sYear, int sMonth, int sDay, double expectedResult, int frequency)
         {
-            var issue = new DateTime(iYear, iMonth, iDay);
-            var firstInterest = new DateTime(fiYear, fiMonth, fiDay);
-            var settlement = new DateTime(sYear, sMonth, sDay);
+            DateTime issue = new DateTime(iYear, iMonth, iDay);
+            DateTime firstInterest = new DateTime(fiYear, fiMonth, fiDay);
+            DateTime settlement = new DateTime(sYear, sMonth, sDay);
             _worksheet.Cells["A1"].Value = issue;
             _worksheet.Cells["A2"].Value = firstInterest;
             _worksheet.Cells["A3"].Value = settlement;
@@ -800,7 +800,7 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions
             _worksheet.Cells["A7"].Value = frequency;
             _worksheet.Cells["A9"].Formula = "ACCRINT(A1, A2, A3, A4, A5, A6, A7)";
             _worksheet.Calculate();
-            var result = _worksheet.Cells["A9"].Value;
+            object? result = _worksheet.Cells["A9"].Value;
 
             Assert.AreEqual(expectedResult, System.Math.Round((double)result, 8));
         }
@@ -811,8 +811,8 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions
         [DataRow(2009, 1, 5, 2010, 6, 10, 144.722222d, 2)]
         public void AccrintMtests(int iYear, int iMonth, int iDay, int sYear, int sMonth, int sDay, double expectedResult, int basis)
         {
-            var issue = new DateTime(iYear, iMonth, iDay);
-            var settlement = new DateTime(sYear, sMonth, sDay);
+            DateTime issue = new DateTime(iYear, iMonth, iDay);
+            DateTime settlement = new DateTime(sYear, sMonth, sDay);
             _worksheet.Cells["A1"].Value = issue;
             _worksheet.Cells["A2"].Value = settlement;
             _worksheet.Cells["A3"].Value = 0.1;
@@ -820,7 +820,7 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions
             _worksheet.Cells["A5"].Value = basis;
             _worksheet.Cells["A9"].Formula = "ACCRINTM(A1, A2, A3, A4, A5)";
             _worksheet.Calculate();
-            var result = _worksheet.Cells["A9"].Value;
+            object? result = _worksheet.Cells["A9"].Value;
 
             Assert.AreEqual(expectedResult, System.Math.Round((double)result, 6));
         }

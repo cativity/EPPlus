@@ -165,7 +165,7 @@ namespace OfficeOpenXml.Drawing
         {
             get
             {
-                var node = (XmlElement)GetNode(_path);
+                XmlElement? node = (XmlElement)GetNode(_path);
                 if (node == null)
                 {
                     return (XmlElement)CreateNode(_path);

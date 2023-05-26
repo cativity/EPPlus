@@ -37,10 +37,10 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
                 return this.CreateResult(eErrorType.Value);
             }
 
-            var numbers = ArgsToDoubleEnumerable(IgnoreHiddenValues, IgnoreErrors, arguments, context);
-            var counts = new Dictionary<double, int>();
+            IEnumerable<ExcelDoubleCellValue>? numbers = ArgsToDoubleEnumerable(IgnoreHiddenValues, IgnoreErrors, arguments, context);
+            Dictionary<double, int>? counts = new Dictionary<double, int>();
             double? maxCountValue = default;
-            foreach(var number in numbers)
+            foreach(ExcelDoubleCellValue number in numbers)
             {
                 if (!counts.ContainsKey(number))
                 {

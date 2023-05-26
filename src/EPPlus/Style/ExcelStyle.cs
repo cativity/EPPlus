@@ -33,7 +33,7 @@ namespace OfficeOpenXml.Style
             {
                 if(xfsId==0)
                 {
-                    var id = _styles.NamedStyles.FindIndexByBuildInId(0);
+                    int id = _styles.NamedStyles.FindIndexByBuildInId(0);
                     if(id>-1 && id < _styles.CellStyleXfs.Count)
                     {
                         _xfs = _styles.CellStyleXfs[_styles.NamedStyles[id].StyleXfId];
@@ -52,7 +52,7 @@ namespace OfficeOpenXml.Style
             {
                 if (_styles.CellStyleXfs.Count == 0)   //CellStyleXfs.Count should never be 0, but for some custom build sheets this can happend.
                 {
-                    var item=_styles.CellXfs[0].Copy();                    
+                    ExcelXfs? item=_styles.CellXfs[0].Copy();                    
                     _styles.CellStyleXfs.Add(item.Id, item);
                 }
                 _xfs = _styles.CellStyleXfs[xfsId];

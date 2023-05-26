@@ -93,18 +93,18 @@ namespace OfficeOpenXml.Drawing.Chart
         internal ExcelChartStandard(ExcelDrawings drawings, XmlNode node, Uri uriChart, ZipPackagePart part, XmlDocument chartXml, XmlNode chartNode, ExcelGroupShape parent, string drawingPath = "xdr:graphicFrame", string nvPrPath = "xdr:nvGraphicFramePr/xdr:cNvPr") :
            base(drawings, node, chartXml, parent, drawingPath, nvPrPath)
         {
-            var ptSource = _chartXmlHelper.GetXmlNodeString("c:pivotSource/c:name");
+            string? ptSource = _chartXmlHelper.GetXmlNodeString("c:pivotSource/c:name");
             if(!string.IsNullOrEmpty(ptSource))
             {
                 if(ptSource.StartsWith("["))
                 {
                     ptSource = ptSource.Substring(ptSource.IndexOf("]") + 1);
                 }
-                var wsName = ExcelAddressBase.GetWorksheetPart(ptSource,"");
-                var ws = drawings.Worksheet.Workbook.Worksheets[wsName];
+                string? wsName = ExcelAddressBase.GetWorksheetPart(ptSource,"");
+                ExcelWorksheet? ws = drawings.Worksheet.Workbook.Worksheets[wsName];
                 if(ws!=null)
                 {
-                    var ptName = ptSource.Substring(ptSource.LastIndexOf("!")+1);
+                    string? ptName = ptSource.Substring(ptSource.LastIndexOf("!")+1);
                     PivotTableSource = ws.PivotTables[ptName];
                     _chartXmlHelper.SetXmlNodeString("c:pivotSource/c:name", "[]"+ptSource);
                 }
@@ -196,7 +196,7 @@ namespace OfficeOpenXml.Drawing.Chart
                 graphFrame.InnerXml = string.Format("<xdr:nvGraphicFramePr><xdr:cNvPr id=\"{0}\" name=\"Chart 1\" /><xdr:cNvGraphicFramePr /></xdr:nvGraphicFramePr><xdr:xfrm><a:off x=\"0\" y=\"0\" /> <a:ext cx=\"0\" cy=\"0\" /></xdr:xfrm><a:graphic><a:graphicData uri=\"http://schemas.openxmlformats.org/drawingml/2006/chart\"><c:chart xmlns:c=\"http://schemas.openxmlformats.org/drawingml/2006/chart\" xmlns:r=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships\" r:id=\"rId1\" />   </a:graphicData>  </a:graphic>", _id);
                 TopNode.AppendChild(TopNode.OwnerDocument.CreateElement("clientData", ExcelPackage.schemaSheetDrawings));
 
-                var package = drawings.Worksheet._package.ZipPackage;
+                ZipPackage? package = drawings.Worksheet._package.ZipPackage;
                 UriChart = GetNewUri(package, "/xl/charts/chart{0}.xml");
 
                 if (chartXml == null)
@@ -220,7 +220,7 @@ namespace OfficeOpenXml.Drawing.Chart
                 streamChart.Close();
                 package.Flush();
 
-                var chartRelation = drawings.Part.CreateRelationship(UriHelper.GetRelativeUri(drawings.UriDrawing, UriChart), Packaging.TargetMode.Internal, ExcelPackage.schemaRelationships + "/chart");
+                ZipPackageRelationship? chartRelation = drawings.Part.CreateRelationship(UriHelper.GetRelativeUri(drawings.UriDrawing, UriChart), Packaging.TargetMode.Internal, ExcelPackage.schemaRelationships + "/chart");
                 graphFrame.SelectSingleNode("a:graphic/a:graphicData/c:chart", NameSpaceManager).Attributes["r:id"].Value = chartRelation.Id;
                 package.Flush();
                 _chartNode = ChartXml.SelectSingleNode(string.Format("c:chartSpace/c:chart/c:plotArea/{0}", GetChartNodeText()), NameSpaceManager);
@@ -266,7 +266,7 @@ namespace OfficeOpenXml.Drawing.Chart
             foreach (XmlNode node in nl)
             {                
                 string id = node.Attributes["val"].Value;
-                var ix = Array.FindIndex(_axis, x => x.Id == id);
+                int ix = Array.FindIndex(_axis, x => x.Id == id);
                 if(ix>=0)
                 {
                     if(XAxis==null)
@@ -775,7 +775,7 @@ namespace OfficeOpenXml.Drawing.Chart
 
             _axis[_axis.Length - 2] = new ExcelChartAxisStandard(this, NameSpaceManager, catAx, "c");
             _axis[_axis.Length - 1] = new ExcelChartAxisStandard(this, NameSpaceManager, valAx, "c");
-            foreach (var chart in _plotArea.ChartTypes)
+            foreach (ExcelChart? chart in _plotArea.ChartTypes)
             {
                 chart._axis = _axis;
             }
@@ -961,7 +961,7 @@ namespace OfficeOpenXml.Drawing.Chart
                 //Remove the axis
                 ExcelChartAxis[] newAxis = new ExcelChartAxis[Axis.Length - 1];
                 int pos = 0;
-                foreach (var ax in Axis)
+                foreach (ExcelChartAxisStandard? ax in Axis)
                 {
                     if (ax != excelChartAxis)
                     {
@@ -1211,11 +1211,11 @@ namespace OfficeOpenXml.Drawing.Chart
             PivotTableSource = pivotTableSource;
             XmlElement chart = ChartXml.SelectSingleNode("c:chartSpace/c:chart", NameSpaceManager) as XmlElement;
 
-            var pivotSource = ChartXml.CreateElement("pivotSource", ExcelPackage.schemaChart);
+            XmlElement? pivotSource = ChartXml.CreateElement("pivotSource", ExcelPackage.schemaChart);
             chart.ParentNode.InsertBefore(pivotSource, chart);
             pivotSource.InnerXml = string.Format("<c:name>[]{0}!{1}</c:name><c:fmtId val=\"0\"/>", PivotTableSource.WorkSheet.Name, pivotTableSource.Name);
 
-            var fmts = ChartXml.CreateElement("pivotFmts", ExcelPackage.schemaChart);
+            XmlElement? fmts = ChartXml.CreateElement("pivotFmts", ExcelPackage.schemaChart);
             chart.PrependChild(fmts);
             fmts.InnerXml = "<c:pivotFmt><c:idx val=\"0\"/><c:marker><c:symbol val=\"none\"/></c:marker></c:pivotFmt>";
 

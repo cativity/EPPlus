@@ -30,7 +30,7 @@ namespace OfficeOpenXml.Drawing.Chart
         internal ExcelChartSerieWithErrorBars(ExcelChart chart, XmlNamespaceManager ns, XmlNode node, bool isPivot) :
             base(chart, ns, node, isPivot)
         {
-            var errorNode = GetNode("c:errBars");
+            XmlNode? errorNode = GetNode("c:errBars");
             if (errorNode != null) 
             {
                 ErrorBars = new ExcelChartErrorBars(this, errorNode);

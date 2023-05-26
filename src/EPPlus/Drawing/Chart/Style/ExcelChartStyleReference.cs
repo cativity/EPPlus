@@ -70,7 +70,7 @@ namespace OfficeOpenXml.Drawing.Chart.Style
         {
             get
             {
-                var node = GetNode(_path);
+                XmlNode? node = GetNode(_path);
                 return node!=null && node.HasChildNodes;
             }
         }

@@ -28,8 +28,8 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Statistical
         public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
         {
             ValidateArguments(arguments, 1);
-            var z = ArgToDecimal(arguments, 0);
-            var result = CumulativeDistribution(z, 0, 1);
+            double z = ArgToDecimal(arguments, 0);
+            double result = CumulativeDistribution(z, 0, 1);
             return CreateResult(result, DataType.Decimal);
         }
     }

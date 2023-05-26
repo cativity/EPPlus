@@ -37,9 +37,9 @@ namespace EPPlusTest.Core.Worksheet
         [TestMethod]
         public void InsertRowsUpdatesReferencesCorrectly()
         {
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var sheet1 = package.Workbook.Worksheets.Add("Sheet1");
+                ExcelWorksheet? sheet1 = package.Workbook.Worksheets.Add("Sheet1");
                 sheet1.Cells[2, 2].Formula = "C3";
                 sheet1.Cells[3, 3].Value = "Hello, world!";
                 package.Workbook.Calculate();
@@ -55,10 +55,10 @@ namespace EPPlusTest.Core.Worksheet
         [TestMethod]
         public void CrossSheetInsertRowsUpdatesReferencesCorrectly()
         {
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var sheet1 = package.Workbook.Worksheets.Add("Sheet1");
-                var sheet2 = package.Workbook.Worksheets.Add("Sheet2");
+                ExcelWorksheet? sheet1 = package.Workbook.Worksheets.Add("Sheet1");
+                ExcelWorksheet? sheet2 = package.Workbook.Worksheets.Add("Sheet2");
                 sheet1.Cells[2, 2].Formula = "Sheet2!C3";
                 sheet2.Cells[3, 3].Value = "Hello, world!";
                 package.Workbook.Calculate();
@@ -74,10 +74,10 @@ namespace EPPlusTest.Core.Worksheet
         [TestMethod]
         public void CrossSheetInsertColumnsUpdatesReferencesCorrectly()
         {
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var sheet1 = package.Workbook.Worksheets.Add("Sheet1");
-                var sheet2 = package.Workbook.Worksheets.Add("Sheet2");
+                ExcelWorksheet? sheet1 = package.Workbook.Worksheets.Add("Sheet1");
+                ExcelWorksheet? sheet2 = package.Workbook.Worksheets.Add("Sheet2");
                 sheet1.Cells[2, 2].Formula = "'Sheet2'!C3";
                 sheet2.Cells[3, 3].Value = "Hello, world!";
                 package.Workbook.Calculate();
@@ -94,8 +94,8 @@ namespace EPPlusTest.Core.Worksheet
         {
             using (ExcelPackage package = new ExcelPackage())
             {
-                var sheet = package.Workbook.Worksheets.Add("New Sheet");
-                var otherSheet = package.Workbook.Worksheets.Add("Other Sheet");
+                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("New Sheet");
+                ExcelWorksheet? otherSheet = package.Workbook.Worksheets.Add("Other Sheet");
                 sheet.Cells[3, 3].Formula = "'Other Sheet'!C3";
                 otherSheet.Cells[3, 3].Formula = "45";
                 otherSheet.InsertRow(5, 1);
@@ -108,8 +108,8 @@ namespace EPPlusTest.Core.Worksheet
         {
             using (ExcelPackage package = new ExcelPackage())
             {
-                var sheet = package.Workbook.Worksheets.Add("New Sheet");
-                var otherSheet = package.Workbook.Worksheets.Add("Other Sheet");
+                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("New Sheet");
+                ExcelWorksheet? otherSheet = package.Workbook.Worksheets.Add("Other Sheet");
                 sheet.Cells[3, 3].Formula = "'Other Sheet'!C3";
                 otherSheet.Cells[3, 3].Formula = "45";
                 otherSheet.InsertColumn(5, 1);
@@ -122,8 +122,8 @@ namespace EPPlusTest.Core.Worksheet
         {
             using (ExcelPackage package = new ExcelPackage())
             {
-                var sheet = package.Workbook.Worksheets.Add("New Sheet");
-                var otherSheet = package.Workbook.Worksheets.Add("Other Sheet");
+                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("New Sheet");
+                ExcelWorksheet? otherSheet = package.Workbook.Worksheets.Add("Other Sheet");
                 sheet.Cells[3, 3].Formula = "'Other Sheet'!C3";
                 otherSheet.Cells[3, 3].Formula = "45";
                 otherSheet.Name = "New Name";
@@ -134,10 +134,10 @@ namespace EPPlusTest.Core.Worksheet
         [TestMethod]
         public void CopyCellUpdatesRelativeCrossSheetReferencesCorrectly()
         {
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var sheet1 = package.Workbook.Worksheets.Add("Sheet1");
-                var sheet2 = package.Workbook.Worksheets.Add("Sheet2");
+                ExcelWorksheet? sheet1 = package.Workbook.Worksheets.Add("Sheet1");
+                ExcelWorksheet? sheet2 = package.Workbook.Worksheets.Add("Sheet2");
                 sheet1.Cells[3, 3].Formula = "Sheet2!C3";
                 sheet2.Cells[3, 3].Value = "Hello, world!";
                 sheet2.Cells[3, 4].Value = "Hello, WORLD!";
@@ -156,10 +156,10 @@ namespace EPPlusTest.Core.Worksheet
         [TestMethod]
         public void CopyCellUpdatesAbsoluteCrossSheetReferencesCorrectly()
         {
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var sheet1 = package.Workbook.Worksheets.Add("Sheet1");
-                var sheet2 = package.Workbook.Worksheets.Add("Sheet2");
+                ExcelWorksheet? sheet1 = package.Workbook.Worksheets.Add("Sheet1");
+                ExcelWorksheet? sheet2 = package.Workbook.Worksheets.Add("Sheet2");
                 sheet1.Cells[3, 3].Formula = "Sheet2!$C$3";
                 sheet2.Cells[3, 3].Value = "Hello, world!";
                 sheet2.Cells[3, 4].Value = "Hello, WORLD!";
@@ -178,10 +178,10 @@ namespace EPPlusTest.Core.Worksheet
         [TestMethod]
         public void CopyCellUpdatesRowAbsoluteCrossSheetReferencesCorrectly()
         {
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var sheet1 = package.Workbook.Worksheets.Add("Sheet1");
-                var sheet2 = package.Workbook.Worksheets.Add("Sheet2");
+                ExcelWorksheet? sheet1 = package.Workbook.Worksheets.Add("Sheet1");
+                ExcelWorksheet? sheet2 = package.Workbook.Worksheets.Add("Sheet2");
                 sheet1.Cells[3, 3].Formula = "Sheet2!C$3";
                 sheet2.Cells[3, 3].Value = "Hello, world!";
                 sheet2.Cells[3, 4].Value = "Hello, WORLD!";
@@ -200,10 +200,10 @@ namespace EPPlusTest.Core.Worksheet
         [TestMethod]
         public void CopyCellUpdatesColumnAbsoluteCrossSheetReferencesCorrectly()
         {
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var sheet1 = package.Workbook.Worksheets.Add("Sheet1");
-                var sheet2 = package.Workbook.Worksheets.Add("Sheet2");
+                ExcelWorksheet? sheet1 = package.Workbook.Worksheets.Add("Sheet1");
+                ExcelWorksheet? sheet2 = package.Workbook.Worksheets.Add("Sheet2");
                 sheet1.Cells[3, 3].Formula = "Sheet2!$C3";
                 sheet2.Cells[3, 3].Value = "Hello, world!";
                 sheet2.Cells[3, 4].Value = "Hello, WORLD!";
@@ -221,10 +221,10 @@ namespace EPPlusTest.Core.Worksheet
         [TestMethod]
         public void AddWorksheetWithDollarSign()
         {
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var sheetName = "Sheet1$";
-                var sheet1 = package.Workbook.Worksheets.Add(sheetName);
+                string? sheetName = "Sheet1$";
+                ExcelWorksheet? sheet1 = package.Workbook.Worksheets.Add(sheetName);
                 Assert.AreEqual(sheetName, sheet1.Name);
                 Assert.AreEqual(sheet1, package.Workbook.Worksheets[sheetName]);
 
@@ -232,7 +232,7 @@ namespace EPPlusTest.Core.Worksheet
                 sheet1.Names.Add("DefinedName1", sheet1.Cells["A1"]);
 
                 package.Save();
-                using (var p2 = new ExcelPackage(package.Stream))
+                using (ExcelPackage? p2 = new ExcelPackage(package.Stream))
                 {
                     sheet1 = package.Workbook.Worksheets[sheetName];
                     Assert.IsNotNull(sheet1);
@@ -245,15 +245,15 @@ namespace EPPlusTest.Core.Worksheet
         [TestMethod]
         public void VerifyAddressFullAddress()
         {
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
                 //var ws1 = package.Workbook.Worksheets.Add("sheet1");
                 //var n = ws1.Names.Add("Name1", ws1.Cells["A1:B5"]);
                 //n.Address = "A2:D6";
                 //Assert.AreEqual("sheet1!A2:D6", n.FullAddress);
                 //Assert.AreEqual("sheet1!$A$2:$D$6", n.FullAddressAbsolute);
-                var ws1 = package.Workbook.Worksheets.Add("sheet1");
-                var n = package.Workbook.Names.Add("Name1", ws1.Cells["A1:B5"]);
+                ExcelWorksheet? ws1 = package.Workbook.Worksheets.Add("sheet1");
+                ExcelNamedRange? n = package.Workbook.Names.Add("Name1", ws1.Cells["A1:B5"]);
                 n.Address = "A2:D6";
                 Assert.AreEqual("sheet1!A2:D6", n.FullAddress);
                 Assert.AreEqual("sheet1!$A$2:$D$6", n.FullAddressAbsolute);

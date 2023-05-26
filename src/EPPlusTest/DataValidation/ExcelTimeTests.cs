@@ -144,7 +144,7 @@ namespace EPPlusTest.DataValidation
             decimal value = 3660M/(decimal)SecondsPerDay;
 
             // Act
-            var time = new ExcelTime(value);
+            ExcelTime? time = new ExcelTime(value);
 
             // Assert
             Assert.AreEqual(1, time.Hour);
@@ -157,7 +157,7 @@ namespace EPPlusTest.DataValidation
             decimal value = 3660M / (decimal)SecondsPerDay;
 
             // Act
-            var time = new ExcelTime(value);
+            ExcelTime? time = new ExcelTime(value);
 
             // Assert
             Assert.AreEqual(1, time.Minute);
@@ -170,7 +170,7 @@ namespace EPPlusTest.DataValidation
             decimal value = 3662M / (decimal)SecondsPerDay;
 
             // Act
-            var time = new ExcelTime(value);
+            ExcelTime? time = new ExcelTime(value);
 
             // Assert
             Assert.AreEqual(2, time.Second);
@@ -182,8 +182,8 @@ namespace EPPlusTest.DataValidation
             decimal hour1 = decimal.Parse("0.416666666666667",CultureInfo.InvariantCulture);
             decimal hour2 = decimal.Parse("0.458333333333333",CultureInfo.InvariantCulture);
 
-            var time1 = new ExcelTime(hour1);
-            var time2 = new ExcelTime(hour2);
+            ExcelTime? time1 = new ExcelTime(hour1);
+            ExcelTime? time2 = new ExcelTime(hour2);
 
             Assert.AreEqual(10, time1.Hour);
             Assert.AreEqual(11, time2.Hour);

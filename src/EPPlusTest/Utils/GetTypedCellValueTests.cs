@@ -40,7 +40,7 @@ namespace EPPlusTest.Utils
         [TestMethod]
         public void DoubleToNullableInt()
         {
-            var result = ConvertUtil.GetTypedCellValue<int?>(2D);
+            int? result = ConvertUtil.GetTypedCellValue<int?>(2D);
 
             Assert.AreEqual(2, result);
         }
@@ -48,8 +48,8 @@ namespace EPPlusTest.Utils
         [TestMethod]
         public void StringToDecimal()
         {
-            var decimalSign = System.Globalization.CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator;
-            var result = ConvertUtil.GetTypedCellValue<decimal>($"1{decimalSign}4");
+            string? decimalSign = System.Globalization.CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator;
+            decimal result = ConvertUtil.GetTypedCellValue<decimal>($"1{decimalSign}4");
 
             Assert.AreEqual((decimal)1.4, result);
         }
@@ -57,14 +57,14 @@ namespace EPPlusTest.Utils
         [TestMethod]
         public void EmptyStringToNullableDecimal()
         {
-            var result = ConvertUtil.GetTypedCellValue<decimal?>("");
+            decimal? result = ConvertUtil.GetTypedCellValue<decimal?>("");
             Assert.IsNull(result);
         }
 
         [TestMethod]
         public void BlankStringToNullableDecimal()
         {
-            var result = ConvertUtil.GetTypedCellValue<decimal?>(" ");
+            decimal? result = ConvertUtil.GetTypedCellValue<decimal?>(" ");
 
             Assert.IsNull(result);
         }
@@ -133,31 +133,31 @@ namespace EPPlusTest.Utils
         [TestMethod]
         public void DoubleToDateTime()
         {
-            var expected = new DateTime(2020, 1, 1);
+            DateTime expected = new DateTime(2020, 1, 1);
             Assert.AreEqual(expected, ConvertUtil.GetTypedCellValue<DateTime>(expected.ToOADate()));
         }
         [TestMethod]
         public void StringToDateTime()
         {
-            var expected = new DateTime(2020, 1, 1);
+            DateTime expected = new DateTime(2020, 1, 1);
             Assert.AreEqual(expected, ConvertUtil.GetTypedCellValue<DateTime>(expected.ToString()));
         }
         [TestMethod]
         public void DateTimeToTimeSpan()
         {
-            var expected = new DateTime(2020, 1, 1);
+            DateTime expected = new DateTime(2020, 1, 1);
             Assert.AreEqual(expected, ConvertUtil.GetTypedCellValue<DateTime>(new TimeSpan(expected.Ticks)));
         }
         [TestMethod]
         public void StringToTimeSpan()
         {
-            var expected = new TimeSpan(10, 11, 12);
+            TimeSpan expected = new TimeSpan(10, 11, 12);
             Assert.AreEqual(expected, ConvertUtil.GetTypedCellValue<TimeSpan>(expected.ToString()));
         }
         [TestMethod]
         public void TimeSpanToDateTime()
         {
-            var expected = new TimeSpan(10, 11, 12);
+            TimeSpan expected = new TimeSpan(10, 11, 12);
             Assert.AreEqual(expected, ConvertUtil.GetTypedCellValue<TimeSpan>(new DateTime(expected.Ticks)));
         }
         [TestMethod]
@@ -183,7 +183,7 @@ namespace EPPlusTest.Utils
         [TestMethod]
         public void TextToInt()
         {
-            var result = ConvertUtil.GetTypedCellValue<int>("204");
+            int result = ConvertUtil.GetTypedCellValue<int>("204");
 
             Assert.AreEqual(204, result);
         }

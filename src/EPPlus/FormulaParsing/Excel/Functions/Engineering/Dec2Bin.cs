@@ -29,8 +29,8 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Engineering
         public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
         {
             ValidateArguments(arguments, 1);
-            var number = ArgToInt(arguments, 0);
-            var padding = default(int?);
+            int number = ArgToInt(arguments, 0);
+            int? padding = default(int?);
             if (arguments.Count() > 1)
             {
                 padding = ArgToInt(arguments, 1);
@@ -39,7 +39,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Engineering
                     return this.CreateResult(eErrorType.Num);
                 }
             }
-            var result = Convert.ToString(number, 2);
+            string? result = Convert.ToString(number, 2);
             if(padding.HasValue)
             {
                 result = PaddingHelper.EnsureLength(result, padding.Value, "0");

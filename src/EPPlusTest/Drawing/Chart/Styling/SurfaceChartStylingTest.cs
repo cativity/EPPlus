@@ -54,7 +54,7 @@ namespace EPPlusTest.Drawing.Chart.Styling
         [TestMethod]
         public void Surface_Styles()
         {
-            var ws = _pck.Workbook.Worksheets.Add("SurfaceChartStyling");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("SurfaceChartStyling");
             LoadTestdata(ws);
 
             SurfaceStyle(ws, eSurfaceChartType.Surface);
@@ -74,18 +74,18 @@ namespace EPPlusTest.Drawing.Chart.Styling
 
         private static ExcelSurfaceChart AddSurface(ExcelWorksheet ws, eSurfaceChartType type, string name, int row, int col, string xml, Action<ExcelSurfaceChart> SetProperties)    
         {
-            var chart = ws.Drawings.AddSurfaceChart(name, type);
+            ExcelSurfaceChart? chart = ws.Drawings.AddSurfaceChart(name, type);
             chart.SetPosition(row, 0, col, 0);
             chart.To.Column = col+12;
             chart.To.ColumnOff = 0;
             chart.To.Row = row + 18;
             chart.To.RowOff = 0;
-            var serie = chart.Series.Add("D2:D8", "A2:A8");
-            var serie2 = chart.Series.Add("C2:C8", "A2:A8");
+            ExcelSurfaceChartSerie? serie = chart.Series.Add("D2:D8", "A2:A8");
+            ExcelSurfaceChartSerie? serie2 = chart.Series.Add("C2:C8", "A2:A8");
 
             SetProperties(chart);
 
-            var xmlDoc = new XmlDocument();
+            XmlDocument? xmlDoc = new XmlDocument();
             xmlDoc.LoadXml(xml);
             chart.StyleManager.LoadStyleXml(xmlDoc, eChartStyle.Style2);
             return chart;

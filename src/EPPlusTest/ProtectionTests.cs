@@ -42,10 +42,10 @@ namespace EPPlusTest
         [TestMethod]
         public void SetReadOnlyFileSharing()
         {
-            using (var p = OpenPackage("FileSharing.xlsx", true))
+            using (ExcelPackage? p = OpenPackage("FileSharing.xlsx", true))
             {
-                var ws = p.Workbook.Worksheets.Add("FileSharing");
-                var a1 = ws.Cells["A1"];
+                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("FileSharing");
+                ExcelRange? a1 = ws.Cells["A1"];
                 p.Workbook.Protection.WriteProtection.SetReadOnly("Jan Källman", "EPPlus");
                 p.Workbook.Protection.WriteProtection.ReadOnlyRecommended = true;
                 Assert.IsTrue(p.Workbook.Protection.WriteProtection.ReadOnlyRecommended);
@@ -56,10 +56,10 @@ namespace EPPlusTest
         [TestMethod]
         public void VerifyRemoveReadonly()
         {
-            using (var p = new ExcelPackage())
+            using (ExcelPackage? p = new ExcelPackage())
             {
-                var ws = p.Workbook.Worksheets.Add("FileSharing");
-                var a1 = ws.Cells["A1"];
+                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("FileSharing");
+                ExcelRange? a1 = ws.Cells["A1"];
                 p.Workbook.Protection.WriteProtection.SetReadOnly("Jan Källman", "EPPlus");
                 p.Workbook.Protection.WriteProtection.ReadOnlyRecommended = true;
                 Assert.IsTrue(p.Workbook.Protection.WriteProtection.ReadOnlyRecommended);

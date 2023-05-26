@@ -59,14 +59,14 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
 
         public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
         {
-            var functionArguments = arguments as FunctionArgument[] ?? arguments.ToArray();
+            FunctionArgument[]? functionArguments = arguments as FunctionArgument[] ?? arguments.ToArray();
             ValidateArguments(functionArguments, 2);
-            var range = functionArguments.ElementAt(0);
-            var criteria = functionArguments.ElementAt(1).ValueFirstString;
+            FunctionArgument? range = functionArguments.ElementAt(0);
+            string? criteria = functionArguments.ElementAt(1).ValueFirstString;
             double result = 0d;
             if (range.IsExcelRange)
             {
-                var rangeInfo = range.ValueAsRangeInfo;
+                IRangeInfo? rangeInfo = range.ValueAsRangeInfo;
                 for (int row = rangeInfo.Address.Start.Row; row < rangeInfo.Address.End.Row + 1; row++)
                 {
                     for (int col = rangeInfo.Address.Start.Column; col < rangeInfo.Address.End.Column + 1; col++)
@@ -80,7 +80,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
             }
             else if (range.Value is IEnumerable<FunctionArgument>)
             {
-                foreach (var arg in (IEnumerable<FunctionArgument>) range.Value)
+                foreach (FunctionArgument? arg in (IEnumerable<FunctionArgument>) range.Value)
                 {
                     if(Evaluate(arg.Value, criteria))
                     {

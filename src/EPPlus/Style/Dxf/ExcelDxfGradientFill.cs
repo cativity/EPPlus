@@ -184,8 +184,8 @@ namespace OfficeOpenXml.Style.Dxf
 
         internal override void CreateNodes(XmlHelper helper, string path)
         {
-            var gradNode = helper.CreateNode(path + "/d:gradientFill");
-            var gradHelper=XmlHelperFactory.Create(helper.NameSpaceManager, gradNode);
+            XmlNode? gradNode = helper.CreateNode(path + "/d:gradientFill");
+            XmlHelper? gradHelper=XmlHelperFactory.Create(helper.NameSpaceManager, gradNode);
             SetValueEnum(gradHelper, "@type", GradientType);
             SetValue(gradHelper, "@degree", Degree);
             SetValue(gradHelper, "@left", Left);
@@ -193,7 +193,7 @@ namespace OfficeOpenXml.Style.Dxf
             SetValue(gradHelper, "@top", Top);
             SetValue(gradHelper, "@bottom", Bottom);
 
-            foreach (var c in Colors)
+            foreach (ExcelDxfGradientFillColor? c in Colors)
             {
                 c.CreateNodes(gradHelper, "");
             }
@@ -208,7 +208,7 @@ namespace OfficeOpenXml.Style.Dxf
                 _callback?.Invoke(eStyleClass.GradientFill, eStyleProperty.GradientBottom, _bottom);
                 _callback?.Invoke(eStyleClass.GradientFill, eStyleProperty.GradientLeft, _left);
                 _callback?.Invoke(eStyleClass.GradientFill, eStyleProperty.GradientRight, _right);
-                foreach (var c in Colors)
+                foreach (ExcelDxfGradientFillColor? c in Colors)
                 {
                     c.SetStyle();
                 }
@@ -225,8 +225,8 @@ namespace OfficeOpenXml.Style.Dxf
             Bottom = helper.GetXmlNodeDoubleNull("d:fill/d:gradientFill/@bottom");
             foreach (XmlNode node in helper.GetNodes("d:fill/d:gradientFill/d:stop"))
             {
-                var stopHelper = XmlHelperFactory.Create(_styles.NameSpaceManager, node);
-                var c = Colors.Add(stopHelper.GetXmlNodeDouble("@position") * 100);
+                XmlHelper? stopHelper = XmlHelperFactory.Create(_styles.NameSpaceManager, node);
+                ExcelDxfGradientFillColor? c = Colors.Add(stopHelper.GetXmlNodeDouble("@position") * 100);
                 c.Color = GetColor(stopHelper, "d:color", c.Position==0 ? eStyleClass.FillGradientColor1 : eStyleClass.FillGradientColor2);
             }
         }

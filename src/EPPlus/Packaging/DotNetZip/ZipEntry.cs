@@ -893,7 +893,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
                     throw new ZipException("The FileName must be non empty and non-null.");
                 }
 
-                var filename = ZipEntry.NameInArchive(value, null);
+                string? filename = ZipEntry.NameInArchive(value, null);
                 // workitem 8180
                 if (_FileNameInArchive == filename)
                 {
@@ -2499,8 +2499,8 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
                 catch (System.IO.PathTooLongException ptle)
                 {
                     // workitem 14035
-                    var msg = String.Format("The path is too long, filename={0}",
-                                            filename);
+                    string? msg = String.Format("The path is too long, filename={0}",
+                                                filename);
                     throw new ZipException(msg, ptle);
                 }
 
@@ -2638,7 +2638,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
                 {
                     if (_container.ZipFile != null)
                     {
-                        var zf = _container.ZipFile;
+                        ZipFile? zf = _container.ZipFile;
                         zf.Reset(false);
                         _archiveStream = zf.StreamForDiskNumber(_diskNumber);
                     }

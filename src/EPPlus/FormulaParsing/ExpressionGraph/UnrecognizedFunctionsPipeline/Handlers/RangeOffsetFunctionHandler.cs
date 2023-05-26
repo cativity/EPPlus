@@ -44,17 +44,17 @@ namespace OfficeOpenXml.FormulaParsing.ExpressionGraph.UnrecognizedFunctionsPipe
             function = null;
             if(funcName.Contains(":OFFSET"))
             {
-                var functionCompilerFactory = new FunctionCompilerFactory(context.Configuration.FunctionRepository, context);
-                var startRange = funcName.Split(':')[0];
-                var c = context.Scopes.Current;
-                var resultRange = context.ExcelDataProvider.GetRange(c.Address.Worksheet, c.Address.FromRow, c.Address.FromCol, startRange);
-                var rangeOffset = new RangeOffset
+                FunctionCompilerFactory? functionCompilerFactory = new FunctionCompilerFactory(context.Configuration.FunctionRepository, context);
+                string? startRange = funcName.Split(':')[0];
+                ParsingScope? c = context.Scopes.Current;
+                IRangeInfo? resultRange = context.ExcelDataProvider.GetRange(c.Address.Worksheet, c.Address.FromRow, c.Address.FromCol, startRange);
+                RangeOffset? rangeOffset = new RangeOffset
                 {
                     StartRange = resultRange
                 };
-                var compiler = functionCompilerFactory.Create(new Offset());
+                FunctionCompiler? compiler = functionCompilerFactory.Create(new Offset());
                 children.First().Children.First().IgnoreCircularReference = true;
-                var compileResult = compiler.Compile(children);
+                CompileResult? compileResult = compiler.Compile(children);
                 rangeOffset.EndRange = compileResult.Result as IRangeInfo;
                 function = rangeOffset;
                 return true;

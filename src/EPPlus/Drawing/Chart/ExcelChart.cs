@@ -90,7 +90,7 @@ namespace OfficeOpenXml.Drawing.Chart
             {
                 return false;
             }
-            foreach (var chart in _plotArea.ChartTypes)
+            foreach (ExcelChart? chart in _plotArea.ChartTypes)
             {
                 if (chart != this)
                 {
@@ -136,7 +136,7 @@ namespace OfficeOpenXml.Drawing.Chart
                         {
                             AddAxis();
                         }
-                        var nl = ChartNode.SelectNodes("c:axId", NameSpaceManager);
+                        XmlNodeList? nl = ChartNode.SelectNodes("c:axId", NameSpaceManager);
                         nl[0].Attributes["val"].Value = Axis[2].Id;
                         nl[1].Attributes["val"].Value = Axis[3].Id;
                         XAxis = Axis[2];
@@ -144,7 +144,7 @@ namespace OfficeOpenXml.Drawing.Chart
                     }
                     else
                     {
-                        var nl = ChartNode.SelectNodes("c:axId", NameSpaceManager);
+                        XmlNodeList? nl = ChartNode.SelectNodes("c:axId", NameSpaceManager);
                         nl[0].Attributes["val"].Value = Axis[0].Id;
                         nl[1].Attributes["val"].Value = Axis[1].Id;
                         XAxis = Axis[0];
@@ -655,7 +655,7 @@ namespace OfficeOpenXml.Drawing.Chart
         #endregion
         internal void InitChartTheme(int fallBackStyleId)
         {
-            var styleId = fallBackStyleId + 100;
+            int styleId = fallBackStyleId + 100;
             XmlElement el = (XmlElement)_chartXmlHelper.CreateNode("../../../mc:AlternateContent/mc:Choice");
             el.SetAttribute("xmlns:c14", ExcelPackage.schemaChart14);
             _chartXmlHelper.SetXmlNodeString("../../../mc:AlternateContent/mc:Choice/@Requires", "c14");
@@ -747,11 +747,11 @@ namespace OfficeOpenXml.Drawing.Chart
             
             if (chartNode != null)
             {
-                var drawingRelation = drawings.Part.GetRelationship(chartNode.Attributes["r:id"].Value);
-                var uriChart = UriHelper.ResolvePartUri(drawings.UriDrawing, drawingRelation.TargetUri);
+                ZipPackageRelationship? drawingRelation = drawings.Part.GetRelationship(chartNode.Attributes["r:id"].Value);
+                Uri? uriChart = UriHelper.ResolvePartUri(drawings.UriDrawing, drawingRelation.TargetUri);
 
-                var part = drawings.Part.Package.GetPart(uriChart);
-                var chartXml = new XmlDocument();
+                ZipPackagePart? part = drawings.Part.Package.GetPart(uriChart);
+                XmlDocument? chartXml = new XmlDocument();
                 LoadXmlSafe(chartXml, part.GetStream());
 
                 return CreateChartFromXml(drawings, node, uriChart, part, chartXml, parent);
@@ -766,15 +766,15 @@ namespace OfficeOpenXml.Drawing.Chart
             XmlNode chartDrawingNode = node.SelectSingleNode("mc:AlternateContent/mc:Choice[@Requires='cx1' or @Requires='cx2']/xdr:graphicFrame/a:graphic/a:graphicData/cx:chart", drawings.NameSpaceManager);
             if (chartDrawingNode != null)
             {
-                var drawingRelation = drawings.Part.GetRelationship(chartDrawingNode.Attributes["r:id"].Value);
-                var uriChart = UriHelper.ResolvePartUri(drawings.UriDrawing, drawingRelation.TargetUri);
+                ZipPackageRelationship? drawingRelation = drawings.Part.GetRelationship(chartDrawingNode.Attributes["r:id"].Value);
+                Uri? uriChart = UriHelper.ResolvePartUri(drawings.UriDrawing, drawingRelation.TargetUri);
 
-                var part = drawings.Part.Package.GetPart(uriChart);
-                var chartXml = new XmlDocument();
+                ZipPackagePart? part = drawings.Part.Package.GetPart(uriChart);
+                XmlDocument? chartXml = new XmlDocument();
                 LoadXmlSafe(chartXml, part.GetStream());
 
-                var chartNode = chartXml.SelectSingleNode("cx:chartSpace/cx:chart", drawings.NameSpaceManager);
-                var layoutId = chartNode.SelectSingleNode("cx:plotArea/cx:plotAreaRegion/cx:series[1]/@layoutId", drawings.NameSpaceManager);
+                XmlNode? chartNode = chartXml.SelectSingleNode("cx:chartSpace/cx:chart", drawings.NameSpaceManager);
+                XmlNode? layoutId = chartNode.SelectSingleNode("cx:plotArea/cx:plotAreaRegion/cx:series[1]/@layoutId", drawings.NameSpaceManager);
                 if(layoutId==null)
                 {
                     return new ExcelTreemapChart(drawings, node, uriChart, part, chartXml, chartNode);
@@ -825,7 +825,7 @@ namespace OfficeOpenXml.Drawing.Chart
                     }
                     else
                     {
-                        var subChart = GetChart(n, null, null, null, null, null, topChart, parent);
+                        ExcelChart? subChart = GetChart(n, null, null, null, null, null, topChart, parent);
                         if (subChart != null)
                         {
                             topChart.PlotArea.ChartTypes.Add(subChart);                            

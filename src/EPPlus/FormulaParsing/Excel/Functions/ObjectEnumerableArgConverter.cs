@@ -27,7 +27,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions
                 {
                     if (arg.Value is IRangeInfo)
                     {
-                        foreach (var cell in (IRangeInfo)arg.Value)
+                        foreach (ICellInfo? cell in (IRangeInfo)arg.Value)
                         {
                             if (!CellStateHelper.ShouldIgnore(ignoreHidden, cell, context))
                             {

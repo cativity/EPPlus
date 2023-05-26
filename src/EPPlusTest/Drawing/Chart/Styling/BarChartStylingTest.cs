@@ -53,7 +53,7 @@ namespace EPPlusTest.Drawing.Chart.Styling
         [TestMethod]
         public void BarChart_Styles()
         {
-            var ws = _pck.Workbook.Worksheets.Add("BarClusteredChartStyles");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("BarClusteredChartStyles");
             LoadTestdata(ws);
 
             StyleBarChart(ws, eBarChartType.BarClustered);
@@ -61,7 +61,7 @@ namespace EPPlusTest.Drawing.Chart.Styling
         [TestMethod]
         public void BarChartStacked_Styles()
         {
-            var ws = _pck.Workbook.Worksheets.Add("BarStackedChartStyles");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("BarStackedChartStyles");
             LoadTestdata(ws);
 
             StyleStackedBarChart(ws, eBarChartType.BarStacked);
@@ -69,7 +69,7 @@ namespace EPPlusTest.Drawing.Chart.Styling
         [TestMethod]
         public void BarChartStacked100_Styles()
         {
-            var ws = _pck.Workbook.Worksheets.Add("BarStacked100ChartStyles");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("BarStacked100ChartStyles");
             LoadTestdata(ws);
 
             StyleStackedBarChart(ws, eBarChartType.BarStacked100);
@@ -98,12 +98,12 @@ namespace EPPlusTest.Drawing.Chart.Styling
                 });
 
             //Style 3
-            var chart3 = AddBar(ws, chartType, "ColumnChartStyle3", 0, 31, ePresetChartStyle.BarChartStyle3,
-            c =>
-            {
-                c.DataLabel.ShowPercent = true;
-                c.DataLabel.Position = eLabelPosition.Center;
-            });
+            ExcelBarChart? chart3 = AddBar(ws, chartType, "ColumnChartStyle3", 0, 31, ePresetChartStyle.BarChartStyle3,
+                                           c =>
+                                           {
+                                               c.DataLabel.ShowPercent = true;
+                                               c.DataLabel.Position = eLabelPosition.Center;
+                                           });
 
             //Style 4
             AddBar(ws, chartType, "ColumnChartStyle4", 22, 5, ePresetChartStyle.BarChartStyle4,
@@ -196,12 +196,12 @@ namespace EPPlusTest.Drawing.Chart.Styling
                 });
 
             //Style 3
-            var chart3 = AddBar(ws, chartType, "ColumnChartStyle3", 0, 31, ePresetChartStyle.StackedBarChartStyle3,
-            c =>
-            {
-                c.DataLabel.ShowPercent = true;
-                c.DataLabel.Position = eLabelPosition.Center;
-            });
+            ExcelBarChart? chart3 = AddBar(ws, chartType, "ColumnChartStyle3", 0, 31, ePresetChartStyle.StackedBarChartStyle3,
+                                           c =>
+                                           {
+                                               c.DataLabel.ShowPercent = true;
+                                               c.DataLabel.Position = eLabelPosition.Center;
+                                           });
 
             //Style 4
             AddBar(ws, chartType, "ColumnChartStyle4", 22, 5, ePresetChartStyle.StackedBarChartStyle4,
@@ -261,13 +261,13 @@ namespace EPPlusTest.Drawing.Chart.Styling
 
         private static ExcelBarChart AddBar(ExcelWorksheet ws, eBarChartType type, string name, int row, int col, ePresetChartStyle style, Action<ExcelBarChart> SetProperties)    
         {
-            var chart = ws.Drawings.AddBarChart(name, type);
+            ExcelBarChart? chart = ws.Drawings.AddBarChart(name, type);
             chart.SetPosition(row, 0, col, 0);
             chart.To.Column = col+12;
             chart.To.ColumnOff = 0;
             chart.To.Row = row + 18;
             chart.To.RowOff = 0;
-            var serie = chart.Series.Add("D2:D8", "A2:A8");
+            ExcelBarChartSerie? serie = chart.Series.Add("D2:D8", "A2:A8");
             SetProperties(chart);
 
             chart.StyleManager.SetChartStyle(style);

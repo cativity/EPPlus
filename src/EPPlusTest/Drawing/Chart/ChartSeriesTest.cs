@@ -30,16 +30,16 @@ namespace EPPlusTest.Drawing.Chart
         [TestMethod]
         public void AddSunburstChartSingleSerie()
         {
-            var ws = _pck.Workbook.Worksheets.Add("Sunburst");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("Sunburst");
             LoadHierarkiTestData(ws);
-            var chart = ws.Drawings.AddSunburstChart("Sunburst1");
-            var serie = chart.Series.Add(ws.Cells["D2:D17"]);
+            ExcelSunburstChart? chart = ws.Drawings.AddSunburstChart("Sunburst1");
+            ExcelChartExSerie? serie = chart.Series.Add(ws.Cells["D2:D17"]);
             chart.SetPosition(2, 0, 15, 0);
             chart.SetSize(1600, 900);
             serie.DataLabel.Position = eLabelPosition.Center;
             serie.DataLabel.ShowCategory = true;
             serie.DataLabel.ShowValue = true;
-            var dp = serie.DataPoints.Add(2);
+            ExcelChartExDataPoint? dp = serie.DataPoints.Add(2);
 
             Assert.AreEqual(eDrawingType.Chart, chart.DrawingType);
             Assert.IsInstanceOfType(chart, typeof(ExcelSunburstChart));
@@ -51,16 +51,16 @@ namespace EPPlusTest.Drawing.Chart
         [TestMethod]
         public void AddPieChartSingleSerie()
         {
-            var ws = _pck.Workbook.Worksheets.Add("Pie");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("Pie");
             LoadHierarkiTestData(ws);
-            var chart = ws.Drawings.AddPieChart("Pie1", ePieChartType.Pie);
-            var serie = chart.Series.Add(ws.Cells["D2:D17"]);
+            ExcelPieChart? chart = ws.Drawings.AddPieChart("Pie1", ePieChartType.Pie);
+            ExcelPieChartSerie? serie = chart.Series.Add(ws.Cells["D2:D17"]);
             chart.SetPosition(2, 0, 15, 0);
             chart.SetSize(1600, 900);
             serie.DataLabel.Position = eLabelPosition.Center;
             serie.DataLabel.ShowCategory = true;
             serie.DataLabel.ShowValue = true;
-            var dp = serie.DataPoints.Add(2);
+            ExcelChartDataPoint? dp = serie.DataPoints.Add(2);
 
             Assert.AreEqual(eDrawingType.Chart, chart.DrawingType);
             Assert.IsInstanceOfType(chart, typeof(ExcelPieChart));
@@ -72,11 +72,11 @@ namespace EPPlusTest.Drawing.Chart
         [TestMethod]
         public void AddColumnChartSingleSerieWithSecondSerieWithCategory()
         {
-            var ws = _pck.Workbook.Worksheets.Add("Column");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("Column");
             LoadHierarkiTestData(ws);
-            var chart = ws.Drawings.AddBarChart("Bar1", eBarChartType.Column3D);
-            var serie1 = chart.Series.Add(ws.Cells["D2:D17"]);
-            var serie2 = chart.Series.Add(ws.Cells["D2:D17"], ws.Cells["C2:C17"]);
+            ExcelBarChart? chart = ws.Drawings.AddBarChart("Bar1", eBarChartType.Column3D);
+            ExcelBarChartSerie? serie1 = chart.Series.Add(ws.Cells["D2:D17"]);
+            ExcelBarChartSerie? serie2 = chart.Series.Add(ws.Cells["D2:D17"], ws.Cells["C2:C17"]);
             chart.SetPosition(2, 0, 15, 0);
             chart.SetSize(1600, 900);
 
@@ -96,9 +96,9 @@ namespace EPPlusTest.Drawing.Chart
         [TestMethod]
         public void AddColumnChartSingleSerieWithSecondSerieWithCategoryWithLinear()
         {
-            var ws = _pck.Workbook.Worksheets.Add("ColumnWithinLinear");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("ColumnWithinLinear");
             LoadHierarkiTestData(ws);
-            var chart = ws.Drawings.AddBarChart("Bar1", eBarChartType.Column3D);
+            ExcelBarChart? chart = ws.Drawings.AddBarChart("Bar1", eBarChartType.Column3D);
 
             //Change chart colorMethod from Cylce to WithinLinear
             chart.StyleManager.SetChartStyle(OfficeOpenXml.Drawing.Chart.Style.ePresetChartStyleMultiSeries.Column3dChartStyle1,
@@ -107,19 +107,19 @@ namespace EPPlusTest.Drawing.Chart
 
             //make series only have range of 1 so that the serie2(index=1) is the same as the number of cells in the range
             //which causes System.ArgumentException: Negative percentage not allowed
-            var serie1 = chart.Series.Add(ws.Cells["D2"]);
-            var serie2 = chart.Series.Add(ws.Cells["D2"], ws.Cells["C2"]);
+            ExcelBarChartSerie? serie1 = chart.Series.Add(ws.Cells["D2"]);
+            ExcelBarChartSerie? serie2 = chart.Series.Add(ws.Cells["D2"], ws.Cells["C2"]);
         }
 
         [TestMethod]
         public void AddChartWithLegendEntries()
         {
-            var ws = _pck.Workbook.Worksheets.Add("LegendEntries");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("LegendEntries");
             LoadHierarkiTestData(ws);
-            var chart = ws.Drawings.AddBarChart("Bar1", eBarChartType.Column3D);
-            var serie1 = chart.Series.Add(ws.Cells["D2:D17"]);
-            var serie2 = chart.Series.Add(ws.Cells["D2:D17"], ws.Cells["C2:C17"]);
-            var serie3 = chart.Series.Add(ws.Cells["D2:D17"], ws.Cells["B2:B17"]);
+            ExcelBarChart? chart = ws.Drawings.AddBarChart("Bar1", eBarChartType.Column3D);
+            ExcelBarChartSerie? serie1 = chart.Series.Add(ws.Cells["D2:D17"]);
+            ExcelBarChartSerie? serie2 = chart.Series.Add(ws.Cells["D2:D17"], ws.Cells["C2:C17"]);
+            ExcelBarChartSerie? serie3 = chart.Series.Add(ws.Cells["D2:D17"], ws.Cells["B2:B17"]);
 
             serie1.Header = "Serie 1";
             serie2.Header = "Serie 2-Deleted";
@@ -150,14 +150,14 @@ namespace EPPlusTest.Drawing.Chart
         [TestMethod]
         public void ReadChartWithLegendEntries()
         {
-            using (var p1 = new ExcelPackage())
+            using (ExcelPackage? p1 = new ExcelPackage())
             {
-                var ws = p1.Workbook.Worksheets.Add("LegendEntries");
+                ExcelWorksheet? ws = p1.Workbook.Worksheets.Add("LegendEntries");
                 LoadHierarkiTestData(ws);
-                var chart = ws.Drawings.AddBarChart("Bar1", eBarChartType.Column3D);
-                var serie1 = chart.Series.Add(ws.Cells["D2:D17"]);
-                var serie2 = chart.Series.Add(ws.Cells["D2:D17"], ws.Cells["C2:C17"]);
-                var serie3 = chart.Series.Add(ws.Cells["D2:D17"], ws.Cells["B2:B17"]);
+                ExcelBarChart? chart = ws.Drawings.AddBarChart("Bar1", eBarChartType.Column3D);
+                ExcelBarChartSerie? serie1 = chart.Series.Add(ws.Cells["D2:D17"]);
+                ExcelBarChartSerie? serie2 = chart.Series.Add(ws.Cells["D2:D17"], ws.Cells["C2:C17"]);
+                ExcelBarChartSerie? serie3 = chart.Series.Add(ws.Cells["D2:D17"], ws.Cells["B2:B17"]);
 
                 serie1.Header = "Serie 1";
                 serie2.Header = "Serie 2-Deleted";
@@ -187,7 +187,7 @@ namespace EPPlusTest.Drawing.Chart
 
                 p1.Save();
 
-                using (var p2 = new ExcelPackage(p1.Stream))
+                using (ExcelPackage? p2 = new ExcelPackage(p1.Stream))
                 {
                     ws = p2.Workbook.Worksheets[0];
                     chart = ws.Drawings[0].As.Chart.BarChart;

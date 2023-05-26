@@ -36,13 +36,13 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Text
         public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
         {
             ValidateArguments(arguments, 1);
-            var arg = ArgToString(arguments, 0);
+            string? arg = ArgToString(arguments, 0);
             SetArgAndPercentage(arg);
             if(!ValidateAndSetSeparators(arguments.ToArray()))
             {
                 return CreateResult(ExcelErrorValue.Values.Value, DataType.ExcelError);
             }
-            var cultureInfo = new CultureInfo("en-US", true);
+            CultureInfo? cultureInfo = new CultureInfo("en-US", true);
             cultureInfo.NumberFormat.NumberDecimalSeparator = _decimalSeparator;
             cultureInfo.NumberFormat.NumberGroupSeparator = _groupSeparator;
             if(double.TryParse(_arg, NumberStyles.Any, cultureInfo, out double result))
@@ -58,11 +58,11 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Text
 
         private void SetArgAndPercentage(string arg)
         {
-            var pIndex = arg.IndexOf("%", StringComparison.OrdinalIgnoreCase);
+            int pIndex = arg.IndexOf("%", StringComparison.OrdinalIgnoreCase);
             if(pIndex > 0)
             {
                 _arg = arg.Substring(0, pIndex).Replace(" ", "");
-                var percentage = arg.Substring(pIndex, arg.Length - pIndex).Trim();
+                string? percentage = arg.Substring(pIndex, arg.Length - pIndex).Trim();
                 if (!Regex.IsMatch(percentage, "[%]+"))
                 {
                     throw new ArgumentException("Invalid format: " + arg);
@@ -83,7 +83,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Text
                 return true;
             }
 
-            var decimalSeparator = ArgToString(arguments, 1).Substring(0, 1);
+            string? decimalSeparator = ArgToString(arguments, 1).Substring(0, 1);
             if (!DecimalSeparatorIsValid(decimalSeparator))
             {
                 return false;
@@ -91,7 +91,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Text
             _decimalSeparator = decimalSeparator;
             if (arguments.Length > 2)
             {
-                var groupSeparator = ArgToString(arguments, 2).Substring(0, 1);
+                string? groupSeparator = ArgToString(arguments, 2).Substring(0, 1);
                 if(!GroupSeparatorIsValid(decimalSeparator, groupSeparator))
                 {
                     return false;

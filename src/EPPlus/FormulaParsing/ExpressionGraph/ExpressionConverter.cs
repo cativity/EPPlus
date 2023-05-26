@@ -23,7 +23,7 @@ namespace OfficeOpenXml.FormulaParsing.ExpressionGraph
     {
         public StringExpression ToStringExpression(Expression expression)
         {
-            var result = expression.Compile();
+            CompileResult result = expression.Compile();
             string toString;
             if(result.DataType == DataType.Decimal)
             {
@@ -33,7 +33,7 @@ namespace OfficeOpenXml.FormulaParsing.ExpressionGraph
             {
                 toString = result.Result.ToString();
             }
-            var newExp = new StringExpression(toString);
+            StringExpression newExp = new StringExpression(toString);
             newExp.Operator = expression.Operator;
             return newExp;
         }
@@ -70,7 +70,7 @@ namespace OfficeOpenXml.FormulaParsing.ExpressionGraph
                 case DataType.Date:
                     return new DecimalExpression((double)compileResult.Result);
                 case DataType.Enumerable:
-                    var rangeInfo = compileResult.Result as IRangeInfo;
+                    IRangeInfo? rangeInfo = compileResult.Result as IRangeInfo;
                     if (rangeInfo != null)
                     {
                         return new ExcelRangeExpression(rangeInfo);

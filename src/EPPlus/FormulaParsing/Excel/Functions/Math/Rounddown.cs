@@ -33,10 +33,10 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
                 return this.CreateResult(0d, DataType.Decimal);
             }
 
-            var number = ArgToDecimal(arguments, 0, context.Configuration.PrecisionAndRoundingStrategy);
-            var nDecimals = ArgToInt(arguments, 1);
+            double number = ArgToDecimal(arguments, 0, context.Configuration.PrecisionAndRoundingStrategy);
+            int nDecimals = ArgToInt(arguments, 1);
 
-            var nFactor = number < 0 ? -1 : 1;
+            int nFactor = number < 0 ? -1 : 1;
             number *= nFactor;
 
             double result;
@@ -54,11 +54,11 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
 
         private static double RoundDownDecimalNumber(double number, int nDecimals)
         {
-            var integerPart = System.Math.Floor(number);
-            var decimalPart = number - integerPart;
+            double integerPart = System.Math.Floor(number);
+            double decimalPart = number - integerPart;
             decimalPart = System.Math.Pow(10d, nDecimals)*decimalPart;
             decimalPart = System.Math.Truncate(decimalPart)/System.Math.Pow(10d, nDecimals);
-            var result = integerPart + decimalPart;
+            double result = integerPart + decimalPart;
             return result;
         }
     }

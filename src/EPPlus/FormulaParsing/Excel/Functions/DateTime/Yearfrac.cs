@@ -29,23 +29,23 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime
     {
         public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
         {
-            var functionArguments = arguments as FunctionArgument[] ?? arguments.ToArray();
+            FunctionArgument[]? functionArguments = arguments as FunctionArgument[] ?? arguments.ToArray();
             ValidateArguments(functionArguments, 2);
-            var date1Num = ArgToDecimal(functionArguments, 0);
-            var date2Num = ArgToDecimal(functionArguments, 1);
+            double date1Num = ArgToDecimal(functionArguments, 0);
+            double date2Num = ArgToDecimal(functionArguments, 1);
             if (date1Num > date2Num) //Switch to make date1 the lowest date
             {
-                var t = date1Num;
+                double t = date1Num;
                 date1Num = date2Num;
                 date2Num = t;
-                var fa = functionArguments[1];
+                FunctionArgument? fa = functionArguments[1];
                 functionArguments[1] = functionArguments[0];
                 functionArguments[0] = fa;
             }
-            var date1 = System.DateTime.FromOADate(date1Num);
-            var date2 = System.DateTime.FromOADate(date2Num);
+            System.DateTime date1 = System.DateTime.FromOADate(date1Num);
+            System.DateTime date2 = System.DateTime.FromOADate(date2Num);
 
-            var basis = 0;
+            int basis = 0;
             if (functionArguments.Count() > 2)
             {
                 basis = ArgToInt(functionArguments, 2);
@@ -54,16 +54,16 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime
                     return this.CreateResult(eErrorType.Num);
                 }
             }
-            var func = context.Configuration.FunctionRepository.GetFunction("days360");
-            var calendar = new GregorianCalendar();
+            ExcelFunction? func = context.Configuration.FunctionRepository.GetFunction("days360");
+            GregorianCalendar? calendar = new GregorianCalendar();
             switch (basis)
             {
                 case 0:
-                    var d360Result = System.Math.Abs(func.Execute(functionArguments, context).ResultNumeric);
+                    double d360Result = System.Math.Abs(func.Execute(functionArguments, context).ResultNumeric);
                     // reproducing excels behaviour
                     if (date1.Month == 2 && date2.Day==31)
                     {
-                        var daysInFeb = calendar.IsLeapYear(date1.Year) ? 29 : 28;
+                        int daysInFeb = calendar.IsLeapYear(date1.Year) ? 29 : 28;
                         if (date1.Day == daysInFeb)
                         {
                             d360Result++;
@@ -77,7 +77,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime
                 case 3:
                     return CreateResult(System.Math.Abs((date2 - date1).TotalDays / 365d), DataType.Decimal);
                 case 4:
-                    var args = functionArguments.ToList();
+                    List<FunctionArgument>? args = functionArguments.ToList();
                     args.Add(new FunctionArgument(true));
                     double? result = System.Math.Abs(func.Execute(args, context).ResultNumeric / 360d);
                     return CreateResult(result.Value, DataType.Decimal);
@@ -88,10 +88,10 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime
 
         private double CalculateAcutalYear(System.DateTime dt1, System.DateTime dt2)
         {
-            var calendar = new GregorianCalendar();
-            var perYear = 0d;
-            var nYears = dt2.Year - dt1.Year + 1;
-            for (var y = dt1.Year; y <= dt2.Year; ++y)
+            GregorianCalendar? calendar = new GregorianCalendar();
+            double perYear = 0d;
+            int nYears = dt2.Year - dt1.Year + 1;
+            for (int y = dt1.Year; y <= dt2.Year; ++y)
             {
                 perYear += calendar.IsLeapYear(y) ? 366 : 365;
             }

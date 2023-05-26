@@ -36,8 +36,8 @@ namespace OfficeOpenXml.Core.Worksheet.Fonts.GenericFontMetrics
 
         public IEnumerable<char> ToCharList()
         {
-            var result = new List<char>();
-            for (var c = Start; c <= End; c++)
+            List<char>? result = new List<char>();
+            for (int c = Start; c <= End; c++)
             {
                 result.Add(Convert.ToChar(c));
             }

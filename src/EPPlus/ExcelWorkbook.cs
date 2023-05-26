@@ -35,6 +35,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Xml;
+using OfficeOpenXml.Style;
 
 namespace OfficeOpenXml
 {
@@ -100,7 +101,7 @@ namespace OfficeOpenXml
                 return;
             }
             _worksheets._areDrawingsLoaded = true;
-            foreach (var ws in Worksheets)
+            foreach (ExcelWorksheet ws in Worksheets)
             {
                 if (loadingWsName.Equals(ws.Name, StringComparison.OrdinalIgnoreCase) == false)
                 {
@@ -136,7 +137,7 @@ namespace OfficeOpenXml
         private void LoadSlicerNames()
         {
             _slicerNames = new HashSet<string>(StringComparer.InvariantCultureIgnoreCase);
-            foreach (var ws in Worksheets)
+            foreach (ExcelWorksheet ws in Worksheets)
             {
                 foreach (ExcelDrawing d in ws.Drawings)
                 {
@@ -150,8 +151,8 @@ namespace OfficeOpenXml
 
         private string GetUniqueName(string name, HashSet<string> hs)
         {
-            var n = name;
-            var ix = 1;
+            string n = name;
+            int ix = 1;
             while (hs.Contains(n))
             {
                 n = name + $"{ix++}";
@@ -185,14 +186,14 @@ namespace OfficeOpenXml
         /// </summary>
         internal void LoadPivotTableCaches()
         {
-            var pts = GetNodes("d:pivotCaches/d:pivotCache");
+            XmlNodeList? pts = GetNodes("d:pivotCaches/d:pivotCache");
             if (pts != null)
             {
                 foreach (XmlElement pt in pts)
                 {
-                    var rid = pt.GetAttribute("r:id");
-                    var cacheId = pt.GetAttribute("cacheId");
-                    var rel = Part.GetRelationship(rid);
+                    string rid = pt.GetAttribute("r:id");
+                    string cacheId = pt.GetAttribute("cacheId");
+                    ZipPackageRelationship rel = Part.GetRelationship(rid);
                     _pivotTableIds.Add(UriHelper.ResolvePartUri(rel.SourceUri, rel.TargetUri), int.Parse(cacheId));
                 }
             }
@@ -200,7 +201,7 @@ namespace OfficeOpenXml
 
         private void SetUris()
         {
-            foreach (var rel in _package.ZipPackage.GetRelationships())
+            foreach (ZipPackageRelationship rel in _package.ZipPackage.GetRelationships())
             {
                 if (rel.RelationshipType == ExcelPackage.schemaRelationships + "/officeDocument")
                 {
@@ -215,7 +216,7 @@ namespace OfficeOpenXml
             }
             else
             {
-                foreach (var rel in Part.GetRelationships())
+                foreach (ZipPackageRelationship rel in Part.GetRelationships())
                 {
                     switch (rel.RelationshipType)
                     {
@@ -288,7 +289,7 @@ namespace OfficeOpenXml
         {
             if (_package.ZipPackage.PartExists(SharedStringsUri))
             {
-                var xml = _package.GetXmlFromUri(SharedStringsUri);
+                XmlDocument xml = _package.GetXmlFromUri(SharedStringsUri);
                 XmlNodeList nl = xml.SelectNodes("//d:sst/d:si", NameSpaceManager);
                 _sharedStringsList = new List<SharedStringItem>();
                 if (nl != null)
@@ -307,7 +308,7 @@ namespace OfficeOpenXml
                     }
                 }
                 //Delete the shared string part, it will be recreated when the package is saved.
-                foreach (var rel in Part.GetRelationships())
+                foreach (ZipPackageRelationship rel in Part.GetRelationships())
                 {
                     if (rel.TargetUri.OriginalString.EndsWith("sharedstrings.xml", StringComparison.OrdinalIgnoreCase))
                     {
@@ -340,7 +341,7 @@ namespace OfficeOpenXml
                         nameWorksheet = Worksheets[localSheetID + _package._worksheetAdd];
                     }
 
-                    var addressType = ExcelAddressBase.IsValid(fullAddress);
+                    ExcelAddressBase.AddressType addressType = ExcelAddressBase.IsValid(fullAddress);
                     ExcelNamedRange namedRange;
 
                     if (addressType == ExcelAddressBase.AddressType.Invalid || addressType == ExcelAddressBase.AddressType.InternalName || addressType == ExcelAddressBase.AddressType.ExternalName || addressType == ExcelAddressBase.AddressType.Formula || addressType == ExcelAddressBase.AddressType.ExternalAddress)    //A value or a formula
@@ -359,25 +360,25 @@ namespace OfficeOpenXml
                         {
                             if (string.IsNullOrEmpty(addr._ws))
                             {
-                                var addressRange = CreateRangeForName(Worksheets[localSheetID + _package._worksheetAdd], fullAddress, out bool allowRelativeAddress);
+                                ExcelRangeBase addressRange = CreateRangeForName(Worksheets[localSheetID + _package._worksheetAdd], fullAddress, out bool allowRelativeAddress);
                                 namedRange = Worksheets[localSheetID + _package._worksheetAdd].Names.AddName(elem.GetAttribute("name"), addressRange, allowRelativeAddress);
                             }
                             else
                             {
-                                var addressRange = CreateRangeForName(Worksheets[addr._ws], fullAddress, out bool allowRelativeAddress);
+                                ExcelRangeBase addressRange = CreateRangeForName(Worksheets[addr._ws], fullAddress, out bool allowRelativeAddress);
                                 namedRange = Worksheets[localSheetID + _package._worksheetAdd].Names.AddName(elem.GetAttribute("name"), addressRange, allowRelativeAddress);
                             }
                         }
                         else
                         {
-                            var ws = Worksheets[addr._ws];
+                            ExcelWorksheet? ws = Worksheets[addr._ws];
                             if (ws == null)
                             {
                                 namedRange = _names.AddFormula(elem.GetAttribute("name"), fullAddress);
                             }
                             else
                             {
-                                var addressRange = CreateRangeForName(ws, fullAddress, out bool allowRelativeAddress);
+                                ExcelRangeBase addressRange = CreateRangeForName(ws, fullAddress, out bool allowRelativeAddress);
                                 namedRange = _names.AddName(elem.GetAttribute("name"), addressRange, allowRelativeAddress);
                             }
                         }
@@ -398,7 +399,7 @@ namespace OfficeOpenXml
         private ExcelNamedRange AddFormulaOrValueName(XmlElement elem, string fullAddress, ExcelWorksheet nameWorksheet)
         {
             ExcelNamedRange namedRange;
-            var range = new ExcelRangeBase(this, nameWorksheet, elem.GetAttribute("name"), true);
+            ExcelRangeBase range = new ExcelRangeBase(this, nameWorksheet, elem.GetAttribute("name"), true);
             if (nameWorksheet == null)
             {
                 namedRange = _names.AddName(elem.GetAttribute("name"), range);
@@ -426,9 +427,9 @@ namespace OfficeOpenXml
 
         private ExcelRangeBase CreateRangeForName(ExcelWorksheet worksheet, string fullAddress, out bool allowRelativeAddress)
         {
-            var iR = false;
-            var range = new ExcelRangeBase(this, worksheet, fullAddress, false);
-            var addr = range.ToInternalAddress();
+            bool iR = false;
+            ExcelRangeBase range = new ExcelRangeBase(this, worksheet, fullAddress, false);
+            ExcelAddressBase addr = range.ToInternalAddress();
             if (addr._fromColFixed || addr._toColFixed || addr._fromRowFixed || addr._toRowFixed)
             {
                 iR = true;
@@ -448,7 +449,7 @@ namespace OfficeOpenXml
             {
                 path = $"d:extLst/d:ext/x15:slicerCaches/x14:slicerCache[@r:id='{relId}']";
             }
-            var node = GetNode(path);
+            XmlNode? node = GetNode(path);
             if (node != null)
             {
                 if (node.ParentNode.ChildNodes.Count > 1)
@@ -467,14 +468,14 @@ namespace OfficeOpenXml
             switch (ExcelAddressBase.IsValid(function))
             {
                 case ExcelAddressBase.AddressType.InternalAddress:
-                    var addr = new ExcelAddress(function);
+                    ExcelAddress addr = new ExcelAddress(function);
                     if (string.IsNullOrEmpty(addr.WorkSheetName))
                     {
                         return ws.Cells[function];
                     }
                     else
                     {
-                        var otherWs = Worksheets[addr.WorkSheetName];
+                        ExcelWorksheet? otherWs = Worksheets[addr.WorkSheetName];
                         if (otherWs == null)
                         {
                             return null;
@@ -499,14 +500,14 @@ namespace OfficeOpenXml
                     }
                     else
                     {
-                        var nameAddr = new ExcelAddress(function);
+                        ExcelAddress nameAddr = new ExcelAddress(function);
                         if (string.IsNullOrEmpty(nameAddr.WorkSheetName))
                         {
                             return null;
                         }
                         else
                         {
-                            var otherWs = Worksheets[nameAddr.WorkSheetName];
+                            ExcelWorksheet? otherWs = Worksheets[nameAddr.WorkSheetName];
                             if (otherWs != null && otherWs.Names.ContainsKey(nameAddr.Address))
                             {
                                 return otherWs.Names[nameAddr.Address];
@@ -523,7 +524,7 @@ namespace OfficeOpenXml
 
         internal int GetPivotCacheId(Uri cacheDefinitionUri)
         {
-            foreach (var rel in Part.GetRelationshipsByType(ExcelPackage.schemaRelationships + "/pivotCacheDefinition"))
+            foreach (ZipPackageRelationship rel in Part.GetRelationshipsByType(ExcelPackage.schemaRelationships + "/pivotCacheDefinition"))
             {
                 if (cacheDefinitionUri == OfficeOpenXml.Utils.UriHelper.ResolvePartUri(rel.SourceUri, rel.TargetUri))
                 {
@@ -544,7 +545,7 @@ namespace OfficeOpenXml
             {
                 if (_worksheets == null)
                 {
-                    var sheetsNode = _workbookXml.DocumentElement.SelectSingleNode("d:sheets", _namespaceManager);
+                    XmlNode? sheetsNode = _workbookXml.DocumentElement.SelectSingleNode("d:sheets", _namespaceManager);
                     if (sheetsNode == null)
                     {
                         sheetsNode = CreateNode("d:sheets");
@@ -565,7 +566,7 @@ namespace OfficeOpenXml
         /// <exception cref="InvalidOperationException"></exception>
         public IExcelHtmlRangeExporter CreateHtmlExporter(params ExcelRangeBase[] ranges)
         {
-            foreach (var range in ranges)
+            foreach (ExcelRangeBase range in ranges)
             {
                 if (range._workbook != this)
                 {
@@ -666,10 +667,10 @@ namespace OfficeOpenXml
         {
             get
             {
-                var ix = Styles.GetNormalStyleIndex();
+                int ix = Styles.GetNormalStyleIndex();
                 if (ix >= 0)
                 {
-                    var font = Styles.NamedStyles[ix].Style.Font;
+                    ExcelFont font = Styles.NamedStyles[ix].Style.Font;
                     if (font.Index == int.MinValue)
                     {
                         font.Index = 0;
@@ -712,7 +713,7 @@ namespace OfficeOpenXml
             else
             {
                 float min = -1;
-                foreach (var size in font.Keys)
+                foreach (float size in font.Keys)
                 {
                     if (min < size && size > fontSize)
                     {
@@ -894,15 +895,15 @@ namespace OfficeOpenXml
         internal bool ExistsPivotCache(int cacheID, ref int newID)
         {
             newID = cacheID;
-            var ret = true;
-            foreach (var ws in Worksheets)
+            bool ret = true;
+            foreach (ExcelWorksheet ws in Worksheets)
             {
                 if (ws is ExcelChartsheet)
                 {
                     continue;
                 }
 
-                foreach (var pt in ws.PivotTables)
+                foreach (ExcelPivotTable pt in ws.PivotTables)
                 {
                     if (pt.CacheId == cacheID)
                     {
@@ -942,7 +943,7 @@ namespace OfficeOpenXml
                 if (Date1904 != value)
                 {
                     // Like Excel when the option it's changed update it all cells with Date format
-                    foreach (var ws in Worksheets)
+                    foreach (ExcelWorksheet ws in Worksheets)
                     {
                         if (ws is ExcelChartsheet)
                         {
@@ -1232,7 +1233,7 @@ namespace OfficeOpenXml
             {
                 if (Worksheets[_package._worksheetAdd].Hidden != eWorkSheetHidden.Visible)
                 {
-                    var ix = Worksheets.GetFirstVisibleSheetIndex();
+                    int? ix = Worksheets.GetFirstVisibleSheetIndex();
                     if (ix > View.FirstSheet)
                     {
                         View.FirstSheet = ix;
@@ -1259,8 +1260,8 @@ namespace OfficeOpenXml
             // save threaded comments
 
             // save all the open worksheets
-            var isProtected = Protection.LockWindows || Protection.LockStructure;
-            foreach (var worksheet in Worksheets)
+            bool isProtected = Protection.LockWindows || Protection.LockStructure;
+            foreach (ExcelWorksheet worksheet in Worksheets)
             {
                 if (isProtected && Protection.LockWindows)
                 {
@@ -1297,21 +1298,21 @@ namespace OfficeOpenXml
 
         private void SaveExternalLinks()
         {
-            foreach (var er in _externalLinks)
+            foreach (ExcelExternalLink er in _externalLinks)
             {
                 if (er.Part == null)
                 {
-                    var ewb = er.As.ExternalWorkbook;
-                    var uri = GetNewUri(_package.ZipPackage, "/xl/externalLinks/externalLink{0}.xml");
+                    ExcelExternalWorkbook ewb = er.As.ExternalWorkbook;
+                    Uri uri = GetNewUri(_package.ZipPackage, "/xl/externalLinks/externalLink{0}.xml");
                     ewb.Part = _package.ZipPackage.CreatePart(uri, ContentTypes.contentTypeExternalLink);
-                    var extFile = ((ExcelExternalWorkbook)er).File;
+                    FileInfo extFile = ((ExcelExternalWorkbook)er).File;
                     ewb.Relation = er.Part.CreateRelationship(extFile.FullName, TargetMode.External, ExcelPackage.schemaRelationships + "/externalLinkPath");
 
-                    var wbRel = Part.CreateRelationship(uri, TargetMode.Internal, ExcelPackage.schemaRelationships + "/externalLink");
-                    var wbExtRefElement = (XmlElement)CreateNode("d:externalReferences/d:externalReference", false, true);
+                    ZipPackageRelationship wbRel = Part.CreateRelationship(uri, TargetMode.Internal, ExcelPackage.schemaRelationships + "/externalLink");
+                    XmlElement wbExtRefElement = (XmlElement)CreateNode("d:externalReferences/d:externalReference", false, true);
                     wbExtRefElement.SetAttribute("id", ExcelPackage.schemaRelationships, wbRel.Id);
                 }
-                var sw = new StreamWriter(er.Part.GetStream(FileMode.CreateNew));
+                StreamWriter sw = new StreamWriter(er.Part.GetStream(FileMode.CreateNew));
                 sw.Write("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>");
                 sw.Write("<externalLink xmlns=\"http://schemas.openxmlformats.org/spreadsheetml/2006/main\" xmlns:mc=\"http://schemas.openxmlformats.org/markup-compatibility/2006\" mc:Ignorable=\"x14\" xmlns:x14=\"http://schemas.microsoft.com/office/spreadsheetml/2009/9/main\">");
                 er.Save(sw);
@@ -1322,9 +1323,9 @@ namespace OfficeOpenXml
 
         private void SavePivotTableCaches()
         {
-            foreach (var info in _pivotTableCaches.Values)
+            foreach (PivotTableCacheRangeInfo info in _pivotTableCaches.Values)
             {
-                foreach (var cache in info.PivotCaches)
+                foreach (PivotTableCacheInternal cache in info.PivotCaches)
                 {
                     if (cache._pivotTables.Count == 0)
                     {
@@ -1332,12 +1333,12 @@ namespace OfficeOpenXml
                         continue;
                     }
                     //Rewrite the pivottable address again if any rows or columns have been inserted or deleted
-                    var r = cache.SourceRange;
+                    ExcelRangeBase? r = cache.SourceRange;
                     if (r != null && r.Worksheet != null)              //Source does not exist
                     {
                         ExcelTable t = r.Worksheet.Tables.GetFromRange(r);
 
-                        var fields =
+                        XmlNodeList? fields =
                             cache.CacheDefinitionXml.SelectNodes(
                                 "d:pivotCacheDefinition/d:cacheFields/d:cacheField", NameSpaceManager);
                         if (fields != null)
@@ -1355,8 +1356,8 @@ namespace OfficeOpenXml
         {
             cache.RefreshFields();
             int ix = 0;
-            var flds = new HashSet<string>();
-            var sourceRange = cache.SourceRange;
+            HashSet<string> flds = new HashSet<string>();
+            ExcelRangeBase sourceRange = cache.SourceRange;
             foreach (XmlElement node in fields)
             {
                 if (ix >= sourceRange.Columns)
@@ -1364,7 +1365,7 @@ namespace OfficeOpenXml
                     break;
                 }
 
-                var fldName = node.GetAttribute("name");                        //Fixes issue 15295 dup name error
+                string? fldName = node.GetAttribute("name");                        //Fixes issue 15295 dup name error
                 if (string.IsNullOrEmpty(fldName))
                 {
                     fldName = (t == null
@@ -1402,7 +1403,7 @@ namespace OfficeOpenXml
             if (_package.ZipPackage.PartExists(uriCalcChain))
             {
                 Uri calcChain = new Uri("calcChain.xml", UriKind.Relative);
-                foreach (var relationship in _package.Workbook.Part.GetRelationships())
+                foreach (ZipPackageRelationship relationship in _package.Workbook.Part.GetRelationships())
                 {
                     if (relationship.TargetUri == calcChain)
                     {
@@ -1417,7 +1418,7 @@ namespace OfficeOpenXml
 
         private void ValidateDataValidations()
         {
-            foreach (var sheet in _package.Workbook.Worksheets)
+            foreach (ExcelWorksheet sheet in _package.Workbook.Worksheets)
             {
                 if (!(sheet is ExcelChartsheet) && sheet.DataValidations != null)
                 {
@@ -1432,9 +1433,9 @@ namespace OfficeOpenXml
             stream.CompressionLevel = (OfficeOpenXml.Packaging.Ionic.Zlib.CompressionLevel)compressionLevel;
             stream.PutNextEntry(fileName);
 
-            var cache = new StringBuilder();
-            var utf8Encoder = System.Text.Encoding.GetEncoding("UTF-8", new System.Text.EncoderReplacementFallback(string.Empty), new System.Text.DecoderReplacementFallback(string.Empty));
-            var sw = new StreamWriter(stream, utf8Encoder);
+            StringBuilder cache = new StringBuilder();
+            Encoding utf8Encoder = System.Text.Encoding.GetEncoding("UTF-8", new System.Text.EncoderReplacementFallback(string.Empty), new System.Text.DecoderReplacementFallback(string.Empty));
+            StreamWriter sw = new StreamWriter(stream, utf8Encoder);
             cache.AppendFormat("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\" ?><sst xmlns=\"http://schemas.openxmlformats.org/spreadsheetml/2006/main\" count=\"{0}\" uniqueCount=\"{0}\">", _sharedStrings.Count);
             foreach (string t in _sharedStrings.Keys)
             {
@@ -1627,7 +1628,7 @@ namespace OfficeOpenXml
                 return;
             }
 
-            foreach (var worksheet in this.Worksheets)
+            foreach (ExcelWorksheet worksheet in this.Worksheets)
             {
                 worksheet.ClearFormulas();
             }
@@ -1643,14 +1644,14 @@ namespace OfficeOpenXml
                 return;
             }
 
-            foreach (var worksheet in this.Worksheets)
+            foreach (ExcelWorksheet worksheet in this.Worksheets)
             {
                 worksheet.ClearFormulaValues();
             }
         }
         internal bool ExistsTableName(string Name)
         {
-            foreach (var ws in Worksheets)
+            foreach (ExcelWorksheet ws in Worksheets)
             {
                 if (ws is ExcelChartsheet)
                 {
@@ -1666,7 +1667,7 @@ namespace OfficeOpenXml
         }
         internal bool ExistsPivotTableName(string Name)
         {
-            foreach (var ws in Worksheets)
+            foreach (ExcelWorksheet ws in Worksheets)
             {
                 if (ws is ExcelChartsheet)
                 {
@@ -1688,10 +1689,10 @@ namespace OfficeOpenXml
 
                 XmlElement item = WorkbookXml.CreateElement("pivotCache", ExcelPackage.schemaMain);
                 item.SetAttribute("cacheId", cacheReference.CacheId.ToString());
-                var rel = Part.CreateRelationship(UriHelper.ResolvePartUri(WorkbookUri, cacheReference.CacheDefinitionUri), Packaging.TargetMode.Internal, ExcelPackage.schemaRelationships + "/pivotCacheDefinition");
+                ZipPackageRelationship rel = Part.CreateRelationship(UriHelper.ResolvePartUri(WorkbookUri, cacheReference.CacheDefinitionUri), Packaging.TargetMode.Internal, ExcelPackage.schemaRelationships + "/pivotCacheDefinition");
                 item.SetAttribute("id", ExcelPackage.schemaRelationships, rel.Id);
 
-                var pivotCaches = WorkbookXml.SelectSingleNode("//d:pivotCaches", NameSpaceManager);
+                XmlNode? pivotCaches = WorkbookXml.SelectSingleNode("//d:pivotCaches", NameSpaceManager);
                 pivotCaches.AppendChild(item);
             }
 
@@ -1724,7 +1725,7 @@ namespace OfficeOpenXml
         internal void RemovePivotTableCache(int cacheId)
         {
             string path = $"d:pivotCaches/d:pivotCache[@cacheId={cacheId}]";
-            var relId = GetXmlNodeString(path + "/@r:id");
+            string relId = GetXmlNodeString(path + "/@r:id");
             DeleteNode(path, true);
             Part.DeleteRelationship(relId);
         }
@@ -1771,7 +1772,7 @@ namespace OfficeOpenXml
                     return false;
                 }
 
-                foreach (var ws in _worksheets)
+                foreach (ExcelWorksheet ws in _worksheets)
                 {
                     if (ws.HasLoadedPivotTables == true)
                     {
@@ -1789,11 +1790,11 @@ namespace OfficeOpenXml
             }
 
             _nextPivotTableID = 1;
-            foreach (var ws in Worksheets)
+            foreach (ExcelWorksheet ws in Worksheets)
             {
                 if (!(ws is ExcelChartsheet)) //Chartsheets should be ignored.
                 {
-                    foreach (var pt in ws.PivotTables)
+                    foreach (ExcelPivotTable pt in ws.PivotTables)
                     {
                         if (pt.CacheId >= _nextPivotTableID)
                         {
@@ -1811,11 +1812,11 @@ namespace OfficeOpenXml
             }
 
             _nextTableID = 1;
-            foreach (var ws in Worksheets)
+            foreach (ExcelWorksheet ws in Worksheets)
             {
                 if (!(ws is ExcelChartsheet)) //Chartsheets should be ignored.
                 {
-                    foreach (var tbl in ws.Tables)
+                    foreach (ExcelTable tbl in ws.Tables)
                     {
                         if (tbl.Id >= _nextTableID)
                         {
@@ -1857,11 +1858,11 @@ namespace OfficeOpenXml
         internal void LoadSlicerCaches()
         {
             _slicerCaches = new Dictionary<string, ExcelSlicerCache>();
-            foreach (var r in Part.GetRelationshipsByType(ExcelPackage.schemaRelationshipsSlicerCache))
+            foreach (ZipPackageRelationship r in Part.GetRelationshipsByType(ExcelPackage.schemaRelationshipsSlicerCache))
             {
-                var uri = UriHelper.ResolvePartUri(WorkbookUri, r.TargetUri);
-                var p = Part.Package.GetPart(uri);
-                var xml = new XmlDocument();
+                Uri uri = UriHelper.ResolvePartUri(WorkbookUri, r.TargetUri);
+                ZipPackagePart p = Part.Package.GetPart(uri);
+                XmlDocument xml = new XmlDocument();
                 LoadXmlSafe(xml, p.GetStream());
 
                 ExcelSlicerCache cache;
@@ -1886,9 +1887,9 @@ namespace OfficeOpenXml
 
         internal ExcelTable GetTable(int tableId)
         {
-            foreach (var ws in Worksheets)
+            foreach (ExcelWorksheet ws in Worksheets)
             {
-                var t = ws.Tables.FirstOrDefault(x => x.Id == tableId);
+                ExcelTable? t = ws.Tables.FirstOrDefault(x => x.Id == tableId);
                 if (t != null)
                 {
                     return t;
@@ -1899,7 +1900,7 @@ namespace OfficeOpenXml
 
         internal void ClearDefaultHeightsAndWidths()
         {
-            foreach (var ws in Worksheets)
+            foreach (ExcelWorksheet ws in Worksheets)
             {
                 if (ws.IsChartSheet == false)
                 {

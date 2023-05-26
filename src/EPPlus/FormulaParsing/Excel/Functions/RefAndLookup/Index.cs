@@ -30,17 +30,17 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.RefAndLookup
         public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
         {
             ValidateArguments(arguments, 2);
-            var arg1 = arguments.ElementAt(0);
-            var args = arg1.Value as IEnumerable<FunctionArgument>;
-            var crf = new CompileResultFactory();
+            FunctionArgument? arg1 = arguments.ElementAt(0);
+            IEnumerable<FunctionArgument>? args = arg1.Value as IEnumerable<FunctionArgument>;
+            CompileResultFactory? crf = new CompileResultFactory();
             if (args != null)
             {
-                var index = ArgToInt(arguments, 1, RoundingMethod.Floor);
+                int index = ArgToInt(arguments, 1, RoundingMethod.Floor);
                 if (index > args.Count())
                 {
                     throw new ExcelErrorValueException(eErrorType.Ref);
                 }
-                var candidate = args.ElementAt(index - 1);
+                FunctionArgument? candidate = args.ElementAt(index - 1);
                 //Commented JK-Can be any data type
                 //if (!IsNumber(candidate.Value))
                 //{
@@ -51,15 +51,15 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.RefAndLookup
             }
             if (arg1.IsExcelRange)
             {
-                var row = ArgToInt(arguments, 1, RoundingMethod.Floor);                 
-                var col = arguments.Count()>2 ? ArgToInt(arguments, 2, RoundingMethod.Floor) : 1;
-                var ri=arg1.ValueAsRangeInfo;
+                int row = ArgToInt(arguments, 1, RoundingMethod.Floor);                 
+                int col = arguments.Count()>2 ? ArgToInt(arguments, 2, RoundingMethod.Floor) : 1;
+                IRangeInfo? ri=arg1.ValueAsRangeInfo;
                 if (row > ri.Address._toRow - ri.Address._fromRow + 1 ||
                     col > ri.Address._toCol - ri.Address._fromCol + 1)
                 {
                     ThrowExcelErrorValueException(eErrorType.Ref);
                 }
-                var candidate = ri.GetOffset(row-1, col-1);
+                object? candidate = ri.GetOffset(row-1, col-1);
                 //Commented JK-Can be any data type
                 //if (!IsNumber(candidate.Value))   
                 //{

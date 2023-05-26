@@ -14,9 +14,9 @@ namespace EPPlusTest.FormulaParsing.IntegrationTests
         [TestMethod]
         public void Sum_NamedRangeToNamedRange()
         {
-            using (var pck = new ExcelPackage())
+            using (ExcelPackage? pck = new ExcelPackage())
             {
-                var wks = pck.Workbook.Worksheets.Add("Sheet1");
+                ExcelWorksheet? wks = pck.Workbook.Worksheets.Add("Sheet1");
                 wks.Cells["C3"].Value = 7;
                 wks.Cells["C4"].Value = 1;
                 wks.Cells["C5"].Value = 2;
@@ -35,9 +35,9 @@ namespace EPPlusTest.FormulaParsing.IntegrationTests
         [TestMethod]
         public void SumProduct_NamedRangesToNamedRanges()
         {
-            using (var pck = new ExcelPackage())
+            using (ExcelPackage? pck = new ExcelPackage())
             {
-                var sheet1 = pck.Workbook.Worksheets.Add("Sheet1");
+                ExcelWorksheet? sheet1 = pck.Workbook.Worksheets.Add("Sheet1");
                 sheet1.Cells["A1"].Value = 10;
                 sheet1.Cells["A2"].Value = 4;
                 sheet1.Cells["A3"].Value = 1.6;

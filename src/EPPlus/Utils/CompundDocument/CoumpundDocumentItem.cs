@@ -39,8 +39,8 @@ namespace OfficeOpenXml.Utils.CompundDocument
         {
             get
             {
-                var path = Name;
-                var p=Parent;
+                string? path = Name;
+                CompoundDocumentItem? p=Parent;
                 while(p!=null)
                 {
                     path=p.Name + "/" + path;
@@ -137,8 +137,8 @@ namespace OfficeOpenXml.Utils.CompundDocument
         internal bool _handled = false;
         internal void Read(BinaryReader br)
         {
-            var s = br.ReadBytes(0x40);
-            var sz = br.ReadInt16();
+            byte[]? s = br.ReadBytes(0x40);
+            short sz = br.ReadInt16();
             if (sz > 0)
             {
                 Name = UTF8Encoding.Unicode.GetString(s, 0, sz - 2);
@@ -161,7 +161,7 @@ namespace OfficeOpenXml.Utils.CompundDocument
         }
         internal void Write(BinaryWriter bw)
         {
-            var name = Encoding.Unicode.GetBytes(Name);
+            byte[]? name = Encoding.Unicode.GetBytes(Name);
             bw.Write(name);
             bw.Write(new byte[0x40 - (name.Length)]);
             bw.Write((Int16)(name.Length + 2));
@@ -199,8 +199,8 @@ namespace OfficeOpenXml.Utils.CompundDocument
             {
                 return 1;
             }
-            var n1 = Name.ToUpperInvariant();
-            var n2 = other.Name.ToUpperInvariant();
+            string? n1 = Name.ToUpperInvariant();
+            string? n2 = other.Name.ToUpperInvariant();
             for (int i=0;i<n1.Length;i++)
             {
                 if(n1[i] < n2[i])

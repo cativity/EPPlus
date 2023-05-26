@@ -27,6 +27,7 @@
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *******************************************************************************/
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -53,10 +54,10 @@ namespace EPPlusTest
         [TestMethod]
         public void VisibilityComments()
         {
-            using (var pkg = new ExcelPackage())
+            using (ExcelPackage? pkg = new ExcelPackage())
             {
-                var ws = pkg.Workbook.Worksheets.Add("Comment");
-                var a1 = ws.Cells["A1"];
+                ExcelWorksheet? ws = pkg.Workbook.Worksheets.Add("Comment");
+                ExcelRange? a1 = ws.Cells["A1"];
                 a1.Value = "Justin Dearing";
                 a1.AddComment("I am A1s comment", "JD");
                 Assert.IsFalse(a1.Comment.Visible); // Comments are by default invisible 
@@ -68,16 +69,16 @@ namespace EPPlusTest
                     new OfficeOpenXml.Drawing.Vml.VmlGradiantColor(100, Color.Orange));
                 Assert.IsNotNull(a1.Comment);
                 //check style attribute
-                var stylesDict = new System.Collections.Generic.Dictionary<string, string>();
+                Dictionary<string, string>? stylesDict = new System.Collections.Generic.Dictionary<string, string>();
                 string[] styles = a1.Comment.Style
                     .Split(new[] { ";" }, StringSplitOptions.RemoveEmptyEntries);
-                foreach(var s in styles)
+                foreach(string? s in styles)
                 {
                     string[] split = s.Split(':');
                     if (split.Length == 2)
                     {
-                        var k = (split[0] ?? "").Trim().ToLower();
-                        var v = (split[1] ?? "").Trim().ToLower();
+                        string? k = (split[0] ?? "").Trim().ToLower();
+                        string? v = (split[1] ?? "").Trim().ToLower();
                         stylesDict[k] = v;
                     }
                 }
@@ -91,9 +92,9 @@ namespace EPPlusTest
         [TestMethod]
         public void CommentInsertColumn()
         {
-            using (var pkg = new ExcelPackage())
+            using (ExcelPackage? pkg = new ExcelPackage())
             {
-                var ws = pkg.Workbook.Worksheets.Add("CommentInsert");
+                ExcelWorksheet? ws = pkg.Workbook.Worksheets.Add("CommentInsert");
                 ws.Cells["A1"].AddComment("na", "test");
                 Assert.AreEqual(1, ws.Comments.Count);
 
@@ -111,9 +112,9 @@ namespace EPPlusTest
         [TestMethod]
         public void CommentDeleteColumn()
         {
-            using (var pkg = new ExcelPackage())
+            using (ExcelPackage? pkg = new ExcelPackage())
             {
-                var ws = pkg.Workbook.Worksheets.Add("CommentInsert");
+                ExcelWorksheet? ws = pkg.Workbook.Worksheets.Add("CommentInsert");
                 ws.Cells["B1"].AddComment("na", "test");
                 Assert.AreEqual(1, ws.Comments.Count);
 
@@ -131,9 +132,9 @@ namespace EPPlusTest
         [TestMethod]
         public void CommentInsertRow()
         {
-            using (var pkg = new ExcelPackage())
+            using (ExcelPackage? pkg = new ExcelPackage())
             {
-                var ws = pkg.Workbook.Worksheets.Add("CommentInsert");
+                ExcelWorksheet? ws = pkg.Workbook.Worksheets.Add("CommentInsert");
                 ws.Cells["A1"].AddComment("na", "test");
                 Assert.AreEqual(1, ws.Comments.Count);
 
@@ -152,9 +153,9 @@ namespace EPPlusTest
         [TestMethod]
         public void CommentDeleteRow()
         {
-            using (var pkg = new ExcelPackage())
+            using (ExcelPackage? pkg = new ExcelPackage())
             {
-                var ws = pkg.Workbook.Worksheets.Add("CommentInsert");
+                ExcelWorksheet? ws = pkg.Workbook.Worksheets.Add("CommentInsert");
                 ws.Cells["A2"].AddComment("na", "test");
                 Assert.AreEqual(1, ws.Comments.Count);
 
@@ -172,7 +173,7 @@ namespace EPPlusTest
         [TestMethod]
         public void RangeShouldClearComment()
         {
-            var ws = _pck.Workbook.Worksheets.Add("Sheet1");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("Sheet1");
             for (int i = 0; i < 5; i++)
             {
                 ws.Cells[2, 2].Value = "hallo";
@@ -196,9 +197,9 @@ namespace EPPlusTest
         [TestMethod]
         public void SettingRichTextShouldNotEffectComment()
         {
-            using (var p = new ExcelPackage())
+            using (ExcelPackage? p = new ExcelPackage())
             {
-                var ws = p.Workbook.Worksheets.Add("Sheet1");
+                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Sheet1");
                 ExcelComment comment = ws.Cells[1, 1].AddComment("My Comment", "Me");
                 Assert.IsNotNull(ws.Cells[1, 1].Comment);
                 ws.Cells[1, 1].IsRichText = true;
@@ -208,11 +209,11 @@ namespace EPPlusTest
         [TestMethod]
         public void CopyCommentInRange()
         {
-            using (var p = new ExcelPackage())
+            using (ExcelPackage? p = new ExcelPackage())
             {
                 // Get the comment object from the worksheet
-                var ws = p.Workbook.Worksheets.Add("Sheet1");
-                var comment1 = ws.Comments.Add(ws.Cells["B2"], "Test Comment");
+                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Sheet1");
+                ExcelComment? comment1 = ws.Comments.Add(ws.Cells["B2"], "Test Comment");
                 comment1.BackgroundColor = Color.FromArgb(0xdcf0ff);
                 comment1.AutoFit = true;
                 comment1.Font.FontName = "Tahoma";
@@ -237,7 +238,7 @@ namespace EPPlusTest
                 ws.Cells["B1:B3"].Copy(ws.Cells["A1:A3"]);
 
                 // Check the comment is copied with all properties intact
-                var comment2 = ws.Comments[1];
+                ExcelComment? comment2 = ws.Comments[1];
                 Assert.AreEqual("A2", comment2.Address);
                 Assert.AreEqual(comment1.BackgroundColor.Name, comment2.BackgroundColor.Name);
                 Assert.AreEqual(comment1.AutoFit, comment2.AutoFit);
@@ -252,10 +253,10 @@ namespace EPPlusTest
         [TestMethod]
         public void TestDeleteCellsWithComment()
         {
-            using (var p = new ExcelPackage())
+            using (ExcelPackage? p = new ExcelPackage())
             {
                 // Add a sheet with comments
-                var ws = p.Workbook.Worksheets.Add("Sheet1");
+                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Sheet1");
                 ws.Comments.Add(ws.Cells["B2"], "This is a comment.", "author");
                 Assert.AreEqual(1, ws.Comments.Count);
 

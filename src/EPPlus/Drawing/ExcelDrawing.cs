@@ -595,8 +595,8 @@ namespace OfficeOpenXml.Drawing
                     XmlElement choice = drawNode.FirstChild as XmlElement;
                     if (choice != null && choice.LocalName == "Choice")
                     {
-                        var req = choice.GetAttribute("Requires");  //NOTE:Can be space sparated. Might have to implement functinality for this.
-                        var ns = drawNode.GetAttribute($"xmlns:{req}");
+                        string? req = choice.GetAttribute("Requires");  //NOTE:Can be space sparated. Might have to implement functinality for this.
+                        string? ns = drawNode.GetAttribute($"xmlns:{req}");
                         if (ns == "")
                         {
                             ns = choice.GetAttribute($"xmlns:{req}");
@@ -629,8 +629,8 @@ namespace OfficeOpenXml.Drawing
 
         private static ExcelDrawing GetShapeOrControl(ExcelDrawings drawings, XmlNode node, XmlElement drawNode, ExcelGroupShape parent)
         {
-            var shapeId = GetControlShapeId(drawNode, drawings.NameSpaceManager);
-            var control = drawings.Worksheet.Controls.GetControlByShapeId(shapeId);
+            int shapeId = GetControlShapeId(drawNode, drawings.NameSpaceManager);
+            ControlInternal? control = drawings.Worksheet.Controls.GetControlByShapeId(shapeId);
             if (control != null)
             {
                 return ControlFactory.GetControl(drawings, drawNode, control, parent);
@@ -643,7 +643,7 @@ namespace OfficeOpenXml.Drawing
             
         private static int GetControlShapeId(XmlElement drawNode, XmlNamespaceManager nameSpaceManager)
         {
-            var idNode = drawNode.SelectSingleNode("xdr:nvSpPr/xdr:cNvPr/@id", nameSpaceManager);
+            XmlNode? idNode = drawNode.SelectSingleNode("xdr:nvSpPr/xdr:cNvPr/@id", nameSpaceManager);
             if(idNode!=null)
             {
                 return int.Parse(idNode.Value);
@@ -726,7 +726,7 @@ namespace OfficeOpenXml.Drawing
             else
             {
                 pix = 0;
-                var cache = _drawings.Worksheet.RowHeightCache;
+                Dictionary<int, double>? cache = _drawings.Worksheet.RowHeightCache;
                 for (int row = 0; row < From.Row; row++)
                 {
                     lock (cache)
@@ -756,7 +756,7 @@ namespace OfficeOpenXml.Drawing
                     pix += (double)decimal.Truncate(((256 * ws.GetColumnWidth(col) + decimal.Truncate(128 / (decimal)mdw)) / 256) * mdw);
                 }
 
-                var w = (double)decimal.Truncate(((256 * ws.GetColumnWidth(To.Column + 1) + decimal.Truncate(128 / (decimal)mdw)) / 256) * mdw);
+                double w = (double)decimal.Truncate(((256 * ws.GetColumnWidth(To.Column + 1) + decimal.Truncate(128 / (decimal)mdw)) / 256) * mdw);
                 pix += Math.Min(w, Convert.ToDouble(To.ColumnOff) / EMU_PER_PIXEL);
             }
             else
@@ -777,7 +777,7 @@ namespace OfficeOpenXml.Drawing
                 {
                     pix += ws.GetRowHeight(row) / 0.75;
                 }
-                var h = ws.GetRowHeight(To.Row + 1) / 0.75;
+                double h = ws.GetRowHeight(To.Row + 1) / 0.75;
                 pix += Math.Min(h, Convert.ToDouble(To.RowOff) / EMU_PER_PIXEL);
             }
             else
@@ -895,7 +895,7 @@ namespace OfficeOpenXml.Drawing
                 fromRowOff = From.RowOff;
             }
             ExcelWorksheet ws = _drawings.Worksheet;
-            var pixOff = pixels - ((ws.GetRowHeight(fromRow + 1) / 0.75) - (fromRowOff / (double)EMU_PER_PIXEL));
+            double pixOff = pixels - ((ws.GetRowHeight(fromRow + 1) / 0.75) - (fromRowOff / (double)EMU_PER_PIXEL));
             double prevPixOff = pixels;
             int row = fromRow + 1;
 
@@ -978,8 +978,8 @@ namespace OfficeOpenXml.Drawing
                     _left = GetPixelLeft();
                     _top = GetPixelTop();
                 }
-                var grp = (ExcelGroupShape)this;
-                foreach(var d in grp.Drawings)
+                ExcelGroupShape? grp = (ExcelGroupShape)this;
+                foreach(ExcelDrawing? d in grp.Drawings)
                 {
                     d.SetPosition((int)(d._top + (PixelTop - _top)), (int)(d._left + (PixelLeft - _left)));
                 }
@@ -1028,10 +1028,10 @@ namespace OfficeOpenXml.Drawing
 
             GetPositionSize();
             //Save the positions
-            var top = _top;
-            var left = _left;
-            var width = _width;
-            var height = _height;
+            double top = _top;
+            double left = _left;
+            double width = _width;
+            double height = _height;
             //Change the type
             ChangeCellAnchorTypeInternal(type);
 
@@ -1178,7 +1178,7 @@ namespace OfficeOpenXml.Drawing
         public ExcelGroupShape Group(params ExcelDrawing[] drawing)
         {
             ExcelGroupShape grp = _parent;
-            foreach(var d in drawing)
+            foreach(ExcelDrawing? d in drawing)
             {
                 ExcelGroupShape.Validate(d, _drawings, grp);
                 if (d._parent != null)
@@ -1193,7 +1193,7 @@ namespace OfficeOpenXml.Drawing
             
             grp.Drawings.AddDrawing(this);
 
-            foreach (var d in drawing)
+            foreach (ExcelDrawing? d in drawing)
             {
                 grp.Drawings.AddDrawing(d);
             }

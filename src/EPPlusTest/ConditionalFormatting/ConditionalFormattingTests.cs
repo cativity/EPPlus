@@ -59,8 +59,8 @@ namespace EPPlusTest.ConditionalFormatting
         [TestMethod]
         public void TwoColorScale()
         {
-            var ws = _pck.Workbook.Worksheets.Add("ColorScale");
-            var cf = ws.ConditionalFormatting.AddTwoColorScale(ws.Cells["A1:A5"]);
+            ExcelWorksheet ws = _pck.Workbook.Worksheets.Add("ColorScale");
+            IExcelConditionalFormattingTwoColorScale cf = ws.ConditionalFormatting.AddTwoColorScale(ws.Cells["A1:A5"]);
             cf.PivotTable = true;
             ws.SetValue(1, 1, 1);
             ws.SetValue(2, 1, 2);
@@ -71,8 +71,8 @@ namespace EPPlusTest.ConditionalFormatting
         [TestMethod]
         public void Pivot()
         {
-            var ws = _pck.Workbook.Worksheets.Add("Pivot");
-            var cf = ws.ConditionalFormatting.AddThreeColorScale(ws.Cells["A1:A5"]);
+            ExcelWorksheet ws = _pck.Workbook.Worksheets.Add("Pivot");
+            IExcelConditionalFormattingThreeColorScale cf = ws.ConditionalFormatting.AddThreeColorScale(ws.Cells["A1:A5"]);
             cf.PivotTable = false;
         }
 
@@ -82,7 +82,7 @@ namespace EPPlusTest.ConditionalFormatting
         [TestMethod]
         public void TwoBackColor()
         {
-            var ws = _pck.Workbook.Worksheets.Add("TwoBackColor");
+            ExcelWorksheet ws = _pck.Workbook.Worksheets.Add("TwoBackColor");
             IExcelConditionalFormattingEqual condition1 = ws.ConditionalFormatting.AddEqual(ws.Cells["A1"]);
             condition1.StopIfTrue = true;
             condition1.Priority = 1;
@@ -97,8 +97,8 @@ namespace EPPlusTest.ConditionalFormatting
         [TestMethod]
         public void Databar()
         {
-            var ws = _pck.Workbook.Worksheets.Add("Databar");
-            var cf = ws.ConditionalFormatting.AddDatabar(ws.Cells["A1:A5"], Color.BlueViolet);
+            ExcelWorksheet ws = _pck.Workbook.Worksheets.Add("Databar");
+            IExcelConditionalFormattingDataBarGroup cf = ws.ConditionalFormatting.AddDatabar(ws.Cells["A1:A5"], Color.BlueViolet);
             ws.SetValue(1, 1, 1);
             ws.SetValue(2, 1, 2);
             ws.SetValue(3, 1, 3);
@@ -108,10 +108,10 @@ namespace EPPlusTest.ConditionalFormatting
         [TestMethod]
         public void DatabarChangingAddressAddsConditionalFormatNodeInSchemaOrder()
         {
-            var ws = _pck.Workbook.Worksheets.Add("DatabarAddressing");
+            ExcelWorksheet ws = _pck.Workbook.Worksheets.Add("DatabarAddressing");
             // Ensure there is at least one element that always exists below ConditionalFormatting nodes.   
             ws.HeaderFooter.AlignWithMargins = true;
-            var cf = ws.ConditionalFormatting.AddDatabar(ws.Cells["A1:A5"], Color.BlueViolet);
+            IExcelConditionalFormattingDataBarGroup cf = ws.ConditionalFormatting.AddDatabar(ws.Cells["A1:A5"], Color.BlueViolet);
             Assert.AreEqual("sheetData", cf.Node.ParentNode.PreviousSibling.LocalName);
             Assert.AreEqual("headerFooter", cf.Node.ParentNode.NextSibling.LocalName);
             cf.Address = new ExcelAddress("C3");
@@ -121,13 +121,13 @@ namespace EPPlusTest.ConditionalFormatting
         [TestMethod]
         public void IconSet()
         {
-            var ws = _pck.Workbook.Worksheets.Add("IconSet");
-            var cf = ws.ConditionalFormatting.AddThreeIconSet(ws.Cells["A1:A3"], eExcelconditionalFormatting3IconsSetType.Symbols);
+            ExcelWorksheet ws = _pck.Workbook.Worksheets.Add("IconSet");
+            IExcelConditionalFormattingThreeIconSet<eExcelconditionalFormatting3IconsSetType> cf = ws.ConditionalFormatting.AddThreeIconSet(ws.Cells["A1:A3"], eExcelconditionalFormatting3IconsSetType.Symbols);
             ws.SetValue(1, 1, 1);
             ws.SetValue(2, 1, 2);
             ws.SetValue(3, 1, 3);
 
-            var cf4 = ws.ConditionalFormatting.AddFourIconSet(ws.Cells["B1:B4"], eExcelconditionalFormatting4IconsSetType.Rating);
+            IExcelConditionalFormattingFourIconSet<eExcelconditionalFormatting4IconsSetType> cf4 = ws.ConditionalFormatting.AddFourIconSet(ws.Cells["B1:B4"], eExcelconditionalFormatting4IconsSetType.Rating);
             cf4.Icon1.Type = eExcelConditionalFormattingValueObjectType.Formula;
             cf4.Icon1.Formula = "0";
             cf4.Icon2.Type = eExcelConditionalFormattingValueObjectType.Formula;
@@ -139,7 +139,7 @@ namespace EPPlusTest.ConditionalFormatting
             ws.SetValue(3, 2, 3);
             ws.SetValue(4, 2, 4);
 
-            var cf5 = ws.ConditionalFormatting.AddFiveIconSet(ws.Cells["C1:C5"], eExcelconditionalFormatting5IconsSetType.Quarters);
+            IExcelConditionalFormattingFiveIconSet cf5 = ws.ConditionalFormatting.AddFiveIconSet(ws.Cells["C1:C5"], eExcelconditionalFormatting5IconsSetType.Quarters);
             cf5.Icon1.Type = eExcelConditionalFormattingValueObjectType.Num;
             cf5.Icon1.Value = 1;
             cf5.Icon2.Type = eExcelConditionalFormattingValueObjectType.Num;
@@ -162,13 +162,13 @@ namespace EPPlusTest.ConditionalFormatting
         [TestMethod]
         public void WriteReadEqual()
         {
-            using (var p = new ExcelPackage())
+            using (ExcelPackage p = new ExcelPackage())
             {
-                var ws = p.Workbook.Worksheets.Add("Equal");
-                var cf = ws.Cells["A1"].ConditionalFormatting.AddEqual();
+                ExcelWorksheet ws = p.Workbook.Worksheets.Add("Equal");
+                IExcelConditionalFormattingEqual cf = ws.Cells["A1"].ConditionalFormatting.AddEqual();
                 cf.Formula = "1";
                 p.Save();
-                using (var p2 = new ExcelPackage(p.Stream))
+                using (ExcelPackage p2 = new ExcelPackage(p.Stream))
                 {
                     ws = p2.Workbook.Worksheets[0];
                     cf = ws.ConditionalFormatting[0].As.Equal;
@@ -180,13 +180,13 @@ namespace EPPlusTest.ConditionalFormatting
         [TestMethod]
         public void WriteReadThreeIcon()
         {
-            using (var p = new ExcelPackage())
+            using (ExcelPackage p = new ExcelPackage())
             {
-                var ws = p.Workbook.Worksheets.Add("FiveIcon");
-                var cf = ws.Cells["A1"].ConditionalFormatting.AddThreeIconSet(eExcelconditionalFormatting3IconsSetType.TrafficLights2);
+                ExcelWorksheet ws = p.Workbook.Worksheets.Add("FiveIcon");
+                IExcelConditionalFormattingThreeIconSet<eExcelconditionalFormatting3IconsSetType> cf = ws.Cells["A1"].ConditionalFormatting.AddThreeIconSet(eExcelconditionalFormatting3IconsSetType.TrafficLights2);
 
                 p.Save();
-                using (var p2 = new ExcelPackage(p.Stream))
+                using (ExcelPackage p2 = new ExcelPackage(p.Stream))
                 {
                     ws = p2.Workbook.Worksheets[0];
                     cf = ws.ConditionalFormatting[0].As.ThreeIconSet;
@@ -197,13 +197,13 @@ namespace EPPlusTest.ConditionalFormatting
         [TestMethod]
         public void WriteReadFourIcon()
         {
-            using (var p = new ExcelPackage())
+            using (ExcelPackage p = new ExcelPackage())
             {
-                var ws = p.Workbook.Worksheets.Add("FourIcon");
-                var cf = ws.Cells["A1"].ConditionalFormatting.AddFourIconSet(eExcelconditionalFormatting4IconsSetType.ArrowsGray);
+                ExcelWorksheet ws = p.Workbook.Worksheets.Add("FourIcon");
+                IExcelConditionalFormattingFourIconSet<eExcelconditionalFormatting4IconsSetType> cf = ws.Cells["A1"].ConditionalFormatting.AddFourIconSet(eExcelconditionalFormatting4IconsSetType.ArrowsGray);
 
                 p.Save();
-                using (var p2 = new ExcelPackage(p.Stream))
+                using (ExcelPackage p2 = new ExcelPackage(p.Stream))
                 {
                     ws = p2.Workbook.Worksheets[0];
                     cf = ws.ConditionalFormatting[0].As.FourIconSet;
@@ -214,13 +214,13 @@ namespace EPPlusTest.ConditionalFormatting
         [TestMethod]
         public void WriteReadFiveIcon()
         {
-            using (var p = new ExcelPackage())
+            using (ExcelPackage p = new ExcelPackage())
             {
-                var ws = p.Workbook.Worksheets.Add("FiveIcon");
-                var cf = ws.Cells["A1"].ConditionalFormatting.AddFiveIconSet(eExcelconditionalFormatting5IconsSetType.Arrows);
+                ExcelWorksheet ws = p.Workbook.Worksheets.Add("FiveIcon");
+                IExcelConditionalFormattingFiveIconSet cf = ws.Cells["A1"].ConditionalFormatting.AddFiveIconSet(eExcelconditionalFormatting5IconsSetType.Arrows);
 
                 p.Save();
-                using (var p2 = new ExcelPackage(p.Stream))
+                using (ExcelPackage p2 = new ExcelPackage(p.Stream))
                 {
                     ws = p2.Workbook.Worksheets[0];
                     cf = ws.ConditionalFormatting[0].As.FiveIconSet;
@@ -233,13 +233,13 @@ namespace EPPlusTest.ConditionalFormatting
         [TestMethod]
         public void WriteReadDataBar()
         {
-            using (var p = new ExcelPackage())
+            using (ExcelPackage p = new ExcelPackage())
             {
-                var ws = p.Workbook.Worksheets.Add("DataBar");
-                var cf = ws.Cells["A1"].ConditionalFormatting.AddDatabar(Color.Red);
+                ExcelWorksheet ws = p.Workbook.Worksheets.Add("DataBar");
+                IExcelConditionalFormattingDataBarGroup cf = ws.Cells["A1"].ConditionalFormatting.AddDatabar(Color.Red);
 
                 p.Save();
-                using (var p2 = new ExcelPackage(p.Stream))
+                using (ExcelPackage p2 = new ExcelPackage(p.Stream))
                 {
                     ws = p2.Workbook.Worksheets[0];
                     cf = ws.ConditionalFormatting[0].As.DataBar;
@@ -251,10 +251,10 @@ namespace EPPlusTest.ConditionalFormatting
         [TestMethod]
         public void WriteReadTwoColorScale()
         {
-            using (var p = new ExcelPackage())
+            using (ExcelPackage p = new ExcelPackage())
             {
-                var ws = p.Workbook.Worksheets.Add("TwoColorScale");
-                var cf = ws.Cells["A1"].ConditionalFormatting.AddTwoColorScale();
+                ExcelWorksheet ws = p.Workbook.Worksheets.Add("TwoColorScale");
+                IExcelConditionalFormattingTwoColorScale cf = ws.Cells["A1"].ConditionalFormatting.AddTwoColorScale();
                 cf.LowValue.Type = eExcelConditionalFormattingValueObjectType.Num;
                 cf.LowValue.Value = 2;
                 cf.HighValue.Type = eExcelConditionalFormattingValueObjectType.Percentile;
@@ -265,7 +265,7 @@ namespace EPPlusTest.ConditionalFormatting
                 Assert.AreEqual(50, cf.HighValue.Value);
 
                 p.Save();
-                using (var p2 = new ExcelPackage(p.Stream))
+                using (ExcelPackage p2 = new ExcelPackage(p.Stream))
                 {
                     ws = p2.Workbook.Worksheets[0];
                     cf = ws.ConditionalFormatting[0].As.TwoColorScale;
@@ -279,10 +279,10 @@ namespace EPPlusTest.ConditionalFormatting
         [TestMethod]
         public void WriteReadThreeColorScale()
         {
-            using (var p = new ExcelPackage())
+            using (ExcelPackage p = new ExcelPackage())
             {
-                var ws = p.Workbook.Worksheets.Add("ThreeColorScale");
-                var cf = ws.Cells["A1"].ConditionalFormatting.AddThreeColorScale();
+                ExcelWorksheet ws = p.Workbook.Worksheets.Add("ThreeColorScale");
+                IExcelConditionalFormattingThreeColorScale cf = ws.Cells["A1"].ConditionalFormatting.AddThreeColorScale();
                 cf.LowValue.Type = eExcelConditionalFormattingValueObjectType.Num;
                 cf.LowValue.Value = 2;
                 cf.MiddleValue.Type = eExcelConditionalFormattingValueObjectType.Percent;
@@ -295,7 +295,7 @@ namespace EPPlusTest.ConditionalFormatting
                 Assert.AreEqual(50, cf.HighValue.Value);
 
                 p.Save();
-                using (var p2 = new ExcelPackage(p.Stream))
+                using (ExcelPackage p2 = new ExcelPackage(p.Stream))
                 {
                     ws = p2.Workbook.Worksheets[0];
                     cf = ws.ConditionalFormatting[0].As.ThreeColorScale;
@@ -309,10 +309,10 @@ namespace EPPlusTest.ConditionalFormatting
         [TestMethod]
         public void VerifyReadStyling()
         {
-            using (var p = new ExcelPackage())
+            using (ExcelPackage p = new ExcelPackage())
             {
-                var ws = p.Workbook.Worksheets.Add("Sheet1");
-                var cf = ws.ConditionalFormatting.AddBetween(ws.Cells["A1:A3"]);
+                ExcelWorksheet ws = p.Workbook.Worksheets.Add("Sheet1");
+                IExcelConditionalFormattingBetween cf = ws.ConditionalFormatting.AddBetween(ws.Cells["A1:A3"]);
                 cf.Formula = "1";
                 cf.Formula2 = "2";
 
@@ -324,7 +324,7 @@ namespace EPPlusTest.ConditionalFormatting
 
                 p.Save();
 
-                using (var p2 = new ExcelPackage(p.Stream))
+                using (ExcelPackage p2 = new ExcelPackage(p.Stream))
                 {
                     ws = p.Workbook.Worksheets[0];
                     cf = ws.ConditionalFormatting[0].As.Between;
@@ -338,10 +338,10 @@ namespace EPPlusTest.ConditionalFormatting
         [TestMethod]
         public void VerifyExpression()
         {
-            using (var p = OpenPackage("cf.xlsx", true))
+            using (ExcelPackage p = OpenPackage("cf.xlsx", true))
             {
-                var ws = p.Workbook.Worksheets.Add("Sheet1");
-                var cf = ws.ConditionalFormatting.AddExpression(new ExcelAddress("$1:$1048576"));
+                ExcelWorksheet ws = p.Workbook.Worksheets.Add("Sheet1");
+                IExcelConditionalFormattingExpression cf = ws.ConditionalFormatting.AddExpression(new ExcelAddress("$1:$1048576"));
                 cf.Formula = "IsError(A1)";
                 cf.Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
                 cf.Style.Fill.BackgroundColor.SetColor(Color.Red);
@@ -351,12 +351,12 @@ namespace EPPlusTest.ConditionalFormatting
         [TestMethod]
         public void TestInsertRowsIntoVeryLongRangeWithConditionalFormatting()
         {
-            using (var pck = new ExcelPackage())
+            using (ExcelPackage pck = new ExcelPackage())
             {
                 // Add a sheet with conditional formatting on the whole of column A except row 1
-                var wks = pck.Workbook.Worksheets.Add("Sheet1");
-                var cfAddress = "A2:A1048576";
-                var cf = wks.ConditionalFormatting.AddExpression(new ExcelAddress(cfAddress));
+                ExcelWorksheet wks = pck.Workbook.Worksheets.Add("Sheet1");
+                string cfAddress = "A2:A1048576";
+                IExcelConditionalFormattingExpression cf = wks.ConditionalFormatting.AddExpression(new ExcelAddress(cfAddress));
                 cf.Formula = "=($A$1=TRUE)";
 
                 // Check that the conditional formatting address was set correctly
@@ -372,12 +372,12 @@ namespace EPPlusTest.ConditionalFormatting
         [TestMethod]
         public void TestInsertRowsAboveVeryLongRangeWithConditionalFormatting()
         {
-            using (var pck = new ExcelPackage())
+            using (ExcelPackage pck = new ExcelPackage())
             {
                 // Add a sheet with conditional formatting on the whole of column A except rows 1-10
-                var wks = pck.Workbook.Worksheets.Add("Sheet1");
-                var cfAddress = "A11:A1048576";
-                var cf = wks.ConditionalFormatting.AddExpression(new ExcelAddress(cfAddress));
+                ExcelWorksheet wks = pck.Workbook.Worksheets.Add("Sheet1");
+                string cfAddress = "A11:A1048576";
+                IExcelConditionalFormattingExpression cf = wks.ConditionalFormatting.AddExpression(new ExcelAddress(cfAddress));
                 cf.Formula = "=($A$1=TRUE)";
 
                 // Check that the conditional formatting address was set correctly
@@ -394,12 +394,12 @@ namespace EPPlusTest.ConditionalFormatting
         [TestMethod]
         public void TestInsertRowsToPushConditionalFormattingOffSheet()
         {
-            using (var pck = new ExcelPackage())
+            using (ExcelPackage pck = new ExcelPackage())
             {
                 // Add a sheet with conditional formatting on the last two rows of column A
-                var wks = pck.Workbook.Worksheets.Add("Sheet1");
-                var cfAddress = "A1048575:A1048576";
-                var cf = wks.ConditionalFormatting.AddExpression(new ExcelAddress(cfAddress));
+                ExcelWorksheet wks = pck.Workbook.Worksheets.Add("Sheet1");
+                string cfAddress = "A1048575:A1048576";
+                IExcelConditionalFormattingExpression cf = wks.ConditionalFormatting.AddExpression(new ExcelAddress(cfAddress));
                 cf.Formula = "=($A$1=TRUE)";
 
                 // Check that the conditional formatting address was set correctly
@@ -416,10 +416,10 @@ namespace EPPlusTest.ConditionalFormatting
         [TestMethod]
         public void CFWholeSheetRangeDeleteRowShouldNotRemoveCF()
         {
-            using (var pck = new ExcelPackage())
+            using (ExcelPackage pck = new ExcelPackage())
             {
-                var sheet = pck.Workbook.Worksheets.Add("Test");
-                var cf = sheet.ConditionalFormatting.AddEqual(new ExcelAddress("$1:$1048576"));
+                ExcelWorksheet sheet = pck.Workbook.Worksheets.Add("Test");
+                IExcelConditionalFormattingEqual cf = sheet.ConditionalFormatting.AddEqual(new ExcelAddress("$1:$1048576"));
                 cf.Formula = "Pizza";
                 cf.Style.Font.Color.SetColor(Color.Red);
 
@@ -433,10 +433,10 @@ namespace EPPlusTest.ConditionalFormatting
         [TestMethod]
         public void CFColumnsRangeDeleteRowShouldNotRemoveCF()
         {
-            using (var pck = new ExcelPackage())
+            using (ExcelPackage pck = new ExcelPackage())
             {
-                var sheet = pck.Workbook.Worksheets.Add("Test");
-                var cf = sheet.ConditionalFormatting.AddEqual(new ExcelAddress("$A:$P"));
+                ExcelWorksheet sheet = pck.Workbook.Worksheets.Add("Test");
+                IExcelConditionalFormattingEqual cf = sheet.ConditionalFormatting.AddEqual(new ExcelAddress("$A:$P"));
                 cf.Formula = "Pizza";
                 cf.Style.Font.Color.SetColor(Color.Red);
 
@@ -448,10 +448,10 @@ namespace EPPlusTest.ConditionalFormatting
         [TestMethod]
         public void CFWholeSheetRange2DeleteRowShouldNotRemoveCF()
         {
-            using (var pck = new ExcelPackage())
+            using (ExcelPackage pck = new ExcelPackage())
             {
-                var sheet = pck.Workbook.Worksheets.Add("Test");
-                var cf = sheet.ConditionalFormatting.AddEqual(new ExcelAddress("A1:XFD1048576"));
+                ExcelWorksheet sheet = pck.Workbook.Worksheets.Add("Test");
+                IExcelConditionalFormattingEqual cf = sheet.ConditionalFormatting.AddEqual(new ExcelAddress("A1:XFD1048576"));
                 cf.Formula = "Pizza";
                 cf.Style.Font.Color.SetColor(Color.Red);
 

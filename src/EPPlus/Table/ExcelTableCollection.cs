@@ -16,6 +16,8 @@ using System.Linq;
 using System.Text;
 using System.Xml;
 using OfficeOpenXml.FormulaParsing.ExcelUtilities;
+using OfficeOpenXml.Packaging;
+
 namespace OfficeOpenXml.Table
 {
     /// <summary>
@@ -28,12 +30,12 @@ namespace OfficeOpenXml.Table
         ExcelWorksheet _ws;        
         internal ExcelTableCollection(ExcelWorksheet ws)
         {
-            var pck = ws._package.ZipPackage;
+            ZipPackage? pck = ws._package.ZipPackage;
             _ws = ws;
             foreach(XmlElement node in ws.WorksheetXml.SelectNodes("//d:tableParts/d:tablePart", ws.NameSpaceManager))
             {
-                var rel = ws.Part.GetRelationship(node.GetAttribute("id",ExcelPackage.schemaRelationships));
-                var tbl = new ExcelTable(rel, ws);
+                ZipPackageRelationship? rel = ws.Part.GetRelationship(node.GetAttribute("id",ExcelPackage.schemaRelationships));
+                ExcelTable? tbl = new ExcelTable(rel, ws);
                 _tableNames.Add(tbl.Name, _tables.Count);
                 _tables.Add(tbl);
             }
@@ -76,14 +78,14 @@ namespace OfficeOpenXml.Table
 
             ValidateName(Name);
 
-            foreach (var t in _tables)
+            foreach (ExcelTable? t in _tables)
             {
                 if (t.Address.Collide(Range) != ExcelAddressBase.eAddressCollition.No)
                 {
                     throw (new ArgumentException(string.Format("Table range collides with table {0}", t.Name)));
                 }
             }
-            foreach (var mc in _ws.MergedCells)
+            foreach (string? mc in _ws.MergedCells)
             {
                 if (mc == null)
                 {
@@ -106,7 +108,7 @@ namespace OfficeOpenXml.Table
                 throw new ArgumentException("Tablename is blank", "Name");
             }
 
-            var c = name[0];
+            char c = name[0];
             if (char.IsLetter(c) == false && c != '\\' && c != '_')
             {
                 throw new ArgumentException("Tablename start with invalid character", "Name");
@@ -155,17 +157,17 @@ namespace OfficeOpenXml.Table
             }
             lock (this)
             {
-                var tIx = _tableNames[Table.Name];
+                int tIx = _tableNames[Table.Name];
                 _tableNames.Remove(Table.Name);
                 _tables.Remove(Table);
-                foreach (var sheet in Table.WorkSheet.Workbook.Worksheets)
+                foreach (ExcelWorksheet? sheet in Table.WorkSheet.Workbook.Worksheets)
                 {
                     if (sheet is ExcelChartsheet)
                     {
                         continue;
                     }
 
-                    foreach (var t in sheet.Tables)
+                    foreach (ExcelTable? t in sheet.Tables)
                     {
                         if (t.Id > Table.Id)
                         {
@@ -174,7 +176,7 @@ namespace OfficeOpenXml.Table
                     }
                     Table.WorkSheet.Workbook._nextTableID--;
                 }
-                foreach(var name in _tableNames.Keys.ToArray())
+                foreach(string? name in _tableNames.Keys.ToArray())
                 { 
                     if(_tableNames[name] > tIx)
                     {
@@ -184,7 +186,7 @@ namespace OfficeOpenXml.Table
                 Table.DeleteMe();
                 if (ClearRange)
                 {
-                    var range = _ws.Cells[Table.Address.Address];
+                    ExcelRange? range = _ws.Cells[Table.Address.Address];
                     range.Clear();
                 }                
             }
@@ -218,7 +220,7 @@ namespace OfficeOpenXml.Table
         /// <returns>The table. Null if no range matches</returns>
         public ExcelTable GetFromRange(ExcelRangeBase Range)
         {
-            foreach (var tbl in Range.Worksheet.Tables)
+            foreach (ExcelTable? tbl in Range.Worksheet.Tables)
             {
                 if (tbl.Address._address == Range._address)
                 {

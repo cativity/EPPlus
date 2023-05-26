@@ -33,6 +33,7 @@ using System.Globalization;
 using System.IO;
 using System.Text;
 using System.Xml;
+using OfficeOpenXml.DataValidation;
 
 namespace EPPlusTest.DataValidation
 {
@@ -66,11 +67,11 @@ namespace EPPlusTest.DataValidation
 
         protected void LoadXmlTestData(string address, string validationType, string formula1Value)
         {
-            var xmlDoc = new XmlDocument();
+            XmlDocument? xmlDoc = new XmlDocument();
             _namespaceManager = new XmlNamespaceManager(xmlDoc.NameTable);
             _namespaceManager.AddNamespace("d", "urn:a");
             _namespaceManager.AddNamespace("xr", "urn:b");
-            var sb = new StringBuilder();
+            StringBuilder? sb = new StringBuilder();
             sb.AppendFormat("<dataValidation xmlns:d=\"urn:a\" type=\"{0}\" sqref=\"{1}\">", validationType, address);
             sb.AppendFormat("<d:formula1>{0}</d:formula1>", formula1Value);
             sb.Append("</dataValidation>");
@@ -80,8 +81,8 @@ namespace EPPlusTest.DataValidation
 
         protected IExcelDataValidationInt CreateSheetWithIntegerValidation(ExcelPackage package)
         {
-            var sheet = package.Workbook.Worksheets.Add("NewSheet");
-            var validation = sheet.DataValidations.AddIntegerValidation("A1");
+            ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("NewSheet");
+            IExcelDataValidationInt? validation = sheet.DataValidations.AddIntegerValidation("A1");
             validation.Formula.Value = 1;
             validation.Formula2.Value = 1;
 
@@ -103,8 +104,8 @@ namespace EPPlusTest.DataValidation
 
         protected T ReadTValidation<T>(ExcelPackage package)
         {
-            var validation = ReadPackageAsNewPackage(package).
-                Workbook.Worksheets[0].DataValidations[0];
+            ExcelDataValidation? validation = ReadPackageAsNewPackage(package).
+                                              Workbook.Worksheets[0].DataValidations[0];
 
             return (T)((Object)validation);
         }

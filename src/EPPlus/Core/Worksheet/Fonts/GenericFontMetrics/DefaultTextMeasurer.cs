@@ -23,7 +23,7 @@ namespace OfficeOpenXml.Core.Worksheet.Fonts.GenericFontMetrics
     {
         internal TextMeasurement Measure(string text, float size)
         {
-            var fontKey = GetKey(FontMetricsFamilies.Calibri, FontSubFamilies.Regular);
+            uint fontKey = GetKey(FontMetricsFamilies.Calibri, FontSubFamilies.Regular);
             return MeasureTextInternal(text, fontKey, MeasurementFontStyles.Regular, size);
         }
     }

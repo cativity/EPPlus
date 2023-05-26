@@ -41,9 +41,9 @@ namespace EPPlusTest.Core.Worksheet
         [TestMethod]
         public void InsertRowsSetsOutlineLevel()
         {
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var sheet1 = package.Workbook.Worksheets.Add("Sheet1");
+                ExcelWorksheet? sheet1 = package.Workbook.Worksheets.Add("Sheet1");
                 sheet1.Row(15).OutlineLevel = 1;
                 sheet1.Row(15).StyleID = 2;
                 sheet1.Cells["A15"].StyleID = 3;
@@ -63,9 +63,9 @@ namespace EPPlusTest.Core.Worksheet
         [TestMethod]
         public void InsertColumnsSetsOutlineLevel()
         {
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var sheet1 = package.Workbook.Worksheets.Add("Sheet1");
+                ExcelWorksheet? sheet1 = package.Workbook.Worksheets.Add("Sheet1");
                 sheet1.Column(15).OutlineLevel = 1;
                 sheet1.Column(15).StyleID = 2;
                 sheet1.Cells[1, 15].StyleID = 3;
@@ -85,9 +85,9 @@ namespace EPPlusTest.Core.Worksheet
         [TestMethod]
         public void CopyRowSetsOutlineLevelsCorrectly()
         {
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var sheet1 = package.Workbook.Worksheets.Add("Sheet1");
+                ExcelWorksheet? sheet1 = package.Workbook.Worksheets.Add("Sheet1");
                 sheet1.Row(2).OutlineLevel = 1;
                 sheet1.Row(3).OutlineLevel = 1;
                 sheet1.Row(4).OutlineLevel = 0;
@@ -111,14 +111,14 @@ namespace EPPlusTest.Core.Worksheet
         [TestMethod]
         public void CopyRowCrossSheetSetsOutlineLevelsCorrectly()
         {
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var sheet1 = package.Workbook.Worksheets.Add("Sheet1");
+                ExcelWorksheet? sheet1 = package.Workbook.Worksheets.Add("Sheet1");
                 sheet1.Row(2).OutlineLevel = 1;
                 sheet1.Row(3).OutlineLevel = 1;
                 sheet1.Row(4).OutlineLevel = 0;
 
-                var sheet2 = package.Workbook.Worksheets.Add("Sheet2");
+                ExcelWorksheet? sheet2 = package.Workbook.Worksheets.Add("Sheet2");
                 // Set outline levels on rows to be copied over.
                 sheet2.Row(6).OutlineLevel = 17;
                 sheet2.Row(7).OutlineLevel = 25;
@@ -138,9 +138,9 @@ namespace EPPlusTest.Core.Worksheet
         [TestMethod]
         public void CopyColumnSetsOutlineLevelsCorrectly()
         {
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var sheet1 = package.Workbook.Worksheets.Add("Sheet1");
+                ExcelWorksheet? sheet1 = package.Workbook.Worksheets.Add("Sheet1");
                 sheet1.Column(2).OutlineLevel = 1;
                 sheet1.Column(3).OutlineLevel = 1;
                 sheet1.Column(4).OutlineLevel = 0;

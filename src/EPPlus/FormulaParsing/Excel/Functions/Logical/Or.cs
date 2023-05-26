@@ -28,7 +28,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Logical
         public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
         {
             ValidateArguments(arguments, 1);
-            for (var x = 0; x < arguments.Count(); x++)
+            for (int x = 0; x < arguments.Count(); x++)
             {
                 if (ArgToBool(arguments, x))
                 {

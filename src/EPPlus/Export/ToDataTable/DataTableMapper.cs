@@ -25,10 +25,10 @@ namespace OfficeOpenXml.Export.ToDataTable
 
         internal void Map()
         {
-            var indexInRange = 0;
-            foreach(var columnObj in _dataTable.Columns)
+            int indexInRange = 0;
+            foreach(object? columnObj in _dataTable.Columns)
             {
-                var column = columnObj as DataColumn;
+                DataColumn? column = columnObj as DataColumn;
                 if (column == null)
                 {
                     continue;
@@ -38,7 +38,7 @@ namespace OfficeOpenXml.Export.ToDataTable
                 {
                     if(_options.FirstRowIsColumnNames)
                     {
-                        var ix = FindIndexInRange(column.ColumnName);
+                        int ix = FindIndexInRange(column.ColumnName);
                         if (ix == -1)
                         {
                             throw new InvalidOperationException("Column name not found in range: " + column.ColumnName);
@@ -57,11 +57,11 @@ namespace OfficeOpenXml.Export.ToDataTable
 
         private int FindIndexInRange(string columnName)
         {
-            var row = _range.Start.Row;
-            var index = 0;
-            for(var col = _range.Start.Column; col <= _range.End.Column; col++)
+            int row = _range.Start.Row;
+            int index = 0;
+            for(int col = _range.Start.Column; col <= _range.End.Column; col++)
             {
-                var cellVal = _range.Worksheet.GetValueInner(row, col);
+                object? cellVal = _range.Worksheet.GetValueInner(row, col);
                 if (cellVal == null)
                 {
                     continue;

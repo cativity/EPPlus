@@ -20,10 +20,10 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.Implementations
                 return new FinanceCalcResult<double>(eErrorType.Num);
             }
 
-            var settlementDay = FinancialDayFactory.Create(settlement, basis);
-            var maturityDay = FinancialDayFactory.Create(maturity, basis);
-            var fd = FinancialDaysFactory.Create(basis);
-            var nDays = fd.GetDaysBetweenDates(settlementDay, maturityDay);
+            FinancialDay? settlementDay = FinancialDayFactory.Create(settlement, basis);
+            FinancialDay? maturityDay = FinancialDayFactory.Create(maturity, basis);
+            IFinanicalDays? fd = FinancialDaysFactory.Create(basis);
+            double nDays = fd.GetDaysBetweenDates(settlementDay, maturityDay);
             
             // special case to make this function return same value as Excel
             if (basis == DayCountBasis.US_30_360 && maturityDay.Day == 31)
@@ -31,7 +31,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.Implementations
                 nDays++;
             }
 
-            var result = ((redemption - investment) / investment) * fd.DaysPerYear / nDays;
+            double result = ((redemption - investment) / investment) * fd.DaysPerYear / nDays;
             return new FinanceCalcResult<double>(result);
         }
     }

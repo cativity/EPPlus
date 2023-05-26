@@ -56,7 +56,7 @@ namespace OfficeOpenXml.Drawing.Chart
         }
         private void AddSeriesChartEx(ExcelChartEx chart, XmlNamespaceManager ns, XmlNode chartNode)
         {
-            var histoGramSeries = new List<XmlElement>();
+            List<XmlElement>? histoGramSeries = new List<XmlElement>();
             int index = 0;
             foreach (XmlElement serieElement in chartNode.SelectNodes("cx:plotArea/cx:plotAreaRegion/cx:series", ns))
             {
@@ -93,13 +93,13 @@ namespace OfficeOpenXml.Drawing.Chart
             }
             if (chart.ChartType == eChartType.Pareto)
             {
-                foreach (var e in histoGramSeries)
+                foreach (XmlElement? e in histoGramSeries)
                 {
                     if (e.GetAttribute("layoutId") == "paretoLine")
                     {
                         if (ConvertUtil.TryParseIntString(e.GetAttribute("ownerIdx"), out int ownerId))
                         {
-                            var serie=(ExcelHistogramChartSerie)_list.FirstOrDefault(x => ((ExcelHistogramChartSerie)x)._index == ownerId);
+                            ExcelHistogramChartSerie? serie=(ExcelHistogramChartSerie)_list.FirstOrDefault(x => ((ExcelHistogramChartSerie)x)._index == ownerId);
                             if(serie!=null)
                             {
                                 serie.AddParetoLineFromSerie(e);
@@ -437,7 +437,7 @@ namespace OfficeOpenXml.Drawing.Chart
         bool _isPivot;
         internal void AddPivotSerie(ExcelPivotTable pivotTableSource)
         {
-            var r = pivotTableSource.WorkSheet.Cells[pivotTableSource.Address.Address];
+            ExcelRange? r = pivotTableSource.WorkSheet.Cells[pivotTableSource.Address.Address];
             _isPivot = true;
             AddSeries(r.Offset(0, 1, r._toRow - r._fromRow + 1, 1).FullAddressAbsolute, r.Offset(0, 0, r._toRow - r._fromRow + 1, 1).FullAddressAbsolute, "");
         }

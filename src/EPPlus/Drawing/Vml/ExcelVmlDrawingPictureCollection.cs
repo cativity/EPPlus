@@ -16,6 +16,7 @@ using System.Text;
 using System.Xml;
 using System.Collections;
 using System.Globalization;
+using OfficeOpenXml.Packaging;
 using OfficeOpenXml.Utils;
 
 namespace OfficeOpenXml.Drawing.Vml
@@ -42,12 +43,12 @@ namespace OfficeOpenXml.Drawing.Vml
 
         private void AddDrawingsFromXml()
         {
-            var nodes = VmlDrawingXml.SelectNodes("//v:shape", NameSpaceManager);
+            XmlNodeList? nodes = VmlDrawingXml.SelectNodes("//v:shape", NameSpaceManager);
             _images = new List<ExcelVmlDrawingPicture>();
             foreach (XmlNode node in nodes)
             {
-                var img = new ExcelVmlDrawingPicture(node, NameSpaceManager, _ws);
-                var rel = Part.GetRelationship(img.RelId);
+                ExcelVmlDrawingPicture? img = new ExcelVmlDrawingPicture(node, NameSpaceManager, _ws);
+                ZipPackageRelationship? rel = Part.GetRelationship(img.RelId);
                 img.ImageUri = UriHelper.ResolvePartUri(rel.SourceUri, rel.TargetUri);
                 _images.Add(img);
             }
@@ -75,14 +76,14 @@ namespace OfficeOpenXml.Drawing.Vml
         internal ExcelVmlDrawingPicture Add(string id, Uri uri, string name, double width, double height)
         {
             XmlNode node = AddImage(id, uri, name, width, height);
-            var draw = new ExcelVmlDrawingPicture(node, NameSpaceManager, _ws);
+            ExcelVmlDrawingPicture? draw = new ExcelVmlDrawingPicture(node, NameSpaceManager, _ws);
             draw.ImageUri = uri;
             _images.Add(draw);
             return draw;
         }
         private XmlNode AddImage(string id, Uri targeUri, string Name, double width, double height)
         {
-            var node = VmlDrawingXml.CreateElement("v", "shape", ExcelPackage.schemaMicrosoftVml);
+            XmlElement? node = VmlDrawingXml.CreateElement("v", "shape", ExcelPackage.schemaMicrosoftVml);
             VmlDrawingXml.DocumentElement.AppendChild(node);
             node.SetAttribute("id", id);
             node.SetAttribute("o:type", "#_x0000_t75");

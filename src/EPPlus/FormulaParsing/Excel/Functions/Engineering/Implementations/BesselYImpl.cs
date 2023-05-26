@@ -153,14 +153,14 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Engineering.Implementatio
                 default:
                     {
                         double fTox = 2.0 / fNum;
-                        var y0Result = Bessely0(fNum);
+                        FinanceCalcResult<double>? y0Result = Bessely0(fNum);
                         if (y0Result.HasError)
                         {
                             return y0Result;
                         }
 
                         double fBym = y0Result.Result;
-                        var y1Result = Bessely1(fNum);
+                        FinanceCalcResult<double>? y1Result = Bessely1(fNum);
                         if (y1Result.HasError)
                         {
                             return y1Result;
@@ -170,7 +170,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Engineering.Implementatio
 
                         for (int n = 1; n < nOrder; n++)
                         {
-                            var fByp = n * fTox * fBy - fBym;
+                            double fByp = n * fTox * fBy - fBym;
                             fBym = fBy;
                             fBy = fByp;
                         }

@@ -56,14 +56,14 @@ namespace EPPlusTest.Table
         [TestMethod]
         public void TableWithSubtotalsParensInColumnName()
         {
-            var ws = _pck.Workbook.Worksheets.Add("TableSubtotParensColumnName");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("TableSubtotParensColumnName");
             ws.Cells["B2"].Value = "Header 1";
             ws.Cells["C2"].Value = "Header (2)";
             ws.Cells["B3"].Value = 1;
             ws.Cells["B4"].Value = 2;
             ws.Cells["C3"].Value = 3;
             ws.Cells["C4"].Value = 4;
-            var table = ws.Tables.Add(ws.Cells["B2:C4"], "TestTableParamHeader");
+            ExcelTable? table = ws.Tables.Add(ws.Cells["B2:C4"], "TestTableParamHeader");
             table.ShowTotal = true;
             table.ShowHeader = true;
             table.Columns[0].TotalsRowFunction = OfficeOpenXml.Table.RowFunctions.Sum;
@@ -77,10 +77,10 @@ namespace EPPlusTest.Table
         [ExpectedException(typeof(ArgumentException))]
         public void TestTableNameCanNotStartsWithNumber()
         {
-            using (var pck = new ExcelPackage())
+            using (ExcelPackage? pck = new ExcelPackage())
             {
-                var ws = pck.Workbook.Worksheets.Add("Table");
-                var tbl = ws.Tables.Add(ws.Cells["A1"], "5TestTable");
+                ExcelWorksheet? ws = pck.Workbook.Worksheets.Add("Table");
+                ExcelTable? tbl = ws.Tables.Add(ws.Cells["A1"], "5TestTable");
             }
         }
 
@@ -88,33 +88,33 @@ namespace EPPlusTest.Table
         [ExpectedException(typeof(ArgumentException))]
         public void TestTableNameCanNotContainWhiteSpaces()
         {
-            using (var pck = new ExcelPackage())
+            using (ExcelPackage? pck = new ExcelPackage())
             {
-                var ws = pck.Workbook.Worksheets.Add("TableNoWhiteSpace");
-                var tbl = ws.Tables.Add(ws.Cells["A1"], "Test Table");
+                ExcelWorksheet? ws = pck.Workbook.Worksheets.Add("TableNoWhiteSpace");
+                ExcelTable? tbl = ws.Tables.Add(ws.Cells["A1"], "Test Table");
             }
         }
 
         [TestMethod]
         public void TestTableNameCanStartsWithBackSlash()
         {
-            var ws = _pck.Workbook.Worksheets.Add("NameStartWithBackSlash");
-            var tbl = ws.Tables.Add(ws.Cells["A1"], "\\TestTable");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("NameStartWithBackSlash");
+            ExcelTable? tbl = ws.Tables.Add(ws.Cells["A1"], "\\TestTable");
         }
 
         [TestMethod]
         public void TestTableNameCanStartsWithUnderscore()
         {
-            var ws = _pck.Workbook.Worksheets.Add("NameStartWithUnderscore");
-            var tbl = ws.Tables.Add(ws.Cells["A1"], "_TestTable");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("NameStartWithUnderscore");
+            ExcelTable? tbl = ws.Tables.Add(ws.Cells["A1"], "_TestTable");
         }
         [TestMethod]
         public void TableTotalsRowFunctionEscapesSpecialCharactersInColumnName()
         {
-            var ws = _pck.Workbook.Worksheets.Add("TotalsFormulaTest");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("TotalsFormulaTest");
             ws.Cells["A1"].Value = "Col1";
             ws.Cells["B1"].Value = "[#'Col2']";
-            var tbl = ws.Tables.Add(ws.Cells["A1:B2"], "TableFormulaTest");
+            ExcelTable? tbl = ws.Tables.Add(ws.Cells["A1:B2"], "TableFormulaTest");
             tbl.ShowTotal = true;
             tbl.Columns[1].TotalsRowFunction = RowFunctions.Sum;
             Assert.AreEqual("SUBTOTAL(109,TableFormulaTest['['#''Col2''']])", ws.Cells["B3"].Formula);
@@ -122,10 +122,10 @@ namespace EPPlusTest.Table
         [TestMethod]
         public void ValidateEncodingForTableColumnNames()
         {
-            var ws = _pck.Workbook.Worksheets.Add("ValidateTblColumnNames");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("ValidateTblColumnNames");
             ws.Cells["A1"].Value = "Col1>";
             ws.Cells["B1"].Value = "Col1&gt;";
-            var tbl = ws.Tables.Add(ws.Cells["A1:C2"], "TableValColNames");
+            ExcelTable? tbl = ws.Tables.Add(ws.Cells["A1:C2"], "TableValColNames");
             Assert.AreEqual("Col1>", tbl.Columns[0].Name);
             Assert.AreEqual("Col1&gt;", tbl.Columns[1].Name);
             Assert.AreEqual("Column3", tbl.Columns[2].Name);
@@ -133,9 +133,9 @@ namespace EPPlusTest.Table
         [TestMethod]
         public void TableTest()
         {
-            var ws = _pck.Workbook.Worksheets.Add("Table");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("Table");
             ws.Cells["B1"].Value = 123;
-            var tbl = ws.Tables.Add(ws.Cells["B1:P12"], "TestTable");
+            ExcelTable? tbl = ws.Tables.Add(ws.Cells["B1:P12"], "TestTable");
             tbl.TableStyle = OfficeOpenXml.Table.TableStyles.Custom;
 
             tbl.ShowFirstColumn = true;
@@ -192,17 +192,17 @@ namespace EPPlusTest.Table
         [TestMethod]
         public void TableDeleteTest()
         {
-            using (var p = OpenPackage("TableDeleteTest.xlsx", true))
+            using (ExcelPackage? p = OpenPackage("TableDeleteTest.xlsx", true))
             {
-                var wb = p.Workbook;
-                var sheets = new[]
+                ExcelWorkbook? wb = p.Workbook;
+                ExcelWorksheet[]? sheets = new[]
                 {
                     wb.Worksheets.Add("WorkSheet A"),
                     wb.Worksheets.Add("WorkSheet B")
                 };
                 for (int i = 1; i <= 4; i++)
                 {
-                    var cell = sheets[0].Cells[1, i];
+                    ExcelRange? cell = sheets[0].Cells[1, i];
                     cell.Value = cell.Address + "_";
                     cell = sheets[1].Cells[1, i];
                     cell.Value = cell.Address + "_";
@@ -210,12 +210,12 @@ namespace EPPlusTest.Table
 
                 for (int i = 6; i <= 11; i++)
                 {
-                    var cell = sheets[0].Cells[3, i];
+                    ExcelRange? cell = sheets[0].Cells[3, i];
                     cell.Value = cell.Address + "_";
                     cell = sheets[1].Cells[3, i];
                     cell.Value = cell.Address + "_";
                 }
-                var tables = new[]
+                ExcelTable[]? tables = new[]
                 {
                     sheets[1].Tables.Add(sheets[1].Cells["A1:D73"], "TableDeletea"),
                     sheets[0].Tables.Add(sheets[0].Cells["A1:D73"], "TableDelete2"),
@@ -241,9 +241,9 @@ namespace EPPlusTest.Table
                     Assert.Fail("ArgumentException should have been thrown.");
                 }
                 catch (ArgumentOutOfRangeException) { }
-                var range = sheets[0].Cells[sheets[0].Tables[1].Address.Address];
+                ExcelRange? range = sheets[0].Cells[sheets[0].Tables[1].Address.Address];
                 sheets[0].Tables.Delete(1, true);
-                foreach (var cell in range)
+                foreach (ExcelRangeBase? cell in range)
                 {
                     Assert.IsNull(cell.Value);
                 }
@@ -253,16 +253,16 @@ namespace EPPlusTest.Table
         [TestMethod]
         public void DeleteTablesFromTemplate()
         {
-            using (var p = new ExcelPackage())
+            using (ExcelPackage? p = new ExcelPackage())
             {
-                var ws = p.Workbook.Worksheets.Add("Tablews1");
+                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Tablews1");
                 ws.Tables.Add(new ExcelAddressBase("A1:C3"), "Table1");
                 ws.Tables.Add(new ExcelAddressBase("D1:G7"), "Table2");
 
                 Assert.AreEqual(2, ws.Tables.Count);
                 p.Save();
 
-                using (var p2 = new ExcelPackage(p.Stream))
+                using (ExcelPackage? p2 = new ExcelPackage(p.Stream))
                 {
                     ws = p2.Workbook.Worksheets[0];
                     Assert.AreEqual(2, ws.Tables.Count);
@@ -271,7 +271,7 @@ namespace EPPlusTest.Table
 
                     Assert.AreEqual(0, ws.Tables.Count);
                     p2.Save();
-                    using (var p3 = new ExcelPackage(p2.Stream))
+                    using (ExcelPackage? p3 = new ExcelPackage(p2.Stream))
                     {
                         Assert.AreEqual(0, p3.Workbook.Worksheets[0].Tables.Count);
                     }
@@ -281,9 +281,9 @@ namespace EPPlusTest.Table
         [TestMethod]
         public void ValidateTableSaveLoad()
         {
-            using (var p1 = OpenPackage("table.xlsx"))
+            using (ExcelPackage? p1 = OpenPackage("table.xlsx"))
             {
-                var sheet = p1.Workbook.Worksheets.Add("Tables");
+                ExcelWorksheet? sheet = p1.Workbook.Worksheets.Add("Tables");
 
                 // headers
                 sheet.Cells["A1"].Value = "Month";
@@ -291,8 +291,8 @@ namespace EPPlusTest.Table
                 sheet.Cells["C1"].Value = "VAT";
                 sheet.Cells["D1"].Value = "Total";
 
-                var rnd = new Random();
-                for (var row = 2; row < 12; row++)
+                Random? rnd = new Random();
+                for (int row = 2; row < 12; row++)
                 {
                     sheet.Cells[row, 1].Value = new DateTimeFormatInfo().GetMonthName(row);
                     sheet.Cells[row, 2].Value = rnd.Next(10000, 100000);
@@ -301,10 +301,10 @@ namespace EPPlusTest.Table
                 }
                 sheet.Cells["B2:D13"].Style.Numberformat.Format = "€#,##0.00";
 
-                var range = sheet.Cells["A1:D11"];
+                ExcelRange? range = sheet.Cells["A1:D11"];
 
                 // create the table
-                var table = sheet.Tables.Add(range, "myTable");
+                ExcelTable? table = sheet.Tables.Add(range, "myTable");
                 // configure the table
                 table.ShowHeader = true;
                 table.ShowFirstColumn = true;
@@ -321,17 +321,17 @@ namespace EPPlusTest.Table
                 range.AutoFitColumns();
 
                 p1.Save();
-                using (var p2 = new ExcelPackage(p1.Stream))
+                using (ExcelPackage? p2 = new ExcelPackage(p1.Stream))
                 {
                     sheet = p2.Workbook.Worksheets["Tables"];
                     // get a table by its name and change properties
-                    var myTable = sheet.Tables["myTable"];
+                    ExcelTable? myTable = sheet.Tables["myTable"];
                     myTable.TableStyle = TableStyles.Medium8;
                     myTable.ShowFirstColumn = false;
                     myTable.ShowLastColumn = true;
                     Assert.AreEqual(TableStyles.Medium8, myTable.TableStyle);
                     SaveWorkbook("Table2.xlsx", p2);
-                    using (var p3 = new ExcelPackage(p2.Stream))
+                    using (ExcelPackage? p3 = new ExcelPackage(p2.Stream))
                     {
                         sheet = p3.Workbook.Worksheets["Tables"];
                         // get a table by its name and change properties
@@ -345,9 +345,9 @@ namespace EPPlusTest.Table
         [TestMethod]
         public void AddRowShouldAdjustSubtotals()
         {
-            using (var package = OpenPackage("TableAdjustSubtotals.xlsx", true))
+            using (ExcelPackage? package = OpenPackage("TableAdjustSubtotals.xlsx", true))
             {
-                var sheet = package.Workbook.Worksheets.Add("Tables");
+                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("Tables");
 
                 // headers
                 sheet.Cells["A1"].Value = "Month";
@@ -355,8 +355,8 @@ namespace EPPlusTest.Table
                 sheet.Cells["C1"].Value = "VAT";
                 sheet.Cells["D1"].Value = "Total";
 
-                var rnd = new Random();
-                for (var row = 2; row < 12; row++)
+                Random? rnd = new Random();
+                for (int row = 2; row < 12; row++)
                 {
                     sheet.Cells[row, 1].Value = new DateTimeFormatInfo().GetMonthName(row);
                     sheet.Cells[row, 2].Value = rnd.Next(10000, 100000);
@@ -365,10 +365,10 @@ namespace EPPlusTest.Table
                 }
                 sheet.Cells["B2:D13"].Style.Numberformat.Format = "€#,##0.00";
 
-                var range = sheet.Cells["A1:D11"];
+                ExcelRange? range = sheet.Cells["A1:D11"];
 
                 // create the table
-                var table = sheet.Tables.Add(range, "myTable");
+                ExcelTable? table = sheet.Tables.Add(range, "myTable");
                 // configure the table
                 table.ShowHeader = true;
                 table.ShowFirstColumn = true;
@@ -381,8 +381,8 @@ namespace EPPlusTest.Table
                 table.Columns[3].TotalsRowFunction = RowFunctions.Sum;
 
                 // insert rows
-                var rowRange = table.AddRow();
-                var newRowIx = rowRange.Start.Row;
+                ExcelRangeBase? rowRange = table.AddRow();
+                int newRowIx = rowRange.Start.Row;
                 sheet.Cells[newRowIx, 1].Value = new DateTimeFormatInfo().GetMonthName(newRowIx);
                 sheet.Cells[newRowIx, 2].Value = rnd.Next(10000, 100000);
                 sheet.Cells[newRowIx, 3].Formula = $"B{newRowIx} * 0.25";
@@ -398,9 +398,9 @@ namespace EPPlusTest.Table
         [TestMethod]
         public void ValidateCalculatedColumn()
         {
-            using (var package = OpenPackage("TableCalculatedColumn.xlsx", true))
+            using (ExcelPackage? package = OpenPackage("TableCalculatedColumn.xlsx", true))
             {
-                var sheet = package.Workbook.Worksheets.Add("Tables");
+                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("Tables");
 
                 // headers
                 sheet.Cells["C1"].Value = "Month";
@@ -409,8 +409,8 @@ namespace EPPlusTest.Table
                 sheet.Cells["F1"].Value = "Total";
                 sheet.Cells["G1"].Value = "Formula";
 
-                var rnd = new Random();
-                for (var row = 2; row < 12; row++)
+                Random? rnd = new Random();
+                for (int row = 2; row < 12; row++)
                 {
                     sheet.Cells[row, 3].Value = new DateTimeFormatInfo().GetMonthName(row);
                     sheet.Cells[row, 4].Value = rnd.Next(10000, 100000);
@@ -419,15 +419,15 @@ namespace EPPlusTest.Table
                 }
                 sheet.Cells["D2:G13"].Style.Numberformat.Format = "€#,##0.00";
 
-                var range = sheet.Cells["C1:G11"];
+                ExcelRange? range = sheet.Cells["C1:G11"];
 
                 // create the table
-                var table = sheet.Tables.Add(range, "myTable");
+                ExcelTable? table = sheet.Tables.Add(range, "myTable");
                 // configure the table
                 table.ShowHeader = true;
                 table.ShowTotal = true;
 
-                var formula = "mytable[[#this row],[Sales]]+mytable[[#this row],[VAT]]";
+                string? formula = "mytable[[#this row],[Sales]]+mytable[[#this row],[VAT]]";
                 table.Columns[4].CalculatedColumnFormula = formula;
                 
                 //Assert
@@ -446,17 +446,17 @@ namespace EPPlusTest.Table
         [TestMethod]
         public void RenameTableWithCalculatedColumnFormulas()
         {
-            using (var p = new ExcelPackage())
+            using (ExcelPackage? p = new ExcelPackage())
             {
                 // Get the worksheet containing the tables
-                var ws1 = p.Workbook.Worksheets.Add("Sheet1");
-                var ws2 = p.Workbook.Worksheets.Add("Sheet2");
+                ExcelWorksheet? ws1 = p.Workbook.Worksheets.Add("Sheet1");
+                ExcelWorksheet? ws2 = p.Workbook.Worksheets.Add("Sheet2");
 
                 // Get the tables and check the calculated column formulas
-                var tbl1 = ws1.Tables.Add(ws1.Cells["A1:C2"], "Table1");
+                ExcelTable? tbl1 = ws1.Tables.Add(ws1.Cells["A1:C2"], "Table1");
                 tbl1.Columns[2].CalculatedColumnFormula = "Table1[Column1]+Table1[Column2]";
 
-                var tbl2 = ws1.Tables.Add(ws1.Cells["E1:G2"], "Table2");
+                ExcelTable? tbl2 = ws1.Tables.Add(ws1.Cells["E1:G2"], "Table2");
                 tbl2.Columns[2].CalculatedColumnFormula = "Table1[[#This Row],[Column1]]+Table2[[#This Row],[Column2]]";
 
                 ws2.SetFormula(1, 1, "Table1[[#This Row],[Column1]]");
@@ -477,17 +477,17 @@ namespace EPPlusTest.Table
         [TestMethod]
         public void RenameTableWithCalculatedColumnFormulasSameStartOfTableName()
         {
-            using (var p = new ExcelPackage())
+            using (ExcelPackage? p = new ExcelPackage())
             {
                 // Create some worksheets
-                var ws1 = p.Workbook.Worksheets.Add("Sheet1");
-                var ws2 = p.Workbook.Worksheets.Add("Sheet2");
+                ExcelWorksheet? ws1 = p.Workbook.Worksheets.Add("Sheet1");
+                ExcelWorksheet? ws2 = p.Workbook.Worksheets.Add("Sheet2");
 
                 // Create some tables with calculated column formulas
-                var tbl1 = ws1.Tables.Add(ws1.Cells["A1:C2"], "Table1");
+                ExcelTable? tbl1 = ws1.Tables.Add(ws1.Cells["A1:C2"], "Table1");
                 tbl1.Columns[2].CalculatedColumnFormula = "Table1[Column1]+Table1[Column2]";
 
-                var tbl2 = ws1.Tables.Add(ws1.Cells["E1:G2"], "Table12");
+                ExcelTable? tbl2 = ws1.Tables.Add(ws1.Cells["E1:G2"], "Table12");
                 tbl2.Columns[2].CalculatedColumnFormula = "Table1[[#This Row],[Column1]]+Table12[[#This Row],[Column2]]";
 
                 // Create some references outside of the table
@@ -513,17 +513,17 @@ namespace EPPlusTest.Table
         [TestMethod]
         public void CalculatedColumnFormula_SetToEmptyString()
         {
-            using (var pck = new ExcelPackage())
+            using (ExcelPackage? pck = new ExcelPackage())
             {
                 // Set up a worksheet containing a table
-                var wks = pck.Workbook.Worksheets.Add("Sheet1");
+                ExcelWorksheet? wks = pck.Workbook.Worksheets.Add("Sheet1");
                 wks.Cells["A1"].Value = "Col1";
                 wks.Cells["B1"].Value = "Col2";
                 wks.Cells["C1"].Value = "Col3";
                 wks.Cells["A2"].Value = 1;
                 wks.Cells["B2"].Value = 2;
-                var table1 = wks.Tables.Add(wks.Cells["A1:C2"], "Table1");
-                var formula = "Table1[[#This Row],[Col1]]+Table1[[#This Row],[Col2]]";
+                ExcelTable? table1 = wks.Tables.Add(wks.Cells["A1:C2"], "Table1");
+                string? formula = "Table1[[#This Row],[Col1]]+Table1[[#This Row],[Col2]]";
                 table1.Columns[2].CalculatedColumnFormula = formula;
 
                 // Check the calculated column formula
@@ -547,17 +547,17 @@ namespace EPPlusTest.Table
         [TestMethod]
         public void CalculatedColumnFormula_RemoveFormulas()
         {
-            using (var p = OpenPackage("CalculatedColumnFormulaRemove1.xlsx", true))
+            using (ExcelPackage? p = OpenPackage("CalculatedColumnFormulaRemove1.xlsx", true))
             {
                 // Set up a worksheet containing a table
-                var ws = p.Workbook.Worksheets.Add("Sheet1");
+                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Sheet1");
                 ws.Cells["A1"].Value = "Col1";
                 ws.Cells["B1"].Value = "Col2";
                 ws.Cells["C1"].Value = "Col3";
                 ws.Cells["A2"].Value = 1;
                 ws.Cells["B2"].Value = 2;
-                var table1 = ws.Tables.Add(ws.Cells["A1:C2"], "Table1");
-                var formula = "Table1[[#This Row],[Col1]]+Table1[[#This Row],[Col2]]";
+                ExcelTable? table1 = ws.Tables.Add(ws.Cells["A1:C2"], "Table1");
+                string? formula = "Table1[[#This Row],[Col1]]+Table1[[#This Row],[Col2]]";
                 table1.Columns[2].CalculatedColumnFormula = formula;
 
                 // Check the calculated column formula
@@ -577,17 +577,17 @@ namespace EPPlusTest.Table
         [TestMethod]
         public void CalculatedColumnFormula_RemoveFormulas_AddRow()
         {
-            using (var p = OpenPackage("CalculatedColumnFormulaRemove2.xlsx", true))
+            using (ExcelPackage? p = OpenPackage("CalculatedColumnFormulaRemove2.xlsx", true))
             {
                 // Set up a worksheet containing a table
-                var ws = p.Workbook.Worksheets.Add("Sheet1");
+                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Sheet1");
                 ws.Cells["A1"].Value = "Col1";
                 ws.Cells["B1"].Value = "Col2";
                 ws.Cells["C1"].Value = "Col3";
                 ws.Cells["A2"].Value = 1;
                 ws.Cells["B2"].Value = 2;
-                var table1 = ws.Tables.Add(ws.Cells["A1:C2"], "Table1");
-                var formula = "Table1[[#This Row],[Col1]]+Table1[[#This Row],[Col2]]";
+                ExcelTable? table1 = ws.Tables.Add(ws.Cells["A1:C2"], "Table1");
+                string? formula = "Table1[[#This Row],[Col1]]+Table1[[#This Row],[Col2]]";
                 table1.Columns[2].CalculatedColumnFormula = formula;
 
                 // Check the calculated column formula
@@ -611,10 +611,10 @@ namespace EPPlusTest.Table
         [TestMethod]
         public void CalculatedColumnFormula_OneCellDifferent_AddRow()
         {
-            using (var p = OpenPackage("CalculatedColumnFormulaRemove3.xlsx", true))
+            using (ExcelPackage? p = OpenPackage("CalculatedColumnFormulaRemove3.xlsx", true))
             {
                 // Set up a worksheet containing a table
-                var ws = p.Workbook.Worksheets.Add("Sheet1");
+                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Sheet1");
                 ws.Cells["A1"].Value = "Col1";
                 ws.Cells["B1"].Value = "Col2";
                 ws.Cells["C1"].Value = "Col3";
@@ -624,8 +624,8 @@ namespace EPPlusTest.Table
                 ws.Cells["B3"].Value = 4;
                 ws.Cells["A4"].Value = 5;
                 ws.Cells["B4"].Value = 6;
-                var table1 = ws.Tables.Add(ws.Cells["A1:C4"], "Table1");
-                var formula = "Table1[[#This Row],[Col1]]+Table1[[#This Row],[Col2]]";
+                ExcelTable? table1 = ws.Tables.Add(ws.Cells["A1:C4"], "Table1");
+                string? formula = "Table1[[#This Row],[Col1]]+Table1[[#This Row],[Col2]]";
                 table1.Columns[2].CalculatedColumnFormula = formula;
 
                 // Check the calculated column formula has been added to each cell
@@ -637,7 +637,7 @@ namespace EPPlusTest.Table
                 // Remove the calculated column formula from one row and use a different formula instead
                 ws.Cells["C3"].ClearFormulas();
                 ws.Cells["C3"].ClearFormulaValues();
-                var differentFormula = "Table1[[#This Row],[Col1]]";
+                string? differentFormula = "Table1[[#This Row],[Col1]]";
                 ws.Cells["C3"].Formula = differentFormula;
                 Assert.AreEqual(differentFormula, ws.Cells["C3"].Formula);
 
@@ -657,9 +657,9 @@ namespace EPPlusTest.Table
         public void CreateTableAfterDeletingAMergedCell()
         {
             // Reproduce issue 780
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var worksheet = package.Workbook.Worksheets.Add("Sheet1");
+                ExcelWorksheet? worksheet = package.Workbook.Worksheets.Add("Sheet1");
 
                 // Prepare some data
                 worksheet.Cells["A1"].Value = "Column 1";
@@ -673,8 +673,8 @@ namespace EPPlusTest.Table
                 worksheet.DeleteRow(4);
 
                 // Create a table
-                var tableCells = worksheet.Cells["A1:B2"];
-                var table = worksheet.Tables.Add(tableCells, "table"); // --> This triggers a NullReferenceException
+                ExcelRange? tableCells = worksheet.Cells["A1:B2"];
+                ExcelTable? table = worksheet.Tables.Add(tableCells, "table"); // --> This triggers a NullReferenceException
             }
         }
     }

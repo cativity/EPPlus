@@ -33,7 +33,7 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
             }
             else
             {
-                foreach (var address in range.Addresses)
+                foreach (ExcelAddressBase? address in range.Addresses)
                 {
                     AddRange(range.Worksheet.Cells[address.Address]);
                 }

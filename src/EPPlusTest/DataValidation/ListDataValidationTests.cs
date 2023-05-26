@@ -92,17 +92,17 @@ namespace EPPlusTest.DataValidation
         [TestMethod]
         public void ListDataValidation_ShowErrorMessageIsSet()
         {
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var sheet = package.Workbook.Worksheets.Add("list formula");
+                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("list formula");
 
-                var sheet2 = package.Workbook.Worksheets.Add("Sheet2");
+                ExcelWorksheet? sheet2 = package.Workbook.Worksheets.Add("Sheet2");
                 sheet2.Cells["A1"].Value = "A";
                 sheet2.Cells["A2"].Value = "B";
                 sheet2.Cells["A3"].Value = "C";
 
                 // add a validation and set values
-                var validation = sheet.DataValidations.AddListValidation("A1");
+                IExcelDataValidationList? validation = sheet.DataValidations.AddListValidation("A1");
                 // Alternatively:
                 // var validation = sheet.Cells["A1"].DataValidation.AddListDataValidation();
                 validation.ShowErrorMessage = true;
@@ -118,17 +118,17 @@ namespace EPPlusTest.DataValidation
         [TestMethod]
         public void ListDataValidationExt_ShowDropDownIsSet()
         {
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var sheet = package.Workbook.Worksheets.Add("list formula");
+                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("list formula");
 
-                var sheet2 = package.Workbook.Worksheets.Add("Sheet2");
+                ExcelWorksheet? sheet2 = package.Workbook.Worksheets.Add("Sheet2");
                 sheet2.Cells["A1"].Value = "A";
                 sheet2.Cells["A2"].Value = "B";
                 sheet2.Cells["A3"].Value = "C";
 
                 // add a validation and set values
-                var validation = sheet.DataValidations.AddListValidation("A1");
+                IExcelDataValidationList? validation = sheet.DataValidations.AddListValidation("A1");
                 // Alternatively:
                 // var validation = sheet.Cells["A1"].DataValidation.AddListDataValidation();
                 validation.HideDropDown = true;
@@ -142,8 +142,8 @@ namespace EPPlusTest.DataValidation
                 validation = sheet.DataValidations.Find(x => x.Uid == validation.Uid).As.ListValidation;
 
                 Assert.IsTrue(validation.HideDropDown.Value);
-                var v = validation as ExcelDataValidationList;
-                var attributeValue = v.HideDropDown.Value;
+                ExcelDataValidationList? v = validation as ExcelDataValidationList;
+                bool attributeValue = v.HideDropDown.Value;
                 Assert.IsTrue(attributeValue);
             }
         }
@@ -151,22 +151,22 @@ namespace EPPlusTest.DataValidation
         [TestMethod]
         public void ListDataValidation_ShowDropDownIsSet()
         {
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var sheet = package.Workbook.Worksheets.Add("list formula");
+                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("list formula");
                 sheet.Cells["A1"].Value = "A";
                 sheet.Cells["A2"].Value = "B";
                 sheet.Cells["A3"].Value = "C";
 
                 // add a validation and set values
-                var validation = sheet.DataValidations.AddListValidation("B1");
+                IExcelDataValidationList? validation = sheet.DataValidations.AddListValidation("B1");
                 validation.HideDropDown = true;
                 validation.ShowErrorMessage = true;
                 validation.Formula.ExcelFormula = "A1:A3";
 
                 Assert.IsTrue(validation.HideDropDown.Value);
-                var v = validation as ExcelDataValidationList;
-                var attributeValue = v.HideDropDown.Value;
+                ExcelDataValidationList? v = validation as ExcelDataValidationList;
+                bool attributeValue = v.HideDropDown.Value;
                 Assert.IsTrue(attributeValue);
             }
         }
@@ -174,12 +174,12 @@ namespace EPPlusTest.DataValidation
         [TestMethod]
         public void ListDataValidation_AllowsOperatorShouldBeFalse()
         {
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var sheet = package.Workbook.Worksheets.Add("list operator");
+                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("list operator");
 
                 // add a validation and set values
-                var validation = sheet.DataValidations.AddListValidation("A1");
+                IExcelDataValidationList? validation = sheet.DataValidations.AddListValidation("A1");
 
                 Assert.IsFalse(validation.AllowsOperator);
             }
@@ -188,8 +188,8 @@ namespace EPPlusTest.DataValidation
         [TestMethod, ExpectedException(typeof(InvalidOperationException))]
         public void CompletelyEmptyListValidationsShouldThrow()
         {
-            var excel = new ExcelPackage();
-            var sheet = excel.Workbook.Worksheets.Add("Sheet1");
+            ExcelPackage? excel = new ExcelPackage();
+            ExcelWorksheet? sheet = excel.Workbook.Worksheets.Add("Sheet1");
             sheet.Cells[1, 1].Value = "Column1";
             sheet.Cells["A2:A1048576"].DataValidation.AddListDataValidation();
 
@@ -199,10 +199,10 @@ namespace EPPlusTest.DataValidation
         [TestMethod]
         public void EmptyListValidationsShouldNotThrow()
         {
-            var excel = new ExcelPackage();
-            var sheet = excel.Workbook.Worksheets.Add("Sheet1");
+            ExcelPackage? excel = new ExcelPackage();
+            ExcelWorksheet? sheet = excel.Workbook.Worksheets.Add("Sheet1");
             sheet.Cells[1, 1].Value = "Column1";
-            var boolValidator = sheet.Cells["A2:A1048576"].DataValidation.AddListDataValidation();
+            IExcelDataValidationList? boolValidator = sheet.Cells["A2:A1048576"].DataValidation.AddListDataValidation();
             {
                 boolValidator.Formula.Values.Add("");
                 boolValidator.Formula.Values.Add("True");
@@ -217,30 +217,30 @@ namespace EPPlusTest.DataValidation
         [TestMethod]
         public void ListLocalAndExt()
         {
-            using (var package = OpenPackage("DataValidationExtLocalList.xlsx", true))
+            using (ExcelPackage? package = OpenPackage("DataValidationExtLocalList.xlsx", true))
             {
-                var ws1 = package.Workbook.Worksheets.Add("Worksheet1");
+                ExcelWorksheet? ws1 = package.Workbook.Worksheets.Add("Worksheet1");
                 package.Workbook.Worksheets.Add("Worksheet2");
 
-                var localVal = ws1.DataValidations.AddDecimalValidation("A1:A5");
+                IExcelDataValidationDecimal? localVal = ws1.DataValidations.AddDecimalValidation("A1:A5");
 
                 localVal.Formula.Value = 0;
                 localVal.Formula2.Value = 0.1;
 
-                var extVal = ws1.DataValidations.AddListValidation("B1:B5");
+                IExcelDataValidationList? extVal = ws1.DataValidations.AddListValidation("B1:B5");
 
                 extVal.Formula.ExcelFormula = "Worksheet2!$G$12:G15";
 
                 SaveAndCleanup(package);
 
-                var p = OpenPackage("DataValidationExtLocalList.xlsx");
+                ExcelPackage? p = OpenPackage("DataValidationExtLocalList.xlsx");
 
-                var stream = new MemoryStream();
+                MemoryStream? stream = new MemoryStream();
                 p.SaveAs(stream);
 
                 ExcelPackage pck = new ExcelPackage(stream);
 
-                var stream2 = new MemoryStream();
+                MemoryStream? stream2 = new MemoryStream();
                 pck.SaveAs(stream2);
             }
         }

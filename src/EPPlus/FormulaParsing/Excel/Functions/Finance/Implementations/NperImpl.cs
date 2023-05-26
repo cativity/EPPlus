@@ -65,7 +65,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.Implementations
                 }
                 dTemp4 = Rate + 1.0;
 
-                var result = (System.Math.Log(dTempFv) - System.Math.Log(dTempPv)) / System.Math.Log(dTemp4);
+                double result = (System.Math.Log(dTempFv) - System.Math.Log(dTempPv)) / System.Math.Log(dTemp4);
                 return new FinanceCalcResult<double>(result);
             }
         }

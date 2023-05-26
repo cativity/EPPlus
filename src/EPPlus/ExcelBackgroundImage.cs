@@ -50,7 +50,7 @@ namespace OfficeOpenXml
             {
                 if (_imageNew == null)
                 {
-                    var relId = GetXmlNodeString(BACKGROUNDPIC_PATH);
+                    string? relId = GetXmlNodeString(BACKGROUNDPIC_PATH);
                     _imageNew = new ExcelImage(this, new ePictureType[] {ePictureType.Svg, ePictureType.Ico, ePictureType.WebP});
                     if (!string.IsNullOrEmpty(relId))
                     {
@@ -71,8 +71,8 @@ namespace OfficeOpenXml
             {
                 throw new FileNotFoundException($"Can't find file {PictureFile.FullName}");
             }
-            var type = PictureStore.GetPictureType(PictureFile.Extension);
-            var imgBytes =File.ReadAllBytes(PictureFile.FullName);
+            ePictureType type = PictureStore.GetPictureType(PictureFile.Extension);
+            byte[]? imgBytes =File.ReadAllBytes(PictureFile.FullName);
             Image.SetImage(imgBytes, type);
         }
         /// <summary>
@@ -110,7 +110,7 @@ namespace OfficeOpenXml
         {
             if (Image.Type != null)
             {
-                var pc = (IPictureContainer)this;
+                IPictureContainer? pc = (IPictureContainer)this;
                 _workSheet._package.PictureStore.RemoveImage(pc.ImageHash, pc);
                 _workSheet.DeleteNode(BACKGROUNDPIC_PATH, true);
             }
@@ -118,7 +118,7 @@ namespace OfficeOpenXml
 
         void IPictureContainer.SetNewImage()
         {
-            var pc = (IPictureContainer)this;
+            IPictureContainer? pc = (IPictureContainer)this;
             _workSheet.SetXmlNodeString(BACKGROUNDPIC_PATH, pc.RelPic.Id);
         }
     }

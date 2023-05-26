@@ -42,20 +42,20 @@ namespace OfficeOpenXml.Sparkline
         {
             get
             {
-                var f = GetXmlNodeString("xm:f");
+                string? f = GetXmlNodeString("xm:f");
                 if (string.IsNullOrEmpty(f))
                 {
                     return null;
                 }
 
-                var a = new ExcelAddressBase(f);
+                ExcelAddressBase? a = new ExcelAddressBase(f);
                 if (a.WorkSheetName.Equals(_ws.Name, StringComparison.CurrentCultureIgnoreCase))
                 {
                     return _ws.Cells[a.Address];
                 }
                 else
                 {
-                    var ws = _ws.Workbook.Worksheets[a.WorkSheetName];
+                    ExcelWorksheet? ws = _ws.Workbook.Worksheets[a.WorkSheetName];
                     return ws.Cells[a.Address];
                 }
             }
@@ -97,7 +97,7 @@ namespace OfficeOpenXml.Sparkline
                 }
                 else
                 {
-                    var ws = _ws.Workbook.Worksheets[Sparklines[0].RangeAddress.WorkSheetName];
+                    ExcelWorksheet? ws = _ws.Workbook.Worksheets[Sparklines[0].RangeAddress.WorkSheetName];
                     return _ws.Cells[Sparklines[0].RangeAddress._fromRow, Sparklines[0].RangeAddress._fromCol, Sparklines[Sparklines.Count - 1].RangeAddress._toRow, Sparklines[Sparklines.Count - 1].RangeAddress._toCol];
                 }
             }
@@ -284,7 +284,7 @@ namespace OfficeOpenXml.Sparkline
         {
             get
             {
-                var s=GetXmlNodeString(_dispBlanksAsPath);
+                string? s=GetXmlNodeString(_dispBlanksAsPath);
                 if(string.IsNullOrEmpty(s))
                 {
                     return eDispBlanksAs.Zero;
@@ -307,7 +307,7 @@ namespace OfficeOpenXml.Sparkline
         {
             get
             {
-                var type = GetXmlNodeString(_typePath);
+                string? type = GetXmlNodeString(_typePath);
                 if(string.IsNullOrEmpty(type))
                 {
                     return eSparklineType.Line;
@@ -464,7 +464,7 @@ namespace OfficeOpenXml.Sparkline
 
             get
             {
-                var s = GetXmlNodeString(_minAxisTypePath);
+                string? s = GetXmlNodeString(_minAxisTypePath);
                 if(string.IsNullOrEmpty(s))
                 {
                     return eSparklineAxisMinMax.Individual;
@@ -495,7 +495,7 @@ namespace OfficeOpenXml.Sparkline
         {
             get
             {
-                var s = GetXmlNodeString(_maxAxisTypePath);
+                string? s = GetXmlNodeString(_maxAxisTypePath);
                 if (string.IsNullOrEmpty(s))
                 {
                     return eSparklineAxisMinMax.Individual;

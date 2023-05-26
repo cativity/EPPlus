@@ -43,8 +43,8 @@ namespace OfficeOpenXml
             }
             HashAlgorithm = eHashAlgorithm.SHA512;
 
-            var s = new byte[16];
-            var rnd = RandomNumberGenerator.Create();
+            byte[]? s = new byte[16];
+            RandomNumberGenerator? rnd = RandomNumberGenerator.Create();
             rnd.GetBytes(s);
             SaltValue = s;
             SpinCount = 100000;
@@ -54,7 +54,7 @@ namespace OfficeOpenXml
 
         private void RemovePasswordAttributes()
         {
-            var node = (XmlElement)GetNode("d:fileSharing");            
+            XmlElement? node = (XmlElement)GetNode("d:fileSharing");            
             node.RemoveAttribute("spinCount");
             node.RemoveAttribute("saltValue");
             node.RemoveAttribute("hashValue");
@@ -125,7 +125,7 @@ namespace OfficeOpenXml
         {
             get
             {
-                var s = GetXmlNodeString("d:fileSharing/@saltValue");
+                string? s = GetXmlNodeString("d:fileSharing/@saltValue");
                 if (!string.IsNullOrEmpty(s))
                 {
                     return Convert.FromBase64String(s);
@@ -141,7 +141,7 @@ namespace OfficeOpenXml
         {
             get
             {
-                var s = GetXmlNodeString("d:fileSharing/@hashValue");
+                string? s = GetXmlNodeString("d:fileSharing/@hashValue");
                 if (!string.IsNullOrEmpty(s))
                 {
                     return Convert.FromBase64String(s);

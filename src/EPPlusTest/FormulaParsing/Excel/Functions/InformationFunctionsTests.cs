@@ -36,6 +36,8 @@ using OfficeOpenXml.FormulaParsing.Excel.Functions.Information;
 using EPPlusTest.FormulaParsing.TestHelpers;
 using OfficeOpenXml.FormulaParsing.Exceptions;
 using OfficeOpenXml;
+using OfficeOpenXml.FormulaParsing.Excel.Functions;
+using OfficeOpenXml.FormulaParsing.ExpressionGraph;
 
 namespace EPPlusTest.Excel.Functions
 {
@@ -53,118 +55,118 @@ namespace EPPlusTest.Excel.Functions
         [TestMethod]
         public void IsBlankShouldReturnTrueIfFirstArgIsNull()
         {
-            var func = new IsBlank();
-            var args = FunctionsHelper.CreateArgs(new object[]{null});
-            var result = func.Execute(args, _context);
+            IsBlank? func = new IsBlank();
+            IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(new object[]{null});
+            CompileResult? result = func.Execute(args, _context);
             Assert.IsTrue((bool)result.Result);
         }
 
         [TestMethod]
         public void IsBlankShouldReturnTrueIfFirstArgIsEmptyString()
         {
-            var func = new IsBlank();
-            var args = FunctionsHelper.CreateArgs(string.Empty);
-            var result = func.Execute(args, _context);
+            IsBlank? func = new IsBlank();
+            IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(string.Empty);
+            CompileResult? result = func.Execute(args, _context);
             Assert.IsTrue((bool)result.Result);
         }
 
         [TestMethod]
         public void IsNumberShouldReturnTrueWhenArgIsNumeric()
         {
-            var func = new IsNumber();
-            var args = FunctionsHelper.CreateArgs(1d);
-            var result = func.Execute(args, _context);
+            IsNumber? func = new IsNumber();
+            IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(1d);
+            CompileResult? result = func.Execute(args, _context);
             Assert.IsTrue((bool)result.Result);
         }
 
         [TestMethod]
         public void IsNumberShouldReturnfalseWhenArgIsNonNumeric()
         {
-            var func = new IsNumber();
-            var args = FunctionsHelper.CreateArgs("1");
-            var result = func.Execute(args, _context);
+            IsNumber? func = new IsNumber();
+            IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs("1");
+            CompileResult? result = func.Execute(args, _context);
             Assert.IsFalse((bool)result.Result);
         }
 
         [TestMethod]
         public void IsErrorShouldReturnTrueIfArgIsAnErrorCode()
         {
-            var args = FunctionsHelper.CreateArgs(ExcelErrorValue.Parse("#DIV/0!"));
-            var func = new IsError();
-            var result = func.Execute(args, _context);
+            IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(ExcelErrorValue.Parse("#DIV/0!"));
+            IsError? func = new IsError();
+            CompileResult? result = func.Execute(args, _context);
             Assert.IsTrue((bool)result.Result);
         }
 
         [TestMethod]
         public void IsErrorShouldReturnFalseIfArgIsNotAnError()
         {
-            var args = FunctionsHelper.CreateArgs("A", 1);
-            var func = new IsError();
-            var result = func.Execute(args, _context);
+            IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs("A", 1);
+            IsError? func = new IsError();
+            CompileResult? result = func.Execute(args, _context);
             Assert.IsFalse((bool)result.Result);
         }
 
         [TestMethod]
         public void IsTextShouldReturnTrueWhenFirstArgIsAString()
         {
-            var args = FunctionsHelper.CreateArgs("1");
-            var func = new IsText();
-            var result = func.Execute(args, _context);
+            IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs("1");
+            IsText? func = new IsText();
+            CompileResult? result = func.Execute(args, _context);
             Assert.IsTrue((bool)result.Result);
         }
 
         [TestMethod]
         public void IsTextShouldReturnFalseWhenFirstArgIsNotAString()
         {
-            var args = FunctionsHelper.CreateArgs(1);
-            var func = new IsText();
-            var result = func.Execute(args, _context);
+            IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(1);
+            IsText? func = new IsText();
+            CompileResult? result = func.Execute(args, _context);
             Assert.IsFalse((bool)result.Result);
         }
 
         [TestMethod]
         public void IsNonTextShouldReturnFalseWhenFirstArgIsAString()
         {
-            var args = FunctionsHelper.CreateArgs("1");
-            var func = new IsNonText();
-            var result = func.Execute(args, _context);
+            IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs("1");
+            IsNonText? func = new IsNonText();
+            CompileResult? result = func.Execute(args, _context);
             Assert.IsFalse((bool)result.Result);
         }
 
         [TestMethod]
         public void IsNonTextShouldReturnTrueWhenFirstArgIsNotAString()
         {
-            var args = FunctionsHelper.CreateArgs(1);
-            var func = new IsNonText();
-            var result = func.Execute(args, _context);
+            IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(1);
+            IsNonText? func = new IsNonText();
+            CompileResult? result = func.Execute(args, _context);
             Assert.IsTrue((bool)result.Result);
         }
 
         [TestMethod]
         public void IsOddShouldReturnCorrectResult()
         {
-            var args = FunctionsHelper.CreateArgs(3.123);
-            var func = new IsOdd();
-            var result = func.Execute(args, _context);
+            IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(3.123);
+            IsOdd? func = new IsOdd();
+            CompileResult? result = func.Execute(args, _context);
             Assert.IsTrue((bool)result.Result);
         }
 
         [TestMethod]
         public void IsEvenShouldReturnCorrectResult()
         {
-            var args = FunctionsHelper.CreateArgs(4.123);
-            var func = new IsEven();
-            var result = func.Execute(args, _context);
+            IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(4.123);
+            IsEven? func = new IsEven();
+            CompileResult? result = func.Execute(args, _context);
             Assert.IsTrue((bool)result.Result);
         }
 
         [TestMethod]
         public void IsLogicalShouldReturnCorrectResult()
         {
-            var func = new IsLogical();
+            IsLogical? func = new IsLogical();
 
-            var args = FunctionsHelper.CreateArgs(1);
-            var result = func.Execute(args, _context);
+            IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(1);
+            CompileResult? result = func.Execute(args, _context);
             Assert.IsFalse((bool)result.Result);
 
             args = FunctionsHelper.CreateArgs("true");
@@ -179,10 +181,10 @@ namespace EPPlusTest.Excel.Functions
         [TestMethod]
         public void NshouldReturnCorrectResult()
         {
-            var func = new N();
+            N? func = new N();
 
-            var args = FunctionsHelper.CreateArgs(1.2);
-            var result = func.Execute(args, _context);
+            IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(1.2);
+            CompileResult? result = func.Execute(args, _context);
             Assert.AreEqual(1.2, result.Result);
 
             args = FunctionsHelper.CreateArgs("abc");
@@ -193,7 +195,7 @@ namespace EPPlusTest.Excel.Functions
             result = func.Execute(args, _context);
             Assert.AreEqual(1d, result.Result);
 
-            var errorCode = ExcelErrorValue.Create(eErrorType.Value);
+            ExcelErrorValue? errorCode = ExcelErrorValue.Create(eErrorType.Value);
             args = FunctionsHelper.CreateArgs(errorCode);
             result = func.Execute(args, _context);
             Assert.AreEqual(errorCode, result.Result);
@@ -202,9 +204,9 @@ namespace EPPlusTest.Excel.Functions
         [TestMethod]
         public void TypeShouldReturn1WhenNumber()
         {
-            using(var package = new ExcelPackage())
+            using(ExcelPackage? package = new ExcelPackage())
             {
-                var sheet = package.Workbook.Worksheets.Add("test");
+                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
                 sheet.Cells["A1"].Formula = "TYPE(2)";
                 sheet.Calculate();
                 Assert.AreEqual(1, sheet.Cells["A1"].Value);
@@ -214,9 +216,9 @@ namespace EPPlusTest.Excel.Functions
         [TestMethod]
         public void TypeShouldReturn1WhenEmpty()
         {
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var sheet = package.Workbook.Worksheets.Add("test");
+                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
                 sheet.Cells["A1"].Formula = "TYPE(A2)";
                 sheet.Calculate();
                 Assert.AreEqual(1, sheet.Cells["A1"].Value);
@@ -226,9 +228,9 @@ namespace EPPlusTest.Excel.Functions
         [TestMethod]
         public void TypeShouldReturn2WhenText()
         {
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var sheet = package.Workbook.Worksheets.Add("test");
+                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
                 sheet.Cells["A1"].Formula = "TYPE(A2)";
                 sheet.Cells["A2"].Value = "asdf";
                 sheet.Calculate();
@@ -239,9 +241,9 @@ namespace EPPlusTest.Excel.Functions
         [TestMethod]
         public void TypeShouldReturn4WhenBool()
         {
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var sheet = package.Workbook.Worksheets.Add("test");
+                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
                 sheet.Cells["A1"].Formula = "TYPE(A2)";
                 sheet.Cells["A2"].Value = true;
                 sheet.Calculate();
@@ -252,9 +254,9 @@ namespace EPPlusTest.Excel.Functions
         [TestMethod]
         public void TypeShouldReturn16WhenError()
         {
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var sheet = package.Workbook.Worksheets.Add("test");
+                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
                 sheet.Cells["A1"].Formula = "TYPE(A2)";
                 sheet.Cells["A2"].Formula = "1/0";
                 sheet.Calculate();
@@ -265,9 +267,9 @@ namespace EPPlusTest.Excel.Functions
         [TestMethod]
         public void TypeShouldReturn64WhenArray()
         {
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var sheet = package.Workbook.Worksheets.Add("test");
+                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
                 sheet.Cells["A1"].Formula = "TYPE({1,2,3})";
                 sheet.Calculate();
                 Assert.AreEqual(64, sheet.Cells["A1"].Value);
@@ -277,9 +279,9 @@ namespace EPPlusTest.Excel.Functions
         [TestMethod]
         public void SheetShouldReturnCorrectResult()
         {
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var sheet = package.Workbook.Worksheets.Add("test");
+                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
                 sheet.Cells["A1"].Formula = "SHEET()";
                 sheet.Calculate();
                 Assert.AreEqual(1, sheet.Cells["A1"].Value);
@@ -294,10 +296,10 @@ namespace EPPlusTest.Excel.Functions
         [TestMethod]
         public void SheetShouldReturnCorrectResult_Ref()
         {
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var sheet = package.Workbook.Worksheets.Add("test");
-                var sheet2 = package.Workbook.Worksheets.Add("Sheet2");
+                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
+                ExcelWorksheet? sheet2 = package.Workbook.Worksheets.Add("Sheet2");
 
                 sheet.Cells["A1"].Formula = "SHEET(Sheet2!A1)";
                 sheet.Calculate();
@@ -308,10 +310,10 @@ namespace EPPlusTest.Excel.Functions
         [TestMethod]
         public void SheetShouldReturnCorrectResult_SheetName()
         {
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var sheet = package.Workbook.Worksheets.Add("test");
-                var sheet2 = package.Workbook.Worksheets.Add("Sheet2");
+                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
+                ExcelWorksheet? sheet2 = package.Workbook.Worksheets.Add("Sheet2");
 
                 sheet.Names.Add("aName", sheet2.Cells["B1:C3"]);
                 sheet.Cells["A1"].Formula = "SHEET(aName)";
@@ -323,10 +325,10 @@ namespace EPPlusTest.Excel.Functions
         [TestMethod]
         public void SheetShouldReturnCorrectResult_WbName()
         {
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var sheet = package.Workbook.Worksheets.Add("test");
-                var sheet2 = package.Workbook.Worksheets.Add("Sheet2");
+                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
+                ExcelWorksheet? sheet2 = package.Workbook.Worksheets.Add("Sheet2");
 
                 package.Workbook.Names.Add("aName", sheet2.Cells["B1:C3"]);
                 sheet.Cells["A1"].Formula = "SHEET(aName)";
@@ -339,10 +341,10 @@ namespace EPPlusTest.Excel.Functions
         public void SheetShouldReturnCorrectResult_Table()
         {
             // TODO: support table names as expressions in formula calc engine
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var sheet = package.Workbook.Worksheets.Add("test");
-                var sheet2 = package.Workbook.Worksheets.Add("Sheet2");
+                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
+                ExcelWorksheet? sheet2 = package.Workbook.Worksheets.Add("Sheet2");
 
                 sheet2.Tables.Add(sheet2.Cells["D1:G5"], "myTable");
                 sheet.Cells["A1"].Formula = "SHEET(myTable)";

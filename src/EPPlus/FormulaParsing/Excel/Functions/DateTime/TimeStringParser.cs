@@ -25,7 +25,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime
 
         private double GetSerialNumber(int hour, int minute, int second)
         {
-            var secondsInADay = 24d * 60d * 60d;
+            double secondsInADay = 24d * 60d * 60d;
             return ((double)hour * 60 * 60 + (double)minute * 60 + (double)second) / secondsInADay;
         }
 
@@ -103,7 +103,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime
             minute = 0;
             second = 0;
 
-            var items = input.Split(':');
+            string[]? items = input.Split(':');
             hour = int.Parse(items[0]);
             if (items.Length > 1)
             {
@@ -111,7 +111,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime
             }
             if (items.Length > 2)
             {
-                var val = items[2];
+                string? val = items[2];
                 val = Regex.Replace(val, "[^0-9]+$", string.Empty);
                 second = int.Parse(val);
             }

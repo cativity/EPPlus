@@ -33,7 +33,7 @@ namespace OfficeOpenXml.Table.PivotTable
         public void Add(int index)
         {
             {
-                var items = _reference.Field.Cache.SharedItems.Count == 0 ? _reference.Field.Cache.GroupItems : _reference.Field.Cache.SharedItems;
+                EPPlusReadOnlyList<object>? items = _reference.Field.Cache.SharedItems.Count == 0 ? _reference.Field.Cache.GroupItems : _reference.Field.Cache.SharedItems;
                 if (items.Count > index)
                 {
                     Add(new PivotItemReference() { Index = index, Value = items[index] });
@@ -51,7 +51,7 @@ namespace OfficeOpenXml.Table.PivotTable
         /// <returns>true if the value has been added, otherwise false</returns>
         public bool AddByValue(object value)
         {
-            var index = _reference.Field.Items._list.FindIndex(x => (x.Value!=null && (x.Value.Equals(value)) || (x.Text!=null && x.Text.Equals(value))));
+            int index = _reference.Field.Items._list.FindIndex(x => (x.Value!=null && (x.Value.Equals(value)) || (x.Text!=null && x.Text.Equals(value))));
             if (index >= 0)
             {
                 Add(new PivotItemReference() { Index = index, Value = value });

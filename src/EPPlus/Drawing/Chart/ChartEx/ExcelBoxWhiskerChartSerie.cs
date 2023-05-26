@@ -46,7 +46,7 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
         {
             get
             {
-                var s = GetXmlNodeString("cx:layoutPr/cx:statistics/@quartileMethod");
+                string? s = GetXmlNodeString("cx:layoutPr/cx:statistics/@quartileMethod");
                 if (string.IsNullOrEmpty(s))
                 {
                     return null;

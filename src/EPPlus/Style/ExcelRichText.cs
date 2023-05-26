@@ -77,7 +77,7 @@ namespace OfficeOpenXml.Style
         {
             get
             {
-                var sb = new StringBuilder();
+                StringBuilder? sb = new StringBuilder();
                 WriteHtmlText(sb);
                 return sb.ToString();
             }
@@ -332,12 +332,12 @@ namespace OfficeOpenXml.Style
         {
             get
             {
-                var col = GetXmlNodeString(COLOR_PATH);
-                var tint = GetXmlNodeDoubleNull(COLOR_TINT_PATH);
+                string? col = GetXmlNodeString(COLOR_PATH);
+                double? tint = GetXmlNodeDoubleNull(COLOR_TINT_PATH);
                 Color ret;
                 if (col == "")
                 {
-                    var v = GetXmlNodeIntNull(COLOR_THEME_PATH);
+                    int? v = GetXmlNodeIntNull(COLOR_THEME_PATH);
                     if (v.HasValue)
                     {
                         ret = Utils.ColorConverter.GetThemeColor(_collection._ws.Workbook.ThemeManager.GetOrCreateTheme(), (eThemeSchemeColor)v);
@@ -351,7 +351,7 @@ namespace OfficeOpenXml.Style
                         else
                         {
                             //If not color is set, return the font of the first cell in the range.
-                            var s = _collection._cells.Style.Font.Color.LookupColor();
+                            string? s = _collection._cells.Style.Font.Color.LookupColor();
                             ret = Color.FromArgb(int.Parse(s.Substring(1), NumberStyles.AllowHexSpecifier));
                         }
                     }

@@ -66,7 +66,7 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             get
             {
-                var v = GetXmlNodeString(_majorTickMark);
+                string? v = GetXmlNodeString(_majorTickMark);
                 if (string.IsNullOrEmpty(v))
                 {
                     return eAxisTickMark.Cross;
@@ -96,7 +96,7 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             get
             {
-                var v = GetXmlNodeString(_minorTickMark);
+                string? v = GetXmlNodeString(_minorTickMark);
                 if (string.IsNullOrEmpty(v))
                 {
                     return eAxisTickMark.Cross;
@@ -217,7 +217,7 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             get
             {
-                var v = GetXmlNodeString(_lblPos);
+                string? v = GetXmlNodeString(_lblPos);
                 if (string.IsNullOrEmpty(v))
                 {
                     return eTickLabelPosition.NextTo;
@@ -248,7 +248,7 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             get
             {
-                var v = GetXmlNodeString(_crossesPath);
+                string? v = GetXmlNodeString(_crossesPath);
                 if (string.IsNullOrEmpty(v))
                 {
                     return eCrosses.AutoZero;
@@ -267,7 +267,7 @@ namespace OfficeOpenXml.Drawing.Chart
             }
             set
             {
-                var v = value.ToString();
+                string? v = value.ToString();
                 v = v.Substring(0, 1).ToLower(CultureInfo.InvariantCulture) + v.Substring(1, v.Length - 1);
                 SetXmlNodeString(_crossesPath, v);
             }
@@ -281,7 +281,7 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             get
             {
-                var v = GetXmlNodeString(_crossBetweenPath);
+                string? v = GetXmlNodeString(_crossBetweenPath);
                 if (string.IsNullOrEmpty(v))
                 {
                     return eCrossBetween.Between;
@@ -300,7 +300,7 @@ namespace OfficeOpenXml.Drawing.Chart
             }
             set
             {
-                var v = value.ToString();
+                string? v = value.ToString();
                 v = v.Substring(0, 1).ToLower(CultureInfo.InvariantCulture) + v.Substring(1);
                 SetXmlNodeString(_crossBetweenPath, v);
             }
@@ -379,7 +379,7 @@ namespace OfficeOpenXml.Drawing.Chart
                 string v = GetXmlNodeString(_displayUnitPath);
                 if (string.IsNullOrEmpty(v))
                 {
-                    var c = GetXmlNodeDoubleNull(_custUnitPath);
+                    double? c = GetXmlNodeDoubleNull(_custUnitPath);
                     if (c == null)
                     {
                         return 0;
@@ -405,7 +405,7 @@ namespace OfficeOpenXml.Drawing.Chart
             {
                 if (AxisType == eAxisType.Val && value >= 0)
                 {
-                    foreach (var v in Enum.GetValues(typeof(eBuildInUnits)))
+                    foreach (object? v in Enum.GetValues(typeof(eBuildInUnits)))
                     {
                         if ((double)(long)v == value)
                         {
@@ -470,7 +470,7 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             get
             {
-                var v = GetXmlNodeString(_majorTimeUnitPath);
+                string? v = GetXmlNodeString(_majorTimeUnitPath);
                 if (string.IsNullOrEmpty(v))
                 {
                     return null;
@@ -540,7 +540,7 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             get
             {
-                var v = GetXmlNodeString(_minorTimeUnitPath);
+                string? v = GetXmlNodeString(_minorTimeUnitPath);
                 if (string.IsNullOrEmpty(v))
                 {
                     return null;
@@ -622,7 +622,7 @@ namespace OfficeOpenXml.Drawing.Chart
             {
                 try
                 {
-                    var axType = TopNode.LocalName.Substring(0, TopNode.LocalName.Length - 2);
+                    string? axType = TopNode.LocalName.Substring(0, TopNode.LocalName.Length - 2);
                     if (axType == "ser")
                     {
                         return eAxisType.Serie;

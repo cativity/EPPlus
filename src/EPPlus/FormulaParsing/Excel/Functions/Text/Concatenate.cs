@@ -31,10 +31,10 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Text
             {
                 return CreateResult(string.Empty, DataType.String);
             }
-            var sb = new StringBuilder();
-            foreach (var arg in arguments)
+            StringBuilder? sb = new StringBuilder();
+            foreach (FunctionArgument? arg in arguments)
             {
-                var v = arg.ValueFirst;
+                object? v = arg.ValueFirst;
                 if (v != null)
                 {
                     sb.Append(v);

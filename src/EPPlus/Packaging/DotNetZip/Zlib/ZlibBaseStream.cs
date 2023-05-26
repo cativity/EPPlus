@@ -28,7 +28,9 @@ using OfficeOpenXml.Packaging.Ionic.Crc;
 using OfficeOpenXml.Utils;
 
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Text;
 
 namespace OfficeOpenXml.Packaging.Ionic.Zlib
 {
@@ -394,7 +396,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
 
         private string ReadZeroTerminatedString()
         {
-            var list = new System.Collections.Generic.List<byte>();
+            List<byte>? list = new System.Collections.Generic.List<byte>();
             bool done = false;
             do
             {
@@ -695,8 +697,8 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
         {
             // workitem 8460
             byte[] working = new byte[1024];
-            var encoding = System.Text.Encoding.UTF8;
-            using (var output = RecyclableMemory.GetStream())
+            Encoding? encoding = System.Text.Encoding.UTF8;
+            using (MemoryStream? output = RecyclableMemory.GetStream())
             {
                 using (decompressor)
                 {
@@ -709,7 +711,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
 
                 // reset to allow read from start
                 output.Seek(0, SeekOrigin.Begin);
-                var sr = new StreamReader(output, encoding);
+                StreamReader? sr = new StreamReader(output, encoding);
                 return sr.ReadToEnd();
             }
         }
@@ -718,7 +720,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
         {
             // workitem 8460
             byte[] working = new byte[1024];
-            using (var output = RecyclableMemory.GetStream())
+            using (MemoryStream? output = RecyclableMemory.GetStream())
             {
                 using (decompressor)
                 {

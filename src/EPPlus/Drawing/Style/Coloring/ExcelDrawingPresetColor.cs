@@ -52,7 +52,7 @@ namespace OfficeOpenXml.Drawing.Style.Coloring
             {
                 throw (new ArgumentException("A preset color cannot be set to empty or be an unnamed color"));
             }
-            var s= c.Name.ToString();
+            string? s= c.Name.ToString();
             return s.Substring(0, 1).ToLower()+s.Substring(1);
         }
 

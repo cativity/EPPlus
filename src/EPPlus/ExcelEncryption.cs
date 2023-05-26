@@ -15,6 +15,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using OfficeOpenXml.Encryption;
 
 namespace OfficeOpenXml
 {
@@ -159,7 +160,7 @@ namespace OfficeOpenXml
         /// <returns>A MemoryStream containing the encypted package</returns>
         public static MemoryStream EncryptPackage(Stream stream, string password, EncryptionVersion encryptionVersion=EncryptionVersion.Agile, EncryptionAlgorithm algorithm = EncryptionAlgorithm.AES256)
         {
-            var e = new Encryption.EncryptedPackageHandler();
+            EncryptedPackageHandler? e = new Encryption.EncryptedPackageHandler();
             if(stream.CanRead==false)
             {
                 throw new InvalidOperationException("Stream must be readable");
@@ -169,7 +170,7 @@ namespace OfficeOpenXml
                 stream.Seek(0, SeekOrigin.Begin);
             }
             
-            var b = new byte[stream.Length];
+            byte[]? b = new byte[stream.Length];
             stream.Read(b, 0, (int)stream.Length);
             return e.EncryptPackage(b, new ExcelEncryption { Password = password, Algorithm = algorithm, Version = encryptionVersion });
         }
@@ -181,7 +182,7 @@ namespace OfficeOpenXml
         /// <returns>A memorystream with the encypted package</returns>
         public static MemoryStream DecryptPackage(Stream stream, string password)
         {
-            var e = new Encryption.EncryptedPackageHandler();
+            EncryptedPackageHandler? e = new Encryption.EncryptedPackageHandler();
             if(stream==null)
             {
                 throw new ArgumentNullException("Stream must not be null");

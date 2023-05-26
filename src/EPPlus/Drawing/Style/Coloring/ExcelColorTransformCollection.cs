@@ -38,7 +38,7 @@ namespace OfficeOpenXml.Drawing.Style.Coloring
             _topNode = topNode;
             foreach(XmlElement e in topNode.ChildNodes)
             {
-                var type = e.LocalName.ToEnum(eColorTransformType.Alpha);
+                eColorTransformType type = e.LocalName.ToEnum(eColorTransformType.Alpha);
                 _list.Add(new ExcelColorTransformItem(nsm, e, type));
             }
         }
@@ -59,7 +59,7 @@ namespace OfficeOpenXml.Drawing.Style.Coloring
         /// </summary>
         public void Clear()
         {
-            foreach(var item in _list)
+            foreach(IColorTransformItem? item in _list)
             {
                 if (item is ExcelColorTransformItem colorItem)
                 {
@@ -374,7 +374,7 @@ namespace OfficeOpenXml.Drawing.Style.Coloring
         }
         private XmlElement AddNode(string name)
         {
-            var node = _topNode.OwnerDocument.CreateElement("a", name, ExcelPackage.schemaDrawings);
+            XmlElement? node = _topNode.OwnerDocument.CreateElement("a", name, ExcelPackage.schemaDrawings);
             _topNode.AppendChild(node);
             return node;
         }

@@ -32,18 +32,18 @@ namespace OfficeOpenXml.Export.ToDataTable
         {
             if(_options.PrimaryKeyNames.Any())
             {
-                foreach(var name in _options.PrimaryKeyNames)
+                foreach(string? name in _options.PrimaryKeyNames)
                 {
                     AddPrimaryKeyName(name);
                 }
             }
             else if(_options.PrimaryKeyIndexes.Any())
             {
-                foreach(var ix in _options.PrimaryKeyIndexes)
+                foreach(int ix in _options.PrimaryKeyIndexes)
                 {
                     try
                     {
-                        var mapping = _options.Mappings.GetByRangeIndex(ix);
+                        DataColumnMapping? mapping = _options.Mappings.GetByRangeIndex(ix);
                         AddPrimaryKeyName(mapping.DataColumnName);
                     }
                     catch(ArgumentOutOfRangeException e)

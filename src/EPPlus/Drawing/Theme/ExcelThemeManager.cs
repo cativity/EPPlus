@@ -46,7 +46,7 @@ namespace OfficeOpenXml.Drawing.Theme
             {
                 if(_theme==null)
                 {
-                    var rels = _wb.Part.GetRelationshipsByType(ExcelPackage.schemaThemeRelationships);
+                    ZipPackageRelationshipCollection? rels = _wb.Part.GetRelationshipsByType(ExcelPackage.schemaThemeRelationships);
                     if (rels.Count>0)
                     {                        
                         _theme = new ExcelTheme(_wb, rels.First());
@@ -69,7 +69,7 @@ namespace OfficeOpenXml.Drawing.Theme
             {
                 _defaultTheme = StyleResourceManager.GetItem("DefaultTheme.Xml");
             }
-            var themeXml = new XmlDocument();   
+            XmlDocument? themeXml = new XmlDocument();   
             themeXml.LoadXml(_defaultTheme);
             Load(themeXml);
         }
@@ -105,7 +105,7 @@ namespace OfficeOpenXml.Drawing.Theme
                 throw (new FileNotFoundException($"{thmxFile.FullName} does not exist"));
             }
 
-            using (var ms = RecyclableMemory.GetStream(File.ReadAllBytes(thmxFile.FullName)))
+            using (MemoryStream? ms = RecyclableMemory.GetStream(File.ReadAllBytes(thmxFile.FullName)))
             {
                 Load(ms);
             }
@@ -120,10 +120,10 @@ namespace OfficeOpenXml.Drawing.Theme
             DeleteCurrentTheme();
             if (CurrentTheme == null)
             {
-                var uri = new Uri("/xl/theme/theme1.xml", UriKind.Relative);
-                var part = _wb._package.ZipPackage.CreatePart(uri, ContentTypes.contentTypeTheme);
+                Uri? uri = new Uri("/xl/theme/theme1.xml", UriKind.Relative);
+                ZipPackagePart? part = _wb._package.ZipPackage.CreatePart(uri, ContentTypes.contentTypeTheme);
                 themeXml.Save(part.GetStream());
-                var rel = _wb.Part.CreateRelationship(uri, TargetMode.Internal, ExcelPackage.schemaThemeRelationships);
+                ZipPackageRelationship? rel = _wb.Part.CreateRelationship(uri, TargetMode.Internal, ExcelPackage.schemaThemeRelationships);
                 _theme = new ExcelTheme(_wb, rel);
             }
         }
@@ -136,24 +136,24 @@ namespace OfficeOpenXml.Drawing.Theme
             
             ZipPackage p = new ZipPackage(thmxStream);
             
-            var themeManagerRel = p.GetRelationshipsByType("http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument").FirstOrDefault();
+            ZipPackageRelationship? themeManagerRel = p.GetRelationshipsByType("http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument").FirstOrDefault();
             if (themeManagerRel != null)
             {
-                var themeManager = p.GetPart(themeManagerRel.TargetUri);
-                var themeRel = themeManager.GetRelationshipsByType(ExcelPackage.schemaThemeRelationships).FirstOrDefault();
+                ZipPackagePart? themeManager = p.GetPart(themeManagerRel.TargetUri);
+                ZipPackageRelationship? themeRel = themeManager.GetRelationshipsByType(ExcelPackage.schemaThemeRelationships).FirstOrDefault();
                 if (themeRel != null)
                 {
-                    var themePart = p.GetPart(UriHelper.ResolvePartUri(themeRel.SourceUri, themeRel.TargetUri));
-                    var themeXml = new XmlDocument();
+                    ZipPackagePart? themePart = p.GetPart(UriHelper.ResolvePartUri(themeRel.SourceUri, themeRel.TargetUri));
+                    XmlDocument? themeXml = new XmlDocument();
                     XmlHelper.LoadXmlSafe(themeXml, themePart.GetStream());
                     Load(themeXml);
-                    foreach (var rel in themePart.GetRelationships())
+                    foreach (ZipPackageRelationship? rel in themePart.GetRelationships())
                     {   
-                        var partToCopy = p.GetPart(UriHelper.ResolvePartUri(rel.SourceUri, rel.TargetUri));
-                        var uri = UriHelper.ResolvePartUri(_theme.ThemeUri, rel.TargetUri);
-                        var part = _wb._package.ZipPackage.CreatePart(uri, partToCopy.ContentType);
-                        var stream = part.GetStream();
-                        var b = ((MemoryStream)partToCopy.GetStream()).ToArray();
+                        ZipPackagePart? partToCopy = p.GetPart(UriHelper.ResolvePartUri(rel.SourceUri, rel.TargetUri));
+                        Uri? uri = UriHelper.ResolvePartUri(_theme.ThemeUri, rel.TargetUri);
+                        ZipPackagePart? part = _wb._package.ZipPackage.CreatePart(uri, partToCopy.ContentType);
+                        Stream? stream = part.GetStream();
+                        byte[]? b = ((MemoryStream)partToCopy.GetStream()).ToArray();
                         stream.Write(b, 0, b.Length);
                         stream.Flush();
                         _theme.Part.CreateRelationship(uri, TargetMode.Internal, rel.RelationshipType);
@@ -178,12 +178,12 @@ namespace OfficeOpenXml.Drawing.Theme
                 return;
             }
 
-            var style = GetNormalStyle();
-            foreach(var xfs in _wb.Styles.CellXfs)
+            ExcelNamedStyleXml? style = GetNormalStyle();
+            foreach(ExcelXfs? xfs in _wb.Styles.CellXfs)
             {
                 if (xfs.XfId == style.StyleXfId)
                 {
-                    var font = _wb.Styles.Fonts[xfs.FontId];
+                    ExcelFontXml? font = _wb.Styles.Fonts[xfs.FontId];
                     font.Name = CurrentTheme.FontScheme.MinorFont[0].Typeface;
                     font.Family = 2;
                     font.Color.Theme = eThemeSchemeColor.Text1;

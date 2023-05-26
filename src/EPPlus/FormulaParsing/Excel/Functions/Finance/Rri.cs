@@ -30,15 +30,15 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance
         public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
         {
             ValidateArguments(arguments, 3);
-            var nper = ArgToDecimal(arguments, 0);
-            var pv = ArgToDecimal(arguments, 1);
-            var fv = ArgToDecimal(arguments, 2);
+            double nper = ArgToDecimal(arguments, 0);
+            double pv = ArgToDecimal(arguments, 1);
+            double fv = ArgToDecimal(arguments, 2);
             if (nper <= 0d || pv <= 0d || fv < 0d)
             {
                 return this.CreateResult(eErrorType.Num);
             }
 
-            var retVal = (System.Math.Pow(fv / pv, 1 / nper)) - 1;
+            double retVal = (System.Math.Pow(fv / pv, 1 / nper)) - 1;
             return CreateResult(retVal, DataType.Decimal);
         }
     }

@@ -29,7 +29,7 @@ namespace OfficeOpenXml.Utils
         /// <returns></returns>
         internal static byte[] CompressPart(byte[] part)
         {
-            using (var ms = RecyclableMemory.GetStream(4096))
+            using (MemoryStream? ms = RecyclableMemory.GetStream(4096))
             {
                 BinaryWriter br = new BinaryWriter(ms);
                 br.Write((byte)1);
@@ -64,7 +64,7 @@ namespace OfficeOpenXml.Utils
         }
         private static byte[] CompressChunk(byte[] buffer, ref int startPos)
         {
-            var comprBuffer = new byte[4096];
+            byte[]? comprBuffer = new byte[4096];
             int flagPos = 0;
             int cPos = 1;
             int dPos = startPos;
@@ -134,7 +134,7 @@ namespace OfficeOpenXml.Utils
                 comprBuffer[flagPos] = tokenFlags;
                 flagPos = cPos++;
             }
-            var ret = new byte[cPos - 1];
+            byte[]? ret = new byte[cPos - 1];
             Array.Copy(comprBuffer, ret, ret.Length);
             startPos = dEnd;
             return ret;
@@ -157,7 +157,7 @@ namespace OfficeOpenXml.Utils
             {
                 return null;
             }
-            using (var ms = RecyclableMemory.GetStream(4096))
+            using (MemoryStream? ms = RecyclableMemory.GetStream(4096))
             {
                 int compressPos = startPos + 1;
                 while (compressPos < part.Length - 1)
@@ -198,13 +198,13 @@ namespace OfficeOpenXml.Utils
                         }
                         else //copy token
                         {
-                            var t = BitConverter.ToUInt16(compBuffer, pos);
+                            ushort t = BitConverter.ToUInt16(compBuffer, pos);
                             int bitCount = GetLengthBits(decomprPos);
                             int bits = (16 - bitCount);
                             ushort lengthMask = (ushort)((0xFFFF) >> bits);
                             UInt16 offsetMask = (ushort)~lengthMask;
-                            var length = (lengthMask & t) + 3;
-                            var offset = (offsetMask & t) >> (bitCount);
+                            int length = (lengthMask & t) + 3;
+                            int offset = (offsetMask & t) >> (bitCount);
                             int source = decomprPos - offset - 1;
                             if (decomprPos + length >= buffer.Length)
                             {
@@ -212,7 +212,7 @@ namespace OfficeOpenXml.Utils
                                 // buffer. Excel generated VBA projects do encounter this issue.
                                 // One would think (not surprisingly that the VBA project spec)
                                 // over emphasizes the size restrictions of a DecompressionChunk.
-                                var largerBuffer = new byte[buffer.Length + 4098];
+                                byte[]? largerBuffer = new byte[buffer.Length + 4098];
                                 Array.Copy(buffer, largerBuffer, decomprPos);
                                 buffer = largerBuffer;
                             }

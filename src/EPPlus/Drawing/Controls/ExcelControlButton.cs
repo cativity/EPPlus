@@ -157,8 +157,8 @@ namespace OfficeOpenXml.Drawing.Controls
         {
             base.UpdateXml();
             Margin.UpdateXml();
-            var vmlHelper = XmlHelperFactory.Create(_vmlProp.NameSpaceManager, _vmlProp.TopNode.ParentNode);            
-            var style = "layout-flow:" + LayoutFlow.TranslateString() + ";mso-layout-flow-alt:" + Orientation.TranslateString();
+            XmlHelper? vmlHelper = XmlHelperFactory.Create(_vmlProp.NameSpaceManager, _vmlProp.TopNode.ParentNode);            
+            string? style = "layout-flow:" + LayoutFlow.TranslateString() + ";mso-layout-flow-alt:" + Orientation.TranslateString();
             if (ReadingOrder == eReadingOrder.RightToLeft)
             {
                 style += ";direction:RTL";

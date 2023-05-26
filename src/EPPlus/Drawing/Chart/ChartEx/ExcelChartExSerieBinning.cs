@@ -67,7 +67,7 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
         { 
             get
             {
-                var v=GetXmlNodeString(_intervalClosedPath);
+                string? v=GetXmlNodeString(_intervalClosedPath);
                 if(v=="l")
                 {
                     return eIntervalClosed.Left;

@@ -41,13 +41,13 @@ namespace EPPlusTest.FormulaParsing.ExpressionGraph
         [TestMethod]
         public void CompileShouldReturnEnumerableOfCompiledChildExpressions()
         {
-            var expression = new EnumerableExpression();
+            EnumerableExpression? expression = new EnumerableExpression();
             expression.AddChild(new IntegerExpression("2"));
             expression.AddChild(new IntegerExpression("3"));
-            var result = expression.Compile();
+            CompileResult? result = expression.Compile();
 
             Assert.IsInstanceOfType(result.Result, typeof(IEnumerable<object>));
-            var resultList = (IEnumerable<object>)result.Result;
+            IEnumerable<object>? resultList = (IEnumerable<object>)result.Result;
             Assert.AreEqual(2d, resultList.ElementAt(0));
             Assert.AreEqual(3d, resultList.ElementAt(1));
         }

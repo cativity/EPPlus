@@ -55,7 +55,7 @@ namespace EPPlusTest.Drawing.Chart.Styling
         [TestMethod]
         public void ScatterLinesSmooth_Styles()
         {
-            var ws = _pck.Workbook.Worksheets.Add("ScatterSmooth");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("ScatterSmooth");
             LoadTestdata(ws);
 
             ScatterLineStyle(ws, eScatterChartType.XYScatterSmooth);
@@ -63,7 +63,7 @@ namespace EPPlusTest.Drawing.Chart.Styling
         [TestMethod]
         public void ScatterLines_Styles()
         {
-            var ws = _pck.Workbook.Worksheets.Add("ScatterLines");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("ScatterLines");
             LoadTestdata(ws);
 
             ScatterLineStyle(ws, eScatterChartType.XYScatterLines);
@@ -71,7 +71,7 @@ namespace EPPlusTest.Drawing.Chart.Styling
         [TestMethod]
         public void Scatter_Styles()
         {
-            var ws = _pck.Workbook.Worksheets.Add("Scatter");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("Scatter");
             LoadTestdata(ws);
 
             ScatterLineStyle(ws, eScatterChartType.XYScatter);
@@ -79,7 +79,7 @@ namespace EPPlusTest.Drawing.Chart.Styling
         [TestMethod]
         public void ScatterLinesNoMarkers_Styles()
         {
-            var ws = _pck.Workbook.Worksheets.Add("ScatterLinesNoMarkers");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("ScatterLinesNoMarkers");
             LoadTestdata(ws);
 
             ScatterLineStyle(ws, eScatterChartType.XYScatterLinesNoMarkers);
@@ -87,7 +87,7 @@ namespace EPPlusTest.Drawing.Chart.Styling
         [TestMethod]
         public void ScatterSmoothNoMarkers_Styles()
         {
-            var ws = _pck.Workbook.Worksheets.Add("ScatterSmoothNoMarkers");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("ScatterSmoothNoMarkers");
             LoadTestdata(ws);
 
             ScatterLineStyle(ws, eScatterChartType.XYScatterSmoothNoMarkers);
@@ -183,13 +183,13 @@ namespace EPPlusTest.Drawing.Chart.Styling
         
         private static ExcelScatterChart AddScatter(ExcelWorksheet ws, eScatterChartType type, string name, int row, int col, ePresetChartStyle style, Action<ExcelScatterChart> SetProperties)    
         {
-            var chart = ws.Drawings.AddScatterChart(name, type);
+            ExcelScatterChart? chart = ws.Drawings.AddScatterChart(name, type);
             chart.SetPosition(row, 0, col, 0);
             chart.To.Column = col+12;
             chart.To.ColumnOff = 0;
             chart.To.Row = row + 18;
             chart.To.RowOff = 0;
-            var serie = chart.Series.Add("D2:D8", "A2:A8");
+            ExcelScatterChartSerie? serie = chart.Series.Add("D2:D8", "A2:A8");
 
             SetProperties(chart);
 

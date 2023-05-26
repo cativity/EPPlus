@@ -31,8 +31,8 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
         }
         public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
         {
-            var nums = ArgsToDoubleEnumerable(IgnoreHiddenValues, IgnoreErrors, arguments, context);
-            var arr = nums.ToArray();
+            IEnumerable<ExcelDoubleCellValue>? nums = ArgsToDoubleEnumerable(IgnoreHiddenValues, IgnoreErrors, arguments, context);
+            ExcelDoubleCellValue[]? arr = nums.ToArray();
             Array.Sort(arr);
             if (arr.Length == 0)
             {
@@ -46,7 +46,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
             }
             else
             {
-                var startIndex = arr.Length/2 - 1;
+                int startIndex = arr.Length/2 - 1;
                 result = (arr[startIndex] + arr[startIndex + 1])/2d;
             }
             return CreateResult(result, DataType.Decimal);

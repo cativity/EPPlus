@@ -44,19 +44,19 @@ namespace EPPlusTest
         [TestMethod]
         public void DeleteWorksheetWithReferencedImage()
         {
-            var ms = new MemoryStream();
-            using (var pck = new ExcelPackage())
+            MemoryStream? ms = new MemoryStream();
+            using (ExcelPackage? pck = new ExcelPackage())
             {
-                var ws = pck.Workbook.Worksheets.Add("original");
+                ExcelWorksheet? ws = pck.Workbook.Worksheets.Add("original");
                 ws.Drawings.AddPicture("Pic1", Properties.Resources.Test1);
                 pck.Workbook.Worksheets.Copy("original", "copy");
                 pck.SaveAs(ms);
             }
             ms.Position = 0;
 
-            using (var pck = new ExcelPackage(ms))
+            using (ExcelPackage? pck = new ExcelPackage(ms))
             {
-                var ws = pck.Workbook.Worksheets["original"];
+                ExcelWorksheet? ws = pck.Workbook.Worksheets["original"];
                 pck.Workbook.Worksheets.Delete(ws);
                 pck.Save();
             }
@@ -65,9 +65,9 @@ namespace EPPlusTest
         [TestMethod]
         public void CopyAndDeleteWorksheetWithImage()
         {
-            using (var pck = new ExcelPackage(new MemoryStream()))
+            using (ExcelPackage? pck = new ExcelPackage(new MemoryStream()))
             {
-                var ws = pck.Workbook.Worksheets.Add("original");
+                ExcelWorksheet? ws = pck.Workbook.Worksheets.Add("original");
                 ws.Drawings.AddPicture("Pic1", Properties.Resources.Test1);
                 pck.Workbook.Worksheets.Copy("original", "copy");
                 pck.Workbook.Worksheets.Delete(ws);

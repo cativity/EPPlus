@@ -60,13 +60,13 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime
 
         protected double GetHour(double serialNumber)
         {
-            var seconds = GetSeconds(serialNumber);
+            double seconds = GetSeconds(serialNumber);
             return (int)seconds / (60 * 60);
         }
 
         protected double GetMinute(double serialNumber)
         {
-            var seconds = GetSeconds(serialNumber);
+            double seconds = GetSeconds(serialNumber);
             seconds -= GetHour(serialNumber) * 60 * 60;
             return (seconds - (seconds % 60)) / 60;
         }

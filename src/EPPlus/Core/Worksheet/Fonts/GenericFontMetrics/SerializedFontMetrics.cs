@@ -54,8 +54,8 @@ namespace OfficeOpenXml.Core.Worksheet.Core.Worksheet.Fonts.GenericMeasurements
 
         public static uint GetKey(FontMetricsFamilies family, FontSubFamilies subFamily)
         {
-            var k1 = (ushort)family;
-            var k2 = (ushort)subFamily;
+            ushort k1 = (ushort)family;
+            ushort k2 = (ushort)subFamily;
             return (uint)((k1 << 16) | ((k2) & 0xffff));
         }
 

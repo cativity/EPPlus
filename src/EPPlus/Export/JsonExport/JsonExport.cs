@@ -3,6 +3,7 @@ using OfficeOpenXml.Utils;
 using System;
 using System.IO;
 using System.Text;
+using OfficeOpenXml.Core.CellStore;
 
 namespace OfficeOpenXml
 {
@@ -23,30 +24,30 @@ namespace OfficeOpenXml
             Uri uri = null;
             int commentIx = 0;
             WriteItem(sw, $"\"{_settings.RowsElementName}\":[", true);
-            var fromRow = dr._fromRow + headerRows;
+            int fromRow = dr._fromRow + headerRows;
             for (int r = fromRow; r <= dr._toRow; r++)
             {
                 WriteStart(sw);
                 WriteItem(sw, $"\"{_settings.CellsElementName}\":[", true);
                 for (int c = dr._fromCol; c <= dr._toCol; c++)
                 {
-                    var cv = ws.GetCoreValueInner(r, c);
-                    var t = JsonEscape(ValueToTextHandler.GetFormattedText(cv._value, ws.Workbook, cv._styleId, false, _settings.Culture));
+                    ExcelValue cv = ws.GetCoreValueInner(r, c);
+                    string? t = JsonEscape(ValueToTextHandler.GetFormattedText(cv._value, ws.Workbook, cv._styleId, false, _settings.Culture));
                     WriteStart(sw);
-                    var hasHyperlink = _settings.WriteHyperlinks && ws._hyperLinks.Exists(r, c, ref uri);
-                    var hasComment = _settings.WriteComments && ws._commentsStore.Exists(r, c, ref commentIx);
+                    bool hasHyperlink = _settings.WriteHyperlinks && ws._hyperLinks.Exists(r, c, ref uri);
+                    bool hasComment = _settings.WriteComments && ws._commentsStore.Exists(r, c, ref commentIx);
                     if (cv._value == null)
                     {
                         WriteItem(sw, $"\"t\":\"{t}\"");
                     }
                     else
                     {
-                        var v = JsonEscape(HtmlRawDataProvider.GetRawValue(cv._value));
+                        string? v = JsonEscape(HtmlRawDataProvider.GetRawValue(cv._value));
                         WriteItem(sw, $"\"v\":\"{v}\",");
                         WriteItem(sw, $"\"t\":\"{t}\"", false, dtOnCell || hasHyperlink || hasComment);
                         if (dtOnCell)
                         {
-                            var dt = HtmlRawDataProvider.GetHtmlDataTypeFromValue(cv._value);
+                            string? dt = HtmlRawDataProvider.GetHtmlDataTypeFromValue(cv._value);
                             WriteItem(sw, $"\"dt\":\"{dt}\"", false, hasHyperlink  || hasComment);
                         }
                     }
@@ -58,7 +59,7 @@ namespace OfficeOpenXml
 
                     if(hasComment)
                     {
-                        var comment = ws.Comments[commentIx];
+                        ExcelComment? comment = ws.Comments[commentIx];
                         WriteItem(sw, $"\"comment\":\"{comment.Text}\"");
                     }
 
@@ -91,8 +92,8 @@ namespace OfficeOpenXml
                 return "";
             }
 
-            var sb = new StringBuilder();
-            foreach (var c in s)
+            StringBuilder? sb = new StringBuilder();
+            foreach (char c in s)
             {
                 switch (c)
                 {

@@ -57,7 +57,7 @@ namespace OfficeOpenXml.Sorting
         /// <returns>A <see cref="TableSortLayerBuilder"/> for adding more sort criterias</returns>
         public TableSortLayerBuilder ColumnNamed(string columnName)
         {
-            var ix = _options.GetColumnNameIndex(columnName);
+            int ix = _options.GetColumnNameIndex(columnName);
             SetColumn(ix);
             return new TableSortLayerBuilder(_options, this);
         }
@@ -70,7 +70,7 @@ namespace OfficeOpenXml.Sorting
         /// <returns>A <see cref="TableSortLayerBuilder"/> for adding more sort criterias</returns>
         public TableSortLayerBuilder ColumnNamed(string columnName, eSortOrder sortOrder)
         {
-            var ix = _options.GetColumnNameIndex(columnName);
+            int ix = _options.GetColumnNameIndex(columnName);
             SetColumn(ix, sortOrder);
             return new TableSortLayerBuilder(_options, this);
         }

@@ -57,7 +57,7 @@ namespace EPPlusTest.Drawing.Chart.Styling
         [TestMethod]
         public void FunnelChart_Styles()
         {
-            var ws = _pck.Workbook.Worksheets.Add("FunnelChart");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("FunnelChart");
             LoadTestdata(ws);
             FunnelChartStyle(ws);
         }
@@ -133,7 +133,7 @@ namespace EPPlusTest.Drawing.Chart.Styling
 
         private static ExcelFunnelChart AddChart(ExcelWorksheet ws, ePresetChartStyle style, string name, int row, int col, Action<ExcelFunnelChart> SetProperties)
         {
-            var chart = ws.Drawings.AddFunnelChart(name);
+            ExcelFunnelChart? chart = ws.Drawings.AddFunnelChart(name);
             chart.SetPosition(row, 0, col, 0);
             chart.To.Column = col+12;
             chart.To.ColumnOff = 0;

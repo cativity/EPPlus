@@ -32,10 +32,10 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Helpers
     {
         public static double gammapinv(double p, double a)
         {
-            var j = 0;
-            var a1 = a - 1;
-            var EPS = 1e-8;
-            var gln = GammaHelper.logGamma(a);
+            int j = 0;
+            double a1 = a - 1;
+            double EPS = 1e-8;
+            double gln = GammaHelper.logGamma(a);
             double x;
             double err;
             double t;

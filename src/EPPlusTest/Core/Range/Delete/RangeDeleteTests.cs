@@ -8,6 +8,9 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using OfficeOpenXml.DataValidation.Contracts;
+using OfficeOpenXml.Table;
+using OfficeOpenXml.Table.PivotTable;
 
 namespace EPPlusTest.Core.Range.Delete
 {
@@ -30,8 +33,8 @@ namespace EPPlusTest.Core.Range.Delete
         public void ValidateFormulasAfterDeleteRow()
         {
             //Setup
-            var ws = _pck.Workbook.Worksheets.Add("DeleteRow_Sheet1");
-            var ws2 = _pck.Workbook.Worksheets.Add("DeleteRow_Sheet2");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("DeleteRow_Sheet1");
+            ExcelWorksheet? ws2 = _pck.Workbook.Worksheets.Add("DeleteRow_Sheet2");
             ws.Cells["A1"].Formula = "Sum(C5:C10)";
             ws.Cells["B1:B2"].Formula = "Sum(C5:C10)";
             ws2.Cells["A1"].Formula = "Sum(DeleteRow_Sheet1!C5:C10)";
@@ -39,7 +42,7 @@ namespace EPPlusTest.Core.Range.Delete
 
             //Act
             ws.DeleteRow(3, 1);
-            var wsError = _pck.Workbook.Worksheets["DeleteRow_Sheet1"];
+            ExcelWorksheet? wsError = _pck.Workbook.Worksheets["DeleteRow_Sheet1"];
             if (wsError != null)
             {
                 Assert.AreEqual(1, wsError._sharedFormulas.Count);
@@ -59,14 +62,14 @@ namespace EPPlusTest.Core.Range.Delete
         public void ValidateFormulasAfterDelete2Rows()
         {
             //Setup
-            var ws1 = _pck.Workbook.Worksheets.Add("DeleteRow2_Sheet1");
-            var ws2 = _pck.Workbook.Worksheets.Add("DeleteRow2_Sheet2");
+            ExcelWorksheet? ws1 = _pck.Workbook.Worksheets.Add("DeleteRow2_Sheet1");
+            ExcelWorksheet? ws2 = _pck.Workbook.Worksheets.Add("DeleteRow2_Sheet2");
             ws1.Cells["B3:B6"].Formula = "A1+C3";
             ws2.Cells["B3:B6"].Formula = "DeleteRow2_Sheet1!A1+DeleteRow2_Sheet1!C2";
 
             //Act
             ws1.DeleteRow(2, 2);
-            var wsError = _pck.Workbook.Worksheets["DeleteRow_Sheet1"];
+            ExcelWorksheet? wsError = _pck.Workbook.Worksheets["DeleteRow_Sheet1"];
             if (wsError != null)
             {
                 Assert.AreEqual(1, wsError._sharedFormulas.Count);
@@ -88,8 +91,8 @@ namespace EPPlusTest.Core.Range.Delete
         public void ValidateFormulasAfterDeleteColumn()
         {
             //Setup
-            var ws = _pck.Workbook.Worksheets.Add("DeleteCol_Sheet1");
-            var ws2 = _pck.Workbook.Worksheets.Add("DeleteCol_Sheet2");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("DeleteCol_Sheet1");
+            ExcelWorksheet? ws2 = _pck.Workbook.Worksheets.Add("DeleteCol_Sheet2");
             ws.Cells["A1"].Formula = "Sum(E3:I3)";
             ws.Cells["A2:B2"].Formula = "Sum(E3:I3)";
             ws2.Cells["A1"].Formula = "Sum(DeleteCol_Sheet1!E3:I3)";
@@ -97,7 +100,7 @@ namespace EPPlusTest.Core.Range.Delete
 
             //Act
             ws.DeleteColumn(3, 1);
-            var wsError = _pck.Workbook.Worksheets["DeleteRow_Sheet1"];
+            ExcelWorksheet? wsError = _pck.Workbook.Worksheets["DeleteRow_Sheet1"];
             if (wsError != null)
             {
                 Assert.AreEqual(1, wsError._sharedFormulas.Count);
@@ -116,14 +119,14 @@ namespace EPPlusTest.Core.Range.Delete
         public void ValidateFormulasAfterDelete2Columns()
         {
             //Setup
-            var ws1 = _pck.Workbook.Worksheets.Add("DeleteCol2_Sheet1");
-            var ws2 = _pck.Workbook.Worksheets.Add("DeleteCol2_Sheet2");
+            ExcelWorksheet? ws1 = _pck.Workbook.Worksheets.Add("DeleteCol2_Sheet1");
+            ExcelWorksheet? ws2 = _pck.Workbook.Worksheets.Add("DeleteCol2_Sheet2");
             ws1.Cells["C2:F2"].Formula = "A1+C3";
             ws2.Cells["C2:F2"].Formula = "DeleteCol2_Sheet1!A1+DeleteCol2_Sheet1!C3";
 
             //Act
             ws1.DeleteColumn(2, 2);
-            var wsError = _pck.Workbook.Worksheets["DeleteRow_Sheet1"];
+            ExcelWorksheet? wsError = _pck.Workbook.Worksheets["DeleteRow_Sheet1"];
             if (wsError != null)
             {
                 Assert.AreEqual(1, wsError._sharedFormulas.Count);
@@ -144,10 +147,10 @@ namespace EPPlusTest.Core.Range.Delete
         [TestMethod]
         public void SharedFormulaShouldBeDeletedIfEntireRowIsDeleted()
         {
-            using (var p = new ExcelPackage())
+            using (ExcelPackage? p = new ExcelPackage())
             {
                 //Setup
-                var ws = p.Workbook.Worksheets.Add("Sheet1");
+                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Sheet1");
                 ws.Cells["A2:B2"].Formula = "C2";
                 //Act
                 Assert.AreEqual(1, ws._sharedFormulas.Count);
@@ -162,10 +165,10 @@ namespace EPPlusTest.Core.Range.Delete
         [TestMethod]
         public void SharedFormulaShouldBeDeletedIfEntireColumnIsDeleted()
         {
-            using (var p = new ExcelPackage())
+            using (ExcelPackage? p = new ExcelPackage())
             {
                 //Setup
-                var ws = p.Workbook.Worksheets.Add("Sheet1");
+                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Sheet1");
                 ws.Cells["B1:B2"].Formula = "C2";
                 //Act
                 Assert.AreEqual(1, ws._sharedFormulas.Count);
@@ -180,10 +183,10 @@ namespace EPPlusTest.Core.Range.Delete
         [TestMethod]
         public void SharedFormulaShouldBePartialDeletedRow()
         {
-            using (var p = new ExcelPackage())
+            using (ExcelPackage? p = new ExcelPackage())
             {
                 //Setup
-                var ws = p.Workbook.Worksheets.Add("Sheet1");
+                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Sheet1");
                 ws.Cells["A2:B3"].Formula = "C2";
                 //Act
                 Assert.AreEqual(1, ws._sharedFormulas.Count);
@@ -200,10 +203,10 @@ namespace EPPlusTest.Core.Range.Delete
         [TestMethod]
         public void SharedFormulaShouldBePartialDeletedColumn()
         {
-            using (var p = new ExcelPackage())
+            using (ExcelPackage? p = new ExcelPackage())
             {
                 //Setup
-                var ws = p.Workbook.Worksheets.Add("Sheet1");
+                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Sheet1");
                 ws.Cells["B1:C2"].Formula = "B3";
                 //Act
                 Assert.AreEqual(1, ws._sharedFormulas.Count);
@@ -220,10 +223,10 @@ namespace EPPlusTest.Core.Range.Delete
         [TestMethod]
         public void SharedFormulaShouldBePartialDeletedRowShareFormulaRetained()
         {
-            using (var p = new ExcelPackage())
+            using (ExcelPackage? p = new ExcelPackage())
             {
                 //Setup
-                var ws = p.Workbook.Worksheets.Add("Sheet1");
+                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Sheet1");
                 ws.Cells["A2:B3"].Formula = "E12";
                 //Act
                 Assert.AreEqual(1, ws._sharedFormulas.Count);
@@ -240,10 +243,10 @@ namespace EPPlusTest.Core.Range.Delete
         [TestMethod]
         public void SharedFormulaShouldBePartialDeletedColumnShareFormulaRetained()
         {
-            using (var p = new ExcelPackage())
+            using (ExcelPackage? p = new ExcelPackage())
             {
                 //Setup
-                var ws = p.Workbook.Worksheets.Add("Sheet1");
+                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Sheet1");
                 ws.Cells["B1:C2"].Formula = "E12";
                 //Act
                 Assert.AreEqual(1, ws._sharedFormulas.Count);
@@ -260,11 +263,11 @@ namespace EPPlusTest.Core.Range.Delete
         [TestMethod]
         public void FixedAddressesShouldBeDeletedRow()
         {
-            using (var p = new ExcelPackage())
+            using (ExcelPackage? p = new ExcelPackage())
             {
                 //Setup
-                var ws1 = p.Workbook.Worksheets.Add("Sheet1");
-                var ws2 = p.Workbook.Worksheets.Add("Sheet2");
+                ExcelWorksheet? ws1 = p.Workbook.Worksheets.Add("Sheet1");
+                ExcelWorksheet? ws2 = p.Workbook.Worksheets.Add("Sheet2");
                 ws1.Cells["A1"].Formula = "SUM($A$5:$A$8)";
                 ws2.Cells["A1"].Formula = "SUM(sheet1!$A$5:$A$8)";
                 //Act
@@ -285,11 +288,11 @@ namespace EPPlusTest.Core.Range.Delete
         [TestMethod]
         public void FixedAddressesShouldBeDeletedColumn()
         {
-            using (var p = new ExcelPackage())
+            using (ExcelPackage? p = new ExcelPackage())
             {
                 //Setup
-                var ws1 = p.Workbook.Worksheets.Add("Sheet1");
-                var ws2 = p.Workbook.Worksheets.Add("Sheet2");
+                ExcelWorksheet? ws1 = p.Workbook.Worksheets.Add("Sheet1");
+                ExcelWorksheet? ws2 = p.Workbook.Worksheets.Add("Sheet2");
                 ws1.Cells["A1"].Formula = "SUM($E$1:$H$1)";
                 ws2.Cells["A1"].Formula = "SUM(sheet1!$E$1:$H$1)";
                 //Act
@@ -314,7 +317,7 @@ namespace EPPlusTest.Core.Range.Delete
         public void ValidateValuesAfterDeleteRowInRangeShiftUp()
         {
             //Setup
-            var ws = _pck.Workbook.Worksheets.Add("DeleteRangeDown");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("DeleteRangeDown");
             SetValues(ws,3);
 
             //Act
@@ -335,7 +338,7 @@ namespace EPPlusTest.Core.Range.Delete
         public void ValidateValuesAfterDeleteRowInRangeShiftLeft()
         {
             //Setup
-            var ws = _pck.Workbook.Worksheets.Add("DeleteRangeLeft");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("DeleteRangeLeft");
             SetValues(ws, 3);
 
             //Act
@@ -364,7 +367,7 @@ namespace EPPlusTest.Core.Range.Delete
         public void ValidateValuesAfterDeleteInRangeShiftUpTwoRows()
         {
             //Setup
-            var ws = _pck.Workbook.Worksheets.Add("DeleteRangeUpTwoRows");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("DeleteRangeUpTwoRows");
             SetValues(ws, 4);
 
             //Act
@@ -383,7 +386,7 @@ namespace EPPlusTest.Core.Range.Delete
         public void ValidateValuesAfterDeleteInRangeShiftLeftTwoRows()
         {
             //Setup
-            var ws = _pck.Workbook.Worksheets.Add("DeleteRangeLeftTwoRows");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("DeleteRangeLeftTwoRows");
             SetValues(ws, 4);
 
             //Act
@@ -402,7 +405,7 @@ namespace EPPlusTest.Core.Range.Delete
         public void ValidateCommentsAfterDeleteShiftUp()
         {
             //Setup
-            var ws = _pck.Workbook.Worksheets.Add("DeleteRangeCommentsUp");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("DeleteRangeCommentsUp");
             ws.Cells["A1"].AddComment("Comment A1", "EPPlus");
             ws.Cells["A2"].AddComment("Comment A2", "EPPlus");
             ws.Cells["A3"].AddComment("Comment A3", "EPPlus");
@@ -419,7 +422,7 @@ namespace EPPlusTest.Core.Range.Delete
         public void ValidateCommentsAfterDeleteShiftLeft()
         {
             //Setup
-            var ws = _pck.Workbook.Worksheets.Add("DeleteRangeCommentsLeft");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("DeleteRangeCommentsLeft");
             ws.Cells["A1"].AddComment("Comment A1", "EPPlus");
             ws.Cells["B1"].AddComment("Comment B1", "EPPlus");
             ws.Cells["C1"].AddComment("Comment C1", "EPPlus");
@@ -436,7 +439,7 @@ namespace EPPlusTest.Core.Range.Delete
         public void ValidateNameAfterDeleteShiftUp()
         {
             //Setup
-            var ws = _pck.Workbook.Worksheets.Add("InsertRangeNamesDown");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("InsertRangeNamesDown");
             ws.Names.Add("NameA1", ws.Cells["A1"]);
             ws.Names.Add("NameA2", ws.Cells["A2"]);
             ws.Names.Add("NameB1", ws.Cells["B1"]);
@@ -457,7 +460,7 @@ namespace EPPlusTest.Core.Range.Delete
         public void ValidateNameAfterDeleteShiftUp_MustBeInsideRange()
         {
             //Setup
-            var ws = _pck.Workbook.Worksheets.Add("InsertRangeInsideNamesDown");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("InsertRangeInsideNamesDown");
             ws.Names.Add("NameA2B4", ws.Cells["A2:B4"]);
             ws.Names.Add("NameB2D3", ws.Cells["B2:D3"]);
             ws.Names.Add("NameC1F3", ws.Cells["C1:F3"]);
@@ -485,7 +488,7 @@ namespace EPPlusTest.Core.Range.Delete
         public void ValidateNamesAfterDeleteShiftLeft_MustBeInsideRange()
         {
             //Setup
-            var ws = _pck.Workbook.Worksheets.Add("InsertRangeInsideNamesRight");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("InsertRangeInsideNamesRight");
             ws.Names.Add("NameB1D2", ws.Cells["D1:F2"]);
             ws.Names.Add("NameB2C4", ws.Cells["D2:F4"]);
             ws.Names.Add("NameA3C6", ws.Cells["A3:C6"]);
@@ -512,7 +515,7 @@ namespace EPPlusTest.Core.Range.Delete
         public void ValidateSharedFormulasDeleteShiftUp()
         {
             //Setup
-            var ws = _pck.Workbook.Worksheets.Add("DeleteRangeFormulaUp");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("DeleteRangeFormulaUp");
             ws.Cells["B1:D2"].Formula = "A1";
             ws.Cells["C3:F4"].Formula = "A1";
 
@@ -536,7 +539,7 @@ namespace EPPlusTest.Core.Range.Delete
         public void ValidateSharedFormulasDeleteShiftLeft()
         {
             //Setup
-            var ws = _pck.Workbook.Worksheets.Add("DeleteRangeFormulaLeft");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("DeleteRangeFormulaLeft");
             ws.Cells["B1:D2"].Formula = "A1";
             ws.Cells["C3:F4"].Formula = "A1";
 
@@ -561,9 +564,9 @@ namespace EPPlusTest.Core.Range.Delete
         [TestMethod]
         public void ValidateDeleteMergedCellsUp()
         {
-            using (var p = new ExcelPackage())
+            using (ExcelPackage? p = new ExcelPackage())
             {
-                var ws = p.Workbook.Worksheets.Add("MergedCells");
+                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("MergedCells");
                 ws.Cells["C3:E4"].Merge = true;
                 ws.Cells["C2:E2"].Delete(eShiftTypeDelete.Up);
 
@@ -573,9 +576,9 @@ namespace EPPlusTest.Core.Range.Delete
         [TestMethod]
         public void ValidateDeleteMergedCellsLeft()
         {
-            using (var p = new ExcelPackage())
+            using (ExcelPackage? p = new ExcelPackage())
             {
-                var ws = p.Workbook.Worksheets.Add("MergedCells");
+                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("MergedCells");
                 ws.Cells["C2:E3"].Merge = true;
                 ws.Cells["B2:B3"].Delete(eShiftTypeDelete.Left);
 
@@ -586,9 +589,9 @@ namespace EPPlusTest.Core.Range.Delete
         [ExpectedException(typeof(InvalidOperationException))]
         public void ValidateDeleteIntoMergedCellsPartialLeftThrowsException()
         {
-            using (var p = new ExcelPackage())
+            using (ExcelPackage? p = new ExcelPackage())
             {
-                var ws = p.Workbook.Worksheets.Add("MergedCells");
+                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("MergedCells");
                 ws.Cells["B2:D3"].Merge = true;
                 ws.Cells["A2"].Delete(eShiftTypeDelete.Left);
             }
@@ -597,9 +600,9 @@ namespace EPPlusTest.Core.Range.Delete
         [ExpectedException(typeof(InvalidOperationException))]
         public void ValidateDeleteIntoMergedCellsPartialUpThrowsException()
         {
-            using (var p = new ExcelPackage())
+            using (ExcelPackage? p = new ExcelPackage())
             {
-                var ws = p.Workbook.Worksheets.Add("MergedCells");
+                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("MergedCells");
                 ws.Cells["B2:D3"].Merge = true;
                 ws.Cells["C1"].Delete(eShiftTypeDelete.Up);
             }
@@ -607,9 +610,9 @@ namespace EPPlusTest.Core.Range.Delete
         [TestMethod]
         public void ValidateDeleteIntoMergedCellsPartialLeftShouldNotThrowsException()
         {
-            using (var p = new ExcelPackage())
+            using (ExcelPackage? p = new ExcelPackage())
             {
-                var ws = p.Workbook.Worksheets.Add("MergedCells");
+                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("MergedCells");
                 ws.Cells["B2:D3"].Merge = true;
                 ws.Cells["C1"].Delete(eShiftTypeDelete.Left);
             }
@@ -617,9 +620,9 @@ namespace EPPlusTest.Core.Range.Delete
         [TestMethod]
         public void ValidateDeleteIntoMergedCellsPartialUpShouldNotThrowsException()
         {
-            using (var p = new ExcelPackage())
+            using (ExcelPackage? p = new ExcelPackage())
             {
-                var ws = p.Workbook.Worksheets.Add("MergedCells");
+                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("MergedCells");
                 ws.Cells["B2:D3"].Merge = true;
                 ws.Cells["A2"].Delete(eShiftTypeDelete.Up);
             }
@@ -628,9 +631,9 @@ namespace EPPlusTest.Core.Range.Delete
         [TestMethod]
         public void ValidateDeleteMergedCellsShouldShiftUp()
         {
-            using (var p = new ExcelPackage())
+            using (ExcelPackage? p = new ExcelPackage())
             {
-                var ws = p.Workbook.Worksheets.Add("MergedCells");
+                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("MergedCells");
                 ws.Cells["B3:D4"].Merge = true;
                 ws.Cells["A1:D1"].Delete(eShiftTypeDelete.Up);
 
@@ -653,9 +656,9 @@ namespace EPPlusTest.Core.Range.Delete
         [TestMethod]
         public void ValidateDeleteMergedCellsShouldBeNull()
         {
-            using (var p = new ExcelPackage())
+            using (ExcelPackage? p = new ExcelPackage())
             {
-                var ws = p.Workbook.Worksheets.Add("MergedCells");
+                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("MergedCells");
                 ws.Cells["B3:D3"].Merge = true;
                 ws.Cells["B3:D3"].Delete(eShiftTypeDelete.Up);
 
@@ -677,9 +680,9 @@ namespace EPPlusTest.Core.Range.Delete
         [ExpectedException(typeof(InvalidOperationException))]
         public void ValidateDeleteFromTablePartialLeftThrowsException()
         {
-            using (var p = new ExcelPackage())
+            using (ExcelPackage? p = new ExcelPackage())
             {
-                var ws = p.Workbook.Worksheets.Add("TableDelete");
+                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("TableDelete");
                 ws.Tables.Add(ws.Cells["B2:D3"], "table1");
                 ws.Cells["A2"].Delete(eShiftTypeDelete.Left);
             }
@@ -688,9 +691,9 @@ namespace EPPlusTest.Core.Range.Delete
         [ExpectedException(typeof(InvalidOperationException))]
         public void ValidateDeleteFromTablePartialUpThrowsException()
         {
-            using (var p = new ExcelPackage())
+            using (ExcelPackage? p = new ExcelPackage())
             {
-                var ws = p.Workbook.Worksheets.Add("TableDelete");
+                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("TableDelete");
                 ws.Tables.Add(ws.Cells["B2:D3"], "table1");
                 ws.Cells["C1"].Delete(eShiftTypeDelete.Up);
             }
@@ -698,9 +701,9 @@ namespace EPPlusTest.Core.Range.Delete
         [TestMethod]
         public void ValidateDeletFromTablePartialLeftShouldNotThrowsException()
         {
-            using (var p = new ExcelPackage())
+            using (ExcelPackage? p = new ExcelPackage())
             {
-                var ws = p.Workbook.Worksheets.Add("TableDelete");
+                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("TableDelete");
                 ws.Tables.Add(ws.Cells["B2:D3"], "table1");
                 ws.Cells["C1"].Delete(eShiftTypeDelete.Left);
             }
@@ -708,9 +711,9 @@ namespace EPPlusTest.Core.Range.Delete
         [TestMethod]
         public void ValidateDeleteFromTablePartialUpShouldNotThrowsException()
         {
-            using (var p = new ExcelPackage())
+            using (ExcelPackage? p = new ExcelPackage())
             {
-                var ws = p.Workbook.Worksheets.Add("TableDelete");
+                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("TableDelete");
                 ws.Tables.Add(ws.Cells["B2:D3"], "table1");
                 ws.Cells["A2"].Delete(eShiftTypeDelete.Up);
             }
@@ -719,9 +722,9 @@ namespace EPPlusTest.Core.Range.Delete
         [ExpectedException(typeof(InvalidOperationException))]
         public void ValidateDeleteFromPivotTablePartialLeftThrowsException()
         {
-            using (var p = new ExcelPackage())
+            using (ExcelPackage? p = new ExcelPackage())
             {
-                var ws = p.Workbook.Worksheets.Add("PivotTableDelete");
+                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("PivotTableDelete");
                 ws.Cells["E5"].Value = "E5";
                 ws.Cells["F5"].Value = "F5";
                 ws.PivotTables.Add(ws.Cells["B2:D3"], ws.Cells["E5:F6"], "table1");
@@ -732,9 +735,9 @@ namespace EPPlusTest.Core.Range.Delete
         [ExpectedException(typeof(InvalidOperationException))]
         public void ValidateDeleteFromPivotTablePartialUpThrowsException()
         {
-            using (var p = new ExcelPackage())
+            using (ExcelPackage? p = new ExcelPackage())
             {
-                var ws = p.Workbook.Worksheets.Add("PivotTableDelete");
+                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("PivotTableDelete");
                 ws.Cells["E5"].Value = "E5";
                 ws.Cells["F5"].Value = "F5";
                 ws.PivotTables.Add(ws.Cells["B2:D3"], ws.Cells["E5:F6"], "table1");
@@ -744,9 +747,9 @@ namespace EPPlusTest.Core.Range.Delete
         [TestMethod]
         public void ValidateDeleteFromPivotTablePartialLeftShouldNotThrowsException()
         {
-            using (var p = new ExcelPackage())
+            using (ExcelPackage? p = new ExcelPackage())
             {
-                var ws = p.Workbook.Worksheets.Add("PivotTableDelte");
+                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("PivotTableDelte");
                 ws.Cells["E5"].Value = "E5";
                 ws.Cells["F5"].Value = "F5";
                 ws.PivotTables.Add(ws.Cells["B2:D3"], ws.Cells["E5:F6"], "table1");
@@ -756,9 +759,9 @@ namespace EPPlusTest.Core.Range.Delete
         [TestMethod]
         public void ValidateDeleteFromPivotTablePartialUpShouldNotThrowsException()
         {
-            using (var p = new ExcelPackage())
+            using (ExcelPackage? p = new ExcelPackage())
             {
-                var ws = p.Workbook.Worksheets.Add("PivotTableDelete");
+                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("PivotTableDelete");
                 ws.Cells["E5"].Value = "E5";
                 ws.Cells["F5"].Value = "F5";
                 ws.PivotTables.Add(ws.Cells["B2:D3"], ws.Cells["E5:F6"], "table1");
@@ -768,10 +771,10 @@ namespace EPPlusTest.Core.Range.Delete
         [TestMethod]
         public void ValidateDeleteFromTableShouldShiftUp()
         {
-            using (var p = new ExcelPackage())
+            using (ExcelPackage? p = new ExcelPackage())
             {
-                var ws = p.Workbook.Worksheets.Add("TableDeleteShiftUp");
-                var tbl = ws.Tables.Add(ws.Cells["B9:D10"], "table1");
+                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("TableDeleteShiftUp");
+                ExcelTable? tbl = ws.Tables.Add(ws.Cells["B9:D10"], "table1");
                 ws.Cells["B2:D2"].Delete(eShiftTypeDelete.Up);
                 Assert.AreEqual("B8:D9", tbl.Address.Address);
 
@@ -785,10 +788,10 @@ namespace EPPlusTest.Core.Range.Delete
         [TestMethod]
         public void ValidateDeleteTableShouldShiftLeft()
         {
-            using (var p = new ExcelPackage())
+            using (ExcelPackage? p = new ExcelPackage())
             {
-                var ws = p.Workbook.Worksheets.Add("TableDeleteShiftLeft");
-                var tbl = ws.Tables.Add(ws.Cells["E2:F4"], "table1");
+                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("TableDeleteShiftLeft");
+                ExcelTable? tbl = ws.Tables.Add(ws.Cells["E2:F4"], "table1");
                 ws.Cells["B2:B4"].Delete(eShiftTypeDelete.Left);
                 Assert.AreEqual("D2:E4", tbl.Address.Address);
 
@@ -802,11 +805,11 @@ namespace EPPlusTest.Core.Range.Delete
         [TestMethod]
         public void DeleteEntireTableRangeShouldDeleteTable()
         {
-            using (var p = new ExcelPackage())
+            using (ExcelPackage? p = new ExcelPackage())
             {
                 //Setup
-                var ws = p.Workbook.Worksheets.Add("TableDeleteFull");
-                var tbl = ws.Tables.Add(ws.Cells["E2:F4"], "table1");
+                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("TableDeleteFull");
+                ExcelTable? tbl = ws.Tables.Add(ws.Cells["E2:F4"], "table1");
                 //Act
                 ws.Cells["E2:F4"].Delete(eShiftTypeDelete.Left);
                 //Assert
@@ -817,13 +820,13 @@ namespace EPPlusTest.Core.Range.Delete
         [TestMethod]
         public void DeleteEntirePivotTableRangeShouldDeletePivotTable()
         {
-            using (var p = new ExcelPackage())
+            using (ExcelPackage? p = new ExcelPackage())
             {
                 //Setup
-                var ws = p.Workbook.Worksheets.Add("PivotTableDeleteFull");
+                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("PivotTableDeleteFull");
                 ws.Cells["E5"].Value = "E5";
                 ws.Cells["F5"].Value = "F5";
-                var pt = ws.PivotTables.Add(ws.Cells["B2:D3"], ws.Cells["E5:F6"], "pivottable1");
+                ExcelPivotTable? pt = ws.PivotTables.Add(ws.Cells["B2:D3"], ws.Cells["E5:F6"], "pivottable1");
                 //Act
                 ws.Cells["B2:D3"].Delete
                     (eShiftTypeDelete.Left);
@@ -836,12 +839,12 @@ namespace EPPlusTest.Core.Range.Delete
         [TestMethod]
         public void ValidateDeletePivotTableShouldShiftUp()
         {
-            using (var p = new ExcelPackage())
+            using (ExcelPackage? p = new ExcelPackage())
             {
-                var ws = p.Workbook.Worksheets.Add("PivotTableDeleteShiftUp");
+                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("PivotTableDeleteShiftUp");
                 ws.Cells["E5"].Value = "E5";
                 ws.Cells["F5"].Value = "F5";
-                var pt = ws.PivotTables.Add(ws.Cells["B5:D6"], ws.Cells["E5:F6"], "pivottable1");
+                ExcelPivotTable? pt = ws.PivotTables.Add(ws.Cells["B5:D6"], ws.Cells["E5:F6"], "pivottable1");
                 ws.Cells["B2:D2"].Delete(eShiftTypeDelete.Up);
                 Assert.AreEqual("B4:D5", pt.Address.Address);
 
@@ -855,12 +858,12 @@ namespace EPPlusTest.Core.Range.Delete
         [TestMethod]
         public void ValidateDeletePivotTableShouldShiftLeft()
         {
-            using (var p = new ExcelPackage())
+            using (ExcelPackage? p = new ExcelPackage())
             {
-                var ws = p.Workbook.Worksheets.Add("PivotTableDeleteShiftLeft");
+                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("PivotTableDeleteShiftLeft");
                 ws.Cells["E5"].Value = "E5";
                 ws.Cells["F5"].Value = "F5";
-                var pt = ws.PivotTables.Add(ws.Cells["F2:G3"], ws.Cells["E5:F6"], "pivottable1");
+                ExcelPivotTable? pt = ws.PivotTables.Add(ws.Cells["F2:G3"], ws.Cells["E5:F6"], "pivottable1");
                 ws.Cells["B2:B3"].Delete(eShiftTypeDelete.Left);
                 Assert.AreEqual("E2:F3", pt.Address.Address);
                 ws.Cells["B1:B4"].Delete(eShiftTypeDelete.Left);
@@ -874,8 +877,8 @@ namespace EPPlusTest.Core.Range.Delete
         [TestMethod]
         public void ValidateDatavalidationFullShiftUp()
         {
-            var ws = _pck.Workbook.Worksheets.Add("DataValShiftUpFull");
-            var any = ws.DataValidations.AddAnyValidation("B2:E5");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("DataValShiftUpFull");
+            IExcelDataValidationAny? any = ws.DataValidations.AddAnyValidation("B2:E5");
 
             ws.Cells["A1:E1"].Delete(eShiftTypeDelete.Up);
 
@@ -884,8 +887,8 @@ namespace EPPlusTest.Core.Range.Delete
         [TestMethod]
         public void ValidateDatavalidationPartialShiftUp_Left()
         {
-            var ws = _pck.Workbook.Worksheets.Add("DataValPartialUpFullL");
-            var any = ws.DataValidations.AddAnyValidation("B2:E5");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("DataValPartialUpFullL");
+            IExcelDataValidationAny? any = ws.DataValidations.AddAnyValidation("B2:E5");
 
             ws.Cells["A1:C1"].Delete(eShiftTypeDelete.Up);
 
@@ -894,8 +897,8 @@ namespace EPPlusTest.Core.Range.Delete
         [TestMethod]
         public void ValidateDatavalidationPartialShiftUp_Inside()
         {
-            var ws = _pck.Workbook.Worksheets.Add("DataValPartialUpFullI");
-            var any = ws.DataValidations.AddAnyValidation("B2:E5");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("DataValPartialUpFullI");
+            IExcelDataValidationAny? any = ws.DataValidations.AddAnyValidation("B2:E5");
 
             ws.Cells["C1:D1"].Delete(eShiftTypeDelete.Up);
 
@@ -906,8 +909,8 @@ namespace EPPlusTest.Core.Range.Delete
         [TestMethod]
         public void ValidateDatavalidationPartialShiftUp_Right()
         {
-            var ws = _pck.Workbook.Worksheets.Add("DataValPartialUpFullR");
-            var any = ws.DataValidations.AddAnyValidation("B2:E5");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("DataValPartialUpFullR");
+            IExcelDataValidationAny? any = ws.DataValidations.AddAnyValidation("B2:E5");
 
             ws.Cells["C1:E1"].Delete(eShiftTypeDelete.Up);
 
@@ -916,8 +919,8 @@ namespace EPPlusTest.Core.Range.Delete
         [TestMethod]
         public void ValidateDatavalidationPartialShiftLeft_Top()
         {
-            var ws = _pck.Workbook.Worksheets.Add("DataValPartialLeftFullTop");
-            var any = ws.DataValidations.AddAnyValidation("B2:E5");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("DataValPartialLeftFullTop");
+            IExcelDataValidationAny? any = ws.DataValidations.AddAnyValidation("B2:E5");
 
             ws.Cells["A2:A4"].Delete(eShiftTypeDelete.Left);
 
@@ -926,8 +929,8 @@ namespace EPPlusTest.Core.Range.Delete
         [TestMethod]
         public void ValidateDatavalidationPartialShiftLeft_Inside()
         {
-            var ws = _pck.Workbook.Worksheets.Add("DataValPartialLeftFullIns");
-            var any = ws.DataValidations.AddAnyValidation("B2:E5");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("DataValPartialLeftFullIns");
+            IExcelDataValidationAny? any = ws.DataValidations.AddAnyValidation("B2:E5");
 
             ws.Cells["A3:A4"].Delete(eShiftTypeDelete.Left);
 
@@ -937,8 +940,8 @@ namespace EPPlusTest.Core.Range.Delete
         [TestMethod]
         public void ValidateDatavalPartialShiftLeft_Bottom()
         {
-            var ws = _pck.Workbook.Worksheets.Add("DataValPartialLeftFullBottom");
-            var any = ws.DataValidations.AddAnyValidation("B2:E5");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("DataValPartialLeftFullBottom");
+            IExcelDataValidationAny? any = ws.DataValidations.AddAnyValidation("B2:E5");
 
             ws.Cells["A3:A6"].Delete(eShiftTypeDelete.Left);
 
@@ -948,8 +951,8 @@ namespace EPPlusTest.Core.Range.Delete
         [TestMethod]
         public void ValidateDatavalidationFullShiftLeft()
         {
-            var ws = _pck.Workbook.Worksheets.Add("DataValidationShiftLeftFull");
-            var any = ws.DataValidations.AddAnyValidation("B2:E5");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("DataValidationShiftLeftFull");
+            IExcelDataValidationAny? any = ws.DataValidations.AddAnyValidation("B2:E5");
 
             ws.Cells["A2:A5"].Delete(eShiftTypeDelete.Left);
 
@@ -958,11 +961,11 @@ namespace EPPlusTest.Core.Range.Delete
         [TestMethod]
         public void CheckDatavalidationFormulaAfterDeletingRow()
         {
-            using (var p = new ExcelPackage())
+            using (ExcelPackage? p = new ExcelPackage())
             {
                 // Create a worksheet with conditional formatting 
-                var ws = p.Workbook.Worksheets.Add("Sheet1");
-                var dv = ws.DataValidations.AddCustomValidation("B5:G5");
+                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Sheet1");
+                IExcelDataValidationCustom? dv = ws.DataValidations.AddCustomValidation("B5:G5");
                 dv.Formula.ExcelFormula = "=(B$4=0)";
 
                 // Delete a row before the column being referenced by the CF formula
@@ -976,11 +979,11 @@ namespace EPPlusTest.Core.Range.Delete
         [TestMethod]
         public void CheckDatavalidationFormulaAfterDeletingColumn()
         {
-            using (var p = new ExcelPackage())
+            using (ExcelPackage? p = new ExcelPackage())
             {
                 // Create a worksheet with conditional formatting 
-                var ws = p.Workbook.Worksheets.Add("Sheet1");
-                var dv = ws.DataValidations.AddCustomValidation("E2:E7");
+                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Sheet1");
+                IExcelDataValidationCustom? dv = ws.DataValidations.AddCustomValidation("E2:E7");
                 dv.Formula.ExcelFormula = "=($D2=0)";
 
                 // Delete a column before the column being referenced by the CF formula
@@ -997,8 +1000,8 @@ namespace EPPlusTest.Core.Range.Delete
         [TestMethod]
         public void ValidateConditionalFormattingFullShiftUp()
         {
-            var ws = _pck.Workbook.Worksheets.Add("CondFormShiftUpFull");
-            var cf = ws.ConditionalFormatting.AddAboveAverage(new ExcelAddress("B2:E5"));
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("CondFormShiftUpFull");
+            IExcelConditionalFormattingAverageGroup? cf = ws.ConditionalFormatting.AddAboveAverage(new ExcelAddress("B2:E5"));
             cf.Style.Fill.BackgroundColor.SetColor(eThemeSchemeColor.Accent1);
             ws.Cells["A1:E1"].Delete(eShiftTypeDelete.Up);
 
@@ -1007,8 +1010,8 @@ namespace EPPlusTest.Core.Range.Delete
         [TestMethod]
         public void ValidateConditionalFormattingPartialShiftUp_Left()
         {
-            var ws = _pck.Workbook.Worksheets.Add("CondFormPartialUpFullL");
-            var cf = ws.ConditionalFormatting.AddAboveAverage(new ExcelAddress("B2:E5"));
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("CondFormPartialUpFullL");
+            IExcelConditionalFormattingAverageGroup? cf = ws.ConditionalFormatting.AddAboveAverage(new ExcelAddress("B2:E5"));
             cf.Style.Fill.BackgroundColor.SetColor(eThemeSchemeColor.Accent1);
 
             ws.Cells["A2:C2"].Delete(eShiftTypeDelete.Up);
@@ -1018,8 +1021,8 @@ namespace EPPlusTest.Core.Range.Delete
         [TestMethod]
         public void ValidateConditionalFormattingShiftUp_Inside()
         {
-            var ws = _pck.Workbook.Worksheets.Add("CondFormPartialUpFullI");
-            var cf = ws.ConditionalFormatting.AddAboveAverage(new ExcelAddress("B2:E5"));
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("CondFormPartialUpFullI");
+            IExcelConditionalFormattingAverageGroup? cf = ws.ConditionalFormatting.AddAboveAverage(new ExcelAddress("B2:E5"));
             cf.Style.Fill.BackgroundColor.SetColor(eThemeSchemeColor.Accent1);
 
             ws.Cells["C2:D2"].Delete(eShiftTypeDelete.Up);
@@ -1031,8 +1034,8 @@ namespace EPPlusTest.Core.Range.Delete
         [TestMethod]
         public void ValidateConditionalFormattingShiftUp_Right()
         {
-            var ws = _pck.Workbook.Worksheets.Add("CondFormPartialUpFullR");
-            var cf = ws.ConditionalFormatting.AddAboveAverage(new ExcelAddress("B2:E5"));
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("CondFormPartialUpFullR");
+            IExcelConditionalFormattingAverageGroup? cf = ws.ConditionalFormatting.AddAboveAverage(new ExcelAddress("B2:E5"));
             cf.Style.Fill.BackgroundColor.SetColor(eThemeSchemeColor.Accent1);
 
             ws.Cells["C2:E3"].Delete(eShiftTypeDelete.Up);
@@ -1042,8 +1045,8 @@ namespace EPPlusTest.Core.Range.Delete
         [TestMethod]
         public void ValidateConditionalFormattingPartialShiftLeft_Top()
         {
-            var ws = _pck.Workbook.Worksheets.Add("CondFormPartialRightFullTop");
-            var cf = ws.ConditionalFormatting.AddAboveAverage(new ExcelAddress("B2:E5"));
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("CondFormPartialRightFullTop");
+            IExcelConditionalFormattingAverageGroup? cf = ws.ConditionalFormatting.AddAboveAverage(new ExcelAddress("B2:E5"));
             cf.Style.Fill.BackgroundColor.SetColor(eThemeSchemeColor.Accent1);
 
             ws.Cells["A2:A4"].Delete(eShiftTypeDelete.Left);
@@ -1053,8 +1056,8 @@ namespace EPPlusTest.Core.Range.Delete
         [TestMethod]
         public void ValidateConditionalFormattingPartialShiftLeft_Inside()
         {
-            var ws = _pck.Workbook.Worksheets.Add("CondFormPartialRightFullIns");
-            var cf = ws.ConditionalFormatting.AddAboveAverage(new ExcelAddress("B2:E5"));
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("CondFormPartialRightFullIns");
+            IExcelConditionalFormattingAverageGroup? cf = ws.ConditionalFormatting.AddAboveAverage(new ExcelAddress("B2:E5"));
             cf.Style.Fill.BackgroundColor.SetColor(eThemeSchemeColor.Accent1);
 
             ws.Cells["A3:A4"].Delete(eShiftTypeDelete.Left);
@@ -1065,8 +1068,8 @@ namespace EPPlusTest.Core.Range.Delete
         [TestMethod]
         public void ValidateConditionalFormattingShiftLeft_Bottom()
         {
-            var ws = _pck.Workbook.Worksheets.Add("CondFormPartialDownFullBottom");
-            var cf = ws.ConditionalFormatting.AddAboveAverage(new ExcelAddress("B2:E5"));
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("CondFormPartialDownFullBottom");
+            IExcelConditionalFormattingAverageGroup? cf = ws.ConditionalFormatting.AddAboveAverage(new ExcelAddress("B2:E5"));
             cf.Style.Fill.BackgroundColor.SetColor(eThemeSchemeColor.Accent1);
 
             ws.Cells["A3:A6"].Delete(eShiftTypeDelete.Left);
@@ -1077,8 +1080,8 @@ namespace EPPlusTest.Core.Range.Delete
         [TestMethod]
         public void ValidateConditionalFormattingFullShiftLeft()
         {
-            var ws = _pck.Workbook.Worksheets.Add("CondFormShiftRightFull");
-            var cf = ws.ConditionalFormatting.AddAboveAverage(new ExcelAddress("B2:E5"));
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("CondFormShiftRightFull");
+            IExcelConditionalFormattingAverageGroup? cf = ws.ConditionalFormatting.AddAboveAverage(new ExcelAddress("B2:E5"));
             cf.Style.Fill.BackgroundColor.SetColor(eThemeSchemeColor.Accent1);
 
             ws.Cells["A2:A5"].Delete(eShiftTypeDelete.Left);
@@ -1088,11 +1091,11 @@ namespace EPPlusTest.Core.Range.Delete
         [TestMethod]
         public void CheckConditionalFormattingFormulaAfterDeletingRow()
         {
-            using (var p = new ExcelPackage())
+            using (ExcelPackage? p = new ExcelPackage())
             {
                 // Create a worksheet with conditional formatting 
-                var ws = p.Workbook.Worksheets.Add("Sheet1");
-                var cf = ws.ConditionalFormatting.AddExpression(ws.Cells["B5:G5"]);
+                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Sheet1");
+                IExcelConditionalFormattingExpression? cf = ws.ConditionalFormatting.AddExpression(ws.Cells["B5:G5"]);
                 cf.Formula = "=(B$4=0)";
 
                 // Delete a row before the column being referenced by the CF formula
@@ -1106,11 +1109,11 @@ namespace EPPlusTest.Core.Range.Delete
         [TestMethod]
         public void CheckConditionalFormattingFormulaAfterDeletingColumn()
         {
-            using (var p = new ExcelPackage())
+            using (ExcelPackage? p = new ExcelPackage())
             {
                 // Create a worksheet with conditional formatting 
-                var ws = p.Workbook.Worksheets.Add("Sheet1");
-                var cf = ws.ConditionalFormatting.AddExpression(ws.Cells["E2:E7"]);
+                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Sheet1");
+                IExcelConditionalFormattingExpression? cf = ws.ConditionalFormatting.AddExpression(ws.Cells["E2:E7"]);
                 cf.Formula = "=($D2=0)";
 
                 // Delete a column before the column being referenced by the CF formula
@@ -1126,7 +1129,7 @@ namespace EPPlusTest.Core.Range.Delete
         [TestMethod]
         public void ValidateFilterShiftUp()
         {
-            var ws = _pck.Workbook.Worksheets.Add("AutoFilterShiftUp");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("AutoFilterShiftUp");
             LoadTestdata(ws);
             ws.AutoFilterAddress = new ExcelAddressBase("A2:D100");
             ws.Cells["A1:D1"].Delete(eShiftTypeDelete.Up);
@@ -1137,7 +1140,7 @@ namespace EPPlusTest.Core.Range.Delete
         [TestMethod]
         public void ValidateFilterDeleteFirstRow()
         {
-            var ws = _pck.Workbook.Worksheets.Add("AutoFilterDeleteFirstRow");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("AutoFilterDeleteFirstRow");
             LoadTestdata(ws);
             ws.AutoFilterAddress = new ExcelAddressBase("A1:D100");
             ws.Cells["A1:D1"].Delete(eShiftTypeDelete.Up);
@@ -1146,7 +1149,7 @@ namespace EPPlusTest.Core.Range.Delete
         [TestMethod]
         public void ValidateFilterShiftLeft()
         {
-            var ws = _pck.Workbook.Worksheets.Add("AutoFilterShiftLeft");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("AutoFilterShiftLeft");
             LoadTestdata(ws, 100, 2);
             ws.AutoFilterAddress = new ExcelAddressBase("B1:E100");
             ws.Cells["A1:A100"].Delete(eShiftTypeDelete.Left);
@@ -1157,7 +1160,7 @@ namespace EPPlusTest.Core.Range.Delete
         [TestMethod]
         public void ValidateFilterDeleteRow()
         {
-            var ws = _pck.Workbook.Worksheets.Add("AutoFilterDeleteRow");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("AutoFilterDeleteRow");
             LoadTestdata(ws);
             ws.AutoFilterAddress = new ExcelAddressBase("A2:D100");
             ws.DeleteRow(1, 1);
@@ -1168,7 +1171,7 @@ namespace EPPlusTest.Core.Range.Delete
         [TestMethod]
         public void ValidateFilterDeleteRowFirstRow()
         {
-            var ws = _pck.Workbook.Worksheets.Add("AutoFilterDeleteRowFirstRow");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("AutoFilterDeleteRowFirstRow");
             LoadTestdata(ws);
             ws.AutoFilterAddress = new ExcelAddressBase("A1:D100");
             ws.DeleteRow(1);
@@ -1177,7 +1180,7 @@ namespace EPPlusTest.Core.Range.Delete
         [TestMethod]
         public void ValidateFilterDeleteColumn()
         {
-            var ws = _pck.Workbook.Worksheets.Add("AutoFilterDeleteCol");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("AutoFilterDeleteCol");
             LoadTestdata(ws);
             ws.AutoFilterAddress = new ExcelAddressBase("B1:E100");
             ws.DeleteColumn(1, 1);
@@ -1190,9 +1193,9 @@ namespace EPPlusTest.Core.Range.Delete
         [ExpectedException(typeof(InvalidOperationException))]
         public void ValidateFilterShiftUpPartial()
         {
-            using (var p = new ExcelPackage())
+            using (ExcelPackage? p = new ExcelPackage())
             {
-                var ws = p.Workbook.Worksheets.Add("AutoFilterShiftUpPart");
+                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("AutoFilterShiftUpPart");
                 LoadTestdata(ws);
                 ws.AutoFilterAddress = new ExcelAddressBase("A1:D100");
                 ws.Cells["A1:C1"].Delete(eShiftTypeDelete.Up);
@@ -1202,9 +1205,9 @@ namespace EPPlusTest.Core.Range.Delete
         [ExpectedException(typeof(InvalidOperationException))]
         public void ValidateFilterShiftLeftPartial()
         {
-            using (var p = new ExcelPackage())
+            using (ExcelPackage? p = new ExcelPackage())
             {
-                var ws = p.Workbook.Worksheets.Add("AutoFilterShiftLeftPart");
+                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("AutoFilterShiftLeftPart");
                 LoadTestdata(ws);
                 ws.AutoFilterAddress = new ExcelAddressBase("A1:D100");
                 ws.Cells["A1:A99"].Delete(eShiftTypeDelete.Left);
@@ -1213,7 +1216,7 @@ namespace EPPlusTest.Core.Range.Delete
         [TestMethod]
         public void ValidateSparkLineShiftLeft()
         {
-            var ws = _pck.Workbook.Worksheets.Add("SparklineShiftLeft");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("SparklineShiftLeft");
             LoadTestdata(ws, 10, 2);
             ws.SparklineGroups.Add(OfficeOpenXml.Sparkline.eSparklineType.Line, ws.Cells["F2:F10"], ws.Cells["B2:E10"]);
             ws.Cells["F5"].Delete(eShiftTypeDelete.Left);
@@ -1228,7 +1231,7 @@ namespace EPPlusTest.Core.Range.Delete
         [TestMethod]
         public void ValidateSparkLineShiftUp()
         {
-            var ws = _pck.Workbook.Worksheets.Add("SparklineShiftUp");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("SparklineShiftUp");
             LoadTestdata(ws, 10);
             ws.SparklineGroups.Add(OfficeOpenXml.Sparkline.eSparklineType.Column, ws.Cells["F2:F10"], ws.Cells["B2:E10"]);
             ws.Cells["F5"].Delete(eShiftTypeDelete.Up);
@@ -1240,7 +1243,7 @@ namespace EPPlusTest.Core.Range.Delete
         [TestMethod]
         public void ValidateSparkLineDeleteRow()
         {
-            var ws = _pck.Workbook.Worksheets.Add("SparklineDeleteRow");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("SparklineDeleteRow");
             LoadTestdata(ws, 10);
             ws.SparklineGroups.Add(OfficeOpenXml.Sparkline.eSparklineType.Column, ws.Cells["E2:E10"], ws.Cells["A2:D10"]);
             ws.DeleteRow(5, 1);
@@ -1251,7 +1254,7 @@ namespace EPPlusTest.Core.Range.Delete
         [TestMethod]
         public void ValidateSparkLineInsertColumn()
         {
-            var ws = _pck.Workbook.Worksheets.Add("SparklineDeleteColumn");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("SparklineDeleteColumn");
             LoadTestdata(ws, 10);
             ws.SparklineGroups.Add(OfficeOpenXml.Sparkline.eSparklineType.Column, ws.Cells["E2:E10"], ws.Cells["A2:D10"]);
             ws.DeleteColumn(2, 1);
@@ -1263,10 +1266,10 @@ namespace EPPlusTest.Core.Range.Delete
         [TestMethod]
         public void DeleteFromTemplate1()
         {
-            using (var p = OpenTemplatePackage("InsertDeleteTemplate.xlsx"))
+            using (ExcelPackage? p = OpenTemplatePackage("InsertDeleteTemplate.xlsx"))
             {
-                var ws = p.Workbook.Worksheets["C3R"];
-                var ws2 = ws.Workbook.Worksheets.Add("C3R-2", ws);
+                ExcelWorksheet? ws = p.Workbook.Worksheets["C3R"];
+                ExcelWorksheet? ws2 = ws.Workbook.Worksheets.Add("C3R-2", ws);
                 ws.Cells["G49:G52"].Delete(eShiftTypeDelete.Up);
                 ws2.Cells["G49:G52"].Delete(eShiftTypeDelete.Left);
 
@@ -1276,10 +1279,10 @@ namespace EPPlusTest.Core.Range.Delete
         [TestMethod]
         public void DeleteFromTemplate2()
         {
-            using (var p = OpenTemplatePackage("InsertDeleteTemplate.xlsx"))
+            using (ExcelPackage? p = OpenTemplatePackage("InsertDeleteTemplate.xlsx"))
             {
-                var ws = p.Workbook.Worksheets["C3R"];
-                var ws2 = ws.Workbook.Worksheets.Add("C3R-2", ws);
+                ExcelWorksheet? ws = p.Workbook.Worksheets["C3R"];
+                ExcelWorksheet? ws2 = ws.Workbook.Worksheets.Add("C3R-2", ws);
                 ws.Cells["L49:L52"].Delete(eShiftTypeDelete.Up);
                 ws2.Cells["L49:L52"].Delete(eShiftTypeDelete.Left);
 
@@ -1289,8 +1292,8 @@ namespace EPPlusTest.Core.Range.Delete
         [TestMethod]
         public void ValidateConditionalFormattingDeleteColumnMultiRange()
         {
-            var ws = _pck.Workbook.Worksheets.Add("CondFormPartialUpMR");
-            var cf = ws.ConditionalFormatting.AddAboveAverage(new ExcelAddress("B2:E5,D3:E5"));
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("CondFormPartialUpMR");
+            IExcelConditionalFormattingAverageGroup? cf = ws.ConditionalFormatting.AddAboveAverage(new ExcelAddress("B2:E5,D3:E5"));
             cf.Style.Fill.BackgroundColor.SetColor(eThemeSchemeColor.Accent1);
 
             ws.DeleteColumn(4);
@@ -1300,16 +1303,16 @@ namespace EPPlusTest.Core.Range.Delete
         [TestMethod]
         public void ValidateColumnShifting()
         {
-            var ws = _pck.Workbook.Worksheets.Add("ColumnDelete");
-            var col1 = ws.Column(3);
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("ColumnDelete");
+            ExcelColumn? col1 = ws.Column(3);
             col1.Width = 3;
-            var col2 = ws.Column(4);
+            ExcelColumn? col2 = ws.Column(4);
             col2.Width = 4;
-            var col3 = ws.Column(6);
+            ExcelColumn? col3 = ws.Column(6);
             col3.Width = 6;
             col3.ColumnMax = 8;
 
-            var col4 = ws.Column(14);
+            ExcelColumn? col4 = ws.Column(14);
             col4.Width = 14;
             col4.ColumnMax = 18;
 
@@ -1329,11 +1332,11 @@ namespace EPPlusTest.Core.Range.Delete
         [TestMethod]
         public void TestDeleteColumnsWithConditionalFormatting()
         {
-            using (var pck = new ExcelPackage())
+            using (ExcelPackage? pck = new ExcelPackage())
             {
                 // Add a sheet with conditional formatting over multiple ranges
-                var wks = pck.Workbook.Worksheets.Add("Sheet1");
-                var cf = wks.ConditionalFormatting.AddExpression(new ExcelAddress("B:C,E:F,H:I,K:L"));
+                ExcelWorksheet? wks = pck.Workbook.Worksheets.Add("Sheet1");
+                IExcelConditionalFormattingExpression? cf = wks.ConditionalFormatting.AddExpression(new ExcelAddress("B:C,E:F,H:I,K:L"));
                 cf.Formula = "=($A$1=TRUE)";
 
                 // Delete columns K:L
@@ -1348,9 +1351,9 @@ namespace EPPlusTest.Core.Range.Delete
         [TestMethod]
         public void ValidateDeleteColumnFixedAddresses()
         {
-            using(var p=new ExcelPackage())
+            using(ExcelPackage? p=new ExcelPackage())
             {
-                var ws = p.Workbook.Worksheets.Add("Sheet1");
+                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Sheet1");
                 ws.Names.Add("TestName1", ws.Cells["$A$1"]);
                 ws.Names.Add("TestName2", ws.Cells["$B$1"]); 
                 ws.Names.Add("TestName3", ws.Cells["$C$1"]); 
@@ -1373,9 +1376,9 @@ namespace EPPlusTest.Core.Range.Delete
         [TestMethod]
         public void ValidateDeleteRowFixedAddresses()
         {
-            using (var p = new ExcelPackage())
+            using (ExcelPackage? p = new ExcelPackage())
             {
-                var ws = p.Workbook.Worksheets.Add("Sheet1");
+                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Sheet1");
                 ws.Names.Add("TestName1", ws.Cells["$A$1"]);
                 ws.Names.Add("TestName2", ws.Cells["$A$2"]);
                 ws.Names.Add("TestName3", ws.Cells["$A$3"]);
@@ -1398,11 +1401,11 @@ namespace EPPlusTest.Core.Range.Delete
         [TestMethod]
         public void TestColumnWidthsAfterDeletingColumn()
         {
-            using (var p = new ExcelPackage())
+            using (ExcelPackage? p = new ExcelPackage())
             {
-                var ws = p.Workbook.Worksheets.Add("Sheet1");
+                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Sheet1");
 
-                var col = ws.Column(3);
+                ExcelColumn? col = ws.Column(3);
                 col.ColumnMax = 5;
                 col.Width = 18;
 
@@ -1428,12 +1431,12 @@ namespace EPPlusTest.Core.Range.Delete
         public void ValidateTableCalculatedColumnFormulasAfterDeleteRowAndDeleteColumn()
         {
             //Test created from issue #484 - https://github.com/EPPlusSoftware/EPPlus/issues/484
-            var ws = _pck.Workbook.Worksheets.Add("DeleteCalculateColumnFormula");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("DeleteCalculateColumnFormula");
 
-            var tbl1 = ws.Tables.Add(ws.Cells["A11:C13"], "Table3");
+            ExcelTable? tbl1 = ws.Tables.Add(ws.Cells["A11:C13"], "Table3");
             tbl1.Columns[2].CalculatedColumnFormula = "A12+B12";
 
-            var tbl2 = ws.Tables.Add(ws.Cells["E11:G13"], "Table4");
+            ExcelTable? tbl2 = ws.Tables.Add(ws.Cells["E11:G13"], "Table4");
             tbl2.Columns[2].CalculatedColumnFormula = "A12+F12";
 
             // Check the formulas have been set correctly
@@ -1458,12 +1461,12 @@ namespace EPPlusTest.Core.Range.Delete
         public void ValidateTableCalculatedColumnFormulasAfterDeleteRange()
         {
             //Test created from issue #484 - https://github.com/EPPlusSoftware/EPPlus/issues/484
-            var ws = _pck.Workbook.Worksheets.Add("DeleteCalcColumnFormulaRange");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("DeleteCalcColumnFormulaRange");
 
-            var tbl1 = ws.Tables.Add(ws.Cells["A11:C13"], "Table1");
+            ExcelTable? tbl1 = ws.Tables.Add(ws.Cells["A11:C13"], "Table1");
             tbl1.Columns[2].CalculatedColumnFormula = "A12+B12";
 
-            var tbl2 = ws.Tables.Add(ws.Cells["E11:G13"], "Table2");
+            ExcelTable? tbl2 = ws.Tables.Add(ws.Cells["E11:G13"], "Table2");
             tbl2.Columns[2].CalculatedColumnFormula = "A12+F12";
 
             // Check the formulas have been set correctly

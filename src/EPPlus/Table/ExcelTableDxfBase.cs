@@ -103,7 +103,7 @@ namespace OfficeOpenXml.Table
             }
             else
             {
-                var tbl = _tableColumn.Table;
+                ExcelTable? tbl = _tableColumn.Table;
                 headerRange = tbl.Range.Offset(0, _tableColumn.Position, 1, 1);
             }
             SetStyle(headerRange, styleClass, styleProperty, value);
@@ -123,7 +123,7 @@ namespace OfficeOpenXml.Table
             }
             else
             {
-                var tbl = _tableColumn.Table;
+                ExcelTable? tbl = _tableColumn.Table;
                 range = tbl.DataRange.Offset(0, _tableColumn.Position, tbl.DataRange.Rows, 1);
             }
             SetStyle(range, styleClass, styleProperty, value);
@@ -142,7 +142,7 @@ namespace OfficeOpenXml.Table
             }
             else
             {
-                var tbl = _tableColumn.Table;
+                ExcelTable? tbl = _tableColumn.Table;
                 totalRange = tbl.Range.Offset(tbl.Range.Rows-1, _tableColumn.Position, 1, 1);
             }
             SetStyle(totalRange, styleClass, styleProperty, value);

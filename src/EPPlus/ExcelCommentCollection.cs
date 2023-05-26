@@ -19,6 +19,8 @@ using OfficeOpenXml.Core.CellStore;
 using System.Linq;
 using OfficeOpenXml.Core;
 using System.Threading;
+using OfficeOpenXml.Packaging;
+
 namespace OfficeOpenXml
 {
     /// <summary>
@@ -41,10 +43,10 @@ namespace OfficeOpenXml
         }
         private void CreateXml(ExcelPackage pck)
         {
-            var commentRels = Worksheet.Part.GetRelationshipsByType(ExcelPackage.schemaComment);
+            ZipPackageRelationshipCollection? commentRels = Worksheet.Part.GetRelationshipsByType(ExcelPackage.schemaComment);
             bool isLoaded=false;
             CommentXml=new XmlDocument();
-            foreach(var commentPart in commentRels)
+            foreach(ZipPackageRelationship? commentPart in commentRels)
             {
                 Uri = UriHelper.ResolvePartUri(commentPart.SourceUri, commentPart.TargetUri);
                 Part = pck.ZipPackage.GetPart(Uri);
@@ -64,7 +66,7 @@ namespace OfficeOpenXml
             //var lst = new List<IRangeID>();
             foreach (XmlElement node in CommentXml.SelectNodes("//d:commentList/d:comment", NameSpaceManager))
             {
-                var comment = new ExcelComment(NameSpaceManager, node, new ExcelRangeBase(Worksheet, node.GetAttribute("ref")));
+                ExcelComment? comment = new ExcelComment(NameSpaceManager, node, new ExcelRangeBase(Worksheet, node.GetAttribute("ref")));
                 _listIndex.Add(_list.Count);
                 Worksheet._commentsStore.SetValue(comment.Range._fromRow, comment.Range._fromCol, _list.Count);
                 _list.Add(comment);
@@ -172,7 +174,7 @@ namespace OfficeOpenXml
                     author = "Anonymous";
                 }
             }
-            var elem = CommentXml.CreateElement("comment", ExcelPackage.schemaMain);
+            XmlElement? elem = CommentXml.CreateElement("comment", ExcelPackage.schemaMain);
             //int ix=_comments.IndexOf(ExcelAddress.GetCellID(Worksheet.SheetID, cell._fromRow, cell._fromCol));
             //Make sure the nodes come on order.
             int row=cell.Start.Row, column= cell.Start.Column;
@@ -275,11 +277,11 @@ namespace OfficeOpenXml
                 }
             }
 
-            foreach(var comment in deletedComments)
+            foreach(ExcelComment? comment in deletedComments)
             {
                 comment.TopNode.ParentNode.RemoveChild(comment.TopNode); //Remove VML
                 comment._commentHelper.TopNode.ParentNode.RemoveChild(comment._commentHelper.TopNode); //Remove Comment
-                var ix = _list.IndexOf(comment);
+                int ix = _list.IndexOf(comment);
                 _list[ix] = null;
                 _listIndex.Remove(ix);
             }
@@ -297,7 +299,7 @@ namespace OfficeOpenXml
         {
             foreach (ExcelComment comment in _list.Where(x => x != null))
             {
-                var address = new ExcelAddressBase(comment.Address);
+                ExcelAddressBase? address = new ExcelAddressBase(comment.Address);
                 if (rows > 0 && address._fromRow >= fromRow &&
                     address._fromCol >= fromCol && address._toCol <= toCol)
                 {

@@ -14,9 +14,9 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions
         [TestMethod]
         public void SumIf_SumThisRowWithoutCircularReferences()
         {
-            using (var pck = new ExcelPackage())
+            using (ExcelPackage? pck = new ExcelPackage())
             {
-                var sheet1 = pck.Workbook.Worksheets.Add("Sheet1");
+                ExcelWorksheet? sheet1 = pck.Workbook.Worksheets.Add("Sheet1");
                 sheet1.Cells["A1"].Value = "SumResult";
                 // This shouldn't be a circular reference, because the 1:1="SUMMABLE" condition should filter out A2
                 sheet1.Cells["A2"].Formula = "SUMIF(1:1,\"SUMMABLE\",2:2)";
@@ -42,9 +42,9 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions
         [TestMethod]
         public void SumIf_SumThisColWithoutCircularReferences()
         {
-            using (var pck = new ExcelPackage())
+            using (ExcelPackage? pck = new ExcelPackage())
             {
-                var sheet1 = pck.Workbook.Worksheets.Add("Sheet1");
+                ExcelWorksheet? sheet1 = pck.Workbook.Worksheets.Add("Sheet1");
                 sheet1.Cells["A1"].Value = "SumResult";
                 // This shouldn't be a circular reference, because the 1:1="SUMMABLE" condition should filter out A2
                 sheet1.Cells["B1"].Formula = "SUMIF(A:A,\"SUMMABLE\",B:B)";

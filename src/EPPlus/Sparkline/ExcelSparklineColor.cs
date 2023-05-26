@@ -68,7 +68,7 @@ namespace OfficeOpenXml.Sparkline
         {
             get
             {
-                var v = GetXmlNodeIntNull("@theme");
+                int? v = GetXmlNodeIntNull("@theme");
                 if(v.HasValue)
                 {
                     return (eThemeSchemeColor)v;

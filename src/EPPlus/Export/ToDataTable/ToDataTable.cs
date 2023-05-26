@@ -33,7 +33,7 @@ namespace OfficeOpenXml.Export.ToDataTable
 
         public DataTable Execute()
         {
-            var dataTable = new DataTableBuilder(_options, _range).Build();
+            DataTable? dataTable = new DataTableBuilder(_options, _range).Build();
             new DataTableExporter(_options, _range, dataTable).Export();
             return dataTable;
         }

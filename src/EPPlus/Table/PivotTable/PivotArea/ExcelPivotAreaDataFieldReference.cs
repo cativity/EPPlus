@@ -32,7 +32,7 @@ namespace OfficeOpenXml.Table.PivotTable
                 {
                     if (c.LocalName == "x")
                     {
-                        var ix = int.Parse(c.Attributes["v"].Value);
+                        int ix = int.Parse(c.Attributes["v"].Value);
                         if (ix < pt.DataFields.Count)
                         {
                             _dataFields.Add(pt.DataFields[ix]);
@@ -122,8 +122,8 @@ namespace OfficeOpenXml.Table.PivotTable
             {
                 if (TopNode.LocalName == "pivotArea")
                 {
-                    var n = CreateNode("d:references");
-                    var rn = (XmlElement)CreateNode(n, "d:reference", true);
+                    XmlNode? n = CreateNode("d:references");
+                    XmlElement? rn = (XmlElement)CreateNode(n, "d:reference", true);
                     rn.SetAttribute("field", "4294967294");
                     TopNode = rn;
                 }
@@ -133,10 +133,10 @@ namespace OfficeOpenXml.Table.PivotTable
             {
                 if (r.Field.IsDataField)
                 {
-                    var ix = _pt.DataFields._list.IndexOf(r);
+                    int ix = _pt.DataFields._list.IndexOf(r);
                     if (ix >= 0)
                     {
-                        var n = (XmlElement)CreateNode("d:x", false, true);
+                        XmlElement? n = (XmlElement)CreateNode("d:x", false, true);
                         n.SetAttribute("v", ix.ToString(CultureInfo.InvariantCulture));
                     }
                 }

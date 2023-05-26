@@ -44,9 +44,9 @@ namespace EPPlusTest.Drawing.Style
         [TestMethod]
         public void VerifyPresetColorEnumCastFromColor()
         {
-            var t = typeof(System.Drawing.Color);
+            Type? t = typeof(System.Drawing.Color);
 
-            foreach(var pi in t.GetProperties(BindingFlags.Static | BindingFlags.Public))
+            foreach(PropertyInfo? pi in t.GetProperties(BindingFlags.Static | BindingFlags.Public))
             {
                 if (pi.Name.Equals("transparant", StringComparison.InvariantCultureIgnoreCase))
                 {
@@ -60,10 +60,10 @@ namespace EPPlusTest.Drawing.Style
         [TestMethod]
         public void VerifyAlphaPartWhenSetColor()
         {
-            var pck = new ExcelPackage();
-            var ws = pck.Workbook.Worksheets.Add("DrawingAlphaSetColor");
+            ExcelPackage? pck = new ExcelPackage();
+            ExcelWorksheet? ws = pck.Workbook.Worksheets.Add("DrawingAlphaSetColor");
 
-            var shape = ws.Drawings.AddShape("Shape1", eShapeStyle.RoundRect);
+            ExcelShape? shape = ws.Drawings.AddShape("Shape1", eShapeStyle.RoundRect);
             shape.SetPosition(1, 0, 5, 0);
 
             //Act
@@ -80,13 +80,13 @@ namespace EPPlusTest.Drawing.Style
             {
                 throw (new ArgumentException("A preset color cannot be set to empty or be an unnamed color"));
             }
-            var s = c.Name.ToString();
+            string? s = c.Name.ToString();
             return s.Substring(0, 1).ToLower() + s.Substring(1);
         }
         [TestMethod]
         public void HslToRgb()
         {
-            var rgb = ExcelDrawingHslColor.GetRgb(300, 1, 1);
+            Color rgb = ExcelDrawingHslColor.GetRgb(300, 1, 1);
             Assert.AreEqual(0xFFFFFFFF, (uint)rgb.ToArgb());
 
             rgb = ExcelDrawingHslColor.GetRgb(300, 1, 0);

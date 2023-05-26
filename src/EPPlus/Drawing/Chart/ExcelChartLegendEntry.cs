@@ -73,8 +73,8 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             if(TopNode.LocalName != "legendEntry")
             {
-                var legend = _chart.Legend;
-                var preIx = legend.GetPreEntryIndex(Index);
+                ExcelChartLegend? legend = _chart.Legend;
+                int preIx = legend.GetPreEntryIndex(Index);
                 XmlNode legendEntryNode;
                 if (preIx == -1)
                 {
@@ -83,7 +83,7 @@ namespace OfficeOpenXml.Drawing.Chart
                 else
                 {
                     legendEntryNode = _chart.ChartXml.CreateElement("c", "legendEntry", ExcelPackage.schemaChart);
-                    var refNode = legend.Entries[preIx].TopNode;
+                    XmlNode? refNode = legend.Entries[preIx].TopNode;
                     refNode.ParentNode.InsertBefore(legendEntryNode, refNode);
                 }
                 TopNode = legendEntryNode;
@@ -123,12 +123,12 @@ namespace OfficeOpenXml.Drawing.Chart
 
             if (_chart.StyleManager.Style.Legend.HasTextRun)
             {
-                var node = (XmlElement)CreateNode("c:txPr/a:p/a:pPr/a:defRPr");
+                XmlElement? node = (XmlElement)CreateNode("c:txPr/a:p/a:pPr/a:defRPr");
                 CopyElement(_chart.StyleManager.Style.Legend.DefaultTextRun.PathElement, node);
             }
             if (_chart.StyleManager.Style.Legend.HasTextBody)
             {
-                var node = (XmlElement)CreateNode("c:txPr/a:bodyPr");
+                XmlElement? node = (XmlElement)CreateNode("c:txPr/a:bodyPr");
                 CopyElement(_chart.StyleManager.Style.Legend.DefaultTextBody.PathElement, node);
             }
         }

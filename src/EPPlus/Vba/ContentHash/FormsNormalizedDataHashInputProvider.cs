@@ -35,10 +35,10 @@ namespace OfficeOpenXml.Vba.ContentHash
 
         private void FormsNormaizedData(BinaryWriter bw)
         {
-            var p = base.Project;
-            var designers = GetDesigners(p);
-            var list = new List<SortItem>();
-            foreach (var designer in designers)
+            ExcelVbaProject? p = base.Project;
+            IList<string>? designers = GetDesigners(p);
+            List<SortItem>? list = new List<SortItem>();
+            foreach (string? designer in designers)
             {
                 AppendDesignerStreams(p, list, designer);
             }
@@ -47,8 +47,8 @@ namespace OfficeOpenXml.Vba.ContentHash
 
         private static void WriteDesignerStreams(BinaryWriter bw, ExcelVbaProject p, List<SortItem> list)
         {
-            var hs = new HashSet<string>(list.Where(x => x.IsStream).Select(x => x.Name));
-            foreach (var dir in p.Document.Directories)
+            HashSet<string>? hs = new HashSet<string>(list.Where(x => x.IsStream).Select(x => x.Name));
+            foreach (CompoundDocumentItem? dir in p.Document.Directories)
             {
                 if (hs.Contains(dir.FullName) && dir.StreamSize > 0)
                 {
@@ -59,23 +59,23 @@ namespace OfficeOpenXml.Vba.ContentHash
 
         internal static void NormalizeDesigner(ExcelVbaProject p, BinaryWriter bw, string designer)
         {
-            var list = new List<SortItem>();
+            List<SortItem>? list = new List<SortItem>();
             AppendDesignerStreams(p, list, designer);
             WriteDesignerStreams(bw, p, list);
         }
 
         private static void AppendDesignerStreams(ExcelVbaProject p, List<SortItem> list, string designer)
         {
-            var storage = p.Document.Storage.SubStorage[designer];
+            CompoundDocument.StoragePart? storage = p.Document.Storage.SubStorage[designer];
             NormalizeStorage(storage, list, p.Document.Directories[0].Name + "/" + designer);
         }
 
         private static void NormalizeStorage(CompoundDocument.StoragePart storage, List<SortItem> list, string parentName)
         {
-            var children = GetSortedChildren(storage);
-            foreach (var child in children)
+            IList<SortItem>? children = GetSortedChildren(storage);
+            foreach (SortItem? child in children)
             {
-                var newChildName = parentName + "/" + child.Name;
+                string? newChildName = parentName + "/" + child.Name;
                 if (child.IsStream==false)
                 {
                     NormalizeStorage(storage.SubStorage[child.Name], list, newChildName);
@@ -98,7 +98,7 @@ namespace OfficeOpenXml.Vba.ContentHash
             {
                 streamLength = 0;
             }
-            var zeros = 1023-(streamLength % 1023);
+            int zeros = 1023-(streamLength % 1023);
             for (int i = 0; i < zeros; i++)
             {
                 bw.Write((byte)0);
@@ -118,7 +118,7 @@ namespace OfficeOpenXml.Vba.ContentHash
         }
         private static IList<SortItem> GetSortedChildren(CompoundDocument.StoragePart storage)
         {
-            var list = new List<SortItem>();
+            List<SortItem>? list = new List<SortItem>();
             list.AddRange(storage.DataStreams.Keys.Select(x => new SortItem(x, true)));
             list.AddRange(storage.SubStorage.Keys.Select(x => new SortItem(x, false)));
             return list;
@@ -126,13 +126,13 @@ namespace OfficeOpenXml.Vba.ContentHash
 
         private static IList<string> GetDesigners(ExcelVbaProject p)
         {
-            var designerModules = p.Modules.Where(x => x.Type == eModuleType.Designer).Select(x => x.streamName);
+            IEnumerable<string>? designerModules = p.Modules.Where(x => x.Type == eModuleType.Designer).Select(x => x.streamName);
             return designerModules.ToList();
         }
 
         private void NormalizeDesignerStorage(ExcelVBAModule designerModule, BinaryWriter bw)
         {
-            var buffer = new System.IO.BufferedStream(bw.BaseStream, 1023);
+            BufferedStream? buffer = new System.IO.BufferedStream(bw.BaseStream, 1023);
             //var ds = p.Document.Storage.SubStorage[designerModule.streamName];
         }
     }

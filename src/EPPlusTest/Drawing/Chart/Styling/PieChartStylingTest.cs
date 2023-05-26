@@ -57,7 +57,7 @@ namespace EPPlusTest.Drawing.Chart.Styling
         [TestMethod]
         public void PieChart_Styles()
         {
-            var ws = _pck.Workbook.Worksheets.Add("PieChartStyles");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("PieChartStyles");
             LoadTestdata(ws);
 
             PieStyles(ws, ePieChartType.Pie);
@@ -65,7 +65,7 @@ namespace EPPlusTest.Drawing.Chart.Styling
         [TestMethod]
         public void PieExplodedChart_Styles()
         {
-            var ws = _pck.Workbook.Worksheets.Add("PieExlodedChartStyles");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("PieExlodedChartStyles");
             LoadTestdata(ws);
 
             PieStyles(ws, ePieChartType.PieExploded);
@@ -81,19 +81,19 @@ namespace EPPlusTest.Drawing.Chart.Styling
                 });
 
             //Style 2
-            var chart2 = AddPie(ws, chartType, "PieChartStyle2", 0, 18, ePresetChartStyle.PieChartStyle2,
-                c =>
-                {
-                    c.Legend.Position = eLegendPosition.Top;
-                });
+            ExcelPieChart? chart2 = AddPie(ws, chartType, "PieChartStyle2", 0, 18, ePresetChartStyle.PieChartStyle2,
+                                           c =>
+                                           {
+                                               c.Legend.Position = eLegendPosition.Top;
+                                           });
 
             //Style 3
-            var chart3 = AddPie(ws, chartType, "PieChartStyle3", 0, 31, ePresetChartStyle.PieChartStyle3,
-            c =>
-            {
-                c.DataLabel.ShowPercent = true;
-                c.DataLabel.Position = eLabelPosition.Center;
-            });
+            ExcelPieChart? chart3 = AddPie(ws, chartType, "PieChartStyle3", 0, 31, ePresetChartStyle.PieChartStyle3,
+                                           c =>
+                                           {
+                                               c.DataLabel.ShowPercent = true;
+                                               c.DataLabel.Position = eLabelPosition.Center;
+                                           });
 
             //Style 4
             AddPie(ws, chartType, "PieChartStyle4", 22, 5, ePresetChartStyle.PieChartStyle4,
@@ -173,7 +173,7 @@ namespace EPPlusTest.Drawing.Chart.Styling
         [TestMethod]
         public void PieChart3D_Styles()
         {
-            var ws = _pck.Workbook.Worksheets.Add("Pie3DChartStyles");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("Pie3DChartStyles");
             LoadTestdata(ws);
 
             Pie3DStyles(ws, ePieChartType.Pie3D);
@@ -181,7 +181,7 @@ namespace EPPlusTest.Drawing.Chart.Styling
         [TestMethod]
         public void PieExplodedChart3D_Styles()
         {
-            var ws = _pck.Workbook.Worksheets.Add("PieExploded3DChartStyles");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("PieExploded3DChartStyles");
             LoadTestdata(ws);
 
             Pie3DStyles(ws, ePieChartType.PieExploded3D);
@@ -197,17 +197,17 @@ namespace EPPlusTest.Drawing.Chart.Styling
                 });
 
             //Style 2
-            var chart2 = AddPie(ws, ePieChartType, "PieChartStyle2", 0, 18, ePresetChartStyle.Pie3dChartStyle2,
-                c =>
-                {
-                    c.Legend.Remove();
-                    c.DataLabel.ShowCategory = true;
-                    c.DataLabel.ShowValue = true;
-                    c.View3D.RotY = 50;
-                    c.View3D.RotX = 50;
-                    c.View3D.DepthPercent = 100;
-                    c.View3D.RightAngleAxes = false;
-                });
+            ExcelPieChart? chart2 = AddPie(ws, ePieChartType, "PieChartStyle2", 0, 18, ePresetChartStyle.Pie3dChartStyle2,
+                                           c =>
+                                           {
+                                               c.Legend.Remove();
+                                               c.DataLabel.ShowCategory = true;
+                                               c.DataLabel.ShowValue = true;
+                                               c.View3D.RotY = 50;
+                                               c.View3D.RotX = 50;
+                                               c.View3D.DepthPercent = 100;
+                                               c.View3D.RightAngleAxes = false;
+                                           });
 
             //Style 3
             AddPie(ws, ePieChartType, "PieChartStyle3", 0, 31, ePresetChartStyle.Pie3dChartStyle3,
@@ -278,14 +278,14 @@ namespace EPPlusTest.Drawing.Chart.Styling
 
         private static ExcelPieChart AddPie(ExcelWorksheet ws, ePieChartType type, string name, int row, int col, ePresetChartStyle style, Action<ExcelPieChart> SetProperties)    
         {
-            var chart = ws.Drawings.AddPieChart(name, type);
+            ExcelPieChart? chart = ws.Drawings.AddPieChart(name, type);
             chart.SetPosition(row, 0, col, 0);
             chart.To.Column = col+12;
             chart.To.ColumnOff = 0;
             chart.To.Row = row + 18;
             chart.To.RowOff = 0;
-            var serie = chart.Series.Add("D2:D8", "A2:A8");
-            var dp=serie.DataPoints.Add(3);
+            ExcelPieChartSerie? serie = chart.Series.Add("D2:D8", "A2:A8");
+            ExcelChartDataPoint? dp=serie.DataPoints.Add(3);
             dp.Border.Fill.Style = OfficeOpenXml.Drawing.eFillStyle.SolidFill;
             dp.Border.Fill.SolidFill.Color.SetRgbColor(Color.Black);
             SetProperties(chart);

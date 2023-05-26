@@ -17,11 +17,11 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions
         [TestMethod]
         public void ShouldHandleYearDiff()
         {
-            var culture = Thread.CurrentThread.CurrentCulture;
+            CultureInfo? culture = Thread.CurrentThread.CurrentCulture;
             Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var sheet = package.Workbook.Worksheets.Add("test");
+                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
                 
                 sheet.Cells["A1"].Value = "1/1/2001";
                 sheet.Cells["B1"].Value = new DateTime(2003, 1, 1).ToOADate();
@@ -41,11 +41,11 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions
         [TestMethod]
         public void ShouldHandleMonthDiff()
         {
-            var culture = Thread.CurrentThread.CurrentCulture;
+            CultureInfo? culture = Thread.CurrentThread.CurrentCulture;
             Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var sheet = package.Workbook.Worksheets.Add("test");
+                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
 
                 sheet.Cells["A1"].Value = "1/1/2001";
                 sheet.Cells["B1"].Value = new DateTime(2003, 1, 1).ToOADate();
@@ -65,11 +65,11 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions
         [TestMethod]
         public void ShouldHandleTotalDays()
         {
-            var culture = Thread.CurrentThread.CurrentCulture;
+            CultureInfo? culture = Thread.CurrentThread.CurrentCulture;
             Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var sheet = package.Workbook.Worksheets.Add("test");
+                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
 
                 sheet.Cells["A1"].Value = "1/1/2001";
                 sheet.Cells["B1"].Value = new DateTime(2003, 1, 1).ToOADate();
@@ -89,11 +89,11 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions
         [TestMethod]
         public void ShouldHandleTotalDaysYm()
         {
-            var culture = Thread.CurrentThread.CurrentCulture;
+            CultureInfo? culture = Thread.CurrentThread.CurrentCulture;
             Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var sheet = package.Workbook.Worksheets.Add("test");
+                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
 
                 sheet.Cells["A1"].Value = "1/1/2001";
                 sheet.Cells["B1"].Value = new DateTime(2003, 1, 1).ToOADate();
@@ -113,11 +113,11 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions
         [TestMethod]
         public void ShouldHandleTotalDaysYd()
         {
-            var culture = Thread.CurrentThread.CurrentCulture;
+            CultureInfo? culture = Thread.CurrentThread.CurrentCulture;
             Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var sheet = package.Workbook.Worksheets.Add("test");
+                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
 
                 sheet.Cells["A1"].Value = "1/1/2001";
                 sheet.Cells["B1"].Value = new DateTime(2003, 1, 1).ToOADate();
@@ -137,11 +137,11 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions
         [TestMethod]
         public void ShouldHandleTotalDaysMd()
         {
-            var culture = Thread.CurrentThread.CurrentCulture;
+            CultureInfo? culture = Thread.CurrentThread.CurrentCulture;
             Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var sheet = package.Workbook.Worksheets.Add("test");
+                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
 
                 sheet.Cells["A1"].Value = "1/5/2001";
                 sheet.Cells["B1"].Value = new DateTime(2003, 1, 6).ToOADate();

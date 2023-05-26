@@ -34,6 +34,7 @@ using OfficeOpenXml.SystemDrawing.Text;
 using System.Drawing;
 using System.Globalization;
 using System.Threading;
+using OfficeOpenXml.Drawing.Theme;
 
 namespace EPPlusTest.Style
 {
@@ -55,7 +56,7 @@ namespace EPPlusTest.Style
         [TestMethod]
         public void VerifyColumnStyle()
         {
-            var ws=_pck.Workbook.Worksheets.Add("RangeStyle");
+            ExcelWorksheet? ws=_pck.Workbook.Worksheets.Add("RangeStyle");
             LoadTestdata(ws, 100,2,2);
 
             ws.Row(3).Style.Fill.SetBackground(ExcelIndexedColor.Indexed5);
@@ -90,7 +91,7 @@ namespace EPPlusTest.Style
         [TestMethod]
         public void TextRotation255()
         {
-            var ws = _pck.Workbook.Worksheets.Add("TextRotation");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("TextRotation");
 
             ws.Cells["A1:A182"].Value="RotatedText";
             for(int i=1;i<=180;i++)
@@ -106,10 +107,10 @@ namespace EPPlusTest.Style
         [TestMethod]
         public void ValidateGradient()
         {
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var ws = package.Workbook.Worksheets.Add("List1");
-                var gradient = ws.Cells[1, 1].Style.Fill.Gradient;
+                ExcelWorksheet? ws = package.Workbook.Worksheets.Add("List1");
+                ExcelGradientFill? gradient = ws.Cells[1, 1].Style.Fill.Gradient;
 
                 //Validate uninititialized values.
                 Assert.AreEqual(ExcelFillGradientType.None, gradient.Type);
@@ -149,7 +150,7 @@ namespace EPPlusTest.Style
         [TestMethod]
         public void ValidateFontCharsetCondenseExtendAndShadow()
         {
-            var ws = _pck.Workbook.Worksheets.Add("Font");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("Font");
             ws.Cells["A1:C3"].Value = "Font";
 
             Assert.IsNull(ws.Cells["A1"].Style.Font.Charset);
@@ -161,7 +162,7 @@ namespace EPPlusTest.Style
         [TestMethod]
         public void NormalStyleIssue()
         {
-            using (var p = OpenPackage("NormalShouldReflectToEmptyCells.xlsx", true))
+            using (ExcelPackage? p = OpenPackage("NormalShouldReflectToEmptyCells.xlsx", true))
             {
                 ExcelStyle normal = p.Workbook.Styles.NamedStyles[0].Style;
                 normal.Font.Name = "Calibri";
@@ -185,12 +186,12 @@ namespace EPPlusTest.Style
         [TestMethod]
         public void ChangingTheNormalStyleFontWithAutofitColumns()
         {
-            using (var p = new ExcelPackage())
+            using (ExcelPackage? p = new ExcelPackage())
             {
-                var CustomFont = new Font("Calibri", 11);
+                Font? CustomFont = new Font("Calibri", 11);
                 p.Settings.TextSettings.PrimaryTextMeasurer = new SystemDrawingTextMeasurer();
                 p.Workbook.ThemeManager.CreateDefaultTheme();
-                var defaultTheme = p.Workbook.ThemeManager.CurrentTheme;
+                ExcelTheme? defaultTheme = p.Workbook.ThemeManager.CurrentTheme;
                 defaultTheme.FontScheme.MajorFont.SetLatinFont(CustomFont.Name);
                 defaultTheme.FontScheme.MinorFont.SetLatinFont(CustomFont.Name);
                 ExcelStyle normal = p.Workbook.Styles.NamedStyles[0].Style;
@@ -211,17 +212,17 @@ namespace EPPlusTest.Style
         [TestMethod]
         public void SetThemeFontIssue()
         {
-            using (var p = OpenPackage("DefaultFont.xlsx", true))
+            using (ExcelPackage? p = OpenPackage("DefaultFont.xlsx", true))
             {
-                var DefaultFont = new Font("Corbel", 10);
+                Font? DefaultFont = new Font("Corbel", 10);
                 p.Workbook.ThemeManager.CreateDefaultTheme();
-                var defaultTheme = p.Workbook.ThemeManager.CurrentTheme;
+                ExcelTheme? defaultTheme = p.Workbook.ThemeManager.CurrentTheme;
                 defaultTheme.FontScheme.MajorFont.SetLatinFont(DefaultFont.Name);
                 defaultTheme.FontScheme.MinorFont.SetLatinFont(DefaultFont.Name);
                 ExcelStyle normal = p.Workbook.Styles.NamedStyles[0].Style;
                 normal.Font.Name = DefaultFont.Name;
                 normal.Font.Size = DefaultFont.Size;
-                var ws = p.Workbook.Worksheets.Add("Sheet1");
+                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Sheet1");
                 ws.Cells[1, 1].Value = 1000;
 
                 Assert.AreEqual("Corbel", ws.Cells[1, 1].Style.Font.Name);
@@ -239,13 +240,13 @@ namespace EPPlusTest.Style
         [TestMethod]
         public void VerifyDateText()
         {
-            var ci = CultureInfo.CurrentCulture;
+            CultureInfo? ci = CultureInfo.CurrentCulture;
             CultureInfo.CurrentCulture = new CultureInfo("en-US");
             try
             {
-                using (var p = new ExcelPackage())
+                using (ExcelPackage? p = new ExcelPackage())
                 {
-                    var ws = p.Workbook.Worksheets.Add("Sheet1");
+                    ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Sheet1");
                     ws.Cells["A1"].Value = 0;
                     ws.Cells["A2"].Value = 1;
                     ws.Cells["A3"].Value = -1;
@@ -263,26 +264,26 @@ namespace EPPlusTest.Style
         [TestMethod]
         public void VerifyStyleXfsCount()
         {
-            using (var p = new ExcelPackage())
+            using (ExcelPackage? p = new ExcelPackage())
             {
-                var wb = p.Workbook;
-                var ws = wb.Worksheets.Add("Sheet1");
+                ExcelWorkbook? wb = p.Workbook;
+                ExcelWorksheet? ws = wb.Worksheets.Add("Sheet1");
 
                 ws.Cells["A1:A3"].Style.Fill.PatternType = ExcelFillStyle.Solid;
                 ws.Cells["A1:A3"].Style.Fill.BackgroundColor.SetColor(Color.Red);
                 ws.Cells["A1:A5"].Style.Border.BorderAround(ExcelBorderStyle.Dotted);
                 ws.Cells["B1:B5"].Style.Font.Name = "Arial";
                 wb.Styles.UpdateXml();
-                var count = wb.StylesXml.SelectSingleNode("//d:styleSheet/d:cellXfs/@count", wb.NameSpaceManager).Value;
+                string? count = wb.StylesXml.SelectSingleNode("//d:styleSheet/d:cellXfs/@count", wb.NameSpaceManager).Value;
                 Assert.AreEqual("6", count);
             }
         }
         [TestMethod]
         public void VerifyStyleForLastColumns()
         {
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var ws = package.Workbook.Worksheets.Add("Sheet1");
+                ExcelWorksheet? ws = package.Workbook.Worksheets.Add("Sheet1");
 
                 ws.Cells.Style.Font.Size = 8;
                 ws.Cells.Style.Font.Name = "Arial";

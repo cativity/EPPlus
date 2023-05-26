@@ -3,6 +3,7 @@ using OfficeOpenXml.Utils;
 using System;
 using System.IO;
 using System.Text;
+using OfficeOpenXml.Core.CellStore;
 #if !NET35 && !NET40
 using System.Threading.Tasks;
 namespace OfficeOpenXml
@@ -16,30 +17,30 @@ namespace OfficeOpenXml
             Uri uri = null;
             int commentIx = 0;
             await WriteItemAsync(sw, $"\"{_settings.RowsElementName}\":[", true);
-            var fromRow = dr._fromRow + headerRows;
+            int fromRow = dr._fromRow + headerRows;
             for (int r = fromRow; r <= dr._toRow; r++)
             {
                 await WriteStartAsync(sw);
                 await WriteItemAsync(sw, $"\"{_settings.CellsElementName}\":[", true);
                 for (int c = dr._fromCol; c <= dr._toCol; c++)
                 {
-                    var cv = ws.GetCoreValueInner(r, c);
-                    var t = JsonEscape(ValueToTextHandler.GetFormattedText(cv._value, ws.Workbook, cv._styleId, false, _settings.Culture));
+                    ExcelValue cv = ws.GetCoreValueInner(r, c);
+                    string? t = JsonEscape(ValueToTextHandler.GetFormattedText(cv._value, ws.Workbook, cv._styleId, false, _settings.Culture));
                     await WriteStartAsync(sw);
-                    var hasHyperlink = _settings.WriteHyperlinks && ws._hyperLinks.Exists(r, c, ref uri);
-                    var hasComment = _settings.WriteComments && ws._commentsStore.Exists(r, c, ref commentIx);
+                    bool hasHyperlink = _settings.WriteHyperlinks && ws._hyperLinks.Exists(r, c, ref uri);
+                    bool hasComment = _settings.WriteComments && ws._commentsStore.Exists(r, c, ref commentIx);
                     if (cv._value == null)
                     {
                         await WriteItemAsync(sw, $"\"t\":\"{t}\"");
                     }
                     else
                     {
-                        var v = JsonEscape(HtmlRawDataProvider.GetRawValue(cv._value));
+                        string? v = JsonEscape(HtmlRawDataProvider.GetRawValue(cv._value));
                         await WriteItemAsync(sw, $"\"v\":\"{v}\",");
                         await WriteItemAsync(sw, $"\"t\":\"{t}\"", false, dtOnCell || hasHyperlink || hasComment);
                         if (dtOnCell)
                         {
-                            var dt = HtmlRawDataProvider.GetHtmlDataTypeFromValue(cv._value);
+                            string? dt = HtmlRawDataProvider.GetHtmlDataTypeFromValue(cv._value);
                             await WriteItemAsync(sw, $"\"dt\":\"{dt}\"", false, hasHyperlink || hasComment);
                         }
                     }
@@ -51,7 +52,7 @@ namespace OfficeOpenXml
 
                     if (hasComment)
                     {
-                        var comment = ws.Comments[commentIx];
+                        ExcelComment? comment = ws.Comments[commentIx];
                         await WriteItemAsync(sw, $"\"comment\":\"{comment.Text}\"");
                     }
 

@@ -26,8 +26,8 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.Implementations
 
         public FinanceCalcResult<int> Coupdaybs()
         {
-            var fds = FinancialDaysFactory.Create(Basis);
-            var settlementPeriod = fds.GetCouponPeriod(Settlement, Maturity, Frequency);
+            IFinanicalDays? fds = FinancialDaysFactory.Create(Basis);
+            FinancialPeriod? settlementPeriod = fds.GetCouponPeriod(Settlement, Maturity, Frequency);
             return new FinanceCalcResult<int>((int)Settlement.SubtractDays(settlementPeriod.Start) * -1);
         }
     }

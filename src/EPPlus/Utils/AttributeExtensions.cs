@@ -58,22 +58,22 @@ namespace OfficeOpenXml.Utils
         internal static bool HasMemberWithPropertyOfType<T>(this Type type)
             where T : Attribute
         {
-            var members = type.GetProperties();
+            PropertyInfo[]? members = type.GetProperties();
             return members.Any(x => x.GetCustomAttributes(typeof(T), false).FirstOrDefault() != null);
         }
 
         internal static IEnumerable<T> FindAttributesOfType<T>(this Type type)
             where T : Attribute
         {
-            var attributes = type.GetCustomAttributes(true);
+            object[]? attributes = type.GetCustomAttributes(true);
             if(attributes == null || !attributes.Any())
             {
                 return Enumerable.Empty<T>();
             }
-            var result = new List<T>();
-            foreach(var attr in attributes)
+            List<T>? result = new List<T>();
+            foreach(object? attr in attributes)
             {
-                var typedAttr = attr as T;
+                T? typedAttr = attr as T;
                 if(typedAttr != null)
                 {
                     result.Add(typedAttr);

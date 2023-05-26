@@ -37,6 +37,8 @@ using System.Drawing;
 using System.Globalization;
 using System.IO;
 using System.Threading;
+using OfficeOpenXml.Style.XmlAccess;
+using OfficeOpenXml.Table.PivotTable;
 
 namespace EPPlusTest.Style
 {
@@ -53,8 +55,8 @@ namespace EPPlusTest.Style
         [ClassCleanup]
         public static void Cleanup()
         {
-            var dirName = _pck.File.DirectoryName;
-            var fileName = _pck.File.FullName;
+            string? dirName = _pck.File.DirectoryName;
+            string? fileName = _pck.File.FullName;
 
             SaveAndCleanup(_pck);
             if (File.Exists(fileName))
@@ -65,8 +67,8 @@ namespace EPPlusTest.Style
         [TestMethod]
         public void AddTableStyle()
         {
-            var ws = _pck.Workbook.Worksheets.Add("TableStyle");
-            var s=_pck.Workbook.Styles.CreateTableStyle("CustomTableStyle1");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("TableStyle");
+            ExcelTableNamedStyle? s=_pck.Workbook.Styles.CreateTableStyle("CustomTableStyle1");
             s.WholeTable.Style.Font.Color.SetColor(Color.Red);
             s.FirstRowStripe.Style.Fill.PatternType = ExcelFillStyle.Solid;
             s.FirstRowStripe.Style.Fill.BackgroundColor.SetColor(Color.LightBlue);
@@ -74,7 +76,7 @@ namespace EPPlusTest.Style
             s.SecondRowStripe.Style.Fill.BackgroundColor.SetColor(Color.LightYellow);
 
             LoadTestdata(ws);
-            var tbl=ws.Tables.Add(ws.Cells["A1:D101"], "Table1");            
+            ExcelTable? tbl=ws.Tables.Add(ws.Cells["A1:D101"], "Table1");            
             tbl.StyleName = "CustomTableStyle1";            
             //Assert
             Assert.AreEqual(ExcelFillStyle.Solid, s.FirstRowStripe.Style.Fill.PatternType);
@@ -86,10 +88,10 @@ namespace EPPlusTest.Style
         [TestMethod]
         public void AddTableStyleFromTemplate()
         {
-            var ws = _pck.Workbook.Worksheets.Add("TableStyleFromTempl");
-            var s = _pck.Workbook.Styles.CreateTableStyle("CustomTableStyleFromTempl1", OfficeOpenXml.Table.TableStyles.Medium5);
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("TableStyleFromTempl");
+            ExcelTableNamedStyle? s = _pck.Workbook.Styles.CreateTableStyle("CustomTableStyleFromTempl1", OfficeOpenXml.Table.TableStyles.Medium5);
             LoadTestdata(ws);
-            var tbl = ws.Tables.Add(ws.Cells["A1:D100"], "Table2");
+            ExcelTable? tbl = ws.Tables.Add(ws.Cells["A1:D100"], "Table2");
             tbl.StyleName = "CustomTableStyleFromTempl1";
 
             //Assert
@@ -103,11 +105,11 @@ namespace EPPlusTest.Style
         [TestMethod]
         public void AddTableStyleFromOtherStyle()
         {
-            var ws = _pck.Workbook.Worksheets.Add("TableStyleFromOther");
-            var sc = _pck.Workbook.Styles.CreateTableStyle("CustomTableStyleFromTemplCopy", OfficeOpenXml.Table.TableStyles.Light14);
-            var s = _pck.Workbook.Styles.CreateTableStyle("CustomTableStyleFromOther1", sc);
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("TableStyleFromOther");
+            ExcelTableNamedStyle? sc = _pck.Workbook.Styles.CreateTableStyle("CustomTableStyleFromTemplCopy", OfficeOpenXml.Table.TableStyles.Light14);
+            ExcelTableNamedStyle? s = _pck.Workbook.Styles.CreateTableStyle("CustomTableStyleFromOther1", sc);
             LoadTestdata(ws);
-            var tbl = ws.Tables.Add(ws.Cells["A1:D100"], "TableOtherStyle");
+            ExcelTable? tbl = ws.Tables.Add(ws.Cells["A1:D100"], "TableOtherStyle");
             tbl.StyleName = "CustomTableStyleFromOther1";
 
             //Assert
@@ -119,9 +121,9 @@ namespace EPPlusTest.Style
         [TestMethod]
         public void ReadTableStyle()
         {
-            using (var p = OpenTemplatePackage("TableStyleRead.xlsx"))
+            using (ExcelPackage? p = OpenTemplatePackage("TableStyleRead.xlsx"))
             {
-                var s = p.Workbook.Styles.TableStyles["CustomTableStyle1"];
+                ExcelTableNamedStyleBase? s = p.Workbook.Styles.TableStyles["CustomTableStyle1"];
                 if (s == null)
                 {
                     Assert.Inconclusive("CustomTableStyle1 does not exists in workbook");
@@ -141,8 +143,8 @@ namespace EPPlusTest.Style
         [TestMethod]
         public void AddPivotTableStyle()
         {
-            var ws = _pck.Workbook.Worksheets.Add("PivotTableStyle");
-            var s = _pck.Workbook.Styles.CreatePivotTableStyle("CustomPivotTableStyle1");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("PivotTableStyle");
+            ExcelPivotTableNamedStyle? s = _pck.Workbook.Styles.CreatePivotTableStyle("CustomPivotTableStyle1");
             s.WholeTable.Style.Font.Color.SetColor(Color.DarkBlue);
             s.FirstRowStripe.Style.Fill.PatternType = ExcelFillStyle.Solid;
             s.FirstRowStripe.Style.Fill.BackgroundColor.SetColor(Color.LightGreen);
@@ -151,18 +153,18 @@ namespace EPPlusTest.Style
             s.SecondRowStripe.Style.Fill.BackgroundColor.SetColor(Color.LightGray);
             s.SecondRowStripe.BandSize = 3;
             LoadTestdata(ws);
-            var pt = ws.PivotTables.Add(ws.Cells["G2"], ws.Cells["A1:D101"], "PivotTable1");
+            ExcelPivotTable? pt = ws.PivotTables.Add(ws.Cells["G2"], ws.Cells["A1:D101"], "PivotTable1");
 
             pt.StyleName = "CustomPivotTableStyle1";
         }
         [TestMethod]
         public void AddPivotTableStyleFromTemplate()
         {
-            var ws = _pck.Workbook.Worksheets.Add("PivotTableStyleFromTempl");
-            var s = _pck.Workbook.Styles.CreatePivotTableStyle("CustomPivotTableStyleFromTempl1", PivotTableStyles.Dark2);
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("PivotTableStyleFromTempl");
+            ExcelPivotTableNamedStyle? s = _pck.Workbook.Styles.CreatePivotTableStyle("CustomPivotTableStyleFromTempl1", PivotTableStyles.Dark2);
 
             LoadTestdata(ws);
-            var pt = ws.PivotTables.Add(ws.Cells["G2"], ws.Cells["A1:D101"], "PivotTable2");
+            ExcelPivotTable? pt = ws.PivotTables.Add(ws.Cells["G2"], ws.Cells["A1:D101"], "PivotTable2");
             pt.ColumnFields.Add(pt.Fields[0]);
             pt.DataFields.Add(pt.Fields[3]);
             pt.StyleName = "CustomPivotTableStyleFromTempl1";
@@ -171,15 +173,15 @@ namespace EPPlusTest.Style
         [TestMethod]
         public void ReadPivotTableStyle()
         {
-            using (var p = OpenTemplatePackage("TableStyleRead.xlsx"))
+            using (ExcelPackage? p = OpenTemplatePackage("TableStyleRead.xlsx"))
             {
-                var s = p.Workbook.Styles.TableStyles["CustomPivotTableStyle1"];
+                ExcelTableNamedStyleBase? s = p.Workbook.Styles.TableStyles["CustomPivotTableStyle1"];
                 if (s == null)
                 {
                     Assert.Inconclusive("CustomPivotTableStyle1 does not exists in workbook");
                 }
 
-                var ps = s.As.PivotTableStyle;
+                ExcelPivotTableNamedStyle? ps = s.As.PivotTableStyle;
 
                 Assert.AreEqual("CustomPivotTableStyle1", ps.Name);
 
@@ -198,8 +200,8 @@ namespace EPPlusTest.Style
         [TestMethod]
         public void AddTableAndPivotTableStyle()
         {
-            var ws = _pck.Workbook.Worksheets.Add("SharedTableStyle");
-            var s = _pck.Workbook.Styles.CreateTableAndPivotTableStyle("CustomTableAndPivotTableStyle1");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("SharedTableStyle");
+            ExcelTableAndPivotTableNamedStyle? s = _pck.Workbook.Styles.CreateTableAndPivotTableStyle("CustomTableAndPivotTableStyle1");
             if (s == null)
             {
                 Assert.Inconclusive("CustomTableAndPivotTableStyle1 does not exists in workbook");
@@ -216,10 +218,10 @@ namespace EPPlusTest.Style
             s.SecondColumnStripe.BandSize = 2;
 
             LoadTestdata(ws);
-            var tbl = ws.Tables.Add(ws.Cells["A1:D101"], "Table3");
+            ExcelTable? tbl = ws.Tables.Add(ws.Cells["A1:D101"], "Table3");
             tbl.StyleName = "CustomTableAndPivotTableStyle1";
             
-            var pt = ws.PivotTables.Add(ws.Cells["G2"], tbl, "PivotTable3");
+            ExcelPivotTable? pt = ws.PivotTables.Add(ws.Cells["G2"], tbl, "PivotTable3");
             pt.RowFields.Add(pt.Fields[0]);
             pt.DataFields.Add(pt.Fields[3]);
             pt.ShowRowStripes = true;
@@ -228,15 +230,15 @@ namespace EPPlusTest.Style
         [TestMethod]
         public void ReadTableAndPivotTableStyle()
         {
-            using (var p = OpenTemplatePackage("TableStyleRead.xlsx"))
+            using (ExcelPackage? p = OpenTemplatePackage("TableStyleRead.xlsx"))
             {
-                var s = p.Workbook.Styles.TableStyles["CustomTableAndPivotTableStyle1"];
+                ExcelTableNamedStyleBase? s = p.Workbook.Styles.TableStyles["CustomTableAndPivotTableStyle1"];
                 if (s == null)
                 {
                     Assert.Inconclusive("CustomTableAndPivotTableStyle1 style is not present in the workbook");
                 }
 
-                var tpts =s.As.TableAndPivotTableStyle;
+                ExcelTableAndPivotTableNamedStyle? tpts =s.As.TableAndPivotTableStyle;
                 Assert.AreEqual("CustomTableAndPivotTableStyle1", tpts.Name);
 
                 //Assert
@@ -255,10 +257,10 @@ namespace EPPlusTest.Style
         [TestMethod]
         public void AlterTableStyle()
         {
-            var ws = _pck.Workbook.Worksheets.Add("TableRowStyle");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("TableRowStyle");
             LoadTestdata(ws);
-            var tbl = ws.Tables.Add(ws.Cells["A1:D101"], "Table4");
-            var ns = _pck.Workbook.Styles.CreateNamedStyle("TableCellStyle2");
+            ExcelTable? tbl = ws.Tables.Add(ws.Cells["A1:D101"], "Table4");
+            ExcelNamedStyleXml? ns = _pck.Workbook.Styles.CreateNamedStyle("TableCellStyle2");
             ns.Style.Font.Color.SetColor(Color.Red);
 
 
@@ -269,9 +271,9 @@ namespace EPPlusTest.Style
         [TestMethod]
         public void CopyTableRowStyle()
         {
-            var ws = _pck.Workbook.Worksheets.Add("CopyTableRowStyleSource");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("CopyTableRowStyleSource");
             LoadTestdata(ws);
-            var tbl = ws.Tables.Add(ws.Cells["A1:D100"], "Table5");
+            ExcelTable? tbl = ws.Tables.Add(ws.Cells["A1:D100"], "Table5");
 
             tbl.HeaderRowStyle.Border.Bottom.Style=ExcelBorderStyle.Dashed;
             tbl.HeaderRowStyle.Border.Bottom.Color.SetColor(Color.Black);
@@ -286,7 +288,7 @@ namespace EPPlusTest.Style
             tbl.Columns[1].TotalsRowFunction = RowFunctions.Sum;
             //tbl.Columns[1].TotalsRowStyle.NumberFormat.Format = "#,##0.00";
 
-            var wsCopy = _pck.Workbook.Worksheets.Add("CopyTableRowStyleCopy", ws);
+            ExcelWorksheet? wsCopy = _pck.Workbook.Worksheets.Add("CopyTableRowStyleCopy", ws);
 
             Assert.AreEqual(ExcelBorderStyle.Dashed, tbl.HeaderRowStyle.Border.Bottom.Style);
             Assert.AreEqual(Color.Black.ToArgb(),tbl.HeaderRowStyle.Border.Bottom.Color.Color.Value.ToArgb());
@@ -297,11 +299,11 @@ namespace EPPlusTest.Style
         [TestMethod]
         public void CopyTableRowStyleNewPackage()
         {
-            using (var p1 = new ExcelPackage())
+            using (ExcelPackage? p1 = new ExcelPackage())
             {
-                var ws = p1.Workbook.Worksheets.Add("CopyTableRowStyleSource");
+                ExcelWorksheet? ws = p1.Workbook.Worksheets.Add("CopyTableRowStyleSource");
                 LoadTestdata(ws);
-                var tbl = ws.Tables.Add(ws.Cells["A1:D100"], "Table6");
+                ExcelTable? tbl = ws.Tables.Add(ws.Cells["A1:D100"], "Table6");
                 tbl.HeaderRowStyle.Border.Bottom.Style = ExcelBorderStyle.Dashed;
                 tbl.HeaderRowStyle.Border.Bottom.Color.SetColor(Color.Black);
                 tbl.DataStyle.Font.Color.SetColor(Color.Red);
@@ -313,10 +315,10 @@ namespace EPPlusTest.Style
                 tbl.Columns[1].DataStyle.NumberFormat.Format = "#,##0.00";
                 tbl.Columns[1].TotalsRowStyle.NumberFormat.Format = "#,##0.00";
 
-                using (var p2 = new ExcelPackage())
+                using (ExcelPackage? p2 = new ExcelPackage())
                 {
-                    var wsCopy = p2.Workbook.Worksheets.Add("CopyTableRowStyleCopy", ws);
-                    var tblCopy = wsCopy.Tables[0];
+                    ExcelWorksheet? wsCopy = p2.Workbook.Worksheets.Add("CopyTableRowStyleCopy", ws);
+                    ExcelTable? tblCopy = wsCopy.Tables[0];
                     Assert.AreEqual(ExcelBorderStyle.Dashed, tbl.HeaderRowStyle.Border.Bottom.Style);
                     Assert.AreEqual(Color.Black.ToArgb(), tbl.HeaderRowStyle.Border.Bottom.Color.Color.Value.ToArgb());
                     Assert.AreEqual(Color.Red.ToArgb(), tbl.DataStyle.Font.Color.Color.Value.ToArgb());
@@ -335,10 +337,10 @@ namespace EPPlusTest.Style
         [TestMethod]
         public void SetStyleWhenAddingRow()
         {
-            var ws = _pck.Workbook.Worksheets.Add("SetStyleWhenAddingRow");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("SetStyleWhenAddingRow");
             LoadTestdata(ws);
 
-            var tbl = ws.Tables.Add(ws.Cells["A1:D100"], "Table7");
+            ExcelTable? tbl = ws.Tables.Add(ws.Cells["A1:D100"], "Table7");
 
             tbl.DataStyle.Font.Italic=true;
             tbl.AddRow(2);
@@ -349,10 +351,10 @@ namespace EPPlusTest.Style
         [TestMethod]
         public void SetStyleWhenInsertingRowFirst()
         {
-            var ws = _pck.Workbook.Worksheets.Add("SetStyleWhenInsertingRowFirst");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("SetStyleWhenInsertingRowFirst");
             LoadTestdata(ws);
 
-            var tbl = ws.Tables.Add(ws.Cells["A1:D100"], "Table8");
+            ExcelTable? tbl = ws.Tables.Add(ws.Cells["A1:D100"], "Table8");
 
             tbl.ShowHeader = false; 
             tbl.DataStyle.Font.Strike = true;
@@ -364,10 +366,10 @@ namespace EPPlusTest.Style
         [TestMethod]
         public void SetStyleWhenInsertingColumn()
         {
-            var ws = _pck.Workbook.Worksheets.Add("SetStyleWhenInsertingColumn");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("SetStyleWhenInsertingColumn");
             LoadTestdata(ws);
 
-            var tbl = ws.Tables.Add(ws.Cells["A1:D100"], "Table9");
+            ExcelTable? tbl = ws.Tables.Add(ws.Cells["A1:D100"], "Table9");
 
             tbl.ShowHeader = true;
             tbl.ShowTotal = true;
@@ -388,10 +390,10 @@ namespace EPPlusTest.Style
         [TestMethod]
         public void SetStyleWhenInsertingColumnFirst()
         {
-            var ws = _pck.Workbook.Worksheets.Add("SetStyleWhenInsertingColumnFirst");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("SetStyleWhenInsertingColumnFirst");
             LoadTestdata(ws);
 
-            var tbl = ws.Tables.Add(ws.Cells["A1:D100"], "Table10");
+            ExcelTable? tbl = ws.Tables.Add(ws.Cells["A1:D100"], "Table10");
             
             tbl.DataStyle.Font.Strike = true;
             tbl.InsertRow(0, 3);
@@ -402,10 +404,10 @@ namespace EPPlusTest.Style
         [TestMethod]
         public void SetStyleWhenInsertingColumnFirstNoHeader()
         {
-            var ws = _pck.Workbook.Worksheets.Add("SetStyleInsertingColumnFirstNH");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("SetStyleInsertingColumnFirstNH");
             LoadTestdata(ws);
 
-            var tbl = ws.Tables.Add(ws.Cells["A1:D100"], "Table11");
+            ExcelTable? tbl = ws.Tables.Add(ws.Cells["A1:D100"], "Table11");
 
             tbl.DataStyle.Font.Strike = true;
             tbl.ShowHeader = false;

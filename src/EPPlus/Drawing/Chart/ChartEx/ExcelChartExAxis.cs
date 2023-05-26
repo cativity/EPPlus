@@ -137,14 +137,14 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
         {
             get
             {
-                var s=GetXmlNodeString(_displayUnitPath);
+                string? s=GetXmlNodeString(_displayUnitPath);
                 if(string.IsNullOrEmpty(s))
                 {
                     return 1;
                 }
                 try
                 {
-                    var e = Enum.Parse(typeof(eBuildInUnits), s);
+                    object? e = Enum.Parse(typeof(eBuildInUnits), s);
                     return (double)e;
                 }
                 catch
@@ -160,7 +160,7 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
                 }
                 try
                 {
-                    var e = (eBuildInUnits)value;
+                    eBuildInUnits e = (eBuildInUnits)value;
                     SetXmlNodeString("", e.ToEnumString());
                 }
                 catch
@@ -183,7 +183,7 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
         {
             if (_title == null)
             {
-                var node = AddTitleNode();
+                XmlNode? node = AddTitleNode();
                 _title = new ExcelChartExTitle(_chart, NameSpaceManager, node);
             }
             return _title;

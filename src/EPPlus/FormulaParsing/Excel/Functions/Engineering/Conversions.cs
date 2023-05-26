@@ -134,8 +134,8 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Engineering
                 return;
             }
 
-            var conversion = _conversions[abbrevation];
-            foreach(var prefix in _metricPrefixes)
+            Unit conversion = _conversions[abbrevation];
+            foreach(Prefix prefix in _metricPrefixes)
             {
                 switch(conversion.UnitType)
                 {
@@ -159,8 +159,8 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Engineering
                 return;
             }
 
-            var conversion = _conversions[abbrevation];
-            foreach(var prefix in _binaryPrefixes)
+            Unit conversion = _conversions[abbrevation];
+            foreach(Prefix prefix in _binaryPrefixes)
             {
                 _conversions[prefix.Abbrevation + abbrevation] = new Unit(prefix.Value * conversion.Value, conversion.UnitType);
             }
@@ -555,8 +555,8 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Engineering
             {
                 throw new ArgumentException("Invalid toUnit", toUnit);
             }
-            var from = _conversions[fromUnit];
-            var to = _conversions[toUnit];
+            Unit from = _conversions[fromUnit];
+            Unit to = _conversions[toUnit];
             if (from.UnitType != to.UnitType)
             {
                 throw new ArgumentException("Units are not compatible: " + fromUnit + " and " + toUnit);

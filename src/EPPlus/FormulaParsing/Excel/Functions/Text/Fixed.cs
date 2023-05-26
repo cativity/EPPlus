@@ -29,9 +29,9 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Text
         public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
         {
             ValidateArguments(arguments, 1);
-            var number = ArgToDecimal(arguments, 0);
-            var nDecimals = 2;
-            var noCommas = false;
+            double number = ArgToDecimal(arguments, 0);
+            int nDecimals = 2;
+            bool noCommas = false;
             if (arguments.Count() > 1)
             {
                 nDecimals = ArgToInt(arguments, 1);
@@ -40,14 +40,14 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Text
             {
                 noCommas = ArgToBool(arguments, 2);
             }
-            var format = (noCommas ? "F" : "N") + nDecimals.ToString(CultureInfo.InvariantCulture);
+            string? format = (noCommas ? "F" : "N") + nDecimals.ToString(CultureInfo.InvariantCulture);
             if (nDecimals < 0)
             {
                 number = number - (number % (System.Math.Pow(10, nDecimals * -1)));
                 number = System.Math.Floor(number);
                 format = noCommas ? "F0" : "N0";
             }
-            var retVal = number.ToString(format);
+            string? retVal = number.ToString(format);
             return CreateResult(retVal, DataType.String);
         }
     }

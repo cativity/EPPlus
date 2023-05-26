@@ -383,7 +383,7 @@ namespace OfficeOpenXml.Style.XmlAccess
             }
             else
             {
-                var v=_underlineType.ToString();
+                string? v=_underlineType.ToString();
                 SetXmlNodeString(underLinedPath + "/@val", v.Substring(0, 1).ToLower(CultureInfo.InvariantCulture) + v.Substring(1));
             }
 

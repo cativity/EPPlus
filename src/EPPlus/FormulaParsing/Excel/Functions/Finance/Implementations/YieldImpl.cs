@@ -24,16 +24,16 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.Implementations
         public double GetYield(System.DateTime settlement, System.DateTime maturity, double rate, double pr, double redemption, int frequency, DayCountBasis basis = DayCountBasis.US_30_360)
         {
             
-            var A = _couponProvider.GetCoupdaybs(settlement, maturity, frequency, basis);
-            var N = _couponProvider.GetCoupnum(settlement, maturity, frequency, basis);
-            var E = _couponProvider.GetCoupdays(settlement, maturity, frequency, basis);
+            double A = _couponProvider.GetCoupdaybs(settlement, maturity, frequency, basis);
+            double N = _couponProvider.GetCoupnum(settlement, maturity, frequency, basis);
+            double E = _couponProvider.GetCoupdays(settlement, maturity, frequency, basis);
 
             if (N <= -1)
             { 
-                var DSR = E - A;
-                var part1 = (redemption / 100 + rate / frequency) - (pr / 100d + (A / E * rate / frequency));
-                var part2 = pr / 100d + (A / E) * rate / frequency;
-                var retVal = part1 / part2 * ((frequency * E) / DSR);
+                double DSR = E - A;
+                double part1 = (redemption / 100 + rate / frequency) - (pr / 100d + (A / E * rate / frequency));
+                double part2 = pr / 100d + (A / E) * rate / frequency;
+                double retVal = part1 / part2 * ((frequency * E) / DSR);
 
                 return retVal;
             }

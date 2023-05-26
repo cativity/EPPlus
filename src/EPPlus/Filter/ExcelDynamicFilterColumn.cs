@@ -54,7 +54,7 @@ namespace OfficeOpenXml.Filter
             }
             else
             {
-                var date = ConvertUtil.GetValueDate(value);
+                DateTime? date = ConvertUtil.GetValueDate(value);
                 if (date.HasValue == false)
                 {
                     return false;
@@ -66,9 +66,9 @@ namespace OfficeOpenXml.Filter
 
         internal override void Save()
         {
-            var node = (XmlElement)CreateNode("d:dynamicFilter");
+            XmlElement? node = (XmlElement)CreateNode("d:dynamicFilter");
             node.RemoveAll();
-            var type = Type.ToEnumString();
+            string? type = Type.ToEnumString();
             if (type.Length <= 3)
             {
                 type = type.ToUpper();    //For M1, M12, Q1 etc
@@ -115,10 +115,10 @@ namespace OfficeOpenXml.Filter
         {
             int count = 0;
             double sum = 0;
-            var col = address._fromCol + Position;
+            int col = address._fromCol + Position;
             for (int row = address._fromRow + 1; row <= address._toRow; row++)
             {
-                var v = worksheet.GetValue(row, col);
+                object? v = worksheet.GetValue(row, col);
                 if (Utils.ConvertUtil.IsNumericOrDate(v))
                 {
                     sum += ConvertUtil.GetValueDouble(v);

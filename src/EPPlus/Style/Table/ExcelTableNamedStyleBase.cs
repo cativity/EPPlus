@@ -37,7 +37,7 @@ namespace OfficeOpenXml.Style.Table
             {
                 if (node is XmlElement e)
                 {
-                    var type = e.GetAttribute("type").ToEnum(eTableStyleElement.WholeTable);
+                    eTableStyleElement type = e.GetAttribute("type").ToEnum(eTableStyleElement.WholeTable);
                     if (IsBanded(type))
                     {
                         _dic.Add(type, new ExcelBandedTableStyleElement(nameSpaceManager, node, styles, type));
@@ -209,9 +209,9 @@ namespace OfficeOpenXml.Style.Table
         }
         internal void SetFromTemplate(ExcelTableNamedStyleBase templateStyle)
         {
-            foreach(var s in templateStyle._dic.Values)
+            foreach(ExcelTableStyleElement? s in templateStyle._dic.Values)
             {
-                var element = GetTableStyleElement(s.Type);
+                ExcelTableStyleElement? element = GetTableStyleElement(s.Type);
                 element.Style = (ExcelDxfStyleLimitedFont)s.Style.Clone();
             }
         }
@@ -226,7 +226,7 @@ namespace OfficeOpenXml.Style.Table
 
         private void LoadTableTemplate(string folder, string styleName)
         {
-            var zipStream = ZipHelper.OpenZipResource();
+            ZipInputStream? zipStream = ZipHelper.OpenZipResource();
             ZipEntry entry;
             while ((entry = zipStream.GetNextEntry()) != null)
             {
@@ -235,21 +235,21 @@ namespace OfficeOpenXml.Style.Table
                     continue;
                 }
 
-                var name = new FileInfo(entry.FileName).Name;
+                string? name = new FileInfo(entry.FileName).Name;
                 name = name.Substring(0, name.Length - 4);
                 if (name.Equals(styleName, StringComparison.OrdinalIgnoreCase))
                 {
-                    var xmlContent = ZipHelper.UncompressEntry(zipStream, entry);
-                    var xml = new XmlDocument();
+                    string? xmlContent = ZipHelper.UncompressEntry(zipStream, entry);
+                    XmlDocument? xml = new XmlDocument();
                     xml.LoadXml(xmlContent);
 
                     foreach (XmlElement elem in xml.DocumentElement.ChildNodes)
                     {
-                        var type = elem.GetAttribute("name").ToEnum(eTableStyleElement.WholeTable);
-                        var dxfXml = elem.InnerXml;
-                        var dxf = new ExcelDxfStyleLimitedFont(NameSpaceManager, elem.FirstChild, _styles, null);
+                        eTableStyleElement type = elem.GetAttribute("name").ToEnum(eTableStyleElement.WholeTable);
+                        string? dxfXml = elem.InnerXml;
+                        ExcelDxfStyleLimitedFont? dxf = new ExcelDxfStyleLimitedFont(NameSpaceManager, elem.FirstChild, _styles, null);
 
-                        var te = GetTableStyleElement(type);
+                        ExcelTableStyleElement? te = GetTableStyleElement(type);
                         te.Style = dxf;
                     }
                 }

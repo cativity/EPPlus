@@ -13,6 +13,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Xml;
 
 namespace OfficeOpenXml.Core.Worksheet
 {
@@ -20,8 +21,8 @@ namespace OfficeOpenXml.Core.Worksheet
     {       
         internal static void RearrangeWorksheets(ExcelWorksheets worksheets, string sourceWorksheetName, string targetWorksheetName, bool before)
         {
-            var sourceWorksheet = worksheets[sourceWorksheetName];
-            var targetWorksheet=worksheets[targetWorksheetName];
+            ExcelWorksheet? sourceWorksheet = worksheets[sourceWorksheetName];
+            ExcelWorksheet? targetWorksheet=worksheets[targetWorksheetName];
             if (sourceWorksheet == null)
             {
                 throw new ArgumentException($"Could not find source worksheet {sourceWorksheet} to move.");
@@ -42,15 +43,15 @@ namespace OfficeOpenXml.Core.Worksheet
 
             lock (worksheets)
             {
-                var sourceSheet = worksheets[sourcePositionId];
-                var targetSheet = worksheets[targetPositionId];
+                ExcelWorksheet? sourceSheet = worksheets[sourcePositionId];
+                ExcelWorksheet? targetSheet = worksheets[targetPositionId];
 
-                var index = targetSheet._package._worksheetAdd;
+                int index = targetSheet._package._worksheetAdd;
 
                 worksheets._worksheets.Move(sourcePositionId - index, targetPositionId - index, before);
 
-                var from = Math.Min(sourcePositionId, targetPositionId);
-                var to = Math.Max(sourcePositionId, targetPositionId);
+                int from = Math.Min(sourcePositionId, targetPositionId);
+                int to = Math.Max(sourcePositionId, targetPositionId);
                 for (int i = from; i <= to; i++)
                 {
                     worksheets[i].PositionId = i;
@@ -62,8 +63,8 @@ namespace OfficeOpenXml.Core.Worksheet
 
         private static void MoveTargetXml(ExcelWorksheets worksheets, ExcelWorksheet sourceWs, ExcelWorksheet targetWs, bool before)
         {
-            var sourceNode = worksheets.TopNode.SelectSingleNode($"d:sheet[@sheetId = '{sourceWs.SheetId}']", worksheets.NameSpaceManager);
-            var targetNode = worksheets.TopNode.SelectSingleNode($"d:sheet[@sheetId = '{targetWs.SheetId}']", worksheets.NameSpaceManager);
+            XmlNode? sourceNode = worksheets.TopNode.SelectSingleNode($"d:sheet[@sheetId = '{sourceWs.SheetId}']", worksheets.NameSpaceManager);
+            XmlNode? targetNode = worksheets.TopNode.SelectSingleNode($"d:sheet[@sheetId = '{targetWs.SheetId}']", worksheets.NameSpaceManager);
             if (sourceNode == null || targetNode == null)
             {
                 throw new InvalidOperationException("Invalid Workbook Xml. Can't find worksheet in workbook list.");

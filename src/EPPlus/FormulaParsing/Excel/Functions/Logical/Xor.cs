@@ -42,17 +42,17 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Logical
         public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
         {
             ValidateArguments(arguments, 1);
-            var results = new List<bool>();
-            var values = _converter.ConvertArgsIncludingOtherTypes(arguments, false);
-            var nTrue = 0;
-            foreach(var val in values)
+            List<bool>? results = new List<bool>();
+            IEnumerable<ExcelDoubleCellValue>? values = _converter.ConvertArgsIncludingOtherTypes(arguments, false);
+            int nTrue = 0;
+            foreach(ExcelDoubleCellValue val in values)
             {
                 if(val != 0d)
                 {
                     nTrue++;
                 }
             }
-            var result = (System.Math.Abs(nTrue) & 1) != 0;
+            bool result = (System.Math.Abs(nTrue) & 1) != 0;
             return CreateResult(result, DataType.Boolean);
         }
     }

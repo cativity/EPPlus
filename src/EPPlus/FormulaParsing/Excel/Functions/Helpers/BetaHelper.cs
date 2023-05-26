@@ -37,10 +37,10 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Helpers
     {
         internal static double IBetaInv(double p, double a, double b)
         {
-            var EPS = 1e-8;
-            var a1 = a - 1;
-            var b1 = b - 1;
-            var j = 0;
+            double EPS = 1e-8;
+            double a1 = a - 1;
+            double b1 = b - 1;
+            int j = 0;
             double lna, lnb, pp, t, u, err, x, al, h, w, afac;
             if (p <= 0)
             {
@@ -125,10 +125,10 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Helpers
         internal static double IBeta(double x, double a, double b)
         {
             // Factors in front of the continued fraction.
-            var bt = (x == 0 || x == 1) ? 0 :
-              System.Math.Exp(GammaHelper.logGamma(a + b) - GammaHelper.logGamma(a) -
-                       GammaHelper.logGamma(b) + a * System.Math.Log(x) + b *
-                       System.Math.Log(1 - x));
+            double bt = (x == 0 || x == 1) ? 0 :
+                            System.Math.Exp(GammaHelper.logGamma(a + b) - GammaHelper.logGamma(a) -
+                                            GammaHelper.logGamma(b) + a * System.Math.Log(x) + b *
+                                            System.Math.Log(1 - x));
             if (x < 0 || x > 1)
             {
                 return 0d; // previously return false
@@ -187,15 +187,15 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Helpers
 
             if (a < 512 && b < 512)
             {
-                var result = (System.Math.Pow(x, a - 1) * System.Math.Pow(1 - x, b - 1)) /
-                    Beta(a, b);
+                double result = (System.Math.Pow(x, a - 1) * System.Math.Pow(1 - x, b - 1)) /
+                                Beta(a, b);
                 return result / 2d;
             }
             else
             {
-                var result = System.Math.Exp((a - 1) * System.Math.Log(x) +
-                                (b - 1) * System.Math.Log(1 - x) -
-                                Betaln(a, b));
+                double result = System.Math.Exp((a - 1) * System.Math.Log(x) +
+                                                (b - 1) * System.Math.Log(1 - x) -
+                                                Betaln(a, b));
                 return result / 2d;
             }
         }
@@ -209,12 +209,12 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Helpers
         /// <returns></returns>
         internal static double BetaCf(double x, double a, double b)
         {
-            var fpmin = 1e-30;
-            var m = 1;
-            var qab = a + b;
-            var qap = a + 1;
-            var qam = a - 1;
-            var c = 1d;
+            double fpmin = 1e-30;
+            int m = 1;
+            double qab = a + b;
+            double qap = a + 1;
+            double qam = a - 1;
+            double c = 1d;
             double d = 1 - qab * x / qap;
             double m2, aa, del, h;
 

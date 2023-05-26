@@ -28,10 +28,10 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Text
         public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
         {
             ValidateArguments(arguments, 3);
-            var text = ArgToString(arguments, 0);
-            var find = ArgToString(arguments, 1);
-            var replaceWith = ArgToString(arguments, 2);
-            var result = arguments.Count() > 3 ? ReplaceFirst(text, find, replaceWith, ArgToInt(arguments, 3)) : text.Replace(find, replaceWith);
+            string? text = ArgToString(arguments, 0);
+            string? find = ArgToString(arguments, 1);
+            string? replaceWith = ArgToString(arguments, 2);
+            string? result = arguments.Count() > 3 ? ReplaceFirst(text, find, replaceWith, ArgToInt(arguments, 3)) : text.Replace(find, replaceWith);
             return CreateResult(result, DataType.String);
         }
 

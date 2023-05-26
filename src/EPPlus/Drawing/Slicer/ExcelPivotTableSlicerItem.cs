@@ -52,9 +52,9 @@ namespace OfficeOpenXml.Drawing.Slicer
                 {
                     throw (new IndexOutOfRangeException());
                 }
-                foreach (var pt in _cache.PivotTables)
+                foreach (ExcelPivotTable? pt in _cache.PivotTables)
                 {
-                    var fld = pt.Fields[_cache._field.Index];
+                    ExcelPivotTableField? fld = pt.Fields[_cache._field.Index];
                     if (_index >= fld.Items.Count || fld.Items[_index].Type != Table.PivotTable.eItemType.Data)
                     {
                         continue;

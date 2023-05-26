@@ -53,11 +53,11 @@ namespace OfficeOpenXml.Drawing.Vml
         }
         protected internal void AddDrawingsFromXml(ExcelWorksheet ws)
         {
-            var nodes = VmlDrawingXml.SelectNodes("//v:shape", NameSpaceManager);
+            XmlNodeList? nodes = VmlDrawingXml.SelectNodes("//v:shape", NameSpaceManager);
             //var list = new List<IRangeID>();
             foreach (XmlNode node in nodes)
             {
-                var objectType = node.SelectSingleNode("x:ClientData/@ObjectType", NameSpaceManager)?.Value;
+                string? objectType = node.SelectSingleNode("x:ClientData/@ObjectType", NameSpaceManager)?.Value;
                 ExcelVmlDrawingBase vmlDrawing;
                 switch (objectType)
                 {
@@ -75,8 +75,8 @@ namespace OfficeOpenXml.Drawing.Vml
                         _drawings.Add(vmlDrawing);
                         break;
                     default:    //Comments
-                        var rowNode = node.SelectSingleNode("x:ClientData/x:Row", NameSpaceManager);
-                        var colNode = node.SelectSingleNode("x:ClientData/x:Column", NameSpaceManager);
+                        XmlNode? rowNode = node.SelectSingleNode("x:ClientData/x:Row", NameSpaceManager);
+                        XmlNode? colNode = node.SelectSingleNode("x:ClientData/x:Column", NameSpaceManager);
                         int row, col;
                         if (rowNode != null && colNode != null)
                         {
@@ -93,7 +93,7 @@ namespace OfficeOpenXml.Drawing.Vml
                         _drawingsCellStore.SetValue(row, col, _drawings.Count-1);
                         break;
                 }
-                var id = string.IsNullOrEmpty(vmlDrawing.SpId) ? vmlDrawing.Id : vmlDrawing.SpId;
+                string? id = string.IsNullOrEmpty(vmlDrawing.SpId) ? vmlDrawing.Id : vmlDrawing.SpId;
                 int x = 2;
                 if(_drawingsDict.ContainsKey(id))
                 {
@@ -141,7 +141,7 @@ namespace OfficeOpenXml.Drawing.Vml
         internal ExcelVmlDrawingComment AddComment(ExcelRangeBase cell)
         {
             XmlNode node = AddCommentDrawing(cell);
-            var draw = new ExcelVmlDrawingComment(node, cell, NameSpaceManager);
+            ExcelVmlDrawingComment? draw = new ExcelVmlDrawingComment(node, cell, NameSpaceManager);
             _drawings.Add(draw);
             _drawingsCellStore.SetValue(cell._fromRow, cell._fromCol, _drawings.Count-1);
             return draw;
@@ -150,13 +150,13 @@ namespace OfficeOpenXml.Drawing.Vml
         {
             CreateVmlPart(); //Create the vml part to be able to create related parts (like blip fill images).
             int row = cell.Start.Row, col = cell.Start.Column;
-            var node = VmlDrawingXml.CreateElement("v", "shape", ExcelPackage.schemaMicrosoftVml);
+            XmlElement? node = VmlDrawingXml.CreateElement("v", "shape", ExcelPackage.schemaMicrosoftVml);
 
             int r = cell._fromRow, c = cell._fromCol;
-            var prev = _drawingsCellStore.PrevCell(ref r, ref c);
+            bool prev = _drawingsCellStore.PrevCell(ref r, ref c);
             if (prev)
             {                
-                var prevDraw = _drawings[_drawingsCellStore.GetValue(r, c)];
+                ExcelVmlDrawingBase? prevDraw = _drawings[_drawingsCellStore.GetValue(r, c)];
                 prevDraw.TopNode.ParentNode.InsertBefore(node, prevDraw.TopNode);
             }
             else
@@ -192,7 +192,7 @@ namespace OfficeOpenXml.Drawing.Vml
         internal ExcelVmlDrawingControl AddControl(ExcelControl ctrl, string name)
         {
             XmlNode node = AddControlDrawing(ctrl, name);
-            var draw = new ExcelVmlDrawingControl(_ws, node, NameSpaceManager);
+            ExcelVmlDrawingControl? draw = new ExcelVmlDrawingControl(_ws, node, NameSpaceManager);
             _drawings.Add(draw);
             if(_drawingsDict.ContainsKey(draw.Id) == false)
             {
@@ -203,7 +203,7 @@ namespace OfficeOpenXml.Drawing.Vml
         private XmlNode AddControlDrawing(ExcelControl ctrl, string name)
         {
             CreateVmlPart(); //Create the vml part to be able to create related parts (like blip fill images).
-            var shapeElement = VmlDrawingXml.CreateElement("v", "shape", ExcelPackage.schemaMicrosoftVml);
+            XmlElement? shapeElement = VmlDrawingXml.CreateElement("v", "shape", ExcelPackage.schemaMicrosoftVml);
 
             VmlDrawingXml.DocumentElement.AppendChild(shapeElement);
 
@@ -215,7 +215,7 @@ namespace OfficeOpenXml.Drawing.Vml
             shapeElement.SetAttribute("insetmode", ExcelPackage.schemaMicrosoftOffice, "auto");
             SetShapeAttributes(ctrl, shapeElement);
 
-            var vml = new StringBuilder();
+            StringBuilder? vml = new StringBuilder();
             vml.Append(GetVml(ctrl, shapeElement));
             vml.Append("<o:lock v:ext=\"edit\" rotation=\"t\"/>");
             vml.Append("<v:textbox style=\"mso-direction-alt:auto\" o:singleclick=\"f\">");

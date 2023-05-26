@@ -28,7 +28,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Text
         public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
         {
             ValidateArguments(arguments, 1);
-            var number = ArgToInt(arguments, 0);
+            int number = ArgToInt(arguments, 0);
             if (number < 1 || number > 255)
             {
                 return this.CreateResult(eErrorType.Value);

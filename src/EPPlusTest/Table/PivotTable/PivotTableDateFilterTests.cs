@@ -16,8 +16,8 @@ namespace EPPlusTest.Table.PivotTable
         {
             InitBase();
             _pck = OpenPackage("PivotTableDateFilters.xlsx", true);
-            var ws = _pck.Workbook.Worksheets.Add("Data1");
-            var r = LoadItemData(ws);
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("Data1");
+            ExcelRangeBase? r = LoadItemData(ws);
             ws.Tables.Add(r, "Table1");
             ws = _pck.Workbook.Worksheets.Add("Data2");
             r = LoadItemData(ws);
@@ -31,10 +31,10 @@ namespace EPPlusTest.Table.PivotTable
         [TestMethod]
         public void AddDateEqualFilter()
         {
-            var wsData = _pck.Workbook.Worksheets["Data1"];
-            var ws = _pck.Workbook.Worksheets.Add("DateEqual");
+            ExcelWorksheet? wsData = _pck.Workbook.Worksheets["Data1"];
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("DateEqual");
 
-            var pt = ws.PivotTables.Add(ws.Cells["A1"], wsData.Cells["K1:O11"], "Pivottable1");
+            ExcelPivotTable? pt = ws.PivotTables.Add(ws.Cells["A1"], wsData.Cells["K1:O11"], "Pivottable1");
             pt.RowFields.Add(pt.Fields[4]);
             pt.DataFields.Add(pt.Fields[3]);
 
@@ -43,10 +43,10 @@ namespace EPPlusTest.Table.PivotTable
         [TestMethod]
         public void AddDateNotEqualFilter()
         {
-            var wsData = _pck.Workbook.Worksheets["Data1"];
-            var ws = _pck.Workbook.Worksheets.Add("DateNotEqual");
+            ExcelWorksheet? wsData = _pck.Workbook.Worksheets["Data1"];
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("DateNotEqual");
 
-            var pt = ws.PivotTables.Add(ws.Cells["A1"], wsData.Cells["K1:O11"], "Pivottable2");
+            ExcelPivotTable? pt = ws.PivotTables.Add(ws.Cells["A1"], wsData.Cells["K1:O11"], "Pivottable2");
             pt.RowFields.Add(pt.Fields[4]);
             pt.DataFields.Add(pt.Fields[3]);
 
@@ -55,10 +55,10 @@ namespace EPPlusTest.Table.PivotTable
         [TestMethod]
         public void AddDateOlderFilter()
         {
-            var wsData = _pck.Workbook.Worksheets["Data1"];
-            var ws = _pck.Workbook.Worksheets.Add("DateBefore");
+            ExcelWorksheet? wsData = _pck.Workbook.Worksheets["Data1"];
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("DateBefore");
 
-            var pt = ws.PivotTables.Add(ws.Cells["A1"], wsData.Cells["K1:O11"], "Pivottable2");
+            ExcelPivotTable? pt = ws.PivotTables.Add(ws.Cells["A1"], wsData.Cells["K1:O11"], "Pivottable2");
             pt.RowFields.Add(pt.Fields[4]);
             pt.DataFields.Add(pt.Fields[3]);
 
@@ -67,10 +67,10 @@ namespace EPPlusTest.Table.PivotTable
         [TestMethod]
         public void AddDateOlderOrEqualFilter()
         {
-            var wsData = _pck.Workbook.Worksheets["Data1"];
-            var ws = _pck.Workbook.Worksheets.Add("DateBeforeOrEqual");
+            ExcelWorksheet? wsData = _pck.Workbook.Worksheets["Data1"];
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("DateBeforeOrEqual");
 
-            var pt = ws.PivotTables.Add(ws.Cells["A1"], wsData.Cells["K1:O11"], "Pivottable2");
+            ExcelPivotTable? pt = ws.PivotTables.Add(ws.Cells["A1"], wsData.Cells["K1:O11"], "Pivottable2");
             pt.RowFields.Add(pt.Fields[4]);
             pt.DataFields.Add(pt.Fields[3]);
 
@@ -79,10 +79,10 @@ namespace EPPlusTest.Table.PivotTable
         [TestMethod]
         public void AddDateNewerFilter()
         {
-            var wsData = _pck.Workbook.Worksheets["Data1"];
-            var ws = _pck.Workbook.Worksheets.Add("DateNewer");
+            ExcelWorksheet? wsData = _pck.Workbook.Worksheets["Data1"];
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("DateNewer");
 
-            var pt = ws.PivotTables.Add(ws.Cells["A1"], wsData.Cells["K1:O11"], "Pivottable2");
+            ExcelPivotTable? pt = ws.PivotTables.Add(ws.Cells["A1"], wsData.Cells["K1:O11"], "Pivottable2");
             pt.RowFields.Add(pt.Fields[4]);
             pt.DataFields.Add(pt.Fields[3]);
 
@@ -91,10 +91,10 @@ namespace EPPlusTest.Table.PivotTable
         [TestMethod]
         public void AddDateNewerOrEqualFilter()
         {
-            var wsData = _pck.Workbook.Worksheets["Data1"];
-            var ws = _pck.Workbook.Worksheets.Add("DateNewerOrEqual");
+            ExcelWorksheet? wsData = _pck.Workbook.Worksheets["Data1"];
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("DateNewerOrEqual");
 
-            var pt = ws.PivotTables.Add(ws.Cells["A1"], wsData.Cells["K1:O11"], "Pivottable2");
+            ExcelPivotTable? pt = ws.PivotTables.Add(ws.Cells["A1"], wsData.Cells["K1:O11"], "Pivottable2");
             pt.RowFields.Add(pt.Fields[4]);
             pt.DataFields.Add(pt.Fields[3]);
 
@@ -103,10 +103,10 @@ namespace EPPlusTest.Table.PivotTable
         [TestMethod]
         public void AddDateBetweenFilter()
         {
-            var wsData = _pck.Workbook.Worksheets["Data1"];
-            var ws = _pck.Workbook.Worksheets.Add("DateBetween");
+            ExcelWorksheet? wsData = _pck.Workbook.Worksheets["Data1"];
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("DateBetween");
 
-            var pt = ws.PivotTables.Add(ws.Cells["A1"], wsData.Cells["K1:O11"], "Pivottable2");
+            ExcelPivotTable? pt = ws.PivotTables.Add(ws.Cells["A1"], wsData.Cells["K1:O11"], "Pivottable2");
             pt.RowFields.Add(pt.Fields[4]);
             pt.DataFields.Add(pt.Fields[3]);
 
@@ -115,10 +115,10 @@ namespace EPPlusTest.Table.PivotTable
         [TestMethod]
         public void AddDateNotBetweenFilter()
         {
-            var wsData = _pck.Workbook.Worksheets["Data1"];
-            var ws = _pck.Workbook.Worksheets.Add("DateNotBetween");
+            ExcelWorksheet? wsData = _pck.Workbook.Worksheets["Data1"];
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("DateNotBetween");
 
-            var pt = ws.PivotTables.Add(ws.Cells["A1"], wsData.Cells["K1:O11"], "Pivottable2");
+            ExcelPivotTable? pt = ws.PivotTables.Add(ws.Cells["A1"], wsData.Cells["K1:O11"], "Pivottable2");
             pt.RowFields.Add(pt.Fields[4]);
             pt.DataFields.Add(pt.Fields[3]);
 
@@ -127,10 +127,10 @@ namespace EPPlusTest.Table.PivotTable
         [TestMethod]
         public void AddDateLastMonthFilter()
         {
-            var wsData = _pck.Workbook.Worksheets["Data1"];
-            var ws = _pck.Workbook.Worksheets.Add("LastMonth");
+            ExcelWorksheet? wsData = _pck.Workbook.Worksheets["Data1"];
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("LastMonth");
 
-            var pt = ws.PivotTables.Add(ws.Cells["A1"], wsData.Cells["K1:O11"], "Pivottable2");
+            ExcelPivotTable? pt = ws.PivotTables.Add(ws.Cells["A1"], wsData.Cells["K1:O11"], "Pivottable2");
             pt.RowFields.Add(pt.Fields[4]);
             pt.DataFields.Add(pt.Fields[3]);
 
@@ -139,10 +139,10 @@ namespace EPPlusTest.Table.PivotTable
         [TestMethod]
         public void AddDateLastQuarterFilter()
         {
-            var wsData = _pck.Workbook.Worksheets["Data1"];
-            var ws = _pck.Workbook.Worksheets.Add("LastQuarter");
+            ExcelWorksheet? wsData = _pck.Workbook.Worksheets["Data1"];
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("LastQuarter");
 
-            var pt = ws.PivotTables.Add(ws.Cells["A1"], wsData.Cells["K1:O11"], "Pivottable2");
+            ExcelPivotTable? pt = ws.PivotTables.Add(ws.Cells["A1"], wsData.Cells["K1:O11"], "Pivottable2");
             pt.RowFields.Add(pt.Fields[4]);
             pt.DataFields.Add(pt.Fields[3]);
 
@@ -151,10 +151,10 @@ namespace EPPlusTest.Table.PivotTable
         [TestMethod]
         public void AddDateLastWeekFilter()
         {
-            var wsData = _pck.Workbook.Worksheets["Data1"];
-            var ws = _pck.Workbook.Worksheets.Add("LastWeek");
+            ExcelWorksheet? wsData = _pck.Workbook.Worksheets["Data1"];
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("LastWeek");
 
-            var pt = ws.PivotTables.Add(ws.Cells["A1"], wsData.Cells["K1:O11"], "Pivottable2");
+            ExcelPivotTable? pt = ws.PivotTables.Add(ws.Cells["A1"], wsData.Cells["K1:O11"], "Pivottable2");
             pt.RowFields.Add(pt.Fields[4]);
             pt.DataFields.Add(pt.Fields[3]);
 
@@ -163,10 +163,10 @@ namespace EPPlusTest.Table.PivotTable
         [TestMethod]
         public void AddDateLastYearFilter()
         {
-            var wsData = _pck.Workbook.Worksheets["Data1"];
-            var ws = _pck.Workbook.Worksheets.Add("LastYear");
+            ExcelWorksheet? wsData = _pck.Workbook.Worksheets["Data1"];
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("LastYear");
 
-            var pt = ws.PivotTables.Add(ws.Cells["A1"], wsData.Cells["K1:O11"], "Pivottable2");
+            ExcelPivotTable? pt = ws.PivotTables.Add(ws.Cells["A1"], wsData.Cells["K1:O11"], "Pivottable2");
             pt.RowFields.Add(pt.Fields[4]);
             pt.DataFields.Add(pt.Fields[3]);
 
@@ -175,10 +175,10 @@ namespace EPPlusTest.Table.PivotTable
         [TestMethod]
         public void AddDateM1Filter()
         {
-            var wsData = _pck.Workbook.Worksheets["Data1"];
-            var ws = _pck.Workbook.Worksheets.Add("M1");
+            ExcelWorksheet? wsData = _pck.Workbook.Worksheets["Data1"];
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("M1");
 
-            var pt = ws.PivotTables.Add(ws.Cells["A1"], wsData.Cells["K1:O11"], "Pivottable2");
+            ExcelPivotTable? pt = ws.PivotTables.Add(ws.Cells["A1"], wsData.Cells["K1:O11"], "Pivottable2");
             pt.RowFields.Add(pt.Fields[4]);
             pt.DataFields.Add(pt.Fields[3]);
 
@@ -187,10 +187,10 @@ namespace EPPlusTest.Table.PivotTable
         [TestMethod]
         public void AddDateM2Filter()
         {
-            var wsData = _pck.Workbook.Worksheets["Data1"];
-            var ws = _pck.Workbook.Worksheets.Add("M2");
+            ExcelWorksheet? wsData = _pck.Workbook.Worksheets["Data1"];
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("M2");
 
-            var pt = ws.PivotTables.Add(ws.Cells["A1"], wsData.Cells["K1:O11"], "Pivottable2");
+            ExcelPivotTable? pt = ws.PivotTables.Add(ws.Cells["A1"], wsData.Cells["K1:O11"], "Pivottable2");
             pt.RowFields.Add(pt.Fields[4]);
             pt.DataFields.Add(pt.Fields[3]);
 
@@ -199,10 +199,10 @@ namespace EPPlusTest.Table.PivotTable
         [TestMethod]
         public void AddDateM3Filter()
         {
-            var wsData = _pck.Workbook.Worksheets["Data1"];
-            var ws = _pck.Workbook.Worksheets.Add("M3");
+            ExcelWorksheet? wsData = _pck.Workbook.Worksheets["Data1"];
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("M3");
 
-            var pt = ws.PivotTables.Add(ws.Cells["A1"], wsData.Cells["K1:O11"], "Pivottable2");
+            ExcelPivotTable? pt = ws.PivotTables.Add(ws.Cells["A1"], wsData.Cells["K1:O11"], "Pivottable2");
             pt.RowFields.Add(pt.Fields[4]);
             pt.DataFields.Add(pt.Fields[3]);
 
@@ -211,10 +211,10 @@ namespace EPPlusTest.Table.PivotTable
         [TestMethod]
         public void AddDate42Filter()
         {
-            var wsData = _pck.Workbook.Worksheets["Data1"];
-            var ws = _pck.Workbook.Worksheets.Add("M4");
+            ExcelWorksheet? wsData = _pck.Workbook.Worksheets["Data1"];
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("M4");
 
-            var pt = ws.PivotTables.Add(ws.Cells["A1"], wsData.Cells["K1:O11"], "Pivottable2");
+            ExcelPivotTable? pt = ws.PivotTables.Add(ws.Cells["A1"], wsData.Cells["K1:O11"], "Pivottable2");
             pt.RowFields.Add(pt.Fields[4]);
             pt.DataFields.Add(pt.Fields[3]);
 
@@ -223,10 +223,10 @@ namespace EPPlusTest.Table.PivotTable
         [TestMethod]
         public void AddDateM5Filter()
         {
-            var wsData = _pck.Workbook.Worksheets["Data1"];
-            var ws = _pck.Workbook.Worksheets.Add("M5");
+            ExcelWorksheet? wsData = _pck.Workbook.Worksheets["Data1"];
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("M5");
 
-            var pt = ws.PivotTables.Add(ws.Cells["A1"], wsData.Cells["K1:O11"], "Pivottable2");
+            ExcelPivotTable? pt = ws.PivotTables.Add(ws.Cells["A1"], wsData.Cells["K1:O11"], "Pivottable2");
             pt.RowFields.Add(pt.Fields[4]);
             pt.DataFields.Add(pt.Fields[3]);
 
@@ -235,10 +235,10 @@ namespace EPPlusTest.Table.PivotTable
         [TestMethod]
         public void AddDateM6Filter()
         {
-            var wsData = _pck.Workbook.Worksheets["Data1"];
-            var ws = _pck.Workbook.Worksheets.Add("M6");
+            ExcelWorksheet? wsData = _pck.Workbook.Worksheets["Data1"];
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("M6");
 
-            var pt = ws.PivotTables.Add(ws.Cells["A1"], wsData.Cells["K1:O11"], "Pivottable2");
+            ExcelPivotTable? pt = ws.PivotTables.Add(ws.Cells["A1"], wsData.Cells["K1:O11"], "Pivottable2");
             pt.RowFields.Add(pt.Fields[4]);
             pt.DataFields.Add(pt.Fields[3]);
 
@@ -247,10 +247,10 @@ namespace EPPlusTest.Table.PivotTable
         [TestMethod]
         public void AddDateM7Filter()
         {
-            var wsData = _pck.Workbook.Worksheets["Data1"];
-            var ws = _pck.Workbook.Worksheets.Add("M7");
+            ExcelWorksheet? wsData = _pck.Workbook.Worksheets["Data1"];
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("M7");
 
-            var pt = ws.PivotTables.Add(ws.Cells["A1"], wsData.Cells["K1:O11"], "Pivottable2");
+            ExcelPivotTable? pt = ws.PivotTables.Add(ws.Cells["A1"], wsData.Cells["K1:O11"], "Pivottable2");
             pt.RowFields.Add(pt.Fields[4]);
             pt.DataFields.Add(pt.Fields[3]);
 
@@ -259,10 +259,10 @@ namespace EPPlusTest.Table.PivotTable
         [TestMethod]
         public void AddDateM8Filter()
         {
-            var wsData = _pck.Workbook.Worksheets["Data1"];
-            var ws = _pck.Workbook.Worksheets.Add("M8");
+            ExcelWorksheet? wsData = _pck.Workbook.Worksheets["Data1"];
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("M8");
 
-            var pt = ws.PivotTables.Add(ws.Cells["A1"], wsData.Cells["K1:O11"], "Pivottable2");
+            ExcelPivotTable? pt = ws.PivotTables.Add(ws.Cells["A1"], wsData.Cells["K1:O11"], "Pivottable2");
             pt.RowFields.Add(pt.Fields[4]);
             pt.DataFields.Add(pt.Fields[3]);
 
@@ -271,10 +271,10 @@ namespace EPPlusTest.Table.PivotTable
         [TestMethod]
         public void AddDateM9Filter()
         {
-            var wsData = _pck.Workbook.Worksheets["Data1"];
-            var ws = _pck.Workbook.Worksheets.Add("M9");
+            ExcelWorksheet? wsData = _pck.Workbook.Worksheets["Data1"];
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("M9");
 
-            var pt = ws.PivotTables.Add(ws.Cells["A1"], wsData.Cells["K1:O11"], "Pivottable2");
+            ExcelPivotTable? pt = ws.PivotTables.Add(ws.Cells["A1"], wsData.Cells["K1:O11"], "Pivottable2");
             pt.RowFields.Add(pt.Fields[4]);
             pt.DataFields.Add(pt.Fields[3]);
 
@@ -283,10 +283,10 @@ namespace EPPlusTest.Table.PivotTable
         [TestMethod]
         public void AddDateM10Filter()
         {
-            var wsData = _pck.Workbook.Worksheets["Data1"];
-            var ws = _pck.Workbook.Worksheets.Add("M10");
+            ExcelWorksheet? wsData = _pck.Workbook.Worksheets["Data1"];
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("M10");
 
-            var pt = ws.PivotTables.Add(ws.Cells["A1"], wsData.Cells["K1:O11"], "Pivottable2");
+            ExcelPivotTable? pt = ws.PivotTables.Add(ws.Cells["A1"], wsData.Cells["K1:O11"], "Pivottable2");
             pt.RowFields.Add(pt.Fields[4]);
             pt.DataFields.Add(pt.Fields[3]);
 
@@ -295,10 +295,10 @@ namespace EPPlusTest.Table.PivotTable
         [TestMethod]
         public void AddDateM11Filter()
         {
-            var wsData = _pck.Workbook.Worksheets["Data1"];
-            var ws = _pck.Workbook.Worksheets.Add("M11");
+            ExcelWorksheet? wsData = _pck.Workbook.Worksheets["Data1"];
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("M11");
 
-            var pt = ws.PivotTables.Add(ws.Cells["A1"], wsData.Cells["K1:O11"], "Pivottable2");
+            ExcelPivotTable? pt = ws.PivotTables.Add(ws.Cells["A1"], wsData.Cells["K1:O11"], "Pivottable2");
             pt.RowFields.Add(pt.Fields[4]);
             pt.DataFields.Add(pt.Fields[3]);
 
@@ -307,10 +307,10 @@ namespace EPPlusTest.Table.PivotTable
         [TestMethod]
         public void AddDateM12Filter()
         {
-            var wsData = _pck.Workbook.Worksheets["Data1"];
-            var ws = _pck.Workbook.Worksheets.Add("M12");
+            ExcelWorksheet? wsData = _pck.Workbook.Worksheets["Data1"];
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("M12");
 
-            var pt = ws.PivotTables.Add(ws.Cells["A1"], wsData.Cells["K1:O11"], "Pivottable2");
+            ExcelPivotTable? pt = ws.PivotTables.Add(ws.Cells["A1"], wsData.Cells["K1:O11"], "Pivottable2");
             pt.RowFields.Add(pt.Fields[4]);
             pt.DataFields.Add(pt.Fields[3]);
 
@@ -319,10 +319,10 @@ namespace EPPlusTest.Table.PivotTable
         [TestMethod]
         public void AddDateQ1Filter()
         {
-            var wsData = _pck.Workbook.Worksheets["Data1"];
-            var ws = _pck.Workbook.Worksheets.Add("Q1");
+            ExcelWorksheet? wsData = _pck.Workbook.Worksheets["Data1"];
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("Q1");
 
-            var pt = ws.PivotTables.Add(ws.Cells["A1"], wsData.Cells["K1:O11"], "Pivottable2");
+            ExcelPivotTable? pt = ws.PivotTables.Add(ws.Cells["A1"], wsData.Cells["K1:O11"], "Pivottable2");
             pt.RowFields.Add(pt.Fields[4]);
             pt.DataFields.Add(pt.Fields[3]);
 
@@ -331,10 +331,10 @@ namespace EPPlusTest.Table.PivotTable
         [TestMethod]
         public void AddDateQ2Filter()
         {
-            var wsData = _pck.Workbook.Worksheets["Data1"];
-            var ws = _pck.Workbook.Worksheets.Add("Q2");
+            ExcelWorksheet? wsData = _pck.Workbook.Worksheets["Data1"];
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("Q2");
 
-            var pt = ws.PivotTables.Add(ws.Cells["A1"], wsData.Cells["K1:O11"], "Pivottable2");
+            ExcelPivotTable? pt = ws.PivotTables.Add(ws.Cells["A1"], wsData.Cells["K1:O11"], "Pivottable2");
             pt.RowFields.Add(pt.Fields[4]);
             pt.DataFields.Add(pt.Fields[3]);
 
@@ -343,10 +343,10 @@ namespace EPPlusTest.Table.PivotTable
         [TestMethod]
         public void AddDateQ3Filter()
         {
-            var wsData = _pck.Workbook.Worksheets["Data1"];
-            var ws = _pck.Workbook.Worksheets.Add("Q3");
+            ExcelWorksheet? wsData = _pck.Workbook.Worksheets["Data1"];
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("Q3");
 
-            var pt = ws.PivotTables.Add(ws.Cells["A1"], wsData.Cells["K1:O11"], "Pivottable2");
+            ExcelPivotTable? pt = ws.PivotTables.Add(ws.Cells["A1"], wsData.Cells["K1:O11"], "Pivottable2");
             pt.RowFields.Add(pt.Fields[4]);
             pt.DataFields.Add(pt.Fields[3]);
 
@@ -355,10 +355,10 @@ namespace EPPlusTest.Table.PivotTable
         [TestMethod]
         public void AddDateQ4Filter()
         {
-            var wsData = _pck.Workbook.Worksheets["Data1"];
-            var ws = _pck.Workbook.Worksheets.Add("Q4");
+            ExcelWorksheet? wsData = _pck.Workbook.Worksheets["Data1"];
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("Q4");
 
-            var pt = ws.PivotTables.Add(ws.Cells["A1"], wsData.Cells["K1:O11"], "Pivottable2");
+            ExcelPivotTable? pt = ws.PivotTables.Add(ws.Cells["A1"], wsData.Cells["K1:O11"], "Pivottable2");
             pt.RowFields.Add(pt.Fields[4]);
             pt.DataFields.Add(pt.Fields[3]);
 
@@ -367,10 +367,10 @@ namespace EPPlusTest.Table.PivotTable
         [TestMethod]
         public void AddDateYesterdayFilter()
         {
-            var wsData = _pck.Workbook.Worksheets["Data1"];
-            var ws = _pck.Workbook.Worksheets.Add("Yesterday");
+            ExcelWorksheet? wsData = _pck.Workbook.Worksheets["Data1"];
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("Yesterday");
 
-            var pt = ws.PivotTables.Add(ws.Cells["A1"], wsData.Cells["K1:O11"], "Pivottable2");
+            ExcelPivotTable? pt = ws.PivotTables.Add(ws.Cells["A1"], wsData.Cells["K1:O11"], "Pivottable2");
             pt.RowFields.Add(pt.Fields[4]);
             pt.DataFields.Add(pt.Fields[3]);
 
@@ -379,10 +379,10 @@ namespace EPPlusTest.Table.PivotTable
         [TestMethod]
         public void AddDateTodayFilter()
         {
-            var wsData = _pck.Workbook.Worksheets["Data1"];
-            var ws = _pck.Workbook.Worksheets.Add("Today");
+            ExcelWorksheet? wsData = _pck.Workbook.Worksheets["Data1"];
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("Today");
 
-            var pt = ws.PivotTables.Add(ws.Cells["A1"], wsData.Cells["K1:O11"], "Pivottable2");
+            ExcelPivotTable? pt = ws.PivotTables.Add(ws.Cells["A1"], wsData.Cells["K1:O11"], "Pivottable2");
             pt.RowFields.Add(pt.Fields[4]);
             pt.DataFields.Add(pt.Fields[3]);
 
@@ -391,10 +391,10 @@ namespace EPPlusTest.Table.PivotTable
         [TestMethod]
         public void AddDateTomorrowFilter()
         {
-            var wsData = _pck.Workbook.Worksheets["Data1"];
-            var ws = _pck.Workbook.Worksheets.Add("Tomorrow");
+            ExcelWorksheet? wsData = _pck.Workbook.Worksheets["Data1"];
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("Tomorrow");
 
-            var pt = ws.PivotTables.Add(ws.Cells["A1"], wsData.Cells["K1:O11"], "Pivottable2");
+            ExcelPivotTable? pt = ws.PivotTables.Add(ws.Cells["A1"], wsData.Cells["K1:O11"], "Pivottable2");
             pt.RowFields.Add(pt.Fields[4]);
             pt.DataFields.Add(pt.Fields[3]);
 
@@ -403,10 +403,10 @@ namespace EPPlusTest.Table.PivotTable
         [TestMethod]
         public void AddDateYTDFilter()
         {
-            var wsData = _pck.Workbook.Worksheets["Data1"];
-            var ws = _pck.Workbook.Worksheets.Add("YTD");
+            ExcelWorksheet? wsData = _pck.Workbook.Worksheets["Data1"];
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("YTD");
 
-            var pt = ws.PivotTables.Add(ws.Cells["A1"], wsData.Cells["K1:O11"], "Pivottable2");
+            ExcelPivotTable? pt = ws.PivotTables.Add(ws.Cells["A1"], wsData.Cells["K1:O11"], "Pivottable2");
             pt.RowFields.Add(pt.Fields[4]);
             pt.DataFields.Add(pt.Fields[3]);
 
@@ -415,10 +415,10 @@ namespace EPPlusTest.Table.PivotTable
         [TestMethod]
         public void AddDateThisMonthFilter()
         {
-            var wsData = _pck.Workbook.Worksheets["Data1"];
-            var ws = _pck.Workbook.Worksheets.Add("ThisMonth");
+            ExcelWorksheet? wsData = _pck.Workbook.Worksheets["Data1"];
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("ThisMonth");
 
-            var pt = ws.PivotTables.Add(ws.Cells["A1"], wsData.Cells["K1:O11"], "Pivottable2");
+            ExcelPivotTable? pt = ws.PivotTables.Add(ws.Cells["A1"], wsData.Cells["K1:O11"], "Pivottable2");
             pt.RowFields.Add(pt.Fields[4]);
             pt.DataFields.Add(pt.Fields[3]);
 
@@ -427,10 +427,10 @@ namespace EPPlusTest.Table.PivotTable
         [TestMethod]
         public void AddDateThisQuarterFilter()
         {
-            var wsData = _pck.Workbook.Worksheets["Data1"];
-            var ws = _pck.Workbook.Worksheets.Add("ThisQuarter");
+            ExcelWorksheet? wsData = _pck.Workbook.Worksheets["Data1"];
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("ThisQuarter");
 
-            var pt = ws.PivotTables.Add(ws.Cells["A1"], wsData.Cells["K1:O11"], "Pivottable2");
+            ExcelPivotTable? pt = ws.PivotTables.Add(ws.Cells["A1"], wsData.Cells["K1:O11"], "Pivottable2");
             pt.RowFields.Add(pt.Fields[4]);
             pt.DataFields.Add(pt.Fields[3]);
 
@@ -439,10 +439,10 @@ namespace EPPlusTest.Table.PivotTable
         [TestMethod]
         public void AddDateThisWeekFilter()
         {
-            var wsData = _pck.Workbook.Worksheets["Data1"];
-            var ws = _pck.Workbook.Worksheets.Add("ThisWeek");
+            ExcelWorksheet? wsData = _pck.Workbook.Worksheets["Data1"];
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("ThisWeek");
 
-            var pt = ws.PivotTables.Add(ws.Cells["A1"], wsData.Cells["K1:O11"], "Pivottable2");
+            ExcelPivotTable? pt = ws.PivotTables.Add(ws.Cells["A1"], wsData.Cells["K1:O11"], "Pivottable2");
             pt.RowFields.Add(pt.Fields[4]);
             pt.DataFields.Add(pt.Fields[3]);
 
@@ -451,10 +451,10 @@ namespace EPPlusTest.Table.PivotTable
         [TestMethod]
         public void AddDateThisYearFilter()
         {
-            var wsData = _pck.Workbook.Worksheets["Data1"];
-            var ws = _pck.Workbook.Worksheets.Add("ThisYear");
+            ExcelWorksheet? wsData = _pck.Workbook.Worksheets["Data1"];
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("ThisYear");
 
-            var pt = ws.PivotTables.Add(ws.Cells["A1"], wsData.Cells["K1:O11"], "Pivottable2");
+            ExcelPivotTable? pt = ws.PivotTables.Add(ws.Cells["A1"], wsData.Cells["K1:O11"], "Pivottable2");
             pt.RowFields.Add(pt.Fields[4]);
             pt.DataFields.Add(pt.Fields[3]);
 
@@ -463,10 +463,10 @@ namespace EPPlusTest.Table.PivotTable
         [TestMethod]
         public void AddDateNextMonthFilter()
         {
-            var wsData = _pck.Workbook.Worksheets["Data1"];
-            var ws = _pck.Workbook.Worksheets.Add("NextMonth");
+            ExcelWorksheet? wsData = _pck.Workbook.Worksheets["Data1"];
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("NextMonth");
 
-            var pt = ws.PivotTables.Add(ws.Cells["A1"], wsData.Cells["K1:O11"], "Pivottable2");
+            ExcelPivotTable? pt = ws.PivotTables.Add(ws.Cells["A1"], wsData.Cells["K1:O11"], "Pivottable2");
             pt.RowFields.Add(pt.Fields[4]);
             pt.DataFields.Add(pt.Fields[3]);
 
@@ -475,10 +475,10 @@ namespace EPPlusTest.Table.PivotTable
         [TestMethod]
         public void AddDateNextQuarterFilter()
         {
-            var wsData = _pck.Workbook.Worksheets["Data1"];
-            var ws = _pck.Workbook.Worksheets.Add("NextQuarter");
+            ExcelWorksheet? wsData = _pck.Workbook.Worksheets["Data1"];
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("NextQuarter");
 
-            var pt = ws.PivotTables.Add(ws.Cells["A1"], wsData.Cells["K1:O11"], "Pivottable2");
+            ExcelPivotTable? pt = ws.PivotTables.Add(ws.Cells["A1"], wsData.Cells["K1:O11"], "Pivottable2");
             pt.RowFields.Add(pt.Fields[4]);
             pt.DataFields.Add(pt.Fields[3]);
 
@@ -487,10 +487,10 @@ namespace EPPlusTest.Table.PivotTable
         [TestMethod]
         public void AddDateNextWeekFilter()
         {
-            var wsData = _pck.Workbook.Worksheets["Data1"];
-            var ws = _pck.Workbook.Worksheets.Add("NextWeek");
+            ExcelWorksheet? wsData = _pck.Workbook.Worksheets["Data1"];
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("NextWeek");
 
-            var pt = ws.PivotTables.Add(ws.Cells["A1"], wsData.Cells["K1:O11"], "Pivottable2");
+            ExcelPivotTable? pt = ws.PivotTables.Add(ws.Cells["A1"], wsData.Cells["K1:O11"], "Pivottable2");
             pt.RowFields.Add(pt.Fields[4]);
             pt.DataFields.Add(pt.Fields[3]);
 
@@ -499,10 +499,10 @@ namespace EPPlusTest.Table.PivotTable
         [TestMethod]
         public void AddDateNextYearFilter()
         {
-            var wsData = _pck.Workbook.Worksheets["Data1"];
-            var ws = _pck.Workbook.Worksheets.Add("NextYear");
+            ExcelWorksheet? wsData = _pck.Workbook.Worksheets["Data1"];
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("NextYear");
 
-            var pt = ws.PivotTables.Add(ws.Cells["A1"], wsData.Cells["K1:O11"], "Pivottable2");
+            ExcelPivotTable? pt = ws.PivotTables.Add(ws.Cells["A1"], wsData.Cells["K1:O11"], "Pivottable2");
             pt.RowFields.Add(pt.Fields[4]);
             pt.DataFields.Add(pt.Fields[3]);
 

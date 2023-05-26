@@ -31,7 +31,7 @@ namespace OfficeOpenXml.Drawing.Slicer
         }
         internal void CreatePart(ExcelWorkbook wb)
         {
-            var p = wb._package.ZipPackage;
+            ZipPackage? p = wb._package.ZipPackage;
             Uri = GetNewUri(p, "/xl/slicerCaches/slicerCache{0}.xml");
             Part = p.CreatePart(Uri, "application/vnd.ms-excel.slicerCache+xml");
             CacheRel = wb.Part.CreateRelationship(UriHelper.GetRelativeUri(wb.WorkbookUri, Uri), Packaging.TargetMode.Internal, ExcelPackage.schemaRelationshipsSlicerCache);
@@ -104,14 +104,14 @@ namespace OfficeOpenXml.Drawing.Slicer
             {
                 prefix = "x15";
             }
-            var extNode = wb.GetOrCreateExtLstSubNode(uriGuid, prefix, new string[] { ExtLstUris.WorkbookSlicerPivotTableUri, ExtLstUris.WorkbookSlicerTableUri });
+            XmlNode? extNode = wb.GetOrCreateExtLstSubNode(uriGuid, prefix, new string[] { ExtLstUris.WorkbookSlicerPivotTableUri, ExtLstUris.WorkbookSlicerTableUri });
             if (extNode.InnerXml=="")
             {
                 extNode.InnerXml = $"<{prefix}:slicerCaches />";
             }
-            var slNode = extNode.FirstChild;
-            var xh = XmlHelperFactory.Create(NameSpaceManager, slNode);
-            var element = (XmlElement)xh.CreateNode("x14:slicerCache", false, true);
+            XmlNode? slNode = extNode.FirstChild;
+            XmlHelper? xh = XmlHelperFactory.Create(NameSpaceManager, slNode);
+            XmlElement? element = (XmlElement)xh.CreateNode("x14:slicerCache", false, true);
             element.SetAttribute("id", ExcelPackage.schemaRelationships, CacheRel.Id);
         }
     }

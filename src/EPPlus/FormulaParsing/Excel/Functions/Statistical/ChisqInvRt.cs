@@ -30,13 +30,13 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Statistical
         public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
         {
             ValidateArguments(arguments, 2);
-            var n = ArgToDecimal(arguments, 0);
-            var degreesOfFreedom = ArgToInt(arguments, 1);
+            double n = ArgToDecimal(arguments, 0);
+            int degreesOfFreedom = ArgToInt(arguments, 1);
             if (n < 0d || degreesOfFreedom < 1 || degreesOfFreedom > System.Math.Pow(10, 10))
             {
                 return CreateResult(eErrorType.Num);
             }
-            var result = ChiSquareHelper.Inverse(1d - n, degreesOfFreedom);
+            double result = ChiSquareHelper.Inverse(1d - n, degreesOfFreedom);
             return CreateResult(result, DataType.Decimal);
         }
     }

@@ -19,22 +19,22 @@ namespace EPPlusTest.Export.JsonExport
         [TestMethod]
         public void ValidateJsonExport()
         {
-            using (var p = new ExcelPackage())
+            using (ExcelPackage? p = new ExcelPackage())
             {
-                var ws = p.Workbook.Worksheets.Add($"Sheet1");
+                ExcelWorksheet? ws = p.Workbook.Worksheets.Add($"Sheet1");
                 LoadTestdata(ws, 100, 1, 1, true, true);
                 ws.Cells["A2"].AddComment("Comment in A2");
-                var tbl = ws.Tables.Add(ws.Cells["A1:F100"], $"tblGradient");
+                ExcelTable? tbl = ws.Tables.Add(ws.Cells["A1:F100"], $"tblGradient");
 
-                var s = tbl.ToJson();
+                string? s = tbl.ToJson();
             }
         }
         [TestMethod]
         public async Task ValidateJsonExportRange()
         {
-            using (var p = new ExcelPackage())
+            using (ExcelPackage? p = new ExcelPackage())
             {
-                var ws = p.Workbook.Worksheets.Add($"Sheet1");
+                ExcelWorksheet? ws = p.Workbook.Worksheets.Add($"Sheet1");
                 ws.SetValue("A1", "SEK");
                 ws.SetValue("B1", "EUR");
                 ws.SetValue("C1", "USD");
@@ -47,13 +47,13 @@ namespace EPPlusTest.Export.JsonExport
                 ws.SetValue("B3", 10.48);
                 ws.SetValue("C3", 9.59);
 
-                var json = ws.Cells["A1:C3"].ToJson(x => 
+                string? json = ws.Cells["A1:C3"].ToJson(x => 
                 {                    
                     x.AddDataTypesOn = eDataTypeOn.OnColumn;
                     x.Culture = new CultureInfo("sv-SE");
                 });
                 string jsonAsync;
-                using (var ms = new MemoryStream())
+                using (MemoryStream? ms = new MemoryStream())
                 {
                       await ws.Cells["A1:C3"].SaveToJsonAsync(ms, x =>
                       {
@@ -70,9 +70,9 @@ namespace EPPlusTest.Export.JsonExport
         [TestMethod]
         public void ValidateJsonEncoding()
         {
-            using (var p = new ExcelPackage())
+            using (ExcelPackage? p = new ExcelPackage())
             {
-                var ws = p.Workbook.Worksheets.Add($"Sheet2");
+                ExcelWorksheet? ws = p.Workbook.Worksheets.Add($"Sheet2");
                 ws.SetValue(2, 1, "\"");
                 ws.SetValue(2, 2, "\r\n");
                 ws.SetValue(2, 3, "\f");
@@ -81,10 +81,10 @@ namespace EPPlusTest.Export.JsonExport
                 ws.SetValue(2, 6, "\t");
                 ws.SetValue(2, 7, "\0");
                 ws.SetValue(2, 8, "\u001F");
-                var range = ws.Cells["A1:G2"];
-                var tbl = ws.Tables.Add(ws.Cells["A1:G2"], $"tblGradient");
+                ExcelRange? range = ws.Cells["A1:G2"];
+                ExcelTable? tbl = ws.Tables.Add(ws.Cells["A1:G2"], $"tblGradient");
 
-                var s = tbl.ToJson();
+                string? s = tbl.ToJson();
                 Assert.AreEqual("{\"table\":{\"name\":\"tblGradient\",\"showHeader\":\"1\",\"showTotal\":\"0\",\"columns\":[{\"name\":\"Column1\",\"dt\":\"string\"},{\"name\":\"Column2\",\"dt\":\"string\"},{\"name\":\"Column3\",\"dt\":\"string\"},{\"name\":\"Column4\",\"dt\":\"string\"},{\"name\":\"Column5\",\"dt\":\"string\"},{\"name\":\"Column6\",\"dt\":\"string\"},{\"name\":\"Column7\",\"dt\":\"string\"}],\"rows\":[{\"cells\":[{\"v\":\"\\\"\",\"t\":\"\\\"\"},{\"v\":\"\\r\\n\",\"t\":\"\\r\\n\"},{\"v\":\"\\f\",\"t\":\"\\f\"},{\"v\":\"\\t\",\"t\":\"\\t\"},{\"v\":\"\\b\",\"t\":\"\\b\"},{\"v\":\"\\t\",\"t\":\"\\t\"},{\"v\":\"\\u0000\",\"t\":\"\\u0000\"}]}]}}"
                     , s);
 

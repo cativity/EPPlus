@@ -169,14 +169,14 @@ namespace OfficeOpenXml.ConditionalFormatting
     }
     private static eExcelConditionalFormattingRuleType GetIconSetType(XmlNode topNode, XmlNamespaceManager nameSpaceManager)
     {
-        var node = topNode.SelectSingleNode("d:iconSet/@iconSet", nameSpaceManager);
+        XmlNode? node = topNode.SelectSingleNode("d:iconSet/@iconSet", nameSpaceManager);
         if (node == null)
         {
             return eExcelConditionalFormattingRuleType.ThreeIconSet;
         }
         else
         {
-            var v = node.Value;
+            string? v = node.Value;
 
             if (v[0] == '3')
             {
@@ -203,20 +203,20 @@ namespace OfficeOpenXml.ConditionalFormatting
       XmlNamespaceManager nameSpaceManager)
     {
       // Get the <cfvo> nodes
-      var cfvoNodes = topNode.SelectNodes(
-        string.Format(
-          "{0}/{1}",
-          ExcelConditionalFormattingConstants.Paths.ColorScale,
-          ExcelConditionalFormattingConstants.Paths.Cfvo),
-        nameSpaceManager);
+      XmlNodeList? cfvoNodes = topNode.SelectNodes(
+                                                   string.Format(
+                                                                 "{0}/{1}",
+                                                                 ExcelConditionalFormattingConstants.Paths.ColorScale,
+                                                                 ExcelConditionalFormattingConstants.Paths.Cfvo),
+                                                   nameSpaceManager);
 
       // Get the <color> nodes
-      var colorNodes = topNode.SelectNodes(
-        string.Format(
-          "{0}/{1}",
-          ExcelConditionalFormattingConstants.Paths.ColorScale,
-          ExcelConditionalFormattingConstants.Paths.Color),
-        nameSpaceManager);
+      XmlNodeList? colorNodes = topNode.SelectNodes(
+                                                    string.Format(
+                                                                  "{0}/{1}",
+                                                                  ExcelConditionalFormattingConstants.Paths.ColorScale,
+                                                                  ExcelConditionalFormattingConstants.Paths.Color),
+                                                    nameSpaceManager);
 
       // We determine if it is "TwoColorScale" or "ThreeColorScale" by the
       // number of <cfvo> and <color> inside the <colorScale> node

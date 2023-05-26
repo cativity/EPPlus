@@ -42,7 +42,7 @@ namespace EPPlusTest.Excel.Functions
         [TestMethod]
         public void ShouldSetExcelState()
         {
-            var arg = new FunctionArgument(2);
+            FunctionArgument? arg = new FunctionArgument(2);
             arg.SetExcelStateFlag(ExcelCellState.HiddenCell);
             Assert.IsTrue(arg.ExcelStateFlagIsSet(ExcelCellState.HiddenCell));
         }
@@ -50,7 +50,7 @@ namespace EPPlusTest.Excel.Functions
         [TestMethod]
         public void ExcelStateFlagIsSetShouldReturnFalseWhenNotSet()
         {
-            var arg = new FunctionArgument(2);
+            FunctionArgument? arg = new FunctionArgument(2);
             Assert.IsFalse(arg.ExcelStateFlagIsSet(ExcelCellState.HiddenCell));
         }
     }

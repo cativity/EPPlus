@@ -27,15 +27,15 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
         public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
         {
             ValidateArguments(arguments, 2);
-            var number = ArgToDecimal(arguments, 0);
+            double number = ArgToDecimal(arguments, 0);
             number = System.Math.Floor(number);
-            var numberChosen = ArgToDecimal(arguments, 1);
+            double numberChosen = ArgToDecimal(arguments, 1);
             if (number <= 0d || numberChosen <= 0 || number < numberChosen)
             {
                 return this.CreateResult(eErrorType.Num);
             }
 
-            var result = MathHelper.Factorial(number) / MathHelper.Factorial(number - numberChosen);
+            double result = MathHelper.Factorial(number) / MathHelper.Factorial(number - numberChosen);
             return CreateResult(result, DataType.Decimal);
         }
     }

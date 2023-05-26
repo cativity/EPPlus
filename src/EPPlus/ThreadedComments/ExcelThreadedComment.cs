@@ -53,7 +53,7 @@ namespace OfficeOpenXml.ThreadedComments
 
         internal static string NewId()
         {
-            var guid = Guid.NewGuid();
+            Guid guid = Guid.NewGuid();
             return "{" + guid.ToString().ToUpper() + "}";
         }
 
@@ -110,7 +110,7 @@ namespace OfficeOpenXml.ThreadedComments
         {
             get
             {
-                var dt = GetXmlNodeString("@dT");
+                string? dt = GetXmlNodeString("@dT");
                 if(DateTime.TryParse(dt, out DateTime result))
                 {
                     return result;
@@ -185,7 +185,7 @@ namespace OfficeOpenXml.ThreadedComments
         {
             get
             {
-                var val = GetXmlNodeString("@done");
+                string? val = GetXmlNodeString("@done");
                 if(string.IsNullOrEmpty(val))
                 {
                     return null;
@@ -264,7 +264,7 @@ namespace OfficeOpenXml.ThreadedComments
             {
                 if(_mentions == null)
                 {
-                    var mentionsNode = TopNode.SelectSingleNode("tc:mentions", NameSpaceManager);
+                    XmlNode? mentionsNode = TopNode.SelectSingleNode("tc:mentions", NameSpaceManager);
                     if (mentionsNode == null)
                     {
                         mentionsNode = TopNode.OwnerDocument.CreateElement("mentions", ExcelPackage.schemaThreadedComments);

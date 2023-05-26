@@ -49,7 +49,7 @@ namespace OfficeOpenXml.Drawing.Chart.Style
         {
             get
             {
-                var v = GetXmlNodeInt("@size");
+                int v = GetXmlNodeInt("@size");
                 if (v < 0)
                 {
                     return 5;   //Default value;

@@ -33,7 +33,7 @@ namespace OfficeOpenXml.ThreadedComments
 
         internal static string NewId()
         {
-            var guid = Guid.NewGuid();
+            Guid guid = Guid.NewGuid();
             return "{" + guid.ToString().ToUpper() + "}";
         }
 

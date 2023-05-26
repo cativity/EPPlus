@@ -64,10 +64,10 @@ namespace OfficeOpenXml.Drawing.Vml
                 {
                     c = c.Substring(0, c.IndexOf("[")).Trim();
                 }
-                var ts = c.Replace(" ", "");
+                string? ts = c.Replace(" ", "");
                 if (ts.StartsWith("rgb(",StringComparison.InvariantCultureIgnoreCase))
                 {
-                    var l = ts.Substring(4, ts.Length - 5).Split(',');
+                    string[]? l = ts.Substring(4, ts.Length - 5).Split(',');
                     if(l.Length==3)
                     {
                         return Color.FromArgb(0xFF, int.Parse(l[0]), int.Parse(l[1]), int.Parse(l[2]));

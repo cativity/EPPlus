@@ -26,6 +26,7 @@
 
 using System;
 using System.IO;
+using OfficeOpenXml.Packaging.Ionic.Crc;
 
 namespace OfficeOpenXml.Packaging.Ionic.Zip
 {
@@ -779,7 +780,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
                 {
                     WriteStatus("extract file {0}...", targetFileName);
                     targetFileName += ".tmp";
-                    var dirName = Path.GetDirectoryName(targetFileName);
+                    string? dirName = Path.GetDirectoryName(targetFileName);
                     // ensure the target path exists
                     if (!Directory.Exists(dirName))
                     {
@@ -1095,7 +1096,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
 
                 Int64 bytesWritten = 0;
                 // As we read, we maybe decrypt, and then we maybe decompress. Then we write.
-                using (var s1 = new Ionic.Crc.CrcCalculatorStream(input3))
+                using (CrcCalculatorStream? s1 = new Ionic.Crc.CrcCalculatorStream(input3))
                 {
                     while (LeftToRead > 0)
                     {
@@ -1127,7 +1128,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
             }
             finally
             {
-                var zss = input as ZipSegmentedStream;
+                ZipSegmentedStream? zss = input as ZipSegmentedStream;
                 if (zss != null)
                 {
 #if NETCF

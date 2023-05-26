@@ -55,7 +55,7 @@ namespace EPPlusTest.Drawing.Chart.Styling
         [TestMethod]
         public void DoughnutChart_Styles()
         {
-            var ws = _pck.Workbook.Worksheets.Add("DoughnutChartStyles");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("DoughnutChartStyles");
             LoadTestdata(ws);
 
             DoughnutStyles(ws, eDoughnutChartType.Doughnut);
@@ -63,7 +63,7 @@ namespace EPPlusTest.Drawing.Chart.Styling
         [TestMethod]
         public void DoughnutExplodedChart_Styles()
         {
-            var ws = _pck.Workbook.Worksheets.Add("PieExlodedChartStyles");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("PieExlodedChartStyles");
             LoadTestdata(ws);
 
             DoughnutStyles(ws, eDoughnutChartType.DoughnutExploded);
@@ -149,13 +149,13 @@ namespace EPPlusTest.Drawing.Chart.Styling
 
         private static ExcelDoughnutChart AddDoughnut(ExcelWorksheet ws, eDoughnutChartType type, string name, int row, int col, ePresetChartStyle style, Action<ExcelDoughnutChart> SetProperties)    
         {
-            var chart = ws.Drawings.AddDoughnutChart(name, type);
+            ExcelDoughnutChart? chart = ws.Drawings.AddDoughnutChart(name, type);
             chart.SetPosition(row, 0, col, 0);
             chart.To.Column = col+12;
             chart.To.ColumnOff = 0;
             chart.To.Row = row + 18;
             chart.To.RowOff = 0;
-            var serie = chart.Series.Add("D2:D8", "A2:A8");
+            ExcelPieChartSerie? serie = chart.Series.Add("D2:D8", "A2:A8");
             serie.DataPoints.Add(0);
             serie.DataPoints.Add(1);
             serie.DataPoints.Add(2);

@@ -21,9 +21,9 @@ namespace OfficeOpenXml.VBA.Signatures
     {
         internal static ZipPackagePart GetPart(ExcelVbaProject proj, EPPlusVbaSignature signature)
         {
-            var rel = (ZipPackageRelationship)proj.Part.GetRelationshipsByType(signature.SchemaRelation).FirstOrDefault();
-            var part = signature.Part;
-            var uri = default(Uri);
+            ZipPackageRelationship? rel = (ZipPackageRelationship)proj.Part.GetRelationshipsByType(signature.SchemaRelation).FirstOrDefault();
+            ZipPackagePart? part = signature.Part;
+            Uri? uri = default(Uri);
             if (part == null)
             {
                 if (rel != null)
@@ -46,7 +46,7 @@ namespace OfficeOpenXml.VBA.Signatures
         }
         internal static void DeleteParts(params ZipPackagePart[] parts)
         {
-            foreach (var part in parts)
+            foreach (ZipPackagePart? part in parts)
             {
                 if (part != null)
                 {
@@ -62,7 +62,7 @@ namespace OfficeOpenXml.VBA.Signatures
                 return;
             }
 
-            foreach (var r in part.GetRelationships())
+            foreach (ZipPackageRelationship? r in part.GetRelationships())
             {
                 part.DeleteRelationship(r.Id);
             }

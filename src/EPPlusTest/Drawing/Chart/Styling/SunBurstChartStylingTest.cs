@@ -57,7 +57,7 @@ namespace EPPlusTest.Drawing.Chart.Styling
         [TestMethod]
         public void SunburstChart_Styles()
         {
-            var ws = _pck.Workbook.Worksheets.Add("SunburstChart");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("SunburstChart");
             LoadHierarkiTestData(ws);
             SunburstChartStyle(ws);
         }
@@ -79,7 +79,7 @@ namespace EPPlusTest.Drawing.Chart.Styling
                 c =>
                 {
                     c.Legend.Add();
-                    var dl=c.Series[0].DataLabel.DataLabels.Add(0);
+                    ExcelChartExDataLabelItem? dl=c.Series[0].DataLabel.DataLabels.Add(0);
                 });
 
             //Sunburst Chart Style 3
@@ -126,7 +126,7 @@ namespace EPPlusTest.Drawing.Chart.Styling
         }
         private static ExcelSunburstChart AddChartEx(ExcelWorksheet ws, ePresetChartStyle style, string name, int row, int col, Action<ExcelSunburstChart> SetProperties)
         {
-            var chart = ws.Drawings.AddSunburstChart(name);
+            ExcelSunburstChart? chart = ws.Drawings.AddSunburstChart(name);
             chart.SetPosition(row, 0, col, 0);
             chart.To.Column = col+12;
             chart.To.ColumnOff = 0;

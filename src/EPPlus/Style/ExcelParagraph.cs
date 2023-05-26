@@ -52,7 +52,7 @@ namespace OfficeOpenXml.Style
         {
             get
             {
-                var parent = _rootNode.ParentNode;
+                XmlNode? parent = _rootNode.ParentNode;
                 for (int i=0;i<parent.ChildNodes.Count;i++)
                 {
                     if (parent.ChildNodes[i].LocalName == "r")
@@ -70,7 +70,7 @@ namespace OfficeOpenXml.Style
         {
             get
             {
-                var parent = _rootNode.ParentNode;
+                XmlNode? parent = _rootNode.ParentNode;
                 for (int i = parent.ChildNodes.Count-1; i >=0 ; i--)
                 {
                     if (parent.ChildNodes[i].LocalName == "r")

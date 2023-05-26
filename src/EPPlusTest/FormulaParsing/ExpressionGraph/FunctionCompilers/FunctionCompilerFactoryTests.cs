@@ -57,71 +57,71 @@ namespace EPPlusTest.FormulaParsing.ExpressionGraph.FunctionCompilers
         [TestMethod]
         public void CreateHandlesStandardFunctionCompiler()
         {
-            var functionRepository = FunctionRepository.Create();
-            var functionCompilerFactory = new FunctionCompilerFactory(functionRepository, _context);
-            var function = new Sum();
-            var functionCompiler = functionCompilerFactory.Create(function);
+            FunctionRepository? functionRepository = FunctionRepository.Create();
+            FunctionCompilerFactory? functionCompilerFactory = new FunctionCompilerFactory(functionRepository, _context);
+            Sum? function = new Sum();
+            FunctionCompiler? functionCompiler = functionCompilerFactory.Create(function);
             Assert.IsInstanceOfType(functionCompiler, typeof(DefaultCompiler));
         }
 
         [TestMethod]
         public void CreateHandlesSpecialIfCompiler()
         {
-            var functionRepository = FunctionRepository.Create();
-            var functionCompilerFactory = new FunctionCompilerFactory(functionRepository, _context);
-            var function = new If();
-            var functionCompiler = functionCompilerFactory.Create(function);
+            FunctionRepository? functionRepository = FunctionRepository.Create();
+            FunctionCompilerFactory? functionCompilerFactory = new FunctionCompilerFactory(functionRepository, _context);
+            If? function = new If();
+            FunctionCompiler? functionCompiler = functionCompilerFactory.Create(function);
             Assert.IsInstanceOfType(functionCompiler, typeof(IfFunctionCompiler));
         }
 
         [TestMethod]
         public void CreateHandlesSpecialIfErrorCompiler()
         {
-            var functionRepository = FunctionRepository.Create();
-            var functionCompilerFactory = new FunctionCompilerFactory(functionRepository, _context);
-            var function = new IfError();
-            var functionCompiler = functionCompilerFactory.Create(function);
+            FunctionRepository? functionRepository = FunctionRepository.Create();
+            FunctionCompilerFactory? functionCompilerFactory = new FunctionCompilerFactory(functionRepository, _context);
+            IfError? function = new IfError();
+            FunctionCompiler? functionCompiler = functionCompilerFactory.Create(function);
             Assert.IsInstanceOfType(functionCompiler, typeof(IfErrorFunctionCompiler));
         }
 
         [TestMethod]
         public void CreateHandlesSpecialIfNaCompiler()
         {
-            var functionRepository = FunctionRepository.Create();
-            var functionCompilerFactory = new FunctionCompilerFactory(functionRepository, _context);
-            var function = new IfNa();
-            var functionCompiler = functionCompilerFactory.Create(function);
+            FunctionRepository? functionRepository = FunctionRepository.Create();
+            FunctionCompilerFactory? functionCompilerFactory = new FunctionCompilerFactory(functionRepository, _context);
+            IfNa? function = new IfNa();
+            FunctionCompiler? functionCompiler = functionCompilerFactory.Create(function);
             Assert.IsInstanceOfType(functionCompiler, typeof(IfNaFunctionCompiler));
         }
 
         [TestMethod]
         public void CreateHandlesLookupFunctionCompiler()
         {
-            var functionRepository = FunctionRepository.Create();
-            var functionCompilerFactory = new FunctionCompilerFactory(functionRepository, _context);
-            var function = new Column();
-            var functionCompiler = functionCompilerFactory.Create(function);
+            FunctionRepository? functionRepository = FunctionRepository.Create();
+            FunctionCompilerFactory? functionCompilerFactory = new FunctionCompilerFactory(functionRepository, _context);
+            Column? function = new Column();
+            FunctionCompiler? functionCompiler = functionCompilerFactory.Create(function);
             Assert.IsInstanceOfType(functionCompiler, typeof(LookupFunctionCompiler));
         }
 
         [TestMethod]
         public void CreateHandlesErrorFunctionCompiler()
         {
-            var functionRepository = FunctionRepository.Create();
-            var functionCompilerFactory = new FunctionCompilerFactory(functionRepository, _context);
-            var function = new IsError();
-            var functionCompiler = functionCompilerFactory.Create(function);
+            FunctionRepository? functionRepository = FunctionRepository.Create();
+            FunctionCompilerFactory? functionCompilerFactory = new FunctionCompilerFactory(functionRepository, _context);
+            IsError? function = new IsError();
+            FunctionCompiler? functionCompiler = functionCompilerFactory.Create(function);
             Assert.IsInstanceOfType(functionCompiler, typeof(ErrorHandlingFunctionCompiler));
         }
 
         [TestMethod]
         public void CreateHandlesCustomFunctionCompiler()
         {
-            var functionRepository = FunctionRepository.Create();
+            FunctionRepository? functionRepository = FunctionRepository.Create();
             functionRepository.LoadModule(new TestFunctionModule(_context));
-            var functionCompilerFactory = new FunctionCompilerFactory(functionRepository, _context);
-            var function = new MyFunction();
-            var functionCompiler = functionCompilerFactory.Create(function);
+            FunctionCompilerFactory? functionCompilerFactory = new FunctionCompilerFactory(functionRepository, _context);
+            MyFunction? function = new MyFunction();
+            FunctionCompiler? functionCompiler = functionCompilerFactory.Create(function);
             Assert.IsInstanceOfType(functionCompiler, typeof(MyFunctionCompiler));
         }
         #endregion
@@ -131,8 +131,8 @@ namespace EPPlusTest.FormulaParsing.ExpressionGraph.FunctionCompilers
         {
             public TestFunctionModule(ParsingContext context)
             {
-                var myFunction = new MyFunction();
-                var customCompiler = new MyFunctionCompiler(myFunction, context);
+                MyFunction? myFunction = new MyFunction();
+                MyFunctionCompiler? customCompiler = new MyFunctionCompiler(myFunction, context);
                 base.Functions.Add(MyFunction.Name, myFunction);
                 base.CustomCompilers.Add(typeof(MyFunction), customCompiler);
             }

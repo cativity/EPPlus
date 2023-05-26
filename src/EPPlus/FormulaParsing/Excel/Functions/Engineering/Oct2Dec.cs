@@ -29,8 +29,8 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Engineering
         public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
         {
             ValidateArguments(arguments, 1);
-            var number = ArgToString(arguments, 0);
-            var result = TwoComplementHelper.ParseDecFromString(number, 8);
+            string? number = ArgToString(arguments, 0);
+            double result = TwoComplementHelper.ParseDecFromString(number, 8);
             return CreateResult(result, DataType.Integer);
         }
     }

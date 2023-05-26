@@ -14,9 +14,9 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions.Statistical
         [TestMethod]
         public void CorrelTest1()
         {
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var sheet = package.Workbook.Worksheets.Add("test");
+                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
                 sheet.Cells["A1"].Value = 3;
                 sheet.Cells["A2"].Value = 2;
                 sheet.Cells["A3"].Value = 4;
@@ -29,7 +29,7 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions.Statistical
                 sheet.Cells["B5"].Value = 17;
                 sheet.Cells["B6"].Formula = "CORREL(A1:A5,B1:B5)";
                 sheet.Calculate();
-                var result = sheet.Cells["B6"].Value;
+                object? result = sheet.Cells["B6"].Value;
 
                 Assert.AreEqual(0.997054, System.Math.Round((double)result, 6));
             }
@@ -38,13 +38,13 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions.Statistical
         [TestMethod]
         public void FisherTest1()
         {
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var sheet = package.Workbook.Worksheets.Add("test");
+                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
                 sheet.Cells["A1"].Value = 0.75;
                 sheet.Cells["A2"].Formula = "FISHER(A1)";
                 sheet.Calculate();
-                var result = sheet.Cells["A2"].Value;
+                object? result = sheet.Cells["A2"].Value;
 
                 Assert.AreEqual(0.9729551, System.Math.Round((double)result, 7));
             }
@@ -53,13 +53,13 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions.Statistical
         [TestMethod]
         public void FisherInvTest1()
         {
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var sheet = package.Workbook.Worksheets.Add("test");
+                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
                 sheet.Cells["A1"].Value = 0.9729551;
                 sheet.Cells["A2"].Formula = "FISHERINV(A1)";
                 sheet.Calculate();
-                var result = sheet.Cells["A2"].Value;
+                object? result = sheet.Cells["A2"].Value;
 
                 Assert.AreEqual(0.75, System.Math.Round((double)result, 2));
             }
@@ -68,9 +68,9 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions.Statistical
         [TestMethod]
         public void GeomeanTest1()
         {
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var sheet = package.Workbook.Worksheets.Add("test");
+                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
                 sheet.Cells["A1"].Value = 4;
                 sheet.Cells["A2"].Value = 5;
                 sheet.Cells["A3"].Value = 8;
@@ -80,7 +80,7 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions.Statistical
                 sheet.Cells["A7"].Value = 3;
                 sheet.Cells["B6"].Formula = "GEOMEAN(A1:A7)";
                 sheet.Calculate();
-                var result = sheet.Cells["B6"].Value;
+                object? result = sheet.Cells["B6"].Value;
 
                 Assert.AreEqual(5.476987, System.Math.Round((double)result, 6));
             }
@@ -89,9 +89,9 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions.Statistical
         [TestMethod]
         public void HarmeanTest1()
         {
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var sheet = package.Workbook.Worksheets.Add("test");
+                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
                 sheet.Cells["A1"].Value = 4;
                 sheet.Cells["A2"].Value = 5;
                 sheet.Cells["A3"].Value = 8;
@@ -101,7 +101,7 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions.Statistical
                 sheet.Cells["A7"].Value = 3;
                 sheet.Cells["B6"].Formula = "HARMEAN(A1:A7)";
                 sheet.Calculate();
-                var result = sheet.Cells["B6"].Value;
+                object? result = sheet.Cells["B6"].Value;
 
                 Assert.AreEqual(5.028376, System.Math.Round((double)result, 6));
             }
@@ -110,9 +110,9 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions.Statistical
         [TestMethod]
         public void PearsonTest1()
         {
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var sheet = package.Workbook.Worksheets.Add("test");
+                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
                 sheet.Cells["A1"].Value = 9;
                 sheet.Cells["A2"].Value = 7;
                 sheet.Cells["A3"].Value = 5;
@@ -125,7 +125,7 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions.Statistical
                 sheet.Cells["B5"].Value = 3;
                 sheet.Cells["B6"].Formula = "PEARSON(A1:A5,B1:B5)";
                 sheet.Calculate();
-                var result = sheet.Cells["B6"].Value;
+                object? result = sheet.Cells["B6"].Value;
 
                 Assert.AreEqual(0.699379, System.Math.Round((double)result, 6));
             }
@@ -137,13 +137,13 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions.Statistical
         [DataRow(0.1, 0.39695255)]
         public void PhiTest1(double n, double expected)
         {
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var sheet = package.Workbook.Worksheets.Add("test");
+                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
                 sheet.Cells["A1"].Value = n;
                 sheet.Cells["B6"].Formula = "PHI(A1)";
                 sheet.Calculate();
-                var result = sheet.Cells["B6"].Value;
+                object? result = sheet.Cells["B6"].Value;
 
                 Assert.AreEqual(expected, System.Math.Round((double)result, 8));
             }
@@ -152,9 +152,9 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions.Statistical
         [TestMethod]
         public void RsqTest1()
         {
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var sheet = package.Workbook.Worksheets.Add("test");
+                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
                 sheet.Cells["A1"].Value = 2;
                 sheet.Cells["A2"].Value = 3;
                 sheet.Cells["A3"].Value = 9;
@@ -171,7 +171,7 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions.Statistical
                 sheet.Cells["B7"].Value = 4;
                 sheet.Cells["B8"].Formula = "RSQ(A1:A7,B1:B7)";
                 sheet.Calculate();
-                var result = sheet.Cells["B8"].Value;
+                object? result = sheet.Cells["B8"].Value;
 
                 Assert.AreEqual(0.05795, System.Math.Round((double)result, 5));
             }
@@ -180,9 +180,9 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions.Statistical
         [TestMethod]
         public void SkewTest1()
         {
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var sheet = package.Workbook.Worksheets.Add("test");
+                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
                 sheet.Cells["A1"].Value = 3;
                 sheet.Cells["A2"].Value = 4;
                 sheet.Cells["A3"].Value = 5;
@@ -195,7 +195,7 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions.Statistical
                 sheet.Cells["A10"].Value = 7;
                 sheet.Cells["B8"].Formula = "SKEW(A1:A10)";
                 sheet.Calculate();
-                var result = sheet.Cells["B8"].Value;
+                object? result = sheet.Cells["B8"].Value;
 
                 Assert.AreEqual(0.359543, System.Math.Round((double)result, 6));
             }
@@ -204,9 +204,9 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions.Statistical
         [TestMethod]
         public void SkewPTest1()
         {
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var sheet = package.Workbook.Worksheets.Add("test");
+                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
                 sheet.Cells["A1"].Value = 2;
                 sheet.Cells["A2"].Value = 4;
                 sheet.Cells["A3"].Value = 5;
@@ -220,7 +220,7 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions.Statistical
                 sheet.Cells["A11"].Value = 36;
                 sheet.Cells["B8"].Formula = "SKEW.P(A1:A11)";
                 sheet.Calculate();
-                var result = sheet.Cells["B8"].Value;
+                object? result = sheet.Cells["B8"].Value;
 
                 Assert.AreEqual(0.617466, System.Math.Round((double)result, 6));
             }
@@ -229,9 +229,9 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions.Statistical
         [TestMethod]
         public void SkewPTest2()
         {
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var sheet = package.Workbook.Worksheets.Add("test");
+                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
                 sheet.Cells["A1"].Value = 3;
                 sheet.Cells["A2"].Value = 4;
                 sheet.Cells["A3"].Value = 5;
@@ -244,7 +244,7 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions.Statistical
                 sheet.Cells["A10"].Value = 7;
                 sheet.Cells["B8"].Formula = "SKEW.P(A1:A10)";
                 sheet.Calculate();
-                var result = sheet.Cells["B8"].Value;
+                object? result = sheet.Cells["B8"].Value;
 
                 Assert.AreEqual(0.303193, System.Math.Round((double)result, 6));
             }
@@ -255,13 +255,13 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions.Statistical
         [DataRow(-1.5, -0.43319)]
         public void GaussTest1(double z, double expected)
         {
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var sheet = package.Workbook.Worksheets.Add("test");
+                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
                 sheet.Cells["A1"].Value = z;
                 sheet.Cells["A2"].Formula = "GAUSS(A1)";
                 sheet.Calculate();
-                var result = sheet.Cells["A2"].Value;
+                object? result = sheet.Cells["A2"].Value;
 
                 Assert.AreEqual(expected, System.Math.Round((double)result, 5));
             }
@@ -270,15 +270,15 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions.Statistical
         [TestMethod]
         public void StandardizeTest1()
         {
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var sheet = package.Workbook.Worksheets.Add("test");
+                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
                 sheet.Cells["A1"].Value = 42;
                 sheet.Cells["A2"].Value = 40;
                 sheet.Cells["A3"].Value = 1.5;
                 sheet.Cells["B8"].Formula = "STANDARDIZE(A1,A2,A3)";
                 sheet.Calculate();
-                var result = sheet.Cells["B8"].Value;
+                object? result = sheet.Cells["B8"].Value;
 
                 Assert.AreEqual(1.333333, System.Math.Round((double)result, 6));
             }
@@ -287,9 +287,9 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions.Statistical
         [TestMethod]
         public void ForecastTest1()
         {
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var sheet = package.Workbook.Worksheets.Add("test");
+                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
                 sheet.Cells["A1"].Value = 6;
                 sheet.Cells["A2"].Value = 7;
                 sheet.Cells["A3"].Value = 9;
@@ -302,7 +302,7 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions.Statistical
                 sheet.Cells["B5"].Value = 40;
                 sheet.Cells["B8"].Formula = "FORECAST(30,A1:A5,B1:B5)";
                 sheet.Calculate();
-                var result = sheet.Cells["B8"].Value;
+                object? result = sheet.Cells["B8"].Value;
 
                 Assert.AreEqual(10.607253, System.Math.Round((double)result, 6));
             }
@@ -311,9 +311,9 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions.Statistical
         [TestMethod]
         public void ForecastLinearTest1()
         {
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var sheet = package.Workbook.Worksheets.Add("test");
+                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
                 sheet.Cells["A1"].Value = 6;
                 sheet.Cells["A2"].Value = 7;
                 sheet.Cells["A3"].Value = 9;
@@ -326,7 +326,7 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions.Statistical
                 sheet.Cells["B5"].Value = 40;
                 sheet.Cells["B8"].Formula = "FORECAST.LINEAR(30,A1:A5,B1:B5)";
                 sheet.Calculate();
-                var result = sheet.Cells["B8"].Value;
+                object? result = sheet.Cells["B8"].Value;
 
                 Assert.AreEqual(10.607253, System.Math.Round((double)result, 6));
             }
@@ -335,9 +335,9 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions.Statistical
         [TestMethod]
         public void InterceptTest1()
         {
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var sheet = package.Workbook.Worksheets.Add("test");
+                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
                 sheet.Cells["A1"].Value = 2;
                 sheet.Cells["A2"].Value = 3;
                 sheet.Cells["A3"].Value = 9;
@@ -350,7 +350,7 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions.Statistical
                 sheet.Cells["B5"].Value = 5;
                 sheet.Cells["B8"].Formula = "INTERCEPT(A1:A5,B1:B5)";
                 sheet.Calculate();
-                var result = sheet.Cells["B8"].Value;
+                object? result = sheet.Cells["B8"].Value;
 
                 Assert.AreEqual(0.0483871, System.Math.Round((double)result, 7));
             }
@@ -359,9 +359,9 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions.Statistical
         [TestMethod]
         public void KurtTest1()
         {
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var sheet = package.Workbook.Worksheets.Add("test");
+                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
                 sheet.Cells["A1"].Value = 3;
                 sheet.Cells["A2"].Value = 4;
                 sheet.Cells["A3"].Value = 5;
@@ -374,7 +374,7 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions.Statistical
                 sheet.Cells["A10"].Value = 7;
                 sheet.Cells["A11"].Formula = "KURT(A1:A10)";
                 sheet.Calculate();
-                var result = sheet.Cells["A11"].Value;
+                object? result = sheet.Cells["A11"].Value;
 
                 Assert.AreEqual(-0.151799637, System.Math.Round((double)result, 9));
             }
@@ -383,14 +383,14 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions.Statistical
         [TestMethod]
         public void ChisqDistRtTest1()
         {
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var sheet = package.Workbook.Worksheets.Add("test");
+                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
 
                 sheet.Cells["A1"].Value = 0.5;
                 sheet.Cells["A2"].Formula = "CHISQ.DIST.RT(A1, 1)";
                 sheet.Calculate();
-                var result = sheet.Cells["A2"].Value;
+                object? result = sheet.Cells["A2"].Value;
                 Assert.AreEqual(0.47950012, System.Math.Round((double)result, 8));
 
                 sheet.Cells["A1"].Value = 2.5;
@@ -410,14 +410,14 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions.Statistical
         [TestMethod]
         public void ChisqInvTest1()
         {
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var sheet = package.Workbook.Worksheets.Add("test");
+                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
 
                 sheet.Cells["A1"].Value = 0.5;
                 sheet.Cells["A2"].Formula = "CHISQ.INV(A1, 1)";
                 sheet.Calculate();
-                var result = sheet.Cells["A2"].Value;
+                object? result = sheet.Cells["A2"].Value;
                 Assert.AreEqual(0.454936423, System.Math.Round((double)result, 9));
 
                 sheet.Cells["A1"].Value = 0.75;
@@ -437,14 +437,14 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions.Statistical
         [TestMethod]
         public void ChisqInvRtTest1()
         {
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var sheet = package.Workbook.Worksheets.Add("test");
+                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
 
                 sheet.Cells["A1"].Value = 0.5;
                 sheet.Cells["A2"].Formula = "CHISQ.INV.RT(A1, 1)";
                 sheet.Calculate();
-                var result = sheet.Cells["A2"].Value;
+                object? result = sheet.Cells["A2"].Value;
                 Assert.AreEqual(0.454936423, System.Math.Round((double)result, 9));
 
                 sheet.Cells["A1"].Value = 0.75;
@@ -464,14 +464,14 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions.Statistical
         [TestMethod]
         public void ExponDistTest1()
         {
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var sheet = package.Workbook.Worksheets.Add("test");
+                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
 
                 sheet.Cells["A1"].Value = 0.5;
                 sheet.Cells["A2"].Formula = "EXPONDIST(A1, 1, TRUE)";
                 sheet.Calculate();
-                var result = sheet.Cells["A2"].Value;
+                object? result = sheet.Cells["A2"].Value;
                 Assert.AreEqual(0.39346934, System.Math.Round((double)result, 8));
 
                 sheet.Cells["A1"].Value = 0.2;

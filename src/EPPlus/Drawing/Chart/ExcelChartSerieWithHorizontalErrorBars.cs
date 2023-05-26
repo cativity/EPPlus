@@ -32,7 +32,7 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             foreach(XmlElement errBarsNode in GetNodes("c:errBars"))
             {
-                var direction = GetXmlNodeString(errBarsNode, "c:errDir/@val");
+                string? direction = GetXmlNodeString(errBarsNode, "c:errDir/@val");
                 if(direction=="x")
                 {
                     ErrorBarsX = new ExcelChartErrorBars(this, errBarsNode);

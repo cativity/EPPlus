@@ -29,12 +29,12 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Information
         public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
         {
             ValidateArguments(arguments, 1);
-            var arg1 = GetFirstValue(arguments);//arguments.ElementAt(0);
+            object? arg1 = GetFirstValue(arguments);//arguments.ElementAt(0);
             if (!ConvertUtil.IsNumericOrDate(arg1))
             {
                 return CreateResult(eErrorType.Value);
             }
-            var number = (int)System.Math.Floor(ConvertUtil.GetValueDouble(arg1));
+            int number = (int)System.Math.Floor(ConvertUtil.GetValueDouble(arg1));
             return CreateResult(number % 2 == 0, DataType.Boolean);
         }
     }

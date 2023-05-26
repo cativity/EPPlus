@@ -393,14 +393,14 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
 
         internal static ReadProgressEventArgs Before(string archiveName, int entriesTotal)
         {
-            var x = new ReadProgressEventArgs(archiveName, ZipProgressEventType.Reading_BeforeReadEntry);
+            ReadProgressEventArgs? x = new ReadProgressEventArgs(archiveName, ZipProgressEventType.Reading_BeforeReadEntry);
             x.EntriesTotal = entriesTotal;
             return x;
         }
 
         internal static ReadProgressEventArgs After(string archiveName, ZipEntry entry, int entriesTotal)
         {
-            var x = new ReadProgressEventArgs(archiveName, ZipProgressEventType.Reading_AfterReadEntry);
+            ReadProgressEventArgs? x = new ReadProgressEventArgs(archiveName, ZipProgressEventType.Reading_AfterReadEntry);
             x.EntriesTotal = entriesTotal;
             x.CurrentEntry = entry;
             return x;
@@ -408,13 +408,13 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
 
         internal static ReadProgressEventArgs Started(string archiveName)
         {
-            var x = new ReadProgressEventArgs(archiveName, ZipProgressEventType.Reading_Started);
+            ReadProgressEventArgs? x = new ReadProgressEventArgs(archiveName, ZipProgressEventType.Reading_Started);
             return x;
         }
 
         internal static ReadProgressEventArgs ByteUpdate(string archiveName, ZipEntry entry, Int64 bytesXferred, Int64 totalBytes)
         {
-            var x = new ReadProgressEventArgs(archiveName, ZipProgressEventType.Reading_ArchiveBytesRead);
+            ReadProgressEventArgs? x = new ReadProgressEventArgs(archiveName, ZipProgressEventType.Reading_ArchiveBytesRead);
             x.CurrentEntry = entry;
             x.BytesTransferred = bytesXferred;
             x.TotalBytesToTransfer = totalBytes;
@@ -423,7 +423,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
 
         internal static ReadProgressEventArgs Completed(string archiveName)
         {
-            var x = new ReadProgressEventArgs(archiveName, ZipProgressEventType.Reading_Completed);
+            ReadProgressEventArgs? x = new ReadProgressEventArgs(archiveName, ZipProgressEventType.Reading_Completed);
             return x;
         }
 
@@ -443,7 +443,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
 
         internal static AddProgressEventArgs AfterEntry(string archiveName, ZipEntry entry, int entriesTotal)
         {
-            var x = new AddProgressEventArgs(archiveName, ZipProgressEventType.Adding_AfterAddEntry);
+            AddProgressEventArgs? x = new AddProgressEventArgs(archiveName, ZipProgressEventType.Adding_AfterAddEntry);
             x.EntriesTotal = entriesTotal;
             x.CurrentEntry = entry;
             return x;
@@ -451,13 +451,13 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
 
         internal static AddProgressEventArgs Started(string archiveName)
         {
-            var x = new AddProgressEventArgs(archiveName, ZipProgressEventType.Adding_Started);
+            AddProgressEventArgs? x = new AddProgressEventArgs(archiveName, ZipProgressEventType.Adding_Started);
             return x;
         }
 
         internal static AddProgressEventArgs Completed(string archiveName)
         {
-            var x = new AddProgressEventArgs(archiveName, ZipProgressEventType.Adding_Completed);
+            AddProgressEventArgs? x = new AddProgressEventArgs(archiveName, ZipProgressEventType.Adding_Completed);
             return x;
         }
 
@@ -495,7 +495,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
 
         internal static SaveProgressEventArgs ByteUpdate(string archiveName, ZipEntry entry, Int64 bytesXferred, Int64 totalBytes)
         {
-            var x = new SaveProgressEventArgs(archiveName, ZipProgressEventType.Saving_EntryBytesRead);
+            SaveProgressEventArgs? x = new SaveProgressEventArgs(archiveName, ZipProgressEventType.Saving_EntryBytesRead);
             x.ArchiveName = archiveName;
             x.CurrentEntry = entry;
             x.BytesTransferred = bytesXferred;
@@ -505,13 +505,13 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
 
         internal static SaveProgressEventArgs Started(string archiveName)
         {
-            var x = new SaveProgressEventArgs(archiveName, ZipProgressEventType.Saving_Started);
+            SaveProgressEventArgs? x = new SaveProgressEventArgs(archiveName, ZipProgressEventType.Saving_Started);
             return x;
         }
 
         internal static SaveProgressEventArgs Completed(string archiveName)
         {
-            var x = new SaveProgressEventArgs(archiveName, ZipProgressEventType.Saving_Completed);
+            SaveProgressEventArgs? x = new SaveProgressEventArgs(archiveName, ZipProgressEventType.Saving_Completed);
             return x;
         }
 
@@ -561,7 +561,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
 
         internal static ExtractProgressEventArgs BeforeExtractEntry(string archiveName, ZipEntry entry, string extractLocation)
         {
-            var x = new ExtractProgressEventArgs
+            ExtractProgressEventArgs? x = new ExtractProgressEventArgs
                 {
                     ArchiveName = archiveName,
                     EventType = ZipProgressEventType.Extracting_BeforeExtractEntry,
@@ -573,7 +573,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
 
         internal static ExtractProgressEventArgs ExtractExisting(string archiveName, ZipEntry entry, string extractLocation)
         {
-            var x = new ExtractProgressEventArgs
+            ExtractProgressEventArgs? x = new ExtractProgressEventArgs
                 {
                     ArchiveName = archiveName,
                     EventType = ZipProgressEventType.Extracting_ExtractEntryWouldOverwrite,
@@ -585,7 +585,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
 
         internal static ExtractProgressEventArgs AfterExtractEntry(string archiveName, ZipEntry entry, string extractLocation)
         {
-            var x = new ExtractProgressEventArgs
+            ExtractProgressEventArgs? x = new ExtractProgressEventArgs
                 {
                     ArchiveName = archiveName,
                     EventType = ZipProgressEventType.Extracting_AfterExtractEntry,
@@ -597,14 +597,14 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
 
         internal static ExtractProgressEventArgs ExtractAllStarted(string archiveName, string extractLocation)
         {
-            var x = new ExtractProgressEventArgs(archiveName, ZipProgressEventType.Extracting_BeforeExtractAll);
+            ExtractProgressEventArgs? x = new ExtractProgressEventArgs(archiveName, ZipProgressEventType.Extracting_BeforeExtractAll);
             x._target = extractLocation;
             return x;
         }
 
         internal static ExtractProgressEventArgs ExtractAllCompleted(string archiveName, string extractLocation)
         {
-            var x = new ExtractProgressEventArgs(archiveName, ZipProgressEventType.Extracting_AfterExtractAll);
+            ExtractProgressEventArgs? x = new ExtractProgressEventArgs(archiveName, ZipProgressEventType.Extracting_AfterExtractAll);
             x._target = extractLocation;
             return x;
         }
@@ -612,7 +612,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
 
         internal static ExtractProgressEventArgs ByteUpdate(string archiveName, ZipEntry entry, Int64 bytesWritten, Int64 totalBytes)
         {
-            var x = new ExtractProgressEventArgs(archiveName, ZipProgressEventType.Extracting_EntryBytesWritten);
+            ExtractProgressEventArgs? x = new ExtractProgressEventArgs(archiveName, ZipProgressEventType.Extracting_EntryBytesWritten);
             x.ArchiveName = archiveName;
             x.CurrentEntry = entry;
             x.BytesTransferred = bytesWritten;
@@ -653,7 +653,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         private ZipErrorEventArgs() { }
         internal static ZipErrorEventArgs Saving(string archiveName, ZipEntry entry, Exception exception)
         {
-            var x = new ZipErrorEventArgs
+            ZipErrorEventArgs? x = new ZipErrorEventArgs
                 {
                     EventType = ZipProgressEventType.Error_Saving,
                     ArchiveName = archiveName,

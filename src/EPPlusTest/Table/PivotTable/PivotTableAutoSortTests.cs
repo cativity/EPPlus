@@ -20,8 +20,8 @@ namespace EPPlusTest.Table.PivotTable
         {
             InitBase();
             _pck = OpenPackage("PivotTableAutoSort.xlsx", true);
-            var ws = _pck.Workbook.Worksheets.Add("Data1");
-            var r = LoadItemData(ws);
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("Data1");
+            ExcelRangeBase? r = LoadItemData(ws);
             ws.Tables.Add(r, "Table1");
             ws = _pck.Workbook.Worksheets.Add("Data2");
             r = LoadItemData(ws);
@@ -35,88 +35,88 @@ namespace EPPlusTest.Table.PivotTable
         [TestMethod]
         public void SetAutoSortAcending()
         {
-            var ws = _pck.Workbook.Worksheets.Add("PivotSameAutoSortAcending");
-            var p1 = ws.PivotTables.Add(ws.Cells["A1"], _pck.Workbook.Worksheets[0].Tables[0].Range, "Pivot1");
-            var rf=p1.RowFields.Add(p1.Fields[0]);
-            var df=p1.DataFields.Add(p1.Fields[3]);
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("PivotSameAutoSortAcending");
+            ExcelPivotTable? p1 = ws.PivotTables.Add(ws.Cells["A1"], _pck.Workbook.Worksheets[0].Tables[0].Range, "Pivot1");
+            ExcelPivotTableField? rf=p1.RowFields.Add(p1.Fields[0]);
+            ExcelPivotTableDataField? df=p1.DataFields.Add(p1.Fields[3]);
             rf.SetAutoSort(df);
         }
         [TestMethod]
         public void SetAutoSortDesending()
         {
-            var ws = _pck.Workbook.Worksheets.Add("PivotSameAutoSortDescending");
-            var p1 = ws.PivotTables.Add(ws.Cells["A1"], _pck.Workbook.Worksheets[0].Tables[0].Range, "Pivot2");
-            var rf = p1.RowFields.Add(p1.Fields[0]);
-            var df = p1.DataFields.Add(p1.Fields[3]);
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("PivotSameAutoSortDescending");
+            ExcelPivotTable? p1 = ws.PivotTables.Add(ws.Cells["A1"], _pck.Workbook.Worksheets[0].Tables[0].Range, "Pivot2");
+            ExcelPivotTableField? rf = p1.RowFields.Add(p1.Fields[0]);
+            ExcelPivotTableDataField? df = p1.DataFields.Add(p1.Fields[3]);
             rf.SetAutoSort(df, eSortType.Descending);
         }
         [TestMethod]
         public void SetAutoSortDataAndColumnField1()
         {
-            var ws = _pck.Workbook.Worksheets.Add("PivotSameAutoSortDescendingCF1");
-            var p1 = ws.PivotTables.Add(ws.Cells["A1"], _pck.Workbook.Worksheets[0].Tables[0].Range, "Pivot2");            
-            var rf = p1.RowFields.Add(p1.Fields[0]);            
-            var cf = p1.ColumnFields.Add(p1.Fields[1]);
-            var df = p1.DataFields.Add(p1.Fields[3]);
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("PivotSameAutoSortDescendingCF1");
+            ExcelPivotTable? p1 = ws.PivotTables.Add(ws.Cells["A1"], _pck.Workbook.Worksheets[0].Tables[0].Range, "Pivot2");            
+            ExcelPivotTableField? rf = p1.RowFields.Add(p1.Fields[0]);            
+            ExcelPivotTableField? cf = p1.ColumnFields.Add(p1.Fields[1]);
+            ExcelPivotTableDataField? df = p1.DataFields.Add(p1.Fields[3]);
             rf.SetAutoSort(df, eSortType.Descending);
-            var reference = rf.AutoSort.Conditions.Fields.Add(cf);
+            ExcelPivotAreaReference? reference = rf.AutoSort.Conditions.Fields.Add(cf);
             cf.Items.Refresh();
             reference.Items.AddByValue("Hardware");
         }
         [TestMethod]
         public void SetAutoSortDataAndColumnField2()
         {
-            var ws = _pck.Workbook.Worksheets.Add("PivotSameAutoSortDescendingCF2");
-            var p1 = ws.PivotTables.Add(ws.Cells["A1"], _pck.Workbook.Worksheets[0].Tables[0].Range, "Pivot2");
-            var rf = p1.RowFields.Add(p1.Fields[0]);
-            var cf = p1.ColumnFields.Add(p1.Fields[1]);
-            var df = p1.DataFields.Add(p1.Fields[3]);
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("PivotSameAutoSortDescendingCF2");
+            ExcelPivotTable? p1 = ws.PivotTables.Add(ws.Cells["A1"], _pck.Workbook.Worksheets[0].Tables[0].Range, "Pivot2");
+            ExcelPivotTableField? rf = p1.RowFields.Add(p1.Fields[0]);
+            ExcelPivotTableField? cf = p1.ColumnFields.Add(p1.Fields[1]);
+            ExcelPivotTableDataField? df = p1.DataFields.Add(p1.Fields[3]);
             rf.SetAutoSort(df, eSortType.Descending);
-            var reference = rf.AutoSort.Conditions.Fields.Add(cf);
+            ExcelPivotAreaReference? reference = rf.AutoSort.Conditions.Fields.Add(cf);
             cf.Items.Refresh();
             reference.Items.Add(1);
         }
         [TestMethod]
         public void SetAutoSortDataAndRowField1()
         {
-            var ws = _pck.Workbook.Worksheets.Add("PivotSameAutoSortDescendingRF1");
-            var p1 = ws.PivotTables.Add(ws.Cells["A1"], _pck.Workbook.Worksheets[0].Tables[0].Range, "Pivot2");
-            var rf = p1.RowFields.Add(p1.Fields[0]);
-            var cf = p1.ColumnFields.Add(p1.Fields[1]);
-            var df = p1.DataFields.Add(p1.Fields[3]);
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("PivotSameAutoSortDescendingRF1");
+            ExcelPivotTable? p1 = ws.PivotTables.Add(ws.Cells["A1"], _pck.Workbook.Worksheets[0].Tables[0].Range, "Pivot2");
+            ExcelPivotTableField? rf = p1.RowFields.Add(p1.Fields[0]);
+            ExcelPivotTableField? cf = p1.ColumnFields.Add(p1.Fields[1]);
+            ExcelPivotTableDataField? df = p1.DataFields.Add(p1.Fields[3]);
             cf.SetAutoSort(df, eSortType.Descending);
-            var reference = cf.AutoSort.Conditions.Fields.Add(rf);
+            ExcelPivotAreaReference? reference = cf.AutoSort.Conditions.Fields.Add(rf);
             rf.Items.Refresh();
             reference.Items.Add(0);
         }
         [TestMethod]
         public void SetAutoSortDataAndRowField3()
         {
-            var ws = _pck.Workbook.Worksheets.Add("PivotSameAutoSortDescendingRF3");
-            var p1 = ws.PivotTables.Add(ws.Cells["A1"], _pck.Workbook.Worksheets[0].Tables[0].Range, "Pivot2");
-            var rf = p1.RowFields.Add(p1.Fields[0]);
-            var cf = p1.ColumnFields.Add(p1.Fields[1]);
-            var df = p1.DataFields.Add(p1.Fields[3]);
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("PivotSameAutoSortDescendingRF3");
+            ExcelPivotTable? p1 = ws.PivotTables.Add(ws.Cells["A1"], _pck.Workbook.Worksheets[0].Tables[0].Range, "Pivot2");
+            ExcelPivotTableField? rf = p1.RowFields.Add(p1.Fields[0]);
+            ExcelPivotTableField? cf = p1.ColumnFields.Add(p1.Fields[1]);
+            ExcelPivotTableDataField? df = p1.DataFields.Add(p1.Fields[3]);
             cf.SetAutoSort(df, eSortType.Descending);
-            var reference = cf.AutoSort.Conditions.Fields.Add(rf);
+            ExcelPivotAreaReference? reference = cf.AutoSort.Conditions.Fields.Add(rf);
             rf.Items.Refresh();
             reference.Items.Add(2);
         }
         [TestMethod]
         public void ReadAutoSort()
         {
-            using(var p1=new ExcelPackage())
+            using(ExcelPackage? p1=new ExcelPackage())
             {
-                var ws = p1.Workbook.Worksheets.Add("PivotSameAutoClear");
-                var r = LoadItemData(ws);
+                ExcelWorksheet? ws = p1.Workbook.Worksheets.Add("PivotSameAutoClear");
+                ExcelRangeBase? r = LoadItemData(ws);
                 ws.Tables.Add(r, "Table1");
 
-                var pivot1 = ws.PivotTables.Add(ws.Cells["A1"], p1.Workbook.Worksheets[0].Tables[0].Range, "Pivot2");
-                var rf = pivot1.RowFields.Add(pivot1.Fields[0]);
-                var cf = pivot1.ColumnFields.Add(pivot1.Fields[1]);
-                var df = pivot1.DataFields.Add(pivot1.Fields[3]);
+                ExcelPivotTable? pivot1 = ws.PivotTables.Add(ws.Cells["A1"], p1.Workbook.Worksheets[0].Tables[0].Range, "Pivot2");
+                ExcelPivotTableField? rf = pivot1.RowFields.Add(pivot1.Fields[0]);
+                ExcelPivotTableField? cf = pivot1.ColumnFields.Add(pivot1.Fields[1]);
+                ExcelPivotTableDataField? df = pivot1.DataFields.Add(pivot1.Fields[3]);
                 cf.SetAutoSort(df, eSortType.Descending);
-                var reference = cf.AutoSort.Conditions.Fields.Add(rf);
+                ExcelPivotAreaReference? reference = cf.AutoSort.Conditions.Fields.Add(rf);
                 rf.Items.Refresh();
                 reference.Items.Add(2);
 
@@ -124,10 +124,10 @@ namespace EPPlusTest.Table.PivotTable
 
                 p1.Save();
 
-                using(var p2=new ExcelPackage(p1.Stream))
+                using(ExcelPackage? p2=new ExcelPackage(p1.Stream))
                 {
-                    var ws1 = p1.Workbook.Worksheets[0];
-                    var pivot2 = ws.PivotTables[0];
+                    ExcelWorksheet? ws1 = p1.Workbook.Worksheets[0];
+                    ExcelPivotTable? pivot2 = ws.PivotTables[0];
 
                     Assert.AreEqual(1, pivot2.ColumnFields.Count);
                     Assert.AreEqual(1, pivot2.RowFields.Count);
@@ -142,18 +142,18 @@ namespace EPPlusTest.Table.PivotTable
         [TestMethod]
         public void RemoveAutoSort()
         {
-            using (var p1 = new ExcelPackage())
+            using (ExcelPackage? p1 = new ExcelPackage())
             {
-                var ws = p1.Workbook.Worksheets.Add("PivotSameAutoClear");
-                var r = LoadItemData(ws);
+                ExcelWorksheet? ws = p1.Workbook.Worksheets.Add("PivotSameAutoClear");
+                ExcelRangeBase? r = LoadItemData(ws);
                 ws.Tables.Add(r, "Table1");
 
-                var pivot1 = ws.PivotTables.Add(ws.Cells["A1"], p1.Workbook.Worksheets[0].Tables[0].Range, "Pivot2");
-                var rf = pivot1.RowFields.Add(pivot1.Fields[0]);
-                var cf = pivot1.ColumnFields.Add(pivot1.Fields[1]);
-                var df = pivot1.DataFields.Add(pivot1.Fields[3]);
+                ExcelPivotTable? pivot1 = ws.PivotTables.Add(ws.Cells["A1"], p1.Workbook.Worksheets[0].Tables[0].Range, "Pivot2");
+                ExcelPivotTableField? rf = pivot1.RowFields.Add(pivot1.Fields[0]);
+                ExcelPivotTableField? cf = pivot1.ColumnFields.Add(pivot1.Fields[1]);
+                ExcelPivotTableDataField? df = pivot1.DataFields.Add(pivot1.Fields[3]);
                 cf.SetAutoSort(df, eSortType.Descending);
-                var reference = cf.AutoSort.Conditions.Fields.Add(rf);
+                ExcelPivotAreaReference? reference = cf.AutoSort.Conditions.Fields.Add(rf);
                 rf.Items.Refresh();
                 reference.Items.Add(2);
 
@@ -161,10 +161,10 @@ namespace EPPlusTest.Table.PivotTable
 
                 p1.Save();
 
-                using (var p2 = new ExcelPackage(p1.Stream))
+                using (ExcelPackage? p2 = new ExcelPackage(p1.Stream))
                 {
-                    var ws1 = p1.Workbook.Worksheets[0];
-                    var pivot2 = ws.PivotTables[0];
+                    ExcelWorksheet? ws1 = p1.Workbook.Worksheets[0];
+                    ExcelPivotTable? pivot2 = ws.PivotTables[0];
 
                     Assert.AreEqual(1, pivot2.ColumnFields.Count);
                     Assert.AreEqual(1, pivot2.RowFields.Count);

@@ -16,6 +16,7 @@ using OfficeOpenXml.FormulaParsing.ExpressionGraph;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.Implementations;
 
 namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Engineering
 {
@@ -28,9 +29,9 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Engineering
         public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
         {
             ValidateArguments(arguments, 2);
-            var x = ArgToDecimal(arguments, 0);
-            var n = ArgToInt(arguments, 1);
-            var result = new BesselYImpl().BesselY(x, n);
+            double x = ArgToDecimal(arguments, 0);
+            int n = ArgToInt(arguments, 1);
+            FinanceCalcResult<double>? result = new BesselYImpl().BesselY(x, n);
             return CreateResult(result.Result, DataType.Decimal);
         }
     }

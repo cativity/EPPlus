@@ -23,7 +23,7 @@ namespace OfficeOpenXml.Table.PivotTable
         internal ExcelPivotAreaStyleConditions(XmlNamespaceManager nsm, XmlNode topNode, ExcelPivotTable pt)
         {
             Fields = new ExcelPivotAreaReferenceCollection(nsm, topNode, pt);
-            var xh = XmlHelperFactory.Create(nsm, topNode);
+            XmlHelper? xh = XmlHelperFactory.Create(nsm, topNode);
             foreach (XmlElement n in xh.GetNodes("d:references/d:reference"))
             {
                 if (n.GetAttribute("field") == "4294967294")

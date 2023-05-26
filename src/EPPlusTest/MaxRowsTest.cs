@@ -10,9 +10,9 @@ namespace EPPlusTest
         [TestMethod]
         public void DeletingAtMaxRowsOfExcelSheetShouldNotThrow()
         {
-            var package = new ExcelPackage();
+            ExcelPackage? package = new ExcelPackage();
 
-            var sheet = package.Workbook.Worksheets.Add("DeletingAtMaxSheet");
+            ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("DeletingAtMaxSheet");
 
             sheet.Cells["A1048576"].Value = 5;
 
@@ -31,9 +31,9 @@ namespace EPPlusTest
         [ExpectedException(typeof(ArgumentException))]
         public void DeletingAtMaxRowsOfExcelSheetShouldThrow()
         {
-            var package = new ExcelPackage();
+            ExcelPackage? package = new ExcelPackage();
 
-            var sheet = package.Workbook.Worksheets.Add("DeletingAtMaxSheet");
+            ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("DeletingAtMaxSheet");
 
 
             sheet.Cells["A1048576"].Value = 5;

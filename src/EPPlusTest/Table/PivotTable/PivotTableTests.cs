@@ -44,7 +44,7 @@ namespace EPPlusTest.Table.PivotTable
         {
             InitBase();
             _pck = OpenPackage("PivotTable.xlsx", true);
-            var ws = _pck.Workbook.Worksheets.Add("Data");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("Data");
             LoadItemData(ws);
         }
         [ClassCleanup]
@@ -57,16 +57,16 @@ namespace EPPlusTest.Table.PivotTable
         {
             using (ExcelPackage p1 = new ExcelPackage())
             {
-                var tblName = "Table1";
-                var tblAddress = "A1:D4";
-                var wsData = p1.Workbook.Worksheets.Add("TableData");
+                string? tblName = "Table1";
+                string? tblAddress = "A1:D4";
+                ExcelWorksheet? wsData = p1.Workbook.Worksheets.Add("TableData");
                 wsData.Cells["A1"].Value = "Column1";
                 wsData.Cells["B1"].Value = "Column2";
                 wsData.Cells["C1"].Value = "Column3";
                 wsData.Cells["D1"].Value = "Column4";
-                var wsPivot = p1.Workbook.Worksheets.Add("PivotSimple");
-                var Table1 = wsData.Tables.Add(wsData.Cells[tblAddress], tblName);
-                var pivotTable1 = wsPivot.PivotTables.Add(wsPivot.Cells["A1"], wsData.Cells[Table1.Address.Address], "PivotTable1");
+                ExcelWorksheet? wsPivot = p1.Workbook.Worksheets.Add("PivotSimple");
+                ExcelTable? Table1 = wsData.Tables.Add(wsData.Cells[tblAddress], tblName);
+                ExcelPivotTable? pivotTable1 = wsPivot.PivotTables.Add(wsPivot.Cells["A1"], wsData.Cells[Table1.Address.Address], "PivotTable1");
 
                 pivotTable1.RowFields.Add(pivotTable1.Fields[0]);
                 pivotTable1.DataFields.Add(pivotTable1.Fields[1]);
@@ -80,7 +80,7 @@ namespace EPPlusTest.Table.PivotTable
 
                 p1.Save();
 
-                using (var p2 = new ExcelPackage(p1.Stream))
+                using (ExcelPackage? p2 = new ExcelPackage(p1.Stream))
                 {
                     wsData = p2.Workbook.Worksheets[0];
                     wsPivot = p2.Workbook.Worksheets[1];
@@ -99,14 +99,14 @@ namespace EPPlusTest.Table.PivotTable
         {
             using (ExcelPackage p1 = new ExcelPackage())
             {
-                var address = "A1:D4";
-                var wsData = p1.Workbook.Worksheets.Add("TableData");
+                string? address = "A1:D4";
+                ExcelWorksheet? wsData = p1.Workbook.Worksheets.Add("TableData");
                 wsData.Cells["A1"].Value = "Column1";
                 wsData.Cells["B1"].Value = "Column2";
                 wsData.Cells["C1"].Value = "Column3";
                 wsData.Cells["D1"].Value = "Column4";
-                var wsPivot = p1.Workbook.Worksheets.Add("PivotSimple");
-                var pivotTable1 = wsPivot.PivotTables.Add(wsPivot.Cells["A1"], wsData.Cells[address], "PivotTable1");
+                ExcelWorksheet? wsPivot = p1.Workbook.Worksheets.Add("PivotSimple");
+                ExcelPivotTable? pivotTable1 = wsPivot.PivotTables.Add(wsPivot.Cells["A1"], wsData.Cells[address], "PivotTable1");
                 pivotTable1.RowFields.Add(pivotTable1.Fields[0]);
                 pivotTable1.DataFields.Add(pivotTable1.Fields[1]);
                 pivotTable1.ColumnFields.Add(pivotTable1.Fields[2]);
@@ -119,7 +119,7 @@ namespace EPPlusTest.Table.PivotTable
 
                 p1.Save();
 
-                using (var p2 = new ExcelPackage(p1.Stream))
+                using (ExcelPackage? p2 = new ExcelPackage(p1.Stream))
                 {
                     wsData = p2.Workbook.Worksheets[0];
                     wsPivot = p2.Workbook.Worksheets[1];
@@ -137,10 +137,10 @@ namespace EPPlusTest.Table.PivotTable
         [TestMethod]
         public void CreatePivotTableAddressSource()
         {
-            var ws=_pck.Workbook.Worksheets.Add("PivotSourceAddress");
+            ExcelWorksheet? ws=_pck.Workbook.Worksheets.Add("PivotSourceAddress");
             LoadTestdata(ws);
 
-            var pivotTable1 = ws.PivotTables.Add(ws.Cells["G1"], ws.Cells["A1:D100"], "PivotTable1");
+            ExcelPivotTable? pivotTable1 = ws.PivotTables.Add(ws.Cells["G1"], ws.Cells["A1:D100"], "PivotTable1");
 
             pivotTable1.RowFields.Add(pivotTable1.Fields[0]);
             pivotTable1.RowFields.Add(pivotTable1.Fields[2]);
@@ -150,10 +150,10 @@ namespace EPPlusTest.Table.PivotTable
         [TestMethod]
         public void CreatePivotTableTableSource()
         {
-            var ws = _pck.Workbook.Worksheets.Add("PivotSourceTable");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("PivotSourceTable");
             LoadTestdata(ws);
-            var table = ws.Tables.Add(ws.Cells["A1:D100"], "table1");
-            var pivotTable1 = ws.PivotTables.Add(ws.Cells["G1"], table , "PivotTable1");
+            ExcelTable? table = ws.Tables.Add(ws.Cells["A1:D100"], "table1");
+            ExcelPivotTable? pivotTable1 = ws.PivotTables.Add(ws.Cells["G1"], table , "PivotTable1");
 
             pivotTable1.RowFields.Add(pivotTable1.Fields[0]);
             pivotTable1.RowFields.Add(pivotTable1.Fields[2]);
@@ -163,10 +163,10 @@ namespace EPPlusTest.Table.PivotTable
         [TestMethod]
         public void RowsDataOnColumns()
         {
-            var wsData = _pck.Workbook.Worksheets["Data"];
-            var ws = _pck.Workbook.Worksheets.Add("Rows-Data on columns");
+            ExcelWorksheet? wsData = _pck.Workbook.Worksheets["Data"];
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("Rows-Data on columns");
 
-            var pt = ws.PivotTables.Add(ws.Cells["A1"], wsData.Cells["K1:N11"], "Pivottable1");
+            ExcelPivotTable? pt = ws.PivotTables.Add(ws.Cells["A1"], wsData.Cells["K1:N11"], "Pivottable1");
             pt.GrandTotalCaption = "Total amount";
             pt.RowFields.Add(pt.Fields[1]);
             pt.RowFields.Add(pt.Fields[0]);
@@ -178,9 +178,9 @@ namespace EPPlusTest.Table.PivotTable
         [TestMethod]
         public void RowsDataOnRow()
         {
-            var wsData = _pck.Workbook.Worksheets["Data"];
-            var ws = _pck.Workbook.Worksheets.Add("Rows-Data on rows");
-            var pt = ws.PivotTables.Add(ws.Cells["A1"], wsData.Cells["K1:N11"], "Pivottable2");
+            ExcelWorksheet? wsData = _pck.Workbook.Worksheets["Data"];
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("Rows-Data on rows");
+            ExcelPivotTable? pt = ws.PivotTables.Add(ws.Cells["A1"], wsData.Cells["K1:N11"], "Pivottable2");
             pt.RowFields.Add(pt.Fields[1]);
             pt.RowFields.Add(pt.Fields[0]);
             pt.DataFields.Add(pt.Fields[3]);
@@ -191,9 +191,9 @@ namespace EPPlusTest.Table.PivotTable
         [TestMethod]
         public void ColumnsDataOnColumns()
         {
-            var wsData = _pck.Workbook.Worksheets["Data"];
-            var ws = _pck.Workbook.Worksheets.Add("Columns-Data on columns");
-            var pt = ws.PivotTables.Add(ws.Cells["A1"], wsData.Cells["K1:N11"], "Pivottable3");
+            ExcelWorksheet? wsData = _pck.Workbook.Worksheets["Data"];
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("Columns-Data on columns");
+            ExcelPivotTable? pt = ws.PivotTables.Add(ws.Cells["A1"], wsData.Cells["K1:N11"], "Pivottable3");
             pt.ColumnFields.Add(pt.Fields[1]);
             pt.ColumnFields.Add(pt.Fields[0]);
             pt.DataFields.Add(pt.Fields[3]);
@@ -203,10 +203,10 @@ namespace EPPlusTest.Table.PivotTable
         [TestMethod]
         public void ColumnsDataOnRows()
         {
-            var wsData = _pck.Workbook.Worksheets["Data"];
-            var ws = _pck.Workbook.Worksheets.Add("Columns-Data on rows");
+            ExcelWorksheet? wsData = _pck.Workbook.Worksheets["Data"];
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("Columns-Data on rows");
 
-            var pt = ws.PivotTables.Add(ws.Cells["A1"], wsData.Cells["K1:N11"], "Pivottable4");
+            ExcelPivotTable? pt = ws.PivotTables.Add(ws.Cells["A1"], wsData.Cells["K1:N11"], "Pivottable4");
             pt.ColumnFields.Add(pt.Fields[1]);
             pt.ColumnFields.Add(pt.Fields[0]);
             pt.DataFields.Add(pt.Fields[3]);
@@ -216,9 +216,9 @@ namespace EPPlusTest.Table.PivotTable
         [TestMethod]
         public void ColumnsRows_DataOnColumns()
         {
-            var wsData = _pck.Workbook.Worksheets["Data"];
-            var ws = _pck.Workbook.Worksheets.Add("Columns/Rows-Data on columns");
-            var pt = ws.PivotTables.Add(ws.Cells["A1"], wsData.Cells["K1:N11"], "Pivottable5");
+            ExcelWorksheet? wsData = _pck.Workbook.Worksheets["Data"];
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("Columns/Rows-Data on columns");
+            ExcelPivotTable? pt = ws.PivotTables.Add(ws.Cells["A1"], wsData.Cells["K1:N11"], "Pivottable5");
             pt.ColumnFields.Add(pt.Fields[1]);
             pt.RowFields.Add(pt.Fields[0]);
             pt.DataFields.Add(pt.Fields[3]);
@@ -228,9 +228,9 @@ namespace EPPlusTest.Table.PivotTable
         [TestMethod]
         public void ColumnsRows_DataOnRows()
         {
-            var wsData = _pck.Workbook.Worksheets["Data"];
-            var ws = _pck.Workbook.Worksheets.Add("Columns/Rows-Data on rows");
-            var pt = ws.PivotTables.Add(ws.Cells["A1"], wsData.Cells["K1:N11"], "Pivottable6");
+            ExcelWorksheet? wsData = _pck.Workbook.Worksheets["Data"];
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("Columns/Rows-Data on rows");
+            ExcelPivotTable? pt = ws.PivotTables.Add(ws.Cells["A1"], wsData.Cells["K1:N11"], "Pivottable6");
             pt.ColumnFields.Add(pt.Fields[1]);
             pt.RowFields.Add(pt.Fields[0]);
             pt.DataFields.Add(pt.Fields[3]);
@@ -241,10 +241,10 @@ namespace EPPlusTest.Table.PivotTable
         [TestMethod]
         public void RowsPage_DataOnColumns()
         {
-            var wsData = _pck.Workbook.Worksheets["Data"];
-            var ws = _pck.Workbook.Worksheets.Add("Rows/Page-Data on Columns");
+            ExcelWorksheet? wsData = _pck.Workbook.Worksheets["Data"];
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("Rows/Page-Data on Columns");
 
-            var pt = ws.PivotTables.Add(ws.Cells["A3"], wsData.Cells["K1:N11"], "Pivottable7");
+            ExcelPivotTable? pt = ws.PivotTables.Add(ws.Cells["A3"], wsData.Cells["K1:N11"], "Pivottable7");
             pt.PageFields.Add(pt.Fields[1]);
             pt.RowFields.Add(pt.Fields[0]);
             pt.DataFields.Add(pt.Fields[3]);
@@ -269,10 +269,10 @@ namespace EPPlusTest.Table.PivotTable
         [TestMethod]
         public void Pivot_GroupDate()
         {
-            var wsData = _pck.Workbook.Worksheets["Data"];
-            var ws = _pck.Workbook.Worksheets.Add("Pivot-Group Date");
+            ExcelWorksheet? wsData = _pck.Workbook.Worksheets["Data"];
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("Pivot-Group Date");
 
-            var pt = ws.PivotTables.Add(ws.Cells["A3"], wsData.Cells["K1:O11"], "Pivottable8");
+            ExcelPivotTable? pt = ws.PivotTables.Add(ws.Cells["A3"], wsData.Cells["K1:O11"], "Pivottable8");
             pt.RowFields.Add(pt.Fields[1]);
             pt.RowFields.Add(pt.Fields[4]);
             pt.Fields[4].AddDateGrouping(eDateGroupBy.Years | eDateGroupBy.Months | eDateGroupBy.Days | eDateGroupBy.Quarters, new DateTime(2010, 01, 31), new DateTime(2010, 11, 30));
@@ -310,9 +310,9 @@ namespace EPPlusTest.Table.PivotTable
         [TestMethod]
         public void Pivot_GroupNumber()
         {
-            var wsData = _pck.Workbook.Worksheets["Data"];
-            var ws = _pck.Workbook.Worksheets.Add("Pivot-Group Number");
-            var pt = ws.PivotTables.Add(ws.Cells["A3"], wsData.Cells["K1:N11"], "Pivottable9");
+            ExcelWorksheet? wsData = _pck.Workbook.Worksheets["Data"];
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("Pivot-Group Number");
+            ExcelPivotTable? pt = ws.PivotTables.Add(ws.Cells["A3"], wsData.Cells["K1:N11"], "Pivottable9");
             pt.PageFields.Add(pt.Fields[1]);
             pt.RowFields.Add(pt.Fields[3]);
             pt.RowFields[0].AddNumericGrouping(-3.3, 5.5, 4.0);
@@ -327,10 +327,10 @@ namespace EPPlusTest.Table.PivotTable
         [TestMethod]
         public void Pivot_ManyRowFields()
         {
-            var wsData = _pck.Workbook.Worksheets["Data"];
-            var ws = _pck.Workbook.Worksheets.Add("Pivot-Many RowFields");
+            ExcelWorksheet? wsData = _pck.Workbook.Worksheets["Data"];
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("Pivot-Many RowFields");
 
-            var pt = ws.PivotTables.Add(ws.Cells["A1"], wsData.Cells["K1:O11"], "Pivottable10");
+            ExcelPivotTable? pt = ws.PivotTables.Add(ws.Cells["A1"], wsData.Cells["K1:O11"], "Pivottable10");
             pt.ColumnFields.Add(pt.Fields[1]);
             pt.RowFields.Add(pt.Fields[0]);
             pt.RowFields.Add(pt.Fields[3]);
@@ -343,28 +343,28 @@ namespace EPPlusTest.Table.PivotTable
         [TestMethod]
         public void Pivot_Blank()
         {
-            var wsData = _pck.Workbook.Worksheets["Data"];
-            var ws = _pck.Workbook.Worksheets.Add("Pivot-Blank");
+            ExcelWorksheet? wsData = _pck.Workbook.Worksheets["Data"];
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("Pivot-Blank");
 
             wsData.Cells["A1"].Value = "Column1";
             wsData.Cells["B1"].Value = "Column2";
-            var pt = ws.PivotTables.Add(ws.Cells["A1"], wsData.Cells["A1:B2"], "Pivottable11");
+            ExcelPivotTable? pt = ws.PivotTables.Add(ws.Cells["A1"], wsData.Cells["A1:B2"], "Pivottable11");
             pt.ColumnFields.Add(pt.Fields[1]);
-            var rf=pt.RowFields.Add(pt.Fields[0]);
+            ExcelPivotTableField? rf=pt.RowFields.Add(pt.Fields[0]);
             rf.SubTotalFunctions = eSubTotalFunctions.None;
             pt.DataOnRows = true;
         }
         [TestMethod]
         public void Pivot_SaveDataFalse()
         {
-            var wsData = _pck.Workbook.Worksheets["Data"];
-            var ws = _pck.Workbook.Worksheets.Add("Pivot-NoRecord");
+            ExcelWorksheet? wsData = _pck.Workbook.Worksheets["Data"];
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("Pivot-NoRecord");
 
             wsData.Cells["A1"].Value = "Column1";
             wsData.Cells["B1"].Value = "Column2";
-            var pt = ws.PivotTables.Add(ws.Cells["A1"], wsData.Cells["A1:B2"], "Pivottable11");
+            ExcelPivotTable? pt = ws.PivotTables.Add(ws.Cells["A1"], wsData.Cells["A1:B2"], "Pivottable11");
             pt.ColumnFields.Add(pt.Fields[1]);
-            var rf = pt.RowFields.Add(pt.Fields[0]);
+            ExcelPivotTableField? rf = pt.RowFields.Add(pt.Fields[0]);
             rf.SubTotalFunctions = eSubTotalFunctions.None;
             pt.DataOnRows = true;
             pt.CacheDefinition.SaveData = false;
@@ -372,14 +372,14 @@ namespace EPPlusTest.Table.PivotTable
         [TestMethod]
         public void Pivot_SavedDataTrue()
         {
-            var wsData = _pck.Workbook.Worksheets["Data"];
-            var ws = _pck.Workbook.Worksheets.Add("Pivot-WithRecord");
+            ExcelWorksheet? wsData = _pck.Workbook.Worksheets["Data"];
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("Pivot-WithRecord");
 
             wsData.Cells["A1"].Value = "Column1";
             wsData.Cells["B1"].Value = "Column2";
-            var pt = ws.PivotTables.Add(ws.Cells["A1"], wsData.Cells["A1:B2"], "Pivottable11");
+            ExcelPivotTable? pt = ws.PivotTables.Add(ws.Cells["A1"], wsData.Cells["A1:B2"], "Pivottable11");
             pt.ColumnFields.Add(pt.Fields[1]);
-            var rf = pt.RowFields.Add(pt.Fields[0]);
+            ExcelPivotTableField? rf = pt.RowFields.Add(pt.Fields[0]);
             rf.SubTotalFunctions = eSubTotalFunctions.None;
             pt.DataOnRows = true;
             pt.CacheDefinition.SaveData = false;    //Remove the record xml
@@ -388,19 +388,19 @@ namespace EPPlusTest.Table.PivotTable
         [TestMethod]
         public void Pivot_ManyPageFields()
         {
-            var wsData = _pck.Workbook.Worksheets["Data"];
-            var ws = _pck.Workbook.Worksheets.Add("Pivot-Many PageFields");
+            ExcelWorksheet? wsData = _pck.Workbook.Worksheets["Data"];
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("Pivot-Many PageFields");
 
-            var pt = ws.PivotTables.Add(ws.Cells["A3"], wsData.Cells["K1:O11"], "Pivottable12");
+            ExcelPivotTable? pt = ws.PivotTables.Add(ws.Cells["A3"], wsData.Cells["K1:O11"], "Pivottable12");
             pt.ColumnFields.Add(pt.Fields[1]);
             pt.RowFields.Add(pt.Fields[0]);
-            var pf1 = pt.PageFields.Add(pt.Fields[2]);
+            ExcelPivotTableField? pf1 = pt.PageFields.Add(pt.Fields[2]);
             pf1.Items.Refresh();
             pf1.Items[1].Hidden = true;
             pf1.Items[8].Hidden = true;
 
 
-            var pf2 = pt.PageFields.Add(pt.Fields[4]);
+            ExcelPivotTableField? pf2 = pt.PageFields.Add(pt.Fields[4]);
             pf2.Items.Refresh();
             pf2.Items[1].Hidden = true;
             pf1.MultipleItemSelectionAllowed = true;
@@ -419,13 +419,13 @@ namespace EPPlusTest.Table.PivotTable
         [TestMethod]
         public void Pivot_StylingFieldsFalse()
         {
-            var wsData = _pck.Workbook.Worksheets["Data"];
-            var ws = _pck.Workbook.Worksheets.Add("Pivot-StylingFieldsFalse");
+            ExcelWorksheet? wsData = _pck.Workbook.Worksheets["Data"];
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("Pivot-StylingFieldsFalse");
 
-            var pt = ws.PivotTables.Add(ws.Cells["A3"], wsData.Cells["K1:O11"], "Pivottable12");
+            ExcelPivotTable? pt = ws.PivotTables.Add(ws.Cells["A3"], wsData.Cells["K1:O11"], "Pivottable12");
             pt.ColumnFields.Add(pt.Fields[1]);
             pt.RowFields.Add(pt.Fields[0]);
-            var df=pt.DataFields.Add(pt.Fields[3]);
+            ExcelPivotTableDataField? df=pt.DataFields.Add(pt.Fields[3]);
             pt.DataOnRows = true;
             pt.ColumnHeaderCaption = "Column Caption";
             pt.RowHeaderCaption = "Row Caption";
@@ -456,9 +456,9 @@ namespace EPPlusTest.Table.PivotTable
         [TestMethod]
         public void RowsDataOnRow_WithNumberFormat()
         {
-            var wsData = _pck.Workbook.Worksheets["Data"];
-            var ws = _pck.Workbook.Worksheets.Add("PivotTable with numberformat");
-            var pt = ws.PivotTables.Add(ws.Cells["A1"], wsData.Cells["K1:N11"], "Pivottable2");
+            ExcelWorksheet? wsData = _pck.Workbook.Worksheets["Data"];
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("PivotTable with numberformat");
+            ExcelPivotTable? pt = ws.PivotTables.Add(ws.Cells["A1"], wsData.Cells["K1:N11"], "Pivottable2");
             pt.RowFields.Add(pt.Fields[1]);
             pt.RowFields.Add(pt.Fields[0]);
             pt.DataFields.Add(pt.Fields[3]);
@@ -474,16 +474,16 @@ namespace EPPlusTest.Table.PivotTable
         [TestMethod]
         public void AddCalculatedField()
         {
-            var ws = _pck.Workbook.Worksheets.Add("CalculatedField");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("CalculatedField");
 
             LoadTestdata(ws);
-            var formula = "NumValue*2";
-            var tbl = ws.PivotTables.Add(ws.Cells["F1"], ws.Cells["A1:D100"], "PivotTable1");
-            var f = tbl.Fields.AddCalculatedField("NumValueX2", formula);
+            string? formula = "NumValue*2";
+            ExcelPivotTable? tbl = ws.PivotTables.Add(ws.Cells["F1"], ws.Cells["A1:D100"], "PivotTable1");
+            ExcelPivotTableField? f = tbl.Fields.AddCalculatedField("NumValueX2", formula);
             f.Format = "#,##0";
-            var rf = tbl.RowFields.Add(tbl.Fields[1]);
-            var df1 = tbl.DataFields.Add(tbl.Fields[3]);
-            var df2 = tbl.DataFields.Add(tbl.Fields["NumValueX2"]);
+            ExcelPivotTableField? rf = tbl.RowFields.Add(tbl.Fields[1]);
+            ExcelPivotTableDataField? df1 = tbl.DataFields.Add(tbl.Fields[3]);
+            ExcelPivotTableDataField? df2 = tbl.DataFields.Add(tbl.Fields["NumValueX2"]);
             df1.Function = DataFieldFunctions.Sum;
             df2.Function = DataFieldFunctions.Sum;
             tbl.DataOnRows = false;
@@ -493,63 +493,63 @@ namespace EPPlusTest.Table.PivotTable
         [ExpectedException(typeof(ArgumentException))]
         public void ShouldThrowExceptionOnAddingCalculatedFieldToColumns()
         {
-            using(var p=new ExcelPackage())
+            using(ExcelPackage? p=new ExcelPackage())
             {
-                var ws = p.Workbook.Worksheets.Add("RowArgExcep");
+                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("RowArgExcep");
                 LoadTestdata(ws);
-                var formula = "NumValue*2";
-                var tbl = ws.PivotTables.Add(ws.Cells["F1"], ws.Cells["A1:D100"], "PivotTable1");
+                string? formula = "NumValue*2";
+                ExcelPivotTable? tbl = ws.PivotTables.Add(ws.Cells["F1"], ws.Cells["A1:D100"], "PivotTable1");
                 tbl.Fields.AddCalculatedField("NumValueX2", formula);
-                var rf = tbl.ColumnFields.Add(tbl.Fields[4]);
+                ExcelPivotTableField? rf = tbl.ColumnFields.Add(tbl.Fields[4]);
             }
         }
         [TestMethod]
         [ExpectedException(typeof(ArgumentException))]
         public void ShouldThrowExceptionOnAddingCalculatedFieldToRow()
         {
-            using (var p = new ExcelPackage())
+            using (ExcelPackage? p = new ExcelPackage())
             {
-                var ws = p.Workbook.Worksheets.Add("RowArgExcep");
+                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("RowArgExcep");
                 LoadTestdata(ws);
-                var formula = "NumValue*2";
-                var tbl = ws.PivotTables.Add(ws.Cells["F1"], ws.Cells["A1:D100"], "PivotTable1");
+                string? formula = "NumValue*2";
+                ExcelPivotTable? tbl = ws.PivotTables.Add(ws.Cells["F1"], ws.Cells["A1:D100"], "PivotTable1");
                 tbl.Fields.AddCalculatedField("NumValueX2", formula);
-                var rf = tbl.RowFields.Add(tbl.Fields[4]);
+                ExcelPivotTableField? rf = tbl.RowFields.Add(tbl.Fields[4]);
             }
         }
         [TestMethod]
         [ExpectedException(typeof(ArgumentException))]
         public void ShouldThrowExceptionOnAddingCalculatedFieldToPage()
         {
-            using (var p = new ExcelPackage())
+            using (ExcelPackage? p = new ExcelPackage())
             {
-                var ws = p.Workbook.Worksheets.Add("RowArgExcep");
+                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("RowArgExcep");
                 LoadTestdata(ws);
-                var formula = "NumValue*2";
-                var tbl = ws.PivotTables.Add(ws.Cells["F1"], ws.Cells["A1:D100"], "PivotTable1");
+                string? formula = "NumValue*2";
+                ExcelPivotTable? tbl = ws.PivotTables.Add(ws.Cells["F1"], ws.Cells["A1:D100"], "PivotTable1");
                 tbl.Fields.AddCalculatedField("NumValueX2", formula);
-                var rf = tbl.PageFields.Add(tbl.Fields[4]);
+                ExcelPivotTableField? rf = tbl.PageFields.Add(tbl.Fields[4]);
             }
         }
         [TestMethod]
         [ExpectedException(typeof(ArgumentException))]
         public void ShouldThrowExceptionOnAddingCalculatedFieldWithBlankFormula()
         {
-            using (var p = new ExcelPackage())
+            using (ExcelPackage? p = new ExcelPackage())
             {
-                var ws = p.Workbook.Worksheets.Add("RowArgExcep");
+                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("RowArgExcep");
                 LoadTestdata(ws);
-                var tbl = ws.PivotTables.Add(ws.Cells["F1"], ws.Cells["A1:D100"], "PivotTable1");
+                ExcelPivotTable? tbl = ws.PivotTables.Add(ws.Cells["F1"], ws.Cells["A1:D100"], "PivotTable1");
                 tbl.Fields.AddCalculatedField("NumValueX2", "");
             }
         }
         [TestMethod]
         public void PivotTableStyleTests()
         {
-            var wsData = _pck.Workbook.Worksheets["Data"];
-            var ws = _pck.Workbook.Worksheets.Add("StyleTests");
+            ExcelWorksheet? wsData = _pck.Workbook.Worksheets["Data"];
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("StyleTests");
 
-            var pt = ws.PivotTables.Add(ws.Cells["A3"], wsData.Cells["K1:N11"], "Pivottable8");            
+            ExcelPivotTable? pt = ws.PivotTables.Add(ws.Cells["A3"], wsData.Cells["K1:N11"], "Pivottable8");            
             pt.PivotTableStyle = PivotTableStyles.None;
             Assert.AreEqual(PivotTableStyles.None, pt.PivotTableStyle);
             Assert.AreEqual(TableStyles.None, pt.TableStyle);
@@ -578,12 +578,12 @@ namespace EPPlusTest.Table.PivotTable
         [TestMethod]
         public void HideValuesRow()
         {
-            var ws = _pck.Workbook.Worksheets.Add("HideValuesRow");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("HideValuesRow");
 
             LoadTestdata(ws);
-            var tbl = ws.PivotTables.Add(ws.Cells["F1"], ws.Cells["A1:D100"], "PivotTable1");
-            var rf = tbl.RowFields.Add(tbl.Fields[1]);
-            var df = tbl.DataFields.Add(tbl.Fields[3]);
+            ExcelPivotTable? tbl = ws.PivotTables.Add(ws.Cells["F1"], ws.Cells["A1:D100"], "PivotTable1");
+            ExcelPivotTableField? rf = tbl.RowFields.Add(tbl.Fields[1]);
+            ExcelPivotTableDataField? df = tbl.DataFields.Add(tbl.Fields[3]);
             df.Function = DataFieldFunctions.Sum;
             tbl.DataOnRows = false;
             tbl.GridDropZones = false;
@@ -597,7 +597,7 @@ namespace EPPlusTest.Table.PivotTable
         [TestMethod]
         public void ValidateSharedItemsAreCaseInsensitive()
         {
-            var ws = _pck.Workbook.Worksheets.Add("CaseInsentitive");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("CaseInsentitive");
 
             ws.Cells["A1"].Value = "Column1";
             ws.Cells["B1"].Value = "Column2";
@@ -605,9 +605,9 @@ namespace EPPlusTest.Table.PivotTable
             ws.Cells["B2"].Value = 1;
             ws.Cells["A3"].Value = "value1";
             ws.Cells["B3"].Value = 2;
-            var tbl = ws.PivotTables.Add(ws.Cells["F1"], ws.Cells["A1:B3"], "CIPivotTable");
-            var rf = tbl.RowFields.Add(tbl.Fields[0]);
-            var df = tbl.DataFields.Add(tbl.Fields[1]);
+            ExcelPivotTable? tbl = ws.PivotTables.Add(ws.Cells["F1"], ws.Cells["A1:B3"], "CIPivotTable");
+            ExcelPivotTableField? rf = tbl.RowFields.Add(tbl.Fields[0]);
+            ExcelPivotTableDataField? df = tbl.DataFields.Add(tbl.Fields[1]);
             rf.Cache.Refresh();
             Assert.AreEqual(1, rf.Cache.SharedItems.Count);
             Assert.AreEqual("Value1", rf.Cache.SharedItems[0]);
@@ -615,9 +615,9 @@ namespace EPPlusTest.Table.PivotTable
         [TestMethod]
         public void ValidateAttributesWhenNumbericAndMissing()
         {
-            using (var p = new ExcelPackage())
+            using (ExcelPackage? p = new ExcelPackage())
             {
-                var ws = p.Workbook.Worksheets.Add("NumericAndNull");
+                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("NumericAndNull");
                 ws.Cells["A1"].Value = "Int";
                 ws.Cells["A2"].Value = 1;
                 ws.Cells["A3"].Value = 2;
@@ -658,16 +658,16 @@ namespace EPPlusTest.Table.PivotTable
                 ws.Cells["I4"].Value = "Value 3";
 
 
-                var tbl = ws.PivotTables.Add(ws.Cells["K3"], ws.Cells["A1:I4"], "ptNumberMissing");
-                var pf1 = tbl.PageFields.Add(tbl.Fields[0]);
-                var pf2 = tbl.PageFields.Add(tbl.Fields[1]);
-                var pf3 = tbl.PageFields.Add(tbl.Fields[2]);
-                var pf4 = tbl.PageFields.Add(tbl.Fields[3]);
-                var pf5 = tbl.PageFields.Add(tbl.Fields[4]);
-                var pf6 = tbl.PageFields.Add(tbl.Fields[5]);
-                var pf7 = tbl.PageFields.Add(tbl.Fields[6]);
-                var pf8 = tbl.PageFields.Add(tbl.Fields[7]);
-                var pf9 = tbl.PageFields.Add(tbl.Fields[8]);
+                ExcelPivotTable? tbl = ws.PivotTables.Add(ws.Cells["K3"], ws.Cells["A1:I4"], "ptNumberMissing");
+                ExcelPivotTableField? pf1 = tbl.PageFields.Add(tbl.Fields[0]);
+                ExcelPivotTableField? pf2 = tbl.PageFields.Add(tbl.Fields[1]);
+                ExcelPivotTableField? pf3 = tbl.PageFields.Add(tbl.Fields[2]);
+                ExcelPivotTableField? pf4 = tbl.PageFields.Add(tbl.Fields[3]);
+                ExcelPivotTableField? pf5 = tbl.PageFields.Add(tbl.Fields[4]);
+                ExcelPivotTableField? pf6 = tbl.PageFields.Add(tbl.Fields[5]);
+                ExcelPivotTableField? pf7 = tbl.PageFields.Add(tbl.Fields[6]);
+                ExcelPivotTableField? pf8 = tbl.PageFields.Add(tbl.Fields[7]);
+                ExcelPivotTableField? pf9 = tbl.PageFields.Add(tbl.Fields[8]);
 
                 tbl.CacheDefinition.Refresh();
 
@@ -703,7 +703,7 @@ namespace EPPlusTest.Table.PivotTable
 
         private void AssertContains(XmlNode node, string attrName, bool value)
         {
-            var a = node.Attributes[attrName];
+            XmlAttribute? a = node.Attributes[attrName];
             if (a == null)
             {
                 if (value)
@@ -722,20 +722,20 @@ namespace EPPlusTest.Table.PivotTable
         [TestMethod]
         public void CopyPivotTableToExternalPackageSameWorksheetAsData()
         {
-            using (var p = new ExcelPackage())
+            using (ExcelPackage? p = new ExcelPackage())
             {
-                var ws=p.Workbook.Worksheets.Add("data");
+                ExcelWorksheet? ws=p.Workbook.Worksheets.Add("data");
                 LoadTestdata(ws);
 
-                var pivotTable1 = ws.PivotTables.Add(ws.Cells["G1"], ws.Cells["A1:D100"], "PivotTable1");
+                ExcelPivotTable? pivotTable1 = ws.PivotTables.Add(ws.Cells["G1"], ws.Cells["A1:D100"], "PivotTable1");
                 pivotTable1.RowFields.Add(pivotTable1.Fields[0]);
                 pivotTable1.RowFields.Add(pivotTable1.Fields[2]);
                 pivotTable1.DataFields.Add(pivotTable1.Fields[1]);
                 pivotTable1.DataFields.Add(pivotTable1.Fields[3]);
 
-                using(var p2 = new ExcelPackage())
+                using(ExcelPackage? p2 = new ExcelPackage())
                 {
-                    var wsNew = p2.Workbook.Worksheets.Add("PivotCopy", ws);
+                    ExcelWorksheet? wsNew = p2.Workbook.Worksheets.Add("PivotCopy", ws);
                     SaveWorkbook("copiedPivot.xlsx", p2);
                 }
                 SaveWorkbook("Pivot.xlsx", p);

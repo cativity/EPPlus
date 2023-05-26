@@ -273,7 +273,7 @@ namespace OfficeOpenXml.ConditionalFormatting
             {
               for (int i = priority - 1; i >= value; i--)
               {
-                var cfRule = _worksheet.ConditionalFormatting.RulesByPriority(i);
+                IExcelConditionalFormattingRule? cfRule = _worksheet.ConditionalFormatting.RulesByPriority(i);
 
                 if (cfRule != null)
                 {
@@ -285,7 +285,7 @@ namespace OfficeOpenXml.ConditionalFormatting
             {
               for (int i = priority + 1; i <= value; i++)
               {
-                var cfRule = _worksheet.ConditionalFormatting.RulesByPriority(i);
+                IExcelConditionalFormattingRule? cfRule = _worksheet.ConditionalFormatting.RulesByPriority(i);
 
                 if (cfRule != null)
                 {
@@ -599,20 +599,20 @@ namespace OfficeOpenXml.ConditionalFormatting
       set
       {
         // Create/Get the first <formula> node (ensure that it exists)
-        var firstNode = CreateComplexNode(
-          TopNode,
-          string.Format(
-            "{0}[position()=1]",
-          // {0}
-            ExcelConditionalFormattingConstants.Paths.Formula));
+        XmlNode? firstNode = CreateComplexNode(
+                                               TopNode,
+                                               string.Format(
+                                                             "{0}[position()=1]",
+                                                             // {0}
+                                                             ExcelConditionalFormattingConstants.Paths.Formula));
 
         // Create/Get the seconde <formula> node (ensure that it exists)
-        var secondNode = CreateComplexNode(
-          TopNode,
-          string.Format(
-            "{0}[position()=2]",
-          // {0}
-            ExcelConditionalFormattingConstants.Paths.Formula));
+        XmlNode? secondNode = CreateComplexNode(
+                                                TopNode,
+                                                string.Format(
+                                                              "{0}[position()=2]",
+                                                              // {0}
+                                                              ExcelConditionalFormattingConstants.Paths.Formula));
 
         // Save the formula in the second <formula> node
         secondNode.InnerText = value;

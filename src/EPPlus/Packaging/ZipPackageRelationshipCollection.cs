@@ -65,8 +65,8 @@ namespace OfficeOpenXml.Packaging
         }
         internal ZipPackageRelationshipCollection GetRelationshipsByType(string relationshipType)
         {
-            var ret = new ZipPackageRelationshipCollection();
-            foreach (var rel in _rels.Values)
+            ZipPackageRelationshipCollection? ret = new ZipPackageRelationshipCollection();
+            foreach (ZipPackageRelationship? rel in _rels.Values)
             {
                 if (rel.RelationshipType == relationshipType)
                 {
@@ -79,7 +79,7 @@ namespace OfficeOpenXml.Packaging
         internal void WriteZip(ZipOutputStream os, string fileName)
         {
             StringBuilder xml = new StringBuilder("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><Relationships xmlns=\"http://schemas.openxmlformats.org/package/2006/relationships\">");
-            foreach (var rel in _rels.Values)
+            foreach (ZipPackageRelationship? rel in _rels.Values)
             {
                 if(rel.TargetUri==null || rel.TargetUri.OriginalString.StartsWith("Invalid:URI", StringComparison.OrdinalIgnoreCase))
                 {

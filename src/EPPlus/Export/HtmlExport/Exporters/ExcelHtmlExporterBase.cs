@@ -37,7 +37,7 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
             }
             else
             {
-                foreach (var address in range.Addresses)
+                foreach (ExcelAddressBase? address in range.Addresses)
                 {
                     AddRange(range.Worksheet.Cells[address.Address]);
                 }
@@ -51,7 +51,7 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
         internal ExcelHtmlExporterBase(params ExcelRangeBase[] ranges)
         {
             _ranges = new EPPlusReadOnlyList<ExcelRangeBase>();
-            foreach (var range in ranges)
+            foreach (ExcelRangeBase? range in ranges)
             {
                 AddRange(range);
             }

@@ -29,7 +29,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime
             }
             else
             {
-                var d = ArgToDecimal(arguments, argIndex);
+                double d = ArgToDecimal(arguments, argIndex);
                 date = System.DateTime.FromOADate(d);
             }
             return date;

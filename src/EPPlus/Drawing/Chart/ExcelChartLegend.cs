@@ -56,12 +56,12 @@ namespace OfficeOpenXml.Drawing.Chart
             }
 
             _entries = new EPPlusReadOnlyList<ExcelChartLegendEntry>();
-            var e = LoadLegendEntries();
-            foreach (var c in _chart.PlotArea.ChartTypes)
+            List<ExcelChartLegendEntry>? e = LoadLegendEntries();
+            foreach (ExcelChart? c in _chart.PlotArea.ChartTypes)
             {
                 for (int i = 0; i < _chart.Series.Count; i++)
                 {
-                    var ix = e.FindIndex(x => x.Index == i);
+                    int ix = e.FindIndex(x => x.Index == i);
                     if (ix >= 0)
                     {
                         _entries.Add(e[ix]);
@@ -77,16 +77,16 @@ namespace OfficeOpenXml.Drawing.Chart
 
         internal void AddNewEntry(ExcelChartSerie serie)
         {
-            var a = new ExcelAddressBase(serie.Series);
+            ExcelAddressBase? a = new ExcelAddressBase(serie.Series);
             if (a.Rows < 1 || a.Columns < 1)
             {
                 return;
             }
 
-            var seriesCount = (a.Rows == 1 ? a.Rows : a.Columns);
+            int seriesCount = (a.Rows == 1 ? a.Rows : a.Columns);
             for (int i = 0; i < seriesCount; i++)
             {
-                var entry = new ExcelChartLegendEntry(NameSpaceManager, TopNode, (ExcelChartStandard)_chart, _entries.Count);
+                ExcelChartLegendEntry? entry = new ExcelChartLegendEntry(NameSpaceManager, TopNode, (ExcelChartStandard)_chart, _entries.Count);
                 _entries.Add(entry);
             }
         }
@@ -131,8 +131,8 @@ namespace OfficeOpenXml.Drawing.Chart
                 return new List<ExcelChartLegendEntry>(); //Legend entries are not applicable for extended charts.
             }
 
-            var entries = new List<ExcelChartLegendEntry>();
-            var nodes = GetNodes("c:legendEntry");
+            List<ExcelChartLegendEntry>? entries = new List<ExcelChartLegendEntry>();
+            XmlNodeList? nodes = GetNodes("c:legendEntry");
             foreach(XmlNode n in nodes)
             {
                 entries.Add(new ExcelChartLegendEntry(NameSpaceManager, n, (ExcelChartStandard)_chart));

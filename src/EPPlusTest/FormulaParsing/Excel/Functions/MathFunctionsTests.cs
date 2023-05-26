@@ -59,20 +59,20 @@ namespace EPPlusTest.Excel.Functions
         [TestMethod]
         public void PiShouldReturnPIConstant()
         {
-            var expectedValue = (double)Math.Round(Math.PI, 14);
-            var func = new Pi();
-            var args = FunctionsHelper.CreateArgs(0);
-            var result = func.Execute(args, _parsingContext);
+            double expectedValue = (double)Math.Round(Math.PI, 14);
+            Pi? func = new Pi();
+            IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(0);
+            CompileResult? result = func.Execute(args, _parsingContext);
             Assert.AreEqual(expectedValue, result.Result);
         }
 
         [TestMethod]
         public void AbsShouldReturnCorrectResult()
         {
-            var expectedValue = 3d;
-            var func = new Abs();
-            var args = FunctionsHelper.CreateArgs(-3d);
-            var result = func.Execute(args, _parsingContext);
+            double expectedValue = 3d;
+            Abs? func = new Abs();
+            IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(-3d);
+            CompileResult? result = func.Execute(args, _parsingContext);
             Assert.AreEqual(expectedValue, result.Result);
         }
 
@@ -80,10 +80,10 @@ namespace EPPlusTest.Excel.Functions
         public void AsinShouldReturnCorrectResult()
         {
             const double expectedValue = 1.5708;
-            var func = new Asin();
-            var args = FunctionsHelper.CreateArgs(1d);
-            var result = func.Execute(args, _parsingContext);
-            var rounded = Math.Round((double)result.Result, 4);
+            Asin? func = new Asin();
+            IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(1d);
+            CompileResult? result = func.Execute(args, _parsingContext);
+            double rounded = Math.Round((double)result.Result, 4);
             Assert.AreEqual(expectedValue, rounded);
         }
 
@@ -91,70 +91,70 @@ namespace EPPlusTest.Excel.Functions
         public void AsinhShouldReturnCorrectResult()
         {
             const double expectedValue = 0.0998;
-            var func = new Asinh();
-            var args = FunctionsHelper.CreateArgs(0.1d);
-            var result = func.Execute(args, _parsingContext);
-            var rounded = Math.Round((double)result.Result, 4);
+            Asinh? func = new Asinh();
+            IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(0.1d);
+            CompileResult? result = func.Execute(args, _parsingContext);
+            double rounded = Math.Round((double)result.Result, 4);
             Assert.AreEqual(expectedValue, rounded);
         }
 
         [TestMethod]
         public void CombinShouldReturnCorrectResult_6_2()
         {
-            var func = new Combin();
+            Combin? func = new Combin();
 
-            var args = FunctionsHelper.CreateArgs(6, 2);
-            var result = func.Execute(args, _parsingContext);
+            IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(6, 2);
+            CompileResult? result = func.Execute(args, _parsingContext);
             Assert.AreEqual(15d, result.Result);
         }
 
         [TestMethod]
         public void CombinShouldReturnCorrectResult_decimal()
         {
-            var func = new Combin();
+            Combin? func = new Combin();
 
-            var args = FunctionsHelper.CreateArgs(10.456, 3);
-            var result = func.Execute(args, _parsingContext);
+            IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(10.456, 3);
+            CompileResult? result = func.Execute(args, _parsingContext);
             Assert.AreEqual(120d, result.Result);
         }
 
         [TestMethod]
         public void CombinShouldReturnCorrectResult_6_1()
         {
-            var func = new Combin();
+            Combin? func = new Combin();
 
-            var args = FunctionsHelper.CreateArgs(6, 1);
-            var result = func.Execute(args, _parsingContext);
+            IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(6, 1);
+            CompileResult? result = func.Execute(args, _parsingContext);
             Assert.AreEqual(6d, result.Result);
         }
 
         [TestMethod]
         public void CombinaShouldReturnCorrectResult_6_2()
         {
-            var func = new Combina();
+            Combina? func = new Combina();
 
-            var args = FunctionsHelper.CreateArgs(6, 2);
-            var result = func.Execute(args, _parsingContext);
+            IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(6, 2);
+            CompileResult? result = func.Execute(args, _parsingContext);
             Assert.AreEqual(21d, result.Result);
         }
 
         [TestMethod]
         public void CombinaShouldReturnCorrectResult_6_5()
         {
-            var func = new Combina();
+            Combina? func = new Combina();
 
-            var args = FunctionsHelper.CreateArgs(6, 5);
-            var result = func.Execute(args, _parsingContext);
+            IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(6, 5);
+            CompileResult? result = func.Execute(args, _parsingContext);
             Assert.AreEqual(252d, result.Result);
         }
 
         [TestMethod]
         public void PermutationaShouldReturnCorrectResult()
         {
-            var func = new Permutationa();
+            Permutationa? func = new Permutationa();
 
-            var args = FunctionsHelper.CreateArgs(6, 6);
-            var result = func.Execute(args, _parsingContext);
+            IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(6, 6);
+            CompileResult? result = func.Execute(args, _parsingContext);
             Assert.AreEqual(46656d, result.Result);
 
             args = FunctionsHelper.CreateArgs(10, 6);
@@ -165,10 +165,10 @@ namespace EPPlusTest.Excel.Functions
         [TestMethod]
         public void PermutShouldReturnCorrectResult()
         {
-            var func = new Permut();
+            Permut? func = new Permut();
 
-            var args = FunctionsHelper.CreateArgs(6, 6);
-            var result = func.Execute(args, _parsingContext);
+            IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(6, 6);
+            CompileResult? result = func.Execute(args, _parsingContext);
             Assert.AreEqual(720d, result.Result);
 
             args = FunctionsHelper.CreateArgs(10, 6);
@@ -179,136 +179,136 @@ namespace EPPlusTest.Excel.Functions
         [TestMethod]
         public void SecShouldReturnCorrectResult_MinusPi()
         {
-            var func = new Sec();
-            var args = FunctionsHelper.CreateArgs(-3.14159265358979);
-            var result = func.Execute(args, _parsingContext);
+            Sec? func = new Sec();
+            IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(-3.14159265358979);
+            CompileResult? result = func.Execute(args, _parsingContext);
             Assert.AreEqual(-1d, result.Result);
         }
 
         [TestMethod]
         public void SecShouldReturnCorrectResult_Zero()
         {
-            var func = new Sec();
-            var args = FunctionsHelper.CreateArgs(0d);
-            var result = func.Execute(args, _parsingContext);
+            Sec? func = new Sec();
+            IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(0d);
+            CompileResult? result = func.Execute(args, _parsingContext);
             Assert.AreEqual(1d, result.Result);
         }
 
         [TestMethod]
         public void SechShouldReturnCorrectResult_PiDividedBy4()
         {
-            var func = new SecH();
-            var args = FunctionsHelper.CreateArgs(Math.PI / 4);
-            var result = func.Execute(args, _parsingContext).Result;
+            SecH? func = new SecH();
+            IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(Math.PI / 4);
+            object? result = func.Execute(args, _parsingContext).Result;
             Assert.AreEqual(0.7549, Math.Round((double)result, 4));
         }
 
         [TestMethod]
         public void SechShouldReturnCorrectResult_MinusPi()
         {
-            var func = new SecH();
-            var args = FunctionsHelper.CreateArgs(-3.14159265358979);
-            var result = func.Execute(args, _parsingContext).Result;
+            SecH? func = new SecH();
+            IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(-3.14159265358979);
+            object? result = func.Execute(args, _parsingContext).Result;
             Assert.AreEqual(0.08627, Math.Round((double)result, 5));
         }
 
         [TestMethod]
         public void SechShouldReturnCorrectResult_Zero()
         {
-            var func = new SecH();
-            var args = FunctionsHelper.CreateArgs(0d);
-            var result = func.Execute(args, _parsingContext);
+            SecH? func = new SecH();
+            IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(0d);
+            CompileResult? result = func.Execute(args, _parsingContext);
             Assert.AreEqual(1d, result.Result);
         }
 
         [TestMethod]
         public void SecShouldReturnCorrectResult_PiDividedBy4()
         {
-            var func = new Sec();
-            var args = FunctionsHelper.CreateArgs(Math.PI / 4);
-            var result = func.Execute(args, _parsingContext).Result;
+            Sec? func = new Sec();
+            IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(Math.PI / 4);
+            object? result = func.Execute(args, _parsingContext).Result;
             Assert.AreEqual(1.4142, Math.Round((double)result, 4));
         }
 
         [TestMethod]
         public void CscShouldReturnCorrectResult_Minus6()
         {
-            var func = new Csc();
-            var args = FunctionsHelper.CreateArgs(-6);
-            var result = func.Execute(args, _parsingContext).Result;
+            Csc? func = new Csc();
+            IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(-6);
+            object? result = func.Execute(args, _parsingContext).Result;
             Assert.AreEqual(3.5789, Math.Round((double)result, 4));
         }
 
         [TestMethod]
         public void CotShouldReturnCorrectResult_2()
         {
-            var func = new Cot();
-            var args = FunctionsHelper.CreateArgs(2);
-            var result = func.Execute(args, _parsingContext).Result;
+            Cot? func = new Cot();
+            IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(2);
+            object? result = func.Execute(args, _parsingContext).Result;
             Assert.AreEqual(-0.4577, Math.Round((double)result, 4));
         }
 
         [TestMethod]
         public void CothShouldReturnCorrectResult_MinusPi()
         {
-            var func = new Coth();
-            var args = FunctionsHelper.CreateArgs(Math.PI * -1);
-            var result = func.Execute(args, _parsingContext).Result;
+            Coth? func = new Coth();
+            IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(Math.PI * -1);
+            object? result = func.Execute(args, _parsingContext).Result;
             Assert.AreEqual(-1.0037, Math.Round((double)result, 4));
         }
 
         [TestMethod]
         public void AcothShouldReturnCorrectResult_MinusPi()
         {
-            var func = new Acoth();
-            var args = FunctionsHelper.CreateArgs(-5);
-            var result = func.Execute(args, _parsingContext).Result;
+            Acoth? func = new Acoth();
+            IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(-5);
+            object? result = func.Execute(args, _parsingContext).Result;
             Assert.AreEqual(-0.2027, Math.Round((double)result, 4));
         }
 
         [TestMethod]
         public void RadiansShouldReturnCorrectResult_50()
         {
-            var func = new Radians();
-            var args = FunctionsHelper.CreateArgs(50);
-            var result = func.Execute(args, _parsingContext).Result;
+            Radians? func = new Radians();
+            IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(50);
+            object? result = func.Execute(args, _parsingContext).Result;
             Assert.AreEqual(0.8727, Math.Round((double)result, 4));
         }
 
         [TestMethod]
         public void RadiansShouldReturnCorrectResult_360()
         {
-            var func = new Radians();
-            var args = FunctionsHelper.CreateArgs(360);
-            var result = func.Execute(args, _parsingContext).Result;
+            Radians? func = new Radians();
+            IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(360);
+            object? result = func.Execute(args, _parsingContext).Result;
             Assert.AreEqual(6.2832, Math.Round((double)result, 4));
         }
 
         [TestMethod]
         public void AcotShouldReturnCorrectResult_1()
         {
-            var func = new Acot();
-            var args = FunctionsHelper.CreateArgs(1);
-            var result = func.Execute(args, _parsingContext).Result;
+            Acot? func = new Acot();
+            IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(1);
+            object? result = func.Execute(args, _parsingContext).Result;
             Assert.AreEqual(0.7854, Math.Round((double)result, 4));
         }
 
         [TestMethod]
         public void CschShouldReturnCorrectResult_Pi()
         {
-            var func = new Csch();
-            var args = FunctionsHelper.CreateArgs(Math.PI * -1);
-            var result = func.Execute(args, _parsingContext).Result;
+            Csch? func = new Csch();
+            IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(Math.PI * -1);
+            object? result = func.Execute(args, _parsingContext).Result;
             Assert.AreEqual(-0.0866, Math.Round((double)result, 4));
         }
 
         [TestMethod]
         public void RomanShouldReturnCorrectResult()
         {
-            var func = new Roman();
+            Roman? func = new Roman();
 
-            var args = FunctionsHelper.CreateArgs(2);
-            var result = func.Execute(args, _parsingContext).Result;
+            IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(2);
+            object? result = func.Execute(args, _parsingContext).Result;
             Assert.AreEqual("II", result, "2 was not II");
 
             args = FunctionsHelper.CreateArgs(4);
@@ -347,10 +347,10 @@ namespace EPPlusTest.Excel.Functions
         [TestMethod]
         public void RomanType1ShouldReturnCorrectResult()
         {
-            var func = new Roman();
+            Roman? func = new Roman();
 
-            var args = FunctionsHelper.CreateArgs(495, 1);
-            var result = func.Execute(args, _parsingContext).Result;
+            IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(495, 1);
+            object? result = func.Execute(args, _parsingContext).Result;
             Assert.AreEqual("LDVL", result, "495 was not LDVL");
 
             args = FunctionsHelper.CreateArgs(45, 1);
@@ -381,10 +381,10 @@ namespace EPPlusTest.Excel.Functions
         [TestMethod]
         public void RomanType2ShouldReturnCorrectResult()
         {
-            var func = new Roman();
+            Roman? func = new Roman();
 
-            var args = FunctionsHelper.CreateArgs(495, 2);
-            var result = func.Execute(args, _parsingContext).Result;
+            IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(495, 2);
+            object? result = func.Execute(args, _parsingContext).Result;
             Assert.AreEqual("XDV", result, "495 was not XDV");
 
             args = FunctionsHelper.CreateArgs(45, 2);
@@ -415,10 +415,10 @@ namespace EPPlusTest.Excel.Functions
         [TestMethod]
         public void RomanType3ShouldReturnCorrectResult()
         {
-            var func = new Roman();
+            Roman? func = new Roman();
 
-            var args = FunctionsHelper.CreateArgs(495, 3);
-            var result = func.Execute(args, _parsingContext).Result;
+            IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(495, 3);
+            object? result = func.Execute(args, _parsingContext).Result;
             Assert.AreEqual("VD", result, "495 was not VD");
 
             args = FunctionsHelper.CreateArgs(499, 3);
@@ -441,10 +441,10 @@ namespace EPPlusTest.Excel.Functions
         [TestMethod]
         public void RomanType4ShouldReturnCorrectResult()
         {
-            var func = new Roman();
+            Roman? func = new Roman();
 
-            var args = FunctionsHelper.CreateArgs(499, 4);
-            var result = func.Execute(args, _parsingContext).Result;
+            IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(499, 4);
+            object? result = func.Execute(args, _parsingContext).Result;
             Assert.AreEqual("ID", result, "499 was not ID");
 
             args = FunctionsHelper.CreateArgs(999, 4);
@@ -456,11 +456,11 @@ namespace EPPlusTest.Excel.Functions
         public void Roman_should_work_correctly_with_all_possible_arguments_issue_770()
         {
             // This unit test was supplied via Github issue 
-            using (var p = new ExcelPackage())
+            using (ExcelPackage? p = new ExcelPackage())
             {
                 p.Workbook.Worksheets.Add("first");
 
-                var sheet = p.Workbook.Worksheets.First();
+                ExcelWorksheet? sheet = p.Workbook.Worksheets.First();
 
                 sheet.Cells["A1"].Formula = "=Roman(9.99)";
                 sheet.Cells["A2"].Formula = "=Roman(999;1)";
@@ -483,10 +483,10 @@ namespace EPPlusTest.Excel.Functions
         [TestMethod]
         public void GcdShouldReturnCorrectResult()
         {
-            var func = new Gcd();
+            Gcd? func = new Gcd();
 
-            var args = FunctionsHelper.CreateArgs(15, 10, 25);
-            var result = func.Execute(args, _parsingContext).Result;
+            IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(15, 10, 25);
+            object? result = func.Execute(args, _parsingContext).Result;
             Assert.AreEqual(5, result);
 
             args = FunctionsHelper.CreateArgs(0, 8, 12);
@@ -497,10 +497,10 @@ namespace EPPlusTest.Excel.Functions
         [TestMethod]
         public void LcmShouldReturnCorrectResult()
         {
-            var func = new Lcm();
+            Lcm? func = new Lcm();
 
-            var args = FunctionsHelper.CreateArgs(15, 10, 25);
-            var result = func.Execute(args, _parsingContext).Result;
+            IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(15, 10, 25);
+            object? result = func.Execute(args, _parsingContext).Result;
             Assert.AreEqual(150, result);
 
             args = FunctionsHelper.CreateArgs(1, 8, 12);
@@ -511,74 +511,74 @@ namespace EPPlusTest.Excel.Functions
         [TestMethod]
         public void SumShouldCalculate2Plus3AndReturn5()
         {
-            var func = new Sum();
-            var args = FunctionsHelper.CreateArgs(2, 3);
-            var result = func.Execute(args, _parsingContext);
+            Sum? func = new Sum();
+            IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(2, 3);
+            CompileResult? result = func.Execute(args, _parsingContext);
             Assert.AreEqual(5d, result.Result);
         }
 
         [TestMethod]
         public void SumShouldCalculateEnumerableOf2Plus5Plus3AndReturn10()
         {
-            var func = new Sum();
-            var args = FunctionsHelper.CreateArgs(FunctionsHelper.CreateArgs(2, 5), 3);
-            var result = func.Execute(args, _parsingContext);
+            Sum? func = new Sum();
+            IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(FunctionsHelper.CreateArgs(2, 5), 3);
+            CompileResult? result = func.Execute(args, _parsingContext);
             Assert.AreEqual(10d, result.Result);
         }
 
         [TestMethod]
         public void SumShouldIgnoreHiddenValuesWhenIgnoreHiddenValuesIsSet()
         {
-            var func = new Sum();
+            Sum? func = new Sum();
             func.IgnoreHiddenValues = true;
-            var args = FunctionsHelper.CreateArgs(FunctionsHelper.CreateArgs(2, 5), 3, 4);
+            IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(FunctionsHelper.CreateArgs(2, 5), 3, 4);
             args.Last().SetExcelStateFlag(ExcelCellState.HiddenCell);
-            var result = func.Execute(args, _parsingContext);
+            CompileResult? result = func.Execute(args, _parsingContext);
             Assert.AreEqual(10d, result.Result);
         }
 
         [TestMethod]
         public void SumSqShouldCalculateArray()
         {
-            var func = new Sumsq();
-            var args = FunctionsHelper.CreateArgs(2, 4);
-            var result = func.Execute(args, _parsingContext);
+            Sumsq? func = new Sumsq();
+            IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(2, 4);
+            CompileResult? result = func.Execute(args, _parsingContext);
             Assert.AreEqual(20d, result.Result);
         }
 
         [TestMethod]
         public void SumSqShouldIncludeTrueAsOne()
         {
-            var func = new Sumsq();
-            var args = FunctionsHelper.CreateArgs(2, 4, true);
-            var result = func.Execute(args, _parsingContext);
+            Sumsq? func = new Sumsq();
+            IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(2, 4, true);
+            CompileResult? result = func.Execute(args, _parsingContext);
             Assert.AreEqual(21d, result.Result);
         }
 
         [TestMethod]
         public void SumSqShouldNoCountTrueTrueInArray()
         {
-            var func = new Sumsq();
-            var args = FunctionsHelper.CreateArgs(FunctionsHelper.CreateArgs(2, 4, true));
-            var result = func.Execute(args, _parsingContext);
+            Sumsq? func = new Sumsq();
+            IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(FunctionsHelper.CreateArgs(2, 4, true));
+            CompileResult? result = func.Execute(args, _parsingContext);
             Assert.AreEqual(20d, result.Result);
         }
 
         [TestMethod]
         public void StdevShouldCalculateCorrectResult()
         {
-            var func = new Stdev();
-            var args = FunctionsHelper.CreateArgs(1, 3, 5);
-            var result = func.Execute(args, _parsingContext);
+            Stdev? func = new Stdev();
+            IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(1, 3, 5);
+            CompileResult? result = func.Execute(args, _parsingContext);
             Assert.AreEqual(2d, result.Result);
         }
 
         [TestMethod]
         public void StdevaShouldCalculateCorrectResult()
         {
-            var func = new Stdeva();
-            var args = FunctionsHelper.CreateArgs(1, 3, 5, 2);
-            var result = func.Execute(args, _parsingContext);
+            Stdeva? func = new Stdeva();
+            IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(1, 3, 5, 2);
+            CompileResult? result = func.Execute(args, _parsingContext);
             Assert.AreEqual(1.7078d, System.Math.Round((double)result.Result, 4));
 
             args = FunctionsHelper.CreateArgs(1, 3, 5, 2, true, "text");
@@ -589,9 +589,9 @@ namespace EPPlusTest.Excel.Functions
         [TestMethod]
         public void StdevpaShouldCalculateCorrectResult()
         {
-            var func = new Stdevpa();
-            var args = FunctionsHelper.CreateArgs(1, 3, 5, 2);
-            var result = func.Execute(args, _parsingContext);
+            Stdevpa? func = new Stdevpa();
+            IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(1, 3, 5, 2);
+            CompileResult? result = func.Execute(args, _parsingContext);
             Assert.AreEqual(1.479d, System.Math.Round((double)result.Result, 4));
 
             args = FunctionsHelper.CreateArgs(1, 3, 5, 2, true, "text");
@@ -602,72 +602,72 @@ namespace EPPlusTest.Excel.Functions
         [TestMethod]
         public void StdevShouldIgnoreHiddenValuesWhenIgnoreHiddenValuesIsSet()
         {
-            var func = new Stdev();
+            Stdev? func = new Stdev();
             func.IgnoreHiddenValues = true;
-            var args = FunctionsHelper.CreateArgs(1, 3, 5, 6);
+            IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(1, 3, 5, 6);
             args.Last().SetExcelStateFlag(ExcelCellState.HiddenCell);
-            var result = func.Execute(args, _parsingContext);
+            CompileResult? result = func.Execute(args, _parsingContext);
             Assert.AreEqual(2d, result.Result);
         }
 
         [TestMethod]
         public void StdevPShouldCalculateCorrectResult()
         {
-            var func = new StdevP();
-            var args = FunctionsHelper.CreateArgs(2, 3, 4);
-            var result = func.Execute(args, _parsingContext);
+            StdevP? func = new StdevP();
+            IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(2, 3, 4);
+            CompileResult? result = func.Execute(args, _parsingContext);
             Assert.AreEqual(0.8165d, Math.Round((double)result.Result, 5));
         }
 
         [TestMethod]
         public void StdevPShouldIgnoreHiddenValuesWhenIgnoreHiddenValuesIsSet()
         {
-            var func = new StdevP();
+            StdevP? func = new StdevP();
             func.IgnoreHiddenValues = true;
-            var args = FunctionsHelper.CreateArgs(2, 3, 4, 165);
+            IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(2, 3, 4, 165);
             args.Last().SetExcelStateFlag(ExcelCellState.HiddenCell);
-            var result = func.Execute(args, _parsingContext);
+            CompileResult? result = func.Execute(args, _parsingContext);
             Assert.AreEqual(0.8165d, Math.Round((double)result.Result, 5));
         }
 
         [TestMethod]
         public void ExpShouldCalculateCorrectResult()
         {
-            var func = new Exp();
-            var args = FunctionsHelper.CreateArgs(4);
-            var result = func.Execute(args, _parsingContext);
+            Exp? func = new Exp();
+            IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(4);
+            CompileResult? result = func.Execute(args, _parsingContext);
             Assert.AreEqual(54.59815003d, System.Math.Round((double)result.Result, 8));
         }
 
         [TestMethod]
         public void MaxShouldCalculateCorrectResult()
         {
-            var func = new Max();
-            var args = FunctionsHelper.CreateArgs(4, 2, 5, 2);
-            var result = func.Execute(args, _parsingContext);
+            Max? func = new Max();
+            IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(4, 2, 5, 2);
+            CompileResult? result = func.Execute(args, _parsingContext);
             Assert.AreEqual(5d, result.Result);
         }
 
         [TestMethod]
         public void MaxShouldIgnoreHiddenValuesIfIgnoreHiddenValuesIsTrue()
         {
-            var func = new Max();
+            Max? func = new Max();
             func.IgnoreHiddenValues = true;
-            var args = FunctionsHelper.CreateArgs(4, 2, 5, 2);
+            IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(4, 2, 5, 2);
             args.ElementAt(2).SetExcelStateFlag(ExcelCellState.HiddenCell);
-            var result = func.Execute(args, _parsingContext);
+            CompileResult? result = func.Execute(args, _parsingContext);
             Assert.AreEqual(4d, result.Result);
         }
 
         [TestMethod]
         public void MaxShouldHandleEmptyRange()
         {
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var sheet = package.Workbook.Worksheets.Add("test");
+                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
                 sheet.Cells["A5"].Formula = "MAX(A1:A4)";
                 sheet.Calculate();
-                var value = sheet.Cells["A5"].Value;
+                object? value = sheet.Cells["A5"].Value;
                 Assert.AreEqual(0d, value);
             }
         }
@@ -675,59 +675,59 @@ namespace EPPlusTest.Excel.Functions
         [TestMethod]
         public void MaxaShouldCalculateCorrectResult()
         {
-            var func = new Maxa();
-            var args = FunctionsHelper.CreateArgs(-1, 0, 1);
-            var result = func.Execute(args, _parsingContext);
+            Maxa? func = new Maxa();
+            IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(-1, 0, 1);
+            CompileResult? result = func.Execute(args, _parsingContext);
             Assert.AreEqual(1d, result.Result);
         }
 
         [TestMethod]
         public void MaxaShouldCalculateCorrectResultUsingBool()
         {
-            var func = new Maxa();
-            var args = FunctionsHelper.CreateArgs(-1, 0, true);
-            var result = func.Execute(args, _parsingContext);
+            Maxa? func = new Maxa();
+            IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(-1, 0, true);
+            CompileResult? result = func.Execute(args, _parsingContext);
             Assert.AreEqual(1d, result.Result);
         }
 
         [TestMethod]
         public void MaxaShouldCalculateCorrectResultUsingString()
         {
-            var func = new Maxa();
-            var args = FunctionsHelper.CreateArgs(-1, "test");
-            var result = func.Execute(args, _parsingContext);
+            Maxa? func = new Maxa();
+            IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(-1, "test");
+            CompileResult? result = func.Execute(args, _parsingContext);
             Assert.AreEqual(0d, result.Result);
         }
 
         [TestMethod]
         public void MinShouldCalculateCorrectResult()
         {
-            var func = new Min();
-            var args = FunctionsHelper.CreateArgs(4, 2, 5, 2);
-            var result = func.Execute(args, _parsingContext);
+            Min? func = new Min();
+            IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(4, 2, 5, 2);
+            CompileResult? result = func.Execute(args, _parsingContext);
             Assert.AreEqual(2d, result.Result);
         }
 
         [TestMethod]
         public void MinShouldIgnoreHiddenValuesIfIgnoreHiddenValuesIsTrue()
         {
-            var func = new Min();
+            Min? func = new Min();
             func.IgnoreHiddenValues = true;
-            var args = FunctionsHelper.CreateArgs(4, 2, 5, 3);
+            IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(4, 2, 5, 3);
             args.ElementAt(1).SetExcelStateFlag(ExcelCellState.HiddenCell);
-            var result = func.Execute(args, _parsingContext);
+            CompileResult? result = func.Execute(args, _parsingContext);
             Assert.AreEqual(3d, result.Result);
         }
 
         [TestMethod]
         public void MinShouldHandleEmptyRange()
         {
-            using(var package = new ExcelPackage())
+            using(ExcelPackage? package = new ExcelPackage())
             {
-                var sheet = package.Workbook.Worksheets.Add("test");
+                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
                 sheet.Cells["A5"].Formula = "MIN(A1:A4)";
                 sheet.Calculate();
-                var value = sheet.Cells["A5"].Value;
+                object? value = sheet.Cells["A5"].Value;
                 Assert.AreEqual(0d, value);
             }
         }
@@ -735,32 +735,32 @@ namespace EPPlusTest.Excel.Functions
         [TestMethod]
         public void AverageShouldCalculateCorrectResult()
         {
-            var expectedResult = (4d + 2d + 5d + 2d) / 4d;
-            var func = new Average();
-            var args = FunctionsHelper.CreateArgs(4d, 2d, 5d, 2d);
-            var result = func.Execute(args, _parsingContext);
+            double expectedResult = (4d + 2d + 5d + 2d) / 4d;
+            Average? func = new Average();
+            IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(4d, 2d, 5d, 2d);
+            CompileResult? result = func.Execute(args, _parsingContext);
             Assert.AreEqual(expectedResult, result.Result);
         }
 
         [TestMethod]
         public void AverageShouldCalculateCorrectResultWithEnumerableAndBoolMembers()
         {
-            var expectedResult = (4d + 2d + 5d + 2d + 1d) / 5d;
-            var func = new Average();
-            var args = FunctionsHelper.CreateArgs(FunctionsHelper.CreateArgs(4d, 2d), 5d, 2d, true);
-            var result = func.Execute(args, _parsingContext);
+            double expectedResult = (4d + 2d + 5d + 2d + 1d) / 5d;
+            Average? func = new Average();
+            IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(FunctionsHelper.CreateArgs(4d, 2d), 5d, 2d, true);
+            CompileResult? result = func.Execute(args, _parsingContext);
             Assert.AreEqual(expectedResult, result.Result);
         }
 
         [TestMethod]
         public void AverageShouldIgnoreHiddenFieldsIfIgnoreHiddenValuesIsTrue()
         {
-            var expectedResult = (4d + 2d + 2d + 1d) / 4d;
-            var func = new Average();
+            double expectedResult = (4d + 2d + 2d + 1d) / 4d;
+            Average? func = new Average();
             func.IgnoreHiddenValues = true;
-            var args = FunctionsHelper.CreateArgs(FunctionsHelper.CreateArgs(4d, 2d), 5d, 2d, true);
+            IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(FunctionsHelper.CreateArgs(4d, 2d), 5d, 2d, true);
             args.ElementAt(1).SetExcelStateFlag(ExcelCellState.HiddenCell);
-            var result = func.Execute(args, _parsingContext);
+            CompileResult? result = func.Execute(args, _parsingContext);
             Assert.AreEqual(expectedResult, result.Result);
         }
 
@@ -769,8 +769,8 @@ namespace EPPlusTest.Excel.Functions
         {
             eErrorType errorType = eErrorType.Value;
 
-            var func = new Average();
-            var args = new FunctionArgument[0];
+            Average? func = new Average();
+            FunctionArgument[]? args = new FunctionArgument[0];
             try
             {
                 func.Execute(args, _parsingContext);
@@ -785,75 +785,75 @@ namespace EPPlusTest.Excel.Functions
         [TestMethod]
         public void AverageAShouldCalculateCorrectResult()
         {
-            var expectedResult = (4d + 2d + 5d + 2d) / 4d;
-            var func = new AverageA();
-            var args = FunctionsHelper.CreateArgs(4d, 2d, 5d, 2d);
-            var result = func.Execute(args, _parsingContext);
+            double expectedResult = (4d + 2d + 5d + 2d) / 4d;
+            AverageA? func = new AverageA();
+            IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(4d, 2d, 5d, 2d);
+            CompileResult? result = func.Execute(args, _parsingContext);
             Assert.AreEqual(expectedResult, result.Result);
         }
 
         [TestMethod]
         public void AverageAShouldIncludeTrueAs1()
         {
-            var expectedResult = (4d + 2d + 5d + 2d + 1d) / 5d;
-            var func = new AverageA();
-            var args = FunctionsHelper.CreateArgs(4d, 2d, 5d, 2d, true);
-            var result = func.Execute(args, _parsingContext);
+            double expectedResult = (4d + 2d + 5d + 2d + 1d) / 5d;
+            AverageA? func = new AverageA();
+            IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(4d, 2d, 5d, 2d, true);
+            CompileResult? result = func.Execute(args, _parsingContext);
             Assert.AreEqual(expectedResult, result.Result);
         }
 
         [TestMethod, ExpectedException(typeof(ExcelErrorValueException))]
         public void AverageAShouldThrowValueExceptionIfNonNumericTextIsSupplied()
         {
-            var func = new AverageA();
-            var args = FunctionsHelper.CreateArgs(4d, 2d, 5d, 2d, "ABC");
-            var result = func.Execute(args, _parsingContext);
+            AverageA? func = new AverageA();
+            IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(4d, 2d, 5d, 2d, "ABC");
+            CompileResult? result = func.Execute(args, _parsingContext);
         }
 
         [TestMethod]
         public void AverageAShouldCountValueAs0IfNonNumericTextIsSuppliedInArray()
         {
-            var func = new AverageA();
-            var args = FunctionsHelper.CreateArgs(FunctionsHelper.CreateArgs(1d, 2d, 3d, "ABC"));
-            var result = func.Execute(args, _parsingContext);
+            AverageA? func = new AverageA();
+            IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(FunctionsHelper.CreateArgs(1d, 2d, 3d, "ABC"));
+            CompileResult? result = func.Execute(args, _parsingContext);
             Assert.AreEqual(1.5d, result.Result);
         }
 
         [TestMethod]
         public void AverageAShouldCountNumericStringWithValue()
         {
-            var func = new AverageA();
-            var args = FunctionsHelper.CreateArgs(4d, 2d, "9");
-            var result = func.Execute(args, _parsingContext);
+            AverageA? func = new AverageA();
+            IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(4d, 2d, "9");
+            CompileResult? result = func.Execute(args, _parsingContext);
             Assert.AreEqual(5d, result.Result);
         }
 
         [TestMethod]
         public void RoundShouldReturnCorrectResult()
         {
-            var func = new Round();
-            var args = FunctionsHelper.CreateArgs(2.3433, 3);
-            var result = func.Execute(args, _parsingContext);
+            Round? func = new Round();
+            IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(2.3433, 3);
+            CompileResult? result = func.Execute(args, _parsingContext);
             Assert.AreEqual(2.343d, result.Result);
         }
 
         [TestMethod]
         public void RoundShouldReturnCorrectResultWhenNbrOfDecimalsIsNegative()
         {
-            var func = new Round();
-            var args = FunctionsHelper.CreateArgs(9333, -3);
-            var result = func.Execute(args, _parsingContext);
+            Round? func = new Round();
+            IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(9333, -3);
+            CompileResult? result = func.Execute(args, _parsingContext);
             Assert.AreEqual(9000d, result.Result);
         }
 
         [TestMethod]
         public void RandShouldReturnAValueBetween0and1()
         {
-            var func = new Rand();
-            var args = new FunctionArgument[0];
-            var result1 = func.Execute(args, _parsingContext);
+            Rand? func = new Rand();
+            FunctionArgument[]? args = new FunctionArgument[0];
+            CompileResult? result1 = func.Execute(args, _parsingContext);
             Assert.IsTrue(((double)result1.Result) > 0 && ((double)result1.Result) < 1);
-            var result2 = func.Execute(args, _parsingContext);
+            CompileResult? result2 = func.Execute(args, _parsingContext);
             Assert.AreNotEqual(result1.Result, result2.Result, "The two numbers were the same");
             Assert.IsTrue(((double)result2.Result) > 0 && ((double)result2.Result) < 1);
         }
@@ -861,36 +861,36 @@ namespace EPPlusTest.Excel.Functions
         [TestMethod]
         public void RandBetweenShouldReturnAnIntegerValueBetweenSuppliedValues()
         {
-            var func = new RandBetween();
-            var args = FunctionsHelper.CreateArgs(1, 5);
-            var result = func.Execute(args, _parsingContext);
+            RandBetween? func = new RandBetween();
+            IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(1, 5);
+            CompileResult? result = func.Execute(args, _parsingContext);
             CollectionAssert.Contains(new List<double> { 1d, 2d, 3d, 4d, 5d }, result.Result);
         }
 
         [TestMethod]
         public void RandBetweenShouldReturnAnIntegerValueBetweenSuppliedValuesWhenLowIsNegative()
         {
-            var func = new RandBetween();
-            var args = FunctionsHelper.CreateArgs(-5, 0);
-            var result = func.Execute(args, _parsingContext);
+            RandBetween? func = new RandBetween();
+            IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(-5, 0);
+            CompileResult? result = func.Execute(args, _parsingContext);
             CollectionAssert.Contains(new List<double> { 0d, -1d, -2d, -3d, -4d, -5d }, result.Result);
         }
 
         [TestMethod]
         public void CountShouldReturnNumberOfNumericItems()
         {
-            var func = new Count();
-            var args = FunctionsHelper.CreateArgs(1d, 2m, 3, new DateTime(2012, 4, 1), "4");
-            var result = func.Execute(args, _parsingContext);
+            Count? func = new Count();
+            IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(1d, 2m, 3, new DateTime(2012, 4, 1), "4");
+            CompileResult? result = func.Execute(args, _parsingContext);
             Assert.AreEqual(5d, result.Result);
         }
 
         [TestMethod]
         public void CountShouldIncludeNumericStringsAndDatesInArray()
         {
-            var func = new Count();
-            var args = FunctionsHelper.CreateArgs(FunctionsHelper.CreateArgs(1d, 2m, 3, new DateTime(2012, 4, 1), "4"));
-            var result = func.Execute(args, _parsingContext);
+            Count? func = new Count();
+            IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(FunctionsHelper.CreateArgs(1d, 2m, 3, new DateTime(2012, 4, 1), "4"));
+            CompileResult? result = func.Execute(args, _parsingContext);
             Assert.AreEqual(5d, result.Result);
         }
 
@@ -898,105 +898,105 @@ namespace EPPlusTest.Excel.Functions
         [TestMethod]
         public void CountShouldIncludeEnumerableMembers()
         {
-            var func = new Count();
-            var args = FunctionsHelper.CreateArgs(1d, FunctionsHelper.CreateArgs(12, 13));
-            var result = func.Execute(args, _parsingContext);
+            Count? func = new Count();
+            IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(1d, FunctionsHelper.CreateArgs(12, 13));
+            CompileResult? result = func.Execute(args, _parsingContext);
             Assert.AreEqual(3d, result.Result);
         }
 
         [TestMethod, Ignore]
         public void CountShouldIgnoreHiddenValuesIfIgnoreHiddenValuesIsTrue()
         {
-            var func = new Count();
+            Count? func = new Count();
             func.IgnoreHiddenValues = true;
-            var args = FunctionsHelper.CreateArgs(1d, FunctionsHelper.CreateArgs(12, 13));
+            IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(1d, FunctionsHelper.CreateArgs(12, 13));
             args.ElementAt(0).SetExcelStateFlag(ExcelCellState.HiddenCell);
-            var result = func.Execute(args, _parsingContext);
+            CompileResult? result = func.Execute(args, _parsingContext);
             Assert.AreEqual(2d, result.Result);
         }
 
         [TestMethod]
         public void CountAShouldCountEmptyString()
         {
-            var func = new CountA();
-            var args = FunctionsHelper.CreateArgs(1d, 2m, 3, new DateTime(2012, 4, 1), "4", null, string.Empty);
-            var result = func.Execute(args, _parsingContext);
+            CountA? func = new CountA();
+            IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(1d, 2m, 3, new DateTime(2012, 4, 1), "4", null, string.Empty);
+            CompileResult? result = func.Execute(args, _parsingContext);
             Assert.AreEqual(6d, result.Result);
         }
 
         [TestMethod]
         public void CountAShouldIncludeEnumerableMembers()
         {
-            var func = new CountA();
-            var args = FunctionsHelper.CreateArgs(1d, FunctionsHelper.CreateArgs(12, 13));
-            var result = func.Execute(args, _parsingContext);
+            CountA? func = new CountA();
+            IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(1d, FunctionsHelper.CreateArgs(12, 13));
+            CompileResult? result = func.Execute(args, _parsingContext);
             Assert.AreEqual(3d, result.Result);
         }
 
         [TestMethod]
         public void CountAShouldIgnoreHiddenValuesIfIgnoreHiddenValuesIsTrue()
         {
-            var func = new CountA();
+            CountA? func = new CountA();
             func.IgnoreHiddenValues = true;
-            var args = FunctionsHelper.CreateArgs(1d, FunctionsHelper.CreateArgs(12, 13));
+            IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(1d, FunctionsHelper.CreateArgs(12, 13));
             args.ElementAt(0).SetExcelStateFlag(ExcelCellState.HiddenCell);
-            var result = func.Execute(args, _parsingContext);
+            CompileResult? result = func.Execute(args, _parsingContext);
             Assert.AreEqual(2d, result.Result);
         }
 
         [TestMethod]
         public void ProductShouldMultiplyArguments()
         {
-            var func = new Product();
-            var args = FunctionsHelper.CreateArgs(2d, 2d, 4d);
-            var result = func.Execute(args, _parsingContext);
+            Product? func = new Product();
+            IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(2d, 2d, 4d);
+            CompileResult? result = func.Execute(args, _parsingContext);
             Assert.AreEqual(16d, result.Result);
         }
 
         [TestMethod]
         public void ProductShouldHandleEnumerable()
         {
-            var func = new Product();
-            var args = FunctionsHelper.CreateArgs(2d, 2d, FunctionsHelper.CreateArgs(4d, 2d));
-            var result = func.Execute(args, _parsingContext);
+            Product? func = new Product();
+            IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(2d, 2d, FunctionsHelper.CreateArgs(4d, 2d));
+            CompileResult? result = func.Execute(args, _parsingContext);
             Assert.AreEqual(32d, result.Result);
         }
 
         [TestMethod]
         public void ProductShouldIgnoreHiddenValuesIfIgnoreHiddenIsTrue()
         {
-            var func = new Product();
+            Product? func = new Product();
             func.IgnoreHiddenValues = true;
-            var args = FunctionsHelper.CreateArgs(2d, 2d, FunctionsHelper.CreateArgs(4d, 2d));
+            IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(2d, 2d, FunctionsHelper.CreateArgs(4d, 2d));
             args.ElementAt(1).SetExcelStateFlag(ExcelCellState.HiddenCell);
-            var result = func.Execute(args, _parsingContext);
+            CompileResult? result = func.Execute(args, _parsingContext);
             Assert.AreEqual(16d, result.Result);
         }
 
         [TestMethod]
         public void ProductShouldHandleFirstItemIsEnumerable()
         {
-            var func = new Product();
-            var args = FunctionsHelper.CreateArgs(FunctionsHelper.CreateArgs(4d, 2d), 2d, 2d);
-            var result = func.Execute(args, _parsingContext);
+            Product? func = new Product();
+            IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(FunctionsHelper.CreateArgs(4d, 2d), 2d, 2d);
+            CompileResult? result = func.Execute(args, _parsingContext);
             Assert.AreEqual(32d, result.Result);
         }
 
         [TestMethod]
         public void VarShouldReturnCorrectResult()
         {
-            var func = new Var();
-            var args = FunctionsHelper.CreateArgs(1, 2, 3, 4);
-            var result = func.Execute(args, _parsingContext);
+            Var? func = new Var();
+            IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(1, 2, 3, 4);
+            CompileResult? result = func.Execute(args, _parsingContext);
             Assert.AreEqual(1.6667d, System.Math.Round((double)result.Result, 4));
         }
 
         [TestMethod]
         public void VaraShouldReturnCorrectResult()
         {
-            var func = new Vara();
-            var args = FunctionsHelper.CreateArgs(1, 3, 5, 2);
-            var result = func.Execute(args, _parsingContext);
+            Vara? func = new Vara();
+            IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(1, 3, 5, 2);
+            CompileResult? result = func.Execute(args, _parsingContext);
             Assert.AreEqual(2.9167d, System.Math.Round((double)result.Result, 4));
 
             args = FunctionsHelper.CreateArgs(1, 3, 5, 2, true, "text");
@@ -1007,9 +1007,9 @@ namespace EPPlusTest.Excel.Functions
         [TestMethod]
         public void VarpaShouldReturnCorrectResult()
         {
-            var func = new Varpa();
-            var args = FunctionsHelper.CreateArgs(1, 3, 5, 2);
-            var result = func.Execute(args, _parsingContext);
+            Varpa? func = new Varpa();
+            IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(1, 3, 5, 2);
+            CompileResult? result = func.Execute(args, _parsingContext);
             Assert.AreEqual(2.1875, System.Math.Round((double)result.Result, 4));
 
             args = FunctionsHelper.CreateArgs(1, 3, 5, 2, true, "text");
@@ -1020,469 +1020,469 @@ namespace EPPlusTest.Excel.Functions
         [TestMethod]
         public void VarDotSShouldReturnCorrectResult()
         {
-            var func = new VarDotS();
-            var args = FunctionsHelper.CreateArgs(1, 2, 3, 4);
-            var result = func.Execute(args, _parsingContext);
+            VarDotS? func = new VarDotS();
+            IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(1, 2, 3, 4);
+            CompileResult? result = func.Execute(args, _parsingContext);
             Assert.AreEqual(1.6667d, System.Math.Round((double)result.Result, 4));
         }
 
         [TestMethod]
         public void VarShouldIgnoreHiddenValuesIfIgnoreHiddenIsTrue()
         {
-            var func = new Var();
+            Var? func = new Var();
             func.IgnoreHiddenValues = true;
-            var args = FunctionsHelper.CreateArgs(1, 2, 3, 4, 9);
+            IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(1, 2, 3, 4, 9);
             args.Last().SetExcelStateFlag(ExcelCellState.HiddenCell);
-            var result = func.Execute(args, _parsingContext);
+            CompileResult? result = func.Execute(args, _parsingContext);
             Assert.AreEqual(1.6667d, System.Math.Round((double)result.Result, 4));
         }
 
         [TestMethod]
         public void VarPShouldReturnCorrectResult()
         {
-            var func = new VarP();
-            var args = FunctionsHelper.CreateArgs(1, 2, 3, 4);
-            var result = func.Execute(args, _parsingContext);
+            VarP? func = new VarP();
+            IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(1, 2, 3, 4);
+            CompileResult? result = func.Execute(args, _parsingContext);
             Assert.AreEqual(1.25d, result.Result);
         }
 
         [TestMethod]
         public void VarDotPShouldReturnCorrectResult()
         {
-            var func = new VarDotP();
-            var args = FunctionsHelper.CreateArgs(1, 2, 3, 4);
-            var result = func.Execute(args, _parsingContext);
+            VarDotP? func = new VarDotP();
+            IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(1, 2, 3, 4);
+            CompileResult? result = func.Execute(args, _parsingContext);
             Assert.AreEqual(1.25d, result.Result);
         }
 
         [TestMethod]
         public void VarPShouldIgnoreHiddenValuesIfIgnoreHiddenIsTrue()
         {
-            var func = new VarP();
+            VarP? func = new VarP();
             func.IgnoreHiddenValues = true;
-            var args = FunctionsHelper.CreateArgs(1, 2, 3, 4, 9);
+            IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(1, 2, 3, 4, 9);
             args.Last().SetExcelStateFlag(ExcelCellState.HiddenCell);
-            var result = func.Execute(args, _parsingContext);
+            CompileResult? result = func.Execute(args, _parsingContext);
             Assert.AreEqual(1.25d, result.Result);
         }
 
         [TestMethod]
         public void ModShouldReturnCorrectResult()
         {
-            var func = new Mod();
-            var args = FunctionsHelper.CreateArgs(5, 2);
-            var result = func.Execute(args, _parsingContext);
+            Mod? func = new Mod();
+            IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(5, 2);
+            CompileResult? result = func.Execute(args, _parsingContext);
             Assert.AreEqual(1d, result.Result);
         }
 
         [TestMethod]
         public void CosShouldReturnCorrectResult()
         {
-            var func = new Cos();
-            var args = FunctionsHelper.CreateArgs(2);
-            var result = func.Execute(args, _parsingContext);
-            var roundedResult = Math.Round((double)result.Result, 9);
+            Cos? func = new Cos();
+            IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(2);
+            CompileResult? result = func.Execute(args, _parsingContext);
+            double roundedResult = Math.Round((double)result.Result, 9);
             Assert.AreEqual(-0.416146837d, roundedResult);
         }
 
         [TestMethod]
         public void CosHShouldReturnCorrectResult()
         {
-            var func = new Cosh();
-            var args = FunctionsHelper.CreateArgs(2);
-            var result = func.Execute(args, _parsingContext);
-            var roundedResult = Math.Round((double)result.Result, 9);
+            Cosh? func = new Cosh();
+            IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(2);
+            CompileResult? result = func.Execute(args, _parsingContext);
+            double roundedResult = Math.Round((double)result.Result, 9);
             Assert.AreEqual(3.762195691, roundedResult);
         }
 
         [TestMethod]
         public void AcosShouldReturnCorrectResult()
         {
-            var func = new Acos();
-            var args = FunctionsHelper.CreateArgs(0.1);
-            var result = func.Execute(args, _parsingContext);
-            var roundedResult = Math.Round((double)result.Result, 4);
+            Acos? func = new Acos();
+            IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(0.1);
+            CompileResult? result = func.Execute(args, _parsingContext);
+            double roundedResult = Math.Round((double)result.Result, 4);
             Assert.AreEqual(1.4706, roundedResult);
         }
 
         [TestMethod]
         public void ACosHShouldReturnCorrectResult()
         {
-            var func = new Acosh();
-            var args = FunctionsHelper.CreateArgs(2);
-            var result = func.Execute(args, _parsingContext);
-            var roundedResult = Math.Round((double)result.Result, 3);
+            Acosh? func = new Acosh();
+            IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(2);
+            CompileResult? result = func.Execute(args, _parsingContext);
+            double roundedResult = Math.Round((double)result.Result, 3);
             Assert.AreEqual(1.317, roundedResult);
         }
 
         [TestMethod]
         public void SinShouldReturnCorrectResult()
         {
-            var func = new Sin();
-            var args = FunctionsHelper.CreateArgs(2);
-            var result = func.Execute(args, _parsingContext);
-            var roundedResult = Math.Round((double)result.Result, 9);
+            Sin? func = new Sin();
+            IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(2);
+            CompileResult? result = func.Execute(args, _parsingContext);
+            double roundedResult = Math.Round((double)result.Result, 9);
             Assert.AreEqual(0.909297427, roundedResult);
         }
 
         [TestMethod]
         public void SinhShouldReturnCorrectResult()
         {
-            var func = new Sinh();
-            var args = FunctionsHelper.CreateArgs(2);
-            var result = func.Execute(args, _parsingContext);
-            var roundedResult = Math.Round((double)result.Result, 9);
+            Sinh? func = new Sinh();
+            IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(2);
+            CompileResult? result = func.Execute(args, _parsingContext);
+            double roundedResult = Math.Round((double)result.Result, 9);
             Assert.AreEqual(3.626860408d, roundedResult);
         }
 
         [TestMethod]
         public void TanShouldReturnCorrectResult()
         {
-            var func = new Tan();
-            var args = FunctionsHelper.CreateArgs(2);
-            var result = func.Execute(args, _parsingContext);
-            var roundedResult = Math.Round((double)result.Result, 9);
+            Tan? func = new Tan();
+            IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(2);
+            CompileResult? result = func.Execute(args, _parsingContext);
+            double roundedResult = Math.Round((double)result.Result, 9);
             Assert.AreEqual(-2.185039863d, roundedResult);
         }
 
         [TestMethod]
         public void TanhShouldReturnCorrectResult()
         {
-            var func = new Tanh();
-            var args = FunctionsHelper.CreateArgs(2);
-            var result = func.Execute(args, _parsingContext);
-            var roundedResult = Math.Round((double)result.Result, 9);
+            Tanh? func = new Tanh();
+            IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(2);
+            CompileResult? result = func.Execute(args, _parsingContext);
+            double roundedResult = Math.Round((double)result.Result, 9);
             Assert.AreEqual(0.96402758d, roundedResult);
         }
 
         [TestMethod]
         public void AtanShouldReturnCorrectResult()
         {
-            var func = new Atan();
-            var args = FunctionsHelper.CreateArgs(10);
-            var result = func.Execute(args, _parsingContext);
-            var roundedResult = Math.Round((double)result.Result, 9);
+            Atan? func = new Atan();
+            IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(10);
+            CompileResult? result = func.Execute(args, _parsingContext);
+            double roundedResult = Math.Round((double)result.Result, 9);
             Assert.AreEqual(1.471127674d, roundedResult);
         }
 
         [TestMethod]
         public void Atan2ShouldReturnCorrectResult()
         {
-            var func = new Atan2();
-            var args = FunctionsHelper.CreateArgs(1, 2);
-            var result = func.Execute(args, _parsingContext);
-            var roundedResult = Math.Round((double)result.Result, 9);
+            Atan2? func = new Atan2();
+            IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(1, 2);
+            CompileResult? result = func.Execute(args, _parsingContext);
+            double roundedResult = Math.Round((double)result.Result, 9);
             Assert.AreEqual(1.107148718d, roundedResult);
         }
 
         [TestMethod]
         public void AtanhShouldReturnCorrectResult()
         {
-            var func = new Atanh();
-            var args = FunctionsHelper.CreateArgs(0.1);
-            var result = func.Execute(args, _parsingContext);
-            var roundedResult = Math.Round((double)result.Result, 4);
+            Atanh? func = new Atanh();
+            IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(0.1);
+            CompileResult? result = func.Execute(args, _parsingContext);
+            double roundedResult = Math.Round((double)result.Result, 4);
             Assert.AreEqual(0.1003d, roundedResult);
         }
 
         [TestMethod]
         public void LogShouldReturnCorrectResult()
         {
-            var func = new Log();
-            var args = FunctionsHelper.CreateArgs(2);
-            var result = func.Execute(args, _parsingContext);
-            var roundedResult = Math.Round((double)result.Result, 9);
+            Log? func = new Log();
+            IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(2);
+            CompileResult? result = func.Execute(args, _parsingContext);
+            double roundedResult = Math.Round((double)result.Result, 9);
             Assert.AreEqual(0.301029996d, roundedResult);
         }
 
         [TestMethod]
         public void LogShouldReturnCorrectResultWithBase()
         {
-            var func = new Log();
-            var args = FunctionsHelper.CreateArgs(2, 2);
-            var result = func.Execute(args, _parsingContext);
+            Log? func = new Log();
+            IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(2, 2);
+            CompileResult? result = func.Execute(args, _parsingContext);
             Assert.AreEqual(1d, result.Result);
         }
 
         [TestMethod]
         public void Log10ShouldReturnCorrectResult()
         {
-            var func = new Log10();
-            var args = FunctionsHelper.CreateArgs(2);
-            var result = func.Execute(args, _parsingContext);
-            var roundedResult = Math.Round((double)result.Result, 9);
+            Log10? func = new Log10();
+            IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(2);
+            CompileResult? result = func.Execute(args, _parsingContext);
+            double roundedResult = Math.Round((double)result.Result, 9);
             Assert.AreEqual(0.301029996d, roundedResult);
         }
 
         [TestMethod]
         public void LnShouldReturnCorrectResult()
         {
-            var func = new Ln();
-            var args = FunctionsHelper.CreateArgs(5);
-            var result = func.Execute(args, _parsingContext);
-            var roundedResult = Math.Round((double)result.Result, 5);
+            Ln? func = new Ln();
+            IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(5);
+            CompileResult? result = func.Execute(args, _parsingContext);
+            double roundedResult = Math.Round((double)result.Result, 5);
             Assert.AreEqual(1.60944d, roundedResult);
         }
 
         [TestMethod]
         public void SqrtPiShouldReturnCorrectResult()
         {
-            var func = new SqrtPi();
-            var args = FunctionsHelper.CreateArgs(2);
-            var result = func.Execute(args, _parsingContext);
-            var roundedResult = Math.Round((double)result.Result, 9);
+            SqrtPi? func = new SqrtPi();
+            IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(2);
+            CompileResult? result = func.Execute(args, _parsingContext);
+            double roundedResult = Math.Round((double)result.Result, 9);
             Assert.AreEqual(2.506628275d, roundedResult);
         }
 
         [TestMethod]
         public void SignShouldReturnMinus1IfArgIsNegative()
         {
-            var func = new Sign();
-            var args = FunctionsHelper.CreateArgs(-2);
-            var result = func.Execute(args, _parsingContext).Result;
+            Sign? func = new Sign();
+            IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(-2);
+            object? result = func.Execute(args, _parsingContext).Result;
             Assert.AreEqual(-1d, result);
         }
 
         [TestMethod]
         public void SignShouldReturn1IfArgIsPositive()
         {
-            var func = new Sign();
-            var args = FunctionsHelper.CreateArgs(2);
-            var result = func.Execute(args, _parsingContext).Result;
+            Sign? func = new Sign();
+            IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(2);
+            object? result = func.Execute(args, _parsingContext).Result;
             Assert.AreEqual(1d, result);
         }
 
         [TestMethod]
         public void RounddownShouldReturnCorrectResultWithPositiveNumber()
         {
-            var func = new Rounddown();
-            var args = FunctionsHelper.CreateArgs(9.999, 2);
-            var result = func.Execute(args, _parsingContext);
+            Rounddown? func = new Rounddown();
+            IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(9.999, 2);
+            CompileResult? result = func.Execute(args, _parsingContext);
             Assert.AreEqual(9.99, result.Result);
         }
 
         [TestMethod]
         public void RounddownShouldHandleNegativeNumber()
         {
-            var func = new Rounddown();
-            var args = FunctionsHelper.CreateArgs(-9.999, 2);
-            var result = func.Execute(args, _parsingContext);
+            Rounddown? func = new Rounddown();
+            IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(-9.999, 2);
+            CompileResult? result = func.Execute(args, _parsingContext);
             Assert.AreEqual(-9.99, result.Result);
         }
 
         [TestMethod]
         public void RounddownShouldHandleNegativeNumDigits()
         {
-            var func = new Rounddown();
-            var args = FunctionsHelper.CreateArgs(999.999, -2);
-            var result = func.Execute(args, _parsingContext);
+            Rounddown? func = new Rounddown();
+            IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(999.999, -2);
+            CompileResult? result = func.Execute(args, _parsingContext);
             Assert.AreEqual(900d, result.Result);
         }
 
         [TestMethod]
         public void RounddownShouldReturn0IfNegativeNumDigitsIsTooLarge()
         {
-            var func = new Rounddown();
-            var args = FunctionsHelper.CreateArgs(999.999, -4);
-            var result = func.Execute(args, _parsingContext);
+            Rounddown? func = new Rounddown();
+            IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(999.999, -4);
+            CompileResult? result = func.Execute(args, _parsingContext);
             Assert.AreEqual(0d, result.Result);
         }
 
         [TestMethod]
         public void RounddownShouldHandleZeroNumDigits()
         {
-            var func = new Rounddown();
-            var args = FunctionsHelper.CreateArgs(999.999, 0);
-            var result = func.Execute(args, _parsingContext);
+            Rounddown? func = new Rounddown();
+            IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(999.999, 0);
+            CompileResult? result = func.Execute(args, _parsingContext);
             Assert.AreEqual(999d, result.Result);
         }
 
         [TestMethod]
         public void RoundupShouldReturnCorrectResultWithPositiveNumber()
         {
-            var func = new Roundup();
-            var args = FunctionsHelper.CreateArgs(9.9911, 3);
-            var result = func.Execute(args, _parsingContext);
+            Roundup? func = new Roundup();
+            IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(9.9911, 3);
+            CompileResult? result = func.Execute(args, _parsingContext);
             Assert.AreEqual(9.992, result.Result);
         }
 
         [TestMethod]
         public void RoundupShouldHandleNegativeNumDigits()
         {
-            var func = new Roundup();
-            var args = FunctionsHelper.CreateArgs(99123, -2);
-            var result = func.Execute(args, _parsingContext);
+            Roundup? func = new Roundup();
+            IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(99123, -2);
+            CompileResult? result = func.Execute(args, _parsingContext);
             Assert.AreEqual(99200d, result.Result);
         }
 
         [TestMethod]
         public void RoundupShouldHandleZeroNumDigits()
         {
-            var func = new Roundup();
-            var args = FunctionsHelper.CreateArgs(999.999, 0);
-            var result = func.Execute(args, _parsingContext);
+            Roundup? func = new Roundup();
+            IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(999.999, 0);
+            CompileResult? result = func.Execute(args, _parsingContext);
             Assert.AreEqual(1000d, result.Result);
         }
 
         [TestMethod]
         public void TruncShouldReturnCorrectResult()
         {
-            var func = new Trunc();
-            var args = FunctionsHelper.CreateArgs(99.99);
-            var result = func.Execute(args, _parsingContext);
+            Trunc? func = new Trunc();
+            IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(99.99);
+            CompileResult? result = func.Execute(args, _parsingContext);
             Assert.AreEqual(99d, result.Result);
         }
 
         [TestMethod]
         public void FactShouldRoundDownAndReturnCorrectResult()
         {
-            var func = new Fact();
-            var args = FunctionsHelper.CreateArgs(5.99);
-            var result = func.Execute(args, _parsingContext);
+            Fact? func = new Fact();
+            IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(5.99);
+            CompileResult? result = func.Execute(args, _parsingContext);
             Assert.AreEqual(120d, result.Result);
         }
 
         [TestMethod]
         public void FactShouldReturnErrorNegativeNumber()
         {
-            var func = new Fact();
-            var args = FunctionsHelper.CreateArgs(-1);
-            var result = func.Execute(args, _parsingContext);
+            Fact? func = new Fact();
+            IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(-1);
+            CompileResult? result = func.Execute(args, _parsingContext);
             Assert.AreEqual(DataType.ExcelError, result.DataType);
         }
 
         [TestMethod]
         public void FactDoubleShouldReturnCorrectResult5()
         {
-            var func = new FactDouble();
-            var arg = FunctionsHelper.CreateArgs(5);
-            var result = func.Execute(arg, _parsingContext);
+            FactDouble? func = new FactDouble();
+            IEnumerable<FunctionArgument>? arg = FunctionsHelper.CreateArgs(5);
+            CompileResult? result = func.Execute(arg, _parsingContext);
             Assert.AreEqual(15d, result.Result);
         }
 
         [TestMethod]
         public void FactDoubleShouldReturnCorrectResult8()
         {
-            var func = new FactDouble();
-            var arg = FunctionsHelper.CreateArgs(8);
-            var result = func.Execute(arg, _parsingContext);
+            FactDouble? func = new FactDouble();
+            IEnumerable<FunctionArgument>? arg = FunctionsHelper.CreateArgs(8);
+            CompileResult? result = func.Execute(arg, _parsingContext);
             Assert.AreEqual(384d, result.Result);
         }
 
         [TestMethod]
         public void QuotientShouldReturnCorrectResult()
         {
-            var func = new Quotient();
-            var args = FunctionsHelper.CreateArgs(5, 2);
-            var result = func.Execute(args, _parsingContext);
+            Quotient? func = new Quotient();
+            IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(5, 2);
+            CompileResult? result = func.Execute(args, _parsingContext);
             Assert.AreEqual(2, result.Result);
         }
 
         [TestMethod]
         public void QuotientShouldReturnErrorDenomIs0()
         {
-            var func = new Quotient();
-            var args = FunctionsHelper.CreateArgs(1, 0);
-            var result = func.Execute(args, _parsingContext);
+            Quotient? func = new Quotient();
+            IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(1, 0);
+            CompileResult? result = func.Execute(args, _parsingContext);
             Assert.AreEqual(DataType.ExcelError, result.DataType);
         }
 
         [TestMethod]
         public void LargeShouldReturnTheLargestNumberIf1()
         {
-            var func = new Large();
-            var args = FunctionsHelper.CreateArgs(FunctionsHelper.CreateArgs(1, 2, 3), 1);
-            var result = func.Execute(args, _parsingContext);
+            Large? func = new Large();
+            IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(FunctionsHelper.CreateArgs(1, 2, 3), 1);
+            CompileResult? result = func.Execute(args, _parsingContext);
             Assert.AreEqual(3d, result.Result);
         }
 
         [TestMethod]
         public void LargeShouldReturnTheSecondLargestNumberIf2()
         {
-            var func = new Large();
-            var args = FunctionsHelper.CreateArgs(FunctionsHelper.CreateArgs(4, 1, 2, 3), 2);
-            var result = func.Execute(args, _parsingContext);
+            Large? func = new Large();
+            IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(FunctionsHelper.CreateArgs(4, 1, 2, 3), 2);
+            CompileResult? result = func.Execute(args, _parsingContext);
             Assert.AreEqual(3d, result.Result);
         }
 
         [TestMethod]
         public void LargeShouldReturnErrorIfIndexOutOfBounds()
         {
-            var func = new Large();
-            var args = FunctionsHelper.CreateArgs(FunctionsHelper.CreateArgs(4, 1, 2, 3), 6);
-            var result = func.Execute(args, _parsingContext);
+            Large? func = new Large();
+            IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(FunctionsHelper.CreateArgs(4, 1, 2, 3), 6);
+            CompileResult? result = func.Execute(args, _parsingContext);
             Assert.AreEqual(DataType.ExcelError, result.DataType);
         }
 
         [TestMethod]
         public void SmallShouldReturnTheSmallestNumberIf1()
         {
-            var func = new Small();
-            var args = FunctionsHelper.CreateArgs(FunctionsHelper.CreateArgs(1, 2, 3), 1);
-            var result = func.Execute(args, _parsingContext);
+            Small? func = new Small();
+            IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(FunctionsHelper.CreateArgs(1, 2, 3), 1);
+            CompileResult? result = func.Execute(args, _parsingContext);
             Assert.AreEqual(1d, result.Result);
         }
 
         [TestMethod]
         public void SmallShouldReturnTheSecondSmallestNumberIf2()
         {
-            var func = new Small();
-            var args = FunctionsHelper.CreateArgs(FunctionsHelper.CreateArgs(4, 1, 2, 3), 2);
-            var result = func.Execute(args, _parsingContext);
+            Small? func = new Small();
+            IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(FunctionsHelper.CreateArgs(4, 1, 2, 3), 2);
+            CompileResult? result = func.Execute(args, _parsingContext);
             Assert.AreEqual(2d, result.Result);
         }
 
         [TestMethod]
         public void SmallShouldThrowIfIndexOutOfBounds()
         {
-            var func = new Small();
-            var args = FunctionsHelper.CreateArgs(FunctionsHelper.CreateArgs(4, 1, 2, 3), 6);
-            var result = func.Execute(args, _parsingContext);
+            Small? func = new Small();
+            IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(FunctionsHelper.CreateArgs(4, 1, 2, 3), 6);
+            CompileResult? result = func.Execute(args, _parsingContext);
             Assert.AreEqual(DataType.ExcelError, result.DataType);
         }
 
         [TestMethod]
         public void MedianShouldReturnErrorIfNoArgs()
         {
-            var func = new Median();
-            var args = FunctionsHelper.Empty();
-            var result = func.Execute(args, _parsingContext);
+            Median? func = new Median();
+            IEnumerable<FunctionArgument>? args = FunctionsHelper.Empty();
+            CompileResult? result = func.Execute(args, _parsingContext);
             Assert.AreEqual(DataType.ExcelError, result.DataType);
         }
 
         [TestMethod]
         public void MedianShouldCalculateCorrectlyWithOneMember()
         {
-            var func = new Median();
-            var args = FunctionsHelper.CreateArgs(1);
-            var result = func.Execute(args, _parsingContext);
+            Median? func = new Median();
+            IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(1);
+            CompileResult? result = func.Execute(args, _parsingContext);
             Assert.AreEqual(1d, result.Result);
         }
 
         [TestMethod]
         public void MedianShouldCalculateCorrectlyWithOddMembers()
         {
-            var func = new Median();
-            var args = FunctionsHelper.CreateArgs(3, 5, 1, 4, 2);
-            var result = func.Execute(args, _parsingContext);
+            Median? func = new Median();
+            IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(3, 5, 1, 4, 2);
+            CompileResult? result = func.Execute(args, _parsingContext);
             Assert.AreEqual(3d, result.Result);
         }
 
         [TestMethod]
         public void MedianShouldCalculateCorrectlyWithEvenMembers()
         {
-            var func = new Median();
-            var args = FunctionsHelper.CreateArgs(1, 2, 3, 4);
-            var result = func.Execute(args, _parsingContext);
+            Median? func = new Median();
+            IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(1, 2, 3, 4);
+            CompileResult? result = func.Execute(args, _parsingContext);
             Assert.AreEqual(2.5d, result.Result);
         }
 
         [TestMethod]
         public void CountIfShouldHandleNegativeCriteria()
         {
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var sheet1 = package.Workbook.Worksheets.Add("test");
+                ExcelWorksheet? sheet1 = package.Workbook.Worksheets.Add("test");
                 sheet1.Cells["A1"].Value = -1;
                 sheet1.Cells["A2"].Value = -2;
                 sheet1.Cells["A3"].Formula = "CountIf(A1:A2,\"-1\")";
@@ -1494,9 +1494,9 @@ namespace EPPlusTest.Excel.Functions
         [TestMethod]
         public void OddShouldRound0To1()
         {
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var sheet1 = package.Workbook.Worksheets.Add("test");
+                ExcelWorksheet? sheet1 = package.Workbook.Worksheets.Add("test");
                 sheet1.Cells["A1"].Value = 0;
                 sheet1.Cells["A3"].Formula = "ODD(A1)";
                 sheet1.Calculate();
@@ -1507,9 +1507,9 @@ namespace EPPlusTest.Excel.Functions
         [TestMethod]
         public void OddShouldRound1To1()
         {
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var sheet1 = package.Workbook.Worksheets.Add("test");
+                ExcelWorksheet? sheet1 = package.Workbook.Worksheets.Add("test");
                 sheet1.Cells["A1"].Value = 1;
                 sheet1.Cells["A3"].Formula = "ODD(A1)";
                 sheet1.Calculate();
@@ -1520,9 +1520,9 @@ namespace EPPlusTest.Excel.Functions
         [TestMethod]
         public void OddShouldRound2To3()
         {
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var sheet1 = package.Workbook.Worksheets.Add("test");
+                ExcelWorksheet? sheet1 = package.Workbook.Worksheets.Add("test");
                 sheet1.Cells["A1"].Value = 2;
                 sheet1.Cells["A3"].Formula = "ODD(A1)";
                 sheet1.Calculate();
@@ -1533,9 +1533,9 @@ namespace EPPlusTest.Excel.Functions
         [TestMethod]
         public void OddShouldRoundMinus1point3ToMinus3()
         {
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var sheet1 = package.Workbook.Worksheets.Add("test");
+                ExcelWorksheet? sheet1 = package.Workbook.Worksheets.Add("test");
                 sheet1.Cells["A1"].Value = -1.3;
                 sheet1.Cells["A3"].Formula = "ODD(A1)";
                 sheet1.Calculate();
@@ -1546,9 +1546,9 @@ namespace EPPlusTest.Excel.Functions
         [TestMethod]
         public void EvenShouldRound0To0()
         {
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var sheet1 = package.Workbook.Worksheets.Add("test");
+                ExcelWorksheet? sheet1 = package.Workbook.Worksheets.Add("test");
                 sheet1.Cells["A1"].Value = 0;
                 sheet1.Cells["A3"].Formula = "EVEN(A1)";
                 sheet1.Calculate();
@@ -1559,9 +1559,9 @@ namespace EPPlusTest.Excel.Functions
         [TestMethod]
         public void EvenShouldRound1To2()
         {
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var sheet1 = package.Workbook.Worksheets.Add("test");
+                ExcelWorksheet? sheet1 = package.Workbook.Worksheets.Add("test");
                 sheet1.Cells["A1"].Value = 1;
                 sheet1.Cells["A3"].Formula = "EVEN(A1)";
                 sheet1.Calculate();
@@ -1572,9 +1572,9 @@ namespace EPPlusTest.Excel.Functions
         [TestMethod]
         public void EvenShouldRound2To2()
         {
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var sheet1 = package.Workbook.Worksheets.Add("test");
+                ExcelWorksheet? sheet1 = package.Workbook.Worksheets.Add("test");
                 sheet1.Cells["A1"].Value = 2;
                 sheet1.Cells["A3"].Formula = "EVEN(A1)";
                 sheet1.Calculate();
@@ -1585,9 +1585,9 @@ namespace EPPlusTest.Excel.Functions
         [TestMethod]
         public void EvenShouldRoundMinus1point3ToMinus2()
         {
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var sheet1 = package.Workbook.Worksheets.Add("test");
+                ExcelWorksheet? sheet1 = package.Workbook.Worksheets.Add("test");
                 sheet1.Cells["A1"].Value = -1.3;
                 sheet1.Cells["A3"].Formula = "EVEN(A1)";
                 sheet1.Calculate();
@@ -1598,9 +1598,9 @@ namespace EPPlusTest.Excel.Functions
         [TestMethod]
         public void Rank()
         {
-            using (var p = new ExcelPackage())
+            using (ExcelPackage? p = new ExcelPackage())
             {
-                var w = p.Workbook.Worksheets.Add("testsheet");
+                ExcelWorksheet? w = p.Workbook.Worksheets.Add("testsheet");
                 w.SetValue(1, 1, 1);
                 w.SetValue(2, 1, 1);
                 w.SetValue(3, 1, 2);
@@ -1662,15 +1662,15 @@ namespace EPPlusTest.Excel.Functions
         [TestMethod]
         public void PercentrankInc_Test1()
         {
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var sheet = package.Workbook.Worksheets.Add("test");
+                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
                 sheet.Cells["A1"].Value = 1;
                 sheet.Cells["A2"].Value = 2;
                 sheet.Cells["A3"].Value = 3;
                 sheet.Cells["A5"].Formula = "PERCENTRANK.INC(A1:A3,2)";
                 sheet.Calculate();
-                var result = sheet.Cells["A5"].Value;
+                object? result = sheet.Cells["A5"].Value;
                 Assert.AreEqual(0.5, result);
 
                 sheet.Cells["A1"].Value = 1;
@@ -1686,9 +1686,9 @@ namespace EPPlusTest.Excel.Functions
         [TestMethod]
         public void PercentrankInc_Test2()
         {
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var sheet = package.Workbook.Worksheets.Add("test");
+                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
 
                 sheet.Cells["A1"].Value = 1;
                 sheet.Cells["A2"].Value = 2;
@@ -1702,7 +1702,7 @@ namespace EPPlusTest.Excel.Functions
 
                 sheet.Cells["A10"].Formula = "PERCENTRANK.INC(A1:A9,6.5)";
                 sheet.Calculate();
-                var result = sheet.Cells["A10"].Value;
+                object? result = sheet.Cells["A10"].Value;
                 Assert.AreEqual(0.375, result);
 
                 sheet.Cells["A10"].Formula = "PERCENTRANK.INC(A1:A9,7,5)";
@@ -1715,9 +1715,9 @@ namespace EPPlusTest.Excel.Functions
         [TestMethod] 
         public void PercentrankExc_Test1()
         {
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var sheet = package.Workbook.Worksheets.Add("test");
+                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
                 sheet.Cells["A1"].Value = 1;
                 sheet.Cells["A2"].Value = 2;
                 sheet.Cells["A3"].Value = 4;
@@ -1729,7 +1729,7 @@ namespace EPPlusTest.Excel.Functions
                 sheet.Cells["A9"].Value = 14;
                 sheet.Cells["B1"].Formula = "PERCENTRANK.EXC(A1:A9,6.5)";
                 sheet.Calculate();
-                var result = sheet.Cells["B1"].Value;
+                object? result = sheet.Cells["B1"].Value;
                 Assert.AreEqual(0.4, result);
 
                 sheet.Cells["B1"].Formula = "PERCENTRANK.EXC(A1:A9,7,5)";
@@ -1747,9 +1747,9 @@ namespace EPPlusTest.Excel.Functions
         [TestMethod]
         public void Percentile_Test1()
         {
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var sheet = package.Workbook.Worksheets.Add("test");
+                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
 
                 sheet.Cells["A1"].Value = 2;
                 sheet.Cells["A2"].Value = 1;
@@ -1760,7 +1760,7 @@ namespace EPPlusTest.Excel.Functions
 
                 sheet.Cells["A10"].Formula = "PERCENTILE(A1:A6,0.2)";
                 sheet.Calculate();
-                var result = sheet.Cells["A10"].Value;
+                object? result = sheet.Cells["A10"].Value;
                 Assert.AreEqual(2d, result);
 
                 sheet.Cells["A10"].Formula = "PERCENTILE(A1:A6,60%)";
@@ -1783,9 +1783,9 @@ namespace EPPlusTest.Excel.Functions
         [TestMethod]
         public void PercentileInc_Test1()
         {
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var sheet = package.Workbook.Worksheets.Add("test");
+                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
 
                 sheet.Cells["A1"].Value = 0;
                 sheet.Cells["A2"].Value = 1;
@@ -1796,7 +1796,7 @@ namespace EPPlusTest.Excel.Functions
 
                 sheet.Cells["A10"].Formula = "PERCENTILE.INC(A1:A6,0.2)";
                 sheet.Calculate();
-                var result = sheet.Cells["A10"].Value;
+                object? result = sheet.Cells["A10"].Value;
                 Assert.AreEqual(1d, result);
 
                 sheet.Cells["A10"].Formula = "PERCENTILE.INC(A1:A6,60%)";
@@ -1819,9 +1819,9 @@ namespace EPPlusTest.Excel.Functions
         [TestMethod]
         public void PercentileExc_Test1()
         {
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var sheet = package.Workbook.Worksheets.Add("test");
+                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
 
                 sheet.Cells["A1"].Value = 1;
                 sheet.Cells["A2"].Value = 2;
@@ -1830,7 +1830,7 @@ namespace EPPlusTest.Excel.Functions
 
                 sheet.Cells["A10"].Formula = "PERCENTILE.EXC(A1:A4,0.2)";
                 sheet.Calculate();
-                var result = sheet.Cells["A10"].Value;
+                object? result = sheet.Cells["A10"].Value;
                 Assert.AreEqual(1d, result);
 
                 sheet.Cells["A10"].Formula = "PERCENTILE.EXC(A1:A4,60%)";
@@ -1853,9 +1853,9 @@ namespace EPPlusTest.Excel.Functions
         [TestMethod]
         public void Quartile_Test1()
         {
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var sheet = package.Workbook.Worksheets.Add("test");
+                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
 
                 sheet.Cells["A1"].Value = 2;
                 sheet.Cells["A2"].Value = 1;
@@ -1867,7 +1867,7 @@ namespace EPPlusTest.Excel.Functions
 
                 sheet.Cells["A10"].Formula = "QUARTILE(A1:A7,0)";
                 sheet.Calculate();
-                var result = sheet.Cells["A10"].Value;
+                object? result = sheet.Cells["A10"].Value;
                 Assert.AreEqual(0d, result);
 
                 sheet.Cells["A10"].Formula = "QUARTILE(A1:A7,1)";
@@ -1895,9 +1895,9 @@ namespace EPPlusTest.Excel.Functions
         [TestMethod]
         public void QuartileInc_Test1()
         {
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var sheet = package.Workbook.Worksheets.Add("test");
+                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
 
                 sheet.Cells["A1"].Value = 2;
                 sheet.Cells["A2"].Value = 1;
@@ -1909,7 +1909,7 @@ namespace EPPlusTest.Excel.Functions
 
                 sheet.Cells["A10"].Formula = "QUARTILE.INC(A1:A7,0)";
                 sheet.Calculate();
-                var result = sheet.Cells["A10"].Value;
+                object? result = sheet.Cells["A10"].Value;
                 Assert.AreEqual(0d, result);
 
                 sheet.Cells["A10"].Formula = "QUARTILE.INC(A1:A7,1)";
@@ -1937,9 +1937,9 @@ namespace EPPlusTest.Excel.Functions
         [TestMethod]
         public void ModeShouldReturnCorrectResult()
         {
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var sheet = package.Workbook.Worksheets.Add("test");
+                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
 
                 sheet.Cells["A1"].Value = 1;
                 sheet.Cells["A2"].Value = 1;
@@ -1956,9 +1956,9 @@ namespace EPPlusTest.Excel.Functions
         [TestMethod]
         public void ModeShouldReturnLowestIfMultipleResults()
         {
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var sheet = package.Workbook.Worksheets.Add("test");
+                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
 
                 sheet.Cells["A1"].Value = 2;
                 sheet.Cells["A2"].Value = 1;
@@ -1975,9 +1975,9 @@ namespace EPPlusTest.Excel.Functions
         [TestMethod]
         public void MultinomialShouldReturnCorrectResult()
         {
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var sheet = package.Workbook.Worksheets.Add("test");
+                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
 
                 sheet.Cells["A1"].Value = 3;
                 sheet.Cells["A2"].Value = 1;
@@ -1992,9 +1992,9 @@ namespace EPPlusTest.Excel.Functions
         [TestMethod]
         public void CovarShouldReturnCorrectResult()
         {
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var sheet = package.Workbook.Worksheets.Add("test");
+                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
 
                 sheet.Cells["A1"].Value = 3;
                 sheet.Cells["A2"].Value = 1;
@@ -2018,9 +2018,9 @@ namespace EPPlusTest.Excel.Functions
         [TestMethod]
         public void CovarianceSshouldReturnCorrectResult()
         {
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var sheet = package.Workbook.Worksheets.Add("test");
+                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
 
                 sheet.Cells["A1"].Value = 3;
                 sheet.Cells["A2"].Value = 1;

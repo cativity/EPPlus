@@ -3053,7 +3053,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         {
             get
             {
-                var key = SharedUtilities.NormalizePathForUseInZipFile(fileName);
+                string? key = SharedUtilities.NormalizePathForUseInZipFile(fileName);
                 if (_entries.ContainsKey(key))
                 {
                     return this._entries[key];
@@ -3257,8 +3257,8 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         {
             get
             {
-                var coll = new System.Collections.Generic.List<ZipEntry>();
-                foreach (var e in this.Entries)
+                List<ZipEntry>? coll = new System.Collections.Generic.List<ZipEntry>();
+                foreach (ZipEntry? e in this.Entries)
                 {
                     coll.Add(e);
                 }

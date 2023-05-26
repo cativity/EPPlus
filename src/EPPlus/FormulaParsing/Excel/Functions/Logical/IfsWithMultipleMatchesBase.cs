@@ -15,17 +15,17 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Logical
         {
             ValidateArguments(arguments, 3);
             errorResult = null;
-            var maxRange = arguments.ElementAt(0).ValueAsRangeInfo;
-            var maxArgs = arguments.Count() < (126 * 2 + 1) ? arguments.Count() : 126 * 2 + 1;
-            var matches = new List<double>();
-            var rangeSizeEvaluated = false;
-            for (var valueIx = 0; valueIx < maxRange.Count(); valueIx++)
+            IRangeInfo? maxRange = arguments.ElementAt(0).ValueAsRangeInfo;
+            int maxArgs = arguments.Count() < (126 * 2 + 1) ? arguments.Count() : 126 * 2 + 1;
+            List<double>? matches = new List<double>();
+            bool rangeSizeEvaluated = false;
+            for (int valueIx = 0; valueIx < maxRange.Count(); valueIx++)
             {
-                var isMatch = true;
-                for (var criteriaIx = 1; criteriaIx < maxArgs; criteriaIx += 2)
+                bool isMatch = true;
+                for (int criteriaIx = 1; criteriaIx < maxArgs; criteriaIx += 2)
                 {
 
-                    var criteriaRange = arguments.ElementAt(criteriaIx).ValueAsRangeInfo;
+                    IRangeInfo? criteriaRange = arguments.ElementAt(criteriaIx).ValueAsRangeInfo;
                     if (!rangeSizeEvaluated)
                     {
                         if (criteriaRange.Count() < maxRange.Count())
@@ -34,9 +34,9 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Logical
                             return Enumerable.Empty<double>();
                         }
                     }
-                    var matchCriteria = arguments.ElementAt(criteriaIx + 1).Value;
+                    object? matchCriteria = arguments.ElementAt(criteriaIx + 1).Value;
 
-                    var candidate = criteriaRange.ElementAt(valueIx).Value;
+                    object? candidate = criteriaRange.ElementAt(valueIx).Value;
                     if (!_evaluator.Evaluate(candidate, Convert.ToString(matchCriteria, CultureInfo.InvariantCulture)))
                     {
                         isMatch = false;

@@ -82,11 +82,11 @@ namespace OfficeOpenXml.FormulaParsing.Logging
             if (_count%500 == 0)
             {
                 _sw.WriteLine(Separator);
-                var timeEllapsed = DateTime.Now.Subtract(_startTime);
+                TimeSpan timeEllapsed = DateTime.Now.Subtract(_startTime);
                 _sw.WriteLine("{0} cells parsed, time {1} seconds", _count, timeEllapsed.TotalSeconds);
 
-                var funcs = _funcs.Keys.OrderByDescending(x => _funcs[x]).ToList();
-                foreach (var func in funcs)
+                List<string>? funcs = _funcs.Keys.OrderByDescending(x => _funcs[x]).ToList();
+                foreach (string? func in funcs)
                 {
                     _sw.Write(func + "  - " + _funcs[func]);
                     if (_funcPerformance.ContainsKey(func))

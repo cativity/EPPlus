@@ -23,7 +23,7 @@ namespace OfficeOpenXml.VBA
         {
             StringBuilder sb=new StringBuilder();
 
-            foreach (var attr in this)
+            foreach (ExcelVbaModuleAttribute? attr in this)
             {
                 sb.AppendFormat("Attribute {0} = {1}\r\n", attr.Name, attr.DataType==eAttributeDataType.String ? "\"" + attr.Value + "\"" : attr.Value);
             }

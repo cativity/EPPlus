@@ -66,7 +66,7 @@ namespace OfficeOpenXml.Drawing.Theme
         /// <returns></returns>
         public ExcelThemeEffectStyle Add()
         {
-            var node = TopNode.OwnerDocument.CreateElement("a", "effectStyle", ExcelPackage.schemaMain);
+            XmlElement? node = TopNode.OwnerDocument.CreateElement("a", "effectStyle", ExcelPackage.schemaMain);
             TopNode.AppendChild(node);
             return new ExcelThemeEffectStyle(NameSpaceManager, TopNode, "", null, _theme);
         }

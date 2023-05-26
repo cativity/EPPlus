@@ -3,6 +3,7 @@ using OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.FinancialDayCount;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using OfficeOpenXml.FormulaParsing.ExpressionGraph;
 
 namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.Implementations
 {
@@ -16,9 +17,9 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.Implementations
         private readonly ParsingContext _context;
         public double GetYearFrac(System.DateTime date1, System.DateTime date2, DayCountBasis basis)
         {
-            var func = new Yearfrac();
-            var args = new List<FunctionArgument> { new FunctionArgument(date1.ToOADate()), new FunctionArgument(date2.ToOADate()), new FunctionArgument((int)basis) };
-            var result = func.Execute(args, _context);
+            Yearfrac? func = new Yearfrac();
+            List<FunctionArgument>? args = new List<FunctionArgument> { new FunctionArgument(date1.ToOADate()), new FunctionArgument(date2.ToOADate()), new FunctionArgument((int)basis) };
+            CompileResult? result = func.Execute(args, _context);
             return result.ResultNumeric;
         }
     }

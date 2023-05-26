@@ -81,14 +81,14 @@ namespace OfficeOpenXml
                 return;
             }
 
-            var address=FirstAddress;
+            string? address=FirstAddress;
             if(_fromRow==_toRow && _fromCol==_toCol)
             {
                 GetFixed(address, out _fromRowFixed, out _fromColFixed);
             }
             else
             {
-                var cells = address.Split(':');                
+                string[]? cells = address.Split(':');                
                 if(cells.Length>1) //If 1 then the address is the entire worksheet
                 {
                     GetFixed(cells[0], out _fromRowFixed, out _fromColFixed);
@@ -100,7 +100,7 @@ namespace OfficeOpenXml
         private void GetFixed(string address, out bool rowFixed, out bool colFixed)
         {            
             rowFixed=colFixed=false;
-            var ix=address.IndexOf('$');
+            int ix=address.IndexOf('$');
             while(ix>-1)
             {
                 ix++;
@@ -159,7 +159,7 @@ namespace OfficeOpenXml
         internal string GetOffset(int row, int column, bool withWbWs=false)
         {
             int fromRow = _fromRow, fromCol = _fromCol, toRow = _toRow, tocol = _toCol;
-            var isMulti = (fromRow != toRow || fromCol != tocol);
+            bool isMulti = (fromRow != toRow || fromCol != tocol);
             if (!_fromRowFixed)
             {
                 fromRow += row;
@@ -187,7 +187,7 @@ namespace OfficeOpenXml
             string a = GetAddress(fromRow, fromCol, toRow, tocol, _fromRowFixed, _fromColFixed, _toRowFixed, _toColFixed);
             if (Addresses != null)
             {
-                foreach (var sa in Addresses)
+                foreach (ExcelFormulaAddress? sa in Addresses)
                 {
                     a+="," + sa.GetOffset(row, column, withWbWs);
                 }

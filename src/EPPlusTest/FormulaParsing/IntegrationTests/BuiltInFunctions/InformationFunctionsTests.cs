@@ -61,34 +61,34 @@ namespace EPPlusTest.FormulaParsing.IntegrationTests.BuiltInFunctions
         [TestMethod]
         public void IsBlankShouldReturnCorrectValue()
         {
-            var result = _parser.Parse("ISBLANK(A1)");
+            object? result = _parser.Parse("ISBLANK(A1)");
             Assert.IsTrue((bool)result);
         }
 
         [TestMethod]
         public void IsNumberShouldReturnCorrectValue()
         {
-            var result = _parser.Parse("ISNUMBER(10/2)");
+            object? result = _parser.Parse("ISNUMBER(10/2)");
             Assert.IsTrue((bool)result);
         }
 
         [TestMethod]
         public void IsErrorShouldReturnTrueWhenDivBy0()
         {
-            var result = _parser.Parse("ISERROR(10/0)");
+            object? result = _parser.Parse("ISERROR(10/0)");
             Assert.IsTrue((bool)result);
         }
 
         [TestMethod]
         public void IsTextShouldReturnTrueWhenReferencedCellContainsText()
         {
-            using(var pck = new ExcelPackage())
+            using(ExcelPackage? pck = new ExcelPackage())
             {
-                var sheet = pck.Workbook.Worksheets.Add("Test");
+                ExcelWorksheet? sheet = pck.Workbook.Worksheets.Add("Test");
                 sheet.Cells["A1"].Value = "Abc";
                 sheet.Cells["A2"].Formula = "ISTEXT(A1)";
                 sheet.Calculate();
-                var result = sheet.Cells["A2"].Value;
+                object? result = sheet.Cells["A2"].Value;
                 Assert.IsTrue((bool)result);
             }
         }
@@ -96,13 +96,13 @@ namespace EPPlusTest.FormulaParsing.IntegrationTests.BuiltInFunctions
         [TestMethod]
         public void IsErrShouldReturnFalseIfErrorCodeIsNa()
         {
-            using (var pck = new ExcelPackage())
+            using (ExcelPackage? pck = new ExcelPackage())
             {
-                var sheet = pck.Workbook.Worksheets.Add("Test");
+                ExcelWorksheet? sheet = pck.Workbook.Worksheets.Add("Test");
                 sheet.Cells["A1"].Value = ExcelErrorValue.Parse("#N/A");
                 sheet.Cells["A2"].Formula = "ISERR(A1)";
                 sheet.Calculate();
-                var result = sheet.Cells["A2"].Value;
+                object? result = sheet.Cells["A2"].Value;
                 Assert.IsFalse((bool)result);
             }
         }
@@ -110,13 +110,13 @@ namespace EPPlusTest.FormulaParsing.IntegrationTests.BuiltInFunctions
         [TestMethod]
         public void IsNaShouldReturnTrueCodeIsNa()
         {
-            using (var pck = new ExcelPackage())
+            using (ExcelPackage? pck = new ExcelPackage())
             {
-                var sheet = pck.Workbook.Worksheets.Add("Test");
+                ExcelWorksheet? sheet = pck.Workbook.Worksheets.Add("Test");
                 sheet.Cells["A1"].Value = ExcelErrorValue.Parse("#N/A");
                 sheet.Cells["A2"].Formula = "ISNA(A1)";
                 sheet.Calculate();
-                var result = sheet.Cells["A2"].Value;
+                object? result = sheet.Cells["A2"].Value;
                 Assert.IsTrue((bool)result);
             }
         }
@@ -124,9 +124,9 @@ namespace EPPlusTest.FormulaParsing.IntegrationTests.BuiltInFunctions
         [TestMethod]
         public void ErrorTypeShouldReturnCorrectErrorCodes()
         {
-            using (var pck = new ExcelPackage())
+            using (ExcelPackage? pck = new ExcelPackage())
             {
-                var sheet = pck.Workbook.Worksheets.Add("Test");
+                ExcelWorksheet? sheet = pck.Workbook.Worksheets.Add("Test");
                 sheet.Cells["A1"].Value = ExcelErrorValue.Create(eErrorType.Null);
                 sheet.Cells["B1"].Formula = "ERROR.TYPE(A1)";
                 sheet.Cells["A2"].Value = ExcelErrorValue.Create(eErrorType.Div0);
@@ -144,14 +144,14 @@ namespace EPPlusTest.FormulaParsing.IntegrationTests.BuiltInFunctions
                 sheet.Cells["A8"].Value = 10;
                 sheet.Cells["B8"].Formula = "ERROR.TYPE(A8)";
                 sheet.Calculate();
-                var nullResult = sheet.Cells["B1"].Value;
-                var div0Result = sheet.Cells["B2"].Value;
-                var valueResult = sheet.Cells["B3"].Value;
-                var refResult = sheet.Cells["B4"].Value;
-                var nameResult = sheet.Cells["B5"].Value;
-                var numResult = sheet.Cells["B6"].Value;
-                var naResult = sheet.Cells["B7"].Value;
-                var noErrorResult = sheet.Cells["B8"].Value;
+                object? nullResult = sheet.Cells["B1"].Value;
+                object? div0Result = sheet.Cells["B2"].Value;
+                object? valueResult = sheet.Cells["B3"].Value;
+                object? refResult = sheet.Cells["B4"].Value;
+                object? nameResult = sheet.Cells["B5"].Value;
+                object? numResult = sheet.Cells["B6"].Value;
+                object? naResult = sheet.Cells["B7"].Value;
+                object? noErrorResult = sheet.Cells["B8"].Value;
                 Assert.AreEqual(1, nullResult, "Null error was not 1");
                 Assert.AreEqual(2, div0Result, "Div0 error was not 2");
                 Assert.AreEqual(3, valueResult, "Value error was not 3");

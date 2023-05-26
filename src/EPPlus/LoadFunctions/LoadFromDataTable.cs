@@ -50,7 +50,7 @@ namespace OfficeOpenXml.LoadFunctions
             }
 
             //var rowArray = new List<object[]>();
-            var row = _range._fromRow;
+            int row = _range._fromRow;
             if (_printHeaders)
             {
                 _worksheet._values.SetValueRow_Value(_range._fromRow, _range._fromCol, _dataTable.Columns.Cast<DataColumn>().Select((dc) => { return dc.Caption; }).ToArray());
@@ -69,7 +69,7 @@ namespace OfficeOpenXml.LoadFunctions
             int rows = (_dataTable.Rows.Count == 0 ? 1 : _dataTable.Rows.Count) + (_printHeaders ? 1 : 0);
             if (rows >= 0 && _dataTable.Columns.Count > 0 && _tableStyle.HasValue)
             {
-                var tbl = _worksheet.Tables.Add(new ExcelAddressBase(_range._fromRow, _range._fromCol, _range._fromRow + rows - 1, _range._fromCol + _dataTable.Columns.Count - 1), _dataTable.TableName);
+                ExcelTable? tbl = _worksheet.Tables.Add(new ExcelAddressBase(_range._fromRow, _range._fromCol, _range._fromRow + rows - 1, _range._fromCol + _dataTable.Columns.Count - 1), _dataTable.TableName);
                 tbl.ShowHeader = _printHeaders;
                 tbl.TableStyle = _tableStyle.Value;
             }

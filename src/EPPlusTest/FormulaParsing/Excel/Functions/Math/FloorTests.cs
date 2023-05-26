@@ -8,6 +8,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using OfficeOpenXml.FormulaParsing.Excel.Functions;
+using OfficeOpenXml.FormulaParsing.ExpressionGraph;
 
 namespace EPPlusTest.FormulaParsing.Excel.Functions.Math
 {
@@ -26,55 +28,55 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions.Math
         [TestMethod]
         public void FloorShouldReturnCorrectResultWhenSignificanceIsBetween0And1()
         {
-            var func = new Floor();
-            var args = FunctionsHelper.CreateArgs(26.75d, 0.1);
-            var result = func.Execute(args, _parsingContext);
+            Floor? func = new Floor();
+            IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(26.75d, 0.1);
+            CompileResult? result = func.Execute(args, _parsingContext);
             Assert.AreEqual(26.7d, result.Result);
         }
 
         [TestMethod]
         public void FloorShouldReturnCorrectResultWhenSignificanceIs1()
         {
-            var func = new Floor();
-            var args = FunctionsHelper.CreateArgs(26.75d, 1);
-            var result = func.Execute(args, _parsingContext);
+            Floor? func = new Floor();
+            IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(26.75d, 1);
+            CompileResult? result = func.Execute(args, _parsingContext);
             Assert.AreEqual(26d, result.Result);
         }
 
         [TestMethod]
         public void FloorShouldReturnCorrectResultWhenSignificanceIsMinus1()
         {
-            var func = new Floor();
-            var args = FunctionsHelper.CreateArgs(-26.75d, -1);
-            var result = func.Execute(args, _parsingContext);
+            Floor? func = new Floor();
+            IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(-26.75d, -1);
+            CompileResult? result = func.Execute(args, _parsingContext);
             Assert.AreEqual(-26d, result.Result);
         }
         [TestMethod]
         public void FloorBugTest1()
         {
-            var expectedValue = 100d;
-            var func = new Floor();
-            var args = FunctionsHelper.CreateArgs(100d, 100d);
-            var result = func.Execute(args, _parsingContext);
+            double expectedValue = 100d;
+            Floor? func = new Floor();
+            IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(100d, 100d);
+            CompileResult? result = func.Execute(args, _parsingContext);
             Assert.AreEqual(expectedValue, result.Result);
         }
         [TestMethod]
         public void FloorBugTest2()
         {
-            var expectedValue = 12000d;
-            var func = new Floor();
-            var args = FunctionsHelper.CreateArgs(12000d, 1000d);
-            var result = func.Execute(args, _parsingContext);
+            double expectedValue = 12000d;
+            Floor? func = new Floor();
+            IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(12000d, 1000d);
+            CompileResult? result = func.Execute(args, _parsingContext);
             Assert.AreEqual(expectedValue, result.Result);
         }
 
         [TestMethod]
         public void FloorMathShouldReturnCorrectResult()
         {
-            var func = new FloorMath();
+            FloorMath? func = new FloorMath();
 
-            var args = FunctionsHelper.CreateArgs(58.55);
-            var result = func.Execute(args, _parsingContext).Result;
+            IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(58.55);
+            object? result = func.Execute(args, _parsingContext).Result;
             Assert.AreEqual(58d, result);
 
             args = FunctionsHelper.CreateArgs(58.55, 0.1);

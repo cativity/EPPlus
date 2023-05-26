@@ -81,21 +81,21 @@ namespace OfficeOpenXml.FormulaParsing.ExpressionGraph
                 }
                 throw new CircularReferenceException("Circular reference occurred at " + _parsingContext.Scopes.Current.Address.Address);
             }
-            var cache = _parsingContext.AddressCache;
-            var cacheId = cache.GetNewId();
+            ExcelAddressCache? cache = _parsingContext.AddressCache;
+            int cacheId = cache.GetNewId();
             if(!cache.Add(cacheId, ExpressionString))
             {
                 throw new InvalidOperationException("Catastropic error occurred, address caching failed");
             }
-                var compileResult = CompileRangeValues();
+                CompileResult? compileResult = CompileRangeValues();
             compileResult.ExcelAddressReferenceId = cacheId;
             return compileResult;
         }
 
         private CompileResult CompileRangeValues()
         {
-            var c = this._parsingContext.Scopes.Current;
-            var resultRange = _excelDataProvider.GetRange(c.Address.Worksheet, c.Address.FromRow, c.Address.FromCol, ExpressionString);
+            ParsingScope? c = this._parsingContext.Scopes.Current;
+            IRangeInfo? resultRange = _excelDataProvider.GetRange(c.Address.Worksheet, c.Address.FromRow, c.Address.FromCol, ExpressionString);
             if (resultRange == null)
             {
                 if (resultRange.IsRef)
@@ -116,7 +116,7 @@ namespace OfficeOpenXml.FormulaParsing.ExpressionGraph
 
         private CompileResult CompileSingleCell(IRangeInfo result)
         {
-            var cell = result.FirstOrDefault();
+            ICellInfo? cell = result.FirstOrDefault();
             if (cell == null)
             {
                 if (result.IsRef)
@@ -125,8 +125,8 @@ namespace OfficeOpenXml.FormulaParsing.ExpressionGraph
                 }
                 return CompileResult.Empty;
             }
-            var factory = new CompileResultFactory();
-            var compileResult = factory.Create(cell.Value);
+            CompileResultFactory? factory = new CompileResultFactory();
+            CompileResult? compileResult = factory.Create(cell.Value);
             if (_negate && compileResult.IsNumeric)
             {
                 compileResult = new CompileResult(compileResult.ResultNumeric * -1, compileResult.DataType);

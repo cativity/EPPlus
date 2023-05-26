@@ -168,9 +168,9 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions
         [TestMethod]
         public void CountIfs_CountThisRowWithoutCircularReferences()
         {
-            using (var pck = new ExcelPackage())
+            using (ExcelPackage? pck = new ExcelPackage())
             {
-                var sheet1 = pck.Workbook.Worksheets.Add("Sheet1");
+                ExcelWorksheet? sheet1 = pck.Workbook.Worksheets.Add("Sheet1");
                 sheet1.Cells["A1"].Value = "SumResult";
                 // This shouldn't be a circular reference, because the 1:1="COUNTABLE" condition should filter out A2 before the 2:2 filter is applied
                 sheet1.Cells["A2"].Formula = "COUNTIFS(1:1,\"COUNTABLE\",2:2,\"<>\")";
@@ -196,9 +196,9 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions
         [TestMethod]
         public void CountIfs_CountThisColWithoutCircularReferences()
         {
-            using (var pck = new ExcelPackage())
+            using (ExcelPackage? pck = new ExcelPackage())
             {
-                var sheet1 = pck.Workbook.Worksheets.Add("Sheet1");
+                ExcelWorksheet? sheet1 = pck.Workbook.Worksheets.Add("Sheet1");
                 sheet1.Cells["A1"].Value = "SumResult";
                 // This shouldn't be a circular reference, because the 1:1="COUNTABLE" condition should filter out A2 before the 2:2 filter is applied
                 sheet1.Cells["B1"].Formula = "COUNTIFS(A:A,\"COUNTABLE\",B:B,\"<>\")";

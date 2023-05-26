@@ -32,7 +32,7 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
             }
             set
             {
-                var applyStyle = (RichText.Count == 0);
+                bool applyStyle = (RichText.Count == 0);
                 RichText.Text = value;
                 if (applyStyle)
                 {

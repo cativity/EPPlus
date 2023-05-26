@@ -65,7 +65,7 @@ namespace OfficeOpenXml.Drawing
             {
                 if(_shape==null)
                 {
-                    var id = GetXmlNodeIntNull(_path + "/@id");
+                    int? id = GetXmlNodeIntNull(_path + "/@id");
                     if (id.HasValue)
                     {
                         _shape = _drawings.GetById(id.Value) as ExcelShape;

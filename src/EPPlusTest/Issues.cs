@@ -50,6 +50,12 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading;
+using OfficeOpenXml.ConditionalFormatting.Contracts;
+using OfficeOpenXml.DataValidation.Contracts;
+using OfficeOpenXml.Drawing.Controls;
+using OfficeOpenXml.ExternalReferences;
+using OfficeOpenXml.Style.XmlAccess;
+using OfficeOpenXml.VBA;
 
 namespace EPPlusTest
 {
@@ -75,9 +81,9 @@ namespace EPPlusTest
         [TestMethod]
         public void Issue15041()
         {
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var ws = package.Workbook.Worksheets.Add("Test");
+                ExcelWorksheet? ws = package.Workbook.Worksheets.Add("Test");
                 ws.Cells["A1"].Value = 202100083;
                 ws.Cells["A1"].Style.Numberformat.Format = "00\\.00\\.00\\.000\\.0";
                 Assert.AreEqual("02.02.10.008.3", ws.Cells["A1"].Text);
@@ -87,10 +93,10 @@ namespace EPPlusTest
         [TestMethod]
         public void Issue15031()
         {
-            var d = OfficeOpenXml.Utils.ConvertUtil.GetValueDouble(new TimeSpan(35, 59, 1));
-            using (var package = new ExcelPackage())
+            double d = OfficeOpenXml.Utils.ConvertUtil.GetValueDouble(new TimeSpan(35, 59, 1));
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var ws = package.Workbook.Worksheets.Add("Test");
+                ExcelWorksheet? ws = package.Workbook.Worksheets.Add("Test");
                 ws.Cells["A1"].Value = d;
                 ws.Cells["A1"].Style.Numberformat.Format = "[t]:mm:ss";
                 ws.Dispose();
@@ -99,9 +105,9 @@ namespace EPPlusTest
         [TestMethod]
         public void Issue15022()
         {
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var ws = package.Workbook.Worksheets.Add("Test");
+                ExcelWorksheet? ws = package.Workbook.Worksheets.Add("Test");
                 ws.Cells.AutoFitColumns();
                 ws.Cells["A1"].Style.Numberformat.Format = "0";
                 ws.Cells.AutoFitColumns();
@@ -110,9 +116,9 @@ namespace EPPlusTest
         [TestMethod]
         public void Issue15056()
         {
-            using (var ep = OpenPackage(@"output.xlsx", true))
+            using (ExcelPackage? ep = OpenPackage(@"output.xlsx", true))
             {
-                var s = ep.Workbook.Worksheets.Add("test");
+                ExcelWorksheet? s = ep.Workbook.Worksheets.Add("test");
                 s.Cells["A1:A2"].Formula = ""; // or null, or non-empty whitespace, with same result
                 ep.Save();
             }
@@ -120,8 +126,8 @@ namespace EPPlusTest
         [TestMethod]
         public void Issue15113()
         {
-            var p = new ExcelPackage();
-            var ws = p.Workbook.Worksheets.Add("t");
+            ExcelPackage? p = new ExcelPackage();
+            ExcelWorksheet? ws = p.Workbook.Worksheets.Add("t");
             ws.Cells["A1"].Value = " Performance Update";
             ws.Cells["A1:H1"].Merge = true;
             ws.Cells["A1:H1"].Style.HorizontalAlignment = ExcelHorizontalAlignment.CenterContinuous;
@@ -149,9 +155,9 @@ namespace EPPlusTest
         [TestMethod]
         public void Issue15123()
         {
-            var p = new ExcelPackage();
-            var ws = p.Workbook.Worksheets.Add("t");
-            using (var dt = new DataTable())
+            ExcelPackage? p = new ExcelPackage();
+            ExcelWorksheet? ws = p.Workbook.Worksheets.Add("t");
+            using (DataTable? dt = new DataTable())
             {
                 dt.Columns.Add("String", typeof(string));
                 dt.Columns.Add("Int", typeof(int));
@@ -159,7 +165,7 @@ namespace EPPlusTest
                 dt.Columns.Add("Double", typeof(double));
                 dt.Columns.Add("Date", typeof(DateTime));
 
-                var dr = dt.NewRow();
+                DataRow? dr = dt.NewRow();
                 dr[0] = "Row1";
                 dr[1] = 1;
                 dr[2] = true;
@@ -186,8 +192,8 @@ namespace EPPlusTest
         [TestMethod]
         public void Issue15128()
         {
-            var p = new ExcelPackage();
-            var ws = p.Workbook.Worksheets.Add("t");
+            ExcelPackage? p = new ExcelPackage();
+            ExcelWorksheet? ws = p.Workbook.Worksheets.Add("t");
             ws.Cells["A1"].Value = 1;
             ws.Cells["B1"].Value = 2;
             ws.Cells["B2"].Formula = "A1+$B$1";
@@ -201,8 +207,8 @@ namespace EPPlusTest
         [TestMethod]
         public void IssueMergedCells()
         {
-            var p = new ExcelPackage();
-            var ws = p.Workbook.Worksheets.Add("t");
+            ExcelPackage? p = new ExcelPackage();
+            ExcelWorksheet? ws = p.Workbook.Worksheets.Add("t");
             ws.Cells["A1:A5,C1:C8"].Merge = true;
             ws.Cells["C1:C8"].Merge = false;
             ws.Cells["A1:A8"].Merge = false;
@@ -221,13 +227,13 @@ namespace EPPlusTest
         [TestMethod]
         public void LoadFromColIssue()
         {
-            var l = new List<cls1>();
+            List<cls1>? l = new List<cls1>();
 
             l.Add(new cls1() { prop1 = 1 });
             l.Add(new cls2() { prop1 = 1, prop2 = "test1" });
 
-            var p = new ExcelPackage();
-            var ws = p.Workbook.Worksheets.Add("Test");
+            ExcelPackage? p = new ExcelPackage();
+            ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Test");
 
             ws.Cells["A1"].LoadFromCollection(l, true, TableStyles.Light16, BindingFlags.Instance | BindingFlags.Public,
                 new MemberInfo[] { typeof(cls2).GetProperty("prop2") });
@@ -236,9 +242,9 @@ namespace EPPlusTest
         [TestMethod]
         public void Issue15168()
         {
-            using (var p = new ExcelPackage())
+            using (ExcelPackage? p = new ExcelPackage())
             {
-                var ws = p.Workbook.Worksheets.Add("Test");
+                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Test");
                 ws.Cells[1, 1].Value = "A1";
                 ws.Cells[2, 1].Value = "A2";
 
@@ -249,27 +255,27 @@ namespace EPPlusTest
         [TestMethod]
         public void Issue15179()
         {
-            using (var package = new OfficeOpenXml.ExcelPackage())
+            using (ExcelPackage? package = new OfficeOpenXml.ExcelPackage())
             {
-                var ws = package.Workbook.Worksheets.Add("MergeDeleteBug");
+                ExcelWorksheet? ws = package.Workbook.Worksheets.Add("MergeDeleteBug");
                 ws.Cells["E3:F3"].Merge = true;
                 ws.Cells["E3:F3"].Merge = false;
                 ws.DeleteRow(2, 6);
                 ws.Cells["A1"].Value = 0;
-                var s = ws.Cells["A1"].Value.ToString();
+                string? s = ws.Cells["A1"].Value.ToString();
 
             }
         }
         [TestMethod]
         public void Issue15212()
         {
-            var s = "_(\"R$ \"* #,##0.00_);_(\"R$ \"* (#,##0.00);_(\"R$ \"* \"-\"??_);_(@_) )";
-            using (var p = new ExcelPackage())
+            string? s = "_(\"R$ \"* #,##0.00_);_(\"R$ \"* (#,##0.00);_(\"R$ \"* \"-\"??_);_(@_) )";
+            using (ExcelPackage? p = new ExcelPackage())
             {
-                var ws = p.Workbook.Worksheets.Add("StyleBug");
+                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("StyleBug");
                 ws.Cells["A1"].Value = 5698633.64;
                 ws.Cells["A1"].Style.Numberformat.Format = s;
-                var t = ws.Cells["A1"].Text;
+                string? t = ws.Cells["A1"].Text;
             }
         }
 
@@ -278,7 +284,7 @@ namespace EPPlusTest
         public void Issue()
         {
 
-            using (var p = OpenPackage("pivottable.xlsx", true))
+            using (ExcelPackage? p = OpenPackage("pivottable.xlsx", true))
             {
                 LoadData(p);
                 BuildPivotTable1(p);
@@ -342,7 +348,7 @@ namespace EPPlusTest
             wsData.Cells["E7"].Value = "Pending";
             wsData.Cells["F7"].Value = 1;
 
-            using (var range = wsData.Cells[2, 1, 7, 1])
+            using (ExcelRange? range = wsData.Cells[2, 1, 7, 1])
             {
                 range.Style.Numberformat.Format = "mm-dd-yy";
             }
@@ -351,29 +357,29 @@ namespace EPPlusTest
         }
         private void BuildPivotTable1(ExcelPackage p)
         {
-            var wsData = p.Workbook.Worksheets["Data"];
-            var totalRows = wsData.Dimension.Address;
+            ExcelWorksheet? wsData = p.Workbook.Worksheets["Data"];
+            string? totalRows = wsData.Dimension.Address;
             ExcelRange data = wsData.Cells[totalRows];
 
-            var wsAuditPivot = p.Workbook.Worksheets.Add("Pivot1");
+            ExcelWorksheet? wsAuditPivot = p.Workbook.Worksheets.Add("Pivot1");
 
-            var pivotTable1 = wsAuditPivot.PivotTables.Add(wsAuditPivot.Cells["A7:C30"], data, "PivotAudit1");
+            ExcelPivotTable? pivotTable1 = wsAuditPivot.PivotTables.Add(wsAuditPivot.Cells["A7:C30"], data, "PivotAudit1");
             pivotTable1.ColumnGrandTotals = true;
-            var rowField = pivotTable1.RowFields.Add(pivotTable1.Fields["INVOICE_DATE"]);
+            ExcelPivotTableField? rowField = pivotTable1.RowFields.Add(pivotTable1.Fields["INVOICE_DATE"]);
 
 
             rowField.AddDateGrouping(eDateGroupBy.Years);
-            var yearField = pivotTable1.Fields.GetDateGroupField(eDateGroupBy.Years);
+            ExcelPivotTableField? yearField = pivotTable1.Fields.GetDateGroupField(eDateGroupBy.Years);
             yearField.Name = "Year";
 
-            var rowField2 = pivotTable1.RowFields.Add(pivotTable1.Fields["AUDIT_LINE_STATUS"]);
+            ExcelPivotTableField? rowField2 = pivotTable1.RowFields.Add(pivotTable1.Fields["AUDIT_LINE_STATUS"]);
 
-            var TotalSpend = pivotTable1.DataFields.Add(pivotTable1.Fields["TOTAL_INVOICE_PRICE"]);
+            ExcelPivotTableDataField? TotalSpend = pivotTable1.DataFields.Add(pivotTable1.Fields["TOTAL_INVOICE_PRICE"]);
             TotalSpend.Name = "Total Spend";
             TotalSpend.Format = "$##,##0";
 
 
-            var CountInvoicePrice = pivotTable1.DataFields.Add(pivotTable1.Fields["COUNT"]);
+            ExcelPivotTableDataField? CountInvoicePrice = pivotTable1.DataFields.Add(pivotTable1.Fields["COUNT"]);
             CountInvoicePrice.Name = "Total Lines";
             CountInvoicePrice.Format = "##,##0";
 
@@ -382,29 +388,29 @@ namespace EPPlusTest
 
         private void BuildPivotTable2(ExcelPackage p)
         {
-            var wsData = p.Workbook.Worksheets["Data"];
-            var totalRows = wsData.Dimension.Address;
+            ExcelWorksheet? wsData = p.Workbook.Worksheets["Data"];
+            string? totalRows = wsData.Dimension.Address;
             ExcelRange data = wsData.Cells[totalRows];
 
-            var wsAuditPivot = p.Workbook.Worksheets.Add("Pivot2");
+            ExcelWorksheet? wsAuditPivot = p.Workbook.Worksheets.Add("Pivot2");
 
-            var pivotTable1 = wsAuditPivot.PivotTables.Add(wsAuditPivot.Cells["A7:C30"], data, "PivotAudit2");
+            ExcelPivotTable? pivotTable1 = wsAuditPivot.PivotTables.Add(wsAuditPivot.Cells["A7:C30"], data, "PivotAudit2");
             pivotTable1.ColumnGrandTotals = true;
-            var rowField = pivotTable1.RowFields.Add(pivotTable1.Fields["INVOICE_DATE"]);
+            ExcelPivotTableField? rowField = pivotTable1.RowFields.Add(pivotTable1.Fields["INVOICE_DATE"]);
 
 
             rowField.AddDateGrouping(eDateGroupBy.Years);
-            var yearField = pivotTable1.Fields.GetDateGroupField(eDateGroupBy.Years);
+            ExcelPivotTableField? yearField = pivotTable1.Fields.GetDateGroupField(eDateGroupBy.Years);
             yearField.Name = "Year";
 
-            var rowField2 = pivotTable1.RowFields.Add(pivotTable1.Fields["AUDIT_LINE_STATUS"]);
+            ExcelPivotTableField? rowField2 = pivotTable1.RowFields.Add(pivotTable1.Fields["AUDIT_LINE_STATUS"]);
 
-            var TotalSpend = pivotTable1.DataFields.Add(pivotTable1.Fields["TOTAL_INVOICE_PRICE"]);
+            ExcelPivotTableDataField? TotalSpend = pivotTable1.DataFields.Add(pivotTable1.Fields["TOTAL_INVOICE_PRICE"]);
             TotalSpend.Name = "Total Spend";
             TotalSpend.Format = "$##,##0";
 
 
-            var CountInvoicePrice = pivotTable1.DataFields.Add(pivotTable1.Fields["COUNT"]);
+            ExcelPivotTableDataField? CountInvoicePrice = pivotTable1.DataFields.Add(pivotTable1.Fields["COUNT"]);
             CountInvoicePrice.Name = "Total Lines";
             CountInvoicePrice.Format = "##,##0";
 
@@ -414,20 +420,20 @@ namespace EPPlusTest
         [TestMethod]
         public void Issue15377()
         {
-            using (var p = new ExcelPackage())
+            using (ExcelPackage? p = new ExcelPackage())
             {
-                var ws = p.Workbook.Worksheets.Add("ws1");
+                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("ws1");
                 ws.Cells["A1"].Value = (double?)1;
-                var v = ws.GetValue<double?>(1, 1);
+                double? v = ws.GetValue<double?>(1, 1);
             }
         }
         [TestMethod]
         public void Issue15374()
         {
-            using (var p = new ExcelPackage())
+            using (ExcelPackage? p = new ExcelPackage())
             {
-                var ws = p.Workbook.Worksheets.Add("RT");
-                var r = ws.Cells["A1"];
+                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("RT");
+                ExcelRange? r = ws.Cells["A1"];
                 r.RichText.Text = "Cell 1";
                 r["A2"].RichText.Add("Cell 2");
                 SaveWorkbook(@"rt.xlsx", p);
@@ -436,11 +442,11 @@ namespace EPPlusTest
         [TestMethod]
         public void IssueTranslate()
         {
-            using (var p = new ExcelPackage())
+            using (ExcelPackage? p = new ExcelPackage())
             {
-                var ws = p.Workbook.Worksheets.Add("Trans");
+                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Trans");
                 ws.Cells["A1:A2"].Formula = "IF(1=1, \"A's B C\",\"D\") ";
-                var fr = ws.Cells["A1:A2"].FormulaR1C1;
+                string? fr = ws.Cells["A1:A2"].FormulaR1C1;
                 ws.Cells["A1:A2"].FormulaR1C1 = fr;
                 Assert.AreEqual("IF(1=1,\"A's B C\",\"D\")", ws.Cells["A2"].Formula);
             }
@@ -448,9 +454,9 @@ namespace EPPlusTest
         [TestMethod]
         public void Issue15397()
         {
-            using (var p = new ExcelPackage())
+            using (ExcelPackage? p = new ExcelPackage())
             {
-                var workSheet = p.Workbook.Worksheets.Add("styleerror");
+                ExcelWorksheet? workSheet = p.Workbook.Worksheets.Add("styleerror");
                 workSheet.Cells["F:G"].Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
                 workSheet.Cells["F:G"].Style.Fill.BackgroundColor.SetColor(Color.Red);
 
@@ -476,10 +482,10 @@ namespace EPPlusTest
         [TestMethod]
         public void Issuer14801()
         {
-            using (var p = new ExcelPackage())
+            using (ExcelPackage? p = new ExcelPackage())
             {
-                var workSheet = p.Workbook.Worksheets.Add("rterror");
-                var cell = workSheet.Cells["A1"];
+                ExcelWorksheet? workSheet = p.Workbook.Worksheets.Add("rterror");
+                ExcelRange? cell = workSheet.Cells["A1"];
                 cell.RichText.Add("toto: ");
                 cell.RichText[0].PreserveSpace = true;
                 cell.RichText[0].Bold = true;
@@ -492,10 +498,10 @@ namespace EPPlusTest
         [TestMethod]
         public void Issuer15445()
         {
-            using (var p = new ExcelPackage())
+            using (ExcelPackage? p = new ExcelPackage())
             {
-                var ws1 = p.Workbook.Worksheets.Add("ws1");
-                var ws2 = p.Workbook.Worksheets.Add("ws2");
+                ExcelWorksheet? ws1 = p.Workbook.Worksheets.Add("ws1");
+                ExcelWorksheet? ws2 = p.Workbook.Worksheets.Add("ws2");
                 ws2.View.SelectedRange = "A1:B3 D12:D15";
                 ws2.View.ActiveCell = "D15";
                 SaveWorkbook(@"activeCell.xlsx", p);
@@ -504,10 +510,10 @@ namespace EPPlusTest
         [TestMethod]
         public void Issue15438()
         {
-            using (var p = new ExcelPackage())
+            using (ExcelPackage? p = new ExcelPackage())
             {
-                var ws = p.Workbook.Worksheets.Add("Test");
-                var c = ws.Cells["A1"].Style.Font.Color;
+                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Test");
+                ExcelColor? c = ws.Cells["A1"].Style.Font.Color;
                 c.Indexed = 3;
                 Assert.AreEqual(c.LookupColor(c), "#FF00FF00");
             }
@@ -517,7 +523,7 @@ namespace EPPlusTest
             byte[] templateFIle;
             using (System.IO.MemoryStream ms = new System.IO.MemoryStream())
             {
-                using (var sw = new System.IO.FileStream(templateName, System.IO.FileMode.Open, System.IO.FileAccess.Read, System.IO.FileShare.ReadWrite))
+                using (FileStream? sw = new System.IO.FileStream(templateName, System.IO.FileMode.Open, System.IO.FileAccess.Read, System.IO.FileShare.ReadWrite))
                 {
                     byte[] buffer = new byte[2048];
                     int bytesRead;
@@ -536,11 +542,11 @@ namespace EPPlusTest
         [TestMethod]
         public void Issue15455()
         {
-            using (var pck = new ExcelPackage())
+            using (ExcelPackage? pck = new ExcelPackage())
             {
 
-                var sheet1 = pck.Workbook.Worksheets.Add("sheet1");
-                var sheet2 = pck.Workbook.Worksheets.Add("Sheet2");
+                ExcelWorksheet? sheet1 = pck.Workbook.Worksheets.Add("sheet1");
+                ExcelWorksheet? sheet2 = pck.Workbook.Worksheets.Add("Sheet2");
                 sheet1.Cells["C2"].Value = 3;
                 sheet1.Cells["C3"].Formula = "VLOOKUP(E1, Sheet2!A1:D6, C2, 0)";
                 sheet1.Cells["E1"].Value = "d";
@@ -548,7 +554,7 @@ namespace EPPlusTest
                 sheet2.Cells["A1"].Value = "d";
                 sheet2.Cells["C1"].Value = "dg";
                 pck.Workbook.Calculate();
-                var c3 = sheet1.Cells["C3"].Value;
+                object? c3 = sheet1.Cells["C3"].Value;
                 Assert.AreEqual("dg", c3);
             }
         }
@@ -556,9 +562,9 @@ namespace EPPlusTest
         [TestMethod]
         public void Issue15548_SumIfsShouldHandleGaps()
         {
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var test = package.Workbook.Worksheets.Add("Test");
+                ExcelWorksheet? test = package.Workbook.Worksheets.Add("Test");
 
                 test.Cells["A1"].Value = 1;
                 test.Cells["B1"].Value = "A";
@@ -573,7 +579,7 @@ namespace EPPlusTest
 
                 test.Calculate();
 
-                var result = test.Cells["D2"].GetValue<int>();
+                int result = test.Cells["D2"].GetValue<int>();
 
                 Assert.AreEqual(1, result, string.Format("Expected 1, got {0}", result));
             }
@@ -581,9 +587,9 @@ namespace EPPlusTest
         [TestMethod]
         public void Issue15548_SumIfsShouldHandleBadData()
         {
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var test = package.Workbook.Worksheets.Add("Test");
+                ExcelWorksheet? test = package.Workbook.Worksheets.Add("Test");
 
                 test.Cells["A1"].Value = 1;
                 test.Cells["B1"].Value = "A";
@@ -598,7 +604,7 @@ namespace EPPlusTest
 
                 test.Calculate();
 
-                var result = test.Cells["D2"].GetValue<int>();
+                int result = test.Cells["D2"].GetValue<int>();
 
                 Assert.AreEqual(1, result, string.Format("Expected 1, got {0}", result));
             }
@@ -606,7 +612,7 @@ namespace EPPlusTest
         [TestMethod]
         public void Issue63() // See https://github.com/JanKallman/EPPlus/issues/63
         {
-            using (var p1 = new ExcelPackage())
+            using (ExcelPackage? p1 = new ExcelPackage())
             {
                 ExcelWorksheet ws = p1.Workbook.Worksheets.Add("ArrayTest");
                 ws.Cells["A1"].Value = 1;
@@ -616,7 +622,7 @@ namespace EPPlusTest
                 p1.Save();
 
                 // Test: basic support to recognize array formulas after reading Excel workbook file
-                using (var p2 = new ExcelPackage(p1.Stream))
+                using (ExcelPackage? p2 = new ExcelPackage(p1.Stream))
                 {
                     Assert.AreEqual("A1:A3", p1.Workbook.Worksheets["ArrayTest"].Cells["B1"].Formula);
                     Assert.IsTrue(p1.Workbook.Worksheets["ArrayTest"].Cells["B1"].IsArrayFormula);
@@ -629,9 +635,9 @@ namespace EPPlusTest
             DataTable table1 = new DataTable("TestTable");
             table1.Columns.Add("name");
             table1.Columns.Add("id");
-            using (var p = new ExcelPackage())
+            using (ExcelPackage? p = new ExcelPackage())
             {
-                var ws = p.Workbook.Worksheets.Add("i61");
+                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("i61");
                 ws.Cells["A1"].LoadFromDataTable(table1, true);
             }
 
@@ -647,16 +653,16 @@ namespace EPPlusTest
         public void Issue66()
         {
 
-            using (var pck = new ExcelPackage())
+            using (ExcelPackage? pck = new ExcelPackage())
             {
-                var ws = pck.Workbook.Worksheets.Add("Test!");
+                ExcelWorksheet? ws = pck.Workbook.Worksheets.Add("Test!");
                 ws.Cells["A1"].Value = 1;
                 ws.Cells["B1"].Formula = "A1";
-                var wb = pck.Workbook;
+                ExcelWorkbook? wb = pck.Workbook;
                 wb.Names.Add("Name1", ws.Cells["A1:A2"]);
                 ws.Names.Add("Name2", ws.Cells["A1"]);
                 pck.Save();
-                using (var pck2 = new ExcelPackage(pck.Stream))
+                using (ExcelPackage? pck2 = new ExcelPackage(pck.Stream))
                 {
                     ws = pck2.Workbook.Worksheets["Test!"];
 
@@ -676,11 +682,11 @@ namespace EPPlusTest
         public void Issue184_Disposing_External_Stream()
         {
             // Arrange
-            var stream = new MemoryStream();
+            MemoryStream? stream = new MemoryStream();
 
-            using (var excelPackage = new ExcelPackage(stream))
+            using (ExcelPackage? excelPackage = new ExcelPackage(stream))
             {
-                var worksheet = excelPackage.Workbook.Worksheets.Add("Issue 184");
+                ExcelWorksheet? worksheet = excelPackage.Workbook.Worksheets.Add("Issue 184");
                 worksheet.Cells[1, 1].Value = "Hello EPPlus!";
                 excelPackage.SaveAs(stream);
                 // Act
@@ -692,18 +698,18 @@ namespace EPPlusTest
         [TestMethod]
         public void Issue204()
         {
-            using (var pack = new ExcelPackage())
+            using (ExcelPackage? pack = new ExcelPackage())
             {
                 //create sheets
-                var sheet1 = pack.Workbook.Worksheets.Add("Sheet 1");
-                var sheet2 = pack.Workbook.Worksheets.Add("Sheet 2");
+                ExcelWorksheet? sheet1 = pack.Workbook.Worksheets.Add("Sheet 1");
+                ExcelWorksheet? sheet2 = pack.Workbook.Worksheets.Add("Sheet 2");
                 //set some default values
                 sheet1.Cells[1, 1].Value = 1;
                 sheet2.Cells[1, 1].Value = 2;
                 //fill the formula
-                var formula = string.Format("'{0}'!R1C1", sheet1.Name);
+                string? formula = string.Format("'{0}'!R1C1", sheet1.Name);
 
-                var cell = sheet2.Cells[2, 1];
+                ExcelRange? cell = sheet2.Cells[2, 1];
                 cell.FormulaR1C1 = formula;
                 //Formula should remain the same
                 Assert.AreEqual(formula.ToUpper(), cell.FormulaR1C1.ToUpper());
@@ -712,7 +718,7 @@ namespace EPPlusTest
         [TestMethod, Ignore]
         public void Issue170()
         {
-            using (var p = OpenTemplatePackage("print_titles_170.xlsx"))
+            using (ExcelPackage? p = OpenTemplatePackage("print_titles_170.xlsx"))
             {
                 p.Compatibility.IsWorksheets1Based = false;
                 ExcelWorksheet sheet = p.Workbook.Worksheets[0];
@@ -726,8 +732,8 @@ namespace EPPlusTest
         [TestMethod]
         public void Issue172()
         {
-            var pck = OpenTemplatePackage("quest.xlsx");
-            foreach (var ws in pck.Workbook.Worksheets)
+            ExcelPackage? pck = OpenTemplatePackage("quest.xlsx");
+            foreach (ExcelWorksheet? ws in pck.Workbook.Worksheets)
             {
                 Console.WriteLine(ws.Name);
             }
@@ -738,9 +744,9 @@ namespace EPPlusTest
         [TestMethod]
         public void Issue219()
         {
-            using (var p = OpenTemplatePackage("issueFile.xlsx"))
+            using (ExcelPackage? p = OpenTemplatePackage("issueFile.xlsx"))
             {
-                foreach (var ws in p.Workbook.Worksheets)
+                foreach (ExcelWorksheet? ws in p.Workbook.Worksheets)
                 {
                     Console.WriteLine(ws.Name);
                 }
@@ -750,25 +756,25 @@ namespace EPPlusTest
         [ExpectedException(typeof(InvalidDataException))]
         public void Issue234()
         {
-            using (var s = new MemoryStream())
+            using (MemoryStream? s = new MemoryStream())
             {
-                var data = Encoding.UTF8.GetBytes("Bad data").ToArray();
+                byte[]? data = Encoding.UTF8.GetBytes("Bad data").ToArray();
                 s.Write(data, 0, data.Length);
-                var package = new ExcelPackage(s);
+                ExcelPackage? package = new ExcelPackage(s);
             }
         }
 
         [TestMethod]
         public void WorksheetNameWithSingeQuote()
         {
-            var pck = OpenPackage("sheetname_pbl.xlsx", true);
-            var ws = pck.Workbook.Worksheets.Add("Deal's History");
-            var a = ws.Cells["A:B"];
+            ExcelPackage? pck = OpenPackage("sheetname_pbl.xlsx", true);
+            ExcelWorksheet? ws = pck.Workbook.Worksheets.Add("Deal's History");
+            ExcelRange? a = ws.Cells["A:B"];
             ws.AutoFilterAddress = ws.Cells["A1:C3"];
             pck.Workbook.Names.Add("Test", ws.Cells["B1:D2"]);
-            var name = a.WorkSheetName;
+            string? name = a.WorkSheetName;
 
-            var a2 = new ExcelAddress("'Deal''s History'!a1:a3");
+            ExcelAddress? a2 = new ExcelAddress("'Deal''s History'!a1:a3");
             Assert.AreEqual(a2.WorkSheetName, "Deal's History");
             pck.Save();
             pck.Dispose();
@@ -779,20 +785,20 @@ namespace EPPlusTest
         public void Issue233()
         {
             //get some test data
-            var cars = Car.GenerateList();
+            List<Car>? cars = Car.GenerateList();
 
-            var pck = OpenPackage("issue233.xlsx", true);
+            ExcelPackage? pck = OpenPackage("issue233.xlsx", true);
 
-            var sheetName = "Summary_GLEDHOWSUGARCO![]()PTY";
+            string? sheetName = "Summary_GLEDHOWSUGARCO![]()PTY";
 
             //Create the worksheet 
-            var sheet = pck.Workbook.Worksheets.Add(sheetName);
+            ExcelWorksheet? sheet = pck.Workbook.Worksheets.Add(sheetName);
 
             //Read the data into a range
-            var range = sheet.Cells["A1"].LoadFromCollection(cars, true);
+            ExcelRangeBase? range = sheet.Cells["A1"].LoadFromCollection(cars, true);
 
             //Make the range a table
-            var tbl = sheet.Tables.Add(range, $"data{sheetName}");
+            ExcelTable? tbl = sheet.Tables.Add(range, $"data{sheetName}");
             tbl.ShowTotal = true;
             tbl.Columns["ReleaseYear"].TotalsRowFunction = OfficeOpenXml.Table.RowFunctions.Sum;
 
@@ -836,7 +842,7 @@ namespace EPPlusTest
         [TestMethod]
         public void Issue236()
         {
-            using (var p = OpenTemplatePackage("Issue236.xlsx"))
+            using (ExcelPackage? p = OpenTemplatePackage("Issue236.xlsx"))
             {
                 p.Workbook.Worksheets["Sheet1"].Cells[7, 10].AddComment("test", "Author");
                 SaveWorkbook("Issue236-Saved.xlsx", p);
@@ -845,10 +851,10 @@ namespace EPPlusTest
         [TestMethod]
         public void Issue228()
         {
-            using (var p = OpenTemplatePackage("Font55.xlsx"))
+            using (ExcelPackage? p = OpenTemplatePackage("Font55.xlsx"))
             {
-                var ws = p.Workbook.Worksheets["Sheet1"];
-                var d = ws.Drawings.AddShape("Shape1", eShapeStyle.Diamond);
+                ExcelWorksheet? ws = p.Workbook.Worksheets["Sheet1"];
+                ExcelShape? d = ws.Drawings.AddShape("Shape1", eShapeStyle.Diamond);
                 ws.Cells["A1"].Value = "tasetraser";
                 ws.Cells.AutoFitColumns();
                 SaveWorkbook("Font55-Saved.xlsx", p);
@@ -857,8 +863,8 @@ namespace EPPlusTest
         [TestMethod]
         public void Issue241()
         {
-            var pck = OpenPackage("issue241", true);
-            var wks = pck.Workbook.Worksheets.Add("test");
+            ExcelPackage? pck = OpenPackage("issue241", true);
+            ExcelWorksheet? wks = pck.Workbook.Worksheets.Add("test");
             wks.DefaultRowHeight = 35;
             pck.Save();
             pck.Dispose();
@@ -866,14 +872,14 @@ namespace EPPlusTest
         [TestMethod]
         public void Issue195()
         {
-            using (var pkg = new OfficeOpenXml.ExcelPackage())
+            using (ExcelPackage? pkg = new OfficeOpenXml.ExcelPackage())
             {
-                var sheet = pkg.Workbook.Worksheets.Add("Sheet1");
-                var defaultStyle = pkg.Workbook.Styles.CreateNamedStyle("Default");
+                ExcelWorksheet? sheet = pkg.Workbook.Worksheets.Add("Sheet1");
+                ExcelNamedStyleXml? defaultStyle = pkg.Workbook.Styles.CreateNamedStyle("Default");
                 defaultStyle.Style.Font.Name = "Arial";
                 defaultStyle.Style.Font.Size = 18;
                 defaultStyle.Style.Font.UnderLine = true;
-                var boldStyle = pkg.Workbook.Styles.CreateNamedStyle("Bold", defaultStyle.Style);
+                ExcelNamedStyleXml? boldStyle = pkg.Workbook.Styles.CreateNamedStyle("Bold", defaultStyle.Style);
                 boldStyle.Style.Font.Color.SetColor(Color.Red);
 
                 Assert.AreEqual("Arial", defaultStyle.Style.Font.Name);
@@ -890,8 +896,8 @@ namespace EPPlusTest
         public void Issue332()
         {
             InitBase();
-            var pkg = OpenPackage("Hyperlink.xlsx", true);
-            var ws = pkg.Workbook.Worksheets.Add("Hyperlink");
+            ExcelPackage? pkg = OpenPackage("Hyperlink.xlsx", true);
+            ExcelWorksheet? ws = pkg.Workbook.Worksheets.Add("Hyperlink");
             ws.Cells["A1"].Hyperlink = new ExcelHyperLink("A2", "A2");
             pkg.Save();
         }
@@ -899,15 +905,15 @@ namespace EPPlusTest
         public void Issue332_2()
         {
             InitBase();
-            var pkg = OpenPackage("Hyperlink.xlsx");
-            var ws = pkg.Workbook.Worksheets["Hyperlink"];
+            ExcelPackage? pkg = OpenPackage("Hyperlink.xlsx");
+            ExcelWorksheet? ws = pkg.Workbook.Worksheets["Hyperlink"];
             Assert.IsNotNull(ws.Cells["A1"].Hyperlink);
         }
         [TestMethod]
         public void Issue347()
         {
-            var package = OpenTemplatePackage("Issue327.xlsx");
-            var templateWS = package.Workbook.Worksheets["Template"];
+            ExcelPackage? package = OpenTemplatePackage("Issue327.xlsx");
+            ExcelWorksheet? templateWS = package.Workbook.Worksheets["Template"];
             //package.Workbook.Worksheets.Add("NewWs", templateWS);
             package.Workbook.Worksheets.Delete(templateWS);
         }
@@ -919,18 +925,18 @@ namespace EPPlusTest
                 ExcelWorksheet ws = pck.Workbook.Worksheets.Add("S1");
                 string formula = "VLOOKUP(C2,A:B,1,0)";
                 ws.Cells[2, 4].Formula = formula;
-                var t1 = ws.Cells[2, 4].FormulaR1C1; // VLOOKUP(C2,C[-3]:C[-2],1,0)
+                string? t1 = ws.Cells[2, 4].FormulaR1C1; // VLOOKUP(C2,C[-3]:C[-2],1,0)
                 ws.Cells[2, 5].FormulaR1C1 = ws.Cells[2, 4].FormulaR1C1;
-                var t2 = ws.Cells[2, 5].FormulaR1C1; // VLOOKUP(C2,C[-3]**:B:C:C**,1,0)   //unexpected value here
+                string? t2 = ws.Cells[2, 5].FormulaR1C1; // VLOOKUP(C2,C[-3]**:B:C:C**,1,0)   //unexpected value here
             }
         }
 
         [TestMethod]
         public void Issue367()
         {
-            using (var pck = OpenTemplatePackage(@"ProductFunctionTest.xlsx"))
+            using (ExcelPackage? pck = OpenTemplatePackage(@"ProductFunctionTest.xlsx"))
             {
-                var sheet = pck.Workbook.Worksheets.First();
+                ExcelWorksheet? sheet = pck.Workbook.Worksheets.First();
                 //sheet.Cells["B13"].Value = null;
                 sheet.Cells["B14"].Value = 11;
                 sheet.Cells["B15"].Value = 13;
@@ -945,7 +951,7 @@ namespace EPPlusTest
         {
             using (ExcelPackage package = OpenTemplatePackage("issue345.xlsx"))
             {
-                var worksheet = package.Workbook.Worksheets["test"];
+                ExcelWorksheet? worksheet = package.Workbook.Worksheets["test"];
                 int[] sortColumns = new int[1];
                 sortColumns[0] = 0;
                 worksheet.Cells["A2:A30864"].Sort(sortColumns);
@@ -958,11 +964,11 @@ namespace EPPlusTest
 
             using (ExcelPackage package = OpenTemplatePackage("issue345.xlsx"))
             {
-                var workbook = package.Workbook;
-                var worksheet = workbook.Worksheets.Add("One");
+                ExcelWorkbook? workbook = package.Workbook;
+                ExcelWorksheet? worksheet = workbook.Worksheets.Add("One");
 
                 worksheet.Cells[1, 3].Value = "Hello";
-                var cells = worksheet.Cells["A3"];
+                ExcelRange? cells = worksheet.Cells["A3"];
 
                 worksheet.Names.Add("R0", cells);
                 workbook.Names.Add("Q0", cells);
@@ -971,20 +977,20 @@ namespace EPPlusTest
         [TestMethod]
         public void Issue333()
         {
-            var ci = Thread.CurrentThread.CurrentCulture;
+            CultureInfo? ci = Thread.CurrentThread.CurrentCulture;
             Thread.CurrentThread.CurrentCulture = new CultureInfo("sv-SE");
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var ws = package.Workbook.Worksheets.Add("TextBug");
+                ExcelWorksheet? ws = package.Workbook.Worksheets.Add("TextBug");
                 ws.Cells["A1"].Value = new DateTime(2019, 3, 7);
                 ws.Cells["A1"].Style.Numberformat.Format = "mm-dd-yy";
 
                 Assert.AreEqual("2019-03-07", ws.Cells["A1"].Text);
             }
             Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var ws = package.Workbook.Worksheets.Add("TextBug");
+                ExcelWorksheet? ws = package.Workbook.Worksheets.Add("TextBug");
                 ws.Cells["A1"].Value = new DateTime(2019, 3, 7);
                 ws.Cells["A1"].Style.Numberformat.Format = "mm-dd-yy";
 
@@ -1003,16 +1009,16 @@ namespace EPPlusTest
         [TestMethod]
         public void Issue551()
         {
-            using (var p = OpenTemplatePackage("Submittal.Extract.5.ton.xlsx"))
+            using (ExcelPackage? p = OpenTemplatePackage("Submittal.Extract.5.ton.xlsx"))
             {
-                var ws = p.Workbook.Worksheets[0];
+                ExcelWorksheet? ws = p.Workbook.Worksheets[0];
                 SaveWorkbook("Submittal.Extract.5.ton_Saved.xlsx", p);
             }
         }
         [TestMethod]
         public void Issue558()
         {
-            using (var p = OpenTemplatePackage("GoogleSpreadsheet.xlsx"))
+            using (ExcelPackage? p = OpenTemplatePackage("GoogleSpreadsheet.xlsx"))
             {
                 ExcelWorksheet ws = p.Workbook.Worksheets[0];
                 p.Workbook.Worksheets.Copy(ws.Name, "NewName");
@@ -1022,10 +1028,10 @@ namespace EPPlusTest
         [TestMethod]
         public void Issue520()
         {
-            using (var p = OpenTemplatePackage("template_slim.xlsx"))
+            using (ExcelPackage? p = OpenTemplatePackage("template_slim.xlsx"))
             {
 
-                var workSheet = p.Workbook.Worksheets[0];
+                ExcelWorksheet? workSheet = p.Workbook.Worksheets[0];
                 workSheet.Cells["B5"].LoadFromArrays(new List<object[]> { new object[] { "xx", "Name", 1, 2, 3, 5, 6, 7 } });
 
                 SaveWorkbook("ErrorStyle0.xlsx", p);
@@ -1034,10 +1040,10 @@ namespace EPPlusTest
         [TestMethod]
         public void Issue510()
         {
-            using (var p = OpenTemplatePackage("Error.Opening.with.EPPLus.xlsx"))
+            using (ExcelPackage? p = OpenTemplatePackage("Error.Opening.with.EPPLus.xlsx"))
             {
 
-                var workSheet = p.Workbook.Worksheets[0];
+                ExcelWorksheet? workSheet = p.Workbook.Worksheets[0];
 
                 SaveWorkbook("Issue510.xlsx", p);
             }
@@ -1045,13 +1051,13 @@ namespace EPPlusTest
         [TestMethod]
         public void Issue464()
         {
-            using (var p1 = OpenTemplatePackage("Sample_Cond_Format.xlsx"))
+            using (ExcelPackage? p1 = OpenTemplatePackage("Sample_Cond_Format.xlsx"))
             {
-                var ws = p1.Workbook.Worksheets[0];
-                using (var p2 = new ExcelPackage())
+                ExcelWorksheet? ws = p1.Workbook.Worksheets[0];
+                using (ExcelPackage? p2 = new ExcelPackage())
                 {
-                    var ws2 = p2.Workbook.Worksheets.Add("Test", ws);
-                    foreach (var cf in ws2.ConditionalFormatting)
+                    ExcelWorksheet? ws2 = p2.Workbook.Worksheets.Add("Test", ws);
+                    foreach (IExcelConditionalFormattingRule? cf in ws2.ConditionalFormatting)
                     {
 
                     }
@@ -1062,18 +1068,18 @@ namespace EPPlusTest
         [TestMethod]
         public void Issue436()
         {
-            using (var p1 = OpenTemplatePackage("issue436.xlsx"))
+            using (ExcelPackage? p1 = OpenTemplatePackage("issue436.xlsx"))
             {
-                var ws = p1.Workbook.Worksheets[0];
+                ExcelWorksheet? ws = p1.Workbook.Worksheets[0];
                 Assert.IsNotNull(((ExcelShape)ws.Drawings[0]).Text);
             }
         }
         [TestMethod]
         public void Issue425()
         {
-            using (var p1 = OpenTemplatePackage("issue425.xlsm"))
+            using (ExcelPackage? p1 = OpenTemplatePackage("issue425.xlsm"))
             {
-                var ws = p1.Workbook.Worksheets[1];
+                ExcelWorksheet? ws = p1.Workbook.Worksheets[1];
 
                 p1.Workbook.Worksheets.Add("NewNotCopied");
                 p1.Workbook.Worksheets.Add("NewCopied", ws);
@@ -1084,7 +1090,7 @@ namespace EPPlusTest
         [TestMethod]
         public void Issue422()
         {
-            using (var p1 = OpenTemplatePackage("CustomFormula.xlsx"))
+            using (ExcelPackage? p1 = OpenTemplatePackage("CustomFormula.xlsx"))
             {
                 SaveWorkbook("issue422.xlsx", p1);
             }
@@ -1093,10 +1099,10 @@ namespace EPPlusTest
         [TestMethod]
         public void Issue625()
         {
-            using (var p = OpenTemplatePackage("multiple_print_areas.xlsx"))
+            using (ExcelPackage? p = OpenTemplatePackage("multiple_print_areas.xlsx"))
             {
 
-                var workSheet = p.Workbook.Worksheets[0];
+                ExcelWorksheet? workSheet = p.Workbook.Worksheets[0];
 
                 SaveWorkbook("Issue625.xlsx", p);
             }
@@ -1104,18 +1110,18 @@ namespace EPPlusTest
         [TestMethod]
         public void Issue403()
         {
-            using (var p = OpenTemplatePackage("issue403.xlsx"))
+            using (ExcelPackage? p = OpenTemplatePackage("issue403.xlsx"))
             {
-                var ws = p.Workbook.Worksheets[0];
+                ExcelWorksheet? ws = p.Workbook.Worksheets[0];
                 SaveWorkbook("Issue403.xlsx", p);
             }
         }
         [TestMethod]
         public void Issue39()
         {
-            using (var p = OpenTemplatePackage("MyExcel.xlsx"))
+            using (ExcelPackage? p = OpenTemplatePackage("MyExcel.xlsx"))
             {
-                var workSheet = p.Workbook.Worksheets[0];
+                ExcelWorksheet? workSheet = p.Workbook.Worksheets[0];
 
                 workSheet.InsertRow(8, 2, 8);
                 SaveWorkbook("Issue39.xlsx", p);
@@ -1124,7 +1130,7 @@ namespace EPPlusTest
         [TestMethod]
         public void Issue70()
         {
-            using (var p = OpenTemplatePackage("HiddenOO.xlsx"))
+            using (ExcelPackage? p = OpenTemplatePackage("HiddenOO.xlsx"))
             {
                 Assert.IsTrue(p.Workbook.Worksheets[0].Column(2).Hidden);
                 SaveWorkbook("Issue70.xlsx", p);
@@ -1133,9 +1139,9 @@ namespace EPPlusTest
         [TestMethod]
         public void Issue72()
         {
-            using (var p = OpenTemplatePackage("Issue72-Table.xlsx"))
+            using (ExcelPackage? p = OpenTemplatePackage("Issue72-Table.xlsx"))
             {
-                var ws = p.Workbook.Worksheets[0];
+                ExcelWorksheet? ws = p.Workbook.Worksheets[0];
                 Assert.AreEqual("COUNTIF(Base[Date],Calc[[#This Row],[Date]])", ws.Cells["F3"].Formula);
                 SaveWorkbook("Issue72.xlsx", p);
             }
@@ -1143,11 +1149,11 @@ namespace EPPlusTest
         [TestMethod]
         public void Issue54()
         {
-            using (var p = new ExcelPackage())
+            using (ExcelPackage? p = new ExcelPackage())
             {
-                var ws = p.Workbook.Worksheets.Add("MergeBug");
+                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("MergeBug");
 
-                var r = ws.Cells[1, 1, 1, 5];
+                ExcelRange? r = ws.Cells[1, 1, 1, 5];
                 r.Merge = true;
                 r.Value = "Header";
                 SaveWorkbook("Issue54.xlsx", p);
@@ -1156,15 +1162,15 @@ namespace EPPlusTest
         [TestMethod]
         public void Issue55()
         {
-            using (var p = new ExcelPackage())
+            using (ExcelPackage? p = new ExcelPackage())
             {
-                var worksheet = p.Workbook.Worksheets.Add("DV test");
-                var rangeToSet = ExcelCellBase.GetAddress(1, 3, ExcelPackage.MaxRows, 3);
+                ExcelWorksheet? worksheet = p.Workbook.Worksheets.Add("DV test");
+                string? rangeToSet = ExcelCellBase.GetAddress(1, 3, ExcelPackage.MaxRows, 3);
                 worksheet.Names.Add("ListName", worksheet.Cells["D1:D3"]);
                 worksheet.Cells["D1"].Value = "A";
                 worksheet.Cells["D2"].Value = "B";
                 worksheet.Cells["D3"].Value = "C";
-                var validation = worksheet.DataValidations.AddListValidation(rangeToSet);
+                IExcelDataValidationList? validation = worksheet.DataValidations.AddListValidation(rangeToSet);
                 validation.Formula.ExcelFormula = $"=ListName";
                 SaveWorkbook("dv.xlsx", p);
             }
@@ -1172,9 +1178,9 @@ namespace EPPlusTest
         [TestMethod]
         public void Issue73()
         {
-            using (var p = OpenTemplatePackage("Issue73.xlsx"))
+            using (ExcelPackage? p = OpenTemplatePackage("Issue73.xlsx"))
             {
-                var workSheet = p.Workbook.Worksheets[0];
+                ExcelWorksheet? workSheet = p.Workbook.Worksheets[0];
 
                 SaveWorkbook("Issue73Saved.xlsx", p);
             }
@@ -1182,9 +1188,9 @@ namespace EPPlusTest
         [TestMethod]
         public void Issue74()
         {
-            using (var p = OpenTemplatePackage("Issue74.xlsx"))
+            using (ExcelPackage? p = OpenTemplatePackage("Issue74.xlsx"))
             {
-                var workSheet = p.Workbook.Worksheets[0];
+                ExcelWorksheet? workSheet = p.Workbook.Worksheets[0];
 
                 SaveWorkbook("Issue74Saved.xlsx", p);
             }
@@ -1192,9 +1198,9 @@ namespace EPPlusTest
         [TestMethod]
         public void Issue76()
         {
-            using (var p = OpenTemplatePackage("Issue76.xlsx"))
+            using (ExcelPackage? p = OpenTemplatePackage("Issue76.xlsx"))
             {
-                var workSheet = p.Workbook.Worksheets[0];
+                ExcelWorksheet? workSheet = p.Workbook.Worksheets[0];
 
                 SaveWorkbook("Issue76Saved.xlsx", p);
             }
@@ -1202,17 +1208,17 @@ namespace EPPlusTest
         [TestMethod]
         public void Issue88()
         {
-            using (var p = OpenTemplatePackage("Issue88.xlsm"))
+            using (ExcelPackage? p = OpenTemplatePackage("Issue88.xlsm"))
             {
-                var ws1 = p.Workbook.Worksheets[0];
-                var ws2 = p.Workbook.Worksheets.Add("test", ws1);
+                ExcelWorksheet? ws1 = p.Workbook.Worksheets[0];
+                ExcelWorksheet? ws2 = p.Workbook.Worksheets.Add("test", ws1);
                 SaveWorkbook("Issue88Saved.xlsm", p);
             }
         }
         [TestMethod]
         public void Issue94()
         {
-            using (var p = OpenTemplatePackage("Issue425.xlsm"))
+            using (ExcelPackage? p = OpenTemplatePackage("Issue425.xlsm"))
             {
                 p.Workbook.VbaProject.Remove();
                 SaveWorkbook("Issue425.xlsx", p);
@@ -1221,7 +1227,7 @@ namespace EPPlusTest
         [TestMethod]
         public void Issue95()
         {
-            using (var p = OpenTemplatePackage("Issue95.xlsx"))
+            using (ExcelPackage? p = OpenTemplatePackage("Issue95.xlsx"))
             {
                 SaveAndCleanup(p);
             }
@@ -1229,7 +1235,7 @@ namespace EPPlusTest
         [TestMethod]
         public void Issue99()
         {
-            using (var p = OpenTemplatePackage("Issue-99-2.xlsx"))
+            using (ExcelPackage? p = OpenTemplatePackage("Issue-99-2.xlsx"))
             {
                 //var p2 = OpenPackage("Issue99-2Saved-new.xlsx", true);
                 //var ws = p2.Workbook.Worksheets.Add("Picture");
@@ -1244,9 +1250,9 @@ namespace EPPlusTest
         [TestMethod]
         public void Issue115()
         {
-            using (var p = OpenPackage("Issue115.xlsx", true))
+            using (ExcelPackage? p = OpenPackage("Issue115.xlsx", true))
             {
-                var ws = p.Workbook.Worksheets.Add("DefinedNamesIssue");
+                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("DefinedNamesIssue");
                 p.Workbook.Names.Add("Name", ws.Cells["B6:D8,B10:D11"]);
                 SaveAndCleanup(p);
             }
@@ -1254,29 +1260,29 @@ namespace EPPlusTest
         [TestMethod]
         public void Issue121()
         {
-            using (var p = OpenTemplatePackage("Deployment aftaler.xlsx"))
+            using (ExcelPackage? p = OpenTemplatePackage("Deployment aftaler.xlsx"))
             {
-                var sheet = p.Workbook.Worksheets[0];
+                ExcelWorksheet? sheet = p.Workbook.Worksheets[0];
             }
         }
 
         [TestMethod, Ignore]
         public void SupportCase17()
         {
-            using (var p = new ExcelPackage(new FileInfo(@"c:\temp\Issue17\BreakLinks3.xlsx")))
+            using (ExcelPackage? p = new ExcelPackage(new FileInfo(@"c:\temp\Issue17\BreakLinks3.xlsx")))
             {
-                var stopwatch = Stopwatch.StartNew();
+                Stopwatch? stopwatch = Stopwatch.StartNew();
                 p.Workbook.FormulaParserManager.AttachLogger(new FileInfo("c:\\temp\\formulalog.txt"));
                 p.Workbook.Calculate();
                 stopwatch.Stop();
-                var ms = stopwatch.Elapsed.TotalSeconds;
+                double ms = stopwatch.Elapsed.TotalSeconds;
 
             }
         }
         [TestMethod, Ignore]
         public void Issue17()
         {
-            using (var p = OpenTemplatePackage("Excel Sample Circular Ref break links.xlsx"))
+            using (ExcelPackage? p = OpenTemplatePackage("Excel Sample Circular Ref break links.xlsx"))
             {
                 p.Workbook.Calculate();
             }
@@ -1284,7 +1290,7 @@ namespace EPPlusTest
         [TestMethod]
         public void Issue18()
         {
-            using (var p = OpenTemplatePackage("000P020-SQ101_H0.xlsm"))
+            using (ExcelPackage? p = OpenTemplatePackage("000P020-SQ101_H0.xlsm"))
             {
                 p.Workbook.Worksheets.Delete(0);
                 p.Workbook.Worksheets.Delete(2);
@@ -1295,11 +1301,11 @@ namespace EPPlusTest
         [TestMethod]
         public void Issue26()
         {
-            using (var p = OpenTemplatePackage("Issue26.xlsx"))
+            using (ExcelPackage? p = OpenTemplatePackage("Issue26.xlsx"))
             {
                 SaveAndCleanup(p);
             }
-            using (var p = OpenPackage("Issue26.xlsx"))
+            using (ExcelPackage? p = OpenPackage("Issue26.xlsx"))
             {
                 SaveWorkbook("Issue26-resaved.xlsx", p);
             }
@@ -1307,15 +1313,15 @@ namespace EPPlusTest
         [TestMethod]
         public void Issue180()
         {
-            var p1 = OpenTemplatePackage("Issue180-1.xlsm");
-            var p2 = OpenTemplatePackage("Issue180-2.xlsm");
+            ExcelPackage? p1 = OpenTemplatePackage("Issue180-1.xlsm");
+            ExcelPackage? p2 = OpenTemplatePackage("Issue180-2.xlsm");
             p2.Workbook.Worksheets.Add(p1.Workbook.Worksheets[0].Name, p1.Workbook.Worksheets[0]);
             p2.SaveAs(new FileInfo("c:\\epplustest\\t.xlsm"));
         }
         [TestMethod]
         public void Issue34()
         {
-            using (var p = OpenTemplatePackage("Issue34.xlsx"))
+            using (ExcelPackage? p = OpenTemplatePackage("Issue34.xlsx"))
             {
                 SaveAndCleanup(p);
             }
@@ -1324,15 +1330,15 @@ namespace EPPlusTest
         [TestMethod]
         public void Issue38()
         {
-            using (var p = OpenTemplatePackage("pivottest.xlsx"))
+            using (ExcelPackage? p = OpenTemplatePackage("pivottest.xlsx"))
             {
                 Assert.AreEqual(1, p.Workbook.Worksheets[1].PivotTables.Count);
-                var tbl = p.Workbook.Worksheets[0].Tables[0];
-                var pt = p.Workbook.Worksheets[1].PivotTables[0];
+                ExcelTable? tbl = p.Workbook.Worksheets[0].Tables[0];
+                ExcelPivotTable? pt = p.Workbook.Worksheets[1].PivotTables[0];
                 Assert.IsNotNull(p.Workbook.Worksheets[1].PivotTables[0].CacheDefinition);
-                var s1 = pt.Fields[0].AddSlicer();
+                ExcelPivotTableSlicer? s1 = pt.Fields[0].AddSlicer();
                 s1.SetPosition(0, 500);
-                var s2 = pt.Fields["OpenDate"].AddSlicer();
+                ExcelPivotTableSlicer? s2 = pt.Fields["OpenDate"].AddSlicer();
                 pt.Fields["Distance"].Format = "#,##0.00";
                 pt.Fields["Distance"].AddSlicer();
                 s2.SetPosition(0, 500 + (int)s1._width);
@@ -1345,18 +1351,18 @@ namespace EPPlusTest
         [TestMethod]
         public void Issue195_PivotTable()
         {
-            using (var p = OpenTemplatePackage("Issue195.xlsx"))
+            using (ExcelPackage? p = OpenTemplatePackage("Issue195.xlsx"))
             {
-                var ws = p.Workbook.Worksheets[1];
+                ExcelWorksheet? ws = p.Workbook.Worksheets[1];
                 SaveAndCleanup(p);
             }
         }
         [TestMethod]
         public void Issue45()
         {
-            using (var p = OpenPackage("LinkIssue.xlsx", true))
+            using (ExcelPackage? p = OpenPackage("LinkIssue.xlsx", true))
             {
-                var ws = p.Workbook.Worksheets.Add("Sheet1");
+                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Sheet1");
                 ws.Cells["A1:A2"].Value = 1;
                 ws.Cells["B1:B2"].Formula = $"VLOOKUP($A1,[externalBook.xlsx]Prices!$A:$H, 3, FALSE)";
                 SaveAndCleanup(p);
@@ -1366,18 +1372,18 @@ namespace EPPlusTest
         [TestMethod]
         public void EmfIssue()
         {
-            using (var p = OpenTemplatePackage("emfIssue.xlsm"))
+            using (ExcelPackage? p = OpenTemplatePackage("emfIssue.xlsm"))
             {
-                var ws = p.Workbook.Worksheets[0];
+                ExcelWorksheet? ws = p.Workbook.Worksheets[0];
                 SaveAndCleanup(p);
             }
         }
         [TestMethod]
         public void Issue201()
         {
-            using (var p = OpenTemplatePackage("book1.xlsx"))
+            using (ExcelPackage? p = OpenTemplatePackage("book1.xlsx"))
             {
-                var ws = p.Workbook.Worksheets[0];
+                ExcelWorksheet? ws = p.Workbook.Worksheets[0];
                 Assert.AreEqual("0", ws.Cells["A1"].Text);
                 Assert.AreEqual("-", ws.Cells["A2"].Text);
                 Assert.AreEqual("0", ws.Cells["A3"].Text);
@@ -1390,9 +1396,9 @@ namespace EPPlusTest
             int START_ROW = 1;
             int CustomTemplateRowsOffset = 4;
             int rowCount = 34000;
-            using (var package = OpenTemplatePackage("CellStoreIssue.xlsm"))
+            using (ExcelPackage? package = OpenTemplatePackage("CellStoreIssue.xlsm"))
             {
-                var worksheet = package.Workbook.Worksheets[0];
+                ExcelWorksheet? worksheet = package.Workbook.Worksheets[0];
                 worksheet.Cells["A5"].Value = "Test";
                 worksheet.InsertRow(START_ROW + CustomTemplateRowsOffset, rowCount - 1, CustomTemplateRowsOffset + 1);
                 Assert.AreEqual("Test", worksheet.Cells["A34004"].Value);
@@ -1407,28 +1413,28 @@ namespace EPPlusTest
         [TestMethod]
         public void Issue220()
         {
-            using (var p = OpenTemplatePackage("Generated.with.EPPlus.xlsx"))
+            using (ExcelPackage? p = OpenTemplatePackage("Generated.with.EPPlus.xlsx"))
             {
-                var ws = p.Workbook.Worksheets[0];
+                ExcelWorksheet? ws = p.Workbook.Worksheets[0];
             }
         }
         [TestMethod]
         public void Issue232()
         {
-            using (var p = OpenTemplatePackage("pivotbug541.xlsx"))
+            using (ExcelPackage? p = OpenTemplatePackage("pivotbug541.xlsx"))
             {
-                var overviewSheet = p.Workbook.Worksheets["Overblik"];
-                var serverSheet = p.Workbook.Worksheets["Servers"];
-                var serverPivot = overviewSheet.PivotTables.Add(overviewSheet.Cells["A4"], serverSheet.Cells[serverSheet.Dimension.Address], "ServerPivot");
+                ExcelWorksheet? overviewSheet = p.Workbook.Worksheets["Overblik"];
+                ExcelWorksheet? serverSheet = p.Workbook.Worksheets["Servers"];
+                ExcelPivotTable? serverPivot = overviewSheet.PivotTables.Add(overviewSheet.Cells["A4"], serverSheet.Cells[serverSheet.Dimension.Address], "ServerPivot");
                 p.Save();
             }
         }
         [TestMethod]
         public void Issue_234()
         {
-            using (var p = OpenTemplatePackage("ExcelErrorFile.xlsx"))
+            using (ExcelPackage? p = OpenTemplatePackage("ExcelErrorFile.xlsx"))
             {
-                var ws = p.Workbook.Worksheets["Leistung"];
+                ExcelWorksheet? ws = p.Workbook.Worksheets["Leistung"];
 
                 Assert.IsNull(ws.Cells["C65538"].Value);
                 Assert.IsNull(ws.Cells["C71715"].Value);
@@ -1442,16 +1448,16 @@ namespace EPPlusTest
         [TestMethod]
         public void InflateIssue()
         {
-            using (var p = OpenPackage("inflateStart.xlsx", true))
+            using (ExcelPackage? p = OpenPackage("inflateStart.xlsx", true))
             {
-                var worksheet = p.Workbook.Worksheets.Add("Test");
+                ExcelWorksheet? worksheet = p.Workbook.Worksheets.Add("Test");
                 for (int i = 1; i <= 10; i++)
                 {
                     worksheet.Cells[1, i].Hyperlink = new Uri("https://epplussoftware.com");
                     worksheet.Cells[1, i].Value = "Url " + worksheet.Cells[1, i].Address;
                 }
                 p.Save();
-                using (var p2 = new ExcelPackage(p.Stream))
+                using (ExcelPackage? p2 = new ExcelPackage(p.Stream))
                 {
                     for (int i = 0; i < 10; i++)
                     {
@@ -1464,10 +1470,10 @@ namespace EPPlusTest
         [TestMethod]
         public void DrawingSetFont()
         {
-            using (var p = OpenPackage("DrawingSetFromFont.xlsx", true))
+            using (ExcelPackage? p = OpenPackage("DrawingSetFromFont.xlsx", true))
             {
-                var ws = p.Workbook.Worksheets.Add("Drawing1");
-                var shape = ws.Drawings.AddShape("x", eShapeStyle.Rect);
+                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Drawing1");
+                ExcelShape? shape = ws.Drawings.AddShape("x", eShapeStyle.Rect);
                 shape.Font.SetFromFont("Arial", 20);
                 shape.Text = "Font";
                 SaveAndCleanup(p);
@@ -1476,23 +1482,23 @@ namespace EPPlusTest
         [TestMethod]
         public void Issue_258()
         {
-            using (var package = OpenTemplatePackage("Test.xlsx"))
+            using (ExcelPackage? package = OpenTemplatePackage("Test.xlsx"))
             {
-                var overviewSheet = package.Workbook.Worksheets["Overview"];
+                ExcelWorksheet? overviewSheet = package.Workbook.Worksheets["Overview"];
                 if (overviewSheet != null)
                 {
                     package.Workbook.Worksheets.Delete(overviewSheet);
                 }
 
                 overviewSheet = package.Workbook.Worksheets.Add("Overview");
-                var serverSheet = package.Workbook.Worksheets["Servers"];
-                var serverPivot = overviewSheet.PivotTables.Add(overviewSheet.Cells["A4"], serverSheet.Cells[serverSheet.Dimension.Address], "ServerPivot");
-                var serverNameField = serverPivot.Fields["Name"];
+                ExcelWorksheet? serverSheet = package.Workbook.Worksheets["Servers"];
+                ExcelPivotTable? serverPivot = overviewSheet.PivotTables.Add(overviewSheet.Cells["A4"], serverSheet.Cells[serverSheet.Dimension.Address], "ServerPivot");
+                ExcelPivotTableField? serverNameField = serverPivot.Fields["Name"];
                 serverPivot.RowFields.Add(serverNameField);
-                var standardBackupField = serverPivot.Fields["StandardBackup"];
+                ExcelPivotTableField? standardBackupField = serverPivot.Fields["StandardBackup"];
                 serverPivot.PageFields.Add(standardBackupField);
                 standardBackupField.Items.Refresh();
-                var items = standardBackupField.Items;
+                ExcelPivotTableFieldItemsCollection? items = standardBackupField.Items;
                 items.SelectSingleItem(1); // <===== this one is to select only the "false" condition
                 SaveWorkbook("Issue248.xlsx", package);
             }
@@ -1500,15 +1506,15 @@ namespace EPPlusTest
         [TestMethod]
         public void Issue_243()
         {
-            using (var p = OpenPackage("formula.xlsx", true))
+            using (ExcelPackage? p = OpenPackage("formula.xlsx", true))
             {
-                var ws = p.Workbook.Worksheets.Add("formula");
+                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("formula");
                 ws.Cells["A1"].Value = "column1";
                 ws.Cells["A2"].Value = 1;
                 ws.Cells["A3"].Value = 2;
                 ws.Cells["A4"].Value = 3;
 
-                var tbl = ws.Tables.Add(ws.Cells["A1:A4"], "Table1");
+                ExcelTable? tbl = ws.Tables.Add(ws.Cells["A1:A4"], "Table1");
 
                 ws.Cells["B1"].Formula = "TEXTJOIN(\" | \", false, INDIRECT(\"Table1[#data]\"))";
                 ws.Calculate();
@@ -1524,9 +1530,9 @@ namespace EPPlusTest
         public void IssueCommentInsert()
         {
 
-            using (var p = OpenPackage("CommentInsert.xlsx", true))
+            using (ExcelPackage? p = OpenPackage("CommentInsert.xlsx", true))
             {
-                var ws = p.Workbook.Worksheets.Add("CommentInsert");
+                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("CommentInsert");
                 ws.Cells["A2"].AddComment("na", "test");
                 Assert.AreEqual(1, ws.Comments.Count);
 
@@ -1538,9 +1544,9 @@ namespace EPPlusTest
         [TestMethod]
         public void Issue261()
         {
-            using (var p = OpenTemplatePackage("issue261.xlsx"))
+            using (ExcelPackage? p = OpenTemplatePackage("issue261.xlsx"))
             {
-                var ws = p.Workbook.Worksheets["data"];
+                ExcelWorksheet? ws = p.Workbook.Worksheets["data"];
                 ws.Cells["A1"].Value = "test";
                 SaveAndCleanup(p);
             }
@@ -1548,23 +1554,23 @@ namespace EPPlusTest
         [TestMethod]
         public void Issue260()
         {
-            using (var p = OpenTemplatePackage("issue260.xlsx"))
+            using (ExcelPackage? p = OpenTemplatePackage("issue260.xlsx"))
             {
-                var workbook = p.Workbook;
+                ExcelWorkbook? workbook = p.Workbook;
                 Console.WriteLine(workbook.Worksheets.Count);
             }
         }
         [TestMethod]
         public void Issue268()
         {
-            using (var p = OpenPackage("Issue268.xlsx", true))
+            using (ExcelPackage? p = OpenPackage("Issue268.xlsx", true))
             {
                 ExcelWorksheet formSheet = CreateFormSheet(p);
-                var r1 = formSheet.Drawings.AddCheckBoxControl("OptionSingleRoom");
+                ExcelControlCheckBox? r1 = formSheet.Drawings.AddCheckBoxControl("OptionSingleRoom");
                 r1.Text = "Single Room";
                 r1.LinkedCell = formSheet.Cells["G7"];
                 r1.SetPosition(5, 0, 1, 0);
-                var tableSheet = p.Workbook.Worksheets.Add("Table");
+                ExcelWorksheet? tableSheet = p.Workbook.Worksheets.Add("Table");
                 ExcelRange tableRange = formSheet.Cells[10, 20, 30, 22];
                 ExcelTable faultsTable = formSheet.Tables.Add(tableRange, "FaultsTable");
                 faultsTable.StyleName = "None";
@@ -1573,7 +1579,7 @@ namespace EPPlusTest
         }
         private static ExcelWorksheet CreateFormSheet(ExcelPackage package)
         {
-            var formSheet = package.Workbook.Worksheets.Add("Form");
+            ExcelWorksheet? formSheet = package.Workbook.Worksheets.Add("Form");
             formSheet.Cells["A1"].Value = "Room booking";
             formSheet.Cells["A1"].Style.Font.Size = 18;
             formSheet.Cells["A1"].Style.Font.Bold = true;
@@ -1582,21 +1588,21 @@ namespace EPPlusTest
         [TestMethod]
         public void Issue269()
         {
-            var data = new List<TestDTO>();
+            List<TestDTO>? data = new List<TestDTO>();
 
-            using (var p = new ExcelPackage())
+            using (ExcelPackage? p = new ExcelPackage())
             {
-                var sheet = p.Workbook.Worksheets.Add("Sheet1");
-                var r = sheet.Cells["A1"].LoadFromCollection(data, false);
+                ExcelWorksheet? sheet = p.Workbook.Worksheets.Add("Sheet1");
+                ExcelRangeBase? r = sheet.Cells["A1"].LoadFromCollection(data, false);
                 Assert.IsNull(r);
             }
         }
         [TestMethod]
         public void Issue272()
         {
-            using (var p = OpenTemplatePackage("Issue272.xlsx"))
+            using (ExcelPackage? p = OpenTemplatePackage("Issue272.xlsx"))
             {
-                var workbook = p.Workbook;
+                ExcelWorkbook? workbook = p.Workbook;
                 Console.WriteLine(workbook.Worksheets.Count);
                 SaveAndCleanup(p);
             }
@@ -1604,10 +1610,10 @@ namespace EPPlusTest
         [TestMethod]
         public void IssueS84()
         {
-            using (var p = OpenTemplatePackage("XML in Cells.xlsx"))
+            using (ExcelPackage? p = OpenTemplatePackage("XML in Cells.xlsx"))
             {
-                var ws = p.Workbook.Worksheets[0];
-                var cell = ws.Cells["D43"];
+                ExcelWorksheet? ws = p.Workbook.Worksheets[0];
+                ExcelRange? cell = ws.Cells["D43"];
                 cell.Value += " ";
 
                 ExcelRichText rtx = cell.RichText.Add("a");
@@ -1622,9 +1628,9 @@ namespace EPPlusTest
         [TestMethod]
         public void IssueS80()
         {
-            using (var p = OpenTemplatePackage("Example - CANNOT OPEN EPPLUS.xlsx"))
+            using (ExcelPackage? p = OpenTemplatePackage("Example - CANNOT OPEN EPPLUS.xlsx"))
             {
-                var workbook = p.Workbook;
+                ExcelWorkbook? workbook = p.Workbook;
                 SaveAndCleanup(p);
                 new ExcelAddress("f");
             }
@@ -1632,20 +1638,20 @@ namespace EPPlusTest
         [TestMethod]
         public void IssueS91()
         {
-            using (var p = OpenTemplatePackage("Tagging Template V14.xlsx"))
+            using (ExcelPackage? p = OpenTemplatePackage("Tagging Template V14.xlsx"))
             {
-                var ws = p.Workbook.Worksheets["Stacked Logs"];
+                ExcelWorksheet? ws = p.Workbook.Worksheets["Stacked Logs"];
                 //Insert 2 rows extending the data validations. 
                 ws.InsertRow(4, 2, 4);
 
                 //Get the data validation of choice.
-                var dv = ws.DataValidations[0].As.ListValidation;
+                IExcelDataValidationList? dv = ws.DataValidations[0].As.ListValidation;
 
                 //Adjust the formula using the R1C1 translator...
-                var formula = dv.Formula.ExcelFormula;
-                var r1c1Formula = OfficeOpenXml.Core.R1C1Translator.ToR1C1Formula(formula, dv.Address.Start.Row, dv.Address.Start.Column);
+                string? formula = dv.Formula.ExcelFormula;
+                string? r1c1Formula = OfficeOpenXml.Core.R1C1Translator.ToR1C1Formula(formula, dv.Address.Start.Row, dv.Address.Start.Column);
                 //Add one row to the formula
-                var formulaRowPlus1 = OfficeOpenXml.Core.R1C1Translator.FromR1C1Formula(r1c1Formula, dv.Address.Start.Row + 1, dv.Address.Start.Column);
+                string? formulaRowPlus1 = OfficeOpenXml.Core.R1C1Translator.FromR1C1Formula(r1c1Formula, dv.Address.Start.Row + 1, dv.Address.Start.Column);
 
                 SaveAndCleanup(p);
             }
@@ -1661,7 +1667,7 @@ namespace EPPlusTest
         public void Issue284()
         {
             //1
-            var report1 = new List<Test>
+            List<Test>? report1 = new List<Test>
             {
                 new Test{ Value1 = 1, Value2= 2, Value3=3 },
                 new Test{ Value1 = 2, Value2= 3, Value3=4 },
@@ -1669,7 +1675,7 @@ namespace EPPlusTest
             };
 
             //3
-            var report2 = new List<Test>
+            List<Test>? report2 = new List<Test>
             {
                 new Test{ Value1 = 0, Value2= 0, Value3=0 },
                 new Test{ Value1 = 0, Value2= 0, Value3=0 },
@@ -1677,7 +1683,7 @@ namespace EPPlusTest
             };
 
             //4
-            var report3 = new List<Test>
+            List<Test>? report3 = new List<Test>
             {
                 new Test{ Value1 = 3, Value2= 3, Value3=3 },
                 new Test{ Value1 = 3, Value2= 3, Value3=3 },
@@ -1686,12 +1692,12 @@ namespace EPPlusTest
 
 
             string workingDirectory = AppDomain.CurrentDomain.BaseDirectory;
-            using (var excelFile = OpenTemplatePackage("issue284.xlsx"))
+            using (ExcelPackage? excelFile = OpenTemplatePackage("issue284.xlsx"))
             {
                 //Data1
-                var worksheet = excelFile.Workbook.Worksheets["Test1"];
+                ExcelWorksheet? worksheet = excelFile.Workbook.Worksheets["Test1"];
                 ExcelRangeBase location = worksheet.Cells["A1"].LoadFromCollection(Collection: report1, PrintHeaders: true);
-                var t = worksheet.Tables.Add(location, "mytestTbl");
+                ExcelTable? t = worksheet.Tables.Add(location, "mytestTbl");
                 t.TableStyle = TableStyles.None;
 
                 //Data2
@@ -1703,7 +1709,7 @@ namespace EPPlusTest
                 location = worksheet.Cells["K1"].LoadFromCollection(Collection: report3, PrintHeaders: true);
                 worksheet.Tables.Add(location, "Test3");
 
-                var wsFirst = excelFile.Workbook.Worksheets["Test1"];
+                ExcelWorksheet? wsFirst = excelFile.Workbook.Worksheets["Test1"];
 
                 wsFirst.Select();
                 SaveAndCleanup(excelFile);
@@ -1712,14 +1718,14 @@ namespace EPPlusTest
         [TestMethod]
         public void Ticket90()
         {
-            using (var p = OpenTemplatePackage("Example - Calculate.xlsx"))
+            using (ExcelPackage? p = OpenTemplatePackage("Example - Calculate.xlsx"))
             {
-                var sheet = p.Workbook.Worksheets["Others"];
-                var fi = new FileInfo(@"c:\Temp\countiflog.txt");
+                ExcelWorksheet? sheet = p.Workbook.Worksheets["Others"];
+                FileInfo? fi = new FileInfo(@"c:\Temp\countiflog.txt");
                 p.Workbook.FormulaParserManager.AttachLogger(fi);
                 sheet.Calculate(x => x.PrecisionAndRoundingStrategy = OfficeOpenXml.FormulaParsing.PrecisionAndRoundingStrategy.Excel);
                 p.Workbook.FormulaParserManager.DetachLogger();
-                var result = sheet.Cells["R5"].Value;
+                object? result = sheet.Cells["R5"].Value;
                 ExcelAddress a = new ExcelAddress();
 
                 SaveAndCleanup(p);
@@ -1728,7 +1734,7 @@ namespace EPPlusTest
         [TestMethod]
         public void Ticket90_2()
         {
-            using (var p = OpenTemplatePackage("s70.xlsx"))
+            using (ExcelPackage? p = OpenTemplatePackage("s70.xlsx"))
             {
                 p.Workbook.Calculate();
                 Assert.AreEqual(7D, p.Workbook.Worksheets[0].Cells["P1"].Value);
@@ -1739,7 +1745,7 @@ namespace EPPlusTest
         [TestMethod]
         public void Issue287()
         {
-            using (var p = OpenTemplatePackage("issue287.xlsm"))
+            using (ExcelPackage? p = OpenTemplatePackage("issue287.xlsm"))
             {
                 p.Workbook.CreateVBAProject();
                 p.Save();
@@ -1748,7 +1754,7 @@ namespace EPPlusTest
         [TestMethod]
         public void Issue309()
         {
-            using (var p = OpenTemplatePackage("test1.xlsx"))
+            using (ExcelPackage? p = OpenTemplatePackage("test1.xlsx"))
             {
                 p.Save();
             }
@@ -1756,9 +1762,9 @@ namespace EPPlusTest
         [TestMethod]
         public void Issue274()
         {
-            using (var p = OpenPackage("Issue274.xlsx", true))
+            using (ExcelPackage? p = OpenPackage("Issue274.xlsx", true))
             {
-                var worksheet = p.Workbook.Worksheets.Add("PayrollData");
+                ExcelWorksheet? worksheet = p.Workbook.Worksheets.Add("PayrollData");
 
                 //Add the headers
                 worksheet.Cells[1, 1].Value = "Employee";
@@ -1854,24 +1860,24 @@ namespace EPPlusTest
                 worksheet.Cells[cnt, 8].Value = 4.0;
 
                 cnt--;
-                using (var range = worksheet.Cells[1, 1, 1, 8])
+                using (ExcelRange? range = worksheet.Cells[1, 1, 1, 8])
                 {
                     range.Style.Font.Bold = true;
                     range.Style.Fill.PatternType = ExcelFillStyle.Solid;
                     range.Style.Fill.BackgroundColor.SetColor(Color.DarkBlue);
                     range.Style.Font.Color.SetColor(Color.White);
                 }
-                var dataRange = worksheet.Cells[1, 1, cnt, 8];
+                ExcelRange? dataRange = worksheet.Cells[1, 1, cnt, 8];
                 ExcelTableCollection tblcollection = worksheet.Tables;
                 ExcelTable table = tblcollection.Add(dataRange, "payrolldata");
                 table.ShowHeader = true;
                 table.ShowFilter = true;
-                var wsPivot = p.Workbook.Worksheets.Add("Employee-Job");
-                var pivotTable = wsPivot.PivotTables.Add(wsPivot.Cells["A3"], dataRange, "ByEmployee");
+                ExcelWorksheet? wsPivot = p.Workbook.Worksheets.Add("Employee-Job");
+                ExcelPivotTable? pivotTable = wsPivot.PivotTables.Add(wsPivot.Cells["A3"], dataRange, "ByEmployee");
                 pivotTable.RowFields.Add(pivotTable.Fields["Employee"]);
-                var rowField1 = pivotTable.RowFields.Add(pivotTable.Fields["HomeOffice"]);
-                var rowField2 = pivotTable.RowFields.Add(pivotTable.Fields["JobNo"]);
-                var calcField1 = pivotTable.Fields.AddCalculatedField("Productive", "'ProductiveHrs'/('ProductiveHrs'+'NonProductiveHrs')*100");
+                ExcelPivotTableField? rowField1 = pivotTable.RowFields.Add(pivotTable.Fields["HomeOffice"]);
+                ExcelPivotTableField? rowField2 = pivotTable.RowFields.Add(pivotTable.Fields["JobNo"]);
+                ExcelPivotTableField? calcField1 = pivotTable.Fields.AddCalculatedField("Productive", "'ProductiveHrs'/('ProductiveHrs'+'NonProductiveHrs')*100");
                 calcField1.Format = "#,##0";
                 ExcelPivotTableDataField dataField;
                 dataField = pivotTable.DataFields.Add(pivotTable.Fields["Productive"]);
@@ -1914,17 +1920,17 @@ namespace EPPlusTest
         [TestMethod]
         public void DeleteCommentIssue()
         {
-            using (var p = OpenTemplatePackage("CommentDelete.xlsx"))
+            using (ExcelPackage? p = OpenTemplatePackage("CommentDelete.xlsx"))
             {
-                var ws = p.Workbook.Worksheets["S3"];
+                ExcelWorksheet? ws = p.Workbook.Worksheets["S3"];
                 ws.Comments[0].RichText.Add("T");
                 ws.Comments[0].RichText.Add("x");
-                var ws2 = p.Workbook.Worksheets.Add("Copied S3", ws);
+                ExcelWorksheet? ws2 = p.Workbook.Worksheets.Add("Copied S3", ws);
                 ws.InsertRow(2, 1);
                 ws.DeleteRow(2);
                 ws2.DeleteRow(2);
                 ws.InsertRow(2, 2);
-                var c = ws2.Comments;   // Access the comment collection to force loading it. Otherwise Exception!
+                ExcelCommentCollection? c = ws2.Comments;   // Access the comment collection to force loading it. Otherwise Exception!
                 int dummy = c.Count;    // to load!
                 p.Workbook.Worksheets.Delete(ws);
                 p.Workbook.Worksheets.Delete(ws2);
@@ -1934,10 +1940,10 @@ namespace EPPlusTest
         [TestMethod]
         public void DeleteWorksheetIssue()
         {
-            using (var p = OpenTemplatePackage("CommentDelete.xlsx"))
+            using (ExcelPackage? p = OpenTemplatePackage("CommentDelete.xlsx"))
             {
-                var ws = p.Workbook.Worksheets["S3"];
-                var c = ws.Comments; // Access the comment collection to force loading it. Otherwise Exception!
+                ExcelWorksheet? ws = p.Workbook.Worksheets["S3"];
+                ExcelCommentCollection? c = ws.Comments; // Access the comment collection to force loading it. Otherwise Exception!
                 int dummy = c.Count; // to load!
                 //ws.DeleteRow(2);
                 dummy = c.Count; // to load!
@@ -1948,19 +1954,19 @@ namespace EPPlusTest
         [TestMethod]
         public void Issue294()
         {
-            using (var p = OpenTemplatePackage("test_excel_workbook_before2-xl.xlsx"))
+            using (ExcelPackage? p = OpenTemplatePackage("test_excel_workbook_before2-xl.xlsx"))
             {
-                var s = p.Workbook.Styles.NamedStyles.Count;
-                var ws = p.Workbook.Worksheets["Summary"];
+                int s = p.Workbook.Styles.NamedStyles.Count;
+                ExcelWorksheet? ws = p.Workbook.Worksheets["Summary"];
                 p.Save();
             }
         }
         [TestMethod]
         public void Issue333_2()
         {
-            using (var p = OpenTemplatePackage("issue333-2.xlsx"))
+            using (ExcelPackage? p = OpenTemplatePackage("issue333-2.xlsx"))
             {
-                var sheet = p.Workbook.Worksheets[1];
+                ExcelWorksheet? sheet = p.Workbook.Worksheets[1];
                 Assert.IsFalse(string.IsNullOrEmpty(sheet.Cells[8, 1].Formula));
                 Assert.IsFalse(string.IsNullOrEmpty(sheet.Cells[9, 1].Formula));
                 Assert.IsFalse(string.IsNullOrEmpty(sheet.Cells[9, 2].Formula));
@@ -1971,17 +1977,17 @@ namespace EPPlusTest
         [TestMethod]
         public void S107()
         {
-            using (var p = OpenTemplatePackage("2021-03-18 - Styling issues.xlsm"))
+            using (ExcelPackage? p = OpenTemplatePackage("2021-03-18 - Styling issues.xlsm"))
             {
                 p.Save();
-                var p2 = new ExcelPackage(p.Stream);
+                ExcelPackage? p2 = new ExcelPackage(p.Stream);
                 p2.SaveAs(new FileInfo(p.File.DirectoryName + "\\Test.xlsm"));
             }
         }
         [TestMethod]
         public void S127()
         {
-            using (var p = OpenTemplatePackage("Tagging Template V15 - New Format.xlsx"))
+            using (ExcelPackage? p = OpenTemplatePackage("Tagging Template V15 - New Format.xlsx"))
             {
                 SaveWorkbook("Tagging Template V15 - New Format2.xlsx", p);
             }
@@ -1989,9 +1995,9 @@ namespace EPPlusTest
         [TestMethod]
         public void MergeIssue()
         {
-            using (var p = OpenTemplatePackage("MergeIssue.xlsx"))
+            using (ExcelPackage? p = OpenTemplatePackage("MergeIssue.xlsx"))
             {
-                var ws = p.Workbook.Worksheets["s7"];
+                ExcelWorksheet? ws = p.Workbook.Worksheets["s7"];
                 ws.Cells["B2:F2"].Merge = false;
                 ws.Cells["B2:F12"].Clear();
                 ws.Cells["B2:F2"].Merge = true;
@@ -2011,12 +2017,12 @@ namespace EPPlusTest
 
         public void DefinedNamesAddressIssue()
         {
-            using (var p = OpenPackage("defnames.xlsx"))
+            using (ExcelPackage? p = OpenPackage("defnames.xlsx"))
             {
-                var ws1 = p.Workbook.Worksheets.Add("Sheet1");
-                var ws2 = p.Workbook.Worksheets.Add("Sheet2");
+                ExcelWorksheet? ws1 = p.Workbook.Worksheets.Add("Sheet1");
+                ExcelWorksheet? ws2 = p.Workbook.Worksheets.Add("Sheet2");
 
-                var name = ws1.Names.Add("Name2", ws1.Cells["B1:C5"]);
+                ExcelNamedRange? name = ws1.Names.Add("Name2", ws1.Cells["B1:C5"]);
                 Assert.AreEqual("Sheet1", name.Worksheet.Name);
                 name.Address = "Sheet3!B2:C6";
                 Assert.IsNull(name.Worksheet);
@@ -2027,12 +2033,12 @@ namespace EPPlusTest
         [TestMethod]
         public void Issue341()
         {
-            using (var package = OpenTemplatePackage("Base_debug.xlsx"))
+            using (ExcelPackage? package = OpenTemplatePackage("Base_debug.xlsx"))
             {
-                using (var atomic_sheet_package = OpenTemplatePackage("Test_debug.xlsx"))
+                using (ExcelPackage? atomic_sheet_package = OpenTemplatePackage("Test_debug.xlsx"))
                 {
-                    var s = atomic_sheet_package.Workbook.Worksheets["Test3"];
-                    var s_copy = package.Workbook.Worksheets.Add("Test3", s); // Exception on this line
+                    ExcelWorksheet? s = atomic_sheet_package.Workbook.Worksheets["Test3"];
+                    ExcelWorksheet? s_copy = package.Workbook.Worksheets.Add("Test3", s); // Exception on this line
                     s_copy.Drawings[0].As.Chart.LineChart.Series[0].XSeries = "A1:a15";
                     atomic_sheet_package.Save();
                 }
@@ -2042,7 +2048,7 @@ namespace EPPlusTest
         [TestMethod]
         public void Issue347_2()
         {
-            using (var p = OpenTemplatePackage("i347.xlsx"))
+            using (ExcelPackage? p = OpenTemplatePackage("i347.xlsx"))
             {
                 SaveAndCleanup(p);
             }
@@ -2050,7 +2056,7 @@ namespace EPPlusTest
         [TestMethod]
         public void Issue353()
         {
-            using (var p = OpenTemplatePackage("HeaderFooterTest (1).xlsx"))
+            using (ExcelPackage? p = OpenTemplatePackage("HeaderFooterTest (1).xlsx"))
             {
                 ExcelWorksheet worksheet = p.Workbook.Worksheets[0];
                 Assert.IsFalse(worksheet.HeaderFooter.differentFirst);
@@ -2061,11 +2067,11 @@ namespace EPPlusTest
         [TestMethod]
         public void Issue354()
         {
-            using (var p = OpenTemplatePackage("i354.xlsx"))
+            using (ExcelPackage? p = OpenTemplatePackage("i354.xlsx"))
             {
-                var ws1 = p.Workbook.Worksheets[0];
-                var ws2 = p.Workbook.Worksheets[2];
-                var pt = ws1.PivotTables.Add(ws1.Cells["A2"], ws2.Cells["A1:E3005"], "pt");
+                ExcelWorksheet? ws1 = p.Workbook.Worksheets[0];
+                ExcelWorksheet? ws2 = p.Workbook.Worksheets[2];
+                ExcelPivotTable? pt = ws1.PivotTables.Add(ws1.Cells["A2"], ws2.Cells["A1:E3005"], "pt");
                 ws2.Cells["B2"].Value = eDateGroupBy.Years;
                 ws2.Cells["B3"].Value = eDateGroupBy.Months;
                 pt.ColumnFields.Add(pt.Fields[1]);
@@ -2079,8 +2085,8 @@ namespace EPPlusTest
         {
             foreach (bool onColumns in new[] { true, false })
             {
-                var ep = new ExcelPackage();
-                var ws = ep.Workbook.Worksheets.Add("Test");
+                ExcelPackage? ep = new ExcelPackage();
+                ExcelWorksheet? ws = ep.Workbook.Worksheets.Add("Test");
 
                 // Header area (along with freezing the header in the view)
                 ws.Cells[1, 1, 1, 8].Style.Font.Bold = true;
@@ -2130,10 +2136,10 @@ namespace EPPlusTest
         [TestMethod]
         public void Issue382()
         {
-            using (var p = OpenPackage("Issue382.xlsx", true))
+            using (ExcelPackage? p = OpenPackage("Issue382.xlsx", true))
             {
                 p.Workbook.Styles.NamedStyles[0].Style.Font.Size = 9;
-                var ws = p.Workbook.Worksheets.Add("Sheet1");
+                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Sheet1");
                 ws.Cells["A1"].Value = "Cell Value";
                 ws.Cells.AutoFitColumns();
                 SaveAndCleanup(p);
@@ -2142,9 +2148,9 @@ namespace EPPlusTest
         [TestMethod]
         public void Issue381()
         {
-            using (var p = OpenTemplatePackage("Issue381.xlsx"))
+            using (ExcelPackage? p = OpenTemplatePackage("Issue381.xlsx"))
             {
-                var ws = p.Workbook.Worksheets[1];
+                ExcelWorksheet? ws = p.Workbook.Worksheets[1];
                 Assert.AreEqual(2, ws.Drawings.Count);
                 SaveAndCleanup(p);
             }
@@ -2152,18 +2158,18 @@ namespace EPPlusTest
         [TestMethod]
         public void ReadIssue()
         {
-            using (var p = OpenTemplatePackage("cf.xlsx"))
+            using (ExcelPackage? p = OpenTemplatePackage("cf.xlsx"))
             {
-                var ws = p.Workbook.Worksheets[0];
+                ExcelWorksheet? ws = p.Workbook.Worksheets[0];
             }
         }
         [TestMethod]
         public void Issue407_1()
         {
-            using (var p = OpenTemplatePackage("TestStyles_MoreCellStyleXfsThanCellXfs.xlsx"))
+            using (ExcelPackage? p = OpenTemplatePackage("TestStyles_MoreCellStyleXfsThanCellXfs.xlsx"))
             {
-                var p2 = new ExcelPackage();
-                var ws = p2.Workbook.Worksheets.Add("Copied Style", p.Workbook.Worksheets["StylesTestSheet"]);
+                ExcelPackage? p2 = new ExcelPackage();
+                ExcelWorksheet? ws = p2.Workbook.Worksheets.Add("Copied Style", p.Workbook.Worksheets["StylesTestSheet"]);
 
                 SaveWorkbook("Issue407_1.xlsx", p2);
             }
@@ -2171,10 +2177,10 @@ namespace EPPlusTest
         [TestMethod]
         public void Issue407_2()
         {
-            using (var p = OpenTemplatePackage("TestStyles_MinimalWithNamedStyles.xlsx"))
+            using (ExcelPackage? p = OpenTemplatePackage("TestStyles_MinimalWithNamedStyles.xlsx"))
             {
-                var p2 = new ExcelPackage();
-                var ws = p.Workbook.Worksheets["StylesTestSheet"];
+                ExcelPackage? p2 = new ExcelPackage();
+                ExcelWorksheet? ws = p.Workbook.Worksheets["StylesTestSheet"];
 
                 Assert.AreEqual("Normal", ws.Cells["A1"].StyleName);
                 Assert.AreEqual("MyCustomCellStyle", ws.Cells["A2"].StyleName);
@@ -2200,10 +2206,10 @@ namespace EPPlusTest
         [TestMethod]
         public void s185()
         {
-            using (var p = OpenTemplatePackage("s185.xlsx"))
+            using (ExcelPackage? p = OpenTemplatePackage("s185.xlsx"))
             {
-                var ws = p.Workbook.Worksheets[0];
-                var chart = ws.Drawings[0] as ExcelLineChart;
+                ExcelWorksheet? ws = p.Workbook.Worksheets[0];
+                ExcelLineChart? chart = ws.Drawings[0] as ExcelLineChart;
 
                 Assert.AreEqual(4887, chart.PlotArea.ChartTypes[1].Series[0].NumberOfItems);
             }
@@ -2211,12 +2217,12 @@ namespace EPPlusTest
         [TestMethod]
         public void GetNamedRangeAddressAfterRowInsert()
         {
-            using (var pck = OpenTemplatePackage("TestWbk_SingleNamedRange.xlsx"))
+            using (ExcelPackage? pck = OpenTemplatePackage("TestWbk_SingleNamedRange.xlsx"))
             {
                 // Get the worksheet containing the named range
-                var ws = pck.Workbook.Worksheets["Sheet1"];
+                ExcelWorksheet? ws = pck.Workbook.Worksheets["Sheet1"];
                 // Get the named range
-                var namedRange = ws.Names["MyValues"];
+                ExcelNamedRange? namedRange = ws.Names["MyValues"];
                 // Check that the named range exists with the expected address
                 Assert.AreEqual("Sheet1!$A$1:$A$9", namedRange.FullAddress);
                 Assert.AreEqual("Sheet1!$A$1:$A$9", namedRange.Address); // This line is currently failing
@@ -2230,11 +2236,11 @@ namespace EPPlusTest
         [TestMethod]
         public void Issue410()
         {
-            using (var package = OpenTemplatePackage("test-in.xlsx"))
+            using (ExcelPackage? package = OpenTemplatePackage("test-in.xlsx"))
             {
-                var wb = package.Workbook;
-                var worksheet = wb.Worksheets.Add("Pivot Tables");
-                var table = wb.Worksheets[0].Tables["Table1"];
+                ExcelWorkbook? wb = package.Workbook;
+                ExcelWorksheet? worksheet = wb.Worksheets.Add("Pivot Tables");
+                ExcelTable? table = wb.Worksheets[0].Tables["Table1"];
                 ExcelPivotTable pt = worksheet.PivotTables.Add(worksheet.Cells["A1"], table, "PT1");
                 pt.RowFields.Add(pt.Fields["ColC"]);
                 pt.DataFields.Add(pt.Fields["ColB"]);
@@ -2244,18 +2250,18 @@ namespace EPPlusTest
         [TestMethod]
         public void Issue415()
         {
-            using (var package = OpenTemplatePackage("Issue415.xlsm"))
+            using (ExcelPackage? package = OpenTemplatePackage("Issue415.xlsm"))
             {
-                var wb = package.Workbook;
+                ExcelWorkbook? wb = package.Workbook;
                 SaveAndCleanup(package);
             }
         }
         [TestMethod]
         public void Issue417()
         {
-            using (var package = OpenTemplatePackage("Issue417.xlsx"))
+            using (ExcelPackage? package = OpenTemplatePackage("Issue417.xlsx"))
             {
-                var ws = package.Workbook.Worksheets[0];
+                ExcelWorksheet? ws = package.Workbook.Worksheets[0];
                 Assert.AreEqual("0", ws.Cells["A1"].Text);
                 Assert.AreEqual(null, ws.Cells["A2"].Text);
             }
@@ -2263,29 +2269,29 @@ namespace EPPlusTest
         [TestMethod]
         public void Issue395()
         {
-            using (var package = OpenTemplatePackage("Issue395.xlsx"))
+            using (ExcelPackage? package = OpenTemplatePackage("Issue395.xlsx"))
             {
-                var ws = package.Workbook.Worksheets[0];
+                ExcelWorksheet? ws = package.Workbook.Worksheets[0];
                 SaveAndCleanup(package);
             }
         }
         [TestMethod]
         public void Issue418()
         {
-            using (var p = OpenPackage("issue418.xlsx", true))
+            using (ExcelPackage? p = OpenPackage("issue418.xlsx", true))
             {
-                var ws = p.Workbook.Worksheets.Add("Test");
+                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Test");
 
-                var mergetest = ws.Cells[2, 1, 2, 5];
+                ExcelRange? mergetest = ws.Cells[2, 1, 2, 5];
                 mergetest.IsRichText = true;
                 mergetest.Merge = true;
                 mergetest.Style.WrapText = true;
 
-                var t1 = mergetest.RichText.Add($"Text 1", true);
+                ExcelRichText? t1 = mergetest.RichText.Add($"Text 1", true);
                 t1.Size = 16;
                 t1.Bold = true;
 
-                var t2 = mergetest.RichText.Add($"Text 2", true);
+                ExcelRichText? t2 = mergetest.RichText.Add($"Text 2", true);
                 t2.Size = 12;
                 t2.Bold = false;
 
@@ -2297,7 +2303,7 @@ namespace EPPlusTest
         [TestMethod]
         public void IssueHidden()
         {
-            using (var p = OpenTemplatePackage("workbook.xlsx"))
+            using (ExcelPackage? p = OpenTemplatePackage("workbook.xlsx"))
             {
                 p.Workbook.Worksheets[p.Workbook.Worksheets.Count - 2].Hidden = eWorkSheetHidden.Hidden;
                 p.Workbook.Worksheets[p.Workbook.Worksheets.Count - 1].Hidden = eWorkSheetHidden.Hidden;
@@ -2307,39 +2313,39 @@ namespace EPPlusTest
         [TestMethod]
         public void Issue430()
         {
-            using (var p = OpenTemplatePackage("issue430.xlsx"))
+            using (ExcelPackage? p = OpenTemplatePackage("issue430.xlsx"))
             {
-                var workbook = p.Workbook;
+                ExcelWorkbook? workbook = p.Workbook;
                 SaveAndCleanup(p);
             }
         }
         [TestMethod]
         public void Issue435()
         {
-            using (var p = OpenTemplatePackage("issue435.xlsx"))
+            using (ExcelPackage? p = OpenTemplatePackage("issue435.xlsx"))
             {
-                var workbook = p.Workbook;
+                ExcelWorkbook? workbook = p.Workbook;
                 SaveAndCleanup(p);
             }
         }
         [TestMethod]
         public void VbaIssueLoad()
         {
-            using (var p = OpenTemplatePackage("PlantillaDefectivo-NotWorking.xlsm"))
+            using (ExcelPackage? p = OpenTemplatePackage("PlantillaDefectivo-NotWorking.xlsm"))
             {
-                var workbook = p.Workbook;
-                var vba = p.Workbook.VbaProject;
+                ExcelWorkbook? workbook = p.Workbook;
+                ExcelVbaProject? vba = p.Workbook.VbaProject;
                 SaveAndCleanup(p);
             }
         }
         [TestMethod]
         public void Issue440()
         {
-            using (var p = OpenTemplatePackage("issue440.xlsx"))
+            using (ExcelPackage? p = OpenTemplatePackage("issue440.xlsx"))
             {
-                var wb = p.Workbook;
-                var worksheet = wb.Worksheets.Add("Pivot Tables");
-                var table = wb.Worksheets[0].Tables["Table1"];
+                ExcelWorkbook? wb = p.Workbook;
+                ExcelWorksheet? worksheet = wb.Worksheets.Add("Pivot Tables");
+                ExcelTable? table = wb.Worksheets[0].Tables["Table1"];
                 ExcelPivotTable pt = worksheet.PivotTables.Add(worksheet.Cells["A1"], table, "PT1");
                 pt.RowFields.Add(pt.Fields["ColC"]);
                 pt.DataFields.Add(pt.Fields["ColB"]);
@@ -2349,10 +2355,10 @@ namespace EPPlusTest
         [TestMethod]
         public void Issue441()
         {
-            using (var pck = OpenPackage("issue441.xlsx", true))
+            using (ExcelPackage? pck = OpenPackage("issue441.xlsx", true))
             {
-                var wks = pck.Workbook.Worksheets.Add("Sheet1");
-                var commentAddress = "B2";
+                ExcelWorksheet? wks = pck.Workbook.Worksheets.Add("Sheet1");
+                string? commentAddress = "B2";
                 wks.Comments.Add(wks.Cells[commentAddress], "This is a comment.", "author");
                 wks.Cells[commentAddress].Value = "This cell contains a comment.";
 
@@ -2368,12 +2374,12 @@ namespace EPPlusTest
         [TestMethod]
         public void Issue442()
         {
-            using (var pck = OpenPackage("issue442.xlsx", true))
+            using (ExcelPackage? pck = OpenPackage("issue442.xlsx", true))
             {
                 // Add a sheet with data validation in cell B2
-                var wks = pck.Workbook.Worksheets.Add("Sheet1");
-                var dataValidationList = wks.DataValidations.AddListValidation("B2");
-                var values = dataValidationList.Formula.Values;
+                ExcelWorksheet? wks = pck.Workbook.Worksheets.Add("Sheet1");
+                IExcelDataValidationList? dataValidationList = wks.DataValidations.AddListValidation("B2");
+                IList<string>? values = dataValidationList.Formula.Values;
                 values.Add("Yes");
                 values.Add("No");
                 wks.Cells["B2"].Value = "Yes";
@@ -2395,7 +2401,7 @@ namespace EPPlusTest
         [TestMethod]
         public void s224()
         {
-            using (var p = OpenTemplatePackage("s224.xltx"))
+            using (ExcelPackage? p = OpenTemplatePackage("s224.xltx"))
             {
                 SaveWorkbook("s224.xlsx", p);
             }
@@ -2403,17 +2409,17 @@ namespace EPPlusTest
         [TestMethod]
         public void InsertCellsNextToComment()
         {
-            using (var pck = new ExcelPackage())
+            using (ExcelPackage? pck = new ExcelPackage())
             {
-                var wks = pck.Workbook.Worksheets.Add("Sheet1");
+                ExcelWorksheet? wks = pck.Workbook.Worksheets.Add("Sheet1");
 
                 // Create a comment in cell B2
-                var commentAddress = "B2";
+                string? commentAddress = "B2";
                 wks.Comments.Add(wks.Cells[commentAddress], "This is a comment.", "author");
                 wks.Cells[commentAddress].Value = "This cell contains a comment.";
 
                 // Create another comment in cell B10
-                var commentAddress2 = "B10";
+                string? commentAddress2 = "B10";
                 wks.Comments.Add(wks.Cells[commentAddress2], "This is another comment.", "author");
                 wks.Cells[commentAddress2].Value = "This cell contains another comment.";
 
@@ -2437,10 +2443,10 @@ namespace EPPlusTest
         [TestMethod]
         public void InsertRowsIntoTable_CheckFormulasWithColumnReferences()
         {
-            using (var pck = new ExcelPackage())
+            using (ExcelPackage? pck = new ExcelPackage())
             {
                 // Add a sheet, and a table with headers and a single row of data
-                var wks = pck.Workbook.Worksheets.Add("Sheet1");
+                ExcelWorksheet? wks = pck.Workbook.Worksheets.Add("Sheet1");
                 wks.Cells["B2:D3"].Value = new object[,] { { "Col1", "Col2", "Col3" }, { 1, 2, 3 } };
                 wks.Tables.Add(wks.Cells["B2:D3"], "Table1");
 
@@ -2462,9 +2468,9 @@ namespace EPPlusTest
         [TestMethod]
         public void CopyWorksheetWithDynamicArrayFormula()
         {
-            using (var p1 = OpenTemplatePackage("TestDynamicArrayFormula.xlsx"))
+            using (ExcelPackage? p1 = OpenTemplatePackage("TestDynamicArrayFormula.xlsx"))
             {
-                using (var p2 = new ExcelPackage())
+                using (ExcelPackage? p2 = new ExcelPackage())
                 {
                     p2.Workbook.Worksheets.Add("Sheet1", p1.Workbook.Worksheets["Sheet1"]);
                     SaveWorkbook("DontCopyMetadataToNewWorkbook.xlsx", p2);
@@ -2476,7 +2482,7 @@ namespace EPPlusTest
         [TestMethod]
         public void VbaIssue()
         {
-            using (var p = OpenTemplatePackage("Issue479.xlsm"))
+            using (ExcelPackage? p = OpenTemplatePackage("Issue479.xlsm"))
             {
                 p.Workbook.Worksheets.Add("New Sheet");
                 SaveAndCleanup(p);
@@ -2492,24 +2498,24 @@ namespace EPPlusTest
         public void Issue478()
         {
 
-            var dataStartRow = 2;
-            var errors = JsonConvert.DeserializeObject<Error[]>("[{\"typeOfError\":\"WARNING\",\"row\":4,\"col\":17,\"messages\":[\"The address is uncompleted. It can only get an approximate coordinates.\"]},{\"typeOfError\":\"WARNING\",\"row\":20,\"col\":17,\"messages\":[\"The address is uncompleted. It can only get an approximate coordinates.\"]},{\"typeOfError\":\"WARNING\",\"row\":35,\"col\":17,\"messages\":[\"The address is uncompleted. It can only get an approximate coordinates.\"]},{\"typeOfError\":\"WARNING\",\"row\":47,\"col\":17,\"messages\":[\"The address is uncompleted. It can only get an approximate coordinates.\"]},{\"typeOfError\":\"WARNING\",\"row\":57,\"col\":17,\"messages\":[\"The address is uncompleted. It can only get an approximate coordinates.\"]},{\"typeOfError\":\"WARNING\",\"row\":60,\"col\":17,\"messages\":[\"The address is uncompleted. It can only get an approximate coordinates.\"]},{\"typeOfError\":\"WARNING\",\"row\":90,\"col\":17,\"messages\":[\"The address is uncompleted. It can only get an approximate coordinates.\"]},{\"typeOfError\":\"WARNING\",\"row\":131,\"col\":17,\"messages\":[\"The address is uncompleted. It can only get an approximate coordinates.\"]},{\"typeOfError\":\"WARNING\",\"row\":136,\"col\":17,\"messages\":[\"The address is uncompleted. It can only get an approximate coordinates.\"]},{\"typeOfError\":\"WARNING\",\"row\":138,\"col\":17,\"messages\":[\"The address is uncompleted. It can only get an approximate coordinates.\"]},{\"typeOfError\":\"WARNING\",\"row\":139,\"col\":17,\"messages\":[\"The address is uncompleted. It can only get an approximate coordinates.\"]}]");
-            var assetFields = JsonConvert.DeserializeObject<AssetField[]>("[{\"index\":1,\"field\":\"Reference\"},{\"index\":15,\"field\":\"ZipCode\"},{\"index\":16,\"field\":\"Municipality\"},{\"index\":17,\"field\":\"FullAddress\"}]");
+            int dataStartRow = 2;
+            Error[]? errors = JsonConvert.DeserializeObject<Error[]>("[{\"typeOfError\":\"WARNING\",\"row\":4,\"col\":17,\"messages\":[\"The address is uncompleted. It can only get an approximate coordinates.\"]},{\"typeOfError\":\"WARNING\",\"row\":20,\"col\":17,\"messages\":[\"The address is uncompleted. It can only get an approximate coordinates.\"]},{\"typeOfError\":\"WARNING\",\"row\":35,\"col\":17,\"messages\":[\"The address is uncompleted. It can only get an approximate coordinates.\"]},{\"typeOfError\":\"WARNING\",\"row\":47,\"col\":17,\"messages\":[\"The address is uncompleted. It can only get an approximate coordinates.\"]},{\"typeOfError\":\"WARNING\",\"row\":57,\"col\":17,\"messages\":[\"The address is uncompleted. It can only get an approximate coordinates.\"]},{\"typeOfError\":\"WARNING\",\"row\":60,\"col\":17,\"messages\":[\"The address is uncompleted. It can only get an approximate coordinates.\"]},{\"typeOfError\":\"WARNING\",\"row\":90,\"col\":17,\"messages\":[\"The address is uncompleted. It can only get an approximate coordinates.\"]},{\"typeOfError\":\"WARNING\",\"row\":131,\"col\":17,\"messages\":[\"The address is uncompleted. It can only get an approximate coordinates.\"]},{\"typeOfError\":\"WARNING\",\"row\":136,\"col\":17,\"messages\":[\"The address is uncompleted. It can only get an approximate coordinates.\"]},{\"typeOfError\":\"WARNING\",\"row\":138,\"col\":17,\"messages\":[\"The address is uncompleted. It can only get an approximate coordinates.\"]},{\"typeOfError\":\"WARNING\",\"row\":139,\"col\":17,\"messages\":[\"The address is uncompleted. It can only get an approximate coordinates.\"]}]");
+            AssetField[]? assetFields = JsonConvert.DeserializeObject<AssetField[]>("[{\"index\":1,\"field\":\"Reference\"},{\"index\":15,\"field\":\"ZipCode\"},{\"index\":16,\"field\":\"Municipality\"},{\"index\":17,\"field\":\"FullAddress\"}]");
 
-            using (var excelPackage = OpenTemplatePackage("issue478.xlsx"))
+            using (ExcelPackage? excelPackage = OpenTemplatePackage("issue478.xlsx"))
             {
-                var worksheet = excelPackage.Workbook.Worksheets["Avances"];
-                var start = worksheet.Dimension.Start;
-                var end = worksheet.Dimension.End;
+                ExcelWorksheet? worksheet = excelPackage.Workbook.Worksheets["Avances"];
+                ExcelCellAddress? start = worksheet.Dimension.Start;
+                ExcelCellAddress? end = worksheet.Dimension.End;
 
                 // Add column of errors and warnings
-                var startMessagesColumn = end.Column + 1;
+                int startMessagesColumn = end.Column + 1;
                 worksheet.InsertColumn(startMessagesColumn, 2);
-                var errorColumn = startMessagesColumn;
-                var warningColumn = startMessagesColumn + 1;
+                int errorColumn = startMessagesColumn;
+                int warningColumn = startMessagesColumn + 1;
                 worksheet.Cells[(dataStartRow) - 1, errorColumn].Value = "Errors";
                 worksheet.Cells[(dataStartRow) - 1, warningColumn].Value = "Warnings";
-                foreach (var error in errors)
+                foreach (Error? error in errors)
                 {
                     if (error.TypeOfError == "ERROR")
                     {
@@ -2522,10 +2528,10 @@ namespace EPPlusTest
                 }
 
                 // Remove distinct columns from "Reference"
-                var colFieldReference = assetFields.Where(x => x.Field == "REFERENCE").Select(x => x.Index).FirstOrDefault();
+                int colFieldReference = assetFields.Where(x => x.Field == "REFERENCE").Select(x => x.Index).FirstOrDefault();
                 worksheet.Cells[1, colFieldReference + 1].Value = "Reference";
 
-                var deletedColumns = 0;
+                int deletedColumns = 0;
                 for (int i = 1; i <= end.Column; i++)
                 {
                     if (colFieldReference + 1 != i && errorColumn != i && warningColumn != i)
@@ -2536,7 +2542,7 @@ namespace EPPlusTest
                 }
 
                 // Remove rows that do not contain errors
-                var deletedRows = 0;
+                int deletedRows = 0;
                 for (int i = 1; i <= end.Row; i++)
                 {
                     if (i < (dataStartRow - 1) || (i >= dataStartRow && !errors.Any(w => (w.Row - 1) == i)))
@@ -2551,10 +2557,10 @@ namespace EPPlusTest
         [TestMethod]
         public void TestColumnWidthsAfterDeletingColumn()
         {
-            using (var pck = OpenTemplatePackage("Issue480.xlsx"))
+            using (ExcelPackage? pck = OpenTemplatePackage("Issue480.xlsx"))
             {
                 // Get the worksheet where columns 3-5 have a width of around 18
-                var wks = pck.Workbook.Worksheets["Sheet1"];
+                ExcelWorksheet? wks = pck.Workbook.Worksheets["Sheet1"];
 
                 // Check the width of column 5
                 Assert.AreEqual(18.77734375, wks.Column(5).Width, 1E-5);
@@ -2571,16 +2577,16 @@ namespace EPPlusTest
         [TestMethod]
         public void Issue484_InsertRowCalculatedColumnFormula()
         {
-            using (var p = new ExcelPackage())
+            using (ExcelPackage? p = new ExcelPackage())
             {
                 // Create some worksheets
-                var ws1 = p.Workbook.Worksheets.Add("Sheet1");
+                ExcelWorksheet? ws1 = p.Workbook.Worksheets.Add("Sheet1");
 
                 // Create some tables with calculated column formulas
-                var tbl1 = ws1.Tables.Add(ws1.Cells["A11:C12"], "Table1");
+                ExcelTable? tbl1 = ws1.Tables.Add(ws1.Cells["A11:C12"], "Table1");
                 tbl1.Columns[2].CalculatedColumnFormula = "A12+B12";
 
-                var tbl2 = ws1.Tables.Add(ws1.Cells["E11:G12"], "Table2");
+                ExcelTable? tbl2 = ws1.Tables.Add(ws1.Cells["E11:G12"], "Table2");
                 tbl2.Columns[2].CalculatedColumnFormula = "A12+F12";
 
                 // Check the formulas have been set correctly
@@ -2602,16 +2608,16 @@ namespace EPPlusTest
         [TestMethod]
         public void Issue484_DeleteRowCalculatedColumnFormula()
         {
-            using (var p = new ExcelPackage())
+            using (ExcelPackage? p = new ExcelPackage())
             {
                 // Create some worksheets
-                var ws1 = p.Workbook.Worksheets.Add("Sheet1");
+                ExcelWorksheet? ws1 = p.Workbook.Worksheets.Add("Sheet1");
 
                 // Create some tables with calculated column formulas
-                var tbl1 = ws1.Tables.Add(ws1.Cells["A11:C12"], "Table1");
+                ExcelTable? tbl1 = ws1.Tables.Add(ws1.Cells["A11:C12"], "Table1");
                 tbl1.Columns[2].CalculatedColumnFormula = "A12+B12";
 
-                var tbl2 = ws1.Tables.Add(ws1.Cells["E11:G12"], "Table2");
+                ExcelTable? tbl2 = ws1.Tables.Add(ws1.Cells["E11:G12"], "Table2");
                 tbl2.Columns[2].CalculatedColumnFormula = "A12+F12";
 
                 // Check the formulas have been set correctly
@@ -2633,10 +2639,10 @@ namespace EPPlusTest
         [TestMethod]
         public void FreezeTemplate()
         {
-            using (var p = OpenTemplatePackage("freeze.xlsx"))
+            using (ExcelPackage? p = OpenTemplatePackage("freeze.xlsx"))
             {
                 // Get the worksheet where columns 3-5 have a width of around 18
-                var ws = p.Workbook.Worksheets[0];
+                ExcelWorksheet? ws = p.Workbook.Worksheets[0];
                 ws.View.FreezePanes(40, 5);
                 SaveAndCleanup(p);
             }
@@ -2645,10 +2651,10 @@ namespace EPPlusTest
         [TestMethod]
         public void CopyWorksheetWithBlipFillObjects()
         {
-            using (var p1 = OpenTemplatePackage("BlipFills.xlsx"))
+            using (ExcelPackage? p1 = OpenTemplatePackage("BlipFills.xlsx"))
             {
-                var ws = p1.Workbook.Worksheets[0];
-                var wsCopy = p1.Workbook.Worksheets.Add("Copy", p1.Workbook.Worksheets[0]);
+                ExcelWorksheet? ws = p1.Workbook.Worksheets[0];
+                ExcelWorksheet? wsCopy = p1.Workbook.Worksheets.Add("Copy", p1.Workbook.Worksheets[0]);
 
                 ws.Cells["G4"].Copy(wsCopy.Cells["F20"]);
                 SaveAndCleanup(p1);
@@ -2657,14 +2663,14 @@ namespace EPPlusTest
         [TestMethod]
         public void Issue519()
         {
-            using (var package = OpenPackage("I519.xlsx", true))
+            using (ExcelPackage? package = OpenPackage("I519.xlsx", true))
             {
 
                 ExcelWorksheet worksheet = package.Workbook.Worksheets.Add("Sheet1");
 
                 worksheet.Cells[3, 1].Value = "test";
 
-                var ctrl = worksheet.Drawings.AddCheckBoxControl("test");
+                ExcelControlCheckBox? ctrl = worksheet.Drawings.AddCheckBoxControl("test");
                 ctrl.SetPosition(10, 10);
                 ctrl.Checked = OfficeOpenXml.Drawing.Controls.eCheckState.Checked; // creates valid XLSX file
                 //ctrl.Checked = OfficeOpenXml.Drawing.Controls.eCheckState.Mixed; // creates valid XLSX file
@@ -2676,9 +2682,9 @@ namespace EPPlusTest
         [TestMethod]
         public void Issue520_2()
         {
-            using (var p = OpenPackage("i520.xlsx", true))
+            using (ExcelPackage? p = OpenPackage("i520.xlsx", true))
             {
-                var sheet = p.Workbook.Worksheets.Add("17Columns");
+                ExcelWorksheet? sheet = p.Workbook.Worksheets.Add("17Columns");
                 var tableData = Enumerable.Range(1, 10)
                 .Select(_ => new
                 {
@@ -2700,7 +2706,7 @@ namespace EPPlusTest
                     C16 = 16,
                     C17 = 17
                 }).ToArray();
-                var table = sheet.Cells[1, 1].LoadFromCollection(tableData, true, TableStyles.Light1);
+                ExcelRangeBase? table = sheet.Cells[1, 1].LoadFromCollection(tableData, true, TableStyles.Light1);
                 table.AutoFitColumns();
 
                 sheet = p.Workbook.Worksheets.Add("16Columns");
@@ -2758,14 +2764,14 @@ namespace EPPlusTest
         [TestMethod]
         public void Issue522()
         {
-            using (var package = OpenPackage("I22.xlsx", true))
+            using (ExcelPackage? package = OpenPackage("I22.xlsx", true))
             {
 
                 ExcelWorksheet worksheet = package.Workbook.Worksheets.Add("Sheet1");
 
                 worksheet.Cells[1, 1].Value = -1234;
                 worksheet.Cells[1, 1].Style.Numberformat.Format = "#.##0\"*\";(#.##0)\"*\"";
-                var s = worksheet.Cells[1, 1].Text;
+                string? s = worksheet.Cells[1, 1].Text;
 
                 SaveAndCleanup(package);
             }
@@ -2773,14 +2779,14 @@ namespace EPPlusTest
         [TestMethod]
         public void IssueNamedRanges()
         {
-            using (var package = OpenTemplatePackage("ORRange23 Problem.xlsx"))
+            using (ExcelPackage? package = OpenTemplatePackage("ORRange23 Problem.xlsx"))
             {
 
                 ExcelWorksheet worksheet = package.Workbook.Worksheets.Add("Sheet1");
 
                 worksheet.Cells[1, 1].Value = -1234;
                 worksheet.Cells[1, 1].Style.Numberformat.Format = "#.##0\"*\";(#.##0)\"*\"";
-                var s = worksheet.Cells[1, 1].Text;
+                string? s = worksheet.Cells[1, 1].Text;
 
                 SaveAndCleanup(package);
             }
@@ -2788,13 +2794,13 @@ namespace EPPlusTest
         [TestMethod]
         public void DvcfCopy()
         {
-            using (var p = OpenTemplatePackage("i527.xlsm"))
+            using (ExcelPackage? p = OpenTemplatePackage("i527.xlsm"))
             {
 
                 // Fails when data validation is set
                 // Fails when conditional formatting is set.
-                var copyFrom1 = p.Workbook.Worksheets["CopyFrom"].Cells["A1:BR23"];
-                var copyTo1 = p.Workbook.Worksheets["CopyTo"].Cells["A:XFD"];
+                ExcelRange? copyFrom1 = p.Workbook.Worksheets["CopyFrom"].Cells["A1:BR23"];
+                ExcelRange? copyTo1 = p.Workbook.Worksheets["CopyTo"].Cells["A:XFD"];
                 copyFrom1.Copy(copyTo1);
 
                 SaveAndCleanup(p);
@@ -2803,9 +2809,9 @@ namespace EPPlusTest
         [TestMethod]
         public void s268()
         {
-            using (var p = OpenTemplatePackage("s268.xlsx"))
+            using (ExcelPackage? p = OpenTemplatePackage("s268.xlsx"))
             {
-                var s3 = p.Workbook.Worksheets["s3"];
+                ExcelWorksheet? s3 = p.Workbook.Worksheets["s3"];
 
                 s3.InsertRow(1, 1);
                 s3.InsertRow(1, 1);
@@ -2822,18 +2828,18 @@ namespace EPPlusTest
         [TestMethod]
         public void Issue538()
         {
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var sheet = package.Workbook.Worksheets.Add("Sheet1");
-                var sheet2 = package.Workbook.Worksheets.Add("Sheet2");
-                var validation = sheet.DataValidations.AddListValidation("A1 B1");
+                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("Sheet1");
+                ExcelWorksheet? sheet2 = package.Workbook.Worksheets.Add("Sheet2");
+                IExcelDataValidationList? validation = sheet.DataValidations.AddListValidation("A1 B1");
                 validation.Formula.ExcelFormula = "Sheet2!$A$7:$A$12"; // throws exception "Multiple addresses may not be commaseparated, use space instead"
             }
         }
         [TestMethod]
         public void s272()
         {
-            using (var p = OpenTemplatePackage("RadioButton.xlsm"))
+            using (ExcelPackage? p = OpenTemplatePackage("RadioButton.xlsm"))
             {
                 if (p.Workbook.VbaProject == null)
                 {
@@ -2845,9 +2851,9 @@ namespace EPPlusTest
         [TestMethod]
         public void s277()
         {
-            using (var p = OpenTemplatePackage("s277.xlsx"))
+            using (ExcelPackage? p = OpenTemplatePackage("s277.xlsx"))
             {
-                foreach (var ws in p.Workbook.Worksheets)
+                foreach (ExcelWorksheet? ws in p.Workbook.Worksheets)
                 {
                     ws.Drawings.Clear();
                 }
@@ -2856,9 +2862,9 @@ namespace EPPlusTest
         [TestMethod]
         public void s279()
         {
-            using (var p = OpenTemplatePackage("s279.xlsx"))
+            using (ExcelPackage? p = OpenTemplatePackage("s279.xlsx"))
             {
-                var ws = p.Workbook.Worksheets[0];
+                ExcelWorksheet? ws = p.Workbook.Worksheets[0];
                 ws.Cells["C3"].Value = "Test";
                 SaveAndCleanup(p);
             }
@@ -2866,32 +2872,32 @@ namespace EPPlusTest
         [TestMethod]
         public void I546()
         {
-            using (var excelPackage = OpenTemplatePackage("b.xlsx"))
+            using (ExcelPackage? excelPackage = OpenTemplatePackage("b.xlsx"))
             {
-                var ws = excelPackage.Workbook.Worksheets[0];
-                var cell = ws.Cells["A2"];
-                var formula = cell.Formula;
-                var value1 = cell.Value;
+                ExcelWorksheet? ws = excelPackage.Workbook.Worksheets[0];
+                ExcelRange? cell = ws.Cells["A2"];
+                string? formula = cell.Formula;
+                object? value1 = cell.Value;
                 Console.WriteLine($"value1: {value1}");
 
-                var externalLinks = excelPackage.Workbook.ExternalLinks;
-                var externalWorkbook = externalLinks[0].As.ExternalWorkbook;
+                ExcelExternalLinksCollection? externalLinks = excelPackage.Workbook.ExternalLinks;
+                ExcelExternalWorkbook? externalWorkbook = externalLinks[0].As.ExternalWorkbook;
                 externalWorkbook.Load();
 
                 ws.ClearFormulaValues();
                 ws.Calculate(); // "Circular reference occurred at A2" exception is thrown here
 
-                var value2 = cell.Value;
+                object? value2 = cell.Value;
                 Console.WriteLine($"value2: {value2}");
             }
         }
         [TestMethod]
         public void I548()
         {
-            using (var p = OpenTemplatePackage("09-145.xlsx"))
+            using (ExcelPackage? p = OpenTemplatePackage("09-145.xlsx"))
             {
-                var wsCopy = p.Workbook.Worksheets["Sheet3"];
-                var ws = p.Workbook.Worksheets.Add("tmpCopy");
+                ExcelWorksheet? wsCopy = p.Workbook.Worksheets["Sheet3"];
+                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("tmpCopy");
                 //copy in the same o in another workbook, same issue
                 wsCopy.Cells["C1:AB55"].Copy(ws.Cells["C1"], ExcelRangeCopyOptionFlags.ExcludeFormulas);
 
@@ -2901,18 +2907,18 @@ namespace EPPlusTest
         [TestMethod]
         public void I552()
         {
-            using (var package = OpenTemplatePackage("I552-2.xlsx"))
+            using (ExcelPackage? package = OpenTemplatePackage("I552-2.xlsx"))
             {
-                var worksheet = package.Workbook.Worksheets[0];
+                ExcelWorksheet? worksheet = package.Workbook.Worksheets[0];
                 worksheet.InsertRow(2, 1);
                 worksheet.Cells[1, 1, 1, 10].Copy(worksheet.Cells[2, 1, 2, 10]);
 
                 SaveAndCleanup(package);
             }
 
-            using (var package = OpenPackage("I552-2.xlsx"))
+            using (ExcelPackage? package = OpenPackage("I552-2.xlsx"))
             {
-                var worksheet = package.Workbook.Worksheets[0];
+                ExcelWorksheet? worksheet = package.Workbook.Worksheets[0];
                 worksheet.InsertRow(2, 1);
                 worksheet.Cells[1, 1, 1, 10].Copy(worksheet.Cells[2, 1, 2, 10]);
 
@@ -2922,11 +2928,11 @@ namespace EPPlusTest
         [TestMethod]
         public void s285()
         {
-            using (var package = OpenTemplatePackage("s285.xlsx"))
+            using (ExcelPackage? package = OpenTemplatePackage("s285.xlsx"))
             {
-                var worksheet = package.Workbook.Worksheets[0];
+                ExcelWorksheet? worksheet = package.Workbook.Worksheets[0];
                 worksheet.SetValue(3, 3, "Test");
-                var ns = package.Workbook.Styles.CreateNamedStyle("Normal");
+                ExcelNamedStyleXml? ns = package.Workbook.Styles.CreateNamedStyle("Normal");
                 ns.BuildInId = 0;
                 SaveAndCleanup(package);
             }
@@ -2934,10 +2940,10 @@ namespace EPPlusTest
         [TestMethod]
         public void i566()
         {
-            using (var package = OpenPackage("i566.xlsx", true))
+            using (ExcelPackage? package = OpenPackage("i566.xlsx", true))
             {
-                var worksheet = package.Workbook.Worksheets.Add("Sheet 1");
-                var ws = package.Workbook.Worksheets["Sheet 1"];
+                ExcelWorksheet? worksheet = package.Workbook.Worksheets.Add("Sheet 1");
+                ExcelWorksheet? ws = package.Workbook.Worksheets["Sheet 1"];
                 ws.SetValue(3, 3, "Test");
                 SaveAndCleanup(package);
             }
@@ -2945,9 +2951,9 @@ namespace EPPlusTest
         [TestMethod]
         public void i583()
         {
-            using (var p = new ExcelPackage())
+            using (ExcelPackage? p = new ExcelPackage())
             {
-                var ws = p.Workbook.Worksheets.Add("Sheet1");
+                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Sheet1");
                 ws.SetValue(1048576, 1, 1);
                 Assert.AreEqual("A1048576", ws.Dimension.Address);
 
@@ -2957,11 +2963,11 @@ namespace EPPlusTest
         [TestMethod]
         public void i567()
         {
-            using (var package = OpenTemplatePackage("i567.xlsx"))
+            using (ExcelPackage? package = OpenTemplatePackage("i567.xlsx"))
             {
-                var wsSource = package.Workbook.Worksheets["Detail"];
+                ExcelWorksheet? wsSource = package.Workbook.Worksheets["Detail"];
 
-                var dataCollection = new List<object[]>()
+                List<object[]>? dataCollection = new List<object[]>()
                 {
                     new object[]{"Driver 1",1,2,"Fleet 1", "Manager 1",3,true,0,5,0 },
                     new object[]{"Driver 2",3,4,"Fleet 2", "Manager 2", 5,true,0,8,0 }
@@ -2970,9 +2976,9 @@ namespace EPPlusTest
                 //code to load a collection to the spreadsheet. very nice
                 wsSource.Cells["A2"].LoadFromArrays(dataCollection);
 
-                foreach (var ws in package.Workbook.Worksheets)
+                foreach (ExcelWorksheet? ws in package.Workbook.Worksheets)
                 {
-                    foreach (var pt in ws.PivotTables)
+                    foreach (ExcelPivotTable? pt in ws.PivotTables)
                     {
                         pt.CacheDefinition.SourceRange = wsSource.Cells["A1:J3"];
                     }
@@ -2984,9 +2990,9 @@ namespace EPPlusTest
         [TestMethod]
         public void i574()
         {
-            using (var package = OpenTemplatePackage("i574.xlsx"))
+            using (ExcelPackage? package = OpenTemplatePackage("i574.xlsx"))
             {
-                var wsSource = package.Workbook.Worksheets[0];
+                ExcelWorksheet? wsSource = package.Workbook.Worksheets[0];
 
                 SaveAndCleanup(package);
             }
@@ -3000,9 +3006,9 @@ namespace EPPlusTest
         [TestMethod]
         public void PiechartWithHorizontalSource()
         {
-            using (var p = OpenPackage("piechartHorizontal.xlsx", true))
+            using (ExcelPackage? p = OpenPackage("piechartHorizontal.xlsx", true))
             {
-                var ws = p.Workbook.Worksheets.Add("PieVertical");
+                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("PieVertical");
                 ws.SetValue("A1", "C1");
                 ws.SetValue("A2", "C2");
                 ws.SetValue("A3", "C3");
@@ -3010,7 +3016,7 @@ namespace EPPlusTest
                 ws.SetValue("B2", 45);
                 ws.SetValue("B3", 40);
 
-                var chart = ws.Drawings.AddPieChart("Pie1", ePieChartType.Pie);
+                ExcelPieChart? chart = ws.Drawings.AddPieChart("Pie1", ePieChartType.Pie);
                 chart.VaryColors = true;
                 chart.Series.Add("B1:B3", "A1:A3");
                 chart.StyleManager.SetChartStyle(OfficeOpenXml.Drawing.Chart.Style.ePresetChartStyle.PieChartStyle1);
@@ -3021,9 +3027,9 @@ namespace EPPlusTest
         [TestMethod]
         public void PiechartWithVerticalSource()
         {
-            using (var p = OpenPackage("piechartvertical.xlsx", true))
+            using (ExcelPackage? p = OpenPackage("piechartvertical.xlsx", true))
             {
-                var ws = p.Workbook.Worksheets.Add("PieVertical");
+                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("PieVertical");
                 ws.SetValue("A1", "C1");
                 ws.SetValue("B1", "C2");
                 ws.SetValue("C1", "C3");
@@ -3031,7 +3037,7 @@ namespace EPPlusTest
                 ws.SetValue("B2", 45);
                 ws.SetValue("C2", 40);
 
-                var chart = ws.Drawings.AddPieChart("Pie1", ePieChartType.Pie);
+                ExcelPieChart? chart = ws.Drawings.AddPieChart("Pie1", ePieChartType.Pie);
                 chart.VaryColors = true;
                 chart.Series.Add("A2:C2", "A1:C1");
                 chart.StyleManager.SetChartStyle(OfficeOpenXml.Drawing.Chart.Style.ePresetChartStyle.PieChartStyle1);
@@ -3047,19 +3053,19 @@ namespace EPPlusTest
         [TestMethod]
         public void Issue592()
         {
-            using (var p = OpenTemplatePackage("I592.xlsx"))
+            using (ExcelPackage? p = OpenTemplatePackage("I592.xlsx"))
             {
-                var ws = p.Workbook.Worksheets[0];
+                ExcelWorksheet? ws = p.Workbook.Worksheets[0];
                 SaveAndCleanup(p);
             }
         }
         [TestMethod]
         public void I594()
         {
-            using (var p = OpenTemplatePackage("i594.xlsx"))
+            using (ExcelPackage? p = OpenTemplatePackage("i594.xlsx"))
             {
-                var ws = p.Workbook.Worksheets[1];
-                var tbl = ws.Tables[0];
+                ExcelWorksheet? ws = p.Workbook.Worksheets[1];
+                ExcelTable? tbl = ws.Tables[0];
                 tbl.AddRow(2);
                 SaveAndCleanup(p);
             }
@@ -3067,9 +3073,9 @@ namespace EPPlusTest
         [TestMethod]
         public void s302()
         {
-            using (var p = OpenTemplatePackage("SampleData.xlsx"))
+            using (ExcelPackage? p = OpenTemplatePackage("SampleData.xlsx"))
             {
-                var worksheet = p.Workbook.Worksheets[2];
+                ExcelWorksheet? worksheet = p.Workbook.Worksheets[2];
                 ExcelBarChart chart = worksheet.Drawings.AddBarChart("NewBarChart", eBarChartType.BarClustered);
 
                 chart.SetPosition(32, 0, 1, 0);
@@ -3100,30 +3106,30 @@ namespace EPPlusTest
         [TestMethod]
         public void I596()
         {
-            using (var p = OpenTemplatePackage("I596.xlsx"))
+            using (ExcelPackage? p = OpenTemplatePackage("I596.xlsx"))
             {
-                var ws = p.Workbook.Worksheets[0];
+                ExcelWorksheet? ws = p.Workbook.Worksheets[0];
                 SaveAndCleanup(p);
             }
         }
         [TestMethod]
         public void I606()
         {
-            using (var p = OpenTemplatePackage("i606.xlsx"))
+            using (ExcelPackage? p = OpenTemplatePackage("i606.xlsx"))
             {
-                var ws = p.Workbook.Worksheets[0];
+                ExcelWorksheet? ws = p.Workbook.Worksheets[0];
                 SaveAndCleanup(p);
             }
         }
         [TestMethod]
         public void s312()
         {
-            using (var p = OpenTemplatePackage("richtext.xlsx"))
+            using (ExcelPackage? p = OpenTemplatePackage("richtext.xlsx"))
             {
-                var ws = p.Workbook.Worksheets[0];
-                var t = ws.Cells["C2"].RichText.GetType(); ;
-                var prop = t.GetProperty("TopNode", BindingFlags.GetProperty | BindingFlags.NonPublic | BindingFlags.Instance);
-                var topNode = prop.GetValue(ws.Cells["C2"].RichText);
+                ExcelWorksheet? ws = p.Workbook.Worksheets[0];
+                Type? t = ws.Cells["C2"].RichText.GetType(); ;
+                PropertyInfo? prop = t.GetProperty("TopNode", BindingFlags.GetProperty | BindingFlags.NonPublic | BindingFlags.Instance);
+                object? topNode = prop.GetValue(ws.Cells["C2"].RichText);
                 SaveAndCleanup(p);
             }
         }
@@ -3135,21 +3141,21 @@ namespace EPPlusTest
             {
                 package.Compatibility.IsWorksheets1Based = false;
 
-                var wb = package.Workbook;
+                ExcelWorkbook? wb = package.Workbook;
                 wb.Worksheets.Add("A");
                 wb.Worksheets.Add("B");
 
                 ExcelWorksheet sheetA = wb.Worksheets["A"];
                 ExcelWorksheet sheetB = wb.Worksheets["B"];
 
-                var qsUndefined = QStr("Undefined");
-                var qsEmpty = QStr("");
-                var qsOk = QStr("OK");
-                var qsError = QStr("ERROR");
-                var qsES4 = QStr("ES4");
-                var qsES5 = QStr("ES5");
+                string? qsUndefined = QStr("Undefined");
+                string? qsEmpty = QStr("");
+                string? qsOk = QStr("OK");
+                string? qsError = QStr("ERROR");
+                string? qsES4 = QStr("ES4");
+                string? qsES5 = QStr("ES5");
 
-                var errorFormula = $"IF(OR(LEFT(RC4,9)={qsUndefined},AND(OR(RC5={qsES4},RC5={qsES5}),RC8={qsEmpty}),RC5={qsEmpty}),{qsError},{qsOk})";
+                string? errorFormula = $"IF(OR(LEFT(RC4,9)={qsUndefined},AND(OR(RC5={qsES4},RC5={qsES5}),RC8={qsEmpty}),RC5={qsEmpty}),{qsError},{qsOk})";
 
                 sheetB.Cells[1, 4].Value = "ABC";
                 sheetB.Cells[1, 5].Value = "ES1";
@@ -3175,12 +3181,12 @@ namespace EPPlusTest
         [TestMethod]
         public void s314()
         {
-            using (var p = OpenTemplatePackage("SlicerIssue.xlsx"))
+            using (ExcelPackage? p = OpenTemplatePackage("SlicerIssue.xlsx"))
             {
-                var ws = p.Workbook.Worksheets[0];
-                var pt = ws.PivotTables[0];
-                var wsTable = p.Workbook.Worksheets[1];
-                var tbl = wsTable.Tables[0];
+                ExcelWorksheet? ws = p.Workbook.Worksheets[0];
+                ExcelPivotTable? pt = ws.PivotTables[0];
+                ExcelWorksheet? wsTable = p.Workbook.Worksheets[1];
+                ExcelTable? tbl = wsTable.Tables[0];
                 wsTable.Cells["E9"].Value = "New Value";
                 wsTable.Cells["E9"].Value = "Stockholm";
                 wsTable.Cells["F11"].Value = "Test";
@@ -3206,9 +3212,9 @@ namespace EPPlusTest
         [TestMethod]
         public void i620()
         {
-            using (var p = OpenTemplatePackage("i621.xlsx"))
+            using (ExcelPackage? p = OpenTemplatePackage("i621.xlsx"))
             {
-                var ws = p.Workbook.Worksheets[0];
+                ExcelWorksheet? ws = p.Workbook.Worksheets[0];
                 ws.DeleteColumn(1, 3);
                 SaveAndCleanup(p);
             }
@@ -3216,18 +3222,18 @@ namespace EPPlusTest
         [TestMethod]
         public void i609()
         {
-            using (var p = OpenTemplatePackage("i609.xlsx"))
+            using (ExcelPackage? p = OpenTemplatePackage("i609.xlsx"))
             {
-                var ws = p.Workbook.Worksheets[0];
+                ExcelWorksheet? ws = p.Workbook.Worksheets[0];
                 SaveAndCleanup(p);
             }
         }
         [TestMethod]
         public void HeaderFooterWithInitWhiteSpace()
         {
-            using (var p = OpenPackage("i631.xlsx", true))
+            using (ExcelPackage? p = OpenPackage("i631.xlsx", true))
             {
-                var ws = p.Workbook.Worksheets.Add("Sheet1");
+                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Sheet1");
                 ws.HeaderFooter.EvenFooter.RightAlignedText = "  Row1\r\nRow 2 ";
                 ws.HeaderFooter.OddFooter.RightAlignedText = "\r\nRow1\r\nRow 2\r\n";
                 ws.HeaderFooter.EvenHeader.LeftAlignedText = "\tRow1\r\nRow 2";
@@ -3238,10 +3244,10 @@ namespace EPPlusTest
         [TestMethod]
         public void CopyDxfs()
         {
-            using (var p = OpenTemplatePackage("Input Sheet.xlsx"))
+            using (ExcelPackage? p = OpenTemplatePackage("Input Sheet.xlsx"))
             {
-                var ws = p.Workbook.Worksheets[0];
-                using (var p2 = OpenPackage("CopyDxfs.xlsx", true))
+                ExcelWorksheet? ws = p.Workbook.Worksheets[0];
+                using (ExcelPackage? p2 = OpenPackage("CopyDxfs.xlsx", true))
                 {
                     p2.Workbook.Worksheets.Add("Sheet1", ws);
                     SaveAndCleanup(p2);
@@ -3251,9 +3257,9 @@ namespace EPPlusTest
         [TestMethod]
         public void i654()
         {
-            using (var p = OpenTemplatePackage("i654.xlsx"))
+            using (ExcelPackage? p = OpenTemplatePackage("i654.xlsx"))
             {
-                var ws = p.Workbook.Worksheets[0];
+                ExcelWorksheet? ws = p.Workbook.Worksheets[0];
                 for (int i = 0; i < 10; i++)
                 {
                     ws.InsertRow(5, 1);
@@ -3264,7 +3270,7 @@ namespace EPPlusTest
         [TestMethod]
         public void I653()
         {
-            using (var p = OpenTemplatePackage("i653.xlsx"))
+            using (ExcelPackage? p = OpenTemplatePackage("i653.xlsx"))
             {
                 ExcelWorksheet sheet = p.Workbook.Worksheets[0];
                 for (int i = 3; i < 1003; i++)
@@ -3281,10 +3287,10 @@ namespace EPPlusTest
         [TestMethod]
         public void I665()
         {
-            using (var p1 = OpenTemplatePackage("Source.xlsx"))
+            using (ExcelPackage? p1 = OpenTemplatePackage("Source.xlsx"))
             {
                 ExcelWorksheet sheet = p1.Workbook.Worksheets[0];
-                using (var p2 = OpenTemplatePackage("VbaCopy.xlsm"))
+                using (ExcelPackage? p2 = OpenTemplatePackage("VbaCopy.xlsm"))
                 {
                     p2.Workbook.Worksheets.Add("sheet2", sheet);
                     SaveWorkbook("i665.xlsm", p2);
@@ -3294,20 +3300,20 @@ namespace EPPlusTest
         [TestMethod]
         public void I667()
         {
-            using (var p = OpenTemplatePackage("I667.xlsx"))
+            using (ExcelPackage? p = OpenTemplatePackage("I667.xlsx"))
             {
-                var ws = p.Workbook.Worksheets[0];
+                ExcelWorksheet? ws = p.Workbook.Worksheets[0];
 
-                var lastDataRowIdx = 10;
+                int lastDataRowIdx = 10;
 
-                var notCopyCols = ws
-                    .Cells[1, 1, 1, 100]
-                    .Where(x =>
-                        x.Value != null &&
-                        x.Value.ToString().Trim().Replace(" ", string.Empty).IndexOf("#NotCopy", StringComparison.InvariantCultureIgnoreCase) >= 0)
-                    .Select(x => x.End);
+                IEnumerable<ExcelCellAddress>? notCopyCols = ws
+                                                             .Cells[1, 1, 1, 100]
+                                                             .Where(x =>
+                                                                        x.Value != null &&
+                                                                        x.Value.ToString().Trim().Replace(" ", string.Empty).IndexOf("#NotCopy", StringComparison.InvariantCultureIgnoreCase) >= 0)
+                                                             .Select(x => x.End);
 
-                foreach (var col in notCopyCols)
+                foreach (ExcelCellAddress? col in notCopyCols)
                 {
                     ws.Cells[lastDataRowIdx + 1, col.Column].Clear();
                 }
@@ -3317,7 +3323,7 @@ namespace EPPlusTest
         [TestMethod]
         public void I673()
         {
-            using (var p = OpenTemplatePackage("I673.xlsm"))
+            using (ExcelPackage? p = OpenTemplatePackage("I673.xlsm"))
             {
                 p.Workbook.Worksheets.Copy(p.Workbook.Worksheets.First().Name, "copied sheet");
                 SaveAndCleanup(p);
@@ -3327,7 +3333,7 @@ namespace EPPlusTest
         [TestMethod]
         public void SaveDefinedName()
         {
-            using (var p = OpenTemplatePackage("SaveIssueName.xlsm"))
+            using (ExcelPackage? p = OpenTemplatePackage("SaveIssueName.xlsm"))
             {
                 SaveAndCleanup(p);
             }
@@ -3336,9 +3342,9 @@ namespace EPPlusTest
         [TestMethod]
         public void I676()
         {
-            using (var p = OpenTemplatePackage("i676.xlsm"))
+            using (ExcelPackage? p = OpenTemplatePackage("i676.xlsm"))
             {
-                var ws = p.Workbook.Worksheets["4"];
+                ExcelWorksheet? ws = p.Workbook.Worksheets["4"];
                 ws.Cells["P10"].Value = 10;
                 p.Workbook.VbaProject.Remove();
                 SaveWorkbook("i676.xlsx", p);
@@ -3347,7 +3353,7 @@ namespace EPPlusTest
         [TestMethod]
         public void s350()
         {
-            using (var p = OpenTemplatePackage("s350.xlsm"))
+            using (ExcelPackage? p = OpenTemplatePackage("s350.xlsm"))
             {
                 SaveWorkbook("s350.xlsm", p);
             }
@@ -3355,10 +3361,10 @@ namespace EPPlusTest
         [TestMethod]
         public void s351()
         {
-            using (var p = OpenPackage("s351.xlsx", true))
+            using (ExcelPackage? p = OpenPackage("s351.xlsx", true))
             {
-                var ws = p.Workbook.Worksheets.Add("sheet1");
-                var grpBox = ws.Drawings.AddGroupBoxControl("GB_Deliverables");
+                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("sheet1");
+                ExcelControlGroupBox? grpBox = ws.Drawings.AddGroupBoxControl("GB_Deliverables");
 
                 int optionBoxWidth = 300;
                 int optionBoxHeight = 27;
@@ -3369,7 +3375,7 @@ namespace EPPlusTest
                 grpBox.SetSize(optionBoxWidth * 3, optionBoxHeight * 5);
                 grpBox.Text = "";
 
-                var r1c1 = ws.Drawings.AddCheckBoxControl("General_Technimark_Submission");
+                ExcelControlCheckBox? r1c1 = ws.Drawings.AddCheckBoxControl("General_Technimark_Submission");
                 r1c1.Text = "General Technimark Submission";
                 r1c1.SetPosition(25, OptionBoxRowOffsetPixels, 2, 5);
                 r1c1.SetSize(optionBoxWidth, optionBoxHeight);
@@ -3377,97 +3383,97 @@ namespace EPPlusTest
                 ws.Cells["J26"].Value = true;
                 r1c1.LinkedCell = ws.Cells["J26"];
 
-                var r1c2 = ws.Drawings.AddCheckBoxControl("Project_Schedule");
+                ExcelControlCheckBox? r1c2 = ws.Drawings.AddCheckBoxControl("Project_Schedule");
                 r1c2.Text = "Project Schedule";
                 r1c2.SetPosition(25, OptionBoxRowOffsetPixels, 3, 5);
                 r1c2.SetSize(optionBoxWidth, optionBoxHeight);
                 r1c2.LinkedCell = ws.Cells["K26"];
 
-                var r1c3 = ws.Drawings.AddCheckBoxControl("Customer_Company_Questionnaire");
+                ExcelControlCheckBox? r1c3 = ws.Drawings.AddCheckBoxControl("Customer_Company_Questionnaire");
                 r1c3.Text = "Customer Company Questionnaire";
                 r1c3.SetPosition(25, OptionBoxRowOffsetPixels, 4, 5);
                 r1c3.SetSize(optionBoxWidth, optionBoxHeight);
                 r1c3.LinkedCell = ws.Cells["L26"];
                 //*********************************************************
-                var r2c1 = ws.Drawings.AddCheckBoxControl("Customer_Provided_Bid_Sheets");
+                ExcelControlCheckBox? r2c1 = ws.Drawings.AddCheckBoxControl("Customer_Provided_Bid_Sheets");
                 r2c1.Text = "Customer Provided Bid Sheets";
                 r2c1.SetPosition(26, OptionBoxRowOffsetPixels, 2, 5);
                 r2c1.SetSize(optionBoxWidth, optionBoxHeight);
                 r2c1.LinkedCell = ws.Cells["J27"];
 
-                var r2c2 = ws.Drawings.AddCheckBoxControl("PowerPoint_Presentation");
+                ExcelControlCheckBox? r2c2 = ws.Drawings.AddCheckBoxControl("PowerPoint_Presentation");
                 r2c2.Text = "PowerPoint Presentation";
                 r2c2.SetPosition(26, OptionBoxRowOffsetPixels, 3, 5);
                 r2c2.SetSize(optionBoxWidth, optionBoxHeight);
                 r2c2.LinkedCell = ws.Cells["K27"];
 
-                var r2c3 = ws.Drawings.AddCheckBoxControl("Comprehensive_Tooling_Automation_Quotes");
+                ExcelControlCheckBox? r2c3 = ws.Drawings.AddCheckBoxControl("Comprehensive_Tooling_Automation_Quotes");
                 r2c3.Text = "Comprehensive Tooling/Automation Quotes";
                 r2c3.SetPosition(26, OptionBoxRowOffsetPixels, 4, 5);
                 r2c3.SetSize(optionBoxWidth, optionBoxHeight);
                 r2c3.LinkedCell = ws.Cells["L27"];
                 //*********************************************************
-                var r3c1 = ws.Drawings.AddCheckBoxControl("Validation_Quote");
+                ExcelControlCheckBox? r3c1 = ws.Drawings.AddCheckBoxControl("Validation_Quote");
                 r3c1.Text = "Validation Quote";
                 r3c1.SetPosition(27, OptionBoxRowOffsetPixels, 2, 5);
                 r3c1.SetSize(optionBoxWidth, optionBoxHeight);
                 r3c1.LinkedCell = ws.Cells["J28"];
 
-                var r3c2 = ws.Drawings.AddCheckBoxControl("Process_Flow_Diagrams");
+                ExcelControlCheckBox? r3c2 = ws.Drawings.AddCheckBoxControl("Process_Flow_Diagrams");
                 r3c2.Text = "Process Flow Diagrams";
                 r3c2.SetPosition(27, OptionBoxRowOffsetPixels, 3, 5);
                 r3c2.SetSize(optionBoxWidth, optionBoxHeight);
                 r3c2.LinkedCell = ws.Cells["K28"];
 
-                var r3c3 = ws.Drawings.AddCheckBoxControl("DFM_DesignForManufacturability");
+                ExcelControlCheckBox? r3c3 = ws.Drawings.AddCheckBoxControl("DFM_DesignForManufacturability");
                 r3c3.Text = "DFM - Design For Manufacturability";
                 r3c3.SetPosition(27, OptionBoxRowOffsetPixels, 4, 5);
                 r3c3.SetSize(optionBoxWidth, optionBoxHeight);
                 r3c3.LinkedCell = ws.Cells["L28"];
                 //*********************************************************
-                var r4c1 = ws.Drawings.AddCheckBoxControl("Plant_Layout");
+                ExcelControlCheckBox? r4c1 = ws.Drawings.AddCheckBoxControl("Plant_Layout");
                 r4c1.Text = "Plant Layout";
                 r4c1.SetPosition(28, OptionBoxRowOffsetPixels, 2, 5);
                 r4c1.SetSize(optionBoxWidth, optionBoxHeight);
                 r4c1.LinkedCell = ws.Cells["J29"];
 
-                var r4c2 = ws.Drawings.AddCheckBoxControl("Moldflow");
+                ExcelControlCheckBox? r4c2 = ws.Drawings.AddCheckBoxControl("Moldflow");
                 r4c2.Text = "Moldflow";
                 r4c2.SetPosition(28, OptionBoxRowOffsetPixels, 3, 5);
                 r4c2.SetSize(optionBoxWidth, optionBoxHeight);
                 r4c2.LinkedCell = ws.Cells["K29"];
 
-                var r4c3 = ws.Drawings.AddCheckBoxControl("Development_Prototype_Proposal");
+                ExcelControlCheckBox? r4c3 = ws.Drawings.AddCheckBoxControl("Development_Prototype_Proposal");
                 r4c3.Text = "Development/Prototype Proposal";
                 r4c3.SetPosition(28, OptionBoxRowOffsetPixels, 4, 5);
                 r4c3.SetSize(optionBoxWidth, optionBoxHeight);
                 r4c3.LinkedCell = ws.Cells["L29"];
                 //*********************************************************
-                var r5c1 = ws.Drawings.AddCheckBoxControl("Amortization_Schedule");
+                ExcelControlCheckBox? r5c1 = ws.Drawings.AddCheckBoxControl("Amortization_Schedule");
                 r5c1.Text = "Amortization Schedule";
                 r5c1.SetPosition(29, OptionBoxRowOffsetPixels, 2, 5);
                 r5c1.SetSize(optionBoxWidth, optionBoxHeight);
                 r5c1.LinkedCell = ws.Cells["J30"];
 
-                var r5c2 = ws.Drawings.AddCheckBoxControl("Risk_Assessment");
+                ExcelControlCheckBox? r5c2 = ws.Drawings.AddCheckBoxControl("Risk_Assessment");
                 r5c2.Text = "Risk Assessment";
                 r5c2.SetPosition(29, OptionBoxRowOffsetPixels, 3, 5);
                 r5c2.SetSize(optionBoxWidth, optionBoxHeight);
                 r5c2.LinkedCell = ws.Cells["K30"];
 
-                var r5c3 = ws.Drawings.AddCheckBoxControl("Total_CostOfOwnershipAnalysis");
+                ExcelControlCheckBox? r5c3 = ws.Drawings.AddCheckBoxControl("Total_CostOfOwnershipAnalysis");
                 r5c3.Text = "Total Cost of Ownership Analysis";
                 r5c3.SetPosition(29, OptionBoxRowOffsetPixels, 4, 5);
                 r5c3.SetSize(optionBoxWidth, optionBoxHeight);
                 r5c3.LinkedCell = ws.Cells["L30"];
                 //*********************************************************
-                var r6c1 = ws.Drawings.AddCheckBoxControl("Organization Chart");
+                ExcelControlCheckBox? r6c1 = ws.Drawings.AddCheckBoxControl("Organization Chart");
                 r6c1.Text = "Organization Chart";
                 r6c1.SetPosition(30, OptionBoxRowOffsetPixels, 2, 5);
                 r6c1.SetSize(optionBoxWidth, optionBoxHeight);
                 r6c1.LinkedCell = ws.Cells["J31"];
                 //*********************************************************
-                var grp = grpBox.Group(r1c1, r1c2, r1c3, r2c1, r2c2, r2c3, r3c1, r3c2, r3c3, r4c1, r4c2, r4c3, r5c1, r5c2, r5c3, r6c1);
+                ExcelGroupShape? grp = grpBox.Group(r1c1, r1c2, r1c3, r2c1, r2c2, r2c3, r3c1, r3c2, r3c3, r4c1, r4c2, r4c3, r5c1, r5c2, r5c3, r6c1);
 
                 ws.Row(32).Height = 30;  //Add extra space between Strategy section
                 SaveAndCleanup(p);
@@ -3477,21 +3483,21 @@ namespace EPPlusTest
         [TestMethod]
         public void i681()
         {
-            using (var p = OpenTemplatePackage("i681.xlsx"))
+            using (ExcelPackage? p = OpenTemplatePackage("i681.xlsx"))
             {
                 p.Workbook.Calculate();
 
-                var ws = p.Workbook.Worksheets[1];
+                ExcelWorksheet? ws = p.Workbook.Worksheets[1];
                 Assert.AreEqual(400D, ws.Cells["B118"].Value);
             }
         }
         [TestMethod]
         public void SumWithDoubleWorksheetRefs()
         {
-            using (var p = new ExcelPackage())
+            using (ExcelPackage? p = new ExcelPackage())
             {
-                var wsA = p.Workbook.Worksheets.Add("a");
-                var wsB = p.Workbook.Worksheets.Add("b");
+                ExcelWorksheet? wsA = p.Workbook.Worksheets.Add("a");
+                ExcelWorksheet? wsB = p.Workbook.Worksheets.Add("b");
                 wsA.Cells["A1"].Value = 1;
                 wsA.Cells["A2"].Value = 2;
                 wsA.Cells["A3"].Value = 3;
@@ -3504,7 +3510,7 @@ namespace EPPlusTest
         [TestMethod]
         public void AddressWithDoubleWorksheetRefs()
         {
-            var a = new ExcelAddressBase("a!a1:'a'!A3");
+            ExcelAddressBase? a = new ExcelAddressBase("a!a1:'a'!A3");
 
             Assert.AreEqual(1, a._fromRow);
             Assert.AreEqual(3, a._toRow);
@@ -3514,9 +3520,9 @@ namespace EPPlusTest
         [TestMethod]
         public void IsError_CellReference_StringLiteral()
         {
-            using (var pck = new ExcelPackage())
+            using (ExcelPackage? pck = new ExcelPackage())
             {
-                var sheet1 = pck.Workbook.Worksheets.Add("Sheet1");
+                ExcelWorksheet? sheet1 = pck.Workbook.Worksheets.Add("Sheet1");
                 sheet1.Cells["B2"].Value = ExcelErrorValue.Create(eErrorType.Value);
                 sheet1.Cells["C3"].Formula = "ISERROR(B2)";
 
@@ -3530,12 +3536,12 @@ namespace EPPlusTest
         [TestMethod]
         public void I690InsertRow()
         {
-            using (var pck = new ExcelPackage())
+            using (ExcelPackage? pck = new ExcelPackage())
             {
-                var sheet1 = pck.Workbook.Worksheets.Add("Sheet1");
+                ExcelWorksheet? sheet1 = pck.Workbook.Worksheets.Add("Sheet1");
                 pck.Workbook.Names.Add("ColumnRange", new ExcelRangeBase(sheet1, "Sheet1!$C:$C"));
 
-                var rangeAddress = pck.Workbook.Names["ColumnRange"].Address;
+                string? rangeAddress = pck.Workbook.Names["ColumnRange"].Address;
 
                 sheet1.InsertRow(1, 1);
 
@@ -3546,12 +3552,12 @@ namespace EPPlusTest
         [TestMethod]
         public void I690InsertColumn()
         {
-            using (var pck = new ExcelPackage())
+            using (ExcelPackage? pck = new ExcelPackage())
             {
-                var sheet1 = pck.Workbook.Worksheets.Add("Sheet1");
+                ExcelWorksheet? sheet1 = pck.Workbook.Worksheets.Add("Sheet1");
                 pck.Workbook.Names.Add("RowRange", new ExcelRangeBase(sheet1, "Sheet1!$7:$7"));
 
-                var rangeAddress = pck.Workbook.Names["RowRange"].Address;
+                string? rangeAddress = pck.Workbook.Names["RowRange"].Address;
 
                 sheet1.InsertColumn(1, 1);
 
@@ -3561,12 +3567,12 @@ namespace EPPlusTest
         [TestMethod]
         public void I690DeleteRow()
         {
-            using (var pck = new ExcelPackage())
+            using (ExcelPackage? pck = new ExcelPackage())
             {
-                var sheet1 = pck.Workbook.Worksheets.Add("Sheet1");
+                ExcelWorksheet? sheet1 = pck.Workbook.Worksheets.Add("Sheet1");
                 pck.Workbook.Names.Add("ColumnRange", new ExcelRangeBase(sheet1, $"Sheet1!$C2:$C{ExcelPackage.MaxRows}"));
 
-                var rangeAddress = pck.Workbook.Names["ColumnRange"].Address;
+                string? rangeAddress = pck.Workbook.Names["ColumnRange"].Address;
 
                 sheet1.DeleteRow(1, 1);
 
@@ -3577,12 +3583,12 @@ namespace EPPlusTest
         [TestMethod]
         public void I690DeleteColumn()
         {
-            using (var pck = new ExcelPackage())
+            using (ExcelPackage? pck = new ExcelPackage())
             {
-                var sheet1 = pck.Workbook.Worksheets.Add("Sheet1");
+                ExcelWorksheet? sheet1 = pck.Workbook.Worksheets.Add("Sheet1");
                 pck.Workbook.Names.Add("RowRange", new ExcelRangeBase(sheet1, $"Sheet1!$B$7:$XFD$7"));
 
-                var rangeAddress = pck.Workbook.Names["RowRange"].Address;
+                string? rangeAddress = pck.Workbook.Names["RowRange"].Address;
 
                 sheet1.DeleteColumn(1, 1);
 
@@ -3592,7 +3598,7 @@ namespace EPPlusTest
         [TestMethod]
         public void s330()
         {
-            using (var p = OpenTemplatePackage("s330.xlsm"))
+            using (ExcelPackage? p = OpenTemplatePackage("s330.xlsm"))
             {
                 p.Workbook.VbaProject.Signature.Certificate = null;
                 SaveAndCleanup(p);
@@ -3601,12 +3607,12 @@ namespace EPPlusTest
         [TestMethod]
         public void i694()
         {
-            using (var p = OpenPackage("i694.xlsx", true))
+            using (ExcelPackage? p = OpenPackage("i694.xlsx", true))
             {
-                var wb = p.Workbook;
-                var ws = wb.Worksheets.Add("test");
+                ExcelWorkbook? wb = p.Workbook;
+                ExcelWorksheet? ws = wb.Worksheets.Add("test");
 
-                for (var colNum = 1; colNum <= 5; colNum++)
+                for (int colNum = 1; colNum <= 5; colNum++)
                 {
                     ws.Cells[1, colNum].Value = $"Column_{colNum}";
                     ws.Column(colNum).OutlineLevel = 1;
@@ -3620,7 +3626,7 @@ namespace EPPlusTest
         [TestMethod]
         public void i701()
         {
-            using (var p = OpenTemplatePackage(@"i701.xlsx"))
+            using (ExcelPackage? p = OpenTemplatePackage(@"i701.xlsx"))
             {
                 ExcelTable partsTable = p.Workbook.Worksheets
                 .SelectMany(x => x.Tables)
@@ -3629,7 +3635,7 @@ namespace EPPlusTest
                 if (!partsTable.Columns.Any(x => x.Name == "TEST"))
                 {
                     partsTable.Columns.Add();
-                    var newCol = partsTable.Columns.Last();
+                    ExcelTableColumn? newCol = partsTable.Columns.Last();
                 }
                 SaveAndCleanup(p);
             }
@@ -3637,7 +3643,7 @@ namespace EPPlusTest
         [TestMethod]
         public void AddExternalWorkbookNoUpdate()
         {
-            using (var p = OpenTemplatePackage(@"extref_relative.xlsx"))
+            using (ExcelPackage? p = OpenTemplatePackage(@"extref_relative.xlsx"))
             {
                 p.Workbook.ExternalLinks[0].As.ExternalWorkbook.IsPathRelative = true;
                 p.Workbook.ExternalLinks[0].As.ExternalWorkbook.Load();
@@ -3647,17 +3653,17 @@ namespace EPPlusTest
         [TestMethod]
         public void i715()
         {
-            using (var p = OpenTemplatePackage(@"i715.xlsx"))
+            using (ExcelPackage? p = OpenTemplatePackage(@"i715.xlsx"))
             {
-                var t = p.Workbook.Worksheets["Data"].Tables[0];
+                ExcelTable? t = p.Workbook.Worksheets["Data"].Tables[0];
                 int columnPosition = t.Columns.First(c => c.Name == "Extra").Position;
                 t.Columns.Delete(columnPosition, 1);
                 SaveAndCleanup(p);
             }
 
-            using (var p = OpenTemplatePackage(@"i715-2.xlsx"))
+            using (ExcelPackage? p = OpenTemplatePackage(@"i715-2.xlsx"))
             {
-                var t = p.Workbook.Worksheets["Data"].Tables[0];
+                ExcelTable? t = p.Workbook.Worksheets["Data"].Tables[0];
                 int columnPosition = t.Columns.First(c => c.Name == "Extra").Position;
                 t.Columns.Delete(columnPosition, 1);
                 // delete one more column
@@ -3666,9 +3672,9 @@ namespace EPPlusTest
                 SaveAndCleanup(p);
             }
 
-            using (var p = OpenTemplatePackage(@"i715-3.xlsx"))
+            using (ExcelPackage? p = OpenTemplatePackage(@"i715-3.xlsx"))
             {
-                var t = p.Workbook.Worksheets["Bookings This Year"].Tables["JobsThisYear"];
+                ExcelTable? t = p.Workbook.Worksheets["Bookings This Year"].Tables["JobsThisYear"];
                 // if I delete even one column it produces corrupted xlsx
                 int columnPosition = t.Columns.First(c => c.Name == "Total Time").Position;
                 t.Columns.Delete(columnPosition, 1);
@@ -3679,18 +3685,18 @@ namespace EPPlusTest
         [TestMethod]
         public void i707()
         {
-            using (var p = OpenTemplatePackage(@"i707.xlsx"))
+            using (ExcelPackage? p = OpenTemplatePackage(@"i707.xlsx"))
             {
                 SaveAndCleanup(p);
             }
         }
         public void i720()
         {
-            var stream = new MemoryStream();
-            using (var p = OpenPackage("i720.xlsx"))
+            MemoryStream? stream = new MemoryStream();
+            using (ExcelPackage? p = OpenPackage("i720.xlsx"))
             {
                 p.Settings.TextSettings.DefaultTextMeasurer = new OfficeOpenXml.Core.Worksheet.Fonts.GenericFontMetrics.DefaultTextMeasurer();
-                var worksheet = p.Workbook.Worksheets.Add("Sheet1");
+                ExcelWorksheet? worksheet = p.Workbook.Worksheets.Add("Sheet1");
                 worksheet.Cells["A1"].Value = "Test";
                 worksheet.Cells["a:xfd"].AutoFitColumns();
             }
@@ -3698,18 +3704,18 @@ namespace EPPlusTest
         [TestMethod]
         public void i729()
         {
-            var id = "2";
-            using (var p = OpenTemplatePackage($"i729-{id}.xlsm"))
+            string? id = "2";
+            using (ExcelPackage? p = OpenTemplatePackage($"i729-{id}.xlsm"))
             {
-                var path = $"c:\\temp\\vba-issue\\{id}\\";
+                string? path = $"c:\\temp\\vba-issue\\{id}\\";
                 if (Directory.Exists(path))
                 {
                     Directory.Delete(path, true);
                 }
                 Directory.CreateDirectory(path);
 
-                var code = p.Workbook.VbaProject.Modules[0].Code;
-                var sb = new StringWriter();
+                string? code = p.Workbook.VbaProject.Modules[0].Code;
+                StringWriter? sb = new StringWriter();
                 WriteStorage(p.Workbook.VbaProject.Document.Storage, sb, path, "");
 
                 SaveWorkbook("i729.xlsm", p);
@@ -3718,11 +3724,11 @@ namespace EPPlusTest
         [TestMethod]
         public void i735()
         {
-            using (var p = OpenPackage("i735.xlsx", true))
+            using (ExcelPackage? p = OpenPackage("i735.xlsx", true))
             {
-                var wb = p.Workbook;
-                var ws = wb.Worksheets.Add("test");
-                var tableRange = ws.Cells["A1:C5"];
+                ExcelWorkbook? wb = p.Workbook;
+                ExcelWorksheet? ws = wb.Worksheets.Add("test");
+                ExcelRange? tableRange = ws.Cells["A1:C5"];
                 tableRange.Style.Border.Top.Style = ExcelBorderStyle.Dashed;
                 tableRange.Style.Border.Left.Style = ExcelBorderStyle.Dashed;
                 tableRange.Style.Border.Bottom.Style = ExcelBorderStyle.Dashed;
@@ -3735,12 +3741,12 @@ namespace EPPlusTest
         }
         private void WriteStorage(CompoundDocument.StoragePart storage, StringWriter sb, string path, string dir)
         {
-            foreach (var key in storage.SubStorage.Keys)
+            foreach (string? key in storage.SubStorage.Keys)
             {
                 Directory.CreateDirectory($"{path}{dir}{key}\\");
                 WriteStorage(storage.SubStorage[key], sb, path, dir + $"{key}\\");
             }
-            foreach (var key in storage.DataStreams.Keys)
+            foreach (string? key in storage.DataStreams.Keys)
             {
                 sb.WriteLine($"{path}{dir}\\" + key);
                 System.IO.File.WriteAllBytes($"{path}{dir}\\" + GetFileName(key) + ".bin", storage.DataStreams[key]);
@@ -3749,9 +3755,9 @@ namespace EPPlusTest
 
         private string GetFileName(string key)
         {
-            var sb = new StringBuilder();
-            var ic = Path.GetInvalidFileNameChars();
-            foreach (var c in key)
+            StringBuilder? sb = new StringBuilder();
+            char[]? ic = Path.GetInvalidFileNameChars();
+            foreach (char c in key)
             {
                 if (ic.Contains(c))
                 {
@@ -3771,17 +3777,17 @@ namespace EPPlusTest
         [TestMethod]
         public void i740()
         {
-            using (var package = OpenPackage($"i738.xlsx", true))
+            using (ExcelPackage? package = OpenPackage($"i738.xlsx", true))
             {
-                var sheet = package.Workbook.Worksheets.Add("sheet1");
-                var tableRange = sheet.Cells["A1:C5"];
+                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("sheet1");
+                ExcelRange? tableRange = sheet.Cells["A1:C5"];
                 List<BorderInfo> brders = new List<BorderInfo>()
                     {
                         new BorderInfo(){ RangeType="border-all" },
                         new BorderInfo(){ RangeType="border-outside" },
                         new BorderInfo(){ RangeType="border-none" }
                     };
-                foreach (var border in brders)
+                foreach (BorderInfo? border in brders)
                 {
                     if (border.RangeType.Equals("border-all"))
                     {
@@ -3813,7 +3819,7 @@ namespace EPPlusTest
         [TestMethod]
         public void I742()
         {
-            using (var p = OpenTemplatePackage(@"i742.xlsx"))
+            using (ExcelPackage? p = OpenTemplatePackage(@"i742.xlsx"))
             {
                 SaveAndCleanup(p);
             }
@@ -3821,18 +3827,18 @@ namespace EPPlusTest
         [TestMethod]
         public void I743()
         {
-            using (var p = OpenTemplatePackage(@"i743.xlsx"))
+            using (ExcelPackage? p = OpenTemplatePackage(@"i743.xlsx"))
             {
                 int[] rows = { 1, 3, 5, 7, 9, 12, 14, 16, 18, 20 };
 
-                foreach (var row in rows)
+                foreach (int row in rows)
                 {
-                    var cell = p.Workbook.Worksheets[0].Cells[row, 3];
-                    var cellColor = "";
+                    ExcelRange? cell = p.Workbook.Worksheets[0].Cells[row, 3];
+                    string? cellColor = "";
 
                     if (!String.IsNullOrEmpty(cell.Style.Font.Color.Theme.ToString()))
                     {
-                        var theme = cell.Style.Font.Color.Theme.ToString();
+                        string? theme = cell.Style.Font.Color.Theme.ToString();
 
                         if (theme == "Text1")
                         {
@@ -3851,10 +3857,10 @@ namespace EPPlusTest
                             theme = "Light2";
                         }
 
-                        var colorManager = (ExcelDrawingThemeColorManager)p.Workbook.ThemeManager.CurrentTheme.ColorScheme
-                                                                           .GetType()
-                                                                           .GetProperty(theme)
-                                                                           .GetValue(p.Workbook.ThemeManager.CurrentTheme.ColorScheme);
+                        ExcelDrawingThemeColorManager? colorManager = (ExcelDrawingThemeColorManager)p.Workbook.ThemeManager.CurrentTheme.ColorScheme
+                                                                                                      .GetType()
+                                                                                                      .GetProperty(theme)
+                                                                                                      .GetValue(p.Workbook.ThemeManager.CurrentTheme.ColorScheme);
 
                         switch (colorManager.ColorType)
                         {
@@ -3888,7 +3894,7 @@ namespace EPPlusTest
 
                     if (cell.RichText != null)
                     {
-                        foreach (var richText in cell.RichText)
+                        foreach (ExcelRichText? richText in cell.RichText)
                         {
                             Debug.WriteLine(richText.Text + " " + richText.Color.Name.ToUpper());
                         }
@@ -3900,7 +3906,7 @@ namespace EPPlusTest
         [TestMethod]
         public void s404()
         {
-            using (var p = OpenTemplatePackage(@"s404.xlsm"))
+            using (ExcelPackage? p = OpenTemplatePackage(@"s404.xlsm"))
             {
                 p.Workbook.VbaProject.Protection.SetPassword(null);
                 SaveAndCleanup(p);
@@ -3909,9 +3915,9 @@ namespace EPPlusTest
         [TestMethod]
         public void i751()
         {
-            using (var p = OpenTemplatePackage(@"i751-Normal.xlsx"))
+            using (ExcelPackage? p = OpenTemplatePackage(@"i751-Normal.xlsx"))
             {
-                var ws = p.Workbook.Worksheets[0];
+                ExcelWorksheet? ws = p.Workbook.Worksheets[0];
                 ws.DeleteColumn(3);
                 SaveAndCleanup(p);
             }
@@ -3919,7 +3925,7 @@ namespace EPPlusTest
         [TestMethod]
         public void i752()
         {
-            using (var p = OpenTemplatePackage(@"i752.xlsx"))
+            using (ExcelPackage? p = OpenTemplatePackage(@"i752.xlsx"))
             {
                 for (int row = 1; row <= p.Workbook.Worksheets[0].Dimension.End.Row; row++)
                 {
@@ -3928,7 +3934,7 @@ namespace EPPlusTest
                         continue;
                     }
 
-                    var cell = p.Workbook.Worksheets[0].Cells[row, 3];
+                    ExcelRange? cell = p.Workbook.Worksheets[0].Cells[row, 3];
 
                     Debug.WriteLine($"\n--> {p.Workbook.Worksheets[0].Cells[row, 1].Text}");
                     Debug.Write($"Cell Font: [{cell.Style.Font.Name}], Size: [{cell.Style.Font.Size}]");
@@ -3939,7 +3945,7 @@ namespace EPPlusTest
 
                     Debug.WriteLine("");
 
-                    foreach (var richText in cell.RichText)
+                    foreach (ExcelRichText? richText in cell.RichText)
                     {
                         Debug.Write($"RichText {richText.Text} Font: [{richText.FontName}], Size: [{richText.Size}]");
                         if (richText.Bold)
@@ -3955,10 +3961,10 @@ namespace EPPlusTest
         [TestMethod]
         public void s407()
         {
-            using (var p = OpenTemplatePackage(@"s407.xlsx"))
+            using (ExcelPackage? p = OpenTemplatePackage(@"s407.xlsx"))
             {
-                var sheet1 = p.Workbook.Worksheets.First();
-                var sheet2 = p.Workbook.Worksheets.Add("copy", sheet1);
+                ExcelWorksheet? sheet1 = p.Workbook.Worksheets.First();
+                ExcelWorksheet? sheet2 = p.Workbook.Worksheets.Add("copy", sheet1);
                 p.Save();
 
             }
@@ -3966,9 +3972,9 @@ namespace EPPlusTest
         [TestMethod]
         public void i761()
         {
-            using (var package = OpenPackage("i761.xlsx", true))
+            using (ExcelPackage? package = OpenPackage("i761.xlsx", true))
             {
-                var sheet = package.Workbook.Worksheets.Add("Page1");
+                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("Page1");
                 sheet.Cells["A1"].Value = 0;
                 sheet.Cells["B1"].Value = 5;
                 sheet.Cells["A2"].Value = 0;
@@ -3985,11 +3991,11 @@ namespace EPPlusTest
         [TestMethod]
         public void i762()
         {
-            using (var p = OpenTemplatePackage(@"i762.xlsx"))
+            using (ExcelPackage? p = OpenTemplatePackage(@"i762.xlsx"))
             {
-                var ws = p.Workbook.Worksheets[0];
+                ExcelWorksheet? ws = p.Workbook.Worksheets[0];
                 ws.Cells["C5"].Value = 15;
-                var pc = ws.Drawings[0].As.Chart.PieChart;
+                ExcelPieChart? pc = ws.Drawings[0].As.Chart.PieChart;
                 pc.Series[0].CreateCache();
 
                 SaveAndCleanup(p);
@@ -3998,9 +4004,9 @@ namespace EPPlusTest
         [TestMethod]
         public void i763()
         {
-            using (var package = OpenPackage("i761.xlsx", true))
+            using (ExcelPackage? package = OpenPackage("i761.xlsx", true))
             {
-                var sheet = package.Workbook.Worksheets.Add("Page1");
+                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("Page1");
                 sheet.Cells["A1"].Value = 0;
                 sheet.Cells["A2"].Value = 5;
                 sheet.Cells["A3"].Value = 0;
@@ -4011,7 +4017,7 @@ namespace EPPlusTest
                 sheet.Cells["A8"].Value = 4;
                 sheet.Cells["A9"].Value = 1;
 
-                foreach (var c in sheet.Cells["A1:A3,A5,A6,A7"])
+                foreach (ExcelRangeBase? c in sheet.Cells["A1:A3,A5,A6,A7"])
                 {
                     Console.WriteLine($"{c.Address}");
                 }
@@ -4020,11 +4026,11 @@ namespace EPPlusTest
         [TestMethod]
         public void ExcelRangeBase_Counts_Periods_Twice_763_1()
         {
-            using (var p = new ExcelPackage())
+            using (ExcelPackage? p = new ExcelPackage())
             {
                 p.Workbook.Worksheets.Add("first");
 
-                var sheet = p.Workbook.Worksheets.First();
+                ExcelWorksheet? sheet = p.Workbook.Worksheets.First();
 
                 sheet.Cells["A1"].Value = 1;
                 sheet.Cells["A2"].Value = 1;
@@ -4050,21 +4056,21 @@ namespace EPPlusTest
                 int counterNoRanges = 0;
                 int counterOneRange = 0;
                 int counterMixed = 0;
-                var cellsFirstIteration = string.Empty;
-                var cellsSecondIteration = string.Empty;
-                var cellsSingleAdress = string.Empty;
-                var cellsMultipleRanges = string.Empty;
-                var cellsRangesFirst = string.Empty;
-                var cellsRangesLast = string.Empty;
-                var cellsNoRanges = string.Empty;
-                var cellsOneRange = string.Empty;
-                var cellsMixed = string.Empty;
+                string? cellsFirstIteration = string.Empty;
+                string? cellsSecondIteration = string.Empty;
+                string? cellsSingleAdress = string.Empty;
+                string? cellsMultipleRanges = string.Empty;
+                string? cellsRangesFirst = string.Empty;
+                string? cellsRangesLast = string.Empty;
+                string? cellsNoRanges = string.Empty;
+                string? cellsOneRange = string.Empty;
+                string? cellsMixed = string.Empty;
 
                 //------------------
-                var cellsInRange = string.Empty;
+                string? cellsInRange = string.Empty;
 
-                var rangeWithPeriod = sheet.Cells["A1:A3,A5,A6,A7,A8,A10,A9,A11"];
-                foreach (var cell in rangeWithPeriod)
+                ExcelRange? rangeWithPeriod = sheet.Cells["A1:A3,A5,A6,A7,A8,A10,A9,A11"];
+                foreach (ExcelRangeBase? cell in rangeWithPeriod)
                 {
                     cellsInRange = $"{cellsInRange};{cell.Address}";
                 }
@@ -4073,14 +4079,14 @@ namespace EPPlusTest
 
                 //------------------
 
-                var range = sheet.Cells["A1:A3,A5,A6,A7,A8,A10,A9,A11"];
-                foreach (var cell in range)
+                ExcelRange? range = sheet.Cells["A1:A3,A5,A6,A7,A8,A10,A9,A11"];
+                foreach (ExcelRangeBase? cell in range)
                 {
                     counterFirstIteration++;
                     cellsFirstIteration = $"{cellsFirstIteration};{cell.Address}";
                 }
 
-                foreach (var cell in range)
+                foreach (ExcelRangeBase? cell in range)
                 {
                     counterSecondIteration++;
                     cellsSecondIteration = $"{cellsSecondIteration};{cell.Address}";
@@ -4093,8 +4099,8 @@ namespace EPPlusTest
                 Assert.AreEqual(10, counterFirstIteration);
 
 
-                var rangeSingleAdress = sheet.Cells["A1"];
-                foreach (var cell in rangeSingleAdress)
+                ExcelRange? rangeSingleAdress = sheet.Cells["A1"];
+                foreach (ExcelRangeBase? cell in rangeSingleAdress)
                 {
                     CounterSingleAdress++;
                     cellsSingleAdress = $"{cellsSingleAdress};{cell.Address}";
@@ -4105,7 +4111,7 @@ namespace EPPlusTest
 
                 cellsSingleAdress = String.Empty;
                 CounterSingleAdress = 0;
-                foreach (var cell in rangeSingleAdress)
+                foreach (ExcelRangeBase? cell in rangeSingleAdress)
                 {
                     CounterSingleAdress++;
                     cellsSingleAdress = $"{cellsSingleAdress};{cell.Address}";
@@ -4115,8 +4121,8 @@ namespace EPPlusTest
                 Assert.AreEqual(1, CounterSingleAdress);
 
 
-                var rangeMultipleRanges = sheet.Cells["A1:A4,A5:A7,A8:A11"];
-                foreach (var cell in rangeMultipleRanges)
+                ExcelRange? rangeMultipleRanges = sheet.Cells["A1:A4,A5:A7,A8:A11"];
+                foreach (ExcelRangeBase? cell in rangeMultipleRanges)
                 {
                     CounterMultipleRanges++;
                     cellsMultipleRanges = $"{cellsMultipleRanges};{cell.Address}";
@@ -4127,7 +4133,7 @@ namespace EPPlusTest
 
                 CounterMultipleRanges = 0;
                 cellsMultipleRanges = String.Empty;
-                foreach (var cell in rangeMultipleRanges)
+                foreach (ExcelRangeBase? cell in rangeMultipleRanges)
                 {
                     CounterMultipleRanges++;
                     cellsMultipleRanges = $"{cellsMultipleRanges};{cell.Address}";
@@ -4136,8 +4142,8 @@ namespace EPPlusTest
                 Assert.AreEqual(";A1;A2;A3;A4;A5;A6;A7;A8;A9;A10;A11", cellsMultipleRanges);
                 Assert.AreEqual(11, CounterMultipleRanges);
 
-                var rangeRangeFirst = sheet.Cells["A1:A4,A5,A6,A7"];
-                foreach (var cell in rangeRangeFirst)
+                ExcelRange? rangeRangeFirst = sheet.Cells["A1:A4,A5,A6,A7"];
+                foreach (ExcelRangeBase? cell in rangeRangeFirst)
                 {
                     CounterRangesFirst++;
                     cellsRangesFirst = $"{cellsRangesFirst};{cell.Address}";
@@ -4148,7 +4154,7 @@ namespace EPPlusTest
 
                 CounterRangesFirst = 0;
                 cellsRangesFirst = String.Empty;
-                foreach (var cell in rangeRangeFirst)
+                foreach (ExcelRangeBase? cell in rangeRangeFirst)
                 {
                     CounterRangesFirst++;
                     cellsRangesFirst = $"{cellsRangesFirst};{cell.Address}";
@@ -4157,8 +4163,8 @@ namespace EPPlusTest
                 Assert.AreEqual(";A1;A2;A3;A4;A5;A6;A7", cellsRangesFirst);
                 Assert.AreEqual(7, CounterRangesFirst);
 
-                var rangeRangeLast = sheet.Cells["A1,A2,A3,A4:A7"];
-                foreach (var cell in rangeRangeLast)
+                ExcelRange? rangeRangeLast = sheet.Cells["A1,A2,A3,A4:A7"];
+                foreach (ExcelRangeBase? cell in rangeRangeLast)
                 {
                     CounterRangesLast++;
                     cellsRangesLast = $"{cellsRangesLast};{cell.Address}";
@@ -4169,7 +4175,7 @@ namespace EPPlusTest
 
                 CounterRangesLast = 0;
                 cellsRangesLast = String.Empty;
-                foreach (var cell in rangeRangeLast)
+                foreach (ExcelRangeBase? cell in rangeRangeLast)
                 {
                     CounterRangesLast++;
                     cellsRangesLast = $"{cellsRangesLast};{cell.Address}";
@@ -4178,8 +4184,8 @@ namespace EPPlusTest
                 Assert.AreEqual(";A1;A2;A3;A4;A5;A6;A7", cellsRangesLast);
                 Assert.AreEqual(7, CounterRangesLast);
 
-                var rangeOneRange = sheet.Cells["A1:A7"];
-                foreach (var cell in rangeOneRange)
+                ExcelRange? rangeOneRange = sheet.Cells["A1:A7"];
+                foreach (ExcelRangeBase? cell in rangeOneRange)
                 {
                     counterOneRange++;
                     cellsOneRange = $"{cellsOneRange};{cell.Address}";
@@ -4189,8 +4195,8 @@ namespace EPPlusTest
                 Assert.AreEqual(7, counterOneRange);
 
 
-                var rangeNoRange = sheet.Cells["A1,A2,A3,A4"];
-                foreach (var cell in rangeNoRange)
+                ExcelRange? rangeNoRange = sheet.Cells["A1,A2,A3,A4"];
+                foreach (ExcelRangeBase? cell in rangeNoRange)
                 {
                     counterNoRanges++;
                     cellsNoRanges = $"{cellsNoRanges};{cell.Address}";
@@ -4200,8 +4206,8 @@ namespace EPPlusTest
                 Assert.AreEqual(4, counterNoRanges);
 
 
-                var rangeMixed = sheet.Cells["A1,A2,A3:A5,A6,A7"];
-                foreach (var cell in rangeMixed)
+                ExcelRange? rangeMixed = sheet.Cells["A1,A2,A3:A5,A6,A7"];
+                foreach (ExcelRangeBase? cell in rangeMixed)
                 {
                     counterMixed++;
                     cellsMixed = $"{cellsMixed};{cell.Address}";
@@ -4213,7 +4219,7 @@ namespace EPPlusTest
 
                 int counter = 0;
                 String cells = String.Empty;
-                foreach (var cell in sheet.Cells)
+                foreach (ExcelRangeBase? cell in sheet.Cells)
                 {
                     counter++;
                     cells = $"{cells};{cell.Address}";
@@ -4226,7 +4232,7 @@ namespace EPPlusTest
         [TestMethod]
         public void I778()
         {
-            using (var package = OpenTemplatePackage("i778.xlsx"))
+            using (ExcelPackage? package = OpenTemplatePackage("i778.xlsx"))
             {
                 SaveAndCleanup(package);
             }
@@ -4235,7 +4241,7 @@ namespace EPPlusTest
         [TestMethod]
         public void StyleKeepBoxes()
         {
-            using (var p = OpenTemplatePackage("XfsStyles.xlsx"))
+            using (ExcelPackage? p = OpenTemplatePackage("XfsStyles.xlsx"))
             {
                 SaveAndCleanup(p);
             }
@@ -4243,9 +4249,9 @@ namespace EPPlusTest
         [TestMethod]
         public void BuildInStylesRegional()
         {
-            using (var p = OpenPackage("BuildinStylesRegional.xlsx", true))
+            using (ExcelPackage? p = OpenPackage("BuildinStylesRegional.xlsx", true))
             {
-                var ws = p.Workbook.Worksheets.Add("Sheet1");
+                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Sheet1");
                 ws.Cells["A1:A4"].FillNumber(1);
                 ws.Cells["A1"].Style.Numberformat.Format = "#,##0 ;(#,##0)";
                 ws.Cells["A2"].Style.Numberformat.Format = "#,##0 ;[Red](#,##0)";
@@ -4258,9 +4264,9 @@ namespace EPPlusTest
         [TestMethod]
         public void I809()
         {
-            using (var p = new ExcelPackage())
+            using (ExcelPackage? p = new ExcelPackage())
             {
-                var ws = p.Workbook.Worksheets.Add("DateSheet");
+                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("DateSheet");
 
                 ws.Cells["A1"].Value = "2022-11-25";
 
@@ -4281,7 +4287,7 @@ namespace EPPlusTest
         [TestMethod]
         public void s425()
         {
-            using (var p = OpenTemplatePackage("s425.xlsx"))
+            using (ExcelPackage? p = OpenTemplatePackage("s425.xlsx"))
             {
                 Assert.AreEqual(1, p.Workbook.Worksheets[0].PivotTables.Count);
                 SaveAndCleanup(p);
@@ -4290,9 +4296,9 @@ namespace EPPlusTest
         [TestMethod]
         public void s803()
         {
-            using (var p = OpenPackage("s803.xlsx", true))
+            using (ExcelPackage? p = OpenPackage("s803.xlsx", true))
             {
-                var ws = p.Workbook.Worksheets.Add("Sheet1");
+                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Sheet1");
                 ws.Cells["A1:E100"].FillNumber(1, 1);
                 ws.Cells["A82"].Formula = "a1";
                 ws.Cells["A82"].Formula = null;
@@ -4304,13 +4310,13 @@ namespace EPPlusTest
         [TestMethod]
         public void s431()
         {
-            using (var package = OpenTemplatePackage("template-not-working.xlsx"))
+            using (ExcelPackage? package = OpenTemplatePackage("template-not-working.xlsx"))
             {
-                var pics = package.Workbook.Worksheets.SelectMany(p => p.Drawings).Where(p => p is ExcelPicture)
-                    .Select(p => p as ExcelPicture).ToList();
+                List<ExcelPicture>? pics = package.Workbook.Worksheets.SelectMany(p => p.Drawings).Where(p => p is ExcelPicture)
+                                                  .Select(p => p as ExcelPicture).ToList();
 
-                var pic = pics.First(p => p.Name == "Image_ExistingInventoryImg");
-                var image = File.ReadAllBytes("c:\\temp\\img1.png");
+                ExcelPicture? pic = pics.First(p => p.Name == "Image_ExistingInventoryImg");
+                byte[]? image = File.ReadAllBytes("c:\\temp\\img1.png");
                 pic.Image.SetImage(image, ePictureType.Png);
                 image = File.ReadAllBytes("c:\\temp\\img2.png");
                 pics[1].Image.SetImage(image, ePictureType.Png);
@@ -4321,14 +4327,14 @@ namespace EPPlusTest
         [TestMethod]
         public void s430()
         {
-            using (var package = OpenTemplatePackage("s430.xlsx"))
+            using (ExcelPackage? package = OpenTemplatePackage("s430.xlsx"))
             {
-                var SheetName = "Error_Sheet";
-                var InSheet = package.Workbook.Worksheets[SheetName];
+                string? SheetName = "Error_Sheet";
+                ExcelWorksheet? InSheet = package.Workbook.Worksheets[SheetName];
 
-                using (var outPackage = OpenPackage("s430_out.xlsx", true))
+                using (ExcelPackage? outPackage = OpenPackage("s430_out.xlsx", true))
                 {
-                    var xlSheet = outPackage.Workbook.Worksheets.Add(SheetName, InSheet);
+                    ExcelWorksheet? xlSheet = outPackage.Workbook.Worksheets.Add(SheetName, InSheet);
 
                     SaveAndCleanup(outPackage);
                 }
@@ -4337,18 +4343,18 @@ namespace EPPlusTest
         [TestMethod]
         public void s435()
         {
-            using (var package = OpenTemplatePackage("s435.xlsx"))
+            using (ExcelPackage? package = OpenTemplatePackage("s435.xlsx"))
             {
-                var worksheet = package.Workbook.Worksheets[0];
+                ExcelWorksheet? worksheet = package.Workbook.Worksheets[0];
 
 
-                var start = 2;
+                int start = 2;
                 worksheet.Cells["A" + start].Value = "Month";
                 worksheet.Cells["B" + start].Value = "Serie1";
                 worksheet.Cells["C" + start].Value = "Serie2";
                 worksheet.Cells["D" + start].Value = "Serie3";
                 start++;
-                var randomData = Data();
+                DataTable? randomData = Data();
                 foreach (DataRow row in randomData.Rows)
                 {
                     worksheet.Cells["A" + start].Value = row[0];
@@ -4357,15 +4363,15 @@ namespace EPPlusTest
                     worksheet.Cells["D" + start].Value = row[3];
                     start++;
                 }
-                var end = start - 1;
-                var metroChart = (ExcelChart)worksheet.Drawings.Where(p => p is ExcelChart).First();
+                int end = start - 1;
+                ExcelChart? metroChart = (ExcelChart)worksheet.Drawings.Where(p => p is ExcelChart).First();
                 if (metroChart != null)
                 {
                     metroChart.YAxis.MinValue = 0.5;
                     metroChart.YAxis.MaxValue = 4.5;
 
 
-                    var serieColors = new Dictionary<string, string>()
+                    Dictionary<string, string>? serieColors = new Dictionary<string, string>()
                     {
                         { "Serie1", "#CBB54C" },
                         { "Serie2", "#00A7CE" },
@@ -4380,7 +4386,7 @@ namespace EPPlusTest
 
                     foreach (ExcelLineChartSerie serie in metroChart.Series)
                     {
-                        var serieColor = serieColors[serie.Header];
+                        string? serieColor = serieColors[serie.Header];
                         serie.Smooth = true;
                         serie.Border.Fill.Color = ColorTranslator.FromHtml(serieColor);
                         serie.Marker.Style = eMarkerStyle.None;
@@ -4398,14 +4404,14 @@ namespace EPPlusTest
         }
         private void AddLineSeries(ExcelChart chart, string seriesAddress, string xSeriesAddress, string seriesName)
         {
-            var lineSeries = chart.Series.Add(seriesAddress, xSeriesAddress);
+            ExcelChartSerie? lineSeries = chart.Series.Add(seriesAddress, xSeriesAddress);
             lineSeries.Header = seriesName;
         }
 
 
         private DataTable Data()
         {
-            var toReturn = new DataTable();
+            DataTable? toReturn = new DataTable();
             toReturn.Columns.Add("Month");
             toReturn.Columns.Add("Serie1", typeof(decimal));
             toReturn.Columns.Add("Serie2", typeof(decimal));
@@ -4427,23 +4433,23 @@ namespace EPPlusTest
         [TestMethod]
         public void s437()
         {
-            using (var package = OpenTemplatePackage("s437.xlsx"))
+            using (ExcelPackage? package = OpenTemplatePackage("s437.xlsx"))
             {
-                var worksheet = package.Workbook.Worksheets[0];
+                ExcelWorksheet? worksheet = package.Workbook.Worksheets[0];
 
 
-                var metroChart = (ExcelChart)worksheet.Drawings.Where(p => p is ExcelChart).First();
+                ExcelChart? metroChart = (ExcelChart)worksheet.Drawings.Where(p => p is ExcelChart).First();
                 if (metroChart != null)
                 {
                     metroChart.YAxis.MinValue = 0d;
                     metroChart.YAxis.MajorUnit = 0.05d;
 
 
-                    foreach (var ct in metroChart.PlotArea.ChartTypes)
+                    foreach (ExcelChart? ct in metroChart.PlotArea.ChartTypes)
                     {
                         ///The "Series" being returned in this is only the bar series
                         ///while the other two line series are not being returned.
-                        foreach (var serie in ct.Series)
+                        foreach (ExcelChartSerie? serie in ct.Series)
                         {
 
                         }
@@ -4465,7 +4471,7 @@ namespace EPPlusTest
         {
             using (ExcelPackage package = OpenPackage("richtextclear.xlsx", true))
             {
-                var ws = package.Workbook.Worksheets.Add("Sheet1");
+                ExcelWorksheet? ws = package.Workbook.Worksheets.Add("Sheet1");
                 ws.Cells["A1"].Style.Fill.PatternType = ExcelFillStyle.Solid;
                 ws.Cells["A1"].Style.Fill.BackgroundColor.SetColor(Color.Red);
 
@@ -4491,14 +4497,14 @@ namespace EPPlusTest
         [TestMethod]
         public void Issue842()
         {
-            using (var package = OpenPackage("issue842_SHOULD_BE_OPENEABLE.xlsx", true))
+            using (ExcelPackage? package = OpenPackage("issue842_SHOULD_BE_OPENEABLE.xlsx", true))
             {
                 ExcelWorksheet ws = package.Workbook.Worksheets.Add("exampleSheet");
 
                 ws.SetValue("C1", "0");
 
-                var address = new ExcelAddress(1, 1, 3, 1);
-                var testValidation = ws.DataValidations.AddDecimalValidation(address.Address);
+                ExcelAddress? address = new ExcelAddress(1, 1, 3, 1);
+                IExcelDataValidationDecimal? testValidation = ws.DataValidations.AddDecimalValidation(address.Address);
                 testValidation.Formula.Value = 10;
                 testValidation.Formula2.Value = 15;
 
@@ -4514,13 +4520,13 @@ namespace EPPlusTest
         [TestMethod]
         public void s449()
         {
-            using (var xlPackage = OpenTemplatePackage("s449.xlsx"))
+            using (ExcelPackage? xlPackage = OpenTemplatePackage("s449.xlsx"))
             {
-                using (var p2 = OpenPackage("s449-saved.xlsx", true))
+                using (ExcelPackage? p2 = OpenPackage("s449-saved.xlsx", true))
                 {
-                    var SheetName = "Error_Sheet";
-                    var InSheet = xlPackage.Workbook.Worksheets[SheetName];
-                    var xlSheet = p2.Workbook.Worksheets.Add(SheetName, InSheet);
+                    string? SheetName = "Error_Sheet";
+                    ExcelWorksheet? InSheet = xlPackage.Workbook.Worksheets[SheetName];
+                    ExcelWorksheet? xlSheet = p2.Workbook.Worksheets.Add(SheetName, InSheet);
                     SaveAndCleanup(p2);
 
                 }
@@ -4529,11 +4535,11 @@ namespace EPPlusTest
         [TestMethod]
         public void i848()
         {
-            using (var p = OpenTemplatePackage("i848.xlsx"))
+            using (ExcelPackage? p = OpenTemplatePackage("i848.xlsx"))
             {
                 // We have 2 rows with formulas in C column.
-                var book = p.Workbook;
-                var eppWorksheet = book.Worksheets[0];
+                ExcelWorkbook? book = p.Workbook;
+                ExcelWorksheet? eppWorksheet = book.Worksheets[0];
 
                 // Insert row(-s) after first one. 
                 // New row one-based index is 2.
@@ -4557,9 +4563,9 @@ namespace EPPlusTest
         [TestMethod]
         public void Issue848()
         {
-            using (var p = OpenPackage("issue848-2.xlsx", true))
+            using (ExcelPackage? p = OpenPackage("issue848-2.xlsx", true))
             {
-                var worksheet = p.Workbook.Worksheets.Add("Sheet1");
+                ExcelWorksheet? worksheet = p.Workbook.Worksheets.Add("Sheet1");
 
                 // We start with a single row that has a formula
                 worksheet.Cells["A1"].Value = 1;
@@ -4596,9 +4602,9 @@ namespace EPPlusTest
         public void Issue854()
         {
             //using (var p = OpenTemplatePackage("i854.xlsx"))
-            using (var p = OpenTemplatePackage("i854.xlsx"))
+            using (ExcelPackage? p = OpenTemplatePackage("i854.xlsx"))
             {
-                var ws = p.Workbook.Worksheets["Component Failure Rates"];
+                ExcelWorksheet? ws = p.Workbook.Worksheets["Component Failure Rates"];
                 ws.Tables[0].DeleteRow(0, 1);
                 SaveAndCleanup(p);
             }
@@ -4606,10 +4612,10 @@ namespace EPPlusTest
         [TestMethod]
         public void Issue854_2_Insert()
         {
-            using (var p = OpenTemplatePackage("i854-2.xlsx"))
+            using (ExcelPackage? p = OpenTemplatePackage("i854-2.xlsx"))
             {
-                var ws = p.Workbook.Worksheets["Components"];
-                var table = ws.Tables[0];
+                ExcelWorksheet? ws = p.Workbook.Worksheets["Components"];
+                ExcelTable? table = ws.Tables[0];
                 table.Columns.Insert(1,2);
                 SaveWorkbook("i854-2-Insert.xlsx", p);
             }
@@ -4617,10 +4623,10 @@ namespace EPPlusTest
         [TestMethod]
         public void Issue854_2_Delete()
         {
-            using (var p = OpenTemplatePackage("i854-2.xlsx"))
+            using (ExcelPackage? p = OpenTemplatePackage("i854-2.xlsx"))
             {
-                var ws = p.Workbook.Worksheets["Components"];
-                var table = ws.Tables[0];
+                ExcelWorksheet? ws = p.Workbook.Worksheets["Components"];
+                ExcelTable? table = ws.Tables[0];
                 table.Columns.Delete(1, 2);
                 SaveWorkbook("i854-2-Delete.xlsx", p);
             }
@@ -4628,9 +4634,9 @@ namespace EPPlusTest
         [TestMethod]
         public void Issue854_3()
         {
-            using (var p = OpenTemplatePackage("i854-3.xlsx"))
+            using (ExcelPackage? p = OpenTemplatePackage("i854-3.xlsx"))
             {
-                var table = p.Workbook.Worksheets.SelectMany(x => x.Tables).Single(x => x.Name == "TblComponents");
+                ExcelTable? table = p.Workbook.Worksheets.SelectMany(x => x.Tables).Single(x => x.Name == "TblComponents");
                 List<object[]> tableData = new List<object[]>()
                     {
                         new []{ "C1", null, "Ceramic Capacitor", "Ceramic Capacitor FM" },
@@ -4689,12 +4695,12 @@ namespace EPPlusTest
         [TestMethod]
         public void Issue852()
         {
-            using (var p = OpenPackage("i852.xlsx", true))
+            using (ExcelPackage? p = OpenPackage("i852.xlsx", true))
             {
                 //Making the sheet
-                var sheet = p.Workbook.Worksheets.Add("mergedCellsTest");
+                ExcelWorksheet? sheet = p.Workbook.Worksheets.Add("mergedCellsTest");
 
-                var cells = sheet.Cells["A1:D1"];
+                ExcelRange? cells = sheet.Cells["A1:D1"];
 
                 cells.Merge = true;
                 cells.Style.Fill.PatternType = ExcelFillStyle.Solid;
@@ -4705,21 +4711,21 @@ namespace EPPlusTest
                 sheet.Cells["A3"].Value = "c";
                 sheet.Cells["B3"].Value = "d";
 
-                var square = sheet.Cells["C2:C3"];
+                ExcelRange? square = sheet.Cells["C2:C3"];
 
                 square.Merge = true;
 
                 square.Style.Fill.PatternType = ExcelFillStyle.Solid;
                 square.Style.Fill.BackgroundColor.SetColor(Color.LightYellow);
 
-                var numberRange = sheet.Cells["A5:E5"];
+                ExcelRange? numberRange = sheet.Cells["A5:E5"];
 
                 for (int i = 0; i < numberRange.Columns; i++)
                 {
                     numberRange.SetCellValue(0, i, i + 1);
                 }
 
-                var lowMerge = sheet.Cells["A6:E6"];
+                ExcelRange? lowMerge = sheet.Cells["A6:E6"];
 
                 lowMerge.Merge = true;
 
@@ -4735,12 +4741,12 @@ namespace EPPlusTest
 
                 Assert.AreEqual(Color.LightYellow.ToArgb().ToString("X"), sheet.Cells["F2:F3"].Style.Fill.BackgroundColor.Rgb);
 
-                var stream = new MemoryStream();
+                MemoryStream? stream = new MemoryStream();
                 p.SaveAs(stream);
 
                 ExcelPackage newPack = new ExcelPackage(stream);
 
-                var newSheet = newPack.Workbook.Worksheets[0];
+                ExcelWorksheet? newSheet = newPack.Workbook.Worksheets[0];
 
                 //Performing the test
 
@@ -4755,9 +4761,9 @@ namespace EPPlusTest
         [TestMethod]
         public void Issue858()
         {
-            using (var p = OpenTemplatePackage("i858.xlsx"))
+            using (ExcelPackage? p = OpenTemplatePackage("i858.xlsx"))
             {
-                var sheet = p.Workbook.Worksheets[0];
+                ExcelWorksheet? sheet = p.Workbook.Worksheets[0];
 
                 for (int i = 1; i <= 4; i++)
                 {
@@ -4769,15 +4775,15 @@ namespace EPPlusTest
 
                 }
 
-                var bytearray = p.GetAsByteArray();
+                byte[]? bytearray = p.GetAsByteArray();
             }
         }
 
         [TestMethod]
         public void Issue861()
         {
-            var ep = new ExcelPackage();
-            var ws = ep.Workbook.Worksheets.Add("Test");
+            ExcelPackage? ep = new ExcelPackage();
+            ExcelWorksheet? ws = ep.Workbook.Worksheets.Add("Test");
 
             for (int row = 1; row < 10; ++row)
             {
@@ -4787,7 +4793,7 @@ namespace EPPlusTest
                 }
             }
 
-            var wsCol = ws.Column(3);
+            ExcelColumn? wsCol = ws.Column(3);
             wsCol.Style.Border.Left.Style = wsCol.Style.Border.Right.Style = ExcelBorderStyle.Thick;
             wsCol.Style.Fill.SetBackground(System.Drawing.Color.Black);
 
@@ -4800,12 +4806,12 @@ namespace EPPlusTest
         [TestMethod]
         public void i863()
         {
-            using (var p = OpenTemplatePackage("i863.xlsx"))
+            using (ExcelPackage? p = OpenTemplatePackage("i863.xlsx"))
             {
                 // Removed insertion of PHI data, just re-saving the template for sample purposes
 
                 // Workaround - Issue with "Inputs" tab - Validation of T60:T64 failed: Formula2 must be set if operator is 'between' or 'notBetween' when cells are not using between or notBetween
-                var otherInputTab = p.Workbook.Worksheets.FirstOrDefault(ws => ws.Name.Equals("Inputs"));
+                ExcelWorksheet? otherInputTab = p.Workbook.Worksheets.FirstOrDefault(ws => ws.Name.Equals("Inputs"));
                 if (otherInputTab != null)
                 {
                     otherInputTab.DataValidations.InternalValidationEnabled = false;
@@ -4819,9 +4825,9 @@ namespace EPPlusTest
         [TestMethod]
         public void Issue864()
         {
-            using (var p = OpenPackage("i864.xlsx", true))
+            using (ExcelPackage? p = OpenPackage("i864.xlsx", true))
             {
-                var worksheet = p.Workbook.Worksheets.Add("Test");
+                ExcelWorksheet? worksheet = p.Workbook.Worksheets.Add("Test");
 
                 worksheet.Cells[1, 1].Value = 1100;
                 worksheet.Cells[1, 2].Value = 2200;
@@ -4840,11 +4846,11 @@ namespace EPPlusTest
                 worksheet.Cells[4, 3].Value = 1112;
                 worksheet.Cells[4, 4].Value = 2211;
 
-                var sparklineGroups = worksheet.SparklineGroups.Add(
-                            eSparklineType.Line,
-                            worksheet.Cells[1, 6, 4, 6],
-                            worksheet.Cells[1, 1, 4, 4]
-                        );
+                ExcelSparklineGroup? sparklineGroups = worksheet.SparklineGroups.Add(
+                                                                                     eSparklineType.Line,
+                                                                                     worksheet.Cells[1, 6, 4, 6],
+                                                                                     worksheet.Cells[1, 1, 4, 4]
+                                                                                    );
 
                 sparklineGroups.MinAxisType = eSparklineAxisMinMax.Custom;
                 sparklineGroups.ManualMin = 0;
@@ -4855,18 +4861,18 @@ namespace EPPlusTest
         [TestMethod]
         public void s461()
         {
-            using (var p = OpenTemplatePackage("s461.xlsx"))
+            using (ExcelPackage? p = OpenTemplatePackage("s461.xlsx"))
             {
-                var ws = p.Workbook.Worksheets[0];
+                ExcelWorksheet? ws = p.Workbook.Worksheets[0];
                 SaveAndCleanup(p);
             }
         }
         [TestMethod]
         public void s463()
         {
-            using (var p = OpenTemplatePackage("SRK2016.xlsx"))
+            using (ExcelPackage? p = OpenTemplatePackage("SRK2016.xlsx"))
             {
-                foreach(var ws in p.Workbook.Worksheets)
+                foreach(ExcelWorksheet? ws in p.Workbook.Worksheets)
                 {
                     if (ws.Names.ContainsKey("_xlnm.Print_Area") && ws.Names.ContainsKey("Print_Area"))
                     {
@@ -4879,9 +4885,9 @@ namespace EPPlusTest
         [TestMethod]
         public void i871()
         {
-            using (var p = OpenTemplatePackage("i871.xlsx"))
+            using (ExcelPackage? p = OpenTemplatePackage("i871.xlsx"))
             {
-                var table = p.Workbook.Worksheets.SelectMany(x => x.Tables).Single(x => x.Name == "TblComponentTypes");
+                ExcelTable? table = p.Workbook.Worksheets.SelectMany(x => x.Tables).Single(x => x.Name == "TblComponentTypes");
                 table.AddRow(2);
                 table.WorkSheet.Cells[8, 1].Value = "TST";
                 table.WorkSheet.Cells[9, 1].Value = "TST 2";
@@ -4892,16 +4898,16 @@ namespace EPPlusTest
         [TestMethod]
         public void s466()
         {
-            using (var package = OpenTemplatePackage("s466.xlsx"))
+            using (ExcelPackage? package = OpenTemplatePackage("s466.xlsx"))
             {
-                var table = package.Workbook.Worksheets.SelectMany(x => x.Tables).Single(x => x.Name == "TblEffects");
+                ExcelTable? table = package.Workbook.Worksheets.SelectMany(x => x.Tables).Single(x => x.Name == "TblEffects");
                 table.AddRow(2);
                 table.WorkSheet.Cells[8, 1].Value = "TST";
                 table.WorkSheet.Cells[8, 2].Value = "Safe";
                 table.WorkSheet.Cells[9, 1].Value = "TST 2";
                 table.WorkSheet.Cells[9, 2].Value = "Dangerous";
 
-                var cell = table.WorkSheet.Cells[8, 1];
+                ExcelRange? cell = table.WorkSheet.Cells[8, 1];
                 table.InsertRow(0, 5);
                 table.DeleteRow(0, 5);
                 SaveAndCleanup(package);

@@ -28,15 +28,15 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Statistical
         public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
         {
             ValidateArguments(arguments, 1);
-            var arr = ArgsToDoubleEnumerable(arguments, context);
+            IEnumerable<ExcelDoubleCellValue>? arr = ArgsToDoubleEnumerable(arguments, context);
             if (!arr.Any())
             {
                 return this.CreateResult(eErrorType.Div0);
             }
 
-            var dArr = arr.Select(x => (double)x);
-            var mean = dArr.Average();
-            var result = dArr.Aggregate(0d, (val, x) => val += System.Math.Abs(x - mean)) / dArr.Count();
+            IEnumerable<double>? dArr = arr.Select(x => (double)x);
+            double mean = dArr.Average();
+            double result = dArr.Aggregate(0d, (val, x) => val += System.Math.Abs(x - mean)) / dArr.Count();
             return CreateResult(result, DataType.Decimal);
         }
     }

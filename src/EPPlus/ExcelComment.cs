@@ -33,7 +33,7 @@ namespace OfficeOpenXml
         {
             //_commentHelper = new XmlHelper(ns, commentTopNode);
             _commentHelper = XmlHelperFactory.Create(ns, commentTopNode);
-            var textElem=commentTopNode.SelectSingleNode("d:text", ns);
+            XmlNode? textElem=commentTopNode.SelectSingleNode("d:text", ns);
             if (textElem == null)
             {
                 textElem = commentTopNode.OwnerDocument.CreateElement("text", ExcelPackage.schemaMain);
@@ -46,7 +46,7 @@ namespace OfficeOpenXml
 
             TopNode = cell.Worksheet.VmlDrawings[cell.Start.Row, cell.Start.Column].TopNode;
             RichText = new ExcelRichTextCollection(ns,textElem, cell.Worksheet);
-            var tNode = textElem.SelectSingleNode("d:t", ns);
+            XmlNode? tNode = textElem.SelectSingleNode("d:t", ns);
             if (tNode != null)
             {
                 _text = tNode.InnerText;
@@ -85,7 +85,7 @@ namespace OfficeOpenXml
             }
             if (!found)
             {
-                var elem = _commentHelper.TopNode.OwnerDocument.CreateElement("d", "author", ExcelPackage.schemaMain);
+                XmlElement? elem = _commentHelper.TopNode.OwnerDocument.CreateElement("d", "author", ExcelPackage.schemaMain);
                 _commentHelper.TopNode.OwnerDocument.SelectSingleNode(AUTHORS_PATH, _commentHelper.NameSpaceManager).AppendChild(elem);
                 elem.InnerText = value;
             }
@@ -141,9 +141,9 @@ namespace OfficeOpenXml
 			get { return _commentHelper.GetXmlNodeString("@ref"); }
             set
             {
-                var a = new ExcelAddressBase(value);
-                var rows = a._fromRow - Range._fromRow;
-                var cols= a._fromCol - Range._fromCol;
+                ExcelAddressBase? a = new ExcelAddressBase(value);
+                int rows = a._fromRow - Range._fromRow;
+                int cols= a._fromCol - Range._fromCol;
                 Range.Address = value;
                 _commentHelper.SetXmlNodeString("@ref", value);
 

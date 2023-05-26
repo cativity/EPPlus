@@ -39,7 +39,7 @@ namespace OfficeOpenXml.VBA
             {
                 throw(new ArgumentException("Vba modulename already exist."));
             }
-            var m = new ExcelVBAModule();
+            ExcelVBAModule? m = new ExcelVBAModule();
             m.Name = Name;
             m.Type = eModuleType.Module;
             m.Attributes._list.Add(new ExcelVbaModuleAttribute() { Name = "VB_Name", Value = Name, DataType = eAttributeDataType.String });
@@ -55,7 +55,7 @@ namespace OfficeOpenXml.VBA
         /// <returns>The class object</returns>
         public ExcelVBAModule AddClass(string Name, bool Exposed)
         {
-            var m = new ExcelVBAModule();
+            ExcelVBAModule? m = new ExcelVBAModule();
             m.Name = Name;            
             m.Type = eModuleType.Class;
             m.Attributes._list.Add(new ExcelVbaModuleAttribute() { Name = "VB_Name", Value = Name, DataType = eAttributeDataType.String });

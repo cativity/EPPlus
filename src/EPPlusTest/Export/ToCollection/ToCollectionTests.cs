@@ -10,6 +10,7 @@ using OfficeOpenXml.LoadFunctions.Params;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using OfficeOpenXml.Table;
 
 namespace EPPlusTest.Export.ToCollection
 {
@@ -38,22 +39,22 @@ namespace EPPlusTest.Export.ToCollection
         [TestMethod]
         public void ToCollection_Index()
         {
-            using(var p = new ExcelPackage())
+            using(ExcelPackage? p = new ExcelPackage())
             {
-                var sheet = LoadTestData(p, "LoadFromCollectionIndex");
-                var list = sheet.Cells["A2:E3"].ToCollectionWithMappings(
-                    row => 
-                    {
-                        var dto = new TestDto();
-                        dto.Id = row.GetValue<int>(0);
-                        dto.Name = row.GetValue<string>(1);
-                        dto.Ratio = row.GetValue<double>(2);
-                        dto.TimeStamp = row.GetValue<DateTime>(3);
-                        dto.Category = new Category() { CatId = row.GetValue<int>(4) };
-                        dto.FormattedRatio = row.GetText(2);
-                        dto.FormattedTimeStamp = row.GetText(3);
-                        return dto;
-                    });
+                ExcelWorksheet? sheet = LoadTestData(p, "LoadFromCollectionIndex");
+                List<TestDto>? list = sheet.Cells["A2:E3"].ToCollectionWithMappings(
+                                                                                    row => 
+                                                                                    {
+                                                                                        TestDto? dto = new TestDto();
+                                                                                        dto.Id = row.GetValue<int>(0);
+                                                                                        dto.Name = row.GetValue<string>(1);
+                                                                                        dto.Ratio = row.GetValue<double>(2);
+                                                                                        dto.TimeStamp = row.GetValue<DateTime>(3);
+                                                                                        dto.Category = new Category() { CatId = row.GetValue<int>(4) };
+                                                                                        dto.FormattedRatio = row.GetText(2);
+                                                                                        dto.FormattedTimeStamp = row.GetText(3);
+                                                                                        return dto;
+                                                                                    });
 
                 Assert.AreEqual(2, list.Count);
                 Assert.AreEqual(sheet.Cells["A2"].Value, list[0].Id);
@@ -77,12 +78,12 @@ namespace EPPlusTest.Export.ToCollection
         [TestMethod]
         public void ToCollection_ColumnNames()
         {
-            using (var p = new ExcelPackage())
+            using (ExcelPackage? p = new ExcelPackage())
             {
-                var sheet = LoadTestData(p, "LoadFromCollectionName");
-                var list = sheet.Cells["A1:E3"].ToCollectionWithMappings(x =>
+                ExcelWorksheet? sheet = LoadTestData(p, "LoadFromCollectionName");
+                List<TestDto>? list = sheet.Cells["A1:E3"].ToCollectionWithMappings(x =>
                 {
-                    var dto = new TestDto();
+                    TestDto? dto = new TestDto();
                     dto.Id = x.GetValue<int>("id");
                     dto.Name = x.GetValue<string>("Name");
                     dto.Ratio = x.GetValue<double>("Ratio");
@@ -114,12 +115,12 @@ namespace EPPlusTest.Export.ToCollection
         [TestMethod]
         public void ToCollection_AutoMapInMapping()
         {
-            using (var p = new ExcelPackage())
+            using (ExcelPackage? p = new ExcelPackage())
             {
-                var sheet = LoadTestData(p, "LoadFromCollectionName");
-                var list = sheet.Cells["A1:E3"].ToCollectionWithMappings((ToCollectionRow row) =>
+                ExcelWorksheet? sheet = LoadTestData(p, "LoadFromCollectionName");
+                List<TestDto>? list = sheet.Cells["A1:E3"].ToCollectionWithMappings((ToCollectionRow row) =>
                 {
-                    var dto = new TestDto();
+                    TestDto? dto = new TestDto();
                     row.Automap(dto);
                     dto.Category = new Category() { CatId = row.GetValue<int>("CategoryId") };
                     dto.FormattedRatio = row.GetText("Ratio");
@@ -144,12 +145,12 @@ namespace EPPlusTest.Export.ToCollection
         [TestMethod]
         public void ToCollection_CustomHeaders()
         {
-            using (var p = new ExcelPackage())
+            using (ExcelPackage? p = new ExcelPackage())
             {
-                var sheet = LoadTestData(p, "LoadFromCollectionHeaders");
-                var list = sheet.Cells["A2:E3"].ToCollectionWithMappings((ToCollectionRow row) =>
+                ExcelWorksheet? sheet = LoadTestData(p, "LoadFromCollectionHeaders");
+                List<TestDto>? list = sheet.Cells["A2:E3"].ToCollectionWithMappings((ToCollectionRow row) =>
                 {
-                    var dto = new TestDto();
+                    TestDto? dto = new TestDto();
                     dto.Id = row.GetValue<int>("Custom-Id");
                     dto.Name = row.GetText("Custom-Name");
                     dto.Category = new Category() { CatId = row.GetValue<int>("Custom-CategoryId") };
@@ -234,12 +235,12 @@ namespace EPPlusTest.Export.ToCollection
         [TestMethod]
         public void ToCollectionTable_AutoMap()
         {
-            using (var p = new ExcelPackage())
+            using (ExcelPackage? p = new ExcelPackage())
             {
-                var sheet = LoadTestData(p, "LoadFromCollectionAuto", true);
+                ExcelWorksheet? sheet = LoadTestData(p, "LoadFromCollectionAuto", true);
                 sheet.Cells["A1"].Value = "Identity";
                 sheet.Cells["B1"].Value = "First name";
-                var list = sheet.Tables[0].ToCollection<TestDto>();
+                List<TestDto>? list = sheet.Tables[0].ToCollection<TestDto>();
 
                 Assert.AreEqual(2, list.Count);
                 Assert.AreEqual(sheet.Cells["A2"].Value, list[0].Id);
@@ -257,22 +258,22 @@ namespace EPPlusTest.Export.ToCollection
         [TestMethod]
         public void ToCollectionTable_Index()
         {
-            using (var p = new ExcelPackage())
+            using (ExcelPackage? p = new ExcelPackage())
             {
-                var sheet = LoadTestData(p, "LoadFromCollectionIndex", true);
-                var list = sheet.Tables[0].ToCollection(
-                    row =>
-                    {
-                        var dto = new TestDto();
-                        dto.Id = row.GetValue<int>(0);
-                        dto.Name = row.GetValue<string>(1);
-                        dto.Ratio = row.GetValue<double>(2);
-                        dto.TimeStamp = row.GetValue<DateTime > (3);
-                        dto.Category = new Category() { CatId = row.GetValue<int>(4) };
-                        dto.FormattedRatio = row.GetText(2);
-                        dto.FormattedTimeStamp = row.GetText(3);
-                        return dto;
-                    });
+                ExcelWorksheet? sheet = LoadTestData(p, "LoadFromCollectionIndex", true);
+                List<TestDto>? list = sheet.Tables[0].ToCollection(
+                                                                   row =>
+                                                                   {
+                                                                       TestDto? dto = new TestDto();
+                                                                       dto.Id = row.GetValue<int>(0);
+                                                                       dto.Name = row.GetValue<string>(1);
+                                                                       dto.Ratio = row.GetValue<double>(2);
+                                                                       dto.TimeStamp = row.GetValue<DateTime > (3);
+                                                                       dto.Category = new Category() { CatId = row.GetValue<int>(4) };
+                                                                       dto.FormattedRatio = row.GetText(2);
+                                                                       dto.FormattedTimeStamp = row.GetText(3);
+                                                                       return dto;
+                                                                   });
 
                 Assert.AreEqual(2, list.Count);
                 Assert.AreEqual(sheet.Cells["A2"].Value, list[0].Id);
@@ -295,14 +296,14 @@ namespace EPPlusTest.Export.ToCollection
         [TestMethod]
         public void ToCollectionTable_AutoMapInCallback()
         {
-            using (var p = new ExcelPackage())
+            using (ExcelPackage? p = new ExcelPackage())
             {
-                var sheet = LoadTestData(p, "LoadFromCollectionAuto", true);
+                ExcelWorksheet? sheet = LoadTestData(p, "LoadFromCollectionAuto", true);
                 sheet.Cells["A1"].Value = "Identity";
                 sheet.Cells["B1"].Value = "First name";
-                var list = sheet.Tables[0].ToCollection(x =>
+                List<TestDto>? list = sheet.Tables[0].ToCollection(x =>
                 {
-                    var item = new TestDto();
+                    TestDto? item = new TestDto();
                     x.Automap(item);
                     item.Category = new Category() { CatId = x.GetValue<int>("CategoryId") };
                     item.FormattedRatio = x.GetText("Ratio");
@@ -325,12 +326,12 @@ namespace EPPlusTest.Export.ToCollection
         [TestMethod]
         public void ToCollectionTable_ColumnNames()
         {
-            using (var p = new ExcelPackage())
+            using (ExcelPackage? p = new ExcelPackage())
             {
-                var sheet = LoadTestData(p, "LoadFromCollectionName",true);
-                var list = sheet.Tables[0].ToCollection(x =>
+                ExcelWorksheet? sheet = LoadTestData(p, "LoadFromCollectionName",true);
+                List<TestDto>? list = sheet.Tables[0].ToCollection(x =>
                 {
-                    var dto = new TestDto();
+                    TestDto? dto = new TestDto();
                     dto.Id = x.GetValue<int>("id");
                     dto.Name = x.GetValue<string>("Name");
                     dto.Ratio = x.GetValue<double>("Ratio");
@@ -363,13 +364,13 @@ namespace EPPlusTest.Export.ToCollection
         [ExpectedException(typeof(EPPlusDataTypeConvertionException))]
         public void ToCollectionTable_ColumnNamesConversionFailure()
         {
-            using (var p = new ExcelPackage())
+            using (ExcelPackage? p = new ExcelPackage())
             {
-                var sheet = LoadTestData(p, "LoadFromCollectionName", true);
+                ExcelWorksheet? sheet = LoadTestData(p, "LoadFromCollectionName", true);
                 sheet.Cells["C2"].Value = "str";
-                var list = sheet.Tables[0].ToCollection(x =>
+                List<TestDto>? list = sheet.Tables[0].ToCollection(x =>
                 {
-                    var dto = new TestDto();
+                    TestDto? dto = new TestDto();
                     dto.Id = x.GetValue<int>("id");
                     dto.Name = x.GetValue<string>("Name");
                     dto.Ratio = x.GetValue<double>("Ratio");
@@ -384,13 +385,13 @@ namespace EPPlusTest.Export.ToCollection
         [TestMethod]
         public void ToCollectionTable_ColumnNamesConversionDefault()
         {
-            using (var p = new ExcelPackage())
+            using (ExcelPackage? p = new ExcelPackage())
             {
-                var sheet = LoadTestData(p, "LoadFromCollectionName", true);
+                ExcelWorksheet? sheet = LoadTestData(p, "LoadFromCollectionName", true);
                 sheet.Cells["C2"].Value = "str";
-                var list = sheet.Tables[0].ToCollectionWithMappings(x =>
+                List<TestDto>? list = sheet.Tables[0].ToCollectionWithMappings(x =>
                 {
-                    var dto = new TestDto();
+                    TestDto? dto = new TestDto();
                     dto.Id = x.GetValue<int>("id");
                     dto.Name = x.GetValue<string>("Name");
                     dto.Ratio = x.GetValue<double>("Ratio");
@@ -423,7 +424,7 @@ namespace EPPlusTest.Export.ToCollection
         #endregion
         private ExcelWorksheet LoadTestData(ExcelPackage p, string wsName, bool addTable = false)
         {
-            var sheet = p.Workbook.Worksheets.Add(wsName);
+            ExcelWorksheet? sheet = p.Workbook.Worksheets.Add(wsName);
             sheet.Cells["A1"].Value = "Id";
             sheet.Cells["B1"].Value = "Name";
             sheet.Cells["C1"].Value = "Ratio";
@@ -443,7 +444,7 @@ namespace EPPlusTest.Export.ToCollection
             sheet.Cells["D2:D3"].Style.Numberformat.Format = "yyyy-MM-dd HH:MM";
             if(addTable)
             {
-                var t=sheet.Tables.Add(sheet.Cells["A1:E3"], $"tbl{wsName}");
+                ExcelTable? t=sheet.Tables.Add(sheet.Cells["A1:E3"], $"tbl{wsName}");
                 t.ShowTotal = true;
                 t.Columns["Id"].TotalsRowLabel = "Totals";
                 t.Columns["Ratio"].TotalsRowFunction = OfficeOpenXml.Table.RowFunctions.Sum;

@@ -47,8 +47,8 @@ namespace EPPlusTest.Core
 
         public static void CopyRead(FileInfo file)
         {
-            var dirName = file.DirectoryName;
-            var fileName = file.FullName;
+            string? dirName = file.DirectoryName;
+            string? fileName = file.FullName;
 
             File.Copy(fileName, dirName + $"\\{file.Name.Substring(0, file.Name.Length-file.Extension.Length)}Read.xlsx", true);
         }
@@ -56,9 +56,9 @@ namespace EPPlusTest.Core
         [TestMethod]
         public async Task SaveAsyncTest()
         {
-            using (var pck = OpenPackage("Async.xlsx", true))
+            using (ExcelPackage? pck = OpenPackage("Async.xlsx", true))
             {
-                var ws = pck.Workbook.Worksheets.Add("AsyncSave");
+                ExcelWorksheet? ws = pck.Workbook.Worksheets.Add("AsyncSave");
                 LoadTestdata(ws, noRows);
                 await pck.SaveAsync().ConfigureAwait(false);
                 CopyRead(pck.File);
@@ -67,9 +67,9 @@ namespace EPPlusTest.Core
         [TestMethod]
         public async Task SaveAsyncEncryptedTest()
         {
-            using (var pck = OpenPackage("AsyncEnc.xlsx", true))
+            using (ExcelPackage? pck = OpenPackage("AsyncEnc.xlsx", true))
             {
-                var ws = pck.Workbook.Worksheets.Add("AsyncEncryptedSave");
+                ExcelWorksheet? ws = pck.Workbook.Worksheets.Add("AsyncEncryptedSave");
                 LoadTestdata(ws, noRows);
                 await pck.SaveAsync("EPPlus").ConfigureAwait(false);
                 CopyRead(pck.File);
@@ -79,9 +79,9 @@ namespace EPPlusTest.Core
         public async Task LoadAsyncTest()
         {
             AssertIfNotExists("AsyncRead.xlsx");
-            using (var pck = await OpenPackageAsync("AsyncRead.xlsx").ConfigureAwait(false))
+            using (ExcelPackage? pck = await OpenPackageAsync("AsyncRead.xlsx").ConfigureAwait(false))
             {
-                var ws = TryGetWorksheet(pck, "AsyncSave");
+                ExcelWorksheet? ws = TryGetWorksheet(pck, "AsyncSave");
                 Assert.AreEqual($"A1:D{noRows}", ws.Dimension.Address);
             }
         }
@@ -89,9 +89,9 @@ namespace EPPlusTest.Core
         public async Task LoadAsyncEncryptedTest()
         {
             AssertIfNotExists("AsyncEncRead.xlsx");
-            using (var pck = await OpenPackageAsync("AsyncEncRead.xlsx", false, "EPPlus").ConfigureAwait(false))
+            using (ExcelPackage? pck = await OpenPackageAsync("AsyncEncRead.xlsx", false, "EPPlus").ConfigureAwait(false))
             {
-                var ws = TryGetWorksheet(pck, "AsyncEncryptedSave");
+                ExcelWorksheet? ws = TryGetWorksheet(pck, "AsyncEncryptedSave");
                 Assert.AreEqual($"A1:D{noRows}", ws.Dimension.Address);
             }
         }
@@ -99,14 +99,14 @@ namespace EPPlusTest.Core
         public async Task GetAsByteArrayLoadStreamTest()
         {
             AssertIfNotExists("AsyncRead.xlsx");
-            using (var pck = await OpenPackageAsync("AsyncRead.xlsx").ConfigureAwait(false))
+            using (ExcelPackage? pck = await OpenPackageAsync("AsyncRead.xlsx").ConfigureAwait(false))
             {
-                var ws = TryGetWorksheet(pck, "AsyncSave");
+                ExcelWorksheet? ws = TryGetWorksheet(pck, "AsyncSave");
 
-                var b = await pck.GetAsByteArrayAsync();
-                var ms = new MemoryStream(b);
+                byte[]? b = await pck.GetAsByteArrayAsync();
+                MemoryStream? ms = new MemoryStream(b);
 
-                var pck2 = new ExcelPackage();
+                ExcelPackage? pck2 = new ExcelPackage();
                 await pck2.LoadAsync(ms);
                 ws = TryGetWorksheet(pck2, "AsyncSave");
                 Assert.AreEqual($"A1:D{noRows}", ws.Dimension.Address);
@@ -116,16 +116,16 @@ namespace EPPlusTest.Core
         public async Task GetAsByteArrayEncryptedLoadStreamEncryptedTest()
         {
             AssertIfNotExists("AsyncEncRead.xlsx");
-            var password = "EPPlus";
-            using (var pck = await OpenPackageAsync("AsyncEncRead.xlsx", false, password).ConfigureAwait(false))
+            string? password = "EPPlus";
+            using (ExcelPackage? pck = await OpenPackageAsync("AsyncEncRead.xlsx", false, password).ConfigureAwait(false))
             {
-                var ws = TryGetWorksheet(pck, "AsyncEncryptedSave");
+                ExcelWorksheet? ws = TryGetWorksheet(pck, "AsyncEncryptedSave");
                 Assert.AreEqual($"A1:D{noRows}", ws.Dimension.Address);
 
-                var b = await pck.GetAsByteArrayAsync(password);
+                byte[]? b = await pck.GetAsByteArrayAsync(password);
 
-                var ms = new MemoryStream(b);
-                var pck2 = new ExcelPackage();
+                MemoryStream? ms = new MemoryStream(b);
+                ExcelPackage? pck2 = new ExcelPackage();
 
                 await pck2.LoadAsync(ms, password);
                 ws = TryGetWorksheet(pck2, "AsyncEncryptedSave");

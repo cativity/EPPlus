@@ -66,8 +66,8 @@ namespace OfficeOpenXml.Core.Worksheet.Fonts.GenericFontMetrics
                 return originalFactorLower;
             }
 
-            var f = originalFactorUpper - originalFactorLower;
-            var f2 = v / upperWidth;
+            float f = originalFactorUpper - originalFactorLower;
+            float f2 = v / upperWidth;
             return originalFactorLower + (f * f2);
         }
     }

@@ -67,7 +67,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.FinancialDayCount
 
         public FinancialDay SubtractYears(int years)
         {
-            var day = Day;
+            short day = Day;
             if (IsLastDayOfFebruary && System.DateTime.IsLeapYear(Year) && !System.DateTime.IsLeapYear(Year + years))
             {
                 day -= 1;
@@ -140,9 +140,9 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.FinancialDayCount
 
         public FinancialDay SubtractMonths(int months, short day)
         {
-            var year = Year;
-            var actualDay = day;
-            var month = Month;
+            short year = Year;
+            short actualDay = day;
+            short month = Month;
             if (Month - months < 1)
             {
                 year -= 1;
@@ -179,7 +179,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.FinancialDayCount
         /// <returns>Number of days according to the <see cref="DayCountBasis"/> of this day</returns>
         public double SubtractDays(FinancialDay day)
         {
-            var financialDays = FinancialDaysFactory.Create(Basis);
+            IFinanicalDays? financialDays = FinancialDaysFactory.Create(Basis);
             return financialDays.GetDaysBetweenDates(this.ToDateTime(), day.ToDateTime());
         }
         public override bool Equals(object obj)

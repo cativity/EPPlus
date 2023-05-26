@@ -26,7 +26,7 @@ namespace OfficeOpenXml.Export.ToDataTable
         private readonly Dictionary<int, DataColumnMapping> _mappingIndexes = new Dictionary<int, DataColumnMapping>();
         internal void Validate()
         {
-            foreach(var mapping in this)
+            foreach(DataColumnMapping? mapping in this)
             {
                 mapping.Validate();
             }
@@ -51,7 +51,7 @@ namespace OfficeOpenXml.Export.ToDataTable
         /// <seealso cref="DataColumnMapping.TransformCellValue"/>
         public void Add(int zeroBasedIndexInRange, DataColumn dataColumn, Func<object, object> transformCellValueFunc)
         {
-            var mapping = new DataColumnMapping(dataColumn)
+            DataColumnMapping? mapping = new DataColumnMapping(dataColumn)
             {
                 ZeroBasedColumnIndexInRange = zeroBasedIndexInRange,
                 TransformCellValue = transformCellValueFunc
@@ -126,7 +126,7 @@ namespace OfficeOpenXml.Export.ToDataTable
         /// <seealso cref="DataColumnMapping.TransformCellValue"/>
         public void Add(int zeroBasedIndexInRange, string columnName, Type columnDataType, bool allowNull, Func<object, object> transformCellValueFunc)
         {
-            var mapping = new DataColumnMapping
+            DataColumnMapping? mapping = new DataColumnMapping
             {
                 ZeroBasedColumnIndexInRange = zeroBasedIndexInRange,
                 DataColumnName = columnName,

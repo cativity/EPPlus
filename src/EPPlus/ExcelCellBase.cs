@@ -16,6 +16,7 @@ using OfficeOpenXml.FormulaParsing.Excel.Functions;
 using OfficeOpenXml.FormulaParsing.LexicalAnalysis;
 using System;
 using System.Collections.Generic;
+using OfficeOpenXml.Table;
 
 namespace OfficeOpenXml
 {
@@ -124,8 +125,8 @@ namespace OfficeOpenXml
 
         internal static string GetWorkbookFromAddress(string address)
         {
-            var startIx = address.IndexOf('[');
-            var endIx = address.IndexOf(']');
+            int startIx = address.IndexOf('[');
+            int endIx = address.IndexOf(']');
             return address.Substring(startIx + 1, endIx - startIx - 1);
         }
         /// <summary>
@@ -181,7 +182,7 @@ namespace OfficeOpenXml
                     ToColumn = -1;
                     fixedFromRow = fixedFromColumn = fixedToRow = fixedToColumn = false;
 
-                    foreach (var cell in cells)
+                    foreach (string? cell in cells)
                     {
                         if (IsCellAddress(cell))
                         {
@@ -209,7 +210,7 @@ namespace OfficeOpenXml
                             {
                                 if (wb.Names.ContainsKey(cell))
                                 {
-                                    var n = wb.Names[cell];
+                                    ExcelNamedRange? n = wb.Names[cell];
                                     if (n._fromRow > 0 && n._fromCol > 0)
                                     {
                                         SetFromRowCol(ref FromColumn, ref fixedFromColumn, n._fromCol, n._fromColFixed);
@@ -226,12 +227,12 @@ namespace OfficeOpenXml
                                 }
                                 else
                                 {
-                                    var ws = wb.Worksheets[wsName];
+                                    ExcelWorksheet? ws = wb.Worksheets[wsName];
                                     if (ws == null)
                                     {
                                         if (ws.Names.ContainsKey(cell))
                                         {
-                                            var n = wb.Names[cell];
+                                            ExcelNamedRange? n = wb.Names[cell];
                                             if (n._fromRow > 0 && n._fromCol > 0)
                                             {
                                                 SetFromRowCol(ref FromColumn, ref fixedFromColumn, n._fromCol, n._fromColFixed);
@@ -248,7 +249,7 @@ namespace OfficeOpenXml
                                         }
                                         else
                                         {
-                                            var tbl = ws.Tables[cell];
+                                            ExcelTable? tbl = ws.Tables[cell];
                                             if (tbl == null)
                                             {
                                                 FromRow = FromColumn = ToRow = ToColumn = -1;
@@ -341,7 +342,7 @@ namespace OfficeOpenXml
             bool num = false;
             for (int i = 0; i < cellAddress.Length; i++)
             {
-                var c = cellAddress[i];
+                char c = cellAddress[i];
                 if (c != '$')
                 {
                     if (c >= 'A' && c <= 'Z')
@@ -418,7 +419,7 @@ namespace OfficeOpenXml
                 return true;
             }
 
-            var sheetNameSeparator = address.LastIndexOf('!');
+            int sheetNameSeparator = address.LastIndexOf('!');
             if (sheetNameSeparator > 0)
             {
                 start = sheetNameSeparator + 1;
@@ -529,7 +530,7 @@ namespace OfficeOpenXml
         /// <returns></returns>
         public static string GetAddressCol(int Col, bool Absolute = false)
         {
-            var colLetter = GetColumnLetter(Col);
+            string? colLetter = GetColumnLetter(Col);
             if (Absolute)
             {
                 return $"${colLetter}";
@@ -617,12 +618,12 @@ namespace OfficeOpenXml
             {
                 if (FromRow == 1 && ToRow == ExcelPackage.MaxRows)
                 {
-                    var absChar = Absolute ? "$" : "";
+                    string? absChar = Absolute ? "$" : "";
                     return absChar + GetColumnLetter(FromColumn) + ":" + absChar + GetColumnLetter(ToColumn);
                 }
                 else if (FromColumn == 1 && ToColumn == ExcelPackage.MaxColumns)
                 {
-                    var absChar = Absolute ? "$" : "";
+                    string? absChar = Absolute ? "$" : "";
                     return absChar + FromRow.ToString() + ":" + absChar + ToRow.ToString();
                 }
                 else
@@ -693,7 +694,7 @@ namespace OfficeOpenXml
         }
         internal static string GetFullAddress(string worksheetName, string address, bool fullRowCol)
         {
-            var wsForAddress = "";
+            string? wsForAddress = "";
             if (!string.IsNullOrEmpty(worksheetName))
             {
                 wsForAddress = GetQuotedWorksheetName(worksheetName);
@@ -714,7 +715,7 @@ namespace OfficeOpenXml
                 }
                 else
                 {
-                    var a = new ExcelAddressBase(address);
+                    ExcelAddressBase? a = new ExcelAddressBase(address);
                     if ((a._fromRow == 1 && a._toRow == ExcelPackage.MaxRows) || (a._fromCol == 1 && a._toCol == ExcelPackage.MaxColumns))
                     {
                         if (string.IsNullOrEmpty(wsForAddress))
@@ -755,12 +756,12 @@ namespace OfficeOpenXml
         /// <returns>True if valid.</returns>
         public static bool IsSimpleAddress(string address)
         {
-            var split = address.Split(':');
+            string[]? split = address.Split(':');
             if (split.Length > 2)
             {
                 return false;
             }
-            foreach (var cell in split)
+            foreach (string? cell in split)
             {
                 if (!IsCellAddress(cell))
                 {
@@ -786,8 +787,8 @@ namespace OfficeOpenXml
             }
 
             address = Utils.ConvertUtil._invariantTextInfo.ToUpper(address);
-            var addrs = address.Split(',');
-            foreach (var a in addrs)
+            string[]? addrs = address.Split(',');
+            foreach (string? a in addrs)
             {
                 string r1 = "", c1 = "", r2 = "", c2 = "";
                 bool isSecond = false;
@@ -867,16 +868,16 @@ namespace OfficeOpenXml
                 bool ret;
                 if (r1 != "" && c1 != "" && r2 == "" && c2 == "")   //Single Cell
                 {
-                    var column = GetColumn(c1);
-                    var row = int.Parse(r1);
+                    int column = GetColumn(c1);
+                    int row = int.Parse(r1);
                     ret = (column >= 1 && column <= ExcelPackage.MaxColumns && row >= 1 && row <= ExcelPackage.MaxRows);
                 }
                 else if (r1 != "" && r2 != "" && c1 != "" && c2 != "") //Range
                 {
-                    var iR1 = int.Parse(r1);
-                    var iC1 = GetColumn(c1);
-                    var iR2 = int.Parse(r2);
-                    var iC2 = GetColumn(c2);
+                    int iR1 = int.Parse(r1);
+                    int iC1 = GetColumn(c1);
+                    int iR2 = int.Parse(r2);
+                    int iC2 = GetColumn(c2);
 
                     ret = iC1 <= iC2 && iR1 <= iR2 &&
                         iC1 >= 1 && iC2 <= ExcelPackage.MaxColumns &&
@@ -885,15 +886,15 @@ namespace OfficeOpenXml
                 }
                 else if (r1 == "" && r2 == "" && c1 != "" && c2 != "") //Full Column
                 {
-                    var iC1 = GetColumn(c1);
-                    var iC2 = GetColumn(c2);
+                    int iC1 = GetColumn(c1);
+                    int iC2 = GetColumn(c2);
                     ret = iC1 <= iC2 &&
                         iC1 >= 1 && iC2 <= ExcelPackage.MaxColumns;
                 }
                 else if (r1 != "" && r2 != "" && c1 == "" && c2 == "")
                 {
-                    var iR1 = int.Parse(r2);
-                    var iR2 = int.Parse(r2);
+                    int iR1 = int.Parse(r2);
+                    int iR2 = int.Parse(r2);
 
                     ret = int.Parse(r1) <= iR2 &&
                         iR1 >= 1 &&
@@ -973,12 +974,12 @@ namespace OfficeOpenXml
                 {
                     tokens = _sct.Tokenize(formula);
                 }
-                var f = "";
-                foreach (var t in tokens)
+                string? f = "";
+                foreach (Token t in tokens)
                 {
                     if (t.TokenTypeIsSet(TokenType.ExcelAddress))
                     {
-                        var address = new ExcelAddressBase(t.Value);
+                        ExcelAddressBase? address = new ExcelAddressBase(t.Value);
                         if ((!string.IsNullOrEmpty(address._wb) || !IsReferencesModifiedWorksheet(currentSheet, modifiedSheet, address)) && !setFixed)
                         {
                             f += address.Address;
@@ -1053,7 +1054,7 @@ namespace OfficeOpenXml
                         }
                         else
                         {
-                            var ix = address.Address.LastIndexOf('!');
+                            int ix = address.Address.LastIndexOf('!');
                             if (ix > 0)
                             {
                                 f += address.Address.Substring(ix + 1);
@@ -1129,16 +1130,16 @@ namespace OfficeOpenXml
         {
             try
             {
-                var afterRow = range._fromRow;
-                var afterColumn = range._fromCol;
-                var sct = new SourceCodeTokenizer(FunctionNameProvider.Empty, NameValueProvider.Empty);
-                var tokens = sct.Tokenize(formula);
-                var f = "";
-                foreach (var t in tokens)
+                int afterRow = range._fromRow;
+                int afterColumn = range._fromCol;
+                SourceCodeTokenizer? sct = new SourceCodeTokenizer(FunctionNameProvider.Empty, NameValueProvider.Empty);
+                IEnumerable<Token>? tokens = sct.Tokenize(formula);
+                string? f = "";
+                foreach (Token t in tokens)
                 {
                     if (t.TokenTypeIsSet(TokenType.ExcelAddress))
                     {
-                        var address = new ExcelAddressBase(t.Value);
+                        ExcelAddressBase? address = new ExcelAddressBase(t.Value);
                         if (((!string.IsNullOrEmpty(address._wb) || !IsReferencesModifiedWorksheet(currentSheet, modifiedSheet, address)) && !setFixed) ||
                                 address.Collide(effectedRange) == ExcelAddressBase.eAddressCollition.No)
                         {
@@ -1200,7 +1201,7 @@ namespace OfficeOpenXml
                         }
                         else
                         {
-                            var ix = address.Address.LastIndexOf('!');
+                            int ix = address.Address.LastIndexOf('!');
                             if (ix > 0)
                             {
                                 f += address.Address.Substring(ix + 1);
@@ -1248,13 +1249,13 @@ namespace OfficeOpenXml
 
             try
             {
-                var sct = new SourceCodeTokenizer(FunctionNameProvider.Empty, NameValueProvider.Empty);
-                var retFormula = "";
-                foreach (var token in sct.Tokenize(formula))
+                SourceCodeTokenizer? sct = new SourceCodeTokenizer(FunctionNameProvider.Empty, NameValueProvider.Empty);
+                string? retFormula = "";
+                foreach (Token token in sct.Tokenize(formula))
                 {
                     if (token.TokenTypeIsSet(TokenType.ExcelAddress)) //Address
                     {
-                        var address = new ExcelAddressBase(token.Value);
+                        ExcelAddressBase? address = new ExcelAddressBase(token.Value);
                         if (address == null || !address.IsValidRowCol())
                         {
                             retFormula += "#REF!";

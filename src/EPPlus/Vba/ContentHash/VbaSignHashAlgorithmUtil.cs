@@ -28,35 +28,35 @@ namespace OfficeOpenXml.VBA.ContentHash
         {
             if (ctx.SignatureType == ExcelVbaSignatureType.Legacy)
             {
-                using (var ms = RecyclableMemory.GetStream())
+                using (MemoryStream? ms = RecyclableMemory.GetStream())
                 {
                     ContentHashInputProvider.GetContentNormalizedDataHashInput(proj, ms);
-                    var buffer = ms.ToArray();
-                    var hash = ComputeHash(buffer, ctx);
-                    var existingHash = ctx.SourceHash;
+                    byte[]? buffer = ms.ToArray();
+                    byte[]? hash = ComputeHash(buffer, ctx);
+                    byte[]? existingHash = ctx.SourceHash;
                     return hash;
                 }
             }
             else if (ctx.SignatureType == ExcelVbaSignatureType.Agile)
             {
-                using (var ms = RecyclableMemory.GetStream())
+                using (MemoryStream? ms = RecyclableMemory.GetStream())
                 {
                     ContentHashInputProvider.GetContentNormalizedDataHashInput(proj, ms);
                     ContentHashInputProvider.GetFormsNormalizedDataHashInput(proj, ms);
-                    var buffer = ms.ToArray();
-                    var hash = ComputeHash(buffer, ctx);
-                    var existingHash = ctx.SourceHash;
+                    byte[]? buffer = ms.ToArray();
+                    byte[]? hash = ComputeHash(buffer, ctx);
+                    byte[]? existingHash = ctx.SourceHash;
                     return hash;
                 }
             }
             else if(ctx.SignatureType == ExcelVbaSignatureType.V3)
             {
-                using (var ms = RecyclableMemory.GetStream())
+                using (MemoryStream? ms = RecyclableMemory.GetStream())
                 {
                     ContentHashInputProvider.GetV3ContentNormalizedDataHashInput(proj, ms);
-                    var buffer = ms.ToArray();
-                    var hash = ComputeHash(buffer, ctx);
-                    var existingHash = ctx.SourceHash;
+                    byte[]? buffer = ms.ToArray();
+                    byte[]? hash = ComputeHash(buffer, ctx);
+                    byte[]? existingHash = ctx.SourceHash;
                     
                     return hash;
                 }
@@ -66,7 +66,7 @@ namespace OfficeOpenXml.VBA.ContentHash
         }
         internal static byte[] ComputeHash(byte[] buffer, EPPlusSignatureContext ctx)
         {
-            var algorithm = ctx.GetHashAlgorithm();
+            HashAlgorithm? algorithm = ctx.GetHashAlgorithm();
             if (algorithm == null)
             {
                 return null;

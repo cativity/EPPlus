@@ -28,7 +28,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions
                 {
                     if (arg.IsExcelRange)
                     {
-                        foreach (var cell in arg.ValueAsRangeInfo)
+                        foreach (ICellInfo? cell in arg.ValueAsRangeInfo)
                         {
                             if(!ignoreErrors && cell.IsExcelError)
                             {
@@ -37,7 +37,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions
 
                             if (!CellStateHelper.ShouldIgnore(ignoreHidden, ignoreNonNumeric, cell, context) && ConvertUtil.IsNumericOrDate(cell.Value))
                             {
-                                var val = new ExcelDoubleCellValue(cell.ValueDouble, cell.Row, cell.Column);
+                                ExcelDoubleCellValue val = new ExcelDoubleCellValue(cell.ValueDouble, cell.Row, cell.Column);
                                 argList.Add(val);
                             }       
                         }
@@ -51,7 +51,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions
 
                         if (ConvertUtil.IsNumericOrDate(arg.Value) && !CellStateHelper.ShouldIgnore(ignoreHidden, arg, context))
                         {
-                            var val = new ExcelDoubleCellValue(ConvertUtil.GetValueDouble(arg.Value));
+                            ExcelDoubleCellValue val = new ExcelDoubleCellValue(ConvertUtil.GetValueDouble(arg.Value));
                             argList.Add(val);
                         }
                     }
@@ -66,11 +66,11 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions
                 //var value = cellInfo != null ? cellInfo.Value : arg.Value;
                 if (arg.Value is IRangeInfo)
                 {
-                    foreach (var cell in (IRangeInfo)arg.Value)
+                    foreach (ICellInfo? cell in (IRangeInfo)arg.Value)
                     {
                         if((!ignoreHidden && cell.IsHiddenRow) || !cell.IsHiddenRow)
                         {
-                            var val = new ExcelDoubleCellValue(cell.ValueDoubleLogical, cell.Row, cell.Column);
+                            ExcelDoubleCellValue val = new ExcelDoubleCellValue(cell.ValueDoubleLogical, cell.Row, cell.Column);
                             argList.Add(val);
                         }
                         

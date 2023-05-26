@@ -13,7 +13,7 @@ namespace OfficeOpenXml.FormulaParsing.ExpressionGraph.FunctionCompilers
 
         public override CompileResult Compile(IEnumerable<Expression> children)
         {
-            foreach(var child in children)
+            foreach(Expression? child in children)
             {
                 child.IgnoreCircularReference = true;
             }

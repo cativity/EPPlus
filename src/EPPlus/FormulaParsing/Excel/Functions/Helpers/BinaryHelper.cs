@@ -20,14 +20,14 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Helpers
     {
         public static bool TryParseBinaryToDecimal(string number, int raiseToBase, out int result)
         {
-            var chars = number.ToCharArray();
-            var isNegative = chars[0] == '1';
-            var negativeUsed = false;
+            char[]? chars = number.ToCharArray();
+            bool isNegative = chars[0] == '1';
+            bool negativeUsed = false;
             result = 0;
-            for (var x = 1; x < 10; x++)
+            for (int x = 1; x < 10; x++)
             {
-                var c = chars[x];
-                var current = 0;
+                char c = chars[x];
+                int current = 0;
                 if (c != '0' && c != '1')
                 {
                     return false;

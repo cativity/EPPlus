@@ -43,10 +43,10 @@ namespace OfficeOpenXml.FormulaParsing.LexicalAnalysis.PostProcessing
         /// </summary>
         public void Process()
         {
-            var hasColon = false;
+            bool hasColon = false;
             while (_navigator.HasNext())
             {
-                var token = _navigator.CurrentToken;
+                Token token = _navigator.CurrentToken;
                 if (token.TokenTypeIsSet(TokenType.Unrecognized))
                 {
                     HandleUnrecognizedToken();
@@ -75,13 +75,13 @@ namespace OfficeOpenXml.FormulaParsing.LexicalAnalysis.PostProcessing
                 _navigator.MoveIndex(-_navigator.Index);
                 while (_navigator.HasNext())
                 {
-                    var token = _navigator.CurrentToken;
+                    Token token = _navigator.CurrentToken;
                     if (token.TokenTypeIsSet(TokenType.Colon) && _context.Result.Count > _navigator.Index + 1)
                     {
                         if (_navigator.PreviousToken != null && _navigator.PreviousToken.Value.TokenTypeIsSet(TokenType.ExcelAddress) &&
                            _navigator.NextToken.TokenTypeIsSet(TokenType.ExcelAddress))
                         {
-                            var newToken= _navigator.PreviousToken.Value.Value+":"+ _navigator.NextToken.Value;
+                            string? newToken= _navigator.PreviousToken.Value.Value+":"+ _navigator.NextToken.Value;
                             _context.Result[_navigator.Index-1] = new Token(newToken, TokenType.ExcelAddress);
                             _context.RemoveAt(_navigator.Index);
                             _context.RemoveAt(_navigator.Index);
@@ -109,18 +109,18 @@ namespace OfficeOpenXml.FormulaParsing.LexicalAnalysis.PostProcessing
 
         private void HandleColon()
         {
-            var prevToken = _navigator.GetTokenAtRelativePosition(-1);
-            var nextToken = _navigator.GetTokenAtRelativePosition(1);
+            Token prevToken = _navigator.GetTokenAtRelativePosition(-1);
+            Token nextToken = _navigator.GetTokenAtRelativePosition(1);
             if (prevToken.TokenTypeIsSet(TokenType.ClosingParenthesis))
             {
                 // Previous expression should be an OFFSET function
-                var index = 0;
-                var openedParenthesis = 0;
-                var closedParethesis = 0;
+                int index = 0;
+                int openedParenthesis = 0;
+                int closedParethesis = 0;
                 while(openedParenthesis == 0 || openedParenthesis > closedParethesis)
                 {
                     index--;
-                    var token = _navigator.GetTokenAtRelativePosition(index);
+                    Token token = _navigator.GetTokenAtRelativePosition(index);
                     if (token.TokenTypeIsSet(TokenType.ClosingParenthesis))
                     {
                         openedParenthesis++;
@@ -130,7 +130,7 @@ namespace OfficeOpenXml.FormulaParsing.LexicalAnalysis.PostProcessing
                         closedParethesis++;
                     }
                 }
-                var offsetCandidate = _navigator.GetTokenAtRelativePosition(--index);
+                Token offsetCandidate = _navigator.GetTokenAtRelativePosition(--index);
                 if(IsOffsetFunctionToken(offsetCandidate))
                 {
                     _context.ChangeTokenType(TokenType.Function | TokenType.RangeOffset, _navigator.Index + index);
@@ -156,7 +156,7 @@ namespace OfficeOpenXml.FormulaParsing.LexicalAnalysis.PostProcessing
 
         private void HandleNegators()
         {
-            var token = _navigator.CurrentToken;
+            Token token = _navigator.CurrentToken;
             //Remove '+' from start of formula and formula arguments
             if (token.Value == "+" && (!_navigator.HasPrev() || _navigator.PreviousToken.Value.TokenTypeIsSet(TokenType.OpeningParenthesis) || _navigator.PreviousToken.Value.TokenTypeIsSet(TokenType.Comma)))
             {
@@ -164,7 +164,7 @@ namespace OfficeOpenXml.FormulaParsing.LexicalAnalysis.PostProcessing
                 return;
             }
 
-            var nextToken = _navigator.NextToken;
+            Token nextToken = _navigator.NextToken;
             if (nextToken.TokenTypeIsSet(TokenType.Operator) || nextToken.TokenTypeIsSet(TokenType.Negator))
             {
                 // Remove leading '+' from operator combinations
@@ -216,11 +216,11 @@ namespace OfficeOpenXml.FormulaParsing.LexicalAnalysis.PostProcessing
         private void HandleWorksheetNameToken()
         {
             // use this and the following three tokens
-            var relativeToken = _navigator.GetTokenAtRelativePosition(3);
-            var tokenType = relativeToken.GetTokenTypeFlags();
+            Token relativeToken = _navigator.GetTokenAtRelativePosition(3);
+            TokenType tokenType = relativeToken.GetTokenTypeFlags();
             ChangeTokenTypeOnCurrentToken(tokenType);
-            var sb = new StringBuilder();
-            var nToRemove = 3;
+            StringBuilder? sb = new StringBuilder();
+            int nToRemove = 3;
             if (_navigator.NbrOfRemainingTokens < nToRemove)
             {
                 ChangeTokenTypeOnCurrentToken(TokenType.InvalidReference);
@@ -229,7 +229,7 @@ namespace OfficeOpenXml.FormulaParsing.LexicalAnalysis.PostProcessing
             if (relativeToken.TokenTypeIsSet(TokenType.Comma) ||
                relativeToken.TokenTypeIsSet(TokenType.ClosingParenthesis))
             {
-                for (var ix = 0; ix < 3; ix++)
+                for (int ix = 0; ix < 3; ix++)
                 {
                     sb.Append(_navigator.GetTokenAtRelativePosition(ix).Value);
                 }
@@ -246,13 +246,13 @@ namespace OfficeOpenXml.FormulaParsing.LexicalAnalysis.PostProcessing
             }            
             else
             {
-                for (var ix = 0; ix < 4; ix++)
+                for (int ix = 0; ix < 4; ix++)
                 {
                     sb.Append(_navigator.GetTokenAtRelativePosition(ix).Value);
                 }
             }
             ChangeValueOnCurrentToken(sb.ToString());
-            for (var ix = 0; ix < nToRemove; ix++)
+            for (int ix = 0; ix < nToRemove; ix++)
             {
                 _context.RemoveAt(_navigator.Index + 1);
             }
@@ -260,7 +260,7 @@ namespace OfficeOpenXml.FormulaParsing.LexicalAnalysis.PostProcessing
 
         private void SetNegatorOperator(int i)
         {
-            var token = _context.Result[i];
+            Token token = _context.Result[i];
             if (token.Value == "-" && i > 0 && (token.TokenTypeIsSet(TokenType.Operator) || token.TokenTypeIsSet(TokenType.Negator)))
             {
                 if (TokenIsNegator(_context.Result[i - 1]))

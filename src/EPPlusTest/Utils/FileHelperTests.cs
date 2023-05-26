@@ -15,7 +15,7 @@ namespace EPPlusTest.Utils
 		[TestMethod]
 		public void ValidateGetRelativeFile()
 		{
-			var file = FileHelper.GetRelativeFile(new System.IO.FileInfo("FileSource.xlsx"), new System.IO.FileInfo("FileTarget.xlsx"));
+			string? file = FileHelper.GetRelativeFile(new System.IO.FileInfo("FileSource.xlsx"), new System.IO.FileInfo("FileTarget.xlsx"));
 			Assert.AreEqual("FileTarget.xlsx", file);
 
 			file = FileHelper.GetRelativeFile(new System.IO.FileInfo("c:\\FileSource.xlsx"), new System.IO.FileInfo("c:\\Dir1\\FileTarget.xlsx"));

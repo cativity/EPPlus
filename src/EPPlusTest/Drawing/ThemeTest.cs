@@ -40,6 +40,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Reflection;
+using OfficeOpenXml.Style.XmlAccess;
 
 namespace EPPlusTest.Drawing
 {
@@ -50,10 +51,10 @@ namespace EPPlusTest.Drawing
         [TestMethod]
         public void PresetColors()
         {
-            var l = new List<Color>();
-            foreach (var name in Enum.GetNames(typeof(ePresetColor)))
+            List<Color>? l = new List<Color>();
+            foreach (string? name in Enum.GetNames(typeof(ePresetColor)))
             {
-                var n = name;
+                string? n = name;
                 if (n.Contains("Grey"))
                 {
                     n = n.Replace("Grey", "Gray");
@@ -74,7 +75,7 @@ namespace EPPlusTest.Drawing
                     n = n.Replace("Lt", "Light");
                 }
 
-                var c = Color.FromName(n);
+                Color c = Color.FromName(n);
                 if (c == Color.Empty)
                 {
                     Assert.Fail("Error Name");
@@ -85,12 +86,12 @@ namespace EPPlusTest.Drawing
         [TestMethod]
         public void SystemColor()
         {
-            var l = new List<Color>();
-            foreach (var name in Enum.GetNames(typeof(eSystemColor)))
+            List<Color>? l = new List<Color>();
+            foreach (string? name in Enum.GetNames(typeof(eSystemColor)))
             {
-                var n = name;
+                string? n = name;
                 Color c = Color.Empty;
-                foreach (var p in typeof(SystemColors).GetProperties(BindingFlags.Public | BindingFlags.Static))
+                foreach (PropertyInfo? p in typeof(SystemColors).GetProperties(BindingFlags.Public | BindingFlags.Static))
                 {
                     if (p.Name.Equals(n, StringComparison.CurrentCultureIgnoreCase))
                     {
@@ -109,7 +110,7 @@ namespace EPPlusTest.Drawing
         public void Read()
         {
             _pck = OpenTemplatePackage("Theme.xlsx");
-            var theme = _pck.Workbook.ThemeManager;
+            ExcelThemeManager? theme = _pck.Workbook.ThemeManager;
             Assert.AreNotEqual(theme.CurrentTheme, null);
             Assert.AreEqual(theme.CurrentTheme.ColorScheme.Accent1.ColorType, eDrawingColorType.Rgb);
             Assert.AreEqual((uint)(theme.CurrentTheme.ColorScheme.Accent1.RgbColor.Color.ToArgb()), (uint)0xFF4472C4);
@@ -127,21 +128,21 @@ namespace EPPlusTest.Drawing
             theme.CurrentTheme.ColorScheme.Accent6.SetRgbColor(Color.FromArgb(34, 34, 34));
             theme.CurrentTheme.ColorScheme.Accent1.Transforms.AddAlpha(50);
 
-            var f1 = theme.CurrentTheme.FormatScheme.FillStyle[0];
-            var f2 = theme.CurrentTheme.FormatScheme.FillStyle[1];
-            var f3 = theme.CurrentTheme.FormatScheme.FillStyle[2];
+            ExcelDrawingFill? f1 = theme.CurrentTheme.FormatScheme.FillStyle[0];
+            ExcelDrawingFill? f2 = theme.CurrentTheme.FormatScheme.FillStyle[1];
+            ExcelDrawingFill? f3 = theme.CurrentTheme.FormatScheme.FillStyle[2];
 
-            var b1 = theme.CurrentTheme.FormatScheme.BackgroundFillStyle[0];
-            var b2 = theme.CurrentTheme.FormatScheme.BackgroundFillStyle[1];
-            var b3 = theme.CurrentTheme.FormatScheme.BackgroundFillStyle[2];
+            ExcelDrawingFill? b1 = theme.CurrentTheme.FormatScheme.BackgroundFillStyle[0];
+            ExcelDrawingFill? b2 = theme.CurrentTheme.FormatScheme.BackgroundFillStyle[1];
+            ExcelDrawingFill? b3 = theme.CurrentTheme.FormatScheme.BackgroundFillStyle[2];
 
             Assert.AreEqual(eFillStyle.GradientFill, f2.Style);
-            foreach (var f in f2.GradientFill.Colors)
+            foreach (ExcelDrawingGradientFillColor? f in f2.GradientFill.Colors)
             {
 
             }
             Assert.AreEqual(eFillStyle.GradientFill, f3.Style);
-            foreach (var f in f3.GradientFill.Colors)
+            foreach (ExcelDrawingGradientFillColor? f in f3.GradientFill.Colors)
             {
 
             }
@@ -179,7 +180,7 @@ namespace EPPlusTest.Drawing
             _pck.Workbook.ThemeManager.CurrentTheme.ColorScheme.Dark2.SetRgbColor(Color.Red);
             _pck.Workbook.ThemeManager.CurrentTheme.ColorScheme.Light2.SetPresetColor(Color.Green);
             _pck.Workbook.ThemeManager.CurrentTheme.ColorScheme.Accent1.SetPresetColor(Color.Orange);
-            var ws = _pck.Workbook.Worksheets.Add("ThemeLoaded");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("ThemeLoaded");
 
             ws.Cells["A1:A12"].Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
             ws.Cells["A1"].Value = "Background1";
@@ -199,7 +200,7 @@ namespace EPPlusTest.Drawing
             ws.Cells["A11"].Style.Fill.BackgroundColor.Theme = eThemeSchemeColor.Hyperlink;
             ws.Cells["A12"].Style.Fill.BackgroundColor.Theme = eThemeSchemeColor.FollowedHyperlink;
 
-            var shape = ws.Drawings.AddShape("Oct", eShapeStyle.Octagon);
+            ExcelShape? shape = ws.Drawings.AddShape("Oct", eShapeStyle.Octagon);
             shape.Fill.Style = eFillStyle.SolidFill;
             shape.Fill.SolidFill.Color.SetSchemeColor(eSchemeColor.Text1);
 
@@ -225,7 +226,7 @@ namespace EPPlusTest.Drawing
             _pck = new ExcelPackage();
             _pck.Workbook.ThemeManager.Load(Resources.TestThemeThmx);
             Assert.IsNotNull(_pck.Workbook.ThemeManager.CurrentTheme);
-            var currentTheme = _pck.Workbook.ThemeManager.CurrentTheme;
+            ExcelTheme? currentTheme = _pck.Workbook.ThemeManager.CurrentTheme;
 
             /*** Assert ***/
             //Font scheme
@@ -243,7 +244,7 @@ namespace EPPlusTest.Drawing
             _pck = new ExcelPackage();
             _pck.Workbook.ThemeManager.Load(Resources.TestThemeThmx);
             Assert.IsNotNull(_pck.Workbook.ThemeManager.CurrentTheme);
-            var currentTheme = _pck.Workbook.ThemeManager.CurrentTheme;
+            ExcelTheme? currentTheme = _pck.Workbook.ThemeManager.CurrentTheme;
 
             /*** Assert ***/
             //Border scheme
@@ -270,7 +271,7 @@ namespace EPPlusTest.Drawing
             _pck = new ExcelPackage();
             _pck.Workbook.ThemeManager.Load(Resources.TestThemeThmx);
             Assert.IsNotNull(_pck.Workbook.ThemeManager.CurrentTheme);
-            var currentTheme = _pck.Workbook.ThemeManager.CurrentTheme;
+            ExcelTheme? currentTheme = _pck.Workbook.ThemeManager.CurrentTheme;
 
             /*** Assert ***/
             /*
@@ -344,7 +345,7 @@ namespace EPPlusTest.Drawing
             _pck = new ExcelPackage();
             _pck.Workbook.ThemeManager.Load(Resources.TestThemeThmx);
             Assert.IsNotNull(_pck.Workbook.ThemeManager.CurrentTheme);
-            var currentTheme = _pck.Workbook.ThemeManager.CurrentTheme;
+            ExcelTheme? currentTheme = _pck.Workbook.ThemeManager.CurrentTheme;
 
             /*** Assert ***/
             //Background Fill scheme
@@ -404,11 +405,11 @@ namespace EPPlusTest.Drawing
             _pck = new ExcelPackage();
             _pck.Workbook.ThemeManager.Load(Resources.SavonThmx);
 
-            var theme = _pck.Workbook.ThemeManager.CurrentTheme;
+            ExcelTheme? theme = _pck.Workbook.ThemeManager.CurrentTheme;
             Assert.AreEqual(eFillStyle.BlipFill, theme.FormatScheme.BackgroundFillStyle[2].Style);
-            var ws=_pck.Workbook.Worksheets.Add("ThemeTest");
+            ExcelWorksheet? ws=_pck.Workbook.Worksheets.Add("ThemeTest");
             LoadTestdata(ws);
-            var chart = ws.Drawings.AddBarChart("ThisChart", eBarChartType.BarClustered3D);
+            ExcelBarChart? chart = ws.Drawings.AddBarChart("ThisChart", eBarChartType.BarClustered3D);
 
             chart.Series.Add("D2:D8", "A2:A8");
             chart.Series.Add("B2:B8", "A2:A8");
@@ -421,9 +422,9 @@ namespace EPPlusTest.Drawing
             _pck = new ExcelPackage();
             _pck.Workbook.ThemeManager.Load(Resources.WoodTypeThmx);
 
-            var theme = _pck.Workbook.ThemeManager.CurrentTheme;
+            ExcelTheme? theme = _pck.Workbook.ThemeManager.CurrentTheme;
             Assert.AreEqual(eFillStyle.BlipFill, theme.FormatScheme.BackgroundFillStyle[2].Style);
-            var ws=_pck.Workbook.Worksheets.Add("ThemeTest");
+            ExcelWorksheet? ws=_pck.Workbook.Worksheets.Add("ThemeTest");
             LoadTestdata(ws); 
             SaveWorkbook("ThemeWoodTypeBlipFill.xlsx", _pck);
         }
@@ -433,7 +434,7 @@ namespace EPPlusTest.Drawing
             _pck = new ExcelPackage();
             _pck.Workbook.ThemeManager.CreateDefaultTheme();
 
-            var theme = _pck.Workbook.ThemeManager.CurrentTheme;
+            ExcelTheme? theme = _pck.Workbook.ThemeManager.CurrentTheme;
             Assert.AreEqual("Calibri Light", theme.FontScheme.MajorFont[0].Typeface);
             Assert.AreEqual("Calibri", theme.FontScheme.MinorFont[0].Typeface);
             theme.Name = "My custom theme";
@@ -445,10 +446,10 @@ namespace EPPlusTest.Drawing
 
             //Set normal font to arial
             _pck.Workbook.Styles.NamedStyles[0].Style.Font.Name = "Arial";
-            var ns=_pck.Workbook.Styles.CreateNamedStyle("New Style With Arial");
+            ExcelNamedStyleXml? ns=_pck.Workbook.Styles.CreateNamedStyle("New Style With Arial");
             ns.Style.Font.Size = 12;
 
-            var ws=_pck.Workbook.Worksheets.Add("Sheet1");
+            ExcelWorksheet? ws=_pck.Workbook.Worksheets.Add("Sheet1");
             ws.Cells["A1"].Value = 1;
             ws.Cells["A2"].Value = 2;
             ws.Cells["A2"].StyleName = "New Style With Arial";

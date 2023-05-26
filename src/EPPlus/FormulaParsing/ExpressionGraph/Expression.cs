@@ -61,7 +61,7 @@ namespace OfficeOpenXml.FormulaParsing.ExpressionGraph
         {
             if (_children.Any())
             {
-                var last = _children.Last();
+                Expression? last = _children.Last();
                 child.Prev = last;
                 last.Next = child;
             }
@@ -71,10 +71,10 @@ namespace OfficeOpenXml.FormulaParsing.ExpressionGraph
 
         public virtual Expression MergeWithNext()
         {
-            var expression = this;
+            Expression? expression = this;
             if (Next != null && Operator != null)
             {
-                var result = Operator.Apply(Compile(), Next.Compile());
+                CompileResult? result = Operator.Apply(Compile(), Next.Compile());
                 expression = ExpressionConverter.Instance.FromCompileResult(result);
                 if (expression is ExcelErrorExpression)
                 {

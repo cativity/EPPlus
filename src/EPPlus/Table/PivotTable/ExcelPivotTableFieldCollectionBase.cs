@@ -68,7 +68,7 @@ namespace OfficeOpenXml.Table.PivotTable
         /// </summary>
         public void ShowAll()
         {
-            foreach(var item in _list)
+            foreach(ExcelPivotTableFieldItem? item in _list)
             {
                 item.Hidden = false;
             }
@@ -89,7 +89,7 @@ namespace OfficeOpenXml.Table.PivotTable
                 this.Refresh();
             }
 
-            foreach (var item in _list)
+            foreach (ExcelPivotTableFieldItem? item in _list)
             {
                 item.ShowDetails= isExpanded;
             }
@@ -104,7 +104,7 @@ namespace OfficeOpenXml.Table.PivotTable
                 throw new ArgumentOutOfRangeException("index", "Index is out of range");
             }
 
-            foreach (var item in _list)
+            foreach (ExcelPivotTableFieldItem? item in _list)
             {
                 if (item.Type == eItemType.Data)
                 {

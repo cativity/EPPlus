@@ -219,9 +219,9 @@ namespace OfficeOpenXml.Drawing.Chart.Style
         {
             get
             {
-                var split = GetXmlNodeString("@mods").Split(' ');
+                string[]? split = GetXmlNodeString("@mods").Split(' ');
                 eStyleEntryModifier ret=0;
-                foreach(var v in split)
+                foreach(string? v in split)
                 {
                     ret |= v.ToEnum<eStyleEntryModifier>(0);
                 }

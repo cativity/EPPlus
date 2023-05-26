@@ -30,18 +30,18 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.RefAndLookup
         public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
         {
             ValidateArguments(arguments, 2);
-            var row = ArgToInt(arguments, 0);
-            var col = ArgToInt(arguments, 1);
+            int row = ArgToInt(arguments, 0);
+            int col = ArgToInt(arguments, 1);
             if (row < 0 && col < 0)
             {
                 return this.CreateResult(eErrorType.Value);
             }
 
-            var referenceType = ExcelReferenceType.AbsoluteRowAndColumn;
-            var worksheetSpec = string.Empty;
+            ExcelReferenceType referenceType = ExcelReferenceType.AbsoluteRowAndColumn;
+            string? worksheetSpec = string.Empty;
             if (arguments.Count() > 2)
             {
-                var arg3 = ArgToInt(arguments, 2);
+                int arg3 = ArgToInt(arguments, 2);
                 if (arg3 < 1 || arg3 > 4)
                 {
                     return this.CreateResult(eErrorType.Value);
@@ -51,7 +51,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.RefAndLookup
             }
             if (arguments.Count() > 3)
             {
-                var fourthArg = arguments.ElementAt(3).Value;
+                object? fourthArg = arguments.ElementAt(3).Value;
                 if (fourthArg is bool && !(bool)fourthArg)
                 {
                     throw new InvalidOperationException("Excelformulaparser does not support the R1C1 format!");
@@ -59,13 +59,13 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.RefAndLookup
             }
             if (arguments.Count() > 4)
             {
-                var fifthArg = arguments.ElementAt(4).Value;
+                object? fifthArg = arguments.ElementAt(4).Value;
                 if (fifthArg is string && !string.IsNullOrEmpty(fifthArg.ToString()))
                 {
                     worksheetSpec = fifthArg + "!";
                 }
             }
-            var translator = new IndexToAddressTranslator(context.ExcelDataProvider, referenceType);
+            IndexToAddressTranslator? translator = new IndexToAddressTranslator(context.ExcelDataProvider, referenceType);
             return CreateResult(worksheetSpec + translator.ToAddress(col, row), DataType.ExcelAddress);
         }
     }

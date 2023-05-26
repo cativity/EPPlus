@@ -5,6 +5,8 @@ using OfficeOpenXml.ExternalReferences;
 using OfficeOpenXml.FormulaParsing.LexicalAnalysis;
 using System.Collections.Generic;
 using System.IO;
+using OfficeOpenXml.Drawing.Chart;
+using OfficeOpenXml.Table;
 
 namespace EPPlusTest.Core
 {
@@ -16,13 +18,13 @@ namespace EPPlusTest.Core
         public static void Init(TestContext context)
         {
             //_pck = OpenPackage("ExternalReferences.xlsx", true);
-            var outDir = _worksheetPath + "ExternalReferences";
+            string? outDir = _worksheetPath + "ExternalReferences";
             if (!Directory.Exists(outDir))
             {
                 Directory.CreateDirectory(outDir);
             }
 
-            foreach (var f in Directory.GetFiles(_testInputPath + "ExternalReferences"))
+            foreach (string? f in Directory.GetFiles(_testInputPath + "ExternalReferences"))
             {
                 File.Copy(f, outDir+"\\"+new FileInfo(f).Name,true);
             }
@@ -40,15 +42,15 @@ namespace EPPlusTest.Core
         [TestMethod]
         public void OpenAndReadExternalLink()
         {
-            var p = OpenTemplatePackage("ExternalReferences\\ExtRef.xlsx");
+            ExcelPackage? p = OpenTemplatePackage("ExternalReferences\\ExtRef.xlsx");
 
             Assert.AreEqual(2, p.Workbook.ExternalLinks.Count);
 
             Assert.AreEqual(1D, p.Workbook.ExternalLinks[0].As.ExternalWorkbook.CachedWorksheets["sheet1"].CellValues["A2"].Value);
             Assert.AreEqual(12D, p.Workbook.ExternalLinks[0].As.ExternalWorkbook.CachedWorksheets["sheet1"].CellValues["C3"].Value);
 
-            var c = 0;
-            foreach(var cell in p.Workbook.ExternalLinks[0].As.ExternalWorkbook.CachedWorksheets["sheet1"].CellValues)
+            int c = 0;
+            foreach(ExcelExternalCellValue? cell in p.Workbook.ExternalLinks[0].As.ExternalWorkbook.CachedWorksheets["sheet1"].CellValues)
             {
                 Assert.IsNotNull(cell.Value);
                 c++;
@@ -59,12 +61,12 @@ namespace EPPlusTest.Core
         [TestMethod]
         public void OpenAndCalculateExternalLinkFromCache()
         {
-            var p = OpenTemplatePackage("ExternalReferences\\ExtRef.xlsx");
+            ExcelPackage? p = OpenTemplatePackage("ExternalReferences\\ExtRef.xlsx");
 
             p.Workbook.ClearFormulaValues();
             p.Workbook.Calculate();
 
-            var ws = p.Workbook.Worksheets[0];
+            ExcelWorksheet? ws = p.Workbook.Worksheets[0];
             Assert.AreEqual(2D, ws.Cells["E2"].Value);
             Assert.AreEqual(4D, ws.Cells["F2"].Value);
             Assert.AreEqual(6D, ws.Cells["G2"].Value);
@@ -87,7 +89,7 @@ namespace EPPlusTest.Core
         [TestMethod]
         public void OpenAndCalculateExternalLinkFromPackage()
         {
-            var p = OpenTemplatePackage("ExternalReferences\\ExtRef.xlsx");
+            ExcelPackage? p = OpenTemplatePackage("ExternalReferences\\ExtRef.xlsx");
 
             p.Workbook.ExternalLinks.Directories.Add(new DirectoryInfo(_testInputPathOptional));
             p.Workbook.ExternalLinks.LoadWorkbooks();
@@ -95,7 +97,7 @@ namespace EPPlusTest.Core
             p.Workbook.ClearFormulaValues();
             p.Workbook.Calculate();
 
-            var ws = p.Workbook.Worksheets[0];
+            ExcelWorksheet? ws = p.Workbook.Worksheets[0];
             Assert.AreEqual(3D, ws.Cells["D1"].Value);
             Assert.AreEqual(2D, ws.Cells["E2"].Value);
             Assert.AreEqual(2D, ws.Cells["E2"].Value);
@@ -118,7 +120,7 @@ namespace EPPlusTest.Core
         [TestMethod]
         public void DeleteExternalLink()
         {
-            var p = OpenTemplatePackage("ExternalReferences\\ExtRef.xlsx");
+            ExcelPackage? p = OpenTemplatePackage("ExternalReferences\\ExtRef.xlsx");
 
             Assert.AreEqual(2, p.Workbook.ExternalLinks.Count);
 
@@ -130,12 +132,12 @@ namespace EPPlusTest.Core
         [TestMethod]
         public void OpenAndReadExternalReferences1()
         {
-            var p = OpenTemplatePackage("ExternalReferencesText1.xlsx");
+            ExcelPackage? p = OpenTemplatePackage("ExternalReferencesText1.xlsx");
 
             Assert.AreEqual(62, p.Workbook.ExternalLinks.Count);
 
-            var c = 0;
-            foreach (var cell in p.Workbook.ExternalLinks[0].As.ExternalWorkbook.CachedWorksheets[0].CellValues)
+            int c = 0;
+            foreach (ExcelExternalCellValue? cell in p.Workbook.ExternalLinks[0].As.ExternalWorkbook.CachedWorksheets[0].CellValues)
             {
                 Assert.IsNotNull(cell.Value);
                 c++;
@@ -146,7 +148,7 @@ namespace EPPlusTest.Core
         [TestMethod]
         public void DeleteExternalLinks1()
         {
-            var p = OpenTemplatePackage("ExternalReferencesText1.xlsx");
+            ExcelPackage? p = OpenTemplatePackage("ExternalReferencesText1.xlsx");
 
             p.Workbook.ExternalLinks.RemoveAt(0);
             p.Workbook.ExternalLinks.RemoveAt(8);
@@ -159,12 +161,12 @@ namespace EPPlusTest.Core
         [TestMethod]
         public void OpenAndReadExternalLinks2()
         {
-            var p = OpenTemplatePackage("ExternalReferencesText2.xlsx");
+            ExcelPackage? p = OpenTemplatePackage("ExternalReferencesText2.xlsx");
 
             Assert.AreEqual(204, p.Workbook.ExternalLinks.Count);
 
-            var c = 0;
-            foreach (var cell in p.Workbook.ExternalLinks[0].As.ExternalWorkbook.CachedWorksheets[0].CellValues)
+            int c = 0;
+            foreach (ExcelExternalCellValue? cell in p.Workbook.ExternalLinks[0].As.ExternalWorkbook.CachedWorksheets[0].CellValues)
             {
                 Assert.IsNotNull(cell.Value);
                 c++;
@@ -174,7 +176,7 @@ namespace EPPlusTest.Core
         [TestMethod]
         public void OpenAndDeleteExternalLinks2()
         {
-            var p = OpenTemplatePackage("ExternalReferencesText2.xlsx");
+            ExcelPackage? p = OpenTemplatePackage("ExternalReferencesText2.xlsx");
 
             Assert.AreEqual(204, p.Workbook.ExternalLinks.Count);
             p.Workbook.ExternalLinks.RemoveAt(103);
@@ -184,7 +186,7 @@ namespace EPPlusTest.Core
         [TestMethod]
         public void OpenAndCalculateExternalLinks1()
         {
-            var p = OpenTemplatePackage("ExternalReferencesText1.xlsx");
+            ExcelPackage? p = OpenTemplatePackage("ExternalReferencesText1.xlsx");
 
             p.Workbook.Calculate();
             SaveAndCleanup(p);
@@ -192,7 +194,7 @@ namespace EPPlusTest.Core
         [TestMethod]
         public void OpenAndCalculateExternalLinks2()
         {
-            var p = OpenTemplatePackage("ExternalReferencesText2.xlsx");
+            ExcelPackage? p = OpenTemplatePackage("ExternalReferencesText2.xlsx");
 
             Assert.AreEqual(204, p.Workbook.ExternalLinks.Count);
             p.Workbook.Calculate();
@@ -201,7 +203,7 @@ namespace EPPlusTest.Core
         [TestMethod]
         public void OpenAndClearExternalLinks1()
         {
-            var p = OpenTemplatePackage("ExternalReferencesText1.xlsx");
+            ExcelPackage? p = OpenTemplatePackage("ExternalReferencesText1.xlsx");
 
             Assert.AreEqual(62, p.Workbook.ExternalLinks.Count);
             p.Workbook.ExternalLinks.Clear();
@@ -211,7 +213,7 @@ namespace EPPlusTest.Core
         [TestMethod]
         public void OpenAndClearExternalLinks2()
         {
-            var p = OpenTemplatePackage("ExternalReferencesText2.xlsx");
+            ExcelPackage? p = OpenTemplatePackage("ExternalReferencesText2.xlsx");
 
             Assert.AreEqual(204, p.Workbook.ExternalLinks.Count);
             p.Workbook.ExternalLinks.Clear();
@@ -222,7 +224,7 @@ namespace EPPlusTest.Core
         [TestMethod]
         public void OpenAndClearExternalLinks3()
         {
-            var p = OpenTemplatePackage("ExternalReferencesText3.xlsx");
+            ExcelPackage? p = OpenTemplatePackage("ExternalReferencesText3.xlsx");
 
             Assert.AreEqual(63, p.Workbook.ExternalLinks.Count);
             p.Workbook.ExternalLinks.Clear();
@@ -235,12 +237,12 @@ namespace EPPlusTest.Core
         [TestMethod]
         public void OpenAndReadExternalLinks3()
         {
-            var p = OpenTemplatePackage("ExternalReferencesText3.xlsx");
+            ExcelPackage? p = OpenTemplatePackage("ExternalReferencesText3.xlsx");
 
             Assert.AreEqual(63, p.Workbook.ExternalLinks.Count);
 
-            var c = 0;
-            foreach (var cell in p.Workbook.ExternalLinks[0].As.ExternalWorkbook.CachedWorksheets[0].CellValues)
+            int c = 0;
+            foreach (ExcelExternalCellValue? cell in p.Workbook.ExternalLinks[0].As.ExternalWorkbook.CachedWorksheets[0].CellValues)
             {
                 Assert.IsNotNull(cell.Value);
                 c++;
@@ -250,7 +252,7 @@ namespace EPPlusTest.Core
         [TestMethod]
         public void OpenAndCalculateExternalLink3()
         {
-            var p = OpenTemplatePackage("ExternalReferencesText3.xlsx");
+            ExcelPackage? p = OpenTemplatePackage("ExternalReferencesText3.xlsx");
 
             p.Workbook.Calculate();
             SaveAndCleanup(p);
@@ -258,17 +260,17 @@ namespace EPPlusTest.Core
         [TestMethod]
         public void OpenAndReadExternalLinkDdeOle()
         {
-            var p = OpenTemplatePackage("ExternalReferences\\dde.xlsx");
+            ExcelPackage? p = OpenTemplatePackage("ExternalReferences\\dde.xlsx");
 
             Assert.AreEqual(6, p.Workbook.ExternalLinks.Count);
 
             Assert.AreEqual(eExternalLinkType.DdeLink, p.Workbook.ExternalLinks[0].ExternalLinkType);
             p.Workbook.ExternalLinks.LoadWorkbooks();
 
-            var book3 = p.Workbook.ExternalLinks[3].As.ExternalWorkbook;
+            ExcelExternalWorkbook? book3 = p.Workbook.ExternalLinks[3].As.ExternalWorkbook;
             Assert.AreEqual(p.File.DirectoryName+"\\fromwb1.xlsx", book3.File.FullName, true);
             Assert.IsNotNull(book3.Package);
-            var book4 = p.Workbook.ExternalLinks[4].As.ExternalWorkbook;
+            ExcelExternalWorkbook? book4 = p.Workbook.ExternalLinks[4].As.ExternalWorkbook;
             Assert.AreEqual(p.File.DirectoryName + "\\extref.xlsx", book4.File.FullName, true);
             Assert.IsNotNull(book4.Package);
             SaveWorkbook("dde.xlsx",p);
@@ -277,15 +279,15 @@ namespace EPPlusTest.Core
         [TestMethod]
         public void UpdateCacheShouldBeSameAsExcel()
         {
-            var p = OpenTemplatePackage("ExternalReferences\\ExtRef.xlsx");
+            ExcelPackage? p = OpenTemplatePackage("ExternalReferences\\ExtRef.xlsx");
 
-            var er = p.Workbook.ExternalLinks[0].As.ExternalWorkbook;
-            var excelCache = GetExternalCache(er);
+            ExcelExternalWorkbook? er = p.Workbook.ExternalLinks[0].As.ExternalWorkbook;
+            Dictionary<string, object>? excelCache = GetExternalCache(er);
 
             p.Workbook.ExternalLinks[0].As.ExternalWorkbook.UpdateCache();
-            var epplusCache = GetExternalCache(er);
+            Dictionary<string, object>? epplusCache = GetExternalCache(er);
 
-            foreach (var key in excelCache.Keys)
+            foreach (string? key in excelCache.Keys)
             {
                 if(epplusCache.ContainsKey(key))
                 {
@@ -299,7 +301,7 @@ namespace EPPlusTest.Core
                 }
             }
 
-            foreach (var key in epplusCache.Keys)
+            foreach (string? key in epplusCache.Keys)
             {
                 if (!excelCache.ContainsKey(key))
                 {
@@ -313,9 +315,9 @@ namespace EPPlusTest.Core
         [TestMethod]
         public void AddExternalLinkShouldBeSameAsExcel()
         {
-            var p = OpenPackage("AddedExtRef.xlsx", true);
-            var ws1=CreateWorksheet1(p);
-            var ws2 = p.Workbook.Worksheets.Add("Sheet2");
+            ExcelPackage? p = OpenPackage("AddedExtRef.xlsx", true);
+            ExcelWorksheet? ws1=CreateWorksheet1(p);
+            ExcelWorksheet? ws2 = p.Workbook.Worksheets.Add("Sheet2");
             
             ws2.Cells["A1"].Value = 3;
             ws2.Names.Add("SheetDefinedName", ws2.Cells["A1"]);
@@ -328,7 +330,7 @@ namespace EPPlusTest.Core
             ws1.Cells["F3"].Formula = "Table1[[#This Row],[b]]+[1]Sheet1!$B3";
             ws1.Cells["G3"].Formula = "Table1[[#This Row],[c]]+'[1]Sheet1'!$C3";
             ws1.Cells["G4"].Formula = "Table1[[#This Row],[c]]+'[1]Sheet8888'!$C3";
-            var er = p.Workbook.ExternalLinks.AddExternalWorkbook(new FileInfo(_testInputPath + "externalreferences\\FromWB1.xlsx"));
+            ExcelExternalWorkbook? er = p.Workbook.ExternalLinks.AddExternalWorkbook(new FileInfo(_testInputPath + "externalreferences\\FromWB1.xlsx"));
             
             ws1.Cells["G5"].Formula = $"[{er.Index}]Sheet1!FromF2*[{er.Index}]!CellH5";
 
@@ -343,9 +345,9 @@ namespace EPPlusTest.Core
         [TestMethod]
         public void AddExternalWorkbookNoUpdate()
         {
-            var p = OpenPackage("AddedExtRefNoUpdate.xlsx", true);
-            var ws1 = CreateWorksheet1(p);
-            var ws2 = p.Workbook.Worksheets.Add("Sheet2");
+            ExcelPackage? p = OpenPackage("AddedExtRefNoUpdate.xlsx", true);
+            ExcelWorksheet? ws1 = CreateWorksheet1(p);
+            ExcelWorksheet? ws2 = p.Workbook.Worksheets.Add("Sheet2");
 
             ws2.Cells["A1"].Value = 3;
             ws2.Names.Add("SheetDefinedName", ws2.Cells["A1"]);
@@ -357,7 +359,7 @@ namespace EPPlusTest.Core
             ws1.Cells["E3"].Formula = "Table1[[#This Row],[a]]+[1]Sheet1!$A3";
             ws1.Cells["F3"].Formula = "Table1[[#This Row],[b]]+[1]Sheet1!$B3";
             ws1.Cells["G3"].Formula = "Table1[[#This Row],[c]]+'[1]Sheet1'!$C3";
-            var er = p.Workbook.ExternalLinks.AddExternalWorkbook(new FileInfo(_testInputPath + "externalreferences\\FromWB1.xlsx"));
+            ExcelExternalWorkbook? er = p.Workbook.ExternalLinks.AddExternalWorkbook(new FileInfo(_testInputPath + "externalreferences\\FromWB1.xlsx"));
 
             ws1.Cells["G5"].Formula = $"[{er.Index}]Sheet1!FromF2*[{er.Index}]!CellH5";
             ws1.Cells["G6"].Formula = $"'[FromWB1.xlsx]Sheet1'!FromF2*[FromWB1.xlsx]Sheet1!H6";
@@ -369,12 +371,12 @@ namespace EPPlusTest.Core
         [TestMethod]
         public void AddExternalWorkbookWithChartCache()
         {
-            var p = OpenPackage("AddedExtRefChart.xlsx", true);
-            var ws = p.Workbook.Worksheets.Add("SheetWithChart");
+            ExcelPackage? p = OpenPackage("AddedExtRefChart.xlsx", true);
+            ExcelWorksheet? ws = p.Workbook.Worksheets.Add("SheetWithChart");
 
-            var er = p.Workbook.ExternalLinks.AddExternalWorkbook(new FileInfo(_testInputPath + "externalreferences\\FromWB1.xlsx"));
-            var chart = ws.Drawings.AddLineChart("line1", OfficeOpenXml.Drawing.Chart.eLineChartType.Line);
-            var serie = chart.Series.Add("[1]Sheet1!A2:A3", "[1]Sheet1!B2:B3");
+            ExcelExternalWorkbook? er = p.Workbook.ExternalLinks.AddExternalWorkbook(new FileInfo(_testInputPath + "externalreferences\\FromWB1.xlsx"));
+            ExcelLineChart? chart = ws.Drawings.AddLineChart("line1", OfficeOpenXml.Drawing.Chart.eLineChartType.Line);
+            ExcelLineChartSerie? serie = chart.Series.Add("[1]Sheet1!A2:A3", "[1]Sheet1!B2:B3");
             er.UpdateCache();
             serie.CreateCache();
 
@@ -383,7 +385,7 @@ namespace EPPlusTest.Core
 
         private static ExcelWorksheet CreateWorksheet1(ExcelPackage p)
         {
-            var ws = p.Workbook.Worksheets.Add("Sheet1");
+            ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Sheet1");
             ws.SetValue(1, 1, "a");
             ws.SetValue(1, 2, "b");
             ws.SetValue(1, 3, "c");
@@ -394,7 +396,7 @@ namespace EPPlusTest.Core
             ws.SetValue(3, 2, 8D);
             ws.SetValue(3, 3, 12D);
 
-            var tbl = ws.Tables.Add(ws.Cells["A1:C3"], "Table1");
+            ExcelTable? tbl = ws.Tables.Add(ws.Cells["A1:C3"], "Table1");
             //Create Table
             tbl.TableStyle = OfficeOpenXml.Table.TableStyles.Medium2;
             return ws;
@@ -402,7 +404,7 @@ namespace EPPlusTest.Core
 
         private Dictionary<string, object> GetExternalCache(ExcelExternalWorkbook ewb)
         {
-            var d=new Dictionary<string, object>();
+            Dictionary<string, object>? d=new Dictionary<string, object>();
             foreach(ExcelExternalWorksheet ws in ewb.CachedWorksheets)
             {
                 foreach(ExcelExternalCellValue v in ws.CellValues)
@@ -437,9 +439,9 @@ namespace EPPlusTest.Core
         [TestMethod]
         public void RichTextClear()
         {
-            using (var p = OpenPackage("RichText.xlsx", true))
+            using (ExcelPackage? p = OpenPackage("RichText.xlsx", true))
             {
-                var ws = p.Workbook.Worksheets.Add("SheetWithChart");
+                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("SheetWithChart");
                 ws.Cells["A1:A5"].FillNumber(1, 1);
                 ws.Cells["A1:A5"].Style.Font.Bold = true;
                 ws.Cells["A1:A5"].RichText.Clear();

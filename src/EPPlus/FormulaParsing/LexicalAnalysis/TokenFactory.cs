@@ -57,12 +57,12 @@ namespace OfficeOpenXml.FormulaParsing.LexicalAnalysis
             {
                 return tokenSeparator;
             }
-            var tokenList = tokens.ToList();
+            List<Token>? tokenList = tokens.ToList();
             //Address with worksheet-string before  /JK
             if (token.StartsWith("!", StringComparison.OrdinalIgnoreCase) && tokenList[tokenList.Count - 1].TokenTypeIsSet(TokenType.String))
             {
                 string addr = "";
-                var i = tokenList.Count - 2;
+                int i = tokenList.Count - 2;
                 if (i > 0)
                 {
                     if (tokenList[i].TokenTypeIsSet(TokenType.StringContent))
@@ -145,7 +145,7 @@ namespace OfficeOpenXml.FormulaParsing.LexicalAnalysis
             {
                 return new Token(token, TokenType.Enumerable);
             }
-            var at = OfficeOpenXml.ExcelAddressBase.IsValid(token, _r1c1);
+            ExcelAddressBase.AddressType at = OfficeOpenXml.ExcelAddressBase.IsValid(token, _r1c1);
             if (at==ExcelAddressBase.AddressType.InternalAddress || at == ExcelAddressBase.AddressType.ExternalAddress)
             {
                 return new Token(token, TokenType.ExcelAddress);
@@ -164,11 +164,11 @@ namespace OfficeOpenXml.FormulaParsing.LexicalAnalysis
 
         public static bool IsNumeric(string value, bool allowDecimal)
         {
-            var nExp = 0;
-            var nDot = 0;
-            var nMinus = 0;
-            var nPlus = 0;
-            foreach(var c in value)
+            int nExp = 0;
+            int nDot = 0;
+            int nMinus = 0;
+            int nPlus = 0;
+            foreach(char c in value)
             {
                 if ((c < '0' || c > '9') && (allowDecimal == false || c != '.') && c != 'E' && (c != '-' && c != '+'))
                 {

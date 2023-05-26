@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using OfficeOpenXml.Drawing.Chart;
 
 namespace EPPlusTest.Core.Range.Insert
 {
@@ -30,13 +31,13 @@ namespace EPPlusTest.Core.Range.Insert
         public void InsertRowWithDrawing()
         {
             //Setup
-            var ws = _pck.Workbook.Worksheets.Add("DrawingsInsertRow");
-            var shape = ws.Drawings.AddShape("Shape1_TwoCell",OfficeOpenXml.Drawing.eShapeStyle.Rect);
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("DrawingsInsertRow");
+            ExcelShape? shape = ws.Drawings.AddShape("Shape1_TwoCell",OfficeOpenXml.Drawing.eShapeStyle.Rect);
 
-            var pic =  ws.Drawings.AddPicture("Picture1_OneCell", Properties.Resources.Test1);
+            ExcelPicture? pic =  ws.Drawings.AddPicture("Picture1_OneCell", Properties.Resources.Test1);
             pic.SetPosition(0, 0, 11, 0);
 
-            var chart = ws.Drawings.AddLineChart("Chart1_TwoCellAbsolute", OfficeOpenXml.Drawing.Chart.eLineChartType.Line);
+            ExcelLineChart? chart = ws.Drawings.AddLineChart("Chart1_TwoCellAbsolute", OfficeOpenXml.Drawing.Chart.eLineChartType.Line);
             chart.SetPosition(0, 0, 22, 0);
             chart.EditAs = OfficeOpenXml.Drawing.eEditAs.Absolute;
 
@@ -56,13 +57,13 @@ namespace EPPlusTest.Core.Range.Insert
         public void InsertRangeWithDrawingFullShiftDown()
         {
             //Setup
-            var ws = _pck.Workbook.Worksheets.Add("DrawingsInsertRangeDownFull");
-            var shape = ws.Drawings.AddShape("Shape1_TwoCell", OfficeOpenXml.Drawing.eShapeStyle.Rect);
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("DrawingsInsertRangeDownFull");
+            ExcelShape? shape = ws.Drawings.AddShape("Shape1_TwoCell", OfficeOpenXml.Drawing.eShapeStyle.Rect);
 
-            var pic = ws.Drawings.AddPicture("Picture1_OneCell", Properties.Resources.Test1);
+            ExcelPicture? pic = ws.Drawings.AddPicture("Picture1_OneCell", Properties.Resources.Test1);
             pic.SetPosition(0, 0, 11, 0);
 
-            var chart = ws.Drawings.AddLineChart("Chart1_TwoCellAbsolute", OfficeOpenXml.Drawing.Chart.eLineChartType.Line);
+            ExcelLineChart? chart = ws.Drawings.AddLineChart("Chart1_TwoCellAbsolute", OfficeOpenXml.Drawing.Chart.eLineChartType.Line);
             chart.SetPosition(0, 0, 22, 0);
             chart.EditAs = OfficeOpenXml.Drawing.eEditAs.Absolute;
 
@@ -82,13 +83,13 @@ namespace EPPlusTest.Core.Range.Insert
         public void InsertRangeWithDrawingFullShiftRight()
         {
             //Setup
-            var ws = _pck.Workbook.Worksheets.Add("DrawingsInsertRangeRightFull");
-            var shape = ws.Drawings.AddShape("Shape1_TwoCell", OfficeOpenXml.Drawing.eShapeStyle.Rect);
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("DrawingsInsertRangeRightFull");
+            ExcelShape? shape = ws.Drawings.AddShape("Shape1_TwoCell", OfficeOpenXml.Drawing.eShapeStyle.Rect);
 
-            var pic = ws.Drawings.AddPicture("Picture1_OneCell", Properties.Resources.Test1);
+            ExcelPicture? pic = ws.Drawings.AddPicture("Picture1_OneCell", Properties.Resources.Test1);
             pic.SetPosition(0, 0, 11, 0);
 
-            var chart = ws.Drawings.AddLineChart("Chart1_TwoCellAbsolute", OfficeOpenXml.Drawing.Chart.eLineChartType.Line);
+            ExcelLineChart? chart = ws.Drawings.AddLineChart("Chart1_TwoCellAbsolute", OfficeOpenXml.Drawing.Chart.eLineChartType.Line);
             chart.SetPosition(0, 0, 22, 0);
             chart.EditAs = OfficeOpenXml.Drawing.eEditAs.Absolute;
 
@@ -108,13 +109,13 @@ namespace EPPlusTest.Core.Range.Insert
         public void InsertRangeWithDrawingPartialShiftDown()
         {
             //Setup
-            var ws = _pck.Workbook.Worksheets.Add("DrawingsInsertRangeDownPart");
-            var shape = ws.Drawings.AddShape("Shape1_TwoCell", OfficeOpenXml.Drawing.eShapeStyle.Rect);
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("DrawingsInsertRangeDownPart");
+            ExcelShape? shape = ws.Drawings.AddShape("Shape1_TwoCell", OfficeOpenXml.Drawing.eShapeStyle.Rect);
 
-            var pic = ws.Drawings.AddPicture("Picture1_OneCell", Properties.Resources.Test1);
+            ExcelPicture? pic = ws.Drawings.AddPicture("Picture1_OneCell", Properties.Resources.Test1);
             pic.SetPosition(0, 0, 11, 0);
 
-            var chart = ws.Drawings.AddLineChart("Chart1_TwoCellAbsolute", OfficeOpenXml.Drawing.Chart.eLineChartType.Line);
+            ExcelLineChart? chart = ws.Drawings.AddLineChart("Chart1_TwoCellAbsolute", OfficeOpenXml.Drawing.Chart.eLineChartType.Line);
             chart.SetPosition(0, 0, 22, 0);
             chart.EditAs = OfficeOpenXml.Drawing.eEditAs.Absolute;
 
@@ -136,13 +137,13 @@ namespace EPPlusTest.Core.Range.Insert
         public void InsertRangeWithDrawingPartialShiftRight()
         {
             //Setup
-            var ws = _pck.Workbook.Worksheets.Add("DrawingsInsertRangeRightPart");
-            var shape = ws.Drawings.AddShape("Shape1_TwoCell", OfficeOpenXml.Drawing.eShapeStyle.Rect);
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("DrawingsInsertRangeRightPart");
+            ExcelShape? shape = ws.Drawings.AddShape("Shape1_TwoCell", OfficeOpenXml.Drawing.eShapeStyle.Rect);
 
-            var pic = ws.Drawings.AddPicture("Picture1_OneCell", Properties.Resources.Test1);
+            ExcelPicture? pic = ws.Drawings.AddPicture("Picture1_OneCell", Properties.Resources.Test1);
             pic.SetPosition(0, 0, 11, 0);
 
-            var chart = ws.Drawings.AddLineChart("Chart1_TwoCellAbsolute", OfficeOpenXml.Drawing.Chart.eLineChartType.Line);
+            ExcelLineChart? chart = ws.Drawings.AddLineChart("Chart1_TwoCellAbsolute", OfficeOpenXml.Drawing.Chart.eLineChartType.Line);
             chart.SetPosition(0, 0, 22, 0);
             chart.EditAs = OfficeOpenXml.Drawing.eEditAs.Absolute;
 
@@ -167,13 +168,13 @@ namespace EPPlusTest.Core.Range.Insert
         public void InsertColumnWithDrawing()
         {
             //Setup
-            var ws = _pck.Workbook.Worksheets.Add("DrawingsInsertColumn");
-            var shape = ws.Drawings.AddShape("Shape1_TwoCell", OfficeOpenXml.Drawing.eShapeStyle.Rect);
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("DrawingsInsertColumn");
+            ExcelShape? shape = ws.Drawings.AddShape("Shape1_TwoCell", OfficeOpenXml.Drawing.eShapeStyle.Rect);
 
-            var pic = ws.Drawings.AddPicture("Picture1_OneCell", Properties.Resources.Test1);
+            ExcelPicture? pic = ws.Drawings.AddPicture("Picture1_OneCell", Properties.Resources.Test1);
             pic.SetPosition(20, 0, 0, 0);
 
-            var chart = ws.Drawings.AddLineChart("Chart1_TwoCellAbsolute", OfficeOpenXml.Drawing.Chart.eLineChartType.Line);
+            ExcelLineChart? chart = ws.Drawings.AddLineChart("Chart1_TwoCellAbsolute", OfficeOpenXml.Drawing.Chart.eLineChartType.Line);
             chart.SetPosition(40, 0, 0, 0);
             chart.EditAs = OfficeOpenXml.Drawing.eEditAs.Absolute;
 

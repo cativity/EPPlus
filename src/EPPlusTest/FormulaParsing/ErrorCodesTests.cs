@@ -14,9 +14,9 @@ namespace EPPlusTest.FormulaParsing
         [TestMethod]
         public void ShouldSetDiv0InFunctions()
         {
-            using(var package = new ExcelPackage())
+            using(ExcelPackage? package = new ExcelPackage())
             {
-                var ws = package.Workbook.Worksheets.Add("test");
+                ExcelWorksheet? ws = package.Workbook.Worksheets.Add("test");
                 ws.Cells["A1"].Formula = "ROUND(2.3 + 1/0, 2)";
                 ws.Calculate();
                 Assert.AreEqual("#DIV/0!", ws.Cells["A1"].Value.ToString());

@@ -47,7 +47,7 @@ namespace OfficeOpenXml.Drawing.Chart
             }
             else
             {
-                var ix = GetItemAfter(index);
+                int ix = GetItemAfter(index);
                 if (_list[ix].Index == index)
                 {
                     throw (new ArgumentException($"Data label with index {index} already exists"));
@@ -58,9 +58,9 @@ namespace OfficeOpenXml.Drawing.Chart
 
         private ExcelChartDataLabelItem CreateDataLabel(int idx)
         {
-            var pos = GetItemAfter(idx);
+            int pos = GetItemAfter(idx);
             XmlElement element = CreateElement(idx);
-            var dl = new ExcelChartDataLabelItem(_chart, NameSpaceManager, element, "dLbl", SchemaNodeOrder) { Index=idx };
+            ExcelChartDataLabelItem? dl = new ExcelChartDataLabelItem(_chart, NameSpaceManager, element, "dLbl", SchemaNodeOrder) { Index=idx };
 
             if (idx < _list.Count)
             {
@@ -91,7 +91,7 @@ namespace OfficeOpenXml.Drawing.Chart
 
         private int GetItemAfter(int index)
         {
-            for (var i = 0; i < _list.Count; i++)
+            for (int i = 0; i < _list.Count; i++)
             {
                 if (index >= _list[i].Index)
                 {

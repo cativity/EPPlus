@@ -60,16 +60,16 @@ namespace OfficeOpenXml.Export.HtmlExport
             {
                 return;
             }
-            var row = _table.ShowHeader ? _table.Address._fromRow + 1 : _table.Address._fromRow;
+            int row = _table.ShowHeader ? _table.Address._fromRow + 1 : _table.Address._fromRow;
             for (int c=0;c < _table.Columns.Count;c++)
             {
-                var col = _table.Address._fromCol + c;
-                var styleId = _table.WorkSheet.GetStyleInner(row, col);
+                int col = _table.Address._fromCol + c;
+                int styleId = _table.WorkSheet.GetStyleInner(row, col);
                 string hAlign = "";
                 string vAlign = "";
                 if(styleId>0)
                 {
-                    var xfs = _table.WorkSheet.Workbook.Styles.CellXfs[styleId];
+                    ExcelXfs? xfs = _table.WorkSheet.Workbook.Styles.CellXfs[styleId];
                     if(xfs.ApplyAlignment??true)
                     {
                         hAlign = GetHorizontalAlignment(xfs);
@@ -99,7 +99,7 @@ namespace OfficeOpenXml.Export.HtmlExport
         }
         internal void AddToCss(string name, ExcelTableStyleElement element, string htmlElement)
         {
-            var s = element.Style;
+            ExcelDxfStyleLimitedFont? s = element.Style;
             if (s.HasValue == false)
             {
                 return; //Dont add empty elements
@@ -121,7 +121,7 @@ namespace OfficeOpenXml.Export.HtmlExport
 
         internal void AddToCssBorderVH(string name, ExcelTableStyleElement element, string htmlElement)
         {
-            var s = element.Style;
+            ExcelDxfStyleLimitedFont? s = element.Style;
             if (s.Border.Vertical.HasValue == false && s.Border.Horizontal.HasValue==false)
             {
                 return; //Dont add empty elements
@@ -159,7 +159,7 @@ namespace OfficeOpenXml.Export.HtmlExport
 
         private void WriteDxfGradient(ExcelDxfGradientFill gradient)
         {
-            var sb = new StringBuilder();
+            StringBuilder? sb = new StringBuilder();
             if(gradient.GradientType==eDxfGradientFillType.Linear)
             {
                 sb.Append($"background: linear-gradient({(gradient.Degree+90)%360}deg");
@@ -168,7 +168,7 @@ namespace OfficeOpenXml.Export.HtmlExport
             {
                 sb.Append($"background:radial-gradient(ellipse {(gradient.Right??0)*100}% {(gradient.Bottom ?? 0) * 100}%");
             }
-            foreach (var color in gradient.Colors)
+            foreach (ExcelDxfGradientFillColor? color in gradient.Colors)
             {
                 sb.Append($",{GetDxfColor(color.Color)} {color.Position.ToString("F", CultureInfo.InvariantCulture)}%");
             }
@@ -178,7 +178,7 @@ namespace OfficeOpenXml.Export.HtmlExport
         }
         private void WriteFontStyles(ExcelDxfFontBase f)
         {
-            var flags = _settings.Css.Exclude.TableStyle.Font;
+            eFontExclude flags = _settings.Css.Exclude.TableStyle.Font;
             if (f.Color.HasValue && EnumUtil.HasNotFlag(flags, eFontExclude.Color))
             {
                 WriteCssItem($"color:{GetDxfColor(f.Color)};", _settings.Minify);
@@ -214,7 +214,7 @@ namespace OfficeOpenXml.Export.HtmlExport
         {
             if (b.HasValue)
             {
-                var flags = _settings.Css.Exclude.TableStyle.Border;
+                eBorderExclude flags = _settings.Css.Exclude.TableStyle.Border;
                 if(EnumUtil.HasNotFlag(flags, eBorderExclude.Top))
                 {
                     this.WriteBorderItem(b.Top, "top");
@@ -240,7 +240,7 @@ namespace OfficeOpenXml.Export.HtmlExport
         {
             if (b.HasValue)
             {
-                var flags = _settings.Css.Exclude.TableStyle.Border;
+                eBorderExclude flags = _settings.Css.Exclude.TableStyle.Border;
                 if (EnumUtil.HasNotFlag(flags, eBorderExclude.Top))
                 {
                     this.WriteBorderItem(b.Horizontal, "top");
@@ -267,7 +267,7 @@ namespace OfficeOpenXml.Export.HtmlExport
         {
             if (bi.HasValue && bi.Style != ExcelBorderStyle.None)
             {
-                var sb = new StringBuilder();
+                StringBuilder? sb = new StringBuilder();
                 sb.Append(GetBorderItemLine(bi.Style.Value, suffix));
                 if (bi.Color.HasValue)
                 {

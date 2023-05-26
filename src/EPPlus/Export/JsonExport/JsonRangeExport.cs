@@ -20,7 +20,7 @@ namespace OfficeOpenXml
         }
         internal void Export(Stream stream)
         {
-            var sw = new StreamWriter(stream);
+            StreamWriter? sw = new StreamWriter(stream);
             WriteStart(sw);
             WriteItem(sw, $"\"{_settings.RootElementName}\":");
             WriteStart(sw);
@@ -47,7 +47,7 @@ namespace OfficeOpenXml
                 }
                 if (_settings.AddDataTypesOn==eDataTypeOn.OnColumn)
                 {
-                    var dt = HtmlRawDataProvider.GetHtmlDataTypeFromValue(_range.GetCellValue<object>(1, i));
+                    string? dt = HtmlRawDataProvider.GetHtmlDataTypeFromValue(_range.GetCellValue<object>(1, i));
                     WriteItem(sw, $"\"dt\":\"{dt}\"");
                 }
                 if (i == _range.Columns - 1)

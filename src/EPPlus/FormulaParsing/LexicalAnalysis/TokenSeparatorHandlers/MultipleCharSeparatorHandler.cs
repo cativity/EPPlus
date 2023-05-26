@@ -39,8 +39,8 @@ namespace OfficeOpenXml.FormulaParsing.LexicalAnalysis.TokenSeparatorHandlers
             // two operators in sequence could be "<=" or ">="
             if (IsPartOfMultipleCharSeparator(context, c))
             {
-                var sOp = context.LastToken.Value.Value + c.ToString();
-                var op = _tokenSeparatorProvider.Tokens[sOp];
+                string? sOp = context.LastToken.Value.Value + c.ToString();
+                Token op = _tokenSeparatorProvider.Tokens[sOp];
                 context.ReplaceLastToken(op);
                 context.NewToken();
                 return true;
@@ -63,7 +63,7 @@ namespace OfficeOpenXml.FormulaParsing.LexicalAnalysis.TokenSeparatorHandlers
             {
                 if(_nameValueProvider.IsNamedValue(context.CurrentToken, context.Worksheet))
                 {
-                    var nameValue = _nameValueProvider.GetNamedValue(context.CurrentToken, context.Worksheet);
+                    object? nameValue = _nameValueProvider.GetNamedValue(context.CurrentToken, context.Worksheet);
                     if(nameValue != null)
                     {
                         if(nameValue is IRangeInfo rangeInfo)
@@ -81,13 +81,13 @@ namespace OfficeOpenXml.FormulaParsing.LexicalAnalysis.TokenSeparatorHandlers
 
         private bool IsPartOfMultipleCharSeparator(TokenizerContext context, char c)
         {
-            var lastTokenVal = string.Empty;
+            string? lastTokenVal = string.Empty;
             if (!context.LastToken.HasValue)
             {
                 return false;
             }
 
-            var lastToken = context.LastToken.Value;
+            Token lastToken = context.LastToken.Value;
             lastTokenVal = lastToken.Value ?? string.Empty;
             return _tokenSeparatorProvider.IsOperator(lastTokenVal)
                 && _tokenSeparatorProvider.IsPossibleLastPartOfMultipleCharOperator(c.ToString())

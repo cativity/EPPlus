@@ -14,13 +14,13 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions.Math
         [TestMethod]
         public void CountIfsShouldNotCountNumericStringsAsNumbers()
         {
-            using(var package = new ExcelPackage())
+            using(ExcelPackage? package = new ExcelPackage())
             {
-                var sheet = package.Workbook.Worksheets.Add("test");
+                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
                 sheet.Cells[1, 1].Value = "123";
                 sheet.Cells[2, 1].Formula = "COUNTIFS(A1,\">0\")";
                 sheet.Calculate();
-                var val = sheet.Cells[2, 1].Value;
+                object? val = sheet.Cells[2, 1].Value;
                 Assert.AreEqual(0d, val);
             }
         }
@@ -28,13 +28,13 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions.Math
         [TestMethod]
         public void CountIfsShouldCountMatchingNumericValue()
         {
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var sheet = package.Workbook.Worksheets.Add("test");
+                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
                 sheet.Cells[1, 1].Value = 123;
                 sheet.Cells[2, 1].Formula = "COUNTIFS(A1,\">0\")";
                 sheet.Calculate();
-                var val = sheet.Cells[2, 1].Value;
+                object? val = sheet.Cells[2, 1].Value;
                 Assert.AreEqual(1d, val);
             }
         }

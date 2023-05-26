@@ -42,8 +42,8 @@ namespace EPPlusTest.FormulaParsing.LexicalAnalysis
         [TestInitialize]
         public void Init()
         {
-            var parsingContext = ParsingContext.Create();
-            var tokenFactory = new TokenFactory(parsingContext.Configuration.FunctionRepository, null);
+            ParsingContext? parsingContext = ParsingContext.Create();
+            TokenFactory? tokenFactory = new TokenFactory(parsingContext.Configuration.FunctionRepository, null);
             _tokenizerContext = new TokenizerContext("test", null, tokenFactory);
             _handler = _tokenizerContext.CreateHandler(NameValueProvider.Empty);
         }
@@ -58,7 +58,7 @@ namespace EPPlusTest.FormulaParsing.LexicalAnalysis
         [TestMethod]
         public void HasMoreTokensShouldBeFalseWhenAllAreHandled()
         {
-            for (var x = 0; x < "test".Length; x++ )
+            for (int x = 0; x < "test".Length; x++ )
             {
                 _handler.Next();
             }

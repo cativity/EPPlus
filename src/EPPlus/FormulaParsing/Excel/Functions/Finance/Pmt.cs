@@ -29,11 +29,11 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance
         public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
         {
             ValidateArguments(arguments, 3);
-            var rate = ArgToDecimal(arguments, 0);
-            var nPer = ArgToInt(arguments, 1);
-            var presentValue = ArgToDecimal(arguments, 2);
-            var payEndOfPeriod = 0;
-            var futureValue = 0d;
+            double rate = ArgToDecimal(arguments, 0);
+            int nPer = ArgToInt(arguments, 1);
+            double presentValue = ArgToDecimal(arguments, 2);
+            int payEndOfPeriod = 0;
+            double futureValue = 0d;
             if (arguments.Count() > 3)
             {
                 futureValue = this.ArgToDecimal(arguments, 3);
@@ -44,7 +44,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance
                 payEndOfPeriod = this.ArgToInt(arguments, 4);
             }
 
-            var result = InternalMethods.PMT_Internal(rate, nPer, presentValue, futureValue, payEndOfPeriod == 0 ? PmtDue.EndOfPeriod : PmtDue.BeginningOfPeriod);
+            FinanceCalcResult<double>? result = InternalMethods.PMT_Internal(rate, nPer, presentValue, futureValue, payEndOfPeriod == 0 ? PmtDue.EndOfPeriod : PmtDue.BeginningOfPeriod);
             if (result.HasError)
             {
                 return this.CreateResult(result.ExcelErrorType);

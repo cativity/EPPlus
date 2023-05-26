@@ -71,7 +71,7 @@ namespace OfficeOpenXml.FormulaParsing.ExcelUtilities
         {
             if (v is IRangeInfo)
             {
-                var r = ((IRangeInfo)v);
+                IRangeInfo? r = ((IRangeInfo)v);
                 if (r.GetNCells() > 1)
                 {
                     v = ExcelErrorValue.Create(eErrorType.NA);
@@ -80,7 +80,7 @@ namespace OfficeOpenXml.FormulaParsing.ExcelUtilities
             }
             else if (v is INameInfo)
             {
-                var n = ((INameInfo)v);
+                INameInfo? n = ((INameInfo)v);
                 v = CheckGetRange(n);
             }
             return v;

@@ -36,10 +36,10 @@ namespace OfficeOpenXml.ThreadedComments
             {
                 PersonsXml = workbook._package.GetXmlFromUri(workbook.PersonsUri);
                 // lägg upp personerna i listan, loopa på noderna
-                var listNode = PersonsXml.DocumentElement;
-                foreach(var personNode in listNode.ChildNodes)
+                XmlElement? listNode = PersonsXml.DocumentElement;
+                foreach(object? personNode in listNode.ChildNodes)
                 {
-                    var person = new ExcelThreadedCommentPerson(workbook.NameSpaceManager, (XmlNode)personNode);
+                    ExcelThreadedCommentPerson? person = new ExcelThreadedCommentPerson(workbook.NameSpaceManager, (XmlNode)personNode);
                     _personList.Add(person);
                 }
             }
@@ -147,9 +147,9 @@ namespace OfficeOpenXml.ThreadedComments
         /// <returns>The added <see cref="ExcelThreadedCommentPerson"/></returns>
         public ExcelThreadedCommentPerson Add(string displayName, string userId, IdentityProvider identityProvider, string id)
         {
-            var personsNode = PersonsXml.CreateElement("person", ExcelPackage.schemaThreadedComments);
+            XmlElement? personsNode = PersonsXml.CreateElement("person", ExcelPackage.schemaThreadedComments);
             PersonsXml.DocumentElement.AppendChild(personsNode);
-            var p = new ExcelThreadedCommentPerson(_workbook.NameSpaceManager, personsNode);
+            ExcelThreadedCommentPerson? p = new ExcelThreadedCommentPerson(_workbook.NameSpaceManager, personsNode);
             p.DisplayName = displayName;
             p.Id = id;
             p.UserId = userId;
@@ -187,7 +187,7 @@ namespace OfficeOpenXml.ThreadedComments
         /// <param name="person"></param>
         public void Remove(ExcelThreadedCommentPerson person)
         {
-            var node = PersonsXml.DocumentElement.SelectSingleNode("/person[id='" + person.Id + "']");
+            XmlNode? node = PersonsXml.DocumentElement.SelectSingleNode("/person[id='" + person.Id + "']");
             if(node != null)
             {
                 PersonsXml.DocumentElement.RemoveChild(node);
@@ -226,7 +226,7 @@ namespace OfficeOpenXml.ThreadedComments
             {
                 if (!package.ZipPackage.PartExists(personsUri))
                 {
-                    var p=package.ZipPackage.CreatePart(personsUri, "application/vnd.ms-excel.person+xml");
+                    ZipPackagePart? p=package.ZipPackage.CreatePart(personsUri, "application/vnd.ms-excel.person+xml");
                     WorkbookPart.CreateRelationship(personsUri, Packaging.TargetMode.Internal, ExcelPackage.schemaPersonsRelationShips);
                 }
                 package.SavePart(personsUri, PersonsXml);

@@ -35,7 +35,7 @@ namespace OfficeOpenXml.FormulaParsing.ExpressionGraph
 
         public override CompileResult Compile()
         {
-            var result = _precompiledValue ?? bool.Parse(ExpressionString);
+            bool result = _precompiledValue ?? bool.Parse(ExpressionString);
             return new CompileResult(result, DataType.Boolean);
         }
     }

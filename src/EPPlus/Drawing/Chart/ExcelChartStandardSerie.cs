@@ -17,6 +17,8 @@ using System.Xml;
 using System.Linq;
 using OfficeOpenXml.Core.CellStore;
 using System.Globalization;
+using OfficeOpenXml.ExternalReferences;
+
 namespace OfficeOpenXml.Drawing.Chart
 {
     /// <summary>
@@ -54,8 +56,8 @@ namespace OfficeOpenXml.Drawing.Chart
            _seriesPath = string.Format(_seriesPath, _seriesTopPath);
            _numCachePath = string.Format(_numCachePath, _seriesTopPath);
 
-            var np = string.Format(_xSeriesPath, _xSeriesTopPath, isPivot ? "c:multiLvlStrRef" : "c:numRef");
-            var sp= string.Format(_xSeriesPath, _xSeriesTopPath, isPivot ? "c:multiLvlStrRef" : "c:strRef");
+            string? np = string.Format(_xSeriesPath, _xSeriesTopPath, isPivot ? "c:multiLvlStrRef" : "c:numRef");
+            string? sp= string.Format(_xSeriesPath, _xSeriesTopPath, isPivot ? "c:multiLvlStrRef" : "c:strRef");
 
             if(ExistsNode(sp))
             {
@@ -95,7 +97,7 @@ namespace OfficeOpenXml.Drawing.Chart
 
        private void Cleartx()
        {
-           var n = TopNode.SelectSingleNode("c:tx", NameSpaceManager);
+           XmlNode? n = TopNode.SelectSingleNode("c:tx", NameSpaceManager);
            if (n != null)
            {
                n.InnerXml = "";
@@ -229,7 +231,7 @@ namespace OfficeOpenXml.Drawing.Chart
             else
             {
                 stringLiterals = null;
-                var split = value.Split(',');
+                string[]? split = value.Split(',');
                 numberLiterals = new double[split.Length];
 
                 for (int i = 0; i < split.Length; i++)
@@ -244,9 +246,9 @@ namespace OfficeOpenXml.Drawing.Chart
 
         private string[] SplitStringValue(string value, char textQualifier)
         {
-            var sb = new StringBuilder();
+            StringBuilder? sb = new StringBuilder();
             bool insideStr = true;
-            var list = new List<string>();
+            List<string>? list = new List<string>();
             for (int i = 1; i < value.Length; i++)
             {
                 if (insideStr)
@@ -364,10 +366,10 @@ namespace OfficeOpenXml.Drawing.Chart
                 return;
             }
 
-            var ci = CultureInfo.InvariantCulture;
+            CultureInfo? ci = CultureInfo.InvariantCulture;
             for (int i = 0; i < numLit.Length; i++)
             {
-                var pt = lit.OwnerDocument.CreateElement("c", "pt", ExcelPackage.schemaChart);
+                XmlElement? pt = lit.OwnerDocument.CreateElement("c", "pt", ExcelPackage.schemaChart);
                 pt.SetAttribute("idx", i.ToString(CultureInfo.InvariantCulture));
                 lit.AppendChild(pt);
                 pt.InnerXml = $"<c:v>{((double)numLit[i]).ToString("R15", ci)}</c:v>";
@@ -379,7 +381,7 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             for (int i = 0; i < strLit.Length; i++)
             {
-                var pt = lit.OwnerDocument.CreateElement("c", "pt", ExcelPackage.schemaChart);
+                XmlElement? pt = lit.OwnerDocument.CreateElement("c", "pt", ExcelPackage.schemaChart);
                 pt.SetAttribute("idx", i.ToString(CultureInfo.InvariantCulture));
                 lit.AppendChild(pt);
                 pt.InnerXml = $"<c:v>{strLit[i]}</c:v>";
@@ -388,7 +390,7 @@ namespace OfficeOpenXml.Drawing.Chart
         }
         private static void AddCount(XmlNode lit, int count)
         {
-            var ct = lit.OwnerDocument.CreateElement("c", "ptCount", ExcelPackage.schemaChart);
+            XmlElement? ct = lit.OwnerDocument.CreateElement("c", "ptCount", ExcelPackage.schemaChart);
             ct.SetAttribute("val", count.ToString(CultureInfo.InvariantCulture));
             lit.InsertBefore(ct, lit.FirstChild);
         }
@@ -417,7 +419,7 @@ namespace OfficeOpenXml.Drawing.Chart
             {
                 if(ExcelCellBase.IsValidAddress(Series))
                 {
-                    var a = new ExcelAddressBase(Series);
+                    ExcelAddressBase? a = new ExcelAddressBase(Series);
                     return a.Rows;
                 }
                 else
@@ -444,7 +446,7 @@ namespace OfficeOpenXml.Drawing.Chart
                 {
                     throw (new InvalidOperationException("A serie cannot be multiple columns. Please add one serie per column to create a cache"));
                 }
-                var node = GetTopNode(Series, _seriesTopPath);
+                XmlNode? node = GetTopNode(Series, _seriesTopPath);
                 
                 CreateCache(Series, node);
             }
@@ -456,7 +458,7 @@ namespace OfficeOpenXml.Drawing.Chart
                     throw (new InvalidOperationException("A serie cannot be multiple columns (XSerie). Please add one serie per column to create a cache"));
                 }
 
-                var node = GetTopNode(XSeries, _xSeriesTopPath);
+                XmlNode? node = GetTopNode(XSeries, _xSeriesTopPath);
 
                 CreateCache(XSeries, node);
             }
@@ -464,14 +466,14 @@ namespace OfficeOpenXml.Drawing.Chart
         private void CreateCache(string address, XmlNode node)
         {
             //var ws = _chart.WorkSheet;
-            var wb = _chart.WorkSheet.Workbook;
-            var addr = new ExcelAddressBase(address);
+            ExcelWorkbook? wb = _chart.WorkSheet.Workbook;
+            ExcelAddressBase? addr = new ExcelAddressBase(address);
             if (addr.IsExternal)
             {
-                var erIx = wb.ExternalLinks.GetExternalLink(addr._wb);
+                int erIx = wb.ExternalLinks.GetExternalLink(addr._wb);
                 if (erIx >= 0 && wb.ExternalLinks[erIx].ExternalLinkType == ExternalReferences.eExternalLinkType.ExternalWorkbook)
                 {
-                    var er = wb.ExternalLinks[erIx].As.ExternalWorkbook;
+                    ExcelExternalWorkbook? er = wb.ExternalLinks[erIx].As.ExternalWorkbook;
                     if (er.Package == null)
                     {
                         CreateCacheFromExternalCache(node, er, addr);
@@ -488,7 +490,7 @@ namespace OfficeOpenXml.Drawing.Chart
             }
             else
             {
-                var ws = string.IsNullOrEmpty(addr.WorkSheetName) ? _chart.WorkSheet : _chart.WorkSheet.Workbook.Worksheets[addr.WorkSheetName];
+                ExcelWorksheet? ws = string.IsNullOrEmpty(addr.WorkSheetName) ? _chart.WorkSheet : _chart.WorkSheet.Workbook.Worksheets[addr.WorkSheetName];
                 if (ws == null) //Worksheet does not exist, exit
                 {
                     return;
@@ -505,16 +507,16 @@ namespace OfficeOpenXml.Drawing.Chart
                 return;
             }
 
-            var startRow = range._fromRow;
-            var items = 0;
-            var cse = new CellStoreEnumerator<ExcelValue>(range.Worksheet._values, startRow,range._fromCol, range._toRow, range._toCol);
+            int startRow = range._fromRow;
+            int items = 0;
+            CellStoreEnumerator<ExcelValue>? cse = new CellStoreEnumerator<ExcelValue>(range.Worksheet._values, startRow,range._fromCol, range._toRow, range._toCol);
             while (cse.Next())
             {
-                var v = cse.Value._value;
+                object? v = cse.Value._value;
                 if (v != null)
                 {
-                    var d = Utils.ConvertUtil.GetValueDouble(v);
-                    var ptNode = node.OwnerDocument.CreateElement("c", "pt", ExcelPackage.schemaChart);
+                    double d = Utils.ConvertUtil.GetValueDouble(v);
+                    XmlElement? ptNode = node.OwnerDocument.CreateElement("c", "pt", ExcelPackage.schemaChart);
                     node.AppendChild(ptNode);
                     ptNode.SetAttribute("idx", (cse.Row - startRow).ToString(CultureInfo.InvariantCulture));
                     ptNode.InnerXml = $"<c:v>{Utils.ConvertUtil.GetValueForXml(d, range.Worksheet.Workbook.Date1904)}</c:v>";
@@ -522,7 +524,7 @@ namespace OfficeOpenXml.Drawing.Chart
                 }
             }
 
-            var countNode = node.SelectSingleNode("c:ptCount", NameSpaceManager) as XmlElement;
+            XmlElement? countNode = node.SelectSingleNode("c:ptCount", NameSpaceManager) as XmlElement;
             if (countNode != null)
             {
                 countNode.SetAttribute("val", items.ToString(CultureInfo.InvariantCulture));
@@ -530,22 +532,22 @@ namespace OfficeOpenXml.Drawing.Chart
         }
         private void CreateCacheFromExternalCache(XmlNode node, ExternalReferences.ExcelExternalWorkbook er, ExcelAddressBase addr)
         {
-            var ews = er.CachedWorksheets[addr.WorkSheetName];
+            ExcelExternalWorksheet? ews = er.CachedWorksheets[addr.WorkSheetName];
             if (ews == null)
             {
                 return;
             }
 
-            var startRow = addr._fromRow;
-            var items = 0;
-            var cse = new CellStoreEnumerator<object>(ews.CellValues._values, startRow, addr._fromCol, addr._toRow, addr._toCol);
+            int startRow = addr._fromRow;
+            int items = 0;
+            CellStoreEnumerator<object>? cse = new CellStoreEnumerator<object>(ews.CellValues._values, startRow, addr._fromCol, addr._toRow, addr._toCol);
             while (cse.Next())
             {
-                var v = cse.Value;
+                object? v = cse.Value;
                 if (v != null)
                 {
-                    var d = Utils.ConvertUtil.GetValueDouble(v);
-                    var ptNode = node.OwnerDocument.CreateElement("c", "pt", ExcelPackage.schemaChart);
+                    double d = Utils.ConvertUtil.GetValueDouble(v);
+                    XmlElement? ptNode = node.OwnerDocument.CreateElement("c", "pt", ExcelPackage.schemaChart);
                     node.AppendChild(ptNode);
                     ptNode.SetAttribute("idx", (cse.Row - startRow).ToString(CultureInfo.InvariantCulture));
                     ptNode.InnerXml = $"<c:v>{Utils.ConvertUtil.GetValueForXml(d, er._wb.Date1904)}</c:v>";
@@ -553,7 +555,7 @@ namespace OfficeOpenXml.Drawing.Chart
                 }
             }
 
-            var countNode = node.SelectSingleNode("c:ptCount", NameSpaceManager) as XmlElement;
+            XmlElement? countNode = node.SelectSingleNode("c:ptCount", NameSpaceManager) as XmlElement;
             if (countNode != null)
             {
                 countNode.SetAttribute("val", items.ToString(CultureInfo.InvariantCulture));
@@ -564,24 +566,24 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             if (ExcelCellBase.IsValidAddress(address))
             {
-                var addr = new ExcelAddressBase(address);
+                ExcelAddressBase? addr = new ExcelAddressBase(address);
                 object v;
-                var wb = _chart.WorkSheet.Workbook;
+                ExcelWorkbook? wb = _chart.WorkSheet.Workbook;
                 if (addr.IsExternal)
                 {
-                    var erIx = wb.ExternalLinks.GetExternalLink(addr._wb);
+                    int erIx = wb.ExternalLinks.GetExternalLink(addr._wb);
                     if(erIx>=0)
                     {
-                        var er = wb.ExternalLinks[erIx].As.ExternalWorkbook;
+                        ExcelExternalWorkbook? er = wb.ExternalLinks[erIx].As.ExternalWorkbook;
                         if(er.Package!=null)
                         {
-                            var ws = er.Package.Workbook.Worksheets[addr.WorkSheetName];
-                            var range = ws.Cells[addr.LocalAddress];
+                            ExcelWorksheet? ws = er.Package.Workbook.Worksheets[addr.WorkSheetName];
+                            ExcelRange? range = ws.Cells[addr.LocalAddress];
                             v = range.FirstOrDefault()?.Value;
                         }
                         else
                         {
-                            var ws = er.CachedWorksheets[addr.WorkSheetName];
+                            ExcelExternalWorksheet? ws = er.CachedWorksheets[addr.WorkSheetName];
                             if(ws==null)
                             {
                                 v = null;
@@ -615,7 +617,7 @@ namespace OfficeOpenXml.Drawing.Chart
                     }
                     else
                     {
-                        var range = ws.Cells[address];
+                        ExcelRange? range = ws.Cells[address];
                         v = range.FirstOrDefault()?.Value;
                     }
                 }
@@ -633,7 +635,7 @@ namespace OfficeOpenXml.Drawing.Chart
                     cachePath=string.Format("{0}/c:strRef/c:strCache", seriesTopPath);
                     isNum = false;
                 }
-                var node = CreateNode(cachePath);
+                XmlNode? node = CreateNode(cachePath);
                 if (node.HasChildNodes)
                 {
                     if(isNum)
@@ -662,7 +664,7 @@ namespace OfficeOpenXml.Drawing.Chart
         }
         internal static XmlElement CreateSerieElement(ExcelChart chart)
         {
-            var ser = (XmlElement)chart._chartXmlHelper.CreateNode("c:ser", false, true);
+            XmlElement? ser = (XmlElement)chart._chartXmlHelper.CreateNode("c:ser", false, true);
 
             //If the chart is added from a chart template, then use the chart templates series xml
             if (!string.IsNullOrEmpty(chart._drawings._seriesTemplateXml))
@@ -680,7 +682,7 @@ namespace OfficeOpenXml.Drawing.Chart
             int ret = 0, newID = 0;
             if (chart.PlotArea.ChartTypes.Count > 1)
             {
-                foreach (var chartType in chart.PlotArea.ChartTypes)
+                foreach (ExcelChart? chartType in chart.PlotArea.ChartTypes)
                 {
                     if (newID > 0)
                     {

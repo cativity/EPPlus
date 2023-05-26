@@ -12,6 +12,7 @@
  *************************************************************************************************/
 using OfficeOpenXml.FormulaParsing.LexicalAnalysis;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace OfficeOpenXml.Core
@@ -39,19 +40,19 @@ namespace OfficeOpenXml.Core
         /// <returns>The formula in A1 notation</returns>
         public static string FromR1C1Formula(string formula, int row, int col)
         {
-            var lexer = new Lexer(SourceCodeTokenizer.R1C1, new SyntacticAnalyzer());
-            var tokens = lexer.Tokenize(formula, null).ToArray();
-            for(var ix = 0; ix < tokens.Length; ix++)
+            Lexer? lexer = new Lexer(SourceCodeTokenizer.R1C1, new SyntacticAnalyzer());
+            Token[]? tokens = lexer.Tokenize(formula, null).ToArray();
+            for(int ix = 0; ix < tokens.Length; ix++)
             {
-                var token = tokens[ix];
+                Token token = tokens[ix];
                 if (token.TokenTypeIsSet(TokenType.ExcelAddress) /*|| token.TokenTypeIsSet(TokenType.NameValue)*/ || token.TokenTypeIsSet(TokenType.ExcelAddressR1C1))
                 {
-                    var part = FromR1C1(token.Value, row, col);
+                    string? part = FromR1C1(token.Value, row, col);
                     tokens[ix] = tokens[ix].CloneWithNewValue(part);
                 }
 
             }
-            var ret = string.Join("", tokens.Select(x => x.TokenTypeIsSet(TokenType.StringContent) ? x.Value.Replace("\"", "\"\"") :  x.Value).ToArray());
+            string? ret = string.Join("", tokens.Select(x => x.TokenTypeIsSet(TokenType.StringContent) ? x.Value.Replace("\"", "\"\"") :  x.Value).ToArray());
             return ret;
         }
         /// <summary>
@@ -63,19 +64,19 @@ namespace OfficeOpenXml.Core
         /// <returns>The formula in R1C1 notation</returns>        
         public static string ToR1C1Formula(string formula, int row, int col)
         {
-            var lexer = new Lexer(SourceCodeTokenizer.Default, new SyntacticAnalyzer());
-            var tokens = lexer.Tokenize(formula, null).ToArray();
-            for (var ix = 0; ix < tokens.Length; ix++)
+            Lexer? lexer = new Lexer(SourceCodeTokenizer.Default, new SyntacticAnalyzer());
+            Token[]? tokens = lexer.Tokenize(formula, null).ToArray();
+            for (int ix = 0; ix < tokens.Length; ix++)
             {
-                var token = tokens[ix];
+                Token token = tokens[ix];
                 if (token.TokenTypeIsSet(TokenType.ExcelAddress) || token.TokenTypeIsSet(TokenType.ExcelAddressR1C1))
                 {
-                    var part = ToR1C1(new ExcelAddressBase(token.Value), row, col);
+                    string? part = ToR1C1(new ExcelAddressBase(token.Value), row, col);
                     tokens[ix] = tokens[ix].CloneWithNewValue(part);
                 }
 
             }
-            var ret = string.Join("", tokens.Select(x => x.TokenTypeIsSet(TokenType.StringContent) ? x.Value.Replace("\"", "\"\"") : x.Value).ToArray());
+            string? ret = string.Join("", tokens.Select(x => x.TokenTypeIsSet(TokenType.StringContent) ? x.Value.Replace("\"", "\"\"") : x.Value).ToArray());
             return ret;
         }
         /// <summary>
@@ -92,9 +93,9 @@ namespace OfficeOpenXml.Core
                 return r1C1Address;
             }
 
-            var addresses = ExcelAddressBase.SplitFullAddress(r1C1Address);
-            var ret = "";
-            foreach(var address in addresses)
+            List<string[]>? addresses = ExcelAddressBase.SplitFullAddress(r1C1Address);
+            string? ret = "";
+            foreach(string[]? address in addresses)
             {
                 ret += ExcelCellBase.GetFullAddress(address[0], address[1], FromR1C1SingleAddress(address[2], row, col))+",";
             }
@@ -104,7 +105,7 @@ namespace OfficeOpenXml.Core
         private static string FromR1C1SingleAddress(string r1C1Address, int row, int col)
         {
             R1C1 firstCell = new R1C1();
-            var currentCell = firstCell;
+            R1C1 currentCell = firstCell;
             bool isRow = false;
             bool isSecond = false;
             string num = "";
@@ -187,7 +188,7 @@ namespace OfficeOpenXml.Core
             {
                 if (currentCell.hasRow == false || currentCell.hasCol == false)
                 {
-                    var cell = GetCell(currentCell, row, col);
+                    string? cell = GetCell(currentCell, row, col);
                     return $"{cell}:{cell}";
                 }
                 else
@@ -197,8 +198,8 @@ namespace OfficeOpenXml.Core
             }
             else
             {
-                var cell1 = GetCell(firstCell, row, col);
-                var cell2 = GetCell(currentCell, row, col);
+                string? cell1 = GetCell(firstCell, row, col);
+                string? cell2 = GetCell(currentCell, row, col);
                 if (cell1 == cell2)
                 {
                     return cell1;

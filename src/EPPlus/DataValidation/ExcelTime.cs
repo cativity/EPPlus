@@ -85,7 +85,7 @@ namespace OfficeOpenXml.DataValidation
             if (value == 60)
             {
                 Second = 0;
-                var minute = Minute + 1;
+                int minute = Minute + 1;
                 SetMinute(minute);
             }
             else
@@ -99,7 +99,7 @@ namespace OfficeOpenXml.DataValidation
             if (value == 60)
             {
                 Minute = 0;
-                var hour = Hour + 1;
+                int hour = Hour + 1;
                 SetHour(hour);
             }
             else
@@ -216,7 +216,7 @@ namespace OfficeOpenXml.DataValidation
 
         private decimal ToSeconds()
         {
-            var result = Hour * SecondsPerHour;
+            decimal result = Hour * SecondsPerHour;
             result += Minute * SecondsPerMinute;
             result += Second ?? 0;
             return (decimal)result;
@@ -228,7 +228,7 @@ namespace OfficeOpenXml.DataValidation
         /// <returns></returns>
         public decimal ToExcelTime()
         {
-            var seconds = ToSeconds();
+            decimal seconds = ToSeconds();
             return Round(seconds / (decimal)SecondsPerDay);
         }
 
@@ -246,7 +246,7 @@ namespace OfficeOpenXml.DataValidation
         /// <returns>The string</returns>
         public override string ToString()
         {
-            var second = Second ?? 0;
+            int second = Second ?? 0;
             return string.Format("{0}:{1}:{2}",
                 Hour < 10 ? "0" + Hour.ToString() : Hour.ToString(),
                 Minute < 10 ? "0" + Minute.ToString() : Minute.ToString(),

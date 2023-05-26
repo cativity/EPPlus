@@ -48,15 +48,15 @@ namespace EPPlusTest.Core.Worksheet
         [ClassCleanup]
         public static void Cleanup()
         {
-            var dirName = _pck.File.DirectoryName;
-            var fileName = _pck.File.FullName;
+            string? dirName = _pck.File.DirectoryName;
+            string? fileName = _pck.File.FullName;
 
             SaveAndCleanup(_pck);
         }
         [TestMethod]
         public void SetTopLeftCellToH15()
         {
-            var ws = _pck.Workbook.Worksheets.Add("TopLeftH15");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("TopLeftH15");
             ws.View.TopLeftCell = "H15";
 
             Assert.AreEqual("H15", ws.View.TopLeftCell);
@@ -64,7 +64,7 @@ namespace EPPlusTest.Core.Worksheet
         [TestMethod]
         public void SetTopLeftCellToNullAfterItHasBeenSet()
         {
-            var ws = _pck.Workbook.Worksheets.Add("TopLeftBlank");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("TopLeftBlank");
             ws.View.TopLeftCell = "H15";
 
             Assert.AreEqual("H15", ws.View.TopLeftCell);
@@ -75,10 +75,10 @@ namespace EPPlusTest.Core.Worksheet
         [TestMethod]
         public void ReadFrozenPanes()
         {
-            using (var p = OpenTemplatePackage("FrozenRead.xlsx"))
+            using (ExcelPackage? p = OpenTemplatePackage("FrozenRead.xlsx"))
             {
                 //Worksheet 1
-                var ws = p.Workbook.Worksheets[0];
+                ExcelWorksheet? ws = p.Workbook.Worksheets[0];
                 Assert.IsNotNull(ws.View);
                 Assert.IsNotNull(ws.View.PaneSettings);
                 Assert.AreEqual(ePaneState.Frozen, ws.View.PaneSettings.State);
@@ -102,10 +102,10 @@ namespace EPPlusTest.Core.Worksheet
         [TestMethod]
         public void ReadSplitPanes()
         {
-            using (var p = OpenTemplatePackage("SplitPanes.xlsx"))
+            using (ExcelPackage? p = OpenTemplatePackage("SplitPanes.xlsx"))
             {
                 //Worksheet 1
-                var ws = p.Workbook.Worksheets[0];
+                ExcelWorksheet? ws = p.Workbook.Worksheets[0];
                 Assert.IsNotNull(ws.View);
                 Assert.IsNotNull(ws.View.PaneSettings);
                 Assert.AreEqual(ePaneState.Split, ws.View.PaneSettings.State);
@@ -119,7 +119,7 @@ namespace EPPlusTest.Core.Worksheet
         [TestMethod]
         public void SplitPanesBoth()
         {
-            var ws = _pck.Workbook.Worksheets.Add("SplitPanes");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("SplitPanes");
             ws.View.TopLeftCell = "G200";
             ws.View.SplitPanes(2, 2);
             ws.View.ActiveCell = "B2";
@@ -127,7 +127,7 @@ namespace EPPlusTest.Core.Worksheet
         [TestMethod]
         public void SplitPanesRow()
         {
-            var ws = _pck.Workbook.Worksheets.Add("SplitPanesRow");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("SplitPanesRow");
             ws.View.TopLeftCell = "A200";
             ws.View.SplitPanes(2, 0);
             ws.View.ActiveCell = "A201";
@@ -138,7 +138,7 @@ namespace EPPlusTest.Core.Worksheet
         [TestMethod]
         public void SplitPanesColumn()
         {
-            var ws = _pck.Workbook.Worksheets.Add("SplitPanesColumn");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("SplitPanesColumn");
             ws.View.TopLeftCell = "A200";
             ws.View.SplitPanes(0, 2);
             ws.View.ActiveCell = "A201";
@@ -148,7 +148,7 @@ namespace EPPlusTest.Core.Worksheet
         [TestMethod]
         public void SplitPanesNormal18()
         {
-            var ws = _pck.Workbook.Worksheets.Add("SplitPanesNormal18");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("SplitPanesNormal18");
             //_pck.Workbook.Styles.NamedStyles[0].Style.Font.Name = "Arial";
             _pck.Workbook.Styles.NamedStyles[0].Style.Font.Size = 18;
             ws.View.TopLeftCell = "G200";
@@ -158,7 +158,7 @@ namespace EPPlusTest.Core.Worksheet
         [TestMethod]
         public void SplitPanesPixelsThenRemove()
         {
-            var ws = _pck.Workbook.Worksheets.Add("SplitPanesPixelRemove");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("SplitPanesPixelRemove");
             ws.View.TopLeftPane.ActiveCell = "B2";
             
             ws.View.SplitPanesPixels(100, 100);            
@@ -170,7 +170,7 @@ namespace EPPlusTest.Core.Worksheet
         [TestMethod]
         public void SplitPanesPixelsValidatePixls()
         {
-            var ws = _pck.Workbook.Worksheets.Add("SplitPanes1Px");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("SplitPanes1Px");
             _pck.Workbook.Styles.NamedStyles[0].Style.Font.Name = "Calibri";
             _pck.Workbook.Styles.NamedStyles[0].Style.Font.Size = 11;
             ws.View.TopLeftPane.ActiveCell = "B2";
@@ -187,7 +187,7 @@ namespace EPPlusTest.Core.Worksheet
         [TestMethod]
         public void SplitPanesThenRemove()
         {
-            var ws = _pck.Workbook.Worksheets.Add("SplitPanesRemove");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("SplitPanesRemove");
             ws.View.TopLeftPane.ActiveCell = "B2";
 
             ws.View.SplitPanes(5, 5);
@@ -199,7 +199,7 @@ namespace EPPlusTest.Core.Worksheet
         [TestMethod]
         public void SplitPanesNormal11Arial()
         {
-            var ws = _pck.Workbook.Worksheets.Add("SplitPanesNormal11Arial");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("SplitPanesNormal11Arial");
             _pck.Workbook.Styles.NamedStyles[0].Style.Font.Name = "Arial";
             _pck.Workbook.Styles.NamedStyles[0].Style.Font.Size = 11;
             ws.View.TopLeftCell = "G20000";
@@ -212,9 +212,9 @@ namespace EPPlusTest.Core.Worksheet
         [TestMethod]
         public void SplitPanesNormal18BellMT()
         {
-            using (var p = new ExcelPackage())
+            using (ExcelPackage? p = new ExcelPackage())
             {
-                var ws = p.Workbook.Worksheets.Add("SplitPanesNormal18BellMT");
+                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("SplitPanesNormal18BellMT");
                 p.Workbook.Styles.NamedStyles[0].Style.Font.Name = "Bell MT";
                 p.Workbook.Styles.NamedStyles[0].Style.Font.Size = 18;
                 ws.View.TopLeftCell = "G20000";

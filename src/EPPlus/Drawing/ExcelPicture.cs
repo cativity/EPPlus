@@ -17,6 +17,7 @@ using System.IO;
 using OfficeOpenXml.Utils;
 using OfficeOpenXml.Drawing.Interfaces;
 using OfficeOpenXml.Drawing.Style.Effect;
+using OfficeOpenXml.Packaging;
 #if NETFULL
 using System.Drawing.Imaging;
 #endif
@@ -49,7 +50,7 @@ namespace OfficeOpenXml.Drawing
                 container.RelPic = drawings.Part.GetRelationship(picNode.Attributes["embed", ExcelPackage.schemaRelationships].Value);
                 container.UriPic = UriHelper.ResolvePartUri(drawings.UriDrawing, container.RelPic.TargetUri);
 
-                var extension = Path.GetExtension(container.UriPic.OriginalString);
+                string? extension = Path.GetExtension(container.UriPic.OriginalString);
                 ContentType = PictureStore.GetContentType(extension);
                 if (drawings.Part.Package.PartExists(container.UriPic))
                 {
@@ -65,8 +66,8 @@ namespace OfficeOpenXml.Drawing
                 Image = new ExcelImage(this);
                 Image.Type = PictureStore.GetPictureType(extension);
                 Image.ImageBytes=iby;
-                var ii = _drawings._package.PictureStore.LoadImage(iby, container.UriPic, Part);
-                var pd = (IPictureRelationDocument)_drawings;
+                ImageInfo? ii = _drawings._package.PictureStore.LoadImage(iby, container.UriPic, Part);
+                IPictureRelationDocument? pd = (IPictureRelationDocument)_drawings;
                 if (pd.Hashes.ContainsKey(ii.Hash))
                 {
                     pd.Hashes[ii.Hash].RefCount++;
@@ -102,7 +103,7 @@ namespace OfficeOpenXml.Drawing
 #if !NET35 && !NET40
         internal async Task LoadImageAsync(Stream stream, ePictureType type)
         {
-            var img = new byte[stream.Length];
+            byte[]? img = new byte[stream.Length];
             stream.Seek(0, SeekOrigin.Begin);
             await stream.ReadAsync(img, 0, (int)stream.Length).ConfigureAwait(false);
 
@@ -111,7 +112,7 @@ namespace OfficeOpenXml.Drawing
 #endif
         internal void LoadImage(Stream stream, ePictureType type)
         {
-            var img = new byte[stream.Length];
+            byte[]? img = new byte[stream.Length];
             stream.Seek(0, SeekOrigin.Begin);
             stream.Read(img, 0, (int)stream.Length);
 
@@ -119,7 +120,7 @@ namespace OfficeOpenXml.Drawing
         }
         private void SaveImageToPackage(ePictureType type, byte[] img)
         {
-            var package = _drawings.Worksheet._package.ZipPackage;
+            ZipPackage? package = _drawings.Worksheet._package.ZipPackage;
             if (type == ePictureType.Emz ||
                type == ePictureType.Wmz)
             {
@@ -132,10 +133,10 @@ namespace OfficeOpenXml.Drawing
             }
 
             ContentType = PictureStore.GetContentType(type.ToString());
-            var newUri = GetNewUri(package, "/xl/media/image{0}." + type.ToString());
-            var store = _drawings._package.PictureStore;
-            var pc = _drawings as IPictureRelationDocument;            
-            var ii = store.AddImage(img, newUri, type);
+            Uri? newUri = GetNewUri(package, "/xl/media/image{0}." + type.ToString());
+            PictureStore? store = _drawings._package.PictureStore;
+            IPictureRelationDocument? pc = _drawings as IPictureRelationDocument;            
+            ImageInfo? ii = store.AddImage(img, newUri, type);
             
             IPictureContainer container = this;
             container.UriPic = ii.Uri;
@@ -151,17 +152,17 @@ namespace OfficeOpenXml.Drawing
             else
             {
                 relId = pc.Hashes[ii.Hash].RelId;
-                var rel = _drawings.Part.GetRelationship(relId);
+                ZipPackageRelationship? rel = _drawings.Part.GetRelationship(relId);
                 container.UriPic = UriHelper.ResolvePartUri(rel.SourceUri, rel.TargetUri);
             }
             container.ImageHash = ii.Hash;
-            using (var ms = RecyclableMemory.GetStream(img))
+            using (MemoryStream? ms = RecyclableMemory.GetStream(img))
             {
                 Image.Bounds = PictureStore.GetImageBounds(img, type, _drawings._package);
                 Image.ImageBytes = img;
                 Image.Type = type;
-                var width = Image.Bounds.Width / (Image.Bounds.HorizontalResolution / STANDARD_DPI);
-                var height = Image.Bounds.Height / (Image.Bounds.VerticalResolution / STANDARD_DPI);
+                double width = Image.Bounds.Width / (Image.Bounds.HorizontalResolution / STANDARD_DPI);
+                double height = Image.Bounds.Height / (Image.Bounds.VerticalResolution / STANDARD_DPI);
                 SetPosDefaults((float)width, (float)height);
             }
 
@@ -173,7 +174,7 @@ namespace OfficeOpenXml.Drawing
 
         private void CreatePicNode(XmlNode node, ePictureType type)
         {
-            var picNode = CreateNode("xdr:pic");
+            XmlNode? picNode = CreateNode("xdr:pic");
             picNode.InnerXml = PicStartXml(type);
 
             node.InsertAfter(node.OwnerDocument.CreateElement("xdr", "clientData", ExcelPackage.schemaSheetDrawings), picNode);
@@ -181,7 +182,7 @@ namespace OfficeOpenXml.Drawing
 
         private void AddNewPicture(byte[] img, string relID)
         {
-            var newPic = new ExcelDrawings.ImageCompare();
+            ExcelDrawings.ImageCompare? newPic = new ExcelDrawings.ImageCompare();
             newPic.image = img;
             newPic.relID = relID;
             //_drawings._pics.Add(newPic);
@@ -372,7 +373,7 @@ namespace OfficeOpenXml.Drawing
         void IPictureContainer.RemoveImage()
         {
             IPictureContainer container = this;
-            var relDoc = (IPictureRelationDocument)_drawings;
+            IPictureRelationDocument? relDoc = (IPictureRelationDocument)_drawings;
             if (relDoc.Hashes.TryGetValue(container.ImageHash, out HashInfo hi))
             {
                 if (hi.RefCount <= 1)
@@ -390,7 +391,7 @@ namespace OfficeOpenXml.Drawing
 
         void IPictureContainer.SetNewImage()
         {
-            var relId = ((IPictureContainer)this).RelPic.Id;
+            string? relId = ((IPictureContainer)this).RelPic.Id;
             TopNode.SelectSingleNode("xdr:pic/xdr:blipFill/a:blip/@r:embed", NameSpaceManager).Value = relId;
             if (Image.Type == ePictureType.Svg)
             {

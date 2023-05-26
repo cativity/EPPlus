@@ -49,9 +49,9 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
 
         private void AddAxis()
         {
-            var axis0=(XmlElement)_chart._chartXmlHelper.CreateNode("cx:plotArea/cx:axis");
+            XmlElement? axis0=(XmlElement)_chart._chartXmlHelper.CreateNode("cx:plotArea/cx:axis");
             axis0.SetAttribute("id", "0");
-            var axis1 = (XmlElement)_chart._chartXmlHelper.CreateNode("cx:plotArea/cx:axis", false, true);
+            XmlElement? axis1 = (XmlElement)_chart._chartXmlHelper.CreateNode("cx:plotArea/cx:axis", false, true);
             axis1.SetAttribute("id", "1");
 
             switch(_chart.ChartType)
@@ -73,7 +73,7 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
                     axis1.InnerXml = "<cx:valScaling/><cx:majorGridlines/><cx:tickLabels/>";
                     if(_chart.ChartType== eChartType.Pareto)
                     {
-                        var axis2 = (XmlElement)_chart._chartXmlHelper.CreateNode("cx:plotArea/cx:axis", false, true);
+                        XmlElement? axis2 = (XmlElement)_chart._chartXmlHelper.CreateNode("cx:plotArea/cx:axis", false, true);
                         axis2.SetAttribute("id", "2");
                         axis2.InnerXml = "<cx:valScaling min=\"0\" max=\"1\"/><cx:units unit=\"percentage\"/><cx:tickLabels/>";
                     }
@@ -110,7 +110,7 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
         {
             get
             {
-                var f = GetXmlNodeString("cx:tx/cx:txData/cx:f");
+                string? f = GetXmlNodeString("cx:tx/cx:txData/cx:f");
                 if (ExcelAddress.IsValidAddress(f))
                 {
                     return new ExcelAddressBase(f);
@@ -156,12 +156,12 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
         {
             get
             {
-                var helper = GetSerieHelper();
+                XmlHelper? helper = GetSerieHelper();
                 return helper.GetXmlNodeString("cx:f");
             }
             set
             {
-                var helper = GetSerieHelper();
+                XmlHelper? helper = GetSerieHelper();
                 helper.SetXmlNodeString("cx:f", ToFullAddress(value));
             }
         }
@@ -173,7 +173,7 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
         {
             get
             {
-                var helper = GetXSerieHelper(false);
+                XmlHelper? helper = GetXSerieHelper(false);
                 if(helper==null)
                 {
                     return "";
@@ -185,7 +185,7 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
             }
             set
             {
-                var helper = GetXSerieHelper(true);
+                XmlHelper? helper = GetXSerieHelper(true);
                 helper.SetXmlNodeString("cx:f", ToFullAddress(value));
             }
         }
@@ -213,7 +213,7 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
                 {
                     if (create)
                     {
-                        var node = _dataNode.OwnerDocument.CreateElement("cx", "strDim", ExcelPackage.schemaChartExMain);
+                        XmlElement? node = _dataNode.OwnerDocument.CreateElement("cx", "strDim", ExcelPackage.schemaChartExMain);
                         _dataNode.InsertBefore(node, _dataNode.FirstChild);
                         _catSerieHelper = XmlHelperFactory.Create(NameSpaceManager, node);
                     }
@@ -308,9 +308,9 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
             SetLayoutProperties(chart, ser);
 
             chart._chartXmlHelper.CreateNode("../cx:chartData", true);
-            var dataElement = (XmlElement)chart._chartXmlHelper.CreateNode("../cx:chartData/cx:data", false, true);
+            XmlElement? dataElement = (XmlElement)chart._chartXmlHelper.CreateNode("../cx:chartData/cx:data", false, true);
             dataElement.SetAttribute("id", chart.Series.Count.ToString());
-            var innerXml="";
+            string? innerXml="";
             if (hasCatSerie == true)
             {
                 innerXml += $"<cx:strDim type=\"cat\"><cx:f></cx:f><cx:nf></cx:nf></cx:strDim>";
@@ -322,8 +322,8 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
 
         internal static XmlElement CreateSeriesElement(ExcelChartEx chart, eChartType type, int index, XmlNode referenceNode = null, bool isPareto=false)
         {
-            var plotareaNode = chart._chartXmlHelper.CreateNode("cx:plotArea/cx:plotAreaRegion");
-            var ser = plotareaNode.OwnerDocument.CreateElement("cx", "series", ExcelPackage.schemaChartExMain);
+            XmlNode? plotareaNode = chart._chartXmlHelper.CreateNode("cx:plotArea/cx:plotAreaRegion");
+            XmlElement? ser = plotareaNode.OwnerDocument.CreateElement("cx", "series", ExcelPackage.schemaChartExMain);
             XmlNodeList node = plotareaNode.SelectNodes("cx:series", chart.NameSpaceManager);
 
             if(node.Count > 0)
@@ -332,7 +332,7 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
             }
             else
             {
-                var f = XmlHelperFactory.Create(chart.NameSpaceManager, plotareaNode);
+                XmlHelper? f = XmlHelperFactory.Create(chart.NameSpaceManager, plotareaNode);
                 f.InserAfter(plotareaNode, "cx:plotSurface", ser);
             }
             ser.SetAttribute("formatIdx", index.ToString());
@@ -372,7 +372,7 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
 
         private static void SetLayoutProperties(ExcelChartEx chart, XmlElement ser)
         {
-            var layoutPr = ser.SelectSingleNode("cx:layoutPr", chart.NameSpaceManager);
+            XmlNode? layoutPr = ser.SelectSingleNode("cx:layoutPr", chart.NameSpaceManager);
             switch (chart.ChartType)
             {
                 case eChartType.BoxWhisker:
@@ -383,7 +383,7 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
                     layoutPr.InnerXml = "<cx:binning intervalClosed=\"r\"/>";
                     break;
                 case eChartType.RegionMap:
-                    var ci = CultureInfo.CurrentCulture;
+                    CultureInfo? ci = CultureInfo.CurrentCulture;
                     layoutPr.InnerXml = $"<cx:geography attribution = \"Powered by Bing\" cultureRegion = \"{ci.TwoLetterISOLanguageName}\" cultureLanguage = \"{ci.Name}\" ><cx:geoCache provider=\"{{E9337A44-BEBE-4D9F-B70C-5C5E7DAFC167}}\"><cx:binary/></cx:geoCache></cx:geography>";
                     break;
                 case eChartType.Waterfall:

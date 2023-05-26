@@ -28,6 +28,7 @@ using OfficeOpenXml.Export.HtmlExport;
 using System.Globalization;
 using OfficeOpenXml.Sorting;
 using OfficeOpenXml.Export.HtmlExport.Interfaces;
+using OfficeOpenXml.Packaging;
 #if !NET35 && !NET40
 using System.Threading.Tasks;
 #endif
@@ -45,7 +46,7 @@ namespace OfficeOpenXml.Table
             WorkSheet = sheet;
             TableUri = UriHelper.ResolvePartUri(rel.SourceUri, rel.TargetUri);
             RelationshipID = rel.Id;
-            var pck = sheet._package.ZipPackage;
+            ZipPackage? pck = sheet._package.ZipPackage;
             Part=pck.GetPart(TableUri);
 
             TableXml = new XmlDocument();
@@ -99,10 +100,10 @@ namespace OfficeOpenXml.Table
 
             int cols=Address._toCol-Address._fromCol+1;
             xml += string.Format("<tableColumns count=\"{0}\">",cols);
-            var names = new HashSet<string>();            
+            HashSet<string>? names = new HashSet<string>();            
             for(int i=1;i<=cols;i++)
             {
-                var cell = WorkSheet.Cells[Address._fromRow, Address._fromCol+i-1];
+                ExcelRange? cell = WorkSheet.Cells[Address._fromRow, Address._fromCol+i-1];
                 string colName= SecurityElement.Escape(cell.Value?.ToString());
                 if (cell.Value == null || names.Contains(colName))
                 {
@@ -189,7 +190,7 @@ namespace OfficeOpenXml.Table
                     WorkSheet.Tables._tableNames.Remove(prevName);
                     WorkSheet.Tables._tableNames.Add(value,ix);
                 }
-                var ta = new TableAdjustFormula(this);
+                TableAdjustFormula? ta = new TableAdjustFormula(this);
                 ta.AdjustFormulas(prevName, value);
                 SetXmlNodeString(NAME_PATH, value);
                 SetXmlNodeString(DISPLAY_NAME_PATH, ExcelAddressUtil.GetValidName(value));
@@ -362,7 +363,7 @@ namespace OfficeOpenXml.Table
         /// <returns></returns>
         public async Task SaveToJsonAsync(Stream stream)
         {
-            var s = new JsonTableExportSettings();
+            JsonTableExportSettings? s = new JsonTableExportSettings();
             await SaveToJsonInternalAsync(stream, s);
         }
         /// <summary>
@@ -373,13 +374,13 @@ namespace OfficeOpenXml.Table
         /// <returns></returns>
         public async Task SaveToJsonAsync(Stream stream, Action<JsonTableExportSettings> settings)
         {
-            var s = new JsonTableExportSettings();
+            JsonTableExportSettings? s = new JsonTableExportSettings();
             settings.Invoke(s);
             await SaveToJsonInternalAsync(stream, s);
         }        
         private async Task SaveToJsonInternalAsync(Stream stream, JsonTableExportSettings s)
         {
-            var exporter = new JsonTableExport(this, s);
+            JsonTableExport? exporter = new JsonTableExport(this, s);
             await exporter.ExportAsync(stream);
             await stream.FlushAsync();
         }
@@ -400,7 +401,7 @@ namespace OfficeOpenXml.Table
         /// <returns>A string containing the JSON document.</returns>
         public string ToJson()
         {
-            var s = new JsonTableExportSettings();
+            JsonTableExportSettings? s = new JsonTableExportSettings();
             return ToJsonString(s);
         }
         /// <summary>
@@ -410,7 +411,7 @@ namespace OfficeOpenXml.Table
         /// <returns>A string containing the JSON document.</returns>
         public string ToJson(Action<JsonTableExportSettings> settings)
         {
-            var s=new JsonTableExportSettings();
+            JsonTableExportSettings? s=new JsonTableExportSettings();
             settings.Invoke(s);
             return ToJsonString(s);
         }
@@ -420,7 +421,7 @@ namespace OfficeOpenXml.Table
         /// <param name="stream">The stream to write the JSON to.</param>
         public void SaveToJson(Stream stream)
         {
-            var s = new JsonTableExportSettings();
+            JsonTableExportSettings? s = new JsonTableExportSettings();
             SaveToJsonInternal(stream, s);
         }
         /// <summary>
@@ -430,22 +431,22 @@ namespace OfficeOpenXml.Table
         /// <param name="settings">Settings to configure the JSON output</param>
         public void SaveToJson(Stream stream, Action<JsonTableExportSettings> settings)
         {
-            var s = new JsonTableExportSettings();
+            JsonTableExportSettings? s = new JsonTableExportSettings();
             settings.Invoke(s);
             SaveToJsonInternal(stream, s);
         }
 
         private void SaveToJsonInternal(Stream stream, JsonTableExportSettings s)
         {
-            var exporter = new JsonTableExport(this, s);
+            JsonTableExport? exporter = new JsonTableExport(this, s);
             exporter.Export(stream);
             stream.Flush();
         }
 
         private string ToJsonString(JsonTableExportSettings s)
         {
-            var exporter = new JsonTableExport(this, s);
-            var ms = RecyclableMemory.GetStream();
+            JsonTableExport? exporter = new JsonTableExport(this, s);
+            MemoryStream? ms = RecyclableMemory.GetStream();
             exporter.Export(ms);
             return s.Encoding.GetString(ms.ToArray());
         }
@@ -499,7 +500,7 @@ namespace OfficeOpenXml.Table
         /// <returns>A list of T</returns>
         public List<T> ToCollection<T>(Action<ToCollectionTableOptions> options)
         {
-            var o = new ToCollectionTableOptions();
+            ToCollectionTableOptions? o = new ToCollectionTableOptions();
             options.Invoke(o);
             return ToCollection<T>(o);
         }
@@ -519,10 +520,10 @@ namespace OfficeOpenXml.Table
             {
                 throw new InvalidOperationException("The table must have headers or the headers must be supplied in the options.");
             }
-            var ro = new ToCollectionRangeOptions(options) { HeaderRow = 0 };
+            ToCollectionRangeOptions? ro = new ToCollectionRangeOptions(options) { HeaderRow = 0 };
             if (ShowTotal)
             {
-                var r = Range;
+                ExcelRangeBase? r = Range;
                 return WorkSheet.Cells[r._fromRow, r._fromCol, r._toRow - 1, r._toCol].ToCollection<T>(ro);
             }
             else
@@ -560,7 +561,7 @@ namespace OfficeOpenXml.Table
         /// <returns>A list of T</returns>
         public List<T> ToCollectionWithMappings<T>(Func<Export.ToCollection.ToCollectionRow, T> setRow, Action<ToCollectionTableOptions> options)
         {
-            var o = ToCollectionTableOptions.Default;
+            ToCollectionTableOptions? o = ToCollectionTableOptions.Default;
             options.Invoke(o);
             return ToCollectionWithMappings(setRow, o);
         }
@@ -582,11 +583,11 @@ namespace OfficeOpenXml.Table
             {
                 throw new InvalidOperationException("The table must have headers or the headers must be supplied in the options.");
             }
-            var ro = new ToCollectionRangeOptions(options);
+            ToCollectionRangeOptions? ro = new ToCollectionRangeOptions(options);
             ro.HeaderRow = 0;
             if (ShowTotal)
             {
-                var r = Range;
+                ExcelRangeBase? r = Range;
                 return WorkSheet.Cells[r._fromRow, r._fromCol, r._toRow - 1, r._toCol].ToCollectionWithMappings(setRow, ro);
             }
             else
@@ -655,7 +656,7 @@ namespace OfficeOpenXml.Table
                     WriteAutoFilter(ShowTotal);
                     for (int i = 0; i < Columns.Count; i++)
                     {
-                        var v = WorkSheet.GetValue<string>(Address._fromRow, Address._fromCol + i);
+                        string? v = WorkSheet.GetValue<string>(Address._fromRow, Address._fromCol + i);
                         if(string.IsNullOrEmpty(v))
                         {
                             WorkSheet.SetValue(Address._fromRow, Address._fromCol + i, _cols[i].Name);
@@ -666,7 +667,7 @@ namespace OfficeOpenXml.Table
                         }
                     }
                     HeaderRowStyle.SetStyle();
-                    foreach (var c in Columns)
+                    foreach (ExcelTableColumn? c in Columns)
                     {
                         c.HeaderRowStyle.SetStyle();
                     }
@@ -734,7 +735,7 @@ namespace OfficeOpenXml.Table
         {
             if (_autoFilter == null)
             {
-                var node = TopNode.SelectSingleNode(AUTOFILTER_PATH, NameSpaceManager);
+                XmlNode? node = TopNode.SelectSingleNode(AUTOFILTER_PATH, NameSpaceManager);
                 _autoFilter = new ExcelAutoFilter(NameSpaceManager, node, this);
                 _autoFilter.Address = AutoFilterAddress;
             }
@@ -799,7 +800,7 @@ namespace OfficeOpenXml.Table
                         SetXmlNodeString(TOTALSROWCOUNT_PATH, "1");
                         SetXmlNodeString(TOTALSROWSHOWN_PATH, "1");
                         TotalsRowStyle.SetStyle();
-                        foreach (var c in Columns)
+                        foreach (ExcelTableColumn? c in Columns)
                         {
                             c.TotalsRowStyle.SetStyle();
                         }
@@ -1042,9 +1043,9 @@ namespace OfficeOpenXml.Table
             {
                 throw new ArgumentException("position", "rows can't be negative");
             }
-            var firstRow = _address._fromRow;
-            var isFirstRow = position == 0;
-            var subtact = ShowTotal ? 2 : 1;
+            int firstRow = _address._fromRow;
+            bool isFirstRow = position == 0;
+            int subtact = ShowTotal ? 2 : 1;
             if (position>=ExcelPackage.MaxRows || position > _address._fromRow + position + rows - subtact)
             {
                 position = _address.Rows - subtact;
@@ -1058,8 +1059,8 @@ namespace OfficeOpenXml.Table
                 position++;
             }
 
-            var address = ExcelCellBase.GetAddress(_address._fromRow + position, _address._fromCol, _address._fromRow + position + rows - 1, _address._toCol);
-            var range = new ExcelRangeBase(WorkSheet, address);
+            string? address = ExcelCellBase.GetAddress(_address._fromRow + position, _address._fromCol, _address._fromRow + position + rows - 1, _address._toCol);
+            ExcelRangeBase? range = new ExcelRangeBase(WorkSheet, address);
 
             WorksheetRangeInsertHelper.Insert(range,eShiftTypeInsert.Down, false, true);
 
@@ -1085,7 +1086,7 @@ namespace OfficeOpenXml.Table
 
         private void ExtendCalculatedFormulas(ExcelRangeBase range)
         {
-            foreach(var c in Columns)
+            foreach(ExcelTableColumn? c in Columns)
             {
                 if(!string.IsNullOrEmpty(c.CalculatedColumnFormula))
                 {
@@ -1096,10 +1097,10 @@ namespace OfficeOpenXml.Table
 
         private void CopyStylesFromRow(string address, int copyRow)
         {
-            var range = WorkSheet.Cells[address];
-            for (var col = range._fromCol; col <= range._toCol; col++)
+            ExcelRange? range = WorkSheet.Cells[address];
+            for (int col = range._fromCol; col <= range._toCol; col++)
             {
-                var styleId = WorkSheet.Cells[copyRow, col].StyleID;
+                int styleId = WorkSheet.Cells[copyRow, col].StyleID;
                 if (styleId != 0)
                 {
                     for (int row = range._fromRow; row <= range._toRow; row++)
@@ -1112,13 +1113,13 @@ namespace OfficeOpenXml.Table
         }
         private void CopyStylesFromColumn(string address, int copyColumn)
         {
-            var range = WorkSheet.Cells[address];
+            ExcelRange? range = WorkSheet.Cells[address];
             for (int row = range._fromRow; row <= range._toRow; row++)
             {
-                var styleId = WorkSheet.Cells[row, copyColumn].StyleID;
+                int styleId = WorkSheet.Cells[row, copyColumn].StyleID;
                 if (styleId != 0)
                 {
-                for (var col = range._fromCol; col <= range._toCol; col++)
+                for (int col = range._fromCol; col <= range._toCol; col++)
                 {
 
                         WorkSheet.SetStyleInner(row, col, styleId);
@@ -1147,14 +1148,14 @@ namespace OfficeOpenXml.Table
             {
                 throw new InvalidOperationException("Delete will exceed the number of rows in the table");
             }
-            var subtract = ShowTotal ? 2 : 1;
+            int subtract = ShowTotal ? 2 : 1;
             if(position==0 && rows+subtract >=_address.Rows)
             {
                 throw new InvalidOperationException("Can't delete all table rows. A table must have at least one row.");
             }
             position += ShowHeader ? 1 : 0; //Header row should not be deleted.
-            var address = ExcelCellBase.GetAddress(_address._fromRow + position, _address._fromCol, _address._fromRow + position + rows - 1, _address._toCol);
-            var range = new ExcelRangeBase(WorkSheet, address);
+            string? address = ExcelCellBase.GetAddress(_address._fromRow + position, _address._fromCol, _address._fromRow + position + rows - 1, _address._toCol);
+            ExcelRangeBase? range = new ExcelRangeBase(WorkSheet, address);
             range.Delete(eShiftTypeDelete.Up);
             return range;
         }
@@ -1175,7 +1176,7 @@ namespace OfficeOpenXml.Table
             {
                 throw new ArgumentException("columns", "columns can't be negative");
             }
-            var isFirstColumn = position == 0;
+            bool isFirstColumn = position == 0;
             if (position >= ExcelPackage.MaxColumns || position > _address._fromCol + position + columns - 1)
             {
                 position = _address.Columns;
@@ -1186,8 +1187,8 @@ namespace OfficeOpenXml.Table
                 throw new InvalidOperationException("Insert will exceed the maximum number of columns in the worksheet");
             }
 
-            var address = ExcelCellBase.GetAddress(_address._fromRow, _address._fromCol + position, _address._toRow, _address._fromCol + position + columns - 1);
-            var range = new ExcelRangeBase(WorkSheet, address);
+            string? address = ExcelCellBase.GetAddress(_address._fromRow, _address._fromCol + position, _address._toRow, _address._fromCol + position + columns - 1);
+            ExcelRangeBase? range = new ExcelRangeBase(WorkSheet, address);
 
             WorksheetRangeInsertHelper.Insert(range, eShiftTypeInsert.Right, true, false);
 
@@ -1202,7 +1203,7 @@ namespace OfficeOpenXml.Table
             
             if(copyStyles && isFirstColumn==false)
             {
-                var copyFromCol = _address._fromCol + position - 1;
+                int copyFromCol = _address._fromCol + position - 1;
                 CopyStylesFromColumn(address, copyFromCol);
             }
 
@@ -1230,8 +1231,8 @@ namespace OfficeOpenXml.Table
                 throw new InvalidOperationException("Delete will exceed the number of columns in the table");
             }
 
-            var address = ExcelCellBase.GetAddress(_address._fromRow, _address._fromCol + position, _address._toRow, _address._fromCol + position + columns - 1);
-            var range = new ExcelRangeBase(WorkSheet, address);
+            string? address = ExcelCellBase.GetAddress(_address._fromRow, _address._fromCol + position, _address._toRow, _address._fromCol + position + columns - 1);
+            ExcelRangeBase? range = new ExcelRangeBase(WorkSheet, address);
 
             WorksheetRangeDeleteHelper.Delete(range, eShiftTypeDelete.Left);
 
@@ -1284,7 +1285,7 @@ namespace OfficeOpenXml.Table
             {
                 if (_sortState == null)
                 {
-                    var node = TableXml.SelectSingleNode($"//{SortStatePath}", NameSpaceManager);
+                    XmlNode? node = TableXml.SelectSingleNode($"//{SortStatePath}", NameSpaceManager);
                     if (node == null)
                     {
                         return null;
@@ -1299,19 +1300,19 @@ namespace OfficeOpenXml.Table
         internal void SetTableSortState(int[] columns, bool[] descending, CompareOptions compareOptions, Dictionary<int, string[]> customLists)
         {
             //Set sort state
-            var sortState = new SortState(Range.Worksheet.NameSpaceManager, this);
+            SortState? sortState = new SortState(Range.Worksheet.NameSpaceManager, this);
             sortState.Clear();
-            var dataRange = DataRange;
+            ExcelRangeBase? dataRange = DataRange;
             sortState.Ref = dataRange.Address;
             sortState.CaseSensitive = (compareOptions == CompareOptions.IgnoreCase || compareOptions == CompareOptions.OrdinalIgnoreCase);
-            for (var ix = 0; ix < columns.Length; ix++)
+            for (int ix = 0; ix < columns.Length; ix++)
             {
                 bool? desc = null;
                 if (descending.Length > ix && descending[ix])
                 {
                     desc = true;
                 }
-                var adr = ExcelCellBase.GetAddress(dataRange._fromRow, dataRange._fromCol + columns[ix], dataRange._toRow, dataRange._fromCol + columns[ix]);
+                string? adr = ExcelCellBase.GetAddress(dataRange._fromRow, dataRange._fromCol + columns[ix], dataRange._toRow, dataRange._fromCol + columns[ix]);
                 if(customLists.ContainsKey(columns[ix]))
                 {
                     sortState.SortConditions.Add(adr, desc, customLists[columns[ix]]);

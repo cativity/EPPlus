@@ -755,7 +755,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
             bool inputUsesZip64 = false;
             ZipEntry de;
             // in lieu of hashset, use a dictionary
-            var previouslySeen = new Dictionary<String,object>();
+            Dictionary<string, object>? previouslySeen = new Dictionary<String,object>();
             while ((de = ZipEntry.ReadDirEntry(zf, previouslySeen)) != null)
             {
                 de.ResetDirEntry();
@@ -850,7 +850,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
             {
                 ZipEntry de;
                 // in lieu of hashset, use a dictionary
-                var previouslySeen = new Dictionary<String,Object>();
+                Dictionary<string, object>? previouslySeen = new Dictionary<String,Object>();
                 while ((de = ZipEntry.ReadDirEntry(zf, previouslySeen)) != null)
                 {
                     // Housekeeping: Since ZipFile exposes ZipEntry elements in the enumerator,
@@ -1092,7 +1092,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
                     return false;
                 }
 
-                using (var s = File.Open(fileName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+                using (FileStream? s = File.Open(fileName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
                 {
                     result = IsZipFile(s, testExtract);
                 }
@@ -1155,13 +1155,13 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
                     return false;
                 }
 
-                var bitBucket = Stream.Null;
+                Stream? bitBucket = Stream.Null;
 
                 using (ZipFile zip1 = ZipFile.Read(stream, null, null, null))
                 {
                     if (testExtract)
                     {
-                        foreach (var e in zip1)
+                        foreach (ZipEntry? e in zip1)
                         {
                             if (!e.IsDirectory)
                             {

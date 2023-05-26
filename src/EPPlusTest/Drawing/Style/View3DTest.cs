@@ -46,8 +46,8 @@ namespace EPPlusTest.Drawing
         [ClassCleanup]
         public static void Cleanup()
         {
-            var dirName = _pck.File.DirectoryName;
-            var fileName = _pck.File.FullName;
+            string? dirName = _pck.File.DirectoryName;
+            string? fileName = _pck.File.FullName;
 
             SaveAndCleanup(_pck);
             File.Copy(fileName, dirName + "\\Drawing3DRead.xlsx", true);
@@ -56,9 +56,9 @@ namespace EPPlusTest.Drawing
         public void Scene3dDefaultCamera()
         {
             //Setup
-            var ws = _pck.Workbook.Worksheets.Add("Scene3DDefaultCamera");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("Scene3DDefaultCamera");
 
-            var shape = ws.Drawings.AddShape("Shape1", eShapeStyle.RoundRect);
+            ExcelShape? shape = ws.Drawings.AddShape("Shape1", eShapeStyle.RoundRect);
             shape.SetPosition(1, 0, 5, 0);
 
             //Act
@@ -73,9 +73,9 @@ namespace EPPlusTest.Drawing
         public void Scene3dDefaultLightRigType()
         {
             //Setup
-            var ws = _pck.Workbook.Worksheets.Add("Scene3DLightRigType");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("Scene3DLightRigType");
 
-            var shape = ws.Drawings.AddShape("Shape1", eShapeStyle.RoundRect);
+            ExcelShape? shape = ws.Drawings.AddShape("Shape1", eShapeStyle.RoundRect);
             shape.SetPosition(1, 0, 5, 0);
 
             //Act
@@ -87,9 +87,9 @@ namespace EPPlusTest.Drawing
         public void Scene3dDefaultLightRigDir()
         {
             //Setup
-            var ws = _pck.Workbook.Worksheets.Add("Scene3DLightRig");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("Scene3DLightRig");
 
-            var shape = ws.Drawings.AddShape("Shape1", eShapeStyle.RoundRect);
+            ExcelShape? shape = ws.Drawings.AddShape("Shape1", eShapeStyle.RoundRect);
             shape.SetPosition(1, 0, 5, 0);
 
             //Act
@@ -101,9 +101,9 @@ namespace EPPlusTest.Drawing
         public void Scene3dDefaultLightBackplane()
         {
             //Setup
-            var ws = _pck.Workbook.Worksheets.Add("Scene3DBackplane");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("Scene3DBackplane");
 
-            var shape = ws.Drawings.AddShape("Shape1", eShapeStyle.RoundRect);
+            ExcelShape? shape = ws.Drawings.AddShape("Shape1", eShapeStyle.RoundRect);
             shape.SetPosition(1, 0, 5, 0);
 
             //Act
@@ -114,9 +114,9 @@ namespace EPPlusTest.Drawing
         public void View3dBevelBDefault()
         {
             //Setup
-            var ws = _pck.Workbook.Worksheets.Add("View3DBevelBDefault");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("View3DBevelBDefault");
 
-            var shape = ws.Drawings.AddShape("Shape1", eShapeStyle.RoundRect);
+            ExcelShape? shape = ws.Drawings.AddShape("Shape1", eShapeStyle.RoundRect);
             shape.SetPosition(1, 0, 5, 0);
 
             //Act
@@ -130,9 +130,9 @@ namespace EPPlusTest.Drawing
         public void View3dBevelTDefault()
         {
             //Setup
-            var ws = _pck.Workbook.Worksheets.Add("View3DBevelTDefault");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("View3DBevelTDefault");
 
-            var shape = ws.Drawings.AddShape("Shape1", eShapeStyle.RoundRect);
+            ExcelShape? shape = ws.Drawings.AddShape("Shape1", eShapeStyle.RoundRect);
             shape.SetPosition(1, 0, 5, 0);
 
             //Act
@@ -147,9 +147,9 @@ namespace EPPlusTest.Drawing
         public void View3dContourColorDefault()
         {
             //Setup
-            var ws = _pck.Workbook.Worksheets.Add("View3DContourColorDefault");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("View3DContourColorDefault");
 
-            var shape = ws.Drawings.AddShape("Shape1", eShapeStyle.RoundRect);
+            ExcelShape? shape = ws.Drawings.AddShape("Shape1", eShapeStyle.RoundRect);
             shape.SetPosition(1, 0, 5, 0);
 
             //Act
@@ -163,9 +163,9 @@ namespace EPPlusTest.Drawing
         public void View3dExtrusionColorDefault()
         {
             //Setup
-            var ws = _pck.Workbook.Worksheets.Add("View3DExtrusionColorDefault");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("View3DExtrusionColorDefault");
 
-            var shape = ws.Drawings.AddShape("Shape1", eShapeStyle.RoundRect);
+            ExcelShape? shape = ws.Drawings.AddShape("Shape1", eShapeStyle.RoundRect);
             shape.SetPosition(1, 0, 5, 0);
 
             //Act
@@ -180,10 +180,10 @@ namespace EPPlusTest.Drawing
         public void View3dMaterialTypeDefault()
         {
             //Setup
-            var expected = ePresetMaterialType.Plastic;
-            var ws = _pck.Workbook.Worksheets.Add("View3DMaterialTypeDefault");
+            ePresetMaterialType expected = ePresetMaterialType.Plastic;
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("View3DMaterialTypeDefault");
 
-            var shape = ws.Drawings.AddShape("Shape1", eShapeStyle.RoundRect);
+            ExcelShape? shape = ws.Drawings.AddShape("Shape1", eShapeStyle.RoundRect);
             shape.SetPosition(1, 0, 5, 0);
 
             //Act
@@ -195,9 +195,9 @@ namespace EPPlusTest.Drawing
         public void View3dNoScene()
         {
             //Setup
-            var ws = _pck.Workbook.Worksheets.Add("View3DNoScene");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("View3DNoScene");
 
-            var shape = ws.Drawings.AddShape("Shape1", eShapeStyle.RoundRect);
+            ExcelShape? shape = ws.Drawings.AddShape("Shape1", eShapeStyle.RoundRect);
             shape.SetPosition(1, 0, 5, 0);
 
             //Act
@@ -233,9 +233,9 @@ namespace EPPlusTest.Drawing
         public void View3dScene()
         {
             //Setup
-            var ws = _pck.Workbook.Worksheets.Add("View3DScene");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("View3DScene");
 
-            var shape = ws.Drawings.AddShape("Shape1", eShapeStyle.RoundRect);
+            ExcelShape? shape = ws.Drawings.AddShape("Shape1", eShapeStyle.RoundRect);
             shape.SetPosition(1, 0, 5, 0);
 
             //Act
@@ -288,9 +288,9 @@ namespace EPPlusTest.Drawing
         public void View3dNosp3d()
         {
             //Setup
-            var ws = _pck.Workbook.Worksheets.Add("View3DNosp3d");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("View3DNosp3d");
 
-            var shape = ws.Drawings.AddShape("Shape1", eShapeStyle.RoundRect);
+            ExcelShape? shape = ws.Drawings.AddShape("Shape1", eShapeStyle.RoundRect);
             shape.SetPosition(1, 0, 5, 0);
 
             //Act
@@ -316,9 +316,9 @@ namespace EPPlusTest.Drawing
         public void Scene3dThreeD()
         {
             //Setup
-            var ws = _pck.Workbook.Worksheets.Add("ThreeDTest");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("ThreeDTest");
 
-            var shape = ws.Drawings.AddShape("Shape1", eShapeStyle.RoundRect);
+            ExcelShape? shape = ws.Drawings.AddShape("Shape1", eShapeStyle.RoundRect);
             shape.SetPosition(1, 0, 5, 0);
 
             //Act

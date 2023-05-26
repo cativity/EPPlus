@@ -94,23 +94,23 @@ namespace OfficeOpenXml.Sparkline
 
         private ExcelSparklineGroup AddGroup(eSparklineType type, ExcelAddressBase locationRange, ExcelAddressBase dataRange, bool isRows)
         {
-            var group = NewSparklineGroup();
+            ExcelSparklineGroup? group = NewSparklineGroup();
             group.Type = type;
-            var row = locationRange._fromRow;
-            var col = locationRange._fromCol;
+            int row = locationRange._fromRow;
+            int col = locationRange._fromCol;
 
-            var drFromRow = dataRange._fromRow;
-            var drFromCol = dataRange._fromCol;
-            var drToRow = isRows ? dataRange._fromRow : dataRange._toRow;
-            var drToCol = isRows ? dataRange._toCol : dataRange._fromCol;
+            int drFromRow = dataRange._fromRow;
+            int drFromCol = dataRange._fromCol;
+            int drToRow = isRows ? dataRange._fromRow : dataRange._toRow;
+            int drToCol = isRows ? dataRange._toCol : dataRange._fromCol;
 
-            var cells = (locationRange._fromRow==locationRange._toRow ? locationRange._toCol - locationRange._fromCol: locationRange._toRow- locationRange._fromRow)+1;
-            var cell = 0;
-            var wsName = dataRange?.WorkSheetName ?? _ws.Name;
+            int cells = (locationRange._fromRow==locationRange._toRow ? locationRange._toCol - locationRange._fromCol: locationRange._toRow- locationRange._fromRow)+1;
+            int cell = 0;
+            string? wsName = dataRange?.WorkSheetName ?? _ws.Name;
             while (cell < cells)
             {
-                var f = new ExcelCellAddress(row, col);
-                var sqref = new ExcelAddressBase(wsName, drFromRow, drFromCol, drToRow, drToCol);
+                ExcelCellAddress? f = new ExcelCellAddress(row, col);
+                ExcelAddressBase? sqref = new ExcelAddressBase(wsName, drFromRow, drFromCol, drToRow, drToCol);
                 group.Sparklines.Add(f, wsName, sqref);
                 cell++;
                 if(locationRange._fromRow == locationRange._toRow)
@@ -147,18 +147,18 @@ namespace OfficeOpenXml.Sparkline
 
         private ExcelSparklineGroup NewSparklineGroup()
         {
-            var xh = new XmlHelperInstance(_ws.NameSpaceManager, _ws.WorksheetXml); //SelectSingleNode("/d:worksheet", _ws.NameSpaceManager)
+            XmlHelperInstance? xh = new XmlHelperInstance(_ws.NameSpaceManager, _ws.WorksheetXml); //SelectSingleNode("/d:worksheet", _ws.NameSpaceManager)
             if (!xh.ExistsNode(_extPath + _searchPath))
             {
-                var ext = xh.CreateNode(_extPath, false, true);
+                XmlNode? ext = xh.CreateNode(_extPath, false, true);
                 if (ext.Attributes["uri"] == null)
                 {
                     ((XmlElement)ext).SetAttribute("uri", "{05C60535-1F16-4fd2-B633-F4F36F0B64E0}");        //Guid URI for sparklines... https://msdn.microsoft.com/en-us/library/dd905242(v=office.12).aspx
                 }
             }
-            var parent = xh.CreateNode(_topSearchPath);
+            XmlNode? parent = xh.CreateNode(_topSearchPath);
 
-            var topNode = _ws.WorksheetXml.CreateElement("x14","sparklineGroup", ExcelPackage.schemaMainX14);
+            XmlElement? topNode = _ws.WorksheetXml.CreateElement("x14","sparklineGroup", ExcelPackage.schemaMainX14);
             topNode.SetAttribute("xmlns:xm", ExcelPackage.schemaMainXm);
             topNode.SetAttribute("uid", ExcelPackage.schemaXr2, $"{{{Guid.NewGuid().ToString()}}}");
             parent.AppendChild(topNode);
@@ -168,7 +168,7 @@ namespace OfficeOpenXml.Sparkline
 
         private void LoadSparklines()
         {
-            var grps=_ws.WorksheetXml.SelectNodes(_topPath + "/x14:sparklineGroup", _ws.NameSpaceManager);
+            XmlNodeList? grps=_ws.WorksheetXml.SelectNodes(_topPath + "/x14:sparklineGroup", _ws.NameSpaceManager);
             foreach (XmlElement grp in grps)
             {
                 _lst.Add(new ExcelSparklineGroup(_ws.NameSpaceManager, grp, _ws));

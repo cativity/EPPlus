@@ -75,9 +75,9 @@ namespace OfficeOpenXml.ConditionalFormatting
             SchemaNodeOrder = _worksheet.SchemaNodeOrder;
 
             // Look for all the <conditionalFormatting>
-            var conditionalFormattingNodes = TopNode.SelectNodes(
-              "//" + ExcelConditionalFormattingConstants.Paths.ConditionalFormatting,
-              _worksheet.NameSpaceManager);
+            XmlNodeList? conditionalFormattingNodes = TopNode.SelectNodes(
+                                                                          "//" + ExcelConditionalFormattingConstants.Paths.ConditionalFormatting,
+                                                                          _worksheet.NameSpaceManager);
 
             // Check if we found at least 1 node
             if ((conditionalFormattingNodes != null)
@@ -94,13 +94,13 @@ namespace OfficeOpenXml.ConditionalFormatting
                     }
 
                     // Get the @sqref attribute    
-                    var refAddress = conditionalFormattingNode.Attributes[ExcelConditionalFormattingConstants.Attributes.Sqref].Value.Replace(" ", ",");
+                    string? refAddress = conditionalFormattingNode.Attributes[ExcelConditionalFormattingConstants.Attributes.Sqref].Value.Replace(" ", ",");
           	ExcelAddress address = new ExcelAddress(_worksheet.Name, refAddress);
 
                     // Check for all the <cfRules> nodes and load them
-                    var cfRuleNodes = conditionalFormattingNode.SelectNodes(
-                      ExcelConditionalFormattingConstants.Paths.CfRule,
-                      _worksheet.NameSpaceManager);
+                    XmlNodeList? cfRuleNodes = conditionalFormattingNode.SelectNodes(
+                                                                                     ExcelConditionalFormattingConstants.Paths.CfRule,
+                                                                                     _worksheet.NameSpaceManager);
 
                     // Checking the count of cfRuleNodes "materializes" the collection which prevents a rare infinite loop bug
                     if (cfRuleNodes.Count == 0)
@@ -143,18 +143,18 @@ namespace OfficeOpenXml.ConditionalFormatting
               ExcelConditionalFormattingConstants.Attributes.Priority);
 
             // Transform the @type attribute to EPPlus Rule Type (slighty diferente)
-            var type = ExcelConditionalFormattingRuleType.GetTypeByAttrbiute(
+            eExcelConditionalFormattingRuleType type = ExcelConditionalFormattingRuleType.GetTypeByAttrbiute(
               typeAttribute,
               cfRuleNode,
               _worksheet.NameSpaceManager);
 
             // Create the Rule according to the correct type, address and priority
-            var cfRule = ExcelConditionalFormattingRuleFactory.Create(
-              type,
-              address,
-              priority,
-              _worksheet,
-              cfRuleNode);
+            ExcelConditionalFormattingRule? cfRule = ExcelConditionalFormattingRuleFactory.Create(
+                                                                                                  type,
+                                                                                                  address,
+                                                                                                  priority,
+                                                                                                  _worksheet,
+                                                                                                  cfRuleNode);
 
             // Add the new rule to the list
             if (cfRule != null)
@@ -167,10 +167,10 @@ namespace OfficeOpenXml.ConditionalFormatting
 
         internal void AddFromXml(ExcelAddress address, bool pivot, string ruleXml)
         {
-            var cfRuleNode = (XmlElement)CreateNode(ExcelConditionalFormattingConstants.Paths.ConditionalFormatting, false, true);
+            XmlElement? cfRuleNode = (XmlElement)CreateNode(ExcelConditionalFormattingConstants.Paths.ConditionalFormatting, false, true);
             cfRuleNode.SetAttribute("sqref", address.AddressSpaceSeparated);
             cfRuleNode.InnerXml = ruleXml;
-            var rule = AddNewCf(address, cfRuleNode.FirstChild);
+            ExcelConditionalFormattingRule? rule = AddNewCf(address, cfRuleNode.FirstChild);
             rule.PivotTable = pivot;
         }
         #endregion Constructors
@@ -225,7 +225,7 @@ namespace OfficeOpenXml.ConditionalFormatting
             int lastPriority = 0;
 
             // Search for the last priority
-            foreach (var cfRule in _rules)
+            foreach (IExcelConditionalFormattingRule? cfRule in _rules)
             {
                 if (cfRule.Priority > lastPriority)
                 {
@@ -287,9 +287,9 @@ namespace OfficeOpenXml.ConditionalFormatting
         public void RemoveAll()
         {
             // Look for all the <conditionalFormatting> nodes
-            var conditionalFormattingNodes = TopNode.SelectNodes(
-              "//" + ExcelConditionalFormattingConstants.Paths.ConditionalFormatting,
-              _worksheet.NameSpaceManager);
+            XmlNodeList? conditionalFormattingNodes = TopNode.SelectNodes(
+                                                                          "//" + ExcelConditionalFormattingConstants.Paths.ConditionalFormatting,
+                                                                          _worksheet.NameSpaceManager);
 
             // Remove all the <conditionalFormatting> nodes one by one
             foreach (XmlNode conditionalFormattingNode in conditionalFormattingNodes)
@@ -313,7 +313,7 @@ namespace OfficeOpenXml.ConditionalFormatting
             try
             {
                 // Point to the parent node
-                var oldParentNode = item.Node.ParentNode;
+                XmlNode? oldParentNode = item.Node.ParentNode;
 
                 // Remove the <cfRule> from the old <conditionalFormatting> parent node
                 oldParentNode.RemoveChild(item.Node);
@@ -948,9 +948,9 @@ namespace OfficeOpenXml.ConditionalFormatting
         /// <returns></returns>
         public IExcelConditionalFormattingThreeIconSet<eExcelconditionalFormatting3IconsSetType> AddThreeIconSet(ExcelAddress Address, eExcelconditionalFormatting3IconsSetType IconSet)
         {
-            var icon = (IExcelConditionalFormattingThreeIconSet<eExcelconditionalFormatting3IconsSetType>)AddRule(
-                eExcelConditionalFormattingRuleType.ThreeIconSet,
-                Address);
+            IExcelConditionalFormattingThreeIconSet<eExcelconditionalFormatting3IconsSetType>? icon = (IExcelConditionalFormattingThreeIconSet<eExcelconditionalFormatting3IconsSetType>)AddRule(
+                                                                                                                                                                                                 eExcelConditionalFormattingRuleType.ThreeIconSet,
+                                                                                                                                                                                                 Address);
             icon.IconSet = IconSet;
             return icon;
         }
@@ -962,9 +962,9 @@ namespace OfficeOpenXml.ConditionalFormatting
         /// <returns></returns>
         public IExcelConditionalFormattingFourIconSet<eExcelconditionalFormatting4IconsSetType> AddFourIconSet(ExcelAddress Address, eExcelconditionalFormatting4IconsSetType IconSet)
         {
-            var icon = (IExcelConditionalFormattingFourIconSet<eExcelconditionalFormatting4IconsSetType>)AddRule(
-                eExcelConditionalFormattingRuleType.FourIconSet,
-                Address);
+            IExcelConditionalFormattingFourIconSet<eExcelconditionalFormatting4IconsSetType>? icon = (IExcelConditionalFormattingFourIconSet<eExcelconditionalFormatting4IconsSetType>)AddRule(
+                                                                                                                                                                                               eExcelConditionalFormattingRuleType.FourIconSet,
+                                                                                                                                                                                               Address);
             icon.IconSet = IconSet;
             return icon;
         }
@@ -976,7 +976,7 @@ namespace OfficeOpenXml.ConditionalFormatting
         /// <returns></returns>
         public IExcelConditionalFormattingFiveIconSet AddFiveIconSet(ExcelAddress Address, eExcelconditionalFormatting5IconsSetType IconSet)
         {
-            var icon = (IExcelConditionalFormattingFiveIconSet)AddRule(
+            IExcelConditionalFormattingFiveIconSet? icon = (IExcelConditionalFormattingFiveIconSet)AddRule(
                 eExcelConditionalFormattingRuleType.FiveIconSet,
                 Address);
             icon.IconSet = IconSet;
@@ -990,7 +990,7 @@ namespace OfficeOpenXml.ConditionalFormatting
         /// <returns></returns>
         public IExcelConditionalFormattingDataBarGroup AddDatabar(ExcelAddress Address, Color color)
         {
-            var dataBar = (IExcelConditionalFormattingDataBarGroup)AddRule(
+            IExcelConditionalFormattingDataBarGroup? dataBar = (IExcelConditionalFormattingDataBarGroup)AddRule(
                 eExcelConditionalFormattingRuleType.DataBar,
                 Address);
             dataBar.Color = color;

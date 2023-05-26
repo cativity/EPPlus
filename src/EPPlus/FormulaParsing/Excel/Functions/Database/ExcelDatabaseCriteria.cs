@@ -32,7 +32,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Database
         internal ExcelDatabaseCriteria(ExcelDataProvider dataProvider, string range)
         {
             _dataProvider = dataProvider;
-            var address = new ExcelAddressBase(range);
+            ExcelAddressBase? address = new ExcelAddressBase(range);
             _fromCol = address._fromCol;
             _toCol = address._toCol;
             _worksheet = address.WorkSheetName;
@@ -42,20 +42,20 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Database
 
         private void Initialize()
         {
-            for (var x = _fromCol; x <= _toCol; x++)
+            for (int x = _fromCol; x <= _toCol; x++)
             {
-                var fieldObj = _dataProvider.GetCellValue(_worksheet, _fieldRow, x);
-                var val = _dataProvider.GetCellValue(_worksheet, _fieldRow + 1, x);
+                object? fieldObj = _dataProvider.GetCellValue(_worksheet, _fieldRow, x);
+                object? val = _dataProvider.GetCellValue(_worksheet, _fieldRow + 1, x);
                 if (fieldObj != null && val != null)
                 {
                     if(fieldObj is string)
                     { 
-                        var field = new ExcelDatabaseCriteriaField(fieldObj.ToString().ToLower(CultureInfo.InvariantCulture));
+                        ExcelDatabaseCriteriaField? field = new ExcelDatabaseCriteriaField(fieldObj.ToString().ToLower(CultureInfo.InvariantCulture));
                         _criterias.Add(field, val);
                     }
                     else if (ConvertUtil.IsNumericOrDate(fieldObj))
                     {
-                        var field = new ExcelDatabaseCriteriaField((int) fieldObj);
+                        ExcelDatabaseCriteriaField? field = new ExcelDatabaseCriteriaField((int) fieldObj);
                         _criterias.Add(field, val);
                     }
 

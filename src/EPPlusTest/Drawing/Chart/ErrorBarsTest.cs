@@ -55,12 +55,12 @@ namespace EPPlusTest.Drawing.Chart
         [TestMethod]
         public void ErrorBars_StdDev()
         {
-            var ws = _pck.Workbook.Worksheets.Add("ErrorBar_StDev");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("ErrorBar_StDev");
             LoadTestdata(ws);
 
-            var chart = ws.Drawings.AddLineChart("LineChart1", eLineChartType.Line);
+            ExcelLineChart? chart = ws.Drawings.AddLineChart("LineChart1", eLineChartType.Line);
             Assert.AreEqual(eDrawingType.Chart, chart.DrawingType);
-            var serie = chart.Series.Add("D2:D100", "A2:A100");
+            ExcelLineChartSerie? serie = chart.Series.Add("D2:D100", "A2:A100");
             serie.AddErrorBars(eErrorBarType.Both, eErrorValueType.StandardDeviation);
             serie.ErrorBars.Direction = eErrorBarDirection.Y;
             serie.ErrorBars.Value = 14;
@@ -74,11 +74,11 @@ namespace EPPlusTest.Drawing.Chart
         [TestMethod]
         public void ErrorBars_StdErr()
         {
-            var ws = _pck.Workbook.Worksheets.Add("ErrorBar_StErr");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("ErrorBar_StErr");
             LoadTestdata(ws);
 
-            var chart = ws.Drawings.AddLineChart("LineChart1", eLineChartType.Line);
-            var serie = chart.Series.Add("D2:D100", "A2:A100");
+            ExcelLineChart? chart = ws.Drawings.AddLineChart("LineChart1", eLineChartType.Line);
+            ExcelLineChartSerie? serie = chart.Series.Add("D2:D100", "A2:A100");
             serie.AddErrorBars(eErrorBarType.Both, eErrorValueType.StandardError);
             serie.ErrorBars.Direction = eErrorBarDirection.X;
             serie.ErrorBars.NoEndCap = true;
@@ -92,11 +92,11 @@ namespace EPPlusTest.Drawing.Chart
         [TestMethod]
         public void ErrorBars_Percentage()
         {
-            var ws = _pck.Workbook.Worksheets.Add("ErrorBar_Percentage");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("ErrorBar_Percentage");
             LoadTestdata(ws);
 
-            var chart = ws.Drawings.AddLineChart("LineChart1", eLineChartType.Line);
-            var serie = chart.Series.Add("D2:D100", "A2:A100");
+            ExcelLineChart? chart = ws.Drawings.AddLineChart("LineChart1", eLineChartType.Line);
+            ExcelLineChartSerie? serie = chart.Series.Add("D2:D100", "A2:A100");
             serie.AddErrorBars(eErrorBarType.Plus, eErrorValueType.Percentage);
             serie.ErrorBars.Value = 5;
             chart.SetPosition(1, 0, 5, 0);
@@ -109,11 +109,11 @@ namespace EPPlusTest.Drawing.Chart
         [TestMethod]
         public void ErrorBars_Fixed()
         {
-            var ws = _pck.Workbook.Worksheets.Add("ErrorBar_Fixed");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("ErrorBar_Fixed");
             LoadTestdata(ws);
 
-            var chart = ws.Drawings.AddLineChart("LineChart1", eLineChartType.Line);
-            var serie = chart.Series.Add("D2:D100", "A2:A100");
+            ExcelLineChart? chart = ws.Drawings.AddLineChart("LineChart1", eLineChartType.Line);
+            ExcelLineChartSerie? serie = chart.Series.Add("D2:D100", "A2:A100");
             serie.AddErrorBars(eErrorBarType.Plus, eErrorValueType.FixedValue);
             serie.ErrorBars.Value = 5.2;
             chart.SetPosition(1, 0, 5, 0);
@@ -125,11 +125,11 @@ namespace EPPlusTest.Drawing.Chart
         [TestMethod]
         public void ErrorBars_Custom()
         {
-            var ws = _pck.Workbook.Worksheets.Add("ErrorBar_Custom");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("ErrorBar_Custom");
             LoadTestdata(ws);
 
-            var chart = ws.Drawings.AddLineChart("LineChart1", eLineChartType.Line);
-            var serie = chart.Series.Add("D2:D100", "A2:A100");
+            ExcelLineChart? chart = ws.Drawings.AddLineChart("LineChart1", eLineChartType.Line);
+            ExcelLineChartSerie? serie = chart.Series.Add("D2:D100", "A2:A100");
             serie.AddErrorBars(eErrorBarType.Plus, eErrorValueType.Custom);
             serie.ErrorBars.Plus.ValuesSource = "{1}";
             serie.ErrorBars.Minus.FormatCode = "General";
@@ -147,11 +147,11 @@ namespace EPPlusTest.Drawing.Chart
         [TestMethod]
         public void ErrorBars_Scatter()
         {
-            var ws = _pck.Workbook.Worksheets.Add("ErrorBarScatter");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("ErrorBarScatter");
             LoadTestdata(ws);
 
-            var chart = ws.Drawings.AddScatterChart("ScatterChart1", eScatterChartType.XYScatter);
-            var serie = chart.Series.Add("D2:D100", "A2:A100");
+            ExcelScatterChart? chart = ws.Drawings.AddScatterChart("ScatterChart1", eScatterChartType.XYScatter);
+            ExcelScatterChartSerie? serie = chart.Series.Add("D2:D100", "A2:A100");
             serie.AddErrorBars(eErrorBarType.Both, eErrorValueType.Custom);
             serie.ErrorBars.Plus.ValuesSource = "{1}";
             serie.ErrorBars.Minus.FormatCode = "General";
@@ -184,13 +184,13 @@ namespace EPPlusTest.Drawing.Chart
         [TestMethod]
         public void ErrorBars_ReadScatter()
         {
-            using (var p1 = new ExcelPackage())
+            using (ExcelPackage? p1 = new ExcelPackage())
             {
-                var ws = p1.Workbook.Worksheets.Add("ErrorBarsScatter");
+                ExcelWorksheet? ws = p1.Workbook.Worksheets.Add("ErrorBarsScatter");
                 LoadTestdata(ws);
 
-                var chart = ws.Drawings.AddScatterChart("ScatterChart1", eScatterChartType.XYScatter);
-                var serie = chart.Series.Add("D2:D100", "A2:A100");
+                ExcelScatterChart? chart = ws.Drawings.AddScatterChart("ScatterChart1", eScatterChartType.XYScatter);
+                ExcelScatterChartSerie? serie = chart.Series.Add("D2:D100", "A2:A100");
                 serie.AddErrorBars(eErrorBarType.Both, eErrorValueType.Custom);
                 serie.ErrorBars.Plus.ValuesSource = "{1}";
                 serie.ErrorBars.Minus.FormatCode = "General";
@@ -204,7 +204,7 @@ namespace EPPlusTest.Drawing.Chart
 
                 chart.SetPosition(1, 0, 5, 0);
                 p1.Save();
-                using(var p2=new ExcelPackage(p1.Stream))
+                using(ExcelPackage? p2=new ExcelPackage(p1.Stream))
                 {
                     ws = p2.Workbook.Worksheets["ErrorBarsScatter"];
 
@@ -232,11 +232,11 @@ namespace EPPlusTest.Drawing.Chart
         [TestMethod]
         public void ErrorBars_Bubble()
         {
-            var ws = _pck.Workbook.Worksheets.Add("ErrorBar_Bubble");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("ErrorBar_Bubble");
             LoadTestdata(ws);
 
-            var chart = ws.Drawings.AddBubbleChart("BubbleChart1", eBubbleChartType.Bubble);
-            var serie = chart.Series.Add("D2:D100", "A2:A100");
+            ExcelBubbleChart? chart = ws.Drawings.AddBubbleChart("BubbleChart1", eBubbleChartType.Bubble);
+            ExcelBubbleChartSerie? serie = chart.Series.Add("D2:D100", "A2:A100");
             serie.AddErrorBars(eErrorBarType.Both, eErrorValueType.Custom);
             serie.ErrorBars.Plus.ValuesSource = "{1}";
             serie.ErrorBars.Minus.FormatCode = "General";
@@ -269,13 +269,13 @@ namespace EPPlusTest.Drawing.Chart
         [TestMethod]
         public void ErrorBars_ReadBubble()
         {
-            using (var p1 = new ExcelPackage())
+            using (ExcelPackage? p1 = new ExcelPackage())
             {
-                var ws = p1.Workbook.Worksheets.Add("ErrorBars");
+                ExcelWorksheet? ws = p1.Workbook.Worksheets.Add("ErrorBars");
                 LoadTestdata(ws);
 
-                var chart = ws.Drawings.AddBubbleChart("BubbleChart1", eBubbleChartType.Bubble);
-                var serie = chart.Series.Add("D2:D100", "A2:A100");
+                ExcelBubbleChart? chart = ws.Drawings.AddBubbleChart("BubbleChart1", eBubbleChartType.Bubble);
+                ExcelBubbleChartSerie? serie = chart.Series.Add("D2:D100", "A2:A100");
                 serie.AddErrorBars(eErrorBarType.Both, eErrorValueType.Custom);
                 serie.ErrorBars.Plus.ValuesSource = "{1}";
                 serie.ErrorBars.Minus.FormatCode = "General";
@@ -289,7 +289,7 @@ namespace EPPlusTest.Drawing.Chart
 
                 chart.SetPosition(1, 0, 5, 0);
                 p1.Save();
-                using (var p2 = new ExcelPackage(p1.Stream))
+                using (ExcelPackage? p2 = new ExcelPackage(p1.Stream))
                 {
                     ws = p2.Workbook.Worksheets["ErrorBars"];
 
@@ -317,11 +317,11 @@ namespace EPPlusTest.Drawing.Chart
         [TestMethod]
         public void ErrorBars_Area()
         {
-            var ws = _pck.Workbook.Worksheets.Add("ErrorBar_Area");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("ErrorBar_Area");
             LoadTestdata(ws);
 
-            var chart = ws.Drawings.AddAreaChart("AreaChart1", eAreaChartType.Area);
-            var serie = chart.Series.Add("D2:D100", "A2:A100");
+            ExcelAreaChart? chart = ws.Drawings.AddAreaChart("AreaChart1", eAreaChartType.Area);
+            ExcelAreaChartSerie? serie = chart.Series.Add("D2:D100", "A2:A100");
             serie.AddErrorBars(eErrorBarType.Both, eErrorValueType.Custom);
             serie.ErrorBars.Plus.ValuesSource = "{1}";
             serie.ErrorBars.Minus.FormatCode = "General";
@@ -354,13 +354,13 @@ namespace EPPlusTest.Drawing.Chart
         [TestMethod]
         public void ErrorBars_ReadArea()
         {
-            using (var p1 = new ExcelPackage())
+            using (ExcelPackage? p1 = new ExcelPackage())
             {
-                var ws = p1.Workbook.Worksheets.Add("ErrorBars");
+                ExcelWorksheet? ws = p1.Workbook.Worksheets.Add("ErrorBars");
                 LoadTestdata(ws);
 
-                var chart = ws.Drawings.AddAreaChart("ScatterChart1", eAreaChartType.Area);
-                var serie = chart.Series.Add("D2:D100", "A2:A100");
+                ExcelAreaChart? chart = ws.Drawings.AddAreaChart("ScatterChart1", eAreaChartType.Area);
+                ExcelAreaChartSerie? serie = chart.Series.Add("D2:D100", "A2:A100");
                 serie.AddErrorBars(eErrorBarType.Both, eErrorValueType.Custom);
                 serie.ErrorBars.Plus.ValuesSource = "{1}";
                 serie.ErrorBars.Minus.FormatCode = "General";
@@ -374,7 +374,7 @@ namespace EPPlusTest.Drawing.Chart
 
                 chart.SetPosition(1, 0, 5, 0);
                 p1.Save();
-                using (var p2 = new ExcelPackage(p1.Stream))
+                using (ExcelPackage? p2 = new ExcelPackage(p1.Stream))
                 {
                     ws = p2.Workbook.Worksheets["ErrorBars"];
 
@@ -402,11 +402,11 @@ namespace EPPlusTest.Drawing.Chart
         [TestMethod]
         public void ErrorBars_Delete()
         {
-            var ws = _pck.Workbook.Worksheets.Add("ErrorBar_Percentage_removed");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("ErrorBar_Percentage_removed");
             LoadTestdata(ws);
 
-            var chart = ws.Drawings.AddLineChart("LineChart1_DeletedErrorbars", eLineChartType.Line);
-            var serie = chart.Series.Add("D2:D100", "A2:A100");
+            ExcelLineChart? chart = ws.Drawings.AddLineChart("LineChart1_DeletedErrorbars", eLineChartType.Line);
+            ExcelLineChartSerie? serie = chart.Series.Add("D2:D100", "A2:A100");
             serie.AddErrorBars(eErrorBarType.Plus, eErrorValueType.Percentage);
             serie.ErrorBars.Value = 5;
             chart.SetPosition(1, 0, 5, 0);
@@ -422,11 +422,11 @@ namespace EPPlusTest.Drawing.Chart
         [TestMethod]
         public void ErrorBarsScatter_Delete()
         {
-            var ws = _pck.Workbook.Worksheets.Add("ErrorBar_Scatter_removed");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("ErrorBar_Scatter_removed");
             LoadTestdata(ws);
 
-            var chart = ws.Drawings.AddScatterChart("LineChart1_DeletedErrorbars", eScatterChartType.XYScatter);
-            var serie = chart.Series.Add("D2:D100", "A2:A100");
+            ExcelScatterChart? chart = ws.Drawings.AddScatterChart("LineChart1_DeletedErrorbars", eScatterChartType.XYScatter);
+            ExcelScatterChartSerie? serie = chart.Series.Add("D2:D100", "A2:A100");
             serie.AddErrorBars(eErrorBarType.Plus, eErrorValueType.Percentage);
             Assert.IsNotNull(serie.ErrorBars);
             Assert.IsNotNull(serie.ErrorBarsX);

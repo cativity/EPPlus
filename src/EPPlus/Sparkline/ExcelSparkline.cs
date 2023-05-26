@@ -35,7 +35,7 @@ namespace OfficeOpenXml.Sparkline
         {
             get
             {
-                var v = GetXmlNodeString(_fPath);
+                string? v = GetXmlNodeString(_fPath);
                 if(string.IsNullOrEmpty(v))
                 {
                     return null;

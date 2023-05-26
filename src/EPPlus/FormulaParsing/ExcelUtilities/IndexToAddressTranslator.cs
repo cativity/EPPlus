@@ -58,15 +58,15 @@ namespace OfficeOpenXml.FormulaParsing.ExcelUtilities
 
         public string ToAddress(int col, int row)
         {
-            var fixedCol = _excelReferenceType == ExcelReferenceType.AbsoluteRowAndColumn ||
-                           _excelReferenceType == ExcelReferenceType.RelativeRowAbsolutColumn;
-            var colString = GetColumnLetter(col, fixedCol);
+            bool fixedCol = _excelReferenceType == ExcelReferenceType.AbsoluteRowAndColumn ||
+                            _excelReferenceType == ExcelReferenceType.RelativeRowAbsolutColumn;
+            string? colString = GetColumnLetter(col, fixedCol);
             return colString + GetRowNumber(row);
         }
 
         private string GetRowNumber(int rowNo)
         {
-            var retVal = rowNo < (_excelDataProvider.ExcelMaxRows) ? rowNo.ToString() : string.Empty;
+            string? retVal = rowNo < (_excelDataProvider.ExcelMaxRows) ? rowNo.ToString() : string.Empty;
             if (!string.IsNullOrEmpty(retVal))
             {
                 switch (_excelReferenceType)

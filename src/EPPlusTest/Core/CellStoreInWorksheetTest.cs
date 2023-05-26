@@ -52,7 +52,7 @@ namespace EPPlusTest.Core
         [TestMethod]
         public void Insert1()
         {
-            var ws = _pck.Workbook.Worksheets.Add("Insert1");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("Insert1");
             LoadData(ws);
 
             ws.InsertRow(2, 1000);
@@ -78,7 +78,7 @@ namespace EPPlusTest.Core
         [TestMethod]
         public void Insert2()
         {
-            var ws = _pck.Workbook.Worksheets.Add("Insert2-1");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("Insert2-1");
             LoadData(ws);
 
             for (int i = 0; i < 32; i++)
@@ -100,7 +100,7 @@ namespace EPPlusTest.Core
         [TestMethod]
         public void InsertTwoFrom5000()
         {
-            var ws = _pck.Workbook.Worksheets.Add("Insert3");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("Insert3");
             LoadData(ws, 5000);
 
             for (int i = 0; i < 5000; i += 4)
@@ -113,7 +113,7 @@ namespace EPPlusTest.Core
         [TestMethod]
         public void InsertEveryOtherFrom5000()
         {
-            var ws = _pck.Workbook.Worksheets.Add("InsertOtherFrom5000");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("InsertOtherFrom5000");
 
             LoadData(ws, 5000);
 
@@ -127,12 +127,12 @@ namespace EPPlusTest.Core
         [TestMethod]
         public void EnumCellstore()
         {
-            var ws = _pck.Workbook.Worksheets.Add("enum");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("enum");
 
             LoadData(ws, 5000);
 
-            var o = new CellStoreEnumerator<ExcelValue>(ws._values, 2, 1, 5, 3);
-            for (var i=1;i<5000;i++)
+            CellStoreEnumerator<ExcelValue>? o = new CellStoreEnumerator<ExcelValue>(ws._values, 2, 1, 5, 3);
+            for (int i=1;i<5000;i++)
             {
                 Assert.AreEqual($"{i-1},0", ws.Cells[i, 1].Value);
             }
@@ -140,7 +140,7 @@ namespace EPPlusTest.Core
         [TestMethod]
         public void DeleteRows()
         {
-            var ws = _pck.Workbook.Worksheets.Add("Delete");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("Delete");
             LoadData(ws, 5000);
 
             ws.DeleteRow(2, 2);
@@ -158,7 +158,7 @@ namespace EPPlusTest.Core
         [TestMethod]
         public void DeleteRowsFirst()
         {
-            var ws = _pck.Workbook.Worksheets.Add("DeleteFirst");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("DeleteFirst");
             LoadData(ws, 5000);
 
             ws.DeleteRow(32, 30);
@@ -170,7 +170,7 @@ namespace EPPlusTest.Core
         [TestMethod]
         public void DeleteInsert()
         {
-            var ws = _pck.Workbook.Worksheets.Add("DeleteInsert");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("DeleteInsert");
             LoadData(ws, 5000);
 
             ws.DeleteRow(2, 33);
@@ -205,11 +205,11 @@ namespace EPPlusTest.Core
         [TestMethod]
         public void FillInsertTest()
         {
-            var ws = _pck.Workbook.Worksheets.Add("FillInsert");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("FillInsert");
 
             LoadData(ws, 500);
 
-            var r = 1;
+            int r = 1;
             for (int i = 1; i <= 500; i++)
             {
                 ws.InsertRow(r, i);
@@ -220,7 +220,7 @@ namespace EPPlusTest.Core
         [TestMethod]
         public void CopyCellsTest()
         {
-            var ws = _pck.Workbook.Worksheets.Add("CopyCells");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("CopyCells");
 
             LoadData(ws, 100, isNumeric: true);
             ws.Cells["B1"].Formula = "SUM(A1:A500)";
@@ -237,14 +237,14 @@ namespace EPPlusTest.Core
         [TestMethod]
         public void Issues351()
         {
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
                 // Arrange
-                var worksheet = package.Workbook.Worksheets.Add("Test");
+                ExcelWorksheet? worksheet = package.Workbook.Worksheets.Add("Test");
                 worksheet.Cells[1, 1].Value = "A";                      // If you remove this "anchor", the problem doesn't happen.
                 worksheet.Cells[1026, 1].Value = "B";
                 worksheet.Cells[1026, 2].Value = "B";
-                var range = worksheet.Row(1026);
+                ExcelRow? range = worksheet.Row(1026);
                 range.Style.Fill.PatternType = ExcelFillStyle.Solid;
                 range.Style.Fill.BackgroundColor.SetColor(Color.FromArgb(255, 255, 0));
 
@@ -259,7 +259,7 @@ namespace EPPlusTest.Core
         public void ValidateColumnsAreCreatedIfSpan()
         {
 
-            var ws = _pck.Workbook.Worksheets.Add("ValidateColumnSpan");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("ValidateColumnSpan");
             for (int i = 1; i < 11; i++)
             {
                 ws.Cells[i, 1].Value = "A";

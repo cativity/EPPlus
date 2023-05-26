@@ -53,7 +53,7 @@ namespace EPPlusTest.Utils
         [TestMethod]
         public void Require_IsNotNull_ShouldNotThrowIfArgumentIsAnInstance()
         {
-            var obj = new TestClass();
+            TestClass? obj = new TestClass();
             Require.Argument(obj).IsNotNull("test");
         }
 

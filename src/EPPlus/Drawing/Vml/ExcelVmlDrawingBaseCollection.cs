@@ -18,6 +18,7 @@ using System.Collections;
 using OfficeOpenXml.Utils;
 using System.IO;
 using OfficeOpenXml.Constants;
+using OfficeOpenXml.Packaging;
 
 namespace OfficeOpenXml.Drawing.Vml
 {
@@ -43,7 +44,7 @@ namespace OfficeOpenXml.Drawing.Vml
             _ws = ws;
             if (uri == null)
             {
-                var id = _ws.SheetId;
+                int id = _ws.SheetId;
             }
             else
             {
@@ -55,7 +56,7 @@ namespace OfficeOpenXml.Drawing.Vml
                 catch
                 {
                     //VML can contain unclosed br tags. Try handle this.
-                    var xml = new StreamReader(Part.GetStream()).ReadToEnd();
+                    string? xml = new StreamReader(Part.GetStream()).ReadToEnd();
                     XmlHelper.LoadXmlSafe(VmlDrawingXml, RemoveUnclosedBrTags(xml), Encoding.UTF8);
                 }
             }
@@ -76,13 +77,13 @@ namespace OfficeOpenXml.Drawing.Vml
         {
             if (Uri == null)
             {
-                var id = _ws.SheetId;
+                int id = _ws.SheetId;
                 Uri = XmlHelper.GetNewUri(_package.ZipPackage, @"/xl/drawings/vmlDrawing{0}.vml", ref id);
             }
             if (Part == null)
             {
                 Part = _package.ZipPackage.CreatePart(Uri, ContentTypes.contentTypeVml, _package.Compression);
-                var rel = _ws.Part.CreateRelationship(UriHelper.GetRelativeUri(_ws.WorksheetUri, Uri), Packaging.TargetMode.Internal, ExcelPackage.schemaRelationships + "/vmlDrawing");
+                ZipPackageRelationship? rel = _ws.Part.CreateRelationship(UriHelper.GetRelativeUri(_ws.WorksheetUri, Uri), Packaging.TargetMode.Internal, ExcelPackage.schemaRelationships + "/vmlDrawing");
                 _ws.SetXmlNodeString("d:legacyDrawing/@r:id", rel.Id);
                 RelId = rel.Id;
             }

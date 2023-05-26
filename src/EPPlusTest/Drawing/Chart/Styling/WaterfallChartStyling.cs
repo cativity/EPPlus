@@ -58,7 +58,7 @@ namespace EPPlusTest.Drawing.Chart.Styling
         [TestMethod]
         public void WaterfallChart_Styles()
         {
-            var ws = _pck.Workbook.Worksheets.Add("WaterfallChart");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("WaterfallChart");
             LoadTestdata(ws);
             WaterfallChartStyle(ws);
         }
@@ -89,7 +89,7 @@ namespace EPPlusTest.Drawing.Chart.Styling
                 {
                     c.Legend.Position = eLegendPosition.Bottom;
                     c.Title.Text = "Waterfall 2";
-                    var dl = c.Series[0].DataLabel.DataLabels.Add(1);
+                    ExcelChartExDataLabelItem? dl = c.Series[0].DataLabel.DataLabels.Add(1);
                     dl.Format = "#,##0.00";
                     dl = c.Series[0].DataLabel.DataLabels.Add(0);
                     dl.Border.Width = 1;
@@ -147,7 +147,7 @@ namespace EPPlusTest.Drawing.Chart.Styling
         }
         private static ExcelWaterfallChart AddChartEx(ExcelWorksheet ws, ePresetChartStyle style, string name, int row, int col,Action<ExcelWaterfallChart> SetProperties)
         {
-            var chart = ws.Drawings.AddWaterfallChart(name);
+            ExcelWaterfallChart? chart = ws.Drawings.AddWaterfallChart(name);
             chart.SetPosition(row, 0, col, 0);
             chart.To.Column = col+12;
             chart.To.ColumnOff = 0;

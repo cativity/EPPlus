@@ -49,15 +49,15 @@ namespace EPPlusTest.Drawing
         public void ReadColorProperty()
         {
             //Setup
-            var wsName = "SolidFill";
-            var expected = Color.Blue;
-            var ws = _pck.Workbook.Worksheets[wsName];
+            string? wsName = "SolidFill";
+            Color expected = Color.Blue;
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets[wsName];
             if (ws == null)
             {
                 Assert.Inconclusive($"{wsName} worksheet is missing");
             }
 
-            var shape = (ExcelShape)ws.Drawings[0];
+            ExcelShape? shape = (ExcelShape)ws.Drawings[0];
 
             //Assert
             Assert.AreEqual(eFillStyle.SolidFill, shape.Fill.Style);
@@ -68,15 +68,15 @@ namespace EPPlusTest.Drawing
         public void ReadSolidFill_Color()
         {
             //Setup
-            var wsName = "SolidFillFromSolidFill";
-            var expected = Color.Green;
-            var ws = _pck.Workbook.Worksheets[wsName];
+            string? wsName = "SolidFillFromSolidFill";
+            Color expected = Color.Green;
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets[wsName];
             if (ws == null)
             {
                 Assert.Inconclusive($"{wsName} worksheet is missing");
             }
 
-            var shape = (ExcelShape)ws.Drawings[0];
+            ExcelShape? shape = (ExcelShape)ws.Drawings[0];
 
             //Assert
             Assert.AreEqual(eFillStyle.SolidFill, shape.Fill.Style);
@@ -87,15 +87,15 @@ namespace EPPlusTest.Drawing
         public void ReadSolidFill_ColorPreset()
         {
             //Setup
-            var wsName = "SolidFillFromPresetClr";
-            var expected = ePresetColor.Red;
-            var ws = _pck.Workbook.Worksheets[wsName];
+            string? wsName = "SolidFillFromPresetClr";
+            ePresetColor expected = ePresetColor.Red;
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets[wsName];
             if (ws == null)
             {
                 Assert.Inconclusive($"{wsName} worksheet is missing");
             }
 
-            var shape = (ExcelShape)ws.Drawings[0];
+            ExcelShape? shape = (ExcelShape)ws.Drawings[0];
 
             //Assert
             Assert.AreEqual(eFillStyle.SolidFill, shape.Fill.Style);
@@ -106,15 +106,15 @@ namespace EPPlusTest.Drawing
         public void ReadSolidFill_ColorScheme()
         {
             //Setup
-            var wsName = "SolidFillFromSchemeClr";
-            var expected = eSchemeColor.Accent6;
-            var ws = _pck.Workbook.Worksheets[wsName];
+            string? wsName = "SolidFillFromSchemeClr";
+            eSchemeColor expected = eSchemeColor.Accent6;
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets[wsName];
             if (ws == null)
             {
                 Assert.Inconclusive($"{wsName} worksheet is missing");
             }
 
-            var shape = (ExcelShape)ws.Drawings[0];
+            ExcelShape? shape = (ExcelShape)ws.Drawings[0];
 
             //Act
             shape.Fill.Style = eFillStyle.SolidFill;
@@ -129,17 +129,17 @@ namespace EPPlusTest.Drawing
         public void ReadSolidFill_ColorPercentage()
         {
             //Setup
-            var wsName = "SolidFillFromColorPrc";
-            var expectedR = 51;
-            var expectedG = 49;
-            var expectedB = 50;
-            var ws = _pck.Workbook.Worksheets[wsName];
+            string? wsName = "SolidFillFromColorPrc";
+            int expectedR = 51;
+            int expectedG = 49;
+            int expectedB = 50;
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets[wsName];
             if (ws == null)
             {
                 Assert.Inconclusive($"{wsName} worksheet is missing");
             }
 
-            var shape = (ExcelShape)ws.Drawings[0];
+            ExcelShape? shape = (ExcelShape)ws.Drawings[0];
 
             //Assert
             Assert.AreEqual(eFillStyle.SolidFill, shape.Fill.Style);
@@ -152,17 +152,17 @@ namespace EPPlusTest.Drawing
         public void ReadSolidFill_ColorHsl()
         {
             //Setup
-            var wsName = "SolidFillFromColorHcl";
-            var expectedHue = 180;
-            var expectedLum = 15;
-            var expectedSat = 50;
-            var ws = _pck.Workbook.Worksheets[wsName];
+            string? wsName = "SolidFillFromColorHcl";
+            int expectedHue = 180;
+            int expectedLum = 15;
+            int expectedSat = 50;
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets[wsName];
             if (ws == null)
             {
                 Assert.Inconclusive($"{wsName} worksheet is missing");
             }
 
-            var shape = (ExcelShape)ws.Drawings[0];
+            ExcelShape? shape = (ExcelShape)ws.Drawings[0];
 
             //Assert
             Assert.AreEqual(eFillStyle.SolidFill, shape.Fill.Style);
@@ -175,15 +175,15 @@ namespace EPPlusTest.Drawing
         public void ReadSolidFill_ColorSystem()
         {
             //Setup
-            var wsName = "SolidFillFromColorSystem";
-            var expected = eSystemColor.Background;
-            var ws = _pck.Workbook.Worksheets[wsName];
+            string? wsName = "SolidFillFromColorSystem";
+            eSystemColor expected = eSystemColor.Background;
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets[wsName];
             if (ws == null)
             {
                 Assert.Inconclusive($"{wsName} worksheet is missing");
             }
 
-            var shape = (ExcelShape)ws.Drawings[0];
+            ExcelShape? shape = (ExcelShape)ws.Drawings[0];
 
             //Assert
             Assert.AreEqual(eFillStyle.SolidFill, shape.Fill.Style);
@@ -196,15 +196,15 @@ namespace EPPlusTest.Drawing
         public void ReadTransparancy()
         {
             //Setup
-            var wsName = "Transparancy";
-            var expected = 45;
-            var ws = _pck.Workbook.Worksheets[wsName];
+            string? wsName = "Transparancy";
+            int expected = 45;
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets[wsName];
             if (ws == null)
             {
                 Assert.Inconclusive($"{wsName} worksheet is missing");
             }
 
-            var shape = (ExcelShape)ws.Drawings[0];
+            ExcelShape? shape = (ExcelShape)ws.Drawings[0];
 
             //Assert
             Assert.AreEqual(eFillStyle.SolidFill, shape.Fill.Style);
@@ -216,15 +216,15 @@ namespace EPPlusTest.Drawing
         public void ReadTransformAlpha()
         {
             //Setup
-            var wsName = "Alpha";
-            var expected = 45;
-            var ws = _pck.Workbook.Worksheets[wsName];
+            string? wsName = "Alpha";
+            int expected = 45;
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets[wsName];
             if (ws == null)
             {
                 Assert.Inconclusive($"{wsName} worksheet is missing");
             }
 
-            var shape = (ExcelShape)ws.Drawings[0];
+            ExcelShape? shape = (ExcelShape)ws.Drawings[0];
 
             //Assert
             Assert.AreEqual(eFillStyle.SolidFill, shape.Fill.Style);
@@ -236,15 +236,15 @@ namespace EPPlusTest.Drawing
         public void ReadTransformTint()
         {
             //Setup
-            var wsName = "Tint";
-            var expected = 30;
-            var ws = _pck.Workbook.Worksheets[wsName];
+            string? wsName = "Tint";
+            int expected = 30;
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets[wsName];
             if (ws == null)
             {
                 Assert.Inconclusive($"{wsName} worksheet is missing");
             }
 
-            var shape = (ExcelShape)ws.Drawings[0];
+            ExcelShape? shape = (ExcelShape)ws.Drawings[0];
 
             //Assert
             Assert.AreEqual(eFillStyle.SolidFill, shape.Fill.Style);
@@ -255,15 +255,15 @@ namespace EPPlusTest.Drawing
         public void ReadTransformShade()
         {
             //Setup
-            var wsName = "Shade";
-            var expected = 95;
-            var ws = _pck.Workbook.Worksheets[wsName];
+            string? wsName = "Shade";
+            int expected = 95;
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets[wsName];
             if (ws == null)
             {
                 Assert.Inconclusive($"{wsName} worksheet is missing");
             }
 
-            var shape = (ExcelShape)ws.Drawings[0];
+            ExcelShape? shape = (ExcelShape)ws.Drawings[0];
 
 
             //Assert
@@ -275,14 +275,14 @@ namespace EPPlusTest.Drawing
         public void ReadTransformInverse_true()
         {
             //Setup
-            var wsName = "Inverse_set";
-            var ws = _pck.Workbook.Worksheets[wsName];
+            string? wsName = "Inverse_set";
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets[wsName];
             if (ws == null)
             {
                 Assert.Inconclusive($"{wsName} worksheet is missing");
             }
 
-            var shape = (ExcelShape)ws.Drawings[0];
+            ExcelShape? shape = (ExcelShape)ws.Drawings[0];
 
             //Assert
             Assert.AreEqual(eFillStyle.SolidFill, shape.Fill.Style);
@@ -293,15 +293,15 @@ namespace EPPlusTest.Drawing
         public void ReadTransformAlphaModulation()
         {
             //Setup
-            var wsName = "AlphaModulation";
-            var expected = 50;
-            var ws = _pck.Workbook.Worksheets[wsName];
+            string? wsName = "AlphaModulation";
+            int expected = 50;
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets[wsName];
             if (ws == null)
             {
                 Assert.Inconclusive($"{wsName} worksheet is missing");
             }
 
-            var shape = (ExcelShape)ws.Drawings[0];
+            ExcelShape? shape = (ExcelShape)ws.Drawings[0];
 
             //Assert
             Assert.AreEqual(eFillStyle.SolidFill, shape.Fill.Style);
@@ -314,15 +314,15 @@ namespace EPPlusTest.Drawing
         public void ReadTransformAlphaOffset()
         {
             //Setup
-            var wsName = "AlphaOffset";
-            var expected = -10;
-            var ws = _pck.Workbook.Worksheets[wsName];
+            string? wsName = "AlphaOffset";
+            int expected = -10;
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets[wsName];
             if (ws == null)
             {
                 Assert.Inconclusive($"{wsName} worksheet is missing");
             }
 
-            var shape = (ExcelShape)ws.Drawings[0];
+            ExcelShape? shape = (ExcelShape)ws.Drawings[0];
 
             //Assert
             Assert.AreEqual(eFillStyle.SolidFill, shape.Fill.Style);
@@ -335,17 +335,17 @@ namespace EPPlusTest.Drawing
         public void ReadTransformColorPercentage()
         {
             //Setup
-            var wsName = "TransColorPerc";
-            var expectedR = 30;
-            var expectedG = 60;
-            var expectedB = 20;
-            var ws = _pck.Workbook.Worksheets[wsName];
+            string? wsName = "TransColorPerc";
+            int expectedR = 30;
+            int expectedG = 60;
+            int expectedB = 20;
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets[wsName];
             if (ws == null)
             {
                 Assert.Inconclusive($"{wsName} worksheet is missing");
             }
 
-            var shape = (ExcelShape)ws.Drawings[0];
+            ExcelShape? shape = (ExcelShape)ws.Drawings[0];
 
             //Assert
             Assert.AreEqual(eFillStyle.SolidFill, shape.Fill.Style);
@@ -360,17 +360,17 @@ namespace EPPlusTest.Drawing
         public void ReadTransformColorModulation()
         {
             //Setup
-            var wsName = "TransColorMod";
-            var expectedR = 3.33;
-            var expectedG = 50;
-            var expectedB = 25600;
-            var ws = _pck.Workbook.Worksheets[wsName];
+            string? wsName = "TransColorMod";
+            double expectedR = 3.33;
+            int expectedG = 50;
+            int expectedB = 25600;
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets[wsName];
             if (ws == null)
             {
                 Assert.Inconclusive($"{wsName} worksheet is missing");
             }
 
-            var shape = (ExcelShape)ws.Drawings[0];
+            ExcelShape? shape = (ExcelShape)ws.Drawings[0];
 
             //Assert
             Assert.AreEqual(eFillStyle.SolidFill, shape.Fill.Style);
@@ -385,17 +385,17 @@ namespace EPPlusTest.Drawing
         public void ReadTransformColorOffset()
         {
             //Setup
-            var wsName = "TransColorOffset";
-            var expectedR = 10;
-            var expectedG = -20;
-            var expectedB = 30;
-            var ws = _pck.Workbook.Worksheets[wsName];
+            string? wsName = "TransColorOffset";
+            int expectedR = 10;
+            int expectedG = -20;
+            int expectedB = 30;
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets[wsName];
             if (ws == null)
             {
                 Assert.Inconclusive($"{wsName} worksheet is missing");
             }
 
-            var shape = (ExcelShape)ws.Drawings[0];
+            ExcelShape? shape = (ExcelShape)ws.Drawings[0];
 
             //Assert
             Assert.AreEqual(eFillStyle.SolidFill, shape.Fill.Style);
@@ -410,16 +410,16 @@ namespace EPPlusTest.Drawing
         public void ReadTransformHslOffset()
         {
             //Setup
-            var wsName = "TransHslOffset";
-            var expectedLum = 10;
-            var expectedSat = -20;
-            var ws = _pck.Workbook.Worksheets[wsName];
+            string? wsName = "TransHslOffset";
+            int expectedLum = 10;
+            int expectedSat = -20;
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets[wsName];
             if (ws == null)
             {
                 Assert.Inconclusive($"{wsName} worksheet is missing");
             }
 
-            var shape = (ExcelShape)ws.Drawings[0];
+            ExcelShape? shape = (ExcelShape)ws.Drawings[0];
 
             //Assert
             Assert.AreEqual(eFillStyle.SolidFill, shape.Fill.Style);
@@ -432,16 +432,16 @@ namespace EPPlusTest.Drawing
         public void ReadTransformHslModulation()
         {
             //Setup
-            var wsName = "TransHslModulation";
-            var expectedLum = 50;
-            var expectedSat = 200;
-            var ws = _pck.Workbook.Worksheets[wsName];
+            string? wsName = "TransHslModulation";
+            int expectedLum = 50;
+            int expectedSat = 200;
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets[wsName];
             if (ws == null)
             {
                 Assert.Inconclusive($"{wsName} worksheet is missing");
             }
 
-            var shape = (ExcelShape)ws.Drawings[0];
+            ExcelShape? shape = (ExcelShape)ws.Drawings[0];
             
             //Assert
             Assert.AreEqual(eFillStyle.SolidFill, shape.Fill.Style);
@@ -457,14 +457,14 @@ namespace EPPlusTest.Drawing
         public void ReadGradient()
         {
             //Setup
-            var wsName = "Gradient";
-            var ws = _pck.Workbook.Worksheets[wsName];
+            string? wsName = "Gradient";
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets[wsName];
             if (ws == null)
             {
                 Assert.Inconclusive($"{wsName} worksheet is missing");
             }
 
-            var shape = (ExcelShape)ws.Drawings[0];
+            ExcelShape? shape = (ExcelShape)ws.Drawings[0];
 
             //Assert
             Assert.IsNull(shape.Fill.SolidFill);
@@ -477,14 +477,14 @@ namespace EPPlusTest.Drawing
         public void ReadGradientCircularPath()
         {
             //Setup
-            var wsName = "GradientCircular";
-            var ws = _pck.Workbook.Worksheets[wsName];
+            string? wsName = "GradientCircular";
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets[wsName];
             if (ws == null)
             {
                 Assert.Inconclusive($"{wsName} worksheet is missing");
             }
 
-            var shape = (ExcelShape)ws.Drawings[0];
+            ExcelShape? shape = (ExcelShape)ws.Drawings[0];
 
             //Assert
             Assert.IsNull(shape.Fill.SolidFill);
@@ -500,14 +500,14 @@ namespace EPPlusTest.Drawing
         public void ReadGradientRectPath()
         {
             //Setup
-            var wsName = "GradientRect";
-            var ws = _pck.Workbook.Worksheets[wsName];
+            string? wsName = "GradientRect";
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets[wsName];
             if (ws == null)
             {
                 Assert.Inconclusive($"{wsName} worksheet is missing");
             }
 
-            var shape = (ExcelShape)ws.Drawings[0];
+            ExcelShape? shape = (ExcelShape)ws.Drawings[0];
 
             //Assert
             Assert.AreEqual(eFillStyle.GradientFill, shape.Fill.Style);
@@ -522,14 +522,14 @@ namespace EPPlusTest.Drawing
         public void ReadGradientShapePath()
         {
             //Setup
-            var wsName = "GradientShape";
-            var ws = _pck.Workbook.Worksheets[wsName];
+            string? wsName = "GradientShape";
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets[wsName];
             if (ws == null)
             {
                 Assert.Inconclusive($"{wsName} worksheet is missing");
             }
 
-            var shape = (ExcelShape)ws.Drawings[0];
+            ExcelShape? shape = (ExcelShape)ws.Drawings[0];
 
             //Assert
             Assert.IsNull(shape.Fill.SolidFill);
@@ -551,14 +551,14 @@ namespace EPPlusTest.Drawing
         public void ReadGradientAddMethods()
         {
             //Setup
-            var wsName = "GradientAddMethods";
-            var ws = _pck.Workbook.Worksheets[wsName];
+            string? wsName = "GradientAddMethods";
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets[wsName];
             if (ws == null)
             {
                 Assert.Inconclusive($"{wsName} worksheet is missing");
             }
 
-            var shape = (ExcelShape)ws.Drawings[0];
+            ExcelShape? shape = (ExcelShape)ws.Drawings[0];
 
             //Act
             shape.Fill.Style = eFillStyle.GradientFill;
@@ -616,14 +616,14 @@ namespace EPPlusTest.Drawing
         public void ReadPatternDefault()
         {
             //Setup
-            var wsName = "PatternDefault";
-            var ws = _pck.Workbook.Worksheets[wsName];
+            string? wsName = "PatternDefault";
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets[wsName];
             if (ws == null)
             {
                 Assert.Inconclusive($"{wsName} worksheet is missing");
             }
 
-            var shape = (ExcelShape)ws.Drawings[0];
+            ExcelShape? shape = (ExcelShape)ws.Drawings[0];
 
             //Assert
             Assert.AreEqual(eFillStyle.PatternFill, shape.Fill.Style);
@@ -635,14 +635,14 @@ namespace EPPlusTest.Drawing
         public void ReadPatternCross()
         {
             //Setup
-            var wsName = "PatternCross";
-            var ws = _pck.Workbook.Worksheets[wsName];
+            string? wsName = "PatternCross";
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets[wsName];
             if (ws == null)
             {
                 Assert.Inconclusive($"{wsName} worksheet is missing");
             }
 
-            var shape = (ExcelShape)ws.Drawings[0];
+            ExcelShape? shape = (ExcelShape)ws.Drawings[0];
 
             //Act
             shape.Fill.Style = eFillStyle.PatternFill;
@@ -662,14 +662,14 @@ namespace EPPlusTest.Drawing
         public void ReadBlipFill_DefaultSettings()
         {
             //Setup
-            var wsName = "BlipFill";
-            var ws = _pck.Workbook.Worksheets[wsName];
+            string? wsName = "BlipFill";
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets[wsName];
             if (ws == null)
             {
                 Assert.Inconclusive($"{wsName} worksheet is missing");
             }
 
-            var shape = (ExcelShape)ws.Drawings[0]; 
+            ExcelShape? shape = (ExcelShape)ws.Drawings[0]; 
 
             //Assert
             Assert.AreEqual(eFillStyle.BlipFill, shape.Fill.Style);
@@ -682,14 +682,14 @@ namespace EPPlusTest.Drawing
         public void ReadBlipFill_NoImage()
         {
             //Setup
-            var wsName = "BlipFillNoImage";
-            var ws = _pck.Workbook.Worksheets[wsName];
+            string? wsName = "BlipFillNoImage";
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets[wsName];
             if (ws == null)
             {
                 Assert.Inconclusive($"{wsName} worksheet is missing");
             }
 
-            var shape = (ExcelShape)ws.Drawings[0];
+            ExcelShape? shape = (ExcelShape)ws.Drawings[0];
 
             //Assert
             Assert.AreEqual(eFillStyle.BlipFill, shape.Fill.Style);
@@ -701,14 +701,14 @@ namespace EPPlusTest.Drawing
         public void ReadBlipFill_Stretch()
         {
             //Setup
-            var wsName = "BlipFillStretch";
-            var ws = _pck.Workbook.Worksheets[wsName];
+            string? wsName = "BlipFillStretch";
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets[wsName];
             if (ws == null)
             {
                 Assert.Inconclusive($"{wsName} worksheet is missing");
             }
 
-            var shape = (ExcelShape)ws.Drawings[0];
+            ExcelShape? shape = (ExcelShape)ws.Drawings[0];
 
             //Assert
             Assert.AreEqual(eFillStyle.BlipFill, shape.Fill.Style);
@@ -725,14 +725,14 @@ namespace EPPlusTest.Drawing
         public void ReadBlipFill_SourceRectangle()
         {
             //Setup
-            var wsName = "BlipFillSourceRectangle";
-            var ws = _pck.Workbook.Worksheets[wsName];
+            string? wsName = "BlipFillSourceRectangle";
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets[wsName];
             if (ws == null)
             {
                 Assert.Inconclusive($"{wsName} worksheet is missing");
             }
 
-            var shape = (ExcelShape)ws.Drawings[0];
+            ExcelShape? shape = (ExcelShape)ws.Drawings[0];
 
             //Assert
             Assert.AreEqual(eFillStyle.BlipFill, shape.Fill.Style);
@@ -749,14 +749,14 @@ namespace EPPlusTest.Drawing
         public void ReadBlipFill_Tile()
         {
             //Setup
-            var wsName = "BlipFillTile";
-            var ws = _pck.Workbook.Worksheets[wsName];
+            string? wsName = "BlipFillTile";
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets[wsName];
             if (ws == null)
             {
                 Assert.Inconclusive($"{wsName} worksheet is missing");
             }
 
-            var shape = (ExcelShape)ws.Drawings[0];
+            ExcelShape? shape = (ExcelShape)ws.Drawings[0];
 
             //Assert
             Assert.AreEqual(eFillStyle.BlipFill, shape.Fill.Style);
@@ -775,14 +775,14 @@ namespace EPPlusTest.Drawing
         public void ReadBlipFill_PieChart()
         {
             //Setup
-            var wsName = "BlipFillPieChart";
-            var ws = _pck.Workbook.Worksheets[wsName];
+            string? wsName = "BlipFillPieChart";
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets[wsName];
             if (ws == null)
             {
                 Assert.Inconclusive($"{wsName} worksheet is missing");
             }
 
-            var chart = ws.Drawings[0].As.Chart.PieChart;
+            ExcelPieChart? chart = ws.Drawings[0].As.Chart.PieChart;
 
             Assert.AreEqual(eFillStyle.BlipFill, chart.Fill.Style);
             Assert.IsNull(chart.Fill.SolidFill);

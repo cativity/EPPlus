@@ -18,6 +18,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using OfficeOpenXml.Utils.CompundDocument;
 
 namespace OfficeOpenXml.Vba.ContentHash
 {
@@ -55,8 +56,8 @@ namespace OfficeOpenXml.Vba.ContentHash
         /// <param name="bw"></param>
         private void CreateV3NormalizedDataHashInput(BinaryWriter bw)
         {
-            var p = base.Project;
-            var encoding = Encoding.GetEncoding(p.CodePage);
+            ExcelVbaProject? p = base.Project;
+            Encoding? encoding = Encoding.GetEncoding(p.CodePage);
 
             /******************************************
              * 2.3.4.2.1.1 PROJECTSYSKIND Record      *
@@ -112,7 +113,7 @@ namespace OfficeOpenXml.Vba.ContentHash
             // APPEND Buffer WITH PROJECTNAME.Id (section 2.3.4.2.1.6) of Storage
             bw.Write((ushort)0x0004);
 
-            var nameBytes = encoding.GetBytes(p.Name);
+            byte[]? nameBytes = encoding.GetBytes(p.Name);
 
             // APPEND Buffer WITH PROJECTNAME.SizeOfProjectName (section 2.3.4.2.1.6) of Storage
             bw.Write((uint)nameBytes.Length);
@@ -128,14 +129,14 @@ namespace OfficeOpenXml.Vba.ContentHash
             bw.Write((ushort)0x0005);
 
             // APPEND Buffer WITH PROJECTDOCSTRING.SizeOfDocString (section 2.3.4.2.1.7) of Storage 
-            var descriptionBytes = encoding.GetBytes(p.Description);
+            byte[]? descriptionBytes = encoding.GetBytes(p.Description);
             bw.Write((uint)descriptionBytes.Length);
 
             // APPEND Buffer WITH PROJECTDOCSTRING.Reserved (section 2.3.4.2.1.7)
             bw.Write((ushort)0x0040);
 
             // APPEND Buffer WITH PROJECTDOCSTRING.SizeOfDocStringUnicode (section 2.3.4.2.1.7) of Storage
-            var descriptionUnicodeBytes = Encoding.Unicode.GetBytes(p.Description);
+            byte[]? descriptionUnicodeBytes = Encoding.Unicode.GetBytes(p.Description);
             bw.Write((uint)descriptionUnicodeBytes.Length);
 
             /******************************************
@@ -146,14 +147,14 @@ namespace OfficeOpenXml.Vba.ContentHash
             bw.Write((ushort)0x0006);
 
             // APPEND Buffer WITH PROJECTHELPFILEPATH.SizeOfHelpFile1 (section 2.3.4.2.1.8) of Storage
-            var helpFile1Bytes = encoding.GetBytes(p.HelpFile1);
+            byte[]? helpFile1Bytes = encoding.GetBytes(p.HelpFile1);
             bw.Write((uint)helpFile1Bytes.Length);  // PROJECTHELPFILEPATH.SizeOfHelpFile1            
 
             // APPEND Buffer WITH PROJECTHELPFILEPATH.Reserved (section 2.3.4.2.1.8) of Storage
             bw.Write((ushort)0x003D);
 
             // APPEND Buffer WITH PROJECTHELPFILEPATH.SizeOfHelpFile2 (section 2.3.4.2.1.8) of Storage
-            var helpFile2Bytes = encoding.GetBytes(p.HelpFile2);
+            byte[]? helpFile2Bytes = encoding.GetBytes(p.HelpFile2);
             bw.Write((uint)helpFile2Bytes.Length);
 
             /******************************************
@@ -202,7 +203,7 @@ namespace OfficeOpenXml.Vba.ContentHash
             // APPEND Buffer WITH PROJECTCONSTANTS.Id (section 2.3.4.2.1.12) of Storage
             bw.Write((ushort)0x000C);
 
-            var constantsBytes = encoding.GetBytes(p.Constants);
+            byte[]? constantsBytes = encoding.GetBytes(p.Constants);
 
             // APPEND Buffer WITH PROJECTCONSTANTS.SizeOfConstants (section 2.3.4.2.1.12) of Storage
             bw.Write((uint)constantsBytes.Length);
@@ -213,7 +214,7 @@ namespace OfficeOpenXml.Vba.ContentHash
             // APPEND Buffer WITH PROJECTCONSTANTS.Reserved(section 2.3.4.2.1.12) of Storage
             bw.Write((ushort)0x003C);
 
-            var constantsUnicodeBytes = Encoding.Unicode.GetBytes(p.Constants);
+            byte[]? constantsUnicodeBytes = Encoding.Unicode.GetBytes(p.Constants);
 
             // APPEND Buffer WITH PROJECTCONSTANTS.SizeOfConstantsUnicode (section 2.3.4.2.1.12) of Storage
             bw.Write((uint)constantsUnicodeBytes.Length);
@@ -225,7 +226,7 @@ namespace OfficeOpenXml.Vba.ContentHash
              * FOR EACH REFERENCE (section 2.3.4.2.2.1) IN PROJECTREFERENCES.ReferenceArray (section
              * 2.3.4.2.2) of Storage
              */
-            foreach (var reference in p.References)
+            foreach (ExcelVbaReference? reference in p.References)
             {
                 /******************************************
                  * 2.3.4.2.2.1 REFERENCE Record           *
@@ -256,7 +257,7 @@ namespace OfficeOpenXml.Vba.ContentHash
             /*
              * FOR EACH Module IN ProjectModules
              */
-            foreach(var module in p.Modules)
+            foreach(ExcelVBAModule? module in p.Modules)
             {
                 /******************************************
                  * 2.3.4.2.2.1 REFERENCE Record           *
@@ -273,7 +274,7 @@ namespace OfficeOpenXml.Vba.ContentHash
 
         private void HandleProjectReference(ExcelVbaProject p, BinaryWriter bw, ExcelVbaReference reference)
         {
-            var encoding = Encoding.GetEncoding(p.CodePage);
+            Encoding? encoding = Encoding.GetEncoding(p.CodePage);
 
             /******************************************
              * 2.3.4.2.2.2 REFERENCENAME Record       *
@@ -292,7 +293,7 @@ namespace OfficeOpenXml.Vba.ContentHash
                 // APPEND Buffer with REFERENCE.ReferenceOriginal.Id (section 2.3.4.2.2.4)
                 bw.Write((ushort)0x33);
 
-                var libIdBytes = encoding.GetBytes(reference.Libid);
+                byte[]? libIdBytes = encoding.GetBytes(reference.Libid);
                 // APPEND Buffer with REFERENCE.ReferenceOriginal.SizeOfLibidOriginal (section 2.3.4.2.2.4)
                 bw.Write((uint)libIdBytes.Length);
 
@@ -308,8 +309,8 @@ namespace OfficeOpenXml.Vba.ContentHash
                     // APPEND Buffer with REFERENCE.ReferenceControl.Id (section 2.3.4.2.2.3)
                     bw.Write((ushort)0x002F);
 
-                    var controlRef = (ExcelVbaReferenceControl)reference;
-                    var libIdTwiddledBytes = encoding.GetBytes(controlRef.LibIdTwiddled);
+                    ExcelVbaReferenceControl? controlRef = (ExcelVbaReferenceControl)reference;
+                    byte[]? libIdTwiddledBytes = encoding.GetBytes(controlRef.LibIdTwiddled);
 
                     // APPEND Buffer with REFERENCE.ReferenceControl.SizeOfLibidTwiddled (section 2.3.4.2.2.3)
                     bw.Write((uint)libIdTwiddledBytes.Length);
@@ -333,7 +334,7 @@ namespace OfficeOpenXml.Vba.ContentHash
                     // APPEND Buffer with REFERENCE.ReferenceControl.Reserved3 (section 2.3.4.2.2.3)
                     bw.Write((ushort)0x0030);
 
-                    var libIdExtendedBytes = encoding.GetBytes(controlRef.LibIdExtended);
+                    byte[]? libIdExtendedBytes = encoding.GetBytes(controlRef.LibIdExtended);
                     // APPEND Buffer with REFERENCE.ReferenceControl.SizeOfLibidExtended (section 2.3.4.2.2.3)           
                     bw.Write((uint)libIdExtendedBytes.Length);
 
@@ -363,7 +364,7 @@ namespace OfficeOpenXml.Vba.ContentHash
                 // APPEND Buffer with REFERENCE.ReferenceRegistered.Id (section 2.3.4.2.2.5)
                 bw.Write((ushort)0x000D);
 
-                var libIdBytes = Encoding.Unicode.GetBytes(reference.Libid);
+                byte[]? libIdBytes = Encoding.Unicode.GetBytes(reference.Libid);
                 // APPEND Buffer with REFERENCE.ReferenceRegistered.SizeOfLibid (section 2.3.4.2.2.5)
                 bw.Write((uint)reference.Libid.Length);
 
@@ -383,9 +384,9 @@ namespace OfficeOpenXml.Vba.ContentHash
                  * 2.3.4.2.2.6 REFERENCEPROJECT Record    *
                  ******************************************/
 
-                var projRef = (ExcelVbaReferenceProject)reference;
-                var libIdBytes = Encoding.GetEncoding(p.CodePage).GetBytes(projRef.Libid);
-                var libIdRelativeBytes = Encoding.GetEncoding(p.CodePage).GetBytes(projRef.LibIdRelative);
+                ExcelVbaReferenceProject? projRef = (ExcelVbaReferenceProject)reference;
+                byte[]? libIdBytes = Encoding.GetEncoding(p.CodePage).GetBytes(projRef.Libid);
+                byte[]? libIdRelativeBytes = Encoding.GetEncoding(p.CodePage).GetBytes(projRef.LibIdRelative);
 
                 // APPEND Buffer with REFERENCE.ReferenceProject.Id (section 2.3.4.2.2.6)
                 bw.Write((ushort)0x000E);
@@ -415,7 +416,7 @@ namespace OfficeOpenXml.Vba.ContentHash
             // APPEND Buffer WITH REFERENCENAME.Id (section 2.3.4.2.2.2)
             bw.Write((ushort)0x0016); // Id
 
-            var refNameBytes = encoding.GetBytes(reference.Name);
+            byte[]? refNameBytes = encoding.GetBytes(reference.Name);
 
             // APPEND Buffer WITH REFERENCENAME.SizeOfName (section 2.3.4.2.2.2)
             bw.Write((uint)refNameBytes.Length); // Size
@@ -426,7 +427,7 @@ namespace OfficeOpenXml.Vba.ContentHash
             // APPEND Buffer WITH REFERENCENAME.Reserved (section 2.3.4.2.2.2)
             bw.Write((ushort)0x003E); // Reserved
 
-            var refNameUnicodeBytes = Encoding.Unicode.GetBytes(reference.Name);
+            byte[]? refNameUnicodeBytes = Encoding.Unicode.GetBytes(reference.Name);
 
             // APPEND Buffer WITH REFERENCENAME.SizeOfNameUnicode (section 2.3.4.2.2.2)
             bw.Write((uint)refNameUnicodeBytes.Length);
@@ -462,15 +463,15 @@ namespace OfficeOpenXml.Vba.ContentHash
              * SET CompressedContainer TO ModuleStream.CompressedSourceCode
              * SET Text TO result of Decompression(CompressedContainer) (section 2.4.1)
              **/
-            var vbaStorage = p.Document.Storage.SubStorage["VBA"];
-            var stream = vbaStorage.DataStreams[module.Name];
-            var text = VBACompression.DecompressPart(stream, (int)module.ModuleOffset);
-            var totalText = Encoding.GetEncoding(p.CodePage).GetString(text);
+            CompoundDocument.StoragePart? vbaStorage = p.Document.Storage.SubStorage["VBA"];
+            byte[]? stream = vbaStorage.DataStreams[module.Name];
+            byte[]? text = VBACompression.DecompressPart(stream, (int)module.ModuleOffset);
+            string? totalText = Encoding.GetEncoding(p.CodePage).GetString(text);
 
-            var lines = new List<byte[]>();
-            var textBuffer = new List<byte>();
+            List<byte[]>? lines = new List<byte[]>();
+            List<byte>? textBuffer = new List<byte>();
             byte pc = 0x0;
-            foreach(var ch in text)
+            foreach(byte ch in text)
             {
                 if(ch == 0xA || ch == 0xD)
                 {
@@ -487,11 +488,11 @@ namespace OfficeOpenXml.Vba.ContentHash
                 pc = ch;
             }
 
-            var hashModuleNameFlag = false;
+            bool hashModuleNameFlag = false;
             byte endOfLine = 0xA;
-            foreach (var line in lines)
+            foreach (byte[]? line in lines)
             {
-                var lineText = Encoding.GetEncoding(p.CodePage).GetString(line);
+                string? lineText = Encoding.GetEncoding(p.CodePage).GetString(line);
                 /*
                  * IF Line NOT start with “attribute” when ignoring case THEN 
                  *    SET HashModuleNameFlag TO true 
@@ -538,12 +539,12 @@ namespace OfficeOpenXml.Vba.ContentHash
                  */
                 if (!string.IsNullOrEmpty(module.NameUnicode))
                 {
-                    var nameUnicodeBytes = Encoding.Unicode.GetBytes(module.NameUnicode);
+                    byte[]? nameUnicodeBytes = Encoding.Unicode.GetBytes(module.NameUnicode);
                     bw.Write(nameUnicodeBytes);
                 }
                 else if(!string.IsNullOrEmpty(module.Name))
                 {
-                    var nameBytes = Encoding.GetEncoding(p.CodePage).GetBytes(module.Name);
+                    byte[]? nameBytes = Encoding.GetEncoding(p.CodePage).GetBytes(module.Name);
                     bw.Write(nameBytes);
                 }
                 bw.Write(endOfLine);
@@ -558,20 +559,20 @@ namespace OfficeOpenXml.Vba.ContentHash
         /// <param name="bw"></param>
         private void NormalizeProjectStream(BinaryWriter bw)
         {
-            var p = base.Project;
+            ExcelVbaProject? p = base.Project;
             if(string.IsNullOrEmpty(p.ProjectStreamText))
             {
                 return;
             }
-            var encoding = Encoding.GetEncoding(p.CodePage);
-            var lines = Regex.Split(p.ProjectStreamText, "\r\n");
-            var currentCategory = string.Empty;
-            var hostExtenders = new List<string>();
+            Encoding? encoding = Encoding.GetEncoding(p.CodePage);
+            string[]? lines = Regex.Split(p.ProjectStreamText, "\r\n");
+            string? currentCategory = string.Empty;
+            List<string>? hostExtenders = new List<string>();
 
             /***************************************************************
              * For definition of properties, see 2.3.1.1 ProjectProperties *
              ***************************************************************/
-            foreach(var line in lines)
+            foreach(string? line in lines)
             {
                 if(line.StartsWith("[") && line.EndsWith("]"))
                 {
@@ -589,8 +590,8 @@ namespace OfficeOpenXml.Vba.ContentHash
                 }
                 if(!string.IsNullOrEmpty(line) && line.Contains("="))
                 {
-                    var propertyName = line.Split('=')[0];
-                    var propertyValue = line.Split('=')[1];
+                    string? propertyName = line.Split('=')[0];
+                    string? propertyValue = line.Split('=')[1];
                     /*
                      * IF property is ProjectDesignerModule THEN 
                      *   APPEND Buffer WITH output of NormalizeDesignerStorage(ProjectDesignerModule) (section 2.4.2.2) 
@@ -630,7 +631,7 @@ namespace OfficeOpenXml.Vba.ContentHash
             {
                 bw.Write(encoding.GetBytes(HostExtenderInfo));
             }
-            foreach(var hostExtender in hostExtenders)
+            foreach(string? hostExtender in hostExtenders)
             {
                 bw.Write(encoding.GetBytes(hostExtender));
             }

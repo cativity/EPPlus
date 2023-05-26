@@ -545,7 +545,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
             if (_pendingException != null)
             {
                 _handlingException = true;
-                var pe = _pendingException;
+                Exception? pe = _pendingException;
                 _pendingException = null;
                 throw pe;
             }
@@ -669,7 +669,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
             // with Flush.Sync, we now write the final one as Flush.Finish,
             // and then stop.
             byte[] buffer = new byte[128];
-            var compressor = new ZlibCodec();
+            ZlibCodec? compressor = new ZlibCodec();
             int rc = compressor.InitializeDeflate(_compressLevel, false);
             compressor.InputBuffer = null;
             compressor.NextIn = 0;
@@ -743,7 +743,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
             if (_pendingException != null)
             {
                 _handlingException = true;
-                var pe = _pendingException;
+                Exception? pe = _pendingException;
                 _pendingException = null;
                 throw pe;
             }
@@ -770,7 +770,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
             if (_pendingException != null)
             {
                 _handlingException = true;
-                var pe = _pendingException;
+                Exception? pe = _pendingException;
                 _pendingException = null;
                 throw pe;
             }
@@ -883,7 +883,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
             // reset all status
             _toWrite.Clear();
             _toFill.Clear();
-            foreach (var workitem in _pool)
+            foreach (WorkItem? workitem in _pool)
             {
                 _toFill.Enqueue(workitem.index);
                 workitem.ordinal = -1;

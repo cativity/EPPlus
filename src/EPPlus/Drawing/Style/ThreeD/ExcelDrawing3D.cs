@@ -246,12 +246,12 @@ namespace OfficeOpenXml.Drawing.Style.ThreeD
         {
             if(copyFromScene3DElement!=null)
             {
-                var scene3DElement = (XmlElement)CreateNode(_scene3dPath);
+                XmlElement? scene3DElement = (XmlElement)CreateNode(_scene3dPath);
                 CopyXml(copyFromScene3DElement, scene3DElement);
             }
             if (copyFromSp3DElement!=null)
             {
-                var sp3DElement = (XmlElement)CreateNode(_sp3dPath);
+                XmlElement? sp3DElement = (XmlElement)CreateNode(_sp3dPath);
                 CopyXml(copyFromSp3DElement, sp3DElement);
             }
         }

@@ -53,13 +53,13 @@ namespace EPPlusTest.FormulaParsing.ExpressionGraph
         [TestMethod]
         public void ShouldCompileTwoInterExpressionsToCorrectResult()
         {
-            var exp1 = new IntegerExpression("2");
+            IntegerExpression? exp1 = new IntegerExpression("2");
             exp1.Operator = Operator.Plus;
             _graph.Add(exp1);
-            var exp2 = new IntegerExpression("2");
+            IntegerExpression? exp2 = new IntegerExpression("2");
             _graph.Add(exp2);
 
-            var result = _expressionCompiler.Compile(_graph.Expressions);
+            CompileResult? result = _expressionCompiler.Compile(_graph.Expressions);
 
             Assert.AreEqual(4d, result.Result);
         }
@@ -68,7 +68,7 @@ namespace EPPlusTest.FormulaParsing.ExpressionGraph
         [TestMethod]
         public void CompileShouldMultiplyGroupExpressionWithFollowingIntegerExpression()
         {
-            var groupExpression = new GroupExpression(false);
+            GroupExpression? groupExpression = new GroupExpression(false);
             groupExpression.AddChild(new IntegerExpression("2"));
             groupExpression.Children.First().Operator = Operator.Plus;
             groupExpression.AddChild(new IntegerExpression("3"));
@@ -77,7 +77,7 @@ namespace EPPlusTest.FormulaParsing.ExpressionGraph
             _graph.Add(groupExpression);
             _graph.Add(new IntegerExpression("2"));
 
-            var result = _expressionCompiler.Compile(_graph.Expressions);
+            CompileResult? result = _expressionCompiler.Compile(_graph.Expressions);
 
             Assert.AreEqual(10d, result.Result);
         }
@@ -85,19 +85,19 @@ namespace EPPlusTest.FormulaParsing.ExpressionGraph
         [TestMethod]
         public void CompileShouldCalculateMultipleExpressionsAccordingToPrecedence()
         {
-            var exp1 = new IntegerExpression("2");
+            IntegerExpression? exp1 = new IntegerExpression("2");
             exp1.Operator = Operator.Multiply;
             _graph.Add(exp1);
-            var exp2 = new IntegerExpression("2");
+            IntegerExpression? exp2 = new IntegerExpression("2");
             exp2.Operator = Operator.Plus;
             _graph.Add(exp2);
-            var exp3 = new IntegerExpression("2");
+            IntegerExpression? exp3 = new IntegerExpression("2");
             exp3.Operator = Operator.Multiply;
             _graph.Add(exp3);
-            var exp4 = new IntegerExpression("2");
+            IntegerExpression? exp4 = new IntegerExpression("2");
             _graph.Add(exp4);
 
-            var result = _expressionCompiler.Compile(_graph.Expressions);
+            CompileResult? result = _expressionCompiler.Compile(_graph.Expressions);
 
             Assert.AreEqual(8d, result.Result);
         }

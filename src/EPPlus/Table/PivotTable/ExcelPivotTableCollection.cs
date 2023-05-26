@@ -14,6 +14,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Xml;
+using OfficeOpenXml.Packaging;
 
 namespace OfficeOpenXml.Table.PivotTable
 {
@@ -31,13 +32,13 @@ namespace OfficeOpenXml.Table.PivotTable
         }
         internal ExcelPivotTableCollection(ExcelWorksheet ws)
         {
-            var pck = ws._package.ZipPackage;
+            ZipPackage? pck = ws._package.ZipPackage;
             _ws = ws;            
-            foreach(var rel in ws.Part.GetRelationships())
+            foreach(ZipPackageRelationship? rel in ws.Part.GetRelationships())
             {
                 if (rel.RelationshipType == ExcelPackage.schemaRelationships + "/pivotTable")
                 {
-                    var tbl = new ExcelPivotTable(rel, ws);
+                    ExcelPivotTable? tbl = new ExcelPivotTable(rel, ws);
                     _pivotTableNames.Add(tbl.Name, _pivotTables.Count);
                     _pivotTables.Add(tbl);
                 }
@@ -85,7 +86,7 @@ namespace OfficeOpenXml.Table.PivotTable
             {
                 throw (new ArgumentException("Tablename is not unique"));
             }
-            foreach (var t in _pivotTables)
+            foreach (ExcelPivotTable? t in _pivotTables)
             {
                 if (t.Address.Collide(Range) != ExcelAddressBase.eAddressCollition.No)
                 {
@@ -237,7 +238,7 @@ namespace OfficeOpenXml.Table.PivotTable
             {
                 throw new ArgumentException("This pivot table does not exist in the collection");
             }
-            var pck = _ws._package.ZipPackage;
+            ZipPackage? pck = _ws._package.ZipPackage;
 
             PivotTable.CacheDefinition._cacheReference._pivotTables.Remove(PivotTable);
             pck.DeletePart(PivotTable.Part.Uri);

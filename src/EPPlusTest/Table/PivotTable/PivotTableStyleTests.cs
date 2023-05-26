@@ -28,14 +28,14 @@ namespace EPPlusTest.Table.PivotTable
         [ClassCleanup]
         public static void Cleanup()
         {
-            var dirName = _pck.File.DirectoryName;
-            var fileName = _pck.File.FullName;
+            string? dirName = _pck.File.DirectoryName;
+            string? fileName = _pck.File.FullName;
             SaveAndCleanup(_pck);
             File.Copy(fileName, dirName + "\\PivotTableReadStyle.xlsx", true);
         }
         internal ExcelPivotTable CreatePivotTable(ExcelWorksheet ws)
         {
-            var pt = ws.PivotTables.Add(ws.Cells["A3"], _ws.Cells[_ws.Dimension.Address], "PivotTable1");
+            ExcelPivotTable? pt = ws.PivotTables.Add(ws.Cells["A3"], _ws.Cells[_ws.Dimension.Address], "PivotTable1");
             pt.RowFields.Add(pt.Fields[0]);
             pt.ColumnFields.Add(pt.Fields[1]);
             pt.DataFields.Add(pt.Fields[3]);
@@ -46,9 +46,9 @@ namespace EPPlusTest.Table.PivotTable
         [TestMethod]
         public void AddPivotAllStyle()
         {
-            var ws = _pck.Workbook.Worksheets.Add("StyleAll");
-            var pt = CreatePivotTable(ws);
-            var s=pt.Styles.AddWholeTable();
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("StyleAll");
+            ExcelPivotTable? pt = CreatePivotTable(ws);
+            ExcelPivotTableAreaStyle? s=pt.Styles.AddWholeTable();
             s.Style.Font.Name = "Bauhaus 93";
 
             Assert.IsTrue(s.Style.HasValue);
@@ -57,47 +57,47 @@ namespace EPPlusTest.Table.PivotTable
         [TestMethod]
         public void AddPivotLabels()
         {
-            var ws = _pck.Workbook.Worksheets.Add("StyleAllLabels");
-            var pt = CreatePivotTable(ws);
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("StyleAllLabels");
+            ExcelPivotTable? pt = CreatePivotTable(ws);
 
-            var s = pt.Styles.AddAllLabels();
+            ExcelPivotTableAreaStyle? s = pt.Styles.AddAllLabels();
             s.Style.Font.Color.SetColor(Color.Green);
         }
         [TestMethod]
         public void AddPivotAllData()
         {
-            var ws = _pck.Workbook.Worksheets.Add("StyleAllData");
-            var pt = CreatePivotTable(ws);
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("StyleAllData");
+            ExcelPivotTable? pt = CreatePivotTable(ws);
 
-            var s = pt.Styles.AddAllData();
+            ExcelPivotTableAreaStyle? s = pt.Styles.AddAllData();
             s.Style.Font.Color.SetColor(Color.Blue);
         }
 
         [TestMethod]
         public void AddPivotLabelPageField()
         {
-            var ws = _pck.Workbook.Worksheets.Add("StylePageFieldLabel");
-            var pt = CreatePivotTable(ws);
-            var s = pt.Styles.AddLabel(pt.PageFields[0]);
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("StylePageFieldLabel");
+            ExcelPivotTable? pt = CreatePivotTable(ws);
+            ExcelPivotTableAreaStyle? s = pt.Styles.AddLabel(pt.PageFields[0]);
             s.Style.Font.Color.SetColor(Color.Green);
         }
         [TestMethod]
         public void AddPivotLabelColumnField()
         {
-            var ws = _pck.Workbook.Worksheets.Add("StyleColumnFieldLabel");
-            var pt = CreatePivotTable(ws);
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("StyleColumnFieldLabel");
+            ExcelPivotTable? pt = CreatePivotTable(ws);
 
-            var s = pt.Styles.AddLabel(pt.ColumnFields[0]);
+            ExcelPivotTableAreaStyle? s = pt.Styles.AddLabel(pt.ColumnFields[0]);
             s.Style.Font.Color.SetColor(Color.Indigo);
         }
         [TestMethod]
         public void AddPivotLabelColumnFieldSingleCell()
         {
-            var ws = _pck.Workbook.Worksheets.Add("StyleColumnFieldLabelCell");
-            var pt = CreatePivotTable(ws);
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("StyleColumnFieldLabelCell");
+            ExcelPivotTable? pt = CreatePivotTable(ws);
             pt.DataOnRows = false;
             pt.CacheDefinition.Refresh();
-            var s = pt.Styles.AddLabel(pt.ColumnFields[0]);
+            ExcelPivotTableAreaStyle? s = pt.Styles.AddLabel(pt.ColumnFields[0]);
             s.Conditions.DataFields.Add(0);
             s.Conditions.Fields[0].Items.Add(0);
             s.Conditions.Fields[0].Items.Add(1);
@@ -107,9 +107,9 @@ namespace EPPlusTest.Table.PivotTable
         [TestMethod]
         public void AddPivotLabelRowColumnField()
         {
-            var ws = _pck.Workbook.Worksheets.Add("StyleRowFieldLabel");
-            var pt = CreatePivotTable(ws);
-            var s = pt.Styles.AddLabel(pt.RowFields[0]);
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("StyleRowFieldLabel");
+            ExcelPivotTable? pt = CreatePivotTable(ws);
+            ExcelPivotTableAreaStyle? s = pt.Styles.AddLabel(pt.RowFields[0]);
 
             s.Style.Font.Italic = true;
             s.Style.Font.Strike = true;
@@ -118,10 +118,10 @@ namespace EPPlusTest.Table.PivotTable
         [TestMethod]
         public void AddPivotDataRowColumnField()
         {
-            var ws = _pck.Workbook.Worksheets.Add("StyleRowFieldData");
-            var pt = CreatePivotTable(ws);
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("StyleRowFieldData");
+            ExcelPivotTable? pt = CreatePivotTable(ws);
 
-            var s = pt.Styles.AddData(pt.RowFields[0]);
+            ExcelPivotTableAreaStyle? s = pt.Styles.AddData(pt.RowFields[0]);
 
             s.Style.Font.Italic = true;
             s.Style.Font.Strike = true;
@@ -130,10 +130,10 @@ namespace EPPlusTest.Table.PivotTable
         [TestMethod]
         public void AddPivotData()
         {
-            var ws = _pck.Workbook.Worksheets.Add("StyleData");
-            var pt = CreatePivotTable(ws);
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("StyleData");
+            ExcelPivotTable? pt = CreatePivotTable(ws);
 
-            var s = pt.Styles.AddData(pt.Fields[0], pt.Fields[1]);
+            ExcelPivotTableAreaStyle? s = pt.Styles.AddData(pt.Fields[0], pt.Fields[1]);
             s.Style.Fill.Style = eDxfFillStyle.PatternFill;
             s.Style.Fill.BackgroundColor.SetColor(Color.Red);
             s.Style.Font.Italic = true;
@@ -143,10 +143,10 @@ namespace EPPlusTest.Table.PivotTable
         [TestMethod]
         public void AddPivotDataGrandColumn()
         {
-            var ws = _pck.Workbook.Worksheets.Add("StyleDataGrandColumn");
-            var pt = CreatePivotTable(ws);
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("StyleDataGrandColumn");
+            ExcelPivotTable? pt = CreatePivotTable(ws);
 
-            var s = pt.Styles.AddData(pt.Fields[0], pt.Fields[1]);
+            ExcelPivotTableAreaStyle? s = pt.Styles.AddData(pt.Fields[0], pt.Fields[1]);
             s.GrandColumn = true;
             s.Style.Fill.Style = eDxfFillStyle.PatternFill;
             s.Style.Fill.BackgroundColor.SetColor(Color.LightGray);
@@ -156,10 +156,10 @@ namespace EPPlusTest.Table.PivotTable
         [TestMethod]
         public void AddPivotDataGrandRow()
         {
-            var ws = _pck.Workbook.Worksheets.Add("StyleDataGrandRow");
-            var pt = CreatePivotTable(ws);
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("StyleDataGrandRow");
+            ExcelPivotTable? pt = CreatePivotTable(ws);
 
-            var s = pt.Styles.AddData();
+            ExcelPivotTableAreaStyle? s = pt.Styles.AddData();
             s.GrandRow = true;
             s.Style.Fill.Style = eDxfFillStyle.PatternFill;
             s.Style.Fill.BackgroundColor.SetColor(Color.LightGray);
@@ -170,10 +170,10 @@ namespace EPPlusTest.Table.PivotTable
         [TestMethod]
         public void AddPivotLabelRow()
         {
-            var ws = _pck.Workbook.Worksheets.Add("StyleRowFieldLabelTot");
-            var pt = CreatePivotTable(ws);
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("StyleRowFieldLabelTot");
+            ExcelPivotTable? pt = CreatePivotTable(ws);
 
-            var s = pt.Styles.AddLabel(pt.RowFields[0]);
+            ExcelPivotTableAreaStyle? s = pt.Styles.AddLabel(pt.RowFields[0]);
             s.GrandRow = true;
             s.Style.Font.Italic = true;
             s.Style.Font.Strike = true;
@@ -182,10 +182,10 @@ namespace EPPlusTest.Table.PivotTable
         [TestMethod]
         public void AddPivotLabelRowDf1()
         {
-            var ws = _pck.Workbook.Worksheets.Add("StyleRowFieldLabelTotDf1");
-            var pt = CreatePivotTable(ws);
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("StyleRowFieldLabelTotDf1");
+            ExcelPivotTable? pt = CreatePivotTable(ws);
 
-            var s = pt.Styles.AddLabel(pt.RowFields[0]);
+            ExcelPivotTableAreaStyle? s = pt.Styles.AddLabel(pt.RowFields[0]);
             s.Conditions.DataFields.Add(1);
             s.GrandRow = true;
             s.Style.Font.Italic = true;
@@ -196,10 +196,10 @@ namespace EPPlusTest.Table.PivotTable
         [TestMethod]
         public void AddPivotLabelRowDataField2()
         {
-            var ws = _pck.Workbook.Worksheets.Add("StyleRowFieldDf2");
-            var pt = CreatePivotTable(ws);
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("StyleRowFieldDf2");
+            ExcelPivotTable? pt = CreatePivotTable(ws);
 
-            var s = pt.Styles.AddLabel(pt.RowFields[0]);
+            ExcelPivotTableAreaStyle? s = pt.Styles.AddLabel(pt.RowFields[0]);
             s.Conditions.DataFields.Add(1);
             s.Style.Font.Italic = true;
             s.Style.Font.Strike = true;
@@ -208,11 +208,11 @@ namespace EPPlusTest.Table.PivotTable
         [TestMethod]
         public void AddPivotLabelRowDataField2AndValue()
         {
-            var ws = _pck.Workbook.Worksheets.Add("StyleRowFieldDf2Value");
-            var pt = CreatePivotTable(ws);
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("StyleRowFieldDf2Value");
+            ExcelPivotTable? pt = CreatePivotTable(ws);
 
             pt.CacheDefinition.Refresh();
-            var s = pt.Styles.AddLabel(pt.RowFields[0]);
+            ExcelPivotTableAreaStyle? s = pt.Styles.AddLabel(pt.RowFields[0]);
             s.Conditions.DataFields.Add(1);
             s.Conditions.Fields[0].Items.AddByValue("Screwdriver");
             s.Style.Font.Italic = true;
@@ -222,11 +222,11 @@ namespace EPPlusTest.Table.PivotTable
         [TestMethod]
         public void AddPivotDataItemByIndex()
         {
-            var ws = _pck.Workbook.Worksheets.Add("PivotDataItemIndex");
-            var pt = CreatePivotTable(ws);
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("PivotDataItemIndex");
+            ExcelPivotTable? pt = CreatePivotTable(ws);
 
             pt.CacheDefinition.Refresh();
-            var s = pt.Styles.AddData(pt.Fields[0], pt.Fields[1]);
+            ExcelPivotTableAreaStyle? s = pt.Styles.AddData(pt.Fields[0], pt.Fields[1]);
             s.Conditions.DataFields.Add(0);
             s.Conditions.Fields[0].Items.Add(0);
             s.Conditions.Fields[1].Items.Add(0);
@@ -239,11 +239,11 @@ namespace EPPlusTest.Table.PivotTable
         [TestMethod]
         public void AddPivotDataItemByValue()
         {
-            var ws = _pck.Workbook.Worksheets.Add("PivotDataItemValue");
-            var pt = CreatePivotTable(ws);
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("PivotDataItemValue");
+            ExcelPivotTable? pt = CreatePivotTable(ws);
 
             pt.CacheDefinition.Refresh();
-            var s = pt.Styles.AddData(pt.Fields[0], pt.Fields[1]);
+            ExcelPivotTableAreaStyle? s = pt.Styles.AddData(pt.Fields[0], pt.Fields[1]);
             s.Conditions.DataFields.Add(pt.DataFields[1]);
             s.Conditions.Fields[0].Items.AddByValue("Apple");
             s.Conditions.Fields[1].Items.AddByValue("Groceries");
@@ -257,38 +257,38 @@ namespace EPPlusTest.Table.PivotTable
         [TestMethod]
         public void AddButtonField()
         {
-            var ws = _pck.Workbook.Worksheets.Add("StyleFieldPage");
-            var pt = CreatePivotTable(ws);
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("StyleFieldPage");
+            ExcelPivotTable? pt = CreatePivotTable(ws);
 
-            var s = pt.Styles.AddButtonField(pt.Fields[4]);
+            ExcelPivotTableAreaStyle? s = pt.Styles.AddButtonField(pt.Fields[4]);
             s.Style.Font.Color.SetColor(Color.Pink);
         }
 
         [TestMethod]
         public void AddButtonRowAxis()
         {
-            var ws = _pck.Workbook.Worksheets.Add("StyleButtonRowAxis");
-            var pt = CreatePivotTable(ws);
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("StyleButtonRowAxis");
+            ExcelPivotTable? pt = CreatePivotTable(ws);
 
-            var s = pt.Styles.AddButtonField(ePivotTableAxis.RowAxis);
+            ExcelPivotTableAreaStyle? s = pt.Styles.AddButtonField(ePivotTableAxis.RowAxis);
             s.Style.Font.Underline = ExcelUnderLineType.DoubleAccounting;
         }
         [TestMethod]
         public void AddButtonColumnAxis()
         {
-            var ws = _pck.Workbook.Worksheets.Add("StyleButtonColumnAxis");
-            var pt = CreatePivotTable(ws);
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("StyleButtonColumnAxis");
+            ExcelPivotTable? pt = CreatePivotTable(ws);
 
-            var s3 = pt.Styles.AddButtonField(ePivotTableAxis.ColumnAxis);
+            ExcelPivotTableAreaStyle? s3 = pt.Styles.AddButtonField(ePivotTableAxis.ColumnAxis);
             s3.Style.Font.Italic = true;
         }
         [TestMethod]
         public void AddButtonPageAxis()
         {
-            var ws = _pck.Workbook.Worksheets.Add("StyleButtonPageAxis");
-            var pt = CreatePivotTable(ws);
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("StyleButtonPageAxis");
+            ExcelPivotTable? pt = CreatePivotTable(ws);
 
-            var s4 = pt.Styles.AddButtonField(ePivotTableAxis.PageAxis);
+            ExcelPivotTableAreaStyle? s4 = pt.Styles.AddButtonField(ePivotTableAxis.PageAxis);
             s4.Style.Font.Color.SetColor(Color.ForestGreen);
         }
 
@@ -296,22 +296,22 @@ namespace EPPlusTest.Table.PivotTable
         [TestMethod]
         public void AddTopStart()
         {
-            var ws = _pck.Workbook.Worksheets.Add("StyleTopStart");
-            var pt = CreatePivotTable(ws);
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("StyleTopStart");
+            ExcelPivotTable? pt = CreatePivotTable(ws);
 
             //Top Left cells 
-            var styleTopLeft = pt.Styles.AddTopStart();
+            ExcelPivotTableAreaStyle? styleTopLeft = pt.Styles.AddTopStart();
             styleTopLeft.Style.Fill.PatternType = ExcelFillStyle.Solid;
             styleTopLeft.Style.Fill.BackgroundColor.SetColor(Color.Red);
         }
         [TestMethod]
         public void AddTopStartOffset0()
         {
-            var ws = _pck.Workbook.Worksheets.Add("StyleTopStartOffset0");
-            var pt = CreatePivotTable(ws);
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("StyleTopStartOffset0");
+            ExcelPivotTable? pt = CreatePivotTable(ws);
 
             //Top Left cells 
-            var styleTopLeft = pt.Styles.AddTopStart("A1");
+            ExcelPivotTableAreaStyle? styleTopLeft = pt.Styles.AddTopStart("A1");
             styleTopLeft.Style.Fill.PatternType = ExcelFillStyle.Solid;
             styleTopLeft.Style.Fill.BackgroundColor.SetColor(Color.Blue);
         }
@@ -319,20 +319,20 @@ namespace EPPlusTest.Table.PivotTable
         [TestMethod]
         public void AddTopEnd()
         {
-            var ws = _pck.Workbook.Worksheets.Add("StyleTopEnd");
-            var pt = CreatePivotTable(ws);
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("StyleTopEnd");
+            ExcelPivotTable? pt = CreatePivotTable(ws);
 
-            var styleTopRight2 = pt.Styles.AddTopEnd();
+            ExcelPivotTableAreaStyle? styleTopRight2 = pt.Styles.AddTopEnd();
             styleTopRight2.Style.Fill.PatternType = ExcelFillStyle.Solid;
             styleTopRight2.Style.Fill.BackgroundColor.SetColor(Color.Yellow);
         }
         [TestMethod]
         public void AddTopEndOffset1()
         {
-            var ws = _pck.Workbook.Worksheets.Add("StyleTopEndOffset1");
-            var pt = CreatePivotTable(ws);
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("StyleTopEndOffset1");
+            ExcelPivotTable? pt = CreatePivotTable(ws);
 
-            var styleTopRight2 = pt.Styles.AddTopEnd("A1");
+            ExcelPivotTableAreaStyle? styleTopRight2 = pt.Styles.AddTopEnd("A1");
             styleTopRight2.Style.Fill.PatternType = ExcelFillStyle.Solid;
             styleTopRight2.Style.Fill.BackgroundColor.SetColor(Color.Yellow);            
         }

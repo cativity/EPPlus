@@ -29,15 +29,15 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance
         public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
         {
             ValidateArguments(arguments, 1);
-            var values = ArgsToDoubleEnumerable(new List<FunctionArgument> { arguments.ElementAt(0) }, context);
-            var result = default(FinanceCalcResult<double>);
+            IEnumerable<ExcelDoubleCellValue>? values = ArgsToDoubleEnumerable(new List<FunctionArgument> { arguments.ElementAt(0) }, context);
+            FinanceCalcResult<double>? result = default(FinanceCalcResult<double>);
             if(arguments.Count() == 1)
             {
                 result = IrrImpl.Irr(values.Select(x => (double)x).ToArray());
             }
             else
             {
-                var guess = ArgToDecimal(arguments, 1);
+                double guess = ArgToDecimal(arguments, 1);
                 result = IrrImpl.Irr(values.Select(x => (double)x).ToArray(), guess);
             }
             if (result.HasError)

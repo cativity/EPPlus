@@ -34,29 +34,29 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
 
         public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
         {
-            var functionArguments = arguments as FunctionArgument[] ?? arguments.ToArray();
+            FunctionArgument[]? functionArguments = arguments as FunctionArgument[] ?? arguments.ToArray();
             ValidateArguments(functionArguments, 2);
-            var argRanges = new List<RangeOrValue>();
-            var criterias = new List<string>();
-            for (var ix = 0; ix < 30; ix +=2)
+            List<RangeOrValue>? argRanges = new List<RangeOrValue>();
+            List<string>? criterias = new List<string>();
+            for (int ix = 0; ix < 30; ix +=2)
             {
                 if (functionArguments.Length <= ix)
                 {
                     break;
                 }
 
-                var arg = functionArguments[ix];
+                FunctionArgument? arg = functionArguments[ix];
                 if (arg.DataType == DataType.ExcelError)
                 {
                     continue;
                 }
 
-                var rangeInfo = arg.ValueAsRangeInfo;
+                IRangeInfo? rangeInfo = arg.ValueAsRangeInfo;
                 if(rangeInfo == null && arg.ExcelAddressReferenceId > 0)
                 {
-                    var addressString = ArgToAddress(arguments, ix, context);
-                    var address = new ExcelAddress(addressString);
-                    var ws = string.IsNullOrEmpty(address.WorkSheetName) ? context.Scopes.Current.Address.Worksheet : address.WorkSheetName;
+                    string? addressString = ArgToAddress(arguments, ix, context);
+                    ExcelAddress? address = new ExcelAddress(addressString);
+                    string? ws = string.IsNullOrEmpty(address.WorkSheetName) ? context.Scopes.Current.Address.Worksheet : address.WorkSheetName;
                     rangeInfo = context.ExcelDataProvider.GetRange(ws, context.Scopes.Current.Address.FromRow, context.Scopes.Current.Address.FromCol, address.Address);
                     argRanges.Add(new RangeOrValue { Range = rangeInfo });
                 }
@@ -68,14 +68,14 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
                 {
                     argRanges.Add(new RangeOrValue { Value = arg.Value });
                 }
-                var value = functionArguments[ix + 1].Value != null ? ArgToString(arguments, ix + 1) : null;
+                string? value = functionArguments[ix + 1].Value != null ? ArgToString(arguments, ix + 1) : null;
                 criterias.Add(value);
             }
             IEnumerable<int> matchIndexes = GetMatchIndexes(argRanges[0], criterias[0], false);
-            var enumerable = matchIndexes as IList<int> ?? matchIndexes.ToList();
-            for (var ix = 1; ix < argRanges.Count && enumerable.Any(); ix++)
+            IList<int>? enumerable = matchIndexes as IList<int> ?? matchIndexes.ToList();
+            for (int ix = 1; ix < argRanges.Count && enumerable.Any(); ix++)
             {
-                var indexes = GetMatchIndexes(argRanges[ix], criterias[ix], false);
+                List<int>? indexes = GetMatchIndexes(argRanges[ix], criterias[ix], false);
                 matchIndexes = matchIndexes.Intersect(indexes);
             }
             

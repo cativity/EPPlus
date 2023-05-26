@@ -28,9 +28,9 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance
         public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
         {
             ValidateArguments(arguments, 2);
-            var fractionalDollar = ArgToDecimal(arguments, 0);
-            var fractionDec = ArgToDecimal(arguments, 1);
-            var fraction = System.Math.Floor(fractionDec);
+            double fractionalDollar = ArgToDecimal(arguments, 0);
+            double fractionDec = ArgToDecimal(arguments, 1);
+            double fraction = System.Math.Floor(fractionDec);
             if (fraction <= 0d)
             {
                 return this.CreateResult(eErrorType.Num);
@@ -41,9 +41,9 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance
                 return this.CreateResult(eErrorType.Div0);
             }
 
-            var intResult = System.Math.Floor(fractionalDollar);
-            var result = ((double)intResult) + (fractionalDollar % 1) * System.Math.Pow(10d, (double)System.Math.Ceiling(System.Math.Log(fraction) / System.Math.Log(10))) / fraction;
-            var power = System.Math.Pow(10d, (double)System.Math.Ceiling(System.Math.Log(fraction) / System.Math.Log(2)) + 1);
+            double intResult = System.Math.Floor(fractionalDollar);
+            double result = ((double)intResult) + (fractionalDollar % 1) * System.Math.Pow(10d, (double)System.Math.Ceiling(System.Math.Log(fraction) / System.Math.Log(10))) / fraction;
+            double power = System.Math.Pow(10d, (double)System.Math.Ceiling(System.Math.Log(fraction) / System.Math.Log(2)) + 1);
             return CreateResult(System.Math.Round(result * power) / power, DataType.Decimal);
         }
     }

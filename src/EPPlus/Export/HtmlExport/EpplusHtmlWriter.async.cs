@@ -31,7 +31,7 @@ namespace OfficeOpenXml.Export.HtmlExport
                 await WriteIndentAsync();
             }
             await _writer.WriteAsync($"<{elementName}");
-            foreach (var attribute in _attributes)
+            foreach (EpplusHtmlAttribute? attribute in _attributes)
             {
                 await _writer.WriteAsync($" {attribute.AttributeName}=\"{attribute.Value}\"");
             }
@@ -56,7 +56,7 @@ namespace OfficeOpenXml.Export.HtmlExport
                 await WriteIndentAsync();
             }
 
-            var elementName = _elementStack.Pop();
+            string? elementName = _elementStack.Pop();
             await _writer.WriteAsync($"</{elementName}>");
             await _writer.FlushAsync();
         }

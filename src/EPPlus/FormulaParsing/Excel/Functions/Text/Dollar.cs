@@ -29,13 +29,13 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Text
         public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
         {
             ValidateArguments(arguments, 1);
-            var number = ArgToDecimal(arguments, 0, context.Configuration.PrecisionAndRoundingStrategy);
-            var decimals = 2;
+            double number = ArgToDecimal(arguments, 0, context.Configuration.PrecisionAndRoundingStrategy);
+            int decimals = 2;
             if(arguments.Count() > 1)
             {
                 decimals = ArgToInt(arguments, 1);
             }
-            var result = 0d;
+            double result = 0d;
             if(decimals >= 0)
             {
                 result = System.Math.Round(number, decimals);

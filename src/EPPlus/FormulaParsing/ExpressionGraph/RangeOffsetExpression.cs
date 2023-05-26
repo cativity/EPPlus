@@ -53,20 +53,20 @@ namespace OfficeOpenXml.FormulaParsing.ExpressionGraph
 
         public override CompileResult Compile()
         {
-            var offsetRange1 = OffsetExpression1.Compile().Result as IRangeInfo;
-            var rangeOffset = new RangeOffset
+            IRangeInfo? offsetRange1 = OffsetExpression1.Compile().Result as IRangeInfo;
+            RangeOffset? rangeOffset = new RangeOffset
             {
                 StartRange = offsetRange1
             };
             if(AddressExpression2 != null)
             {
-                var c = _parsingContext.Scopes.Current;
-                var resultRange = _parsingContext.ExcelDataProvider.GetRange(c.Address.Worksheet, c.Address.FromRow, c.Address.FromCol, AddressExpression2.ExpressionString);
+                ParsingScope? c = _parsingContext.Scopes.Current;
+                IRangeInfo? resultRange = _parsingContext.ExcelDataProvider.GetRange(c.Address.Worksheet, c.Address.FromRow, c.Address.FromCol, AddressExpression2.ExpressionString);
                 rangeOffset.EndRange = resultRange;
             }
             else
             {
-                var offsetRange2 = OffsetExpression2.Compile().Result;
+                object? offsetRange2 = OffsetExpression2.Compile().Result;
                 rangeOffset.EndRange = offsetRange2 as IRangeInfo;
             }
             return new CompileResult(rangeOffset.Execute(new FunctionArgument[] { }, _parsingContext).Result, DataType.Enumerable);

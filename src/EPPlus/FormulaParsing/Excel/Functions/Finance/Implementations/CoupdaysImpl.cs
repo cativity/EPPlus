@@ -26,8 +26,8 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.Implementations
 
         internal FinanceCalcResult<double> GetCoupdays()
         {
-            var fds = FinancialDaysFactory.Create(Basis);
-            var settlementPeriod = fds.GetCouponPeriod(Settlement, Maturity, Frequency);
+            IFinanicalDays? fds = FinancialDaysFactory.Create(Basis);
+            FinancialPeriod? settlementPeriod = fds.GetCouponPeriod(Settlement, Maturity, Frequency);
             return new FinanceCalcResult<double>(fds.GetCoupdays(settlementPeriod.Start, settlementPeriod.End, Frequency));
         }
     }

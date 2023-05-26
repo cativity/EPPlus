@@ -54,12 +54,12 @@ namespace EPPlusTest.Drawing
         [TestMethod]
         public void ReadBeyondPieChartsTutorial()
         {
-            using (var p = OpenTemplatePackage(@"msCharts\Beyond pie charts tutorial.xlsx"))
+            using (ExcelPackage? p = OpenTemplatePackage(@"msCharts\Beyond pie charts tutorial.xlsx"))
             {
                 Assert.AreEqual(27, p.Workbook.Worksheets.Count);
                 Assert.AreEqual(2, p.Workbook.Worksheets[0 + p._worksheetAdd].Drawings.Count);
                 Assert.AreEqual(3, p.Workbook.Worksheets[1 + p._worksheetAdd].Drawings.Count);
-                var grpShp = ((ExcelGroupShape)p.Workbook.Worksheets[1 + p._worksheetAdd].Drawings[0]);
+                ExcelGroupShape? grpShp = ((ExcelGroupShape)p.Workbook.Worksheets[1 + p._worksheetAdd].Drawings[0]);
                 Assert.AreEqual(4, grpShp.Drawings.Count);
                 Assert.AreEqual(eShapeStyle.Rect, ((ExcelShape)grpShp.Drawings[0]).Style);
                 Assert.AreEqual(6, p.Workbook.Worksheets[1 + p._worksheetAdd].Drawings[1].As.Chart.PieChart.StyleManager.ColorsManager.Colors.Count);
@@ -68,7 +68,7 @@ namespace EPPlusTest.Drawing
         [TestMethod]
         public void GetMoreOutOfPivotTables()
         {
-            using(var p = OpenTemplatePackage(@"msCharts\Get more out of PivotTables.xltx"))
+            using(ExcelPackage? p = OpenTemplatePackage(@"msCharts\Get more out of PivotTables.xltx"))
             {
                 Assert.AreEqual(26, p.Workbook.Worksheets.Count);
                 Assert.AreEqual(4, p.Workbook.Worksheets[0 + p._worksheetAdd].Drawings.Count);
@@ -78,7 +78,7 @@ namespace EPPlusTest.Drawing
         [TestMethod]    
         public void FormulaTutorial()
         {
-            using (var p = OpenTemplatePackage(@"msCharts\Formula tutorial.xltx"))
+            using (ExcelPackage? p = OpenTemplatePackage(@"msCharts\Formula tutorial.xltx"))
             {
                 Assert.AreEqual(13, p.Workbook.Worksheets.Count);
                 Assert.AreEqual(2, p.Workbook.Worksheets[0 + p._worksheetAdd].Drawings.Count);

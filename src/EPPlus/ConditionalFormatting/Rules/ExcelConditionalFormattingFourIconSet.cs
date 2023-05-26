@@ -70,7 +70,7 @@ namespace OfficeOpenXml.ConditionalFormatting
         else
         {
             XmlNode iconSetNode = TopNode.SelectSingleNode("d:iconSet", NameSpaceManager);
-            var iconNode4 = iconSetNode.OwnerDocument.CreateElement(ExcelConditionalFormattingConstants.Paths.Cfvo, ExcelPackage.schemaMain);
+            XmlElement? iconNode4 = iconSetNode.OwnerDocument.CreateElement(ExcelConditionalFormattingConstants.Paths.Cfvo, ExcelPackage.schemaMain);
             iconSetNode.AppendChild(iconNode4);
 
 

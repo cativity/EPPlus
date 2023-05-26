@@ -32,6 +32,7 @@ using OfficeOpenXml.DataValidation;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using OfficeOpenXml.DataValidation.Contracts;
 
 namespace EPPlusTest.DataValidation.Formulas
 {
@@ -41,14 +42,14 @@ namespace EPPlusTest.DataValidation.Formulas
         [TestMethod]
         public void ValuesAreReadExcelFormula()
         {
-            var package = new ExcelPackage(new MemoryStream());
-            var sheet = package.Workbook.Worksheets.Add("ListTest");
+            ExcelPackage? package = new ExcelPackage(new MemoryStream());
+            ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("ListTest");
 
-            var validationOrig = sheet.DataValidations.AddListValidation("A1");
+            IExcelDataValidationList? validationOrig = sheet.DataValidations.AddListValidation("A1");
 
             validationOrig.Formula.ExcelFormula = "\"3,42\"";
 
-            var validation = ReadTValidation<ExcelDataValidationList>(package);
+            ExcelDataValidationList? validation = ReadTValidation<ExcelDataValidationList>(package);
 
             Assert.AreEqual("3", validation.Formula.Values[0]);
             Assert.AreEqual("42", validation.Formula.Values[1]);
@@ -57,16 +58,16 @@ namespace EPPlusTest.DataValidation.Formulas
         [TestMethod]
         public void ValuesAreRead()
         {
-            var package = new ExcelPackage(new MemoryStream());
-            var sheet = package.Workbook.Worksheets.Add("ListTest");
+            ExcelPackage? package = new ExcelPackage(new MemoryStream());
+            ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("ListTest");
 
-            var validationOrig = sheet.DataValidations.AddListValidation("A1");
+            IExcelDataValidationList? validationOrig = sheet.DataValidations.AddListValidation("A1");
 
             validationOrig.Formula.Values.Add("5");
             validationOrig.Formula.Values.Add("15");
 
 
-            var validation = ReadTValidation<ExcelDataValidationList>(package);
+            ExcelDataValidationList? validation = ReadTValidation<ExcelDataValidationList>(package);
 
             CollectionAssert.AreEquivalent(new List<string> { "5", "15" }, (ICollection)validation.Formula.Values);
         }
@@ -74,14 +75,14 @@ namespace EPPlusTest.DataValidation.Formulas
         [TestMethod]
         public void ExcelFormulaIsRead()
         {
-            var package = new ExcelPackage(new MemoryStream());
-            var sheet = package.Workbook.Worksheets.Add("ListTest");
+            ExcelPackage? package = new ExcelPackage(new MemoryStream());
+            ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("ListTest");
 
-            var validationOrig = sheet.DataValidations.AddListValidation("A1");
+            IExcelDataValidationList? validationOrig = sheet.DataValidations.AddListValidation("A1");
 
             validationOrig.Formula.ExcelFormula = "D1";
 
-            var validation = ReadTValidation<ExcelDataValidationList>(package);
+            ExcelDataValidationList? validation = ReadTValidation<ExcelDataValidationList>(package);
 
             Assert.AreEqual("D1", validation.Formula.ExcelFormula);
         }
@@ -89,10 +90,10 @@ namespace EPPlusTest.DataValidation.Formulas
         [TestMethod]
         public void FormulaSpecialSignsAreWrittenAndRead()
         {
-            var package = new ExcelPackage(new MemoryStream());
-            var sheet = package.Workbook.Worksheets.Add("DecimalTest");
+            ExcelPackage? package = new ExcelPackage(new MemoryStream());
+            ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("DecimalTest");
 
-            var lessThan = sheet.DataValidations.AddListValidation("A1");
+            IExcelDataValidationList? lessThan = sheet.DataValidations.AddListValidation("A1");
 
             sheet.Cells["B1"].Value = "EP";
             sheet.Cells["B2"].Value = "Plus";
@@ -103,7 +104,7 @@ namespace EPPlusTest.DataValidation.Formulas
             lessThan.ShowErrorMessage = true;
 
 
-            var greaterThan = sheet.DataValidations.AddListValidation("A2");
+            IExcelDataValidationList? greaterThan = sheet.DataValidations.AddListValidation("A2");
 
             sheet.Cells["B2"].Value = 6;
             greaterThan.Formula.ExcelFormula = "\"HulaBal00,-?53&<>/\\\'#¤$%||,123456789\"";
@@ -114,10 +115,10 @@ namespace EPPlusTest.DataValidation.Formulas
             MemoryStream stream = new MemoryStream();
             package.SaveAs(stream);
 
-            var loadedpkg = new ExcelPackage(stream);
-            var loadedSheet = loadedpkg.Workbook.Worksheets[0];
+            ExcelPackage? loadedpkg = new ExcelPackage(stream);
+            ExcelWorksheet? loadedSheet = loadedpkg.Workbook.Worksheets[0];
 
-            var validations = loadedSheet.DataValidations;
+            ExcelDataValidationCollection? validations = loadedSheet.DataValidations;
 
             Assert.AreEqual(((ExcelDataValidationList)validations[0]).Formula.Values[0], "1<5");
             Assert.AreEqual(((ExcelDataValidationList)validations[0]).Formula.Values[1], "B1&B2");

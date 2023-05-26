@@ -35,6 +35,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
+using OfficeOpenXml.Drawing;
 
 namespace EPPlusTest.Drawing.Chart
 {
@@ -46,12 +47,12 @@ namespace EPPlusTest.Drawing.Chart
         [TestInitialize]
         public void Initialize()
         {
-            var xmlDoc = new XmlDocument();
+            XmlDocument? xmlDoc = new XmlDocument();
             xmlDoc.LoadXml("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><c:chartSpace xmlns:c=\"http://schemas.openxmlformats.org/drawingml/2006/chart\" xmlns:a=\"http://schemas.openxmlformats.org/drawingml/2006/main\" xmlns:r=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships\" ></c:chartSpace>");
-            var xmlNsm = new XmlNamespaceManager(new NameTable());
+            XmlNamespaceManager? xmlNsm = new XmlNamespaceManager(new NameTable());
             xmlNsm.AddNamespace("c", ExcelPackage.schemaChart);
             xmlNsm.AddNamespace("a", ExcelPackage.schemaDrawings);
-            var node = xmlDoc.CreateElement("axis");
+            XmlElement? node = xmlDoc.CreateElement("axis");
             xmlDoc.DocumentElement.AppendChild(node);
             axis = new ExcelChartAxisStandard(null,xmlNsm, node, "c");
         }
@@ -100,11 +101,11 @@ namespace EPPlusTest.Drawing.Chart
         [TestMethod] 
         public void Gridlines_Set_IsNotNull()
         { 
-            var major = axis.MajorGridlines;
+            ExcelDrawingBorder? major = axis.MajorGridlines;
             major.Width = 1;
             Assert.IsTrue(axis.ExistsNode("c:majorGridlines")); 
   
-            var minor = axis.MinorGridlines;
+            ExcelDrawingBorder? minor = axis.MinorGridlines;
             minor.Width = 1;
             Assert.IsTrue(axis.ExistsNode("c:minorGridlines")); 
         } 
@@ -112,9 +113,9 @@ namespace EPPlusTest.Drawing.Chart
         [TestMethod] 
         public void Gridlines_Remove_IsNull()
         { 
-            var major = axis.MajorGridlines;
+            ExcelDrawingBorder? major = axis.MajorGridlines;
             major.Width = 1;
-            var minor = axis.MinorGridlines;
+            ExcelDrawingBorder? minor = axis.MinorGridlines;
             minor.Width = 1;
 
             axis.RemoveGridlines(); 

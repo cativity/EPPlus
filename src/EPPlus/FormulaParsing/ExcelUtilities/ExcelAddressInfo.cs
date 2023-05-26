@@ -25,17 +25,17 @@ namespace OfficeOpenXml.FormulaParsing.ExcelUtilities
     {
         private ExcelAddressInfo(string address) 
         {   
-            var addressOnSheet = address;
+            string? addressOnSheet = address;
             Worksheet = string.Empty;
             if (address.Contains("!"))
             {
-                var worksheetArr = address.Split('!');
+                string[]? worksheetArr = address.Split('!');
                 Worksheet = worksheetArr[0];
                 addressOnSheet = worksheetArr[1];
             }
             if (addressOnSheet.Contains(":"))
             {
-                var rangeArr = addressOnSheet.Split(':');
+                string[]? rangeArr = addressOnSheet.Split(':');
                 StartCell = rangeArr[0];
                 EndCell = rangeArr[1];
             }

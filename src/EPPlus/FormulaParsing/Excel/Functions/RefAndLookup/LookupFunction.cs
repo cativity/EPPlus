@@ -52,8 +52,8 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.RefAndLookup
 
         protected LookupDirection GetLookupDirection(RangeAddress rangeAddress)
         {
-            var nRows = rangeAddress.ToRow - rangeAddress.FromRow;
-            var nCols = rangeAddress.ToCol - rangeAddress.FromCol;
+            int nRows = rangeAddress.ToRow - rangeAddress.FromRow;
+            int nCols = rangeAddress.ToCol - rangeAddress.FromCol;
             return nCols > nRows ? LookupDirection.Horizontal : LookupDirection.Vertical;
         }
 
@@ -68,7 +68,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.RefAndLookup
             }
             do
             {
-                var matchResult = IsMatch(lookupArgs.SearchedValue, navigator.CurrentValue);
+                int matchResult = IsMatch(lookupArgs.SearchedValue, navigator.CurrentValue);
                 if (matchResult != 0)
                 {
                     if (lastValue != null && navigator.CurrentValue == null)

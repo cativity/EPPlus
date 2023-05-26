@@ -29,9 +29,9 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance
         public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
         {
             ValidateArguments(arguments, 2);
-            var rate = ArgToDecimal(arguments, 0);
-            var args = ArgsToDoubleEnumerable(false, true, arguments, context).ToList();
-            var retVal = CashFlowHelper.Npv(rate, args.Skip(1).Select(x => (double)x));
+            double rate = ArgToDecimal(arguments, 0);
+            List<ExcelDoubleCellValue>? args = ArgsToDoubleEnumerable(false, true, arguments, context).ToList();
+            double retVal = CashFlowHelper.Npv(rate, args.Skip(1).Select(x => (double)x));
             return CreateResult(retVal, DataType.Decimal);
         }
     }

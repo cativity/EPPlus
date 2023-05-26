@@ -17,12 +17,12 @@ namespace EPPlusTest.Sorting
         [TestMethod]
         public void ShouldSetSortState()
         {
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var rnd = new Random();
-                var sheet = package.Workbook.Worksheets.Add("Test");
+                Random? rnd = new Random();
+                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("Test");
                 Assert.IsNull(sheet.SortState, "Worksheet.SortState was not null");
-                for (var x = 1; x < 10; x++)
+                for (int x = 1; x < 10; x++)
                 {
                     sheet.Cells[x, 1].Value = rnd.Next(1, 20);
                 }
@@ -35,12 +35,12 @@ namespace EPPlusTest.Sorting
         [TestMethod]
         public void SetSortStateShouldClearChildNodesAtEachSearch()
         {
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var rnd = new Random();
-                var sheet = package.Workbook.Worksheets.Add("Test");
+                Random? rnd = new Random();
+                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("Test");
                 Assert.IsNull(sheet.SortState, "Worksheet.SortState was not null");
-                for (var x = 1; x < 10; x++)
+                for (int x = 1; x < 10; x++)
                 {
                     sheet.Cells[x, 1].Value = rnd.Next(1, 20);
                 }
@@ -55,12 +55,12 @@ namespace EPPlusTest.Sorting
         [TestMethod]
         public void SortStateClearMethodShouldRemoveAllConditions()
         {
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var rnd = new Random();
-                var sheet = package.Workbook.Worksheets.Add("Test");
+                Random? rnd = new Random();
+                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("Test");
                 Assert.IsNull(sheet.SortState, "Worksheet.SortState was not null");
-                for (var x = 1; x < 10; x++)
+                for (int x = 1; x < 10; x++)
                 {
                     sheet.Cells[x, 1].Value = rnd.Next(1, 20);
                 }
@@ -77,9 +77,9 @@ namespace EPPlusTest.Sorting
         [TestMethod]
         public void ShouldHandleEmptyDescendingArray()
         {
-            using(var package = new ExcelPackage())
+            using(ExcelPackage? package = new ExcelPackage())
             {
-                var sheet = package.Workbook.Worksheets.Add("test");
+                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
                 int[] sortColumns = new int[1];
                 sortColumns[0] = 0;
                 sheet.Cells["A2:A30864"].Sort(sortColumns);
@@ -89,9 +89,9 @@ namespace EPPlusTest.Sorting
         [TestMethod]
         public void ShouldSortMultipleColumns()
         {
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var sheet = package.Workbook.Worksheets.Add("Test");
+                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("Test");
                 sheet.Cells[1, 1].Value = 1;
                 sheet.Cells[2, 1].Value = 6;
                 sheet.Cells[3, 1].Value = 2;
@@ -113,9 +113,9 @@ namespace EPPlusTest.Sorting
         [TestMethod]
         public void ShouldSortSingleColumn()
         {
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var sheet = package.Workbook.Worksheets.Add("Test");
+                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("Test");
                 sheet.Cells[1, 1].Value = 4;
                 sheet.Cells[2, 1].Value = 3;
                 sheet.Cells[3, 1].Value = 2;
@@ -141,7 +141,7 @@ namespace EPPlusTest.Sorting
         [TestMethod]
         public void ShouldConfigureSortOptionsForSingleColumn()
         {
-            var options = new RangeSortOptions();
+            RangeSortOptions? options = new RangeSortOptions();
             options.SortBy.Column(0);
             Assert.AreEqual(1, options.ColumnIndexes.Count);
             Assert.AreEqual(1, options.Descending.Count);
@@ -152,7 +152,7 @@ namespace EPPlusTest.Sorting
         [TestMethod]
         public void ShouldConfigureSortOptionsForMultiColumns()
         {
-            var options = new RangeSortOptions();
+            RangeSortOptions? options = new RangeSortOptions();
             options
                 .SortBy.Column(0)
                 .ThenSortBy.Column(3, eSortOrder.Descending)
@@ -168,9 +168,9 @@ namespace EPPlusTest.Sorting
         [TestMethod]
         public void ShouldSortMultipleColumnsWithOptions()
         {
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var sheet = package.Workbook.Worksheets.Add("Test");
+                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("Test");
                 sheet.Cells[1, 1].Value = 1;
                 sheet.Cells[2, 1].Value = 6;
                 sheet.Cells[3, 1].Value = 2;
@@ -198,9 +198,9 @@ namespace EPPlusTest.Sorting
         [TestMethod]
         public void ShouldSortByCustomList()
         {
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var sheet = package.Workbook.Worksheets.Add("Test");
+                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("Test");
                 sheet.Cells[1, 1].Value = "Blue";
                 sheet.Cells[2, 1].Value = "Red";
                 sheet.Cells[3, 1].Value = "Yellow";
@@ -225,9 +225,9 @@ namespace EPPlusTest.Sorting
         [TestMethod]
         public void ShouldSortLeftToRight()
         {
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var sheet = package.Workbook.Worksheets.Add("Test");
+                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("Test");
                 sheet.Cells[1, 1].Value = 4;
                 sheet.Cells[1, 2].Value = 1;
                 sheet.Cells[1, 3].Value = 5;
@@ -252,9 +252,9 @@ namespace EPPlusTest.Sorting
         [TestMethod]
         public void ShouldSetStortStateLeftToRight()
         {
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var sheet = package.Workbook.Worksheets.Add("Test");
+                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("Test");
                 sheet.Cells[1, 1].Value = 4;
                 sheet.Cells[1, 2].Value = 1;
                 sheet.Cells[1, 3].Value = 5;
@@ -276,9 +276,9 @@ namespace EPPlusTest.Sorting
         [TestMethod]
         public void ShouldSortLeftToRightWithTwoLayers()
         {
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var sheet = package.Workbook.Worksheets.Add("Test");
+                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("Test");
                 sheet.Cells[1, 1].Value = 4;
                 sheet.Cells[1, 2].Value = 4;
                 sheet.Cells[1, 3].Value = 4;
@@ -303,9 +303,9 @@ namespace EPPlusTest.Sorting
         [TestMethod]
         public void ShouldShiftRowsInSharedFormula()
         {
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var sheet = package.Workbook.Worksheets.Add("Test");
+                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("Test");
                 sheet.Cells[1, 1].Value = 3;
                 sheet.Cells[2, 1].Value = 2;
                 sheet.Cells[3, 1].Value = 1;
@@ -323,9 +323,9 @@ namespace EPPlusTest.Sorting
         [TestMethod]
         public void ShouldShiftRowsInFormula()
         {
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var sheet = package.Workbook.Worksheets.Add("Test");
+                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("Test");
 
                 sheet.Cells[1, 1].Value = 3;
                 sheet.Cells[2, 1].Value = 2;
@@ -344,9 +344,9 @@ namespace EPPlusTest.Sorting
         [TestMethod]
         public void ShouldShiftRowsInFormulaWithRangeAddress()
         {
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var sheet = package.Workbook.Worksheets.Add("Test");
+                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("Test");
 
                 sheet.Cells[1, 1].Value = 3;
                 sheet.Cells[2, 1].Value = 2;
@@ -369,9 +369,9 @@ namespace EPPlusTest.Sorting
         [TestMethod]
         public void ShouldShiftColumnsInFormulaWithRangeAddress()
         {
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var sheet = package.Workbook.Worksheets.Add("Test");
+                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("Test");
 
                 sheet.Cells[1, 1].Value = 3;
                 sheet.Cells[1, 2].Value = 2;
@@ -397,9 +397,9 @@ namespace EPPlusTest.Sorting
         [TestMethod]
         public void ShouldSortLeftToRightUsingCustomList()
         {
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var sheet = package.Workbook.Worksheets.Add("Test");
+                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("Test");
                 sheet.Cells[1, 1].Value = "S";
                 sheet.Cells[1, 2].Value = "M";
                 sheet.Cells[1, 3].Value = "M";
@@ -424,9 +424,9 @@ namespace EPPlusTest.Sorting
         [TestMethod]
         public void ShouldSortLeftToRightUsingCustomListNonFluent()
         {
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var sheet = package.Workbook.Worksheets.Add("Test");
+                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("Test");
                 sheet.Cells[1, 1].Value = "S";
                 sheet.Cells[1, 2].Value = "M";
                 sheet.Cells[1, 3].Value = "M";
@@ -437,8 +437,8 @@ namespace EPPlusTest.Sorting
                 sheet.Cells[2, 3].Value = 1;
                 sheet.Cells[2, 4].Value = 2;
                 sheet.Cells[2, 5].Value = 5;
-                var options = RangeSortOptions.Create();
-                var builder = options.SortLeftToRightBy.Row(0).UsingCustomList("S", "M", "L");
+                RangeSortOptions? options = RangeSortOptions.Create();
+                RangeLeftToRightSortLayerBuilder? builder = options.SortLeftToRightBy.Row(0).UsingCustomList("S", "M", "L");
                 builder.ThenSortBy.Row(1);
                 sheet.Cells["A1:E2"].Sort(options);
 
@@ -454,9 +454,9 @@ namespace EPPlusTest.Sorting
         [TestMethod]
         public void ShouldIgnoreCaseWithCustomList()
         {
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var sheet = package.Workbook.Worksheets.Add("Test");
+                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("Test");
                 sheet.Cells[1, 1].Value = "s";
                 sheet.Cells[1, 2].Value = "m";
                 sheet.Cells[1, 3].Value = "m";
@@ -486,9 +486,9 @@ namespace EPPlusTest.Sorting
         [TestMethod]
         public void NullValuesShouldBeLastAscending()
         {
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var sheet = package.Workbook.Worksheets.Add("Test");
+                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("Test");
                 sheet.Cells[1, 1].Value = 4;
                 sheet.Cells[2, 1].Value = 1;
                 sheet.Cells[3, 1].Value = null;
@@ -506,15 +506,15 @@ namespace EPPlusTest.Sorting
         [TestMethod]
         public void NullValuesShouldBeLastDecending()
         {
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var sheet = package.Workbook.Worksheets.Add("Test");
+                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("Test");
                 sheet.Cells[1, 1].Value = 4;
                 sheet.Cells[2, 1].Value = 1;
                 sheet.Cells[3, 1].Value = null;
                 sheet.Cells[4, 1].Value = 2;
                 sheet.Cells[5, 1].Value = 5;
-                var a5 = sheet.Cells["A5"].Value;
+                object? a5 = sheet.Cells["A5"].Value;
                 sheet.Cells["A1:A5"].Sort(x => x.SortBy.Column(0, eSortOrder.Descending));
 
                 Assert.AreEqual(5, sheet.Cells[1, 1].Value);
@@ -527,9 +527,9 @@ namespace EPPlusTest.Sorting
         [TestMethod]
         public void Left2RightNullValuesShouldBeLastAscending()
         {
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var sheet = package.Workbook.Worksheets.Add("Test");
+                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("Test");
                 sheet.Cells[1, 1].Value = 4;
                 sheet.Cells[1, 2].Value = 1;
                 sheet.Cells[1, 3].Value = null;
@@ -545,9 +545,9 @@ namespace EPPlusTest.Sorting
         [TestMethod]
         public void Left2RightNullValuesShouldBeLastDecending()
         {
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var sheet = package.Workbook.Worksheets.Add("Test");
+                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("Test");
                 sheet.Cells[1, 1].Value = 4;
                 sheet.Cells[1, 2].Value = 1;
                 sheet.Cells[1, 3].Value = null;
@@ -563,9 +563,9 @@ namespace EPPlusTest.Sorting
         [TestMethod]
         public void ShouldClearSortStateWhenNewSort()
         {
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var sheet = package.Workbook.Worksheets.Add("Test");
+                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("Test");
                 sheet.Cells["A1"].Value = 4;
                 sheet.Cells["A2"].Value = 1;
                 

@@ -37,7 +37,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Database
         public ExcelDatabase(ExcelDataProvider dataProvider, string range)
         {
             _dataProvider = dataProvider;
-            var address = new ExcelAddressBase(range);
+            ExcelAddressBase? address = new ExcelAddressBase(range);
             _fromCol = address._fromCol;
             _toCol = address._toCol;
             _fieldRow = address._fromRow;
@@ -49,11 +49,11 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Database
 
         private void Initialize()
         {
-            var fieldIx = 0;
-            for (var colIndex = _fromCol; colIndex <= _toCol; colIndex++)
+            int fieldIx = 0;
+            for (int colIndex = _fromCol; colIndex <= _toCol; colIndex++)
             {
-                var nameObj = GetCellValue(_fieldRow, colIndex);
-                var name = nameObj != null ? nameObj.ToString().ToLower(CultureInfo.InvariantCulture) : string.Empty;
+                object? nameObj = GetCellValue(_fieldRow, colIndex);
+                string? name = nameObj != null ? nameObj.ToString().ToLower(CultureInfo.InvariantCulture) : string.Empty;
                 _fields.Add(new ExcelDatabaseField(name, fieldIx++));
             }
         }
@@ -70,12 +70,12 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Database
 
         public ExcelDatabaseRow Read()
         {
-            var retVal = new ExcelDatabaseRow();
+            ExcelDatabaseRow? retVal = new ExcelDatabaseRow();
             _rowIndex++;
-            foreach (var field in Fields)
+            foreach (ExcelDatabaseField? field in Fields)
             {
-                var colIndex = _fromCol + field.ColIndex;
-                var val = GetCellValue(_rowIndex, colIndex);
+                int colIndex = _fromCol + field.ColIndex;
+                object? val = GetCellValue(_rowIndex, colIndex);
                 retVal[field.FieldName] = val;
             }
             return retVal;

@@ -29,19 +29,19 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Statistical
         public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
         {
             ValidateArguments(arguments, 1);
-            var numbers = ArgsToDoubleEnumerable(arguments, context);
+            IEnumerable<ExcelDoubleCellValue>? numbers = ArgsToDoubleEnumerable(arguments, context);
             if (numbers.Any(x => x.Value <= 0d))
             {
                 return this.CreateResult(eErrorType.Num);
             }
 
-            var p = 1d;
-            for(var x = 0; x < numbers.Count(); x++)
+            double p = 1d;
+            for(int x = 0; x < numbers.Count(); x++)
             {
-                var n = numbers.ElementAt(x);
+                ExcelDoubleCellValue n = numbers.ElementAt(x);
                 p *= n.Value;
             }
-            var result = System.Math.Pow(p, 1d / numbers.Count());
+            double result = System.Math.Pow(p, 1d / numbers.Count());
             return CreateResult(result, DataType.Decimal);
         }
     }

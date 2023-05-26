@@ -31,8 +31,8 @@ namespace OfficeOpenXml.Utils
                 return "";
             }
 
-            var styles = wb.Styles;
-            var nfID = styles.CellXfs[styleId].NumberFormatId;
+            ExcelStyles? styles = wb.Styles;
+            int nfID = styles.CellXfs[styleId].NumberFormatId;
             ExcelNumberFormatXml.ExcelFormatTranslator nf = null;
             for (int i = 0; i < styles.NumberFormats.Count; i++)
             {
@@ -51,7 +51,7 @@ namespace OfficeOpenXml.Utils
         }
         internal static string FormatValue(object v, bool forWidthCalc, ExcelNumberFormatXml.ExcelFormatTranslator nf, CultureInfo overrideCultureInfo)
         {
-            var f = nf.GetFormatPart(v);
+            ExcelNumberFormatXml.ExcelFormatTranslator.FormatPart? f = nf.GetFormatPart(v);
             string format;
             if (forWidthCalc)
             {
@@ -90,7 +90,7 @@ namespace OfficeOpenXml.Utils
                 {
                     if (d >= 0 && d<=DateTime.MaxValue.ToOADate())
                     {
-                        var date = DateTime.FromOADate(d);
+                        DateTime date = DateTime.FromOADate(d);
                         return GetDateText(date, format, f, overrideCultureInfo ?? nf.Culture);
                     }
                     else
@@ -175,7 +175,7 @@ namespace OfficeOpenXml.Utils
 
         private static string FormatNumber(double d, string format, CultureInfo cultureInfo)
         {
-            var s = FormatNumberExcel(d, format, cultureInfo);
+            string? s = FormatNumberExcel(d, format, cultureInfo);
             if (string.IsNullOrEmpty(s) == false && (
                     s.StartsWith("--") && format.StartsWith("-") ||
                    (s.StartsWith("-(", StringComparison.OrdinalIgnoreCase) && format.StartsWith("(", StringComparison.OrdinalIgnoreCase) && format.IndexOf(")", StringComparison.OrdinalIgnoreCase)>0)))

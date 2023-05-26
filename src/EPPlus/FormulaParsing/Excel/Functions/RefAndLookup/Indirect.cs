@@ -28,7 +28,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.RefAndLookup
         public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
         {
             ValidateArguments(arguments, 1);
-            var address = ArgToAddress(arguments, 0);
+            string? address = ArgToAddress(arguments, 0);
             ExcelAddressBase adr;
             if (ExcelAddressBase.IsValidAddress(address) || ExcelAddressBase.IsTableAddress(address))
             {
@@ -36,7 +36,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.RefAndLookup
             }
             else
             {                
-                var n=context.ExcelDataProvider.GetName(context.Scopes.Current.Address.Worksheet, address);
+                INameInfo? n=context.ExcelDataProvider.GetName(context.Scopes.Current.Address.Worksheet, address);
                 if(n.Value is EpplusExcelDataProvider.RangeInfo ri)
                 {
                     adr = ri.Address;
@@ -47,20 +47,20 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.RefAndLookup
                 }
                 address = adr.Address;
             }
-            var ws = adr.WorkSheetName;
+            string? ws = adr.WorkSheetName;
             if (string.IsNullOrEmpty(ws))
             {
                 ws = context.Scopes.Current.Address.Worksheet;
             }
-            var result = context.ExcelDataProvider.GetRange(ws, context.Scopes.Current.Address.FromRow, context.Scopes.Current.Address.FromCol, address);
+            IRangeInfo? result = context.ExcelDataProvider.GetRange(ws, context.Scopes.Current.Address.FromRow, context.Scopes.Current.Address.FromCol, address);
             if (result.IsEmpty)
             {
                 return CompileResult.Empty;
             }
             else if(!result.IsMulti)
             {
-                var cell = result.FirstOrDefault();
-                var val = cell != null ? cell.Value : null;
+                ICellInfo? cell = result.FirstOrDefault();
+                object? val = cell != null ? cell.Value : null;
                 if (val == null)
                 {
                     return CompileResult.Empty;

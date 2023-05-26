@@ -14,7 +14,7 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions
         [TestMethod]
         public void CeilingShouldReturnCorrectResult()
         {
-            var result = RoundingHelper.Round(22.25, 0.1, RoundingHelper.Direction.Up);
+            double result = RoundingHelper.Round(22.25, 0.1, RoundingHelper.Direction.Up);
             Assert.AreEqual(22.3, result);
 
             result = RoundingHelper.Round(22.25, 0.5, RoundingHelper.Direction.Up);
@@ -48,7 +48,7 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions
         [TestMethod]
         public void FloorShouldReturnCorrectResult_Down()
         {
-            var result = RoundingHelper.Round(26.75, 0.1, RoundingHelper.Direction.Down);
+            double result = RoundingHelper.Round(26.75, 0.1, RoundingHelper.Direction.Down);
             Assert.AreEqual(26.7, result);
 
             result = RoundingHelper.Round(26.75, 0.5, RoundingHelper.Direction.Down);
@@ -82,7 +82,7 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions
         [TestMethod]
         public void FloorShouldReturnCorrectResult_AlwaysDown()
         {
-            var result = RoundingHelper.Round(26.75, 0.1, RoundingHelper.Direction.AlwaysDown);
+            double result = RoundingHelper.Round(26.75, 0.1, RoundingHelper.Direction.AlwaysDown);
             Assert.AreEqual(26.7, result);
 
             result = RoundingHelper.Round(26.75, 0.5, RoundingHelper.Direction.AlwaysDown);
@@ -113,7 +113,7 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions
         [TestMethod]
         public void CeilingShouldReturnCorrectResult_AlwaysUp()
         {
-            var result = RoundingHelper.Round(22.25, 0.1, RoundingHelper.Direction.AlwaysUp);
+            double result = RoundingHelper.Round(22.25, 0.1, RoundingHelper.Direction.AlwaysUp);
             Assert.AreEqual(22.3, result);
 
             result = RoundingHelper.Round(22.25, 0.5, RoundingHelper.Direction.AlwaysUp);
@@ -147,7 +147,7 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions
         [TestMethod]
         public void NearestRoundingTest()
         {
-            var result = RoundingHelper.Round(22.24, 0.1, RoundingHelper.Direction.Nearest);
+            double result = RoundingHelper.Round(22.24, 0.1, RoundingHelper.Direction.Nearest);
             Assert.AreEqual(22.2, result);
 
             result = RoundingHelper.Round(22.25, 0.1, RoundingHelper.Direction.Nearest);

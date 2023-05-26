@@ -30,9 +30,9 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Statistical
         public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
         {
             ValidateArguments(arguments, 3);
-            var alpha = ArgToDecimal(arguments, 0);
-            var sigma = ArgToDecimal(arguments, 1);
-            var size = ArgToInt(arguments, 2);
+            double alpha = ArgToDecimal(arguments, 0);
+            double sigma = ArgToDecimal(arguments, 1);
+            int size = ArgToInt(arguments, 2);
 
             if (alpha <= 0d || alpha >= 1d)
             {
@@ -49,14 +49,14 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Statistical
                 return this.CreateResult(eErrorType.Num);
             }
 
-            var result = System.Math.Abs(StudentInv(alpha / 2, size - 1) * sigma / System.Math.Sqrt(size));
+            double result = System.Math.Abs(StudentInv(alpha / 2, size - 1) * sigma / System.Math.Sqrt(size));
             return CreateResult(result, DataType.Decimal);
         }
 
 
         private double StudentInv(double p, double dof)
         {
-            var x = BetaHelper.IBetaInv(2 * System.Math.Min(p, 1 - p), 0.5 * dof, 0.5);
+            double x = BetaHelper.IBetaInv(2 * System.Math.Min(p, 1 - p), 0.5 * dof, 0.5);
             x = System.Math.Sqrt(dof * (1 - x) / x);
             return (p > 0.5) ? x : -x;
         }

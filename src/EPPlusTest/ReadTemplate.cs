@@ -50,7 +50,7 @@ namespace EPPlusTest
             MemoryStream stream = new MemoryStream();
             using (ExcelPackage pck = new ExcelPackage(stream))
             {
-                var ws = pck.Workbook.Worksheets.Add("Perf");
+                ExcelWorksheet? ws = pck.Workbook.Worksheets.Add("Perf");
                 pck.SaveAs(stream);
             }
             stream.Close();
@@ -58,9 +58,9 @@ namespace EPPlusTest
         [TestMethod]
         public void OpenXlts()
         {
-            using (var pck = OpenTemplatePackage("Template.xltx"))
+            using (ExcelPackage? pck = OpenTemplatePackage("Template.xltx"))
             {
-                var ws=pck.Workbook.Worksheets[0];
+                ExcelWorksheet? ws=pck.Workbook.Worksheets[0];
                 SaveWorkbook("Template.xlsx", pck);
             }
         }

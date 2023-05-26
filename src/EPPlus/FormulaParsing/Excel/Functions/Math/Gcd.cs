@@ -28,7 +28,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
         public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
         {
             ValidateArguments(arguments, 1);
-            var numbers = ArgsToDoubleEnumerable(arguments, context).Select(x => (int)x);
+            IEnumerable<int>? numbers = ArgsToDoubleEnumerable(arguments, context).Select(x => (int)x);
             return CreateResult(MathHelper.GreatestCommonDevisor(numbers.ToArray()), DataType.Integer);
         }
     }

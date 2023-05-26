@@ -74,22 +74,22 @@ namespace EPPlusTest
             {
                 _testInputPathOptional = Environment.GetEnvironmentVariable("EPPlusTestInputPath");
             }
-            var asm = Assembly.GetExecutingAssembly();
-            var validExtensions = new[]
+            Assembly? asm = Assembly.GetExecutingAssembly();
+            string[]? validExtensions = new[]
                 {
                     ".gif", ".wmf"
                 };
 
-            foreach (var name in asm.GetManifestResourceNames())
+            foreach (string? name in asm.GetManifestResourceNames())
             {
-                foreach (var ext in validExtensions)
+                foreach (string? ext in validExtensions)
                 {
                     if (name.EndsWith(ext, StringComparison.OrdinalIgnoreCase))
                     {
                         string fileName = name.Replace("EPPlusTest.Resources.", "");
-                        using (var stream = asm.GetManifestResourceStream(name))
+                        using (Stream? stream = asm.GetManifestResourceStream(name))
                         {
-                            using (var file = File.Create(Path.Combine(_clipartPath, fileName)))
+                            using (FileStream? file = File.Create(Path.Combine(_clipartPath, fileName)))
                             {
                                 stream.CopyTo(file);
                             }
@@ -100,7 +100,7 @@ namespace EPPlusTest
                 }
             }
             
-            var di=new DirectoryInfo(_worksheetPath);            
+            DirectoryInfo? di=new DirectoryInfo(_worksheetPath);            
             _worksheetPath = di.FullName + "\\";
         }
         /// <summary>
@@ -118,7 +118,7 @@ namespace EPPlusTest
 
         protected static bool ExistsPackage(string name)
         {
-            var fi = new FileInfo(_worksheetPath + name);
+            FileInfo? fi = new FileInfo(_worksheetPath + name);
             return fi.Exists;
         }
         protected static void AssertIfNotExists(string name)
@@ -141,12 +141,12 @@ namespace EPPlusTest
         protected static async Task<ExcelPackage> OpenPackageAsync(string name, bool delete = false, string password=null)
         {
             CreateWorksheetPathIfNotExists();
-            var _file = new FileInfo(_worksheetPath + name);
+            FileInfo? _file = new FileInfo(_worksheetPath + name);
             if (delete && _file.Exists)
             {
                 _file.Delete();
             }
-            var p = new ExcelPackage();
+            ExcelPackage? p = new ExcelPackage();
             if (password == null)
             {
                 await p.LoadAsync(_file).ConfigureAwait(false);
@@ -171,10 +171,10 @@ namespace EPPlusTest
         }
         protected static ExcelPackage OpenTemplatePackage(string name)
         {
-            var t = new FileInfo(_testInputPath  + name);
+            FileInfo? t = new FileInfo(_testInputPath  + name);
             if (t.Exists)
             {
-                var file = new FileInfo(_worksheetPath + name);
+                FileInfo? file = new FileInfo(_worksheetPath + name);
                 return new ExcelPackage(file, t);
             }
             else
@@ -182,7 +182,7 @@ namespace EPPlusTest
                 t = new FileInfo(_testInputPathOptional + name);
                 if (t.Exists)
                 {
-                    var file = new FileInfo(_worksheetPath + name);
+                    FileInfo? file = new FileInfo(_worksheetPath + name);
                     return new ExcelPackage(file, t);  
                 }
                 t = new FileInfo(_worksheetPath + name);
@@ -212,7 +212,7 @@ namespace EPPlusTest
                 return;
             }
 
-            var fi = new FileInfo(_worksheetPath + name);
+            FileInfo? fi = new FileInfo(_worksheetPath + name);
             if (fi.Exists)
             {
                 //fi.Delete();
@@ -274,7 +274,7 @@ namespace EPPlusTest
         protected static void LoadHierarkiTestData(ExcelWorksheet ws)
         {
 
-            var l = new List<SalesData>
+            List<SalesData>? l = new List<SalesData>
             {
                 new SalesData{ Continent="Europe", Country="Sweden", State = "Stockholm", Sales = 154 },
                 new SalesData{ Continent="Asia", Country="Vietnam", State = "Ho Chi Minh", Sales= 88 },
@@ -299,7 +299,7 @@ namespace EPPlusTest
         protected static void LoadGeoTestData(ExcelWorksheet ws)
         {
 
-            var l = new List<GeoData>
+            List<GeoData>? l = new List<GeoData>
             {
                 new GeoData{ Country="Sweden", State = "Stockholm", Sales = 154 },
                 new GeoData{ Country="Sweden", State = "Jämtland", Sales = 55 },
@@ -399,7 +399,7 @@ namespace EPPlusTest
         }
         protected int GetRowFromDate(DateTime date)
         {
-            var startDate = new DateTime(DateTime.Today.Year-1, 11, 1);
+            DateTime startDate = new DateTime(DateTime.Today.Year-1, 11, 1);
             if (startDate > date)
             {
                 return 2;
@@ -411,7 +411,7 @@ namespace EPPlusTest
         }
         protected static ExcelWorksheet TryGetWorksheet(ExcelPackage pck, string worksheetName)
         {
-            var ws = pck.Workbook.Worksheets[worksheetName];
+            ExcelWorksheet? ws = pck.Workbook.Worksheets[worksheetName];
             if (ws == null)
             {
                 Assert.Inconclusive($"{worksheetName} worksheet is missing");
@@ -421,13 +421,13 @@ namespace EPPlusTest
         }
         protected static ExcelShape TryGetShape(ExcelPackage pck, string wsName)
         {
-            var ws = pck.Workbook.Worksheets[wsName];
+            ExcelWorksheet? ws = pck.Workbook.Worksheets[wsName];
             if (ws == null)
             {
                 Assert.Inconclusive($"{wsName} worksheet is missing");
             }
 
-            var shape = (ExcelShape)ws.Drawings[0];
+            ExcelShape? shape = (ExcelShape)ws.Drawings[0];
             return shape;
         }
         protected static FileInfo GetResourceFile(string fileName)
@@ -448,7 +448,7 @@ namespace EPPlusTest
         }
         protected void AssertIsNull(ExcelRangeBase range)
         {
-            foreach (var r in range)
+            foreach (ExcelRangeBase? r in range)
             {
                 Assert.IsNotNull(r.Value);
             }
@@ -457,7 +457,7 @@ namespace EPPlusTest
 
         protected void AssertNoChange(ExcelRangeBase range)
         {
-            foreach (var r in range)
+            foreach (ExcelRangeBase? r in range)
             {
                 Assert.AreEqual(r.Address, r.Value);
             }

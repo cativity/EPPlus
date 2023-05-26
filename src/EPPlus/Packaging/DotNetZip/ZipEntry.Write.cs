@@ -28,7 +28,9 @@
 
 using OfficeOpenXml.Packaging.Ionic.Zlib;
 using System;
+using System.Collections.Generic;
 using System.IO;
+using OfficeOpenXml.Packaging.Ionic.Crc;
 using RE = System.Text.RegularExpressions;
 
 namespace OfficeOpenXml.Packaging.Ionic.Zip
@@ -311,7 +313,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
 
         private byte[] ConstructExtraField(bool forCentralDirectory)
         {
-            var listOfBlocks = new System.Collections.Generic.List<byte[]>();
+            List<byte[]>? listOfBlocks = new System.Collections.Generic.List<byte[]>();
             byte[] block;
 
             // Conditionally emit an extra field with Zip64 information.  If the
@@ -622,7 +624,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         private byte[] GetEncodedFileNameBytes()
         {
             // workitem 6513
-            var s1 = NormalizeFileName();
+            string? s1 = NormalizeFileName();
 
             switch(AlternateEncodingUsage)
             {
@@ -852,7 +854,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
             // the header, and also we have to compute the offset later, to handle the
             // case of split archives.
 
-            var counter = s as CountingStream;
+            CountingStream? counter = s as CountingStream;
 
             // workitem 8098: ok (output)
             // This may change later, for split archives
@@ -1181,7 +1183,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
             _LengthOfHeader = i;
 
             // handle split archives
-            var zss = s as ZipSegmentedStream;
+            ZipSegmentedStream? zss = s as ZipSegmentedStream;
             if (zss != null)
             {
                 zss.ContiguousWrite = true;
@@ -1231,7 +1233,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
                 // get the original stream:
                 if (this._Source == ZipEntrySource.WriteDelegate)
                 {
-                    var output = new Ionic.Crc.CrcCalculatorStream(Stream.Null);
+                    CrcCalculatorStream? output = new Ionic.Crc.CrcCalculatorStream(Stream.Null);
                     // allow the application to write the data
                     this._WriteDelegate(this.FileName, output);
                     _Crc32 = output.Crc;
@@ -1267,7 +1269,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
                         input = File.Open(LocalFileName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
                     }
 
-                    var crc32 = new Ionic.Crc.CRC32();
+                    CRC32? crc32 = new Ionic.Crc.CRC32();
                     _Crc32 = crc32.GetCrc32(input);
 
                     if (_sourceStream == null)
@@ -1461,7 +1463,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
 
                 // Wrap a CrcCalculatorStream around that.
                 // This will happen BEFORE compression (if any) as we write data out.
-                var output = new Ionic.Crc.CrcCalculatorStream(compressor, true);
+                CrcCalculatorStream? output = new Ionic.Crc.CrcCalculatorStream(compressor, true);
 
                 // output.Write() causes this flow:
                 // calc-crc -> compress -> encrypt -> count -> actually write
@@ -1643,7 +1645,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
 
         internal void PostProcessOutput(Stream s)
         {
-            var s1 = s as CountingStream;
+            CountingStream? s1 = s as CountingStream;
 
             // workitem 8931 - for WriteDelegate.
             // The WriteDelegate changes things because there can be a zero-byte stream
@@ -1892,7 +1894,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
                  (this._Source == ZipEntrySource.ZipOutputStream && s.CanSeek))
             {
                 // seek back and rewrite the entry header
-                var zss = s as ZipSegmentedStream;
+                ZipSegmentedStream? zss = s as ZipSegmentedStream;
                 if (zss != null && _diskNumber != zss.CurrentSegment)
                 {
                     // In this case the entry header is in a different file,
@@ -2102,7 +2104,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
                     return o1;
                 }
 #endif
-                var o = new DeflateStream(s, OfficeOpenXml.Packaging.Ionic.Zlib.CompressionMode.Compress,
+                DeflateStream? o = new DeflateStream(s, OfficeOpenXml.Packaging.Ionic.Zlib.CompressionMode.Compress,
                                                      CompressionLevel,
                                                      true);
                 if (_container.CodecBufferSize > 0)
@@ -2174,8 +2176,8 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
 
         internal void Write(Stream s)
         {
-            var cs1 = s as CountingStream;
-            var zss1 = s as ZipSegmentedStream;
+            CountingStream? cs1 = s as CountingStream;
+            ZipSegmentedStream? zss1 = s as ZipSegmentedStream;
 
             bool done = false;
             do
@@ -2449,7 +2451,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
                 _zipCrypto_forWrite = ZipCrypto.ForWrite(pwd);
 
                 // generate the random 12-byte header:
-                var rnd = new System.Random();
+                Random? rnd = new System.Random();
                 byte[] encryptionHeader = new byte[12];
                 rnd.NextBytes(encryptionHeader);
 
@@ -2561,7 +2563,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         {
             int n;
             byte[] bytes = new byte[BufferSize];
-            var input = new CountingStream(this.ArchiveStream);
+            CountingStream? input = new CountingStream(this.ArchiveStream);
 
             long origRelativeOffsetOfHeader = _RelativeOffsetOfLocalHeader;
 
@@ -2675,7 +2677,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         {
             int n;
             byte[] bytes = new byte[BufferSize];
-            var input = new CountingStream(this.ArchiveStream);
+            CountingStream? input = new CountingStream(this.ArchiveStream);
 
             // seek to the beginning of the entry data in the input stream
             input.Seek(this._RelativeOffsetOfLocalHeader, SeekOrigin.Begin);
@@ -2705,7 +2707,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
             // remember the offset, within the output stream, of this particular entry header.
             // This may have changed if any of the other entries changed (eg, if a different
             // entry was removed or added.)
-            var counter = outstream as CountingStream;
+            CountingStream? counter = outstream as CountingStream;
             _RelativeOffsetOfLocalHeader = (counter != null)
                 ? counter.ComputedPosition
                 : outstream.Position;  // BytesWritten

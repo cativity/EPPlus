@@ -35,16 +35,16 @@ namespace OfficeOpenXml.FormulaParsing
         {
             AllowCircularReferences = false;
             PrecisionAndRoundingStrategy = PrecisionAndRoundingStrategy.DotNet;
-            var initErrors = new List<ExcelInitializationError>();
+            List<ExcelInitializationError>? initErrors = new List<ExcelInitializationError>();
 
 #if (Core)
-            var configValue = ExcelConfigurationReader.GetJsonConfigValue("EPPlus:ExcelPackage:AllowCircularReferences", ExcelPackage.GlobalConfiguration, initErrors);
+            string? configValue = ExcelConfigurationReader.GetJsonConfigValue("EPPlus:ExcelPackage:AllowCircularReferences", ExcelPackage.GlobalConfiguration, initErrors);
             if(bool.TryParse(configValue, out bool allow))
             {
                 AllowCircularReferences = allow;
             }
             //var roundingStrategy = c["EPPlus:ExcelPackage:PrecisionAndRoundingStrategy"];
-            var roundingStrategy = ExcelConfigurationReader.GetJsonConfigValue("EPPlus:ExcelPackage:PrecisionAndRoundingStrategy", ExcelPackage.GlobalConfiguration, initErrors);
+            string? roundingStrategy = ExcelConfigurationReader.GetJsonConfigValue("EPPlus:ExcelPackage:PrecisionAndRoundingStrategy", ExcelPackage.GlobalConfiguration, initErrors);
             if (Enum.TryParse(roundingStrategy, out PrecisionAndRoundingStrategy precisionAndRoundingStrategy))
             {
                 PrecisionAndRoundingStrategy = precisionAndRoundingStrategy;

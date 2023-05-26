@@ -59,7 +59,7 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             get
             {
-                var v=GetXmlNodeInt("c:marker/c:size/@val");
+                int v=GetXmlNodeInt("c:marker/c:size/@val");
                 if(v<0)
                 {
                     return 5;   //Default value;

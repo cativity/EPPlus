@@ -14,9 +14,9 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions.Statistical
         [TestMethod]
         public void AvedevShouldReturnCorrectResult()
         {
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var sheet = package.Workbook.Worksheets.Add("test");
+                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
                 sheet.Cells["A1"].Value = 1;
                 sheet.Cells["A2"].Value = 3;
                 sheet.Cells["A3"].Value = 5;
@@ -26,7 +26,7 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions.Statistical
 
                 sheet.Cells["B1"].Formula = "AVEDEV(A1:A6)";
                 sheet.Calculate();
-                var result = sheet.Cells["B1"].Value;
+                object? result = sheet.Cells["B1"].Value;
                 Assert.AreEqual(2.5, result);
 
                 sheet.Cells["B1"].Formula = "AVEDEV(A1:A6, 8, 10)";

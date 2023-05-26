@@ -51,7 +51,7 @@ namespace EPPlusTest.FormulaParsing.LexicalAnalysis
         [TestMethod]
         public void ShouldPassIfParenthesisAreWellformed()
         {
-            var input = new List<Token>
+            List<Token>? input = new List<Token>
             {
                 new Token("(", TokenType.OpeningParenthesis),
                 new Token("1", TokenType.Integer),
@@ -65,7 +65,7 @@ namespace EPPlusTest.FormulaParsing.LexicalAnalysis
         [TestMethod, ExpectedException(typeof(FormatException))]
         public void ShouldThrowExceptionIfParenthesesAreNotWellformed()
         {
-            var input = new List<Token>
+            List<Token>? input = new List<Token>
             {
                 new Token("(", TokenType.OpeningParenthesis),
                 new Token("1", TokenType.Integer),
@@ -78,7 +78,7 @@ namespace EPPlusTest.FormulaParsing.LexicalAnalysis
         [TestMethod]
         public void ShouldPassIfStringIsWellformed()
         {
-            var input = new List<Token>
+            List<Token>? input = new List<Token>
             {
                 new Token("'", TokenType.String),
                 new Token("abc123", TokenType.StringContent),
@@ -90,7 +90,7 @@ namespace EPPlusTest.FormulaParsing.LexicalAnalysis
         [TestMethod, ExpectedException(typeof(FormatException))]
         public void ShouldThrowExceptionIfStringHasNotClosing()
         {
-            var input = new List<Token>
+            List<Token>? input = new List<Token>
             {
                 new Token("'", TokenType.String),
                 new Token("abc123", TokenType.StringContent)
@@ -102,7 +102,7 @@ namespace EPPlusTest.FormulaParsing.LexicalAnalysis
         [TestMethod, ExpectedException(typeof(UnrecognizedTokenException))]
         public void ShouldThrowExceptionIfThereIsAnUnrecognizedToken()
         {
-            var input = new List<Token>
+            List<Token>? input = new List<Token>
             {
                 new Token("abc123", TokenType.Unrecognized)
             };
@@ -112,8 +112,8 @@ namespace EPPlusTest.FormulaParsing.LexicalAnalysis
         [TestMethod]
         public void DoubleQuoteSharedFormulasTest()
         {
-            var pck = new ExcelPackage();
-            var ws = pck.Workbook.Worksheets.Add("s");
+            ExcelPackage? pck = new ExcelPackage();
+            ExcelWorksheet? ws = pck.Workbook.Worksheets.Add("s");
             ws.Cells["A1:A3"].Formula = @"IF(TRUE,"""""""")";
             ws.Calculate();
             Assert.AreEqual("\"", ws.Cells["A1"].Value);

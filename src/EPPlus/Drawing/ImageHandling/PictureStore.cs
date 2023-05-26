@@ -51,11 +51,11 @@ namespace OfficeOpenXml.Drawing
                 pictureType = ePictureType.Jpg;
             }
 #if (Core)
-            var hashProvider = SHA1.Create();
+            SHA1? hashProvider = SHA1.Create();
 #else
             var hashProvider = new SHA1CryptoServiceProvider();
 #endif
-            var hash = BitConverter.ToString(hashProvider.ComputeHash(image)).Replace("-", "");
+            string? hash = BitConverter.ToString(hashProvider.ComputeHash(image)).Replace("-", "");
             lock (_images)
             {
                 if (_images.ContainsKey(hash))
@@ -68,7 +68,7 @@ namespace OfficeOpenXml.Drawing
                     string contentType;
                     if (uri == null)
                     {
-                        var extension = GetExtension(pictureType.Value);
+                        string? extension = GetExtension(pictureType.Value);
                         contentType = GetContentType(extension);
                         uri = GetNewUri(_pck.ZipPackage, "/xl/media/image{0}." + extension);
                         imagePart = _pck.ZipPackage.CreatePart(uri, contentType, CompressionLevel.None, extension);
@@ -76,7 +76,7 @@ namespace OfficeOpenXml.Drawing
                     }
                     else
                     {
-                        var extension = GetExtension(uri);
+                        string? extension = GetExtension(uri);
                         contentType = GetContentType(extension);
                         pictureType = GetPictureType(extension);
                         if (_pck.ZipPackage.PartExists(uri))
@@ -114,16 +114,16 @@ namespace OfficeOpenXml.Drawing
 
         private static void SaveImageToPart(byte[] image, ZipPackagePart imagePart)
         {
-            var stream = imagePart.GetStream(FileMode.Create, FileAccess.Write);
+            Stream? stream = imagePart.GetStream(FileMode.Create, FileAccess.Write);
             stream.Write(image, 0, image.GetLength(0));
             stream.Flush();
         }
 
         internal static ExcelImageInfo GetImageBounds(byte[] image, ePictureType type, ExcelPackage pck)
         {
-            var ret = new ExcelImageInfo();
-            var ms = RecyclableMemory.GetStream(image);
-            var s = pck.Settings.ImageSettings;
+            ExcelImageInfo? ret = new ExcelImageInfo();
+            MemoryStream? ms = RecyclableMemory.GetStream(image);
+            ExcelImageSettings? s = pck.Settings.ImageSettings;
 
             if(s.GetImageBounds(ms, type, out double width, out double height, out double horizontalResolution, out double verticalResolution)==false)
             {
@@ -137,8 +137,8 @@ namespace OfficeOpenXml.Drawing
         }
         internal static string GetExtension(Uri uri)
         {
-            var s = uri.OriginalString;
-            var i = s.LastIndexOf('.');
+            string? s = uri.OriginalString;
+            int i = s.LastIndexOf('.');
             if(i>0)
             {
                 return s.Substring(i + 1);
@@ -149,11 +149,11 @@ namespace OfficeOpenXml.Drawing
         internal ImageInfo LoadImage(byte[] image, Uri uri, Packaging.ZipPackagePart imagePart)
         {
 #if (Core)
-            var hashProvider = SHA1.Create();
+            SHA1? hashProvider = SHA1.Create();
 #else
             var hashProvider = new SHA1CryptoServiceProvider();
 #endif
-            var hash = BitConverter.ToString(hashProvider.ComputeHash(image)).Replace("-", "");
+            string? hash = BitConverter.ToString(hashProvider.ComputeHash(image)).Replace("-", "");
             if (_images.ContainsKey(hash))
             {
                 _images[hash].RefCount++;
@@ -170,7 +170,7 @@ namespace OfficeOpenXml.Drawing
             {
                 if (_images.ContainsKey(hash))
                 {
-                    var ii = _images[hash];
+                    ImageInfo? ii = _images[hash];
                     ii.RefCount--;
                     if (ii.RefCount == 0)
                     {
@@ -191,7 +191,7 @@ namespace OfficeOpenXml.Drawing
         }
         internal ImageInfo GetImageInfo(byte[] image)
         {
-            var hash = GetHash(image);
+            string? hash = GetHash(image);
             if (_images.ContainsKey(hash))
             {
                 return _images[hash];
@@ -203,14 +203,14 @@ namespace OfficeOpenXml.Drawing
         }
         internal bool ImageExists(byte[] image)
         {
-            var hash = GetHash(image);
+            string? hash = GetHash(image);
             return _images.ContainsKey(hash);
         }
 
         internal static string GetHash(byte[] image)
         {
 #if (Core)
-            var hashProvider = SHA1.Create();
+            SHA1? hashProvider = SHA1.Create();
 #else
             var hashProvider = new SHA1CryptoServiceProvider();
 #endif
@@ -235,14 +235,14 @@ namespace OfficeOpenXml.Drawing
             container.UriPic = UriHelper.ResolvePartUri(container.RelationDocument.RelatedUri, container.RelPic.TargetUri);
             part = container.RelationDocument.RelatedPart.Package.GetPart(container.UriPic);
 
-            var extension = Path.GetExtension(container.UriPic.OriginalString);
+            string? extension = Path.GetExtension(container.UriPic.OriginalString);
             contentType = GetContentType(extension);
             pictureType = GetPictureType(extension);
             return ((MemoryStream)part.GetStream()).ToArray();
         }
         internal static ePictureType GetPictureType(Uri uri)
         {
-            var ext = GetExtension(uri);
+            string? ext = GetExtension(uri);
             return GetPictureType(ext);
         }
         internal static ePictureType GetPictureType(string extension)
@@ -365,14 +365,14 @@ namespace OfficeOpenXml.Drawing
         }
         internal static string SavePicture(byte[] image, IPictureContainer container, ePictureType type)
         {
-            var store = container.RelationDocument.Package.PictureStore;
-            var ii = store.AddImage(image, container.UriPic, type);
+            PictureStore? store = container.RelationDocument.Package.PictureStore;
+            ImageInfo? ii = store.AddImage(image, container.UriPic, type);
 
             container.ImageHash = ii.Hash;
-            var hashes = container.RelationDocument.Hashes;
+            Dictionary<string, HashInfo>? hashes = container.RelationDocument.Hashes;
             if (hashes.ContainsKey(ii.Hash))
             {
-                var relID = hashes[ii.Hash].RelId;
+                string? relID = hashes[ii.Hash].RelId;
                 container.RelPic = container.RelationDocument.RelatedPart.GetRelationship(relID);
                 container.UriPic = UriHelper.ResolvePartUri(container.RelPic.SourceUri, container.RelPic.TargetUri);
                 return relID;

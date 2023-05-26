@@ -86,12 +86,12 @@ namespace OfficeOpenXml.Core.CellStore
         }
         internal int GetRowPosition(int row)
         {
-            var offset = row - IndexOffset;
+            int offset = row - IndexOffset;
             return ArrayUtil.OptimizedBinarySearch(Rows, offset, RowCount);
         }
         internal int GetNextRow(int row)
         {
-            var o = GetRowPosition(row);
+            int o = GetRowPosition(row);
             if (o < 0)
             {
                 o = ~o;

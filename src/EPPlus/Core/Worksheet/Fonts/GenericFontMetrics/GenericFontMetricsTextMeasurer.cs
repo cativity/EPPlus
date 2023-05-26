@@ -29,7 +29,7 @@ namespace OfficeOpenXml.Core.Worksheet.Core.Worksheet.Fonts.GenericMeasurements
         /// <returns>A <see cref="TextMeasurement"/></returns>
         public TextMeasurement MeasureText(string text, MeasurementFont font)
         {
-            var fontKey = GetKey(font.FontFamily, font.Style);
+            uint fontKey = GetKey(font.FontFamily, font.Style);
             if (!IsValidFont(fontKey))
             {
                 return TextMeasurement.Empty;

@@ -186,7 +186,7 @@ namespace OfficeOpenXml.Style.Dxf
         {
             if (helper.ExistsNode("d:font/d:u"))
             {
-                var v = helper.GetXmlNodeString("d:font/d:u/@val");
+                string? v = helper.GetXmlNodeString("d:font/d:u/@val");
                 if (string.IsNullOrEmpty(v))
                 {
                     return ExcelUnderLineType.Single;

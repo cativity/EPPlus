@@ -46,9 +46,9 @@ namespace OfficeOpenXml.SystemDrawing.Text
             {
                 return TextMeasurement.Empty;
             }
-            var style = ToFontStyle(font.Style);
-            var dFont = new Font(font.FontFamily, font.Size, style);
-            var size = g.MeasureString(text, dFont, 10000, _stringFormat);
+            FontStyle style = ToFontStyle(font.Style);
+            Font? dFont = new Font(font.FontFamily, font.Size, style);
+            SizeF size = g.MeasureString(text, dFont, 10000, _stringFormat);
             return new TextMeasurement(size.Width * dpiCorrectX, size.Height * dpiCorrectY);
         }
         bool? _validForEnvironment=null;
@@ -58,7 +58,7 @@ namespace OfficeOpenXml.SystemDrawing.Text
             {
                 try
                 {
-                    var g=Graphics.FromHwnd(IntPtr.Zero);
+                    Graphics? g=Graphics.FromHwnd(IntPtr.Zero);
                     g.MeasureString("d",new Font("Calibri", 11, FontStyle.Regular));
                     _validForEnvironment = true;
                 }

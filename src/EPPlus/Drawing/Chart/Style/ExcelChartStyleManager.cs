@@ -26,6 +26,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Xml;
+using OfficeOpenXml.Drawing.Style.Fill;
 
 namespace OfficeOpenXml.Drawing.Chart.Style
 {
@@ -70,8 +71,8 @@ namespace OfficeOpenXml.Drawing.Chart.Style
                 throw new InvalidOperationException("The chart must have a style. Please set the charts Style property to a value different than None or Call LoadStyleXml with the fallBackStyle parameter");
             }
 
-            var p = _chart.WorkSheet.Workbook._package.ZipPackage;
-            var id = CreateStylePart(p);
+            ZipPackage? p = _chart.WorkSheet.Workbook._package.ZipPackage;
+            int id = CreateStylePart(p);
             StyleXml = new XmlDocument();
             StyleXml.LoadXml(GetStartStyleXml(id));
             StyleXml.Save(StylePart.GetStream());
@@ -97,8 +98,8 @@ namespace OfficeOpenXml.Drawing.Chart.Style
         /// </summary>
         public static void LoadStyles()
         {
-            var assembly = Assembly.GetExecutingAssembly();
-            var defaultStyleLibrary = assembly.GetManifestResourceStream("OfficeOpenXml.resources.DefaultChartStyles.ecs");
+            Assembly? assembly = Assembly.GetExecutingAssembly();
+            Stream? defaultStyleLibrary = assembly.GetManifestResourceStream("OfficeOpenXml.resources.DefaultChartStyles.ecs");
 
             LoadStyles(defaultStyleLibrary);
         }
@@ -113,7 +114,7 @@ namespace OfficeOpenXml.Drawing.Chart.Style
             {
                 StyleLibrary.Clear();
             }
-            foreach (var ecsFile in directory.GetFiles("*.ecs"))
+            foreach (FileInfo? ecsFile in directory.GetFiles("*.ecs"))
             {
                 LoadStyles(ecsFile, false);
             }
@@ -125,7 +126,7 @@ namespace OfficeOpenXml.Drawing.Chart.Style
         /// <param name="clearLibrary">If true, clear the library before load.</param>
         public static void LoadStyles(FileInfo ecsFile, bool clearLibrary = true)
         {
-            using (var fs = ecsFile.Open(FileMode.Open, FileAccess.Read, FileShare.Read))
+            using (FileStream? fs = ecsFile.Open(FileMode.Open, FileAccess.Read, FileShare.Read))
             {
                 LoadStyles(fs, clearLibrary, fs.Name);
             }
@@ -149,7 +150,7 @@ namespace OfficeOpenXml.Drawing.Chart.Style
             {
                 using (stream)
                 {
-                    var zipStream = new ZipInputStream(stream);
+                    ZipInputStream? zipStream = new ZipInputStream(stream);
                     ZipEntry entry;
                     while ((entry = zipStream.GetNextEntry()) != null)
                     {
@@ -158,7 +159,7 @@ namespace OfficeOpenXml.Drawing.Chart.Style
                             continue;
                         }
 
-                        var name = new FileInfo(entry.FileName).Name;
+                        string? name = new FileInfo(entry.FileName).Name;
                         int id;
                         try
                         {
@@ -180,7 +181,7 @@ namespace OfficeOpenXml.Drawing.Chart.Style
                             }
                             else if (name.Equals("defaulttheme.xml", StringComparison.InvariantCultureIgnoreCase))
                             {
-                                var themeXml = UncompressEntry(zipStream, entry);
+                                string? themeXml = UncompressEntry(zipStream, entry);
                                 ExcelThemeManager._defaultTheme = themeXml;
                                 continue;
                             }
@@ -196,8 +197,8 @@ namespace OfficeOpenXml.Drawing.Chart.Style
 
 
                         //Extract and set
-                        var uncompressedContent = UncompressEntry(zipStream, entry);
-                        var item = new ExcelChartStyleLibraryItem() { Id = id, XmlString = uncompressedContent };
+                        string? uncompressedContent = UncompressEntry(zipStream, entry);
+                        ExcelChartStyleLibraryItem? item = new ExcelChartStyleLibraryItem() { Id = id, XmlString = uncompressedContent };
                         if (name[0] == 'c') //Colors
                         {
                             ColorsLibrary.Add(item.Id, item);
@@ -224,8 +225,8 @@ namespace OfficeOpenXml.Drawing.Chart.Style
 
         private static string UncompressEntry(ZipInputStream zipStream, ZipEntry entry)
         {
-            var content = new byte[entry.UncompressedSize];
-            var size = zipStream.Read(content, 0, (int)entry.UncompressedSize);
+            byte[]? content = new byte[entry.UncompressedSize];
+            int size = zipStream.Read(content, 0, (int)entry.UncompressedSize);
             return Encoding.UTF8.GetString(content);            
         }
         #endregion
@@ -373,7 +374,7 @@ namespace OfficeOpenXml.Drawing.Chart.Style
         /// <param name="themePart">The theme part</param>
         internal void LoadThemeOverrideXml(ZipPackagePart themePart)
         {
-            var rel = CreateThemeOverridePart(_chart.WorkSheet.Workbook._package.ZipPackage, themePart);
+            ZipPackageRelationship? rel = CreateThemeOverridePart(_chart.WorkSheet.Workbook._package.ZipPackage, themePart);
             ThemeOverride = new ExcelThemeOverride(_chart, rel);
         }
         /// <summary>
@@ -483,7 +484,7 @@ namespace OfficeOpenXml.Drawing.Chart.Style
             }
 
             ColorsXml = colorXml;
-            var stream = ColorsPart.GetStream(FileMode.CreateNew);
+            Stream? stream = ColorsPart.GetStream(FileMode.CreateNew);
             ColorsXml.Save(stream);
             
             ColorsManager = new ExcelChartColorsManager(NameSpaceManager, ColorsXml.DocumentElement);
@@ -609,7 +610,7 @@ namespace OfficeOpenXml.Drawing.Chart.Style
         }
         private void GenerateDataPoints()
         {            
-            foreach (var serie in _chart.Series)
+            foreach (ExcelChartSerie? serie in _chart.Series)
             {
                 GenerateDataPointsSerie(serie);
             }
@@ -622,7 +623,7 @@ namespace OfficeOpenXml.Drawing.Chart.Style
                 int points;
                 if(_chart.PivotTableSource==null)
                 {
-                    var address = _chart.WorkSheet.Workbook.GetRange(_chart.WorkSheet, serie.Series);
+                    ExcelRangeBase? address = _chart.WorkSheet.Workbook.GetRange(_chart.WorkSheet, serie.Series);
                     if (address == null)
                     {
                         return;
@@ -635,7 +636,7 @@ namespace OfficeOpenXml.Drawing.Chart.Style
                 {
                     points = 48;
                 }
-                for (var i = 0; i < points; i++)
+                for (int i = 0; i < points; i++)
                 {
                     if (!dtpSerie.DataPoints.ContainsKey(i))
                     {
@@ -666,7 +667,7 @@ namespace OfficeOpenXml.Drawing.Chart.Style
         private void ApplyDataLabelSerie(ExcelChartSerieDataLabel dataLabel)
         {
             ApplyStyle(dataLabel, Style.DataLabel);
-            foreach (var lbl in dataLabel.DataLabels)
+            foreach (ExcelChartDataLabelItem? lbl in dataLabel.DataLabels)
             {
                 ApplyStyle(lbl, Style.DataLabel);
             }
@@ -674,7 +675,7 @@ namespace OfficeOpenXml.Drawing.Chart.Style
 
         private void ApplyAxis()
         {
-            foreach (var axis in _chart.Axis)
+            foreach (ExcelChartAxis? axis in _chart.Axis)
             {
                 ExcelChartStyleEntry currStyle;
                 if (axis.AxisType == eAxisType.Cat ||
@@ -712,16 +713,16 @@ namespace OfficeOpenXml.Drawing.Chart.Style
 
         internal void ApplySeries()
         {   
-            foreach (var chart in _chart.PlotArea.ChartTypes)
+            foreach (ExcelChart? chart in _chart.PlotArea.ChartTypes)
             {
-                var dataPoint = GetDataPointStyle(chart);
-                var applyFill = (!chart.IsTypeLine() || chart.ChartType == eChartType.Line3D || chart.ChartType == eChartType.XYScatter);   //Lines have no fill, except Line3D
+                ExcelChartStyleEntry? dataPoint = GetDataPointStyle(chart);
+                bool applyFill = (!chart.IsTypeLine() || chart.ChartType == eChartType.Line3D || chart.ChartType == eChartType.XYScatter);   //Lines have no fill, except Line3D
                 int serieNo = 0;
                 foreach (ExcelChartSerie serie in chart.Series)
                 {
                     //Note: Datalabels are applied in the ApplyDataLabels method
                     //Marker
-                    var applyBorder = !(chart.IsTypeStock() && serie.Border.Width==0);
+                    bool applyBorder = !(chart.IsTypeStock() && serie.Border.Width==0);
                     ApplyStyle(serie, dataPoint, serieNo, chart.Series.Count, applyFill, applyBorder);
                     if (serie is IDrawingChartMarker serieMarker && serieMarker.HasMarker())     //Applies to Line and Scatterchart series
                     {
@@ -734,7 +735,7 @@ namespace OfficeOpenXml.Drawing.Chart.Style
                     }
                     
                     //Trendlines
-                    foreach (var tl in serie.TrendLines)
+                    foreach (ExcelChartTrendline? tl in serie.TrendLines)
                     {
                         serieNo++;  
                         ApplyStyle(tl, Style.Trendline, serieNo);
@@ -747,8 +748,8 @@ namespace OfficeOpenXml.Drawing.Chart.Style
                     //Datapoints
                     if (serie is IDrawingChartDataPoints dps)
                     {
-                        var items = serie.NumberOfItems;
-                        foreach (var dp in dps.DataPoints)
+                        int items = serie.NumberOfItems;
+                        foreach (ExcelChartDataPoint? dp in dps.DataPoints)
                         {
                             applyBorder = !(chart.IsTypeStock() && dp.Border.Width == 0);
                             ApplyStyle(dp, dataPoint, dp.Index, items, applyFill, applyBorder);
@@ -827,10 +828,10 @@ namespace OfficeOpenXml.Drawing.Chart.Style
             }
             else if (section.FillReference.Index > 0)//From theme
             {
-                var theme = GetTheme();
+                ExcelThemeBase? theme = GetTheme();
                 if (theme.FormatScheme.FillStyle.Count > section.FillReference.Index - 1)
                 {
-                    var fill = theme.FormatScheme.FillStyle[section.FillReference.Index - 1];
+                    ExcelDrawingFill? fill = theme.FormatScheme.FillStyle[section.FillReference.Index - 1];
                     chartPart.Fill.SetFromXml(fill);
                 }
             }
@@ -846,10 +847,10 @@ namespace OfficeOpenXml.Drawing.Chart.Style
             }
             else if (section.BorderReference.Index > 0) //From theme
             {
-                var theme = GetTheme();
+                ExcelThemeBase? theme = GetTheme();
                 if (theme.FormatScheme.BorderStyle.Count > section.BorderReference.Index - 1)
                 {
-                    var border = theme.FormatScheme.BorderStyle[section.BorderReference.Index - 1];
+                    ExcelThemeLine? border = theme.FormatScheme.BorderStyle[section.BorderReference.Index - 1];
                     chartBorder.SetFromXml(border.LineElement);
                 }
             }
@@ -864,10 +865,10 @@ namespace OfficeOpenXml.Drawing.Chart.Style
             }
             else if (section.EffectReference.Index > 0) //From theme
             {
-                var theme = GetTheme();
+                ExcelThemeBase? theme = GetTheme();
                 if (theme.FormatScheme.EffectStyle.Count > section.EffectReference.Index - 1)
                 {
-                    var effect = theme.FormatScheme.EffectStyle[section.EffectReference.Index - 1];
+                    ExcelThemeEffectStyle? effect = theme.FormatScheme.EffectStyle[section.EffectReference.Index - 1];
                     chartEffect.SetFromXml(effect.Effect.EffectElement);
                 }
             }
@@ -883,10 +884,10 @@ namespace OfficeOpenXml.Drawing.Chart.Style
             }
             else if (section.EffectReference.Index > 0) //From theme
             {
-                var theme = GetTheme();
+                ExcelThemeBase? theme = GetTheme();
                 if (theme.FormatScheme.EffectStyle.Count > section.EffectReference.Index - 1)
                 {
-                    var effect = theme.FormatScheme.EffectStyle[section.EffectReference.Index - 1];
+                    ExcelThemeEffectStyle? effect = theme.FormatScheme.EffectStyle[section.EffectReference.Index - 1];
                     chartThreeD.ThreeD.SetFromXml(effect.ThreeD.Scene3DElement, effect.ThreeD.Sp3DElement);
                     tranformColor = (effect.ThreeD.Sp3DElement != null);
                 }
@@ -957,7 +958,7 @@ namespace OfficeOpenXml.Drawing.Chart.Style
                     TransformColor(fill.SolidFill.Color, color, colorIndex, numberOfItems);
                     break;
                 case eFillStyle.GradientFill:
-                    foreach (var grad in fill.GradientFill.Colors)
+                    foreach (ExcelDrawingGradientFillColor? grad in fill.GradientFill.Colors)
                     {
                         TransformColor(grad.Color, color, colorIndex, numberOfItems);
                     }
@@ -1012,7 +1013,7 @@ namespace OfficeOpenXml.Drawing.Chart.Style
 
         private int CreateStylePart(ZipPackage p)
         {
-            var id = GetIxFromChartUri(_chart.UriChart.OriginalString);
+            int id = GetIxFromChartUri(_chart.UriChart.OriginalString);
             StyleUri = GetNewUri(p, "/xl/charts/style{0}.xml", ref id);
             _chart.Part.CreateRelationship(StyleUri, TargetMode.Internal, ExcelPackage.schemaChartStyleRelationships);
             StylePart = p.CreatePart(StyleUri, ContentTypes.contentTypeChartStyle);
@@ -1020,7 +1021,7 @@ namespace OfficeOpenXml.Drawing.Chart.Style
         }
         private int CreateColorPart(ZipPackage p)
         {
-            var id = GetIxFromChartUri(_chart.UriChart.OriginalString);
+            int id = GetIxFromChartUri(_chart.UriChart.OriginalString);
             ColorsUri = GetNewUri(p, "/xl/charts/colors{0}.xml", ref id);
             _chart.Part.CreateRelationship(ColorsUri, TargetMode.Internal, ExcelPackage.schemaChartColorStyleRelationships);
             ColorsPart = p.CreatePart(ColorsUri, ContentTypes.contentTypeChartColorStyle);
@@ -1028,22 +1029,22 @@ namespace OfficeOpenXml.Drawing.Chart.Style
         }
         private ZipPackageRelationship CreateThemeOverridePart(ZipPackage p, ZipPackagePart partToCopy)
         {
-            var id = GetIxFromChartUri(_chart.UriChart.OriginalString);
+            int id = GetIxFromChartUri(_chart.UriChart.OriginalString);
             ThemeOverrideUri = GetNewUri(p, "/xl/theme/themeOverride{0}.xml", ref id);
-            var rel=_chart.Part.CreateRelationship(ThemeOverrideUri, TargetMode.Internal, ExcelPackage.schemaThemeOverrideRelationships);
+            ZipPackageRelationship? rel=_chart.Part.CreateRelationship(ThemeOverrideUri, TargetMode.Internal, ExcelPackage.schemaThemeOverrideRelationships);
             ThemeOverridePart = p.CreatePart(ThemeOverrideUri, ContentTypes.contentTypeThemeOverride);
 
             ThemeOverrideXml = new XmlDocument();
             ThemeOverrideXml.Load(partToCopy.GetStream());
 
-            foreach (var themeRel in partToCopy.GetRelationships())
+            foreach (ZipPackageRelationship? themeRel in partToCopy.GetRelationships())
             {
-                var uri = OfficeOpenXml.Utils.UriHelper.ResolvePartUri(new Uri("/xl/chart/theme1.xml", UriKind.Relative), themeRel.TargetUri);
-                var toPart = _chart.Part.Package.CreatePart(uri, PictureStore.GetContentType(uri.OriginalString));                
-                var imageRel = ThemeOverridePart.CreateRelationship(uri, TargetMode.Internal, themeRel.RelationshipType);
+                Uri? uri = OfficeOpenXml.Utils.UriHelper.ResolvePartUri(new Uri("/xl/chart/theme1.xml", UriKind.Relative), themeRel.TargetUri);
+                ZipPackagePart? toPart = _chart.Part.Package.CreatePart(uri, PictureStore.GetContentType(uri.OriginalString));                
+                ZipPackageRelationship? imageRel = ThemeOverridePart.CreateRelationship(uri, TargetMode.Internal, themeRel.RelationshipType);
                 SetRelIdInThemeDoc(ThemeOverrideXml, themeRel.Id, imageRel.Id);
-                var stream = partToCopy.GetStream();
-                var b = ((MemoryStream)stream).GetBuffer();
+                Stream? stream = partToCopy.GetStream();
+                byte[]? b = ((MemoryStream)stream).GetBuffer();
                 toPart.GetStream().Write(b, 0, b.Length);
             }
 
@@ -1059,7 +1060,7 @@ namespace OfficeOpenXml.Drawing.Chart.Style
                 
                 if(fill!=null)
                 {
-                    var relId=fill.GetAttribute("r:embed");
+                    string? relId=fill.GetAttribute("r:embed");
                     if(relId==fromRelId)
                     {
                         fill.SetAttribute("r:embed", toRelId);
@@ -1070,7 +1071,7 @@ namespace OfficeOpenXml.Drawing.Chart.Style
 
         private string GetStartStyleXml(int id)
         {
-            var sb = new StringBuilder();
+            StringBuilder? sb = new StringBuilder();
             sb.Append($"<cs:chartStyle xmlns:cs=\"http://schemas.microsoft.com/office/drawing/2012/chartStyle\" xmlns:a=\"http://schemas.openxmlformats.org/drawingml/2006/main\" id=\"{id}\">");
             AppendDefaultStyleSection(sb, "axisTitle");
             AppendDefaultStyleSection(sb, "categoryAxis");
@@ -1134,7 +1135,7 @@ namespace OfficeOpenXml.Drawing.Chart.Style
         {
             if (name.StartsWith("chart", StringComparison.InvariantCultureIgnoreCase) && name.EndsWith(".xml", StringComparison.InvariantCultureIgnoreCase))
             {
-                var n = name.Substring(5, name.Length - 9);
+                string? n = name.Substring(5, name.Length - 9);
                 try
                 {
                     return int.Parse(n);
@@ -1154,8 +1155,8 @@ namespace OfficeOpenXml.Drawing.Chart.Style
                 return;
             }
 
-            var p = chart.WorkSheet.Workbook._package;
-            foreach (var rel in chart.Part.GetRelationships())
+            ExcelPackage? p = chart.WorkSheet.Workbook._package;
+            foreach (ZipPackageRelationship? rel in chart.Part.GetRelationships())
             {
                 if (rel.RelationshipType == ExcelPackage.schemaChartStyleRelationships)
                 {

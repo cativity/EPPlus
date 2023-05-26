@@ -41,8 +41,8 @@ namespace EPPlusTest
         [TestMethod, Ignore]
         public void ConstructorWithStringPath()
         {
-            var path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Test.xlsx");
-            using(var package = new ExcelPackage(path))
+            string? path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Test.xlsx");
+            using(ExcelPackage? package = new ExcelPackage(path))
             {
 
             }
@@ -51,8 +51,8 @@ namespace EPPlusTest
         [TestMethod, Ignore]
         public void ConstructorWithStringPathAndPassword()
         {
-            var path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Test.xlsx");
-            using (var package = new ExcelPackage(path, "pwd123"))
+            string? path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Test.xlsx");
+            using (ExcelPackage? package = new ExcelPackage(path, "pwd123"))
             {
 
             }

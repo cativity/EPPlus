@@ -16,8 +16,8 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions.Math
         [TestMethod]
         public void Below1AndBelowMinus1()
         {
-            var n = -120253.87499999999;
-            var result = RoundingHelper.RoundToSignificantFig(n, 15);
+            double n = -120253.87499999999;
+            double result = RoundingHelper.RoundToSignificantFig(n, 15);
             Assert.AreEqual(-120253.875, result);
 
             n = 120253.87499999999;
@@ -28,8 +28,8 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions.Math
         [TestMethod]
         public void FromMinus1To1()
         {
-            var n = -0.0699999999999994;
-            var result = RoundingHelper.RoundToSignificantFig(n, 15);
+            double n = -0.0699999999999994;
+            double result = RoundingHelper.RoundToSignificantFig(n, 15);
             Assert.AreEqual(-0.07, result);
 
             n = -0.06999999999999;
@@ -40,9 +40,9 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions.Math
             result = RoundingHelper.RoundToSignificantFig(n, 15);
             Assert.AreEqual(0.07, result);
 
-            using (var p = new ExcelPackage())
+            using (ExcelPackage? p = new ExcelPackage())
             {
-                var sheet = p.Workbook.Worksheets.Add("test");
+                ExcelWorksheet? sheet = p.Workbook.Worksheets.Add("test");
                 sheet.Cells["A1"].Value = -0.0699999999999994;
                 sheet.Cells["A2"].Formula = "ROUND(A1, 2)";
                 sheet.Cells["B1"].Value = 0.0700000000000003;

@@ -55,10 +55,10 @@ namespace EPPlusTest.Table
         public void TableInsertRowTop()
         {
             //Setup
-            var ws = _pck.Workbook.Worksheets.Add("TableDeleteTop");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("TableDeleteTop");
             LoadTestdata(ws, 100);
 
-            var tbl = ws.Tables.Add(ws.Cells["A1:D100"], "TableDeleteTop");
+            ExcelTable? tbl = ws.Tables.Add(ws.Cells["A1:D100"], "TableDeleteTop");
             ws.Cells["A102"].Value = "Shift Me Up";
             tbl.DeleteRow(0);
 
@@ -72,10 +72,10 @@ namespace EPPlusTest.Table
         public void TableDeleteRowBottom()
         {
             //Setup
-            var ws = _pck.Workbook.Worksheets.Add("TableDeleteBottom");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("TableDeleteBottom");
             LoadTestdata(ws, 100);
             ws.Cells["A102"].Value = "Shift Me Up";
-            var tbl = ws.Tables.Add(ws.Cells["A1:D100"], "TableDeleteBottom");
+            ExcelTable? tbl = ws.Tables.Add(ws.Cells["A1:D100"], "TableDeleteBottom");
             tbl.DeleteRow(98, 1);
             Assert.AreEqual("A1:D99", tbl.Address.Address);
             Assert.AreEqual(99, ws.Cells["B99"].Value);
@@ -88,12 +88,12 @@ namespace EPPlusTest.Table
         public void TableDeleteRowBottomWithTotal()
         {
             //Setup
-            var ws = _pck.Workbook.Worksheets.Add("TableDeleteBottomTotal");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("TableDeleteBottomTotal");
             LoadTestdata(ws, 100, 2);
             ws.Cells["B102"].Value = "Shift Me Up";
             ws.Cells["F5"].Value = "Don't Shift Me";
 
-            var tbl = ws.Tables.Add(ws.Cells["B1:E100"], "TableDeleteBottomTotal");
+            ExcelTable? tbl = ws.Tables.Add(ws.Cells["B1:E100"], "TableDeleteBottomTotal");
             tbl.ShowTotal = true;
             tbl.Columns[0].TotalsRowFunction = RowFunctions.Sum;
             tbl.Columns[1].TotalsRowFunction = RowFunctions.Count;
@@ -111,10 +111,10 @@ namespace EPPlusTest.Table
         public void TableDeleteRowInside()
         {
             //Setup
-            var ws = _pck.Workbook.Worksheets.Add("TableDeleteColumnInside");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("TableDeleteColumnInside");
             LoadTestdata(ws, 100);
             ws.Cells["A102"].Value = "Shift Me Up";
-            var tbl = ws.Tables.Add(ws.Cells["A1:D100"], "TableDeleteColumnInside");
+            ExcelTable? tbl = ws.Tables.Add(ws.Cells["A1:D100"], "TableDeleteColumnInside");
             tbl.DeleteRow(50, 1);
             Assert.AreEqual("A1:D99", tbl.Address.Address);
             Assert.AreEqual("Shift Me Up", ws.Cells["A101"].Value);
@@ -127,10 +127,10 @@ namespace EPPlusTest.Table
         public void TableDeleteRowPositionNegative()
         {
             //Setup
-            using (var p = new ExcelPackage())
+            using (ExcelPackage? p = new ExcelPackage())
             {
-                var ws = p.Workbook.Worksheets.Add("Table1");
-                var tbl = ws.Tables.Add(ws.Cells["A1:D100"], "Table1");
+                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Table1");
+                ExcelTable? tbl = ws.Tables.Add(ws.Cells["A1:D100"], "Table1");
                 tbl.DeleteRow(-1);
             }
         }
@@ -139,10 +139,10 @@ namespace EPPlusTest.Table
         public void TableDeleteRowRowsNegative()
         {
             //Setup
-            using (var p = new ExcelPackage())
+            using (ExcelPackage? p = new ExcelPackage())
             {
-                var ws = p.Workbook.Worksheets.Add("Table1");
-                var tbl = ws.Tables.Add(ws.Cells["A1:D100"], "Table1");
+                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Table1");
+                ExcelTable? tbl = ws.Tables.Add(ws.Cells["A1:D100"], "Table1");
                 tbl.DeleteRow(0, -1);
             }
         }
@@ -151,10 +151,10 @@ namespace EPPlusTest.Table
         public void TableDeleteOverTableLimit()
         {
             //Setup
-            using (var p = new ExcelPackage())
+            using (ExcelPackage? p = new ExcelPackage())
             {
-                var ws = p.Workbook.Worksheets.Add("Table1");
-                var tbl = ws.Tables.Add(ws.Cells["A1:D100"], "Table1");
+                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Table1");
+                ExcelTable? tbl = ws.Tables.Add(ws.Cells["A1:D100"], "Table1");
                 tbl.DeleteRow(99,1);
             }
         }
@@ -163,10 +163,10 @@ namespace EPPlusTest.Table
         public void TableDelete5OverTableLimit()
         {
             //Setup
-            using (var p = new ExcelPackage())
+            using (ExcelPackage? p = new ExcelPackage())
             {
-                var ws = p.Workbook.Worksheets.Add("Table1");
-                var tbl = ws.Tables.Add(ws.Cells["A1:D100"], "Table1");
+                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Table1");
+                ExcelTable? tbl = ws.Tables.Add(ws.Cells["A1:D100"], "Table1");
                 tbl.DeleteRow(95, 5);
             }
         }
@@ -174,9 +174,9 @@ namespace EPPlusTest.Table
         public void TableDeleteLeaveOneRow()
         {
             //Setup
-            var ws = _pck.Workbook.Worksheets.Add("TableLeaveOneRow");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("TableLeaveOneRow");
             LoadTestdata(ws, 100);
-            var tbl = ws.Tables.Add(ws.Cells["A1:D100"], "TableLeaveOneRow");
+            ExcelTable? tbl = ws.Tables.Add(ws.Cells["A1:D100"], "TableLeaveOneRow");
             tbl.DeleteRow(0, 98);
             Assert.AreEqual("A1:D2", tbl.Address.Address);
         }
@@ -185,10 +185,10 @@ namespace EPPlusTest.Table
         public void TableDeleteAllRows()
         {
             //Setup
-            using (var p = new ExcelPackage())
+            using (ExcelPackage? p = new ExcelPackage())
             {
-                var ws = p.Workbook.Worksheets.Add("Table1");
-                var tbl = ws.Tables.Add(ws.Cells["A1:D100"], "Table1");
+                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Table1");
+                ExcelTable? tbl = ws.Tables.Add(ws.Cells["A1:D100"], "Table1");
                 tbl.DeleteRow(0, 99); 
             }
         }
@@ -198,10 +198,10 @@ namespace EPPlusTest.Table
         public void TableDeleteColumnFirst()
         {
             //Setup
-            var ws = _pck.Workbook.Worksheets.Add("TableDeleteColFirst");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("TableDeleteColFirst");
             LoadTestdata(ws, 100);
 
-            var tbl = ws.Tables.Add(ws.Cells["A1:D100"], "TableDeleteColFirst");
+            ExcelTable? tbl = ws.Tables.Add(ws.Cells["A1:D100"], "TableDeleteColFirst");
             ws.Cells["E10"].Value = "Shift Me Left";
             tbl.Columns.Delete(0);
 
@@ -216,10 +216,10 @@ namespace EPPlusTest.Table
         public void TableDeleteAllColumns()
         {
             //Setup
-            var ws = _pck.Workbook.Worksheets.Add("TableAddCol");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("TableAddCol");
             LoadTestdata(ws, 100,2);
             ws.Cells["F99"].Value = "Shift Me Right";
-            var tbl = ws.Tables.Add(ws.Cells["B1:E100"], "TableAddColumn");
+            ExcelTable? tbl = ws.Tables.Add(ws.Cells["B1:E100"], "TableAddColumn");
             tbl.Columns.Delete(0, 4);
             Assert.IsNull(tbl.Address);
             Assert.AreEqual("Shift Me Right", ws.Cells["B99"].Value);
@@ -228,12 +228,12 @@ namespace EPPlusTest.Table
         public void TableDeleteColumnWithTotal()
         {
             //Setup
-            var ws = _pck.Workbook.Worksheets.Add("TableDeleteColTotal");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("TableDeleteColTotal");
             LoadTestdata(ws, 100, 2);
             ws.Cells["F100"].Value = "Shift Me Left";
             ws.Cells["A50,F102"].Value = "Don't Shift Me";
 
-            var tbl = ws.Tables.Add(ws.Cells["B1:E100"], "TableAddTotal");
+            ExcelTable? tbl = ws.Tables.Add(ws.Cells["B1:E100"], "TableAddTotal");
             tbl.ShowTotal = true;
             tbl.Columns[0].TotalsRowFunction = RowFunctions.Sum;
             tbl.Columns[1].TotalsRowFunction = RowFunctions.Count;
@@ -254,11 +254,11 @@ namespace EPPlusTest.Table
         public void TableDeleteColumnInside()
         {
             //Setup
-            var ws = _pck.Workbook.Worksheets.Add("TableInsertColInside");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("TableInsertColInside");
             LoadTestdata(ws, 100, 5, 2);
             ws.Cells["A1,C50,D102,XE102,GGG1"].Value = "Don't Shift Me";
             ws.Cells["XG2,Y101"].Value = "Shift Me";
-            var tbl = ws.Tables.Add(ws.Cells["E2:H101"], "TableInsertColInside");
+            ExcelTable? tbl = ws.Tables.Add(ws.Cells["E2:H101"], "TableInsertColInside");
             tbl.Columns.Delete(1, 2);
             Assert.AreEqual("E2:F101", tbl.Address.Address);
             Assert.AreEqual("Don't Shift Me", ws.Cells["A1"].Value);
@@ -275,10 +275,10 @@ namespace EPPlusTest.Table
         public void TableDeleteColumnPositionNegative()
         {
             //Setup
-            using (var p = new ExcelPackage())
+            using (ExcelPackage? p = new ExcelPackage())
             {
-                var ws = p.Workbook.Worksheets.Add("Table1");
-                var tbl = ws.Tables.Add(ws.Cells["A1:D100"], "Table1");
+                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Table1");
+                ExcelTable? tbl = ws.Tables.Add(ws.Cells["A1:D100"], "Table1");
                 tbl.Columns.Delete(-1);
             }
         }
@@ -287,10 +287,10 @@ namespace EPPlusTest.Table
         public void TableDeleteColumnColumnsNegative()
         {
             //Setup
-            using (var p = new ExcelPackage())
+            using (ExcelPackage? p = new ExcelPackage())
             {
-                var ws = p.Workbook.Worksheets.Add("Table1");
-                var tbl = ws.Tables.Add(ws.Cells["A1:D100"], "Table1");
+                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Table1");
+                ExcelTable? tbl = ws.Tables.Add(ws.Cells["A1:D100"], "Table1");
                 tbl.Columns.Delete(0, -1);
             }
         }
@@ -300,15 +300,15 @@ namespace EPPlusTest.Table
 
         private ExcelPackage CreateTablePackage(bool showHeader, string sheetName, string tableName)
         {
-            var package = new ExcelPackage();
-            var sheet = package.Workbook.Worksheets.Add("Sheet1");
-            for (var x = 1; x < 6; x++)
+            ExcelPackage? package = new ExcelPackage();
+            ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("Sheet1");
+            for (int x = 1; x < 6; x++)
             {
                 sheet.Cells[2, x].Value = $"Column{x}";
             }
             sheet.Cells["A3"].Value = 1;
             sheet.Cells["A4"].Value = 2;
-            var table = showHeader ? sheet.Tables.Add(sheet.Cells["A2:E4"], tableName) : sheet.Tables.Add(sheet.Cells["A3:E4"], tableName);
+            ExcelTable? table = showHeader ? sheet.Tables.Add(sheet.Cells["A2:E4"], tableName) : sheet.Tables.Add(sheet.Cells["A3:E4"], tableName);
             table.ShowHeader = showHeader;
             return package;
         }
@@ -316,10 +316,10 @@ namespace EPPlusTest.Table
         [TestMethod]
         public void RemoveRowFromTableWithHiddenHeader_Should_Succeed()
         {
-            using (var xlsx = CreateTablePackage(false, "Sheet1", "myTable"))
+            using (ExcelPackage? xlsx = CreateTablePackage(false, "Sheet1", "myTable"))
             {
-                var ws = xlsx.Workbook.Worksheets["Sheet1"];
-                var table = ws.Tables["myTable"];
+                ExcelWorksheet? ws = xlsx.Workbook.Worksheets["Sheet1"];
+                ExcelTable? table = ws.Tables["myTable"];
                 Assert.AreEqual(2, table.Range.Rows);
                 Assert.AreEqual(2, ws.Cells["A4"].Value);
                 table.DeleteRow(1, 1);
@@ -331,10 +331,10 @@ namespace EPPlusTest.Table
         [TestMethod]
         public void RemoveRowFromTableWithVisibleHeader_Should_Succeed()
         {
-            using (var xlsx = CreateTablePackage(true, "Sheet1", "myTable"))
+            using (ExcelPackage? xlsx = CreateTablePackage(true, "Sheet1", "myTable"))
             {
-                var ws = xlsx.Workbook.Worksheets["Sheet1"];
-                var table = ws.Tables["myTable"];
+                ExcelWorksheet? ws = xlsx.Workbook.Worksheets["Sheet1"];
+                ExcelTable? table = ws.Tables["myTable"];
                 Assert.AreEqual(3, table.Range.Rows);
                 Assert.AreEqual(2, ws.Cells["A4"].Value);
                 table.DeleteRow(1, 1);

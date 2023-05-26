@@ -19,6 +19,7 @@ using OfficeOpenXml.Utils;
 using OfficeOpenXml.Utils.Extensions;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Globalization;
 using System.Linq;
 using System.Reflection.Emit;
@@ -50,7 +51,7 @@ namespace OfficeOpenXml.Drawing.Controls
         internal ExcelControl(ExcelDrawings drawings, XmlNode drawingNode, string name, ExcelGroupShape parent = null) : 
             base(drawings, drawingNode, "xdr:sp", "xdr:nvSpPr/xdr:cNvPr", parent)
         {
-            var ws = drawings.Worksheet;
+            ExcelWorksheet? ws = drawings.Worksheet;
                        
             //Drawing Xml
             XmlElement spElement = CreateShapeNode();
@@ -62,7 +63,7 @@ namespace OfficeOpenXml.Drawing.Controls
             int id= ws.SheetId;
             ControlPropertiesUri = GetNewUri(ws._package.ZipPackage, "/xl/ctrlProps/ctrlProp{0}.xml",ref id);
             ControlPropertiesPart = ws._package.ZipPackage.CreatePart(ControlPropertiesUri, ContentTypes.contentTypeControlProperties);
-            var rel=ws.Part.CreateRelationship(ControlPropertiesUri, TargetMode.Internal, ExcelPackage.schemaRelationships + "/ctrlProp");
+            ZipPackageRelationship? rel=ws.Part.CreateRelationship(ControlPropertiesUri, TargetMode.Internal, ExcelPackage.schemaRelationships + "/ctrlProp");
 
             //Vml
             _vml=drawings.Worksheet.VmlDrawings.AddControl(this, name);
@@ -79,7 +80,7 @@ namespace OfficeOpenXml.Drawing.Controls
         }
         private string GetControlStartWorksheetXml(string relId)
         {
-            var sb = new StringBuilder();
+            StringBuilder? sb = new StringBuilder();
 
             sb.Append($"<control shapeId=\"{Id}\" r:id=\"{relId}\" name=\"\">");
             sb.Append("<controlPr defaultSize=\"0\" print=\"0\" autoFill=\"0\" autoPict=\"0\">");
@@ -102,7 +103,7 @@ namespace OfficeOpenXml.Drawing.Controls
         }
         private string ControlStartControlPrXml()
         {
-            var xml = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><formControlPr xmlns=\"http://schemas.microsoft.com/office/spreadsheetml/2009/9/main\" {0} />";
+            string? xml = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><formControlPr xmlns=\"http://schemas.microsoft.com/office/spreadsheetml/2009/9/main\" {0} />";
             switch (ControlType)
             {
                 case eControlType.Button:
@@ -259,9 +260,9 @@ namespace OfficeOpenXml.Drawing.Controls
             }
             set
             {
-                var node = GetNode(GetlegacySpIdPath());
-                var extHelper = XmlHelperFactory.Create(NameSpaceManager, node);
-                var extNode= extHelper.GetOrCreateExtLstSubNode(ExtLstUris.LegacyObjectWrapperUri, "a14");
+                XmlNode? node = GetNode(GetlegacySpIdPath());
+                XmlHelper? extHelper = XmlHelperFactory.Create(NameSpaceManager, node);
+                XmlNode? extNode= extHelper.GetOrCreateExtLstSubNode(ExtLstUris.LegacyObjectWrapperUri, "a14");
                 if (extNode.InnerXml == "")
                 {
                     extNode.InnerXml = $"<a14:compatExt/>";
@@ -356,8 +357,8 @@ namespace OfficeOpenXml.Drawing.Controls
 
         internal string GetVmlAnchorValue()
         {
-            var from = _control?.From ?? From;
-            var to = _control?.To ?? To;
+            ExcelPosition? from = _control?.From ?? From;
+            ExcelPosition? to = _control?.To ?? To;
             return string.Format("{0}, {1}, {2}, {3}, {4}, {5}, {6}, {7}",
                 from.Column, Math.Round(from.ColumnOff / EMU_PER_PIXEL * 1.5),
                 from.Row, Math.Round(from.RowOff / EMU_PER_PIXEL * 1.5),
@@ -438,7 +439,7 @@ namespace OfficeOpenXml.Drawing.Controls
         {
             get
             {
-                var b = _ctrlProp.GetXmlNodeBoolNullable("@noThreeD2");
+                bool? b = _ctrlProp.GetXmlNodeBoolNullable("@noThreeD2");
                 if (b.HasValue == false)
                 {
                     return _ctrlProp.GetXmlNodeBool("@noThreeD") == false;
@@ -450,7 +451,7 @@ namespace OfficeOpenXml.Drawing.Controls
             }
             set
             {
-                var b = _ctrlProp.GetXmlNodeBoolNullable("@noThreeD2");
+                bool? b = _ctrlProp.GetXmlNodeBoolNullable("@noThreeD2");
                 if (b.HasValue)
                 {
                     _ctrlProp.SetXmlNodeBool("@noThreeD2", value == false);   //can be used for lists and drop-downs.
@@ -460,7 +461,7 @@ namespace OfficeOpenXml.Drawing.Controls
                     _ctrlProp.SetXmlNodeBool("@noThreeD", value == false);
                 }
 
-                var xmlAttr = (ControlType == eControlType.DropDown || ControlType == eControlType.ListBox) ? "x:NoThreeD2" : "x:NoThreeD";
+                string? xmlAttr = (ControlType == eControlType.DropDown || ControlType == eControlType.ListBox) ? "x:NoThreeD2" : "x:NoThreeD";
                 if (value)
                 {
                     _vmlProp.CreateNode(xmlAttr);
@@ -525,7 +526,7 @@ namespace OfficeOpenXml.Drawing.Controls
         {
             get
             {
-                var range = _ctrlProp.GetXmlNodeString("@fmlaLink");
+                string? range = _ctrlProp.GetXmlNodeString("@fmlaLink");
                 if (ExcelAddressBase.IsValidAddress(range))
                 {
                     return new ExcelAddressBase(range);
@@ -558,7 +559,7 @@ namespace OfficeOpenXml.Drawing.Controls
         {
             get
             {
-                var range = _ctrlProp.GetXmlNodeString("@fmlaTxbx");
+                string? range = _ctrlProp.GetXmlNodeString("@fmlaTxbx");
                 if (ExcelAddressBase.IsValidAddress(range))
                 {
                     return new ExcelAddressBase(range);
@@ -588,7 +589,7 @@ namespace OfficeOpenXml.Drawing.Controls
         {
             get
             {
-                var range = _ctrlProp.GetXmlNodeString("@fmlaGroup");
+                string? range = _ctrlProp.GetXmlNodeString("@fmlaGroup");
                 if (ExcelAddressBase.IsValidAddress(range))
                 {
                     return new ExcelAddressBase(range);
@@ -630,14 +631,14 @@ namespace OfficeOpenXml.Drawing.Controls
             SetPositionAndSizeForControl();
             if(ControlType==eControlType.CheckBox || ControlType == eControlType.RadioButton)
             {
-                var c = (ExcelControlWithColorsAndLines)this;
+                ExcelControlWithColorsAndLines? c = (ExcelControlWithColorsAndLines)this;
                 
                 if(c.Fill.Style!=eVmlFillType.NoFill)
                 {
-                    var fill = new ExcelDrawingFill(_drawings, NameSpaceManager, TopNode, _topPath+"/xdr:spPr", SchemaNodeOrder);
+                    ExcelDrawingFill? fill = new ExcelDrawingFill(_drawings, NameSpaceManager, TopNode, _topPath+"/xdr:spPr", SchemaNodeOrder);
                     if(c.Fill.Style==eVmlFillType.Solid) //Set solid fill for drawing. 
                     {
-                        var color = c.Fill.Color.GetColor();
+                        Color color = c.Fill.Color.GetColor();
                         if (!color.IsEmpty)
                         {
                             fill.Color = color;

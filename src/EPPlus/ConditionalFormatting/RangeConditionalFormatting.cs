@@ -460,9 +460,9 @@ namespace OfficeOpenXml.ConditionalFormatting
     /// <returns></returns>
     public IExcelConditionalFormattingThreeIconSet<eExcelconditionalFormatting3IconsSetType> AddThreeIconSet(eExcelconditionalFormatting3IconsSetType IconSet)
     {
-        var rule = (IExcelConditionalFormattingThreeIconSet<eExcelconditionalFormatting3IconsSetType>)(_worksheet.ConditionalFormatting.AddRule(
-          eExcelConditionalFormattingRuleType.ThreeIconSet,
-          _address));
+        IExcelConditionalFormattingThreeIconSet<eExcelconditionalFormatting3IconsSetType>? rule = (IExcelConditionalFormattingThreeIconSet<eExcelconditionalFormatting3IconsSetType>)(_worksheet.ConditionalFormatting.AddRule(
+                                                                                                                                                                                                                               eExcelConditionalFormattingRuleType.ThreeIconSet,
+                                                                                                                                                                                                                               _address));
         rule.IconSet = IconSet;
         return rule;
     }
@@ -474,9 +474,9 @@ namespace OfficeOpenXml.ConditionalFormatting
     /// <returns></returns>
     public IExcelConditionalFormattingFourIconSet<eExcelconditionalFormatting4IconsSetType> AddFourIconSet(eExcelconditionalFormatting4IconsSetType IconSet)
     {
-        var rule = (IExcelConditionalFormattingFourIconSet<eExcelconditionalFormatting4IconsSetType>)(_worksheet.ConditionalFormatting.AddRule(
-          eExcelConditionalFormattingRuleType.FourIconSet,
-          _address));
+        IExcelConditionalFormattingFourIconSet<eExcelconditionalFormatting4IconsSetType>? rule = (IExcelConditionalFormattingFourIconSet<eExcelconditionalFormatting4IconsSetType>)(_worksheet.ConditionalFormatting.AddRule(
+                                                                                                                                                                                                                             eExcelConditionalFormattingRuleType.FourIconSet,
+                                                                                                                                                                                                                             _address));
         rule.IconSet = IconSet;
         return rule;
     }
@@ -488,9 +488,9 @@ namespace OfficeOpenXml.ConditionalFormatting
     /// <returns></returns>
     public IExcelConditionalFormattingFiveIconSet AddFiveIconSet(eExcelconditionalFormatting5IconsSetType IconSet)
     {
-        var rule = (IExcelConditionalFormattingFiveIconSet)(_worksheet.ConditionalFormatting.AddRule(
-          eExcelConditionalFormattingRuleType.FiveIconSet,
-          _address));
+        IExcelConditionalFormattingFiveIconSet? rule = (IExcelConditionalFormattingFiveIconSet)(_worksheet.ConditionalFormatting.AddRule(
+                                                                                                    eExcelConditionalFormattingRuleType.FiveIconSet,
+                                                                                                    _address));
         rule.IconSet = IconSet;
         return rule;
     }
@@ -502,9 +502,9 @@ namespace OfficeOpenXml.ConditionalFormatting
     /// <returns></returns>
     public IExcelConditionalFormattingDataBarGroup AddDatabar(System.Drawing.Color Color)
     {
-        var rule = (IExcelConditionalFormattingDataBarGroup)(_worksheet.ConditionalFormatting.AddRule(
-          eExcelConditionalFormattingRuleType.DataBar,
-          _address));
+        IExcelConditionalFormattingDataBarGroup? rule = (IExcelConditionalFormattingDataBarGroup)(_worksheet.ConditionalFormatting.AddRule(
+                                                                                                      eExcelConditionalFormattingRuleType.DataBar,
+                                                                                                      _address));
         rule.Color = Color;
         return rule;
     }

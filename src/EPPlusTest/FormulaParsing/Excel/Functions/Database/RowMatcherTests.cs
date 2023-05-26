@@ -40,8 +40,8 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions.Database
     {
         private ExcelDatabaseCriteria GetCriteria(Dictionary<ExcelDatabaseCriteriaField, object> items)
         {
-            var provider = A.Fake<ExcelDataProvider>();
-            var criteria = A.Fake<ExcelDatabaseCriteria>();// (provider, string.Empty);
+            ExcelDataProvider? provider = A.Fake<ExcelDataProvider>();
+            ExcelDatabaseCriteria? criteria = A.Fake<ExcelDatabaseCriteria>();// (provider, string.Empty);
 
             A.CallTo(() => criteria.Items).Returns(items);
             return criteria;
@@ -49,18 +49,18 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions.Database
         [TestMethod]
         public void IsMatchShouldReturnTrueIfCriteriasMatch()
         {
-            var data = new ExcelDatabaseRow();
+            ExcelDatabaseRow? data = new ExcelDatabaseRow();
             data["Crit1"] = 1;
             data["Crit2"] = 2;
             data["Crit3"] = 3;
 
-            var crit = new Dictionary<ExcelDatabaseCriteriaField, object>();
+            Dictionary<ExcelDatabaseCriteriaField, object>? crit = new Dictionary<ExcelDatabaseCriteriaField, object>();
             crit[new ExcelDatabaseCriteriaField("Crit1")] = 1;
             crit[new ExcelDatabaseCriteriaField("Crit3")] = 3;
 
-            var matcher = new RowMatcher();
+            RowMatcher? matcher = new RowMatcher();
 
-            var criteria = GetCriteria(crit);
+            ExcelDatabaseCriteria? criteria = GetCriteria(crit);
 
             Assert.IsTrue(matcher.IsMatch(data, criteria));
         }
@@ -68,18 +68,18 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions.Database
         [TestMethod]
         public void IsMatchShouldReturnFalseIfCriteriasDoesNotMatch()
         {
-            var data = new ExcelDatabaseRow();
+            ExcelDatabaseRow? data = new ExcelDatabaseRow();
             data["Crit1"] = 1;
             data["Crit2"] = 2;
             data["Crit3"] = 3;
 
-            var crit = new Dictionary<ExcelDatabaseCriteriaField, object>();
+            Dictionary<ExcelDatabaseCriteriaField, object>? crit = new Dictionary<ExcelDatabaseCriteriaField, object>();
             crit[new ExcelDatabaseCriteriaField("Crit1")] = 1;
             crit[new ExcelDatabaseCriteriaField("Crit3")] = 4;
 
-            var matcher = new RowMatcher();
+            RowMatcher? matcher = new RowMatcher();
 
-            var criteria = GetCriteria(crit);
+            ExcelDatabaseCriteria? criteria = GetCriteria(crit);
 
             Assert.IsFalse(matcher.IsMatch(data, criteria));
         }
@@ -87,18 +87,18 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions.Database
         [TestMethod]
         public void IsMatchShouldMatchStrings1()
         {
-            var data = new ExcelDatabaseRow();
+            ExcelDatabaseRow? data = new ExcelDatabaseRow();
             data["Crit1"] = "1";
             data["Crit2"] = 2;
             data["Crit3"] = 3;
 
-            var crit = new Dictionary<ExcelDatabaseCriteriaField, object>();
+            Dictionary<ExcelDatabaseCriteriaField, object>? crit = new Dictionary<ExcelDatabaseCriteriaField, object>();
             crit[new ExcelDatabaseCriteriaField("Crit1")] = "1";
             crit[new ExcelDatabaseCriteriaField("Crit3")] = 3;
 
-            var matcher = new RowMatcher();
+            RowMatcher? matcher = new RowMatcher();
 
-            var criteria = GetCriteria(crit);
+            ExcelDatabaseCriteria? criteria = GetCriteria(crit);
 
             Assert.IsTrue(matcher.IsMatch(data, criteria));
         }
@@ -106,18 +106,18 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions.Database
         [TestMethod]
         public void IsMatchShouldMatchStrings2()
         {
-            var data = new ExcelDatabaseRow();
+            ExcelDatabaseRow? data = new ExcelDatabaseRow();
             data["Crit1"] = "2";
             data["Crit2"] = 2;
             data["Crit3"] = 3;
 
-            var crit = new Dictionary<ExcelDatabaseCriteriaField, object>();
+            Dictionary<ExcelDatabaseCriteriaField, object>? crit = new Dictionary<ExcelDatabaseCriteriaField, object>();
             crit[new ExcelDatabaseCriteriaField("Crit1")] = "1";
             crit[new ExcelDatabaseCriteriaField("Crit3")] = 3;
 
-            var matcher = new RowMatcher();
+            RowMatcher? matcher = new RowMatcher();
 
-            var criteria = GetCriteria(crit);
+            ExcelDatabaseCriteria? criteria = GetCriteria(crit);
 
             Assert.IsFalse(matcher.IsMatch(data, criteria));
         }
@@ -125,18 +125,18 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions.Database
         [TestMethod]
         public void IsMatchShouldMatchWildcardStrings()
         {
-            var data = new ExcelDatabaseRow();
+            ExcelDatabaseRow? data = new ExcelDatabaseRow();
             data["Crit1"] = "test";
             data["Crit2"] = 2;
             data["Crit3"] = 3;
 
-            var crit = new Dictionary<ExcelDatabaseCriteriaField, object>();
+            Dictionary<ExcelDatabaseCriteriaField, object>? crit = new Dictionary<ExcelDatabaseCriteriaField, object>();
             crit[new ExcelDatabaseCriteriaField("Crit1")] = "t*t";
             crit[new ExcelDatabaseCriteriaField("Crit3")] = 3;
 
-            var matcher = new RowMatcher();
+            RowMatcher? matcher = new RowMatcher();
 
-            var criteria = GetCriteria(crit);
+            ExcelDatabaseCriteria? criteria = GetCriteria(crit);
 
             Assert.IsTrue(matcher.IsMatch(data, criteria));
         }
@@ -144,18 +144,18 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions.Database
         [TestMethod]
         public void IsMatchShouldMatchNumericExpression()
         {
-            var data = new ExcelDatabaseRow();
+            ExcelDatabaseRow? data = new ExcelDatabaseRow();
             data["Crit1"] = "test";
             data["Crit2"] = 2;
             data["Crit3"] = 3;
 
-            var crit = new Dictionary<ExcelDatabaseCriteriaField, object>();
+            Dictionary<ExcelDatabaseCriteriaField, object>? crit = new Dictionary<ExcelDatabaseCriteriaField, object>();
             crit[new ExcelDatabaseCriteriaField("Crit2")] = "<3";
             crit[new ExcelDatabaseCriteriaField("Crit3")] = 3;
 
-            var matcher = new RowMatcher();
+            RowMatcher? matcher = new RowMatcher();
 
-            var criteria = GetCriteria(crit);
+            ExcelDatabaseCriteria? criteria = GetCriteria(crit);
 
             Assert.IsTrue(matcher.IsMatch(data, criteria));
         }
@@ -163,18 +163,18 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions.Database
         [TestMethod]
         public void IsMatchShouldHandleFieldIndex()
         {
-            var data = new ExcelDatabaseRow();
+            ExcelDatabaseRow? data = new ExcelDatabaseRow();
             data["Crit1"] = "test";
             data["Crit2"] = 2;
             data["Crit3"] = 3;
 
-            var crit = new Dictionary<ExcelDatabaseCriteriaField, object>();
+            Dictionary<ExcelDatabaseCriteriaField, object>? crit = new Dictionary<ExcelDatabaseCriteriaField, object>();
             crit[new ExcelDatabaseCriteriaField(2)] = "<3";
             crit[new ExcelDatabaseCriteriaField("Crit3")] = 3;
 
-            var matcher = new RowMatcher();
+            RowMatcher? matcher = new RowMatcher();
 
-            var criteria = GetCriteria(crit);
+            ExcelDatabaseCriteria? criteria = GetCriteria(crit);
 
             Assert.IsTrue(matcher.IsMatch(data, criteria));
         }

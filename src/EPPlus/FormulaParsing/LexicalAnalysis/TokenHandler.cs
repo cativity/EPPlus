@@ -52,7 +52,7 @@ namespace OfficeOpenXml.FormulaParsing.LexicalAnalysis
 
         private void Handle()
         {
-            var c = _context.FormulaChars[_tokenIndex];
+            char c = _context.FormulaChars[_tokenIndex];
             Token tokenSeparator;
             if (CharIsTokenSeparator(c, out tokenSeparator))
             {
@@ -77,7 +77,7 @@ namespace OfficeOpenXml.FormulaParsing.LexicalAnalysis
                     //If the a next token is an opening parantheses and the previous token is interpeted as an address or name, then the currenct token is a function
                     if (tokenSeparator.TokenTypeIsSet(TokenType.OpeningParenthesis) && (_context.LastToken.Value.TokenTypeIsSet(TokenType.ExcelAddress) || _context.LastToken.Value.TokenTypeIsSet(TokenType.NameValue)))
                     {
-                        var newToken = _context.LastToken.Value.CloneWithNewTokenType(TokenType.Function);
+                        Token newToken = _context.LastToken.Value.CloneWithNewTokenType(TokenType.Function);
                         _context.ReplaceLastToken(newToken);
                     }
                 }
@@ -95,7 +95,7 @@ namespace OfficeOpenXml.FormulaParsing.LexicalAnalysis
 
         private bool CharIsTokenSeparator(char c, out Token token)
         {
-            var result = _tokenProvider.Tokens.ContainsKey(c.ToString());
+            bool result = _tokenProvider.Tokens.ContainsKey(c.ToString());
             token = result ? token = _tokenProvider.Tokens[c.ToString()] : default(Token);
             return result;
         }
@@ -112,7 +112,7 @@ namespace OfficeOpenXml.FormulaParsing.LexicalAnalysis
                 return true;
             }
 
-            var t = context.LastToken.Value;
+            Token t = context.LastToken.Value;
             
             return t.TokenTypeIsSet(TokenType.Operator)
                         ||

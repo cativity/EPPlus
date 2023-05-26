@@ -29,15 +29,15 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime
         public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
         {
             ValidateArguments(arguments, 2);
-            var numDate1 = ArgToDecimal(arguments, 0);
-            var numDate2 = ArgToDecimal(arguments, 1);
-            var dt1 = System.DateTime.FromOADate(numDate1);
-            var dt2 = System.DateTime.FromOADate(numDate2);
+            double numDate1 = ArgToDecimal(arguments, 0);
+            double numDate2 = ArgToDecimal(arguments, 1);
+            System.DateTime dt1 = System.DateTime.FromOADate(numDate1);
+            System.DateTime dt2 = System.DateTime.FromOADate(numDate2);
 
-            var calcType = Days360Calctype.Us;
+            Days360Calctype calcType = Days360Calctype.Us;
             if (arguments.Count() > 2)
             {
-                var european = ArgToBool(arguments, 2);
+                bool european = ArgToBool(arguments, 2);
                 if (european)
                 {
                     calcType = Days360Calctype.European;
@@ -50,8 +50,8 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime
 
         private int GetNumWholeMonths(System.DateTime dt1, System.DateTime dt2)
         {
-            var startDate = new System.DateTime(dt1.Year, dt1.Month, 1).AddMonths(1);
-            var endDate = new System.DateTime(dt2.Year, dt2.Month, 1);
+            System.DateTime startDate = new System.DateTime(dt1.Year, dt1.Month, 1).AddMonths(1);
+            System.DateTime endDate = new System.DateTime(dt2.Year, dt2.Month, 1);
             return ((endDate.Year - startDate.Year)*12) + (endDate.Month - startDate.Month);
         }
     }

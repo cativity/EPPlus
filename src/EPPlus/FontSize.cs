@@ -111,7 +111,7 @@ namespace OfficeOpenXml
 
         private static decimal GetWidthHeight(string fontName, float fontSize, bool width, decimal defaultValue)
         {
-            var font = GetFontSize(fontName, width);
+            Dictionary<float, short>? font = GetFontSize(fontName, width);
 
             if (font.ContainsKey(fontSize))
             {
@@ -120,7 +120,7 @@ namespace OfficeOpenXml
             else
             {
                 float min = -1;
-                foreach (var size in font.Keys)
+                foreach (float size in font.Keys)
                 {
                     if (min < size && size > fontSize)
                     {
@@ -154,7 +154,7 @@ namespace OfficeOpenXml
         /// <returns></returns>
         internal static Dictionary<float, short> GetFontSize(string fontName, bool width)
         {
-            var fontColl = width ? FontWidths : FontHeights;
+            Dictionary<string, Dictionary<float, short>>? fontColl = width ? FontWidths : FontHeights;
             if (fontColl.ContainsKey(fontName))
             {
                 return fontColl[fontName];
@@ -198,21 +198,21 @@ namespace OfficeOpenXml
                     ReadFontSize(_fontStream, fontName);
                     _isLoaded = string.IsNullOrEmpty(fontName);
                 }
-                var assembly = Assembly.GetExecutingAssembly();
-                var stream = assembly.GetManifestResourceStream("OfficeOpenXml.resources.fontsize.zip");
+                Assembly? assembly = Assembly.GetExecutingAssembly();
+                Stream? stream = assembly.GetManifestResourceStream("OfficeOpenXml.resources.fontsize.zip");
 
                 using (stream)
                 {
-                    var zipStream = new ZipInputStream(stream);
+                    ZipInputStream? zipStream = new ZipInputStream(stream);
                     ZipEntry entry;
                     while ((entry = zipStream.GetNextEntry()) != null)
                     {
                         if (entry.FileName.Equals("fontsize.bin", StringComparison.OrdinalIgnoreCase))
                         {
-                            var br = new BinaryReader(zipStream);
+                            BinaryReader? br = new BinaryReader(zipStream);
                             if (string.IsNullOrEmpty(fontName))
                             {
-                                using (var ms = RecyclableMemory.GetStream(br.ReadBytes((int)entry.UncompressedSize)))
+                                using (MemoryStream? ms = RecyclableMemory.GetStream(br.ReadBytes((int)entry.UncompressedSize)))
                                 {
                                     ReadFontSize(ms, fontName);
                                 }
@@ -231,16 +231,16 @@ namespace OfficeOpenXml
 
         private static void ReadFontSize(MemoryStream stream, string fontName)
         {
-            var br = new BinaryReader(stream);
-            var noFonts = br.ReadUInt16();
+            BinaryReader? br = new BinaryReader(stream);
+            ushort noFonts = br.ReadUInt16();
             //Read all font names first
-            var fonts = new Dictionary<string, uint>();
-            var fno = 0;
+            Dictionary<string, uint>? fonts = new Dictionary<string, uint>();
+            int fno = 0;
             while (fno<noFonts)
             {
-                var nameSize = (short)br.ReadByte();
-                var name = Encoding.ASCII.GetString(br.ReadBytes(nameSize));
-                var dataPos = br.ReadUInt32();
+                short nameSize = (short)br.ReadByte();
+                string? name = Encoding.ASCII.GetString(br.ReadBytes(nameSize));
+                uint dataPos = br.ReadUInt32();
                 if (fontName == null || fontName.Equals(name, StringComparison.OrdinalIgnoreCase))
                 {
                     fonts.Add(name, dataPos);
@@ -248,7 +248,7 @@ namespace OfficeOpenXml
                 fno++;
             }
             
-            foreach(var font in fonts)
+            foreach(KeyValuePair<string, uint> font in fonts)
             {
                 AddFont(br, font.Key, font.Value);
             }
@@ -256,15 +256,15 @@ namespace OfficeOpenXml
 
         private static void AddFont(BinaryReader br, string fontName, uint dataPos)
         {
-            var fontHeights = new Dictionary<float, short>();
-            var fontWidths = new Dictionary<float, short>();
+            Dictionary<float, short>? fontHeights = new Dictionary<float, short>();
+            Dictionary<float, short>? fontWidths = new Dictionary<float, short>();
             br.BaseStream.Position = dataPos;
-            var length = br.ReadUInt16();
-            var pos = 0; 
+            ushort length = br.ReadUInt16();
+            int pos = 0; 
             while (pos < length)
             {
-                var s = br.ReadUInt16();
-                var v = br.ReadUInt16();
+                ushort s = br.ReadUInt16();
+                ushort v = br.ReadUInt16();
                 if ((v & 0x8000) == 0)
                 {
                     fontWidths.Add(s / 100F, (short)v);

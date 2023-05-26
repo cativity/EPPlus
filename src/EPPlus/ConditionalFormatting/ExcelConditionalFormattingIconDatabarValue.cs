@@ -256,7 +256,7 @@ namespace OfficeOpenXml.ConditionalFormatting
 		{
 			get
 			{
-				var typeAttribute = GetXmlNodeString(ExcelConditionalFormattingConstants.Paths.TypeAttribute);
+				string? typeAttribute = GetXmlNodeString(ExcelConditionalFormattingConstants.Paths.TypeAttribute);
 
 				return ExcelConditionalFormattingValueObjectType.GetTypeByAttrbiute(typeAttribute);
 			}

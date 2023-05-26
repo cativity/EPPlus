@@ -26,15 +26,15 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
         {
             _context = context;
             ValidateArguments(arguments, 2);
-            var arg1 = arguments.ElementAt(0);
-            var arg2 = arguments.ElementAt(1);
+            FunctionArgument? arg1 = arguments.ElementAt(0);
+            FunctionArgument? arg2 = arguments.ElementAt(1);
             CreateSets(arg1, arg2, out double[] set1, out double[] set2);
             if (set1.Length != set2.Length)
             {
                 return this.CreateResult(eErrorType.NA);
             }
 
-            var result = Calculate(set1.ToArray(), set2.ToArray());
+            double result = Calculate(set1.ToArray(), set2.ToArray());
             return CreateResult(result, DataType.Decimal);
         }
 
@@ -42,13 +42,13 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
 
         private void CreateSets(FunctionArgument arg1, FunctionArgument arg2, out double[] set1, out double[] set2)
         {
-            var list1 = CreateSet(arg1);
-            var list2 = CreateSet(arg2);
+            List<double>? list1 = CreateSet(arg1);
+            List<double>? list2 = CreateSet(arg2);
             if(list1.Count == list2.Count)
             {
-                var r1 = new List<double>();
-                var r2 = new List<double>();
-                for(var x = 0; x < list1.Count; x++)
+                List<double>? r1 = new List<double>();
+                List<double>? r2 = new List<double>();
+                for(int x = 0; x < list1.Count; x++)
                 {
                     if(!double.IsNaN(list1[x]) && !double.IsNaN(list2[x]))
                     {
@@ -71,10 +71,10 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
             List<double> result = new List<double>();
             if (arg.IsExcelRange)
             {
-                var r1 = arg.ValueAsRangeInfo;
-                for (var x = 0; x < r1.Count(); x++)
+                IRangeInfo? r1 = arg.ValueAsRangeInfo;
+                for (int x = 0; x < r1.Count(); x++)
                 {
-                    var v = r1.ElementAt(x).Value;
+                    object? v = r1.ElementAt(x).Value;
                     if (!IsNumeric(v))
                     {
                         result.Add(double.NaN);

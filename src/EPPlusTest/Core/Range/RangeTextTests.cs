@@ -17,16 +17,16 @@ namespace EPPlusTest.Core.Range
         {
             _pck = OpenPackage("Range_Text.xlsx", true);
             _ws = _pck.Workbook.Worksheets.Add("ToTextData");
-            var noItems = 100;
+            int noItems = 100;
             LoadTestdata(_ws, noItems);
             SetDateValues(_ws, noItems);
         }
         [TestMethod]
         public void TextFormatParentheses()
         {
-            using (var p = new ExcelPackage())
+            using (ExcelPackage? p = new ExcelPackage())
             {
-                var ws = p.Workbook.Worksheets.Add("Sheet1");
+                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Sheet1");
                 ws.Cells["A1"].Value = -100;
                 ws.Cells["A1"].Style.Numberformat.Format = "(#,##0)";
 
@@ -40,9 +40,9 @@ namespace EPPlusTest.Core.Range
         [TestMethod]
         public void TextFormatStringWithPercent()
         {
-            using (var p = new ExcelPackage())
+            using (ExcelPackage? p = new ExcelPackage())
             {
-                var ws = p.Workbook.Worksheets.Add("Sheet1");
+                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Sheet1");
                 ws.Cells["A1"].Value = 88;
                 ws.Cells["A1"].Style.Numberformat.Format = "0\"%\"";
 
@@ -52,9 +52,9 @@ namespace EPPlusTest.Core.Range
         [TestMethod]
         public void TextFormatWithBlankFormattingNumber()
         {
-            using (var p = new ExcelPackage())
+            using (ExcelPackage? p = new ExcelPackage())
             {
-                var ws = p.Workbook.Worksheets.Add("Sheet1");
+                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Sheet1");
                 ws.Cells["A1"].Value = 88;
                 ws.Cells["A2"].Value = 0;
                 ws.Cells["A3"].Value = -88;
@@ -70,9 +70,9 @@ namespace EPPlusTest.Core.Range
         [TestMethod]
         public void TextFormatWithBlankFormattingWithString()
         {
-            using (var p = new ExcelPackage())
+            using (ExcelPackage? p = new ExcelPackage())
             {
-                var ws = p.Workbook.Worksheets.Add("Sheet1");
+                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Sheet1");
                 ws.Cells["A1"].Value = 88;
                 ws.Cells["A2"].Value = 0;
                 ws.Cells["A3"].Value = -88;
@@ -88,7 +88,7 @@ namespace EPPlusTest.Core.Range
         [TestMethod]
         public void NumberFormatWithLanguageCode()
         {
-            var dt1 = new DateTime(2021, 3, 30);
+            DateTime dt1 = new DateTime(2021, 3, 30);
 
             ExcelPackage pck = new ExcelPackage();
             ExcelWorksheet ws = pck.Workbook.Worksheets.Add("test");
@@ -104,10 +104,10 @@ namespace EPPlusTest.Core.Range
         [TestMethod]
         public void ValidateNumberFormatDiffExcelVsNet()
         {
-            using (var p = new ExcelPackage())
+            using (ExcelPackage? p = new ExcelPackage())
             {
-                var ws = p.Workbook.Worksheets.Add("Sheet1");
-                var prevCi = Thread.CurrentThread.CurrentCulture;
+                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Sheet1");
+                CultureInfo? prevCi = Thread.CurrentThread.CurrentCulture;
                 Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
                 ws.SetValue(1, 1, -0.1);
                 ws.SetValue(2, 1, 0);
@@ -129,7 +129,7 @@ namespace EPPlusTest.Core.Range
         {
             using (ExcelPackage p = new ExcelPackage())
             {
-                var ws = p.Workbook.Worksheets.Add("Sheet1");
+                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Sheet1");
                 ws.Cells["A1"].Value = new DateTime(2018, 2, 3);
                 ws.Cells["A1"].Style.Numberformat.Format = "d";
                 Assert.AreEqual("3", ws.Cells["A1"].Text);
@@ -148,9 +148,9 @@ namespace EPPlusTest.Core.Range
         [TestMethod]
         public void ValudateDateTextWithAMPM()
         {
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var ws = package.Workbook.Worksheets.Add("dateText");
+                ExcelWorksheet? ws = package.Workbook.Worksheets.Add("dateText");
                 ws.Cells["A1"].Value = new DateTime(2021, 7, 6, 9, 29, 0);
                 ws.Cells["A1"].Style.Numberformat.Format = "[$-0409]M/d/yyyy h:mm AM/PM";
 
@@ -160,14 +160,14 @@ namespace EPPlusTest.Core.Range
         [TestMethod]
         public void ValidateAccountingFormatKr()
         {
-            var prevCi = Thread.CurrentThread.CurrentCulture;
+            CultureInfo? prevCi = Thread.CurrentThread.CurrentCulture;
             Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
-            var fmt = "_-* #,##0\\ \"kr\"_-;\\-* #,##0\\ \"kr\"_-;_-* \"-\"\\ \"kr\"_-;_-@_-";
+            string? fmt = "_-* #,##0\\ \"kr\"_-;\\-* #,##0\\ \"kr\"_-;_-* \"-\"\\ \"kr\"_-;_-@_-";
             //var fmt2 = "_-* #,##0.00\\ \"kr\"_-;\\-* #,##0.00\\ \"kr\"_-;_-* \"-\"??\\ \"kr\"_-;_-@_-\"";
 
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var ws = package.Workbook.Worksheets.Add("dateText");
+                ExcelWorksheet? ws = package.Workbook.Worksheets.Add("dateText");
                 ws.Cells["A1"].Value = 5555;
                 ws.Cells["A2"].Value = 0;
                 ws.Cells["A3"].Value = -5555;
@@ -184,13 +184,13 @@ namespace EPPlusTest.Core.Range
         [TestMethod]
         public void ValidateAccountingFormatKrWithDecimals()
         {
-            var prevCi = Thread.CurrentThread.CurrentCulture;
+            CultureInfo? prevCi = Thread.CurrentThread.CurrentCulture;
             Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
-            var fmt = "_-* #,##0.00\\ \"kr\"_-;\\-* #,##0.00\\ \"kr\"_-;_-* \"-\"??\\ \"kr\"_-;_-@_-\"";
+            string? fmt = "_-* #,##0.00\\ \"kr\"_-;\\-* #,##0.00\\ \"kr\"_-;_-* \"-\"??\\ \"kr\"_-;_-@_-\"";
 
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var ws = package.Workbook.Worksheets.Add("dateText");
+                ExcelWorksheet? ws = package.Workbook.Worksheets.Add("dateText");
                 ws.Cells["A1"].Value = 5555;
                 ws.Cells["A2"].Value = 0;
                 ws.Cells["A3"].Value = -5555;
@@ -207,13 +207,13 @@ namespace EPPlusTest.Core.Range
         [TestMethod]
         public void ValidateDateFormatWithNullAndText()
         {
-            var prevCi = Thread.CurrentThread.CurrentCulture;
+            CultureInfo? prevCi = Thread.CurrentThread.CurrentCulture;
             Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
-            var fmt = "yyyy/mm/dd;;\"NULL DATE\";\"Invalid date \"@\"";
+            string? fmt = "yyyy/mm/dd;;\"NULL DATE\";\"Invalid date \"@\"";
 
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var ws = package.Workbook.Worksheets.Add("dateText");
+                ExcelWorksheet? ws = package.Workbook.Worksheets.Add("dateText");
                 ws.Cells["A1"].Value = new DateTime(2021,2,3);
                 ws.Cells["A2"].Value = 0;
                 ws.Cells["A3"].Value = -2;

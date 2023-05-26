@@ -37,6 +37,7 @@ using OfficeOpenXml.Utils.CompundDocument;
 using OfficeOpenXml.Style;
 using System.Drawing;
 using System.Linq;
+using OfficeOpenXml.VBA;
 
 namespace EPPlusTest
 {
@@ -97,9 +98,9 @@ namespace EPPlusTest
         public void Read()
         {
            //var doc = File.ReadAllBytes(@"c:\temp\vbaProject.bin");
-           var doc = File.ReadAllBytes(@"c:\temp\vba.bin");
-           var cd = new CompoundDocumentFile(doc);
-           var ms = new MemoryStream();
+           byte[]? doc = File.ReadAllBytes(@"c:\temp\vba.bin");
+           CompoundDocumentFile? cd = new CompoundDocumentFile(doc);
+           MemoryStream? ms = new MemoryStream();
            cd.Write(ms);
            printitems(cd.RootItem);
            File.WriteAllBytes(@"c:\temp\vba.bin", ms.ToArray());
@@ -108,7 +109,7 @@ namespace EPPlusTest
         private void printitems(CompoundDocumentItem item)
         {
             File.AppendAllText(@"c:\temp\items.txt", item.Name+ "\t");            
-            foreach(var c in item.Children)
+            foreach(CompoundDocumentItem? c in item.Children)
             {
                 printitems(c);
             }
@@ -118,13 +119,13 @@ namespace EPPlusTest
         {
             for(int i=1;i<50;i++)
             {
-                var b=CreateFile(i);
+                byte[]? b=CreateFile(i);
                 ReadFile(b,i);
                 GC.Collect();
             }
             for (int i = 5; i < 20; i++)
             {
-                var b = CreateFile(i*50);
+                byte[]? b = CreateFile(i*50);
                 ReadFile(b, i*50);
                 GC.Collect();
             }
@@ -132,8 +133,8 @@ namespace EPPlusTest
 
         private void ReadFile(byte[] b, int noSheets)
         {
-            var ms = new MemoryStream(b);
-            using (var p = new ExcelPackage(ms))
+            MemoryStream? ms = new MemoryStream(b);
+            using (ExcelPackage? p = new ExcelPackage(ms))
             {
                 Assert.AreEqual(p.Workbook.VbaProject.Modules.Count,noSheets+2);
                 Assert.AreEqual(noSheets, p.Workbook.Worksheets.Count);
@@ -142,11 +143,11 @@ namespace EPPlusTest
 
         public byte[] CreateFile(int noSheets)
         {
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var sheets = Enumerable.Range(1, noSheets)   //460
-                    .Select(x => $"Sheet{x}");
-                foreach (var sheet in sheets)
+                IEnumerable<string>? sheets = Enumerable.Range(1, noSheets)   //460
+                                                        .Select(x => $"Sheet{x}");
+                foreach (string? sheet in sheets)
                 {
                     package.Workbook.Worksheets.Add(sheet);
                 }
@@ -162,9 +163,9 @@ namespace EPPlusTest
         [TestMethod, Ignore]
         public void ReadEncLong()
         {
-            var doc=File.ReadAllBytes(@"c:\temp\EncrDocRead.xlsx");
-            var cd = new CompoundDocumentFile(doc);
-            var ms = new MemoryStream();
+            byte[]? doc=File.ReadAllBytes(@"c:\temp\EncrDocRead.xlsx");
+            CompoundDocumentFile? cd = new CompoundDocumentFile(doc);
+            MemoryStream? ms = new MemoryStream();
             cd.Write(ms);
 
             File.WriteAllBytes(@"c:\temp\vba.xlsx", ms.ToArray());
@@ -172,28 +173,28 @@ namespace EPPlusTest
         [TestMethod, Ignore]
         public void ReadVba()
         {
-            var p = new ExcelPackage(new FileInfo(@"c:\temp\pricecheck.xlsm"));
-            var vba = p.Workbook.VbaProject;
+            ExcelPackage? p = new ExcelPackage(new FileInfo(@"c:\temp\pricecheck.xlsm"));
+            ExcelVbaProject? vba = p.Workbook.VbaProject;
             p.SaveAs(new FileInfo(@"c:\temp\pricecheckSaved.xlsm"));
         }
         FileInfo TempFile(string name)
         {
-            var baseFolder = Path.Combine(@"c:\temp\bug\");
+            string? baseFolder = Path.Combine(@"c:\temp\bug\");
             return new FileInfo(Path.Combine(baseFolder, name));
         }
         [TestMethod, Ignore]
         public void Issue131()
         {
-            var src = TempFile("report.xlsm");
+            FileInfo? src = TempFile("report.xlsm");
             if (src.Exists)
             {
                 src.Delete();
             }
 
-            var package = new ExcelPackage(src);
-            var sheets = Enumerable.Range(1, 500)   //460
-                .Select(x => $"Sheet{x}");
-            foreach (var sheet in sheets)
+            ExcelPackage? package = new ExcelPackage(src);
+            IEnumerable<string>? sheets = Enumerable.Range(1, 500)   //460
+                                                    .Select(x => $"Sheet{x}");
+            foreach (string? sheet in sheets)
             {
                 package.Workbook.Worksheets.Add(sheet);
             }
@@ -220,14 +221,14 @@ namespace EPPlusTest
                 Console.WriteLine("{0:HH.mm.ss}\tStarting...", DateTime.Now);
 
                 //Load the sheet with one string column, one date column and a few random numbers.
-                var ws = package.Workbook.Worksheets.Add("Performance Test");
+                ExcelWorksheet? ws = package.Workbook.Worksheets.Add("Performance Test");
 
                 //Format all cells
                 ExcelRange cols = ws.Cells["A:XFD"];
                 cols.Style.Fill.PatternType = ExcelFillStyle.Solid;
                 cols.Style.Fill.BackgroundColor.SetColor(Color.LightGray);
 
-                var rnd = new Random();
+                Random? rnd = new Random();
                 for (int row = 1; row <= Rows; row++)
                 {
                     for (int c = 0; c < colMult * 5; c += 5)
@@ -238,7 +239,7 @@ namespace EPPlusTest
                         ws.SetValue(row, 4 + c, rnd.NextDouble() * 10000); 
                      }
                 }
-                var endC = colMult * 5;
+                int endC = colMult * 5;
                 ws.Cells[1, endC, Rows, endC].FormulaR1C1 = "RC[-4]+RC[-1]";
 
                 //Add a sum at the end
@@ -265,7 +266,7 @@ namespace EPPlusTest
                 ws.Cells["E1"].Value = "Formula";
                 ws.View.FreezePanes(2, 1);
 
-                using (var rng = ws.Cells["A1:E1"])
+                using (ExcelRange? rng = ws.Cells["A1:E1"])
                 {
                     rng.Style.Font.Bold = true;
                     rng.Style.Font.Color.SetColor(Color.White);
@@ -303,7 +304,7 @@ namespace EPPlusTest
         [TestMethod, Ignore]
         public void ReadPerfTest()
         {
-            var p = new ExcelPackage(new FileInfo(@"c:\temp\bug\sample7compdoctest.xlsx"), "");
+            ExcelPackage? p = new ExcelPackage(new FileInfo(@"c:\temp\bug\sample7compdoctest.xlsx"), "");
             //var p = new ExcelPackage(new FileInfo(@"c:\temp\bug\sample7compdoctest_4.5.xlsx"), "");
             //var p = new ExcelPackage(new FileInfo(@"c:\temp\bug\sample7compdoctest.310k.xlsx"), "");
         }
@@ -312,8 +313,8 @@ namespace EPPlusTest
         {
             //var p = new ExcelPackage(new FileInfo(@"c:\temp\bug\report.xlsm"));
             //var p = new ExcelPackage(new FileInfo(@"c:\temp\bug\report411.xlsm"));
-            var p = new ExcelPackage(new FileInfo(@"c:\temp\bug\sample7.xlsx"),"");
-            var vba = p.Workbook.VbaProject;
+            ExcelPackage? p = new ExcelPackage(new FileInfo(@"c:\temp\bug\sample7.xlsx"),"");
+            ExcelVbaProject? vba = p.Workbook.VbaProject;
         }
         
     }

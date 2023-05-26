@@ -17,10 +17,10 @@ namespace OfficeOpenXml.Export.HtmlExport
             }
 
             className = className.Trim().Replace(" ", "-");
-            var newClassName = "";
+            string? newClassName = "";
             for (int i = 0; i < className.Length; i++)
             {
-                var c = className[i];
+                char c = className[i];
                 if (i == 0)
                 {
                     if (c == '-' || (c >= '0' && c <= '9'))
@@ -43,9 +43,9 @@ namespace OfficeOpenXml.Export.HtmlExport
 
         internal static string GetPictureName(HtmlImage p)
         {
-            var hash = ((IPictureContainer)p.Picture).ImageHash;
-            var fi = new FileInfo(p.Picture.Part.Uri.OriginalString);
-            var name = fi.Name.Substring(0, fi.Name.Length - fi.Extension.Length);
+            string? hash = ((IPictureContainer)p.Picture).ImageHash;
+            FileInfo? fi = new FileInfo(p.Picture.Part.Uri.OriginalString);
+            string? name = fi.Name.Substring(0, fi.Name.Length - fi.Extension.Length);
 
             return GetClassName(name, hash);
         }
@@ -54,7 +54,7 @@ namespace OfficeOpenXml.Export.HtmlExport
         {
             if (image != null)
             {
-                var name = GetPictureName(image);
+                string? name = GetPictureName(image);
                 string imageName = GetClassName(image.Picture.Name, ((IPictureContainer)image.Picture).ImageHash);
                 writer.AddAttribute("alt", image.Picture.Name);
                 if (settings.Pictures.AddNameAsId)

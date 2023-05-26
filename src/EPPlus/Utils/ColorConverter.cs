@@ -21,7 +21,7 @@ namespace OfficeOpenXml.Utils
     {
         internal static Color GetThemeColor(ExcelTheme theme, eThemeSchemeColor tc)
         {
-            var cm = theme.ColorScheme.GetColorByEnum(tc);
+            ExcelDrawingThemeColorManager? cm = theme.ColorScheme.GetColorByEnum(tc);
             return GetThemeColor(cm);
         }
         internal static Color GetThemeColor(ExcelDrawingThemeColorManager cm)
@@ -39,7 +39,7 @@ namespace OfficeOpenXml.Utils
                     color = cm.SystemColor.GetColor();
                     break;
                 case eDrawingColorType.RgbPercentage:
-                    var rp = cm.RgbPercentageColor;
+                    ExcelDrawingRgbPercentageColor? rp = cm.RgbPercentageColor;
                     color = Color.FromArgb(GetRgpPercentToRgb(rp.RedPercentage),
                                            GetRgpPercentToRgb(rp.GreenPercentage),
                                            GetRgpPercentToRgb(rp.BluePercentage));

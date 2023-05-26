@@ -58,7 +58,7 @@ namespace OfficeOpenXml.FormulaParsing.LexicalAnalysis
 
         public TokenHandler CreateHandler(INameValueProvider nameValueProvider)
         {
-            var handler = new TokenHandler(this, _tokenFactory, TokenSeparatorProvider.Instance, nameValueProvider);
+            TokenHandler? handler = new TokenHandler(this, _tokenFactory, TokenSeparatorProvider.Instance, nameValueProvider);
             handler.Worksheet = _worksheet;
             return handler;
         }
@@ -130,7 +130,7 @@ namespace OfficeOpenXml.FormulaParsing.LexicalAnalysis
                 AddToken(CreateToken(_worksheet));
             }
 
-            var postProcessor = new TokenizerPostProcessor(this);
+            TokenizerPostProcessor? postProcessor = new TokenizerPostProcessor(this);
             postProcessor.Process();
         }
 
@@ -229,9 +229,9 @@ namespace OfficeOpenXml.FormulaParsing.LexicalAnalysis
 
         public void AppendToLastToken(string stringToAppend)
         {
-            var token = _result.Last();
-            var newVal = token.Value += stringToAppend;
-            var newToken = token.CloneWithNewValue(newVal);
+            Token token = _result.Last();
+            string? newVal = token.Value += stringToAppend;
+            Token newToken = token.CloneWithNewValue(newVal);
             ReplaceLastToken(newToken);
         }
 
@@ -261,7 +261,7 @@ namespace OfficeOpenXml.FormulaParsing.LexicalAnalysis
         /// <param name="type"></param>
         public void SetLastTokenType(TokenType type)
         {
-            var newToken = _result.Last().CloneWithNewTokenType(type);
+            Token newToken = _result.Last().CloneWithNewTokenType(type);
             ReplaceLastToken(newToken);
         }
 
@@ -271,7 +271,7 @@ namespace OfficeOpenXml.FormulaParsing.LexicalAnalysis
         /// <param name="newToken">The new token</param>
         public void ReplaceLastToken(Token newToken)
         {
-            var count = _result.Count;
+            int count = _result.Count;
             if (count > 0)
             {
                 _result.RemoveAt(count - 1);   

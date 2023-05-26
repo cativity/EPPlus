@@ -27,16 +27,16 @@ namespace OfficeOpenXml.ThreadedComments
         /// <param name="personsToMention"><see cref="ExcelThreadedCommentPerson"/>s to mention</param>
         internal static void InsertMentions(ExcelThreadedComment comment, string textWithFormats, params ExcelThreadedCommentPerson[] personsToMention)
         {
-            var str = textWithFormats;
-            var isMentioned = new Dictionary<string, bool>();
-            for (var index = 0; index < personsToMention.Length; index++)
+            string? str = textWithFormats;
+            Dictionary<string, bool>? isMentioned = new Dictionary<string, bool>();
+            for (int index = 0; index < personsToMention.Length; index++)
             {
-                var person = personsToMention[index];
-                var format = "{" + index + "}";
+                ExcelThreadedCommentPerson? person = personsToMention[index];
+                string? format = "{" + index + "}";
                 while (str.IndexOf(format) > -1)
                 {
-                    var placeHolderPos = str.IndexOf("{" + index + "}", StringComparison.OrdinalIgnoreCase);
-                    var regex = new Regex(@"\{" + index + @"\}");
+                    int placeHolderPos = str.IndexOf("{" + index + "}", StringComparison.OrdinalIgnoreCase);
+                    Regex? regex = new Regex(@"\{" + index + @"\}");
                     str = regex.Replace(str, "@" + person.DisplayName, 1);
 
                     // Excel seems to only support one mention per person, so we

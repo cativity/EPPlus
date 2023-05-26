@@ -30,7 +30,7 @@ namespace OfficeOpenXml.Core.CellStore
         }
         internal int GetPagePosition(int Row)
         {
-            var page = (Row >> CellStoreSettings._pageBits);
+            int page = (Row >> CellStoreSettings._pageBits);
             int pagePos;
             if (page >= 0 && page < PageCount && _pages[page].Index == page)
             {
@@ -48,7 +48,7 @@ namespace OfficeOpenXml.Core.CellStore
             }
             else
             {
-                var p = ~pagePos;
+                int p = ~pagePos;
 
                 if (GetPage(Row, ref p))
                 {
@@ -92,7 +92,7 @@ namespace OfficeOpenXml.Core.CellStore
         }
         internal int GetNextRow(int row)
         {
-            var p = GetPagePosition(row);
+            int p = GetPagePosition(row);
             if (p < 0)
             {
                 p = ~p;
@@ -124,7 +124,7 @@ namespace OfficeOpenXml.Core.CellStore
             {
                 if (p < PageCount)
                 {
-                    var r = _pages[p].GetNextRow(row);
+                    int r = _pages[p].GetNextRow(row);
                     if (r >= 0)
                     {
                         return _pages[p].IndexOffset + _pages[p].Rows[r].Index;
@@ -149,10 +149,10 @@ namespace OfficeOpenXml.Core.CellStore
         }
         internal int GetPointer(int Row)
         {
-            var pos = GetPagePosition(Row);
+            int pos = GetPagePosition(Row);
             if (pos >= 0 && pos < PageCount)
             {
-                var pageItem = _pages[pos];
+                PageIndex? pageItem = _pages[pos];
                 if (pageItem.MinIndex > Row)
                 {
                     pos--;
@@ -166,7 +166,7 @@ namespace OfficeOpenXml.Core.CellStore
                     }
                 }
                 int ix = Row - pageItem.IndexOffset;
-                var cellPos = ArrayUtil.OptimizedBinarySearch(pageItem.Rows, ix, pageItem.RowCount);
+                int cellPos = ArrayUtil.OptimizedBinarySearch(pageItem.Rows, ix, pageItem.RowCount);
                 if (cellPos >= 0)
                 {
                     return pageItem.Rows[cellPos].IndexPointer;

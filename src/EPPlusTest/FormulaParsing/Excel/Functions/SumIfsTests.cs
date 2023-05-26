@@ -45,7 +45,7 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions
         public void Initialize()
         {
             _package = new ExcelPackage();
-            var s1 = _package.Workbook.Worksheets.Add("test");
+            ExcelWorksheet? s1 = _package.Workbook.Worksheets.Add("test");
             s1.Cells["A1"].Value = 1;
             s1.Cells["A2"].Value = 2;
             s1.Cells["A3"].Value = 3;
@@ -115,7 +115,7 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions
             _sheet.Cells["A10"].Value = (12d * 3600d + 00d * 60d) / (24d * 3600d);// 12:00
             _sheet.Cells["A2:A10"].Calculate();
 
-            for(var row = 2; row < 11; row++)
+            for(int row = 2; row < 11; row++)
             {
                 _sheet.Cells["B" + row].Value = 100;
             }
@@ -130,9 +130,9 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions
         [TestMethod]
         public void SumIfsShouldHandleSingleRange()
         {
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var sheet = package.Workbook.Worksheets.Add("test");
+                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
                 sheet.Cells["A1"].Formula = "SUMIFS(H5,H5,\">0\",K5,\"> 0\")";
                 sheet.Cells["H5"].Value = 1;
                 sheet.Cells["K5"].Value = 1;

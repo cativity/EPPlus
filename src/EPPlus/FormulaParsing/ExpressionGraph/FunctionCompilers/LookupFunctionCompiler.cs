@@ -28,16 +28,16 @@ namespace OfficeOpenXml.FormulaParsing.ExpressionGraph.FunctionCompilers
 
         public override CompileResult Compile(IEnumerable<Expression> children)
         {
-            var args = new List<FunctionArgument>();
+            List<FunctionArgument>? args = new List<FunctionArgument>();
             Function.BeforeInvoke(Context);
-            for(var x = 0; x < children.Count(); x++)
+            for(int x = 0; x < children.Count(); x++)
             {
-                var child = children.ElementAt(x);
+                Expression? child = children.ElementAt(x);
                 //if (x > 0 || Function.SkipArgumentEvaluation)
                 //{
                 //    child.ParentIsLookupFunction = Function.IsLookupFuction;
                 //}
-                var arg = child.Compile();
+                CompileResult? arg = child.Compile();
                 if (arg != null)
                 {
                     BuildFunctionArguments(arg, arg.DataType, args);

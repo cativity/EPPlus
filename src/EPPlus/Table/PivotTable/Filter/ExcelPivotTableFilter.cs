@@ -82,10 +82,10 @@ namespace OfficeOpenXml.Table.PivotTable.Filter
         internal void CreateDateCustomFilter(ePivotTableDateValueFilterType type)
         {
             _filterColumnNode.InnerXml = "<customFilters/>";
-            var cf = new ExcelCustomFilterColumn(NameSpaceManager, _filterColumnNode);
+            ExcelCustomFilterColumn? cf = new ExcelCustomFilterColumn(NameSpaceManager, _filterColumnNode);
 
             eFilterOperator t;
-            var v = ConvertUtil.GetValueForXml(Value1, _date1904);
+            string? v = ConvertUtil.GetValueForXml(Value1, _date1904);
             switch (type)
             {
                 case ePivotTableDateValueFilterType.DateNotEqual:
@@ -110,7 +110,7 @@ namespace OfficeOpenXml.Table.PivotTable.Filter
                     break;
             }
 
-            var item1 = new ExcelFilterCustomItem(v, t);
+            ExcelFilterCustomItem? item1 = new ExcelFilterCustomItem(v, t);
             cf.Filters.Add(item1);
 
             if (type == ePivotTableDateValueFilterType.DateBetween)
@@ -129,7 +129,7 @@ namespace OfficeOpenXml.Table.PivotTable.Filter
         internal void CreateDateDynamicFilter(ePivotTableDatePeriodFilterType type)
         {
             _filterColumnNode.InnerXml = "<dynamicFilter />";
-            var df = new ExcelDynamicFilterColumn(NameSpaceManager, _filterColumnNode);
+            ExcelDynamicFilterColumn? df = new ExcelDynamicFilterColumn(NameSpaceManager, _filterColumnNode);
             switch(type)
             {
                 case ePivotTableDatePeriodFilterType.LastMonth:
@@ -238,7 +238,7 @@ namespace OfficeOpenXml.Table.PivotTable.Filter
         internal void CreateTop10Filter(ePivotTableTop10FilterType type, bool isTop, double value)
         {
             _filterColumnNode.InnerXml = "<top10 />";
-            var tf = new ExcelTop10FilterColumn(NameSpaceManager, _filterColumnNode);
+            ExcelTop10FilterColumn? tf = new ExcelTop10FilterColumn(NameSpaceManager, _filterColumnNode);
 
             tf.Percent = (type == ePivotTableTop10FilterType.Percent);
             tf.Top = isTop;
@@ -251,10 +251,10 @@ namespace OfficeOpenXml.Table.PivotTable.Filter
         internal void CreateCaptionCustomFilter(ePivotTableCaptionFilterType type)
         {
             _filterColumnNode.InnerXml = "<customFilters/>";
-            var cf = new ExcelCustomFilterColumn(NameSpaceManager, _filterColumnNode);
+            ExcelCustomFilterColumn? cf = new ExcelCustomFilterColumn(NameSpaceManager, _filterColumnNode);
 
             eFilterOperator t;
-            var v = StringValue1;
+            string? v = StringValue1;
             switch(type)
             {
                 case ePivotTableCaptionFilterType.CaptionNotBeginsWith:
@@ -296,7 +296,7 @@ namespace OfficeOpenXml.Table.PivotTable.Filter
                     v = $"*{v}";
                     break;
             }
-            var item1 = new ExcelFilterCustomItem(v, t);
+            ExcelFilterCustomItem? item1 = new ExcelFilterCustomItem(v, t);
             cf.Filters.Add(item1);
 
             if(type==ePivotTableCaptionFilterType.CaptionBetween)
@@ -315,7 +315,7 @@ namespace OfficeOpenXml.Table.PivotTable.Filter
         internal void CreateValueCustomFilter(ePivotTableValueFilterType type)
         {
             _filterColumnNode.InnerXml = "<customFilters/>";
-            var cf = new ExcelCustomFilterColumn(NameSpaceManager, _filterColumnNode);
+            ExcelCustomFilterColumn? cf = new ExcelCustomFilterColumn(NameSpaceManager, _filterColumnNode);
 
             eFilterOperator t;
             string v1 = GetFilterValueAsString(Value1);
@@ -343,7 +343,7 @@ namespace OfficeOpenXml.Table.PivotTable.Filter
                     break;
             }
 
-            var item1 = new ExcelFilterCustomItem(v1, t);
+            ExcelFilterCustomItem? item1 = new ExcelFilterCustomItem(v1, t);
             cf.Filters.Add(item1);
 
             if (type == ePivotTableValueFilterType.ValueBetween)
@@ -373,7 +373,7 @@ namespace OfficeOpenXml.Table.PivotTable.Filter
         internal void CreateValueFilter()
         {
             _filterColumnNode.InnerXml = "<filters/>";
-            var f = new ExcelValueFilterColumn(NameSpaceManager, _filterColumnNode);
+            ExcelValueFilterColumn? f = new ExcelValueFilterColumn(NameSpaceManager, _filterColumnNode);
             f.Filters.Add(StringValue1);
             _filter = f;
         }
@@ -389,7 +389,7 @@ namespace OfficeOpenXml.Table.PivotTable.Filter
             }
             internal set
             {
-                var s = value.ToEnumString();
+                string? s = value.ToEnumString();
                 if (s.Length <= 3 && (s[0]=='m' || s[0] == 'q'))
                 {
                     s = s.ToUpper();  //For M1 - M12 and Q1 - Q4
@@ -508,7 +508,7 @@ namespace OfficeOpenXml.Table.PivotTable.Filter
             {
                 if (_filter == null)
                 {
-                    var filterNode = GetNode("d:autoFilter/d:filterColumn");
+                    XmlNode? filterNode = GetNode("d:autoFilter/d:filterColumn");
                     if (filterNode != null)
                     {
                         switch (filterNode.LocalName)

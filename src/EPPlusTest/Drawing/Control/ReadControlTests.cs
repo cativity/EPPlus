@@ -38,7 +38,7 @@ namespace EPPlusTest.Drawing.Control
         {
             /**** Button ****/
             Assert.IsInstanceOfType(_ws.Drawings[0], typeof(ExcelControlButton));
-            var button = _ws.Drawings[0].As.Control.Button;
+            ExcelControlButton? button = _ws.Drawings[0].As.Control.Button;
             Assert.AreEqual(eControlType.Button, button.ControlType);
             Assert.IsTrue(button.LockedText);
             Assert.AreEqual("Button 1", button.Name);
@@ -52,7 +52,7 @@ namespace EPPlusTest.Drawing.Control
         {
             /**** DropDown ****/
             Assert.IsInstanceOfType(_ws.Drawings[1], typeof(ExcelControlDropDown));
-            var dropDown = _ws.Drawings[1].As.Control.DropDown;
+            ExcelControlDropDown? dropDown = _ws.Drawings[1].As.Control.DropDown;
             Assert.AreEqual(eControlType.DropDown, dropDown.ControlType);
             Assert.AreEqual("Drop Down 3", dropDown.Name);
             Assert.AreEqual("[0]!DropDown3_Change", dropDown.Macro);
@@ -71,7 +71,7 @@ namespace EPPlusTest.Drawing.Control
         {
             Assert.IsInstanceOfType(_ws.Drawings[2], typeof(ExcelControlLabel));
             Assert.AreEqual(eControlType.Label, _ws.Drawings[2].As.Control.Label.ControlType);
-            var label = _ws.Drawings[2].As.Control.Label;
+            ExcelControlLabel? label = _ws.Drawings[2].As.Control.Label;
             Assert.AreEqual("Label 6", label.Name);
             Assert.AreEqual("Label 6", label.Text);
             Assert.IsTrue(label.LockedText);
@@ -80,7 +80,7 @@ namespace EPPlusTest.Drawing.Control
         public void ValidateListboxControl()
         {
             Assert.IsInstanceOfType(_ws.Drawings[3], typeof(ExcelControlListBox));
-            var listBox = _ws.Drawings[3].As.Control.ListBox;
+            ExcelControlListBox? listBox = _ws.Drawings[3].As.Control.ListBox;
             Assert.AreEqual("$J$4:$K$8", listBox.InputRange.Address);
             Assert.AreEqual("$A$1:$A$2", listBox.LinkedCell.Address);
             Assert.AreEqual(0, listBox.SelectedIndex);
@@ -94,7 +94,7 @@ namespace EPPlusTest.Drawing.Control
         public void ValidateCheckboxControl()
         {
             Assert.IsInstanceOfType(_ws.Drawings[4], typeof(ExcelControlCheckBox));
-            var checkbox = _ws.Drawings[4].As.Control.CheckBox;
+            ExcelControlCheckBox? checkbox = _ws.Drawings[4].As.Control.CheckBox;
             Assert.AreEqual(eControlType.CheckBox, checkbox.ControlType);
             Assert.AreEqual(eCheckState.Checked, checkbox.Checked);
             Assert.IsTrue(checkbox.LockedText);
@@ -106,7 +106,7 @@ namespace EPPlusTest.Drawing.Control
         public void ValidateCheckboxWithTileControl()
         {
             Assert.IsInstanceOfType(_ws.Drawings[8], typeof(ExcelControlCheckBox));
-            var checkbox = _ws.Drawings[8].As.Control.CheckBox;
+            ExcelControlCheckBox? checkbox = _ws.Drawings[8].As.Control.CheckBox;
             Assert.AreEqual(eControlType.CheckBox, checkbox.ControlType);
             Assert.AreEqual(eCheckState.Checked, checkbox.Checked);
             Assert.AreEqual("Check Box 12", checkbox.Name);
@@ -119,7 +119,7 @@ namespace EPPlusTest.Drawing.Control
         public void ValidateCheckboxWithFrameControl()
         {
             Assert.IsInstanceOfType(_ws.Drawings[9], typeof(ExcelControlCheckBox));
-            var checkbox = _ws.Drawings[9].As.Control.CheckBox;
+            ExcelControlCheckBox? checkbox = _ws.Drawings[9].As.Control.CheckBox;
             Assert.AreEqual(eControlType.CheckBox, checkbox.ControlType);
             Assert.AreEqual(eCheckState.Checked, checkbox.Checked);
             Assert.AreEqual("Check Box 13", checkbox.Name);
@@ -131,7 +131,7 @@ namespace EPPlusTest.Drawing.Control
         public void ValidateCheckboxWithPatternControl()
         {
             Assert.IsInstanceOfType(_ws.Drawings[10], typeof(ExcelControlCheckBox));
-            var checkbox = _ws.Drawings[10].As.Control.CheckBox;
+            ExcelControlCheckBox? checkbox = _ws.Drawings[10].As.Control.CheckBox;
             Assert.AreEqual(eControlType.CheckBox, checkbox.ControlType);
             Assert.AreEqual(eCheckState.Checked, checkbox.Checked);
             Assert.AreEqual("Check Box 14", checkbox.Name);
@@ -144,7 +144,7 @@ namespace EPPlusTest.Drawing.Control
         public void ValidateSpinbuttonControl()
         {
             Assert.IsInstanceOfType(_ws.Drawings[5], typeof(ExcelControlSpinButton));
-            var spin = _ws.Drawings[5].As.Control.SpinButton;
+            ExcelControlSpinButton? spin = _ws.Drawings[5].As.Control.SpinButton;
             Assert.AreEqual(eControlType.SpinButton, spin.ControlType);
             Assert.AreEqual("$K$22", spin.LinkedCell.Address);
             Assert.AreEqual(3, spin.Increment);
@@ -158,7 +158,7 @@ namespace EPPlusTest.Drawing.Control
         {
             Assert.IsInstanceOfType(_ws.Drawings[6], typeof(ExcelControlGroupBox));
             Assert.AreEqual(eControlType.GroupBox, _ws.Drawings[6].As.Control.GroupBox.ControlType);
-            var groupBox = _ws.Drawings[6].As.Control.GroupBox;
+            ExcelControlGroupBox? groupBox = _ws.Drawings[6].As.Control.GroupBox;
             Assert.AreEqual("[0]!GroupBox5_Click", groupBox.Macro);
             Assert.AreEqual("Group Box 5", groupBox.Name);
             Assert.AreEqual("Group Box 5", groupBox.Text);
@@ -168,7 +168,7 @@ namespace EPPlusTest.Drawing.Control
         {
             Assert.IsInstanceOfType(_ws.Drawings[7], typeof(ExcelControlRadioButton));
             Assert.AreEqual(eControlType.RadioButton, _ws.Drawings[7].As.Control.RadioButton.ControlType);
-            var radioButton = _ws.Drawings[7].As.Control.RadioButton;
+            ExcelControlRadioButton? radioButton = _ws.Drawings[7].As.Control.RadioButton;
             Assert.IsTrue(radioButton.LockedText);
             Assert.IsTrue(radioButton.FirstButton);
             Assert.IsTrue(radioButton.Checked);
@@ -180,11 +180,11 @@ namespace EPPlusTest.Drawing.Control
         [TestMethod]
         public void ValidateDrawingGroup()
         {
-            var ws = _pck.Workbook.Worksheets[1];
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets[1];
 
             Assert.IsInstanceOfType(ws.Drawings[0], typeof(ExcelGroupShape));
             Assert.AreEqual(2, ws.Drawings.Count);
-            var grp = (ExcelGroupShape)ws.Drawings[0];
+            ExcelGroupShape? grp = (ExcelGroupShape)ws.Drawings[0];
             Assert.AreEqual(4, grp.Drawings.Count);
             Assert.AreEqual(eDrawingType.Control, grp.Drawings[0].DrawingType);
             Assert.AreEqual(2028825, grp.Drawings[0].Size.Width);
@@ -194,11 +194,11 @@ namespace EPPlusTest.Drawing.Control
         [TestMethod]
         public void ValidateDrawingUnGroup()
         {
-            var ws = _pck.Workbook.Worksheets[1];
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets[1];
 
             Assert.IsInstanceOfType(ws.Drawings[0], typeof(ExcelGroupShape));
             Assert.AreEqual(2, ws.Drawings.Count);
-            var grp = (ExcelGroupShape)ws.Drawings[0];
+            ExcelGroupShape? grp = (ExcelGroupShape)ws.Drawings[0];
             Assert.AreEqual(4, grp.Drawings.Count);
             Assert.AreEqual(eDrawingType.Control, grp.Drawings[0].DrawingType);
             Assert.AreEqual(2028825, grp.Drawings[0].Size.Width);

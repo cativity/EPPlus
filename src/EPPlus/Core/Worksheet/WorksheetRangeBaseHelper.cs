@@ -12,6 +12,7 @@
  *************************************************************************************************/
 using OfficeOpenXml.ConditionalFormatting;
 using OfficeOpenXml.DataValidation;
+using OfficeOpenXml.DataValidation.Contracts;
 using OfficeOpenXml.DataValidation.Formulas.Contracts;
 
 namespace OfficeOpenXml.Core.Worksheet
@@ -20,7 +21,7 @@ namespace OfficeOpenXml.Core.Worksheet
     {
         internal static void AdjustDvAndCfFormulasRow(ExcelWorksheet ws, int rowFrom, int rows)
         {
-            foreach (var dv in ws.DataValidations)
+            foreach (IExcelDataValidation? dv in ws.DataValidations)
             {
                 if (dv is ExcelDataValidationWithFormula<IExcelDataValidationFormula> dvFormula)
                 {
@@ -101,7 +102,7 @@ namespace OfficeOpenXml.Core.Worksheet
 
         internal static void AdjustDvAndCfFormulasColumn(ExcelWorksheet ws, int columnFrom, int columns)
         {
-            foreach (var dv in ws.DataValidations)
+            foreach (IExcelDataValidation? dv in ws.DataValidations)
             {
                 if (dv is ExcelDataValidationWithFormula<IExcelDataValidationFormula> dvFormula)
                 {

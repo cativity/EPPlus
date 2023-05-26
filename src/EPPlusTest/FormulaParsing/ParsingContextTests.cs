@@ -41,14 +41,14 @@ namespace EPPlusTest.FormulaParsing
         [TestMethod]
         public void ConfigurationShouldBeSetByFactoryMethod()
         {
-            var context = ParsingContext.Create();
+            ParsingContext? context = ParsingContext.Create();
             Assert.IsNotNull(context.Configuration);
         }
 
         [TestMethod]
         public void ScopesShouldBeSetByFactoryMethod()
         {
-            var context = ParsingContext.Create();
+            ParsingContext? context = ParsingContext.Create();
             Assert.IsNotNull(context.Scopes);
         }
     }

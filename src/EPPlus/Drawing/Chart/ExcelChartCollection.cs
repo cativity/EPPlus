@@ -13,6 +13,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Xml;
 
 namespace OfficeOpenXml.Drawing.Chart
 {
@@ -52,8 +53,8 @@ namespace OfficeOpenXml.Drawing.Chart
                 throw(new InvalidOperationException("3D charts cannot be combined with other chart types"));
             }
 
-            var prependingChartNode = _list[_list.Count - 1].TopNode;
-            var chart = ExcelChart.GetNewChart(_topChart.WorkSheet.Drawings, _topChart.TopNode, chartType, _topChart, null);
+            XmlNode? prependingChartNode = _list[_list.Count - 1].TopNode;
+            ExcelChart? chart = ExcelChart.GetNewChart(_topChart.WorkSheet.Drawings, _topChart.TopNode, chartType, _topChart, null);
 
             _list.Add((ExcelChart)chart);
             return chart;

@@ -27,7 +27,7 @@ namespace OfficeOpenXml.ExcelXMLWriter
                 end = -1;
                 return;
             }
-            var startPos = startmMatch.Index + start;
+            int startPos = startmMatch.Index + start;
             if (startmMatch.Value.Substring(startmMatch.Value.Length - 2, 1) == "/")
             {
                 end = startPos + startmMatch.Length;

@@ -22,12 +22,12 @@ namespace OfficeOpenXml.Core.Worksheet
         [TestMethod]
         public void ValidateRowsCollectionEnumeration()
         {
-            var ws = _pck.Workbook.Worksheets.Add("Rows");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("Rows");
 
             ws.Cells["A1:A10"].FillNumber(1);
 
             int r = 2;
-            foreach(var row in ws.Rows[2,10])
+            foreach(ExcelRangeRow? row in ws.Rows[2,10])
             {
                 Assert.AreEqual(r++, row.StartRow);
             }
@@ -36,7 +36,7 @@ namespace OfficeOpenXml.Core.Worksheet
         [TestMethod]
         public void ValidateRowsCollectionEnumerationEveryOther()
         {
-            var ws = _pck.Workbook.Worksheets.Add("RowsEveryOther");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("RowsEveryOther");
 
             ws.Cells["A2"].Value = 2;
             ws.Cells["A4"].Value = 4;
@@ -45,7 +45,7 @@ namespace OfficeOpenXml.Core.Worksheet
             ws.Cells["A10"].Value = 10;
             int r = 2;
 
-            foreach (var row in ws.Rows[1, 10])
+            foreach (ExcelRangeRow? row in ws.Rows[1, 10])
             {
                 Assert.AreEqual(r, row.StartRow);
                 r += 2;
@@ -55,12 +55,12 @@ namespace OfficeOpenXml.Core.Worksheet
         [TestMethod]
         public void ValidateRowsCollectionEnumerationNoRows()
         {
-            var ws = _pck.Workbook.Worksheets.Add("NoRows");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("NoRows");
 
             ws.Cells["A1"].Value = 1;
             ws.Cells["A11"].Value = 11;
 
-            foreach (var row in ws.Rows[2, 10])
+            foreach (ExcelRangeRow? row in ws.Rows[2, 10])
             {
                 Assert.Fail("No rows should be in the Rows collection.");
             }
@@ -68,12 +68,12 @@ namespace OfficeOpenXml.Core.Worksheet
         [TestMethod]
         public void ValidateRowsCollectionEnumerationNoIndexerParams()
         {
-            var ws = _pck.Workbook.Worksheets.Add("RowsNoIndexerParams");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("RowsNoIndexerParams");
 
             ws.Cells["A2"].Value = 2;
             ws.Cells["A11"].Value = 11;
-            var rows = 0;
-            foreach (var row in ws.Rows)
+            int rows = 0;
+            foreach (ExcelRangeRow? row in ws.Rows)
             {
                 if(row.StartRow!=2 && row.StartRow!=11)
                 {
@@ -86,7 +86,7 @@ namespace OfficeOpenXml.Core.Worksheet
         [TestMethod]
         public void ValidateColumnsCollectionEnumeration()
         {
-            var ws = _pck.Workbook.Worksheets.Add("Columns");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("Columns");
 
             ws.Cells["A1:K1"].FillNumber(x=>
             {
@@ -96,7 +96,7 @@ namespace OfficeOpenXml.Core.Worksheet
             });
 
             int c = 2;
-            foreach (var column in ws.Columns[2, 10])
+            foreach (ExcelRangeColumn? column in ws.Columns[2, 10])
             {
                 Assert.AreEqual(c++, column.StartColumn);
             }
@@ -105,14 +105,14 @@ namespace OfficeOpenXml.Core.Worksheet
         [TestMethod]
         public void ValidateColumnsCollectionEnumerationColumn3_7()
         {
-            var ws = _pck.Workbook.Worksheets.Add("Columns3_7");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("Columns3_7");
 
             ws.Columns[3, 5].Width = 25;
             ws.Cells["F3"].Value = "Column F";
             ws.Columns[7].Width = 20;
 
             int columns = 0;
-            foreach (var column in ws.Columns[2, 10])
+            foreach (ExcelRangeColumn? column in ws.Columns[2, 10])
             {
                 if(column.StartColumn < 3 || column.StartColumn > 7)
                 {
@@ -125,7 +125,7 @@ namespace OfficeOpenXml.Core.Worksheet
         [TestMethod]
         public void ValidateColumnsCollectionEnumerationColumnWithGap()
         {
-            var ws = _pck.Workbook.Worksheets.Add("ColumnsWithGap");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("ColumnsWithGap");
 
             ws.Columns[3].Width = 25;
             ws.Columns[8].PageBreak = true;
@@ -134,7 +134,7 @@ namespace OfficeOpenXml.Core.Worksheet
 
             ws.Cells["J13"].Formula = "A1";
             int columns = 0;
-            foreach (var column in ws.Columns[2, 10])
+            foreach (ExcelRangeColumn? column in ws.Columns[2, 10])
             {
                 if (!(column.StartColumn == 3 || column.StartColumn == 8 || column.StartColumn == 6 || column.StartColumn == 10))
                 {
@@ -148,10 +148,10 @@ namespace OfficeOpenXml.Core.Worksheet
         [TestMethod]
         public void ValidateColumnsRange()
         {
-            var ws = _pck.Workbook.Worksheets.Add("ColumnsRangeProperties");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("ColumnsRangeProperties");
             
-            var valueCell = "First Cell";
-            var columns = ws.Columns[2, 4];
+            string? valueCell = "First Cell";
+            ExcelRangeColumn? columns = ws.Columns[2, 4];
             columns.Range.SetCellValue(0, 0, valueCell);
             columns.Range.Style.Fill.SetBackground(Color.Aqua, Style.ExcelFillStyle.LightTrellis);
 

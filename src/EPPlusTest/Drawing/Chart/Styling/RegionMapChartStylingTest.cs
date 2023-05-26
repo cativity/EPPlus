@@ -57,7 +57,7 @@ namespace EPPlusTest.Drawing.Chart.Styling
         [TestMethod]
         public void RegionMapChart_Styles()
         {
-            var ws = _pck.Workbook.Worksheets.Add("RegionMapChart");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("RegionMapChart");
             LoadGeoTestData(ws);
             RegionMapChartStyle(ws);
         }
@@ -101,7 +101,7 @@ namespace EPPlusTest.Drawing.Chart.Styling
 
         private static ExcelRegionMapChart AddChart(ExcelWorksheet ws, ePresetChartStyle style, string name, int row, int col, Action<ExcelRegionMapChart> SetProperties)
         {
-            var chart = ws.Drawings.AddRegionMapChart(name);
+            ExcelRegionMapChart? chart = ws.Drawings.AddRegionMapChart(name);
             chart.SetPosition(row, 0, col, 0);
             chart.To.Column = col+12;
             chart.To.ColumnOff = 0;

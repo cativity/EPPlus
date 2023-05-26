@@ -55,12 +55,12 @@ namespace EPPlusTest.Drawing.Chart
         [TestMethod]
         public void LineChart()
         {
-            var ws = _pck.Workbook.Worksheets.Add("LineChart");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("LineChart");
             LoadTestdata(ws);
 
-            var chart=ws.Drawings.AddLineChart("LineChart1", eLineChartType.Line);
-            var serie = chart.Series.Add("D2:D100", "A2:A100");
-            var point = serie.DataPoints.Add(3);
+            ExcelLineChart? chart=ws.Drawings.AddLineChart("LineChart1", eLineChartType.Line);
+            ExcelLineChartSerie? serie = chart.Series.Add("D2:D100", "A2:A100");
+            ExcelChartDataPoint? point = serie.DataPoints.Add(3);
             point.Border.Fill.Color = Color.Red;
             point.Border.Fill.Style = eFillStyle.SolidFill;
             point.Fill.Color = Color.Green;
@@ -69,12 +69,12 @@ namespace EPPlusTest.Drawing.Chart
         [TestMethod]
         public void PieChart()
         {
-            var ws = _pck.Workbook.Worksheets.Add("PieChart");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("PieChart");
             LoadTestdata(ws);
 
-            var chart = ws.Drawings.AddPieChart("PieChart1", ePieChartType.Pie);
-            var serie = chart.Series.Add("D2:D6", "A2:A6");
-            var point = serie.DataPoints.Add(0);
+            ExcelPieChart? chart = ws.Drawings.AddPieChart("PieChart1", ePieChartType.Pie);
+            ExcelPieChartSerie? serie = chart.Series.Add("D2:D6", "A2:A6");
+            ExcelChartDataPoint? point = serie.DataPoints.Add(0);
             point.Border.Fill.Color = Color.Red;
             point.Border.Fill.Style = eFillStyle.SolidFill;
             point.Fill.Color = Color.Green;
@@ -83,12 +83,12 @@ namespace EPPlusTest.Drawing.Chart
         [TestMethod]
         public void BarChart()  
         {
-            var ws = _pck.Workbook.Worksheets.Add("BarChart");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("BarChart");
             LoadTestdata(ws);
 
-            var chart = ws.Drawings.AddBarChart("BarChart1", eBarChartType.Column3D);
-            var serie = chart.Series.Add("D2:D5", "A2:A5");
-            var point = serie.DataPoints.Add(0);
+            ExcelBarChart? chart = ws.Drawings.AddBarChart("BarChart1", eBarChartType.Column3D);
+            ExcelBarChartSerie? serie = chart.Series.Add("D2:D5", "A2:A5");
+            ExcelChartDataPoint? point = serie.DataPoints.Add(0);
             point.Border.Fill.Color = Color.Blue;
             point.Border.Fill.Style = eFillStyle.SolidFill;
             point.Fill.Style = eFillStyle.SolidFill;

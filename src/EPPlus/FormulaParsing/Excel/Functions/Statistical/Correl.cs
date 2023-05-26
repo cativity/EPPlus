@@ -28,10 +28,10 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Statistical
         public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
         {
             ValidateArguments(arguments, 2);
-            var arg1 = arguments.ElementAt(0);
-            var arg2 = arguments.ElementAt(1);
-            var arr1 = ArgsToDoubleEnumerable(new FunctionArgument[] { arg1 }, context).ToArray();
-            var arr2 = ArgsToDoubleEnumerable(new FunctionArgument[] { arg2 }, context).ToArray();
+            FunctionArgument? arg1 = arguments.ElementAt(0);
+            FunctionArgument? arg2 = arguments.ElementAt(1);
+            ExcelDoubleCellValue[]? arr1 = ArgsToDoubleEnumerable(new FunctionArgument[] { arg1 }, context).ToArray();
+            ExcelDoubleCellValue[]? arr2 = ArgsToDoubleEnumerable(new FunctionArgument[] { arg2 }, context).ToArray();
             if (arr2.Count() != arr1.Count())
             {
                 return this.CreateResult(eErrorType.NA);
@@ -42,7 +42,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Statistical
                 return this.CreateResult(eErrorType.Div0);
             }
 
-            var result = Covar(arr1, arr2) / StandardDeviation(arr1) / StandardDeviation(arr2);
+            double result = Covar(arr1, arr2) / StandardDeviation(arr1) / StandardDeviation(arr2);
             return CreateResult(result, DataType.Decimal);
         }
 
@@ -54,10 +54,10 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Statistical
 
         private double Covar(ExcelDoubleCellValue[] array1, ExcelDoubleCellValue[] array2)
         {
-            var avg1 = array1.Select(x => x.Value).Average();
-            var avg2 = array2.Select(x => x.Value).Average();
-            var result = 0d;
-            for (var x = 0; x < array1.Length; x++)
+            double avg1 = array1.Select(x => x.Value).Average();
+            double avg2 = array2.Select(x => x.Value).Average();
+            double result = 0d;
+            for (int x = 0; x < array1.Length; x++)
             {
                 result += (array1[x] - avg1) * (array2[x] - avg2);
             }

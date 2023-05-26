@@ -25,7 +25,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Engineering.Implementatio
                 double fNum2 = fNum * 0.5;
                 double y = fNum2 * fNum2;
 
-                var iResult = new BesselIimpl().BesselI(fNum, 0);
+                FinanceCalcResult<double>? iResult = new BesselIimpl().BesselI(fNum, 0);
                 if (iResult.HasError)
                 {
                     return iResult;
@@ -58,7 +58,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Engineering.Implementatio
                 double fNum2 = fNum * 0.5;
                 double y = fNum2 * fNum2;
 
-                var iResult = new BesselIimpl().BesselI(fNum, 1);
+                FinanceCalcResult<double>? iResult = new BesselIimpl().BesselI(fNum, 1);
                 if (iResult.HasError)
                 {
                     return iResult;
@@ -89,13 +89,13 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Engineering.Implementatio
                 case 1: return Besselk1(fNum);
                 default:
                     {
-                        var k0Result = Besselk0(fNum);
+                        FinanceCalcResult<double>? k0Result = Besselk0(fNum);
                         if (k0Result.HasError)
                         {
                             return k0Result;
                         }
 
-                        var k1Result = Besselk1(fNum);
+                        FinanceCalcResult<double>? k1Result = Besselk1(fNum);
                         if (k1Result.HasError)
                         {
                             return k1Result;
@@ -107,7 +107,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Engineering.Implementatio
 
                         for (int n = 1; n < nOrder; n++)
                         {
-                            var fBkp = fBkm + n * fTox * fBk;
+                            double fBkp = fBkm + n * fTox * fBk;
                             fBkm = fBk;
                             fBk = fBkp;
                         }

@@ -83,7 +83,7 @@ namespace OfficeOpenXml.Filter
 
         internal override void Save()
         {
-            var node = (XmlElement)CreateNode("d:top10");
+            XmlElement? node = (XmlElement)CreateNode("d:top10");
             node.SetAttribute("filterVal", FilterValue.ToString("R15", CultureInfo.InvariantCulture));
             node.SetAttribute("percent", Percent ? "1": "0");
             node.SetAttribute("top", Top ? "1" : "0");
@@ -92,11 +92,11 @@ namespace OfficeOpenXml.Filter
 
         internal override void SetFilterValue(ExcelWorksheet worksheet, ExcelAddressBase address)
         {
-            var items = new List<double>();
-            var col = address._fromCol + Position;
+            List<double>? items = new List<double>();
+            int col = address._fromCol + Position;
             for (int row= address._fromRow + 1; row <= address._toRow; row++)
             {
-                var v = worksheet.GetValue(row, col);
+                object? v = worksheet.GetValue(row, col);
                 if (Utils.ConvertUtil.IsNumericOrDate(v))
                 {
                     items.Add(Utils.ConvertUtil.GetValueDouble(v));
@@ -104,7 +104,7 @@ namespace OfficeOpenXml.Filter
             }
             items.Sort();
 
-            var valueInt = Convert.ToInt32(Value);
+            int valueInt = Convert.ToInt32(Value);
             int index;
             if (Top)
             {

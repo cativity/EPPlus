@@ -31,7 +31,7 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
             AddSchemaNodeOrder(schemaNodeOrder, new string[]{ "numFmt","spPr", "txPr", "visibility", "separator"});
             foreach (XmlNode pointNode in TopNode.SelectNodes(ExcelChartExDataLabel._dataLabelPath, ns))
             {
-                var item = new ExcelChartExDataLabelItem(serie, ns, pointNode);
+                ExcelChartExDataLabelItem? item = new ExcelChartExDataLabelItem(serie, ns, pointNode);
                 _dic.Add(item.Index, item);
             }
         }
@@ -50,7 +50,7 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
             {
                 throw new InvalidOperationException($"Data label with index {index} already exists.");
             }
-            var node = _serie.CreateNode("cx:dataLabels/cx:dataLabel", false, true);
+            XmlNode? node = _serie.CreateNode("cx:dataLabels/cx:dataLabel", false, true);
             return new ExcelChartExDataLabelItem(_serie, NameSpaceManager, node, index);
         }
         /// <summary>

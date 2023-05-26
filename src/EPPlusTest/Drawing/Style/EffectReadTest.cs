@@ -47,7 +47,7 @@ namespace EPPlusTest.Drawing
         public void InnerShadowDefaultRead()
         {
             //Setup
-            var shape = TryGetShape(_pck, "InnerShadowDefault");
+            ExcelShape? shape = TryGetShape(_pck, "InnerShadowDefault");
 
             //Assert default values
             Assert.AreEqual(0, shape.Effect.InnerShadow.BlurRadius);
@@ -62,7 +62,7 @@ namespace EPPlusTest.Drawing
         public void OuterShadowDefaultRead()
         {
             //Setup
-            var shape = TryGetShape(_pck, "OuterShadowDefault");
+            ExcelShape? shape = TryGetShape(_pck, "OuterShadowDefault");
 
             //Assert default values
             Assert.AreEqual(eRectangleAlignment.Bottom, shape.Effect.OuterShadow.Alignment);
@@ -83,7 +83,7 @@ namespace EPPlusTest.Drawing
         public void ReflectionDefaultRead()
         {
             //Setup
-            var shape = TryGetShape(_pck, "ReflectionDefault");
+            ExcelShape? shape = TryGetShape(_pck, "ReflectionDefault");
 
             //Assert default values
             Assert.AreEqual(eRectangleAlignment.Bottom, shape.Effect.Reflection.Alignment);
@@ -104,7 +104,7 @@ namespace EPPlusTest.Drawing
         public void GlowDefaultRead()
         {
             //Setup
-            var shape = TryGetShape(_pck, "GlowDefault");
+            ExcelShape? shape = TryGetShape(_pck, "GlowDefault");
 
             //Assert default values
             Assert.AreEqual(0, shape.Effect.Glow.Radius);
@@ -118,7 +118,7 @@ namespace EPPlusTest.Drawing
         public void BlurDefaultRead()
         {
             //Setup
-            var shape = TryGetShape(_pck, "BlurDefault");
+            ExcelShape? shape = TryGetShape(_pck, "BlurDefault");
             
             //Assert default values
             Assert.AreEqual(0, shape.Effect.Blur.Radius);
@@ -128,7 +128,7 @@ namespace EPPlusTest.Drawing
         public void FillOverlayDefaultRead()
         {
             //Setup
-            var shape = TryGetShape(_pck, "FillOverlay");
+            ExcelShape? shape = TryGetShape(_pck, "FillOverlay");
 
             //Assert default values
             Assert.AreEqual(eBlendMode.Over,shape.Effect.FillOverlay.Blend);
@@ -138,7 +138,7 @@ namespace EPPlusTest.Drawing
         public void PresetShadowRead()
         {
             //Setup
-            var shape = TryGetShape(_pck, "PresetShadow");
+            ExcelShape? shape = TryGetShape(_pck, "PresetShadow");
 
             //Assert
             Assert.AreEqual(ePresetShadowType.FrontBottomShadow, shape.Effect.PresetShadow.Type);
@@ -153,7 +153,7 @@ namespace EPPlusTest.Drawing
         public void BlurRead()
         {
             //Setup
-            var shape = TryGetShape(_pck, "Blur");
+            ExcelShape? shape = TryGetShape(_pck, "Blur");
 
             //Assert
             Assert.AreEqual(50, shape.Effect.Blur.Radius);
@@ -164,28 +164,28 @@ namespace EPPlusTest.Drawing
         #region Private help methods
         private static void AddPresetShadowShape(ExcelWorksheet ws, int row, int col, ePresetExcelShadowType preset)
         {
-            var shape = AddShape(ws, row, col, preset.ToString());
+            ExcelShape? shape = AddShape(ws, row, col, preset.ToString());
             shape.Effect.SetPresetShadow(preset);
         }
 
         private static void AddPresetReflectionShape(ExcelWorksheet ws, int row, int col, ePresetExcelReflectionType preset)
         {
-            var shape = AddShape(ws, row, col, preset.ToString());
+            ExcelShape? shape = AddShape(ws, row, col, preset.ToString());
             shape.Effect.SetPresetReflection(preset);
         }
         private static void AddPresetGlowShape(ExcelWorksheet ws, int row, int col, ePresetExcelGlowType preset)
         {
-            var shape = AddShape(ws, row, col, preset.ToString());
+            ExcelShape? shape = AddShape(ws, row, col, preset.ToString());
             shape.Effect.SetPresetGlow(preset);
         }
         private static void AddPresetSoftEdgesShape(ExcelWorksheet ws, int row, int col, ePresetExcelSoftEdgesType preset)
         {
-            var shape = AddShape(ws, row, col, preset.ToString());
+            ExcelShape? shape = AddShape(ws, row, col, preset.ToString());
             shape.Effect.SetPresetSoftEdges(preset);
         }
         private static ExcelShape AddShape(ExcelWorksheet ws, int row, int col, string name)
         {
-            var shape = ws.Drawings.AddShape(name, eShapeStyle.RoundRect);
+            ExcelShape? shape = ws.Drawings.AddShape(name, eShapeStyle.RoundRect);
             shape.Text = name;
             shape.TextAlignment = eTextAlignment.Center;
             shape.TextAnchoring = eTextAnchoringType.Center;

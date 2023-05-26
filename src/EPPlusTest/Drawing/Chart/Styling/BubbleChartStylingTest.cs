@@ -55,7 +55,7 @@ namespace EPPlusTest.Drawing.Chart.Styling
         [TestMethod]
         public void Bubble_Styles()
         {
-            var ws = _pck.Workbook.Worksheets.Add("BubbleChartStyling");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("BubbleChartStyling");
             LoadTestdata(ws);
 
             BubbleStyle(ws, eBubbleChartType.Bubble);
@@ -63,7 +63,7 @@ namespace EPPlusTest.Drawing.Chart.Styling
         [TestMethod]
         public void Bubble3D_Styles()
         {
-            var ws = _pck.Workbook.Worksheets.Add("BarOfPieChartStyles");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("BarOfPieChartStyles");
             LoadTestdata(ws);
 
             Bubble3DStyle(ws, eBubbleChartType.Bubble3DEffect);
@@ -223,13 +223,13 @@ namespace EPPlusTest.Drawing.Chart.Styling
 
         private static ExcelBubbleChart AddBubble(ExcelWorksheet ws, eBubbleChartType type, string name, int row, int col, ePresetChartStyle style, Action<ExcelBubbleChart> SetProperties)    
         {
-            var chart = ws.Drawings.AddBubbleChart(name, type);
+            ExcelBubbleChart? chart = ws.Drawings.AddBubbleChart(name, type);
             chart.SetPosition(row, 0, col, 0);
             chart.To.Column = col+12;
             chart.To.ColumnOff = 0;
             chart.To.Row = row + 18;
             chart.To.RowOff = 0;
-            var serie = chart.Series.Add("D2:D8", "A2:A8");
+            ExcelBubbleChartSerie? serie = chart.Series.Add("D2:D8", "A2:A8");
 
             SetProperties(chart);
 

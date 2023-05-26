@@ -106,7 +106,7 @@ namespace OfficeOpenXml.DataValidation.Formulas
 
             bool ICollection<string>.Remove(string item)
             {
-                var retVal = _items.Remove(item);
+                bool retVal = _items.Remove(item);
                 OnListChanged();
                 return retVal;
             }
@@ -147,7 +147,7 @@ namespace OfficeOpenXml.DataValidation.Formulas
         public ExcelDataValidationFormulaList(string formula, string uid, string sheetName, Action<OnFormulaChangedEventArgs> extListHandler)
             : base(uid, sheetName, extListHandler)
         {
-            var values = new DataValidationList();
+            DataValidationList? values = new DataValidationList();
             values.ListChanged += new EventHandler<EventArgs>(values_ListChanged);
             Values = values;
             _inputFormula = formula;
@@ -158,14 +158,14 @@ namespace OfficeOpenXml.DataValidation.Formulas
 
         private void SetInitialValues()
         {
-            var @value = _inputFormula;
+            string? @value = _inputFormula;
             if (!string.IsNullOrEmpty(@value))
             {
                 if (@value.StartsWith("\"", StringComparison.OrdinalIgnoreCase) && @value.EndsWith("\"", StringComparison.OrdinalIgnoreCase))
                 {
                     @value = @value.TrimStart('"').TrimEnd('"');
-                    var items = @value.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
-                    foreach (var item in items)
+                    string[]? items = @value.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                    foreach (string? item in items)
                     {
                         Values.Add(item);
                     }
@@ -183,7 +183,7 @@ namespace OfficeOpenXml.DataValidation.Formulas
             {
                 State = FormulaState.Value;
             }
-            var valuesAsString = GetValueAsString();
+            string? valuesAsString = GetValueAsString();
             // Excel supports max 255 characters in this field.
             if (valuesAsString.Length > 255)
             {
@@ -198,8 +198,8 @@ namespace OfficeOpenXml.DataValidation.Formulas
 
         protected override string GetValueAsString()
         {
-            var sb = new StringBuilder();
-            foreach (var val in Values)
+            StringBuilder? sb = new StringBuilder();
+            foreach (string? val in Values)
             {
                 if (sb.Length == 0)
                 {

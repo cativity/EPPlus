@@ -685,7 +685,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
             OnAddStarted();
             if (preserveDirHierarchy)
             {
-                foreach (var f in fileNames)
+                foreach (string? f in fileNames)
                 {
                     if (_addOperationCanceled)
                     {
@@ -706,7 +706,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
             }
             else
             {
-                foreach (var f in fileNames)
+                foreach (string? f in fileNames)
                 {
                     if (_addOperationCanceled)
                     {
@@ -770,7 +770,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
             }
 
             OnAddStarted();
-            foreach (var f in fileNames)
+            foreach (string? f in fileNames)
             {
                 this.UpdateFile(f, directoryPathInArchive);
             }
@@ -929,7 +929,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         public ZipEntry UpdateFile(string fileName, String directoryPathInArchive)
         {
             // ideally this would all be transactional!
-            var key = ZipEntry.NameInArchive(fileName, directoryPathInArchive);
+            string? key = ZipEntry.NameInArchive(fileName, directoryPathInArchive);
             if (this[key] != null)
             {
                 this.RemoveEntry(key);
@@ -1240,11 +1240,11 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         {
             // cannot employ a using clause here.  We need the stream to
             // persist after exit from this method.
-            var ms = RecyclableMemory.GetStream();
+            MemoryStream? ms = RecyclableMemory.GetStream();
 
             // cannot use a using clause here; StreamWriter takes
             // ownership of the stream and Disposes it before we are ready.
-            var sw = new StreamWriter(ms, encoding);
+            StreamWriter? sw = new StreamWriter(ms, encoding);
             sw.Write(content);
             sw.Flush();
 
@@ -1889,7 +1889,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
                 directoryPathInArchive = Path.GetDirectoryName(entryName);
                 entryName = Path.GetFileName(entryName);
             }
-            var key = ZipEntry.NameInArchive(entryName, directoryPathInArchive);
+            string? key = ZipEntry.NameInArchive(entryName, directoryPathInArchive);
             if (this[key] != null)
             {
                 this.RemoveEntry(key);
@@ -1919,7 +1919,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
                 throw new ArgumentException("bad argument", "byteContent");
             }
 
-            var ms = RecyclableMemory.GetStream(byteContent);
+            MemoryStream? ms = RecyclableMemory.GetStream(byteContent);
             return AddEntry(entryName, ms);
         }
 

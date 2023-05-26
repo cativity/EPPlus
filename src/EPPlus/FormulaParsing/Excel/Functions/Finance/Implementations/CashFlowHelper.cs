@@ -75,10 +75,10 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.Implementations
         /// <returns></returns>
         public static double Npv(double rate, IEnumerable<double> payments)
         {
-            var retVal = 0d;
-            for (var x = 0; x < payments.Count(); x++)
+            double retVal = 0d;
+            for (int x = 0; x < payments.Count(); x++)
             {
-                var payment = payments.ElementAt(x);
+                double payment = payments.ElementAt(x);
                 retVal += payment * (1d / System.Math.Pow(1d + rate, x + 1));
             }
             return retVal;

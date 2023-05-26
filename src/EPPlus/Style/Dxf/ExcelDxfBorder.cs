@@ -213,10 +213,10 @@ namespace OfficeOpenXml.Style.Dxf
         private ExcelDxfBorderItem GetBorderItem(XmlHelper helper, string path, eStyleClass styleClass)
         {
             ExcelDxfBorderItem bi = new ExcelDxfBorderItem(_styles, styleClass, _callback);
-            var exists = helper.ExistsNode(path);
+            bool exists = helper.ExistsNode(path);
             if (exists)
             {
-                var style = helper.GetXmlNodeString(path + "/@style");
+                string? style = helper.GetXmlNodeString(path + "/@style");
                 bi.Style = GetBorderStyleEnum(style);
                 bi.Color = GetColor(helper, path + "/d:color", styleClass);
             }

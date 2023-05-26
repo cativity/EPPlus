@@ -6,6 +6,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using OfficeOpenXml.Style.XmlAccess;
 
 namespace OfficeOpenXml
 {
@@ -244,10 +245,10 @@ namespace OfficeOpenXml
 
             get
             {
-                var xfId = _worksheet.Workbook.Styles.CellXfs[StyleID].XfId;
+                int xfId = _worksheet.Workbook.Styles.CellXfs[StyleID].XfId;
                 if (xfId >= 0 && xfId < _worksheet.Workbook.Styles.CellStyleXfs.Count)
                 {
-                    var ns = _worksheet.Workbook.Styles.NamedStyles.Where(x => x.StyleXfId == xfId).FirstOrDefault();
+                    ExcelNamedStyleXml? ns = _worksheet.Workbook.Styles.NamedStyles.Where(x => x.StyleXfId == xfId).FirstOrDefault();
                     if (ns != null)
                     {
                         return ns.Name;
@@ -314,7 +315,7 @@ namespace OfficeOpenXml
 
         private TOut GetValue<TOut>(Func<RowInternal, TOut> getValue, TOut defaultValue)
         {
-            var currentRow = _worksheet.GetValueInner(_fromRow, 0) as RowInternal;
+            RowInternal? currentRow = _worksheet.GetValueInner(_fromRow, 0) as RowInternal;
             if (currentRow == null)
             {
                 return defaultValue;
@@ -329,7 +330,7 @@ namespace OfficeOpenXml
         {
             for(int r=_fromRow;r<=_toRow;r++)
             {
-                var row = _worksheet.GetValueInner(r, 0) as RowInternal;
+                RowInternal? row = _worksheet.GetValueInner(r, 0) as RowInternal;
                 if(row==null)
                 {
                     row = new RowInternal();
@@ -426,7 +427,7 @@ namespace OfficeOpenXml
         /// </summary>
         public void CollapseChildren(bool allLevels = true)
         {
-            var helper = new WorksheetOutlineHelper(_worksheet);
+            WorksheetOutlineHelper? helper = new WorksheetOutlineHelper(_worksheet);
             if (_worksheet.OutLineSummaryBelow)
             {
                 for (int c = GetToRow(); c >= _fromRow; c--)
@@ -448,7 +449,7 @@ namespace OfficeOpenXml
         /// </summary>
         public void ExpandChildren(bool allLevels = true)
         {
-            var helper = new WorksheetOutlineHelper(_worksheet);
+            WorksheetOutlineHelper? helper = new WorksheetOutlineHelper(_worksheet);
             if (_worksheet.OutLineSummaryBelow)
             {
                 for (int row = GetToRow(); row >= _fromRow; row--)
@@ -471,7 +472,7 @@ namespace OfficeOpenXml
         /// <param name="collapseChildren">Collapse all children with a greater <see cref="OutlineLevel"/> than <paramref name="level"/></param>
         public void SetVisibleOutlineLevel(int level, bool collapseChildren=true)
         {
-            var helper = new WorksheetOutlineHelper(_worksheet);
+            WorksheetOutlineHelper? helper = new WorksheetOutlineHelper(_worksheet);
             if (_worksheet.OutLineSummaryBelow)
             {
                 for (int r = GetToRow(); r >= _fromRow; r--)

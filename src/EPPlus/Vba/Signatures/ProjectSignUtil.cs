@@ -18,6 +18,7 @@ using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Security.Cryptography.Pkcs;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 
 namespace OfficeOpenXml.VBA.Signatures
@@ -26,7 +27,7 @@ namespace OfficeOpenXml.VBA.Signatures
     {
         internal static ContentInfo SignProject(ExcelVbaProject proj, EPPlusVbaSignature signature, EPPlusSignatureContext ctx)
         {
-            var certificate = signature.Certificate;
+            X509Certificate2? certificate = signature.Certificate;
             if (!certificate.HasPrivateKey)
             {
                 //throw (new InvalidOperationException("The certificate doesn't have a private key"));
@@ -34,10 +35,10 @@ namespace OfficeOpenXml.VBA.Signatures
                 return null;
             }
 
-            var hash = VbaSignHashAlgorithmUtil.GetContentHash(proj, ctx);
+            byte[]? hash = VbaSignHashAlgorithmUtil.GetContentHash(proj, ctx);
 
             ContentInfo contentInfo;
-            using (var ms = RecyclableMemory.GetStream())
+            using (MemoryStream? ms = RecyclableMemory.GetStream())
             {
                 contentInfo = CreateContentInfo(hash, ms, ctx);
             }
@@ -50,8 +51,8 @@ namespace OfficeOpenXml.VBA.Signatures
             // [MS-OSHARED] 2.3.2.4.3.1 SpcIndirectDataContent
             BinaryWriter bw = new BinaryWriter(ms);
 
-            var hashAlgorithmBytes = ctx.GetHashAlgorithmBytes();
-            var hashContentBytes = GetHashContent(ctx, hash);
+            byte[]? hashAlgorithmBytes = ctx.GetHashAlgorithmBytes();
+            byte[]? hashContentBytes = GetHashContent(ctx, hash);
 
             bw.Write((byte)0x30); //Constructed Type 
             if (ctx.SignatureType == ExcelVbaSignatureType.Legacy)
@@ -60,13 +61,13 @@ namespace OfficeOpenXml.VBA.Signatures
             }
             else
             {
-                var length = (byte)(hashAlgorithmBytes.Length + hashContentBytes.Length + 0x24);
+                byte length = (byte)(hashAlgorithmBytes.Length + hashContentBytes.Length + 0x24);
                 WriteSequenceLength(bw, length);
             }
             bw.Write((byte)0x30); //Constructed Type 
             bw.Write((byte)0x0E); //Length SpcIndirectDataContent
 
-            var spcIndirectDataContentOidBytes = ctx.GetIndirectDataContentOidBytes();
+            byte[]? spcIndirectDataContentOidBytes = ctx.GetIndirectDataContentOidBytes();
             WriteOid(bw, spcIndirectDataContentOidBytes);
             if (ctx.SignatureType == ExcelVbaSignatureType.Legacy)
             {
@@ -102,16 +103,16 @@ namespace OfficeOpenXml.VBA.Signatures
             int num = length;
             if(num >= 0x80)
             {
-                var bytes = GetByteSize(length);
+                int bytes = GetByteSize(length);
                 length += bytes;
-                var b2 = GetByteSize(length);
+                int b2 = GetByteSize(length);
                 if (bytes!=b2)
                 {
                     length++;
                     bytes = b2;
                 }
                 bw.Write((byte)(0x80 | bytes));
-                var lengthBytes = BitConverter.GetBytes(length);
+                byte[]? lengthBytes = BitConverter.GetBytes(length);
                 for (int i = 0; i < bytes; i++)
                 {
                     bw.Write(lengthBytes[bytes - i - 1]);
@@ -130,8 +131,8 @@ namespace OfficeOpenXml.VBA.Signatures
 
         private static byte[] GetHashContent(EPPlusSignatureContext ctx, byte[] hash)
         {
-            var ms= RecyclableMemory.GetStream();
-            var bw=new BinaryWriter(ms);
+            MemoryStream? ms= RecyclableMemory.GetStream();
+            BinaryWriter? bw=new BinaryWriter(ms);
             if (ctx.SignatureType == ExcelVbaSignatureType.Legacy)
             {
                 bw.Write((byte)0x04);   //Octet String Identifier
@@ -143,7 +144,7 @@ namespace OfficeOpenXml.VBA.Signatures
                 // SigDataV1Serialized
                 bw.Write((byte)0x04);   //Octet String Tag Identifier
                 const int headerSizeOffset = 4 * 6; // size of header containg size and offset information
-                var discriptorLength = headerSizeOffset + ctx.AlgorithmIdentifierOId.Length + 1 + hash.Length; // length of structure
+                int discriptorLength = headerSizeOffset + ctx.AlgorithmIdentifierOId.Length + 1 + hash.Length; // length of structure
                 bw.Write((byte)discriptorLength);
                 bw.Write(ctx.AlgorithmIdentifierOId.Length + 1);
                 bw.Write(0); // compiled hash size
@@ -151,7 +152,7 @@ namespace OfficeOpenXml.VBA.Signatures
                 bw.Write(headerSizeOffset); // algorithm id offset
                 bw.Write(headerSizeOffset + ctx.AlgorithmIdentifierOId.Length + 1); // compiled hash offset (always empty)
                 bw.Write(headerSizeOffset + ctx.AlgorithmIdentifierOId.Length + 1); // source hash offset
-                var algorithmIdOffset = ctx.AlgorithmIdentifierOId.Length + 1 + hash.Length;
+                int algorithmIdOffset = ctx.AlgorithmIdentifierOId.Length + 1 + hash.Length;
                 bw.Write(Encoding.ASCII.GetBytes(ctx.AlgorithmIdentifierOId));
                 bw.Write((byte)0); // string terminator
                 bw.Write(hash);

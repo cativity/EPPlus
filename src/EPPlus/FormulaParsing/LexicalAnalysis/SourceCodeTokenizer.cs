@@ -58,8 +58,8 @@ namespace OfficeOpenXml.FormulaParsing.LexicalAnalysis
             }
             // MA 1401: Ignore leading plus in formula.
             input = input.TrimStart('+');
-            var context = new TokenizerContext(input, worksheet, _tokenFactory);
-            var handler = context.CreateHandler(_nameValueProvider);
+            TokenizerContext? context = new TokenizerContext(input, worksheet, _tokenFactory);
+            TokenHandler? handler = context.CreateHandler(_nameValueProvider);
             while (handler.HasMore())
             {
                 handler.Next();

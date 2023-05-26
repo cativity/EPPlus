@@ -14,6 +14,7 @@ using System;
 using System.Globalization;
 using System.Xml;
 using OfficeOpenXml.Constants;
+using OfficeOpenXml.Drawing;
 using OfficeOpenXml.Drawing.Slicer;
 using OfficeOpenXml.Utils;
 
@@ -62,7 +63,7 @@ namespace OfficeOpenXml.Table
         {
             get
             {
-                var n=GetXmlNodeString("@name");
+                string? n=GetXmlNodeString("@name");
                 if (string.IsNullOrEmpty(n))
                 {
                     if (_tbl.ShowHeader)
@@ -78,11 +79,11 @@ namespace OfficeOpenXml.Table
             }
             set
             {
-                var v = ConvertUtil.ExcelEncodeString(value);
+                string? v = ConvertUtil.ExcelEncodeString(value);
                 SetXmlNodeString("@name", v);
                 if (_tbl.ShowHeader)
                 {
-                    var cellValue = _tbl.WorkSheet.GetValue(_tbl.Address._fromRow, _tbl.Address._fromCol + Position);
+                    object? cellValue = _tbl.WorkSheet.GetValue(_tbl.Address._fromRow, _tbl.Address._fromCol + Position);
                     if (v.Equals(cellValue?.ToString(),StringComparison.CurrentCultureIgnoreCase)==false)
                     {
                         _tbl.WorkSheet.SetValue(_tbl.Address._fromRow, _tbl.Address._fromCol + Position, value);
@@ -205,12 +206,12 @@ namespace OfficeOpenXml.Table
             {
                 if (_slicer == null)
                 {
-                    var wb = _tbl.WorkSheet.Workbook;
+                    ExcelWorkbook? wb = _tbl.WorkSheet.Workbook;
                     if (wb.ExistsNode($"d:extLst/d:ext[@uri='{ExtLstUris.WorkbookSlicerTableUri}']"))
                     {
-                        foreach (var ws in wb.Worksheets)
+                        foreach (ExcelWorksheet? ws in wb.Worksheets)
                         {
-                            foreach (var d in ws.Drawings)
+                            foreach (ExcelDrawing? d in ws.Drawings)
                             {
                                 if (d is ExcelTableSlicer s && s.TableColumn == this)
                                 {
@@ -293,7 +294,7 @@ namespace OfficeOpenXml.Table
         {
             int fromRow = _tbl.ShowHeader ? _tbl.Address._fromRow + 1 : _tbl.Address._fromRow;
             int toRow = _tbl.ShowTotal ? _tbl.Address._toRow - 1 : _tbl.Address._toRow;
-            var colNum = _tbl.Address._fromCol + Position;
+            int colNum = _tbl.Address._fromCol + Position;
             if(clear)
             {
                 _tbl.WorkSheet.Cells[fromRow, colNum, toRow, colNum].Clear();
@@ -309,12 +310,12 @@ namespace OfficeOpenXml.Table
             string r1c1Formula = ExcelCellBase.TranslateToR1C1(CalculatedColumnFormula, _tbl.ShowHeader ? _tbl.Address._fromRow + 1 : _tbl.Address._fromRow, colNum);
             bool needsTranslation = r1c1Formula != CalculatedColumnFormula;
 
-            var ws = _tbl.WorkSheet;
+            ExcelWorksheet? ws = _tbl.WorkSheet;
             for (int row = fromRow; row <= toRow; row++)
             {
                 if(needsTranslation)
                 {
-                    var f = ExcelCellBase.TranslateFromR1C1(r1c1Formula, row, colNum);
+                    string? f = ExcelCellBase.TranslateFromR1C1(r1c1Formula, row, colNum);
                     ws.SetFormula(row, colNum, f);
                 }
                 else if(ws._formulas.Exists(row, colNum)==false)

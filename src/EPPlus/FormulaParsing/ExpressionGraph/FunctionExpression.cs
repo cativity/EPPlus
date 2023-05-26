@@ -57,7 +57,7 @@ namespace OfficeOpenXml.FormulaParsing.ExpressionGraph
         {
             try
             {
-                var funcName = ExpressionString;
+                string? funcName = ExpressionString;
 
                 // older versions of Excel (pre 2007) adds "_xlfn." in front of some function names for compatibility reasons.
                 // EPPlus implements most of these functions, so we just remove this.
@@ -66,11 +66,11 @@ namespace OfficeOpenXml.FormulaParsing.ExpressionGraph
                     funcName = funcName.Replace("_xlfn.", string.Empty);
                 }
 
-                var function = _parsingContext.Configuration.FunctionRepository.GetFunction(funcName);
+                ExcelFunction? function = _parsingContext.Configuration.FunctionRepository.GetFunction(funcName);
                 if (function == null)
                 {
                     // Handle unrecognized func name
-                    var pipeline = new FunctionsPipeline(_parsingContext, Children);
+                    FunctionsPipeline? pipeline = new FunctionsPipeline(_parsingContext, Children);
                     function = pipeline.FindFunction(funcName);
                     if(function == null)
                     {
@@ -85,16 +85,16 @@ namespace OfficeOpenXml.FormulaParsing.ExpressionGraph
                 {
                     _parsingContext.Configuration.Logger.LogFunction(funcName);
                 }
-                var compiler = _functionCompilerFactory.Create(function);
-                var result = compiler.Compile(HasChildren ? Children : Enumerable.Empty<Expression>());
+                FunctionCompiler? compiler = _functionCompilerFactory.Create(function);
+                CompileResult? result = compiler.Compile(HasChildren ? Children : Enumerable.Empty<Expression>());
                 if (_isNegated)
                 {
                     if (!result.IsNumeric)
                     {
                         if (_parsingContext.Debug)
                         {
-                            var msg = string.Format("Trying to negate a non-numeric value ({0}) in function '{1}'",
-                                result.Result, funcName);
+                            string? msg = string.Format("Trying to negate a non-numeric value ({0}) in function '{1}'",
+                                                        result.Result, funcName);
                             _parsingContext.Configuration.Logger.Log(_parsingContext, msg);
                         }
                         return new CompileResult(ExcelErrorValue.Create(eErrorType.Value), DataType.ExcelError);

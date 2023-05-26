@@ -51,12 +51,12 @@ namespace EPPlusTest.Filter
         [TestMethod]
         public void AboveAverage()
         {
-            var ws = _pck.Workbook.Worksheets.Add("AboveAverage");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("AboveAverage");
             LoadTestdata(ws);
             SetDateValues(ws);
 
             ws.AutoFilterAddress = ws.Cells["A1:D100"];
-            var col=ws.AutoFilter.Columns.AddDynamicFilterColumn(1);
+            ExcelDynamicFilterColumn? col=ws.AutoFilter.Columns.AddDynamicFilterColumn(1);
             col.Type = eDynamicFilterType.AboveAverage;
             ws.AutoFilter.ApplyFilter();    
             Assert.AreEqual(true, ws.Row(48).Hidden);
@@ -68,12 +68,12 @@ namespace EPPlusTest.Filter
         [TestMethod]
         public void BelowAverage()
         {
-            var ws = _pck.Workbook.Worksheets.Add("BelowAverage");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("BelowAverage");
             LoadTestdata(ws);
             SetDateValues(ws);
 
             ws.AutoFilterAddress = ws.Cells["A1:D100"];
-            var col = ws.AutoFilter.Columns.AddDynamicFilterColumn(1);
+            ExcelDynamicFilterColumn? col = ws.AutoFilter.Columns.AddDynamicFilterColumn(1);
             col.Type = eDynamicFilterType.BelowAverage;
             ws.AutoFilter.ApplyFilter();
             Assert.AreEqual(false, ws.Row(48).Hidden);
@@ -87,18 +87,18 @@ namespace EPPlusTest.Filter
         public void Yesterday()
         {
             //Setup
-            var ws = _pck.Workbook.Worksheets.Add("Yesterday");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("Yesterday");
             LoadTestdata(ws, 500);
 
             //Act
             ws.AutoFilterAddress = ws.Cells["A1:D500"];
-            var col = ws.AutoFilter.Columns.AddDynamicFilterColumn(0);
+            ExcelDynamicFilterColumn? col = ws.AutoFilter.Columns.AddDynamicFilterColumn(0);
             col.Type = eDynamicFilterType.Yesterday;
             ws.AutoFilter.ApplyFilter();
             
             //Assert
-            var dt = DateTime.Today.AddDays(-1);
-            var row = GetRowFromDate(dt);
+            DateTime dt = DateTime.Today.AddDays(-1);
+            int row = GetRowFromDate(dt);
             Assert.AreEqual(true, ws.Row(row - 1).Hidden);
             Assert.AreEqual(false, ws.Row(row).Hidden);
             Assert.AreEqual(true, ws.Row(row + 1).Hidden);
@@ -107,18 +107,18 @@ namespace EPPlusTest.Filter
         public void Today()
         {
             //Setup
-            var ws = _pck.Workbook.Worksheets.Add("Today");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("Today");
             LoadTestdata(ws, 500);
 
             //Act
             ws.AutoFilterAddress = ws.Cells["A1:D500"];
-            var col = ws.AutoFilter.Columns.AddDynamicFilterColumn(0);
+            ExcelDynamicFilterColumn? col = ws.AutoFilter.Columns.AddDynamicFilterColumn(0);
             col.Type = eDynamicFilterType.Today;
             ws.AutoFilter.ApplyFilter();
 
             //Assert
-            var dt = DateTime.Today;
-            var row = GetRowFromDate(dt);
+            DateTime dt = DateTime.Today;
+            int row = GetRowFromDate(dt);
             Assert.AreEqual(true, ws.Row(row - 1).Hidden);
             Assert.AreEqual(false, ws.Row(row).Hidden);
             Assert.AreEqual(true, ws.Row(row + 1).Hidden);
@@ -127,18 +127,18 @@ namespace EPPlusTest.Filter
         public void Tomorrow()
         {
             //Setup
-            var ws = _pck.Workbook.Worksheets.Add("Tomorrow");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("Tomorrow");
             LoadTestdata(ws, 500);
 
             //Act
             ws.AutoFilterAddress = ws.Cells["A1:D500"];
-            var col = ws.AutoFilter.Columns.AddDynamicFilterColumn(0);
+            ExcelDynamicFilterColumn? col = ws.AutoFilter.Columns.AddDynamicFilterColumn(0);
             col.Type = eDynamicFilterType.Tomorrow;
             ws.AutoFilter.ApplyFilter();
 
             //Assert
-            var dt = DateTime.Today.AddDays(1);
-            var row = GetRowFromDate(dt);
+            DateTime dt = DateTime.Today.AddDays(1);
+            int row = GetRowFromDate(dt);
             Assert.AreEqual(true, ws.Row(row - 1).Hidden);
             Assert.AreEqual(false, ws.Row(row).Hidden);
             Assert.AreEqual(true, ws.Row(row + 1).Hidden);
@@ -150,20 +150,20 @@ namespace EPPlusTest.Filter
         public void LastWeek()
         {
             //Setup
-            var ws = _pck.Workbook.Worksheets.Add("LastWeek");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("LastWeek");
             LoadTestdata(ws, 500);
 
             //Act
             ws.AutoFilterAddress = ws.Cells["A1:D500"];
-            var col = ws.AutoFilter.Columns.AddDynamicFilterColumn(0);
+            ExcelDynamicFilterColumn? col = ws.AutoFilter.Columns.AddDynamicFilterColumn(0);
             col.Type = eDynamicFilterType.LastWeek;
             ws.AutoFilter.ApplyFilter();
 
 
             //Assert
-            var dt = GetPrevSunday(DateTime.Today.AddDays(-7));
-            var startRow = GetRowFromDate(dt);
-            var endRow = startRow + 6;
+            DateTime dt = GetPrevSunday(DateTime.Today.AddDays(-7));
+            int startRow = GetRowFromDate(dt);
+            int endRow = startRow + 6;
             Assert.AreEqual(true, ws.Row(startRow - 1).Hidden);
             Assert.AreEqual(false, ws.Row(startRow).Hidden);
             Assert.AreEqual(false, ws.Row(endRow).Hidden);
@@ -173,19 +173,19 @@ namespace EPPlusTest.Filter
         public void ThisWeek()
         {
             //Setup
-            var ws = _pck.Workbook.Worksheets.Add("ThisWeek");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("ThisWeek");
             LoadTestdata(ws, 500);
 
             //Act
             ws.AutoFilterAddress = ws.Cells["A1:D500"];
-            var col = ws.AutoFilter.Columns.AddDynamicFilterColumn(0);
+            ExcelDynamicFilterColumn? col = ws.AutoFilter.Columns.AddDynamicFilterColumn(0);
             col.Type = eDynamicFilterType.ThisWeek;
             ws.AutoFilter.ApplyFilter();
 
             //Assert
-            var dt = GetPrevSunday(DateTime.Today);
-            var startRow = GetRowFromDate(dt);
-            var endRow = startRow + 6;
+            DateTime dt = GetPrevSunday(DateTime.Today);
+            int startRow = GetRowFromDate(dt);
+            int endRow = startRow + 6;
             Assert.AreEqual(true, ws.Row(startRow - 1).Hidden);
             Assert.AreEqual(false, ws.Row(startRow).Hidden);
             Assert.AreEqual(false, ws.Row(endRow).Hidden);
@@ -195,19 +195,19 @@ namespace EPPlusTest.Filter
         public void NextWeek()
         {
             //Setup
-            var ws = _pck.Workbook.Worksheets.Add("NextWeek");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("NextWeek");
             LoadTestdata(ws, 500);
 
             //Act
             ws.AutoFilterAddress = ws.Cells["A1:D500"];
-            var col = ws.AutoFilter.Columns.AddDynamicFilterColumn(0);
+            ExcelDynamicFilterColumn? col = ws.AutoFilter.Columns.AddDynamicFilterColumn(0);
             col.Type = eDynamicFilterType.NextWeek;
             ws.AutoFilter.ApplyFilter();
 
             //Assert
-            var dt = GetPrevSunday(DateTime.Today.AddDays(7));
-            var startRow = GetRowFromDate(dt);
-            var endRow = startRow + 6;
+            DateTime dt = GetPrevSunday(DateTime.Today.AddDays(7));
+            int startRow = GetRowFromDate(dt);
+            int endRow = startRow + 6;
             Assert.AreEqual(true, ws.Row(startRow - 1).Hidden);
             Assert.AreEqual(false, ws.Row(startRow).Hidden);
             Assert.AreEqual(false, ws.Row(endRow).Hidden);
@@ -219,20 +219,20 @@ namespace EPPlusTest.Filter
         public void LastMonth()
         {
             //Setup
-            var ws = _pck.Workbook.Worksheets.Add("LastMonth");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("LastMonth");
             LoadTestdata(ws, 500);
 
             //Act
             ws.AutoFilterAddress = ws.Cells["A1:D500"];
-            var col = ws.AutoFilter.Columns.AddDynamicFilterColumn(0);
+            ExcelDynamicFilterColumn? col = ws.AutoFilter.Columns.AddDynamicFilterColumn(0);
             col.Type = eDynamicFilterType.LastMonth;
             ws.AutoFilter.ApplyFilter();
 
 
             //Assert
-            var dt = DateTime.Today.AddMonths(-1);
-            var startRow = GetRowFromDate(new DateTime(dt.Year, dt.Month, 1));
-            var endRow = GetRowFromDate(new DateTime(dt.Year, dt.Month, 1).AddMonths(1).AddDays(-1));
+            DateTime dt = DateTime.Today.AddMonths(-1);
+            int startRow = GetRowFromDate(new DateTime(dt.Year, dt.Month, 1));
+            int endRow = GetRowFromDate(new DateTime(dt.Year, dt.Month, 1).AddMonths(1).AddDays(-1));
             Assert.AreEqual(true, ws.Row(startRow-1).Hidden);
             Assert.AreEqual(false, ws.Row(startRow).Hidden);
             Assert.AreEqual(false, ws.Row(endRow).Hidden);
@@ -242,20 +242,20 @@ namespace EPPlusTest.Filter
         public void ThisMonth()
         {
             //Setup
-            var ws = _pck.Workbook.Worksheets.Add("ThisMonth");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("ThisMonth");
             LoadTestdata(ws, 500);
 
             //Act
             ws.AutoFilterAddress = ws.Cells["A1:D500"];
-            var col = ws.AutoFilter.Columns.AddDynamicFilterColumn(0);
+            ExcelDynamicFilterColumn? col = ws.AutoFilter.Columns.AddDynamicFilterColumn(0);
             col.Type = eDynamicFilterType.ThisMonth;
             ws.AutoFilter.ApplyFilter();
 
 
             //Assert
-            var dt = DateTime.Today;
-            var startRow = GetRowFromDate(new DateTime(dt.Year, dt.Month, 1));
-            var endRow = GetRowFromDate(new DateTime(dt.Year, dt.Month, 1).AddMonths(1).AddDays(-1));
+            DateTime dt = DateTime.Today;
+            int startRow = GetRowFromDate(new DateTime(dt.Year, dt.Month, 1));
+            int endRow = GetRowFromDate(new DateTime(dt.Year, dt.Month, 1).AddMonths(1).AddDays(-1));
             Assert.AreEqual(true, ws.Row(startRow - 1).Hidden);
             Assert.AreEqual(false, ws.Row(startRow).Hidden);
             Assert.AreEqual(false, ws.Row(endRow).Hidden);
@@ -265,20 +265,20 @@ namespace EPPlusTest.Filter
         public void NextMonth()
         {
             //Setup
-            var ws = _pck.Workbook.Worksheets.Add("NextMonth");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("NextMonth");
             LoadTestdata(ws, 500);
 
             //Act
             ws.AutoFilterAddress = ws.Cells["A1:D500"];
-            var col = ws.AutoFilter.Columns.AddDynamicFilterColumn(0);
+            ExcelDynamicFilterColumn? col = ws.AutoFilter.Columns.AddDynamicFilterColumn(0);
             col.Type = eDynamicFilterType.NextMonth;
             ws.AutoFilter.ApplyFilter();
 
 
             //Assert
-            var dt = DateTime.Today.AddMonths(1);
-            var startRow = GetRowFromDate(new DateTime(dt.Year, dt.Month, 1));
-            var endRow = GetRowFromDate(new DateTime(dt.Year, dt.Month, 1).AddMonths(1).AddDays(-1));
+            DateTime dt = DateTime.Today.AddMonths(1);
+            int startRow = GetRowFromDate(new DateTime(dt.Year, dt.Month, 1));
+            int endRow = GetRowFromDate(new DateTime(dt.Year, dt.Month, 1).AddMonths(1).AddDays(-1));
             Assert.AreEqual(true, ws.Row(startRow - 1).Hidden);
             Assert.AreEqual(false, ws.Row(startRow).Hidden);
             Assert.AreEqual(false, ws.Row(endRow).Hidden);
@@ -288,20 +288,20 @@ namespace EPPlusTest.Filter
         public void M1()
         {
             //Setup
-            var ws = _pck.Workbook.Worksheets.Add("M1");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("M1");
             LoadTestdata(ws, 500);
 
             //Act
             ws.AutoFilterAddress = ws.Cells["A1:D500"];
-            var col = ws.AutoFilter.Columns.AddDynamicFilterColumn(0);
+            ExcelDynamicFilterColumn? col = ws.AutoFilter.Columns.AddDynamicFilterColumn(0);
             col.Type = eDynamicFilterType.M1;
             ws.AutoFilter.ApplyFilter();
 
 
             //Assert
-            var dt = DateTime.Today.AddMonths(1);
-            var startRow = GetRowFromDate(new DateTime(dt.Year, 1, 1));
-            var endRow = GetRowFromDate(new DateTime(dt.Year, 1, 1).AddMonths(1).AddDays(-1));
+            DateTime dt = DateTime.Today.AddMonths(1);
+            int startRow = GetRowFromDate(new DateTime(dt.Year, 1, 1));
+            int endRow = GetRowFromDate(new DateTime(dt.Year, 1, 1).AddMonths(1).AddDays(-1));
             //Will only verify this year
             Assert.AreEqual(true, ws.Row(startRow - 1).Hidden);
             Assert.AreEqual(false, ws.Row(startRow).Hidden);
@@ -313,20 +313,20 @@ namespace EPPlusTest.Filter
         public void M2()
         {
             //Setup
-            var ws = _pck.Workbook.Worksheets.Add("M2");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("M2");
             LoadTestdata(ws, 500);
 
             //Act
             ws.AutoFilterAddress = ws.Cells["A1:D500"];
-            var col = ws.AutoFilter.Columns.AddDynamicFilterColumn(0);
+            ExcelDynamicFilterColumn? col = ws.AutoFilter.Columns.AddDynamicFilterColumn(0);
             col.Type = eDynamicFilterType.M2;
             ws.AutoFilter.ApplyFilter();
 
 
             //Assert
-            var dt = DateTime.Today.AddMonths(1);
-            var startRow = GetRowFromDate(new DateTime(dt.Year, 2, 1));
-            var endRow = GetRowFromDate(new DateTime(dt.Year, 2, 1).AddMonths(1).AddDays(-1));
+            DateTime dt = DateTime.Today.AddMonths(1);
+            int startRow = GetRowFromDate(new DateTime(dt.Year, 2, 1));
+            int endRow = GetRowFromDate(new DateTime(dt.Year, 2, 1).AddMonths(1).AddDays(-1));
             //Will only verify this year
             Assert.AreEqual(true, ws.Row(startRow - 1).Hidden);
             Assert.AreEqual(false, ws.Row(startRow).Hidden);
@@ -338,20 +338,20 @@ namespace EPPlusTest.Filter
         public void M3()
         {
             //Setup
-            var ws = _pck.Workbook.Worksheets.Add("M3");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("M3");
             LoadTestdata(ws, 600);
 
             //Act
             ws.AutoFilterAddress = ws.Cells["A1:D600"];
-            var col = ws.AutoFilter.Columns.AddDynamicFilterColumn(0);
+            ExcelDynamicFilterColumn? col = ws.AutoFilter.Columns.AddDynamicFilterColumn(0);
             col.Type = eDynamicFilterType.M3;
             ws.AutoFilter.ApplyFilter();
 
 
             //Assert
-            var dt = DateTime.Today.AddMonths(1);
-            var startRow = GetRowFromDate(new DateTime(dt.Year, 3, 1));
-            var endRow = GetRowFromDate(new DateTime(dt.Year, 3, 1).AddMonths(1).AddDays(-1));
+            DateTime dt = DateTime.Today.AddMonths(1);
+            int startRow = GetRowFromDate(new DateTime(dt.Year, 3, 1));
+            int endRow = GetRowFromDate(new DateTime(dt.Year, 3, 1).AddMonths(1).AddDays(-1));
             //Will only verify this year
             Assert.AreEqual(true, ws.Row(startRow - 1).Hidden);
             Assert.AreEqual(false, ws.Row(startRow).Hidden);
@@ -363,20 +363,20 @@ namespace EPPlusTest.Filter
         public void M4()
         {
             //Setup
-            var ws = _pck.Workbook.Worksheets.Add("M4");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("M4");
             LoadTestdata(ws, 600);
 
             //Act
             ws.AutoFilterAddress = ws.Cells["A1:D600"];
-            var col = ws.AutoFilter.Columns.AddDynamicFilterColumn(0);
+            ExcelDynamicFilterColumn? col = ws.AutoFilter.Columns.AddDynamicFilterColumn(0);
             col.Type = eDynamicFilterType.M4;
             ws.AutoFilter.ApplyFilter();
 
 
             //Assert
-            var dt = DateTime.Today.AddMonths(1);
-            var startRow = GetRowFromDate(new DateTime(dt.Year, 4, 1));
-            var endRow = GetRowFromDate(new DateTime(dt.Year, 4, 1).AddMonths(1).AddDays(-1));
+            DateTime dt = DateTime.Today.AddMonths(1);
+            int startRow = GetRowFromDate(new DateTime(dt.Year, 4, 1));
+            int endRow = GetRowFromDate(new DateTime(dt.Year, 4, 1).AddMonths(1).AddDays(-1));
             //Will only verify this year
             Assert.AreEqual(true, ws.Row(startRow - 1).Hidden);
             Assert.AreEqual(false, ws.Row(startRow).Hidden);
@@ -388,20 +388,20 @@ namespace EPPlusTest.Filter
         public void M5()
         {
             //Setup
-            var ws = _pck.Workbook.Worksheets.Add("M5");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("M5");
             LoadTestdata(ws, 700);
 
             //Act
             ws.AutoFilterAddress = ws.Cells["A1:D700"];
-            var col = ws.AutoFilter.Columns.AddDynamicFilterColumn(0);
+            ExcelDynamicFilterColumn? col = ws.AutoFilter.Columns.AddDynamicFilterColumn(0);
             col.Type = eDynamicFilterType.M5;
             ws.AutoFilter.ApplyFilter();
 
 
             //Assert
-            var dt = DateTime.Today.AddMonths(1);
-            var startRow = GetRowFromDate(new DateTime(dt.Year, 5, 1));
-            var endRow = GetRowFromDate(new DateTime(dt.Year, 5, 1).AddMonths(1).AddDays(-1));
+            DateTime dt = DateTime.Today.AddMonths(1);
+            int startRow = GetRowFromDate(new DateTime(dt.Year, 5, 1));
+            int endRow = GetRowFromDate(new DateTime(dt.Year, 5, 1).AddMonths(1).AddDays(-1));
             //Will only verify this year
             Assert.AreEqual(true, ws.Row(startRow - 1).Hidden);
             Assert.AreEqual(false, ws.Row(startRow).Hidden);
@@ -413,20 +413,20 @@ namespace EPPlusTest.Filter
         public void M6()
         {
             //Setup
-            var ws = _pck.Workbook.Worksheets.Add("M6");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("M6");
             LoadTestdata(ws, 700);
 
             //Act
             ws.AutoFilterAddress = ws.Cells["A1:D700"];
-            var col = ws.AutoFilter.Columns.AddDynamicFilterColumn(0);
+            ExcelDynamicFilterColumn? col = ws.AutoFilter.Columns.AddDynamicFilterColumn(0);
             col.Type = eDynamicFilterType.M6;
             ws.AutoFilter.ApplyFilter();
 
 
             //Assert
-            var dt = DateTime.Today.AddMonths(1);
-            var startRow = GetRowFromDate(new DateTime(dt.Year, 6, 1));
-            var endRow = GetRowFromDate(new DateTime(dt.Year, 6, 1).AddMonths(1).AddDays(-1));
+            DateTime dt = DateTime.Today.AddMonths(1);
+            int startRow = GetRowFromDate(new DateTime(dt.Year, 6, 1));
+            int endRow = GetRowFromDate(new DateTime(dt.Year, 6, 1).AddMonths(1).AddDays(-1));
             //Will only verify this year
             Assert.AreEqual(true, ws.Row(startRow - 1).Hidden);
             Assert.AreEqual(false, ws.Row(startRow).Hidden);
@@ -437,20 +437,20 @@ namespace EPPlusTest.Filter
         public void M7()
         {
             //Setup
-            var ws = _pck.Workbook.Worksheets.Add("M7");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("M7");
             LoadTestdata(ws, 700);
 
             //Act
             ws.AutoFilterAddress = ws.Cells["A1:D700"];
-            var col = ws.AutoFilter.Columns.AddDynamicFilterColumn(0);
+            ExcelDynamicFilterColumn? col = ws.AutoFilter.Columns.AddDynamicFilterColumn(0);
             col.Type = eDynamicFilterType.M7;
             ws.AutoFilter.ApplyFilter();
 
 
             //Assert
-            var dt = DateTime.Today.AddMonths(1);
-            var startRow = GetRowFromDate(new DateTime(dt.Year, 7, 1));
-            var endRow = GetRowFromDate(new DateTime(dt.Year, 7, 1).AddMonths(1).AddDays(-1));
+            DateTime dt = DateTime.Today.AddMonths(1);
+            int startRow = GetRowFromDate(new DateTime(dt.Year, 7, 1));
+            int endRow = GetRowFromDate(new DateTime(dt.Year, 7, 1).AddMonths(1).AddDays(-1));
             //Will only verify this year
             Assert.AreEqual(true, ws.Row(startRow - 1).Hidden);
             Assert.AreEqual(false, ws.Row(startRow).Hidden);
@@ -461,20 +461,20 @@ namespace EPPlusTest.Filter
         public void M8()
         {
             //Setup
-            var ws = _pck.Workbook.Worksheets.Add("M8");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("M8");
             LoadTestdata(ws, 800);
 
             //Act
             ws.AutoFilterAddress = ws.Cells["A1:D800"];
-            var col = ws.AutoFilter.Columns.AddDynamicFilterColumn(0);
+            ExcelDynamicFilterColumn? col = ws.AutoFilter.Columns.AddDynamicFilterColumn(0);
             col.Type = eDynamicFilterType.M8;
             ws.AutoFilter.ApplyFilter();
 
 
             //Assert
-            var dt = DateTime.Today.AddMonths(1);
-            var startRow = GetRowFromDate(new DateTime(dt.Year, 8, 1));
-            var endRow = GetRowFromDate(new DateTime(dt.Year, 8, 1).AddMonths(1).AddDays(-1));
+            DateTime dt = DateTime.Today.AddMonths(1);
+            int startRow = GetRowFromDate(new DateTime(dt.Year, 8, 1));
+            int endRow = GetRowFromDate(new DateTime(dt.Year, 8, 1).AddMonths(1).AddDays(-1));
             //Will only verify this year
             Assert.AreEqual(true, ws.Row(startRow - 1).Hidden);
             Assert.AreEqual(false, ws.Row(startRow).Hidden);
@@ -485,20 +485,20 @@ namespace EPPlusTest.Filter
         public void M9()
         {
             //Setup
-            var ws = _pck.Workbook.Worksheets.Add("M9");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("M9");
             LoadTestdata(ws, 800);
 
             //Act
             ws.AutoFilterAddress = ws.Cells["A1:D800"];
-            var col = ws.AutoFilter.Columns.AddDynamicFilterColumn(0);
+            ExcelDynamicFilterColumn? col = ws.AutoFilter.Columns.AddDynamicFilterColumn(0);
             col.Type = eDynamicFilterType.M9;
             ws.AutoFilter.ApplyFilter();
 
 
             //Assert
-            var dt = DateTime.Today.AddMonths(1);
-            var startRow = GetRowFromDate(new DateTime(dt.Year, 9, 1));
-            var endRow = GetRowFromDate(new DateTime(dt.Year, 9, 1).AddMonths(1).AddDays(-1));
+            DateTime dt = DateTime.Today.AddMonths(1);
+            int startRow = GetRowFromDate(new DateTime(dt.Year, 9, 1));
+            int endRow = GetRowFromDate(new DateTime(dt.Year, 9, 1).AddMonths(1).AddDays(-1));
             //Will only verify this year
             Assert.AreEqual(true, ws.Row(startRow - 1).Hidden);
             Assert.AreEqual(false, ws.Row(startRow).Hidden);
@@ -509,20 +509,20 @@ namespace EPPlusTest.Filter
         public void M10()
         {
             //Setup
-            var ws = _pck.Workbook.Worksheets.Add("M10");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("M10");
             LoadTestdata(ws, 800);
 
             //Act
             ws.AutoFilterAddress = ws.Cells["A1:D800"];
-            var col = ws.AutoFilter.Columns.AddDynamicFilterColumn(0);
+            ExcelDynamicFilterColumn? col = ws.AutoFilter.Columns.AddDynamicFilterColumn(0);
             col.Type = eDynamicFilterType.M10;
             ws.AutoFilter.ApplyFilter();
 
 
             //Assert
-            var dt = DateTime.Today.AddMonths(1);
-            var startRow = GetRowFromDate(new DateTime(dt.Year, 10, 1));
-            var endRow = GetRowFromDate(new DateTime(dt.Year, 10, 1).AddMonths(1).AddDays(-1));
+            DateTime dt = DateTime.Today.AddMonths(1);
+            int startRow = GetRowFromDate(new DateTime(dt.Year, 10, 1));
+            int endRow = GetRowFromDate(new DateTime(dt.Year, 10, 1).AddMonths(1).AddDays(-1));
             //Will only verify this year
             Assert.AreEqual(true, ws.Row(startRow - 1).Hidden);
             Assert.AreEqual(false, ws.Row(startRow).Hidden);
@@ -533,20 +533,20 @@ namespace EPPlusTest.Filter
         public void M11()
         {
             //Setup
-            var ws = _pck.Workbook.Worksheets.Add("M11");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("M11");
             LoadTestdata(ws, 800);
 
             //Act
             ws.AutoFilterAddress = ws.Cells["A1:D800"];
-            var col = ws.AutoFilter.Columns.AddDynamicFilterColumn(0);
+            ExcelDynamicFilterColumn? col = ws.AutoFilter.Columns.AddDynamicFilterColumn(0);
             col.Type = eDynamicFilterType.M11;
             ws.AutoFilter.ApplyFilter();
 
 
             //Assert
-            var dt = DateTime.Today.AddMonths(1);
-            var startRow = GetRowFromDate(new DateTime(dt.Year, 11, 1));
-            var endRow = GetRowFromDate(new DateTime(dt.Year, 11, 1).AddMonths(1).AddDays(-1));
+            DateTime dt = DateTime.Today.AddMonths(1);
+            int startRow = GetRowFromDate(new DateTime(dt.Year, 11, 1));
+            int endRow = GetRowFromDate(new DateTime(dt.Year, 11, 1).AddMonths(1).AddDays(-1));
             //Will only verify this year
             Assert.AreEqual(true, ws.Row(startRow - 1).Hidden);
             Assert.AreEqual(false, ws.Row(startRow).Hidden);
@@ -557,20 +557,20 @@ namespace EPPlusTest.Filter
         public void M12()
         {
             //Setup
-            var ws = _pck.Workbook.Worksheets.Add("M12");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("M12");
             LoadTestdata(ws, 900);
 
             //Act
             ws.AutoFilterAddress = ws.Cells["A1:D900"];
-            var col = ws.AutoFilter.Columns.AddDynamicFilterColumn(0);
+            ExcelDynamicFilterColumn? col = ws.AutoFilter.Columns.AddDynamicFilterColumn(0);
             col.Type = eDynamicFilterType.M12;
             ws.AutoFilter.ApplyFilter();
 
 
             //Assert
-            var dt = DateTime.Today.AddMonths(1);
-            var startRow = GetRowFromDate(new DateTime(dt.Year, 12, 1));
-            var endRow = GetRowFromDate(new DateTime(dt.Year, 12, 1).AddMonths(1).AddDays(-1));
+            DateTime dt = DateTime.Today.AddMonths(1);
+            int startRow = GetRowFromDate(new DateTime(dt.Year, 12, 1));
+            int endRow = GetRowFromDate(new DateTime(dt.Year, 12, 1).AddMonths(1).AddDays(-1));
             //Will only verify this year
             Assert.AreEqual(true, ws.Row(startRow - 1).Hidden);
             Assert.AreEqual(false, ws.Row(startRow).Hidden);
@@ -584,20 +584,20 @@ namespace EPPlusTest.Filter
         public void LastQuarter()
         {
             //Setup
-            var ws = _pck.Workbook.Worksheets.Add("LastQuarter");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("LastQuarter");
             LoadTestdata(ws, 500);
 
             //Act
             ws.AutoFilterAddress = ws.Cells["A1:D500"];
-            var col = ws.AutoFilter.Columns.AddDynamicFilterColumn(0);
+            ExcelDynamicFilterColumn? col = ws.AutoFilter.Columns.AddDynamicFilterColumn(0);
             col.Type = eDynamicFilterType.LastQuarter;
             ws.AutoFilter.ApplyFilter();
 
             //Assert
-            var startDate = GetStartOfQuarter(DateTime.Today.AddMonths(-3));
-            var endDate = startDate.AddMonths(3).AddDays(-1);
-            var startRow = GetRowFromDate(startDate);
-            var endRow = GetRowFromDate(endDate);
+            DateTime startDate = GetStartOfQuarter(DateTime.Today.AddMonths(-3));
+            DateTime endDate = startDate.AddMonths(3).AddDays(-1);
+            int startRow = GetRowFromDate(startDate);
+            int endRow = GetRowFromDate(endDate);
             if (startRow > 2)
             {
                 Assert.AreEqual(true, ws.Row(startRow - 1).Hidden);
@@ -610,20 +610,20 @@ namespace EPPlusTest.Filter
         public void ThisQuarter()
         {
             //Setup
-            var ws = _pck.Workbook.Worksheets.Add("ThisQuarter");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("ThisQuarter");
             LoadTestdata(ws, 500);
 
             //Act   
             ws.AutoFilterAddress = ws.Cells["A1:D500"];
-            var col = ws.AutoFilter.Columns.AddDynamicFilterColumn(0);
+            ExcelDynamicFilterColumn? col = ws.AutoFilter.Columns.AddDynamicFilterColumn(0);
             col.Type = eDynamicFilterType.ThisQuarter;
             ws.AutoFilter.ApplyFilter();
 
             //Assert
-            var startDate = GetStartOfQuarter(DateTime.Today);
-            var endDate = startDate.AddMonths(3).AddDays(-1);
-            var startRow = GetRowFromDate(startDate);
-            var endRow = GetRowFromDate(endDate);
+            DateTime startDate = GetStartOfQuarter(DateTime.Today);
+            DateTime endDate = startDate.AddMonths(3).AddDays(-1);
+            int startRow = GetRowFromDate(startDate);
+            int endRow = GetRowFromDate(endDate);
             Assert.AreEqual(true, ws.Row(startRow - 1).Hidden);
             Assert.AreEqual(false, ws.Row(startRow).Hidden);
             Assert.AreEqual(false, ws.Row(endRow).Hidden);
@@ -633,20 +633,20 @@ namespace EPPlusTest.Filter
         public void NextQuarter()
         {
             //Setup
-            var ws = _pck.Workbook.Worksheets.Add("NextQuarter");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("NextQuarter");
             LoadTestdata(ws, 600);
 
             //Act   
             ws.AutoFilterAddress = ws.Cells["A1:D600"];
-            var col = ws.AutoFilter.Columns.AddDynamicFilterColumn(0);
+            ExcelDynamicFilterColumn? col = ws.AutoFilter.Columns.AddDynamicFilterColumn(0);
             col.Type = eDynamicFilterType.NextQuarter;
             ws.AutoFilter.ApplyFilter();
 
             //Assert
-            var startDate = GetStartOfQuarter(DateTime.Today.AddMonths(3));
-            var endDate = startDate.AddMonths(3).AddDays(-1);
-            var startRow = GetRowFromDate(startDate);
-            var endRow = GetRowFromDate(endDate);
+            DateTime startDate = GetStartOfQuarter(DateTime.Today.AddMonths(3));
+            DateTime endDate = startDate.AddMonths(3).AddDays(-1);
+            int startRow = GetRowFromDate(startDate);
+            int endRow = GetRowFromDate(endDate);
             Assert.AreEqual(true, ws.Row(startRow - 1).Hidden);
             Assert.AreEqual(false, ws.Row(startRow).Hidden);
             Assert.AreEqual(false, ws.Row(endRow).Hidden);
@@ -656,20 +656,20 @@ namespace EPPlusTest.Filter
         public void Q1()
         {
             //Setup
-            var ws = _pck.Workbook.Worksheets.Add("Q1");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("Q1");
             LoadTestdata(ws, 500);
 
             //Act
             ws.AutoFilterAddress = ws.Cells["A1:D500"];
-            var col = ws.AutoFilter.Columns.AddDynamicFilterColumn(0);
+            ExcelDynamicFilterColumn? col = ws.AutoFilter.Columns.AddDynamicFilterColumn(0);
             col.Type = eDynamicFilterType.Q1;
             ws.AutoFilter.ApplyFilter();
 
 
             //Assert
-            var dt = DateTime.Today;
-            var startRow = GetRowFromDate(new DateTime(dt.Year, 1, 1));
-            var endRow = GetRowFromDate(new DateTime(dt.Year, 3, 31));
+            DateTime dt = DateTime.Today;
+            int startRow = GetRowFromDate(new DateTime(dt.Year, 1, 1));
+            int endRow = GetRowFromDate(new DateTime(dt.Year, 3, 31));
             //Will only verify this year
             Assert.AreEqual(true, ws.Row(startRow - 1).Hidden);
             Assert.AreEqual(false, ws.Row(startRow).Hidden);
@@ -680,20 +680,20 @@ namespace EPPlusTest.Filter
         public void Q2()
         {
             //Setup
-            var ws = _pck.Workbook.Worksheets.Add("Q2");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("Q2");
             LoadTestdata(ws, 500);
 
             //Act
             ws.AutoFilterAddress = ws.Cells["A1:D500"];
-            var col = ws.AutoFilter.Columns.AddDynamicFilterColumn(0);
+            ExcelDynamicFilterColumn? col = ws.AutoFilter.Columns.AddDynamicFilterColumn(0);
             col.Type = eDynamicFilterType.Q2;
             ws.AutoFilter.ApplyFilter();
 
 
             //Assert
-            var dt = DateTime.Today;
-            var startRow = GetRowFromDate(new DateTime(dt.Year, 4, 1));
-            var endRow = GetRowFromDate(new DateTime(dt.Year, 6, 30));
+            DateTime dt = DateTime.Today;
+            int startRow = GetRowFromDate(new DateTime(dt.Year, 4, 1));
+            int endRow = GetRowFromDate(new DateTime(dt.Year, 6, 30));
             //Will only verify this year
             Assert.AreEqual(true, ws.Row(startRow - 1).Hidden);
             Assert.AreEqual(false, ws.Row(startRow).Hidden);
@@ -704,20 +704,20 @@ namespace EPPlusTest.Filter
         public void Q3()
         {
             //Setup
-            var ws = _pck.Workbook.Worksheets.Add("Q3");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("Q3");
             LoadTestdata(ws, 500);
 
             //Act
             ws.AutoFilterAddress = ws.Cells["A1:D500"];
-            var col = ws.AutoFilter.Columns.AddDynamicFilterColumn(0);
+            ExcelDynamicFilterColumn? col = ws.AutoFilter.Columns.AddDynamicFilterColumn(0);
             col.Type = eDynamicFilterType.Q3;
             ws.AutoFilter.ApplyFilter();
 
 
             //Assert
-            var dt = DateTime.Today;
-            var startRow = GetRowFromDate(new DateTime(dt.Year, 7, 1));
-            var endRow = GetRowFromDate(new DateTime(dt.Year, 9, 30));
+            DateTime dt = DateTime.Today;
+            int startRow = GetRowFromDate(new DateTime(dt.Year, 7, 1));
+            int endRow = GetRowFromDate(new DateTime(dt.Year, 9, 30));
             //Will only verify this year
             Assert.AreEqual(true, ws.Row(startRow - 1).Hidden);
             Assert.AreEqual(false, ws.Row(startRow).Hidden);
@@ -728,20 +728,20 @@ namespace EPPlusTest.Filter
         public void Q4()
         {
             //Setup
-            var ws = _pck.Workbook.Worksheets.Add("Q4");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("Q4");
             LoadTestdata(ws, 500);
 
             //Act
             ws.AutoFilterAddress = ws.Cells["A1:D500"];
-            var col = ws.AutoFilter.Columns.AddDynamicFilterColumn(0);
+            ExcelDynamicFilterColumn? col = ws.AutoFilter.Columns.AddDynamicFilterColumn(0);
             col.Type = eDynamicFilterType.Q4;
             ws.AutoFilter.ApplyFilter();
 
 
             //Assert
-            var dt = DateTime.Today;
-            var startRow = GetRowFromDate(new DateTime(dt.Year, 10, 1));
-            var endRow = GetRowFromDate(new DateTime(dt.Year, 12, 31));
+            DateTime dt = DateTime.Today;
+            int startRow = GetRowFromDate(new DateTime(dt.Year, 10, 1));
+            int endRow = GetRowFromDate(new DateTime(dt.Year, 12, 31));
             //Will only verify this year
             Assert.AreEqual(true, ws.Row(startRow - 1).Hidden);
             Assert.AreEqual(false, ws.Row(startRow).Hidden);
@@ -755,20 +755,20 @@ namespace EPPlusTest.Filter
         public void LastYear()
         {
             //Setup
-            var ws = _pck.Workbook.Worksheets.Add("LastYear");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("LastYear");
             LoadTestdata(ws, 500);
 
             //Act
             ws.AutoFilterAddress = ws.Cells["A1:D500"];
-            var col = ws.AutoFilter.Columns.AddDynamicFilterColumn(0);
+            ExcelDynamicFilterColumn? col = ws.AutoFilter.Columns.AddDynamicFilterColumn(0);
             col.Type = eDynamicFilterType.LastYear;
             ws.AutoFilter.ApplyFilter();
 
             //Assert
-            var startDate = new DateTime(DateTime.Today.Year-1, 1, 1);
-            var endDate = new DateTime(DateTime.Today.Year - 1, 12, 31);
-            var startRow = GetRowFromDate(startDate);
-            var endRow = GetRowFromDate(endDate);
+            DateTime startDate = new DateTime(DateTime.Today.Year-1, 1, 1);
+            DateTime endDate = new DateTime(DateTime.Today.Year - 1, 12, 31);
+            int startRow = GetRowFromDate(startDate);
+            int endRow = GetRowFromDate(endDate);
             Assert.AreEqual(false, ws.Row(startRow).Hidden);
             Assert.AreEqual(false, ws.Row(endRow).Hidden);
             Assert.AreEqual(true, ws.Row(endRow + 1).Hidden);
@@ -777,20 +777,20 @@ namespace EPPlusTest.Filter
         public void ThisYear()
         {
             //Setup
-            var ws = _pck.Workbook.Worksheets.Add("ThisYear");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("ThisYear");
             LoadTestdata(ws, 500);
 
             //Act
             ws.AutoFilterAddress = ws.Cells["A1:D500"];
-            var col = ws.AutoFilter.Columns.AddDynamicFilterColumn(0);
+            ExcelDynamicFilterColumn? col = ws.AutoFilter.Columns.AddDynamicFilterColumn(0);
             col.Type = eDynamicFilterType.ThisYear;
             ws.AutoFilter.ApplyFilter();
 
             //Assert
-            var startDate = new DateTime(DateTime.Today.Year , 1, 1);
-            var endDate = new DateTime(DateTime.Today.Year, 12, 31);
-            var startRow = GetRowFromDate(startDate);
-            var endRow = GetRowFromDate(endDate);
+            DateTime startDate = new DateTime(DateTime.Today.Year , 1, 1);
+            DateTime endDate = new DateTime(DateTime.Today.Year, 12, 31);
+            int startRow = GetRowFromDate(startDate);
+            int endRow = GetRowFromDate(endDate);
             Assert.AreEqual(true, ws.Row(startRow-1).Hidden);
             Assert.AreEqual(false, ws.Row(startRow).Hidden);
             Assert.AreEqual(false, ws.Row(endRow).Hidden);
@@ -801,20 +801,20 @@ namespace EPPlusTest.Filter
         public void NextYear()
         {
             //Setup
-            var ws = _pck.Workbook.Worksheets.Add("NextYear");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("NextYear");
             LoadTestdata(ws, 500);
 
             //Act
             ws.AutoFilterAddress = ws.Cells["A1:D500"];
-            var col = ws.AutoFilter.Columns.AddDynamicFilterColumn(0);
+            ExcelDynamicFilterColumn? col = ws.AutoFilter.Columns.AddDynamicFilterColumn(0);
             col.Type = eDynamicFilterType.NextYear;
             ws.AutoFilter.ApplyFilter();
 
             //Assert
-            var startDate = new DateTime(DateTime.Today.Year + 1, 1, 1);
-            var endDate = new DateTime(DateTime.Today.Year + 1, 12, 31);
-            var startRow = GetRowFromDate(startDate);
-            var endRow = GetRowFromDate(endDate);
+            DateTime startDate = new DateTime(DateTime.Today.Year + 1, 1, 1);
+            DateTime endDate = new DateTime(DateTime.Today.Year + 1, 12, 31);
+            int startRow = GetRowFromDate(startDate);
+            int endRow = GetRowFromDate(endDate);
             Assert.AreEqual(true, ws.Row(startRow - 1).Hidden);
             Assert.AreEqual(false, ws.Row(startRow).Hidden);
             Assert.AreEqual(false, ws.Row(500).Hidden);
@@ -825,20 +825,20 @@ namespace EPPlusTest.Filter
         public void YearToDate()
         {
             //Setup
-            var ws = _pck.Workbook.Worksheets.Add("YearToDate");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("YearToDate");
             LoadTestdata(ws, 500);
 
             //Act
             ws.AutoFilterAddress = ws.Cells["A1:D500"];
-            var col = ws.AutoFilter.Columns.AddDynamicFilterColumn(0);
+            ExcelDynamicFilterColumn? col = ws.AutoFilter.Columns.AddDynamicFilterColumn(0);
             col.Type = eDynamicFilterType.YearToDate;
             ws.AutoFilter.ApplyFilter();
 
             //Assert
-            var startDate = new DateTime(DateTime.Today.Year, 1, 1);
-            var endDate = DateTime.Today;
-            var startRow = GetRowFromDate(startDate);
-            var endRow = GetRowFromDate(endDate);
+            DateTime startDate = new DateTime(DateTime.Today.Year, 1, 1);
+            DateTime endDate = DateTime.Today;
+            int startRow = GetRowFromDate(startDate);
+            int endRow = GetRowFromDate(endDate);
             Assert.AreEqual(true, ws.Row(startRow - 1).Hidden);
             Assert.AreEqual(false, ws.Row(startRow).Hidden);
             Assert.AreEqual(false, ws.Row(endRow).Hidden);
@@ -849,7 +849,7 @@ namespace EPPlusTest.Filter
         #region Private methods
         private DateTime GetStartOfQuarter(DateTime dt)
         {
-            var quarter = ((dt.Month - (dt.Month - 1) % 3) + 1) / 3;
+            int quarter = ((dt.Month - (dt.Month - 1) % 3) + 1) / 3;
                       
             return new DateTime(dt.Year, (quarter * 3) + 1, 1);
         }

@@ -18,7 +18,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using static OfficeOpenXml.ExcelAddressBase;
+ using OfficeOpenXml.Table;
+ using OfficeOpenXml.Table.PivotTable;
+ using static OfficeOpenXml.ExcelAddressBase;
 
 namespace OfficeOpenXml.Core.Worksheet
 {
@@ -130,7 +132,7 @@ namespace OfficeOpenXml.Core.Worksheet
         }
         internal static void AdjustDrawingsRow(ExcelWorksheet ws, int rowFrom, int rows, int colFrom=0, int colTo=ExcelPackage.MaxColumns)
         {
-            var deletedDrawings = new List<ExcelDrawing>();
+            List<ExcelDrawing>? deletedDrawings = new List<ExcelDrawing>();
             foreach (ExcelDrawing drawing in ws.Drawings)
             {
 
@@ -196,7 +198,7 @@ namespace OfficeOpenXml.Core.Worksheet
         }
         internal static void AdjustDrawingsColumn(ExcelWorksheet ws, int columnFrom, int columns, int rowFrom = 0, int rowTo = ExcelPackage.MaxRows)
         {
-            var deletedDrawings = new List<ExcelDrawing>();
+            List<ExcelDrawing>? deletedDrawings = new List<ExcelDrawing>();
             foreach (ExcelDrawing drawing in ws.Drawings)
             {
                 if(!drawing.IsWithinRowRange(rowFrom, rowTo))
@@ -258,11 +260,11 @@ namespace OfficeOpenXml.Core.Worksheet
         }
         internal static void ConvertEffectedSharedFormulasToCellFormulas(ExcelWorksheet wsUpdate, ExcelAddressBase range)
         {
-            foreach (var ws in wsUpdate.Workbook.Worksheets)
+            foreach (ExcelWorksheet? ws in wsUpdate.Workbook.Worksheets)
             {
                 bool isCurrentWs = wsUpdate.Name.Equals(ws.Name, StringComparison.CurrentCultureIgnoreCase);
-                var deletedSf = new List<int>();
-                foreach (var sf in ws._sharedFormulas.Values)
+                List<int>? deletedSf = new List<int>();
+                foreach (ExcelWorksheet.Formulas? sf in ws._sharedFormulas.Values)
                 {
                     //Do not convert array formulas.
                     if (sf.FormulaType == ExcelWorksheet.FormulaType.Shared && (isCurrentWs || sf.Formula.IndexOf(wsUpdate.Name, StringComparison.CurrentCultureIgnoreCase) >= 0))
@@ -279,14 +281,14 @@ namespace OfficeOpenXml.Core.Worksheet
         private static bool ConvertEffectedSharedFormulaIfReferenceWithinRange(ExcelWorksheet ws, ExcelAddressBase delRange, ExcelWorksheet.Formulas sf, string wsName)
         {
             bool doConvertSF = false;
-            var sfAddress = new ExcelAddressBase(sf.Address);
+            ExcelAddressBase? sfAddress = new ExcelAddressBase(sf.Address);
             sf.SetTokens(ws.Name);
-            foreach (var token in sf.Tokens)
+            foreach (Token token in sf.Tokens)
             {
                 if (token.TokenTypeIsSet(TokenType.ExcelAddress))
                 {
                     //Check if the address for the entire shared formula collides with the deleted address.
-                    var tokenAddress = new ExcelAddressBase(token.Value);
+                    ExcelAddressBase? tokenAddress = new ExcelAddressBase(token.Value);
                     if ((ws.Name.Equals(wsName, StringComparison.CurrentCultureIgnoreCase) && string.IsNullOrEmpty(tokenAddress.WorkSheetName)) ||
                         (!string.IsNullOrEmpty(tokenAddress.WorkSheetName) && tokenAddress.WorkSheetName.Equals(wsName, StringComparison.CurrentCultureIgnoreCase)))
                     {
@@ -316,12 +318,12 @@ namespace OfficeOpenXml.Core.Worksheet
         }
         private static void ConvertSharedFormulaToCellFormula(ExcelWorksheet ws, ExcelWorksheet.Formulas sf, ExcelAddressBase sfAddress)
         {
-            for (var r = 0; r < sfAddress.Rows; r++)
+            for (int r = 0; r < sfAddress.Rows; r++)
             {
-                for (var c = 0; c < sfAddress.Columns; c++)
+                for (int c = 0; c < sfAddress.Columns; c++)
                 {
-                    var row = sf.StartRow + r;
-                    var col = sf.StartCol + c;
+                    int row = sf.StartRow + r;
+                    int col = sf.StartCol + c;
                     ws._formulas.SetValue(row, col, ws.GetFormula(row, col));
                 }
             }
@@ -338,11 +340,11 @@ namespace OfficeOpenXml.Core.Worksheet
             }
 
             //Validate merged Cells
-            foreach (var a in range.Worksheet.MergedCells)
+            foreach (string? a in range.Worksheet.MergedCells)
             {
                 if (!string.IsNullOrEmpty(a))
                 {
-                    var mc = new ExcelAddressBase(a);
+                    ExcelAddressBase? mc = new ExcelAddressBase(a);
                     if (effectedAddress.Collide(mc) == ExcelAddressBase.eAddressCollition.Partly)
                     {
                         throw new InvalidOperationException($"Can't {(insert ? "insert into" : "delete from")} the range. Cells collide with merged range {a}");
@@ -351,7 +353,7 @@ namespace OfficeOpenXml.Core.Worksheet
             }
 
             //Validate pivot tables Cells
-            foreach (var pt in range.Worksheet.PivotTables)
+            foreach (ExcelPivotTable? pt in range.Worksheet.PivotTables)
             {
                 if (effectedAddress.Collide(pt.Address) == ExcelAddressBase.eAddressCollition.Partly)
                 {
@@ -360,7 +362,7 @@ namespace OfficeOpenXml.Core.Worksheet
             }
 
             //Validate tables Cells
-            foreach (var t in range.Worksheet.Tables)
+            foreach (ExcelTable? t in range.Worksheet.Tables)
             {
                 if (effectedAddressTable.Collide(t.Address) == ExcelAddressBase.eAddressCollition.Partly &&
                     effectedAddress.Collide(t.Address) != ExcelAddressBase.eAddressCollition.No)
@@ -372,11 +374,11 @@ namespace OfficeOpenXml.Core.Worksheet
         }
         internal static string AdjustStartCellForFormula(string formula, ExcelAddress address, ExcelAddressBase newAddress)
         {
-            var sct = new SourceCodeTokenizer(FunctionNameProvider.Empty, NameValueProvider.Empty);
-            var tokens = sct.Tokenize(formula);
-            var sb = new StringBuilder();
-            var firstCell = address.FirstCellAddressRelative;
-            foreach (var t in tokens)
+            SourceCodeTokenizer? sct = new SourceCodeTokenizer(FunctionNameProvider.Empty, NameValueProvider.Empty);
+            IEnumerable<Token>? tokens = sct.Tokenize(formula);
+            StringBuilder? sb = new StringBuilder();
+            string? firstCell = address.FirstCellAddressRelative;
+            foreach (Token t in tokens)
             {
                 if (t.TokenTypeIsSet(TokenType.ExcelAddress) && t.Value == firstCell) //If the first cell has been change we adjust any formula that reference it. This will not adjust custom formulas.
                 {

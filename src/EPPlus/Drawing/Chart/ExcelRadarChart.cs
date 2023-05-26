@@ -71,7 +71,7 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             get
             {
-                var v=_chartXmlHelper.GetXmlNodeString(STYLE_PATH);
+                string? v=_chartXmlHelper.GetXmlNodeString(STYLE_PATH);
                 if (string.IsNullOrEmpty(v))
                 {
                     return eRadarStyle.Standard;

@@ -44,11 +44,11 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
         /// <returns>A html table</returns>
         public string GetHtmlString()
         {
-            using (var ms = RecyclableMemory.GetStream())
+            using (MemoryStream? ms = RecyclableMemory.GetStream())
             {
                 RenderHtml(ms, 0);
                 ms.Position = 0;
-                using (var sr = new StreamReader(ms))
+                using (StreamReader? sr = new StreamReader(ms))
                 {
                     return sr.ReadToEnd();
                 }
@@ -61,11 +61,11 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
         public string GetHtmlString(int rangeIndex)
         {
             ValidateRangeIndex(rangeIndex);
-            using (var ms = RecyclableMemory.GetStream())
+            using (MemoryStream? ms = RecyclableMemory.GetStream())
             {
                 RenderHtml(ms, rangeIndex);
                 ms.Position = 0;
-                using (var sr = new StreamReader(ms))
+                using (StreamReader? sr = new StreamReader(ms))
                 {
                     return sr.ReadToEnd();
                 }
@@ -81,11 +81,11 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
         public string GetHtmlString(int rangeIndex, ExcelHtmlOverrideExportSettings settings)
         {
             ValidateRangeIndex(rangeIndex);
-            using (var ms = RecyclableMemory.GetStream())
+            using (MemoryStream? ms = RecyclableMemory.GetStream())
             {
                 RenderHtml(ms, rangeIndex, settings);
                 ms.Position = 0;
-                using (var sr = new StreamReader(ms))
+                using (StreamReader? sr = new StreamReader(ms))
                 {
                     return sr.ReadToEnd();
                 }
@@ -100,7 +100,7 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
         /// <returns></returns>
         public string GetHtmlString(int rangeIndex, Action<ExcelHtmlOverrideExportSettings> config)
         {
-            var settings = new ExcelHtmlOverrideExportSettings();
+            ExcelHtmlOverrideExportSettings? settings = new ExcelHtmlOverrideExportSettings();
             config.Invoke(settings);
             return GetHtmlString(rangeIndex, settings);
         }
@@ -130,7 +130,7 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
                 throw new IOException("Parameter stream must be a writeable System.IO.Stream");
             }
             _mergedCells.Clear();
-            var range = _ranges[rangeIndex];
+            ExcelRangeBase? range = _ranges[rangeIndex];
             GetDataTypes(range, _settings);
 
             ExcelTable table = null;
@@ -139,12 +139,12 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
                 table = range.GetTable();
             }
 
-            var writer = new EpplusHtmlWriter(stream, Settings.Encoding, _styleCache);
-            var tableId = GetTableId(rangeIndex, overrideSettings);
-            var additionalClassNames = GetAdditionalClassNames(overrideSettings);
-            var accessibilitySettings = GetAccessibilitySettings(overrideSettings);
-            var headerRows = overrideSettings != null ? overrideSettings.HeaderRows : _settings.HeaderRows;
-            var headers = overrideSettings != null ? overrideSettings.Headers : _settings.Headers;
+            EpplusHtmlWriter? writer = new EpplusHtmlWriter(stream, Settings.Encoding, _styleCache);
+            string? tableId = GetTableId(rangeIndex, overrideSettings);
+            List<string>? additionalClassNames = GetAdditionalClassNames(overrideSettings);
+            AccessibilitySettings? accessibilitySettings = GetAccessibilitySettings(overrideSettings);
+            int headerRows = overrideSettings != null ? overrideSettings.HeaderRows : _settings.HeaderRows;
+            List<string>? headers = overrideSettings != null ? overrideSettings.Headers : _settings.Headers;
             AddClassesAttributes(writer, table, tableId, additionalClassNames);
             AddTableAccessibilityAttributes(accessibilitySettings, writer);
             writer.RenderBeginTag(HtmlElements.Table);
@@ -177,7 +177,7 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
         /// <returns></returns>
         public void RenderHtml(Stream stream, int rangeIndex, Action<ExcelHtmlOverrideExportSettings> config)
         {
-            var settings = new ExcelHtmlOverrideExportSettings();
+            ExcelHtmlOverrideExportSettings? settings = new ExcelHtmlOverrideExportSettings();
             config.Invoke(settings);
             RenderHtml(stream, rangeIndex, settings);
         }
@@ -205,9 +205,9 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
                 htmlDocument = htmlDocument.Replace("\r\n", "");
             }
 
-            var html = GetHtmlString();
-            var exporter = HtmlExporterFactory.CreateCssExporterSync(_settings, _ranges, _styleCache);
-            var css = exporter.GetCssString();
+            string? html = GetHtmlString();
+            CssRangeExporterSync? exporter = HtmlExporterFactory.CreateCssExporterSync(_settings, _ranges, _styleCache);
+            string? css = exporter.GetCssString();
             return string.Format(htmlDocument, html, css);
         }
 
@@ -219,9 +219,9 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
             }
             writer.RenderBeginTag(HtmlElements.Tbody);
             writer.ApplyFormatIncreaseIndent(Settings.Minify);
-            var row = range._fromRow + _settings.HeaderRows;
-            var endRow = range._toRow;
-            var ws = range.Worksheet;
+            int row = range._fromRow + _settings.HeaderRows;
+            int endRow = range._toRow;
+            ExcelWorksheet? ws = range.Worksheet;
             HtmlImage image = null;
             bool hasFooter = table != null && table.ShowTotal;
             while (row <= endRow)
@@ -249,17 +249,17 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
 
                 writer.RenderBeginTag(HtmlElements.TableRow);
                 writer.ApplyFormatIncreaseIndent(Settings.Minify);
-                foreach (var col in _columns)
+                foreach (int col in _columns)
                 {
                     if (InMergeCellSpan(row, col))
                     {
                         continue;
                     }
 
-                    var colIx = col - range._fromCol;
-                    var cell = ws.Cells[row, col];
-                    var cv = cell.Value;
-                    var dataType = HtmlRawDataProvider.GetHtmlDataTypeFromValue(cell.Value);
+                    int colIx = col - range._fromCol;
+                    ExcelRange? cell = ws.Cells[row, col];
+                    object? cv = cell.Value;
+                    string? dataType = HtmlRawDataProvider.GetHtmlDataTypeFromValue(cell.Value);
 
                     SetColRowSpan(range, writer, cell);
 
@@ -274,7 +274,7 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
                     }
                     else
                     {
-                        var imageCellClassName = GetImageCellClassName(image, Settings);
+                        string? imageCellClassName = GetImageCellClassName(image, Settings);
                         writer.SetClassAttributeFromStyle(cell, false, Settings, imageCellClassName);
                         writer.RenderBeginTag(HtmlElements.TableData);
                         AddImage(writer, Settings, image, cell.Value);
@@ -328,7 +328,7 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
                 {
                     writer.AddAttribute("role", "row");
                 }
-                var row = range._fromRow + i;
+                int row = range._fromRow + i;
                 if (Settings.SetRowHeight)
                 {
                     this.AddRowHeightStyle(writer, range, row, this.Settings.StyleClassPrefix, this.IsMultiSheet);
@@ -336,14 +336,14 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
 
                 writer.RenderBeginTag(HtmlElements.TableRow);
                 writer.ApplyFormatIncreaseIndent(Settings.Minify);
-                foreach (var col in _columns)
+                foreach (int col in _columns)
                 {
                     if (InMergeCellSpan(row, col))
                     {
                         continue;
                     }
 
-                    var cell = range.Worksheet.Cells[row, col];
+                    ExcelRange? cell = range.Worksheet.Cells[row, col];
                     if (Settings.RenderDataTypes)
                     {
                         writer.AddAttribute("data-datatype", _dataTypes[col - range._fromCol]);
@@ -351,7 +351,7 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
                     SetColRowSpan(range, writer, cell);
                     if (Settings.IncludeCssClassNames)
                     {
-                        var imageCellClassName = GetImageCellClassName(image, Settings);
+                        string? imageCellClassName = GetImageCellClassName(image, Settings);
                         writer.SetClassAttributeFromStyle(cell, true, Settings, imageCellClassName);
                     }
                     if (Settings.Pictures.Include == ePictureInclude.Include)

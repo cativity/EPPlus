@@ -50,7 +50,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions
 
         public virtual double CalculateCollection(IEnumerable<FunctionArgument> collection, double result, Func<FunctionArgument, double, double> action)
         {
-            foreach (var item in collection)
+            foreach (FunctionArgument? item in collection)
             {
                 if (item.Value is IEnumerable<FunctionArgument>)
                 {

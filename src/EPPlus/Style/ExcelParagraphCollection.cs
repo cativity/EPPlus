@@ -18,6 +18,7 @@ using OfficeOpenXml.Drawing;
 using System.Drawing;
 using System.Linq;
 using System.Globalization;
+using OfficeOpenXml.Style.XmlAccess;
 
 namespace OfficeOpenXml.Style
 {
@@ -39,11 +40,11 @@ namespace OfficeOpenXml.Style
             AddSchemaNodeOrder(schemaNodeOrder, new string[] { "strRef","rich", "f", "strCache", "bodyPr", "lstStyle", "p", "ptCount","pt","pPr", "lnSpc", "spcBef", "spcAft", "buClrTx", "buClr", "buSzTx", "buSzPct", "buSzPts", "buFontTx", "buFont","buNone", "buAutoNum", "buChar","buBlip", "tabLst","defRPr", "r","br","fld" ,"endParaRPr" });
 
             _path = path;
-            var pars = TopNode.SelectNodes(path, NameSpaceManager);
+            XmlNodeList? pars = TopNode.SelectNodes(path, NameSpaceManager);
             foreach(XmlElement par in pars)
             {
                 _paragraphs.Add(par);
-                var nl = par.SelectNodes("a:r", NameSpaceManager);
+                XmlNodeList? nl = par.SelectNodes("a:r", NameSpaceManager);
                 if (nl != null)
                 {
                     foreach (XmlNode n in nl)
@@ -101,7 +102,7 @@ namespace OfficeOpenXml.Style
             {
                 parentNode = CreateNode(_path, false, true);
                 _paragraphs.Add((XmlElement)parentNode);
-                var p = _list[0].TopNode.ParentNode.ParentNode.SelectSingleNode("a:pPr", NameSpaceManager);
+                XmlNode? p = _list[0].TopNode.ParentNode.ParentNode.SelectSingleNode("a:pPr", NameSpaceManager);
                 if(p!=null)
                 {
                     parentNode.InnerXml = p.OuterXml;
@@ -115,11 +116,11 @@ namespace OfficeOpenXml.Style
             {                
                 parentNode = CreateNode(_path);
                 _paragraphs.Add((XmlElement)parentNode);
-                var defNode = CreateNode(_path + "/a:pPr/a:defRPr");
+                XmlNode? defNode = CreateNode(_path + "/a:pPr/a:defRPr");
                 if (defNode.InnerXml == "")
                 {
                     ((XmlElement)defNode).SetAttribute("sz", (_defaultFontSize*100).ToString(CultureInfo.InvariantCulture));
-                    var normalStyle = _drawing._drawings.Worksheet.Workbook.Styles.GetNormalStyle();
+                    ExcelNamedStyleXml? normalStyle = _drawing._drawings.Worksheet.Workbook.Styles.GetNormalStyle();
                     if (normalStyle == null)
                     {
                         defNode.InnerXml = "<a:latin typeface=\"Calibri\" /><a:cs typeface=\"Calibri\" />";
@@ -131,11 +132,11 @@ namespace OfficeOpenXml.Style
                 }
             }
 
-            var node = doc.CreateElement("a", "r", ExcelPackage.schemaDrawings);
+            XmlElement? node = doc.CreateElement("a", "r", ExcelPackage.schemaDrawings);
             parentNode.AppendChild(node);
-            var childNode = doc.CreateElement("a", "rPr", ExcelPackage.schemaDrawings);
+            XmlElement? childNode = doc.CreateElement("a", "rPr", ExcelPackage.schemaDrawings);
             node.AppendChild(childNode);
-            var rt = new ExcelParagraph(_drawing._drawings, NameSpaceManager, node, "", SchemaNodeOrder);
+            ExcelParagraph? rt = new ExcelParagraph(_drawing._drawings, NameSpaceManager, node, "", SchemaNodeOrder);
             //var normalStyle = _drawing._drawings.Worksheet.Workbook.Styles.GetNormalStyle();
             //if (normalStyle == null)
             //{
@@ -171,7 +172,7 @@ namespace OfficeOpenXml.Style
         /// <param name="Index">The index</param>
         public void RemoveAt(int Index)
         {
-            var node = _list[Index].TopNode;
+            XmlNode? node = _list[Index].TopNode;
             while (node != null && node.Name != "a:r")
             {
                 node = node.ParentNode;
@@ -195,7 +196,7 @@ namespace OfficeOpenXml.Style
             get
             {
                 StringBuilder sb = new StringBuilder();
-                foreach (var item in _list)
+                foreach (ExcelParagraph? item in _list)
                 {
                     if (item.IsLastInParagraph)
                     {

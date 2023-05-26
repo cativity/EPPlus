@@ -36,26 +36,26 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Text
             {
                 return CreateResult(ExcelErrorValue.Create(eErrorType.Value), DataType.ExcelAddress);
             }
-            var sb = new StringBuilder();
-            foreach (var arg in arguments)
+            StringBuilder? sb = new StringBuilder();
+            foreach (FunctionArgument? arg in arguments)
             {
                 if(arg.IsExcelRange)
                 {
-                    foreach(var cell in arg.ValueAsRangeInfo)
+                    foreach(ICellInfo? cell in arg.ValueAsRangeInfo)
                     {
                         sb.Append(cell.Value);
                     }
                 }
                 else
                 {
-                    var v = arg.ValueFirst;
+                    object? v = arg.ValueFirst;
                     if (v != null)
                     {
                         sb.Append(v);
                     }
                 }
             }
-            var result = sb.ToString();
+            string? result = sb.ToString();
             if(!string.IsNullOrEmpty(result) && result.Length > 32767)
             {
                 return CreateResult(ExcelErrorValue.Create(eErrorType.Value), DataType.ExcelAddress);

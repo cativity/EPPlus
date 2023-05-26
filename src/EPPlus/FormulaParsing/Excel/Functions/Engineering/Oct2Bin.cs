@@ -29,8 +29,8 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Engineering
         public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
         {
             ValidateArguments(arguments, 1);
-            var number = ArgToString(arguments, 0);
-            var padding = default(int?);
+            string? number = ArgToString(arguments, 0);
+            int? padding = default(int?);
             if (arguments.Count() > 1)
             {
                 padding = ArgToInt(arguments, 1);
@@ -39,8 +39,8 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Engineering
                     return this.CreateResult(eErrorType.Num);
                 }
             }
-            var decNumber = TwoComplementHelper.ParseDecFromString(number, 8);
-            var result = Convert.ToString((int)decNumber, 2);
+            double decNumber = TwoComplementHelper.ParseDecFromString(number, 8);
+            string? result = Convert.ToString((int)decNumber, 2);
             if (padding.HasValue)
             {
                 result = PaddingHelper.EnsureLength(result, padding.Value, "0");

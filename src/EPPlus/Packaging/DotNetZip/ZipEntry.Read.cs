@@ -681,13 +681,13 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
 
             int remainingData = dataSize;
 
-            var slurp = new Func<Int64>( () => {
+            Func<long>? slurp = new Func<Int64>( () => {
                     if (remainingData < 8)
                     {
                         throw new BadReadException(String.Format("  Missing data for ZIP64 extra field, position 0x{0:X16}", posn));
                     }
 
-                    var x = BitConverter.ToInt64(buffer, j);
+                    long x = BitConverter.ToInt64(buffer, j);
                     j+= 8;
                     remainingData -= 8;
                     return x;
@@ -750,7 +750,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
 
             int remainingData = dataSize;
 
-            var slurp = new Func<DateTime>( () => {
+            Func<DateTime>? slurp = new Func<DateTime>( () => {
                     Int32 timet = BitConverter.ToInt32(buffer, j);
                     j += 4;
                     remainingData -= 4;

@@ -38,7 +38,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Database
         {
             get
             {
-                var field = _fieldIndexes[index];
+                string? field = _fieldIndexes[index];
                 return _items[field];
             }
         }

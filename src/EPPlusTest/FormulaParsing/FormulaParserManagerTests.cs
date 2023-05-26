@@ -70,12 +70,12 @@ namespace EPPlusTest.FormulaParsing
         [TestMethod]
         public void FunctionsShouldBeCopied()
         {
-            using (var package1 = new ExcelPackage())
+            using (ExcelPackage? package1 = new ExcelPackage())
             {
                 package1.Workbook.FormulaParserManager.LoadFunctionModule(new MyModule());
-                using (var package2 = new ExcelPackage())
+                using (ExcelPackage? package2 = new ExcelPackage())
                 {
-                    var origNumberOfFuncs = package2.Workbook.FormulaParserManager.GetImplementedFunctionNames().Count();
+                    int origNumberOfFuncs = package2.Workbook.FormulaParserManager.GetImplementedFunctionNames().Count();
 
                     // replace functions including the custom functions from package 1
                     package2.Workbook.FormulaParserManager.CopyFunctionsFrom(package1.Workbook);
@@ -90,11 +90,11 @@ namespace EPPlusTest.FormulaParsing
         [TestMethod]
         public void ShouldParse()
         {
-            using(var package = new ExcelPackage())
+            using(ExcelPackage? package = new ExcelPackage())
             {
-                var sheet = package.Workbook.Worksheets.Add("test");
+                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
                 sheet.Cells["A3"].Value = 2;
-                var res = package.Workbook.FormulaParser.Parse("1+A3", "test!A3");
+                object? res = package.Workbook.FormulaParser.Parse("1+A3", "test!A3");
                 Assert.AreEqual(3d, res);
                 Assert.AreEqual(2, sheet.Cells["A3"].Value);
 
@@ -104,13 +104,13 @@ namespace EPPlusTest.FormulaParsing
         [TestMethod]
         public void ShouldReturnCalcChain()
         {
-            using(var package = new ExcelPackage())
+            using(ExcelPackage? package = new ExcelPackage())
             {
-                var sheet = package.Workbook.Worksheets.Add("test");
+                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
                 sheet.Cells["A1"].Formula = "SUM(A2:A3)";
                 sheet.Cells["A2"].Formula = "1+2";
                 sheet.Cells["A3"].Formula = "MIN(1,2)";
-                var dc = package.Workbook.FormulaParserManager.GetCalculationChain(sheet.Cells["A1"]);
+                IEnumerable<IFormulaCellInfo>? dc = package.Workbook.FormulaParserManager.GetCalculationChain(sheet.Cells["A1"]);
                 Assert.AreEqual(3, dc.Count());
                 Assert.AreEqual("A1", dc.Last().Address);
 
@@ -119,14 +119,14 @@ namespace EPPlusTest.FormulaParsing
         [TestMethod]
         public void ValidateCalcChainCrossWorkSheet()
         {
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var ws1 = package.Workbook.Worksheets.Add("sheet1");
-                var ws2 = package.Workbook.Worksheets.Add("sheet2");
+                ExcelWorksheet? ws1 = package.Workbook.Worksheets.Add("sheet1");
+                ExcelWorksheet? ws2 = package.Workbook.Worksheets.Add("sheet2");
                 ws1.Cells["A1"].Formula = "sheet2!A1+A2";
                 ws1.Cells["A2"].Formula = "1+2";
                 ws2.Cells["A1"].Formula = "1+1";
-                var dc=package.Workbook.FormulaParserManager.GetCalculationChain(ws1.Cells["A1"]);
+                IEnumerable<IFormulaCellInfo>? dc=package.Workbook.FormulaParserManager.GetCalculationChain(ws1.Cells["A1"]);
                 Assert.AreEqual(3, dc.Count());
 
                 Assert.AreEqual("sheet2", dc.ElementAt(0).Worksheet);
@@ -143,18 +143,18 @@ namespace EPPlusTest.FormulaParsing
         [TestMethod]
         public void ValidateCalcChainCrossWorkSheet2()
         {
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var ws1 = package.Workbook.Worksheets.Add("sheet1");
-                var ws2 = package.Workbook.Worksheets.Add("sheet2");
-                var ws3 = package.Workbook.Worksheets.Add("sheet3");
+                ExcelWorksheet? ws1 = package.Workbook.Worksheets.Add("sheet1");
+                ExcelWorksheet? ws2 = package.Workbook.Worksheets.Add("sheet2");
+                ExcelWorksheet? ws3 = package.Workbook.Worksheets.Add("sheet3");
                 ws1.Cells["A1"].Formula = "1+C3";
                 ws1.SetFormula(3,3, "1+1");
                 ws2.Cells["A2"].Formula = "1+2";
                 ws2.Cells["A1"].Formula = "1+A2";
                 ws3.Cells["A1"].Formula = "sheet1!A1-A2+sheet2!A1";
                 ws3.SetValue("A2", 1);
-                var dc = package.Workbook.FormulaParserManager.GetCalculationChain(ws3.Cells["A1"]);
+                IEnumerable<IFormulaCellInfo>? dc = package.Workbook.FormulaParserManager.GetCalculationChain(ws3.Cells["A1"]);
                 Assert.AreEqual(5, dc.Count());
 
                 Assert.AreEqual("sheet1", dc.ElementAt(0).Worksheet);

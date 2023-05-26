@@ -31,6 +31,7 @@ using System;
 using System.Text;
 using OfficeOpenXml;
 using OfficeOpenXml.Filter;
+using OfficeOpenXml.Table;
 
 namespace EPPlusTest.Filter
 {
@@ -40,19 +41,19 @@ namespace EPPlusTest.Filter
         [TestMethod]
         public void ValuesFilter()
         {
-            var pck=OpenPackage("AutoFilterValues.xlsx", true);
-            var ws = pck.Workbook.Worksheets.Add("Values");
+            ExcelPackage? pck=OpenPackage("AutoFilterValues.xlsx", true);
+            ExcelWorksheet? ws = pck.Workbook.Worksheets.Add("Values");
             LoadTestdata(ws);
 
             ws.AutoFilterAddress = ws.Cells["A1:D100"];
-            var col=ws.AutoFilter.Columns.AddValueFilterColumn(1);
+            ExcelValueFilterColumn? col=ws.AutoFilter.Columns.AddValueFilterColumn(1);
             col.Filters.Add("3");
             col.Filters.Add("6");
             col.Filters.Add("19");
             col.Filters.Blank = true;
             col.Filters.Add(new ExcelFilterDateGroupItem(2018, 12));
             
-            var col2 = ws.AutoFilter.Columns.AddValueFilterColumn(2);
+            ExcelValueFilterColumn? col2 = ws.AutoFilter.Columns.AddValueFilterColumn(2);
             col2.Filters.Add("Value 6");
             ws.AutoFilter.ApplyFilter();
 
@@ -76,21 +77,21 @@ namespace EPPlusTest.Filter
         [TestMethod]
         public void TableValuesFilter()
         {
-            var pck = OpenPackage("TableFilterValues.xlsx", true);
-            var ws = pck.Workbook.Worksheets.Add("TableValues");
+            ExcelPackage? pck = OpenPackage("TableFilterValues.xlsx", true);
+            ExcelWorksheet? ws = pck.Workbook.Worksheets.Add("TableValues");
             LoadTestdata(ws);
 
-            var tbl =ws.Tables.Add(ws.Cells["A1:D100"], "Table1");
+            ExcelTable? tbl =ws.Tables.Add(ws.Cells["A1:D100"], "Table1");
 
             tbl.ShowFilter = true;
-            var col = tbl.AutoFilter.Columns.AddValueFilterColumn(1);
+            ExcelValueFilterColumn? col = tbl.AutoFilter.Columns.AddValueFilterColumn(1);
             col.Filters.Add("3");
             col.Filters.Add("6");
             col.Filters.Add("19");
             col.Filters.Blank = true;
             col.Filters.Add(new ExcelFilterDateGroupItem(2018, 12));
 
-            var col2 = tbl.AutoFilter.Columns.AddValueFilterColumn(2);
+            ExcelValueFilterColumn? col2 = tbl.AutoFilter.Columns.AddValueFilterColumn(2);
             col2.Filters.Add("Value 6");
             tbl.AutoFilter.ApplyFilter();
 
@@ -113,12 +114,12 @@ namespace EPPlusTest.Filter
         [TestMethod]
         public void CustomFilter()
         {
-            var pck = OpenPackage("AutoFilterCustom.xlsx", true);
-            var ws = pck.Workbook.Worksheets.Add("Autofilter");
+            ExcelPackage? pck = OpenPackage("AutoFilterCustom.xlsx", true);
+            ExcelWorksheet? ws = pck.Workbook.Worksheets.Add("Autofilter");
             LoadTestdata(ws);
 
             ws.AutoFilterAddress = ws.Cells["A1:D100"];
-            var col = ws.AutoFilter.Columns.AddCustomFilterColumn(2);            
+            ExcelCustomFilterColumn? col = ws.AutoFilter.Columns.AddCustomFilterColumn(2);            
             col.And = true;
             col.Filters.Add(new ExcelFilterCustomItem("Val*"));
             col.Filters.Add(new ExcelFilterCustomItem("*3"));
@@ -142,13 +143,13 @@ namespace EPPlusTest.Filter
         [TestMethod]
         public void Top10Filter_100()
         {
-            var pck = OpenPackage("AutoFilterTop10_100.xlsx", true);
+            ExcelPackage? pck = OpenPackage("AutoFilterTop10_100.xlsx", true);
 
             /*** Bottom 12 ***/
-            var ws = pck.Workbook.Worksheets.Add("Bottom12");
+            ExcelWorksheet? ws = pck.Workbook.Worksheets.Add("Bottom12");
             LoadTestdata(ws);
             ws.AutoFilterAddress = ws.Cells["A1:D100"];
-            var col = ws.AutoFilter.Columns.AddTop10FilterColumn(1);
+            ExcelTop10FilterColumn? col = ws.AutoFilter.Columns.AddTop10FilterColumn(1);
             col.Value = 12;
 
             /*** Top 10 ***/
@@ -185,7 +186,7 @@ namespace EPPlusTest.Filter
             /*** Reopen and validate ***/
             pck=OpenPackage("AutoFilterTop10_100.xlsx", false);
             ws = pck.Workbook.Worksheets["Bottom12"];
-            var top10Col = (ExcelTop10FilterColumn)ws.AutoFilter.Columns[1];
+            ExcelTop10FilterColumn? top10Col = (ExcelTop10FilterColumn)ws.AutoFilter.Columns[1];
             Assert.AreEqual(13, top10Col.FilterValue);
 
             ws = pck.Workbook.Worksheets["Top10"];
@@ -205,14 +206,14 @@ namespace EPPlusTest.Filter
         [TestMethod]
         public void Top10Filter_500()
         {
-            var pck = OpenPackage("AutoFilterTop10_500.xlsx", true);
+            ExcelPackage? pck = OpenPackage("AutoFilterTop10_500.xlsx", true);
 
             /*** Bottom 12 ***/
-            var ws = pck.Workbook.Worksheets.Add("Bottom12");
+            ExcelWorksheet? ws = pck.Workbook.Worksheets.Add("Bottom12");
             LoadTestdata(ws, 500);
             SetDateValues(ws);
             ws.AutoFilterAddress = ws.Cells["A1:D500"];
-            var col = ws.AutoFilter.Columns.AddTop10FilterColumn(1);
+            ExcelTop10FilterColumn? col = ws.AutoFilter.Columns.AddTop10FilterColumn(1);
             col.Value = 12;
 
             /*** Top 10 ***/
@@ -250,7 +251,7 @@ namespace EPPlusTest.Filter
             /*** Reopen and validate ***/
             pck=OpenPackage("AutoFilterTop10_500.xlsx", false);
             ws = pck.Workbook.Worksheets["Bottom12"];
-            var top10Col = (ExcelTop10FilterColumn)ws.AutoFilter.Columns[1];
+            ExcelTop10FilterColumn? top10Col = (ExcelTop10FilterColumn)ws.AutoFilter.Columns[1];
             Assert.AreEqual(13, top10Col.FilterValue);
 
             ws = pck.Workbook.Worksheets["Top10"];
@@ -271,14 +272,14 @@ namespace EPPlusTest.Filter
         [TestMethod]
         public void Top10Filter_733()
         {
-            var pck = OpenPackage("AutoFilterTop10_733.xlsx", true);
+            ExcelPackage? pck = OpenPackage("AutoFilterTop10_733.xlsx", true);
 
             /*** Bottom 12 ***/
-            var ws = pck.Workbook.Worksheets.Add("Bottom12");
+            ExcelWorksheet? ws = pck.Workbook.Worksheets.Add("Bottom12");
             LoadTestdata(ws, 733);
             SetDateValues(ws);
             ws.AutoFilterAddress = ws.Cells["A1:D733"];
-            var col = ws.AutoFilter.Columns.AddTop10FilterColumn(1);
+            ExcelTop10FilterColumn? col = ws.AutoFilter.Columns.AddTop10FilterColumn(1);
             col.Value = 12;
 
             /*** Top 10 ***/
@@ -316,7 +317,7 @@ namespace EPPlusTest.Filter
             /*** Reopen and validate ***/
             pck = OpenPackage("AutoFilterTop10_733.xlsx", false);
             ws = pck.Workbook.Worksheets["Bottom12"];
-            var top10Col = (ExcelTop10FilterColumn)ws.AutoFilter.Columns[1];
+            ExcelTop10FilterColumn? top10Col = (ExcelTop10FilterColumn)ws.AutoFilter.Columns[1];
             Assert.AreEqual(13, top10Col.FilterValue);
 
             ws = pck.Workbook.Worksheets["Top10"];
@@ -336,24 +337,24 @@ namespace EPPlusTest.Filter
         [TestMethod]
         public void ColorFilter()
         {
-            var pck = OpenPackage("ColorFilter.xlsx", true);
+            ExcelPackage? pck = OpenPackage("ColorFilter.xlsx", true);
 
             /*** Bottom 12 ***/
-            var ws = pck.Workbook.Worksheets.Add("ColorFilter");
+            ExcelWorksheet? ws = pck.Workbook.Worksheets.Add("ColorFilter");
             LoadTestdata(ws, 100);
             ws.AutoFilterAddress = ws.Cells["A1:D733"];
-            var col = ws.AutoFilter.Columns.AddColorFilterColumn(1);            
+            ExcelColorFilterColumn? col = ws.AutoFilter.Columns.AddColorFilterColumn(1);            
         }
         [TestMethod]
         public void IconFilter()
         {
-            var pck = OpenPackage("Iconfilter.xlsx", true);
+            ExcelPackage? pck = OpenPackage("Iconfilter.xlsx", true);
 
             /*** Bottom 12 ***/
-            var ws = pck.Workbook.Worksheets.Add("IconFilter");
+            ExcelWorksheet? ws = pck.Workbook.Worksheets.Add("IconFilter");
             LoadTestdata(ws, 100);
             ws.AutoFilterAddress = ws.Cells["A1:D733"];
-            var col = ws.AutoFilter.Columns.AddIconFilterColumn(1);
+            ExcelIconFilterColumn? col = ws.AutoFilter.Columns.AddIconFilterColumn(1);
             col.IconSet = OfficeOpenXml.ConditionalFormatting.eExcelconditionalFormattingIconsSetType.ThreeTrafficLights1;
             col.IconId = 1;
         }

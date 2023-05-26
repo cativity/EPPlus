@@ -49,8 +49,8 @@ namespace EPPlusTest.Drawing
         [ClassCleanup]
         public static void Cleanup()
         {
-            var dirName = _pck.File.DirectoryName;
-            var fileName = _pck.File.FullName;
+            string? dirName = _pck.File.DirectoryName;
+            string? fileName = _pck.File.FullName;
 
             SaveAndCleanup(_pck);
             File.Copy(fileName, dirName + "\\DrawingFillRead.xlsx", true);
@@ -60,10 +60,10 @@ namespace EPPlusTest.Drawing
         public void ColorProperty()
         {
             //Setup
-            var expected = Color.Blue;
-            var ws = _pck.Workbook.Worksheets.Add("SolidFill");
+            Color expected = Color.Blue;
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("SolidFill");
 
-            var shape = ws.Drawings.AddShape("Shape1", eShapeStyle.Rect);
+            ExcelShape? shape = ws.Drawings.AddShape("Shape1", eShapeStyle.Rect);
             shape.SetPosition(1, 0, 5, 0);
             
             //Act
@@ -79,9 +79,9 @@ namespace EPPlusTest.Drawing
         public void SolidFill_NoColor()
         {
             //Setup
-            var ws = _pck.Workbook.Worksheets.Add("SolidFillNoColor");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("SolidFillNoColor");
 
-            var shape = ws.Drawings.AddShape("Shape1", eShapeStyle.Rect);
+            ExcelShape? shape = ws.Drawings.AddShape("Shape1", eShapeStyle.Rect);
             shape.SetPosition(1, 0, 5, 0);
 
             //Act
@@ -96,10 +96,10 @@ namespace EPPlusTest.Drawing
         public void SolidFill_Color()
         {
             //Setup
-            var expected = Color.Green;
-            var ws = _pck.Workbook.Worksheets.Add("SolidFillFromSolidFill");
+            Color expected = Color.Green;
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("SolidFillFromSolidFill");
 
-            var shape = ws.Drawings.AddShape("Shape1", eShapeStyle.Rect);
+            ExcelShape? shape = ws.Drawings.AddShape("Shape1", eShapeStyle.Rect);
             shape.SetPosition(1, 0, 5, 0);
 
             //Act
@@ -116,9 +116,9 @@ namespace EPPlusTest.Drawing
         public void NoFill()
         {
             //Setup
-            var ws = _pck.Workbook.Worksheets.Add("NoFill");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("NoFill");
 
-            var shape = ws.Drawings.AddShape("Shape1", eShapeStyle.Rect);
+            ExcelShape? shape = ws.Drawings.AddShape("Shape1", eShapeStyle.Rect);
             shape.SetPosition(1, 0, 5, 0);
 
             //Act
@@ -131,10 +131,10 @@ namespace EPPlusTest.Drawing
         public void SolidFill_ColorPreset()
         {
             //Setup
-            var expected = ePresetColor.Red;
-            var ws = _pck.Workbook.Worksheets.Add("SolidFillFromPresetClr");
+            ePresetColor expected = ePresetColor.Red;
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("SolidFillFromPresetClr");
 
-            var shape = ws.Drawings.AddShape("Shape1", eShapeStyle.Rect);
+            ExcelShape? shape = ws.Drawings.AddShape("Shape1", eShapeStyle.Rect);
             shape.SetPosition(1, 0, 5, 0);
 
             //Act
@@ -150,10 +150,10 @@ namespace EPPlusTest.Drawing
         public void SolidFill_ColorScheme()
         {
             //Setup
-            var expected = eSchemeColor.Accent6;
-            var ws = _pck.Workbook.Worksheets.Add("SolidFillFromSchemeClr");
+            eSchemeColor expected = eSchemeColor.Accent6;
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("SolidFillFromSchemeClr");
 
-            var shape = ws.Drawings.AddShape("Shape1", eShapeStyle.Rect);
+            ExcelShape? shape = ws.Drawings.AddShape("Shape1", eShapeStyle.Rect);
             shape.SetPosition(1, 0, 5, 0);
 
             //Act
@@ -170,12 +170,12 @@ namespace EPPlusTest.Drawing
         public void SolidFill_ColorPercentage()
         {
             //Setup
-            var expectedR = 51;
-            var expectedG = 49;
-            var expectedB = 50;
-            var ws = _pck.Workbook.Worksheets.Add("SolidFillFromColorPrc");
+            int expectedR = 51;
+            int expectedG = 49;
+            int expectedB = 50;
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("SolidFillFromColorPrc");
 
-            var shape = ws.Drawings.AddShape("Shape1", eShapeStyle.Rect);
+            ExcelShape? shape = ws.Drawings.AddShape("Shape1", eShapeStyle.Rect);
             shape.SetPosition(1, 0, 5, 0);
 
             //Act
@@ -194,12 +194,12 @@ namespace EPPlusTest.Drawing
         public void SolidFill_ColorHsl()
         {
             //Setup
-            var expectedHue = 180;
-            var expectedLum = 15;
-            var expectedSat = 50;
-            var ws = _pck.Workbook.Worksheets.Add("SolidFillFromColorHcl");
+            int expectedHue = 180;
+            int expectedLum = 15;
+            int expectedSat = 50;
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("SolidFillFromColorHcl");
 
-            var shape = ws.Drawings.AddShape("Shape1", eShapeStyle.Rect);
+            ExcelShape? shape = ws.Drawings.AddShape("Shape1", eShapeStyle.Rect);
             shape.SetPosition(1, 0, 5, 0);
 
             //Act
@@ -218,10 +218,10 @@ namespace EPPlusTest.Drawing
         public void SolidFill_ColorSystem()
         {
             //Setup
-            var expected= eSystemColor.Background;
-            var ws = _pck.Workbook.Worksheets.Add("SolidFillFromColorSystem");
+            eSystemColor expected= eSystemColor.Background;
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("SolidFillFromColorSystem");
 
-            var shape = ws.Drawings.AddShape("Shape1", eShapeStyle.Rect);
+            ExcelShape? shape = ws.Drawings.AddShape("Shape1", eShapeStyle.Rect);
             shape.SetPosition(1, 0, 5, 0);
 
             //Act
@@ -240,10 +240,10 @@ namespace EPPlusTest.Drawing
         public void Transparancy()
         {
             //Setup
-            var expected = 45;
-            var ws = _pck.Workbook.Worksheets.Add("Transparancy");
+            int expected = 45;
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("Transparancy");
 
-            var shape = ws.Drawings.AddShape("Shape1", eShapeStyle.Rect);
+            ExcelShape? shape = ws.Drawings.AddShape("Shape1", eShapeStyle.Rect);
             shape.SetPosition(1, 0, 5, 0);
 
             //Act
@@ -260,10 +260,10 @@ namespace EPPlusTest.Drawing
         public void TransformAlpha()
         {
             //Setup
-            var expected = 45;
-            var ws = _pck.Workbook.Worksheets.Add("Alpha");
+            int expected = 45;
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("Alpha");
 
-            var shape = ws.Drawings.AddShape("Shape1", eShapeStyle.Rect);
+            ExcelShape? shape = ws.Drawings.AddShape("Shape1", eShapeStyle.Rect);
             shape.SetPosition(1, 0, 5, 0);
 
             //Act
@@ -281,10 +281,10 @@ namespace EPPlusTest.Drawing
         public void TransformTint()
         {
             //Setup
-            var expected = 30;
-            var ws = _pck.Workbook.Worksheets.Add("Tint");
+            int expected = 30;
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("Tint");
 
-            var shape = ws.Drawings.AddShape("Shape1", eShapeStyle.Rect);
+            ExcelShape? shape = ws.Drawings.AddShape("Shape1", eShapeStyle.Rect);
             shape.SetPosition(1, 0, 5, 0);
 
             //Act
@@ -301,10 +301,10 @@ namespace EPPlusTest.Drawing
         public void TransformShade()
         {
             //Setup
-            var expected = 95;
-            var ws = _pck.Workbook.Worksheets.Add("Shade");
+            int expected = 95;
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("Shade");
 
-            var shape = ws.Drawings.AddShape("Shape1", eShapeStyle.Rect);
+            ExcelShape? shape = ws.Drawings.AddShape("Shape1", eShapeStyle.Rect);
             shape.SetPosition(1, 0, 5, 0);
 
             //Act
@@ -321,9 +321,9 @@ namespace EPPlusTest.Drawing
         public void TransformInverse_true()
         {
             //Setup
-            var ws = _pck.Workbook.Worksheets.Add("Inverse_set");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("Inverse_set");
 
-            var shape = ws.Drawings.AddShape("Shape1", eShapeStyle.Rect);
+            ExcelShape? shape = ws.Drawings.AddShape("Shape1", eShapeStyle.Rect);
             shape.SetPosition(1, 0, 5, 0);
 
             //Act
@@ -339,10 +339,10 @@ namespace EPPlusTest.Drawing
         public void TransformAlphaModulation()
         {
             //Setup
-            var expected = 50;
-            var ws = _pck.Workbook.Worksheets.Add("AlphaModulation");
+            int expected = 50;
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("AlphaModulation");
 
-            var shape = ws.Drawings.AddShape("Shape1", eShapeStyle.Rect);
+            ExcelShape? shape = ws.Drawings.AddShape("Shape1", eShapeStyle.Rect);
             shape.SetPosition(1, 0, 5, 0);
 
             //Act
@@ -360,10 +360,10 @@ namespace EPPlusTest.Drawing
         public void TransformAlphaOffset()
         {
             //Setup
-            var expected = -10;
-            var ws = _pck.Workbook.Worksheets.Add("AlphaOffset");
+            int expected = -10;
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("AlphaOffset");
 
-            var shape = ws.Drawings.AddShape("Shape1", eShapeStyle.Rect);
+            ExcelShape? shape = ws.Drawings.AddShape("Shape1", eShapeStyle.Rect);
             shape.SetPosition(1, 0, 5, 0);
 
             //Act
@@ -380,12 +380,12 @@ namespace EPPlusTest.Drawing
         public void TransformColorPercentage()
         {
             //Setup
-            var expectedR = 30;
-            var expectedG = 60;
-            var expectedB = 20;
-            var ws = _pck.Workbook.Worksheets.Add("TransColorPerc");
+            int expectedR = 30;
+            int expectedG = 60;
+            int expectedB = 20;
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("TransColorPerc");
 
-            var shape = ws.Drawings.AddShape("Shape1", eShapeStyle.Rect);
+            ExcelShape? shape = ws.Drawings.AddShape("Shape1", eShapeStyle.Rect);
             shape.SetPosition(1, 0, 5, 0);
 
             //Act
@@ -408,12 +408,12 @@ namespace EPPlusTest.Drawing
         public void TransformColorModulation()
         {
             //Setup
-            var expectedR = 3.33;
-            var expectedG = 50;
-            var expectedB = 25600;
-            var ws = _pck.Workbook.Worksheets.Add("TransColorMod");
+            double expectedR = 3.33;
+            int expectedG = 50;
+            int expectedB = 25600;
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("TransColorMod");
 
-            var shape = ws.Drawings.AddShape("Shape1", eShapeStyle.Rect);
+            ExcelShape? shape = ws.Drawings.AddShape("Shape1", eShapeStyle.Rect);
             shape.SetPosition(1, 0, 5, 0);
 
             //Act
@@ -436,12 +436,12 @@ namespace EPPlusTest.Drawing
         public void TransformColoOffset()
         {
             //Setup
-            var expectedR = 10;
-            var expectedG = -20;
-            var expectedB = 30;
-            var ws = _pck.Workbook.Worksheets.Add("TransColorOffset");
+            int expectedR = 10;
+            int expectedG = -20;
+            int expectedB = 30;
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("TransColorOffset");
 
-            var shape = ws.Drawings.AddShape("Shape1", eShapeStyle.Rect);
+            ExcelShape? shape = ws.Drawings.AddShape("Shape1", eShapeStyle.Rect);
             shape.SetPosition(1, 0, 5, 0);
 
             //Act
@@ -464,11 +464,11 @@ namespace EPPlusTest.Drawing
         public void TransformHslOffset()
         {
             //Setup
-            var expectedLum = 10;
-            var expectedSat = -20;
-            var ws = _pck.Workbook.Worksheets.Add("TransHslOffset");
+            int expectedLum = 10;
+            int expectedSat = -20;
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("TransHslOffset");
 
-            var shape = ws.Drawings.AddShape("Shape1", eShapeStyle.Rect);
+            ExcelShape? shape = ws.Drawings.AddShape("Shape1", eShapeStyle.Rect);
             shape.SetPosition(1, 0, 5, 0);
 
             //Act
@@ -488,11 +488,11 @@ namespace EPPlusTest.Drawing
         public void TransformHslModulation()
         {
             //Setup
-            var expectedLum = 50;
-            var expectedSat = 200;
-            var ws = _pck.Workbook.Worksheets.Add("TransHslModulation");
+            int expectedLum = 50;
+            int expectedSat = 200;
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("TransHslModulation");
 
-            var shape = ws.Drawings.AddShape("Shape1", eShapeStyle.Rect);
+            ExcelShape? shape = ws.Drawings.AddShape("Shape1", eShapeStyle.Rect);
             shape.SetPosition(1, 0, 5, 0);
 
             //Act
@@ -514,9 +514,9 @@ namespace EPPlusTest.Drawing
         public void Gradient()
         {
             //Setup
-            var ws = _pck.Workbook.Worksheets.Add("Gradient");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("Gradient");
 
-            var shape = ws.Drawings.AddShape("Shape1", eShapeStyle.Rect);
+            ExcelShape? shape = ws.Drawings.AddShape("Shape1", eShapeStyle.Rect);
             shape.SetPosition(1, 0, 5, 0);
 
             //Act
@@ -544,9 +544,9 @@ namespace EPPlusTest.Drawing
         public void GradientNotSet()
         {
             //Setup
-            var ws = _pck.Workbook.Worksheets.Add("GradientNotSet");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("GradientNotSet");
 
-            var shape = ws.Drawings.AddShape("Shape1", eShapeStyle.Rect);
+            ExcelShape? shape = ws.Drawings.AddShape("Shape1", eShapeStyle.Rect);
             shape.SetPosition(1, 0, 5, 0);
 
             //Act
@@ -561,9 +561,9 @@ namespace EPPlusTest.Drawing
         public void GradientCircularPath()
         {
             //Setup
-            var ws = _pck.Workbook.Worksheets.Add("GradientCircular");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("GradientCircular");
 
-            var shape = ws.Drawings.AddShape("Shape1", eShapeStyle.Rect);
+            ExcelShape? shape = ws.Drawings.AddShape("Shape1", eShapeStyle.Rect);
             shape.SetPosition(1, 0, 5, 0);
 
             //Act
@@ -586,9 +586,9 @@ namespace EPPlusTest.Drawing
         public void GradientRectPath()
         {
             //Setup
-            var ws = _pck.Workbook.Worksheets.Add("GradientRect");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("GradientRect");
 
-            var shape = ws.Drawings.AddShape("Shape1", eShapeStyle.Rect);
+            ExcelShape? shape = ws.Drawings.AddShape("Shape1", eShapeStyle.Rect);
             shape.SetPosition(1, 0, 5, 0);
 
             //Act
@@ -613,9 +613,9 @@ namespace EPPlusTest.Drawing
         public void GradientShapePath()
         {
             //Setup
-            var ws = _pck.Workbook.Worksheets.Add("GradientShape");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("GradientShape");
 
-            var shape = ws.Drawings.AddShape("Shape1", eShapeStyle.Heart);
+            ExcelShape? shape = ws.Drawings.AddShape("Shape1", eShapeStyle.Heart);
             shape.SetPosition(1, 0, 5, 0);
 
             //Act
@@ -638,9 +638,9 @@ namespace EPPlusTest.Drawing
         public void Gradient_AddMethods()
         {
             //Setup
-            var ws = _pck.Workbook.Worksheets.Add("GradientAddMethods");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("GradientAddMethods");
 
-            var shape = ws.Drawings.AddShape("Shape1", eShapeStyle.Rect);
+            ExcelShape? shape = ws.Drawings.AddShape("Shape1", eShapeStyle.Rect);
             shape.SetPosition(1, 0, 5, 0);
 
             //Act
@@ -697,9 +697,9 @@ namespace EPPlusTest.Drawing
         public void PatternDefault()
         {
             //Setup
-            var ws = _pck.Workbook.Worksheets.Add("PatternDefault");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("PatternDefault");
 
-            var shape = ws.Drawings.AddShape("Shape1", eShapeStyle.RoundRect);
+            ExcelShape? shape = ws.Drawings.AddShape("Shape1", eShapeStyle.RoundRect);
             shape.SetPosition(1, 0, 5, 0);
 
             //Act
@@ -717,9 +717,9 @@ namespace EPPlusTest.Drawing
         public void PatternDefaultColorCheck()
         {
             //Setup
-            var ws = _pck.Workbook.Worksheets.Add("PatternDefaultColorCheck");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("PatternDefaultColorCheck");
 
-            var shape = ws.Drawings.AddShape("Shape1", eShapeStyle.RoundRect);
+            ExcelShape? shape = ws.Drawings.AddShape("Shape1", eShapeStyle.RoundRect);
             shape.SetPosition(1, 0, 5, 0);
 
             //Act
@@ -739,9 +739,9 @@ namespace EPPlusTest.Drawing
         public void PatternCross()
         {
             //Setup
-            var ws = _pck.Workbook.Worksheets.Add("PatternCross");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("PatternCross");
 
-            var shape = ws.Drawings.AddShape("Shape1", eShapeStyle.RoundRect);
+            ExcelShape? shape = ws.Drawings.AddShape("Shape1", eShapeStyle.RoundRect);
             shape.SetPosition(1, 0, 5, 0);
 
             //Act
@@ -761,9 +761,9 @@ namespace EPPlusTest.Drawing
         public void BlipFill_DefaultSettings()
         {
             //Setup
-            var ws = _pck.Workbook.Worksheets.Add("BlipFill");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("BlipFill");
 
-            var shape = AddBlip(ws, 1,"Shape1",false, 0, 0);
+            ExcelShape? shape = AddBlip(ws, 1,"Shape1",false, 0, 0);
 
             //Assert
             Assert.AreEqual(eFillStyle.BlipFill, shape.Fill.Style);
@@ -776,8 +776,8 @@ namespace EPPlusTest.Drawing
         public void BlipFill_NoImage()
         {
             //Setup
-            var ws = _pck.Workbook.Worksheets.Add("BlipFillNoImage");
-            var shape = ws.Drawings.AddShape("Shape1", eShapeStyle.RoundRect);
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("BlipFillNoImage");
+            ExcelShape? shape = ws.Drawings.AddShape("Shape1", eShapeStyle.RoundRect);
             shape.SetPosition(1, 0, 5, 0);
             shape.Fill.Style = eFillStyle.BlipFill;
 
@@ -791,9 +791,9 @@ namespace EPPlusTest.Drawing
         public void BlipFill_Stretch()
         {
             //Setup
-            var ws = _pck.Workbook.Worksheets.Add("BlipFillStretch");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("BlipFillStretch");
 
-            var shape = AddBlip(ws, 1, "Shape1", false, 0, 0);
+            ExcelShape? shape = AddBlip(ws, 1, "Shape1", false, 0, 0);
             shape.Fill.BlipFill.Stretch = true;
             shape.Fill.BlipFill.StretchOffset.TopOffset = 20;
             shape.Fill.BlipFill.StretchOffset.BottomOffset = 10;
@@ -815,9 +815,9 @@ namespace EPPlusTest.Drawing
         public void BlipFill_SourceRectangle()
         {
             //Setup
-            var ws = _pck.Workbook.Worksheets.Add("BlipFillSourceRectangle");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("BlipFillSourceRectangle");
 
-            var shape = AddBlip(ws, 1, "Shape1", false, 0, 0);
+            ExcelShape? shape = AddBlip(ws, 1, "Shape1", false, 0, 0);
             shape.Fill.BlipFill.Stretch = false;
             shape.Fill.BlipFill.SourceRectangle.TopOffset = 20;
             shape.Fill.BlipFill.SourceRectangle.BottomOffset = 10;
@@ -839,9 +839,9 @@ namespace EPPlusTest.Drawing
         public void BlipFill_Tile()
         {
             //Setup
-            var ws = _pck.Workbook.Worksheets.Add("BlipFillTile");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("BlipFillTile");
 
-            var shape = ws.Drawings.AddShape("Shape1", eShapeStyle.RoundRect);
+            ExcelShape? shape = ws.Drawings.AddShape("Shape1", eShapeStyle.RoundRect);
             shape.SetPosition(1, 0, 5, 0);
 
             //Act
@@ -872,16 +872,16 @@ namespace EPPlusTest.Drawing
         [TestMethod]
         public void BlipFill_PieChart()
         {
-            var ws = _pck.Workbook.Worksheets.Add("BlipFillPieChart");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("BlipFillPieChart");
             LoadTestdata(ws);
 
-            var chart = ws.Drawings.AddPieChart("PieChart1", ePieChartType.Pie);
-            var serie = chart.Series.Add("D2:D6", "A2:A6");
+            ExcelPieChart? chart = ws.Drawings.AddPieChart("PieChart1", ePieChartType.Pie);
+            ExcelPieChartSerie? serie = chart.Series.Add("D2:D6", "A2:A6");
             chart.Fill.Style = eFillStyle.BlipFill;
             chart.Fill.BlipFill.Image.SetImage(Resources.CodeTif, ePictureType.Tif);
 
 
-            var pt=chart.Series[0].DataPoints.Add(0);
+            ExcelChartDataPoint? pt=chart.Series[0].DataPoints.Add(0);
             pt.Fill.Style = eFillStyle.BlipFill;
             pt.Fill.BlipFill.Image.SetImage(Resources.CodeTif, ePictureType.Tif);
 
@@ -891,9 +891,9 @@ namespace EPPlusTest.Drawing
         public void BlipFill_OverwriteImage()
         {
             //Setup
-            var ws = _pck.Workbook.Worksheets.Add("BlipOverwriteImage");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("BlipOverwriteImage");
 
-            var shape = AddBlip(ws, 1, "Shape1", false, 0, 0);
+            ExcelShape? shape = AddBlip(ws, 1, "Shape1", false, 0, 0);
 
             //Act
             shape.Fill.Style = eFillStyle.BlipFill;
@@ -908,7 +908,7 @@ namespace EPPlusTest.Drawing
 
         private static ExcelShape AddBlip(ExcelWorksheet ws, int row, string shapeName, bool stretch, double offset, double sourceRect=0)
         {
-            var shape = ws.Drawings.AddShape(shapeName, eShapeStyle.RoundRect);
+            ExcelShape? shape = ws.Drawings.AddShape(shapeName, eShapeStyle.RoundRect);
             shape.SetPosition(row, 0, 5, 0);
 
             //Act

@@ -523,8 +523,8 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
             EventHandler<SaveProgressEventArgs> sp = SaveProgress;
             if (sp != null)
             {
-                var e = SaveProgressEventArgs.ByteUpdate(ArchiveNameForEvent, entry,
-                                                         bytesXferred, totalBytesToXfer);
+                SaveProgressEventArgs? e = SaveProgressEventArgs.ByteUpdate(ArchiveNameForEvent, entry,
+                                                                            bytesXferred, totalBytesToXfer);
                 sp(this, e);
                 if (e.Cancel)
                 {
@@ -539,7 +539,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
             EventHandler<SaveProgressEventArgs> sp = SaveProgress;
             if (sp != null)
             {
-                var e = new SaveProgressEventArgs(ArchiveNameForEvent, before, _entries.Count, current, entry);
+                SaveProgressEventArgs? e = new SaveProgressEventArgs(ArchiveNameForEvent, before, _entries.Count, current, entry);
                 sp(this, e);
                 if (e.Cancel)
                 {
@@ -553,7 +553,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
             EventHandler<SaveProgressEventArgs> sp = SaveProgress;
             if (sp != null)
             {
-                var e = new SaveProgressEventArgs(ArchiveNameForEvent, eventFlavor);
+                SaveProgressEventArgs? e = new SaveProgressEventArgs(ArchiveNameForEvent, eventFlavor);
                 sp(this, e);
                 if (e.Cancel)
                 {
@@ -567,7 +567,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
             EventHandler<SaveProgressEventArgs> sp = SaveProgress;
             if (sp != null)
             {
-                var e = SaveProgressEventArgs.Started(ArchiveNameForEvent);
+                SaveProgressEventArgs? e = SaveProgressEventArgs.Started(ArchiveNameForEvent);
                 sp(this, e);
                 if (e.Cancel)
                 {
@@ -580,7 +580,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
             EventHandler<SaveProgressEventArgs> sp = SaveProgress;
             if (sp != null)
             {
-                var e = SaveProgressEventArgs.Completed(ArchiveNameForEvent);
+                SaveProgressEventArgs? e = SaveProgressEventArgs.Completed(ArchiveNameForEvent);
                 sp(this, e);
             }
         }
@@ -652,7 +652,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
             EventHandler<ReadProgressEventArgs> rp = ReadProgress;
             if (rp != null)
             {
-                    var e = ReadProgressEventArgs.Started(ArchiveNameForEvent);
+                    ReadProgressEventArgs? e = ReadProgressEventArgs.Started(ArchiveNameForEvent);
                     rp(this, e);
             }
         }
@@ -662,7 +662,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
             EventHandler<ReadProgressEventArgs> rp = ReadProgress;
             if (rp != null)
             {
-                    var e = ReadProgressEventArgs.Completed(ArchiveNameForEvent);
+                    ReadProgressEventArgs? e = ReadProgressEventArgs.Completed(ArchiveNameForEvent);
                     rp(this, e);
             }
         }
@@ -672,10 +672,10 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
             EventHandler<ReadProgressEventArgs> rp = ReadProgress;
             if (rp != null)
             {
-                    var e = ReadProgressEventArgs.ByteUpdate(ArchiveNameForEvent,
-                                        entry,
-                                        ReadStream.Position,
-                                        LengthOfReadStream);
+                    ReadProgressEventArgs? e = ReadProgressEventArgs.ByteUpdate(ArchiveNameForEvent,
+                                                                                entry,
+                                                                                ReadStream.Position,
+                                                                                LengthOfReadStream);
                     rp(this, e);
             }
         }
@@ -868,7 +868,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
             EventHandler<ExtractProgressEventArgs> ep = ExtractProgress;
             if (ep != null)
             {
-                var e = new ExtractProgressEventArgs(ArchiveNameForEvent, before, _entries.Count, current, currentEntry, path);
+                ExtractProgressEventArgs? e = new ExtractProgressEventArgs(ArchiveNameForEvent, before, _entries.Count, current, currentEntry, path);
                 ep(this, e);
                 if (e.Cancel)
                 {
@@ -884,8 +884,8 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
             EventHandler<ExtractProgressEventArgs> ep = ExtractProgress;
             if (ep != null)
             {
-                var e = ExtractProgressEventArgs.ByteUpdate(ArchiveNameForEvent, entry,
-                                                            bytesWritten, totalBytesToWrite);
+                ExtractProgressEventArgs? e = ExtractProgressEventArgs.ByteUpdate(ArchiveNameForEvent, entry,
+                                                                                  bytesWritten, totalBytesToWrite);
                 ep(this, e);
                 if (e.Cancel)
                 {
@@ -902,9 +902,9 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
             EventHandler<ExtractProgressEventArgs> ep = ExtractProgress;
             if (ep != null)
             {
-                var e = (before)
-                    ? ExtractProgressEventArgs.BeforeExtractEntry(ArchiveNameForEvent, entry, path)
-                    : ExtractProgressEventArgs.AfterExtractEntry(ArchiveNameForEvent, entry, path);
+                ExtractProgressEventArgs? e = (before)
+                                                  ? ExtractProgressEventArgs.BeforeExtractEntry(ArchiveNameForEvent, entry, path)
+                                                  : ExtractProgressEventArgs.AfterExtractEntry(ArchiveNameForEvent, entry, path);
                 ep(this, e);
                 if (e.Cancel)
                 {
@@ -919,7 +919,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
             EventHandler<ExtractProgressEventArgs> ep = ExtractProgress;
             if (ep != null)
             {
-                var e = ExtractProgressEventArgs.ExtractExisting(ArchiveNameForEvent, entry, path);
+                ExtractProgressEventArgs? e = ExtractProgressEventArgs.ExtractExisting(ArchiveNameForEvent, entry, path);
                 ep(this, e);
                 if (e.Cancel)
                 {
@@ -935,8 +935,8 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
             EventHandler<ExtractProgressEventArgs> ep = ExtractProgress;
             if (ep != null)
             {
-                var e = ExtractProgressEventArgs.ExtractAllCompleted(ArchiveNameForEvent,
-                                                                     path );
+                ExtractProgressEventArgs? e = ExtractProgressEventArgs.ExtractAllCompleted(ArchiveNameForEvent,
+                                                                                           path );
                 ep(this, e);
             }
         }
@@ -947,8 +947,8 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
             EventHandler<ExtractProgressEventArgs> ep = ExtractProgress;
             if (ep != null)
             {
-                var e = ExtractProgressEventArgs.ExtractAllStarted(ArchiveNameForEvent,
-                                                                   path );
+                ExtractProgressEventArgs? e = ExtractProgressEventArgs.ExtractAllStarted(ArchiveNameForEvent,
+                                                                                         path );
                 ep(this, e);
             }
         }
@@ -1044,7 +1044,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
             EventHandler<AddProgressEventArgs> ap = AddProgress;
             if (ap != null)
             {
-                var e = AddProgressEventArgs.Started(ArchiveNameForEvent);
+                AddProgressEventArgs? e = AddProgressEventArgs.Started(ArchiveNameForEvent);
                 ap(this, e);
                 if (e.Cancel) // workitem 13371
                 {
@@ -1058,7 +1058,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
             EventHandler<AddProgressEventArgs> ap = AddProgress;
             if (ap != null)
             {
-                var e = AddProgressEventArgs.Completed(ArchiveNameForEvent);
+                AddProgressEventArgs? e = AddProgressEventArgs.Completed(ArchiveNameForEvent);
                 ap(this, e);
             }
         }
@@ -1068,7 +1068,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
             EventHandler<AddProgressEventArgs> ap = AddProgress;
             if (ap != null)
             {
-                var e = AddProgressEventArgs.AfterEntry(ArchiveNameForEvent, entry, _entries.Count);
+                AddProgressEventArgs? e = AddProgressEventArgs.AfterEntry(ArchiveNameForEvent, entry, _entries.Count);
                 ap(this, e);
                 if (e.Cancel) // workitem 13371
                 {
@@ -1225,7 +1225,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
             {
                 lock (LOCK)
                 {
-                    var e = ZipErrorEventArgs.Saving(this.Name, entry, exc);
+                    ZipErrorEventArgs? e = ZipErrorEventArgs.Saving(this.Name, entry, exc);
                     ZipError(this, e);
                     if (e.Cancel)
                     {

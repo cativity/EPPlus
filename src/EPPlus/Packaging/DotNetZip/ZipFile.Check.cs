@@ -30,6 +30,7 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using System.Text;
 
 namespace OfficeOpenXml.Packaging.Ionic.Zip
 {
@@ -128,9 +129,9 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
 
                 zip2 = ZipFile.Read(zipFileName);
 
-                foreach (var e1 in zip1)
+                foreach (ZipEntry? e1 in zip1)
                 {
-                    foreach (var e2 in zip2)
+                    foreach (ZipEntry? e2 in zip2)
                     {
                         if (e1.FileName == e2.FileName)
                         {
@@ -254,7 +255,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         /// <seealso cref="CheckZip(string,bool,System.IO.TextWriter)"/>
         public static void FixZipDirectory(string zipFileName)
         {
-            using (var zip = new ZipFile())
+            using (ZipFile? zip = new ZipFile())
             {
                 zip.FullScan = true;
                 zip.Initialize(zipFileName);
@@ -297,7 +298,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
             {
                 using (ZipFile zip1 = ZipFile.Read(zipFileName))
                 {
-                    foreach (var e in zip1)
+                    foreach (ZipEntry? e in zip1)
                     {
                         if (!e.IsDirectory && e.UsesEncryption)
                         {
@@ -332,7 +333,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         {
             get
             {
-                var builder = new System.Text.StringBuilder();
+                StringBuilder? builder = new System.Text.StringBuilder();
                 builder.Append(string.Format("          ZipFile: {0}\n", this.Name));
                 if (!string.IsNullOrEmpty(this._Comment))
                 {

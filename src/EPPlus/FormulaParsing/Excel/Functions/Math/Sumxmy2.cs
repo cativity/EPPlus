@@ -25,11 +25,11 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
     {
         public override double Calculate(double[] set1, double[] set2)
         {
-            var result = 0d;
-            for (var x = 0; x < set1.Length; x++)
+            double result = 0d;
+            for (int x = 0; x < set1.Length; x++)
             {
-                var a = set1[x];
-                var b = set2[x];
+                double a = set1[x];
+                double b = set2[x];
                 result += (a - b) * (a - b);
             }
             return result;

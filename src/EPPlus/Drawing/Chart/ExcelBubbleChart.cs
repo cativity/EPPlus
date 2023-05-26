@@ -109,7 +109,7 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             get
             {
-                var v = _chartXmlHelper.GetXmlNodeString(SIZEREPRESENTS_PATH).ToLower(CultureInfo.InvariantCulture);
+                string? v = _chartXmlHelper.GetXmlNodeString(SIZEREPRESENTS_PATH).ToLower(CultureInfo.InvariantCulture);
                 if (v == "w")
                 {
                     return eSizeRepresents.Width;

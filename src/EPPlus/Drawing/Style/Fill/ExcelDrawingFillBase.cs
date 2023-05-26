@@ -53,8 +53,8 @@ namespace OfficeOpenXml.Drawing.Style.Fill
         {
             if (_xml.TopNode.Name != type)
             {
-                var p = _xml.TopNode.ParentNode;
-                var newNode = _xml.TopNode.OwnerDocument.CreateElement(type, ExcelPackage.schemaDrawings);
+                XmlNode? p = _xml.TopNode.ParentNode;
+                XmlElement? newNode = _xml.TopNode.OwnerDocument.CreateElement(type, ExcelPackage.schemaDrawings);
                 p.ReplaceChild(newNode, _xml.TopNode);
                 _xml.TopNode = newNode;
             }

@@ -31,13 +31,13 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
             ValidateArguments(arguments, 1);
             double result = 0d;
             List<List<double>> results = new List<List<double>>();
-            foreach (var arg in arguments)
+            foreach (FunctionArgument? arg in arguments)
             {
                 results.Add(new List<double>());
-                var currentResult = results.Last();
+                List<double>? currentResult = results.Last();
                 if (arg.Value is IEnumerable<FunctionArgument>)
                 {
-                    foreach (var val in (IEnumerable<FunctionArgument>)arg.Value)
+                    foreach (FunctionArgument? val in (IEnumerable<FunctionArgument>)arg.Value)
                     {
                         AddValue(val.Value, currentResult);
                     }
@@ -48,7 +48,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
                 }
                 else if (arg.IsExcelRange)
                 {
-                    var r=arg.ValueAsRangeInfo;
+                    IRangeInfo? r=arg.ValueAsRangeInfo;
                     for (int col = r.Address._fromCol; col <= r.Address._toCol; col++)
                     {
                         for (int row = r.Address._fromRow; row <= r.Address._toRow; row++)
@@ -63,8 +63,8 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
                 }
             }
             // Validate that all supplied lists have the same length
-            var arrayLength = results.First().Count;
-            foreach (var list in results)
+            int arrayLength = results.First().Count;
+            foreach (List<double>? list in results)
             {
                 if (list.Count != arrayLength)
                 {
@@ -72,10 +72,10 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
                     //throw new ExcelFunctionException("All supplied arrays must have the same length", ExcelErrorCodes.Value);
                 }
             }
-            for (var rowIndex = 0; rowIndex < arrayLength; rowIndex++)
+            for (int rowIndex = 0; rowIndex < arrayLength; rowIndex++)
             {
                 double rowResult = 1;
-                for (var colIndex = 0; colIndex < results.Count; colIndex++)
+                for (int colIndex = 0; colIndex < results.Count; colIndex++)
                 {
                     rowResult *= results[colIndex][rowIndex];
                 }

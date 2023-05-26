@@ -1,6 +1,7 @@
 ﻿using OfficeOpenXml.Packaging.Ionic.Zip;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -11,16 +12,16 @@ namespace OfficeOpenXml.Core
     {
         internal static string UncompressEntry(ZipInputStream zipStream, ZipEntry entry)
         {
-            var content = new byte[entry.UncompressedSize];
-            var size = zipStream.Read(content, 0, (int)entry.UncompressedSize);
+            byte[]? content = new byte[entry.UncompressedSize];
+            int size = zipStream.Read(content, 0, (int)entry.UncompressedSize);
             return Encoding.UTF8.GetString(content);
         }
 
         internal static ZipInputStream OpenZipResource()
         {
-            var assembly = Assembly.GetExecutingAssembly();
-            var templateStream = assembly.GetManifestResourceStream("OfficeOpenXml.resources.DefaultTableStyles.cst");
-            var zipStream = new ZipInputStream(templateStream);
+            Assembly? assembly = Assembly.GetExecutingAssembly();
+            Stream? templateStream = assembly.GetManifestResourceStream("OfficeOpenXml.resources.DefaultTableStyles.cst");
+            ZipInputStream? zipStream = new ZipInputStream(templateStream);
             return zipStream;
         }
     }

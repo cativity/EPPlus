@@ -44,7 +44,7 @@ namespace OfficeOpenXml.Utils
                 return true;
             }
 
-            var t = candidate.GetType();
+            Type? t = candidate.GetType();
             return (t == typeof(double) || t == typeof(decimal) || t == typeof(long) || t == typeof(DateTime) || t == typeof(TimeSpan));
         }
         internal static bool IsNumeric(object candidate)
@@ -59,7 +59,7 @@ namespace OfficeOpenXml.Utils
                 return true;
             }
 
-            var t = candidate.GetType();
+            Type? t = candidate.GetType();
             return (t == typeof(double) || t == typeof(decimal) || t == typeof(long));
         }
 
@@ -73,7 +73,7 @@ namespace OfficeOpenXml.Utils
             s = s.Trim();
             if (s.Trim().EndsWith("%"))
             {
-                var tmp = s;
+                string? tmp = s;
                 int n = 0;
                 while (tmp.Length > 0 && tmp.Last() == '%')
                 {
@@ -116,7 +116,7 @@ namespace OfficeOpenXml.Utils
             s = s.Trim();
             if (s.Trim().EndsWith("%"))
             {
-                var tmp = s;
+                string? tmp = s;
                 while (tmp.Length > 0 && tmp.Last() == '%')
                 {
                     tmp = tmp.Substring(0, tmp.Length - 1);
@@ -245,7 +245,7 @@ namespace OfficeOpenXml.Utils
                 {
                     if (IsNumericOrDate(v))
                     {
-                        var n = GetValueDouble(v);
+                        double n = GetValueDouble(v);
                         if (double.IsNaN(n))
                         {
                             return null;
@@ -279,7 +279,7 @@ namespace OfficeOpenXml.Utils
         {
             if (Regex.IsMatch(t, "(_x[0-9A-F]{4,4}_)"))
             {
-                var match = Regex.Match(t, "(_x[0-9A-F]{4,4}_)");
+                Match? match = Regex.Match(t, "(_x[0-9A-F]{4,4}_)");
                 int indexAdd = 0;
                 while (match.Success)
                 {
@@ -316,7 +316,7 @@ namespace OfficeOpenXml.Utils
         {
             if (Regex.IsMatch(t, "(_x[0-9A-F]{4,4}_)"))
             {
-                var match = Regex.Match(t, "(_x[0-9A-F]{4,4}_)");
+                Match? match = Regex.Match(t, "(_x[0-9A-F]{4,4}_)");
                 int indexAdd = 0;
                 while (match.Success)
                 {
@@ -364,15 +364,15 @@ namespace OfficeOpenXml.Utils
         }
         internal static string ExcelDecodeString(string t)
         {
-            var match = Regex.Match(t, "(_x005F|_x[0-9A-F]{4,4}_)");
+            Match? match = Regex.Match(t, "(_x005F|_x[0-9A-F]{4,4}_)");
             if (!match.Success)
             {
                 return t;
             }
 
-            var useNextValue = false;
-            var ret = new StringBuilder();
-            var prevIndex = 0;
+            bool useNextValue = false;
+            StringBuilder? ret = new StringBuilder();
+            int prevIndex = 0;
             while (match.Success)
             {
                 if (prevIndex < match.Index)
@@ -431,7 +431,7 @@ namespace OfficeOpenXml.Utils
         }
         internal static T GetTypedCellValueInner<T>(object value, bool returnDefaultIfException)
         {
-            var conversion = new TypeConvertUtil<T>(value);
+            TypeConvertUtil<T>? conversion = new TypeConvertUtil<T>(value);
 
             if(value == null || (conversion.ReturnType.IsNullable && conversion.Value.IsEmptyString))
             {
@@ -535,7 +535,7 @@ namespace OfficeOpenXml.Utils
         {
             if (type == "s")
             {
-                var s = xr.ReadElementContentAsString();
+                string? s = xr.ReadElementContentAsString();
                 if (int.TryParse(s, out int sId))
                 {
                     return sId;
@@ -552,13 +552,13 @@ namespace OfficeOpenXml.Utils
             }
             else if (type == "e")
             {
-                var v = xr.ReadElementContentAsString();
+                string? v = xr.ReadElementContentAsString();
                 return ExcelErrorValue.Parse(ConvertUtil._invariantTextInfo.ToUpper(v));
             }
             else
             {
                 string v = xr.ReadElementContentAsString();
-                var nf = workbook.Styles.CellXfs[styleId].NumberFormatId;
+                int nf = workbook.Styles.CellXfs[styleId].NumberFormatId;
                 if ((nf >= 14 && nf <= 22) || (nf >= 45 && nf <= 47))
                 {
                     if (double.TryParse(v, NumberStyles.Any, CultureInfo.InvariantCulture, out double res))

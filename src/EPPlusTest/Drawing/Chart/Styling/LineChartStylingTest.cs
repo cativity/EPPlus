@@ -55,7 +55,7 @@ namespace EPPlusTest.Drawing.Chart.Styling
         [TestMethod]
         public void LineChart_Styles()
         {
-            var ws = _pck.Workbook.Worksheets.Add("LineChartStyles");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("LineChartStyles");
             LoadTestdata(ws);
 
             StyleLineChart(ws, eLineChartType.Line);
@@ -63,7 +63,7 @@ namespace EPPlusTest.Drawing.Chart.Styling
         [TestMethod]
         public void LineChartStacked_Styles()
         {
-            var ws = _pck.Workbook.Worksheets.Add("LineStackedChartStyles");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("LineStackedChartStyles");
             LoadTestdata(ws);
 
             StyleLineChart(ws, eLineChartType.LineStacked);
@@ -72,7 +72,7 @@ namespace EPPlusTest.Drawing.Chart.Styling
         [TestMethod]
         public void LineChart3D_Styles()
         {
-            var ws = _pck.Workbook.Worksheets.Add("Line3DChartStyles");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("Line3DChartStyles");
             LoadTestdata(ws);
 
             StyleLine3dChart(ws, eLineChartType.Line3D);
@@ -80,7 +80,7 @@ namespace EPPlusTest.Drawing.Chart.Styling
         [TestMethod]
         public void LineMarkersChartStacked_Styles()
         {
-            var ws = _pck.Workbook.Worksheets.Add("LineMarkersChartStyles");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("LineMarkersChartStyles");
             LoadTestdata(ws);
 
             StyleLineChart(ws, eLineChartType.LineMarkers);
@@ -114,7 +114,7 @@ namespace EPPlusTest.Drawing.Chart.Styling
                         c.Marker = true;
                     }
                     c.DataLabel.ShowValue = true;
-                    foreach(var serie in c.Series)
+                    foreach(ExcelLineChartSerie? serie in c.Series)
                     {
                         if (chartType != eLineChartType.Line3D)
                         {
@@ -271,13 +271,13 @@ namespace EPPlusTest.Drawing.Chart.Styling
         }
         private static ExcelLineChart AddLine(ExcelWorksheet ws, eLineChartType type, string name, int row, int col, ePresetChartStyle style, Action<ExcelLineChart> SetProperties)    
         {
-            var chart = ws.Drawings.AddLineChart(name, type);
+            ExcelLineChart? chart = ws.Drawings.AddLineChart(name, type);
             chart.SetPosition(row, 0, col, 0);
             chart.To.Column = col+12;
             chart.To.ColumnOff = 0;
             chart.To.Row = row + 18;
             chart.To.RowOff = 0;
-            var serie = chart.Series.Add("D2:D50", "A2:A50");
+            ExcelLineChartSerie? serie = chart.Series.Add("D2:D50", "A2:A50");
             SetProperties(chart);
             chart.StyleManager.SetChartStyle(style);
 
@@ -285,13 +285,13 @@ namespace EPPlusTest.Drawing.Chart.Styling
         }
         private static ExcelLineChart AddLine3D(ExcelWorksheet ws, eLineChartType type, string name, int row, int col, ePresetChartStyle style, Action<ExcelLineChart> SetProperties)
         {
-            var chart = ws.Drawings.AddLineChart(name, type);
+            ExcelLineChart? chart = ws.Drawings.AddLineChart(name, type);
             chart.SetPosition(row, 0, col, 0);
             chart.To.Column = col + 12;
             chart.To.ColumnOff = 0;
             chart.To.Row = row + 18;
             chart.To.RowOff = 0;
-            var serie = chart.Series.Add("D2:D50", "A2:A50");
+            ExcelLineChartSerie? serie = chart.Series.Add("D2:D50", "A2:A50");
             SetProperties(chart);
             chart.StyleManager.SetChartStyle(style);
             return chart;

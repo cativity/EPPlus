@@ -33,23 +33,23 @@ namespace OfficeOpenXml.LoadFunctions
             _items = items;
             _bindingFlags = parameters.BindingFlags;
             _headerParsingType = parameters.HeaderParsingType;
-            var type = typeof(T);
-            var tableAttr = type.GetFirstAttributeOfType<EpplusTableAttribute>();
+            Type? type = typeof(T);
+            EpplusTableAttribute? tableAttr = type.GetFirstAttributeOfType<EpplusTableAttribute>();
             if(tableAttr != null)
             {
                 ShowFirstColumn = tableAttr.ShowFirstColumn;
                 ShowLastColumn = tableAttr.ShowLastColumn;
                 ShowTotal = tableAttr.ShowTotal;
             }
-            var classSortOrderAttr = type.GetFirstAttributeOfType<EPPlusTableColumnSortOrderAttribute>();
+            EPPlusTableColumnSortOrderAttribute? classSortOrderAttr = type.GetFirstAttributeOfType<EPPlusTableColumnSortOrderAttribute>();
             if(classSortOrderAttr != null && classSortOrderAttr.Properties != null && classSortOrderAttr.Properties.Length > 0)
             {
                 SortOrderProperties = classSortOrderAttr.Properties.ToList();
             }
             if (parameters.Members == null)
             {
-                var cols = new LoadFromCollectionColumns<T>(parameters.BindingFlags, SortOrderProperties);
-                var columns = cols.Setup();
+                LoadFromCollectionColumns<T>? cols = new LoadFromCollectionColumns<T>(parameters.BindingFlags, SortOrderProperties);
+                List<ColumnInfo>? columns = cols.Setup();
                 _columns = columns.ToArray();
             }
             else
@@ -59,14 +59,14 @@ namespace OfficeOpenXml.LoadFunctions
                 {
                     throw (new ArgumentException("Parameter Members must have at least one property. Length is zero"));
                 }
-                foreach (var columnInfo in _columns)
+                foreach (ColumnInfo? columnInfo in _columns)
                 {
                     if (columnInfo.MemberInfo == null)
                     {
                         continue;
                     }
 
-                    var member = columnInfo.MemberInfo;
+                    MemberInfo? member = columnInfo.MemberInfo;
                     if (member.DeclaringType != null && member.DeclaringType != type)
                     {
                         _isSameType = false;
@@ -110,15 +110,15 @@ namespace OfficeOpenXml.LoadFunctions
 
         protected override void PostProcessTable(ExcelTable table, ExcelRangeBase range)
         {
-            for(var ix = 0; ix < table.Columns.Count; ix++)
+            for(int ix = 0; ix < table.Columns.Count; ix++)
             {
                 if (ix >= _columns.Length)
                 {
                     break;
                 }
 
-                var totalsRowFormula = _columns[ix].TotalsRowFormula;
-                var totalsRowLabel = _columns[ix].TotalsRowLabel;
+                string? totalsRowFormula = _columns[ix].TotalsRowFormula;
+                string? totalsRowLabel = _columns[ix].TotalsRowLabel;
                 if (!string.IsNullOrEmpty(totalsRowFormula))
                 {
                     table.Columns[ix].TotalsRowFormula = totalsRowFormula;
@@ -135,8 +135,8 @@ namespace OfficeOpenXml.LoadFunctions
                 
                 if(!string.IsNullOrEmpty(_columns[ix].TotalsRowNumberFormat))
                 {
-                    var row = range._toRow + 1;
-                    var col = range._fromCol + _columns[ix].Index;
+                    int row = range._toRow + 1;
+                    int col = range._fromCol + _columns[ix].Index;
                     range.Worksheet.Cells[row, col].Style.Numberformat.Format = _columns[ix].TotalsRowNumberFormat;
                 }
             }
@@ -167,8 +167,8 @@ namespace OfficeOpenXml.LoadFunctions
 
         private void SetValuesAndFormulas(object[,] values, Dictionary<int, FormulaCell> formulaCells, ref int col, ref int row)
         {
-            var nMembers = GetNumberOfColumns();
-            foreach (var item in _items)
+            int nMembers = GetNumberOfColumns();
+            foreach (T? item in _items)
             {
                 if (item == null)
                 {
@@ -177,7 +177,7 @@ namespace OfficeOpenXml.LoadFunctions
                 else
                 {
                     col = 0;
-                    var t = item.GetType();
+                    Type? t = item.GetType();
                     if (item is string || item is decimal || item is DateTime || t.IsPrimitive)
                     {
                         values[row, col++] = item;
@@ -188,17 +188,17 @@ namespace OfficeOpenXml.LoadFunctions
                     }
                     else
                     {
-                        foreach (var colInfo in _columns)
+                        foreach (ColumnInfo? colInfo in _columns)
                         {
                             if(!string.IsNullOrEmpty(colInfo.Path) && colInfo.Path.Contains("."))
                             {
                                 values[row, col++] = GetValueByPath(item, colInfo.Path);
                                 continue;
                             }
-                            var obj = item;
+                            T? obj = item;
                             if (colInfo.MemberInfo != null)
                             {
-                                var member = colInfo.MemberInfo;
+                                MemberInfo? member = colInfo.MemberInfo;
                                 object v=null;
                                 if (_isSameType == false && obj.GetType().GetMember(member.Name, _bindingFlags).Length == 0)
                                 {
@@ -221,7 +221,7 @@ namespace OfficeOpenXml.LoadFunctions
 #if (!NET35)
                                 if (v != null)
                                 {
-                                    var type = v.GetType();
+                                    Type? type = v.GetType();
                                     if (type.IsEnum)
                                     {
                                         v=GetEnumValue(v, type);
@@ -251,30 +251,30 @@ namespace OfficeOpenXml.LoadFunctions
 #if (NET35)
             return item.ToString();
 #else
-            var v = item.ToString();
-            var m = t.GetMember(v).FirstOrDefault();
-            var da = m.GetCustomAttribute<DescriptionAttribute>();
+            string? v = item.ToString();
+            MemberInfo? m = t.GetMember(v).FirstOrDefault();
+            DescriptionAttribute? da = m.GetCustomAttribute<DescriptionAttribute>();
             return da?.Description ?? v;
 #endif            
         }
 
         private object GetValueByPath(object obj, string path)
         {
-            var members = path.Split('.');
+            string[]? members = path.Split('.');
             object o = obj;
-            foreach(var member in members)
+            foreach(string? member in members)
             {
                 if (o == null)
                 {
                     return null;
                 }
 
-                var memberInfos = o.GetType().GetMember(member);
+                MemberInfo[]? memberInfos = o.GetType().GetMember(member);
                 if(memberInfos == null || memberInfos.Length == 0)
                 {
                     return null;
                 }
-                var memberInfo = memberInfos.First();
+                MemberInfo? memberInfo = memberInfos.First();
                 if(memberInfo is PropertyInfo pi)
                 {
                     o = pi.GetValue(o, null);
@@ -298,18 +298,18 @@ namespace OfficeOpenXml.LoadFunctions
 
         private void SetHeaders(object[,] values, Dictionary<int, string> columnFormats, ref int col, ref int row)
         {
-            foreach (var colInfo in _columns)
+            foreach (ColumnInfo? colInfo in _columns)
             {
-                var header = colInfo.Header;
+                string? header = colInfo.Header;
                 
                 // if the header is already set and contains a space it doesn't need more formatting or validation.
-                var useExistingHeader = !string.IsNullOrEmpty(header) && header.Contains(" ");
+                bool useExistingHeader = !string.IsNullOrEmpty(header) && header.Contains(" ");
 
                 if (colInfo.MemberInfo != null)
                 {
                     // column data based on a property read with reflection
-                    var member = colInfo.MemberInfo;
-                    var epplusColumnAttribute = member.GetFirstAttributeOfType<EpplusTableColumnAttribute>();
+                    MemberInfo? member = colInfo.MemberInfo;
+                    EpplusTableColumnAttribute? epplusColumnAttribute = member.GetFirstAttributeOfType<EpplusTableColumnAttribute>();
                     if (epplusColumnAttribute != null)
                     {
                         if (!useExistingHeader)
@@ -330,14 +330,14 @@ namespace OfficeOpenXml.LoadFunctions
                     }
                     else if(!useExistingHeader)
                     {
-                        var descriptionAttribute = member.GetFirstAttributeOfType<DescriptionAttribute>();
+                        DescriptionAttribute? descriptionAttribute = member.GetFirstAttributeOfType<DescriptionAttribute>();
                         if (descriptionAttribute != null)
                         {
                             header = descriptionAttribute.Description;
                         }
                         else
                         {
-                            var displayNameAttribute = member.GetFirstAttributeOfType<DisplayNameAttribute>();
+                            DisplayNameAttribute? displayNameAttribute = member.GetFirstAttributeOfType<DisplayNameAttribute>();
                             if (displayNameAttribute != null)
                             {
                                 header = displayNameAttribute.DisplayName;

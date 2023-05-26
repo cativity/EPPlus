@@ -51,7 +51,7 @@ namespace OfficeOpenXml.FormulaParsing.ExpressionGraph
             }
             if (token.TokenTypeIsSet(TokenType.ExcelAddress))
             {
-                var exp = new ExcelAddressExpression(token.Value, _excelDataProvider, _parsingContext, token.IsNegated);
+                ExcelAddressExpression? exp = new ExcelAddressExpression(token.Value, _excelDataProvider, _parsingContext, token.IsNegated);
                 exp.HasCircularReference = token.TokenTypeIsSet(TokenType.CircularReference);
                 return exp;
             }

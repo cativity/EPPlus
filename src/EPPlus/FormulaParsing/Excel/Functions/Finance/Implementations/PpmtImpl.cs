@@ -29,7 +29,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.Implementations
                 return new FinanceCalcResult<double>(eErrorType.Num);
             }
 
-            var pmtResult = InternalMethods.PMT_Internal(Rate, NPer, PV, FV, Due);
+            FinanceCalcResult<double>? pmtResult = InternalMethods.PMT_Internal(Rate, NPer, PV, FV, Due);
             if (pmtResult.HasError)
             {
                 return new FinanceCalcResult<double>(pmtResult.ExcelErrorType);
@@ -37,7 +37,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.Implementations
 
             Pmt = pmtResult.Result;
 
-            var iPmtResult = IPmtImpl.Ipmt(Rate, Per, NPer, PV, FV, Due);
+            FinanceCalcResult<double>? iPmtResult = IPmtImpl.Ipmt(Rate, Per, NPer, PV, FV, Due);
             if (iPmtResult.HasError)
             {
                 return new FinanceCalcResult<double>(iPmtResult.ExcelErrorType);

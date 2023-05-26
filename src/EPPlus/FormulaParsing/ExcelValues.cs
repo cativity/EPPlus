@@ -117,7 +117,7 @@ namespace OfficeOpenXml
                     return false;
                 }
 
-                var candidateString = candidate.ToString();
+                string? candidateString = candidate.ToString();
                 return (!string.IsNullOrEmpty(candidateString) && _values.ContainsKey(candidateString));
             }
 

@@ -14,12 +14,12 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions.Statistical
         [TestMethod]
         public void BetaDotInvShouldReturnCorrectResult()
         {
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var sheet = package.Workbook.Worksheets.Add("Test");
+                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("Test");
                 sheet.Cells["A1"].Formula = "BETA.INV(0.685470581, 8, 10, 1, 3)";
                 sheet.Calculate();
-                var result = sheet.Cells["A1"].Value;
+                object? result = sheet.Cells["A1"].Value;
                 Assert.AreEqual(2d, System.Math.Round((double)result, 8));
 
                 sheet.Cells["A1"].Formula = "BETA.INV(0.55,3,4)";
@@ -32,12 +32,12 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions.Statistical
         [TestMethod]
         public void BetainvShouldReturnCorrectResult()
         {
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var sheet = package.Workbook.Worksheets.Add("Test");
+                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("Test");
                 sheet.Cells["A1"].Formula = "BETAINV(0.685470581, 8, 10, 1, 3)";
                 sheet.Calculate();
-                var result = sheet.Cells["A1"].Value;
+                object? result = sheet.Cells["A1"].Value;
                 Assert.AreEqual(2d, System.Math.Round((double)result, 8));
 
                 sheet.Cells["A1"].Formula = "BETAINV(0.55,3,4)";
@@ -50,12 +50,12 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions.Statistical
         [TestMethod]
         public void BetadistShouldReturnCorrectResult()
         {
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var sheet = package.Workbook.Worksheets.Add("Test");
+                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("Test");
                 sheet.Cells["A1"].Formula = "BETADIST(2, 8, 10, 1, 3)";
                 sheet.Calculate();
-                var result = sheet.Cells["A1"].Value;
+                object? result = sheet.Cells["A1"].Value;
                 Assert.AreEqual(0.6854706d, System.Math.Round((double)result, 7));
             }
         }
@@ -63,12 +63,12 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions.Statistical
         [TestMethod]
         public void BetaDotDistCumulativeShouldReturnCorrectResult()
         {
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var sheet = package.Workbook.Worksheets.Add("Test");
+                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("Test");
                 sheet.Cells["A1"].Formula = "BETA.DIST(2, 8, 10, TRUE, 1, 3)";
                 sheet.Calculate();
-                var result = sheet.Cells["A1"].Value;
+                object? result = sheet.Cells["A1"].Value;
                 Assert.AreEqual(0.6854706d, System.Math.Round((double)result, 7));
             }
         }
@@ -76,12 +76,12 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions.Statistical
         [TestMethod]
         public void BetaDotDistProbabilityShouldReturnCorrectResult()
         {
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var sheet = package.Workbook.Worksheets.Add("Test");
+                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("Test");
                 sheet.Cells["A1"].Formula = "BETA.DIST(2, 8, 10, FALSE, 1, 3)";
                 sheet.Calculate();
-                var result = sheet.Cells["A1"].Value;
+                object? result = sheet.Cells["A1"].Value;
                 Assert.AreEqual(1.4837646d, System.Math.Round((double)result, 7));
             }
         }

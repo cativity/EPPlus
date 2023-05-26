@@ -200,7 +200,7 @@ namespace OfficeOpenXml.Drawing.Slicer
                 }
                 if(value.StartsWith("SlicerStyle", StringComparison.OrdinalIgnoreCase))
                 {
-                    var style = value.Substring(11).ToEnum(eSlicerStyle.Custom);
+                    eSlicerStyle style = value.Substring(11).ToEnum(eSlicerStyle.Custom);
                     if(style!=eSlicerStyle.Custom || style!=eSlicerStyle.None)
                     {
                         _slicerXmlHelper.SetXmlNodeString("@style", "SlicerStyle" + style);

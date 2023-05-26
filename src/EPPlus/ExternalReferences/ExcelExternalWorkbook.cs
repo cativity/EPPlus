@@ -21,6 +21,7 @@ using OfficeOpenXml.FormulaParsing.LexicalAnalysis;
 using System.Xml;
 using System.Text;
 using OfficeOpenXml.Constants;
+using OfficeOpenXml.Drawing;
 using OfficeOpenXml.Drawing.Chart;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
 
@@ -45,7 +46,7 @@ namespace OfficeOpenXml.ExternalReferences
        }
         internal ExcelExternalWorkbook(ExcelWorkbook wb, XmlTextReader reader, ZipPackagePart part, XmlElement workbookElement)  : base(wb, reader, part, workbookElement)
         {
-            var rId = reader.GetAttribute("id", ExcelPackage.schemaRelationships);
+            string? rId = reader.GetAttribute("id", ExcelPackage.schemaRelationships);
             Relation = part.GetRelationship(rId);
             while (reader.Read())
             {
@@ -75,9 +76,9 @@ namespace OfficeOpenXml.ExternalReferences
             }
             CachedWorksheets = new ExcelExternalNamedItemCollection<ExcelExternalWorksheet>();
             CachedNames = GetNames(-1);
-            foreach (var sheetName in _sheetNames.Keys)
+            foreach (string? sheetName in _sheetNames.Keys)
             {
-                var sheetId = _sheetNames[sheetName];
+                int sheetId = _sheetNames[sheetName];
                 CachedWorksheets.Add(new ExcelExternalWorksheet(
                        _sheetValues[sheetId], 
                        _sheetMetaData[sheetId],
@@ -129,7 +130,7 @@ namespace OfficeOpenXml.ExternalReferences
         }
         private void ReadSheetData(XmlTextReader reader, ExcelWorkbook wb)
         {
-            var sheetId = int.Parse(reader.GetAttribute("sheetId"));
+            int sheetId = int.Parse(reader.GetAttribute("sheetId"));
             if(reader.GetAttribute("refreshError")=="1" && !_sheetRefresh.Contains(sheetId))
             {
                 _sheetRefresh.Add(sheetId);
@@ -157,14 +158,14 @@ namespace OfficeOpenXml.ExternalReferences
                         case "cell":
                             ExcelCellBase.GetRowCol(reader.GetAttribute("r"), out row, out col, false);
                             type = reader.GetAttribute("t");
-                            var vm = reader.GetAttribute("vm");
+                            string? vm = reader.GetAttribute("vm");
                             if(!string.IsNullOrEmpty(vm))
                             {
                                 cellStoreMetaData.SetValue(row, col, int.Parse(vm));
                             }
                             break;
                         case "v":
-                            var v = ConvertUtil.GetValueFromType(reader, type, 0, wb);
+                            object? v = ConvertUtil.GetValueFromType(reader, type, 0, wb);
                             cellStoreValues.SetValue(row, col, v);
                             break;
                     }
@@ -182,7 +183,7 @@ namespace OfficeOpenXml.ExternalReferences
                 else if (reader.NodeType == XmlNodeType.Element && reader.Name == "definedName")
                 {
                     int sheetId;
-                    var sheetIdAttr = reader.GetAttribute("sheetId");
+                    string? sheetIdAttr = reader.GetAttribute("sheetId");
                     if (string.IsNullOrEmpty(sheetIdAttr))
                     {
                         sheetId = -1; // -1 represents the workbook level.
@@ -194,14 +195,14 @@ namespace OfficeOpenXml.ExternalReferences
                     
                     ExcelExternalNamedItemCollection<ExcelExternalDefinedName> names = _definedNamesValues[sheetId];
 
-                    var name = reader.GetAttribute("name");
+                    string? name = reader.GetAttribute("name");
                     names.Add(new ExcelExternalDefinedName() { Name = reader.GetAttribute("name"), RefersTo = reader.GetAttribute("refersTo"), SheetId = sheetId });
                 }
             }
         }
         private void ReadSheetNames(XmlTextReader reader)
         {
-            var ix = 0;
+            int ix = 0;
             _definedNamesValues.Add(-1, new ExcelExternalNamedItemCollection<ExcelExternalDefinedName>());
             while (reader.Read())
             {
@@ -244,7 +245,7 @@ namespace OfficeOpenXml.ExternalReferences
             {
                 if(_file==null)
                 {
-                    var filePath = Relation?.TargetUri?.OriginalString;
+                    string? filePath = Relation?.TargetUri?.OriginalString;
                     if (string.IsNullOrEmpty(filePath) || HasWebProtocol(filePath))
                     {
                         return null;
@@ -297,9 +298,9 @@ namespace OfficeOpenXml.ExternalReferences
 
         private void SetDirectoryIfExists()
         {
-            foreach(var d in _wb.ExternalLinks.Directories)
+            foreach(DirectoryInfo? d in _wb.ExternalLinks.Directories)
             {
-                var file = d.FullName;
+                string? file = d.FullName;
                 if (file.EndsWith(Path.DirectorySeparatorChar.ToString()) == false)
                 {
                     file += Path.DirectorySeparatorChar;
@@ -439,11 +440,11 @@ namespace OfficeOpenXml.ExternalReferences
                 return false;
             }
 
-            foreach (var er in erCollection)
+            foreach (ExcelExternalLink? er in erCollection)
             {
                 if (er!=this && er.ExternalLinkType == eExternalLinkType.ExternalWorkbook)
                 {
-                    var wb = er.As.ExternalWorkbook;
+                    ExcelExternalWorkbook? wb = er.As.ExternalWorkbook;
                     if (wb._package!=null && wb.File!=null && wb.File.Name.Equals(file.Name, StringComparison.CurrentCultureIgnoreCase))
                     {
                         _package=wb._package;
@@ -473,7 +474,7 @@ namespace OfficeOpenXml.ExternalReferences
                 }
             }
 
-            var lexer = _wb.FormulaParser.Lexer;
+            ILexer? lexer = _wb.FormulaParser.Lexer;
             CachedWorksheets.Clear();
             CachedNames.Clear();
             _definedNamesValues.Clear();
@@ -481,9 +482,9 @@ namespace OfficeOpenXml.ExternalReferences
             _sheetMetaData.Clear();
             _sheetNames.Clear();
             _definedNamesValues.Add(-1, CachedNames);
-            foreach (var ws in _package.Workbook.Worksheets)
+            foreach (ExcelWorksheet? ws in _package.Workbook.Worksheets)
             {
-                var ix = CachedWorksheets.Count;
+                int ix = CachedWorksheets.Count;
                 _sheetNames.Add(ws.Name, ix);
                 _sheetValues.Add(ix, new CellStore<object>());
                 _sheetMetaData.Add(ix, new CellStore<int>());
@@ -499,14 +500,14 @@ namespace OfficeOpenXml.ExternalReferences
 
         private void UpdateCacheFromCells()
         {
-            foreach (var ws in _wb.Worksheets)
+            foreach (ExcelWorksheet? ws in _wb.Worksheets)
             {
-                var formulas = new CellStoreEnumerator<object>(ws._formulas);
-                foreach (var f in formulas)
+                CellStoreEnumerator<object>? formulas = new CellStoreEnumerator<object>(ws._formulas);
+                foreach (object? f in formulas)
                 {
                     if (f is int sfIx)
                     {
-                        var sf = ws._sharedFormulas[sfIx];
+                        ExcelWorksheet.Formulas? sf = ws._sharedFormulas[sfIx];
                         if (sf.Formula.Contains("["))
                         {
                             UpdateCacheForFormula(_wb, sf.Formula, sf.Address);
@@ -514,7 +515,7 @@ namespace OfficeOpenXml.ExternalReferences
                     }
                     else
                     {
-                        var s = f.ToString();
+                        string? s = f.ToString();
                         if (s.Contains("["))
                         {
                             UpdateCacheForFormula(_wb, s, "");
@@ -524,15 +525,15 @@ namespace OfficeOpenXml.ExternalReferences
                 UpdateCacheFromNames(_wb, ws.Names);
 
                 //Update cache for chart references.
-                foreach(var d in ws.Drawings)
+                foreach(ExcelDrawing? d in ws.Drawings)
                 {
                     if(d is ExcelChart c)
                     {
-                        foreach(var s in c.Series)
+                        foreach(ExcelChartSerie? s in c.Series)
                         {
                             if(s.Series.Contains("["))
                             {
-                                var a = new ExcelAddressBase(s.Series);
+                                ExcelAddressBase? a = new ExcelAddressBase(s.Series);
                                 if (a.IsExternal)
                                 {
                                     UpdateCacheForAddress(a, "");
@@ -540,7 +541,7 @@ namespace OfficeOpenXml.ExternalReferences
                             }
                             if (s.XSeries.Contains("["))
                             {
-                                var a = new ExcelAddressBase(s.XSeries);
+                                ExcelAddressBase? a = new ExcelAddressBase(s.XSeries);
                                 if (a.IsExternal)
                                 {
                                     UpdateCacheForAddress(a, "");
@@ -554,7 +555,7 @@ namespace OfficeOpenXml.ExternalReferences
 
         private void UpdateCacheFromNames(ExcelWorkbook wb, ExcelNamedRangeCollection names)
         {
-            foreach (var n in names)
+            foreach (ExcelNamedRange? n in names)
             {
                 if (string.IsNullOrEmpty(n.NameFormula))
                 {
@@ -579,9 +580,9 @@ namespace OfficeOpenXml.ExternalReferences
         public eExternalWorkbookCacheStatus CacheStatus { get; private set; }
         private void UpdateCacheForFormula(ExcelWorkbook wb, string formula, string address)
         {
-            var tokens = wb.FormulaParser.Lexer.Tokenize(formula);
+            IEnumerable<Token>? tokens = wb.FormulaParser.Lexer.Tokenize(formula);
 
-            foreach (var t in tokens)
+            foreach (Token t in tokens)
             {
                 if (t.TokenTypeIsSet(TokenType.ExcelAddress) || t.TokenTypeIsSet(TokenType.NameValue))
                 {
@@ -590,7 +591,7 @@ namespace OfficeOpenXml.ExternalReferences
                         if(t.TokenTypeIsSet(TokenType.ExcelAddress))
                         {
                             ExcelAddressBase a = new ExcelAddressBase(t.Value);
-                            var ix = _wb.ExternalLinks.GetExternalLink(a._wb);
+                            int ix = _wb.ExternalLinks.GetExternalLink(a._wb);
                             if (ix >= 0 && _wb.ExternalLinks[ix] == this)
                             {
                                 UpdateCacheForAddress(a, address);
@@ -601,7 +602,7 @@ namespace OfficeOpenXml.ExternalReferences
                             ExcelAddressBase.SplitAddress(t.Value, out string wbRef, out string wsRef, out string nameRef);
                             if (!string.IsNullOrEmpty(wbRef))
                             {
-                                var ix = _wb.ExternalLinks.GetExternalLink(wbRef);
+                                int ix = _wb.ExternalLinks.GetExternalLink(wbRef);
                                 if (ix >= 0 && _wb.ExternalLinks[ix] == this)
                                 {
                                     string name;
@@ -625,7 +626,7 @@ namespace OfficeOpenXml.ExternalReferences
         private void UpdateCacheForName(string name)
         {
             int ix = 0;
-            var wsName = ExcelAddressBase.GetWorksheetPart(name, "", ref ix);
+            string? wsName = ExcelAddressBase.GetWorksheetPart(name, "", ref ix);
             if (!string.IsNullOrEmpty(wsName))
             {
                 name = name.Substring(ix);
@@ -638,7 +639,7 @@ namespace OfficeOpenXml.ExternalReferences
             }
             else
             {
-                var ws = _package.Workbook.Worksheets[wsName];
+                ExcelWorksheet? ws = _package.Workbook.Worksheets[wsName];
                 if (ws == null)
                 {
                     namedRange = null;
@@ -668,7 +669,7 @@ namespace OfficeOpenXml.ExternalReferences
             }
             else
             {
-                var cws = CachedWorksheets[namedRange.LocalSheet.Name];
+                ExcelExternalWorksheet? cws = CachedWorksheets[namedRange.LocalSheet.Name];
                 if(cws != null)
                 {
                     if (!cws.CachedNames.ContainsKey(name))
@@ -688,7 +689,7 @@ namespace OfficeOpenXml.ExternalReferences
 
             if (string.IsNullOrEmpty(sfAddress) == false)
             {
-                var a = new ExcelAddress(sfAddress);
+                ExcelAddress? a = new ExcelAddress(sfAddress);
                 if (formulaAddress._toColFixed == false)
                 {
                     formulaAddress._toCol += a.Columns - 1;
@@ -698,7 +699,7 @@ namespace OfficeOpenXml.ExternalReferences
 
             if (!string.IsNullOrEmpty(formulaAddress.WorkSheetName))
             {
-                var ws = _package.Workbook.Worksheets[formulaAddress.WorkSheetName];
+                ExcelWorksheet? ws = _package.Workbook.Worksheets[formulaAddress.WorkSheetName];
                 if (ws == null)
                 {
                     if (!CachedWorksheets.ContainsKey(formulaAddress.WorkSheetName))
@@ -708,11 +709,11 @@ namespace OfficeOpenXml.ExternalReferences
                 }
                 else
                 {
-                    var cws = CachedWorksheets[formulaAddress.WorkSheetName];
+                    ExcelExternalWorksheet? cws = CachedWorksheets[formulaAddress.WorkSheetName];
                     if (cws != null)
                     {
-                        var cse = new CellStoreEnumerator<ExcelValue>(ws._values, formulaAddress._fromRow, formulaAddress._fromCol, formulaAddress._toRow, formulaAddress._toCol);
-                        foreach (var v in cse)
+                        CellStoreEnumerator<ExcelValue>? cse = new CellStoreEnumerator<ExcelValue>(ws._values, formulaAddress._fromRow, formulaAddress._fromCol, formulaAddress._toRow, formulaAddress._toCol);
+                        foreach (ExcelValue v in cse)
                         {
                             cws.CellValues._values.SetValue(cse.Row, cse.Column, v._value);
                         }
@@ -774,12 +775,12 @@ namespace OfficeOpenXml.ExternalReferences
 
             sw.Write($"<externalBook xmlns:r=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships\" r:id=\"{Relation.Id}\">");
             sw.Write("<sheetNames>");
-            foreach(var sheet in _sheetNames.OrderBy(x=>x.Value))
+            foreach(KeyValuePair<string, int> sheet in _sheetNames.OrderBy(x=>x.Value))
             {
                 sw.Write($"<sheetName val=\"{ConvertUtil.ExcelEscapeString(sheet.Key)}\"/>");
             }
             sw.Write("</sheetNames><definedNames>");
-            foreach (var sheet in _definedNamesValues.Keys)
+            foreach (int sheet in _definedNamesValues.Keys)
             {
                 foreach (ExcelExternalDefinedName name in _definedNamesValues[sheet])
                 {
@@ -794,12 +795,12 @@ namespace OfficeOpenXml.ExternalReferences
                 }
             }
             sw.Write("</definedNames><sheetDataSet>");
-            foreach (var sheetId in _sheetValues.Keys)
+            foreach (int sheetId in _sheetValues.Keys)
             {
                 sw.Write($"<sheetData sheetId=\"{sheetId}\"{(_sheetRefresh.Contains(sheetId) ? " refreshError=\"1\"" : "")}>");
-                var cellEnum = new CellStoreEnumerator<object>(_sheetValues[sheetId]);
-                var mdStore = _sheetMetaData[sheetId];
-                var r = -1;
+                CellStoreEnumerator<object>? cellEnum = new CellStoreEnumerator<object>(_sheetValues[sheetId]);
+                CellStore<int>? mdStore = _sheetMetaData[sheetId];
+                int r = -1;
                 while(cellEnum.Next())
                 {
                     if(r!=cellEnum.Row)

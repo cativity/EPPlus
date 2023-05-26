@@ -28,13 +28,13 @@ namespace OfficeOpenXml.FormulaParsing.ExpressionGraph.FunctionCompilers
         }
         public override CompileResult Compile(IEnumerable<Expression> children)
         {
-            var args = new List<FunctionArgument>();
+            List<FunctionArgument>? args = new List<FunctionArgument>();
             Function.BeforeInvoke(Context);
-            foreach (var child in children)
+            foreach (Expression? child in children)
             {
                 try
                 {
-                    var arg = child.Compile();
+                    CompileResult? arg = child.Compile();
                     BuildFunctionArguments(arg != null ? arg : null, args);
                 }
                 catch (ExcelErrorValueException efe)

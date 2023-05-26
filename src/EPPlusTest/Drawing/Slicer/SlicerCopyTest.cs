@@ -6,6 +6,9 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using OfficeOpenXml.Drawing.Slicer;
+using OfficeOpenXml.Table;
+using OfficeOpenXml.Table.PivotTable;
 
 namespace EPPlusTest.Drawing.Slicer
 {
@@ -21,40 +24,40 @@ namespace EPPlusTest.Drawing.Slicer
         [ClassCleanup]
         public static void Cleanup()
         {
-            var dirName = _pck.File.DirectoryName;
-            var fileName = _pck.File.FullName;
+            string? dirName = _pck.File.DirectoryName;
+            string? fileName = _pck.File.FullName;
 
             SaveAndCleanup(_pck);
         }
         [TestMethod]
         public void CopyTableSlicer()
         {
-            var ws = _pck.Workbook.Worksheets.Add("TableSlicerSource");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("TableSlicerSource");
 
             LoadTestdata(ws);
-            var tbl = ws.Tables.Add(ws.Cells["A1:D100"], "Table2");
-            var slicer = ws.Drawings.AddTableSlicer(tbl.Columns[1]);
+            ExcelTable? tbl = ws.Tables.Add(ws.Cells["A1:D100"], "Table2");
+            ExcelTableSlicer? slicer = ws.Drawings.AddTableSlicer(tbl.Columns[1]);
             slicer.SetPosition(1, 0, 5, 0);
 
             slicer.SetSize(200, 600);
 
-            var copy = _pck.Workbook.Worksheets.Add("TableSlicerCopy", ws);
+            ExcelWorksheet? copy = _pck.Workbook.Worksheets.Add("TableSlicerCopy", ws);
         }
         [TestMethod]
         public void CopyPivotTableSlicer()
         {
-            var ws = _pck.Workbook.Worksheets.Add("PivotTableSlicerSource");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("PivotTableSlicerSource");
 
             LoadTestdata(ws);
-            var pt = ws.PivotTables.Add(ws.Cells["F1"], ws.Cells["A1:D100"], "Table3");
+            ExcelPivotTable? pt = ws.PivotTables.Add(ws.Cells["F1"], ws.Cells["A1:D100"], "Table3");
             pt.RowFields.Add(pt.Fields[1]);
             pt.DataFields.Add(pt.Fields[3]);
-            var slicer = ws.Drawings.AddPivotTableSlicer(pt.Fields[3]);
+            ExcelPivotTableSlicer? slicer = ws.Drawings.AddPivotTableSlicer(pt.Fields[3]);
             slicer.SetPosition(1, 0, 8, 0);
 
             slicer.SetSize(200, 600);
 
-            var copy = _pck.Workbook.Worksheets.Add("PivotTableSlicerCopy", ws);
+            ExcelWorksheet? copy = _pck.Workbook.Worksheets.Add("PivotTableSlicerCopy", ws);
         }
     }
 }

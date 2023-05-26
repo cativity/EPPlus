@@ -37,7 +37,7 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
         { 
             get
             {
-                var v=GetXmlNodeString("cx:valueColorPositions/@count");
+                string? v=GetXmlNodeString("cx:valueColorPositions/@count");
                 if(v=="3")
                 {
                     return eNumberOfColors.ThreeColor;

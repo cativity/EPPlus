@@ -45,7 +45,7 @@ namespace OfficeOpenXml.Table.PivotTable
             {
                 if (_style == null)
                 {
-                    var dxfId= GetXmlNodeIntNull("../@dxfId");
+                    int? dxfId= GetXmlNodeIntNull("../@dxfId");
                     _style = _styles.GetDxf(dxfId, null);
                 }
                 return _style;

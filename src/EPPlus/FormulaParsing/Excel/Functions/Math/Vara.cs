@@ -47,8 +47,8 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
                 return this.CreateResult(eErrorType.Div0);
             }
 
-            var values = _argConverter.ConvertArgsIncludingOtherTypes(arguments, false);
-            var result = VarMethods.Var(values);
+            IEnumerable<ExcelDoubleCellValue>? values = _argConverter.ConvertArgsIncludingOtherTypes(arguments, false);
+            double result = VarMethods.Var(values);
             return CreateResult(result, DataType.Decimal);
         }
     }

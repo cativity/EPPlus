@@ -29,10 +29,10 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
     {
         public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
         {
-            var retVal = 0d;
+            double retVal = 0d;
             if (arguments != null)
             {
-                foreach (var arg in arguments)
+                foreach (FunctionArgument? arg in arguments)
                 {
                     retVal += Calculate(arg, context);
                 }
@@ -43,24 +43,24 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
 
         private double Calculate(FunctionArgument arg, ParsingContext context, bool isInArray = false)
         {
-            var retVal = 0d;
+            double retVal = 0d;
             if (ShouldIgnore(arg, context))
             {
                 return retVal;
             }
             if (arg.Value is IEnumerable<FunctionArgument>)
             {
-                foreach (var item in (IEnumerable<FunctionArgument>)arg.Value)
+                foreach (FunctionArgument? item in (IEnumerable<FunctionArgument>)arg.Value)
                 {
                     retVal += Calculate(item, context, true);
                 }
             }
             else
             {
-                var cs = arg.Value as IRangeInfo;
+                IRangeInfo? cs = arg.Value as IRangeInfo;
                 if (cs != null)
                 {
-                    foreach (var c in cs)
+                    foreach (ICellInfo? c in cs)
                     {
                         if (ShouldIgnore(c, context) == false)
                         {
@@ -74,10 +74,10 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
                     CheckForAndHandleExcelError(arg);
                     if (IsNumericString(arg.Value) && !isInArray)
                     {
-                        var value = ConvertUtil.GetValueDouble(arg.Value);
+                        double value = ConvertUtil.GetValueDouble(arg.Value);
                         return System.Math.Pow(value, 2);
                     }
-                    var ignoreBool = isInArray;
+                    bool ignoreBool = isInArray;
                     retVal += System.Math.Pow(ConvertUtil.GetValueDouble(arg.Value, ignoreBool), 2);
                 }
             }

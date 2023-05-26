@@ -95,14 +95,14 @@ namespace EPPlusTest.LoadFunctions
         public void ShouldReturnRange()
         {
             AddLine("a,b,c");
-            var r = _worksheet.Cells["A1"].LoadFromText(_lines.ToString());
+            ExcelRangeBase? r = _worksheet.Cells["A1"].LoadFromText(_lines.ToString());
             Assert.AreEqual("A1:C2", r.FirstAddress);
         }
         [TestMethod]
         public void VerifyOneLineWithTextQualifier()
         {
             AddLine("\"a\",\"\"\"\", \"\"\"\"");
-            var r = _worksheet.Cells["A1"].LoadFromText(_lines.ToString(),new ExcelTextFormat { TextQualifier='\"' });
+            ExcelRangeBase? r = _worksheet.Cells["A1"].LoadFromText(_lines.ToString(),new ExcelTextFormat { TextQualifier='\"' });
             Assert.AreEqual("a", _worksheet.Cells[1,1].Value);
             Assert.AreEqual("\"", _worksheet.Cells[1, 2].Value);
             Assert.AreEqual("\"", _worksheet.Cells[1, 3].Value);
@@ -116,7 +116,7 @@ namespace EPPlusTest.LoadFunctions
             AddLine("\"d\",e, \"\"");
             AddLine("\"\",, \"\"");
 
-            var r = _worksheet.Cells["A1"].LoadFromText(_lines.ToString(), new ExcelTextFormat { TextQualifier = '\"' });
+            ExcelRangeBase? r = _worksheet.Cells["A1"].LoadFromText(_lines.ToString(), new ExcelTextFormat { TextQualifier = '\"' });
             Assert.AreEqual("a", _worksheet.Cells[1, 1].Value);
             Assert.AreEqual("b", _worksheet.Cells[1, 2].Value);
             Assert.AreEqual("c\"", _worksheet.Cells[1, 3].Value);

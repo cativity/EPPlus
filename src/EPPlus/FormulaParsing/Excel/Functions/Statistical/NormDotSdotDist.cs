@@ -29,9 +29,9 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Statistical
         public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
         {
             ValidateArguments(arguments, 2);
-            var z = ArgToDecimal(arguments, 0);
-            var cumulative = ArgToBool(arguments, 1);
-            var result = default(double);
+            double z = ArgToDecimal(arguments, 0);
+            bool cumulative = ArgToBool(arguments, 1);
+            double result = default(double);
             if (cumulative)
             { 
                 result = CumulativeDistribution(z, 0, 1); 

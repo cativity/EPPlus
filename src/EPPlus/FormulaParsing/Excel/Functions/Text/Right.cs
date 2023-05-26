@@ -28,9 +28,9 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Text
         public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
         {
             ValidateArguments(arguments, 2);
-            var str = ArgToString(arguments, 0);
-            var length = ArgToInt(arguments, 1);
-            var startIx = str.Length - length;
+            string? str = ArgToString(arguments, 0);
+            int length = ArgToInt(arguments, 1);
+            int startIx = str.Length - length;
             if (startIx < 0)
             {
                 startIx = 0;

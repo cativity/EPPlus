@@ -23,7 +23,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions
     {
         public override void Validate(object obj)
         {
-            var num = ConvertUtil.GetValueDouble(obj);
+            double num = ConvertUtil.GetValueDouble(obj);
             if (double.IsNaN(num) || double.IsInfinity(num))
             {
                 throw new ExcelErrorValueException(eErrorType.Num);

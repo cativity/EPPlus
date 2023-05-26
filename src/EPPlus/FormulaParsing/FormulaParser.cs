@@ -105,10 +105,10 @@ namespace OfficeOpenXml.FormulaParsing
 
         internal virtual object Parse(string formula, RangeAddress rangeAddress)
         {
-            using (var scope = _parsingContext.Scopes.NewScope(rangeAddress))
+            using (ParsingScope? scope = _parsingContext.Scopes.NewScope(rangeAddress))
             {
-                var tokens = _lexer.Tokenize(formula);
-                var graph = _graphBuilder.Build(tokens);
+                IEnumerable<Token>? tokens = _lexer.Tokenize(formula);
+                ExpressionGraph.ExpressionGraph? graph = _graphBuilder.Build(tokens);
                 if (graph.Expressions.Count() == 0)
                 {
                     return null;
@@ -119,10 +119,10 @@ namespace OfficeOpenXml.FormulaParsing
 
         internal virtual object Parse(IEnumerable<Token> tokens, string worksheet, string address)
         {
-            var rangeAddress = _parsingContext.RangeAddressFactory.Create(address);
-            using (var scope = _parsingContext.Scopes.NewScope(rangeAddress))
+            RangeAddress? rangeAddress = _parsingContext.RangeAddressFactory.Create(address);
+            using (ParsingScope? scope = _parsingContext.Scopes.NewScope(rangeAddress))
             {
-                var graph = _graphBuilder.Build(tokens);
+                ExpressionGraph.ExpressionGraph? graph = _graphBuilder.Build(tokens);
                 if (graph.Expressions.Count() == 0)
                 {
                     return null;
@@ -132,20 +132,20 @@ namespace OfficeOpenXml.FormulaParsing
         }
         internal virtual object ParseCell(IEnumerable<Token> tokens, string worksheet, int row, int column)
         {
-            var rangeAddress = _parsingContext.RangeAddressFactory.Create(worksheet, column, row);
-            using (var scope = _parsingContext.Scopes.NewScope(rangeAddress))
+            RangeAddress? rangeAddress = _parsingContext.RangeAddressFactory.Create(worksheet, column, row);
+            using (ParsingScope? scope = _parsingContext.Scopes.NewScope(rangeAddress))
             {
                 //    _parsingContext.Dependencies.AddFormulaScope(scope);
-                var graph = _graphBuilder.Build(tokens);
+                ExpressionGraph.ExpressionGraph? graph = _graphBuilder.Build(tokens);
                 if (graph.Expressions.Count() == 0)
                 {
                     return 0d;
                 }
                 try
                 {
-                    var compileResult = _compiler.Compile(graph.Expressions);
+                    CompileResult? compileResult = _compiler.Compile(graph.Expressions);
                     // quick solution for the fact that an excelrange can be returned.
-                    var rangeInfo = compileResult.Result as IRangeInfo;
+                    IRangeInfo? rangeInfo = compileResult.Result as IRangeInfo;
                     if (rangeInfo == null)
                     {
                         return compileResult.Result ?? 0d;
@@ -167,8 +167,8 @@ namespace OfficeOpenXml.FormulaParsing
                         }
                         if (_parsingContext.Debug)
                         {
-                            var msg = string.Format("A range with multiple cell was returned at row {0}, column {1}",
-                                row, column);
+                            string? msg = string.Format("A range with multiple cell was returned at row {0}, column {1}",
+                                                        row, column);
                             _parsingContext.Configuration.Logger.Log(_parsingContext, msg);
                         }
                         return ExcelErrorValue.Create(eErrorType.Value);
@@ -214,7 +214,7 @@ namespace OfficeOpenXml.FormulaParsing
         public virtual object ParseAt(string address)
         {
             Require.That(address).Named("address").IsNotNullOrEmpty();
-            var rangeAddress = _parsingContext.RangeAddressFactory.Create(address);
+            RangeAddress? rangeAddress = _parsingContext.RangeAddressFactory.Create(address);
             return ParseAt(rangeAddress.Worksheet, rangeAddress.FromRow, rangeAddress.FromCol);
         }
 
@@ -227,7 +227,7 @@ namespace OfficeOpenXml.FormulaParsing
         /// <returns>The result of the calculation</returns>
         public virtual object ParseAt(string worksheetName, int row, int col)
         {
-            var f = _excelDataProvider.GetRangeFormula(worksheetName, row, col);
+            string? f = _excelDataProvider.GetRangeFormula(worksheetName, row, col);
             if (string.IsNullOrEmpty(f))
             {
                 return _excelDataProvider.GetRangeValue(worksheetName, row, col);

@@ -462,9 +462,9 @@ namespace OfficeOpenXml.Drawing.Style.Effect
                 return;
             }
 
-            var glowTypeString = glowType.ToString();
-            var font = glowTypeString.Substring(0, glowTypeString.IndexOf('_'));
-            var schemeColor = (eSchemeColor)Enum.Parse(typeof(eSchemeColor), font);
+            string? glowTypeString = glowType.ToString();
+            string? font = glowTypeString.Substring(0, glowTypeString.IndexOf('_'));
+            eSchemeColor schemeColor = (eSchemeColor)Enum.Parse(typeof(eSchemeColor), font);
             Glow.Color.SetSchemeColor(schemeColor);
             Glow.Color.Transforms.AddAlpha(40);
             Glow.Color.Transforms.AddSaturationModulation(175);

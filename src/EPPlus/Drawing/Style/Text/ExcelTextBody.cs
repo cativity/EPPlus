@@ -386,7 +386,7 @@ namespace OfficeOpenXml.Drawing
         {
             get
             {
-                var node = (XmlElement)GetNode(_path);
+                XmlElement? node = (XmlElement)GetNode(_path);
                 if (node == null)
                 {
                     return (XmlElement)CreateNode(_path);
@@ -399,7 +399,7 @@ namespace OfficeOpenXml.Drawing
         }
         internal void SetFromXml(XmlElement copyFromElement)
         {
-            var element = PathElement;
+            XmlElement? element = PathElement;
             foreach (XmlAttribute a in copyFromElement.Attributes)
             {
                 element.SetAttribute(a.Name, a.NamespaceURI, a.Value);

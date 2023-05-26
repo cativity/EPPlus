@@ -54,11 +54,11 @@ namespace EPPlusTest.Filter
         [TestMethod]
         public void CustomEndWith()
         {
-            var ws = _pck.Workbook.Worksheets.Add("CustomEndWith");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("CustomEndWith");
             LoadTestdata(ws);
             
             ws.AutoFilterAddress = ws.Cells["A1:D100"];
-            var col=ws.AutoFilter.Columns.AddCustomFilterColumn(2);
+            ExcelCustomFilterColumn? col=ws.AutoFilter.Columns.AddCustomFilterColumn(2);
             col.Filters.Add(new ExcelFilterCustomItem("*3"));
             ws.AutoFilter.ApplyFilter();
 
@@ -68,11 +68,11 @@ namespace EPPlusTest.Filter
         [TestMethod]
         public void CustomStartsWithOrContainsText()
         {
-            var ws = _pck.Workbook.Worksheets.Add("StartOrContains");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("StartOrContains");
             LoadTestdata(ws);
 
             ws.AutoFilterAddress = ws.Cells["A1:D100"];
-            var col = ws.AutoFilter.Columns.AddCustomFilterColumn(2);
+            ExcelCustomFilterColumn? col = ws.AutoFilter.Columns.AddCustomFilterColumn(2);
             col.Filters.Add(new ExcelFilterCustomItem("*3"));
             col.Filters.Add(new ExcelFilterCustomItem("*ue ?2"));
             col.And = false;
@@ -86,7 +86,7 @@ namespace EPPlusTest.Filter
         [TestMethod]
         public void CustomContains()
         {
-            var ws = _pck.Workbook.Worksheets.Add("StartsWith");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("StartsWith");
             LoadTestdata(ws);
             for (int row = 2; row <= ws.Dimension.Rows; row++)
             {
@@ -97,7 +97,7 @@ namespace EPPlusTest.Filter
             }
 
             ws.AutoFilterAddress = ws.Cells["A1:D100"];
-            var col = ws.AutoFilter.Columns.AddCustomFilterColumn(2);
+            ExcelCustomFilterColumn? col = ws.AutoFilter.Columns.AddCustomFilterColumn(2);
             col.Filters.Add(new ExcelFilterCustomItem("*value*"));
             col.And = false;
             ws.AutoFilter.ApplyFilter();
@@ -110,11 +110,11 @@ namespace EPPlusTest.Filter
         [TestMethod]
         public void CustomNumericEqualOrGreaterThanOrEqual()
         {
-            var ws = _pck.Workbook.Worksheets.Add("NumberEqOrGrEq");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("NumberEqOrGrEq");
             LoadTestdata(ws);
 
             ws.AutoFilterAddress = ws.Cells["A1:D100"];
-            var col = ws.AutoFilter.Columns.AddCustomFilterColumn(1);
+            ExcelCustomFilterColumn? col = ws.AutoFilter.Columns.AddCustomFilterColumn(1);
             col.Filters.Add(new ExcelFilterCustomItem("14"));
             col.Filters.Add(new ExcelFilterCustomItem("95", eFilterOperator.GreaterThanOrEqual));
             col.And = false;
@@ -129,11 +129,11 @@ namespace EPPlusTest.Filter
         [TestMethod]
         public void CustomNumericEqualOrLessThanOrEqual()
         {
-            var ws = _pck.Workbook.Worksheets.Add("NumberEqOrLessEq");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("NumberEqOrLessEq");
             LoadTestdata(ws);
 
             ws.AutoFilterAddress = ws.Cells["A1:D100"];
-            var col = ws.AutoFilter.Columns.AddCustomFilterColumn(1);
+            ExcelCustomFilterColumn? col = ws.AutoFilter.Columns.AddCustomFilterColumn(1);
             col.Filters.Add(new ExcelFilterCustomItem("14"));
             col.Filters.Add(new ExcelFilterCustomItem("12.3", eFilterOperator.LessThanOrEqual));
             col.And = false;
@@ -147,11 +147,11 @@ namespace EPPlusTest.Filter
         [TestMethod]
         public void CustomNumericEqualAndLessThanOrEqual()
         {
-            var ws = _pck.Workbook.Worksheets.Add("NumberEqAndLess");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("NumberEqAndLess");
             LoadTestdata(ws);
 
             ws.AutoFilterAddress = ws.Cells["A1:D100"];
-            var col = ws.AutoFilter.Columns.AddCustomFilterColumn(1);
+            ExcelCustomFilterColumn? col = ws.AutoFilter.Columns.AddCustomFilterColumn(1);
             col.Filters.Add(new ExcelFilterCustomItem("13"));
             col.Filters.Add(new ExcelFilterCustomItem("12", eFilterOperator.LessThan));
             col.And = true;
@@ -165,11 +165,11 @@ namespace EPPlusTest.Filter
         [TestMethod]
         public void CustomNumericEqualAndNotEqual()
         {
-            var ws = _pck.Workbook.Worksheets.Add("NumberGtAndNotEq");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("NumberGtAndNotEq");
             LoadTestdata(ws);
 
             ws.AutoFilterAddress = ws.Cells["A1:D100"];
-            var col = ws.AutoFilter.Columns.AddCustomFilterColumn(1);
+            ExcelCustomFilterColumn? col = ws.AutoFilter.Columns.AddCustomFilterColumn(1);
             col.Filters.Add(new ExcelFilterCustomItem("94", eFilterOperator.GreaterThan));
             col.Filters.Add(new ExcelFilterCustomItem("98", eFilterOperator.NotEqual));
             col.And = true;

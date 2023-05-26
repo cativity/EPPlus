@@ -95,10 +95,10 @@ namespace OfficeOpenXml.Drawing.Style.Fill
 
         internal override void GetXml()
         {
-            var relId = _xml.GetXmlNodeString("a:blip/@r:embed");
+            string? relId = _xml.GetXmlNodeString("a:blip/@r:embed");
             if (!string.IsNullOrEmpty(relId))
             {
-                var img = PictureStore.GetPicture(relId, this, out string contentType, out ePictureType pictureType);
+                byte[]? img = PictureStore.GetPicture(relId, this, out string contentType, out ePictureType pictureType);
                 Image.Type = pictureType;
                 Image.ImageBytes = img;
                 ContentType = contentType;
@@ -181,8 +181,8 @@ namespace OfficeOpenXml.Drawing.Style.Fill
             {
                 throw (new ArgumentException($"File {file.FullName} does not exist."));
             }
-            var img = File.ReadAllBytes(file.FullName);
-            var extension = file.Extension;
+            byte[]? img = File.ReadAllBytes(file.FullName);
+            string? extension = file.Extension;
             ContentType = PictureStore.GetContentType(extension);
             Image.SetImage(img, PictureStore.GetPictureType(extension));
         }

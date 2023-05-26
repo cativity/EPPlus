@@ -199,7 +199,7 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions
             _sheet.Cells["A6"].Formula = "AGGREGATE( 7, 6, A1:A5 )";
             _sheet.Cells["A3"].Formula = "1/0";
             _sheet.Calculate();
-            var result = (double)_sheet.Cells["A6"].Value;
+            double result = (double)_sheet.Cells["A6"].Value;
             result = System.Math.Round(result, 5);
             Assert.AreEqual(3.30088d, result);
 
@@ -215,7 +215,7 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions
             _sheet.Cells["A6"].Formula = "AGGREGATE( 8, 6, A1:A5 )";
             _sheet.Cells["A3"].Formula = "1/0";
             _sheet.Calculate();
-            var result = (double)_sheet.Cells["A6"].Value;
+            double result = (double)_sheet.Cells["A6"].Value;
             result = System.Math.Round(result, 5);
             Assert.AreEqual(2.85865d, result);
 
@@ -246,7 +246,7 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions
             _sheet.Cells["A6"].Formula = "AGGREGATE( 10, 6, A1:A5 )";
             _sheet.Cells["A3"].Formula = "1/0";
             _sheet.Calculate();
-            var result = (double)_sheet.Cells["A6"].Value;
+            double result = (double)_sheet.Cells["A6"].Value;
             result = System.Math.Round(result, 5);
             Assert.AreEqual(10.89583d, result);
 
@@ -266,7 +266,7 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions
 
             _sheet.Cells["A3"].Value = 1;
             _sheet.Calculate();
-            var result = (double)_sheet.Cells["A6"].Value;
+            double result = (double)_sheet.Cells["A6"].Value;
             result = System.Math.Round(result, 2);
             Assert.AreEqual(6.84d, result);
         }
@@ -282,7 +282,7 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions
 
             _sheet.Cells["A3"].Value = 1;
             _sheet.Calculate();
-            var result = (double)_sheet.Cells["A6"].Value;
+            double result = (double)_sheet.Cells["A6"].Value;
             result = System.Math.Round(result, 2);
             Assert.AreEqual(2.5d, result);
         }
@@ -383,15 +383,15 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions
         [TestMethod]
         public void ShouldHandleMultipleLevelsOfAggregate()
         {
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var sheet3 = package.Workbook.Worksheets.Add("sheet3");
+                ExcelWorksheet? sheet3 = package.Workbook.Worksheets.Add("sheet3");
                 sheet3.Cells["A1"].Value = 26959.64;
                 sheet3.Cells["A2"].Value = 82272d;
                 sheet3.Cells["A3"].Formula = "AGGREGATE(9,0,A1:A2)";
                 sheet3.Cells["A4"].Formula = "AGGREGATE(9,0,A1:A3)";
 
-                var sheet2 = package.Workbook.Worksheets.Add("sheet2");
+                ExcelWorksheet? sheet2 = package.Workbook.Worksheets.Add("sheet2");
                 sheet2.Cells["A1"].Formula = "sheet3!A4";
                 package.Workbook.Calculate();
                 Assert.AreEqual(109231.64d, sheet2.Cells["A1"].Value);

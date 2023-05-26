@@ -165,7 +165,7 @@ namespace OfficeOpenXml
         /// </summary>
         public void CollapseChildren(bool allLevels = true)
         {
-            var helper = new WorksheetOutlineHelper(_worksheet);
+            WorksheetOutlineHelper? helper = new WorksheetOutlineHelper(_worksheet);
             if (_worksheet.OutLineSummaryRight)
             {
                 for (int c = GetLastCol(); c >= _fromCol; c--)
@@ -187,7 +187,7 @@ namespace OfficeOpenXml
         /// </summary>
         public void ExpandChildren(bool allLevels = true)
         {
-            var helper = new WorksheetOutlineHelper(_worksheet);
+            WorksheetOutlineHelper? helper = new WorksheetOutlineHelper(_worksheet);
             if (_worksheet.OutLineSummaryRight)
             {
                 for (int c = GetLastCol(); c >= _fromCol; c--)
@@ -210,7 +210,7 @@ namespace OfficeOpenXml
         /// <param name="collapseChildren">Collapses all children with a greater <see cref="OutlineLevel"/> than <paramref name="level"/></param>
         public void SetVisibleOutlineLevel(int level, bool collapseChildren = true)
         {
-            var helper = new WorksheetOutlineHelper(_worksheet);
+            WorksheetOutlineHelper? helper = new WorksheetOutlineHelper(_worksheet);
             if (_worksheet.OutLineSummaryRight)
             {
                 for (int c = GetLastCol(); c >= _fromCol; c--)
@@ -430,7 +430,7 @@ namespace OfficeOpenXml
         }
         private ExcelColumn GetColumn(int col, bool ignoreFromCol = true)
         {
-            var currentCol = _worksheet.GetValueInner(0, col) as ExcelColumn;
+            ExcelColumn? currentCol = _worksheet.GetValueInner(0, col) as ExcelColumn;
             if (currentCol == null)
             {
                 int r = 0, c = col;
@@ -450,7 +450,7 @@ namespace OfficeOpenXml
         }
         private TOut GetValue<TOut>(Func<ExcelColumn, TOut> getValue, TOut defaultValue)
         {
-            var currentCol = _worksheet.GetValueInner(0, _fromCol) as ExcelColumn;
+            ExcelColumn? currentCol = _worksheet.GetValueInner(0, _fromCol) as ExcelColumn;
             if (currentCol == null)
             {
                 int r = 0, c = _fromCol;
@@ -475,7 +475,7 @@ namespace OfficeOpenXml
 
         private void SetValue<T>(Action<ExcelColumn,T> SetValue, T value)
         {
-            var c = _fromCol;
+            int c = _fromCol;
             int r = 0;
             ExcelColumn currentCol = _worksheet.GetValueInner(0, c) as ExcelColumn;
             if (currentCol == null)
@@ -483,7 +483,7 @@ namespace OfficeOpenXml
                 int cPrev = _fromCol;
                 if (_worksheet._values.PrevCell(ref r, ref cPrev))
                 {
-                    var pc = _worksheet.GetValueInner(0, cPrev) as ExcelColumn;
+                    ExcelColumn? pc = _worksheet.GetValueInner(0, cPrev) as ExcelColumn;
                     if (cPrev > 0)
                     {
                         ExcelColumn prevCol = _worksheet.GetValueInner(0, cPrev) as ExcelColumn;
@@ -592,7 +592,7 @@ namespace OfficeOpenXml
             }
             else
             {
-                var c = _cs.GetValue(0, enumCol)._value as ExcelColumn;
+                ExcelColumn? c = _cs.GetValue(0, enumCol)._value as ExcelColumn;
                 if(c!=null && c.ColumnMax>=enumCol)
                 {
                     enumColPos = _cs.GetColumnPosition(enumCol);

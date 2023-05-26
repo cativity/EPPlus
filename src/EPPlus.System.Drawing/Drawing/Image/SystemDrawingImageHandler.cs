@@ -50,7 +50,7 @@ namespace OfficeOpenXml.SystemDrawing.Image
         {
             try
             {
-                var bmp = new Bitmap(image);
+                Bitmap? bmp = new Bitmap(image);
                 width = bmp.Width;
                 height = bmp.Height;
                 horizontalResolution = bmp.HorizontalResolution;
@@ -74,7 +74,7 @@ namespace OfficeOpenXml.SystemDrawing.Image
             {
                 try
                 {
-                    var g = Graphics.FromHwnd(IntPtr.Zero); //Fails if no gdi.
+                    Graphics? g = Graphics.FromHwnd(IntPtr.Zero); //Fails if no gdi.
                     _validForEnvironment = true;
                 }
                 catch

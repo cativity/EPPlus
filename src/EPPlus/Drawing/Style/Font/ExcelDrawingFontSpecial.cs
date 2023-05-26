@@ -67,7 +67,7 @@ namespace OfficeOpenXml.Drawing.Style.Font
         {
             get
             {
-                var p=GetXmlNodeInt("@pitchFamily");
+                int p=GetXmlNodeInt("@pitchFamily");
                 try
                 {
                     return (ePitchFamily)p;

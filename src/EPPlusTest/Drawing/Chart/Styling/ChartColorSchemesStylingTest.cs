@@ -55,7 +55,7 @@ namespace EPPlusTest.Drawing.Chart.Styling
         [TestMethod]
         public void ColorSchemesArea3D()
         {
-            var ws = _pck.Workbook.Worksheets.Add("Area3DChartStyles");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("Area3DChartStyles");
             LoadTestdata(ws);
 
             Area3DStyle(ws, eAreaChartType.Area3D);
@@ -63,7 +63,7 @@ namespace EPPlusTest.Drawing.Chart.Styling
         [TestMethod]
         public void ColorSchemesPie3D()
         {
-            var ws = _pck.Workbook.Worksheets.Add("Pie3DChartStyles");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("Pie3DChartStyles");
             LoadTestdata(ws);
 
             Pie3DStyle(ws, ePieChartType.Pie3D);
@@ -305,13 +305,13 @@ namespace EPPlusTest.Drawing.Chart.Styling
         }
         private static ExcelAreaChart AddAreaWithColor(ExcelWorksheet ws, eAreaChartType type, string name, int row, int col, ePresetChartStyle style, ePresetChartColors colors, Action<ExcelAreaChart> SetProperties)    
         {
-            var chart = ws.Drawings.AddAreaChart(name, type);
+            ExcelAreaChart? chart = ws.Drawings.AddAreaChart(name, type);
             chart.SetPosition(row, 0, col, 0);
             chart.To.Column = col+12;
             chart.To.ColumnOff = 0;
             chart.To.Row = row + 18;
             chart.To.RowOff = 0;
-            var serie = chart.Series.Add("D2:D8", "A2:A8");
+            ExcelAreaChartSerie? serie = chart.Series.Add("D2:D8", "A2:A8");
 
             SetProperties(chart);
 
@@ -320,13 +320,13 @@ namespace EPPlusTest.Drawing.Chart.Styling
         }
         private static ExcelPieChart AddPieWithColor(ExcelWorksheet ws, ePieChartType type, string name, int row, int col, ePresetChartStyle style, ePresetChartColors colors, Action<ExcelPieChart> SetProperties)
         {
-            var chart = ws.Drawings.AddPieChart(name, type);
+            ExcelPieChart? chart = ws.Drawings.AddPieChart(name, type);
             chart.SetPosition(row, 0, col, 0);
             chart.To.Column = col + 12;
             chart.To.ColumnOff = 0;
             chart.To.Row = row + 18;
             chart.To.RowOff = 0;
-            var serie = chart.Series.Add("D2:D8", "A2:A8");
+            ExcelPieChartSerie? serie = chart.Series.Add("D2:D8", "A2:A8");
 
             SetProperties(chart);
 

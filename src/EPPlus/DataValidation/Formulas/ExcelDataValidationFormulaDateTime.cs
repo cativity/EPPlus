@@ -21,7 +21,7 @@ namespace OfficeOpenXml.DataValidation.Formulas
         public ExcelDataValidationFormulaDateTime(string formula, string validationUid, string sheetName, Action<OnFormulaChangedEventArgs> evtHandler)
             : base(validationUid, sheetName, evtHandler)
         {
-            var value = formula;
+            string? value = formula;
             if (!string.IsNullOrEmpty(value))
             {
                 double oADate = default(double);

@@ -59,7 +59,7 @@ namespace OfficeOpenXml.Core.CellStore
             row = minRow;
             colPos = minColPos - 1;
 
-            var cols = maxColPos - minColPos + 1;
+            int cols = maxColPos - minColPos + 1;
             pagePos = new int[cols];
             cellPos = new int[cols];
             for (int i = 0; i < cols; i++)

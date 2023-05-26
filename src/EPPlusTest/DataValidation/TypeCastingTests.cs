@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using OfficeOpenXml.DataValidation.Contracts;
 
 namespace EPPlusTest.DataValidation
 {
@@ -14,11 +15,11 @@ namespace EPPlusTest.DataValidation
         [TestMethod]
         public void ShouldCastListValidation()
         {
-            using(var package = new ExcelPackage())
+            using(ExcelPackage? package = new ExcelPackage())
             {
-                var sheet = package.Workbook.Worksheets.Add("test");
+                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
                 sheet.DataValidations.AddListValidation("A1");
-                var dv = sheet.DataValidations.First().As.ListValidation;
+                IExcelDataValidationList? dv = sheet.DataValidations.First().As.ListValidation;
                 Assert.IsNotNull(dv);
             }
         }
@@ -26,11 +27,11 @@ namespace EPPlusTest.DataValidation
         [TestMethod]
         public void ShouldCastIntegerValidation()
         {
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var sheet = package.Workbook.Worksheets.Add("test");
+                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
                 sheet.DataValidations.AddIntegerValidation("A1");
-                var dv = sheet.DataValidations.First().As.IntegerValidation;
+                IExcelDataValidationInt? dv = sheet.DataValidations.First().As.IntegerValidation;
                 Assert.IsNotNull(dv);
             }
         }
@@ -38,11 +39,11 @@ namespace EPPlusTest.DataValidation
         [TestMethod]
         public void ShouldCastDecimalValidation()
         {
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var sheet = package.Workbook.Worksheets.Add("test");
+                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
                 sheet.DataValidations.AddDecimalValidation("A1");
-                var dv = sheet.DataValidations.First().As.DecimalValidation;
+                IExcelDataValidationDecimal? dv = sheet.DataValidations.First().As.DecimalValidation;
                 Assert.IsNotNull(dv);
             }
         }
@@ -50,11 +51,11 @@ namespace EPPlusTest.DataValidation
         [TestMethod]
         public void ShouldCastDateTimeValidation()
         {
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var sheet = package.Workbook.Worksheets.Add("test");
+                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
                 sheet.DataValidations.AddDateTimeValidation("A1");
-                var dv = sheet.DataValidations.First().As.DateTimeValidation;
+                IExcelDataValidationDateTime? dv = sheet.DataValidations.First().As.DateTimeValidation;
                 Assert.IsNotNull(dv);
             }
         }
@@ -62,11 +63,11 @@ namespace EPPlusTest.DataValidation
         [TestMethod]
         public void ShouldCastTimeValidation()
         {
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var sheet = package.Workbook.Worksheets.Add("test");
+                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
                 sheet.DataValidations.AddTimeValidation("A1");
-                var dv = sheet.DataValidations.First().As.TimeValidation;
+                IExcelDataValidationTime? dv = sheet.DataValidations.First().As.TimeValidation;
                 Assert.IsNotNull(dv);
             }
         }
@@ -74,11 +75,11 @@ namespace EPPlusTest.DataValidation
         [TestMethod]
         public void ShouldCastCustomValidation()
         {
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var sheet = package.Workbook.Worksheets.Add("test");
+                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
                 sheet.DataValidations.AddCustomValidation("A1");
-                var dv = sheet.DataValidations.First().As.CustomValidation;
+                IExcelDataValidationCustom? dv = sheet.DataValidations.First().As.CustomValidation;
                 Assert.IsNotNull(dv);
             }
         }
@@ -86,11 +87,11 @@ namespace EPPlusTest.DataValidation
         [TestMethod]
         public void ShouldCastAnyValidation()
         {
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var sheet = package.Workbook.Worksheets.Add("test");
+                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
                 sheet.DataValidations.AddAnyValidation("A1");
-                var dv = sheet.DataValidations.First().As.AnyValidation;
+                IExcelDataValidationAny? dv = sheet.DataValidations.First().As.AnyValidation;
                 Assert.IsNotNull(dv);
             }
         }

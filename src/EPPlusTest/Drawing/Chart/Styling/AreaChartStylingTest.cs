@@ -55,7 +55,7 @@ namespace EPPlusTest.Drawing.Chart.Styling
         [TestMethod]
         public void Area_Styles()
         {
-            var ws = _pck.Workbook.Worksheets.Add("AreaChartStyling");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("AreaChartStyling");
             LoadTestdata(ws);
 
             AreaStyle(ws, eAreaChartType.Area);
@@ -63,7 +63,7 @@ namespace EPPlusTest.Drawing.Chart.Styling
         [TestMethod]
         public void Area3D_Styles()
         {
-            var ws = _pck.Workbook.Worksheets.Add("Area3DChartStyles");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("Area3DChartStyles");
             LoadTestdata(ws);
 
             Area3DStyle(ws, eAreaChartType.Area3D);
@@ -216,13 +216,13 @@ namespace EPPlusTest.Drawing.Chart.Styling
         }
         private static ExcelAreaChart AddArea(ExcelWorksheet ws, eAreaChartType type, string name, int row, int col, ePresetChartStyle style, Action<ExcelAreaChart> SetProperties)    
         {
-            var chart = ws.Drawings.AddAreaChart(name, type);
+            ExcelAreaChart? chart = ws.Drawings.AddAreaChart(name, type);
             chart.SetPosition(row, 0, col, 0);
             chart.To.Column = col+12;
             chart.To.ColumnOff = 0;
             chart.To.Row = row + 18;
             chart.To.RowOff = 0;
-            var serie = chart.Series.Add("D2:D8", "A2:A8");
+            ExcelAreaChartSerie? serie = chart.Series.Add("D2:D8", "A2:A8");
 
             SetProperties(chart);
 

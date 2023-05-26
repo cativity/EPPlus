@@ -38,15 +38,15 @@ namespace EPPlusTest
         [TestMethod]
         public void QuotePrefixStyle()
         {
-            using (var p = new ExcelPackage())
+            using (ExcelPackage? p = new ExcelPackage())
             {
-                var ws = p.Workbook.Worksheets.Add("QuotePrefixTest");
-                var cell = ws.Cells["B2"];
+                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("QuotePrefixTest");
+                ExcelRange? cell = ws.Cells["B2"];
                 cell.Style.QuotePrefix = true;
                 Assert.IsTrue(cell.Style.QuotePrefix);
 
                 p.Workbook.Styles.UpdateXml();                
-                var nodes = p.Workbook.StylesXml.SelectNodes("//d:cellXfs/d:xf", p.Workbook.NameSpaceManager);
+                XmlNodeList? nodes = p.Workbook.StylesXml.SelectNodes("//d:cellXfs/d:xf", p.Workbook.NameSpaceManager);
                 // Since the quotePrefix attribute is not part of the default style,
                 // a new one should be created and referenced.
                 Assert.AreNotEqual(0, cell.StyleID);

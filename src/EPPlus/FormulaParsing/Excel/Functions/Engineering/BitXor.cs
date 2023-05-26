@@ -39,8 +39,8 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Engineering
                 return this.CreateResult(eErrorType.Num);
             }
 
-            var number1 = ArgToInt(arguments, 0);
-            var number2 = ArgToInt(arguments, 1);
+            int number1 = ArgToInt(arguments, 0);
+            int number2 = ArgToInt(arguments, 1);
             if (number1 < 0 || number2 < 0)
             {
                 return this.CreateResult(eErrorType.Num);

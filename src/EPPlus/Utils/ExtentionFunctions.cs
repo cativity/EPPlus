@@ -25,7 +25,7 @@ namespace OfficeOpenXml.Utils.Extensions
         /// <returns></returns>
         internal static string ToEnumString(this Enum enumValue)
         {
-            var s = enumValue.ToString();
+            string? s = enumValue.ToString();
             return s.Substring(0, 1).ToLower() + s.Substring(1);
         }
         internal static T? ToEnum<T>(this string s) where T : struct

@@ -35,6 +35,7 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using OfficeOpenXml.Packaging.Ionic.Zip;
 using System.Globalization;
 
@@ -678,7 +679,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
 
             Ionic.FileSelector ff = new Ionic.FileSelector(selectionCriteria,
                                                            AddDirectoryWillTraverseReparsePoints);
-            var itemsToAdd = ff.SelectFiles(directoryOnDisk, recurseDirectories);
+            ReadOnlyCollection<string>? itemsToAdd = ff.SelectFiles(directoryOnDisk, recurseDirectories);
 
             if (Verbose)
             {
@@ -688,7 +689,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
             OnAddStarted();
 
             AddOrUpdateAction action = (wantUpdate) ? AddOrUpdateAction.AddOrUpdate : AddOrUpdateAction.AddOnly;
-            foreach (var item in itemsToAdd)
+            foreach (string? item in itemsToAdd)
             {
                 // workitem 10153
                 string dirInArchive = (directoryPathInArchive == null)
@@ -958,7 +959,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         /// <returns>the number of entries removed</returns>
         public int RemoveSelectedEntries(String selectionCriteria)
         {
-            var selection = this.SelectEntries(selectionCriteria);
+            ICollection<ZipEntry>? selection = this.SelectEntries(selectionCriteria);
             this.RemoveEntries(selection);
             return selection.Count;
         }
@@ -1024,7 +1025,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         /// <returns>the number of entries removed</returns>
         public int RemoveSelectedEntries(String selectionCriteria, string directoryPathInArchive)
         {
-            var selection = this.SelectEntries(selectionCriteria, directoryPathInArchive);
+            ICollection<ZipEntry>? selection = this.SelectEntries(selectionCriteria, directoryPathInArchive);
             this.RemoveEntries(selection);
             return selection.Count;
         }
@@ -1421,7 +1422,7 @@ namespace OfficeOpenXml.Packaging.Ionic
                 throw new ArgumentNullException("zip");
             }
 
-            var list = new List<ZipEntry>();
+            List<ZipEntry>? list = new List<ZipEntry>();
 
             foreach (ZipEntry e in zip)
             {
@@ -1480,7 +1481,7 @@ namespace OfficeOpenXml.Packaging.Ionic
                 throw new ArgumentNullException("zip");
             }
 
-            var list = new List<ZipEntry>();
+            List<ZipEntry>? list = new List<ZipEntry>();
             // workitem 8559
             string slashSwapped = (directoryPathInArchive == null) ? null : directoryPathInArchive.Replace("/", "\\");
             // workitem 9174

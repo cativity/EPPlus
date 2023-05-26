@@ -25,40 +25,40 @@ namespace OfficeOpenXml.Core.Worksheet.Core.Worksheet.Fonts.GenericMeasurements
 
         public static SerializedFontMetrics Deserialize(Stream stream)
         {
-            using (var reader = new BinaryReader(stream, FileEncoding))
+            using (BinaryReader? reader = new BinaryReader(stream, FileEncoding))
             {
-                var metrics = new SerializedFontMetrics();
+                SerializedFontMetrics? metrics = new SerializedFontMetrics();
                 metrics.Version = reader.ReadUInt16();
                 metrics.Family = (FontMetricsFamilies)reader.ReadUInt16();
                 metrics.SubFamily = (FontSubFamilies)reader.ReadUInt16();
                 metrics.LineHeight1em = reader.ReadSingle();
                 metrics.DefaultWidthClass = (FontMetricsClass)reader.ReadByte();
-                var nClassWidths = reader.ReadUInt16();
+                ushort nClassWidths = reader.ReadUInt16();
                 if (nClassWidths == 0)
                 {
                     return metrics;
                 }
-                for (var x = 0; x < nClassWidths; x++)
+                for (int x = 0; x < nClassWidths; x++)
                 {
-                    var cls = (FontMetricsClass)reader.ReadByte();
-                    var width = reader.ReadSingle();
+                    FontMetricsClass cls = (FontMetricsClass)reader.ReadByte();
+                    float width = reader.ReadSingle();
                     metrics.ClassWidths[cls] = width;
                 }
-                var nClasses = reader.ReadUInt16();
-                for (var x = 0; x < nClasses; x++)
+                ushort nClasses = reader.ReadUInt16();
+                for (int x = 0; x < nClasses; x++)
                 {
-                    var cls = (FontMetricsClass)reader.ReadByte();
-                    var nRanges = reader.ReadUInt16();
-                    for (var rngIx = 0; rngIx < nRanges; rngIx++)
+                    FontMetricsClass cls = (FontMetricsClass)reader.ReadByte();
+                    ushort nRanges = reader.ReadUInt16();
+                    for (int rngIx = 0; rngIx < nRanges; rngIx++)
                     {
-                        var start = reader.ReadUInt16();
-                        var end = reader.ReadUInt16();
-                        for (var c = start; c <= end; c++)
+                        ushort start = reader.ReadUInt16();
+                        ushort end = reader.ReadUInt16();
+                        for (ushort c = start; c <= end; c++)
                         {
                             metrics.CharMetrics[Convert.ToChar(c)] = cls;
                         }
                     }
-                    var nCharactersInClass = reader.ReadUInt16();
+                    ushort nCharactersInClass = reader.ReadUInt16();
                     if (nCharactersInClass == 0)
                     {
                         continue;
@@ -66,8 +66,8 @@ namespace OfficeOpenXml.Core.Worksheet.Core.Worksheet.Fonts.GenericMeasurements
 
                     for (int y = 0; y < nCharactersInClass; y++)
                     {
-                        var cCode = reader.ReadUInt16();
-                        var c = Convert.ToChar(cCode);
+                        ushort cCode = reader.ReadUInt16();
+                        char c = Convert.ToChar(cCode);
                         metrics.CharMetrics[c] = cls;
                     }
                 }

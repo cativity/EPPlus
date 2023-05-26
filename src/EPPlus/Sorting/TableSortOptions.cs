@@ -31,7 +31,7 @@ namespace OfficeOpenXml.Sorting
         {
             _table = table;
             _columnNameIndexes = new Dictionary<string, int>();
-            for(var x = 0; x < table.Columns.Count(); x++)
+            for(int x = 0; x < table.Columns.Count(); x++)
             {
                 _columnNameIndexes[table.Columns.ElementAt(x).Name] = x;
             }

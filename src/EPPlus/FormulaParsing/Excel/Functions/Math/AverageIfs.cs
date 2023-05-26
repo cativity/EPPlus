@@ -33,36 +33,36 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
 
         public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
         {
-            var functionArguments = arguments as FunctionArgument[] ?? arguments.ToArray();
+            FunctionArgument[]? functionArguments = arguments as FunctionArgument[] ?? arguments.ToArray();
             ValidateArguments(functionArguments, 3);
-            var sumRange = ArgsToDoubleEnumerable(false, new List<FunctionArgument> { functionArguments[0] }, context).ToList();
-            var argRanges = new List<RangeOrValue>();
-            var criterias = new List<string>();
-            for (var ix = 1; ix < 31; ix += 2)
+            List<ExcelDoubleCellValue>? sumRange = ArgsToDoubleEnumerable(false, new List<FunctionArgument> { functionArguments[0] }, context).ToList();
+            List<RangeOrValue>? argRanges = new List<RangeOrValue>();
+            List<string>? criterias = new List<string>();
+            for (int ix = 1; ix < 31; ix += 2)
             {
                 if (functionArguments.Length <= ix)
                 {
                     break;
                 }
 
-                var arg = functionArguments[ix];
+                FunctionArgument? arg = functionArguments[ix];
                 if (arg.IsExcelRange)
                 {
-                    var rangeInfo = arg.ValueAsRangeInfo;
+                    IRangeInfo? rangeInfo = arg.ValueAsRangeInfo;
                     argRanges.Add(new RangeOrValue { Range = rangeInfo });
                 }
                 else
                 {
                     argRanges.Add(new RangeOrValue { Value = arg.Value });
                 }
-                var v = GetCriteraFromArgsByIndex(functionArguments, ix);
+                string? v = GetCriteraFromArgsByIndex(functionArguments, ix);
                 criterias.Add(v);
             }
             IEnumerable<int> matchIndexes = GetMatchIndexes(argRanges[0], criterias[0]);
-            var enumerable = matchIndexes as IList<int> ?? matchIndexes.ToList();
-            for (var ix = 1; ix < argRanges.Count && enumerable.Any(); ix++)
+            IList<int>? enumerable = matchIndexes as IList<int> ?? matchIndexes.ToList();
+            for (int ix = 1; ix < argRanges.Count && enumerable.Any(); ix++)
             {
-                var indexes = GetMatchIndexes(argRanges[ix], criterias[ix], false);
+                List<int>? indexes = GetMatchIndexes(argRanges[ix], criterias[ix], false);
                 matchIndexes = matchIndexes.Intersect(indexes);
             }
 
@@ -71,7 +71,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
                 return this.CreateResult(eErrorType.Div0);
             }
 
-            var result = matchIndexes.Average(index => sumRange[index]);
+            double result = matchIndexes.Average(index => sumRange[index]);
 
             return CreateResult(result, DataType.Decimal);
         }

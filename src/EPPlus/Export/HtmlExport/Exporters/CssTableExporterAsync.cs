@@ -20,6 +20,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Xml;
 #if !NET35 && !NET40
 using System.Threading.Tasks;
 
@@ -42,11 +43,11 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
         /// <returns>A html table</returns>
         public async Task<string> GetCssStringAsync()
         {
-            using (var ms = RecyclableMemory.GetStream())
+            using (MemoryStream? ms = RecyclableMemory.GetStream())
             {
                 await RenderCssAsync(ms);
                 ms.Position = 0;
-                using (var sr = new StreamReader(ms))
+                using (StreamReader? sr = new StreamReader(ms))
                 {
                     return await sr.ReadToEndAsync();
                 }
@@ -72,9 +73,9 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
                 this.GetDataTypes(this._table.Address, this._table);
             }
 
-            var sw = new StreamWriter(stream);
-            var ranges = new List<ExcelRangeBase>() { _table.Range };
-            var cellCssWriter = new EpplusCssWriter(sw, ranges, _tableSettings, _tableSettings.Css, _tableSettings.Css.Exclude.CellStyle, _styleCache);
+            StreamWriter? sw = new StreamWriter(stream);
+            List<ExcelRangeBase>? ranges = new List<ExcelRangeBase>() { _table.Range };
+            EpplusCssWriter? cellCssWriter = new EpplusCssWriter(sw, ranges, _tableSettings, _tableSettings.Css, _tableSettings.Css.Exclude.CellStyle, _styleCache);
             await cellCssWriter.RenderAdditionalAndFontCssAsync(TableClass);
             if (_tableSettings.Css.IncludeTableStyles)
             {
@@ -89,7 +90,7 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
             if (Settings.Pictures.Include == ePictureInclude.Include)
             {
                 LoadRangeImages(ranges);
-                foreach (var p in _rangePictures)
+                foreach (HtmlImage? p in _rangePictures)
                 {
                     await cellCssWriter.AddPictureToCssAsync(p);
                 }
@@ -99,12 +100,12 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
 
         private async Task RenderCellCssAsync(StreamWriter sw)
         {
-            var ranges = new List<ExcelRangeBase>() { _table.Range };
-            var styleWriter = new EpplusCssWriter(sw, ranges, _tableSettings, _tableSettings.Css, _tableSettings.Css.Exclude.CellStyle, _styleCache);
+            List<ExcelRangeBase>? ranges = new List<ExcelRangeBase>() { _table.Range };
+            EpplusCssWriter? styleWriter = new EpplusCssWriter(sw, ranges, _tableSettings, _tableSettings.Css, _tableSettings.Css.Exclude.CellStyle, _styleCache);
 
-            var r = _table.Range;
-            var styles = r.Worksheet.Workbook.Styles;
-            var ce = new CellStoreEnumerator<ExcelValue>(r.Worksheet._values, r._fromRow, r._fromCol, r._toRow, r._toCol);
+            ExcelRangeBase? r = _table.Range;
+            ExcelStyles? styles = r.Worksheet.Workbook.Styles;
+            CellStoreEnumerator<ExcelValue>? ce = new CellStoreEnumerator<ExcelValue>(r.Worksheet._values, r._fromRow, r._fromCol, r._toRow, r._toCol);
             while (ce.Next())
             {
                 if (ce.Value._styleId > 0 && ce.Value._styleId < styles.CellXfs.Count)
@@ -117,7 +118,7 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
 
         internal async Task RenderTableCssAsync(StreamWriter sw, ExcelTable table, HtmlTableExportSettings settings, Dictionary<string, int> styleCache, List<string> datatypes)
         {
-            var styleWriter = new EpplusTableCssWriter(sw, table, settings, styleCache);
+            EpplusTableCssWriter? styleWriter = new EpplusTableCssWriter(sw, table, settings, styleCache);
             if (settings.Minify == false)
             {
                 await styleWriter.WriteLineAsync();
@@ -130,12 +131,12 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
             }
             else
             {
-                var tmpNode = table.WorkSheet.Workbook.StylesXml.CreateElement("c:tableStyle");
+                XmlElement? tmpNode = table.WorkSheet.Workbook.StylesXml.CreateElement("c:tableStyle");
                 tblStyle = new ExcelTableNamedStyle(table.WorkSheet.Workbook.Styles.NameSpaceManager, tmpNode, table.WorkSheet.Workbook.Styles);
                 tblStyle.SetFromTemplate(table.TableStyle);
             }
 
-            var tableClass = $"{TableClass}.{HtmlExportTableUtil.TableStyleClassPrefix}{HtmlExportTableUtil.GetClassName(tblStyle.Name, "EmptyClassName").ToLower()}";
+            string? tableClass = $"{TableClass}.{HtmlExportTableUtil.TableStyleClassPrefix}{HtmlExportTableUtil.GetClassName(tblStyle.Name, "EmptyClassName").ToLower()}";
             await styleWriter.AddHyperlinkCssAsync($"{tableClass}", tblStyle.WholeTable);
             await styleWriter.AddAlignmentToCssAsync($"{tableClass}", datatypes);
 
@@ -156,21 +157,21 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
             await styleWriter.AddToCssAsync($"{tableClass}", tblStyle.FirstTotalCell, " tfoot tr td:first-child");
 
             //Columns stripes
-            var tableClassCS = $"{tableClass}-column-stripes";
+            string? tableClassCS = $"{tableClass}-column-stripes";
             await styleWriter.AddToCssAsync($"{tableClassCS}", tblStyle.FirstColumnStripe, $" tbody tr td:nth-child(odd)");
             await styleWriter.AddToCssAsync($"{tableClassCS}", tblStyle.SecondColumnStripe, $" tbody tr td:nth-child(even)");
 
             //Row stripes
-            var tableClassRS = $"{tableClass}-row-stripes";
+            string? tableClassRS = $"{tableClass}-row-stripes";
             await styleWriter.AddToCssAsync($"{tableClassRS}", tblStyle.FirstRowStripe, " tbody tr:nth-child(odd)");
             await styleWriter.AddToCssAsync($"{tableClassRS}", tblStyle.SecondRowStripe, " tbody tr:nth-child(even)");
 
             //Last column
-            var tableClassLC = $"{tableClass}-last-column";
+            string? tableClassLC = $"{tableClass}-last-column";
             await styleWriter.AddToCssAsync($"{tableClassLC}", tblStyle.LastColumn, $" tbody tr td:last-child");
 
             //First column
-            var tableClassFC = $"{tableClass}-first-column";
+            string? tableClassFC = $"{tableClass}-first-column";
             await styleWriter.AddToCssAsync($"{tableClassFC}", tblStyle.FirstColumn, " tbody tr td:first-child");
 
 

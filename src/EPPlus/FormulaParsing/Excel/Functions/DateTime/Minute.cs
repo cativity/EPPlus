@@ -28,7 +28,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime
         public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
         {
             ValidateArguments(arguments, 1);
-            var dateObj = arguments.ElementAt(0).Value;
+            object? dateObj = arguments.ElementAt(0).Value;
             System.DateTime date = System.DateTime.MinValue;
             if (dateObj is string)
             {
@@ -36,7 +36,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime
             }
             else
             {
-                var d = ArgToDecimal(arguments, 0);
+                double d = ArgToDecimal(arguments, 0);
                 date = System.DateTime.FromOADate(d);
             }
             return CreateResult(date.Minute, DataType.Integer);

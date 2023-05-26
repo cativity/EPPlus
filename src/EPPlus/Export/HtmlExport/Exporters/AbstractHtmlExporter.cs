@@ -55,9 +55,9 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
             }
             _rangePictures = new List<HtmlImage>();
             //Render in-cell images.
-            foreach (var worksheet in ranges.Select(x => x.Worksheet).Distinct())
+            foreach (ExcelWorksheet? worksheet in ranges.Select(x => x.Worksheet).Distinct())
             {
-                foreach (var d in worksheet.Drawings)
+                foreach (ExcelDrawing? d in worksheet.Drawings)
                 {
                     if (d is ExcelPicture p)
                     {
@@ -106,7 +106,7 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
                 return null;
             }
 
-            foreach (var p in _rangePictures)
+            foreach (HtmlImage? p in _rangePictures)
             {
                 if (p.FromRow == row - 1 && p.FromColumn == col - 1 && p.WorksheetId == worksheetId)
                 {

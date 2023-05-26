@@ -54,7 +54,7 @@ namespace OfficeOpenXml
         /// <returns>A <see cref="DataTable"/> representing the range.</returns>
         public DataTable ToDataTable(Action<ToDataTableOptions> configHandler)
         {
-            var o = ToDataTableOptions.Default;
+            ToDataTableOptions? o = ToDataTableOptions.Default;
             configHandler.Invoke(o);
             return ToDataTable(o);
         }
@@ -66,7 +66,7 @@ namespace OfficeOpenXml
         /// <returns>A <see cref="DataTable"/> representing the range.</returns>
         public DataTable ToDataTable(ToDataTableOptions options)
         {
-            var func = new ToDataTable(options, this);
+            ToDataTable? func = new ToDataTable(options, this);
             return func.Execute();
         }
 
@@ -78,7 +78,7 @@ namespace OfficeOpenXml
         /// <returns>A <see cref="DataTable"/> representing the range.</returns>
         public DataTable ToDataTable(Action<ToDataTableOptions> configHandler, DataTable dataTable)
         {
-            var o = ToDataTableOptions.Default;
+            ToDataTableOptions? o = ToDataTableOptions.Default;
             configHandler.Invoke(o);
             return ToDataTable(o, dataTable);
         }
@@ -101,7 +101,7 @@ namespace OfficeOpenXml
         /// <returns>A <see cref="DataTable"/> representing the range.</returns>
         public DataTable ToDataTable(ToDataTableOptions options, DataTable dataTable)
         {
-            var func = new ToDataTable(options, this);
+            ToDataTable? func = new ToDataTable(options, this);
             return func.Execute(dataTable);
         }
         #endregion
@@ -122,11 +122,11 @@ namespace OfficeOpenXml
         /// <returns>A string containing the text</returns>
         public string ToText(ExcelOutputTextFormat Format)
         {
-            using (var ms = RecyclableMemory.GetStream())
+            using (MemoryStream? ms = RecyclableMemory.GetStream())
             {
                 SaveToText(ms, Format);
                 ms.Position = 0;
-                var sr = new StreamReader(ms);
+                StreamReader? sr = new StreamReader(ms);
                 return sr.ReadToEnd();
             }
         }
@@ -138,7 +138,7 @@ namespace OfficeOpenXml
         /// <param name="Format">Information how to create the csv text</param>
         public void SaveToText(FileInfo file, ExcelOutputTextFormat Format)
         {
-            var fileStream = file.Open(FileMode.Create, FileAccess.Write, FileShare.Write);
+            FileStream? fileStream = file.Open(FileMode.Create, FileAccess.Write, FileShare.Write);
             SaveToText(fileStream, Format);
         }
         /// <summary>
@@ -154,7 +154,7 @@ namespace OfficeOpenXml
                 Format = new ExcelOutputTextFormat();
             }
 
-            var sw = new StreamWriter(stream, Format.Encoding);
+            StreamWriter? sw = new StreamWriter(stream, Format.Encoding);
             if (!string.IsNullOrEmpty(Format.Header))
             {
                 sw.Write(Format.Header + Format.EOL);
@@ -164,7 +164,7 @@ namespace OfficeOpenXml
 
             bool hasTextQ = Format.TextQualifier != '\0';
             string doubleTextQualifiers = new string(Format.TextQualifier, 2);
-            var skipLinesBegining = Format.SkipLinesBeginning + (Format.FirstRowIsHeader ? 1 : 0);
+            int skipLinesBegining = Format.SkipLinesBeginning + (Format.FirstRowIsHeader ? 1 : 0);
             CultureInfo ci = GetCultureInfo(Format);
             for (int row = _fromRow; row <= _toRow; row++)
             {
@@ -230,11 +230,11 @@ namespace OfficeOpenXml
         /// <returns>A string containing the text</returns>
         public async Task<string> ToTextAsync(ExcelOutputTextFormat Format)
         {
-            using (var ms = RecyclableMemory.GetStream())
+            using (MemoryStream? ms = RecyclableMemory.GetStream())
             {
                 await SaveToTextAsync(ms, Format).ConfigureAwait(false);
                 ms.Position = 0;
-                var sr = new StreamReader(ms);
+                StreamReader? sr = new StreamReader(ms);
                 return await sr.ReadToEndAsync().ConfigureAwait(false);
             }
         }
@@ -246,7 +246,7 @@ namespace OfficeOpenXml
         /// <param name="Format">Information how to create the csv text</param>
         public async Task SaveToTextAsync(FileInfo file, ExcelOutputTextFormat Format)
         {
-            var fileStream = file.Open(FileMode.Create, FileAccess.Write, FileShare.Write);
+            FileStream? fileStream = file.Open(FileMode.Create, FileAccess.Write, FileShare.Write);
             await SaveToTextAsync(fileStream, Format).ConfigureAwait(false);
         }
         /// <summary>
@@ -262,7 +262,7 @@ namespace OfficeOpenXml
                 Format = new ExcelOutputTextFormat();
             }
 
-            var sw = new StreamWriter(stream, Format.Encoding);
+            StreamWriter? sw = new StreamWriter(stream, Format.Encoding);
             if (!string.IsNullOrEmpty(Format.Header))
             {
                 sw.Write(Format.Header + Format.EOL);
@@ -283,7 +283,7 @@ namespace OfficeOpenXml
                     encodedTextQualifier = Format.EncodedTextQualifiers;
                 }
             }
-            var skipLinesBegining = Format.SkipLinesBeginning + (Format.FirstRowIsHeader ? 1 : 0);
+            int skipLinesBegining = Format.SkipLinesBeginning + (Format.FirstRowIsHeader ? 1 : 0);
             CultureInfo ci = GetCultureInfo(Format);
             for (int row = _fromRow; row <= _toRow; row++)
             {
@@ -336,8 +336,8 @@ namespace OfficeOpenXml
         /// <returns>A JSON string</returns>
         public string ToJson()
         {
-            var re = new JsonRangeExport(this, new JsonRangeExportSettings());
-            var ms = RecyclableMemory.GetStream();
+            JsonRangeExport? re = new JsonRangeExport(this, new JsonRangeExportSettings());
+            MemoryStream? ms = RecyclableMemory.GetStream();
             re.Export(ms);
             return Encoding.UTF8.GetString(ms.ToArray());
         }
@@ -348,10 +348,10 @@ namespace OfficeOpenXml
         /// <returns></returns>
         public string ToJson(Action<JsonRangeExportSettings> settings)
         {
-            var s = new JsonRangeExportSettings();
+            JsonRangeExportSettings? s = new JsonRangeExportSettings();
             settings.Invoke(s);
-            var re = new JsonRangeExport(this, s);
-            var ms = RecyclableMemory.GetStream();
+            JsonRangeExport? re = new JsonRangeExport(this, s);
+            MemoryStream? ms = RecyclableMemory.GetStream();
             re.Export(ms);
             return s.Encoding.GetString(ms.ToArray());
         }
@@ -361,7 +361,7 @@ namespace OfficeOpenXml
         /// <param name="stream">The writable stream to write the JSON to.</param>
         public void SaveToJson(Stream stream)
         {
-            var re = new JsonRangeExport(this, new JsonRangeExportSettings());
+            JsonRangeExport? re = new JsonRangeExport(this, new JsonRangeExportSettings());
             re.Export(stream);
         }
         /// <summary>
@@ -371,9 +371,9 @@ namespace OfficeOpenXml
         /// <param name="settings">Configures settings for the JSON export</param>
         public void SaveToJson(Stream stream, Action<JsonRangeExportSettings> settings)
         {
-            var s = new JsonRangeExportSettings();
+            JsonRangeExportSettings? s = new JsonRangeExportSettings();
             settings.Invoke(s);
-            var re = new JsonRangeExport(this, s);
+            JsonRangeExport? re = new JsonRangeExport(this, s);
             re.Export(stream);
         }
         #endregion
@@ -386,7 +386,7 @@ namespace OfficeOpenXml
         /// <returns></returns>
         public async Task SaveToJsonAsync(Stream stream)
         {
-            var re = new JsonRangeExport(this, new JsonRangeExportSettings());
+            JsonRangeExport? re = new JsonRangeExport(this, new JsonRangeExportSettings());
             await re.ExportAsync(stream);
         }
         /// <summary>
@@ -397,16 +397,16 @@ namespace OfficeOpenXml
         /// <returns></returns>
         public async Task SaveToJsonAsync(Stream stream, Action<JsonRangeExportSettings> settings)
         {
-            var s = new JsonRangeExportSettings();
+            JsonRangeExportSettings? s = new JsonRangeExportSettings();
             settings.Invoke(s);
-            var re = new JsonRangeExport(this, s);
+            JsonRangeExport? re = new JsonRangeExport(this, s);
             await re.ExportAsync(stream);
         }
 #endif
         #endregion
         private static CultureInfo GetCultureInfo(ExcelOutputTextFormat Format)
         {
-            var ci = (CultureInfo)(Format.Culture.Clone() ?? CultureInfo.InvariantCulture.Clone());
+            CultureInfo? ci = (CultureInfo)(Format.Culture.Clone() ?? CultureInfo.InvariantCulture.Clone());
             if (Format.DecimalSeparator != null)
             {
                 ci.NumberFormat.NumberDecimalSeparator = Format.DecimalSeparator;
@@ -427,9 +427,9 @@ namespace OfficeOpenXml
 
         private string GetText(ExcelOutputTextFormat Format, int maxFormats, CultureInfo ci, int row, int col, out bool isText)
         {
-            var v = GetCellStoreValue(row, col);
+            ExcelValue v = GetCellStoreValue(row, col);
 
-            var ix = col - _fromCol;
+            int ix = col - _fromCol;
             isText = false;
             string fmt;
             if (ix < maxFormats)
@@ -516,12 +516,12 @@ namespace OfficeOpenXml
 
         private Core.CellStore.ExcelValue GetCellStoreValue(int row, int col)
         {
-            var v = _worksheet.GetCoreValueInner(row, col);
+            ExcelValue v = _worksheet.GetCoreValueInner(row, col);
             if (_worksheet._flags.GetFlagValue(row, col, CellFlags.RichText))
             {
-                var xml = new XmlDocument();
+                XmlDocument? xml = new XmlDocument();
                 XmlHelper.LoadXmlSafe(xml, "<d:si xmlns:d=\"http://schemas.openxmlformats.org/spreadsheetml/2006/main\" >" + v._value.ToString() + "</d:si>", Encoding.UTF8);
-                var rt = new ExcelRichTextCollection(_worksheet.NameSpaceManager, xml.SelectSingleNode("d:si", _worksheet.NameSpaceManager), this);
+                ExcelRichTextCollection? rt = new ExcelRichTextCollection(_worksheet.NameSpaceManager, xml.SelectSingleNode("d:si", _worksheet.NameSpaceManager), this);
                 v._value = rt.Text;
             }
             return v;
@@ -529,11 +529,11 @@ namespace OfficeOpenXml
 
         private string WriteHeaderRow(ExcelOutputTextFormat Format, bool hasTextQ, int row, CultureInfo ci)
         {
-            var sb = new StringBuilder();
+            StringBuilder? sb = new StringBuilder();
             for (int col = _fromCol; col <= _toCol; col++)
             {
-                var v = GetCellStoreValue(row, col);
-                var s = ValueToTextHandler.GetFormattedText(v._value, _workbook, v._styleId, false, ci);
+                ExcelValue v = GetCellStoreValue(row, col);
+                string? s = ValueToTextHandler.GetFormattedText(v._value, _workbook, v._styleId, false, ci);
 
                 if (hasTextQ)
                 {
@@ -581,7 +581,7 @@ namespace OfficeOpenXml
         /// <returns>A list of T</returns>
         public List<T> ToCollectionWithMappings<T>(Func<ToCollectionRow, T> setRow, Action<ToCollectionRangeOptions> options)
         {
-            var o = new ToCollectionRangeOptions();
+            ToCollectionRangeOptions? o = new ToCollectionRangeOptions();
             options.Invoke(o);
             return ToCollectionWithMappings(setRow, o);
         }
@@ -623,7 +623,7 @@ namespace OfficeOpenXml
         /// <returns>A list of <see cref="T"/></returns>
         public List<T> ToCollection<T>(Action<ToCollectionRangeOptions> options)
         {
-            var o = new ToCollectionRangeOptions();
+            ToCollectionRangeOptions? o = new ToCollectionRangeOptions();
             options.Invoke(o);
             return ToCollection<T>(o);
         }

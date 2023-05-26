@@ -78,7 +78,7 @@ namespace OfficeOpenXml.ConditionalFormatting
         else
         {
             XmlNode iconSetNode = TopNode.SelectSingleNode("d:iconSet", NameSpaceManager);
-            var iconNode4 = iconSetNode.OwnerDocument.CreateElement(ExcelConditionalFormattingConstants.Paths.Cfvo, ExcelPackage.schemaMain);
+            XmlElement? iconNode4 = iconSetNode.OwnerDocument.CreateElement(ExcelConditionalFormattingConstants.Paths.Cfvo, ExcelPackage.schemaMain);
             iconSetNode.AppendChild(iconNode4);
 
             Icon4 = new ExcelConditionalFormattingIconDataBarValue(eExcelConditionalFormattingValueObjectType.Percent,
@@ -91,7 +91,7 @@ namespace OfficeOpenXml.ConditionalFormatting
                     iconNode4,
                     namespaceManager);
 
-            var iconNode5 = iconSetNode.OwnerDocument.CreateElement(ExcelConditionalFormattingConstants.Paths.Cfvo, ExcelPackage.schemaMain);
+            XmlElement? iconNode5 = iconSetNode.OwnerDocument.CreateElement(ExcelConditionalFormattingConstants.Paths.Cfvo, ExcelPackage.schemaMain);
             iconSetNode.AppendChild(iconNode5);
 
             Icon5 = new ExcelConditionalFormattingIconDataBarValue(eExcelConditionalFormattingValueObjectType.Percent,

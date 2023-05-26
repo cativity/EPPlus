@@ -28,8 +28,8 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
         public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
         {
             ValidateArguments(arguments, 1);
-            var numbers = ArgsToDoubleEnumerable(arguments, context).Select(x => (int)x);
-            foreach (var number in numbers)
+            IEnumerable<int>? numbers = ArgsToDoubleEnumerable(arguments, context).Select(x => (int)x);
+            foreach (int number in numbers)
             {
                 if (number < 0)
                 {

@@ -28,9 +28,9 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance
         public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
         {
             ValidateArguments(arguments, 3);
-            var cost = ArgToDecimal(arguments, 0);
-            var salvage = ArgToDecimal(arguments, 1);
-            var life = ArgToDecimal(arguments, 2);
+            double cost = ArgToDecimal(arguments, 0);
+            double salvage = ArgToDecimal(arguments, 1);
+            double life = ArgToDecimal(arguments, 2);
 
             if (life == 0)
             {

@@ -50,11 +50,11 @@ namespace EPPlusTest.Drawing.Chart
         public void DataTableFile()
         {
             string outfile = Path.Combine(_worksheetPath, "DataTableFile.xlsx");
-            var fileinfo = new FileInfo(outfile);
+            FileInfo? fileinfo = new FileInfo(outfile);
             using (ExcelPackage pkg = new ExcelPackage(fileinfo))
             {
                 // Add worksheet with sample data
-                var worksheet = pkg.Workbook.Worksheets.Add("TestData");
+                ExcelWorksheet? worksheet = pkg.Workbook.Worksheets.Add("TestData");
                 worksheet.Cells["A1"].Value = "Data";
                 worksheet.Cells["B1"].Value = "Values";
                 for (int x = 1; x < 12; ++x)
@@ -65,8 +65,8 @@ namespace EPPlusTest.Drawing.Chart
                 }
 
                 // Add chart from sample data
-                var chartsheet = pkg.Workbook.Worksheets.AddChart("TestChart", eChartType.Line);
-                var chart = chartsheet.Chart as ExcelLineChart;
+                ExcelChartsheet? chartsheet = pkg.Workbook.Worksheets.AddChart("TestChart", eChartType.Line);
+                ExcelLineChart? chart = chartsheet.Chart as ExcelLineChart;
                 chart.Series.Add(worksheet.Cells["B2:B12"], worksheet.Cells["A2:A12"]).Header = "Data Test";
 
                 Assert.AreEqual(null, chart.PlotArea.DataTable);

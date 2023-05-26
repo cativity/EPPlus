@@ -31,21 +31,21 @@ namespace OfficeOpenXml.Core.Worksheet.Core.Worksheet.Fonts.GenericMeasurements
         /// </summary>
         internal static Dictionary<uint, SerializedFontMetrics> LoadFontMetrics()
         {
-            var fonts = new Dictionary<uint, SerializedFontMetrics>();
-            var assembly = Assembly.GetExecutingAssembly();
-            using (var stream = assembly.GetManifestResourceStream("OfficeOpenXml.resources.TextMetrics.zip"))
+            Dictionary<uint, SerializedFontMetrics>? fonts = new Dictionary<uint, SerializedFontMetrics>();
+            Assembly? assembly = Assembly.GetExecutingAssembly();
+            using (Stream? stream = assembly.GetManifestResourceStream("OfficeOpenXml.resources.TextMetrics.zip"))
             {
-                var zipStream = new ZipInputStream(stream);
+                ZipInputStream? zipStream = new ZipInputStream(stream);
                 ZipEntry entry;
                 while ((entry = zipStream.GetNextEntry()) != null)
                 {
                     if (!entry.IsDirectory && Path.GetExtension(entry.FileName) == ".fmtr")
                     {
-                        var bytes = new byte[entry.UncompressedSize];
-                        var size = zipStream.Read(bytes, 0, (int)entry.UncompressedSize);
-                        using (var ms = RecyclableMemory.GetStream(bytes))
+                        byte[]? bytes = new byte[entry.UncompressedSize];
+                        int size = zipStream.Read(bytes, 0, (int)entry.UncompressedSize);
+                        using (MemoryStream? ms = RecyclableMemory.GetStream(bytes))
                         {
-                            var fnt = GenericFontMetricsSerializer.Deserialize(ms);
+                            SerializedFontMetrics? fnt = GenericFontMetricsSerializer.Deserialize(ms);
                             fonts.Add(fnt.GetKey(), fnt);
                         }
 

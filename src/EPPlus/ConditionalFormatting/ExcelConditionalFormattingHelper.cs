@@ -81,7 +81,7 @@ namespace OfficeOpenXml.ConditionalFormatting
     {
       try
       {
-        var value = node.Attributes[attribute].Value;
+        string? value = node.Attributes[attribute].Value;
         return (value == null) ? string.Empty : value;
       }
       catch
@@ -102,7 +102,7 @@ namespace OfficeOpenXml.ConditionalFormatting
     {
       try
       {
-        var value = node.Attributes[attribute].Value;
+        string? value = node.Attributes[attribute].Value;
         return int.Parse(value, NumberStyles.Integer, CultureInfo.InvariantCulture);
       }
       catch
@@ -129,7 +129,7 @@ namespace OfficeOpenXml.ConditionalFormatting
           }
           else
           {
-              var value = node.Attributes[attribute].Value;
+              string? value = node.Attributes[attribute].Value;
               return int.Parse(value, NumberStyles.Integer, CultureInfo.InvariantCulture);
           }
       }
@@ -151,7 +151,7 @@ namespace OfficeOpenXml.ConditionalFormatting
     {
       try
       {
-        var value = node.Attributes[attribute].Value;
+        string? value = node.Attributes[attribute].Value;
         return (value == "1" || value == "-1" || value.Equals("TRUE", StringComparison.OrdinalIgnoreCase));
       }
       catch
@@ -178,7 +178,7 @@ namespace OfficeOpenXml.ConditionalFormatting
           }
           else
           {
-              var value = node.Attributes[attribute].Value;
+              string? value = node.Attributes[attribute].Value;
               return (value == "1" || value == "-1" || value.Equals("TRUE",StringComparison.OrdinalIgnoreCase));
           }
       }
@@ -200,7 +200,7 @@ namespace OfficeOpenXml.ConditionalFormatting
     {
       try
       {
-        var value = node.Attributes[attribute].Value;
+        string? value = node.Attributes[attribute].Value;
         return double.Parse(value, NumberStyles.Number, CultureInfo.InvariantCulture);
       }
       catch
@@ -221,7 +221,7 @@ namespace OfficeOpenXml.ConditionalFormatting
     {
       try
       {
-        var value = node.Attributes[attribute].Value;
+        string? value = node.Attributes[attribute].Value;
         return decimal.Parse(value, NumberStyles.Any, CultureInfo.InvariantCulture);
       }
       catch

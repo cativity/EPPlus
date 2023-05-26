@@ -66,15 +66,15 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
         public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
         {
             ValidateArguments(arguments, 2);
-            var argRange = ArgToRangeInfo(arguments, 0);
-            var criteria = GetCriteraFromArg(arguments);
+            IRangeInfo? argRange = ArgToRangeInfo(arguments, 0);
+            string? criteria = GetCriteraFromArg(arguments);
             double returnValue;
             if (argRange == null)
             {
-                var val = arguments.ElementAt(0).Value;
+                object? val = arguments.ElementAt(0).Value;
                 if (criteria != null && Evaluate(val, criteria))
                 {
-                    var lookupRange = ArgToRangeInfo(arguments, 2);
+                    IRangeInfo? lookupRange = ArgToRangeInfo(arguments, 2);
                     returnValue = arguments.Count() > 2
                         ? lookupRange.First().ValueDouble
                         : ConvertUtil.GetValueDouble(val, true);
@@ -86,7 +86,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
             }
             else if (arguments.Count() > 2)
             {
-                var lookupRange = ArgToRangeInfo(arguments, 2);
+                IRangeInfo? lookupRange = ArgToRangeInfo(arguments, 2);
                 returnValue = CalculateWithLookupRange(argRange, criteria, lookupRange, context);
             }
             else
@@ -98,18 +98,18 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
 
         private double CalculateWithLookupRange(IRangeInfo argRange, string criteria, IRangeInfo sumRange, ParsingContext context)
         {
-            var returnValue = 0d;
-            var nMatches = 0;
-            foreach (var cell in argRange)
+            double returnValue = 0d;
+            int nMatches = 0;
+            foreach (ICellInfo? cell in argRange)
             {
                 if (criteria != null && Evaluate(cell.Value, criteria))
                 {
-                    var rowOffset = cell.Row - argRange.Address._fromRow;
-                    var columnOffset = cell.Column - argRange.Address._fromCol;
+                    int rowOffset = cell.Row - argRange.Address._fromRow;
+                    int columnOffset = cell.Column - argRange.Address._fromCol;
                     if (sumRange.Address._fromRow + rowOffset <= sumRange.Address._toRow &&
                        sumRange.Address._fromCol + columnOffset <= sumRange.Address._toCol)
                     {
-                        var val = sumRange.GetOffset(rowOffset, columnOffset);
+                        object? val = sumRange.GetOffset(rowOffset, columnOffset);
                         if (val is ExcelErrorValue)
                         {
                             ThrowExcelErrorValueException(((ExcelErrorValue)val));
@@ -124,9 +124,9 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
 
         private double CalculateSingleRange(IRangeInfo range, string expression, ParsingContext context)
         {
-            var returnValue = 0d;
-            var nMatches = 0;
-            foreach (var candidate in range)
+            double returnValue = 0d;
+            int nMatches = 0;
+            foreach (ICellInfo? candidate in range)
             {
                 if (expression != null && IsNumeric(candidate.Value) && Evaluate(candidate.Value, expression))
                 {

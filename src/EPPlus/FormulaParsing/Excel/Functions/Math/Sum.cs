@@ -35,10 +35,10 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
 
         public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
         {
-            var retVal = 0d;
+            double retVal = 0d;
             if (arguments != null)
             {
-                foreach (var arg in arguments)
+                foreach (FunctionArgument? arg in arguments)
                 {
                     retVal += Calculate(arg, context);                    
                 }
@@ -49,14 +49,14 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
         
         private double Calculate(FunctionArgument arg, ParsingContext context)
         {
-            var retVal = 0d;
+            double retVal = 0d;
             if (ShouldIgnore(arg, context))
             {
                 return retVal;
             }
             if (arg.Value is IEnumerable<FunctionArgument>)
             {
-                foreach (var item in (IEnumerable<FunctionArgument>)arg.Value)
+                foreach (FunctionArgument? item in (IEnumerable<FunctionArgument>)arg.Value)
                 {
                     if(!ShouldIgnore(arg, context))
                     {
@@ -66,7 +66,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
             }
             else if (arg.Value is IRangeInfo)
             {
-                foreach (var c in (IRangeInfo)arg.Value)
+                foreach (ICellInfo? c in (IRangeInfo)arg.Value)
                 {
                     if (ShouldIgnore(c, context) == false)
                     {

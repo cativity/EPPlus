@@ -52,31 +52,31 @@ namespace EPPlusTest.Drawing.Chart.Styling
         [TestMethod]
         public void ColumnChart_Styles()
         {
-            var ws = _pck.Workbook.Worksheets.Add("ColumnClustChartStyles");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("ColumnClustChartStyles");
             LoadTestdata(ws);
 
             StyleColumnChart(ws, eBarChartType.ColumnClustered);
-            var chart2 = ws.Drawings[1].As.Chart.BarChart;
+            ExcelBarChart? chart2 = ws.Drawings[1].As.Chart.BarChart;
             Assert.AreEqual(6, chart2.StyleManager.ColorsManager.Colors.Count);
             Assert.AreEqual(9, chart2.StyleManager.ColorsManager.Variations.Count);
         }
         [TestMethod]
         public void ColumnStackedChart_Styles()
         {
-            var ws = _pck.Workbook.Worksheets.Add("ColumnStackedChartStyles");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("ColumnStackedChartStyles");
             LoadTestdata(ws);
 
             StyleColumnStackedChart(ws, eBarChartType.ColumnStacked);
-            var chart2 = ws.Drawings[1].As.Chart.BarChart;
+            ExcelBarChart? chart2 = ws.Drawings[1].As.Chart.BarChart;
         }
         [TestMethod]
         public void ColumnStacked100Chart_Styles()
         {
-            var ws = _pck.Workbook.Worksheets.Add("ColumnStacked100ChartStyles");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("ColumnStacked100ChartStyles");
             LoadTestdata(ws);
 
             StyleColumnStackedChart(ws, eBarChartType.ColumnStacked100);
-            var chart2 = ws.Drawings[1].As.Chart.BarChart;
+            ExcelBarChart? chart2 = ws.Drawings[1].As.Chart.BarChart;
         }
         private static void StyleColumnChart(ExcelWorksheet ws, eBarChartType chartType)
         {
@@ -101,12 +101,12 @@ namespace EPPlusTest.Drawing.Chart.Styling
                 });
 
             //Style 3
-            var chart3 = AddBar(ws, chartType, "ColumnChartStyle3", 0, 31, ePresetChartStyle.ColumnChartStyle3,
-            c =>
-            {
-                c.DataLabel.ShowPercent = true;
-                c.DataLabel.Position = eLabelPosition.Center;
-            });
+            ExcelBarChart? chart3 = AddBar(ws, chartType, "ColumnChartStyle3", 0, 31, ePresetChartStyle.ColumnChartStyle3,
+                                           c =>
+                                           {
+                                               c.DataLabel.ShowPercent = true;
+                                               c.DataLabel.Position = eLabelPosition.Center;
+                                           });
 
             //Style 4
             AddBar(ws, chartType, "ColumnChartStyle4", 22, 5, ePresetChartStyle.ColumnChartStyle4,
@@ -218,12 +218,12 @@ namespace EPPlusTest.Drawing.Chart.Styling
                 });
 
             //Style 3
-            var chart3 = AddBar(ws, chartType, "ColumnChartStyle3", 0, 31, ePresetChartStyle.StackedBarChartStyle3,
-            c =>
-            {
-                c.DataLabel.ShowPercent = true;
-                c.DataLabel.Position = eLabelPosition.Center;
-            });
+            ExcelBarChart? chart3 = AddBar(ws, chartType, "ColumnChartStyle3", 0, 31, ePresetChartStyle.StackedBarChartStyle3,
+                                           c =>
+                                           {
+                                               c.DataLabel.ShowPercent = true;
+                                               c.DataLabel.Position = eLabelPosition.Center;
+                                           });
 
             //Style 4
             AddBar(ws, chartType, "ColumnChartStyle4", 22, 5, ePresetChartStyle.StackedBarChartStyle4,
@@ -283,13 +283,13 @@ namespace EPPlusTest.Drawing.Chart.Styling
 
         private static ExcelBarChart AddBar(ExcelWorksheet ws, eBarChartType type, string name, int row, int col, ePresetChartStyle style, Action<ExcelBarChart> SetProperties)
         {
-            var chart = ws.Drawings.AddBarChart(name, type);
+            ExcelBarChart? chart = ws.Drawings.AddBarChart(name, type);
             chart.SetPosition(row, 0, col, 0);
             chart.To.Column = col + 12;
             chart.To.ColumnOff = 0;
             chart.To.Row = row + 18;
             chart.To.RowOff = 0;
-            var serie = chart.Series.Add("D2:D8", "A2:A8");
+            ExcelBarChartSerie? serie = chart.Series.Add("D2:D8", "A2:A8");
             SetProperties(chart);
 
             chart.StyleManager.SetChartStyle(style);

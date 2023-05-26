@@ -36,6 +36,8 @@ using OfficeOpenXml.FormulaParsing;
 using EPPlusTest.FormulaParsing.TestHelpers;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Logical;
 using OfficeOpenXml;
+using OfficeOpenXml.FormulaParsing.Excel.Functions;
+using OfficeOpenXml.FormulaParsing.ExpressionGraph;
 
 namespace EPPlusTest.Excel.Functions
 {
@@ -47,16 +49,16 @@ namespace EPPlusTest.Excel.Functions
         [TestMethod]
         public void IfShouldReturnCorrectResult()
         {
-            var func = new If();
-            var args = FunctionsHelper.CreateArgs(true, "A", "B");
-            var result = func.Execute(args, _parsingContext);
+            If? func = new If();
+            IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(true, "A", "B");
+            CompileResult? result = func.Execute(args, _parsingContext);
             Assert.AreEqual("A", result.Result);
         }
 
         [TestMethod, Ignore]
         public void IfShouldIgnoreCase()
         {
-            using (var pck = new ExcelPackage(new FileInfo(@"c:\temp\book1.xlsx")))
+            using (ExcelPackage? pck = new ExcelPackage(new FileInfo(@"c:\temp\book1.xlsx")))
             {
                 pck.Workbook.Calculate();
                 Assert.AreEqual("Sant", pck.Workbook.Worksheets.First().Cells["C3"].Value);
@@ -66,36 +68,36 @@ namespace EPPlusTest.Excel.Functions
         [TestMethod]
         public void NotShouldReturnFalseIfArgumentIsTrue()
         {
-            var func = new Not();
-            var args = FunctionsHelper.CreateArgs(true);
-            var result = func.Execute(args, _parsingContext);
+            Not? func = new Not();
+            IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(true);
+            CompileResult? result = func.Execute(args, _parsingContext);
             Assert.IsFalse((bool)result.Result);
         }
 
         [TestMethod]
         public void NotShouldReturnTrueIfArgumentIs0()
         {
-            var func = new Not();
-            var args = FunctionsHelper.CreateArgs(0);
-            var result = func.Execute(args, _parsingContext);
+            Not? func = new Not();
+            IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(0);
+            CompileResult? result = func.Execute(args, _parsingContext);
             Assert.IsTrue((bool)result.Result);
         }
 
         [TestMethod]
         public void NotShouldReturnFalseIfArgumentIs1()
         {
-            var func = new Not();
-            var args = FunctionsHelper.CreateArgs(1);
-            var result = func.Execute(args, _parsingContext);
+            Not? func = new Not();
+            IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(1);
+            CompileResult? result = func.Execute(args, _parsingContext);
             Assert.IsFalse((bool)result.Result);
         }
 
         [TestMethod]
         public void NotShouldHandleExcelReference()
         {
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var sheet = package.Workbook.Worksheets.Add("sheet1");
+                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("sheet1");
                 sheet.Cells["A1"].Value = false;
                 sheet.Cells["A2"].Formula = "NOT(A1)";
                 sheet.Calculate();
@@ -106,9 +108,9 @@ namespace EPPlusTest.Excel.Functions
         [TestMethod]
         public void NotShouldHandleExcelReferenceToStringFalse()
         {
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var sheet = package.Workbook.Worksheets.Add("sheet1");
+                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("sheet1");
                 sheet.Cells["A1"].Value = "false";
                 sheet.Cells["A2"].Formula = "NOT(A1)";
                 sheet.Calculate();
@@ -119,9 +121,9 @@ namespace EPPlusTest.Excel.Functions
         [TestMethod]
         public void NotShouldHandleExcelReferenceToStringTrue()
         {
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var sheet = package.Workbook.Worksheets.Add("sheet1");
+                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("sheet1");
                 sheet.Cells["A1"].Value = "TRUE";
                 sheet.Cells["A2"].Formula = "NOT(A1)";
                 sheet.Calculate();
@@ -132,9 +134,9 @@ namespace EPPlusTest.Excel.Functions
         [TestMethod]
         public void AndShouldHandleStringLiteralTrue()
         {
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var sheet = package.Workbook.Worksheets.Add("sheet1");
+                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("sheet1");
                 sheet.Cells["A1"].Value = "tRuE";
                 sheet.Cells["A2"].Formula = "AND(\"TRUE\", A1)";
                 sheet.Calculate();
@@ -145,63 +147,63 @@ namespace EPPlusTest.Excel.Functions
         [TestMethod]
         public void AndShouldReturnTrueIfAllArgumentsAreTrue()
         {
-            var func = new And();
-            var args = FunctionsHelper.CreateArgs(true, true, true);
-            var result = func.Execute(args, _parsingContext);
+            And? func = new And();
+            IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(true, true, true);
+            CompileResult? result = func.Execute(args, _parsingContext);
             Assert.IsTrue((bool)result.Result);
         }
 
         [TestMethod]
         public void AndShouldReturnTrueIfAllArgumentsAreTrueOr1()
         {
-            var func = new And();
-            var args = FunctionsHelper.CreateArgs(true, true, 1, true, 1);
-            var result = func.Execute(args, _parsingContext);
+            And? func = new And();
+            IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(true, true, 1, true, 1);
+            CompileResult? result = func.Execute(args, _parsingContext);
             Assert.IsTrue((bool)result.Result);
         }
 
         [TestMethod]
         public void AndShouldReturnFalseIfOneArgumentIsFalse()
         {
-            var func = new And();
-            var args = FunctionsHelper.CreateArgs(true, false, true);
-            var result = func.Execute(args, _parsingContext);
+            And? func = new And();
+            IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(true, false, true);
+            CompileResult? result = func.Execute(args, _parsingContext);
             Assert.IsFalse((bool)result.Result);
         }
 
         [TestMethod]
         public void AndShouldReturnFalseIfOneArgumentIs0()
         {
-            var func = new And();
-            var args = FunctionsHelper.CreateArgs(true, 0, true);
-            var result = func.Execute(args, _parsingContext);
+            And? func = new And();
+            IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(true, 0, true);
+            CompileResult? result = func.Execute(args, _parsingContext);
             Assert.IsFalse((bool)result.Result);
         }
 
         [TestMethod]
         public void OrShouldReturnTrueIfOneArgumentIsTrue()
         {
-            var func = new Or();
-            var args = FunctionsHelper.CreateArgs(true, false, false);
-            var result = func.Execute(args, _parsingContext);
+            Or? func = new Or();
+            IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(true, false, false);
+            CompileResult? result = func.Execute(args, _parsingContext);
             Assert.IsTrue((bool)result.Result);
         }
 
         [TestMethod]
         public void OrShouldReturnTrueIfOneArgumentIsTrueString()
         {
-            var func = new Or();
-            var args = FunctionsHelper.CreateArgs("true", "FALSE", false);
-            var result = func.Execute(args, _parsingContext);
+            Or? func = new Or();
+            IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs("true", "FALSE", false);
+            CompileResult? result = func.Execute(args, _parsingContext);
             Assert.IsTrue((bool)result.Result);
         }
 
         [TestMethod]
         public void IfErrorShouldReturnSecondArgIfCriteriaEvaluatesAsAnError()
         {
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var s1 = package.Workbook.Worksheets.Add("test");
+                ExcelWorksheet? s1 = package.Workbook.Worksheets.Add("test");
                 s1.Cells["A1"].Formula = "IFERROR(0/0, \"hello\")";
                 s1.Calculate();
                 Assert.AreEqual("hello", s1.Cells["A1"].Value);
@@ -211,9 +213,9 @@ namespace EPPlusTest.Excel.Functions
         [TestMethod]
         public void IfErrorShouldReturnSecondArgIfCriteriaEvaluatesAsAnError2()
         {
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var s1 = package.Workbook.Worksheets.Add("test");
+                ExcelWorksheet? s1 = package.Workbook.Worksheets.Add("test");
                 s1.Cells["A1"].Formula = "IFERROR(A2, \"hello\")";
                 s1.Cells["A2"].Formula = "23/0";
                 s1.Calculate();
@@ -224,9 +226,9 @@ namespace EPPlusTest.Excel.Functions
         [TestMethod]
         public void IfErrorShouldReturnResultOfFormulaIfNoError()
         {
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var s1 = package.Workbook.Worksheets.Add("test");
+                ExcelWorksheet? s1 = package.Workbook.Worksheets.Add("test");
                 s1.Cells["A1"].Formula = "IFERROR(A2, \"hello\")";
                 s1.Cells["A2"].Value = "hi there";
                 s1.Calculate();
@@ -237,9 +239,9 @@ namespace EPPlusTest.Excel.Functions
         [TestMethod]
         public void IfNaShouldReturnSecondArgIfCriteriaEvaluatesAsAnError2()
         {
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var s1 = package.Workbook.Worksheets.Add("test");
+                ExcelWorksheet? s1 = package.Workbook.Worksheets.Add("test");
                 s1.Cells["A1"].Formula = "IFERROR(A2, \"hello\")";
                 s1.Cells["A2"].Value = ExcelErrorValue.Create(eErrorType.NA);
                 s1.Calculate();
@@ -250,9 +252,9 @@ namespace EPPlusTest.Excel.Functions
         [TestMethod]
         public void IfNaShouldReturnResultOfFormulaIfNoError()
         {
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var s1 = package.Workbook.Worksheets.Add("test");
+                ExcelWorksheet? s1 = package.Workbook.Worksheets.Add("test");
                 s1.Cells["A1"].Formula = "IFNA(A2, \"hello\")";
                 s1.Cells["A2"].Value = "hi there";
                 s1.Calculate();
@@ -263,9 +265,9 @@ namespace EPPlusTest.Excel.Functions
         [TestMethod]
         public void SwitchShouldReturnFirstMatchingArg()
         {
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var s1 = package.Workbook.Worksheets.Add("test");
+                ExcelWorksheet? s1 = package.Workbook.Worksheets.Add("test");
                 s1.Cells["A1"].Formula = "SWITCH(A2, 1, 2)";
                 s1.Cells["A2"].Value = 1;
                 s1.Calculate();
@@ -276,9 +278,9 @@ namespace EPPlusTest.Excel.Functions
         [TestMethod]
         public void SwitchShouldIgnoreNonMatchingArg()
         {
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var s1 = package.Workbook.Worksheets.Add("test");
+                ExcelWorksheet? s1 = package.Workbook.Worksheets.Add("test");
                 s1.Cells["A1"].Formula = "SWITCH(A2, 1, 2, B2, 3)";
                 s1.Cells["A2"].Value = 2;
                 s1.Cells["B2"].Value = 2d;
@@ -290,9 +292,9 @@ namespace EPPlusTest.Excel.Functions
         [TestMethod]
         public void SwitchShouldReturnLastArgIfNoMatch()
         {
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var s1 = package.Workbook.Worksheets.Add("test");
+                ExcelWorksheet? s1 = package.Workbook.Worksheets.Add("test");
                 s1.Cells["A1"].Formula = "SWITCH(A2, 1, 2, B2, 3, 5)";
                 s1.Cells["A2"].Value = -1;
                 s1.Cells["B2"].Value = 2d;
@@ -304,9 +306,9 @@ namespace EPPlusTest.Excel.Functions
         [TestMethod]
         public void XorShouldReturnCorrectResult()
         {
-            var func = new Xor();
-            var args = FunctionsHelper.CreateArgs(true, false);
-            var result = func.Execute(args, ParsingContext.Create());
+            Xor? func = new Xor();
+            IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(true, false);
+            CompileResult? result = func.Execute(args, ParsingContext.Create());
             Assert.IsTrue((bool)result.Result);
 
             args = FunctionsHelper.CreateArgs(false, false);
@@ -317,9 +319,9 @@ namespace EPPlusTest.Excel.Functions
             result = func.Execute(args, ParsingContext.Create());
             Assert.IsFalse((bool)result.Result);
 
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var sheet = package.Workbook.Worksheets.Add("test");
+                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
                 sheet.Cells["A1"].Value = true;
                 sheet.Cells["A2"].Value = 0;
                 sheet.Cells["A3"].Formula = "XOR(A1:A2,DATE(2020,12,10))";

@@ -33,7 +33,7 @@ namespace OfficeOpenXml.Core
         {
             get
             {
-                var pos = Array.BinarySearch(_index[0], 0, _count, key);
+                int pos = Array.BinarySearch(_index[0], 0, _count, key);
                 if(pos>=0)
                 {
                     return _items[_index[1][pos]];
@@ -47,7 +47,7 @@ namespace OfficeOpenXml.Core
 
         internal void InsertAndShift(int fromPosition, int add)
         {
-            var pos = Array.BinarySearch(_index[0], 0, _count, fromPosition);
+            int pos = Array.BinarySearch(_index[0], 0, _count, fromPosition);
             if(pos<0)
             {
                 pos = ~pos;
@@ -65,7 +65,7 @@ namespace OfficeOpenXml.Core
 
         public void Add(int key, T value)
         {
-            var pos = Array.BinarySearch(_index[0], 0, _count, key);
+            int pos = Array.BinarySearch(_index[0], 0, _count, key);
             if (pos >= 0)
             {
                 throw (new ArgumentException("Key already exists"));
@@ -94,9 +94,9 @@ namespace OfficeOpenXml.Core
                 return;
             }
 
-            var listItem = _index[1][fromPosition];
-            var insertPos = before ? toPosition : toPosition + 1;
-            var removePos = fromPosition;
+            int listItem = _index[1][fromPosition];
+            int insertPos = before ? toPosition : toPosition + 1;
+            int removePos = fromPosition;
             if(insertPos>removePos)
             {
                 InsertAndShift(insertPos, 1);
@@ -137,7 +137,7 @@ namespace OfficeOpenXml.Core
 
         private bool RemoveAndShift(int key, bool dispose)
         {
-            var pos = Array.BinarySearch(_index[0], 0, _count, key);
+            int pos = Array.BinarySearch(_index[0], 0, _count, key);
             if (pos >= 0)
             {
                 if (dispose)
@@ -152,7 +152,7 @@ namespace OfficeOpenXml.Core
                     Array.Copy(_index[1], pos + 1, _index[1], pos, Count - pos - 1);
                 }
                 _count--;
-                for (var i = pos; i < _count; i++)
+                for (int i = pos; i < _count; i++)
                 {
                     _index[0][i]--;
                 }
@@ -163,7 +163,7 @@ namespace OfficeOpenXml.Core
 
         public bool TryGetValue(int key, out T value)
         {
-            var pos = Array.BinarySearch(_index[0], 0, _count, key);
+            int pos = Array.BinarySearch(_index[0], 0, _count, key);
             if (pos >= 0)
             {
                 value = _items[pos];

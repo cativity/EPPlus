@@ -47,8 +47,8 @@ namespace EPPlusTest.Drawing
         [ClassCleanup]
         public static void Cleanup()
         {
-            var dirName = _pck.File.DirectoryName;
-            var fileName = _pck.File.FullName;
+            string? dirName = _pck.File.DirectoryName;
+            string? fileName = _pck.File.FullName;
 
             SaveAndCleanup(_pck);
             File.Copy(fileName, dirName + "\\DrawingBorderRead.xlsx", true);
@@ -58,9 +58,9 @@ namespace EPPlusTest.Drawing
         public void BorderFill()
         {
             //Setup
-            var ws = _pck.Workbook.Worksheets.Add("BorderFill");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("BorderFill");
 
-            var shape = ws.Drawings.AddShape("Shape1", eShapeStyle.RoundRect);
+            ExcelShape? shape = ws.Drawings.AddShape("Shape1", eShapeStyle.RoundRect);
             shape.SetPosition(1, 0, 5, 0);
 
             //Act
@@ -75,9 +75,9 @@ namespace EPPlusTest.Drawing
         public void BorderWidthStyle()
         {
             //Setup
-            var ws = _pck.Workbook.Worksheets.Add("BorderWidthStyle");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("BorderWidthStyle");
 
-            var shape = ws.Drawings.AddShape("Shape1", eShapeStyle.RoundRect);
+            ExcelShape? shape = ws.Drawings.AddShape("Shape1", eShapeStyle.RoundRect);
             shape.SetPosition(1, 0, 5, 0);
 
             //Act
@@ -97,9 +97,9 @@ namespace EPPlusTest.Drawing
         public void BorderAlignRoundJoin()
         {
             //Setup
-            var ws = _pck.Workbook.Worksheets.Add("BorderAlignRoundJoin");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("BorderAlignRoundJoin");
 
-            var shape = ws.Drawings.AddShape("Shape1", eShapeStyle.RoundRect);
+            ExcelShape? shape = ws.Drawings.AddShape("Shape1", eShapeStyle.RoundRect);
             shape.SetPosition(1, 0, 5, 0);
 
             //Act
@@ -123,9 +123,9 @@ namespace EPPlusTest.Drawing
         public void BorderMitterJoin()
         {
             //Setup
-            var ws = _pck.Workbook.Worksheets.Add("BorderMiterJoin");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("BorderMiterJoin");
 
-            var shape = ws.Drawings.AddShape("Shape1", eShapeStyle.Line);
+            ExcelShape? shape = ws.Drawings.AddShape("Shape1", eShapeStyle.Line);
             shape.SetPosition(1, 0, 5, 0);
 
             //Act
@@ -149,9 +149,9 @@ namespace EPPlusTest.Drawing
         public void BorderEnds()
         {
             //Setup
-            var ws = _pck.Workbook.Worksheets.Add("BorderEnds");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("BorderEnds");
 
-            var shape = ws.Drawings.AddShape("Shape1", eShapeStyle.Line);
+            ExcelShape? shape = ws.Drawings.AddShape("Shape1", eShapeStyle.Line);
             shape.SetPosition(1, 0, 5, 0);
 
             //Act

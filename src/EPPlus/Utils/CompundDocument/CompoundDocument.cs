@@ -68,19 +68,19 @@ namespace OfficeOpenXml.Utils.CompundDocument
         }
         internal void Read(FileInfo fi)
         {
-            var b = File.ReadAllBytes(fi.FullName);
+            byte[]? b = File.ReadAllBytes(fi.FullName);
             Read(b);
         }
         internal void Read(byte[] doc) 
         {
-            using (var ms = RecyclableMemory.GetStream(doc))
+            using (MemoryStream? ms = RecyclableMemory.GetStream(doc))
             {
                 Read(ms);
             }
         }
         internal void Read(MemoryStream ms)
         {
-            using (var doc = new CompoundDocumentFile(ms))
+            using (CompoundDocumentFile? doc = new CompoundDocumentFile(ms))
             {
                 Storage = new StoragePart();
                 GetStorageAndStreams(Storage, doc.RootItem);
@@ -90,11 +90,11 @@ namespace OfficeOpenXml.Utils.CompundDocument
 
         private void GetStorageAndStreams(StoragePart storage, CompoundDocumentItem parent)
         {
-            foreach(var item in parent.Children)
+            foreach(CompoundDocumentItem? item in parent.Children)
             {
                 if(item.ObjectType==1)      //Substorage
                 {
-                    var part = new StoragePart();
+                    StoragePart? part = new StoragePart();
                     storage.SubStorage.Add(item.Name, part);
                     GetStorageAndStreams(part, item);
                 }
@@ -106,22 +106,22 @@ namespace OfficeOpenXml.Utils.CompundDocument
         }
         internal void Save(MemoryStream ms)
         {
-            var doc = new CompoundDocumentFile();
+            CompoundDocumentFile? doc = new CompoundDocumentFile();
             WriteStorageAndStreams(Storage, doc.RootItem);            
             Directories = doc.Directories;
             doc.Write(ms);
         }
         private void WriteStorageAndStreams(StoragePart storage, CompoundDocumentItem parent)
         {
-            foreach(var item in storage.SubStorage)
+            foreach(KeyValuePair<string, StoragePart> item in storage.SubStorage)
             {
-                var c = new CompoundDocumentItem() { Name = item.Key, ObjectType = 1, Stream = null, StreamSize = 0, Parent = parent };
+                CompoundDocumentItem? c = new CompoundDocumentItem() { Name = item.Key, ObjectType = 1, Stream = null, StreamSize = 0, Parent = parent };
                 parent.Children.Add(c);
                 WriteStorageAndStreams(item.Value, c);
             }
-            foreach (var item in storage.DataStreams)
+            foreach (KeyValuePair<string, byte[]> item in storage.DataStreams)
             {
-                var c = new CompoundDocumentItem() { Name = item.Key, ObjectType = 2, Stream = item.Value, StreamSize = (item.Value == null ? 0 : item.Value.Length), Parent = parent };
+                CompoundDocumentItem? c = new CompoundDocumentItem() { Name = item.Key, ObjectType = 2, Stream = item.Value, StreamSize = (item.Value == null ? 0 : item.Value.Length), Parent = parent };
                 parent.Children.Add(c);
             }
             

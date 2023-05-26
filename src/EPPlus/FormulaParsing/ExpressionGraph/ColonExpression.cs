@@ -14,10 +14,10 @@ namespace OfficeOpenXml.FormulaParsing.ExpressionGraph
 
         public override CompileResult Compile()
         {
-            var prevIsAddress = Prev.GetType() == typeof(ExcelAddressExpression);
-            var prevIsOffset = Prev.GetType() == typeof(FunctionExpression) && ((FunctionExpression)Prev).ExpressionString.ToLower() == "offset";
-            var nextIsAddress = Next.GetType() == typeof(ExcelAddressExpression);
-            var nextIsOffset = Next.GetType() == typeof(FunctionExpression) && ((FunctionExpression)Next).ExpressionString.ToLower() == "offset";
+            bool prevIsAddress = Prev.GetType() == typeof(ExcelAddressExpression);
+            bool prevIsOffset = Prev.GetType() == typeof(FunctionExpression) && ((FunctionExpression)Prev).ExpressionString.ToLower() == "offset";
+            bool nextIsAddress = Next.GetType() == typeof(ExcelAddressExpression);
+            bool nextIsOffset = Next.GetType() == typeof(FunctionExpression) && ((FunctionExpression)Next).ExpressionString.ToLower() == "offset";
 
             if (!prevIsAddress && !prevIsOffset)
             {

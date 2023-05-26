@@ -42,18 +42,18 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Database
         public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
         {
             ValidateArguments(arguments, 3);
-            var dbAddress = arguments.ElementAt(0).ValueAsRangeInfo.Address.Address;
-            var field = ArgToString(arguments, 1).ToLower(CultureInfo.InvariantCulture);
-            var criteriaRange = arguments.ElementAt(2).ValueAsRangeInfo.Address.Address;
+            string? dbAddress = arguments.ElementAt(0).ValueAsRangeInfo.Address.Address;
+            string? field = ArgToString(arguments, 1).ToLower(CultureInfo.InvariantCulture);
+            string? criteriaRange = arguments.ElementAt(2).ValueAsRangeInfo.Address.Address;
 
-            var db = new ExcelDatabase(context.ExcelDataProvider, dbAddress);
-            var criteria = new ExcelDatabaseCriteria(context.ExcelDataProvider, criteriaRange);
+            ExcelDatabase? db = new ExcelDatabase(context.ExcelDataProvider, dbAddress);
+            ExcelDatabaseCriteria? criteria = new ExcelDatabaseCriteria(context.ExcelDataProvider, criteriaRange);
 
-            var nHits = 0;
+            int nHits = 0;
             object retVal = null;
             while (db.HasMoreRows)
             {
-                var dataRow = db.Read();
+                ExcelDatabaseRow? dataRow = db.Read();
                 if (!RowMatcher.IsMatch(dataRow, criteria))
                 {
                     continue;

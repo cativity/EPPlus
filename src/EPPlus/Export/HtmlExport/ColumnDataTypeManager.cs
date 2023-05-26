@@ -33,11 +33,11 @@ namespace OfficeOpenXml.Export.HtmlExport
 
         public static string GetColumnDataType(ExcelWorksheet sheet, ExcelRangeBase range, int startRow, int column)
         {
-            var rowIndex = startRow;
-            var dataType = DataType.Empty;
+            int rowIndex = startRow;
+            DataType dataType = DataType.Empty;
             while(rowIndex <= range.End.Row)
             {
-                var v = sheet.Cells[rowIndex, column].Value;
+                object? v = sheet.Cells[rowIndex, column].Value;
                 if(v != null)
                 {
                     return HtmlRawDataProvider.GetHtmlDataTypeFromValue(v);

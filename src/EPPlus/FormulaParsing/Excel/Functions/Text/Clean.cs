@@ -27,12 +27,12 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Text
         public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
         {
             ValidateArguments(arguments, 1);
-            var str = ArgToString(arguments, 0);
+            string? str = ArgToString(arguments, 0);
             if(!string.IsNullOrEmpty(str))
             {
-                var sb = new StringBuilder();
-                var arr = Encoding.ASCII.GetBytes(str);
-                foreach(var c in arr)
+                StringBuilder? sb = new StringBuilder();
+                byte[]? arr = Encoding.ASCII.GetBytes(str);
+                foreach(byte c in arr)
                 {
                     if (c > 31)
                     {

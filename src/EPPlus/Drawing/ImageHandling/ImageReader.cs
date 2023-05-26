@@ -18,6 +18,7 @@ using System.Xml;
 using System.Collections.Generic;
 using OfficeOpenXml.Utils;
 using System.Threading;
+using OfficeOpenXml.Packaging.Ionic.Zlib;
 #if !NET35
 using System.Threading.Tasks;
 #endif
@@ -80,7 +81,7 @@ namespace OfficeOpenXml.Drawing
 #endif
         private static ePictureType? GetPictureTypeFromMs(MemoryStream ms)
         {
-            var br = new BinaryReader(ms);
+            BinaryReader? br = new BinaryReader(ms);
             if(IsJpg(br))
             {
                 return ePictureType.Jpg;
@@ -124,7 +125,7 @@ namespace OfficeOpenXml.Drawing
             else if (IsGZip(br))
             {
                 ms.Position = 0;
-                var img=ExtractImage(ms.ToArray(), out ePictureType? pt);
+                byte[]? img=ExtractImage(ms.ToArray(), out ePictureType? pt);
                 return pt;
             }
             return null;
@@ -133,7 +134,7 @@ namespace OfficeOpenXml.Drawing
         private static bool IsGZip(BinaryReader br)
         {
             br.BaseStream.Position = 0;
-            var sign = br.ReadBytes(2);
+            byte[]? sign = br.ReadBytes(2);
             return IsGZip(sign);
         }
 
@@ -204,11 +205,11 @@ namespace OfficeOpenXml.Drawing
             {
                 try
                 {
-                    var ms = RecyclableMemory.GetStream(img);
-                    var msOut = RecyclableMemory.GetStream();
+                    MemoryStream? ms = RecyclableMemory.GetStream(img);
+                    MemoryStream? msOut = RecyclableMemory.GetStream();
                     const int bufferSize = 4096;
-                    var buffer = new byte[bufferSize];
-                    using (var z = new OfficeOpenXml.Packaging.Ionic.Zlib.GZipStream(ms, Packaging.Ionic.Zlib.CompressionMode.Decompress))
+                    byte[]? buffer = new byte[bufferSize];
+                    using (GZipStream? z = new OfficeOpenXml.Packaging.Ionic.Zlib.GZipStream(ms, Packaging.Ionic.Zlib.CompressionMode.Decompress))
                     {
                         int size = 0;
                         do
@@ -221,7 +222,7 @@ namespace OfficeOpenXml.Drawing
                         }
                         while (size == bufferSize);
                         msOut.Position = 0;
-                        var br = new BinaryReader(msOut);
+                        BinaryReader? br = new BinaryReader(msOut);
                         if (IsEmf(br))
                         {
                             type = ePictureType.Emf;
@@ -249,21 +250,21 @@ namespace OfficeOpenXml.Drawing
         }
         private static bool IsJpg(MemoryStream ms, ref double width, ref double height, ref double horizontalResolution, ref double verticalResolution)
         {
-            using (var br = new BinaryReader(ms))
+            using (BinaryReader? br = new BinaryReader(ms))
             {
                 if(IsJpg(br))
                 { 
                     float xDensity=1, yDensity=1;
                     while (ms.Position < ms.Length)
                     {
-                        var id = GetUInt16BigEndian(br);
-                        var length = (int)GetInt16BigEndian(br);
+                        ushort id = GetUInt16BigEndian(br);
+                        int length = (int)GetInt16BigEndian(br);
                         switch (id)
                         {
                             case 0xFFE0:
-                                var identifier = br.ReadBytes(5); //JFIF\0
-                                var version = br.ReadBytes(2);
-                                var unit = br.ReadByte();
+                                byte[]? identifier = br.ReadBytes(5); //JFIF\0
+                                byte[]? version = br.ReadBytes(2);
+                                byte unit = br.ReadByte();
                                 xDensity = (int)GetInt16BigEndian(br);
                                 yDensity = (int)GetInt16BigEndian(br);
                                 
@@ -281,7 +282,7 @@ namespace OfficeOpenXml.Drawing
                                 ms.Position += length-14;
                                 break;
                             case 0xFFE1:
-                                var pos = ms.Position;
+                                long pos = ms.Position;
                                 identifier = br.ReadBytes(6); //EXIF\0\0 or //EXIF\FF\FF
                                 double w = 0, h = 0;
                                 ReadTiffHeader(br, ref w, ref h, ref horizontalResolution, ref verticalResolution);
@@ -290,7 +291,7 @@ namespace OfficeOpenXml.Drawing
                             case 0xFFC0:
                             case 0xFFC1:
                             case 0xFFC2:
-                                var precision = br.ReadByte(); //Bits
+                                byte precision = br.ReadByte(); //Bits
                                 height = GetUInt16BigEndian(br);
                                 width = GetUInt16BigEndian(br);
                                 br.Close();
@@ -310,13 +311,13 @@ namespace OfficeOpenXml.Drawing
         private static bool IsJpg(BinaryReader br)
         {
             br.BaseStream.Position = 0;
-            var sign = br.ReadBytes(2);    //FF D8 
+            byte[]? sign = br.ReadBytes(2);    //FF D8 
             return sign.Length>=2 && sign[0] == 0xFF && sign[1] == 0xD8;
         }
 
         private static bool IsGif(MemoryStream ms, ref double width, ref double height)
         {
-            using (var br = new BinaryReader(ms))
+            using (BinaryReader? br = new BinaryReader(ms))
             {
                 if (IsGif(br))
                 {
@@ -332,22 +333,22 @@ namespace OfficeOpenXml.Drawing
         private static bool IsGif(BinaryReader br)
         {
             br.BaseStream.Seek(0, SeekOrigin.Begin);
-            var b = br.ReadBytes(6);
+            byte[]? b = br.ReadBytes(6);
             return b[0] == 0x47 && b[1] == 0x49 && b[2] == 0x46;    //byte 4-6 contains the version, but we don't check them here.
         }
 
         private static bool IsBmp(MemoryStream ms, ref double width, ref double height, ref double horizontalResolution, ref double verticalResolution)
         {
-            using (var br = new BinaryReader(ms))
+            using (BinaryReader? br = new BinaryReader(ms))
             {
                 if (IsBmp(br, out string sign))
                 {
-                    var size = br.ReadInt32();
-                    var reserved = br.ReadBytes(4);
-                    var offsetData = br.ReadInt32();
+                    int size = br.ReadInt32();
+                    byte[]? reserved = br.ReadBytes(4);
+                    int offsetData = br.ReadInt32();
 
                     //Info Header
-                    var ihSize = br.ReadInt32(); //Should be 40
+                    int ihSize = br.ReadInt32(); //Should be 40
                     width = br.ReadInt32();
                     height = br.ReadInt32();
 
@@ -386,11 +387,11 @@ namespace OfficeOpenXml.Drawing
 #region Ico
         private static bool IsIcon(MemoryStream ms, ref double width, ref double height)
         {
-            using (var br = new BinaryReader(ms))
+            using (BinaryReader? br = new BinaryReader(ms))
             {
                 if(IsIco(br))
                 {
-                    var imageCount = br.ReadInt16();
+                    short imageCount = br.ReadInt16();
                     width = br.ReadByte();
                     if (width == 0)
                     {
@@ -424,8 +425,8 @@ namespace OfficeOpenXml.Drawing
         internal static bool IsIco(BinaryReader br)
         {
             br.BaseStream.Seek(0, SeekOrigin.Begin);
-            var type0 = br.ReadInt16();
-            var type1 = br.ReadInt16();
+            short type0 = br.ReadInt16();
+            short type1 = br.ReadInt16();
             return type0 == 0 && type1 == 1;
         }
 #endregion
@@ -434,19 +435,19 @@ namespace OfficeOpenXml.Drawing
         {
             width = height = 0;
             horizontalResolution = verticalResolution = ExcelDrawing.STANDARD_DPI * (1+1/3); //Excel seems to render webp at 1 1/3 size.
-            using (var br = new BinaryReader(ms))
+            using (BinaryReader? br = new BinaryReader(ms))
             {
                 if(IsWebP(br))
                 {
-                    var vp8= Encoding.ASCII.GetString(br.ReadBytes(4));
+                    string? vp8= Encoding.ASCII.GetString(br.ReadBytes(4));
                     switch(vp8)
                     {
                         case "VP8 ":
-                            var b = br.ReadBytes(10);
-                            var w = br.ReadInt16();
+                            byte[]? b = br.ReadBytes(10);
+                            short w = br.ReadInt16();
                             width = w & 0x3FFF;
-                            var hScale = w >> 14;
-                            var h = br.ReadInt16();
+                            int hScale = w >> 14;
+                            short h = br.ReadInt16();
                             height = h & 0x3FFF;
                             hScale = h >> 14;
                             break;
@@ -472,9 +473,9 @@ namespace OfficeOpenXml.Drawing
             try
             {
                 br.BaseStream.Seek(0, SeekOrigin.Begin);
-                var riff = Encoding.ASCII.GetString(br.ReadBytes(4));
-                var length = GetInt32BigEndian(br);
-                var webP = Encoding.ASCII.GetString(br.ReadBytes(4));
+                string? riff = Encoding.ASCII.GetString(br.ReadBytes(4));
+                int length = GetInt32BigEndian(br);
+                string? webP = Encoding.ASCII.GetString(br.ReadBytes(4));
 
                 return riff == "RIFF" && webP == "WEBP";
             }
@@ -487,7 +488,7 @@ namespace OfficeOpenXml.Drawing
 #region Tiff
         private static bool IsTif(MemoryStream ms, ref double width, ref double height, ref double horizontalResolution, ref double verticalResolution)
         {
-            using (var br = new BinaryReader(ms))
+            using (BinaryReader? br = new BinaryReader(ms))
             {
                 return ReadTiffHeader(br, ref width, ref height, ref horizontalResolution, ref verticalResolution);
             }
@@ -495,17 +496,17 @@ namespace OfficeOpenXml.Drawing
 
         private static bool ReadTiffHeader(BinaryReader br, ref double width, ref double height, ref double horizontalResolution, ref double verticalResolution)
         {
-            var ms = br.BaseStream;
-            var pos = ms.Position;
+            Stream? ms = br.BaseStream;
+            long pos = ms.Position;
             if (IsTif(br, out bool isBigEndian, false))
             {
-                var offset = GetTifInt32(br, isBigEndian);
+                int offset = GetTifInt32(br, isBigEndian);
                 ms.Position = pos + offset;
-                var numberOfIdf = GetTifInt16(br, isBigEndian);
-                var ifds = new List<TifIfd>();
+                short numberOfIdf = GetTifInt16(br, isBigEndian);
+                List<TifIfd>? ifds = new List<TifIfd>();
                 for (int i = 0; i < numberOfIdf; i++)
                 {
-                    var ifd = new TifIfd()
+                    TifIfd ifd = new TifIfd()
                     {
                         Tag = GetTifInt16(br, isBigEndian),
                         Type = GetTifInt16(br, isBigEndian),
@@ -529,7 +530,7 @@ namespace OfficeOpenXml.Drawing
                 }
 
                 int resolutionUnit = 2;
-                foreach (var ifd in ifds)
+                foreach (TifIfd ifd in ifds)
                 {
                     switch (ifd.Tag)
                     {
@@ -541,8 +542,8 @@ namespace OfficeOpenXml.Drawing
                             break;
                         case 0x11A:
                             ms.Position = ifd.ValueOffset + pos;
-                            var l1 = GetTifInt32(br, isBigEndian);
-                            var l2 = GetTifInt32(br, isBigEndian);
+                            int l1 = GetTifInt32(br, isBigEndian);
+                            int l2 = GetTifInt32(br, isBigEndian);
                             horizontalResolution = l1 / l2;
                             break;
                         case 0x11B:
@@ -574,9 +575,9 @@ namespace OfficeOpenXml.Drawing
                 {
                     br.BaseStream.Position = 0;
                 }
-                var b = br.ReadBytes(2);
+                byte[]? b = br.ReadBytes(2);
                 isBigEndian = Encoding.ASCII.GetString(b) == "MM";
-                var identifier = GetTifInt16(br, isBigEndian);
+                short identifier = GetTifInt16(br, isBigEndian);
                 if (identifier == 42)
                 {
                     return true;
@@ -616,54 +617,54 @@ namespace OfficeOpenXml.Drawing
 #region Emf
         private static bool IsEmf(MemoryStream ms, ref double width, ref double height, ref double horizontalResolution, ref double verticalResolution)
         {
-            using (var br = new BinaryReader(ms))
+            using (BinaryReader? br = new BinaryReader(ms))
             {
                 if (IsEmf(br))
                 {
-                    var length = br.ReadInt32();
-                    var bounds = new int[4];
+                    int length = br.ReadInt32();
+                    int[]? bounds = new int[4];
                     bounds[0] = br.ReadInt32();
                     bounds[1] = br.ReadInt32();
                     bounds[2] = br.ReadInt32();
                     bounds[3] = br.ReadInt32();
-                    var frame = new int[4];
+                    int[]? frame = new int[4];
                     frame[0] = br.ReadInt32();
                     frame[1] = br.ReadInt32();
                     frame[2] = br.ReadInt32();
                     frame[3] = br.ReadInt32();
 
-                    var signatureBytes = br.ReadBytes(4);
-                    var signature = Encoding.ASCII.GetString(signatureBytes);
+                    byte[]? signatureBytes = br.ReadBytes(4);
+                    string? signature = Encoding.ASCII.GetString(signatureBytes);
                     if (signature.Trim() == "EMF")
                     {
-                        var version = br.ReadUInt32();
-                        var size = br.ReadUInt32();
-                        var records = br.ReadUInt32();
-                        var handles = br.ReadUInt16();
-                        var reserved = br.ReadUInt16();
+                        uint version = br.ReadUInt32();
+                        uint size = br.ReadUInt32();
+                        uint records = br.ReadUInt32();
+                        ushort handles = br.ReadUInt16();
+                        ushort reserved = br.ReadUInt16();
 
-                        var nDescription = br.ReadUInt32();
-                        var offDescription = br.ReadUInt32();
-                        var nPalEntries = br.ReadUInt32();
-                        var device = new uint[2];
+                        uint nDescription = br.ReadUInt32();
+                        uint offDescription = br.ReadUInt32();
+                        uint nPalEntries = br.ReadUInt32();
+                        uint[]? device = new uint[2];
                         device[0]= br.ReadUInt32();
                         device[1] = br.ReadUInt32();
 
-                        var mm= new uint[2];
+                        uint[]? mm= new uint[2];
                         mm[0] = br.ReadUInt32();
                         mm[1] = br.ReadUInt32();
                         //Extension 1
-                        var cbPixelFormat = br.ReadUInt32();
-                        var offPixelFormat = br.ReadUInt32();
-                        var bOpenGL = br.ReadUInt32();
+                        uint cbPixelFormat = br.ReadUInt32();
+                        uint offPixelFormat = br.ReadUInt32();
+                        uint bOpenGL = br.ReadUInt32();
 
                         //Extension 2
-                        var hr = br.ReadUInt32();
-                        var vr = br.ReadUInt32();
+                        uint hr = br.ReadUInt32();
+                        uint vr = br.ReadUInt32();
 
 
-                        var id = br.ReadInt32();
-                        var size2 = br.ReadInt32();
+                        int id = br.ReadInt32();
+                        int size2 = br.ReadInt32();
 
                         width = (bounds[2] - bounds[0] + 1);
                         height = (bounds[3] - bounds[1] + 1);
@@ -681,7 +682,7 @@ namespace OfficeOpenXml.Drawing
         private static bool IsEmf(BinaryReader br)
         {
             br.BaseStream.Position = 0;
-            var type = br.ReadInt32();
+            int type = br.ReadInt32();
             return type == 1;
         }
 
@@ -691,18 +692,18 @@ namespace OfficeOpenXml.Drawing
         private const double DEFAULT_TWIPS = 1440D;
         private static bool IsWmf(MemoryStream ms, ref double width, ref double height, ref double horizontalResolution, ref double verticalResolution)
         {
-            using (var br = new BinaryReader(ms))
+            using (BinaryReader? br = new BinaryReader(ms))
             {
                 if (IsWmf(br))
                 {
-                    var HWmf = br.ReadInt16();
-                    var bounds = new ushort[4];
+                    short HWmf = br.ReadInt16();
+                    ushort[]? bounds = new ushort[4];
                     bounds[0] = br.ReadUInt16();
                     bounds[1] = br.ReadUInt16();
                     bounds[2] = br.ReadUInt16();
                     bounds[3] = br.ReadUInt16();
 
-                    var inch = br.ReadInt16();
+                    short inch = br.ReadInt16();
                     width = bounds[2] - bounds[0];
                     height = bounds[3] - bounds[1];
                     if (inch != 0)
@@ -718,14 +719,14 @@ namespace OfficeOpenXml.Drawing
         private static bool IsWmf(BinaryReader br)
         {
             br.BaseStream.Position = 0;
-            var key = br.ReadUInt32();
+            uint key = br.ReadUInt32();
             return key == 0x9AC6CDD7;
         }
 #endregion
 #region Png
         private static bool IsPng(MemoryStream ms, ref double width, ref double height, ref double horizontalResolution, ref double verticalResolution)
         {
-            using (var br = new BinaryReader(ms))
+            using (BinaryReader? br = new BinaryReader(ms))
             {
                 return IsPng(br, ref width, ref height, ref horizontalResolution, ref verticalResolution);
             }
@@ -740,7 +741,7 @@ namespace OfficeOpenXml.Drawing
                 }
                 while (br.BaseStream.Position < fileEndPosition)
                 {
-                    var chunkType = ReadPngChunkHeader(br, out int length);
+                    string? chunkType = ReadPngChunkHeader(br, out int length);
                     switch (chunkType)
                     {
                         case "IHDR":
@@ -751,7 +752,7 @@ namespace OfficeOpenXml.Drawing
                         case "pHYs":
                             horizontalResolution = GetInt32BigEndian(br);
                             verticalResolution = GetInt32BigEndian(br);
-                            var unitSpecifier = br.ReadByte();
+                            byte unitSpecifier = br.ReadByte();
                             if (unitSpecifier == 1)
                             {
                                 horizontalResolution /= M_TO_INCH ;
@@ -767,7 +768,7 @@ namespace OfficeOpenXml.Drawing
                             br.ReadBytes(length);
                             break;
                     }
-                    var crc = br.ReadInt32();
+                    int crc = br.ReadInt32();
                 }
             }
             br.Close();
@@ -776,14 +777,14 @@ namespace OfficeOpenXml.Drawing
         private static bool IsPng(BinaryReader br)
         {
             br.BaseStream.Position = 0;
-            var signature = br.ReadBytes(8);
+            byte[]? signature = br.ReadBytes(8);
             return signature.SequenceEqual(new byte[] { 137, 80, 78, 71, 13, 10, 26, 10 });
         }
         private static string ReadPngChunkHeader(BinaryReader br, out int length)
         {
             length = GetInt32BigEndian(br);
-            var b = br.ReadBytes(4);
-            var type = Encoding.ASCII.GetString(b);
+            byte[]? b = br.ReadBytes(4);
+            string? type = Encoding.ASCII.GetString(b);
             return type;
         }
 #endregion
@@ -792,15 +793,15 @@ namespace OfficeOpenXml.Drawing
         {
             try
             {
-                using (var reader = new XmlTextReader(ms))
+                using (XmlTextReader? reader = new XmlTextReader(ms))
                 {
                     while (reader.Read())
                     {
                         if (reader.LocalName == "svg" && reader.NodeType == XmlNodeType.Element)
                         {
-                            var w = reader.GetAttribute("width");
-                            var h = reader.GetAttribute("height");
-                            var vb = reader.GetAttribute("viewBox");
+                            string? w = reader.GetAttribute("width");
+                            string? h = reader.GetAttribute("height");
+                            string? vb = reader.GetAttribute("viewBox");
                             reader.Close();
                             if (w == null || h == null)
                             {
@@ -808,7 +809,7 @@ namespace OfficeOpenXml.Drawing
                                 {
                                     return false;
                                 }
-                                var bounds = vb.Split(new char[] { ' ', ',' }, StringSplitOptions.RemoveEmptyEntries);
+                                string[]? bounds = vb.Split(new char[] { ' ', ',' }, StringSplitOptions.RemoveEmptyEntries);
                                 if (bounds.Length < 4)
                                 {
                                     return false;
@@ -850,7 +851,7 @@ namespace OfficeOpenXml.Drawing
             try
             {
                 ms.Position = 0;
-                var reader = new XmlTextReader(ms);
+                XmlTextReader? reader = new XmlTextReader(ms);
                 while (reader.Read())
                 {
                     if (reader.LocalName == "svg" && reader.NodeType == XmlNodeType.Element)
@@ -867,7 +868,7 @@ namespace OfficeOpenXml.Drawing
         }
         private static double GetSvgUnit(string v)
         {
-            var factor = 1D;
+            double factor = 1D;
             if (v.EndsWith("px", StringComparison.OrdinalIgnoreCase))
             {
                 v = v.Substring(0, v.Length - 2);
@@ -907,17 +908,17 @@ namespace OfficeOpenXml.Drawing
 
         private static ushort GetUInt16BigEndian(BinaryReader br)
         {
-            var b = br.ReadBytes(2);
+            byte[]? b = br.ReadBytes(2);
             return BitConverter.ToUInt16(new byte[] { b[1], b[0] }, 0);
         }
         private static short GetInt16BigEndian(BinaryReader br)
         {
-            var b = br.ReadBytes(2);
+            byte[]? b = br.ReadBytes(2);
             return BitConverter.ToInt16(new byte[] { b[1], b[0] }, 0);
         }
         private static int GetInt32BigEndian(BinaryReader br)
         {
-            var b = br.ReadBytes(4);
+            byte[]? b = br.ReadBytes(4);
             return BitConverter.ToInt32(new byte[] { b[3], b[2], b[1], b[0] }, 0);
         }
     }

@@ -111,7 +111,7 @@ namespace OfficeOpenXml.Drawing.Theme
                     }
                     else
                     {
-                        var node = CreateNode("a:solidFill");
+                        XmlNode? node = CreateNode("a:solidFill");
                         _fill = new ExcelDrawingFill(null, NameSpaceManager, TopNode.ChildNodes[0], "", SchemaNodeOrder);
                         Fill.SolidFill.Color.SetSchemeColor(eSchemeColor.Style);
                     }

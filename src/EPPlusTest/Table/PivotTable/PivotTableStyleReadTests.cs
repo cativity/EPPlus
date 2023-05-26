@@ -28,11 +28,11 @@ namespace EPPlusTest.Table.PivotTable
         [TestMethod]
         public void ReadPivotAllStyle()
         {
-            var ws = TryGetWorksheet(_pck, "StyleAll");
-            var pt = ws.PivotTables[0];
+            ExcelWorksheet? ws = TryGetWorksheet(_pck, "StyleAll");
+            ExcelPivotTable? pt = ws.PivotTables[0];
             Assert.AreEqual(1, pt.Styles.Count);
 
-            var s = pt.Styles[0];
+            ExcelPivotTableAreaStyle? s = pt.Styles[0];
 
             Assert.AreEqual(ePivotAreaType.All, s.PivotAreaType);
             Assert.IsTrue(s.Style.HasValue);
@@ -41,11 +41,11 @@ namespace EPPlusTest.Table.PivotTable
         [TestMethod]
         public void ReadPivotLabels()
         {
-            var ws = TryGetWorksheet(_pck, "StyleAllLabels");
-            var pt = ws.PivotTables[0];
+            ExcelWorksheet? ws = TryGetWorksheet(_pck, "StyleAllLabels");
+            ExcelPivotTable? pt = ws.PivotTables[0];
             Assert.AreEqual(1, pt.Styles.Count);
 
-            var s = pt.Styles[0];
+            ExcelPivotTableAreaStyle? s = pt.Styles[0];
 
             Assert.AreEqual(ePivotAreaType.All, s.PivotAreaType);
             Assert.IsTrue(s.LabelOnly);
@@ -56,11 +56,11 @@ namespace EPPlusTest.Table.PivotTable
         [TestMethod]
         public void ReadPivotAllData()
         {
-            var ws = TryGetWorksheet(_pck, "StyleAllData");
-            var pt = ws.PivotTables[0];
+            ExcelWorksheet? ws = TryGetWorksheet(_pck, "StyleAllData");
+            ExcelPivotTable? pt = ws.PivotTables[0];
             Assert.AreEqual(1, pt.Styles.Count);
 
-            var s = pt.Styles[0];
+            ExcelPivotTableAreaStyle? s = pt.Styles[0];
 
             Assert.AreEqual(ePivotAreaType.All, s.PivotAreaType);
             Assert.IsTrue(s.DataOnly);
@@ -72,12 +72,12 @@ namespace EPPlusTest.Table.PivotTable
         [TestMethod]
         public void ReadPivotLabelPageField()
         {
-            var ws = TryGetWorksheet(_pck, "StylePageFieldLabel");
-            var pt = ws.PivotTables[0];
+            ExcelWorksheet? ws = TryGetWorksheet(_pck, "StylePageFieldLabel");
+            ExcelPivotTable? pt = ws.PivotTables[0];
             Assert.AreEqual(1, pt.Styles.Count);
             Assert.AreEqual(1, pt.Styles.Count);
 
-            var s = pt.Styles[0];
+            ExcelPivotTableAreaStyle? s = pt.Styles[0];
 
             Assert.AreEqual(ePivotAreaType.Normal, s.PivotAreaType);
             Assert.IsTrue(s.LabelOnly);
@@ -90,10 +90,10 @@ namespace EPPlusTest.Table.PivotTable
         [TestMethod]
         public void ReadPivotLabelColumnField()
         {
-            var ws = TryGetWorksheet(_pck, "StyleColumnFieldLabel");
-            var pt = ws.PivotTables[0];
+            ExcelWorksheet? ws = TryGetWorksheet(_pck, "StyleColumnFieldLabel");
+            ExcelPivotTable? pt = ws.PivotTables[0];
 
-            var s = pt.Styles[0];
+            ExcelPivotTableAreaStyle? s = pt.Styles[0];
 
             Assert.IsTrue(s.LabelOnly);
             Assert.IsFalse(s.DataOnly);
@@ -105,10 +105,10 @@ namespace EPPlusTest.Table.PivotTable
         [TestMethod]
         public void AddPivotLabelColumnFieldSingleCell()
         {
-            var ws = TryGetWorksheet(_pck, "StyleColumnFieldLabelCell");
-            var pt = ws.PivotTables[0];
+            ExcelWorksheet? ws = TryGetWorksheet(_pck, "StyleColumnFieldLabelCell");
+            ExcelPivotTable? pt = ws.PivotTables[0];
 
-            var s = pt.Styles[0];
+            ExcelPivotTableAreaStyle? s = pt.Styles[0];
 
             Assert.IsFalse(pt.DataOnRows);
             Assert.IsTrue(s.LabelOnly);
@@ -129,10 +129,10 @@ namespace EPPlusTest.Table.PivotTable
         [TestMethod]
         public void AddPivotLabelRowColumnField()
         {
-            var ws = TryGetWorksheet(_pck, "StyleRowFieldLabel");
-            var pt = ws.PivotTables[0];
+            ExcelWorksheet? ws = TryGetWorksheet(_pck, "StyleRowFieldLabel");
+            ExcelPivotTable? pt = ws.PivotTables[0];
 
-            var s = pt.Styles[0];
+            ExcelPivotTableAreaStyle? s = pt.Styles[0];
 
             Assert.AreEqual(ePivotAreaType.Normal, s.PivotAreaType);
             Assert.IsTrue(s.LabelOnly);
@@ -147,10 +147,10 @@ namespace EPPlusTest.Table.PivotTable
         [TestMethod]
         public void ReadPivotDataRowColumnField()
         {
-            var ws = TryGetWorksheet(_pck, "StyleRowFieldData");
-            var pt = ws.PivotTables[0];
+            ExcelWorksheet? ws = TryGetWorksheet(_pck, "StyleRowFieldData");
+            ExcelPivotTable? pt = ws.PivotTables[0];
 
-            var s = pt.Styles[0];
+            ExcelPivotTableAreaStyle? s = pt.Styles[0];
 
             Assert.AreEqual(ePivotAreaType.Data, s.PivotAreaType);
             Assert.IsTrue(s.DataOnly);
@@ -165,10 +165,10 @@ namespace EPPlusTest.Table.PivotTable
         [TestMethod]
         public void ReadPivotData()
         {
-            var ws = TryGetWorksheet(_pck, "StyleData");
-            var pt = ws.PivotTables[0];
+            ExcelWorksheet? ws = TryGetWorksheet(_pck, "StyleData");
+            ExcelPivotTable? pt = ws.PivotTables[0];
 
-            var s = pt.Styles[0];
+            ExcelPivotTableAreaStyle? s = pt.Styles[0];
 
             Assert.AreEqual(2, s.Conditions.Fields.Count);
             Assert.AreEqual(pt.Fields[0].Index, s.Conditions.Fields[0].FieldIndex);
@@ -183,10 +183,10 @@ namespace EPPlusTest.Table.PivotTable
         [TestMethod]
         public void AddPivotDataGrandColumn()
         {
-            var ws = TryGetWorksheet(_pck, "StyleDataGrandColumn");
-            var pt = ws.PivotTables[0];
+            ExcelWorksheet? ws = TryGetWorksheet(_pck, "StyleDataGrandColumn");
+            ExcelPivotTable? pt = ws.PivotTables[0];
 
-            var s = pt.Styles[0];
+            ExcelPivotTableAreaStyle? s = pt.Styles[0];
 
             Assert.AreEqual(2, s.Conditions.Fields.Count);
             Assert.AreEqual(pt.Fields[0].Index, s.Conditions.Fields[0].FieldIndex);
@@ -201,10 +201,10 @@ namespace EPPlusTest.Table.PivotTable
         [TestMethod]
         public void AddPivotDataGrandRow()
         {
-            var ws = TryGetWorksheet(_pck, "StyleDataGrandRow");
-            var pt = ws.PivotTables[0];
+            ExcelWorksheet? ws = TryGetWorksheet(_pck, "StyleDataGrandRow");
+            ExcelPivotTable? pt = ws.PivotTables[0];
 
-            var s = pt.Styles[0];
+            ExcelPivotTableAreaStyle? s = pt.Styles[0];
 
             Assert.IsTrue(s.GrandRow);
             Assert.AreEqual(s.Style.Fill.Style, OfficeOpenXml.Style.eDxfFillStyle.PatternFill);
@@ -217,10 +217,10 @@ namespace EPPlusTest.Table.PivotTable
         [TestMethod]
         public void AddPivotLabelRow()
         {
-            var ws = TryGetWorksheet(_pck, "StyleRowFieldLabelTot");
-            var pt = ws.PivotTables[0];
+            ExcelWorksheet? ws = TryGetWorksheet(_pck, "StyleRowFieldLabelTot");
+            ExcelPivotTable? pt = ws.PivotTables[0];
 
-            var s = pt.Styles[0];
+            ExcelPivotTableAreaStyle? s = pt.Styles[0];
 
             Assert.IsTrue(s.LabelOnly);
             Assert.IsFalse(s.DataOnly);
@@ -234,10 +234,10 @@ namespace EPPlusTest.Table.PivotTable
         [TestMethod]
         public void AddPivotLabelRowDf1()
         {
-            var ws = TryGetWorksheet(_pck, "StyleRowFieldLabelTotDf1");
-            var pt = ws.PivotTables[0];
+            ExcelWorksheet? ws = TryGetWorksheet(_pck, "StyleRowFieldLabelTotDf1");
+            ExcelPivotTable? pt = ws.PivotTables[0];
 
-            var s = pt.Styles[0];
+            ExcelPivotTableAreaStyle? s = pt.Styles[0];
 
             Assert.AreEqual(1, s.Conditions.DataFields.Count);
             Assert.AreEqual(1, s.Conditions.Fields.Count);
@@ -253,10 +253,10 @@ namespace EPPlusTest.Table.PivotTable
         [TestMethod]
         public void ReadPivotLabelRowDataField2()
         {
-            var ws = TryGetWorksheet(_pck, "StyleRowFieldDf2");
-            var pt = ws.PivotTables[0];
+            ExcelWorksheet? ws = TryGetWorksheet(_pck, "StyleRowFieldDf2");
+            ExcelPivotTable? pt = ws.PivotTables[0];
 
-            var s = pt.Styles[0];
+            ExcelPivotTableAreaStyle? s = pt.Styles[0];
 
             Assert.AreEqual(1, s.Conditions.DataFields.Count);
             Assert.AreEqual(1, s.Conditions.Fields.Count);
@@ -270,10 +270,10 @@ namespace EPPlusTest.Table.PivotTable
         [TestMethod]
         public void ReadPivotLabelRowDataField2AndValue()
         {
-            var ws = TryGetWorksheet(_pck, "StyleRowFieldDf2Value");
-            var pt = ws.PivotTables[0];
+            ExcelWorksheet? ws = TryGetWorksheet(_pck, "StyleRowFieldDf2Value");
+            ExcelPivotTable? pt = ws.PivotTables[0];
 
-            var s = pt.Styles[0];
+            ExcelPivotTableAreaStyle? s = pt.Styles[0];
 
             Assert.AreEqual(1, s.Conditions.DataFields.Count);
             Assert.AreEqual(1, s.Conditions.Fields.Count);
@@ -293,10 +293,10 @@ namespace EPPlusTest.Table.PivotTable
         [TestMethod]
         public void ReadPivotDataItemByIndex()
         {
-            var ws = TryGetWorksheet(_pck, "PivotDataItemIndex");
-            var pt = ws.PivotTables[0];
+            ExcelWorksheet? ws = TryGetWorksheet(_pck, "PivotDataItemIndex");
+            ExcelPivotTable? pt = ws.PivotTables[0];
 
-            var s = pt.Styles[0];
+            ExcelPivotTableAreaStyle? s = pt.Styles[0];
 
             Assert.AreEqual(1, s.Conditions.DataFields.Count);
             Assert.AreEqual(2, s.Conditions.Fields.Count);
@@ -316,10 +316,10 @@ namespace EPPlusTest.Table.PivotTable
         [TestMethod]
         public void ReadPivotDataItemByValue()
         {
-            var ws = TryGetWorksheet(_pck, "PivotDataItemValue");
-            var pt = ws.PivotTables[0];
+            ExcelWorksheet? ws = TryGetWorksheet(_pck, "PivotDataItemValue");
+            ExcelPivotTable? pt = ws.PivotTables[0];
 
-            var s = pt.Styles[0];
+            ExcelPivotTableAreaStyle? s = pt.Styles[0];
 
             Assert.AreEqual(1, s.Conditions.DataFields.Count);
             Assert.AreEqual(2, s.Conditions.Fields.Count);
@@ -338,10 +338,10 @@ namespace EPPlusTest.Table.PivotTable
         [TestMethod]
         public void ReadFieldButton()
         {
-            var ws = TryGetWorksheet(_pck, "StyleFieldPage");
-            var pt = ws.PivotTables[0];
+            ExcelWorksheet? ws = TryGetWorksheet(_pck, "StyleFieldPage");
+            ExcelPivotTable? pt = ws.PivotTables[0];
 
-            var s = pt.Styles[0];
+            ExcelPivotTableAreaStyle? s = pt.Styles[0];
 
             Assert.AreEqual(ePivotAreaType.FieldButton, s.PivotAreaType);
             Assert.AreEqual(0, s.Conditions.DataFields.Count);
@@ -353,10 +353,10 @@ namespace EPPlusTest.Table.PivotTable
         [TestMethod]
         public void ReadButtonRowAxis()
         {
-            var ws = TryGetWorksheet(_pck, "StyleButtonRowAxis");
-            var pt = ws.PivotTables[0];
+            ExcelWorksheet? ws = TryGetWorksheet(_pck, "StyleButtonRowAxis");
+            ExcelPivotTable? pt = ws.PivotTables[0];
 
-            var s = pt.Styles[0];
+            ExcelPivotTableAreaStyle? s = pt.Styles[0];
 
             Assert.AreEqual(ePivotAreaType.FieldButton, s.PivotAreaType);
             Assert.AreEqual(ePivotTableAxis.RowAxis, s.Axis);
@@ -365,10 +365,10 @@ namespace EPPlusTest.Table.PivotTable
         [TestMethod]
         public void ReadButtonColumnAxis()
         {
-            var ws = TryGetWorksheet(_pck, "StyleButtonColumnAxis");
-            var pt = ws.PivotTables[0];
+            ExcelWorksheet? ws = TryGetWorksheet(_pck, "StyleButtonColumnAxis");
+            ExcelPivotTable? pt = ws.PivotTables[0];
 
-            var s = pt.Styles[0];
+            ExcelPivotTableAreaStyle? s = pt.Styles[0];
 
             Assert.AreEqual(ePivotAreaType.FieldButton, s.PivotAreaType);
             Assert.AreEqual(ePivotTableAxis.ColumnAxis, s.Axis);
@@ -378,9 +378,9 @@ namespace EPPlusTest.Table.PivotTable
         [TestMethod]
         public void ReadButtonPageAxis()
         {
-            var ws = TryGetWorksheet(_pck, "StyleButtonPageAxis");
-            var pt = ws.PivotTables[0];
-            var s = pt.Styles[0];
+            ExcelWorksheet? ws = TryGetWorksheet(_pck, "StyleButtonPageAxis");
+            ExcelPivotTable? pt = ws.PivotTables[0];
+            ExcelPivotTableAreaStyle? s = pt.Styles[0];
 
             Assert.AreEqual(ePivotAreaType.FieldButton, s.PivotAreaType);
             Assert.AreEqual(ePivotTableAxis.PageAxis, s.Axis);
@@ -391,9 +391,9 @@ namespace EPPlusTest.Table.PivotTable
         [TestMethod]
         public void ReadTopStart()
         {
-            var ws = TryGetWorksheet(_pck, "StyleTopStart");
-            var pt = ws.PivotTables[0];
-            var s = pt.Styles[0];
+            ExcelWorksheet? ws = TryGetWorksheet(_pck, "StyleTopStart");
+            ExcelPivotTable? pt = ws.PivotTables[0];
+            ExcelPivotTableAreaStyle? s = pt.Styles[0];
 
             //Top Left cells 
             Assert.AreEqual(ePivotAreaType.Origin, s.PivotAreaType);
@@ -403,9 +403,9 @@ namespace EPPlusTest.Table.PivotTable
         [TestMethod]
         public void ReadTopStartOffset0()
         {
-            var ws = TryGetWorksheet(_pck, "StyleTopStartOffset0");
-            var pt = ws.PivotTables[0];
-            var s = pt.Styles[0];
+            ExcelWorksheet? ws = TryGetWorksheet(_pck, "StyleTopStartOffset0");
+            ExcelPivotTable? pt = ws.PivotTables[0];
+            ExcelPivotTableAreaStyle? s = pt.Styles[0];
 
             //Top Left cells
             Assert.AreEqual(ePivotAreaType.Origin, s.PivotAreaType);
@@ -417,9 +417,9 @@ namespace EPPlusTest.Table.PivotTable
         [TestMethod]
         public void AddTopEnd()
         {
-            var ws = TryGetWorksheet(_pck, "StyleTopEnd");
-            var pt = ws.PivotTables[0];
-            var s = pt.Styles[0];
+            ExcelWorksheet? ws = TryGetWorksheet(_pck, "StyleTopEnd");
+            ExcelPivotTable? pt = ws.PivotTables[0];
+            ExcelPivotTableAreaStyle? s = pt.Styles[0];
 
             Assert.AreEqual(ePivotAreaType.TopEnd, s.PivotAreaType);
             Assert.AreEqual(eDxfFillStyle.PatternFill, s.Style.Fill.Style);
@@ -428,9 +428,9 @@ namespace EPPlusTest.Table.PivotTable
         [TestMethod]
         public void AddTopEndOffset1()
         {
-            var ws = TryGetWorksheet(_pck, "StyleTopEndOffset1");
-            var pt = ws.PivotTables[0];
-            var s = pt.Styles[0];
+            ExcelWorksheet? ws = TryGetWorksheet(_pck, "StyleTopEndOffset1");
+            ExcelPivotTable? pt = ws.PivotTables[0];
+            ExcelPivotTableAreaStyle? s = pt.Styles[0];
 
             Assert.AreEqual(ePivotAreaType.TopEnd, s.PivotAreaType);
             Assert.AreEqual("A1", s.Offset);

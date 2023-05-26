@@ -29,18 +29,18 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance
         public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
         {
             ValidateArguments(arguments, 6);
-            var rate = ArgToDecimal(arguments, 0);
-            var nper = ArgToInt(arguments, 1);
-            var pv = ArgToDecimal(arguments, 2);
-            var startPeriod = ArgToInt(arguments, 3);
-            var endPeriod = ArgToInt(arguments, 4);
-            var type = ArgToInt(arguments, 5);
+            double rate = ArgToDecimal(arguments, 0);
+            int nper = ArgToInt(arguments, 1);
+            double pv = ArgToDecimal(arguments, 2);
+            int startPeriod = ArgToInt(arguments, 3);
+            int endPeriod = ArgToInt(arguments, 4);
+            int type = ArgToInt(arguments, 5);
             if (type < 0 || type > 1)
             {
                 return this.CreateResult(eErrorType.Value);
             }
 
-            var result = CumipmtImpl.GetCumipmt(rate, nper, pv, startPeriod, endPeriod, (PmtDue)type);
+            FinanceCalcResult<double>? result = CumipmtImpl.GetCumipmt(rate, nper, pv, startPeriod, endPeriod, (PmtDue)type);
             if (result.HasError)
             {
                 return this.CreateResult(result.ExcelErrorType);

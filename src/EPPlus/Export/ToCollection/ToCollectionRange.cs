@@ -21,7 +21,7 @@ namespace OfficeOpenXml.Export.ToCollection
 
                 for (int c = range._fromCol; c <= range._toCol; c++)
                 {
-                    var h = range.Worksheet.Cells[range._fromRow + headerRow.Value, c].Text;
+                    string? h = range.Worksheet.Cells[range._fromRow + headerRow.Value, c].Text;
                     if (string.IsNullOrEmpty(h))
                     {
                         throw new InvalidOperationException("Header cells cannot be empty");
@@ -46,17 +46,17 @@ namespace OfficeOpenXml.Export.ToCollection
         }
         internal static List<T> ToCollection<T>(ExcelRangeBase range, Func<ToCollectionRow, T> setRow, ToCollectionRangeOptions options)
         {
-            var ret = new List<T>();
+            List<T>? ret = new List<T>();
             if (range._toRow < range._fromRow)
             {
                 return null;
             }
 
-            var headers = GetRangeHeaders(range, options.Headers, options.HeaderRow);
+            List<string>? headers = GetRangeHeaders(range, options.Headers, options.HeaderRow);
 
-            var values = new List<ExcelValue>();
-            var row = new ToCollectionRow(headers, range._workbook, options.ConversionFailureStrategy);
-            var startRow = options.DataStartRow ?? ((options.HeaderRow ?? -1) + 1);
+            List<ExcelValue>? values = new List<ExcelValue>();
+            ToCollectionRow? row = new ToCollectionRow(headers, range._workbook, options.ConversionFailureStrategy);
+            int startRow = options.DataStartRow ?? ((options.HeaderRow ?? -1) + 1);
             for (int r = range._fromRow + startRow; r <= range._toRow; r++)
             {
                 for (int c = range._fromCol; c <= range._toCol; c++)
@@ -64,7 +64,7 @@ namespace OfficeOpenXml.Export.ToCollection
                     values.Add(range.Worksheet.GetCoreValueInner(r, c));
                 }
                 row._cellValues = values;
-                var item = setRow(row);
+                T? item = setRow(row);
                 if (item != null)
                 {
                     ret.Add(item);
@@ -77,23 +77,23 @@ namespace OfficeOpenXml.Export.ToCollection
         
         internal static List<T> ToCollection<T>(ExcelRangeBase range, ToCollectionRangeOptions options)
         {
-            var t = typeof(T);
-            var h = GetRangeHeaders(range, options.Headers, options.HeaderRow);
+            Type? t = typeof(T);
+            List<string>? h = GetRangeHeaders(range, options.Headers, options.HeaderRow);
             if (h.Count <= 0)
             {
                 throw new InvalidOperationException("No headers specified. Please set a ToCollectionOptions.HeaderRow or ToCollectionOptions.Headers[].");
             }
 
-            var mappings = ToCollectionAutomap.GetAutomapList<T>(h);
-            var l = new List<T>();
-            var values = new List<ExcelValue>();
-            var startRow = options.DataStartRow ?? ((options.HeaderRow ?? -1) + 1);
+            List<MappedProperty>? mappings = ToCollectionAutomap.GetAutomapList<T>(h);
+            List<T>? l = new List<T>();
+            List<ExcelValue>? values = new List<ExcelValue>();
+            int startRow = options.DataStartRow ?? ((options.HeaderRow ?? -1) + 1);
             for (int r = range._fromRow + startRow; r <= range._toRow; r++)
             {
-                var item = (T)Activator.CreateInstance(t);
-                foreach (var m in mappings)
+                T? item = (T)Activator.CreateInstance(t);
+                foreach (MappedProperty? m in mappings)
                 {
-                    var v = range.Worksheet.GetValueInner(r, m.Index + range._fromCol);
+                    object? v = range.Worksheet.GetValueInner(r, m.Index + range._fromCol);
                     try
                     {
                         m.PropertyInfo.SetValue(item, v, null);

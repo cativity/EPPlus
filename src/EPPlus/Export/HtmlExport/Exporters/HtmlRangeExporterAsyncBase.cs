@@ -46,9 +46,9 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
             }
             await writer.RenderBeginTagAsync(HtmlElements.Tbody);
             await writer.ApplyFormatIncreaseIndentAsync(Settings.Minify);
-            var row = range._fromRow + headerRows;
-            var endRow = range._toRow;
-            var ws = range.Worksheet;
+            int row = range._fromRow + headerRows;
+            int endRow = range._toRow;
+            ExcelWorksheet? ws = range.Worksheet;
             HtmlImage image = null;
             bool hasFooter = table != null && table.ShowTotal;
             while (row <= endRow)
@@ -76,17 +76,17 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
 
                 await writer.RenderBeginTagAsync(HtmlElements.TableRow);
                 await writer.ApplyFormatIncreaseIndentAsync(Settings.Minify);
-                foreach (var col in _columns)
+                foreach (int col in _columns)
                 {
                     if (InMergeCellSpan(row, col))
                     {
                         continue;
                     }
 
-                    var colIx = col - range._fromCol;
-                    var cell = ws.Cells[row, col];
-                    var cv = cell.Value;
-                    var dataType = HtmlRawDataProvider.GetHtmlDataTypeFromValue(cell.Value);
+                    int colIx = col - range._fromCol;
+                    ExcelRange? cell = ws.Cells[row, col];
+                    object? cv = cell.Value;
+                    string? dataType = HtmlRawDataProvider.GetHtmlDataTypeFromValue(cell.Value);
 
                     SetColRowSpan(range, writer, cell);
 
@@ -101,7 +101,7 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
                     }
                     else
                     {
-                        var imageCellClassName = GetImageCellClassName(image, Settings);
+                        string? imageCellClassName = GetImageCellClassName(image, Settings);
                         writer.SetClassAttributeFromStyle(cell, false, Settings, imageCellClassName);
                         await writer.RenderBeginTagAsync(HtmlElements.TableData);
                         await AddImageAsync(writer, Settings, image, cell.Value);
@@ -156,7 +156,7 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
                 {
                     writer.AddAttribute("role", "row");
                 }
-                var row = range._fromRow + i;
+                int row = range._fromRow + i;
                 if (Settings.SetRowHeight)
                 {
                     this.AddRowHeightStyle(writer, range, row, this.Settings.StyleClassPrefix, this.IsMultiSheet);
@@ -164,14 +164,14 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
 
                 await writer.RenderBeginTagAsync(HtmlElements.TableRow);
                 await writer.ApplyFormatIncreaseIndentAsync(Settings.Minify);
-                foreach (var col in _columns)
+                foreach (int col in _columns)
                 {
                     if (InMergeCellSpan(row, col))
                     {
                         continue;
                     }
 
-                    var cell = range.Worksheet.Cells[row, col];
+                    ExcelRange? cell = range.Worksheet.Cells[row, col];
                     if (Settings.RenderDataTypes)
                     {
                         writer.AddAttribute("data-datatype", _dataTypes[col - range._fromCol]);
@@ -179,7 +179,7 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
                     SetColRowSpan(range, writer, cell);
                     if (Settings.IncludeCssClassNames)
                     {
-                        var imageCellClassName = GetImageCellClassName(image, Settings);
+                        string? imageCellClassName = GetImageCellClassName(image, Settings);
                         writer.SetClassAttributeFromStyle(cell, true, Settings, imageCellClassName);
                     }
                     if (Settings.Pictures.Include == ePictureInclude.Include)
@@ -257,7 +257,7 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
         {
             if (image != null)
             {
-                var name = GetPictureName(image);
+                string? name = GetPictureName(image);
                 string imageName = HtmlExportTableUtil.GetClassName(image.Picture.Name, ((IPictureContainer)image.Picture).ImageHash);
                 writer.AddAttribute("alt", image.Picture.Name);
                 if (settings.Pictures.AddNameAsId)
@@ -271,19 +271,19 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
 
         protected async Task SetColumnGroupAsync(EpplusHtmlWriter writer, ExcelRangeBase _range, HtmlExportSettings settings, bool isMultiSheet)
         {
-            var ws = _range.Worksheet;
+            ExcelWorksheet? ws = _range.Worksheet;
             await writer.RenderBeginTagAsync("colgroup");
             await writer.ApplyFormatIncreaseIndentAsync(settings.Minify);
-            var mdw = _range.Worksheet.Workbook.MaxFontWidth;
-            var defColWidth = ExcelColumn.ColumnWidthToPixels(Convert.ToDecimal(ws.DefaultColWidth), mdw);
-            foreach (var c in _columns)
+            decimal mdw = _range.Worksheet.Workbook.MaxFontWidth;
+            int defColWidth = ExcelColumn.ColumnWidthToPixels(Convert.ToDecimal(ws.DefaultColWidth), mdw);
+            foreach (int c in _columns)
             {
                 if (settings.SetColumnWidth)
                 {
                     double width = ws.GetColumnWidthPixels(c - 1, mdw);
                     if (width == defColWidth)
                     {
-                        var clsName = HtmlExportTableUtil.GetWorksheetClassName(settings.StyleClassPrefix, "dcw", ws, isMultiSheet);
+                        string? clsName = HtmlExportTableUtil.GetWorksheetClassName(settings.StyleClassPrefix, "dcw", ws, isMultiSheet);
                         writer.AddAttribute("class", clsName);
                     }
                     else

@@ -21,7 +21,7 @@ namespace OfficeOpenXml.Filter
     {
         internal static bool Match(string value, string pattern)
         {
-            var tokens = SplitInTokens(pattern);
+            List<string>? tokens = SplitInTokens(pattern);
             if (tokens.Count == 1 && tokens[0]!="*" && tokens[0] != "?")
             {
                 return value.Equals(tokens[0], StringComparison.CurrentCultureIgnoreCase);
@@ -76,7 +76,7 @@ namespace OfficeOpenXml.Filter
         }
         private static bool MatchWildCards(string value, List<string> tokens, int stringPos, int tokenPos)
         {
-            var anyChars = 0;
+            int anyChars = 0;
             while (tokens[tokenPos]=="*" || tokens[tokenPos] == "?")
             {
                 if(tokens[tokenPos] == "?")
@@ -121,8 +121,8 @@ namespace OfficeOpenXml.Filter
         }
         private static List<string> SplitInTokens(string filter)
         {
-            var ret = new List<string>();
-            var start = 0;
+            List<string>? ret = new List<string>();
+            int start = 0;
             for (int i = 0; i < filter.Length; i++)
             {
                 if (filter[i] == '*' ||

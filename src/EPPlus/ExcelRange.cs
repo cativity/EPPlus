@@ -62,7 +62,7 @@ namespace OfficeOpenXml
                 {
                     if(Address.IndexOfAny(new char[] { '\'', '[', '!' })>=0)
                     {
-                        var a = new ExcelAddress(Address);
+                        ExcelAddress? a = new ExcelAddress(Address);
                         if(a.WorkSheetName!=null && a.WorkSheetName.Equals(_worksheet.Name, StringComparison.InvariantCultureIgnoreCase)==false)
                         {
                             throw new InvalidOperationException($"The worksheet address {Address} is not within the worksheet {_worksheet.Name}");
@@ -88,7 +88,7 @@ namespace OfficeOpenXml
                 int ixEnd = address.IndexOf(']',ixStart+1);
                 if (ixStart >= 0 & ixEnd >= 0)
                 {
-                    var external = address.Substring(ixStart + 1, ixEnd - 1);
+                    string? external = address.Substring(ixStart + 1, ixEnd - 1);
                     //if (Worksheet.Workbook._externalReferences.Count < external)
                     //{
                     //foreach(var 

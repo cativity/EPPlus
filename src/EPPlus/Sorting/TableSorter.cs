@@ -34,7 +34,7 @@ namespace OfficeOpenXml.Sorting
 
         public void Sort(Action<TableSortOptions> configuration)
         {
-            var options = new TableSortOptions(_table);
+            TableSortOptions? options = new TableSortOptions(_table);
             configuration(options);
             Sort(options);
         }

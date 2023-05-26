@@ -45,7 +45,7 @@ namespace OfficeOpenXml.Drawing.Vml
                 throw (new ArgumentException("Please supply a list of colors"));
             }
             double p = -1;
-            foreach(var c in colors)
+            foreach(VmlGradiantColor? c in colors)
             {
                 if(c.Percent<=p)
                 {
@@ -54,15 +54,15 @@ namespace OfficeOpenXml.Drawing.Vml
                 p = c.Percent;
             }
 
-            var colorsString = "";
+            string? colorsString = "";
             if(colors[0].Percent!=0)
             {
                 colorsString = $"0 #{colors[0].Color.ToColorString()};";
             }
 
-            foreach(var c in colors)
+            foreach(VmlGradiantColor? c in colors)
             {
-                var v = c.Percent == 0 ? 0 : c.Percent / 100;
+                double v = c.Percent == 0 ? 0 : c.Percent / 100;
                 colorsString += $"{(v * 0x10000):F0}f #{c.Color.ToColorString()};";
             }
             if(colors[0].Percent==0)

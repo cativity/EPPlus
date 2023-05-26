@@ -193,7 +193,7 @@ namespace OfficeOpenXml.Drawing.Chart
                 if (_richText == null)
                 {
                     float defFont = 14;
-                    var stylePart = GetStylePart();
+                    ExcelChartStyleEntry? stylePart = GetStylePart();
                     if(stylePart!=null && stylePart.HasTextRun)
                     {
                         defFont = Convert.ToSingle(stylePart.DefaultTextRun.FontSize);
@@ -206,7 +206,7 @@ namespace OfficeOpenXml.Drawing.Chart
 
         private ExcelChartStyleEntry GetStylePart()
         {
-            var style = _chart._styleManager?.Style;
+            ExcelChartStyle? style = _chart._styleManager?.Style;
             if (style == null)
             {
                 return null;
@@ -300,7 +300,7 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             get
             {
-                var i=GetXmlNodeInt($"{_nsPrefix}:tx/{_nsPrefix}:rich/a:bodyPr/@rot");
+                int i=GetXmlNodeInt($"{_nsPrefix}:tx/{_nsPrefix}:rich/a:bodyPr/@rot");
                 if (i < 0)
                 {
                     return 360 - (i / 60000);
@@ -371,7 +371,7 @@ namespace OfficeOpenXml.Drawing.Chart
             }
             set
             {
-                var applyStyle = (RichText.Count == 0);
+                bool applyStyle = (RichText.Count == 0);
                 LinkedCell = null;
                 RichText.Text = value;
                 if (applyStyle)
@@ -387,10 +387,10 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             get
             {
-                var a = GetXmlNodeString($"{titleLinkPath}/c:f");
+                string? a = GetXmlNodeString($"{titleLinkPath}/c:f");
                 if (ExcelCellBase.IsValidAddress(a))
                 {
-                    var address = new ExcelAddressBase(a);
+                    ExcelAddressBase? address = new ExcelAddressBase(a);
                     ExcelWorksheet ws;
                     if (string.IsNullOrEmpty(address.WorkSheetName))
                     {
@@ -421,7 +421,7 @@ namespace OfficeOpenXml.Drawing.Chart
                 {
                     DeleteNode($"{_nsPrefix}:tx/{_nsPrefix}:rich");
                     SetXmlNodeString($"{titleLinkPath}/c:f", value.FullAddressAbsolute);
-                    var cache = CreateNode($"{_nsPrefix}:tx/{_nsPrefix}strRef/c:strCache", false, true);
+                    XmlNode? cache = CreateNode($"{_nsPrefix}:tx/{_nsPrefix}strRef/c:strCache", false, true);
                     cache.InnerXml = $"<c:ptCount val=\"1\"/><c:pt idx=\"0\"><c:v>{value.Text}</c:v></c:pt>";
                 }
             }

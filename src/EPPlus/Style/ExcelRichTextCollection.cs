@@ -31,7 +31,7 @@ namespace OfficeOpenXml.Style
         internal ExcelRichTextCollection(XmlNamespaceManager ns, XmlNode topNode, ExcelWorksheet ws) :
             base(ns, topNode)
         {
-            var nl = topNode.SelectNodes("d:r", NameSpaceManager);
+            XmlNodeList? nl = topNode.SelectNodes("d:r", NameSpaceManager);
             if (nl != null)
             {
                 foreach (XmlNode n in nl)
@@ -56,7 +56,7 @@ namespace OfficeOpenXml.Style
         {
             get
             {
-                var item=_list[Index];
+                ExcelRichText? item=_list[Index];
                 if(_cells!=null)
                 {
                     item.SetCallback(this.UpdateCells);
@@ -114,7 +114,7 @@ namespace OfficeOpenXml.Style
             {
                 doc = TopNode.OwnerDocument;
             }
-            var node = doc.CreateElement("d", "r", ExcelPackage.schemaMain);
+            XmlElement? node = doc.CreateElement("d", "r", ExcelPackage.schemaMain);
             if (index < _list.Count)
             {
                 TopNode.InsertBefore(node, TopNode.ChildNodes[index]);
@@ -123,7 +123,7 @@ namespace OfficeOpenXml.Style
             {
                 TopNode.AppendChild(node);
             }
-            var rt = new ExcelRichText(NameSpaceManager, node, this);
+            ExcelRichText? rt = new ExcelRichText(NameSpaceManager, node, this);
             if (_list.Count > 0)
             {
                 ExcelRichText prevItem = _list[index < _list.Count ? index : _list.Count - 1];
@@ -149,7 +149,7 @@ namespace OfficeOpenXml.Style
             }
             else
             {
-                var style = _cells.Offset(0, 0).Style;
+                ExcelStyle? style = _cells.Offset(0, 0).Style;
                 rt.FontName = style.Font.Name;
                 rt.Size = style.Font.Size;
                 rt.Bold = style.Font.Bold;
@@ -174,13 +174,13 @@ namespace OfficeOpenXml.Style
                 return;
             }
 
-            var isRt = _cells.Worksheet._flags.GetFlagValue(_cells._fromRow, _cells._fromCol, CellFlags.RichText);
+            bool isRt = _cells.Worksheet._flags.GetFlagValue(_cells._fromRow, _cells._fromCol, CellFlags.RichText);
             if (Count == 1 && isRt == false)
             {
                 _cells.Worksheet._flags.SetFlagValue(_cells._fromRow, _cells._fromCol, true, CellFlags.RichText);
-                var s = _cells.Worksheet.GetStyleInner(_cells._fromRow, _cells._fromCol);
+                int s = _cells.Worksheet.GetStyleInner(_cells._fromRow, _cells._fromCol);
                 //var fnt = cell.Style.Font;
-                var fnt = _cells.Worksheet.Workbook.Styles.GetStyleObject(s, _cells.Worksheet.PositionId, ExcelAddressBase.GetAddress(_cells._fromRow, _cells._fromCol)).Font;
+                ExcelFont? fnt = _cells.Worksheet.Workbook.Styles.GetStyleObject(s, _cells.Worksheet.PositionId, ExcelAddressBase.GetAddress(_cells._fromRow, _cells._fromCol)).Font;
                 this[0].PreserveSpace = true;
                 this[0].Bold = fnt.Bold;
                 this[0].FontName = fnt.Name;
@@ -247,7 +247,7 @@ namespace OfficeOpenXml.Style
             get
             {
                 StringBuilder sb=new StringBuilder();
-                foreach (var item in _list)
+                foreach (ExcelRichText? item in _list)
                 {
                     sb.Append(item.Text);
                 }
@@ -280,8 +280,8 @@ namespace OfficeOpenXml.Style
         {
             get
             {
-                var sb=new StringBuilder();
-                foreach(var item in _list)
+                StringBuilder? sb=new StringBuilder();
+                foreach(ExcelRichText? item in _list)
                 {
                     item.WriteHtmlText(sb);
                 }

@@ -89,8 +89,8 @@ namespace OfficeOpenXml.Filter
             {
                 IsNumericFilter = Utils.ConvertUtil.IsNumericOrDate(value);
             }
-            var match = true;
-            foreach(var filter in Filters)
+            bool match = true;
+            foreach(ExcelFilterCustomItem? filter in Filters)
             {
                 if(IsNumericFilter)
                 {
@@ -170,16 +170,16 @@ namespace OfficeOpenXml.Filter
 
             internal override void Save()
             {
-                var node = (XmlElement)CreateNode("d:customFilters");
+                XmlElement? node = (XmlElement)CreateNode("d:customFilters");
                 node.RemoveAll();
                 if (And)
                 {
                     node.SetAttribute("and", "1");
                 }
 
-                foreach (var f in Filters)
+                foreach (ExcelFilterCustomItem? f in Filters)
                 {
-                    var e = TopNode.OwnerDocument.CreateElement("customFilter", ExcelPackage.schemaMain);
+                    XmlElement? e = TopNode.OwnerDocument.CreateElement("customFilter", ExcelPackage.schemaMain);
                     e.SetAttribute("val", f.Value);
                     if(f.Operator.HasValue)
                     {

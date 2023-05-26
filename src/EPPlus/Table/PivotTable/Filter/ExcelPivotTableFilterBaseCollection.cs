@@ -30,12 +30,12 @@ namespace OfficeOpenXml.Table.PivotTable.Filter
         internal ExcelPivotTableFilterBaseCollection(ExcelPivotTable table)
         {
             _table = table;
-            var filtersNode = _table.GetNode("d:filters");
+            XmlNode? filtersNode = _table.GetNode("d:filters");
             if (filtersNode != null)
             {
                 foreach (XmlNode node in filtersNode.ChildNodes)
                 {
-                    var f =new ExcelPivotTableFilter(_table.NameSpaceManager, node, _table.WorkSheet.Workbook.Date1904);
+                    ExcelPivotTableFilter? f =new ExcelPivotTableFilter(_table.NameSpaceManager, node, _table.WorkSheet.Workbook.Date1904);
                     table.SetNewFilterId(f.Id);
                     _filters.Add(f);
                 }
@@ -46,7 +46,7 @@ namespace OfficeOpenXml.Table.PivotTable.Filter
             _field = field;
             _table = field._pivotTable;
 
-            foreach(var filter in _table.Filters)
+            foreach(ExcelPivotTableFilter? filter in _table.Filters)
             {
                 if(filter.Fld==field.Index)
                 {
@@ -78,10 +78,10 @@ namespace OfficeOpenXml.Table.PivotTable.Filter
         }
         internal ExcelPivotTableFilter CreateFilter()
         {
-            var topNode = GetOrCreateFiltersNode();
-            var filterNode = topNode.OwnerDocument.CreateElement("filter", ExcelPackage.schemaMain);
+            XmlNode? topNode = GetOrCreateFiltersNode();
+            XmlElement? filterNode = topNode.OwnerDocument.CreateElement("filter", ExcelPackage.schemaMain);
             topNode.AppendChild(filterNode);
-            var filter = new ExcelPivotTableFilter(_field.NameSpaceManager, filterNode, _table.WorkSheet.Workbook.Date1904)
+            ExcelPivotTableFilter? filter = new ExcelPivotTableFilter(_field.NameSpaceManager, filterNode, _table.WorkSheet.Workbook.Date1904)
             {
                 EvalOrder = -1,
                 Fld = _field.Index,

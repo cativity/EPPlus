@@ -42,7 +42,7 @@ namespace OfficeOpenXml.Style.XmlAccess
             {
                 Exists = true;
                 _auto = GetXmlNodeBool("@auto");
-                var v=GetXmlNodeIntNull("@theme");
+                int? v=GetXmlNodeIntNull("@theme");
                 if(v.HasValue && v>=0 && v<=11)
                 {
                     _theme = (eThemeSchemeColor)v;

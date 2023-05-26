@@ -28,12 +28,12 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
         public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
         {
             ValidateArguments(arguments, 1);
-            var number = ArgToDecimal(arguments, 0);
+            double number = ArgToDecimal(arguments, 0);
             if (arguments.Count() == 1)
             {
                 return CreateResult(System.Math.Log(number, 10d), DataType.Decimal);
             }
-            var newBase = ArgToDecimal(arguments, 1);
+            double newBase = ArgToDecimal(arguments, 1);
             return CreateResult(System.Math.Log(number, newBase), DataType.Decimal);
         }
     }

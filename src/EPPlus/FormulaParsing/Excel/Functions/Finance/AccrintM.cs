@@ -30,11 +30,11 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance
         {
             ValidateArguments(arguments, 4);
             // collect input
-            var issueDate = System.DateTime.FromOADate(ArgToInt(arguments, 0));
-            var settlementDate = System.DateTime.FromOADate(ArgToInt(arguments, 1));
-            var rate = ArgToDecimal(arguments, 2);
-            var par = ArgToDecimal(arguments, 3);
-            var basis = 0;
+            System.DateTime issueDate = System.DateTime.FromOADate(ArgToInt(arguments, 0));
+            System.DateTime settlementDate = System.DateTime.FromOADate(ArgToInt(arguments, 1));
+            double rate = ArgToDecimal(arguments, 2);
+            double par = ArgToDecimal(arguments, 3);
+            int basis = 0;
             if (arguments.Count() > 4)
             {
                 basis = ArgToInt(arguments, 4);
@@ -55,9 +55,9 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance
                 return this.CreateResult(eErrorType.Num);
             }
 
-            var dayCountBasis = (DayCountBasis)basis;
-            var fd = FinancialDaysFactory.Create(dayCountBasis);
-            var result = fd.GetDaysBetweenDates(issueDate, settlementDate)/fd.DaysPerYear * rate * par;
+            DayCountBasis dayCountBasis = (DayCountBasis)basis;
+            IFinanicalDays? fd = FinancialDaysFactory.Create(dayCountBasis);
+            double result = fd.GetDaysBetweenDates(issueDate, settlementDate)/fd.DaysPerYear * rate * par;
             return CreateResult(result, DataType.Decimal);
 
         }

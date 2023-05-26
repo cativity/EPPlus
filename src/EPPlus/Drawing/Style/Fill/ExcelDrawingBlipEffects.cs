@@ -50,7 +50,7 @@ namespace OfficeOpenXml.Drawing.Style.Fill
                 "tint"
             };
 
-            var node = GetNode(_duoTonePath);
+            XmlNode? node = GetNode(_duoTonePath);
             if(node!=null)
             {
                 Duotone = new ExcelDrawingDuotoneEffect(NameSpaceManager, node);
@@ -78,7 +78,7 @@ namespace OfficeOpenXml.Drawing.Style.Fill
             {
                 throw (new InvalidOperationException("Duotone property is already added"));
             }
-            var node = CreateNode(_duoTonePath);
+            XmlNode? node = CreateNode(_duoTonePath);
             node.InnerXml = "<a:schemeClr val=\"accent1\"><a:shade val=\"36000\"/><a:satMod val=\"120000\" /></a:schemeClr><a:schemeClr val=\"accent1\"><a:tint val=\"40000\"/></a:schemeClr>";
             Duotone = new ExcelDrawingDuotoneEffect(NameSpaceManager, node);
         }
@@ -109,7 +109,7 @@ namespace OfficeOpenXml.Drawing.Style.Fill
             {
                 throw (new InvalidOperationException("ColorChange property is already added"));
             }
-            var node = CreateNode(_clrChangePath);
+            XmlNode? node = CreateNode(_clrChangePath);
             node.InnerXml = "<a:schemeClr val=\"accent1\"><a:shade val=\"36000\"/><a:satMod val=\"120000\" /></a:schemeClr><a:schemeClr val=\"accent1\"><a:tint val=\"40000\"/></a:schemeClr>";
             ColorChange = new ExcelDrawingColorChangeEffect(NameSpaceManager, node);
         }
@@ -140,7 +140,7 @@ namespace OfficeOpenXml.Drawing.Style.Fill
             {
                 throw (new InvalidOperationException("ColorChange property is already added"));
             }
-            var node = CreateNode(_clrReplPath);
+            XmlNode? node = CreateNode(_clrReplPath);
             node.InnerXml = "<a:schemeClr val=\"accent1\" />";
             ColorReplace = new ExcelDrawingColorReplaceEffect(NameSpaceManager, node);
         }

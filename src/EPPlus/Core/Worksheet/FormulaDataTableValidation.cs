@@ -12,6 +12,7 @@
  *************************************************************************************************/
 using System;
 using System.Collections.Generic;
+using OfficeOpenXml.Core.CellStore;
 
 namespace OfficeOpenXml.Core.Worksheet
 {
@@ -19,16 +20,16 @@ namespace OfficeOpenXml.Core.Worksheet
     {
         internal static void HasPartlyFormulaDataTable(ExcelWorksheet ws, ExcelAddressBase deleteRange, bool isDelete, string errorMsg)
         {
-            var hs = new HashSet<int>();
-            var cse = new CellStore.CellStoreEnumerator<object>(ws._formulas, deleteRange._fromRow, deleteRange._fromCol, deleteRange._toRow+1, deleteRange._toCol+1);
+            HashSet<int>? hs = new HashSet<int>();
+            CellStoreEnumerator<object>? cse = new CellStore.CellStoreEnumerator<object>(ws._formulas, deleteRange._fromRow, deleteRange._fromCol, deleteRange._toRow+1, deleteRange._toCol+1);
             while(cse.Next())
             {
                 if(cse.Value is int si && hs.Contains(si)==false)
                 {
-                    var f = ws._sharedFormulas[si];
+                    ExcelWorksheet.Formulas? f = ws._sharedFormulas[si];
                     if(f.FormulaType==ExcelWorksheet.FormulaType.DataTable)
                     {
-                        var fa = new ExcelAddressBase(f.Address);
+                        ExcelAddressBase? fa = new ExcelAddressBase(f.Address);
                         if (isDelete)
                         {
                             fa._fromRow--;

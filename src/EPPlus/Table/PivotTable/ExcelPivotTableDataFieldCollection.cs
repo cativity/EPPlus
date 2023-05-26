@@ -38,7 +38,7 @@ namespace OfficeOpenXml.Table.PivotTable
             {
                 throw new ArgumentNullException("field", "Parameter field cannot be null");
             }
-            var dataFieldsNode = field.TopNode.SelectSingleNode("../../d:dataFields", field.NameSpaceManager);
+            XmlNode? dataFieldsNode = field.TopNode.SelectSingleNode("../../d:dataFields", field.NameSpaceManager);
             if (dataFieldsNode == null)
             {
                 _table.CreateNode("d:dataFields");
@@ -52,7 +52,7 @@ namespace OfficeOpenXml.Table.PivotTable
             //XmlElement node = field.AppendField(dataFieldsNode, field.Index, "dataField", "fld");
             field.SetXmlNodeBool("@dataField", true,false);
 
-            var dataField = new ExcelPivotTableDataField(field.NameSpaceManager, node, field);
+            ExcelPivotTableDataField? dataField = new ExcelPivotTableDataField(field.NameSpaceManager, node, field);
             ValidateDupName(dataField);
 
             _list.Add(dataField);
@@ -62,7 +62,7 @@ namespace OfficeOpenXml.Table.PivotTable
         {
             if(ExistsDfName(dataField.Field.Name, null))
             {
-                var index = 2;
+                int index = 2;
                 string name;
                 do
                 {
@@ -75,7 +75,7 @@ namespace OfficeOpenXml.Table.PivotTable
 
         internal bool ExistsDfName(string name, ExcelPivotTableDataField datafield)
         {
-            foreach (var df in _list)
+            foreach (ExcelPivotTableDataField? df in _list)
             {
                 if (((!string.IsNullOrEmpty(df.Name) && df.Name.Equals(name, StringComparison.OrdinalIgnoreCase) ||
                      (string.IsNullOrEmpty(df.Name) && df.Field.Name.Equals(name, StringComparison.OrdinalIgnoreCase)))) && datafield != df)

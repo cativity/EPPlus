@@ -44,6 +44,7 @@ using OfficeOpenXml.ThreadedComments;
 using OfficeOpenXml.Sorting;
 using OfficeOpenXml.Export.HtmlExport;
 using OfficeOpenXml.Export.HtmlExport.Interfaces;
+using OfficeOpenXml.Table.PivotTable;
 
 namespace OfficeOpenXml
 {
@@ -189,7 +190,7 @@ namespace OfficeOpenXml
         private static void SetMultiRange(ExcelRangeBase range, _setValue valueMethod, object value)
         {
             //range.SetValueAddress(range, valueMethod, value);
-            foreach (var address in range.Addresses)
+            foreach (ExcelAddressBase? address in range.Addresses)
             {
                 range.SetValueAddress(address, valueMethod, value);
             }
@@ -252,7 +253,7 @@ namespace OfficeOpenXml
         }
         private static void Set_Value(ExcelRangeBase range, object value, int row, int col)
         {
-            var sfi = range._worksheet._formulas.GetValue(row, col);
+            object? sfi = range._worksheet._formulas.GetValue(row, col);
             if (sfi is int)
             {
                 range.SplitFormulas(range._worksheet.Cells[row, col]);
@@ -268,7 +269,7 @@ namespace OfficeOpenXml
         }
         private static void Set_Formula(ExcelRangeBase range, object value, int row, int col)
         {
-            var f = range._worksheet._formulas.GetValue(row, col);
+            object? f = range._worksheet._formulas.GetValue(row, col);
             if (f is int && (int)f >= 0)
             {
                 range.SplitFormulas(range._worksheet.Cells[row, col]);
@@ -342,7 +343,7 @@ namespace OfficeOpenXml
                 {                    
                     if (string.IsNullOrEmpty(hl.Display))
                     {
-                        var v = range._worksheet.GetValueInner(row, col);
+                        object? v = range._worksheet.GetValueInner(row, col);
                         if(v == null)
                         {
                             range._worksheet.SetValueInner(row, col, hl.ReferenceAddress);
@@ -355,7 +356,7 @@ namespace OfficeOpenXml
                 }
                 else
                 {
-                    var v = range._worksheet.GetValueInner(row, col);
+                    object? v = range._worksheet.GetValueInner(row, col);
                     if (v == null || v.ToString() == "")
                     {
                         range._worksheet.SetValueInner(row, col, ((Uri)value).OriginalString);
@@ -370,12 +371,12 @@ namespace OfficeOpenXml
         }
         private static void Set_IsRichText(ExcelRangeBase range, object value, int row, int col)
         {
-            var b = (bool)value;
-            var ws = range.Worksheet;
-            var isRT = ws._flags.GetFlagValue(row, col, CellFlags.RichText);
+            bool b = (bool)value;
+            ExcelWorksheet? ws = range.Worksheet;
+            bool isRT = ws._flags.GetFlagValue(row, col, CellFlags.RichText);
             if (isRT != b)
             {
-                var rt = ws.GetRichText(row, col, ws.Cells[row, col]);
+                ExcelRichTextCollection? rt = ws.GetRichText(row, col, ws.Cells[row, col]);
                 if (b)
                 {
                     rt.Text = ValueToTextHandler.GetFormattedText(ws.GetValue(row, col), ws.Workbook, ws.GetStyleInner(row, col), false);
@@ -462,7 +463,7 @@ namespace OfficeOpenXml
                 {
                     if (!_worksheet.ExistsStyleInner(_fromRow, 0, ref s)) //No, check Row style
                     {
-                        var c = Worksheet.GetColumn(_fromCol);
+                        ExcelColumn? c = Worksheet.GetColumn(_fromCol);
                         if (c == null)
                         {
                             s = 0;
@@ -517,7 +518,7 @@ namespace OfficeOpenXml
                 {
                     nsID = Style.Styles.CellXfs[xfId].XfId;
                 }
-                foreach (var ns in Style.Styles.NamedStyles)
+                foreach (ExcelNamedStyleXml? ns in Style.Styles.NamedStyles)
                 {
                     if (ns.StyleXfId == nsID)
                     {
@@ -534,7 +535,7 @@ namespace OfficeOpenXml
                 if (_fromRow == 1 && _toRow == ExcelPackage.MaxRows)    //Full column
                 {
                     ExcelColumn column;
-                    var c = _worksheet.GetValue(0, _fromCol);
+                    object? c = _worksheet.GetValue(0, _fromCol);
                     if (c == null)
                     {
                         column = _worksheet.Column(_fromCol);
@@ -547,7 +548,7 @@ namespace OfficeOpenXml
                     column.StyleName = value;
                     column.StyleID = _styleID;
 
-                    var cols = new CellStoreEnumerator<ExcelValue>(_worksheet._values, 0, _fromCol + 1, 0, _toCol);
+                    CellStoreEnumerator<ExcelValue>? cols = new CellStoreEnumerator<ExcelValue>(_worksheet._values, 0, _fromCol + 1, 0, _toCol);
                     if (cols.Next())
                     {
                         col = _fromCol;
@@ -555,7 +556,7 @@ namespace OfficeOpenXml
                         {
                             if (column.ColumnMax > _toCol)
                             {
-                                var newCol = _worksheet.CopyColumn(column, _toCol + 1, column.ColumnMax);
+                                ExcelColumn? newCol = _worksheet.CopyColumn(column, _toCol + 1, column.ColumnMax);
                                 column.ColumnMax = _toCol;
                             }
 
@@ -568,7 +569,7 @@ namespace OfficeOpenXml
                             }
                             else
                             {
-                                var nextCol = (ExcelColumn)cols.Value._value;
+                                ExcelColumn? nextCol = (ExcelColumn)cols.Value._value;
                                 if (column.ColumnMax < nextCol.ColumnMax - 1)
                                 {
                                     column.ColumnMax = nextCol.ColumnMax - 1;
@@ -585,7 +586,7 @@ namespace OfficeOpenXml
 
                     if (_fromCol == 1 && _toCol == ExcelPackage.MaxColumns) //FullRow
                     {
-                        var rows = new CellStoreEnumerator<ExcelValue>(_worksheet._values, 1, 0, ExcelPackage.MaxRows, 0);
+                        CellStoreEnumerator<ExcelValue>? rows = new CellStoreEnumerator<ExcelValue>(_worksheet._values, 1, 0, ExcelPackage.MaxRows, 0);
                         rows.Next();
                         while (rows.Value._value != null)
                         {
@@ -618,7 +619,7 @@ namespace OfficeOpenXml
                 }
                 else //Only set name on created cells. (uncreated cells is set on full row or full column).
                 {
-                    var cells = new CellStoreEnumerator<ExcelValue>(_worksheet._values, _fromRow, _fromCol, _toRow, _toCol);
+                    CellStoreEnumerator<ExcelValue>? cells = new CellStoreEnumerator<ExcelValue>(_worksheet._values, _fromRow, _fromCol, _toRow, _toCol);
                     while (cells.Next())
                     {
                         _worksheet.SetStyleInner(cells.Row, cells.Column, _styleID);
@@ -639,8 +640,8 @@ namespace OfficeOpenXml
                 int row = 0;
                 if (_worksheet._values.PrevCell(ref row, ref col))
                 {
-                    var v = _worksheet.GetCoreValueInner(row, col);
-                    var column = (ExcelColumn)v._value;
+                    ExcelValue v = _worksheet.GetCoreValueInner(row, col);
+                    ExcelColumn? column = (ExcelColumn)v._value;
                     if (column.ColumnMax >= col)
                     {
                         return v._styleId;
@@ -770,7 +771,7 @@ namespace OfficeOpenXml
         private ExcelAddressBase GetAddressDim(ExcelRangeBase addr)
         {
             int fromRow, fromCol, toRow, toCol;
-            var d = _worksheet.Dimension;
+            ExcelAddressBase? d = _worksheet.Dimension;
             fromRow = addr._fromRow < d._fromRow ? d._fromRow : addr._fromRow;
             fromCol = addr._fromCol < d._fromCol ? d._fromCol : addr._fromCol;
 
@@ -863,7 +864,7 @@ namespace OfficeOpenXml
 #if (Core)
             //var af = new AutofitHelperSkia(this);
             //af.AutofitColumn(MinimumWidth, MaximumWidth);
-            var af = new AutofitHelper(this);
+            AutofitHelper? af = new AutofitHelper(this);
             af.AutofitColumn(MinimumWidth, MaximumWidth);
 #else
             var af = new AutofitHelper(this);
@@ -934,7 +935,7 @@ namespace OfficeOpenXml
                         Set_SharedFormula(this, value, this, false);
                         if (Addresses != null)
                         {
-                            foreach (var address in Addresses)
+                            foreach (ExcelAddressBase? address in Addresses)
                             {
                                 Set_SharedFormula(this, value, address, false);
                             }
@@ -966,7 +967,7 @@ namespace OfficeOpenXml
             }
             else
             {
-                foreach (var address in range.Addresses)
+                foreach (ExcelAddressBase? address in range.Addresses)
                 {
                     SetFormulaAddress(range, address, f);
                 }
@@ -994,13 +995,13 @@ namespace OfficeOpenXml
 
         private bool HasOffSheetReference(string value)
         {
-            var tokenizer = SourceCodeTokenizer.Default;
-            var tokens = tokenizer.Tokenize(value, WorkSheetName);
-            foreach (var t in tokens)
+            ISourceCodeTokenizer? tokenizer = SourceCodeTokenizer.Default;
+            IEnumerable<Token>? tokens = tokenizer.Tokenize(value, WorkSheetName);
+            foreach (Token t in tokens)
             {
                 if (t.TokenTypeIsSet(TokenType.ExcelAddress))
                 {
-                    var a = new ExcelAddressBase(t.Value);
+                    ExcelAddressBase? a = new ExcelAddressBase(t.Value);
                     if (string.IsNullOrEmpty(a.WorkSheetName) == false && a.WorkSheetName.Equals(WorkSheetName) == false)
                     {
                         return true;
@@ -1035,7 +1036,7 @@ namespace OfficeOpenXml
                 }
                 else
                 {
-                    var formula = TranslateFromR1C1(value, _fromRow, _fromCol);
+                    string? formula = TranslateFromR1C1(value, _fromRow, _fromCol);
                     if (_fromRow == _toRow && _fromCol == _toCol)
                     {
                         Set_Formula(this, formula, _fromRow, _fromCol);
@@ -1049,7 +1050,7 @@ namespace OfficeOpenXml
                         Set_SharedFormula(this, formula, this, false);
                         if (Addresses != null)
                         {
-                            foreach (var address in Addresses)
+                            foreach (ExcelAddressBase? address in Addresses)
                             {
                                 formula = TranslateFromR1C1(value, address._fromRow, address._fromCol);
                                 Set_SharedFormula(this, formula, address, false);
@@ -1175,7 +1176,7 @@ namespace OfficeOpenXml
                     _worksheet.MergedCells.Add(new ExcelAddressBase(FirstAddress), true);
                     if (Addresses != null)
                     {
-                        foreach (var address in Addresses)
+                        foreach (ExcelAddressBase? address in Addresses)
                         {
                             _worksheet.MergedCells.Clear(address); //Fixes issue 15482
                             _worksheet.MergedCells.Add(address, true);
@@ -1186,7 +1187,7 @@ namespace OfficeOpenXml
                 {
                     if (Addresses != null)
                     {
-                        foreach (var address in Addresses)
+                        foreach (ExcelAddressBase? address in Addresses)
                         {
                             _worksheet.MergedCells.Clear(address);
                         }
@@ -1198,7 +1199,7 @@ namespace OfficeOpenXml
 
         private void ValidateMergePossible()
         {
-            foreach (var t in _worksheet.Tables)
+            foreach (ExcelTable? t in _worksheet.Tables)
             {
                 if (Collide(t.Address) != eAddressCollition.No)
                 {
@@ -1238,7 +1239,7 @@ namespace OfficeOpenXml
                 IsRangeValid("autofilter");
                 if (_worksheet.AutoFilterAddress != null)
                 {
-                    var c = this.Collide(_worksheet.AutoFilterAddress);
+                    eAddressCollition c = this.Collide(_worksheet.AutoFilterAddress);
                     if (value == false && (c == eAddressCollition.Partly || c == eAddressCollition.No))
                     {
                         throw (new InvalidOperationException("Can't remove Autofilter. The current autofilter does not match selected range."));
@@ -1251,11 +1252,11 @@ namespace OfficeOpenXml
                 if (value)
                 {
                     ValidateAutofilterDontCollide();
-                    var tbl = _worksheet.Tables.GetFromRange(this);
+                    ExcelTable? tbl = _worksheet.Tables.GetFromRange(this);
                     if (tbl == null)
                     {
                         _worksheet.AutoFilterAddress = this;
-                        var result = _worksheet.Names.AddName("_xlnm._FilterDatabase", this);
+                        ExcelNamedRange? result = _worksheet.Names.AddName("_xlnm._FilterDatabase", this);
                         result.IsNameHidden = true;
                     }
                     else
@@ -1272,9 +1273,9 @@ namespace OfficeOpenXml
 
         private void ValidateAutofilterDontCollide()
         {
-            foreach (var tbl in _worksheet.Tables)
+            foreach (ExcelTable? tbl in _worksheet.Tables)
             {
-                var c = tbl.Address.Collide(this);
+                eAddressCollition c = tbl.Address.Collide(this);
                 if (c == eAddressCollition.Equal)
                 {
                     return;   //Autofilter is on a table.
@@ -1285,9 +1286,9 @@ namespace OfficeOpenXml
                     throw new InvalidOperationException($"Auto filter collides with table {tbl.Name}");
                 }
             }
-            foreach (var pt in _worksheet.PivotTables)
+            foreach (ExcelPivotTable? pt in _worksheet.PivotTables)
             {
-                var c = pt.Address.Collide(this);
+                eAddressCollition c = pt.Address.Collide(this);
                 if (c != eAddressCollition.No)
                 {
                     throw new InvalidOperationException($"Auto filter collides with pivot table {pt.Name}");
@@ -1414,7 +1415,7 @@ namespace OfficeOpenXml
             get
             {
                 IsRangeValid("comments");
-                var i = -1;
+                int i = -1;
                 if (_worksheet.Comments.Count > 0)
                 {
                     if (_worksheet._commentsStore.Exists(_fromRow, _fromCol, ref i))
@@ -1433,7 +1434,7 @@ namespace OfficeOpenXml
             get
             {
                 IsRangeValid("threaded comments");
-                var i = -1;
+                int i = -1;
                 if (_worksheet.ThreadedComments.Count > 0)
                 {
                     if (_worksheet._threadedCommentsStore.Exists(_fromRow, _fromCol, ref i))
@@ -1468,7 +1469,7 @@ namespace OfficeOpenXml
                 else
                 {
                     string fullAddress = "";
-                    foreach (var a in Addresses)
+                    foreach (ExcelAddressBase? a in Addresses)
                     {
                         fullAddress += GetFullAddress(_worksheet.Name, a.Address) + ",";
                     }
@@ -1492,7 +1493,7 @@ namespace OfficeOpenXml
                 else
                 {
                     fullAddress = "";
-                    foreach (var a in Addresses)
+                    foreach (ExcelAddressBase? a in Addresses)
                     {
                         if (fullAddress != "")
                         {
@@ -1541,7 +1542,7 @@ namespace OfficeOpenXml
             {
                 for (int row = _fromRow; row <= _toRow; row++)
                 {
-                    var f = _worksheet._formulas.GetValue(row, col) as int?;
+                    int? f = _worksheet._formulas.GetValue(row, col) as int?;
                     if (f.HasValue && f.Value == prevId)
                     {
                         _worksheet._formulas.SetValue(row, col, id);
@@ -1555,7 +1556,7 @@ namespace OfficeOpenXml
             {
                 for (int row = address._fromRow; row <= address._toRow; row++)
                 {
-                    var f = _worksheet._formulas.GetValue(row, col);
+                    object? f = _worksheet._formulas.GetValue(row, col);
                     if (f is int && (int)f >= 0)
                     {
                         SplitFormulas(address);
@@ -1572,7 +1573,7 @@ namespace OfficeOpenXml
             {
                 for (int row = address._fromRow; row <= address._toRow; row++)
                 {
-                    var f = _worksheet._formulas.GetValue(row, col);
+                    object? f = _worksheet._formulas.GetValue(row, col);
                     if (f is int)
                     {
                         int id = (int)f;
@@ -1600,9 +1601,9 @@ namespace OfficeOpenXml
 
         private void SplitFormula(ExcelAddressBase address, int ix)
         {
-            var f = _worksheet._sharedFormulas[ix];
-            var fRange = _worksheet.Cells[f.Address];
-            var collide = address.Collide(fRange);
+            ExcelWorksheet.Formulas? f = _worksheet._sharedFormulas[ix];
+            ExcelRange? fRange = _worksheet.Cells[f.Address];
+            eAddressCollition collide = address.Collide(fRange);
 
             //The formula is inside the currenct range, remove it
             if (collide == eAddressCollition.Equal || collide == eAddressCollition.Inside)
@@ -1611,7 +1612,7 @@ namespace OfficeOpenXml
                 return;
                 //fRange.SetSharedFormulaID(int.MinValue); 
             }
-            var firstCellCollide = address.Collide(new ExcelAddressBase(fRange._fromRow, fRange._fromCol, fRange._fromRow, fRange._fromCol));
+            eAddressCollition firstCellCollide = address.Collide(new ExcelAddressBase(fRange._fromRow, fRange._fromCol, fRange._fromRow, fRange._fromCol));
             if (collide == eAddressCollition.Partly && (firstCellCollide == eAddressCollition.Inside || firstCellCollide == eAddressCollition.Equal)) //Do we need to split? Only if the functions first row is inside the new range.
             {
                 //The formula partly collides with the current range
@@ -1623,7 +1624,7 @@ namespace OfficeOpenXml
                     f.Address = GetAddress(fRange._fromRow, fRange._fromCol, _fromRow - 1, fRange._toCol);
                     fIsSet = true;
                 }
-                var pIx = f.Index;
+                int pIx = f.Index;
                 //Left Range
                 if (fRange._fromCol < address._fromCol)
                 {
@@ -1726,7 +1727,7 @@ namespace OfficeOpenXml
         /// </summary>
         public void ClearFormulas()
         {
-            var formulaCells = new CellStoreEnumerator<object>(this.Worksheet._formulas, this.Start.Row, this.Start.Column, this.End.Row, this.End.Column);
+            CellStoreEnumerator<object>? formulaCells = new CellStoreEnumerator<object>(this.Worksheet._formulas, this.Start.Row, this.Start.Column, this.End.Row, this.End.Column);
             while (formulaCells.Next())
             {
                 formulaCells.Value = null;
@@ -1737,19 +1738,19 @@ namespace OfficeOpenXml
         private void ClearTableFormulas()
         {
             //Clear any calculated formulas in tables.
-            foreach (var table in Worksheet.Tables)
+            foreach (ExcelTable? table in Worksheet.Tables)
             {
                 if (table.Address.Collide(this) != eAddressCollition.No)
                 {
-                    foreach (var col in table.Columns)
+                    foreach (ExcelTableColumn? col in table.Columns)
                     {
                         if (string.IsNullOrEmpty(col.CalculatedColumnFormula) == false)
                         {
-                            var adr = table.Address;
+                            ExcelAddressBase? adr = table.Address;
                             int fromRow = table.ShowHeader ? adr._fromRow + 1 : adr._fromRow;
                             int toRow = table.ShowTotal ? adr._toRow - 1 : adr._toRow;
                             int colNum = adr._fromCol + col.Position;
-                            var formulaCells = new CellStoreEnumerator<object>(this.Worksheet._formulas, fromRow, colNum, toRow, colNum);
+                            CellStoreEnumerator<object>? formulaCells = new CellStoreEnumerator<object>(this.Worksheet._formulas, fromRow, colNum, toRow, colNum);
                             bool hasValue = false;
                             while (formulaCells.Next())
                             {
@@ -1775,10 +1776,10 @@ namespace OfficeOpenXml
         /// </summary>
         public void ClearFormulaValues()
         {
-            var formulaCell = new CellStoreEnumerator<object>(this.Worksheet._formulas, this.Start.Row, this.Start.Column, this.End.Row, this.End.Column);
+            CellStoreEnumerator<object>? formulaCell = new CellStoreEnumerator<object>(this.Worksheet._formulas, this.Start.Row, this.Start.Column, this.End.Row, this.End.Column);
             while (formulaCell.Next())
             {
-                var val = Worksheet._values.GetValue(formulaCell.Row, formulaCell.Column);
+                ExcelValue val = Worksheet._values.GetValue(formulaCell.Row, formulaCell.Column);
                 val._value = null;
                 Worksheet._values.SetValue(formulaCell.Row, formulaCell.Column, val);
             }
@@ -1989,7 +1990,7 @@ namespace OfficeOpenXml
         /// <param name="Destination">The top-left cell where the range will be copied.</param>
         public void Copy(ExcelRangeBase Destination)
         {
-            var helper = new RangeCopyHelper(this, Destination, 0);
+            RangeCopyHelper? helper = new RangeCopyHelper(this, Destination, 0);
             helper.Copy();
         }
 
@@ -2000,7 +2001,7 @@ namespace OfficeOpenXml
         /// <param name="excelRangeCopyOptionFlags">Cell properties that will not be copied.</param>
         public void Copy(ExcelRangeBase Destination, ExcelRangeCopyOptionFlags? excelRangeCopyOptionFlags)
         {
-            var helper = new RangeCopyHelper(this, Destination, excelRangeCopyOptionFlags ?? 0);
+            RangeCopyHelper? helper = new RangeCopyHelper(this, Destination, excelRangeCopyOptionFlags ?? 0);
             helper.Copy();
         }
         /// <summary>
@@ -2011,11 +2012,11 @@ namespace OfficeOpenXml
         public void Copy(ExcelRangeBase Destination, params ExcelRangeCopyOptionFlags[] excelRangeCopyOptionFlags)
         {
             ExcelRangeCopyOptionFlags flags=0;
-            foreach (var c in excelRangeCopyOptionFlags)
+            foreach (ExcelRangeCopyOptionFlags c in excelRangeCopyOptionFlags)
             {
                 flags |= c;
             }
-            var helper = new RangeCopyHelper(this, Destination, flags);
+            RangeCopyHelper? helper = new RangeCopyHelper(this, Destination, flags);
             helper.Copy();
         }
         /// <summary>
@@ -2025,7 +2026,7 @@ namespace OfficeOpenXml
         /// <param name="Destination">The destination range</param>
         public void CopyStyles(ExcelRangeBase Destination)
         {
-            var helper = new RangeCopyStylesHelper(this, Destination);
+            RangeCopyStylesHelper? helper = new RangeCopyStylesHelper(this, Destination);
             helper.CopyStyles();
         }
         /// <summary>
@@ -2054,7 +2055,7 @@ namespace OfficeOpenXml
             FormulaDataTableValidation.HasPartlyFormulaDataTable(_worksheet, Range, false, "Can't clear a part of a data table function");
             
             int fromRow, fromCol;
-            var d = Worksheet.Dimension;
+            ExcelAddressBase? d = Worksheet.Dimension;
             if (d != null && Range._fromRow <= d._fromRow && Range._toRow >= d._toRow) //EntireRow?
             {
                 fromRow = d._fromRow;
@@ -2072,8 +2073,8 @@ namespace OfficeOpenXml
                 fromCol = Range._fromCol;
             }
 
-            var rows = Range._toRow - fromRow + 1;
-            var cols = Range._toCol - fromCol + 1;
+            int rows = Range._toRow - fromRow + 1;
+            int cols = Range._toCol - fromCol + 1;
 
 
             if (clearMergedCells)
@@ -2120,7 +2121,7 @@ namespace OfficeOpenXml
             //Clear multi addresses as well
             if (Range.Addresses != null)
             {
-                foreach (var sub in Range.Addresses)
+                foreach (ExcelAddressBase? sub in Range.Addresses)
                 {
                     DeleteMe(sub, shift, clearValues, clearFormulas, clearFlags, clearMergedCells, clearHyperLinks, clearComments, clearThreadedComments, clearStyles);
                 }
@@ -2138,9 +2139,9 @@ namespace OfficeOpenXml
         /// <param name="cols"></param>
         private void ClearValue(CellStoreValue values, bool clearValue, int fromRow, int fromCol, int rows, int cols)
         {
-            var toRow = fromRow + rows - 1;
-            var toCol = fromCol + cols - 1;
-            var cse = new CellStoreEnumerator<ExcelValue>(values, fromRow, fromCol, toRow, toCol);
+            int toRow = fromRow + rows - 1;
+            int toCol = fromCol + cols - 1;
+            CellStoreEnumerator<ExcelValue>? cse = new CellStoreEnumerator<ExcelValue>(values, fromRow, fromCol, toRow, toCol);
             while (cse.Next())
             {
                 if(clearValue)
@@ -2156,8 +2157,8 @@ namespace OfficeOpenXml
 
         private void DeleteComments(ExcelAddressBase Range)
         {
-            var deleted = new List<int>();
-            var cse = new CellStoreEnumerator<int>(_worksheet._commentsStore, Range._fromRow, Range._fromCol, Range._toRow, Range._toCol);
+            List<int>? deleted = new List<int>();
+            CellStoreEnumerator<int>? cse = new CellStoreEnumerator<int>(_worksheet._commentsStore, Range._fromRow, Range._fromCol, Range._toRow, Range._toCol);
             while (cse.Next())
             {
                 if (_worksheet._threadedCommentsStore.Exists(cse.Row, cse.Column) == false) //Threaded comments keep a comment for backward compatibility that needs to be keept.
@@ -2165,20 +2166,20 @@ namespace OfficeOpenXml
                     deleted.Add(cse.Value);
                 }
             }
-            foreach (var i in deleted)
+            foreach (int i in deleted)
             {
                 _worksheet.Comments.Remove(_worksheet.Comments._list[i]);
             }
         }
         private void DeleteThreadedComments(ExcelAddressBase Range)
         {
-            var deleted = new List<int>();
-            var cse = new CellStoreEnumerator<int>(_worksheet._threadedCommentsStore, Range._fromRow, Range._fromCol, Range._toRow, Range._toCol);
+            List<int>? deleted = new List<int>();
+            CellStoreEnumerator<int>? cse = new CellStoreEnumerator<int>(_worksheet._threadedCommentsStore, Range._fromRow, Range._fromCol, Range._toRow, Range._toCol);
             while (cse.Next())
             {
                 deleted.Add(cse.Value);
             }
-            foreach (var i in deleted)
+            foreach (int i in deleted)
             {
                 _worksheet.ThreadedComments.Remove(_worksheet.ThreadedComments._threads[i]);
             }
@@ -2399,7 +2400,7 @@ namespace OfficeOpenXml
         /// </example>
         public void Sort(Action<RangeSortOptions> configuration)
         {
-            var options = new RangeSortOptions();
+            RangeSortOptions? options = new RangeSortOptions();
             configuration(options);
             SortInternal(options);
         }
@@ -2425,7 +2426,7 @@ namespace OfficeOpenXml
 
         private static void SortSetValue(List<ExcelValue> list, int index, object value)
         {
-            var v = (ExcelValue)value;
+            ExcelValue v = (ExcelValue)value;
             list[index] = new ExcelValue { _value = v._value, _styleId = v._styleId };
         }
         /// <summary>
@@ -2440,7 +2441,7 @@ namespace OfficeOpenXml
             }
             else
             {
-                var t = Worksheet.Tables.GetFromRange(this);
+                ExcelTable? t = Worksheet.Tables.GetFromRange(this);
                 if (t != null)
                 {
                     return t.Name;
@@ -2518,7 +2519,7 @@ namespace OfficeOpenXml
 
                     n = _worksheet.Names[_address];
                 }
-                var a = new ExcelAddressBase(n.Address);
+                ExcelAddressBase? a = new ExcelAddressBase(n.Address);
                 if (a._fromRow > 0 && a._fromCol > 0)
                 {
                     return _worksheet.GetValue<T>(_fromRow + rowOffset, _fromCol + columnOffset);
@@ -2553,7 +2554,7 @@ namespace OfficeOpenXml
                     
                     n=_worksheet.Names[_address];
                 }                
-                var a = new ExcelAddressBase(n.Address);
+                ExcelAddressBase? a = new ExcelAddressBase(n.Address);
                 if (a._fromRow>0 && a._fromCol>0)
                 {
                     _worksheet.SetValue(a._fromRow + rowOffset, a._fromCol + columnOffset, value);

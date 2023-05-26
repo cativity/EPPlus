@@ -38,7 +38,7 @@ namespace EPPlusTest.FormulaParsing.ExpressionGraph
 		[TestMethod]
 		public void NumericStringCompileResult()
 		{
-			var expected = 124.24;
+			double expected = 124.24;
 			string numericString = expected.ToString("n");
 			CompileResult result = new CompileResult(numericString, DataType.String);
 			Assert.IsFalse(result.IsNumeric);
@@ -49,7 +49,7 @@ namespace EPPlusTest.FormulaParsing.ExpressionGraph
 		[TestMethod]
 		public void DateStringCompileResult()
 		{
-			var expected = new DateTime(2013, 1, 15);
+			DateTime expected = new DateTime(2013, 1, 15);
 			string dateString = expected.ToString("d");
 			CompileResult result = new CompileResult(dateString, DataType.String);
 			Assert.IsFalse(result.IsNumeric);

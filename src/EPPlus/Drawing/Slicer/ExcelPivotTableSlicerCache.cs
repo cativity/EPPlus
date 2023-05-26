@@ -61,13 +61,13 @@ namespace OfficeOpenXml.Drawing.Slicer
         {
             foreach (XmlElement ptElement in GetNodes("x14:pivotTables/x14:pivotTable"))
             {
-                var name = ptElement.GetAttribute("name");
-                var tabId = ptElement.GetAttribute("tabId");
+                string? name = ptElement.GetAttribute("name");
+                string? tabId = ptElement.GetAttribute("tabId");
 
                 if(int.TryParse(tabId, out int sheetId))
                 {
-                    var ws = wb.Worksheets.GetBySheetID(sheetId);
-                    var pt = ws?.PivotTables[name];
+                    ExcelWorksheet? ws = wb.Worksheets.GetBySheetID(sheetId);
+                    ExcelPivotTable? pt = ws?.PivotTables[name];
                     if(pt!=null)
                     {
                         if (_field == null)
@@ -117,12 +117,12 @@ namespace OfficeOpenXml.Drawing.Slicer
 
         internal void UpdateItemsXml()
         {
-           var sb = new StringBuilder();
-            foreach(var pt in PivotTables)
+           StringBuilder? sb = new StringBuilder();
+            foreach(ExcelPivotTable? pt in PivotTables)
             {
                 sb.Append($"<pivotTable name=\"{pt.Name}\" tabId=\"{pt.WorkSheet.SheetId}\"/>");
             }
-            var ptNode = CreateNode("x14:pivotTables");
+            XmlNode? ptNode = CreateNode("x14:pivotTables");
             ptNode.InnerXml = sb.ToString();
             Data.UpdateItemsXml();
         }

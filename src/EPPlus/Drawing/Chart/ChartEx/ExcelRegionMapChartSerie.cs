@@ -49,7 +49,7 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
         { 
             get
             {
-                var r=GetXmlNodeString(_regionPath);
+                string? r=GetXmlNodeString(_regionPath);
                 return new CultureInfo(r);
             }
             set
@@ -70,7 +70,7 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
         {
             get
             {
-                var r = GetXmlNodeString(_languagePath);
+                string? r = GetXmlNodeString(_languagePath);
                 return new CultureInfo(r);
             }
             set

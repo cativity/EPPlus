@@ -23,29 +23,29 @@ namespace OfficeOpenXml.Export.ToCollection
     {
         internal static List<MappedProperty> GetAutomapList<T>(List<string> h)
         {
-            var t = typeof(T);
+            Type? t = typeof(T);
 
-            var pl = new List<MappedProperty>();
-            foreach (var m in t.GetProperties(BindingFlags.Instance | BindingFlags.Public))
+            List<MappedProperty>? pl = new List<MappedProperty>();
+            foreach (PropertyInfo? m in t.GetProperties(BindingFlags.Instance | BindingFlags.Public))
             {
-                var ix = h.FindIndex(x => RemoveWS(x).Equals(m.Name, StringComparison.CurrentCultureIgnoreCase));
+                int ix = h.FindIndex(x => RemoveWS(x).Equals(m.Name, StringComparison.CurrentCultureIgnoreCase));
                 if (ix < 0)
                 {
-                    var tca = m.GetFirstAttributeOfType<EpplusTableColumnAttributeBase>(true);
+                    EpplusTableColumnAttributeBase? tca = m.GetFirstAttributeOfType<EpplusTableColumnAttributeBase>(true);
                     if (tca != null)
                     {
                         ix = h.FindIndex(x => RemoveWS(x).Equals(RemoveWS(tca.Header), StringComparison.CurrentCultureIgnoreCase));
                     }
                     if (ix < 0)
                     {
-                        var da = m.GetFirstAttributeOfType<DescriptionAttribute>();
+                        DescriptionAttribute? da = m.GetFirstAttributeOfType<DescriptionAttribute>();
                         if (da != null)
                         {
                             ix = h.FindIndex(x => RemoveWS(x).Equals(RemoveWS(da.Description), StringComparison.CurrentCultureIgnoreCase));
                         }
                         if (ix < 0)
                         {
-                            var dna = m.GetFirstAttributeOfType<DisplayNameAttribute>();
+                            DisplayNameAttribute? dna = m.GetFirstAttributeOfType<DisplayNameAttribute>();
                             if (dna != null)
                             {
                                 ix = h.FindIndex(x => RemoveWS(x).Equals(RemoveWS(dna.DisplayName), StringComparison.CurrentCultureIgnoreCase));

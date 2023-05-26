@@ -15,9 +15,9 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions.RefAndLookup
         [TestMethod, Ignore]
         public void VlookupShouldHandleWholeColumn()
         {
-            using(var package = new ExcelPackage())
+            using(ExcelPackage? package = new ExcelPackage())
             {
-                var sheet = package.Workbook.Worksheets.Add("test");
+                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
                 sheet.Cells["D1"].Value = 1;
                 sheet.Cells["D2"].Value = 2;
                 sheet.Cells["D3"].Value = 2;

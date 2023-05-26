@@ -42,7 +42,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math.RomanFunctions
 
         protected string GetClassicRomanFormat(int number)
         {
-            var roman = new StringBuilder();
+            StringBuilder? roman = new StringBuilder();
             Apply(ref number, Thousand, roman);
             Apply(ref number, 900, "CM", roman);
             Apply(ref number, FiveHundred, OneHundred, roman);
@@ -63,8 +63,8 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math.RomanFunctions
         {
             if (number >= roman.Number)
             {
-                var limit = number / roman.Number;
-                for (var x = 0; x < limit; x++)
+                int limit = number / roman.Number;
+                for (int x = 0; x < limit; x++)
                 {
                     result.Append(roman.Letter);
                     number -= roman.Number;
@@ -78,8 +78,8 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math.RomanFunctions
             {
                 result.Append(roman.Letter);
                 number -= roman.Number;
-                var limit = number / lowerRoman.Number;
-                for (var x = 0; x < (number / lowerRoman.Number); x++)
+                int limit = number / lowerRoman.Number;
+                for (int x = 0; x < (number / lowerRoman.Number); x++)
                 {
                     result.Append(lowerRoman.Letter);
                     number -= lowerRoman.Number;

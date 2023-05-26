@@ -101,7 +101,7 @@ namespace OfficeOpenXml.Drawing.Chart
 
         private string GetNumLit()
         {
-            var v = "";
+            string? v = "";
             foreach (XmlNode node in _sourceElement.ChildNodes)
             {
                 if(node.LocalName=="pt")
@@ -118,7 +118,7 @@ namespace OfficeOpenXml.Drawing.Chart
 
         private void SetSourceElement()
         {
-            var node = GetNode(_path);
+            XmlNode? node = GetNode(_path);
             if(node!=null && node.HasChildNodes)
             {
                 _sourceElement = (XmlElement)node.FirstChild;
@@ -127,15 +127,15 @@ namespace OfficeOpenXml.Drawing.Chart
 
         private void CreateNumLit(string value)
         {
-            var nums = value.Substring(1, value.Length - 2).Split(',');
+            string[]? nums = value.Substring(1, value.Length - 2).Split(',');
             if(nums.Length>0)
             {
                 SetXmlNodeString($"{_path}/c:numLit/c:ptCount/@val", nums.Length.ToString(CultureInfo.InvariantCulture));
-                var litNode = (XmlElement)GetNode($"{_path}/c:numLit");
-                var idx = 0;
-                foreach (var num in nums)
+                XmlElement? litNode = (XmlElement)GetNode($"{_path}/c:numLit");
+                int idx = 0;
+                foreach (string? num in nums)
                 {
-                    var child = CreateLit(num.Trim(), idx++);
+                    XmlElement? child = CreateLit(num.Trim(), idx++);
                     litNode.AppendChild(child);
                 }
             }
@@ -145,7 +145,7 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             XmlElement ptNode = TopNode.OwnerDocument.CreateElement("c", "pt", ExcelPackage.schemaChart);
             ptNode.SetAttribute("idx",idx.ToString(CultureInfo.InvariantCulture));
-            var vNode = TopNode.OwnerDocument.CreateElement("c", "v", ExcelPackage.schemaChart);
+            XmlElement? vNode = TopNode.OwnerDocument.CreateElement("c", "v", ExcelPackage.schemaChart);
             vNode.InnerText = num;
             ptNode.AppendChild(vNode);
             return ptNode;

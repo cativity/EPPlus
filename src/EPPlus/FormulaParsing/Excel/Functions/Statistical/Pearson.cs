@@ -28,10 +28,10 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Statistical
         public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
         {
             ValidateArguments(arguments, 2);
-            var arg1 = arguments.ElementAt(0);
-            var arg2 = arguments.ElementAt(1);
-            var array1 = ArgsToDoubleEnumerable(new FunctionArgument[] { arg1 }, context).Select(x => x.Value).ToArray();
-            var array2 = ArgsToDoubleEnumerable(new FunctionArgument[] { arg2 }, context).Select(x => x.Value).ToArray();
+            FunctionArgument? arg1 = arguments.ElementAt(0);
+            FunctionArgument? arg2 = arguments.ElementAt(1);
+            double[]? array1 = ArgsToDoubleEnumerable(new FunctionArgument[] { arg1 }, context).Select(x => x.Value).ToArray();
+            double[]? array2 = ArgsToDoubleEnumerable(new FunctionArgument[] { arg2 }, context).Select(x => x.Value).ToArray();
             if (array1.Count() != array2.Count())
             {
                 return this.CreateResult(eErrorType.NA);
@@ -42,18 +42,18 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Statistical
                 return this.CreateResult(eErrorType.NA);
             }
 
-            var result = PearsonImpl(array1, array2);
+            double result = PearsonImpl(array1, array2);
             return CreateResult(result, DataType.Decimal);
         }
 
         internal static double PearsonImpl(IEnumerable<double> arr1, IEnumerable<double> arr2)
         {
-            var avg1 = arr1.Average();
-            var avg2 = arr2.Average();
-            var length = arr1.Count();
-            var number = 0d;
+            double avg1 = arr1.Average();
+            double avg2 = arr2.Average();
+            int length = arr1.Count();
+            double number = 0d;
             double d1 = 0d, d2 = 0d;
-            for(var x = 0; x < length; x++)
+            for(int x = 0; x < length; x++)
             {
                 number += (arr1.ElementAt(x) - avg1) * (arr2.ElementAt(x) - avg2);
                 d1 += System.Math.Pow(arr1.ElementAt(x) - avg1, 2);

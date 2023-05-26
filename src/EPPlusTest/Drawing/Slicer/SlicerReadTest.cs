@@ -4,6 +4,7 @@ using OfficeOpenXml.Drawing.Slicer;
 using OfficeOpenXml.Filter;
 using OfficeOpenXml.Table.PivotTable;
 using System.IO;
+using OfficeOpenXml.Table;
 
 namespace EPPlusTest.Drawing.Slicer
 {
@@ -23,9 +24,9 @@ namespace EPPlusTest.Drawing.Slicer
         [TestMethod]
         public void ReadTableSlicerDate()
         {
-            var ws = TryGetWorksheet(_pck, "TableSlicerDate");
+            ExcelWorksheet? ws = TryGetWorksheet(_pck, "TableSlicerDate");
 
-            var slicer = ws.Tables[0].Columns[0].Slicer;
+            ExcelTableSlicer? slicer = ws.Tables[0].Columns[0].Slicer;
             Assert.AreEqual(4, slicer.FilterValues.Count);
             Assert.AreEqual(4, ((ExcelFilterDateGroupItem)slicer.FilterValues[0]).Day);
             Assert.AreEqual(11, ((ExcelFilterDateGroupItem)slicer.FilterValues[0]).Month);
@@ -40,7 +41,7 @@ namespace EPPlusTest.Drawing.Slicer
             slicer.Cache.HideItemsWithNoData = false;       //Validate element is removed
             Assert.IsFalse(slicer.Cache.HideItemsWithNoData);
 
-            var slicer2 = ws.Tables[0].Columns[2].Slicer;
+            ExcelTableSlicer? slicer2 = ws.Tables[0].Columns[2].Slicer;
             Assert.AreEqual(eSlicerStyle.Light4, slicer2.Style);
             Assert.IsTrue(slicer2.LockedPosition);
             Assert.AreEqual(3, slicer2.ColumnCount);
@@ -54,10 +55,10 @@ namespace EPPlusTest.Drawing.Slicer
         [TestMethod]
         public void ReadTableSlicerString()
         {
-            var ws = TryGetWorksheet(_pck, "TableSlicerNumber");
+            ExcelWorksheet? ws = TryGetWorksheet(_pck, "TableSlicerNumber");
 
-            var tbl = ws.Tables["Table2"];
-            var slicer = tbl.Columns[1].Slicer;
+            ExcelTable? tbl = ws.Tables["Table2"];
+            ExcelTableSlicer? slicer = tbl.Columns[1].Slicer;
 
             Assert.AreEqual(eSlicerStyle.Dark1, slicer.Style);
             Assert.AreEqual(4, slicer.FilterValues.Count);
@@ -72,15 +73,15 @@ namespace EPPlusTest.Drawing.Slicer
         [TestMethod]
         public void ReadPivotTableSlicer()
         {
-            var ws = TryGetWorksheet(_pck, "PivotTableSlicer");
+            ExcelWorksheet? ws = TryGetWorksheet(_pck, "PivotTableSlicer");
 
-            var tbl = ws.PivotTables["PivotTable1"];
-            var rf = tbl.RowFields[0];
+            ExcelPivotTable? tbl = ws.PivotTables["PivotTable1"];
+            ExcelPivotTableField? rf = tbl.RowFields[0];
             Assert.IsTrue(rf.Items[0].Hidden);
-            var df=tbl.DataFields[0];
+            ExcelPivotTableDataField? df=tbl.DataFields[0];
             Assert.AreEqual(DataFieldFunctions.Sum, df.Function);
 
-            var slicer = tbl.Fields[1].Slicer;
+            ExcelPivotTableSlicer? slicer = tbl.Fields[1].Slicer;
             
             Assert.IsTrue(slicer.Cache.Data.Items[0].Hidden);
             Assert.IsTrue(slicer.Cache.Data.Items[2].Hidden);
@@ -90,18 +91,18 @@ namespace EPPlusTest.Drawing.Slicer
         [TestMethod]
         public void ReadPivotTableSlicerToTwoPivotTables()
         {
-            var ws = TryGetWorksheet(_pck, "SlicerPivotSameCache");
-            var p1 = ws.PivotTables["Pivot1"];
+            ExcelWorksheet? ws = TryGetWorksheet(_pck, "SlicerPivotSameCache");
+            ExcelPivotTable? p1 = ws.PivotTables["Pivot1"];
             Assert.AreEqual(1, p1.RowFields.Count);
             Assert.AreEqual(1, p1.DataFields.Count);
-            var p2 = ws.PivotTables["Pivot2"];
+            ExcelPivotTable? p2 = ws.PivotTables["Pivot2"];
 
             Assert.AreEqual(1, p1.RowFields.Count);
             Assert.AreEqual(1, p1.DataFields.Count);            
             Assert.IsNotNull(p1.Fields[0].Slicer);
             Assert.AreEqual(99, p1.Fields[0].Slicer.Cache.Data.Items.Count);
 
-            var slicer = p1.Fields[0].Slicer;
+            ExcelPivotTableSlicer? slicer = p1.Fields[0].Slicer;
             Assert.IsTrue(slicer.Cache.Data.Items[0].Hidden);
             Assert.IsTrue(slicer.Cache.Data.Items[1].Hidden);
 
@@ -121,17 +122,17 @@ namespace EPPlusTest.Drawing.Slicer
         [TestMethod]
         public void ReadPivotTableSlicerToTwoPivotTablesWithDateGrouping()
         {
-            var ws = TryGetWorksheet(_pck, "SlicerPivotSameCacheDateGroup");
-            var p1 = ws.PivotTables["Pivot1"];
+            ExcelWorksheet? ws = TryGetWorksheet(_pck, "SlicerPivotSameCacheDateGroup");
+            ExcelPivotTable? p1 = ws.PivotTables["Pivot1"];
             Assert.AreEqual(3, p1.RowFields.Count);
             Assert.AreEqual(1, p1.DataFields.Count);
 
-            var p2 = ws.PivotTables["Pivot2"];
+            ExcelPivotTable? p2 = ws.PivotTables["Pivot2"];
             Assert.AreEqual(1, p2.RowFields.Count);
             Assert.AreEqual(1, p2.DataFields.Count);
 
             Assert.AreEqual("Days", p1.Fields[0].Name);
-            var slicer = p1.Fields[0].Slicer;
+            ExcelPivotTableSlicer? slicer = p1.Fields[0].Slicer;
             Assert.AreEqual(p2.Fields[0].Slicer, slicer);
 
             Assert.AreEqual(slicer.Cache.Data.SortOrder, eSortOrder.Ascending);
@@ -150,17 +151,17 @@ namespace EPPlusTest.Drawing.Slicer
         [TestMethod]
         public void ReadPivotTableSlicerToTwoPivotTablesWithNumberGrouping()
         {
-            var ws = TryGetWorksheet(_pck, "SlicerPivotSameCacheNumberGroup");
-            var p1 = ws.PivotTables["Pivot1"];
+            ExcelWorksheet? ws = TryGetWorksheet(_pck, "SlicerPivotSameCacheNumberGroup");
+            ExcelPivotTable? p1 = ws.PivotTables["Pivot1"];
             Assert.AreEqual(1, p1.RowFields.Count);
             Assert.AreEqual(1, p1.DataFields.Count);
 
-            var p2 = ws.PivotTables["Pivot2"];
+            ExcelPivotTable? p2 = ws.PivotTables["Pivot2"];
             Assert.AreEqual(1, p2.RowFields.Count);
             Assert.AreEqual(1, p2.DataFields.Count);
 
             Assert.IsInstanceOfType(p1.Fields[1].Grouping, typeof(ExcelPivotTableFieldNumericGroup));
-            var slicer = p1.Fields[1].Slicer;
+            ExcelPivotTableSlicer? slicer = p1.Fields[1].Slicer;
             Assert.AreEqual(p2.Fields[1].Slicer, slicer);
             Assert.IsTrue(slicer.Cache.Data.Items[0].Hidden);
             Assert.IsTrue(slicer.Cache.Data.Items[1].Hidden);

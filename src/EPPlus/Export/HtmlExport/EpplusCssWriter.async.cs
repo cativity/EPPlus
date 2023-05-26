@@ -17,6 +17,7 @@ using OfficeOpenXml.Style;
 using System.Drawing;
 using System.Globalization;
 using System;
+using System.Collections.Generic;
 using OfficeOpenXml.Utils;
 using System.Text;
 using OfficeOpenXml.Drawing;
@@ -42,14 +43,14 @@ namespace OfficeOpenXml.Export.HtmlExport
             await WriteClassAsync($"table.{tableClass}{{", _settings.Minify);
             if (_cssSettings.IncludeNormalFont)
             {
-                var ns = _ranges.First().Worksheet.Workbook.Styles.GetNormalStyle();
+                ExcelNamedStyleXml? ns = _ranges.First().Worksheet.Workbook.Styles.GetNormalStyle();
                 if (ns != null)
                 {
                     await WriteCssItemAsync($"font-family:{ns.Style.Font.Name};", _settings.Minify);
                     await WriteCssItemAsync($"font-size:{ns.Style.Font.Size.ToString("g", CultureInfo.InvariantCulture)}pt;", _settings.Minify);
                 }
             }
-            foreach (var item in _cssSettings.AdditionalCssElements)
+            foreach (KeyValuePair<string, string> item in _cssSettings.AdditionalCssElements)
             {
                 await WriteCssItemAsync($"{item.Key}:{item.Value};", _settings.Minify);
             }
@@ -67,10 +68,10 @@ namespace OfficeOpenXml.Export.HtmlExport
             await WriteCssItemAsync($"text-align:right;", _settings.Minify);
             await WriteClassEndAsync(_settings.Minify);
 
-            var worksheets = _ranges.Select(x => x.Worksheet).Distinct().ToList();
-            foreach (var ws in worksheets)
+            List<ExcelWorksheet>? worksheets = _ranges.Select(x => x.Worksheet).Distinct().ToList();
+            foreach (ExcelWorksheet? ws in worksheets)
             {
-                var clsName = HtmlExportTableUtil.GetWorksheetClassName(_settings.StyleClassPrefix, "dcw", ws, worksheets.Count > 1);
+                string? clsName = HtmlExportTableUtil.GetWorksheetClassName(_settings.StyleClassPrefix, "dcw", ws, worksheets.Count > 1);
                 await WriteClassAsync($".{clsName} {{", _settings.Minify);
                 await WriteCssItemAsync($"width:{ExcelColumn.ColumnWidthToPixels(Convert.ToDecimal(ws.DefaultColWidth), ws.Workbook.MaxFontWidth)}px;", _settings.Minify);
                 await WriteClassEndAsync(_settings.Minify);
@@ -105,7 +106,7 @@ namespace OfficeOpenXml.Export.HtmlExport
         }
         internal async Task AddPictureToCssAsync(HtmlImage p)
         {
-            var img = p.Picture.Image;
+            ExcelImage? img = p.Picture.Image;
             string encodedImage;
             ePictureType? type;
             if (img.Type == ePictureType.Emz || img.Type == ePictureType.Wmz)
@@ -123,7 +124,7 @@ namespace OfficeOpenXml.Export.HtmlExport
                 return;
             }
 
-            var pc = (IPictureContainer)p.Picture;
+            IPictureContainer? pc = (IPictureContainer)p.Picture;
             if (_images.Contains(pc.ImageHash) == false)
             {
                 string imageFileName = HtmlExportImageUtil.GetPictureName(p);
@@ -136,13 +137,13 @@ namespace OfficeOpenXml.Export.HtmlExport
 
                 if (p.FromColumnOff != 0 && _settings.Pictures.AddMarginLeft)
                 {
-                    var leftOffset = p.FromColumnOff / ExcelPicture.EMU_PER_PIXEL;
+                    int leftOffset = p.FromColumnOff / ExcelPicture.EMU_PER_PIXEL;
                     await WriteCssItemAsync($"margin-left:{leftOffset}px;", _settings.Minify);
                 }
 
                 if (p.FromRowOff != 0 && _settings.Pictures.AddMarginTop)
                 {
-                    var topOffset = p.FromRowOff / ExcelPicture.EMU_PER_PIXEL;
+                    int topOffset = p.FromRowOff / ExcelPicture.EMU_PER_PIXEL;
                     await WriteCssItemAsync($"margin-top:{topOffset}px;", _settings.Minify);
                 }
 
@@ -156,8 +157,8 @@ namespace OfficeOpenXml.Export.HtmlExport
         private async Task AddPicturePropertiesToCssAsync(HtmlImage image)
         {
             string imageName = HtmlExportTableUtil.GetClassName(image.Picture.Name, ((IPictureContainer)image.Picture).ImageHash);
-            var width = image.Picture.GetPixelWidth();
-            var height = image.Picture.GetPixelHeight();
+            double width = image.Picture.GetPixelWidth();
+            double height = image.Picture.GetPixelHeight();
 
             await WriteClassAsync($"img.{_settings.StyleClassPrefix}image-prop-{imageName}{{", _settings.Minify);
             if (_settings.Pictures.KeepOriginalSize == false)
@@ -174,7 +175,7 @@ namespace OfficeOpenXml.Export.HtmlExport
 
             if (image.Picture.Border.LineStyle != null && _settings.Pictures.CssExclude.Border==false)
             {
-                var border = GetDrawingBorder(image.Picture);
+                string? border = GetDrawingBorder(image.Picture);
                 await WriteCssItemAsync($"border:{border};", _settings.Minify);
             }
             await WriteClassEndAsync(_settings.Minify);
@@ -182,7 +183,7 @@ namespace OfficeOpenXml.Export.HtmlExport
 
         internal async Task AddToCssAsync(ExcelStyles styles, int styleId, string styleClassPrefix, string cellStyleClassName)
         {
-            var xfs = styles.CellXfs[styleId];
+            ExcelXfs? xfs = styles.CellXfs[styleId];
             if (HasStyle(xfs))
             {
                 if (IsAddedToCache(xfs, out int id)== false || _addedToCss.Contains(id) == false)
@@ -195,7 +196,7 @@ namespace OfficeOpenXml.Export.HtmlExport
                     }
                     if (xfs.FontId > 0)
                     {
-                        var ns = styles.GetNormalStyle();
+                        ExcelNamedStyleXml? ns = styles.GetNormalStyle();
                         await WriteFontStylesAsync(xfs.Font, ns.Style.Font);
                     }
                     if (xfs.BorderId > 0)
@@ -210,9 +211,9 @@ namespace OfficeOpenXml.Export.HtmlExport
 
         internal async Task AddToCssAsync(ExcelStyles styles, int styleId, int bottomStyleId, int rightStyleId, string styleClassPrefix, string cellStyleClassName)
         {
-            var xfs = styles.CellXfs[styleId];
-            var bXfs = styles.CellXfs[bottomStyleId];
-            var rXfs = styles.CellXfs[rightStyleId];
+            ExcelXfs? xfs = styles.CellXfs[styleId];
+            ExcelXfs? bXfs = styles.CellXfs[bottomStyleId];
+            ExcelXfs? rXfs = styles.CellXfs[rightStyleId];
             if (HasStyle(xfs) || bXfs.BorderId > 0 || rXfs.BorderId > 0)
             {
                 if (IsAddedToCache(xfs, out int id, bottomStyleId, rightStyleId) == false || _addedToCss.Contains(id) == false)
@@ -225,7 +226,7 @@ namespace OfficeOpenXml.Export.HtmlExport
                     }
                     if (xfs.FontId > 0)
                     {
-                        var ns = styles.GetNormalStyle();
+                        ExcelNamedStyleXml? ns = styles.GetNormalStyle();
                         await WriteFontStylesAsync(xfs.Font, ns.Style.Font);
                     }
                     if (xfs.BorderId > 0 || bXfs.BorderId > 0 || rXfs.BorderId > 0)
@@ -254,13 +255,13 @@ namespace OfficeOpenXml.Export.HtmlExport
 
             if (xfs.HorizontalAlignment != ExcelHorizontalAlignment.General && _cssExclude.HorizontalAlignment == false)
             {
-                var hAlign = GetHorizontalAlignment(xfs);
+                string? hAlign = GetHorizontalAlignment(xfs);
                 await WriteCssItemAsync($"text-align:{hAlign};", _settings.Minify);
             }
 
             if (xfs.VerticalAlignment != ExcelVerticalAlignment.Bottom && _cssExclude.VerticalAlignment == false)
             {
-                var vAlign = GetVerticalAlignment(xfs);
+                string? vAlign = GetVerticalAlignment(xfs);
                 await WriteCssItemAsync($"vertical-align:{vAlign};", _settings.Minify);
             }
             if (xfs.TextRotation != 0 && _cssExclude.TextRotation == false)
@@ -320,7 +321,7 @@ namespace OfficeOpenXml.Export.HtmlExport
         {
             if (bi.Style != ExcelBorderStyle.None)
             {
-                var sb = new StringBuilder();
+                StringBuilder? sb = new StringBuilder();
                 sb.Append(GetBorderItemLine(bi.Style, suffix));
                 if (bi.Color!=null && bi.Color.Exists)
                 {

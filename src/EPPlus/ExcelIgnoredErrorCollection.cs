@@ -74,9 +74,9 @@ namespace OfficeOpenXml
         public ExcelIgnoredError Add(ExcelAddressBase address)
         {
 
-            var node = _excelWorksheet.WorksheetXml.CreateElement("ignoredError", ExcelPackage.schemaMain);
+            XmlElement? node = _excelWorksheet.WorksheetXml.CreateElement("ignoredError", ExcelPackage.schemaMain);
             TopNode.AppendChild(node);
-            var item = new ExcelIgnoredError(_nameSpaceManager, node, address);
+            ExcelIgnoredError? item = new ExcelIgnoredError(_nameSpaceManager, node, address);
             _list.Add(item);
             return item;
         }

@@ -29,12 +29,12 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime
         public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
         {
             ValidateArguments(arguments, 1, eErrorType.Value);
-            var dateSerial = ArgToDecimal(arguments, 0);
-            var date = System.DateTime.FromOADate(dateSerial);
-            var startDay = DayOfWeek.Sunday;
+            double dateSerial = ArgToDecimal(arguments, 0);
+            System.DateTime date = System.DateTime.FromOADate(dateSerial);
+            DayOfWeek startDay = DayOfWeek.Sunday;
             if (arguments.Count() > 1)
             {
-                var argStartDay = ArgToInt(arguments, 1);
+                int argStartDay = ArgToInt(arguments, 1);
                 switch (argStartDay)
                 {
                     case 1:
@@ -69,7 +69,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime
                 throw new InvalidOperationException(
                     "Could not execute Weeknum function because DateTimeFormatInfo.CurrentInfo was null");
             }
-            var week = DateTimeFormatInfo.CurrentInfo.Calendar.GetWeekOfYear(date, CalendarWeekRule.FirstDay,
+            int week = DateTimeFormatInfo.CurrentInfo.Calendar.GetWeekOfYear(date, CalendarWeekRule.FirstDay,
                                                                              startDay);
             return CreateResult(week, DataType.Integer);
         }

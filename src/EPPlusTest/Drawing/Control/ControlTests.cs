@@ -10,6 +10,7 @@ using System.Drawing;
 using System.IO;
 using System.Security.Cryptography;
 using System.Security.Principal;
+using OfficeOpenXml.Style;
 
 namespace EPPlusTest.Drawing.Control
 {
@@ -35,7 +36,7 @@ namespace EPPlusTest.Drawing.Control
         public void AddButtonTest()
         {
             _ws = _pck.Workbook.Worksheets.Add("Buttons");
-            var ctrl = _ws.Drawings.AddButtonControl("Button 1");
+            ExcelControlButton? ctrl = _ws.Drawings.AddButtonControl("Button 1");
             ctrl.Macro = "Button1_Click";
             ctrl.SetPosition(100, 100);
             ctrl.SetSize(200, 100);
@@ -45,7 +46,7 @@ namespace EPPlusTest.Drawing.Control
 
             ctrl.RichText[0].Fill.Color = Color.Red;
             ctrl.RichText[0].Size = 18;
-            var rt2 = ctrl.RichText.Add(" Blue");
+            ExcelParagraph? rt2 = ctrl.RichText.Add(" Blue");
             rt2.Fill.Color = Color.Blue;
             rt2.Size = 24;
 
@@ -90,7 +91,7 @@ namespace EPPlusTest.Drawing.Control
         public void AddCheckboxTest()
         {
             _ws = _pck.Workbook.Worksheets.Add("Checkbox");
-            var ctrl = _ws.Drawings.AddCheckBoxControl("Checkbox 1");
+            ExcelControlCheckBox? ctrl = _ws.Drawings.AddCheckBoxControl("Checkbox 1");
             ctrl.Macro = "Checkbox_Click";
             ctrl.Fill.Style = eVmlFillType.Gradient;
             ctrl.Fill.SecondColor.ColorString= "#ff8200";
@@ -109,57 +110,57 @@ namespace EPPlusTest.Drawing.Control
             ctrl.SetPosition(100, 100);
             ctrl.SetSize(200, 100);
             
-            var codeModule = _pck.Workbook.VbaProject.Modules.AddModule("CheckboxCode");
+            ExcelVBAModule? codeModule = _pck.Workbook.VbaProject.Modules.AddModule("CheckboxCode");
             _codeModule.Code += "Sub Checkbox_Click()\r\n  MsgBox \"Clicked Checkbox!!\"\r\nEnd Sub\r\n";
         }
         [TestMethod]
         public void AddRadioButtonTest()
         {
             _ws = _pck.Workbook.Worksheets.Add("RadioButton");
-            var groupBox = _ws.Drawings.AddGroupBoxControl("Groupbox 1");
+            ExcelControlGroupBox? groupBox = _ws.Drawings.AddGroupBoxControl("Groupbox 1");
             groupBox.SetPosition(80, 80);
             groupBox.SetSize(240, 120);
 
-            var ctrl = _ws.Drawings.AddRadioButtonControl("Option Button 1");
+            ExcelControlRadioButton? ctrl = _ws.Drawings.AddRadioButtonControl("Option Button 1");
             ctrl.Macro = "RadioButton_Click";
             ctrl.SetPosition(100, 100);
             ctrl.SetSize(200, 30);
 
-            var ctrl2 = _ws.Drawings.AddControl("RadioButton 2", eControlType.RadioButton);
+            ExcelControl? ctrl2 = _ws.Drawings.AddControl("RadioButton 2", eControlType.RadioButton);
             ctrl2.Macro = "RadioButton_Click";
             ctrl2.SetPosition(130, 100);
             ctrl2.SetSize(200, 30);
 
-            var ctrl3 = _ws.Drawings.AddControl("RadioButton 3", eControlType.RadioButton);
+            ExcelControl? ctrl3 = _ws.Drawings.AddControl("RadioButton 3", eControlType.RadioButton);
             ctrl3.Macro = "RadioButton_Click";
             ctrl3.SetPosition(160, 100);
             ctrl3.SetSize(200, 30);
 
-            var groupBox2 = _ws.Drawings.AddControl("Groupbox 2", eControlType.GroupBox);
+            ExcelControl? groupBox2 = _ws.Drawings.AddControl("Groupbox 2", eControlType.GroupBox);
             groupBox2.SetPosition(780, 80);
             groupBox2.SetSize(240, 120);
 
-            var ctrl4 = _ws.Drawings.AddControl("RadioButton 4", eControlType.RadioButton).As.Control.RadioButton;
+            ExcelControlRadioButton? ctrl4 = _ws.Drawings.AddControl("RadioButton 4", eControlType.RadioButton).As.Control.RadioButton;
             ctrl4.FirstButton = true;
             ctrl4.SetPosition(800, 100);
             ctrl4.SetSize(200, 30);
 
-            var ctrl5 = _ws.Drawings.AddControl("RadioButton 5", eControlType.RadioButton);
+            ExcelControl? ctrl5 = _ws.Drawings.AddControl("RadioButton 5", eControlType.RadioButton);
             ctrl5.SetPosition(830, 100);
             ctrl5.SetSize(200, 30);
 
-            var ctrl6 = _ws.Drawings.AddControl("RadioButton 6", eControlType.RadioButton);
+            ExcelControl? ctrl6 = _ws.Drawings.AddControl("RadioButton 6", eControlType.RadioButton);
             ctrl6.SetPosition(860, 100);
             ctrl6.SetSize(200, 30);
 
-            var codeModule = _pck.Workbook.VbaProject.Modules.AddModule("RadioButtonCode");
+            ExcelVBAModule? codeModule = _pck.Workbook.VbaProject.Modules.AddModule("RadioButtonCode");
             _codeModule.Code += "Sub RadioButton_Click()\r\n  MsgBox \"Clicked RadioButton!!\"\r\nEnd Sub\r\n";
         }
         [TestMethod]
         public void AddCheckboxWithFrameFillTest()
         {
             _ws = _pck.Workbook.Worksheets.Add("CheckboxWithImageFill");
-            var ctrl = _ws.Drawings.AddCheckBoxControl("Checkbox 2");
+            ExcelControlCheckBox? ctrl = _ws.Drawings.AddCheckBoxControl("Checkbox 2");
             ctrl.Fill.Style = eVmlFillType.Frame;
             ctrl.Fill.PatternPictureSettings.Image.SetImage(Properties.Resources.Test1JpgByteArray, ePictureType.Jpg);
             ctrl.Fill.PatternPictureSettings.AspectRatio = eVmlAspectRatio.AtLeast;
@@ -171,7 +172,7 @@ namespace EPPlusTest.Drawing.Control
         public void AddCheckboxWithTileFillTest()
         {
             _ws = _pck.Workbook.Worksheets.Add("CheckboxWithTileFill");
-            var ctrl = _ws.Drawings.AddCheckBoxControl("Checkbox 2");
+            ExcelControlCheckBox? ctrl = _ws.Drawings.AddCheckBoxControl("Checkbox 2");
             ctrl.Fill.Style = eVmlFillType.Tile;
             ctrl.Fill.PatternPictureSettings.Image.SetImage(Properties.Resources.CodeTif, ePictureType.Tif);
             ctrl.Fill.Color.SetColor(Color.Black);
@@ -183,7 +184,7 @@ namespace EPPlusTest.Drawing.Control
         public void AddCheckboxWithPatternFillTest()
         {
             _ws = _pck.Workbook.Worksheets.Add("CheckboxWithPatternFill");
-            var ctrl = _ws.Drawings.AddCheckBoxControl("Checkbox 2");
+            ExcelControlCheckBox? ctrl = _ws.Drawings.AddCheckBoxControl("Checkbox 2");
             ctrl.Fill.Style = eVmlFillType.Pattern;
             ctrl.Fill.PatternPictureSettings.Image.SetImage(Properties.Resources.VmlPatternImage, ePictureType.Png);
             ctrl.Fill.Color.SetColor(Color.Red);
@@ -198,7 +199,7 @@ namespace EPPlusTest.Drawing.Control
         public void AddDropDownTest()
         {
             _ws = _pck.Workbook.Worksheets.Add("DropDown");
-            var ctrl = _ws.Drawings.AddDropDownControl("DropDown 1");
+            ExcelControlDropDown? ctrl = _ws.Drawings.AddDropDownControl("DropDown 1");
             ctrl.Macro = "DropDown_Click";
             ctrl.SetPosition(500, 100);
             ctrl.SetSize(200, 30);
@@ -220,7 +221,7 @@ namespace EPPlusTest.Drawing.Control
         public void AddListBoxTest()
         {
             _ws = _pck.Workbook.Worksheets.Add("ListBox");
-            var ctrl = _ws.Drawings.AddListBoxControl("ListBox 1");
+            ExcelControlListBox? ctrl = _ws.Drawings.AddListBoxControl("ListBox 1");
             ctrl.Macro = "ListBox_Click";
             ctrl.SetPosition(500, 100);
             ctrl.SetSize(200, 100);
@@ -241,7 +242,7 @@ namespace EPPlusTest.Drawing.Control
         public void AddLabelTest()
         {
             _ws = _pck.Workbook.Worksheets.Add("Label");
-            var ctrl = _ws.Drawings.AddLabelControl("Label 1");
+            ExcelControlLabel? ctrl = _ws.Drawings.AddLabelControl("Label 1");
             ctrl.Macro = "Label_Click";
             ctrl.SetPosition(500, 100);
             ctrl.SetSize(200, 100);
@@ -256,7 +257,7 @@ namespace EPPlusTest.Drawing.Control
         public void AddSpinButtonTest()
         {
             _ws = _pck.Workbook.Worksheets.Add("SpinButton");
-            var ctrl = _ws.Drawings.AddSpinButtonControl("SpinButton 1");
+            ExcelControlSpinButton? ctrl = _ws.Drawings.AddSpinButtonControl("SpinButton 1");
             ctrl.Macro = "SpinButton_Click";
             ctrl.SetPosition(500, 100);
             ctrl.SetSize(200, 100);
@@ -271,7 +272,7 @@ namespace EPPlusTest.Drawing.Control
         public void AddScrollbarButtonTest()
         {
             _ws = _pck.Workbook.Worksheets.Add("Scrollbar");
-            var ctrl = _ws.Drawings.AddScrollBarControl("Scrollbar 1");
+            ExcelControlScrollBar? ctrl = _ws.Drawings.AddScrollBarControl("Scrollbar 1");
             ctrl.Macro = "ScrolbarButton_Click";
             ctrl.SetPosition(500, 100);
             //ctrl.SetSize(200, 100);
@@ -289,7 +290,7 @@ namespace EPPlusTest.Drawing.Control
         public void AddGroupBoxTest()
         {
             _ws = _pck.Workbook.Worksheets.Add("GroupBox");
-            var ctrl = _ws.Drawings.AddGroupBoxControl("GroupBox 1");
+            ExcelControlGroupBox? ctrl = _ws.Drawings.AddGroupBoxControl("GroupBox 1");
             ctrl.Macro = "GroupBox_Click";
             ctrl.Text = "Groupbox 1";
             ctrl.SetPosition(480, 80);
@@ -298,13 +299,13 @@ namespace EPPlusTest.Drawing.Control
             _ws.Cells["G1"].Value = "Linked Groupbox";            
             ctrl.LinkedCell = _ws.Cells["G1"];
 
-            var r1 = _ws.Drawings.AddRadioButtonControl("Option Button 1");
+            ExcelControlRadioButton? r1 = _ws.Drawings.AddRadioButtonControl("Option Button 1");
             r1.SetPosition(500, 100);
             r1.SetSize(100, 25);
-            var r2 = _ws.Drawings.AddRadioButtonControl("Option Button 2");
+            ExcelControlRadioButton? r2 = _ws.Drawings.AddRadioButtonControl("Option Button 2");
             r2.SetPosition(530, 100);
             r2.SetSize(100, 25);
-            var r3 = _ws.Drawings.AddRadioButtonControl("Option Button 3");
+            ExcelControlRadioButton? r3 = _ws.Drawings.AddRadioButtonControl("Option Button 3");
             r3.SetPosition(560, 100);
             r3.SetSize(100, 25);
             r3.FirstButton = true;
@@ -327,13 +328,13 @@ namespace EPPlusTest.Drawing.Control
         [TestMethod]
         public void AddControlHeaderAndComment()
         {
-            var ws = _pck.Workbook.Worksheets.Add("HeaderControlAndComment");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("HeaderControlAndComment");
             ws.HeaderFooter.OddHeader.CenteredText = "Before ";
-            var img = ws.HeaderFooter.OddHeader.InsertPicture(Properties.Resources.Test1, PictureAlignment.Centered);
+            ExcelVmlDrawingPicture? img = ws.HeaderFooter.OddHeader.InsertPicture(Properties.Resources.Test1, PictureAlignment.Centered);
             img.Title = "Renamed Image";
 
             ws.Comments.Add(ws.Cells["A1"], "Comment in cell A1", "JK");
-            var btn = ws.Drawings.AddButtonControl("Button 1");
+            ExcelControlButton? btn = ws.Drawings.AddButtonControl("Button 1");
             btn.SetPosition(100, 100);
         }
         [TestMethod]
@@ -350,16 +351,16 @@ namespace EPPlusTest.Drawing.Control
         public void RemoveControlTest()
         {
             _ws = _pck.Workbook.Worksheets.Add("RemoveControl");
-            var ctrl = _ws.Drawings.AddGroupBoxControl("GroupBox 1");
+            ExcelControlGroupBox? ctrl = _ws.Drawings.AddGroupBoxControl("GroupBox 1");
             Assert.AreEqual(1, _ws.Drawings.Count);
         }
         [TestMethod]
         public void VerifySize2()
         {
-            using (var p = OpenPackage("i729-1.xlsx", true))
+            using (ExcelPackage? p = OpenPackage("i729-1.xlsx", true))
             {
-                var ws = p.Workbook.Worksheets.Add("Diagramme & Tabellen erzeugen");                
-                var button1 = ws.Drawings.AddButtonControl("Button 1");
+                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Diagramme & Tabellen erzeugen");                
+                ExcelControlButton? button1 = ws.Drawings.AddButtonControl("Button 1");
                 button1.SetPosition(1, 0, 1, 0);
                 button1.SetSize(135, 70);
 
@@ -369,7 +370,7 @@ namespace EPPlusTest.Drawing.Control
                 p.Workbook.Styles.NamedStyles[0].Style.Font.Name = "Arial";
                 p.Workbook.Styles.NamedStyles[0].Style.Font.Size = 15F;
 
-                var button2 = ws.Drawings.AddButtonControl("Button 2");
+                ExcelControlButton? button2 = ws.Drawings.AddButtonControl("Button 2");
                 button2.SetPosition(1, 0, 5, 0);
                 button2.SetSize(135, 70);
 
@@ -379,7 +380,7 @@ namespace EPPlusTest.Drawing.Control
                 p.Workbook.Styles.NamedStyles[0].Style.Font.Name = "Arial";
                 p.Workbook.Styles.NamedStyles[0].Style.Font.Size = 25F;
 
-                var button3 = ws.Drawings.AddButtonControl("Button 3");
+                ExcelControlButton? button3 = ws.Drawings.AddButtonControl("Button 3");
                 button3.SetPosition(1, 0, 10, 0);
                 button3.SetSize(135, 70);
 

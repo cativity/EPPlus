@@ -22,12 +22,12 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime.Implementations
     {
         internal static int CalcDays360(System.DateTime startDate, System.DateTime endDate, Days360Calctype calcType)
         {
-            var startYear = startDate.Year;
-            var startMonth = startDate.Month;
-            var startDay = startDate.Day;
-            var endYear = endDate.Year;
-            var endMonth = endDate.Month;
-            var endDay = endDate.Day;
+            int startYear = startDate.Year;
+            int startMonth = startDate.Month;
+            int startDay = startDate.Day;
+            int endYear = endDate.Year;
+            int endMonth = endDate.Month;
+            int endDay = endDate.Day;
 
             if (calcType == Days360Calctype.European)
             {
@@ -43,8 +43,8 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime.Implementations
             }
             else
             {
-                var calendar = new GregorianCalendar();
-                var nDaysInFeb = calendar.IsLeapYear(startDate.Year) ? 29 : 28;
+                GregorianCalendar? calendar = new GregorianCalendar();
+                int nDaysInFeb = calendar.IsLeapYear(startDate.Year) ? 29 : 28;
 
                 // If the investment is EOM and (Date1 is the last day of February) and (Date2 is the last day of February), then change D2 to 30.
                 if (startMonth == 2 && startDay == nDaysInFeb && endMonth == 2 && endDay == nDaysInFeb)
@@ -67,7 +67,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime.Implementations
                     startDay = 30;
                 }
             }
-            var result = (endYear * 12 * 30 + endMonth * 30 + endDay) - (startYear * 12 * 30 + startMonth * 30 + startDay);
+            int result = (endYear * 12 * 30 + endMonth * 30 + endDay) - (startYear * 12 * 30 + startMonth * 30 + startDay);
             return result;
         }
     }

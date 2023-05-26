@@ -270,7 +270,7 @@ namespace OfficeOpenXml.Style.Dxf
             Extend = helper.GetXmlNodeBoolNullable("d:font/d:extend/@val");
             Outline = helper.GetXmlNodeBoolNullable("d:font/d:outline/@val");
             
-            var v = helper.GetXmlNodeString("d:font/d:vertAlign/@val");
+            string? v = helper.GetXmlNodeString("d:font/d:vertAlign/@val");
             VerticalAlign = string.IsNullOrEmpty(v)?ExcelVerticalAlignmentFont.None: v.ToEnum(ExcelVerticalAlignmentFont.None);
             
             Family = helper.GetXmlNodeIntNull("d:font/d:family/@val");

@@ -30,9 +30,9 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Statistical
         public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
         {
             ValidateArguments(arguments, 3);
-            var alpha = ArgToDecimal(arguments, 0);
-            var sigma = ArgToDecimal(arguments, 1);
-            var size = ArgToInt(arguments, 2);
+            double alpha = ArgToDecimal(arguments, 0);
+            double sigma = ArgToDecimal(arguments, 1);
+            int size = ArgToInt(arguments, 2);
 
             if (alpha <= 0d || alpha >= 1d)
             {
@@ -49,7 +49,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Statistical
                 return this.CreateResult(eErrorType.Num);
             }
 
-            var result = NormalCi(1, alpha, sigma ,size);
+            double result = NormalCi(1, alpha, sigma ,size);
             result -= 1d;
             return CreateResult(result, DataType.Decimal);
 
@@ -57,13 +57,13 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Statistical
 
         private double NormalCi(int s, double alpha, double sigma, int size)
         {
-            var change = System.Math.Abs(NormalInv(alpha / 2, 0d, 1d) * sigma / System.Math.Sqrt((double)size));
+            double change = System.Math.Abs(NormalInv(alpha / 2, 0d, 1d) * sigma / System.Math.Sqrt((double)size));
             return 1d + change;
         }
 
         private double NormalInv(double p, double mean, double std)
         {
-            var n = -1.41421356237309505 * std * ErfHelper.Erfcinv(2 * p) + mean;
+            double n = -1.41421356237309505 * std * ErfHelper.Erfcinv(2 * p) + mean;
             return n;
         }
 

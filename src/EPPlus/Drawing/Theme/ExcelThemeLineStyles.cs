@@ -63,7 +63,7 @@ namespace OfficeOpenXml.Drawing.Theme
         /// <returns>The line</returns>
         public ExcelThemeLine Add()
         {
-            var node = TopNode.OwnerDocument.CreateElement("a", "ln", ExcelPackage.schemaMain);
+            XmlElement? node = TopNode.OwnerDocument.CreateElement("a", "ln", ExcelPackage.schemaMain);
             TopNode.AppendChild(node);
             return new ExcelThemeLine(NameSpaceManager, TopNode);
         }

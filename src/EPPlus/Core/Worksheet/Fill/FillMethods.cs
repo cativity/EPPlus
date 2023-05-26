@@ -32,7 +32,7 @@ namespace OfficeOpenXml.Core.Worksheet.Fill
             {
                 startValue = worksheet.GetValue(startRow, startCol);
             }
-            var value = ConvertUtil.GetValueDouble(startValue, true, true);
+            double value = ConvertUtil.GetValueDouble(startValue, true, true);
 
             SkipFirstCell(ref fromRow, ref fromCol, ref toRow, ref toCol, options);
 
@@ -86,8 +86,8 @@ namespace OfficeOpenXml.Core.Worksheet.Fill
             //if (options.Direction == eFillDirection.Column) fromRow++; else fromCol++;
             SkipFirstCell(ref fromRow, ref fromCol, ref toRow, ref toCol, options);
 
-            var value = ConvertUtil.GetValueDate(startValue);
-            var isLastDayOfMonth = value.HasValue && value.Value.Month != value.Value.AddDays(1).Month;
+            DateTime? value = ConvertUtil.GetValueDate(startValue);
+            bool isLastDayOfMonth = value.HasValue && value.Value.Month != value.Value.AddDays(1).Month;
 
             int r = startRow, c = startCol;
             while (GetNextCell(options, fromRow, toRow, fromCol, toCol, ref r, ref c))
@@ -163,7 +163,7 @@ namespace OfficeOpenXml.Core.Worksheet.Fill
 
         internal static void FillList<T>(ExcelWorksheet worksheet, int fromRow, int toRow, int fromCol, int toCol,IEnumerable<T> enumList, FillListParams options)
         {
-            var list = enumList.ToList();
+            List<T>? list = enumList.ToList();
 
             if (list.Count==0)
             {
@@ -177,7 +177,7 @@ namespace OfficeOpenXml.Core.Worksheet.Fill
             }
 
             GetStartCell(options, fromRow, toRow, fromCol, toCol, out int startRow, out int startCol);
-            var ix = options.StartIndex;
+            int ix = options.StartIndex;
             worksheet.SetValue(startRow, startCol, list[ix++]);
             SkipFirstCell(ref fromRow, ref fromCol, ref toRow, ref toCol, options);
 

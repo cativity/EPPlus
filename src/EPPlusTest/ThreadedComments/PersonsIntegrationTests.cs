@@ -15,10 +15,10 @@ namespace EPPlusTest.ThreadedComments
         [TestMethod]
         public void PersonCollOnWorkbook()
         {
-            using(var package = OpenTemplatePackage("comments.xlsx"))
+            using(ExcelPackage? package = OpenTemplatePackage("comments.xlsx"))
             {
-                var persons = package.Workbook.ThreadedCommentPersons;
-                var p = persons.Add("Jan Källman", "Jan Källman", IdentityProvider.NoProvider);
+                ExcelThreadedCommentPersonCollection? persons = package.Workbook.ThreadedCommentPersons;
+                ExcelThreadedCommentPerson? p = persons.Add("Jan Källman", "Jan Källman", IdentityProvider.NoProvider);
                 SaveWorkbook("commentsResult.xlsx", package);
             }
         }
@@ -26,11 +26,11 @@ namespace EPPlusTest.ThreadedComments
         [TestMethod]
         public void AddPersonToWorkbook()
         {
-            using (var package = OpenPackage("commentsWithNewPerson.xlsx", true))
+            using (ExcelPackage? package = OpenPackage("commentsWithNewPerson.xlsx", true))
             {
                 package.Workbook.Worksheets.Add("test");
-                var persons = package.Workbook.ThreadedCommentPersons;
-                var p = persons.Add("Jan Källman", "Jan Källman", IdentityProvider.NoProvider);
+                ExcelThreadedCommentPersonCollection? persons = package.Workbook.ThreadedCommentPersons;
+                ExcelThreadedCommentPerson? p = persons.Add("Jan Källman", "Jan Källman", IdentityProvider.NoProvider);
                 package.Save();
             }
         }

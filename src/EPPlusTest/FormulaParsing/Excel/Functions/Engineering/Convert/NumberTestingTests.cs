@@ -14,9 +14,9 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions.Engineering.Convert
         [TestMethod]
         public void DeltaTests()
         {
-            using(var package = new ExcelPackage())
+            using(ExcelPackage? package = new ExcelPackage())
             {
-                var sheet = package.Workbook.Worksheets.Add("test");
+                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
                 
                 sheet.Cells["A1"].Formula = "DELTA(5, 4)";
                 sheet.Calculate();

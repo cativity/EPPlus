@@ -65,7 +65,7 @@ namespace OfficeOpenXml.Drawing.Theme
         /// <returns>The fill</returns>
         public ExcelDrawingFill Add(eFillStyle style)
         {            
-            var node = TopNode.OwnerDocument.CreateElement("a",ExcelDrawingFillBasic.GetStyleText(style),  ExcelPackage.schemaMain);
+            XmlElement? node = TopNode.OwnerDocument.CreateElement("a",ExcelDrawingFillBasic.GetStyleText(style),  ExcelPackage.schemaMain);
             TopNode.AppendChild(node);
             return new ExcelDrawingFill(null, NameSpaceManager, TopNode, "", SchemaNodeOrder);
         }

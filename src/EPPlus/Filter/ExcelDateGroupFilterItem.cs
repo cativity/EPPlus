@@ -168,7 +168,7 @@ namespace OfficeOpenXml.Filter
 
         internal void AddNode(XmlNode node)
         {
-            var e = node.OwnerDocument.CreateElement("dateGroupItem", ExcelPackage.schemaMain);
+            XmlElement? e = node.OwnerDocument.CreateElement("dateGroupItem", ExcelPackage.schemaMain);
             e.SetAttribute("dateTimeGrouping", Grouping.ToString().ToLower());
             e.SetAttribute("year", Year.ToString(CultureInfo.InvariantCulture));
 
@@ -198,7 +198,7 @@ namespace OfficeOpenXml.Filter
 
         internal bool Match(DateTime value)
         {
-            var match = value.Year == Year;
+            bool match = value.Year == Year;
 
             if(match && Month.HasValue)
             {

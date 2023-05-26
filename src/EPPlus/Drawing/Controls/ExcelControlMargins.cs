@@ -27,9 +27,9 @@ namespace OfficeOpenXml.Drawing.Controls
             _vmlHelper = XmlHelperFactory.Create(control._vmlProp.NameSpaceManager, control._vmlProp.TopNode.ParentNode);
             
             Automatic = _vmlHelper.GetXmlNodeString("@o:insetmode") == "auto";
-            var margin = _vmlHelper.GetXmlNodeString("v:textbox/@inset");
+            string? margin = _vmlHelper.GetXmlNodeString("v:textbox/@inset");
 
-            var v = margin.GetCsvPosition(0);
+            string? v = margin.GetCsvPosition(0);
             LeftMargin.SetValue(v);
 
             v = margin.GetCsvPosition(1);
@@ -79,7 +79,7 @@ namespace OfficeOpenXml.Drawing.Controls
 
             if (LeftMargin.Value != 0 && TopMargin.Value != 0 && RightMargin.Value != 0 && BottomMargin.Value != 0)
             {
-                var v =
+                string? v =
                     LeftMargin.GetValueString() + "," +
                     TopMargin.GetValueString() + "," +
                     RightMargin.GetValueString() + "," +

@@ -46,19 +46,19 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
         public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
         {
             ValidateArguments(arguments, 2);
-            var argRange = ArgToRangeInfo(arguments, 0);
+            IRangeInfo? argRange = ArgToRangeInfo(arguments, 0);
 
             // Criteria can either be a string or an array of strings
-            var criteria = GetCriteria(arguments.ElementAt(1));
-            var retVal = 0d;
+            IEnumerable<string>? criteria = GetCriteria(arguments.ElementAt(1));
+            double retVal = 0d;
             if (argRange == null)
             {
-                var val = arguments.ElementAt(0).Value;
+                object? val = arguments.ElementAt(0).Value;
                 if (_evaluator.Evaluate(val, criteria))
                 {
                     if (arguments.Count() > 2)
                     {
-                        var sumRange = ArgToRangeInfo(arguments, 2);
+                        IRangeInfo? sumRange = ArgToRangeInfo(arguments, 2);
                         retVal = sumRange.First().ValueDouble;
                     }
                     else
@@ -69,7 +69,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
             }
             else if (arguments.Count() > 2)
             {
-                var sumRange = ArgToRangeInfo(arguments, 2);
+                IRangeInfo? sumRange = ArgToRangeInfo(arguments, 2);
                 retVal = CalculateWithSumRange(argRange, criteria, sumRange, context);
             }
             else
@@ -81,17 +81,17 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
 
         internal static IEnumerable<string> GetCriteria(FunctionArgument criteriaArg)
         {
-            var criteria = new List<string>();
+            List<string>? criteria = new List<string>();
             if (criteriaArg.IsEnumerableOfFuncArgs)
             {
-                foreach (var arg in criteriaArg.ValueAsEnumerableOfFuncArgs)
+                foreach (FunctionArgument? arg in criteriaArg.ValueAsEnumerableOfFuncArgs)
                 {
                     criteria.Add(arg.ValueFirstString);
                 }
             }
             else if (criteriaArg.IsExcelRange)
             {
-                foreach (var cell in criteriaArg.ValueAsRangeInfo)
+                foreach (ICellInfo? cell in criteriaArg.ValueAsRangeInfo)
                 {
                     if (cell.Value != null)
                     {
@@ -108,17 +108,17 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
 
         private double CalculateWithSumRange(IRangeInfo range, IEnumerable<string> criteria, IRangeInfo sumRange, ParsingContext context)
         {
-            var retVal = 0d;
-            foreach (var cell in range)
+            double retVal = 0d;
+            foreach (ICellInfo? cell in range)
             {
                 if (_evaluator.Evaluate(cell.Value, criteria))
                 {
-                    var rowOffset = cell.Row - range.Address._fromRow;
-                    var columnOffset = cell.Column - range.Address._fromCol;
+                    int rowOffset = cell.Row - range.Address._fromRow;
+                    int columnOffset = cell.Column - range.Address._fromCol;
                     if (sumRange.Address._fromRow + rowOffset <= sumRange.Address._toRow &&
                        sumRange.Address._fromCol + columnOffset <= sumRange.Address._toCol)
                     {
-                        var val = sumRange.GetOffset(rowOffset, columnOffset);
+                        object? val = sumRange.GetOffset(rowOffset, columnOffset);
                         if (val is ExcelErrorValue)
                         {
                             ThrowExcelErrorValueException((ExcelErrorValue)val);
@@ -132,8 +132,8 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
 
         private double CalculateSingleRange(IRangeInfo range, IEnumerable<string> expressions, ParsingContext context)
         {
-            var retVal = 0d;
-            foreach (var candidate in range)
+            double retVal = 0d;
+            foreach (ICellInfo? candidate in range)
             {
                 if (IsNumeric(candidate.Value) && _evaluator.Evaluate(candidate.Value, expressions) && IsNumeric(candidate.Value))
                 {

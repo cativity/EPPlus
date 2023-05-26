@@ -97,12 +97,12 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.Implementations
                         =  0 + SUM   -E_i ----------- r'  =  - SUM   ----------- .
                                 i=1       r^(E_i+1)             i=1  r^(E_i+1)
             */
-            var D_0 = rDates.ElementAt(0);
+            System.DateTime D_0 = rDates.ElementAt(0);
             double r = fRate + 1.0;
             double fResult = 0.0;
             for (int i = 1, nCount = rValues.Count(); i < nCount; ++i)
             {
-                var E_i = (rDates.ElementAt(i).Subtract(D_0).TotalDays / 365d);
+                double E_i = (rDates.ElementAt(i).Subtract(D_0).TotalDays / 365d);
                 fResult -= E_i * rValues.ElementAt(i) / System.Math.Pow(r, E_i + 1.0);
             }
             return fResult;
@@ -121,7 +121,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.Implementations
                 f(R)  =  SUM   -------  =  V_0 + SUM   ------- .
                             i=0  r^E_i              i=1  r^E_i
             */
-            var D_0 = rDates.ElementAt(0);
+            System.DateTime D_0 = rDates.ElementAt(0);
             double r = fRate + 1.0;
             double fResult = rValues.ElementAt(0);
             for (int i = 1, nCount = rValues.Count(); i < nCount; ++i)

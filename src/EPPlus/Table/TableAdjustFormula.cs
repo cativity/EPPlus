@@ -1,6 +1,7 @@
 ﻿using OfficeOpenXml.Core.CellStore;
 using OfficeOpenXml.FormulaParsing.LexicalAnalysis;
 using System;
+using System.Collections.Generic;
 
 namespace OfficeOpenXml.Table
 {
@@ -14,11 +15,11 @@ namespace OfficeOpenXml.Table
 
         internal void AdjustFormulas(string prevName, string name)
         {
-            foreach (var ws in _tbl.WorkSheet.Workbook.Worksheets)
+            foreach (ExcelWorksheet? ws in _tbl.WorkSheet.Workbook.Worksheets)
             {
-                foreach (var tbl in ws.Tables)
+                foreach (ExcelTable? tbl in ws.Tables)
                 {
-                    foreach (var c in tbl.Columns)
+                    foreach (ExcelTableColumn? c in tbl.Columns)
                     {
                         if (!string.IsNullOrEmpty(c.CalculatedColumnFormula))
                         {
@@ -27,7 +28,7 @@ namespace OfficeOpenXml.Table
                     }
                 }
 
-                var cse = new CellStoreEnumerator<object>(ws._formulas);
+                CellStoreEnumerator<object>? cse = new CellStoreEnumerator<object>(ws._formulas);
                 while (cse.Next())
                 {
                     if (cse.Value is string f)
@@ -39,7 +40,7 @@ namespace OfficeOpenXml.Table
                     }
                 }
 
-                foreach (var sf in ws._sharedFormulas.Values)
+                foreach (ExcelWorksheet.Formulas? sf in ws._sharedFormulas.Values)
                 {
                     if (sf.Formula.IndexOf(prevName, StringComparison.InvariantCultureIgnoreCase) > -1)
                     {
@@ -47,13 +48,13 @@ namespace OfficeOpenXml.Table
                     }
                 }
 
-                foreach (var n in ws.Names)
+                foreach (ExcelNamedRange? n in ws.Names)
                 {
                     AdjustName(n, prevName, name);
                 }
             }
 
-            foreach (var n in _tbl.WorkSheet.Workbook.Names)
+            foreach (ExcelNamedRange? n in _tbl.WorkSheet.Workbook.Names)
             {
                 AdjustName(n, prevName, name);
             }
@@ -79,13 +80,13 @@ namespace OfficeOpenXml.Table
 
         private string ReplaceTableName(string formula, string prevName, string name)
         {
-            var tokens = _tbl.WorkSheet.Workbook.FormulaParser.Lexer.Tokenize(formula);
-            var f = "";
-            foreach (var t in tokens)
+            IEnumerable<Token>? tokens = _tbl.WorkSheet.Workbook.FormulaParser.Lexer.Tokenize(formula);
+            string? f = "";
+            foreach (Token t in tokens)
             {
                 if (t.TokenTypeIsSet(TokenType.ExcelAddress))
                 {
-                    var a = new ExcelAddressBase(t.Value);
+                    ExcelAddressBase? a = new ExcelAddressBase(t.Value);
                     if (a.Table == null)
                     {
                         f += t.Value;

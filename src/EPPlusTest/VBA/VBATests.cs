@@ -61,11 +61,11 @@ namespace EPPlusTest.VBA
             //store.Open(OpenFlags.ReadOnly);
             //package.Workbook.VbaProject.Signature.Certificate = store.Certificates[11];
 
-            var m = _pck.Workbook.VbaProject.Modules.AddModule("Module1");
+            ExcelVBAModule? m = _pck.Workbook.VbaProject.Modules.AddModule("Module1");
             m.Code += "Public Sub Test(param1 as string)\r\n\r\nEnd sub\r\nPublic Function functest() As String\r\n\r\nEnd Function\r\n";
-            var c = _pck.Workbook.VbaProject.Modules.AddClass("Class1", false);
+            ExcelVBAModule? c = _pck.Workbook.VbaProject.Modules.AddClass("Class1", false);
             c.Code += "Private Sub Class_Initialize()\r\n\r\nEnd Sub\r\nPrivate Sub Class_Terminate()\r\n\r\nEnd Sub";
-            var c2 = _pck.Workbook.VbaProject.Modules.AddClass("Class2", true);
+            ExcelVBAModule? c2 = _pck.Workbook.VbaProject.Modules.AddClass("Class2", true);
             c2.Code += "Private Sub Class_Initialize()\r\n\r\nEnd Sub\r\nPrivate Sub Class_Terminate()\r\n\r\nEnd Sub";
 
             _pck.Workbook.VbaProject.Protection.SetPassword("EPPlus");
@@ -75,7 +75,7 @@ namespace EPPlusTest.VBA
         {
             _pck.Workbook.Worksheets.Add("VBASetData");
             _pck.Workbook.CodeModule.Code = "Private Sub Workbook_Open()\r\nCreateData\r\nEnd Sub";
-            var module = _pck.Workbook.VbaProject.Modules.AddModule("Code");
+            ExcelVBAModule? module = _pck.Workbook.VbaProject.Modules.AddModule("Code");
 
             StringBuilder code = new StringBuilder("Public Sub CreateData()\r\n");
             for (int row = 1; row < 30; row++)
@@ -97,13 +97,13 @@ namespace EPPlusTest.VBA
         {
             ExcelWorksheet worksheet = _pck.Workbook.Worksheets.Add("测试");
 
-            var sb = new StringBuilder();
+            StringBuilder? sb = new StringBuilder();
             sb.AppendLine("Sub GetData()");
             sb.AppendLine("MsgBox (\"Hello,World\")");
             sb.AppendLine("End Sub");
 
             ExcelWorksheet worksheet2 = _pck.Workbook.Worksheets.Add("Sheet1");
-            var stringBuilder = new StringBuilder();
+            StringBuilder? stringBuilder = new StringBuilder();
             stringBuilder.AppendLine("Private Sub Worksheet_Change(ByVal Target As Range)");
             stringBuilder.AppendLine("GetData");
             stringBuilder.AppendLine("End Sub");
@@ -113,7 +113,7 @@ namespace EPPlusTest.VBA
         [TestMethod]
         public void ValidateName()
         {
-            using (var p = new ExcelPackage())
+            using (ExcelPackage? p = new ExcelPackage())
             {
                 p.Workbook.CreateVBAProject();
                 p.Workbook.Worksheets.Add("Work!Sheet");
@@ -134,7 +134,7 @@ namespace EPPlusTest.VBA
         [ExpectedException(typeof(InvalidOperationException))]
         public void ModuleNameContainsInvalidCharacters()
         {
-            using (var p = new ExcelPackage())
+            using (ExcelPackage? p = new ExcelPackage())
             {
                 p.Workbook.Worksheets.Add("InvalidName");
                 p.Workbook.CreateVBAProject();
@@ -144,16 +144,16 @@ namespace EPPlusTest.VBA
         [TestMethod]
         public void ValidateModuleNameAfterCopyWorksheet()
         {
-            using (var p = new ExcelPackage())
+            using (ExcelPackage? p = new ExcelPackage())
             {
-                var wsName = "SheetWithLooooooooooooooongName";
-                var ws = p.Workbook.Worksheets.Add(wsName);
+                string? wsName = "SheetWithLooooooooooooooongName";
+                ExcelWorksheet? ws = p.Workbook.Worksheets.Add(wsName);
                 p.Workbook.CreateVBAProject();
                 ws.CodeModule.Code = "Sub VBA_Code\r\n\r\nEnd Sub";
 
-                var newWS1 = p.Workbook.Worksheets.Add("1newworksheet", ws);
-                var newWS2 = p.Workbook.Worksheets.Add("Sheet3", ws);
-                var newWS3 = p.Workbook.Worksheets.Add("newworksheet+1", ws);
+                ExcelWorksheet? newWS1 = p.Workbook.Worksheets.Add("1newworksheet", ws);
+                ExcelWorksheet? newWS2 = p.Workbook.Worksheets.Add("Sheet3", ws);
+                ExcelWorksheet? newWS3 = p.Workbook.Worksheets.Add("newworksheet+1", ws);
 
                 Assert.AreEqual(5, p.Workbook.VbaProject.Modules.Count);
                 Assert.AreEqual("ThisWorkbook", p.Workbook.VbaProject.Modules[0].Name);
@@ -167,10 +167,10 @@ namespace EPPlusTest.VBA
         [TestMethod]
         public void SignedUnsignedWorkbook()
         {
-            using(var package = OpenTemplatePackage(@"SignedUnsignedWorkbook1.xlsm"))
+            using(ExcelPackage? package = OpenTemplatePackage(@"SignedUnsignedWorkbook1.xlsm"))
             {
-                var proj = package.Workbook.VbaProject;
-                var s = proj.Signature;
+                ExcelVbaProject? proj = package.Workbook.VbaProject;
+                ExcelVbaSignature? s = proj.Signature;
                 s.LegacySignature.HashAlgorithm = VbaSignatureHashAlgorithm.SHA512;
                 s.AgileSignature.CreateSignatureOnSave = false;
                 s.V3Signature.CreateSignatureOnSave = false;
@@ -180,13 +180,13 @@ namespace EPPlusTest.VBA
         [TestMethod]
         public void Verify_SignedWorkbook1_Hash_V3()
         {
-            using(var package = OpenTemplatePackage(@"SignedWorkbook1.xlsm"))
+            using(ExcelPackage? package = OpenTemplatePackage(@"SignedWorkbook1.xlsm"))
             {
-                var proj = package.Workbook.VbaProject;
-                var s = proj.Signature;
-                var ctx = s.V3Signature.SignatureHandler.Context;
+                ExcelVbaProject? proj = package.Workbook.VbaProject;
+                ExcelVbaSignature? s = proj.Signature;
+                EPPlusSignatureContext? ctx = s.V3Signature.SignatureHandler.Context;
 
-                var hash = VbaSignHashAlgorithmUtil.GetContentHash(proj, ctx);
+                byte[]? hash = VbaSignHashAlgorithmUtil.GetContentHash(proj, ctx);
                 Assert.IsTrue(ctx.SourceHash.SequenceEqual(hash));
             }
         }
@@ -194,36 +194,36 @@ namespace EPPlusTest.VBA
         [TestMethod]
         public void Verify_SignedWorkbook1_Hash_Agile()
         {
-            using (var package = OpenTemplatePackage(@"SignedWorkbook1.xlsm"))
+            using (ExcelPackage? package = OpenTemplatePackage(@"SignedWorkbook1.xlsm"))
             {
-                var proj = package.Workbook.VbaProject;
-                var s = proj.Signature;
-                var ctx = s.AgileSignature.SignatureHandler.Context;
+                ExcelVbaProject? proj = package.Workbook.VbaProject;
+                ExcelVbaSignature? s = proj.Signature;
+                EPPlusSignatureContext? ctx = s.AgileSignature.SignatureHandler.Context;
 
-                var hash = VbaSignHashAlgorithmUtil.GetContentHash(proj, ctx);
+                byte[]? hash = VbaSignHashAlgorithmUtil.GetContentHash(proj, ctx);
                 Assert.IsTrue(ctx.SourceHash.SequenceEqual(hash));
             }
         }
         [TestMethod]
         public void Verify_SignedWorkbook1_Hash_Legacy()
         {
-            using (var package = OpenTemplatePackage(@"SignedWorkbook1.xlsm"))
+            using (ExcelPackage? package = OpenTemplatePackage(@"SignedWorkbook1.xlsm"))
             {
-                var proj = package.Workbook.VbaProject;
-                var s = proj.Signature;
-                var ctx = s.LegacySignature.SignatureHandler.Context;
+                ExcelVbaProject? proj = package.Workbook.VbaProject;
+                ExcelVbaSignature? s = proj.Signature;
+                EPPlusSignatureContext? ctx = s.LegacySignature.SignatureHandler.Context;
 
-                var hash = VbaSignHashAlgorithmUtil.GetContentHash(proj, ctx);
+                byte[]? hash = VbaSignHashAlgorithmUtil.GetContentHash(proj, ctx);
                 Assert.IsTrue(ctx.SourceHash.SequenceEqual(hash));
             }
         }
         [TestMethod]
         public void SignedWorkbook()
         {
-            using (var package = OpenTemplatePackage(@"SignedWorkbook1.xlsm"))
+            using (ExcelPackage? package = OpenTemplatePackage(@"SignedWorkbook1.xlsm"))
             {
-                var proj = package.Workbook.VbaProject;
-                var s = proj.Signature;
+                ExcelVbaProject? proj = package.Workbook.VbaProject;
+                ExcelVbaSignature? s = proj.Signature;
                 package.Workbook.VbaProject.Signature.LegacySignature.CreateSignatureOnSave = false;
                 package.Workbook.VbaProject.Signature.V3Signature.CreateSignatureOnSave = false;
                 SaveAndCleanup(package);
@@ -232,12 +232,12 @@ namespace EPPlusTest.VBA
         [TestMethod]
         public void MyVbaTest_Sign1()
         {
-            var workbook = "VbaSignedSimple2.xlsm";
-            using (var package = OpenTemplatePackage(workbook))
+            string? workbook = "VbaSignedSimple2.xlsm";
+            using (ExcelPackage? package = OpenTemplatePackage(workbook))
             {
                 X509Store store = new X509Store(StoreLocation.CurrentUser);
                 store.Open(OpenFlags.ReadOnly);
-                foreach (var cert in store.Certificates)
+                foreach (X509Certificate2? cert in store.Certificates)
                 {
                     if (cert.HasPrivateKey && cert.NotBefore <= DateTime.Today && cert.NotAfter >= DateTime.Today)
                     {
@@ -248,7 +248,7 @@ namespace EPPlusTest.VBA
                         }
                     }
                 }
-                var module=package.Workbook.VbaProject.Modules.AddModule("TestCode");
+                ExcelVBAModule? module=package.Workbook.VbaProject.Modules.AddModule("TestCode");
                 module.Code = "Sub Main\r\nMsgbox(\"Test\")\r\nEnd Sub";
                 package.Workbook.VbaProject.Signature.LegacySignature.CreateSignatureOnSave = false;
                 package.Workbook.VbaProject.Signature.V3Signature.CreateSignatureOnSave = false;
@@ -259,12 +259,12 @@ namespace EPPlusTest.VBA
         [TestMethod]
         public void v3ContentSigningSample()
         {
-            var workbook = "v3Signing\\V3ContentSigning_original.xlsm";
-            using (var package = OpenTemplatePackage(workbook))
+            string? workbook = "v3Signing\\V3ContentSigning_original.xlsm";
+            using (ExcelPackage? package = OpenTemplatePackage(workbook))
             {
                 X509Store store = new X509Store(StoreLocation.CurrentUser);
                 store.Open(OpenFlags.ReadOnly);
-                foreach (var cert in store.Certificates)
+                foreach (X509Certificate2? cert in store.Certificates)
                 {
                     if (cert.HasPrivateKey && cert.NotBefore <= DateTime.Today && cert.NotAfter >= DateTime.Today)
                     {

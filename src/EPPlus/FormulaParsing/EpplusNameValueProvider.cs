@@ -48,7 +48,7 @@ namespace OfficeOpenXml.FormulaParsing
             }
             else if (ws!=null)
             {
-                var wsNames = _excelDataProvider.GetWorksheetNames(ws);
+                ExcelNamedRangeCollection? wsNames = _excelDataProvider.GetWorksheetNames(ws);
                 if (wsNames != null && wsNames.ContainsKey(key))
                 {
                     return true;

@@ -3,6 +3,7 @@ using OfficeOpenXml;
 using System;
 using System.Drawing;
 using System.Linq;
+using OfficeOpenXml.Style.XmlAccess;
 
 namespace EPPlusTest.Core.Range
 {
@@ -24,7 +25,7 @@ namespace EPPlusTest.Core.Range
         [TestMethod]
         public void Column_SetWidthBestFitAndStyle()
         {
-            var ws = _pck.Workbook.Worksheets.Add("Column_Width");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("Column_Width");
             ws.Cells["A1:E5"].EntireColumn.Width = 30;
             ws.Cells["A1:E5"].EntireColumn.Style.Fill.SetBackground(Color.Red);
 
@@ -43,7 +44,7 @@ namespace EPPlusTest.Core.Range
         [TestMethod]
         public void Column_SetPhonetic()
         {
-            var ws = _pck.Workbook.Worksheets.Add("Column_Phonetic");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("Column_Phonetic");
             ws.Cells["D1:G5"].EntireColumn.Phonetic = true;
             ws.Cells["E1000:E5000"].EntireColumn.Phonetic = false;
 
@@ -57,7 +58,7 @@ namespace EPPlusTest.Core.Range
         [TestMethod]
         public void Column_SetHidden()
         {
-            var ws = _pck.Workbook.Worksheets.Add("Column_Hidden");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("Column_Hidden");
             ws.Cells["F1:J5"].EntireColumn.Hidden = true;
             ws.Cells["G1"].EntireColumn.Hidden = false;
 
@@ -72,7 +73,7 @@ namespace EPPlusTest.Core.Range
         [TestMethod]
         public void Column_CollapsChildren_Right_L()
         {
-            var ws = _pck.Workbook.Worksheets.Add("Column_Collapsed_Right_HideL");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("Column_Collapsed_Right_HideL");
             SetupColumnOutlineRight(ws);
             ws.Cells["L1"].EntireColumn.CollapseChildren(false);
 
@@ -85,7 +86,7 @@ namespace EPPlusTest.Core.Range
         [TestMethod]
         public void Column_CollapsChildren_Right_P()
         {
-            var ws = _pck.Workbook.Worksheets.Add("Column_Collapsed_Right_HideP");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("Column_Collapsed_Right_HideP");
             SetupColumnOutlineRight(ws);
             ws.Cells["P:P"].EntireColumn.CollapseChildren(true);
 
@@ -101,7 +102,7 @@ namespace EPPlusTest.Core.Range
         [TestMethod]
         public void Column_CollapsChildren_Right_D()
         {
-            var ws = _pck.Workbook.Worksheets.Add("Column_Collapsed_Right_HideD");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("Column_Collapsed_Right_HideD");
             SetupColumnOutlineRight(ws);
             ws.Cells["D:D"].EntireColumn.CollapseChildren(true);
 
@@ -116,7 +117,7 @@ namespace EPPlusTest.Core.Range
         [TestMethod]
         public void Column_CollapsChildren_SetLevel1()
         {
-            var ws = _pck.Workbook.Worksheets.Add("Column_Collapsed_Right_Level1");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("Column_Collapsed_Right_Level1");
             SetupColumnOutlineRight(ws);
             ws.Cells["A:P"].EntireColumn.SetVisibleOutlineLevel(1);
 
@@ -132,7 +133,7 @@ namespace EPPlusTest.Core.Range
         [TestMethod]
         public void Column_CollapsChildren_SetLevel1_ExpandedChildren()
         {
-            var ws = _pck.Workbook.Worksheets.Add("Column_Collapsed_Right_Level1_ec");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("Column_Collapsed_Right_Level1_ec");
             SetupColumnOutlineRight(ws);
             ws.Cells["A:P"].EntireColumn.SetVisibleOutlineLevel(1, false);
 
@@ -148,7 +149,7 @@ namespace EPPlusTest.Core.Range
         [TestMethod]
         public void Column_CollapsChildren_SetLevel1_AlreadyCollapsed()
         {
-            var ws = _pck.Workbook.Worksheets.Add("Column_Collapsed_Right_Level1_ac");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("Column_Collapsed_Right_Level1_ac");
             SetupColumnOutlineRight(ws);
             ws.Cells["A:P"].EntireColumn.CollapseChildren(true);
             ws.Cells["A:P"].EntireColumn.SetVisibleOutlineLevel(2, false);
@@ -157,7 +158,7 @@ namespace EPPlusTest.Core.Range
         [TestMethod]
         public void Column_CollapsChildren_Left()
         {
-            var ws = _pck.Workbook.Worksheets.Add("Column_Collapsed_Level0_Left");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("Column_Collapsed_Level0_Left");
             SetupColumnOutlineLeft(ws);
 
             ws.Cells["B1:C1"].EntireColumn.CollapseChildren(false);
@@ -182,7 +183,7 @@ namespace EPPlusTest.Core.Range
         [TestMethod]
         public void Column_CollapsChildren_Left_A()
         {
-            var ws = _pck.Workbook.Worksheets.Add("Column_Collapsed_Level0_Left_A");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("Column_Collapsed_Level0_Left_A");
             SetupColumnOutlineLeft(ws);
 
             ws.Cells["A1"].EntireColumn.CollapseChildren(false);
@@ -201,7 +202,7 @@ namespace EPPlusTest.Core.Range
         [TestMethod]
         public void Row_CollapsChildren_Top()
         {
-            var ws = _pck.Workbook.Worksheets.Add("Row_Collapsed_Level0");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("Row_Collapsed_Level0");
             SetupRowOutlineTop(ws);
 
             ws.Cells["A3:A4"].EntireRow.CollapseChildren(false);
@@ -223,7 +224,7 @@ namespace EPPlusTest.Core.Range
         [TestMethod]
         public void Row_CollapsChildren_TopSummaryTop()
         {
-            var ws = _pck.Workbook.Worksheets.Add("Row_Collapsed_Level0_Below");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("Row_Collapsed_Level0_Below");
             SetupRowOutlineBelow(ws);
             ws.Cells["A13"].EntireRow.CollapseChildren(false);
             ws.Cells["A2"].EntireRow.CollapseChildren(false);
@@ -239,7 +240,7 @@ namespace EPPlusTest.Core.Range
         [TestMethod]
         public void Row_ExpandToLevel3()
         {
-            var ws = _pck.Workbook.Worksheets.Add("Row_Collapsed_ExpandToLevel3");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("Row_Collapsed_ExpandToLevel3");
             SetupRowOutlineBelow(ws);
 
             ws.Cells["A1:A19"].EntireRow.SetVisibleOutlineLevel(1);
@@ -259,7 +260,7 @@ namespace EPPlusTest.Core.Range
         [TestMethod]
         public void Row_ExpandAllAndCollapseSubLevel_Top()
         {
-            var ws = _pck.Workbook.Worksheets.Add("Row_Collapsed_ExpandHidden_Top");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("Row_Collapsed_ExpandHidden_Top");
             SetupRowOutlineTop(ws);
 
             ws.Cells["A1"].EntireRow.CollapseChildren(true);
@@ -278,7 +279,7 @@ namespace EPPlusTest.Core.Range
         [TestMethod]
         public void Row_ExpandAllAndCollapseSubLevel_Bottom()
         {
-            var ws = _pck.Workbook.Worksheets.Add("Row_Collapsed_ExpandHidden_Bottom");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("Row_Collapsed_ExpandHidden_Bottom");
             SetupRowOutlineBelow(ws);
 
             ws.Cells["A13"].EntireRow.CollapseChildren(true);
@@ -293,7 +294,7 @@ namespace EPPlusTest.Core.Range
         [TestMethod]
         public void Column_ExpandAllAndCollapseSubLevel_Left()
         {
-            var ws = _pck.Workbook.Worksheets.Add("Col_Collapsed_ExpandHidden_Left");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("Col_Collapsed_ExpandHidden_Left");
             SetupColumnOutlineLeft(ws);
 
             ws.Cells["A1"].EntireColumn.CollapseChildren(true);
@@ -312,7 +313,7 @@ namespace EPPlusTest.Core.Range
         [TestMethod]
         public void Column_ExpandAllAndCollapseSubLevel_Right()
         {
-            var ws = _pck.Workbook.Worksheets.Add("Col_Collapsed_ExpandHidden_Right");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("Col_Collapsed_ExpandHidden_Right");
             SetupColumnOutlineRight(ws);
 
             ws.Cells["L1"].EntireColumn.CollapseChildren(true);
@@ -327,10 +328,10 @@ namespace EPPlusTest.Core.Range
         [TestMethod]
         public void Column_SetStyleName()
         {
-            var styleName = "Green Fill";
-            var ns = _pck.Workbook.Styles.CreateNamedStyle(styleName);
+            string? styleName = "Green Fill";
+            ExcelNamedStyleXml? ns = _pck.Workbook.Styles.CreateNamedStyle(styleName);
             ns.Style.Fill.SetBackground(Color.Green);
-            var ws = _pck.Workbook.Worksheets.Add("Column_StyleName"); 
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("Column_StyleName"); 
             
             ws.Cells["C15:J20"].EntireColumn.StyleName = "Green Fill";
 
@@ -339,7 +340,7 @@ namespace EPPlusTest.Core.Range
         [TestMethod]
         public void Row_SetStyle()
         {
-            var ws = _pck.Workbook.Worksheets.Add("Row_Style");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("Row_Style");
 
             ws.Cells["C15:J20"].EntireRow.Style.Font.Color.SetAuto();
             ws.Cells["C15:J20"].EntireRow.Style.Font.Bold = true; ;
@@ -356,10 +357,10 @@ namespace EPPlusTest.Core.Range
         [TestMethod]
         public void Row_SetStyleName()
         {
-            var styleName = "Blue Fill";
-            var ns = _pck.Workbook.Styles.CreateNamedStyle(styleName);
+            string? styleName = "Blue Fill";
+            ExcelNamedStyleXml? ns = _pck.Workbook.Styles.CreateNamedStyle(styleName);
             ns.Style.Fill.SetBackground(Color.Blue);
-            var ws = _pck.Workbook.Worksheets.Add("Row_StyleName");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("Row_StyleName");
 
             ws.Cells["C15:J20"].EntireRow.StyleName = styleName;
 
@@ -368,7 +369,7 @@ namespace EPPlusTest.Core.Range
         [TestMethod]
         public void Row_SetPhonetic()
         {
-            var ws = _pck.Workbook.Worksheets.Add("Row_Phonetic");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("Row_Phonetic");
 
             ws.Cells["G15:K20"].EntireRow.Phonetic = true;
             ws.Cells["I17:J18"].EntireRow.Phonetic = false;
@@ -385,7 +386,7 @@ namespace EPPlusTest.Core.Range
         [TestMethod]
         public void Row_SetHidden()
         {
-            var ws = _pck.Workbook.Worksheets.Add("Row_Hidden");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("Row_Hidden");
 
             ws.Cells["G15:K20"].EntireRow.Hidden = true;
             ws.Cells["I17:J18"].EntireRow.Hidden = false;
@@ -402,7 +403,7 @@ namespace EPPlusTest.Core.Range
         [TestMethod]
         public void Row_SetCollapsed()
         {
-            var ws = _pck.Workbook.Worksheets.Add("Row_Collapsed");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("Row_Collapsed");
 
             ws.Cells["G15:K20"].EntireRow.Collapsed = true;
             ws.Cells["I17:J18"].EntireRow.Collapsed = false;
@@ -419,7 +420,7 @@ namespace EPPlusTest.Core.Range
         [TestMethod]
         public void Row_SetOutlineLevel()
         {
-            var ws = _pck.Workbook.Worksheets.Add("Row_OutlineLevel");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("Row_OutlineLevel");
 
             ws.Cells["G15:K20"].EntireRow.OutlineLevel = 1;
             ws.Cells["I17:J18"].EntireRow.OutlineLevel = 2;
@@ -435,9 +436,9 @@ namespace EPPlusTest.Core.Range
         [TestMethod]
         public void VerifyRowHeightIsCopied()
         {
-            var sheet1 = _pck.Workbook.Worksheets.Add("row_height");
+            ExcelWorksheet? sheet1 = _pck.Workbook.Worksheets.Add("row_height");
             sheet1.Rows[1].Height = 30D;
-            var sheet2 = _pck.Workbook.Worksheets.Add("copy", sheet1);
+            ExcelWorksheet? sheet2 = _pck.Workbook.Worksheets.Add("copy", sheet1);
             Assert.AreEqual(30D, sheet2.Rows[1].Height);
         }
 

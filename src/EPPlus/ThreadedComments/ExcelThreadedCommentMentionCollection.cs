@@ -37,7 +37,7 @@ namespace OfficeOpenXml.ThreadedComments
 
         private void LoadMentions()
         {
-            foreach(var mentionNode in TopNode.ChildNodes)
+            foreach(object? mentionNode in TopNode.ChildNodes)
             {
                 _mentionList.Add(new ExcelThreadedCommentMention(NameSpaceManager, (XmlNode)mentionNode));
             }
@@ -68,9 +68,9 @@ namespace OfficeOpenXml.ThreadedComments
         /// <param name="textPosition">Index of the first character of the mention in the text</param>
         internal void AddMention(ExcelThreadedCommentPerson person, int textPosition)
         {
-            var elem = TopNode.OwnerDocument.CreateElement("mention", ExcelPackage.schemaThreadedComments);
+            XmlElement? elem = TopNode.OwnerDocument.CreateElement("mention", ExcelPackage.schemaThreadedComments);
             TopNode.AppendChild(elem);
-            var mention = new ExcelThreadedCommentMention(NameSpaceManager, elem);
+            ExcelThreadedCommentMention? mention = new ExcelThreadedCommentMention(NameSpaceManager, elem);
             mention.MentionId = ExcelThreadedCommentMention.NewId();
             mention.StartIndex = textPosition;
             // + 1 to include the @ prefix...

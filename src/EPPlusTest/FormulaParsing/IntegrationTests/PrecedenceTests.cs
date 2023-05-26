@@ -57,42 +57,42 @@ namespace EPPlusTest.FormulaParsing.IntegrationTests
         [TestMethod]
         public void ShouldCaluclateUsingPrecedenceMultiplyBeforeAdd()
         {
-            var result = _parser.Parse("4 + 6 * 2");
+            object? result = _parser.Parse("4 + 6 * 2");
             Assert.AreEqual(16d, result);
         }
 
         [TestMethod]
         public void ShouldCaluclateUsingPrecedenceDivideBeforeAdd()
         {
-            var result = _parser.Parse("4 + 6 / 2");
+            object? result = _parser.Parse("4 + 6 / 2");
             Assert.AreEqual(7d, result);
         }
 
         [TestMethod]
         public void ShouldCalculateTwoGroupsUsingDivideAndMultiplyBeforeSubtract()
         {
-            var result = _parser.Parse("4/2 + 3 * 3");
+            object? result = _parser.Parse("4/2 + 3 * 3");
             Assert.AreEqual(11d, result);
         }
 
         [TestMethod]
         public void ShouldCalculateExpressionWithinParenthesisBeforeMultiply()
         {
-            var result = _parser.Parse("(2+4) * 2");
+            object? result = _parser.Parse("(2+4) * 2");
             Assert.AreEqual(12d, result);
         }
 
         [TestMethod]
         public void ShouldConcatAfterAdd()
         {
-            var result = _parser.Parse("2 + 4 & \"abc\"");
+            object? result = _parser.Parse("2 + 4 & \"abc\"");
             Assert.AreEqual("6abc", result);
         }
 
         [TestMethod]
         public void Bugfixtest()
         {
-            var result = _parser.Parse("(1+2)+3^2");
+            object? result = _parser.Parse("(1+2)+3^2");
         }
     }
 }

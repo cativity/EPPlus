@@ -29,11 +29,11 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Engineering
         public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
         {
             ValidateArguments(arguments, 1);
-            var number = ArgToString(arguments, 0);
-            var formatString = "X";
+            string? number = ArgToString(arguments, 0);
+            string? formatString = "X";
             if(arguments.Count() > 1)
             {
-                var padding = ArgToInt(arguments, 1);
+                int padding = ArgToInt(arguments, 1);
                 if (padding < 0 ^ padding > 10)
                 {
                     return this.CreateResult(eErrorType.Num);
@@ -48,7 +48,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Engineering
 
             if (number.Length < 10)
             {
-                var n = Convert.ToInt32(number, 2);
+                int n = Convert.ToInt32(number, 2);
                 return CreateResult(n.ToString(formatString), DataType.Decimal);
             }
             else
@@ -58,7 +58,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Engineering
                     return this.CreateResult(eErrorType.Num);
                 }
 
-                var hexStr = result.ToString(formatString);
+                string? hexStr = result.ToString(formatString);
                 if(result < 0)
                 {
                     hexStr = PaddingHelper.EnsureLength(hexStr, 10, "F");

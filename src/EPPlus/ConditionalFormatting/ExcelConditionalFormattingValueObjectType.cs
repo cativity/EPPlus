@@ -104,14 +104,14 @@ namespace OfficeOpenXml.ConditionalFormatting
 			XmlNamespaceManager nameSpaceManager)
 		{
 			// Get the corresponding <cfvo> node (by the position)
-			var node = topNode.SelectSingleNode(
-				string.Format(
-					"{0}[position()={1}]",
-				// {0}
-					ExcelConditionalFormattingConstants.Paths.Cfvo,
-				// {1}
-					ExcelConditionalFormattingValueObjectType.GetOrderByPosition(position, ruleType)),
-				nameSpaceManager);
+			XmlNode? node = topNode.SelectSingleNode(
+                                                     string.Format(
+                                                                   "{0}[position()={1}]",
+                                                                   // {0}
+                                                                   ExcelConditionalFormattingConstants.Paths.Cfvo,
+                                                                   // {1}
+                                                                   ExcelConditionalFormattingValueObjectType.GetOrderByPosition(position, ruleType)),
+                                                     nameSpaceManager);
 
 			if (node == null)
 			{

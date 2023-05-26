@@ -25,8 +25,8 @@ namespace OfficeOpenXml.FormulaParsing
     {
         internal static DependencyChain Create(ExcelWorkbook wb, ExcelCalculationOption options)
         {
-            var depChain = new DependencyChain();
-            foreach (var ws in wb.Worksheets)
+            DependencyChain? depChain = new DependencyChain();
+            foreach (ExcelWorksheet? ws in wb.Worksheets)
             {
                 if (!(ws is ExcelChartsheet))
                 {
@@ -35,7 +35,7 @@ namespace OfficeOpenXml.FormulaParsing
                         (ws, depChain, options);
                 }
             }
-            foreach (var name in wb.Names)
+            foreach (ExcelNamedRange? name in wb.Names)
             {
                 if (name.NameValue==null)
                 {
@@ -48,7 +48,7 @@ namespace OfficeOpenXml.FormulaParsing
         internal static DependencyChain Create(ExcelWorksheet ws, ExcelCalculationOption options)
         {
             ws.CheckSheetTypeAndNotDisposed();
-            var depChain = new DependencyChain();
+            DependencyChain? depChain = new DependencyChain();
 
             GetChain(depChain, ws.Workbook.FormulaParser.Lexer, ws.Cells, options);
 
@@ -59,7 +59,7 @@ namespace OfficeOpenXml.FormulaParsing
         internal static DependencyChain Create(ExcelWorksheet ws, string Formula, ExcelCalculationOption options)
         {
             ws.CheckSheetTypeAndNotDisposed();
-            var depChain = new DependencyChain();
+            DependencyChain? depChain = new DependencyChain();
 
             GetChain(depChain, ws.Workbook.FormulaParser.Lexer, ws, Formula, options);
             
@@ -68,7 +68,7 @@ namespace OfficeOpenXml.FormulaParsing
 
         private static void GetWorksheetNames(ExcelWorksheet ws, DependencyChain depChain, ExcelCalculationOption options)
         {
-            foreach (var name in ws.Names)
+            foreach (ExcelNamedRange? name in ws.Names)
             {
                 if (!string.IsNullOrEmpty(name.NameFormula))
                 {
@@ -78,7 +78,7 @@ namespace OfficeOpenXml.FormulaParsing
         }
         internal static DependencyChain Create(ExcelRangeBase range, ExcelCalculationOption options)
         {
-            var depChain = new DependencyChain();
+            DependencyChain? depChain = new DependencyChain();
 
             GetChain(depChain, range.Worksheet.Workbook.FormulaParser.Lexer, range, options);
 
@@ -86,11 +86,11 @@ namespace OfficeOpenXml.FormulaParsing
         }
         private static void GetChain(DependencyChain depChain, ILexer lexer, ExcelNamedRange name, ExcelCalculationOption options)
         {
-            var ws = name.Worksheet;
-            var id = ExcelCellBase.GetCellId(ws==null || ws.IsDisposed ? -1 : ws.IndexInList, name.Index, 0);
+            ExcelWorksheet? ws = name.Worksheet;
+            ulong id = ExcelCellBase.GetCellId(ws==null || ws.IsDisposed ? -1 : ws.IndexInList, name.Index, 0);
             if (!depChain.index.ContainsKey(id))
             {
-                var f = new FormulaCell() { ws=ws, wsIndex = (ws == null ? -1 : ws.IndexInList), Row = name.Index, Column = 0, Formula=name.NameFormula };
+                FormulaCell? f = new FormulaCell() { ws=ws, wsIndex = (ws == null ? -1 : ws.IndexInList), Row = name.Index, Column = 0, Formula=name.NameFormula };
                 if (!string.IsNullOrEmpty(f.Formula))
                 {
                     f.Tokens = lexer.Tokenize(f.Formula, (ws==null ? null : ws.Name)).ToList();
@@ -109,7 +109,7 @@ namespace OfficeOpenXml.FormulaParsing
         }
         private static void GetChain(DependencyChain depChain, ILexer lexer, ExcelWorksheet ws, string formula, ExcelCalculationOption options)
         {
-            var f = new FormulaCell() { ws = ws, wsIndex = ws.IndexInList, Row = -1, Column = -1 };
+            FormulaCell? f = new FormulaCell() { ws = ws, wsIndex = ws.IndexInList, Row = -1, Column = -1 };
             f.Formula = formula;
             if (!string.IsNullOrEmpty(f.Formula))
             {
@@ -121,8 +121,8 @@ namespace OfficeOpenXml.FormulaParsing
 
         private static void GetChain(DependencyChain depChain, ILexer lexer, ExcelRangeBase Range, ExcelCalculationOption options)
         {
-            var ws = Range.Worksheet;
-            var fs = new CellStoreEnumerator<object>(ws._formulas, Range.Start.Row, Range.Start.Column, Range.End.Row, Range.End.Column);
+            ExcelWorksheet? ws = Range.Worksheet;
+            CellStoreEnumerator<object>? fs = new CellStoreEnumerator<object>(ws._formulas, Range.Start.Row, Range.Start.Column, Range.End.Row, Range.End.Column);
             while (fs.Next())
             {
                 if (fs.Value == null || fs.Value.ToString().Trim() == "")
@@ -130,10 +130,10 @@ namespace OfficeOpenXml.FormulaParsing
                     continue;
                 }
 
-                var id = ExcelCellBase.GetCellId(ws.IndexInList, fs.Row, fs.Column);
+                ulong id = ExcelCellBase.GetCellId(ws.IndexInList, fs.Row, fs.Column);
                 if (!depChain.index.ContainsKey(id))
                 {
-                    var f = new FormulaCell() { ws = ws, wsIndex = ws.IndexInList, Row = fs.Row, Column = fs.Column };
+                    FormulaCell? f = new FormulaCell() { ws = ws, wsIndex = ws.IndexInList, Row = fs.Row, Column = fs.Column };
                     if (fs.Value is int)
                     {
                         f.Formula = ws._sharedFormulas[(int)fs.Value].GetFormula(fs.Row, fs.Column, ws.Name);
@@ -168,10 +168,10 @@ namespace OfficeOpenXml.FormulaParsing
         iterateToken:
             while (f.tokenIx < f.Tokens.Count)
             {
-                var t = f.Tokens[f.tokenIx];
+                Token t = f.Tokens[f.tokenIx];
                 if (t.TokenTypeIsSet(TokenType.ExcelAddress))
                 {
-                    var adr = new ExcelFormulaAddress(t.Value, f.ws??ws);
+                    ExcelFormulaAddress? adr = new ExcelFormulaAddress(t.Value, f.ws??ws);
                     if (adr.Table != null)
                     {
                         adr.SetRCFromTable(ws._package, new ExcelAddressBase(f.Row, f.Column, f.Row, f.Column));
@@ -179,7 +179,7 @@ namespace OfficeOpenXml.FormulaParsing
 
                     if (ws!=null && adr.WorkSheetName.Equals(ws.Name, StringComparison.OrdinalIgnoreCase) && string.IsNullOrEmpty(adr._wb) && adr.Collide(new ExcelAddressBase(f.Row, f.Column, f.Row, f.Column))!=ExcelAddressBase.eAddressCollition.No)
                     {
-                        var tt = t.GetTokenTypeFlags() | TokenType.CircularReference;
+                        TokenType tt = t.GetTokenTypeFlags() | TokenType.CircularReference;
                         f.Tokens[f.tokenIx] = t.CloneWithNewTokenType(tt);
                         f.tokenIx++;
                         continue;
@@ -275,11 +275,11 @@ namespace OfficeOpenXml.FormulaParsing
                         }
                         else
                         {
-                            var id = ExcelAddressBase.GetCellId(name.LocalSheetId, name.Index, 0);
+                            ulong id = ExcelAddressBase.GetCellId(name.LocalSheetId, name.Index, 0);
 
                             if (!depChain.index.ContainsKey(id))
                             {
-                                var rf = new FormulaCell() { wsIndex = name.LocalSheetId, Row = name.Index, Column = 0 };
+                                FormulaCell? rf = new FormulaCell() { wsIndex = name.LocalSheetId, Row = name.Index, Column = 0 };
                                 rf.Formula = name.NameFormula;
                                 if (rf.wsIndex >= 0 && rf.wsIndex < wb.Worksheets.Count)
                                 {
@@ -297,11 +297,11 @@ namespace OfficeOpenXml.FormulaParsing
                                 if (stack.Count > 0)
                                 {
                                     //Check for circular references
-                                    foreach (var par in stack)
+                                    foreach (FormulaCell? par in stack)
                                     {
                                         if (ExcelAddressBase.GetCellId(par.wsIndex, par.Row, par.Column) == id && !options.AllowCircularReferences)
                                         {
-                                            var tt = t.GetTokenTypeFlags() | TokenType.CircularReference;
+                                            TokenType tt = t.GetTokenTypeFlags() | TokenType.CircularReference;
                                             f.Tokens[f.tokenIx] = t.CloneWithNewTokenType(tt);
                                             f.tokenIx++;
                                             continue;
@@ -325,16 +325,16 @@ namespace OfficeOpenXml.FormulaParsing
         iterateCells:
             while (f.iterator != null && f.iterator.Next())
             {
-                var v = f.iterator.Value;
+                object? v = f.iterator.Value;
                 if (v == null || v.ToString().Trim() == "")
                 {
                     continue;
                 }
 
-                var id = ExcelAddressBase.GetCellId(f.iteratorWs.IndexInList, f.iterator.Row, f.iterator.Column);
+                ulong id = ExcelAddressBase.GetCellId(f.iteratorWs.IndexInList, f.iterator.Row, f.iterator.Column);
                 if (!depChain.index.ContainsKey(id))
                 {
-                    var rf = new FormulaCell() { wsIndex = f.iteratorWs.IndexInList, Row = f.iterator.Row, Column = f.iterator.Column };
+                    FormulaCell? rf = new FormulaCell() { wsIndex = f.iteratorWs.IndexInList, Row = f.iterator.Row, Column = f.iterator.Column };
                     if (f.iterator.Value is int)
                     {
                         rf.Formula = f.iteratorWs._sharedFormulas[(int)v].GetFormula(f.iterator.Row, f.iterator.Column, f.iteratorWs.Name);
@@ -359,7 +359,7 @@ namespace OfficeOpenXml.FormulaParsing
                         if (stack.Count > 0)
                         {
                             //Check for circular references
-                            foreach (var par in stack)
+                            foreach (FormulaCell? par in stack)
                             {
                                 if ((par.iteratorWs!=null && par.iterator!=null && ExcelCellBase.GetCellId(par.iteratorWs.IndexInList, par.iterator.Row, par.iterator.Column) == id) ||
                                     ExcelAddressBase.GetCellId(par.wsIndex, par.Row, par.Column) == id)  //This is only neccesary for the first cell in the chain.

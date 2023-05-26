@@ -46,16 +46,16 @@ namespace EPPlusTest.Core.Range
         [TestMethod]
         public void ArrayToCellString()
         {
-            var ms = new MemoryStream();
-            using (var p = new ExcelPackage(ms))
+            MemoryStream? ms = new MemoryStream();
+            using (ExcelPackage? p = new ExcelPackage(ms))
             {
-                var sheet = p.Workbook.Worksheets.Add("Sheet1");
+                ExcelWorksheet? sheet = p.Workbook.Worksheets.Add("Sheet1");
                 sheet.Cells[1, 1].Value = new[] { "string1", "string2", "string3" };
                 p.Save();
             }
-            using (var p = new ExcelPackage(ms))
+            using (ExcelPackage? p = new ExcelPackage(ms))
             {
-                var sheet = p.Workbook.Worksheets["Sheet1"];
+                ExcelWorksheet? sheet = p.Workbook.Worksheets["Sheet1"];
                 Assert.AreEqual("string1", sheet.Cells[1, 1].Value);
             }
         }
@@ -63,45 +63,45 @@ namespace EPPlusTest.Core.Range
         [TestMethod]
         public void ArrayToCellNull()
         {
-            var ms = new MemoryStream();
-            using (var p = new ExcelPackage(ms))
+            MemoryStream? ms = new MemoryStream();
+            using (ExcelPackage? p = new ExcelPackage(ms))
             {
-                var sheet = p.Workbook.Worksheets.Add("Sheet1");
+                ExcelWorksheet? sheet = p.Workbook.Worksheets.Add("Sheet1");
                 sheet.Cells[1, 1].Value = new[] { null, "string2", "string3" };
                 p.Save();
             }
-            using (var p = new ExcelPackage(ms))
+            using (ExcelPackage? p = new ExcelPackage(ms))
             {
-                var sheet = p.Workbook.Worksheets["Sheet1"];
+                ExcelWorksheet? sheet = p.Workbook.Worksheets["Sheet1"];
                 Assert.AreEqual(string.Empty, sheet.Cells[1, 1].Value);
             }
         }
         [TestMethod]
         public void ArrayToCellInt()
         {
-            var ms = new MemoryStream();
-            using (var p = new ExcelPackage(ms))
+            MemoryStream? ms = new MemoryStream();
+            using (ExcelPackage? p = new ExcelPackage(ms))
             {
-                var sheet = p.Workbook.Worksheets.Add("Sheet1");
+                ExcelWorksheet? sheet = p.Workbook.Worksheets.Add("Sheet1");
                 sheet.Cells[1, 1].Value = new object[] { 1, "string2", "string3" };
                 p.Save();
             }
-            using (var p = new ExcelPackage(ms))
+            using (ExcelPackage? p = new ExcelPackage(ms))
             {
-                var sheet = p.Workbook.Worksheets["Sheet1"];
+                ExcelWorksheet? sheet = p.Workbook.Worksheets["Sheet1"];
                 Assert.AreEqual(1D, sheet.Cells[1, 1].Value);
             }
         }
         [TestMethod]
         public void ClearRangeWithCommaseparatedAddress()
         {
-            using (var p1 = new ExcelPackage())
+            using (ExcelPackage? p1 = new ExcelPackage())
             {
-                var ws = p1.Workbook.Worksheets.Add("Sheet1");
+                ExcelWorksheet? ws = p1.Workbook.Worksheets.Add("Sheet1");
                 ws.Cells["A1:B2, C3:D4"].Value = 5;
                 p1.Save();
 
-                using (var p2 = new ExcelPackage(p1.Stream))
+                using (ExcelPackage? p2 = new ExcelPackage(p1.Stream))
                 {
                     ws = p2.Workbook.Worksheets["Sheet1"];
                     ws.Cells["A1:B2, C3:D4"].Clear();
@@ -114,11 +114,11 @@ namespace EPPlusTest.Core.Range
         [TestMethod]
         public void MergeCellsShouldBeSaved()
         {
-            using (var p = new ExcelPackage())
+            using (ExcelPackage? p = new ExcelPackage())
             {
-                var ws = p.Workbook.Worksheets.Add("MergedCells");
+                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("MergedCells");
 
-                var r = ws.Cells[1, 1, 1, 5];
+                ExcelRange? r = ws.Cells[1, 1, 1, 5];
                 r.Merge = true;
                 Assert.AreEqual(1, ws.MergedCells.Count);
                 r.Value = "Header";
@@ -126,7 +126,7 @@ namespace EPPlusTest.Core.Range
                 Assert.AreEqual(1, ws.MergedCells.Count);
                 Assert.AreEqual("A1:E1", ws.MergedCells[0]);
                 p.Save();
-                using (var p2 = new ExcelPackage(p.Stream))
+                using (ExcelPackage? p2 = new ExcelPackage(p.Stream))
                 {
                     ws = p.Workbook.Worksheets[0];
                     Assert.AreEqual(1, ws.MergedCells.Count);
@@ -137,11 +137,11 @@ namespace EPPlusTest.Core.Range
         [TestMethod]
         public void LoadFromCollectionObjectDynamic()
         {
-            using (var p = new ExcelPackage())
+            using (ExcelPackage? p = new ExcelPackage())
             {
-                var ws = p.Workbook.Worksheets.Add("LoadFromCollection");
+                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("LoadFromCollection");
 
-                var range = ws.Cells["A1"].LoadFromCollection(new List<object>() { 1, "s", null });
+                ExcelRangeBase? range = ws.Cells["A1"].LoadFromCollection(new List<object>() { 1, "s", null });
                 Assert.AreEqual("A1:A3", range.Address);
                 Assert.AreEqual("A1:A3", range.Address);
 
@@ -155,11 +155,11 @@ namespace EPPlusTest.Core.Range
         [TestMethod]
         public void EncodingCharInFormulaAndValue()
         {
-            var textA1 = "\"Hello\vA1\" & \"!\t\nNewLine\"";
-            var textB1 = "\"Hello\vB1\" & \"!\t\nNewLine\"";
-            using (var p=OpenPackage("EncodeFormula.xlsx",true))
+            string? textA1 = "\"Hello\vA1\" & \"!\t\nNewLine\"";
+            string? textB1 = "\"Hello\vB1\" & \"!\t\nNewLine\"";
+            using (ExcelPackage? p=OpenPackage("EncodeFormula.xlsx",true))
             {
-                var ws = p.Workbook.Worksheets.Add("Encoding");
+                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Encoding");
                 ws.SetFormula(1, 1, textA1);
                 ws.Cells[1, 2].Formula = textB1;
                 ws.Calculate();
@@ -168,7 +168,7 @@ namespace EPPlusTest.Core.Range
                 Assert.AreEqual(textB1, ws.GetFormula(1, 2));
 
                 p.Save();
-                using(var p2=new ExcelPackage(p.Stream))
+                using(ExcelPackage? p2=new ExcelPackage(p.Stream))
                 {
                     ws = p2.Workbook.Worksheets["Encoding"];
                     Assert.AreEqual(textA1, ws.Cells["A1"].Formula);
@@ -179,9 +179,9 @@ namespace EPPlusTest.Core.Range
         [TestMethod]
         public void ValidateMergedCell()
         {
-            using (var p = OpenPackage("MergeCellsDeleteInsert.xlsx", true))
+            using (ExcelPackage? p = OpenPackage("MergeCellsDeleteInsert.xlsx", true))
             {
-                var ws = p.Workbook.Worksheets.Add("Merge");
+                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Merge");
                 ws.Cells["B2:D2"].Merge = true;
                 ws.Cells["B13:D13"].Merge = true;
                 ws.Cells["B41:D41"].Merge = true;
@@ -197,11 +197,11 @@ namespace EPPlusTest.Core.Range
                 ws.Cells["A42:E44"].Insert(eShiftTypeInsert.Down);
                 ws.Cells["A42:E42"].Delete(eShiftTypeDelete.Up);
 
-                foreach (var addr in ws.MergedCells)
+                foreach (string? addr in ws.MergedCells)
                 {
                     if (!string.IsNullOrEmpty(addr))
                     {
-                        var a = new ExcelAddressBase(addr);
+                        ExcelAddressBase? a = new ExcelAddressBase(addr);
                         for (int r = a._fromRow; r <= a._toRow; r++)
                         {
                             for (int c = a._fromCol; c <= a._toCol; c++)
@@ -214,7 +214,7 @@ namespace EPPlusTest.Core.Range
 
                 p.Save();
 
-                using (var p2 = new ExcelPackage(p.Stream))
+                using (ExcelPackage? p2 = new ExcelPackage(p.Stream))
                 {
                     ws = p2.Workbook.Worksheets["Merge"];
                     ws.Cells["B41:D42"].Merge = true;
@@ -226,9 +226,9 @@ namespace EPPlusTest.Core.Range
         [TestMethod]
         public void ValidateMergedCellAroundTableShouldNotThrowException()
         {
-            using (var p = new ExcelPackage())
+            using (ExcelPackage? p = new ExcelPackage())
             {
-                var ws = p.Workbook.Worksheets.Add("Merge");
+                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Merge");
                 ws.Tables.Add(ws.Cells["D4:E5"], "Table1");
 
                 ws.Cells["A1:A2"].Merge = true;
@@ -241,9 +241,9 @@ namespace EPPlusTest.Core.Range
         [ExpectedException(typeof(InvalidOperationException))]
         public void ValidateMergedCellInsideTableShouldThrowException()
         {
-            using (var p = new ExcelPackage())
+            using (ExcelPackage? p = new ExcelPackage())
             {
-                var ws = p.Workbook.Worksheets.Add("Merge");
+                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Merge");
                 ws.Tables.Add(ws.Cells["D4:E5"], "Table1");
 
                 ws.Cells["D4:D5"].Merge = true;
@@ -253,9 +253,9 @@ namespace EPPlusTest.Core.Range
         [ExpectedException(typeof(InvalidOperationException))]
         public void ValidateMergedCellPartlyWithTableShouldThrowException()
         {
-            using (var p = new ExcelPackage())
+            using (ExcelPackage? p = new ExcelPackage())
             {
-                var ws = p.Workbook.Worksheets.Add("Merge");
+                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Merge");
                 ws.Tables.Add(ws.Cells["D4:E5"], "Table1");
 
                 ws.Cells["D3:D4"].Merge = true;
@@ -265,9 +265,9 @@ namespace EPPlusTest.Core.Range
         [ExpectedException(typeof(InvalidOperationException))]
         public void ValidateMergedCellEqualTableShouldThrowException()
         {
-            using (var p = new ExcelPackage())
+            using (ExcelPackage? p = new ExcelPackage())
             {
-                var ws = p.Workbook.Worksheets.Add("Merge");
+                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Merge");
                 ws.Tables.Add(ws.Cells["D4:E5"], "Table1");
 
                 ws.Cells["D4:E5"].Merge = true;
@@ -277,9 +277,9 @@ namespace EPPlusTest.Core.Range
         [ExpectedException(typeof(ArgumentException))]
         public void ValidateTableAddShouldThrowExceptionMergedCellEqual()
         {
-            using (var p = new ExcelPackage())
+            using (ExcelPackage? p = new ExcelPackage())
             {
-                var ws = p.Workbook.Worksheets.Add("Merge");
+                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Merge");
                 ws.Cells["D4:E5"].Merge = true;
                 ws.Tables.Add(ws.Cells["D4:E5"], "Table1");
             }
@@ -288,9 +288,9 @@ namespace EPPlusTest.Core.Range
         [ExpectedException(typeof(ArgumentException))]
         public void ValidateTableAddShouldThrowExceptionMergedCellInside()
         {
-            using (var p = new ExcelPackage())
+            using (ExcelPackage? p = new ExcelPackage())
             {
-                var ws = p.Workbook.Worksheets.Add("Merge");
+                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Merge");
                 ws.Cells["D4:D5"].Merge = true;
                 ws.Tables.Add(ws.Cells["D4:E5"], "Table1");
             }
@@ -299,18 +299,18 @@ namespace EPPlusTest.Core.Range
         [ExpectedException(typeof(ArgumentException))]
         public void ValidateTableAddShouldThrowExceptionMergedCellPartly()
         {
-            using (var p = new ExcelPackage())
+            using (ExcelPackage? p = new ExcelPackage())
             {
-                var ws = p.Workbook.Worksheets.Add("Merge");
+                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Merge");
                 ws.Cells["D3:D4"].Merge = true;
                 ws.Tables.Add(ws.Cells["D4:E5"], "Table1");
             }
         }
         public void ValidateDeleted()
         {
-            using (var p = new ExcelPackage())
+            using (ExcelPackage? p = new ExcelPackage())
             {
-                var ws = p.Workbook.Worksheets.Add("Merge");
+                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Merge");
                 ws.Cells["D3:D4"].Merge = true;
                 ws.Tables.Add(ws.Cells["D4:E5"], "Table1");
             }

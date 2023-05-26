@@ -182,13 +182,13 @@ namespace OfficeOpenXml.Drawing.Chart
             if (upBars && _upBar == null)
             {
                 _upBar = new ExcelChartStyleItem(NameSpaceManager, ChartNode, this, _upBarPath, RemoveUpBar);
-                var chart = _topChart ?? this;
+                ExcelChart? chart = _topChart ?? this;
                 chart.ApplyStyleOnPart(_upBar, chart.StyleManager?.Style?.UpBar);
             }
             if (downBars && _downBar == null)
             {
                 _downBar = new ExcelChartStyleItem(NameSpaceManager, ChartNode, this, _downBarPath, RemoveDownBar);
-                var chart = _topChart ?? this;
+                ExcelChart? chart = _topChart ?? this;
                 chart.ApplyStyleOnPart(_upBar, chart.StyleManager?.Style?.DownBar);
             }
         }
@@ -200,7 +200,7 @@ namespace OfficeOpenXml.Drawing.Chart
             if (_dropLines == null)
             {
                 _dropLines = new ExcelChartStyleItem(NameSpaceManager, ChartNode, this, _dropLinesPath, RemoveDropLines);
-                var chart = _topChart ?? this;
+                ExcelChart? chart = _topChart ?? this;
                 chart.ApplyStyleOnPart(_upBar, chart.StyleManager?.Style?.DropLine);
             }
             return _dropLines;
@@ -213,7 +213,7 @@ namespace OfficeOpenXml.Drawing.Chart
             if (_hiLowLines == null)
             {
                 _hiLowLines = new ExcelChartStyleItem(NameSpaceManager, ChartNode, this, _hiLowLinesPath, RemoveHiLowLines);
-                var chart = _topChart ?? this;
+                ExcelChart? chart = _topChart ?? this;
                 chart.ApplyStyleOnPart(_upBar, chart.StyleManager?.Style?.HighLowLine);
             }
             return HighLowLine;

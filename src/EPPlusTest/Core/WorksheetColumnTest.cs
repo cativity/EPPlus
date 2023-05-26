@@ -21,10 +21,10 @@ namespace EPPlusTest.Core
         [TestMethod]
         public void ValidateDefaultWidth()
         {
-            using(var p = OpenPackage("columnWidthDefault.xlsx", true))
+            using(ExcelPackage? p = OpenPackage("columnWidthDefault.xlsx", true))
             {
-                var ws = p.Workbook.Worksheets.Add("default");
-                var expectedWidth = 9.140625D;
+                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("default");
+                double expectedWidth = 9.140625D;
                 Assert.AreEqual(expectedWidth, ws.DefaultColWidth);
 
                 ws.Column(2).Width = ws.DefaultColWidth;
@@ -58,12 +58,12 @@ namespace EPPlusTest.Core
         }        
         private static void CreateNormalFontsFiles(string fontName)
         {
-            var fontNameNoSpace = fontName.Replace(" ", "");
-            foreach (var size in new int[] { 6, 8, 9, 10, 11, 12, 14, 16, 18, 20, 24, 26, 28, 30, 32, 34, 36, 38, 40, 42, 44, 48, 72, 96, 128, 256 })
+            string? fontNameNoSpace = fontName.Replace(" ", "");
+            foreach (int size in new int[] { 6, 8, 9, 10, 11, 12, 14, 16, 18, 20, 24, 26, 28, 30, 32, 34, 36, 38, 40, 42, 44, 48, 72, 96, 128, 256 })
             {
-                using (var p = OpenPackage($"ColumnWidth\\columnWidth{fontNameNoSpace}{size}.xlsx", true))
+                using (ExcelPackage? p = OpenPackage($"ColumnWidth\\columnWidth{fontNameNoSpace}{size}.xlsx", true))
                 {
-                    var ws = p.Workbook.Worksheets.Add($"{fontNameNoSpace}{size}");
+                    ExcelWorksheet? ws = p.Workbook.Worksheets.Add($"{fontNameNoSpace}{size}");
                     p.Workbook.Styles.NamedStyles[0].Style.Font.Name = fontName;
                     p.Workbook.Styles.NamedStyles[0].Style.Font.Size = size;
 
@@ -75,9 +75,9 @@ namespace EPPlusTest.Core
         [TestMethod]
         public void ValidateAutoFitWidthNormalArial28()
         {
-            using (var p = OpenPackage($"columnWidthArial28.xlsx", true))
+            using (ExcelPackage? p = OpenPackage($"columnWidthArial28.xlsx", true))
             {
-                var ws = p.Workbook.Worksheets.Add($"arial28");
+                ExcelWorksheet? ws = p.Workbook.Worksheets.Add($"arial28");
                 p.Workbook.Styles.NamedStyles[0].Style.Font.Name = "Arial";
                 p.Workbook.Styles.NamedStyles[0].Style.Font.Size = 28;
 
@@ -91,9 +91,9 @@ namespace EPPlusTest.Core
         [TestMethod]
         public void ValidateDefaultWidthArial36()
         {
-            using (var p = OpenPackage("columnWidthArial36.xlsx", true))
+            using (ExcelPackage? p = OpenPackage("columnWidthArial36.xlsx", true))
             {   
-                var ws = p.Workbook.Worksheets.Add("arial36");
+                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("arial36");
                 p.Workbook.Styles.NamedStyles[0].Style.Font.Name = "Arial";
                 p.Workbook.Styles.NamedStyles[0].Style.Font.Size = 36;
 
@@ -104,9 +104,9 @@ namespace EPPlusTest.Core
         [TestMethod]
         public void ValidateDefaultWidthArial72()
         {
-            using (var p = OpenPackage("columnWidthArial72.xlsx", true))
+            using (ExcelPackage? p = OpenPackage("columnWidthArial72.xlsx", true))
             {
-                var ws = p.Workbook.Worksheets.Add("arial72");
+                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("arial72");
                 p.Workbook.Styles.NamedStyles[0].Style.Font.Name = "Arial";
                 p.Workbook.Styles.NamedStyles[0].Style.Font.Size = 72;
 

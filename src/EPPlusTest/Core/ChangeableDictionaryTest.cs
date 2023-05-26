@@ -41,8 +41,8 @@ namespace EPPlusTest.Core
             ChangeableDictionary<int> d = Setup();
 
             //Validate order
-            var prev = -1;
-            foreach (var item in d)
+            int prev = -1;
+            foreach (int item in d)
             {
                 Assert.IsTrue(prev < item);
             }
@@ -78,7 +78,7 @@ namespace EPPlusTest.Core
 
         private static ChangeableDictionary<int> Setup()
         {
-            var d = new ChangeableDictionary<int>();
+            ChangeableDictionary<int>? d = new ChangeableDictionary<int>();
             d.Add(2, 20);
             d.Add(8, 80);
             d.Add(5, 50);

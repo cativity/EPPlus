@@ -39,8 +39,8 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.FinancialDayCount
 
         internal static FinancialPeriod CreatePeriod(System.DateTime start, System.DateTime end, DayCountBasis basis)
         {
-            var s = Create(start, basis);
-            var e = Create(end, basis);
+            FinancialDay? s = Create(start, basis);
+            FinancialDay? e = Create(end, basis);
             return new FinancialPeriod(s, e);
         }
     }

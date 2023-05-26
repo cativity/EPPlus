@@ -16,6 +16,8 @@ using OfficeOpenXml.Core.Worksheet.Core.Worksheet.Fonts.GenericMeasurements;
 using OfficeOpenXml.Interfaces.Drawing.Text;
 using System;
 using System.Collections.Generic;
+using OfficeOpenXml.Style.XmlAccess;
+using OfficeOpenXml.Table;
 using static OfficeOpenXml.ExcelAddressBase;
 
 namespace OfficeOpenXml.Core
@@ -39,7 +41,7 @@ namespace OfficeOpenXml.Core
 
         internal void AutofitColumn(double MinimumWidth, double MaximumWidth)
         {
-            var ws = _range._worksheet;
+            ExcelWorksheet? ws = _range._worksheet;
             if (ws.Dimension == null)
             {
                 return;
@@ -52,10 +54,10 @@ namespace OfficeOpenXml.Core
 
             bool doAdjust = ws._package.DoAdjustDrawings;
             ws._package.DoAdjustDrawings = false;
-            var drawWidths = ws.Drawings.GetDrawingWidths();
+            double[,]? drawWidths = ws.Drawings.GetDrawingWidths();
 
-            var fromCol = _range._fromCol > ws.Dimension._fromCol ? _range._fromCol : ws.Dimension._fromCol;
-            var toCol = _range._toCol < ws.Dimension._toCol ? _range._toCol : ws.Dimension._toCol;
+            int fromCol = _range._fromCol > ws.Dimension._fromCol ? _range._fromCol : ws.Dimension._fromCol;
+            int toCol = _range._toCol < ws.Dimension._toCol ? _range._toCol : ws.Dimension._toCol;
 
             if (fromCol > toCol)
             {
@@ -68,7 +70,7 @@ namespace OfficeOpenXml.Core
             }
             else
             {
-                foreach (var addr in _range.Addresses)
+                foreach (ExcelAddressBase? addr in _range.Addresses)
                 {
                     fromCol = addr._fromCol > ws.Dimension._fromCol ? addr._fromCol : ws.Dimension._fromCol;
                     toCol = addr._toCol < ws.Dimension._toCol ? addr._toCol : ws.Dimension._toCol;
@@ -77,7 +79,7 @@ namespace OfficeOpenXml.Core
             }
 
             //Get any autofilter to widen these columns
-            var afAddr = new List<ExcelAddressBase>();
+            List<ExcelAddressBase>? afAddr = new List<ExcelAddressBase>();
             if (ws.AutoFilterAddress != null)
             {
                 afAddr.Add(new ExcelAddressBase(    ws.AutoFilterAddress._fromRow,
@@ -86,7 +88,7 @@ namespace OfficeOpenXml.Core
                                                     ws.AutoFilterAddress._toCol));
                 afAddr[afAddr.Count - 1]._ws = _range.WorkSheetName;
             }
-            foreach (var tbl in ws.Tables)
+            foreach (ExcelTable? tbl in ws.Tables)
             {
                 if (tbl.AutoFilterAddress != null)
                 {
@@ -98,16 +100,16 @@ namespace OfficeOpenXml.Core
                 }
             }
 
-            var styles = ws.Workbook.Styles;
-            var ns = styles.GetNormalStyle();
-            var normalXfId = ns?.StyleXfId ?? 0;
+            ExcelStyles? styles = ws.Workbook.Styles;
+            ExcelNamedStyleXml? ns = styles.GetNormalStyle();
+            int normalXfId = ns?.StyleXfId ?? 0;
             if (normalXfId < 0 || normalXfId >= styles.CellStyleXfs.Count)
             {
                 normalXfId = 0;
             }
 
-            var nf = styles.Fonts[styles.CellStyleXfs[normalXfId].FontId];
-            var fs = MeasurementFontStyles.Regular;
+            ExcelFontXml? nf = styles.Fonts[styles.CellStyleXfs[normalXfId].FontId];
+            MeasurementFontStyles fs = MeasurementFontStyles.Regular;
             if (nf.Bold)
             {
                 fs |= MeasurementFontStyles.Bold;
@@ -128,17 +130,17 @@ namespace OfficeOpenXml.Core
                 fs |= MeasurementFontStyles.Strikeout;
             }
 
-            var nfont = new MeasurementFont
+            MeasurementFont? nfont = new MeasurementFont
             {
                 FontFamily = nf.Name,
                 Style = fs,
                 Size = nf.Size
             };
 
-            var normalSize = Convert.ToSingle(FontSize.GetWidthPixels(nf.Name, nf.Size));
-            var textSettings = _range._workbook._package.Settings.TextSettings;
+            float normalSize = Convert.ToSingle(FontSize.GetWidthPixels(nf.Name, nf.Size));
+            ExcelTextSettings? textSettings = _range._workbook._package.Settings.TextSettings;
 
-            foreach (var cell in _range)
+            foreach (ExcelRangeBase? cell in _range)
             {
                 if (ws.Column(cell.Start.Column).Hidden)    //Issue 15338
                 {
@@ -150,7 +152,7 @@ namespace OfficeOpenXml.Core
                     continue;
                 }
 
-                var fntID = styles.CellXfs[cell.StyleID].FontId;
+                int fntID = styles.CellXfs[cell.StyleID].FontId;
                 MeasurementFont f;
                 if (_fontCache.ContainsKey(fntID))
                 {
@@ -158,7 +160,7 @@ namespace OfficeOpenXml.Core
                 }
                 else
                 {
-                    var fnt = styles.Fonts[fntID];
+                    ExcelFontXml? fnt = styles.Fonts[fntID];
                     fs = MeasurementFontStyles.Regular;
                     if (fnt.Bold)
                     {
@@ -189,21 +191,21 @@ namespace OfficeOpenXml.Core
 
                     _fontCache.Add(fntID, f);
                 }
-                var ind = styles.CellXfs[cell.StyleID].Indent;
-                var textForWidth = cell.TextForWidth;
-                var t = textForWidth + (ind > 0 && !string.IsNullOrEmpty(textForWidth) ? new string('_', ind) : "");
+                int ind = styles.CellXfs[cell.StyleID].Indent;
+                string? textForWidth = cell.TextForWidth;
+                string? t = textForWidth + (ind > 0 && !string.IsNullOrEmpty(textForWidth) ? new string('_', ind) : "");
                 if (t.Length > 32000)
                 {
                     t = t.Substring(0, 32000); //Issue
                 }
 
-                var size = MeasureString(t, fntID, textSettings);
+                TextMeasurement size = MeasureString(t, fntID, textSettings);
 
                 double width;
                 double r = styles.CellXfs[cell.StyleID].TextRotation;
                 if (r <= 0)
                 {
-                    var padding = 0; // 5
+                    int padding = 0; // 5
                     width = (size.Width + padding) / normalSize;
                 }
                 else
@@ -212,7 +214,7 @@ namespace OfficeOpenXml.Core
                     width = (((size.Width - size.Height) * Math.Abs(System.Math.Cos(System.Math.PI * r / 180.0)) + size.Height) + 5) / normalSize;
                 }
 
-                foreach (var a in afAddr)
+                foreach (ExcelAddressBase? a in afAddr)
                 {
                     if (a.Collide(cell) != eAddressCollition.No)
                     {
@@ -231,12 +233,12 @@ namespace OfficeOpenXml.Core
         }
         private TextMeasurement MeasureString(string t, int fntID, ExcelTextSettings ts)
         {
-            var measureCache = new Dictionary<ulong, TextMeasurement>();
+            Dictionary<ulong, TextMeasurement>? measureCache = new Dictionary<ulong, TextMeasurement>();
             ulong key = ((ulong)((uint)t.GetHashCode()) << 32) | (uint)fntID;
-            if (!measureCache.TryGetValue(key, out var measurement))
+            if (!measureCache.TryGetValue(key, out TextMeasurement measurement))
             {
-                var measurer = ts.PrimaryTextMeasurer;
-                var font = _fontCache[fntID];
+                ITextMeasurer? measurer = ts.PrimaryTextMeasurer;
+                MeasurementFont? font = _fontCache[fntID];
                 measurement = measurer.MeasureText(t, font);
                 if (measurement.IsEmpty && ts.FallbackTextMeasurer != null && ts.FallbackTextMeasurer != ts.PrimaryTextMeasurer)
                 {
@@ -262,10 +264,10 @@ namespace OfficeOpenXml.Core
             TextMeasurement measurement;
             if (FontSize.FontWidths.ContainsKey(font.FontFamily))
             {
-                var width = FontSize.GetWidthPixels(font.FontFamily, font.Size);
-                var height = FontSize.GetHeightPixels(font.FontFamily, font.Size);
-                var defaultWidth = FontSize.GetWidthPixels(FontSize.NonExistingFont, font.Size);
-                var defaultHeight = FontSize.GetHeightPixels(FontSize.NonExistingFont, font.Size);
+                decimal width = FontSize.GetWidthPixels(font.FontFamily, font.Size);
+                decimal height = FontSize.GetHeightPixels(font.FontFamily, font.Size);
+                decimal defaultWidth = FontSize.GetWidthPixels(FontSize.NonExistingFont, font.Size);
+                decimal defaultHeight = FontSize.GetHeightPixels(FontSize.NonExistingFont, font.Size);
                 _nonExistingFont.Size = font.Size;
                 _nonExistingFont.Style = font.Style;
                 measurement = _genericMeasurer.MeasureText(t, _nonExistingFont);
@@ -287,11 +289,11 @@ namespace OfficeOpenXml.Core
 
         private void SetMinWidth(ExcelWorksheet ws, double minimumWidth, int fromCol, int toCol)
         {
-            var iterator = new CellStoreEnumerator<ExcelValue>(ws._values, 0, fromCol, 0, toCol);
-            var prevCol = fromCol;
+            CellStoreEnumerator<ExcelValue>? iterator = new CellStoreEnumerator<ExcelValue>(ws._values, 0, fromCol, 0, toCol);
+            int prevCol = fromCol;
             foreach (ExcelValue val in iterator)
             {
-                var col = (ExcelColumn)val._value;
+                ExcelColumn? col = (ExcelColumn)val._value;
                 if (col.Hidden)
                 {
                     continue;
@@ -300,7 +302,7 @@ namespace OfficeOpenXml.Core
                 col.Width = minimumWidth;
                 if (ws.DefaultColWidth > minimumWidth && col.ColumnMin > prevCol)
                 {
-                    var newCol = ws.Column(prevCol);
+                    ExcelColumn? newCol = ws.Column(prevCol);
                     newCol.ColumnMax = col.ColumnMin - 1;
                     newCol.Width = minimumWidth;
                 }
@@ -308,7 +310,7 @@ namespace OfficeOpenXml.Core
             }
             if (ws.DefaultColWidth > minimumWidth && prevCol < toCol)
             {
-                var newCol = ws.Column(prevCol);
+                ExcelColumn? newCol = ws.Column(prevCol);
                 newCol.ColumnMax = toCol;
                 newCol.Width = minimumWidth;
             }

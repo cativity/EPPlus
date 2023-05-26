@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using OfficeOpenXml.Style;
 
 namespace EPPlusTest.Core.Range
 {
@@ -32,12 +33,12 @@ namespace EPPlusTest.Core.Range
         [TestMethod]
         public void AddThreeParagraphsAndValidate()
         {
-            var r = _ws.Cells["A1"];
-            var r1=r.RichText.Add("Line1\n");
+            ExcelRange? r = _ws.Cells["A1"];
+            ExcelRichText? r1=r.RichText.Add("Line1\n");
             r1.PreserveSpace = true;
-            var r2 = r.RichText.Add("Line2\n");
+            ExcelRichText? r2 = r.RichText.Add("Line2\n");
             r2.PreserveSpace = true;
-            var r3 = r.RichText.Add("Line3");
+            ExcelRichText? r3 = r.RichText.Add("Line3");
             r3.PreserveSpace = true;
             r3.Bold = true;
             r3.Italic = true;
@@ -93,7 +94,7 @@ namespace EPPlusTest.Core.Range
         [TestMethod]
         public void RemoveVerticalAlign()
         {
-            var p=_ws.Cells["G1"].RichText.Add("RemoveVerticalAlign");
+            ExcelRichText? p=_ws.Cells["G1"].RichText.Add("RemoveVerticalAlign");
             p.VerticalAlign = OfficeOpenXml.Style.ExcelVerticalAlignmentFont.Baseline;
             p.VerticalAlign = OfficeOpenXml.Style.ExcelVerticalAlignmentFont.None;
             Assert.AreEqual(p.VerticalAlign, OfficeOpenXml.Style.ExcelVerticalAlignmentFont.None);
@@ -101,14 +102,14 @@ namespace EPPlusTest.Core.Range
         [TestMethod]
         public void ValidateIsRichTextValuesAndTexts()
         {
-            using (var p1 = new ExcelPackage())
+            using (ExcelPackage? p1 = new ExcelPackage())
             {
-                var ws = p1.Workbook.Worksheets.Add("RichText");
-                var v = "Player's taunt success & you attack them";
+                ExcelWorksheet? ws = p1.Workbook.Worksheets.Add("RichText");
+                string? v = "Player's taunt success & you attack them";
                 ws.Cells["A1"].Value = v;
                 p1.Save();
 
-                using (var p2 = new ExcelPackage(p1.Stream))
+                using (ExcelPackage? p2 = new ExcelPackage(p1.Stream))
                 {
                     Assert.AreEqual(v, ws.Cells["A1"].Value);
                     ws.Cells["A1"].IsRichText = true;
@@ -124,7 +125,7 @@ namespace EPPlusTest.Core.Range
         [TestMethod]
         public void ValidateRichTextOverwriteByArray()
         {
-            var ws = _pck.Workbook.Worksheets.Add("RichTextOverwriteArray");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("RichTextOverwriteArray");
             for(int row=1;row<10;row++)
             {
                 for (int col = 1; col < 10; col++)
@@ -133,7 +134,7 @@ namespace EPPlusTest.Core.Range
                 }
             }
 
-            var array = new object[,] { { "Overwrite cell 1-1", "Overwrite cell 1-2" }, { "Overwrite cell 2-1", "Overwrite cell 2-2" } };
+            object[,]? array = new object[,] { { "Overwrite cell 1-1", "Overwrite cell 1-2" }, { "Overwrite cell 2-1", "Overwrite cell 2-2" } };
 
             ws.Cells["C3:D4"].Value = array;
 
@@ -154,8 +155,8 @@ namespace EPPlusTest.Core.Range
         [TestMethod]
         public void IsRichTextShouldKeepValues()
         {
-            var ws = _pck.Workbook.Worksheets.Add("IsRichTextKeepValues");
-            var ci = Thread.CurrentThread.CurrentCulture;
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("IsRichTextKeepValues");
+            CultureInfo? ci = Thread.CurrentThread.CurrentCulture;
             Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
             ws.Cells["A1"].Value = "Cell A1";
             ws.Cells["B1"].Value = "Cell B1";
@@ -187,11 +188,11 @@ namespace EPPlusTest.Core.Range
         [TestMethod]
         public void ValidateRichText_TextIsReflectedOnRemove()
         {
-            var package = new OfficeOpenXml.ExcelPackage();
+            ExcelPackage? package = new OfficeOpenXml.ExcelPackage();
             package.Workbook.Worksheets.Add("Test");
-            var range = package.Workbook.Worksheets[0].Cells[1, 1];
-            var first = range.RichText.Add("1");
-            var second = range.RichText.Add("2");
+            ExcelRange? range = package.Workbook.Worksheets[0].Cells[1, 1];
+            ExcelRichText? first = range.RichText.Add("1");
+            ExcelRichText? second = range.RichText.Add("2");
             Assert.IsTrue(first != null);
             Assert.IsTrue(second != null);
             Assert.IsTrue(range.IsRichText);

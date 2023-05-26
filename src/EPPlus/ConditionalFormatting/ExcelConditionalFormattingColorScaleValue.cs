@@ -282,16 +282,16 @@ namespace OfficeOpenXml.ConditionalFormatting
             }
 
             // Create the node in the right order
-            var node = CreateComplexNode(
-                TopNode,
-                string.Format(
-                    "{0}[position()={1}]",
-                    // {0}
-                    nodePath,
-                    // {1}
-                    nodeOrder),
-                nodeInsertOrder,
-                referenceNode);
+            XmlNode? node = CreateComplexNode(
+                                              TopNode,
+                                              string.Format(
+                                                            "{0}[position()={1}]",
+                                                            // {0}
+                                                            nodePath,
+                                                            // {1}
+                                                            nodeOrder),
+                                              nodeInsertOrder,
+                                              referenceNode);
 
             // Point to the new node as the temporary TopNode (we need it for the XmlHelper functions)
             TopNode = node;
@@ -336,15 +336,15 @@ namespace OfficeOpenXml.ConditionalFormatting
         {
             get
             {
-                var typeAttribute = GetXmlNodeString(
-                    string.Format(
-                        "{0}[position()={1}]/{2}",
-                        // {0}
-                        ExcelConditionalFormattingConstants.Paths.Cfvo,
-                        // {1}
-                        GetNodeOrder(),
-                        // {2}
-                        ExcelConditionalFormattingConstants.Paths.TypeAttribute));
+                string? typeAttribute = GetXmlNodeString(
+                                                         string.Format(
+                                                                       "{0}[position()={1}]/{2}",
+                                                                       // {0}
+                                                                       ExcelConditionalFormattingConstants.Paths.Cfvo,
+                                                                       // {1}
+                                                                       GetNodeOrder(),
+                                                                       // {2}
+                                                                       ExcelConditionalFormattingConstants.Paths.TypeAttribute));
 
                 return ExcelConditionalFormattingValueObjectType.GetTypeByAttrbiute(typeAttribute);
             }
@@ -397,15 +397,15 @@ namespace OfficeOpenXml.ConditionalFormatting
             get
             {
                 // Color Code like "FF5B34F2"
-                var colorCode = GetXmlNodeString(
-                    string.Format(
-                        "{0}[position()={1}]/{2}",
-                        // {0}
-                        ExcelConditionalFormattingConstants.Paths.Color,
-                        // {1}
-                        GetNodeOrder(),
-                        // {2}
-                        ExcelConditionalFormattingConstants.Paths.RgbAttribute));
+                string? colorCode = GetXmlNodeString(
+                                                     string.Format(
+                                                                   "{0}[position()={1}]/{2}",
+                                                                   // {0}
+                                                                   ExcelConditionalFormattingConstants.Paths.Color,
+                                                                   // {1}
+                                                                   GetNodeOrder(),
+                                                                   // {2}
+                                                                   ExcelConditionalFormattingConstants.Paths.RgbAttribute));
 
                 return ExcelConditionalFormattingHelper.ConvertFromColorCode(colorCode);
             }

@@ -79,7 +79,7 @@ namespace OfficeOpenXml.Style.Dxf
             {
                 throw new ArgumentOutOfRangeException("position","Must be a value between 0 and 100");
             }
-            var color = new ExcelDxfGradientFillColor(_styles, position, _callback);
+            ExcelDxfGradientFillColor? color = new ExcelDxfGradientFillColor(_styles, position, _callback);
             color.Color.Auto = true;
             _lst.Add(color);
             return color;
@@ -98,8 +98,8 @@ namespace OfficeOpenXml.Style.Dxf
         {
             get
             {
-                var id = "";
-                foreach (var c in _lst.OrderBy(x=>x.Position))
+                string? id = "";
+                foreach (ExcelDxfGradientFillColor? c in _lst.OrderBy(x=>x.Position))
                 {
                     id += c.Id;
                 }
@@ -131,7 +131,7 @@ namespace OfficeOpenXml.Style.Dxf
         /// <param name="position"></param>
         public void RemoveAt(double position)
         {
-            var item = _lst.Find(i => i.Position == position);
+            ExcelDxfGradientFillColor? item = _lst.Find(i => i.Position == position);
             if(item!=null)
             {
                 _lst.Remove(item);
@@ -157,7 +157,7 @@ namespace OfficeOpenXml.Style.Dxf
         {
             if(_lst.Count>0)
             {
-                foreach(var c in _lst)
+                foreach(ExcelDxfGradientFillColor? c in _lst)
                 {
                     c.CreateNodes(helper, path);
                 }
@@ -167,7 +167,7 @@ namespace OfficeOpenXml.Style.Dxf
         {
             if (_callback!=null && _lst.Count > 0)
             {
-                foreach (var c in _lst)
+                foreach (ExcelDxfGradientFillColor? c in _lst)
                 {
                     c.SetStyle();
                 }
@@ -175,8 +175,8 @@ namespace OfficeOpenXml.Style.Dxf
         }
         internal override DxfStyleBase Clone()
         {
-            var ret = new ExcelDxfGradientFillColorCollection(_styles, _callback);
-            foreach (var c in _lst)
+            ExcelDxfGradientFillColorCollection? ret = new ExcelDxfGradientFillColorCollection(_styles, _callback);
+            foreach (ExcelDxfGradientFillColor? c in _lst)
             {
                 ret._lst.Add((ExcelDxfGradientFillColor)c.Clone());
             }

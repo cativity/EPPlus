@@ -41,11 +41,11 @@ namespace EPPlusTest.FormulaParsing.LexicalAnalysis
         [TestMethod]
         public void ShouldNotHaveNextWhenOnlyOneToken()
         {
-            var tokens = new List<Token>
+            List<Token>? tokens = new List<Token>
             {
                 new Token("1", TokenType.Decimal)
             };
-            var navigator = new TokenNavigator(tokens);
+            TokenNavigator? navigator = new TokenNavigator(tokens);
 
             Assert.IsFalse(navigator.HasNext());
         }
@@ -53,12 +53,12 @@ namespace EPPlusTest.FormulaParsing.LexicalAnalysis
         [TestMethod]
         public void ShouldHaveNextWhenMoreTokens()
         {
-            var tokens = new List<Token>
+            List<Token>? tokens = new List<Token>
             {
                 new Token("1", TokenType.Decimal),
                 new Token("2", TokenType.Decimal)
             };
-            var navigator = new TokenNavigator(tokens);
+            TokenNavigator? navigator = new TokenNavigator(tokens);
 
             Assert.IsTrue(navigator.HasNext());
         }
@@ -66,12 +66,12 @@ namespace EPPlusTest.FormulaParsing.LexicalAnalysis
         [TestMethod]
         public void ShouldNotHavePrevWheFirstToken()
         {
-            var tokens = new List<Token>
+            List<Token>? tokens = new List<Token>
             {
                 new Token("1", TokenType.Decimal),
                 new Token("2", TokenType.Decimal)
             };
-            var navigator = new TokenNavigator(tokens);
+            TokenNavigator? navigator = new TokenNavigator(tokens);
 
             Assert.AreEqual(0, navigator.Index, "Index was not 0 but " + navigator.Index);
             Assert.IsFalse(navigator.HasPrev(), "HasPrev() was not false");
@@ -80,12 +80,12 @@ namespace EPPlusTest.FormulaParsing.LexicalAnalysis
         [TestMethod]
         public void IndexShouldIncreaseWhenMoveNext()
         {
-            var tokens = new List<Token>
+            List<Token>? tokens = new List<Token>
             {
                 new Token("1", TokenType.Decimal),
                 new Token("2", TokenType.Decimal)
             };
-            var navigator = new TokenNavigator(tokens);
+            TokenNavigator? navigator = new TokenNavigator(tokens);
             navigator.MoveNext();
 
             Assert.AreEqual(1, navigator.Index, "Index was not 1 but " + navigator.Index);
@@ -94,12 +94,12 @@ namespace EPPlusTest.FormulaParsing.LexicalAnalysis
         [TestMethod]
         public void NextTokenShouldBeReturned()
         {
-            var tokens = new List<Token>
+            List<Token>? tokens = new List<Token>
             {
                 new Token("1", TokenType.Decimal),
                 new Token("2", TokenType.Decimal)
             };
-            var navigator = new TokenNavigator(tokens);
+            TokenNavigator? navigator = new TokenNavigator(tokens);
 
             Assert.AreEqual("2", navigator.NextToken.Value);
         }
@@ -107,12 +107,12 @@ namespace EPPlusTest.FormulaParsing.LexicalAnalysis
         [TestMethod]
         public void MoveToNextAndReturnPrevToken()
         {
-            var tokens = new List<Token>
+            List<Token>? tokens = new List<Token>
             {
                 new Token("1", TokenType.Decimal),
                 new Token("2", TokenType.Decimal)
             };
-            var navigator = new TokenNavigator(tokens);
+            TokenNavigator? navigator = new TokenNavigator(tokens);
             navigator.MoveNext();
 
             Assert.AreEqual("1", navigator.PreviousToken.Value.Value);
@@ -121,27 +121,27 @@ namespace EPPlusTest.FormulaParsing.LexicalAnalysis
         [TestMethod]
         public void GetRelativeForward()
         {
-            var tokens = new List<Token>
+            List<Token>? tokens = new List<Token>
             {
                 new Token("1", TokenType.Decimal),
                 new Token("2", TokenType.Decimal),
                 new Token("3", TokenType.Decimal)
             };
-            var navigator = new TokenNavigator(tokens);
-            var token = navigator.GetTokenAtRelativePosition(2);
+            TokenNavigator? navigator = new TokenNavigator(tokens);
+            Token token = navigator.GetTokenAtRelativePosition(2);
             Assert.AreEqual("3", token.Value);
         }
 
         [TestMethod]
         public void NumberOfRemainingTokensShouldBeCorrect()
         {
-            var tokens = new List<Token>
+            List<Token>? tokens = new List<Token>
             {
                 new Token("1", TokenType.Decimal),
                 new Token("2", TokenType.Decimal),
                 new Token("3", TokenType.Decimal)
             };
-            var navigator = new TokenNavigator(tokens);
+            TokenNavigator? navigator = new TokenNavigator(tokens);
 
             Assert.AreEqual(2, navigator.NbrOfRemainingTokens);
             navigator.MoveNext();
@@ -151,13 +151,13 @@ namespace EPPlusTest.FormulaParsing.LexicalAnalysis
         [TestMethod]
         public void MoveIndexShouldSetNewPosition()
         {
-            var tokens = new List<Token>
+            List<Token>? tokens = new List<Token>
             {
                 new Token("1", TokenType.Decimal),
                 new Token("2", TokenType.Decimal),
                 new Token("3", TokenType.Decimal)
             };
-            var navigator = new TokenNavigator(tokens);
+            TokenNavigator? navigator = new TokenNavigator(tokens);
             navigator.MoveIndex(1);
             Assert.AreEqual("2", navigator.CurrentToken.Value);
         }
@@ -166,13 +166,13 @@ namespace EPPlusTest.FormulaParsing.LexicalAnalysis
         [ExpectedException(typeof(ArgumentOutOfRangeException))]
         public void ShouldThrowWhenIndexMovedOutOfRange()
         {
-            var tokens = new List<Token>
+            List<Token>? tokens = new List<Token>
             {
                 new Token("1", TokenType.Decimal),
                 new Token("2", TokenType.Decimal),
                 new Token("3", TokenType.Decimal)
             };
-            var navigator = new TokenNavigator(tokens);
+            TokenNavigator? navigator = new TokenNavigator(tokens);
             navigator.MoveIndex(3);
         }
 
@@ -180,12 +180,12 @@ namespace EPPlusTest.FormulaParsing.LexicalAnalysis
         [ExpectedException(typeof(InvalidOperationException))]
         public void ShouldThrowWhenGetPreviousOutOfRange()
         {
-            var tokens = new List<Token>
+            List<Token>? tokens = new List<Token>
             {
                 new Token("1", TokenType.Decimal)
             };
-            var navigator = new TokenNavigator(tokens);
-            var token = navigator.PreviousToken.Value;
+            TokenNavigator? navigator = new TokenNavigator(tokens);
+            Token token = navigator.PreviousToken.Value;
         }
     }
 }

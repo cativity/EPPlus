@@ -46,7 +46,7 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
         /// <returns>A html table</returns>
         public string GetHtmlString()
         {
-            var exporter = HtmlExporterFactory.CreateHtmlTableExporterSync(_settings, _table, _styleCache);
+            HtmlTableExporterSync? exporter = HtmlExporterFactory.CreateHtmlTableExporterSync(_settings, _table, _styleCache);
             return exporter.GetHtmlString();
         }
 
@@ -57,7 +57,7 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
         /// <returns>A html table</returns>
         public void RenderHtml(Stream stream)
         {
-            var exporter = HtmlExporterFactory.CreateHtmlTableExporterSync(_settings, _table, _styleCache);
+            HtmlTableExporterSync? exporter = HtmlExporterFactory.CreateHtmlTableExporterSync(_settings, _table, _styleCache);
             exporter.RenderHtml(stream);
         }
 
@@ -68,7 +68,7 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
         /// <returns>The html document</returns>
         public string GetSinglePage(string htmlDocument = "<!DOCTYPE html>\r\n<html>\r\n<head>\r\n<style type=\"text/css\">\r\n{1}</style></head>\r\n<body>\r\n{0}</body>\r\n</html>")
         {
-            var exporter = HtmlExporterFactory.CreateHtmlTableExporterSync(_settings, _table, _styleCache);
+            HtmlTableExporterSync? exporter = HtmlExporterFactory.CreateHtmlTableExporterSync(_settings, _table, _styleCache);
             return exporter.GetSinglePage(htmlDocument);
         }
 
@@ -78,7 +78,7 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
         /// <returns>Cascading style sheet for the exported range</returns>
         public string GetCssString()
         {
-            var exporter = HtmlExporterFactory.CreateCssExporterTableSync(_settings, _table, _styleCache);
+            CssTableExporterSync? exporter = HtmlExporterFactory.CreateCssExporterTableSync(_settings, _table, _styleCache);
             return exporter.GetCssString();
         }
 
@@ -89,7 +89,7 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
         /// <exception cref="IOException"></exception>
         public void RenderCss(Stream stream)
         {
-            var exporter = HtmlExporterFactory.CreateCssExporterTableSync(_settings, _table, _styleCache);
+            CssTableExporterSync? exporter = HtmlExporterFactory.CreateCssExporterTableSync(_settings, _table, _styleCache);
             exporter.RenderCss(stream);
         }
 
@@ -100,7 +100,7 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
         /// <returns>A html table</returns>
         public Task<string> GetHtmlStringAsync()
         {
-            var exporter = HtmlExporterFactory.CreateHtmlTableExporterAsync(_settings, _table, _styleCache);
+            HtmlTableExporterAsync? exporter = HtmlExporterFactory.CreateHtmlTableExporterAsync(_settings, _table, _styleCache);
             return exporter.GetHtmlStringAsync();
         }
 
@@ -111,7 +111,7 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
         /// <returns>A html table</returns>
         public Task RenderHtmlAsync(Stream stream)
         {
-            var exporter = HtmlExporterFactory.CreateHtmlTableExporterAsync(_settings, _table, _styleCache);
+            HtmlTableExporterAsync? exporter = HtmlExporterFactory.CreateHtmlTableExporterAsync(_settings, _table, _styleCache);
             return exporter.RenderHtmlAsync(stream);
         }
 
@@ -122,7 +122,7 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
         /// <returns>The html document</returns>
         public Task<string> GetSinglePageAsync(string htmlDocument = "<!DOCTYPE html>\r\n<html>\r\n<head>\r\n<style type=\"text/css\">\r\n{1}</style></head>\r\n<body>\r\n{0}</body>\r\n</html>")
         {
-            var exporter = HtmlExporterFactory.CreateHtmlTableExporterAsync(_settings, _table, _styleCache);
+            HtmlTableExporterAsync? exporter = HtmlExporterFactory.CreateHtmlTableExporterAsync(_settings, _table, _styleCache);
             return exporter.GetSinglePageAsync(htmlDocument);
         }
 
@@ -132,7 +132,7 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
         /// <returns>A html table</returns>
         public Task<string> GetCssStringAsync()
         {
-            var exporter = HtmlExporterFactory.CreateCssExporterTableAsync(_settings, _table, _styleCache);
+            CssTableExporterAsync? exporter = HtmlExporterFactory.CreateCssExporterTableAsync(_settings, _table, _styleCache);
             return exporter.GetCssStringAsync();
         }
 
@@ -142,7 +142,7 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
         /// <returns>A html table</returns>
         public Task RenderCssAsync(Stream stream)
         {
-            var exporter = HtmlExporterFactory.CreateCssExporterTableAsync(_settings, _table, _styleCache);
+            CssTableExporterAsync? exporter = HtmlExporterFactory.CreateCssExporterTableAsync(_settings, _table, _styleCache);
             return exporter.RenderCssAsync(stream);
         }
 #endif

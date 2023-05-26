@@ -4,6 +4,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using OfficeOpenXml.FormulaParsing.ExcelUtilities;
+using OfficeOpenXml.Table;
 
 namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Information
 {
@@ -16,31 +18,31 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Information
     {
         public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
         {
-            var result = -1;
+            int result = -1;
             if(arguments.Count() == 0)
             {
-                var cell = context.Scopes.Current.Address;
-                var ws = cell.Worksheet;
+                RangeAddress? cell = context.Scopes.Current.Address;
+                string? ws = cell.Worksheet;
                 result = context.ExcelDataProvider.GetWorksheetIndex(ws);
             }
             else
             {
-                var arg = arguments.ElementAt(0);
+                FunctionArgument? arg = arguments.ElementAt(0);
                 if(arg.ExcelAddressReferenceId > 0)
                 {
-                    var address = ArgToAddress(arguments, 0, context);
+                    string? address = ArgToAddress(arguments, 0, context);
                     if (address.Contains('!'))
                     {
-                        var excelAddress = new ExcelAddress(address);
+                        ExcelAddress? excelAddress = new ExcelAddress(address);
                         result = context.ExcelDataProvider.GetWorksheetIndex(excelAddress.WorkSheetName);
                     }
                     else
                     {
-                        var value = string.IsNullOrEmpty(address) ? ArgToString(arguments, 0) : address;
-                        var worksheetNames = context.ExcelDataProvider.GetWorksheets();
+                        string? value = string.IsNullOrEmpty(address) ? ArgToString(arguments, 0) : address;
+                        IEnumerable<string>? worksheetNames = context.ExcelDataProvider.GetWorksheets();
                         
                         // for each worksheet in the workbook - check if the value a worksheet name.
-                        foreach(var wsName in worksheetNames)
+                        foreach(string? wsName in worksheetNames)
                         {
                             if(string.Compare(wsName, value, true) == 0)
                             {
@@ -51,8 +53,8 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Information
                         if (result == -1)
                         {
                             // not a worksheet name, now check if it is a named range in the current worksheet
-                            var wsNamedRanges = context.ExcelDataProvider.GetWorksheetNames(context.Scopes.Current.Address.Worksheet);
-                            var matchingWsName = wsNamedRanges.FirstOrDefault(x => x.Name == value);
+                            ExcelNamedRangeCollection? wsNamedRanges = context.ExcelDataProvider.GetWorksheetNames(context.Scopes.Current.Address.Worksheet);
+                            ExcelNamedRange? matchingWsName = wsNamedRanges.FirstOrDefault(x => x.Name == value);
                             if (matchingWsName != null)
                             {
                                 result = context.ExcelDataProvider.GetWorksheetIndex(matchingWsName.WorkSheetName);
@@ -61,8 +63,8 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Information
                             if (result == -1)
                             {
                                 // not a worksheet named range, now check workbook level
-                                var namedRanges = context.ExcelDataProvider.GetWorkbookNameValues();
-                                var matchingWorkbookRange = namedRanges.FirstOrDefault(x => x.Name == value);
+                                ExcelNamedRangeCollection? namedRanges = context.ExcelDataProvider.GetWorkbookNameValues();
+                                ExcelNamedRange? matchingWorkbookRange = namedRanges.FirstOrDefault(x => x.Name == value);
                                 if (matchingWorkbookRange != null)
                                 {
                                     result = context.ExcelDataProvider.GetWorksheetIndex(matchingWorkbookRange.WorkSheetName);
@@ -75,7 +77,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Information
 
                             if (result == -1)
                             {
-                                var table = context.ExcelDataProvider.GetExcelTable(value);
+                                ExcelTable? table = context.ExcelDataProvider.GetExcelTable(value);
                                 if (table != null)
                                 {
                                     result = context.ExcelDataProvider.GetWorksheetIndex(table.WorkSheet.Name);
@@ -86,7 +88,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Information
                 }
                 else
                 {
-                    var value = ArgToString(arguments, 0);
+                    string? value = ArgToString(arguments, 0);
                     result = context.ExcelDataProvider.GetWorksheetIndex(value);
                 }
             }

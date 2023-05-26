@@ -51,7 +51,7 @@ namespace EPPlusTest.ExcelUtilities
         {
             object searchedValue = 1;
             object o2 = null;
-            var result = _matcher.IsMatch(searchedValue, o2);
+            int result = _matcher.IsMatch(searchedValue, o2);
             Assert.AreEqual(-1, result);
         }
 
@@ -60,7 +60,7 @@ namespace EPPlusTest.ExcelUtilities
         {
             object searchedValue = null;
             object o2 = 1;
-            var result = _matcher.IsMatch(searchedValue, o2);
+            int result = _matcher.IsMatch(searchedValue, o2);
             Assert.AreEqual(1, result);
         }
 
@@ -69,7 +69,7 @@ namespace EPPlusTest.ExcelUtilities
         {
             object o1 = null;
             object o2 = null;
-            var result = _matcher.IsMatch(o1, o2);
+            int result = _matcher.IsMatch(o1, o2);
             Assert.AreEqual(0, result);
         }
 
@@ -78,7 +78,7 @@ namespace EPPlusTest.ExcelUtilities
         {
             object o1 = 1d;
             object o2 = 1d;
-            var result = _matcher.IsMatch(o1, o2);
+            int result = _matcher.IsMatch(o1, o2);
             Assert.AreEqual(0, result);
         }
 
@@ -87,7 +87,7 @@ namespace EPPlusTest.ExcelUtilities
         {
             object o1 = 1d;
             object o2 = 5d;
-            var result = _matcher.IsMatch(o1, o2);
+            int result = _matcher.IsMatch(o1, o2);
             Assert.AreEqual(1, result);
         }
 
@@ -96,7 +96,7 @@ namespace EPPlusTest.ExcelUtilities
         {
             object o1 = 3d;
             object o2 = 1d;
-            var result = _matcher.IsMatch(o1, o2);
+            int result = _matcher.IsMatch(o1, o2);
             Assert.AreEqual(-1, result);
         }
 
@@ -105,7 +105,7 @@ namespace EPPlusTest.ExcelUtilities
         {
             object o1 = "T";
             object o2 = "T";
-            var result = _matcher.IsMatch(o1, o2);
+            int result = _matcher.IsMatch(o1, o2);
             Assert.AreEqual(0, result);
         }
 
@@ -114,7 +114,7 @@ namespace EPPlusTest.ExcelUtilities
         {
             object o1 = "2";
             object o2 = 2d;
-            var result = _matcher.IsMatch(o1, o2);
+            int result = _matcher.IsMatch(o1, o2);
             Assert.AreEqual(0, result, "IsMatch did not return 0 as expected when first param is a string and second a double");
 
             o1 = 2d;
@@ -128,34 +128,34 @@ namespace EPPlusTest.ExcelUtilities
         {
             object o1 = 2d;
             object o2 = "T";
-            var result = _matcher.IsMatch(o1, o2);
+            int result = _matcher.IsMatch(o1, o2);
             Assert.AreEqual(ValueMatcher.IncompatibleOperands, result);
         }
 
         [TestMethod]
         public void ShouldReturn0WhenEqualDateTimeAndDouble()
         {
-            var dt = new DateTime(2020, 2, 7).Date;
-            var o2 = dt.ToOADate();
-            var result = _matcher.IsMatch(dt, o2);
+            DateTime dt = new DateTime(2020, 2, 7).Date;
+            double o2 = dt.ToOADate();
+            int result = _matcher.IsMatch(dt, o2);
             Assert.AreEqual(0, result);
         }
 
         [TestMethod]
         public void ShouldReturnMinus1WhenDateTimeLargerThanDouble()
         {
-            var searchedValue = new DateTime(2020, 2, 7).Date;
-            var o2 = searchedValue.AddDays(-1).ToOADate();
-            var result = _matcher.IsMatch(searchedValue, o2);
+            DateTime searchedValue = new DateTime(2020, 2, 7).Date;
+            double o2 = searchedValue.AddDays(-1).ToOADate();
+            int result = _matcher.IsMatch(searchedValue, o2);
             Assert.AreEqual(-1, result);
         }
 
         [TestMethod]
         public void ShouldReturn1WhenDateTimeSmallerThanDouble()
         {
-            var searchedValue = new DateTime(2020, 2, 7).Date;
-            var o2 = searchedValue.AddDays(1).ToOADate();
-            var result = _matcher.IsMatch(searchedValue, o2);
+            DateTime searchedValue = new DateTime(2020, 2, 7).Date;
+            double o2 = searchedValue.AddDays(1).ToOADate();
+            int result = _matcher.IsMatch(searchedValue, o2);
             Assert.AreEqual(1, result);
         }
     }

@@ -58,7 +58,7 @@ namespace OfficeOpenXml.Style.Dxf
         }
         internal override DxfStyleBase Clone()
         {
-            var s = new ExcelDxfStyle(_helper.NameSpaceManager, null, _styles, _callback)
+            ExcelDxfStyle? s = new ExcelDxfStyle(_helper.NameSpaceManager, null, _styles, _callback)
             {
                 Font = (ExcelDxfFont)Font.Clone(),
                 Fill = (ExcelDxfFill)Fill.Clone(),

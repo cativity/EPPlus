@@ -109,7 +109,7 @@ namespace EPPlusTest.Utils
         //[TestMethod]
         public void TextToIntInOldImplementation()
         {
-            var result = GetTypedValue<int>("204");
+            int result = GetTypedValue<int>("204");
 
             Assert.AreEqual(204, result);
         }
@@ -131,7 +131,7 @@ namespace EPPlusTest.Utils
             {
                 return (T)v;
             }
-            var cnv = TypeDescriptor.GetConverter(fromType);
+            TypeConverter? cnv = TypeDescriptor.GetConverter(fromType);
             if (toType == typeof(DateTime) || toType2 == typeof(DateTime))    //Handle dates
             {
                 if (fromType == typeof(TimeSpan))

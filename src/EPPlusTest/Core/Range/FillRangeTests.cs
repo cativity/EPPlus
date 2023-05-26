@@ -78,7 +78,7 @@ namespace EPPlusTest.Core.Range.Fill
         [TestMethod]
         public void FillNumbers_RowWithStartAndStep()
         {
-            var ci = Thread.CurrentThread.CurrentCulture;
+            CultureInfo? ci = Thread.CurrentThread.CurrentCulture;
             Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
             _wsNum.Cells["A10:E11"].FillNumber(x =>
             {
@@ -103,7 +103,7 @@ namespace EPPlusTest.Core.Range.Fill
         [TestMethod]
         public void FillNumbers_RowWithLeftAndStartAndStep()
         {
-            var ci = Thread.CurrentThread.CurrentCulture;
+            CultureInfo? ci = Thread.CurrentThread.CurrentCulture;
             Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
             _wsNum.Cells["A10:E11"].FillNumber(x =>
             {
@@ -172,7 +172,7 @@ namespace EPPlusTest.Core.Range.Fill
         [TestMethod]
         public void FillDate_WithStartAndStepDay()
         {
-            var startDate = new DateTime(2021, 1, 1);
+            DateTime startDate = new DateTime(2021, 1, 1);
             _wsNum.Cells["A1:B5"].FillDateTime(new DateTime(2021,1,1));
             //Assert
             Assert.AreEqual(startDate.Ticks, ((DateTime)_wsNum.Cells["A1"].Value).Ticks);
@@ -187,7 +187,7 @@ namespace EPPlusTest.Core.Range.Fill
         [TestMethod]
         public void FillDateDown()
         {
-            var startDate = new DateTime(2021, 6, 30);
+            DateTime startDate = new DateTime(2021, 6, 30);
             _wsDate.Cells["C1"].Value = startDate;
             _wsDate.Cells["D1"].Value = "D1";
             _wsDate.Cells["C1:D5"].FillDateTime();
@@ -204,7 +204,7 @@ namespace EPPlusTest.Core.Range.Fill
         [TestMethod]
         public void FillDateDownPerRow()
         {
-            var startDate = new DateTime(2021, 6, 30);
+            DateTime startDate = new DateTime(2021, 6, 30);
             _wsDate.Cells["C1"].Value = startDate;
             _wsDate.Cells["C2"].Value = "C2";
             _wsDate.Cells["C1:G2"].FillDateTime(x=>x.Direction=eFillDirection.Row);
@@ -222,7 +222,7 @@ namespace EPPlusTest.Core.Range.Fill
         [TestMethod]
         public void FillDateUpPerRow()
         {
-            var startDate = new DateTime(2021, 6, 30);
+            DateTime startDate = new DateTime(2021, 6, 30);
             _wsDate.Cells["G2"].Value = "G2";
             _wsDate.Cells["C1:G2"].FillDateTime(x =>
             {
@@ -245,7 +245,7 @@ namespace EPPlusTest.Core.Range.Fill
         [TestMethod]
         public void FillDateUp()
         {
-            var startDate = new DateTime(2021, 6, 30);
+            DateTime startDate = new DateTime(2021, 6, 30);
             _wsDate.Cells["C5"].Value = startDate;
             _wsDate.Cells["D5"].Value = "D5";
             _wsDate.Cells["C1:D5"].FillDateTime(x=>x.StartPosition=eFillStartPosition.BottomRight);
@@ -264,7 +264,7 @@ namespace EPPlusTest.Core.Range.Fill
         [TestMethod]
         public void FillDate_StartDate()
         {
-            var startDate = new DateTime(2021, 05, 29);
+            DateTime startDate = new DateTime(2021, 05, 29);
             _wsDate.Cells["E1"].Value = startDate;
             _wsDate.Cells["E1:F5"].FillDateTime(startDate);
             //Assert
@@ -280,10 +280,10 @@ namespace EPPlusTest.Core.Range.Fill
         [TestMethod]
         public void FillDate_Week_WithNumberFormat()
         {
-            var ci = Thread.CurrentThread.CurrentCulture;
+            CultureInfo? ci = Thread.CurrentThread.CurrentCulture;
             Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
 
-            var startDate = new DateTime(2021, 2, 15);
+            DateTime startDate = new DateTime(2021, 2, 15);
             _wsDate.Cells["G1"].Value = startDate;
             _wsDate.Cells["G1:H5"].FillDateTime(x=> { x.DateTimeUnit = eDateTimeUnit.Week;x.StartValue = startDate;x.NumberFormat = "yyyy-MM-dd"; });
             
@@ -304,7 +304,7 @@ namespace EPPlusTest.Core.Range.Fill
         [TestMethod]
         public void FillDate_Month_LastDayInMonth()
         {
-            var startDate = new DateTime(2021, 2, 28);
+            DateTime startDate = new DateTime(2021, 2, 28);
             _wsDate.Cells["I1"].Value = startDate;
             _wsDate.Cells["I1:J5"].FillDateTime(x => { x.DateTimeUnit = eDateTimeUnit.Month; x.StartValue = startDate; });
 
@@ -321,7 +321,7 @@ namespace EPPlusTest.Core.Range.Fill
         [TestMethod]
         public void FillDate_Month_LastDayInMonthNoWeekdays()
         {
-            var startDate = new DateTime(2021, 1, 31);
+            DateTime startDate = new DateTime(2021, 1, 31);
             _wsDate.Cells["K1"].Value = startDate;
             _wsDate.Cells["K1:L5"].FillDateTime(x => 
             { 
@@ -343,7 +343,7 @@ namespace EPPlusTest.Core.Range.Fill
         [TestMethod]
         public void FillDate_Month_LastDayInMonth_NoWeekdays_WithCalender()
         {
-            var startDate = new DateTime(2021, 12, 17);
+            DateTime startDate = new DateTime(2021, 12, 17);
             _wsDate.Cells["M1"].Value = startDate;
             _wsDate.Cells["M1:N5"].FillDateTime(x => 
             { 
@@ -367,7 +367,7 @@ namespace EPPlusTest.Core.Range.Fill
         [TestMethod]
         public void FillDate_Year()
         {
-            var startDate = new DateTime(2021, 2, 15);
+            DateTime startDate = new DateTime(2021, 2, 15);
             _wsDate.Cells["O1"].Value = startDate;
             _wsDate.Cells["O1:P5"].FillDateTime(x => 
             { 
@@ -389,7 +389,7 @@ namespace EPPlusTest.Core.Range.Fill
         [TestMethod]
         public void FillTime_Hours()
         {
-            var startTime = DateTime.Parse("12:00:00");
+            DateTime startTime = DateTime.Parse("12:00:00");
             _wsDate.Cells["A20"].Value = startTime;
             _wsDate.Cells["A20:B24"].FillDateTime(x => { x.DateTimeUnit = eDateTimeUnit.Hour; x.StartValue = startTime; x.NumberFormat = "hh:mm:ss"; });
 
@@ -406,7 +406,7 @@ namespace EPPlusTest.Core.Range.Fill
         [TestMethod]
         public void FillTime_Minutes()
         {
-            var startTime = DateTime.Parse("00:45:00");
+            DateTime startTime = DateTime.Parse("00:45:00");
             _wsDate.Cells["C20"].Value = startTime;
             _wsDate.Cells["C20:D24"].FillDateTime(x => { x.DateTimeUnit = eDateTimeUnit.Minute; x.StartValue = startTime; x.NumberFormat = "hh:mm:ss"; });
 
@@ -423,7 +423,7 @@ namespace EPPlusTest.Core.Range.Fill
         [TestMethod]
         public void FillTime_Seconds()
         {
-            var startTime = DateTime.Parse("00:00:30");
+            DateTime startTime = DateTime.Parse("00:00:30");
             _wsDate.Cells["E20"].Value = startTime;
             _wsDate.Cells["E20:F24"].FillDateTime(x => { x.DateTimeUnit = eDateTimeUnit.Second; x.StartValue = startTime; x.NumberFormat = "hh:mm:ss"; });
 
@@ -440,7 +440,7 @@ namespace EPPlusTest.Core.Range.Fill
         [TestMethod]
         public void FillListDown()
         {
-            var list = new string[] { "Monday","Tuesday","Wednesday" };
+            string[]? list = new string[] { "Monday","Tuesday","Wednesday" };
             _wsList.Cells["A1:B5"].FillList(list);
 
             //Assert
@@ -459,7 +459,7 @@ namespace EPPlusTest.Core.Range.Fill
         [TestMethod]
         public void FillListUp()
         {
-            var list = new string[] { "Monday", "Tuesday", "Wednesday" };
+            string[]? list = new string[] { "Monday", "Tuesday", "Wednesday" };
             _wsList.Cells["A1:B5"].FillList(list, x=>x.StartPosition=eFillStartPosition.BottomRight);
 
             //Assert
@@ -478,7 +478,7 @@ namespace EPPlusTest.Core.Range.Fill
         [TestMethod]
         public void FillListUp_Row()
         {
-            var list = new string[] { "Monday", "Tuesday", "Wednesday" };
+            string[]? list = new string[] { "Monday", "Tuesday", "Wednesday" };
             _wsList.Cells["A1:E2"].FillList(list, 
                 x => 
                 {
@@ -502,7 +502,7 @@ namespace EPPlusTest.Core.Range.Fill
         [TestMethod]
         public void FillList_StartIndex2()
         {
-            var list = new string[] { "Monday", "Tuesday", "Wednesday", "Thursday", "Friday" };
+            string[]? list = new string[] { "Monday", "Tuesday", "Wednesday", "Thursday", "Friday" };
             _wsList.Cells["D1:E5"].FillList(list, x=>x.StartIndex=2);
 
             //Assert
@@ -521,7 +521,7 @@ namespace EPPlusTest.Core.Range.Fill
         [TestMethod]
         public void FillList_PerRowStartIndex4()
         {
-            var list = new string[] { "Monday", "Tuesday", "Wednesday", "Thursday", "Friday" };
+            string[]? list = new string[] { "Monday", "Tuesday", "Wednesday", "Thursday", "Friday" };
             _wsList.Cells["A10:E14"].FillList(list, x =>
             {
                 x.StartIndex = 4;

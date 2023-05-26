@@ -31,7 +31,7 @@ namespace OfficeOpenXml.Utils
         public static string ParseEntireColumnSelections(string address)
         {
             string parsedAddress = address;
-            var matches = Regex.Matches(address, "[A-Z]+:[A-Z]+");
+            MatchCollection? matches = Regex.Matches(address, "[A-Z]+:[A-Z]+");
             foreach (Match match in matches)
             {
                 AddRowNumbersToEntireColumnRange(ref parsedAddress, match.Value);
@@ -45,8 +45,8 @@ namespace OfficeOpenXml.Utils
         /// <param name="range">The full column range</param>
         private static void AddRowNumbersToEntireColumnRange(ref string address, string range)
         {
-            var parsedRange = string.Format("{0}{1}", range, ExcelPackage.MaxRows);
-            var splitArr = parsedRange.Split(new char[] { ':' });
+            string? parsedRange = string.Format("{0}{1}", range, ExcelPackage.MaxRows);
+            string[]? splitArr = parsedRange.Split(new char[] { ':' });
             address = address.Replace(range, string.Format("{0}1:{1}", splitArr[0], splitArr[1]));
         }
 
@@ -57,14 +57,14 @@ namespace OfficeOpenXml.Utils
                 return formula;
             }
 
-            var tokens = SourceCodeTokenizer.Default.Tokenize(formula, worksheetName);
+            IEnumerable<Token>? tokens = SourceCodeTokenizer.Default.Tokenize(formula, worksheetName);
             if (!tokens.Any(x => x.TokenTypeIsSet(TokenType.ExcelAddress)))
             {
                 return formula;
             }
 
-            var resultTokens = new List<Token>();
-            foreach (var token in tokens)
+            List<Token>? resultTokens = new List<Token>();
+            foreach (Token token in tokens)
             {
                 if (!token.TokenTypeIsSet(TokenType.ExcelAddress))
                 {
@@ -72,13 +72,13 @@ namespace OfficeOpenXml.Utils
                 }
                 else
                 {
-                    var addresses = new List<ExcelCellAddress>();
-                    var adr = new ExcelAddressBase(token.Value);
+                    List<ExcelCellAddress>? addresses = new List<ExcelCellAddress>();
+                    ExcelAddressBase? adr = new ExcelAddressBase(token.Value);
                     // if the formula is a table formula (relative) keep it as it is
                     if (adr.Table == null)
                     {
-                        var newAdr = adr.AddRow(currentRow, newRow, true);
-                        var newToken = new Token(newAdr.FullAddress, TokenType.ExcelAddress);
+                        ExcelAddressBase? newAdr = adr.AddRow(currentRow, newRow, true);
+                        Token newToken = new Token(newAdr.FullAddress, TokenType.ExcelAddress);
                         resultTokens.Add(newToken);
                     }
                     else
@@ -87,8 +87,8 @@ namespace OfficeOpenXml.Utils
                     }
                 }
             }
-            var result = new StringBuilder();
-            foreach (var token in resultTokens)
+            StringBuilder? result = new StringBuilder();
+            foreach (Token token in resultTokens)
             {
                 result.Append(token.Value);
             }
@@ -102,14 +102,14 @@ namespace OfficeOpenXml.Utils
                 return formula;
             }
 
-            var tokens = SourceCodeTokenizer.Default.Tokenize(formula, worksheetName);
+            IEnumerable<Token>? tokens = SourceCodeTokenizer.Default.Tokenize(formula, worksheetName);
             if (!tokens.Any(x => x.TokenTypeIsSet(TokenType.ExcelAddress)))
             {
                 return formula;
             }
 
-            var resultTokens = new List<Token>();
-            foreach (var token in tokens)
+            List<Token>? resultTokens = new List<Token>();
+            foreach (Token token in tokens)
             {
                 if (!token.TokenTypeIsSet(TokenType.ExcelAddress))
                 {
@@ -117,13 +117,13 @@ namespace OfficeOpenXml.Utils
                 }
                 else
                 {
-                    var addresses = new List<ExcelCellAddress>();
-                    var adr = new ExcelAddressBase(token.Value);
+                    List<ExcelCellAddress>? addresses = new List<ExcelCellAddress>();
+                    ExcelAddressBase? adr = new ExcelAddressBase(token.Value);
                     // if the formula is a table formula (relative) keep it as it is
                     if (adr.Table == null)
                     {
-                        var newAdr = adr.AddColumn(currentColumn, newColumn, true);
-                        var newToken = new Token(newAdr.FullAddress, TokenType.ExcelAddress);
+                        ExcelAddressBase? newAdr = adr.AddColumn(currentColumn, newColumn, true);
+                        Token newToken = new Token(newAdr.FullAddress, TokenType.ExcelAddress);
                         resultTokens.Add(newToken);
                     }
                     else
@@ -132,8 +132,8 @@ namespace OfficeOpenXml.Utils
                     }
                 }
             }
-            var result = new StringBuilder();
-            foreach (var token in resultTokens)
+            StringBuilder? result = new StringBuilder();
+            foreach (Token token in resultTokens)
             {
                 result.Append(token.Value);
             }

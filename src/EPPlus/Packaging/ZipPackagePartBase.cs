@@ -55,7 +55,7 @@ namespace OfficeOpenXml.Packaging
         }
         internal virtual ZipPackageRelationship CreateRelationship(Uri targetUri, TargetMode targetMode, string relationshipType)
         {
-            var rel = new ZipPackageRelationship();
+            ZipPackageRelationship? rel = new ZipPackageRelationship();
             rel.TargetUri = targetUri;
             rel.TargetMode = targetMode;
             rel.RelationshipType = relationshipType;
@@ -65,7 +65,7 @@ namespace OfficeOpenXml.Packaging
         }
         internal virtual ZipPackageRelationship CreateRelationship(string target, TargetMode targetMode, string relationshipType)
         {
-            var rel = new ZipPackageRelationship();
+            ZipPackageRelationship? rel = new ZipPackageRelationship();
             rel.Target = target;
             rel.TargetMode = targetMode;
             rel.RelationshipType = relationshipType;
@@ -92,13 +92,13 @@ namespace OfficeOpenXml.Packaging
         }
         internal void ReadRelation(string xml, string source)
         {
-            var doc = new XmlDocument();
+            XmlDocument? doc = new XmlDocument();
             XmlHelper.LoadXmlSafe(doc, xml, Encoding.UTF8);
 
             foreach (XmlElement c in doc.DocumentElement.ChildNodes)
             {
-                var target = c.GetAttribute("Target");
-                var rel = new ZipPackageRelationship();
+                string? target = c.GetAttribute("Target");
+                ZipPackageRelationship? rel = new ZipPackageRelationship();
                 rel.Id = c.GetAttribute("Id");
                 rel.RelationshipType = c.GetAttribute("Type");
                 rel.TargetMode = c.GetAttribute("TargetMode").Equals("external",StringComparison.OrdinalIgnoreCase) ? TargetMode.External : TargetMode.Internal;

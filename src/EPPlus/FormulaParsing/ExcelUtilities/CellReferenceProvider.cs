@@ -22,18 +22,18 @@ namespace OfficeOpenXml.FormulaParsing.ExcelUtilities
     {
         public virtual IEnumerable<string> GetReferencedAddresses(string cellFormula, ParsingContext context)
         {
-            var resultCells = new List<string>();
-            var r = context.Configuration.Lexer.Tokenize(cellFormula, context.Scopes.Current.Address.Worksheet);
-            var toAddresses = r.Where(x => x.TokenTypeIsSet(TokenType.ExcelAddress));
-            foreach (var toAddress in toAddresses)
+            List<string>? resultCells = new List<string>();
+            IEnumerable<Token>? r = context.Configuration.Lexer.Tokenize(cellFormula, context.Scopes.Current.Address.Worksheet);
+            IEnumerable<Token>? toAddresses = r.Where(x => x.TokenTypeIsSet(TokenType.ExcelAddress));
+            foreach (Token toAddress in toAddresses)
             {
-                var rangeAddress = context.RangeAddressFactory.Create(toAddress.Value);
-                var rangeCells = new List<string>();
+                RangeAddress? rangeAddress = context.RangeAddressFactory.Create(toAddress.Value);
+                List<string>? rangeCells = new List<string>();
                 if (rangeAddress.FromRow < rangeAddress.ToRow || rangeAddress.FromCol < rangeAddress.ToCol)
                 {
-                    for (var col = rangeAddress.FromCol; col <= rangeAddress.ToCol; col++)
+                    for (int col = rangeAddress.FromCol; col <= rangeAddress.ToCol; col++)
                     {
-                        for (var row = rangeAddress.FromRow; row <= rangeAddress.ToRow; row++)
+                        for (int row = rangeAddress.FromRow; row <= rangeAddress.ToRow; row++)
                         {
                             resultCells.Add(context.RangeAddressFactory.Create(col, row).Address);
                         }

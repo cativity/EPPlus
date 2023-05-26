@@ -46,7 +46,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions
 
         public static FunctionRepository Create()
         {
-            var repo = new FunctionRepository();
+            FunctionRepository? repo = new FunctionRepository();
             repo.LoadModule(new BuiltInFunctions());
             return repo;
         }
@@ -57,12 +57,12 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions
         /// <param name="module">A <see cref="IFunctionModule"/> that can be used for adding functions and custom function compilers.</param>
         public virtual void LoadModule(IFunctionModule module)
         {
-            foreach (var key in module.Functions.Keys)
+            foreach (string? key in module.Functions.Keys)
             {
-                var lowerKey = key.ToLower(CultureInfo.InvariantCulture);
+                string? lowerKey = key.ToLower(CultureInfo.InvariantCulture);
                 _functions[lowerKey] = module.Functions[key];
             }
-            foreach (var key in module.CustomCompilers.Keys)
+            foreach (Type? key in module.CustomCompilers.Keys)
             {
                 CustomCompilers[key] = module.CustomCompilers[key];
             }
@@ -114,7 +114,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions
         {
             Require.That(functionName).Named("functionName").IsNotNullOrEmpty();
             Require.That(functionImpl).Named("functionImpl").IsNotNull();
-            var fName = functionName.ToLower(CultureInfo.InvariantCulture);
+            string? fName = functionName.ToLower(CultureInfo.InvariantCulture);
             if (_functions.ContainsKey(fName))
             {
                 _functions.Remove(fName);

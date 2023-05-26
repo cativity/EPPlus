@@ -29,7 +29,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Logical
     {
         public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
         {
-            var matches = GetMatches("MAXIFS", arguments, out CompileResult errorResult);
+            IEnumerable<double>? matches = GetMatches("MAXIFS", arguments, out CompileResult errorResult);
             if (errorResult != null)
             {
                 return errorResult;

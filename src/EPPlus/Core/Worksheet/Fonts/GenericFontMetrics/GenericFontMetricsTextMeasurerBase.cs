@@ -49,14 +49,14 @@ namespace OfficeOpenXml.Core.Worksheet.Fonts.GenericFontMetrics
 
         internal protected TextMeasurement MeasureTextInternal(string text, uint fontKey, MeasurementFontStyles style, float size)
         {
-            var sFont = _fonts[fontKey];
-            var width = 0f;
-            var widthEA = 0f;
-            var chars = text.ToCharArray();
-            for (var x = 0; x < chars.Length; x++)
+            SerializedFontMetrics? sFont = _fonts[fontKey];
+            float width = 0f;
+            float widthEA = 0f;
+            char[]? chars = text.ToCharArray();
+            for (int x = 0; x < chars.Length; x++)
             {
-                var fnt = sFont;
-                var c = chars[x];
+                SerializedFontMetrics? fnt = sFont;
+                char c = chars[x];
                 // if east asian char use default regardless of actual font.
                 if (IsEastAsianChar(c))
                 {
@@ -66,7 +66,7 @@ namespace OfficeOpenXml.Core.Worksheet.Fonts.GenericFontMetrics
                 {
                     if (sFont.CharMetrics.ContainsKey(c))
                     {
-                        var fw = fnt.ClassWidths[sFont.CharMetrics[c]];
+                        float fw = fnt.ClassWidths[sFont.CharMetrics[c]];
                         if (Char.IsDigit(c))
                         {
                             fw *= FontScaleFactors.DigitsScalingFactor;
@@ -83,10 +83,10 @@ namespace OfficeOpenXml.Core.Worksheet.Fonts.GenericFontMetrics
             }
             width *= size;
             widthEA *= size;
-            var sf = _fontScaleFactors.GetScaleFactor(fontKey, width);
+            float sf = _fontScaleFactors.GetScaleFactor(fontKey, width);
             width *= sf;
             width += widthEA;
-            var height = sFont.LineHeight1em * size;
+            float height = sFont.LineHeight1em * size;
             return new TextMeasurement(width, height);
         }
 
@@ -94,17 +94,17 @@ namespace OfficeOpenXml.Core.Worksheet.Fonts.GenericFontMetrics
 
         internal static uint GetKey(FontMetricsFamilies family, FontSubFamilies subFamily)
         {
-            var k1 = (ushort)family;
-            var k2 = (ushort)subFamily;
+            ushort k1 = (ushort)family;
+            ushort k2 = (ushort)subFamily;
             return (uint)((k1 << 16) | ((k2) & 0xffff));
         }
 
         internal static uint GetKey(string fontFamily, MeasurementFontStyles fontStyle)
         {
-            var enumName = fontFamily.Replace(" ", string.Empty);
-            var values = Enum.GetValues(typeof(FontMetricsFamilies));
-            var supported = false;
-            foreach (var enumVal in values)
+            string? enumName = fontFamily.Replace(" ", string.Empty);
+            Array? values = Enum.GetValues(typeof(FontMetricsFamilies));
+            bool supported = false;
+            foreach (object? enumVal in values)
             {
                 if (enumVal.ToString() == enumName)
                 {
@@ -117,8 +117,8 @@ namespace OfficeOpenXml.Core.Worksheet.Fonts.GenericFontMetrics
                 return uint.MaxValue;
             }
 
-            var family = (FontMetricsFamilies)Enum.Parse(typeof(FontMetricsFamilies), enumName);
-            var subFamily = FontSubFamilies.Regular;
+            FontMetricsFamilies family = (FontMetricsFamilies)Enum.Parse(typeof(FontMetricsFamilies), enumName);
+            FontSubFamilies subFamily = FontSubFamilies.Regular;
             switch (fontStyle)
             {
                 case MeasurementFontStyles.Bold:
@@ -138,7 +138,7 @@ namespace OfficeOpenXml.Core.Worksheet.Fonts.GenericFontMetrics
 
         private static float GetEastAsianCharWidth(int cc, MeasurementFontStyles style)
         {
-            var emWidth = (cc >= 65377 && cc <= 65439) ? 0.5f : 1f;
+            float emWidth = (cc >= 65377 && cc <= 65439) ? 0.5f : 1f;
             if ((style & MeasurementFontStyles.Bold) != 0)
             {
                 emWidth *= 1.05f;
@@ -148,7 +148,7 @@ namespace OfficeOpenXml.Core.Worksheet.Fonts.GenericFontMetrics
 
         private static bool IsEastAsianChar(char c)
         {
-            var cc = (int)c;
+            int cc = (int)c;
 
             return UniCodeRange.JapaneseKanji.Any(x => x.IsInRange(cc));
         }

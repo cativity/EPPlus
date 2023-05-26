@@ -37,9 +37,9 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions.Math
         [DataRow("", "", "", 3)]
         public void CountA_WithGivenCellValues_ShouldReturnExpectedCount(string value1, string value2, string value3, double expectedValue)
         {
-            using(var package = new ExcelPackage())
+            using(ExcelPackage? package = new ExcelPackage())
             {
-                var worksheet = package.Workbook.Worksheets.Add("CountA");
+                ExcelWorksheet? worksheet = package.Workbook.Worksheets.Add("CountA");
                 SetValues(worksheet);
 
                 worksheet.Cells["B1"].Value = value1;
@@ -53,9 +53,9 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions.Math
         [TestMethod]
         public void CountA_WithFormulaError_ExpectErrorIncludedInCount()
         {
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var worksheet = package.Workbook.Worksheets.Add("CountA");
+                ExcelWorksheet? worksheet = package.Workbook.Worksheets.Add("CountA");
                 SetValues(worksheet);
                 worksheet.Cells["B7"].Value = "test";
                 worksheet.Cells["B8"].Value = false;

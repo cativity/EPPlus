@@ -27,16 +27,16 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime
         public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
         {
             ValidateArguments(arguments, 3);
-            var startDateObj = arguments.ElementAt(0).Value;
-            var startDate = ParseDate(arguments, startDateObj);
-            var endDateObj = arguments.ElementAt(1).Value;
-            var endDate = ParseDate(arguments, endDateObj, 1);
+            object? startDateObj = arguments.ElementAt(0).Value;
+            System.DateTime startDate = ParseDate(arguments, startDateObj);
+            object? endDateObj = arguments.ElementAt(1).Value;
+            System.DateTime endDate = ParseDate(arguments, endDateObj, 1);
             if (startDate > endDate)
             {
                 return this.CreateResult(eErrorType.Num);
             }
 
-            var unit = ArgToString(arguments, 2);
+            string? unit = ArgToString(arguments, 2);
             switch(unit.ToLower())
             {
                 case "y":
@@ -44,18 +44,18 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime
                 case "m":
                     return CreateResult(DateDiffMonths(startDate, endDate), DataType.Integer);
                 case "d":
-                    var daysD = endDate.Subtract(startDate).TotalDays;
+                    double daysD = endDate.Subtract(startDate).TotalDays;
                     return CreateResult(daysD, DataType.Integer);
                 case "ym":
-                    var monthsYm = DateDiffMonthsY(startDate, endDate);
+                    double monthsYm = DateDiffMonthsY(startDate, endDate);
                     return CreateResult(monthsYm, DataType.Integer);
                 case "yd":
-                    var daysYd = GetStartYearEndDateY(startDate, endDate).Subtract(startDate).TotalDays;
+                    double daysYd = GetStartYearEndDateY(startDate, endDate).Subtract(startDate).TotalDays;
                     return CreateResult(daysYd, DataType.Integer);
                 case "md":
                     // NB! Excel calculates wrong here sometimes. Example DATEDIF(2001-04-02, 2003-01-01, "md") = 30 (it should be 29)
                     // we have not implemented this bug in EPPlus. Microsoft advices not to use the DateDif function due to this and other bugs.
-                    var daysMd = GetStartYearEndDateMd(startDate, endDate).Subtract(startDate).TotalDays;
+                    double daysMd = GetStartYearEndDateMd(startDate, endDate).Subtract(startDate).TotalDays;
                     return CreateResult(daysMd, DataType.Integer);
                 default:
                     return CreateResult(eErrorType.Num);
@@ -64,8 +64,8 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime
 
         private double DateDiffYears(System.DateTime start, System.DateTime end)
         {
-            var result = Convert.ToDouble(end.Year - start.Year);
-            var tmpEnd = GetStartYearEndDate(start, end);
+            double result = Convert.ToDouble(end.Year - start.Year);
+            System.DateTime tmpEnd = GetStartYearEndDate(start, end);
             if (start > tmpEnd)
             {
                 result -= 1;
@@ -75,9 +75,9 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime
 
         private double DateDiffMonths(System.DateTime start, System.DateTime end)
         {
-            var years = DateDiffYears(start, end);
-            var result = years * 12;
-            var tmpEnd = GetStartYearEndDate(start, end);
+            double years = DateDiffYears(start, end);
+            double result = years * 12;
+            System.DateTime tmpEnd = GetStartYearEndDate(start, end);
             if(start > tmpEnd)
             {
                 result += 12;
@@ -93,9 +93,9 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime
 
         private double DateDiffMonthsY(System.DateTime start, System.DateTime end)
         {
-            var endDate = GetStartYearEndDateY(start, end);
-            var nMonths = 0d;
-            var tmpDate = start;
+            System.DateTime endDate = GetStartYearEndDateY(start, end);
+            double nMonths = 0d;
+            System.DateTime tmpDate = start;
             if(tmpDate.AddMonths(1) < endDate)
             {
                 do
@@ -119,7 +119,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime
 
         private System.DateTime GetStartYearEndDateY(System.DateTime start, System.DateTime end)
         {
-            var dt = new System.DateTime(start.Year, end.Month, end.Day, end.Hour, end.Minute, end.Second, end.Millisecond);
+            System.DateTime dt = new System.DateTime(start.Year, end.Month, end.Day, end.Hour, end.Minute, end.Second, end.Millisecond);
             if(dt < start)
             {
                 dt = dt.AddYears(1);
@@ -129,7 +129,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime
 
         private System.DateTime GetStartYearEndDateMd(System.DateTime start, System.DateTime end)
         {
-            var dt = new System.DateTime(start.Year, start.Month, end.Day, end.Hour, end.Minute, end.Second, end.Millisecond);
+            System.DateTime dt = new System.DateTime(start.Year, start.Month, end.Day, end.Hour, end.Minute, end.Second, end.Millisecond);
             if (dt < start)
             {
                 dt = dt.AddMonths(1);

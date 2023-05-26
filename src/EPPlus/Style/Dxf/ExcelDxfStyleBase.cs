@@ -117,7 +117,7 @@ namespace OfficeOpenXml.Style.Dxf
             }
             else
             {
-                var ns = new ExcelDxfStyle(_styles.NameSpaceManager, null, _styles, null)
+                ExcelDxfStyle? ns = new ExcelDxfStyle(_styles.NameSpaceManager, null, _styles, null)
                 {
                     Border = Border,
                     Fill = Fill,
@@ -138,7 +138,7 @@ namespace OfficeOpenXml.Style.Dxf
             }
             else
             {
-                var ns = new ExcelDxfSlicerStyle(_styles.NameSpaceManager, null, _styles, null)
+                ExcelDxfSlicerStyle? ns = new ExcelDxfSlicerStyle(_styles.NameSpaceManager, null, _styles, null)
                 {
                     Border = Border,
                     Fill = Fill,
@@ -158,7 +158,7 @@ namespace OfficeOpenXml.Style.Dxf
             }
             else
             {
-                var ns = new ExcelDxfTableStyle(_styles.NameSpaceManager, null, _styles)
+                ExcelDxfTableStyle? ns = new ExcelDxfTableStyle(_styles.NameSpaceManager, null, _styles)
                 {
                     Border = Border,
                     Fill = Fill,
@@ -178,7 +178,7 @@ namespace OfficeOpenXml.Style.Dxf
             }
             else
             {
-                var ns = new ExcelDxfStyleLimitedFont(_styles.NameSpaceManager, null, _styles, _callback)
+                ExcelDxfStyleLimitedFont? ns = new ExcelDxfStyleLimitedFont(_styles.NameSpaceManager, null, _styles, _callback)
                 {
                     Border = Border,
                     Fill = Fill,
@@ -198,7 +198,7 @@ namespace OfficeOpenXml.Style.Dxf
             }
             else
             {
-                var ns = new ExcelDxfStyleConditionalFormatting(_styles.NameSpaceManager, null, _styles, _callback)
+                ExcelDxfStyleConditionalFormatting? ns = new ExcelDxfStyleConditionalFormatting(_styles.NameSpaceManager, null, _styles, _callback)
                 {
                     Border = Border,
                     Fill = Fill,

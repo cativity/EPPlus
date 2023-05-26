@@ -29,8 +29,8 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime
         public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
         {
             ValidateArguments(arguments, 1);
-            var dateInt = ArgToInt(arguments, 0);
-            var date = System.DateTime.FromOADate(dateInt);
+            int dateInt = ArgToInt(arguments, 0);
+            System.DateTime date = System.DateTime.FromOADate(dateInt);
             return CreateResult(WeekNumber(date), DataType.Integer);
         }
 
@@ -42,9 +42,9 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime
         private int WeekNumber(System.DateTime fromDate)
         {
             // Get jan 1st of the year
-            var startOfYear = fromDate.AddDays(-fromDate.Day + 1).AddMonths(-fromDate.Month + 1);
+            System.DateTime startOfYear = fromDate.AddDays(-fromDate.Day + 1).AddMonths(-fromDate.Month + 1);
             // Get dec 31st of the year
-            var endOfYear = startOfYear.AddYears(1).AddDays(-1);
+            System.DateTime endOfYear = startOfYear.AddYears(1).AddDays(-1);
             // ISO 8601 weeks start with Monday
             // The first week of a year includes the first Thursday
             // DayOfWeek returns 0 for sunday up to 6 for saterday

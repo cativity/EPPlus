@@ -57,14 +57,14 @@ namespace EPPlusTest.Drawing.Chart.Styling
         [TestMethod]
         public void HistogramChart_Styles()
         {
-            var ws = _pck.Workbook.Worksheets.Add("HistogramChart");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("HistogramChart");
             LoadTestdata(ws);
             HistogramChartStyle(ws, eChartExType.Histogram);
         }
         [TestMethod]
         public void ParetoChart_Styles()
         {
-            var ws = _pck.Workbook.Worksheets.Add("ParetoChart");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("ParetoChart");
             LoadTestdata(ws);
             HistogramChartStyle(ws, eChartExType.Pareto);
         }
@@ -85,7 +85,7 @@ namespace EPPlusTest.Drawing.Chart.Styling
                 c =>
                 {
                     c.Legend.Position = eLegendPosition.Bottom;
-                    var s = c.Series[0];
+                    ExcelHistogramChartSerie? s = c.Series[0];
                     s.Aggregation = true;
                 });
 
@@ -121,7 +121,7 @@ namespace EPPlusTest.Drawing.Chart.Styling
         }
         private static ExcelHistogramChart AddChartEx(ExcelWorksheet ws, ePresetChartStyle style, string name, int row, int col,eChartExType type, Action<ExcelHistogramChart> SetProperties)
         {
-            var chart = ws.Drawings.AddHistogramChart(name, type==eChartExType.Pareto);
+            ExcelHistogramChart? chart = ws.Drawings.AddHistogramChart(name, type==eChartExType.Pareto);
             chart.SetPosition(row, 0, col, 0);
             chart.To.Column = col+12;
             chart.To.ColumnOff = 0;

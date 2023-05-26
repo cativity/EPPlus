@@ -32,12 +32,12 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Information
             {
                 return CreateResult(true, DataType.Boolean);
             }
-            var result = true;
-            foreach (var arg in arguments)
+            bool result = true;
+            foreach (FunctionArgument? arg in arguments)
             {
                 if (arg.Value is IRangeInfo)
                 {                    
-                    var r=(IRangeInfo)arg.Value;
+                    IRangeInfo? r=(IRangeInfo)arg.Value;
                     if (r.GetValue(r.Address._fromRow, r.Address._fromCol) != null)
                     {
                         result = false;

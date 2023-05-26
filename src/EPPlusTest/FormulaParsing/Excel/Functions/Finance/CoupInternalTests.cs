@@ -16,16 +16,16 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions.Finance
         [TestMethod]
         public void Coupdaybs_ShouldReturnCorrectResult_ActualActual()
         {
-            var settlement = new DateTime(2018, 12, 01);
-            var maturity = new DateTime(2019, 3, 15);
+            DateTime settlement = new DateTime(2018, 12, 01);
+            DateTime maturity = new DateTime(2019, 3, 15);
 
-            var func = new CoupdaybsImpl(
-                FinancialDayFactory.Create(settlement, DayCountBasis.Actual_Actual),
-                FinancialDayFactory.Create(maturity, DayCountBasis.Actual_Actual),
-                4,
-                DayCountBasis.Actual_Actual
-                );
-            var result = func.Coupdaybs();
+            CoupdaybsImpl? func = new CoupdaybsImpl(
+                                                    FinancialDayFactory.Create(settlement, DayCountBasis.Actual_Actual),
+                                                    FinancialDayFactory.Create(maturity, DayCountBasis.Actual_Actual),
+                                                    4,
+                                                    DayCountBasis.Actual_Actual
+                                                   );
+            FinanceCalcResult<int>? result = func.Coupdaybs();
             Assert.AreEqual(77, result.Result);
 
             settlement = new DateTime(2016, 02, 01);
@@ -44,16 +44,16 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions.Finance
         [TestMethod]
         public void Coupdaybs_ShouldReturnCorrectResult_Us_30_360()
         {
-            var settlement = new DateTime(2018, 12, 01);
-            var maturity = new DateTime(2019, 3, 15);
+            DateTime settlement = new DateTime(2018, 12, 01);
+            DateTime maturity = new DateTime(2019, 3, 15);
 
-            var func = new CoupdaybsImpl(
-                FinancialDayFactory.Create(settlement, DayCountBasis.US_30_360),
-                FinancialDayFactory.Create(maturity, DayCountBasis.US_30_360),
-                4,
-                DayCountBasis.US_30_360
-                );
-            var result = func.Coupdaybs();
+            CoupdaybsImpl? func = new CoupdaybsImpl(
+                                                    FinancialDayFactory.Create(settlement, DayCountBasis.US_30_360),
+                                                    FinancialDayFactory.Create(maturity, DayCountBasis.US_30_360),
+                                                    4,
+                                                    DayCountBasis.US_30_360
+                                                   );
+            FinanceCalcResult<int>? result = func.Coupdaybs();
             Assert.AreEqual(76, result.Result);
 
             settlement = new DateTime(2016, 02, 01);
@@ -72,16 +72,16 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions.Finance
         [TestMethod]
         public void Coupdaybs_ShouldReturnCorrectResult_Actual_360()
         {
-            var settlement = new DateTime(2018, 12, 01);
-            var maturity = new DateTime(2019, 3, 15);
+            DateTime settlement = new DateTime(2018, 12, 01);
+            DateTime maturity = new DateTime(2019, 3, 15);
 
-            var func = new CoupdaybsImpl(
-                FinancialDayFactory.Create(settlement, DayCountBasis.Actual_360),
-                FinancialDayFactory.Create(maturity, DayCountBasis.Actual_360),
-                4,
-                DayCountBasis.Actual_360
-                );
-            var result = func.Coupdaybs();
+            CoupdaybsImpl? func = new CoupdaybsImpl(
+                                                    FinancialDayFactory.Create(settlement, DayCountBasis.Actual_360),
+                                                    FinancialDayFactory.Create(maturity, DayCountBasis.Actual_360),
+                                                    4,
+                                                    DayCountBasis.Actual_360
+                                                   );
+            FinanceCalcResult<int>? result = func.Coupdaybs();
             Assert.AreEqual(77, result.Result);
 
             settlement = new DateTime(2016, 02, 01);
@@ -100,16 +100,16 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions.Finance
         [TestMethod]
         public void Coupdaybs_ShouldReturnCorrectResult_Actual_365()
         {
-            var settlement = new DateTime(2018, 12, 01);
-            var maturity = new DateTime(2019, 3, 15);
+            DateTime settlement = new DateTime(2018, 12, 01);
+            DateTime maturity = new DateTime(2019, 3, 15);
 
-            var func = new CoupdaybsImpl(
-                FinancialDayFactory.Create(settlement, DayCountBasis.Actual_365),
-                FinancialDayFactory.Create(maturity, DayCountBasis.Actual_365),
-                4,
-                DayCountBasis.Actual_365
-                );
-            var result = func.Coupdaybs();
+            CoupdaybsImpl? func = new CoupdaybsImpl(
+                                                    FinancialDayFactory.Create(settlement, DayCountBasis.Actual_365),
+                                                    FinancialDayFactory.Create(maturity, DayCountBasis.Actual_365),
+                                                    4,
+                                                    DayCountBasis.Actual_365
+                                                   );
+            FinanceCalcResult<int>? result = func.Coupdaybs();
             Assert.AreEqual(77, result.Result);
 
             settlement = new DateTime(2016, 02, 01);
@@ -128,16 +128,16 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions.Finance
         [TestMethod]
         public void Coupdaybs_ShouldReturnCorrectResult_European_30_360()
         {
-            var settlement = new DateTime(2018, 12, 01);
-            var maturity = new DateTime(2019, 3, 15);
+            DateTime settlement = new DateTime(2018, 12, 01);
+            DateTime maturity = new DateTime(2019, 3, 15);
 
-            var func = new CoupdaybsImpl(
-                FinancialDayFactory.Create(settlement, DayCountBasis.European_30_360),
-                FinancialDayFactory.Create(maturity, DayCountBasis.European_30_360),
-                4,
-                DayCountBasis.European_30_360
-                );
-            var result = func.Coupdaybs();
+            CoupdaybsImpl? func = new CoupdaybsImpl(
+                                                    FinancialDayFactory.Create(settlement, DayCountBasis.European_30_360),
+                                                    FinancialDayFactory.Create(maturity, DayCountBasis.European_30_360),
+                                                    4,
+                                                    DayCountBasis.European_30_360
+                                                   );
+            FinanceCalcResult<int>? result = func.Coupdaybs();
             Assert.AreEqual(76, result.Result);
 
             settlement = new DateTime(2016, 02, 01);
@@ -159,16 +159,16 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions.Finance
         [TestMethod]
         public void Coupdays_ShouldReturnNumberOfDays_ActualActual()
         {
-            var settlement = new DateTime(2012, 2, 29);
-            var maturity = new DateTime(2019, 3, 15);
+            DateTime settlement = new DateTime(2012, 2, 29);
+            DateTime maturity = new DateTime(2019, 3, 15);
 
-            var func = new CoupdaysImpl(
-                FinancialDayFactory.Create(settlement, DayCountBasis.Actual_Actual),
-                FinancialDayFactory.Create(maturity, DayCountBasis.Actual_Actual),
-                4,
-                DayCountBasis.Actual_Actual
-                );
-            var result = func.GetCoupdays();
+            CoupdaysImpl? func = new CoupdaysImpl(
+                                                  FinancialDayFactory.Create(settlement, DayCountBasis.Actual_Actual),
+                                                  FinancialDayFactory.Create(maturity, DayCountBasis.Actual_Actual),
+                                                  4,
+                                                  DayCountBasis.Actual_Actual
+                                                 );
+            FinanceCalcResult<double>? result = func.GetCoupdays();
             Assert.AreEqual(91d, result.Result);
 
             //settlement = new DateTime(2016, 2, 1);
@@ -189,16 +189,16 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions.Finance
         [TestMethod]
         public void Coupdays_ShouldReturnNumberOfDays_Us_30_360()
         {
-            var settlement = new DateTime(2012, 2, 29);
-            var maturity = new DateTime(2019, 3, 15);
+            DateTime settlement = new DateTime(2012, 2, 29);
+            DateTime maturity = new DateTime(2019, 3, 15);
 
-            var func = new CoupdaysImpl(
-                FinancialDayFactory.Create(settlement, DayCountBasis.US_30_360),
-                FinancialDayFactory.Create(maturity, DayCountBasis.US_30_360),
-                4,
-                DayCountBasis.US_30_360
-                );
-            var result = func.GetCoupdays();
+            CoupdaysImpl? func = new CoupdaysImpl(
+                                                  FinancialDayFactory.Create(settlement, DayCountBasis.US_30_360),
+                                                  FinancialDayFactory.Create(maturity, DayCountBasis.US_30_360),
+                                                  4,
+                                                  DayCountBasis.US_30_360
+                                                 );
+            FinanceCalcResult<double>? result = func.GetCoupdays();
             Assert.AreEqual(90d, result.Result);
 
 
@@ -218,16 +218,16 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions.Finance
         [TestMethod]
         public void Coupdays_ShouldReturnNumberOfDays_Actual_360()
         {
-            var settlement = new DateTime(2012, 2, 29);
-            var maturity = new DateTime(2019, 3, 15);
+            DateTime settlement = new DateTime(2012, 2, 29);
+            DateTime maturity = new DateTime(2019, 3, 15);
 
-            var func = new CoupdaysImpl(
-                FinancialDayFactory.Create(settlement, DayCountBasis.Actual_360),
-                FinancialDayFactory.Create(maturity, DayCountBasis.Actual_360),
-                4,
-                DayCountBasis.Actual_360
-                );
-            var result = func.GetCoupdays();
+            CoupdaysImpl? func = new CoupdaysImpl(
+                                                  FinancialDayFactory.Create(settlement, DayCountBasis.Actual_360),
+                                                  FinancialDayFactory.Create(maturity, DayCountBasis.Actual_360),
+                                                  4,
+                                                  DayCountBasis.Actual_360
+                                                 );
+            FinanceCalcResult<double>? result = func.GetCoupdays();
             Assert.AreEqual(90d, result.Result);
 
 
@@ -247,16 +247,16 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions.Finance
         [TestMethod]
         public void Coupdays_ShouldReturnNumberOfDays_Actual_365()
         {
-            var settlement = new DateTime(2012, 2, 29);
-            var maturity = new DateTime(2019, 3, 15);
+            DateTime settlement = new DateTime(2012, 2, 29);
+            DateTime maturity = new DateTime(2019, 3, 15);
 
-            var func = new CoupdaysImpl(
-                FinancialDayFactory.Create(settlement, DayCountBasis.Actual_365),
-                FinancialDayFactory.Create(maturity, DayCountBasis.Actual_365),
-                4,
-                DayCountBasis.Actual_365
-                );
-            var result = func.GetCoupdays();
+            CoupdaysImpl? func = new CoupdaysImpl(
+                                                  FinancialDayFactory.Create(settlement, DayCountBasis.Actual_365),
+                                                  FinancialDayFactory.Create(maturity, DayCountBasis.Actual_365),
+                                                  4,
+                                                  DayCountBasis.Actual_365
+                                                 );
+            FinanceCalcResult<double>? result = func.GetCoupdays();
             Assert.AreEqual(91.25, result.Result);
 
 
@@ -276,16 +276,16 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions.Finance
         [TestMethod]
         public void Coupdays_ShouldReturnNumberOfDays_European_Actual_360()
         {
-            var settlement = new DateTime(2012, 2, 29);
-            var maturity = new DateTime(2019, 3, 15);
+            DateTime settlement = new DateTime(2012, 2, 29);
+            DateTime maturity = new DateTime(2019, 3, 15);
 
-            var func = new CoupdaysImpl(
-                FinancialDayFactory.Create(settlement, DayCountBasis.European_30_360),
-                FinancialDayFactory.Create(maturity, DayCountBasis.European_30_360),
-                4,
-                DayCountBasis.European_30_360
-                );
-            var result = func.GetCoupdays();
+            CoupdaysImpl? func = new CoupdaysImpl(
+                                                  FinancialDayFactory.Create(settlement, DayCountBasis.European_30_360),
+                                                  FinancialDayFactory.Create(maturity, DayCountBasis.European_30_360),
+                                                  4,
+                                                  DayCountBasis.European_30_360
+                                                 );
+            FinanceCalcResult<double>? result = func.GetCoupdays();
             Assert.AreEqual(90d, result.Result);
 
 
@@ -308,16 +308,16 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions.Finance
         [TestMethod]
         public void CoupdaysNc_ShouldReturnNumberOfDays_ActualActual()
         {
-            var settlement = new DateTime(2016, 02, 01);
-            var maturity = new DateTime(2019, 5, 31);
+            DateTime settlement = new DateTime(2016, 02, 01);
+            DateTime maturity = new DateTime(2019, 5, 31);
 
-            var func = new CoupdaysncImpl(
-                FinancialDayFactory.Create(settlement, DayCountBasis.Actual_Actual),
-                FinancialDayFactory.Create(maturity, DayCountBasis.Actual_Actual),
-                4,
-                DayCountBasis.Actual_Actual
-                );
-            var result = func.Coupdaysnc();
+            CoupdaysncImpl? func = new CoupdaysncImpl(
+                                                      FinancialDayFactory.Create(settlement, DayCountBasis.Actual_Actual),
+                                                      FinancialDayFactory.Create(maturity, DayCountBasis.Actual_Actual),
+                                                      4,
+                                                      DayCountBasis.Actual_Actual
+                                                     );
+            FinanceCalcResult<double>? result = func.Coupdaysnc();
             Assert.AreEqual(28d, result.Result);
 
             settlement = new DateTime(2016, 05, 30);
@@ -336,16 +336,16 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions.Finance
         [TestMethod]
         public void CoupdaysNc_ShouldReturnNumberOfDays_Us_30_360()
         {
-            var settlement = new DateTime(2016, 02, 01);
-            var maturity = new DateTime(2019, 5, 31);
+            DateTime settlement = new DateTime(2016, 02, 01);
+            DateTime maturity = new DateTime(2019, 5, 31);
 
-            var func = new CoupdaysncImpl(
-                FinancialDayFactory.Create(settlement, DayCountBasis.US_30_360),
-                FinancialDayFactory.Create(maturity, DayCountBasis.US_30_360),
-                4,
-                DayCountBasis.US_30_360
-                );
-            var result = func.Coupdaysnc();
+            CoupdaysncImpl? func = new CoupdaysncImpl(
+                                                      FinancialDayFactory.Create(settlement, DayCountBasis.US_30_360),
+                                                      FinancialDayFactory.Create(maturity, DayCountBasis.US_30_360),
+                                                      4,
+                                                      DayCountBasis.US_30_360
+                                                     );
+            FinanceCalcResult<double>? result = func.Coupdaysnc();
             Assert.AreEqual(29d, result.Result);
 
             settlement = new DateTime(2016, 05, 30);
@@ -390,16 +390,16 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions.Finance
         [TestMethod]
         public void CoupdaysNc_ShouldReturnNumberOfDays_Actual_360()
         {
-            var settlement = new DateTime(2016, 02, 01);
-            var maturity = new DateTime(2019, 5, 31);
+            DateTime settlement = new DateTime(2016, 02, 01);
+            DateTime maturity = new DateTime(2019, 5, 31);
 
-            var func = new CoupdaysncImpl(
-                FinancialDayFactory.Create(settlement, DayCountBasis.Actual_360),
-                FinancialDayFactory.Create(maturity, DayCountBasis.Actual_360),
-                4,
-                DayCountBasis.Actual_360
-                );
-            var result = func.Coupdaysnc();
+            CoupdaysncImpl? func = new CoupdaysncImpl(
+                                                      FinancialDayFactory.Create(settlement, DayCountBasis.Actual_360),
+                                                      FinancialDayFactory.Create(maturity, DayCountBasis.Actual_360),
+                                                      4,
+                                                      DayCountBasis.Actual_360
+                                                     );
+            FinanceCalcResult<double>? result = func.Coupdaysnc();
             Assert.AreEqual(28d, result.Result);
 
             settlement = new DateTime(2016, 05, 30);
@@ -430,16 +430,16 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions.Finance
         [TestMethod]
         public void CoupdaysNc_ShouldReturnNumberOfDays_Actual_365()
         {
-            var settlement = new DateTime(2016, 02, 01);
-            var maturity = new DateTime(2019, 5, 31);
+            DateTime settlement = new DateTime(2016, 02, 01);
+            DateTime maturity = new DateTime(2019, 5, 31);
 
-            var func = new CoupdaysncImpl(
-                FinancialDayFactory.Create(settlement, DayCountBasis.Actual_365),
-                FinancialDayFactory.Create(maturity, DayCountBasis.Actual_365),
-                4,
-                DayCountBasis.Actual_365
-                );
-            var result = func.Coupdaysnc();
+            CoupdaysncImpl? func = new CoupdaysncImpl(
+                                                      FinancialDayFactory.Create(settlement, DayCountBasis.Actual_365),
+                                                      FinancialDayFactory.Create(maturity, DayCountBasis.Actual_365),
+                                                      4,
+                                                      DayCountBasis.Actual_365
+                                                     );
+            FinanceCalcResult<double>? result = func.Coupdaysnc();
             Assert.AreEqual(28d, result.Result);
 
             settlement = new DateTime(2016, 05, 30);
@@ -470,16 +470,16 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions.Finance
         [TestMethod]
         public void CoupdaysNc_ShouldReturnNumberOfDays_European_30_360()
         {
-            var settlement = new DateTime(2016, 02, 01);
-            var maturity = new DateTime(2019, 5, 31);
+            DateTime settlement = new DateTime(2016, 02, 01);
+            DateTime maturity = new DateTime(2019, 5, 31);
 
-            var func = new CoupdaysncImpl(
-                FinancialDayFactory.Create(settlement, DayCountBasis.European_30_360),
-                FinancialDayFactory.Create(maturity, DayCountBasis.European_30_360),
-                4,
-                DayCountBasis.European_30_360
-                );
-            var result = func.Coupdaysnc();
+            CoupdaysncImpl? func = new CoupdaysncImpl(
+                                                      FinancialDayFactory.Create(settlement, DayCountBasis.European_30_360),
+                                                      FinancialDayFactory.Create(maturity, DayCountBasis.European_30_360),
+                                                      4,
+                                                      DayCountBasis.European_30_360
+                                                     );
+            FinanceCalcResult<double>? result = func.Coupdaysnc();
             Assert.AreEqual(28d, result.Result);
 
             settlement = new DateTime(2016, 05, 30);
@@ -515,16 +515,16 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions.Finance
         public void Coupnum_ShouldReturnNumberOfDays_ActualActual()
         {
             // No need for tests per DayCountBasis here.
-            var settlement = new DateTime(2016, 02, 01);
-            var maturity = new DateTime(2019, 3, 15);
+            DateTime settlement = new DateTime(2016, 02, 01);
+            DateTime maturity = new DateTime(2019, 3, 15);
 
-            var func = new CoupnumImpl(
-                FinancialDayFactory.Create(settlement, DayCountBasis.Actual_Actual),
-                FinancialDayFactory.Create(maturity, DayCountBasis.Actual_Actual),
-                4,
-                DayCountBasis.Actual_Actual
-                );
-            var result = func.GetCoupnum();
+            CoupnumImpl? func = new CoupnumImpl(
+                                                FinancialDayFactory.Create(settlement, DayCountBasis.Actual_Actual),
+                                                FinancialDayFactory.Create(maturity, DayCountBasis.Actual_Actual),
+                                                4,
+                                                DayCountBasis.Actual_Actual
+                                               );
+            FinanceCalcResult<int>? result = func.GetCoupnum();
             Assert.AreEqual(13d, result.Result);
 
             settlement = new DateTime(2018, 12, 01);
@@ -546,16 +546,16 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions.Finance
         public void Coupncd_ShouldReturnCorrectDate_ActualActual()
         {
             // No need for tests per DayCountBasis here.
-            var settlement = new DateTime(2017, 02, 01);
-            var maturity = new DateTime(2020, 05, 31);
+            DateTime settlement = new DateTime(2017, 02, 01);
+            DateTime maturity = new DateTime(2020, 05, 31);
 
-            var func = new CoupncdImpl(
-                FinancialDayFactory.Create(settlement, DayCountBasis.Actual_Actual),
-                FinancialDayFactory.Create(maturity, DayCountBasis.Actual_Actual),
-                4,
-                DayCountBasis.Actual_Actual
-                );
-            var result = func.GetCoupncd();
+            CoupncdImpl? func = new CoupncdImpl(
+                                                FinancialDayFactory.Create(settlement, DayCountBasis.Actual_Actual),
+                                                FinancialDayFactory.Create(maturity, DayCountBasis.Actual_Actual),
+                                                4,
+                                                DayCountBasis.Actual_Actual
+                                               );
+            FinanceCalcResult<DateTime>? result = func.GetCoupncd();
             Assert.AreEqual(new System.DateTime(2017, 2, 28), result.Result);
 
             settlement = new DateTime(2016, 02, 01);
@@ -577,16 +577,16 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions.Finance
         public void Couppcd_ShouldReturnCorrectDate_ActualActual()
         {
             // No need for tests per DayCountBasis here.
-            var settlement = new DateTime(2017, 05, 30);
-            var maturity = new DateTime(2020, 05, 31);
+            DateTime settlement = new DateTime(2017, 05, 30);
+            DateTime maturity = new DateTime(2020, 05, 31);
 
-            var func = new CouppcdImpl(
-                FinancialDayFactory.Create(settlement, DayCountBasis.Actual_Actual),
-                FinancialDayFactory.Create(maturity, DayCountBasis.Actual_Actual),
-                4,
-                DayCountBasis.Actual_Actual
-                );
-            var result = func.GetCouppcd();
+            CouppcdImpl? func = new CouppcdImpl(
+                                                FinancialDayFactory.Create(settlement, DayCountBasis.Actual_Actual),
+                                                FinancialDayFactory.Create(maturity, DayCountBasis.Actual_Actual),
+                                                4,
+                                                DayCountBasis.Actual_Actual
+                                               );
+            FinanceCalcResult<DateTime>? result = func.GetCouppcd();
             Assert.AreEqual(new System.DateTime(2017, 2, 28), result.Result);
 
             settlement = new DateTime(2016, 02, 01);

@@ -22,7 +22,7 @@ namespace OfficeOpenXml.DataValidation.Formulas
         public ExcelDataValidationFormulaTime(string formula, string validationUid, string sheetName, Action<OnFormulaChangedEventArgs> extHandler)
             : base(validationUid, sheetName, extHandler)
         {
-            var value = formula;
+            string? value = formula;
             if (!string.IsNullOrEmpty(value))
             {
                 decimal time = default;

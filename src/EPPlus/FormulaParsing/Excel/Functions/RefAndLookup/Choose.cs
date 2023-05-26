@@ -29,13 +29,13 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.RefAndLookup
         public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
         {
             ValidateArguments(arguments, 2);
-            var items = new List<object>();
+            List<object>? items = new List<object>();
             for (int x = 0; x < arguments.Count(); x++)
             {
                 items.Add(arguments.ElementAt(x).ValueFirst);
             }
 
-            var chooseIndices = arguments.ElementAt(0).ValueFirst as IEnumerable<FunctionArgument>;
+            IEnumerable<FunctionArgument>? chooseIndices = arguments.ElementAt(0).ValueFirst as IEnumerable<FunctionArgument>;
             if (chooseIndices != null && chooseIndices.Count() > 1)
             {
                 IntArgumentParser intParser = new IntArgumentParser();
@@ -44,13 +44,13 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.RefAndLookup
             }
             else
             {
-                var index = ArgToInt(arguments, 0);
-                var choosedValue = arguments.ElementAt(index).Value;
+                int index = ArgToInt(arguments, 0);
+                object? choosedValue = arguments.ElementAt(index).Value;
                 if(choosedValue is IRangeInfo)
                 {
                     return CreateResult(choosedValue, DataType.Enumerable);
                 }
-                var factory = new CompileResultFactory();
+                CompileResultFactory? factory = new CompileResultFactory();
                 return factory.Create(choosedValue);
             }
         }

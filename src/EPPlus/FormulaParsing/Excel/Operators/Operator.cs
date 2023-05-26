@@ -160,8 +160,8 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Operators
                     {
                         return new CompileResult(eErrorType.Value);
                     }
-                    var left = l.ResultNumeric;
-                    var right = r.ResultNumeric;
+                    double left = l.ResultNumeric;
+                    double right = r.ResultNumeric;
                     if (Math.Abs(right - 0d) < double.Epsilon)
                     {
                         return new CompileResult(eErrorType.Div0);
@@ -216,8 +216,8 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Operators
                     {
                         l = l ?? new CompileResult(string.Empty, DataType.String);
                         r = r ?? new CompileResult(string.Empty, DataType.String);
-                        var lStr = l.Result != null ? CompileResultToString(l) : string.Empty;
-                        var rStr = r.Result != null ? CompileResultToString(r) : string.Empty;
+                        string? lStr = l.Result != null ? CompileResultToString(l) : string.Empty;
+                        string? rStr = r.Result != null ? CompileResultToString(r) : string.Empty;
                         return new CompileResult(string.Concat(lStr, rStr), DataType.String);
                     });
             }
@@ -346,26 +346,26 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Operators
             right = GetObjFromOther(r, l);
             if (ConvertUtil.IsNumericOrDate(left) && ConvertUtil.IsNumericOrDate(right))
             {
-                var lnum = ConvertUtil.GetValueDouble(left);
-                var rnum = ConvertUtil.GetValueDouble(right);
+                double lnum = ConvertUtil.GetValueDouble(left);
+                double rnum = ConvertUtil.GetValueDouble(right);
                 if (Math.Abs(lnum - rnum) < double.Epsilon)
                 {
                     return new CompileResult(comparison(0), DataType.Boolean);
                 }
-                var comparisonResult = lnum.CompareTo(rnum);
+                int comparisonResult = lnum.CompareTo(rnum);
                 return new CompileResult(comparison(comparisonResult), DataType.Boolean);
             }
             else
             {
-                var comparisonResult = CompareString(left, right);
+                int comparisonResult = CompareString(left, right);
                 return new CompileResult(comparison(comparisonResult), DataType.Boolean);
             }
         }
 
         private static int CompareString(object l, object r)
         {
-            var sl = (l ?? "").ToString();
-            var sr = (r ?? "").ToString();
+            string? sl = (l ?? "").ToString();
+            string? sr = (r ?? "").ToString();
             return string.Compare(sl, sr, StringComparison.OrdinalIgnoreCase);
         }
 

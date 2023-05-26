@@ -36,7 +36,7 @@ namespace OfficeOpenXml
         /// <returns>The value of the environment variable</returns>
         internal static string GetEnvironmentVariable(string key, EnvironmentVariableTarget target, ExcelPackageConfiguration config, List<ExcelInitializationError> initErrors)
         {
-            var supressInitExceptions = config.SuppressInitializationExceptions;
+            bool supressInitExceptions = config.SuppressInitializationExceptions;
             try
             {
                 return Environment.GetEnvironmentVariable(key, target);
@@ -45,8 +45,8 @@ namespace OfficeOpenXml
             {
                 if (supressInitExceptions)
                 {
-                    var errorMessage = $"Could not read environment variable \"{key}\"";
-                    var error = new ExcelInitializationError(errorMessage, ex);
+                    string? errorMessage = $"Could not read environment variable \"{key}\"";
+                    ExcelInitializationError? error = new ExcelInitializationError(errorMessage, ex);
                     initErrors.Add(error);
                 }
                 else
@@ -60,24 +60,24 @@ namespace OfficeOpenXml
 #if (Core)
         internal static string GetJsonConfigValue(string key, ExcelPackageConfiguration config, List<ExcelInitializationError> initErrors)
         {
-            var supressInitExceptions = config.SuppressInitializationExceptions;
-            var basePath = config.JsonConfigBasePath;
-            var configFileName = config.JsonConfigFileName;
-            var configRoot = default(IConfigurationRoot);
+            bool supressInitExceptions = config.SuppressInitializationExceptions;
+            string? basePath = config.JsonConfigBasePath;
+            string? configFileName = config.JsonConfigFileName;
+            IConfigurationRoot? configRoot = default(IConfigurationRoot);
             try
             {
                 
-                var build = new ConfigurationBuilder()
-                       .SetBasePath(basePath)
-                       .AddJsonFile(configFileName, true, false);
+                IConfigurationBuilder? build = new ConfigurationBuilder()
+                                               .SetBasePath(basePath)
+                                               .AddJsonFile(configFileName, true, false);
                 configRoot = build.Build();
             }
             catch (Exception ex)
             {
                 if (supressInitExceptions)
                 {
-                    var errorMessage = $"Could not load configuration file \"{configFileName}\"";
-                    var error = new ExcelInitializationError(errorMessage, ex);
+                    string? errorMessage = $"Could not load configuration file \"{configFileName}\"";
+                    ExcelInitializationError? error = new ExcelInitializationError(errorMessage, ex);
                     initErrors.Add(error);
                 }
                 else
@@ -89,15 +89,15 @@ namespace OfficeOpenXml
             {
                 try
                 {
-                    var v = configRoot[key];
+                    string? v = configRoot[key];
                     return v;
                 }
                 catch (Exception ex)
                 {
                     if (supressInitExceptions)
                     {
-                        var errorMessage = $"Could read key \"{key}\" from appsettings.json";
-                        var error = new ExcelInitializationError(errorMessage, ex);
+                        string? errorMessage = $"Could read key \"{key}\" from appsettings.json";
+                        ExcelInitializationError? error = new ExcelInitializationError(errorMessage, ex);
                         initErrors.Add(error);
                         return null;
                     }

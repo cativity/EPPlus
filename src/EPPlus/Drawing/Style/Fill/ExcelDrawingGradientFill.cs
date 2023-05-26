@@ -132,7 +132,7 @@ namespace OfficeOpenXml.Drawing.Style.Fill
             RotateWithShape = _xml.GetXmlNodeBool("@rotWithShape");
             try
             {
-                var s = _xml.GetXmlNodeString("@flip");
+                string? s = _xml.GetXmlNodeString("@flip");
                 if (string.IsNullOrEmpty(s))
                 {
                     TileFlip = eTileFlipMode.None;
@@ -147,16 +147,16 @@ namespace OfficeOpenXml.Drawing.Style.Fill
                 TileFlip = eTileFlipMode.None;
             }
 
-            var cols = _xml.TopNode.SelectSingleNode("a:gsLst", _xml.NameSpaceManager);
+            XmlNode? cols = _xml.TopNode.SelectSingleNode("a:gsLst", _xml.NameSpaceManager);
             if (cols != null)
             {
                 foreach (XmlNode c in cols.ChildNodes)
                 {
-                    var xml = XmlHelperFactory.Create(_xml.NameSpaceManager, c);
+                    XmlHelper? xml = XmlHelperFactory.Create(_xml.NameSpaceManager, c);
                     _colors.Add(xml.GetXmlNodeDouble("@pos") / 1000, c);
                 }
             }
-            var path=_xml.GetXmlNodeString("a:path/@path");
+            string? path=_xml.GetXmlNodeString("a:path/@path");
             if(!string.IsNullOrEmpty(path))
             {
                 if (path == "rect")

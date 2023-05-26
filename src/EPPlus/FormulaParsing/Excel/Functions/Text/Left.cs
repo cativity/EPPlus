@@ -28,8 +28,8 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Text
         public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
         {
             ValidateArguments(arguments, 2);
-            var str = ArgToString(arguments, 0);
-            var length = ArgToInt(arguments, 1);
+            string? str = ArgToString(arguments, 0);
+            int length = ArgToInt(arguments, 1);
             if (str.Length < length)
             {
                 length = str.Length;

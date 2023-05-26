@@ -41,7 +41,7 @@ namespace OfficeOpenXml.Export.ToDataTable
 
         internal DataTable Build()
         {
-            var columnNames = new HashSet<string>(StringComparer.InvariantCultureIgnoreCase);
+            HashSet<string>? columnNames = new HashSet<string>(StringComparer.InvariantCultureIgnoreCase);
             if(_dataTable == null)
             {
                 _dataTable = string.IsNullOrEmpty(_options.DataTableName) ? new DataTable() : new DataTable(_options.DataTableName);
@@ -50,13 +50,13 @@ namespace OfficeOpenXml.Export.ToDataTable
             {
                 _dataTable.Namespace = _options.DataTableNamespace;
             }
-            var columnOrder = 0;
-            for (var col = _range.Start.Column; col <= _range.End.Column; col++)
+            int columnOrder = 0;
+            for (int col = _range.Start.Column; col <= _range.End.Column; col++)
             {
-                var row = _range.Start.Row;
-                var name = _options.ColumnNamePrefix + ++columnOrder;
-                var origName = name;
-                var columnIndex = columnOrder - 1;
+                int row = _range.Start.Row;
+                string? name = _options.ColumnNamePrefix + ++columnOrder;
+                string? origName = name;
+                int columnIndex = columnOrder - 1;
                 if(_options.Mappings.ContainsMapping(columnIndex))
                 {
                     name = _options.Mappings.GetByRangeIndex(columnIndex).DataColumnName;
@@ -87,16 +87,16 @@ namespace OfficeOpenXml.Export.ToDataTable
                     ;
                 }
 
-                var v = _sheet.GetValue(row, col);
+                object? v = _sheet.GetValue(row, col);
                 if (row == _range.End.Row && v == null)
                 {
                     throw new InvalidOperationException(string.Format("Column with index {0} does not contain any values", col));
                 }
 
-                var type = v == null ? typeof(Nullable) : v.GetType();
+                Type? type = v == null ? typeof(Nullable) : v.GetType();
 
                 // check mapping
-                var mapping = _options.Mappings.GetByRangeIndex(columnIndex);
+                DataColumnMapping? mapping = _options.Mappings.GetByRangeIndex(columnIndex);
                 if (_options.PredefinedMappingsOnly && mapping == null)
                 {
                     continue;
@@ -115,7 +115,7 @@ namespace OfficeOpenXml.Export.ToDataTable
 
                 if((mapping == null || !mapping.HasDataColumn) && _dataTable.Columns[name] == null)
                 {
-                    var column = _dataTable.Columns.Add(name, type);
+                    DataColumn? column = _dataTable.Columns.Add(name, type);
                     column.Caption = origName;
                 }
 
@@ -135,13 +135,13 @@ namespace OfficeOpenXml.Export.ToDataTable
 
         private void HandlePrimaryKeys(DataTable dataTable)
         {
-            var pk = new DataTablePrimaryKey(_options);
+            DataTablePrimaryKey? pk = new DataTablePrimaryKey(_options);
             if(pk.HasKeys)
             {
-                var cols = new List<DataColumn>();
-                foreach(var colObj in dataTable.Columns)
+                List<DataColumn>? cols = new List<DataColumn>();
+                foreach(object? colObj in dataTable.Columns)
                 {
-                    var col = colObj as DataColumn;
+                    DataColumn? col = colObj as DataColumn;
                     if (col == null)
                     {
                         continue;

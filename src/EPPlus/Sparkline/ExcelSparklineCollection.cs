@@ -46,7 +46,7 @@ namespace OfficeOpenXml.Sparkline
 
         private void LoadSparklines()
         {
-            var grps=_slg.TopNode.SelectNodes(_topPath, _slg.NameSpaceManager);
+            XmlNodeList? grps=_slg.TopNode.SelectNodes(_topPath, _slg.NameSpaceManager);
             foreach(XmlElement grp in grps)
             {
                 _lst.Add(new ExcelSparkline(_slg.NameSpaceManager, grp));
@@ -80,12 +80,12 @@ namespace OfficeOpenXml.Sparkline
 
         internal void Add(ExcelCellAddress cell, string worksheetName, ExcelAddressBase sqref)
         {
-            var sparkline = _slg.TopNode.OwnerDocument.CreateElement("x14","sparkline", ExcelPackage.schemaMainX14);            
-            var sls = _slg.TopNode.SelectSingleNode("x14:sparklines", _slg.NameSpaceManager);
+            XmlElement? sparkline = _slg.TopNode.OwnerDocument.CreateElement("x14","sparkline", ExcelPackage.schemaMainX14);            
+            XmlNode? sls = _slg.TopNode.SelectSingleNode("x14:sparklines", _slg.NameSpaceManager);
 
             sls.AppendChild(sparkline);
             _slg.TopNode.AppendChild(sls);
-            var sl = new ExcelSparkline(_slg.NameSpaceManager, sparkline);
+            ExcelSparkline? sl = new ExcelSparkline(_slg.NameSpaceManager, sparkline);
             sl.Cell = cell;
             sl.RangeAddress = sqref;
             _lst.Add(sl);

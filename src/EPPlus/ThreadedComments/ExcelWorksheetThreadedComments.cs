@@ -79,11 +79,11 @@ namespace OfficeOpenXml.ThreadedComments
 
         private void LoadThreads()
         {
-            var commentRels = _worksheet.Part.GetRelationshipsByType(ExcelPackage.schemaThreadedComment);
-            foreach (var commentPart in commentRels)
+            ZipPackageRelationshipCollection? commentRels = _worksheet.Part.GetRelationshipsByType(ExcelPackage.schemaThreadedComment);
+            foreach (ZipPackageRelationship? commentPart in commentRels)
             {
-                var uri = UriHelper.ResolvePartUri(commentPart.SourceUri, commentPart.TargetUri);
-                var part = _package.ZipPackage.GetPart(uri);
+                Uri? uri = UriHelper.ResolvePartUri(commentPart.SourceUri, commentPart.TargetUri);
+                ZipPackagePart? part = _package.ZipPackage.GetPart(uri);
                 ThreadedCommentsXml = new XmlDocument();
                 ThreadedCommentsXml.PreserveWhitespace = true;
                 XmlHelper.LoadXmlSafe(ThreadedCommentsXml, part.GetStream());
@@ -95,8 +95,8 @@ namespace OfficeOpenXml.ThreadedComments
         {
             foreach (XmlElement node in ThreadedCommentsXml.SelectNodes("tc:ThreadedComments/tc:threadedComment", _worksheet.NameSpaceManager))
             {
-                var comment = new ExcelThreadedComment(node, _worksheet.NameSpaceManager, _worksheet.Workbook);
-                var cellAddress = comment.CellAddress;
+                ExcelThreadedComment? comment = new ExcelThreadedComment(node, _worksheet.NameSpaceManager, _worksheet.Workbook);
+                ExcelCellAddress? cellAddress = comment.CellAddress;
                 int i = -1;
                 ExcelThreadedCommentThread thread;
                 if (_worksheet._threadedCommentsStore.Exists(cellAddress.Row, cellAddress.Column, ref i))
@@ -164,7 +164,7 @@ namespace OfficeOpenXml.ThreadedComments
                 ThreadedCommentsXml.PreserveWhitespace = true;
                 ThreadedCommentsXml.LoadXml("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\" ?><ThreadedComments xmlns=\"http://schemas.microsoft.com/office/spreadsheetml/2018/threadedcomments\" xmlns:x=\"http://schemas.openxmlformats.org/spreadsheetml/2006/main\"/>");
             }
-            var thread = new ExcelThreadedCommentThread(cellAddress, ThreadedCommentsXml, _worksheet);
+            ExcelThreadedCommentThread? thread = new ExcelThreadedCommentThread(cellAddress, ThreadedCommentsXml, _worksheet);
             _worksheet._threadedCommentsStore.SetValue(cellAddress.Row, cellAddress.Column, _threads.Count);
             _threadsIndex.Add(_threads.Count);
             _threads.Add(thread);
@@ -242,14 +242,14 @@ namespace OfficeOpenXml.ThreadedComments
 
             if (threadedComment == c)
             {
-                var address = threadedComment.CellAddress;
-                var comment = _worksheet.Comments[address];
+                ExcelCellAddress? address = threadedComment.CellAddress;
+                ExcelComment? comment = _worksheet.Comments[address];
                 if (comment != null) //Check if the underlaying comment exists.
                 {
                     _worksheet.Comments.Remove(comment); //If so, Remove it.
                 }
-                var nodes = threadedComment.Comments.Select(x => x.TopNode);
-                foreach(var node in nodes)
+                IEnumerable<XmlNode>? nodes = threadedComment.Comments.Select(x => x.TopNode);
+                foreach(XmlNode? node in nodes)
                 {
                     node.ParentNode.RemoveChild(node); //Remove xml node
                 }
@@ -274,9 +274,9 @@ namespace OfficeOpenXml.ThreadedComments
         internal void Delete(int fromRow, int fromCol, int rows, int columns, int toRow = ExcelPackage.MaxRows, int toCol = ExcelPackage.MaxColumns)
         {
             List<ExcelThreadedCommentThread> deletedComments = new List<ExcelThreadedCommentThread>();
-            foreach (var threadedComment in _threads.Where(x => x != null))
+            foreach (ExcelThreadedCommentThread? threadedComment in _threads.Where(x => x != null))
             {
-                var address = new ExcelAddressBase(threadedComment.CellAddress.Address);
+                ExcelAddressBase? address = new ExcelAddressBase(threadedComment.CellAddress.Address);
                 if (columns > 0 && address._fromCol >= fromCol &&
                     address._fromRow >= fromRow && address._toRow <= toRow)
                 {
@@ -297,13 +297,13 @@ namespace OfficeOpenXml.ThreadedComments
                 }
             }
 
-            foreach (var comment in deletedComments)
+            foreach (ExcelThreadedCommentThread? comment in deletedComments)
             {
-                foreach (var c in comment.Comments)
+                foreach (ExcelThreadedComment? c in comment.Comments)
                 {
                     c.TopNode.ParentNode.RemoveChild(c.TopNode);
                 }
-                var ix = _threads.IndexOf(comment);
+                int ix = _threads.IndexOf(comment);
                 _threadsIndex.Remove(ix);
                 _threads[ix] = null;
             }
@@ -319,9 +319,9 @@ namespace OfficeOpenXml.ThreadedComments
         /// <param name="toCol">If the insert is in a range, this the end column</param>
         internal void Insert(int fromRow, int fromCol, int rows, int columns, int toRow = ExcelPackage.MaxRows, int toCol = ExcelPackage.MaxColumns)
         {
-            foreach (var comment in _threads.Where(x => x != null))
+            foreach (ExcelThreadedCommentThread? comment in _threads.Where(x => x != null))
             {
-                var address = new ExcelAddressBase(comment.CellAddress.Address);
+                ExcelAddressBase? address = new ExcelAddressBase(comment.CellAddress.Address);
                 if (rows > 0 && address._fromRow >= fromRow &&
                     address._fromCol >= fromCol && address._toCol <= toCol)
                 {

@@ -29,7 +29,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions
             Require.That(obj).Named("argument").IsNotNull();
             if (obj is IRangeInfo)
             {
-                var r=((IRangeInfo)obj).FirstOrDefault();
+                ICellInfo? r=((IRangeInfo)obj).FirstOrDefault();
                 return r == null ? 0 : r.ValueDouble;
             }
             if (obj is double)
@@ -42,7 +42,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions
                 return util.ConvertUtil.GetValueDouble(obj);
             }
 
-            var str = obj != null ? obj.ToString() : string.Empty;
+            string? str = obj != null ? obj.ToString() : string.Empty;
             try
             {
                 double d;

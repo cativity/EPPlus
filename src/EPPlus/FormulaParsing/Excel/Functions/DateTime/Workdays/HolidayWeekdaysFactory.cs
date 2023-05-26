@@ -37,11 +37,11 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime.Workdays
                 throw new ArgumentException("Illegal weekday string", nameof(Weekday));
             }
 
-            var retVal = new List<DayOfWeek>();
-            var arr = weekdays.ToCharArray();
-            for(var i = 0; i < arr.Length;i++)
+            List<DayOfWeek>? retVal = new List<DayOfWeek>();
+            char[]? arr = weekdays.ToCharArray();
+            for(int i = 0; i < arr.Length;i++)
             {
-                var ch = arr[i];
+                char ch = arr[i];
                 if (ch == '1')
                 {
                     retVal.Add(_dayOfWeekArray[i]);

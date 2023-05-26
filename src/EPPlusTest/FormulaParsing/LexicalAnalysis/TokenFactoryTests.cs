@@ -48,8 +48,8 @@ namespace EPPlusTest.FormulaParsing.LexicalAnalysis
         [TestInitialize]
         public void Setup()
         {
-            var context = ParsingContext.Create();
-            var excelDataProvider = A.Fake<ExcelDataProvider>();
+            ParsingContext? context = ParsingContext.Create();
+            ExcelDataProvider? excelDataProvider = A.Fake<ExcelDataProvider>();
             _nameValueProvider = A.Fake<INameValueProvider>();
             _tokenFactory = new TokenFactory(context.Configuration.FunctionRepository, _nameValueProvider);
         }
@@ -63,8 +63,8 @@ namespace EPPlusTest.FormulaParsing.LexicalAnalysis
         [TestMethod]
         public void ShouldCreateAStringToken()
         {
-            var input = "\"";
-            var token = _tokenFactory.Create(Enumerable.Empty<Token>(), input);
+            string? input = "\"";
+            Token token = _tokenFactory.Create(Enumerable.Empty<Token>(), input);
 
             Assert.AreEqual("\"", token.Value);
             Assert.IsTrue(token.TokenTypeIsSet(TokenType.String));
@@ -73,8 +73,8 @@ namespace EPPlusTest.FormulaParsing.LexicalAnalysis
         [TestMethod]
         public void ShouldCreatePlusAsOperatorToken()
         {
-            var input = "+";
-            var token = _tokenFactory.Create(Enumerable.Empty<Token>(), input);
+            string? input = "+";
+            Token token = _tokenFactory.Create(Enumerable.Empty<Token>(), input);
 
             Assert.AreEqual("+", token.Value);
             Assert.IsTrue(token.TokenTypeIsSet(TokenType.Operator));
@@ -83,8 +83,8 @@ namespace EPPlusTest.FormulaParsing.LexicalAnalysis
         [TestMethod]
         public void ShouldCreateMinusAsOperatorToken()
         {
-            var input = "-";
-            var token = _tokenFactory.Create(Enumerable.Empty<Token>(), input);
+            string? input = "-";
+            Token token = _tokenFactory.Create(Enumerable.Empty<Token>(), input);
 
             Assert.AreEqual("-", token.Value);
             Assert.IsTrue(token.TokenTypeIsSet(TokenType.Operator));
@@ -93,8 +93,8 @@ namespace EPPlusTest.FormulaParsing.LexicalAnalysis
         [TestMethod]
         public void ShouldCreateMultiplyAsOperatorToken()
         {
-            var input = "*";
-            var token = _tokenFactory.Create(Enumerable.Empty<Token>(), input);
+            string? input = "*";
+            Token token = _tokenFactory.Create(Enumerable.Empty<Token>(), input);
 
             Assert.AreEqual("*", token.Value);
             Assert.IsTrue(token.TokenTypeIsSet(TokenType.Operator));
@@ -103,8 +103,8 @@ namespace EPPlusTest.FormulaParsing.LexicalAnalysis
         [TestMethod]
         public void ShouldCreateDivideAsOperatorToken()
         {
-            var input = "/";
-            var token = _tokenFactory.Create(Enumerable.Empty<Token>(), input);
+            string? input = "/";
+            Token token = _tokenFactory.Create(Enumerable.Empty<Token>(), input);
 
             Assert.AreEqual("/", token.Value);
             Assert.IsTrue(token.TokenTypeIsSet(TokenType.Operator));
@@ -113,8 +113,8 @@ namespace EPPlusTest.FormulaParsing.LexicalAnalysis
         [TestMethod]
         public void ShouldCreateEqualsAsOperatorToken()
         {
-            var input = "=";
-            var token = _tokenFactory.Create(Enumerable.Empty<Token>(), input);
+            string? input = "=";
+            Token token = _tokenFactory.Create(Enumerable.Empty<Token>(), input);
 
             Assert.AreEqual("=", token.Value);
             Assert.IsTrue(token.TokenTypeIsSet(TokenType.Operator));
@@ -123,8 +123,8 @@ namespace EPPlusTest.FormulaParsing.LexicalAnalysis
         [TestMethod]
         public void ShouldCreateIntegerAsIntegerToken()
         {
-            var input = "23";
-            var token = _tokenFactory.Create(Enumerable.Empty<Token>(), input);
+            string? input = "23";
+            Token token = _tokenFactory.Create(Enumerable.Empty<Token>(), input);
 
             Assert.AreEqual("23", token.Value);
             Assert.IsTrue(token.TokenTypeIsSet(TokenType.Integer));
@@ -134,8 +134,8 @@ namespace EPPlusTest.FormulaParsing.LexicalAnalysis
         [TestMethod]
         public void ShouldCreateBooleanAsBooleanToken()
         {
-            var input = "true";
-            var token = _tokenFactory.Create(Enumerable.Empty<Token>(), input);
+            string? input = "true";
+            Token token = _tokenFactory.Create(Enumerable.Empty<Token>(), input);
 
             Assert.AreEqual("true", token.Value);
             Assert.IsTrue(token.TokenTypeIsSet(TokenType.Boolean));
@@ -144,8 +144,8 @@ namespace EPPlusTest.FormulaParsing.LexicalAnalysis
         [TestMethod]
         public void ShouldCreateDecimalAsDecimalToken()
         {
-            var input = "23.3";
-            var token = _tokenFactory.Create(Enumerable.Empty<Token>(), input);
+            string? input = "23.3";
+            Token token = _tokenFactory.Create(Enumerable.Empty<Token>(), input);
 
             Assert.AreEqual("23.3", token.Value);
             Assert.IsTrue(token.TokenTypeIsSet(TokenType.Decimal));
@@ -154,8 +154,8 @@ namespace EPPlusTest.FormulaParsing.LexicalAnalysis
         [TestMethod]
         public void CreateShouldReadFunctionsFromFuncRepository()
         {
-            var input = "Text";
-            var token = _tokenFactory.Create(Enumerable.Empty<Token>(), input);
+            string? input = "Text";
+            Token token = _tokenFactory.Create(Enumerable.Empty<Token>(), input);
             Assert.IsTrue(token.TokenTypeIsSet(TokenType.Function));
             Assert.AreEqual("Text", token.Value);
         }
@@ -163,8 +163,8 @@ namespace EPPlusTest.FormulaParsing.LexicalAnalysis
         [TestMethod]
         public void CreateShouldCreateExcelAddressAsExcelAddressToken()
         {
-            var input = "A1";
-            var token = _tokenFactory.Create(Enumerable.Empty<Token>(), input);
+            string? input = "A1";
+            Token token = _tokenFactory.Create(Enumerable.Empty<Token>(), input);
             Assert.IsTrue(token.TokenTypeIsSet(TokenType.ExcelAddress));
             Assert.AreEqual("A1", token.Value);
         }
@@ -172,8 +172,8 @@ namespace EPPlusTest.FormulaParsing.LexicalAnalysis
         [TestMethod]
         public void CreateShouldCreateExcelRangeAsExcelAddressToken()
         {
-            var input = "A1:B15";
-            var token = _tokenFactory.Create(Enumerable.Empty<Token>(), input);
+            string? input = "A1:B15";
+            Token token = _tokenFactory.Create(Enumerable.Empty<Token>(), input);
             Assert.IsTrue(token.TokenTypeIsSet(TokenType.ExcelAddress));
             Assert.AreEqual("A1:B15", token.Value);
         }
@@ -181,8 +181,8 @@ namespace EPPlusTest.FormulaParsing.LexicalAnalysis
         [TestMethod]
         public void CreateShouldCreateExcelRangeOnOtherSheetAsExcelAddressToken()
         {
-            var input = "ws!A1:B15";
-            var token = _tokenFactory.Create(Enumerable.Empty<Token>(), input);
+            string? input = "ws!A1:B15";
+            Token token = _tokenFactory.Create(Enumerable.Empty<Token>(), input);
             Assert.IsTrue(token.TokenTypeIsSet(TokenType.ExcelAddress));
             Assert.AreEqual("ws!A1:B15", token.Value);
         }
@@ -190,10 +190,10 @@ namespace EPPlusTest.FormulaParsing.LexicalAnalysis
         [TestMethod]
         public void CreateShouldCreateNamedValueAsExcelAddressToken()
         {
-            var input = "NamedValue";
+            string? input = "NamedValue";
             A.CallTo(() => _nameValueProvider.IsNamedValue("NamedValue","")).Returns(true);
             A.CallTo(() => _nameValueProvider.IsNamedValue("NamedValue", null)).Returns(true);
-            var token = _tokenFactory.Create(Enumerable.Empty<Token>(), input);
+            Token token = _tokenFactory.Create(Enumerable.Empty<Token>(), input);
             Assert.IsTrue(token.TokenTypeIsSet(TokenType.NameValue));
             Assert.AreEqual("NamedValue", token.Value);
         }
@@ -201,9 +201,9 @@ namespace EPPlusTest.FormulaParsing.LexicalAnalysis
         [TestMethod]
         public void TokenFactory_IsNumericTests()
         {
-            var tokens = new List<Token>();
+            List<Token>? tokens = new List<Token>();
             
-            var t = _tokenFactory.Create(tokens, "1");
+            Token t = _tokenFactory.Create(tokens, "1");
             Assert.IsTrue(t.TokenTypeIsSet(TokenType.Integer), "Failed to recognize integer");
 
             t = _tokenFactory.Create(tokens, "1.01");

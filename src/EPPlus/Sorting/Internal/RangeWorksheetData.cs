@@ -25,7 +25,7 @@ namespace OfficeOpenXml.Sorting.Internal
         /// </summary>
         public RangeWorksheetData(ExcelRangeBase range)
         {
-            var worksheet = range.Worksheet;
+            ExcelWorksheet? worksheet = range.Worksheet;
             Flags = GetItems(range, worksheet._flags);
             Formulas = GetItems(range, worksheet._formulas);
             Hyperlinks = GetItems(range, worksheet._hyperLinks);
@@ -45,8 +45,8 @@ namespace OfficeOpenXml.Sorting.Internal
 
         private static Dictionary<string, T> GetItems<T>(ExcelRangeBase r, CellStore<T> store)
         {
-            var e = new CellStoreEnumerator<T>(store, r._fromRow, r._fromCol, r._toRow, r._toCol);
-            var l = new Dictionary<string, T>();
+            CellStoreEnumerator<T>? e = new CellStoreEnumerator<T>(store, r._fromRow, r._fromCol, r._toRow, r._toCol);
+            Dictionary<string, T>? l = new Dictionary<string, T>();
             while (e.Next())
             {
                 l.Add(e.CellAddress, e.Value);

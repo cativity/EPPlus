@@ -40,7 +40,7 @@ namespace OfficeOpenXml.Drawing.Controls
         { 
             get
             {
-                var range = _ctrlProp.GetXmlNodeString("@fmlaRange");
+                string? range = _ctrlProp.GetXmlNodeString("@fmlaRange");
                 if(ExcelAddressBase.IsValidAddress(range))
                 {
                     return new ExcelAddressBase(range);

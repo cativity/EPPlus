@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using OfficeOpenXml.Core;
 
 namespace OfficeOpenXml.Drawing.Slicer
 {
@@ -34,7 +35,7 @@ namespace OfficeOpenXml.Drawing.Slicer
 
         internal void RefreshMe()
         {
-            var cacheItems = _cache._field.Cache.Grouping == null ? _cache._field.Cache.SharedItems : _cache._field.Cache.GroupItems;
+            EPPlusReadOnlyList<object>? cacheItems = _cache._field.Cache.Grouping == null ? _cache._field.Cache.SharedItems : _cache._field.Cache.GroupItems;
             if (cacheItems.Count == _items.Count)
             {
                 return;

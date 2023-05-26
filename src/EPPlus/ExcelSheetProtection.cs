@@ -325,7 +325,7 @@ namespace OfficeOpenXml
             Password = Password.Trim();
             if (Password == "")
             {
-                var node = TopNode.SelectSingleNode(_passwordPath, NameSpaceManager);
+                XmlNode? node = TopNode.SelectSingleNode(_passwordPath, NameSpaceManager);
                 if (node != null)
                 {
                     (node as XmlAttribute).OwnerElement.Attributes.Remove(node as XmlAttribute);

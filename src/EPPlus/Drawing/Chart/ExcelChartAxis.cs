@@ -512,13 +512,13 @@ namespace OfficeOpenXml.Drawing.Chart
         /// <param name="type"></param>
         internal void ChangeAxisType(eAxisType type)
         {
-            var children = XmlHelper.CopyToSchemaNodeOrder(ExcelChartAxisStandard._schemaNodeOrderDateShared, ExcelChartAxisStandard._schemaNodeOrderDate);
+            string[]? children = XmlHelper.CopyToSchemaNodeOrder(ExcelChartAxisStandard._schemaNodeOrderDateShared, ExcelChartAxisStandard._schemaNodeOrderDate);
             RenameNode(TopNode, "c", "dateAx", children);            
         }
         #endregion
         internal XmlNode AddTitleNode()
         {
-            var node = TopNode.SelectSingleNode($"{_nsPrefix}:title", NameSpaceManager);
+            XmlNode? node = TopNode.SelectSingleNode($"{_nsPrefix}:title", NameSpaceManager);
             if (node == null)
             {
                 node = CreateNode($"{_nsPrefix}:title");

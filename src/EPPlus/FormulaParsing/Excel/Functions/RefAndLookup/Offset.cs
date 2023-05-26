@@ -27,11 +27,11 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.RefAndLookup
     {
         public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
         {
-            var functionArguments = arguments as FunctionArgument[] ?? arguments.ToArray();
+            FunctionArgument[]? functionArguments = arguments as FunctionArgument[] ?? arguments.ToArray();
             ValidateArguments(functionArguments, 3);
-            var startRange = ArgToAddress(functionArguments, 0, context);
-            var rowOffset = ArgToInt(functionArguments, 1);
-            var colOffset = ArgToInt(functionArguments, 2);
+            string? startRange = ArgToAddress(functionArguments, 0, context);
+            int rowOffset = ArgToInt(functionArguments, 1);
+            int colOffset = ArgToInt(functionArguments, 2);
             int width = 0, height = 0;
             if (functionArguments.Length > 3)
             {
@@ -49,16 +49,16 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.RefAndLookup
                     return new CompileResult(eErrorType.Ref);
                 }
             }
-            var ws = context.Scopes.Current.Address.Worksheet;            
-            var r =context.ExcelDataProvider.GetRange(ws, context.Scopes.Current.Address.FromRow, context.Scopes.Current.Address.FromCol, startRange);
-            var adr = r.Address;
+            string? ws = context.Scopes.Current.Address.Worksheet;            
+            IRangeInfo? r =context.ExcelDataProvider.GetRange(ws, context.Scopes.Current.Address.FromRow, context.Scopes.Current.Address.FromCol, startRange);
+            ExcelAddressBase? adr = r.Address;
 
-            var fromRow = adr._fromRow + rowOffset;
-            var fromCol = adr._fromCol + colOffset;
-            var toRow = (height != 0 ? adr._fromRow + height - 1 : adr._toRow) + rowOffset;
-            var toCol = (width != 0 ? adr._fromCol + width - 1 : adr._toCol) + colOffset;
+            int fromRow = adr._fromRow + rowOffset;
+            int fromCol = adr._fromCol + colOffset;
+            int toRow = (height != 0 ? adr._fromRow + height - 1 : adr._toRow) + rowOffset;
+            int toCol = (width != 0 ? adr._fromCol + width - 1 : adr._toCol) + colOffset;
 
-            var newRange = context.ExcelDataProvider.GetRange(adr.WorkSheetName, fromRow, fromCol, toRow, toCol);
+            IRangeInfo? newRange = context.ExcelDataProvider.GetRange(adr.WorkSheetName, fromRow, fromCol, toRow, toCol);
             
             return CreateResult(newRange, DataType.Enumerable);
         }

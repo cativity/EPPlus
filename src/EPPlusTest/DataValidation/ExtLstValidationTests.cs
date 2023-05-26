@@ -4,6 +4,7 @@ using OfficeOpenXml.ConditionalFormatting;
 using OfficeOpenXml.DataValidation;
 using System.Drawing;
 using System.IO;
+using OfficeOpenXml.DataValidation.Contracts;
 
 namespace EPPlusTest.DataValidation
 {
@@ -13,11 +14,11 @@ namespace EPPlusTest.DataValidation
         [TestMethod, Ignore]
         public void AddValidationWithFormulaOnOtherWorksheetShouldReturnExt()
         {
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var sheet1 = package.Workbook.Worksheets.Add("test");
-                var sheet2 = package.Workbook.Worksheets.Add("test2");
-                var val = sheet1.DataValidations.AddListValidation("A1");
+                ExcelWorksheet? sheet1 = package.Workbook.Worksheets.Add("test");
+                ExcelWorksheet? sheet2 = package.Workbook.Worksheets.Add("test2");
+                IExcelDataValidationList? val = sheet1.DataValidations.AddListValidation("A1");
                 val.Formula.ExcelFormula = "test2!A1:A2";
                 Assert.IsInstanceOfType(val, typeof(ExcelDataValidationList));
             }
@@ -28,10 +29,10 @@ namespace EPPlusTest.DataValidation
         {
             using (ExcelPackage package = new ExcelPackage(new MemoryStream()))
             {
-                var ws1 = package.Workbook.Worksheets.Add("ExtTest");
-                var ws2 = package.Workbook.Worksheets.Add("ExternalAdresses");
+                ExcelWorksheet? ws1 = package.Workbook.Worksheets.Add("ExtTest");
+                ExcelWorksheet? ws2 = package.Workbook.Worksheets.Add("ExternalAdresses");
 
-                var validation = ws1.DataValidations.AddIntegerValidation("A1");
+                IExcelDataValidationInt? validation = ws1.DataValidations.AddIntegerValidation("A1");
                 validation.Operator = ExcelDataValidationOperator.equal;
                 ws2.Cells["A1"].Value = 5;
 
@@ -39,12 +40,12 @@ namespace EPPlusTest.DataValidation
 
                 Assert.AreEqual(((ExcelDataValidationInt)validation).InternalValidationType, InternalValidationType.ExtLst);
 
-                var stream = new MemoryStream();
+                MemoryStream? stream = new MemoryStream();
                 package.SaveAs(stream);
 
                 ExcelPackage package2 = new ExcelPackage(stream);
 
-                var readingValidation = package2.Workbook.Worksheets[0].DataValidations[0];
+                ExcelDataValidation? readingValidation = package2.Workbook.Worksheets[0].DataValidations[0];
 
                 Assert.AreEqual("sheet2!A1", readingValidation.As.IntegerValidation.Formula.ExcelFormula);
                 Assert.AreEqual(((ExcelDataValidationInt)readingValidation).InternalValidationType, InternalValidationType.ExtLst);
@@ -56,22 +57,22 @@ namespace EPPlusTest.DataValidation
         {
             using (ExcelPackage package = new ExcelPackage(new MemoryStream()))
             {
-                var ws1 = package.Workbook.Worksheets.Add("ExtTest");
-                var ws2 = package.Workbook.Worksheets.Add("ExternalAdresses");
+                ExcelWorksheet? ws1 = package.Workbook.Worksheets.Add("ExtTest");
+                ExcelWorksheet? ws2 = package.Workbook.Worksheets.Add("ExternalAdresses");
 
-                var validation = ws1.DataValidations.AddIntegerValidation("A1");
+                IExcelDataValidationInt? validation = ws1.DataValidations.AddIntegerValidation("A1");
                 validation.Operator = ExcelDataValidationOperator.equal;
 
                 validation.Formula.ExcelFormula = "IF(A2=\"red\"";
 
                 Assert.AreNotEqual(((ExcelDataValidationInt)validation).InternalValidationType, InternalValidationType.ExtLst);
 
-                var stream = new MemoryStream();
+                MemoryStream? stream = new MemoryStream();
                 package.SaveAs(stream);
 
                 ExcelPackage package2 = new ExcelPackage(stream);
 
-                var readingValidation = package2.Workbook.Worksheets[0].DataValidations[0];
+                ExcelDataValidation? readingValidation = package2.Workbook.Worksheets[0].DataValidations[0];
 
                 Assert.AreEqual("IF(A2=\"red\"", readingValidation.As.IntegerValidation.Formula.ExcelFormula);
                 Assert.AreNotEqual(((ExcelDataValidationInt)readingValidation).InternalValidationType, InternalValidationType.ExtLst);
@@ -83,7 +84,7 @@ namespace EPPlusTest.DataValidation
         {
             using (ExcelPackage package = OpenTemplatePackage("ExtLstDataValidationValidation.xlsx"))
             {
-                var memoryStream = new MemoryStream();
+                MemoryStream? memoryStream = new MemoryStream();
                 package.SaveAs(memoryStream);
                 ExcelPackage p = new ExcelPackage(memoryStream);
 
@@ -93,12 +94,12 @@ namespace EPPlusTest.DataValidation
 
         ExcelPackage MakePackageWithExtLstIntValidation()
         {
-            var package = new ExcelPackage(new MemoryStream());
+            ExcelPackage? package = new ExcelPackage(new MemoryStream());
 
             package.Workbook.Worksheets.Add("extValidations");
             package.Workbook.Worksheets.Add("extValidationTargets");
 
-            var validation = package.Workbook.Worksheets[0].DataValidations.AddIntegerValidation("A1");
+            IExcelDataValidationInt? validation = package.Workbook.Worksheets[0].DataValidations.AddIntegerValidation("A1");
             validation.Operator = ExcelDataValidationOperator.equal;
 
             validation.Formula.ExcelFormula = "sheet2!A1";
@@ -109,14 +110,14 @@ namespace EPPlusTest.DataValidation
         [TestMethod]
         public void ReadWriteWorksWithOneValidation()
         {
-            var creationPackage = MakePackageWithExtLstIntValidation();
+            ExcelPackage? creationPackage = MakePackageWithExtLstIntValidation();
 
-            var stream = new MemoryStream();
+            MemoryStream? stream = new MemoryStream();
             creationPackage.SaveAs(stream);
 
-            var readingPackage = new ExcelPackage(stream);
+            ExcelPackage? readingPackage = new ExcelPackage(stream);
 
-            var validation = readingPackage.Workbook.Worksheets[0].DataValidations[0];
+            ExcelDataValidation? validation = readingPackage.Workbook.Worksheets[0].DataValidations[0];
             Assert.AreEqual(ExcelDataValidationOperator.equal, validation.Operator);
             Assert.AreEqual("sheet2!A1", validation.As.IntegerValidation.Formula.ExcelFormula);
             Assert.AreEqual(InternalValidationType.ExtLst, validation.InternalValidationType);
@@ -125,35 +126,35 @@ namespace EPPlusTest.DataValidation
         [TestMethod]
         public void WorksWithManyValidations()
         {
-            var creationPackage = MakePackageWithExtLstIntValidation();
+            ExcelPackage? creationPackage = MakePackageWithExtLstIntValidation();
 
-            var decimalValidation = creationPackage.Workbook.Worksheets[0].DataValidations.AddDecimalValidation("B1");
+            IExcelDataValidationDecimal? decimalValidation = creationPackage.Workbook.Worksheets[0].DataValidations.AddDecimalValidation("B1");
             decimalValidation.Operator = ExcelDataValidationOperator.between;
 
             decimalValidation.Formula.ExcelFormula = "sheet2!B1";
             decimalValidation.Formula2.ExcelFormula = "1.5";
 
-            var timeValidation = creationPackage.Workbook.Worksheets[0].DataValidations.AddTimeValidation("C1");
+            IExcelDataValidationTime? timeValidation = creationPackage.Workbook.Worksheets[0].DataValidations.AddTimeValidation("C1");
             timeValidation.Operator = ExcelDataValidationOperator.notBetween;
 
             timeValidation.Formula.ExcelFormula = "sheet2!C1";
             timeValidation.Formula2.ExcelFormula = "14:00";
 
-            var listValidation = creationPackage.Workbook.Worksheets[0].DataValidations.AddListValidation("D1");
+            IExcelDataValidationList? listValidation = creationPackage.Workbook.Worksheets[0].DataValidations.AddListValidation("D1");
 
             listValidation.Formula.ExcelFormula = "sheet2!A1, sheet2!B1, sheet2!C1";
 
-            var textLength = creationPackage.Workbook.Worksheets[0].DataValidations.AddTextLengthValidation("E1");
+            IExcelDataValidationInt? textLength = creationPackage.Workbook.Worksheets[0].DataValidations.AddTextLengthValidation("E1");
 
             textLength.Operator = ExcelDataValidationOperator.lessThan;
             textLength.Formula.ExcelFormula = "sheet2!D1";
 
-            var stream = new MemoryStream();
+            MemoryStream? stream = new MemoryStream();
             creationPackage.SaveAs(stream);
 
-            var readingPackage = new ExcelPackage(stream);
+            ExcelPackage? readingPackage = new ExcelPackage(stream);
 
-            var validations = readingPackage.Workbook.Worksheets[0].DataValidations;
+            ExcelDataValidationCollection? validations = readingPackage.Workbook.Worksheets[0].DataValidations;
 
             Assert.AreEqual(ExcelDataValidationOperator.equal, validations[0].Operator);
             Assert.AreEqual("sheet2!A1", validations[0].As.IntegerValidation.Formula.ExcelFormula);
@@ -180,13 +181,13 @@ namespace EPPlusTest.DataValidation
         {
             if (isExtLst)
             {
-                var intValidation = ws.DataValidations.AddIntegerValidation("A1");
+                IExcelDataValidationInt? intValidation = ws.DataValidations.AddIntegerValidation("A1");
                 intValidation.Operator = ExcelDataValidationOperator.equal;
                 intValidation.Formula.ExcelFormula = extSheetName + "!A1";
             }
             else
             {
-                var intValidation = ws.DataValidations.AddIntegerValidation("A2");
+                IExcelDataValidationInt? intValidation = ws.DataValidations.AddIntegerValidation("A2");
                 intValidation.Formula.Value = 1;
                 intValidation.Formula2.Value = 3;
             }
@@ -196,7 +197,7 @@ namespace EPPlusTest.DataValidation
 
                 if (isExtLst)
                 {
-                    var timeValidation = ws.DataValidations.AddTimeValidation("B1");
+                    IExcelDataValidationTime? timeValidation = ws.DataValidations.AddTimeValidation("B1");
                     timeValidation.Operator = ExcelDataValidationOperator.between;
 
                     timeValidation.Formula.ExcelFormula = extSheetName + "!B1";
@@ -206,7 +207,7 @@ namespace EPPlusTest.DataValidation
                 }
                 else
                 {
-                    var timeValidation = ws.DataValidations.AddTimeValidation("B2");
+                    IExcelDataValidationTime? timeValidation = ws.DataValidations.AddTimeValidation("B2");
                     timeValidation.Operator = ExcelDataValidationOperator.between;
 
                     timeValidation.Formula.ExcelFormula = "B1";
@@ -218,12 +219,12 @@ namespace EPPlusTest.DataValidation
         //Ensures no save or load errors
         internal void SaveAndLoadAndSave(in ExcelPackage pck)
         {
-            var file = pck.File;
+            FileInfo? file = pck.File;
 
-            var stream = new MemoryStream();
+            MemoryStream? stream = new MemoryStream();
             pck.SaveAs(stream);
 
-            var loadedPackage = new ExcelPackage(stream);
+            ExcelPackage? loadedPackage = new ExcelPackage(stream);
 
             loadedPackage.File = file;
 
@@ -233,10 +234,10 @@ namespace EPPlusTest.DataValidation
         [TestMethod]
         public void LocalDataValidationsShouldWorkWithExtLstValidation()
         {
-            using (var pck = OpenPackage("DataValidationLocalExtLst.xlsx", true))
+            using (ExcelPackage? pck = OpenPackage("DataValidationLocalExtLst.xlsx", true))
             {
-                var ws = pck.Workbook.Worksheets.Add("extLstTest");
-                var extSheet = pck.Workbook.Worksheets.Add("extAddressSheet");
+                ExcelWorksheet? ws = pck.Workbook.Worksheets.Add("extLstTest");
+                ExcelWorksheet? extSheet = pck.Workbook.Worksheets.Add("extAddressSheet");
 
                 AddDataValidations(ref ws, false);
                 AddDataValidations(ref ws, true, "extAddressSheet");
@@ -248,10 +249,10 @@ namespace EPPlusTest.DataValidation
         [TestMethod]
         public void LocalDataValidationsShouldWorkWithManyExtLstValidations()
         {
-            using (var pck = OpenPackage("DataValidationLocalExtLstMany.xlsx", true))
+            using (ExcelPackage? pck = OpenPackage("DataValidationLocalExtLstMany.xlsx", true))
             {
-                var ws = pck.Workbook.Worksheets.Add("extLstTest");
-                var extSheet = pck.Workbook.Worksheets.Add("extAddressSheet");
+                ExcelWorksheet? ws = pck.Workbook.Worksheets.Add("extLstTest");
+                ExcelWorksheet? extSheet = pck.Workbook.Worksheets.Add("extAddressSheet");
 
                 AddDataValidations(ref ws, false);
                 AddDataValidations(ref ws, true, "extAddressSheet", true);
@@ -263,10 +264,10 @@ namespace EPPlusTest.DataValidation
         [TestMethod]
         public void ManyLocalDataValidationsShouldWorkWithSingularExtLstValidations()
         {
-            using (var pck = OpenPackage("DataValidationLocalManyExtLst.xlsx", true))
+            using (ExcelPackage? pck = OpenPackage("DataValidationLocalManyExtLst.xlsx", true))
             {
-                var ws = pck.Workbook.Worksheets.Add("extLstTest");
-                var extSheet = pck.Workbook.Worksheets.Add("extAddressSheet");
+                ExcelWorksheet? ws = pck.Workbook.Worksheets.Add("extLstTest");
+                ExcelWorksheet? extSheet = pck.Workbook.Worksheets.Add("extAddressSheet");
 
                 AddDataValidations(ref ws, false, "", true);
                 AddDataValidations(ref ws, true, "extAddressSheet");
@@ -279,10 +280,10 @@ namespace EPPlusTest.DataValidation
         [TestMethod]
         public void ManyLocalDataValidationsShouldWorkWithManyExtLstConditionalFormattings()
         {
-            using (var pck = OpenPackage("DataValidationLocalManyExtLstMany.xlsx", true))
+            using (ExcelPackage? pck = OpenPackage("DataValidationLocalManyExtLstMany.xlsx", true))
             {
-                var ws = pck.Workbook.Worksheets.Add("extLstTest");
-                var extSheet = pck.Workbook.Worksheets.Add("extAddressSheet");
+                ExcelWorksheet? ws = pck.Workbook.Worksheets.Add("extLstTest");
+                ExcelWorksheet? extSheet = pck.Workbook.Worksheets.Add("extAddressSheet");
 
                 AddDataValidations(ref ws, false, "", true);
                 AddDataValidations(ref ws, true, "extAddressSheet", true);
@@ -294,11 +295,11 @@ namespace EPPlusTest.DataValidation
         [TestMethod]
         public void LocalMultipleAddress()
         {
-            using (var pck = OpenPackage("DataValidationLocalSeperatedAddress.xlsx", true))
+            using (ExcelPackage? pck = OpenPackage("DataValidationLocalSeperatedAddress.xlsx", true))
             {
-                var ws = pck.Workbook.Worksheets.Add("localAddressTest");
+                ExcelWorksheet? ws = pck.Workbook.Worksheets.Add("localAddressTest");
 
-                var validation = ws.DataValidations.AddDecimalValidation("A1:A5 C5:C15 D13");
+                IExcelDataValidationDecimal? validation = ws.DataValidations.AddDecimalValidation("A1:A5 C5:C15 D13");
 
                 validation.Formula.Value = 5;
                 validation.Formula2.Value = 10.5;
@@ -310,13 +311,13 @@ namespace EPPlusTest.DataValidation
         [TestMethod]
         public void ExtLstMultipleAddress()
         {
-            using (var pck = OpenPackage("DataValidationExtLstSeperatedAddress.xlsx", true))
+            using (ExcelPackage? pck = OpenPackage("DataValidationExtLstSeperatedAddress.xlsx", true))
             {
-                var ws = pck.Workbook.Worksheets.Add("extLstAddressTest");
-                var ws2 = pck.Workbook.Worksheets.Add("external");
+                ExcelWorksheet? ws = pck.Workbook.Worksheets.Add("extLstAddressTest");
+                ExcelWorksheet? ws2 = pck.Workbook.Worksheets.Add("external");
 
 
-                var validation = ws.DataValidations.AddDecimalValidation("A1:A5 C5:C15 D13");
+                IExcelDataValidationDecimal? validation = ws.DataValidations.AddDecimalValidation("A1:A5 C5:C15 D13");
 
                 validation.Formula.ExcelFormula = "external!A1";
                 validation.Formula2.Value = 10.5;
@@ -328,18 +329,18 @@ namespace EPPlusTest.DataValidation
         [TestMethod]
         public void ExtLstAndLocalMultipleAddressShouldWork()
         {
-            using (var pck = OpenPackage("DataValidationLocalExtSeperatedAddress.xlsx", true))
+            using (ExcelPackage? pck = OpenPackage("DataValidationLocalExtSeperatedAddress.xlsx", true))
             {
-                var ws = pck.Workbook.Worksheets.Add("extLstAddressTest");
-                var ws2 = pck.Workbook.Worksheets.Add("external");
+                ExcelWorksheet? ws = pck.Workbook.Worksheets.Add("extLstAddressTest");
+                ExcelWorksheet? ws2 = pck.Workbook.Worksheets.Add("external");
 
 
-                var extValidation = ws.DataValidations.AddDecimalValidation("A1:A5 C5:C15 D13");
+                IExcelDataValidationDecimal? extValidation = ws.DataValidations.AddDecimalValidation("A1:A5 C5:C15 D13");
 
                 extValidation.Formula.ExcelFormula = "external!A1";
                 extValidation.Formula2.Value = 10.5;
 
-                var localValidation = ws.DataValidations.AddDecimalValidation("E1:E5 F5:F15 G13");
+                IExcelDataValidationDecimal? localValidation = ws.DataValidations.AddDecimalValidation("E1:E5 F5:F15 G13");
 
                 localValidation.Formula.Value = 5.5;
                 localValidation.Formula2.Value = 25.75;
@@ -351,17 +352,17 @@ namespace EPPlusTest.DataValidation
         [TestMethod]
         public void DataValidationExtLstShouldWorkWithConditionalFormatting()
         {
-            var creationPackage = MakePackageWithExtLstIntValidation();
+            ExcelPackage? creationPackage = MakePackageWithExtLstIntValidation();
 
             creationPackage.Workbook.Worksheets[0]
                 .ConditionalFormatting.AddDatabar(new ExcelAddress("A1:A5"), Color.DarkBlue);
 
-            var stream = new MemoryStream();
+            MemoryStream? stream = new MemoryStream();
             creationPackage.SaveAs(stream);
 
-            var readingPackage = new ExcelPackage(stream);
-            var ws = readingPackage.Workbook.Worksheets[0];
-            var validation = ws.DataValidations[0];
+            ExcelPackage? readingPackage = new ExcelPackage(stream);
+            ExcelWorksheet? ws = readingPackage.Workbook.Worksheets[0];
+            ExcelDataValidation? validation = ws.DataValidations[0];
 
             Assert.AreEqual(eExcelConditionalFormattingRuleType.DataBar, ws.ConditionalFormatting[0].Type);
 
@@ -373,9 +374,9 @@ namespace EPPlusTest.DataValidation
         [TestMethod]
         public void DataValidationExtLstShouldWorkWithConditionalFormattingMultiple()
         {
-            var creationPackage = MakePackageWithExtLstIntValidation();
+            ExcelPackage? creationPackage = MakePackageWithExtLstIntValidation();
 
-            var decimalValidation = creationPackage.Workbook.Worksheets[0].DataValidations.AddDecimalValidation("B1");
+            IExcelDataValidationDecimal? decimalValidation = creationPackage.Workbook.Worksheets[0].DataValidations.AddDecimalValidation("B1");
             decimalValidation.Operator= ExcelDataValidationOperator.between;
 
             decimalValidation.Formula.ExcelFormula = "sheet2!B1";
@@ -386,12 +387,12 @@ namespace EPPlusTest.DataValidation
             creationPackage.Workbook.Worksheets[0]
                 .ConditionalFormatting.AddDatabar(new ExcelAddress("A1:A5"), Color.Red);
 
-            var stream = new MemoryStream();
+            MemoryStream? stream = new MemoryStream();
             creationPackage.SaveAs(stream);
 
-            var readingPackage = new ExcelPackage(stream);
-            var ws = readingPackage.Workbook.Worksheets[0];
-            var validations = ws.DataValidations;
+            ExcelPackage? readingPackage = new ExcelPackage(stream);
+            ExcelWorksheet? ws = readingPackage.Workbook.Worksheets[0];
+            ExcelDataValidationCollection? validations = ws.DataValidations;
 
             Assert.AreEqual(eExcelConditionalFormattingRuleType.DataBar, ws.ConditionalFormatting[0].Type);
             Assert.AreEqual(eExcelConditionalFormattingRuleType.DataBar, ws.ConditionalFormatting[1].Type);
@@ -410,17 +411,17 @@ namespace EPPlusTest.DataValidation
         [TestMethod]
         public void DataValidationExtLstShouldWorkWithSparklines()
         {
-            var creationPackage = MakePackageWithExtLstIntValidation();
+            ExcelPackage? creationPackage = MakePackageWithExtLstIntValidation();
 
             creationPackage.Workbook.Worksheets[0]
                 .SparklineGroups.Add(OfficeOpenXml.Sparkline.eSparklineType.Line, new ExcelAddress("A1:A5"), new ExcelAddress("B1:B5"));
 
-            var stream = new MemoryStream();
+            MemoryStream? stream = new MemoryStream();
             creationPackage.SaveAs(stream);
 
-            var readingPackage = new ExcelPackage(stream);
-            var ws = readingPackage.Workbook.Worksheets[0];
-            var validation = ws.DataValidations[0];
+            ExcelPackage? readingPackage = new ExcelPackage(stream);
+            ExcelWorksheet? ws = readingPackage.Workbook.Worksheets[0];
+            ExcelDataValidation? validation = ws.DataValidations[0];
 
             Assert.AreEqual(OfficeOpenXml.Sparkline.eSparklineType.Line, ws.SparklineGroups[0].Type);
 
@@ -432,9 +433,9 @@ namespace EPPlusTest.DataValidation
         [TestMethod]
         public void DataValidationExtLstShouldWorkWithSparklineMultiple()
         {
-            var creationPackage = MakePackageWithExtLstIntValidation();
+            ExcelPackage? creationPackage = MakePackageWithExtLstIntValidation();
 
-            var decimalValidation = creationPackage.Workbook.Worksheets[0].DataValidations.AddDecimalValidation("B1");
+            IExcelDataValidationDecimal? decimalValidation = creationPackage.Workbook.Worksheets[0].DataValidations.AddDecimalValidation("B1");
             decimalValidation.Operator = ExcelDataValidationOperator.between;
 
             decimalValidation.Formula.ExcelFormula = "sheet2!B1";
@@ -445,12 +446,12 @@ namespace EPPlusTest.DataValidation
             creationPackage.Workbook.Worksheets[0]
                 .SparklineGroups.Add(OfficeOpenXml.Sparkline.eSparklineType.Column, new ExcelAddress("C1:C5"), new ExcelAddress("D1:D5"));
 
-            var stream = new MemoryStream();
+            MemoryStream? stream = new MemoryStream();
             creationPackage.SaveAs(stream);
 
-            var readingPackage = new ExcelPackage(stream);
-            var ws = readingPackage.Workbook.Worksheets[0];
-            var validations = ws.DataValidations;
+            ExcelPackage? readingPackage = new ExcelPackage(stream);
+            ExcelWorksheet? ws = readingPackage.Workbook.Worksheets[0];
+            ExcelDataValidationCollection? validations = ws.DataValidations;
 
             Assert.AreEqual(OfficeOpenXml.Sparkline.eSparklineType.Line, ws.SparklineGroups[0].Type);
             Assert.AreEqual(OfficeOpenXml.Sparkline.eSparklineType.Column, ws.SparklineGroups[1].Type);
@@ -468,19 +469,19 @@ namespace EPPlusTest.DataValidation
         [TestMethod]
         public void DataValidationExtLstShouldWorkWithConditionalFormattingANDSparklineSingle()
         {
-            var creationPackage = MakePackageWithExtLstIntValidation();
+            ExcelPackage? creationPackage = MakePackageWithExtLstIntValidation();
 
             creationPackage.Workbook.Worksheets[0]
                 .SparklineGroups.Add(OfficeOpenXml.Sparkline.eSparklineType.Line, new ExcelAddress("A1:A5"), new ExcelAddress("B1:B5"));
             creationPackage.Workbook.Worksheets[0]
                 .ConditionalFormatting.AddDatabar(new ExcelAddress("A1:A5"), Color.DarkBlue);
 
-            var stream = new MemoryStream();
+            MemoryStream? stream = new MemoryStream();
             creationPackage.SaveAs(stream);
 
-            var readingPackage = new ExcelPackage(stream);
-            var ws = readingPackage.Workbook.Worksheets[0];
-            var validation = ws.DataValidations[0];
+            ExcelPackage? readingPackage = new ExcelPackage(stream);
+            ExcelWorksheet? ws = readingPackage.Workbook.Worksheets[0];
+            ExcelDataValidation? validation = ws.DataValidations[0];
 
             Assert.AreEqual(OfficeOpenXml.Sparkline.eSparklineType.Line, ws.SparklineGroups[0].Type);
             Assert.AreEqual(eExcelConditionalFormattingRuleType.DataBar, ws.ConditionalFormatting[0].Type);
@@ -493,7 +494,7 @@ namespace EPPlusTest.DataValidation
         [TestMethod]
         public void DataValidationExtLstShouldWorkWithConditionalFormattingANDSparklineMultiple()
         {
-            var creationPackage = MakePackageWithExtLstIntValidation();
+            ExcelPackage? creationPackage = MakePackageWithExtLstIntValidation();
 
             creationPackage.Workbook.Worksheets[0]
                 .SparklineGroups.Add(OfficeOpenXml.Sparkline.eSparklineType.Line, new ExcelAddress("A1:A5"), new ExcelAddress("B1:B5"));
@@ -506,18 +507,18 @@ namespace EPPlusTest.DataValidation
                 .ConditionalFormatting.AddDatabar(new ExcelAddress("A1:A5"), Color.Red);
 
 
-            var decimalValidation = creationPackage.Workbook.Worksheets[0].DataValidations.AddDecimalValidation("B1");
+            IExcelDataValidationDecimal? decimalValidation = creationPackage.Workbook.Worksheets[0].DataValidations.AddDecimalValidation("B1");
             decimalValidation.Operator = ExcelDataValidationOperator.between;
 
             decimalValidation.Formula.ExcelFormula = "sheet2!B1";
             decimalValidation.Formula2.ExcelFormula = "1.5";
 
-            var stream = new MemoryStream();
+            MemoryStream? stream = new MemoryStream();
             creationPackage.SaveAs(stream);
 
-            var readingPackage = new ExcelPackage(stream);
-            var ws = readingPackage.Workbook.Worksheets[0];
-            var validations = ws.DataValidations;
+            ExcelPackage? readingPackage = new ExcelPackage(stream);
+            ExcelWorksheet? ws = readingPackage.Workbook.Worksheets[0];
+            ExcelDataValidationCollection? validations = ws.DataValidations;
 
             Assert.AreEqual(OfficeOpenXml.Sparkline.eSparklineType.Line, ws.SparklineGroups[0].Type);
             Assert.AreEqual(OfficeOpenXml.Sparkline.eSparklineType.Column, ws.SparklineGroups[1].Type);

@@ -60,7 +60,7 @@ namespace OfficeOpenXml.ConditionalFormatting
               itemElementNode,
               (namespaceManager == null) ? worksheet.NameSpaceManager : namespaceManager)
         {
-            var s = SchemaNodeOrder;
+            string[]? s = SchemaNodeOrder;
             Array.Resize(ref s, s.Length+2);    //Fixes issue 15429. Append node order instead om overwriting it.
             s[s.Length - 2] = "cfvo";
             s[s.Length - 1] = "color";
@@ -95,11 +95,11 @@ namespace OfficeOpenXml.ConditionalFormatting
             }
             else
             {
-                var iconSetNode = CreateComplexNode(
-                  Node,
-                  ExcelConditionalFormattingConstants.Paths.DataBar);
+                XmlNode? iconSetNode = CreateComplexNode(
+                                                         Node,
+                                                         ExcelConditionalFormattingConstants.Paths.DataBar);
 
-                var lowNode = iconSetNode.OwnerDocument.CreateElement(ExcelConditionalFormattingConstants.Paths.Cfvo, ExcelPackage.schemaMain);
+                XmlElement? lowNode = iconSetNode.OwnerDocument.CreateElement(ExcelConditionalFormattingConstants.Paths.Cfvo, ExcelPackage.schemaMain);
                 iconSetNode.AppendChild(lowNode);
                 LowValue = new ExcelConditionalFormattingIconDataBarValue(eExcelConditionalFormattingValueObjectType.Min,
                         0,
@@ -111,7 +111,7 @@ namespace OfficeOpenXml.ConditionalFormatting
                         lowNode,
                         namespaceManager);
 
-                var highNode = iconSetNode.OwnerDocument.CreateElement(ExcelConditionalFormattingConstants.Paths.Cfvo, ExcelPackage.schemaMain);
+                XmlElement? highNode = iconSetNode.OwnerDocument.CreateElement(ExcelConditionalFormattingConstants.Paths.Cfvo, ExcelPackage.schemaMain);
                 iconSetNode.AppendChild(highNode);
                 HighValue = new ExcelConditionalFormattingIconDataBarValue(eExcelConditionalFormattingValueObjectType.Max,
                         0,
@@ -215,7 +215,7 @@ namespace OfficeOpenXml.ConditionalFormatting
         {
             get
             {
-                var rgb=GetXmlNodeString(_colorPath);
+                string? rgb=GetXmlNodeString(_colorPath);
                 if(!string.IsNullOrEmpty(rgb))
                 {
                     return Color.FromArgb(int.Parse(rgb, NumberStyles.HexNumber));

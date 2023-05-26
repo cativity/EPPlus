@@ -436,7 +436,7 @@ namespace OfficeOpenXml
 #if (Core)
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);  //Add Support for codepage 1252
 
-            var  isWorksheets1Based = ExcelConfigurationReader.GetJsonConfigValue("EPPlus:ExcelPackage:Compatibility:IsWorksheets1Based", _configuration, _initErrors);
+            string?  isWorksheets1Based = ExcelConfigurationReader.GetJsonConfigValue("EPPlus:ExcelPackage:Compatibility:IsWorksheets1Based", _configuration, _initErrors);
 
 #else
             var isWorksheets1Based = ExcelConfigurationReader.GetValueFromAppSettings("EPPlus:ExcelPackage.Compatibility.IsWorksheets1Based", _configuration, _initErrors);
@@ -474,12 +474,12 @@ namespace OfficeOpenXml
                     this._stream = RecyclableMemory.GetStream();
                 }
 
-                var ms = RecyclableMemory.GetStream();
+                MemoryStream? ms = RecyclableMemory.GetStream();
                 if (password != null)
                 {
                     Encryption.IsEncrypted = true;
                     Encryption.Password = password;
-                    var encrHandler = new EncryptedPackageHandler();
+                    EncryptedPackageHandler? encrHandler = new EncryptedPackageHandler();
                     ms.Dispose();
                     ms = encrHandler.DecryptPackage(template, Encryption);
                     encrHandler = null;
@@ -517,7 +517,7 @@ namespace OfficeOpenXml
         }
         private void ConstructNewFile(string password)
         {
-            var ms = RecyclableMemory.GetStream();
+            MemoryStream? ms = RecyclableMemory.GetStream();
             if (_stream == null)
             {
                 this._stream = RecyclableMemory.GetStream();
@@ -532,7 +532,7 @@ namespace OfficeOpenXml
             {
                 if (password != null)
                 {
-                    var encrHandler = new EncryptedPackageHandler();
+                    EncryptedPackageHandler? encrHandler = new EncryptedPackageHandler();
                     Encryption.IsEncrypted = true;
                     Encryption.Password = password;
                     ms.Dispose();
@@ -576,9 +576,9 @@ namespace OfficeOpenXml
         /// <param name="stream">Stream</param>
         private static void WriteFileToStream(string path, Stream stream)
         {
-            using (var fileStream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+            using (FileStream? fileStream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
             {
-                var buffer = new byte[4096];
+                byte[]? buffer = new byte[4096];
                 int read;
                 while ((read = fileStream.Read(buffer, 0, buffer.Length)) > 0)
                 {
@@ -657,7 +657,7 @@ namespace OfficeOpenXml
                     _licenseSet = true;
                     return true;
                 }
-                var v = ExcelConfigurationReader.GetEnvironmentVariable("EPPlusLicenseContext",EnvironmentVariableTarget.User, _configuration, initErrors);
+                string? v = ExcelConfigurationReader.GetEnvironmentVariable("EPPlusLicenseContext",EnvironmentVariableTarget.User, _configuration, initErrors);
                 if(string.IsNullOrEmpty(v))
                 {
                     v = ExcelConfigurationReader.GetEnvironmentVariable("EPPlusLicenseContext", EnvironmentVariableTarget.Process, _configuration, initErrors);
@@ -729,7 +729,7 @@ namespace OfficeOpenXml
                     {
                         throw (new LicenseException("Please set the ExcelPackage.LicenseContext property. See https://epplussoftware.com/developers/licenseexception"));
                     }
-                    var nsm = CreateDefaultNSM();
+                    XmlNamespaceManager? nsm = CreateDefaultNSM();
 
                     _workbook = new ExcelWorkbook(this, nsm);
 
@@ -774,7 +774,7 @@ namespace OfficeOpenXml
             //  Create a NamespaceManager to handle the default namespace, 
             //  and create a prefix for the default namespace:
             NameTable nt = new NameTable();
-            var ns = new XmlNamespaceManager(nt);
+            XmlNamespaceManager? ns = new XmlNamespaceManager(nt);
             ns.AddNamespace(string.Empty, ExcelPackage.schemaMain);
             ns.AddNamespace("d", schemaMain);            
             ns.AddNamespace("r", schemaRelationships);
@@ -812,8 +812,8 @@ namespace OfficeOpenXml
 		internal void SavePart(Uri uri, XmlDocument xmlDoc)
 		{
             Packaging.ZipPackagePart part = _zipPackage.GetPart(uri);
-            var stream = part.GetStream(FileMode.Create, FileAccess.Write);
-            var xr = new XmlTextWriter(stream, Encoding.UTF8);
+            Stream? stream = part.GetStream(FileMode.Create, FileAccess.Write);
+            XmlTextWriter? xr = new XmlTextWriter(stream, Encoding.UTF8);
             xr.Formatting = Formatting.None;
             
             xmlDoc.Save(xr);
@@ -837,7 +837,7 @@ namespace OfficeOpenXml
             {
                 if (part.ContentType != ContentTypes.contentTypeWorkbookMacroEnabled)
                 {
-                    var rels = part.GetRelationships();
+                    ZipPackageRelationshipCollection? rels = part.GetRelationships();
                     _zipPackage.DeletePart(uri);
                     part = ZipPackage.CreatePart(uri, ContentTypes.contentTypeWorkbookMacroEnabled);
                     foreach (ZipPackageRelationship rel in rels)
@@ -847,8 +847,8 @@ namespace OfficeOpenXml
                     }
                 }
             }
-            var stream = part.GetStream(FileMode.Create, FileAccess.Write);
-            var xr = new XmlTextWriter(stream, Encoding.UTF8);
+            Stream? stream = part.GetStream(FileMode.Create, FileAccess.Write);
+            XmlTextWriter? xr = new XmlTextWriter(stream, Encoding.UTF8);
             xr.Formatting = Formatting.None;
 
             xmlDoc.Save(xr);
@@ -909,7 +909,7 @@ namespace OfficeOpenXml
                 }
 
                 //Invoke before save delegates
-                foreach (var action in BeforeSave)
+                foreach (Action? action in BeforeSave)
                 {
                     action.Invoke();
                 }
@@ -920,13 +920,13 @@ namespace OfficeOpenXml
                     if(Encryption.IsEncrypted)
                     {
                         byte[] file;
-                        using (var ms = RecyclableMemory.GetStream())
+                        using (MemoryStream? ms = RecyclableMemory.GetStream())
                         {
                             _zipPackage.Save(ms);
                             file = ms.ToArray();
                         }
                         EncryptedPackageHandler eph = new EncryptedPackageHandler();
-                        using (var msEnc = eph.EncryptPackage(file, Encryption))
+                        using (MemoryStream? msEnc = eph.EncryptPackage(file, Encryption))
                         {
                             StreamUtil.CopyStream(msEnc, ref _stream);
                         }
@@ -956,7 +956,7 @@ namespace OfficeOpenXml
                     _zipPackage.Close();
                     if (Stream is MemoryStream)
                     {
-                        using (var fi = new FileStream(File.FullName, FileMode.Create))
+                        using (FileStream? fi = new FileStream(File.FullName, FileMode.Create))
                         {
                             //EncryptPackage
                             if (Encryption.IsEncrypted)
@@ -964,7 +964,7 @@ namespace OfficeOpenXml
                                 byte[] file = ((MemoryStream)Stream).ToArray();
                                 EncryptedPackageHandler eph = new EncryptedPackageHandler();
 
-                                using (var ms = eph.EncryptPackage(file, Encryption))
+                                using (MemoryStream? ms = eph.EncryptPackage(file, Encryption))
                                 {
                                     fi.Write(ms.ToArray(), 0, (int)ms.Length);
                                 }
@@ -1227,7 +1227,7 @@ namespace OfficeOpenXml
             if (Encryption.IsEncrypted)
             {
                 EncryptedPackageHandler eph=new EncryptedPackageHandler();
-                using (var ms = eph.EncryptPackage(byRet, Encryption))
+                using (MemoryStream? ms = eph.EncryptPackage(byRet, Encryption))
                 {
                     byRet = ms.ToArray();
                 }

@@ -15,15 +15,15 @@ namespace EPPlusTest
         [TestMethod]
         public void ValidateLong()
         {
-            using (var pck=new ExcelPackage())
+            using (ExcelPackage? pck=new ExcelPackage())
             {
-                var ticks = DateTime.Now.Ticks;
+                long ticks = DateTime.Now.Ticks;
                 pck.Workbook.Properties.SetCustomPropertyValue("Timestamp", ticks);
                 pck.Workbook.Worksheets.Add("Test");
 
                 pck.Save();
 
-                using(var pck2=new ExcelPackage(pck.Stream))
+                using(ExcelPackage? pck2=new ExcelPackage(pck.Stream))
                 {
                     Assert.AreEqual((double)ticks, pck.Workbook.Properties.GetCustomPropertyValue("Timestamp"));
                 }
@@ -32,7 +32,7 @@ namespace EPPlusTest
         [TestMethod]
         public void ValidateCaseInsensitiveCustomProperties()
         {
-            using (var p = new OfficeOpenXml.ExcelPackage())
+            using (ExcelPackage? p = new OfficeOpenXml.ExcelPackage())
             {
                 p.Workbook.Worksheets.Add("CustomProperties");
                 p.Workbook.Properties.SetCustomPropertyValue("Foo", "Bar");
@@ -44,14 +44,14 @@ namespace EPPlusTest
         [TestMethod]
         public void ValidateCaseInsensitiveCustomProperties_Loading()
         {
-            var p = new OfficeOpenXml.ExcelPackage();
+            ExcelPackage? p = new OfficeOpenXml.ExcelPackage();
             p.Workbook.Worksheets.Add("CustomProperties");
             p.Workbook.Properties.SetCustomPropertyValue("fOO", "bAR");
             p.Workbook.Properties.SetCustomPropertyValue("Foo", "Bar");
 
             p.Save();
 
-            var p2 = new OfficeOpenXml.ExcelPackage(p.Stream);
+            ExcelPackage? p2 = new OfficeOpenXml.ExcelPackage(p.Stream);
 
             Assert.AreEqual("Bar", p2.Workbook.Properties.GetCustomPropertyValue("fOo"));
 

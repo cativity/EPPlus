@@ -19,6 +19,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using OfficeOpenXml.Sorting;
 #if !NET35 && !NET40
 using System.Threading.Tasks;
 
@@ -40,10 +41,10 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
         private void LoadVisibleColumns()
         {
             _columns = new List<int>();
-            var r = _table.Range;
+            ExcelRangeBase? r = _table.Range;
             for (int col = r._fromCol; col <= r._toCol; col++)
             {
-                var c = _table.WorkSheet.GetColumn(col);
+                ExcelColumn? c = _table.WorkSheet.GetColumn(col);
                 if (c == null || (c.Hidden == false && c.Width > 0))
                 {
                     _columns.Add(col);
@@ -59,8 +60,8 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
             }
             await writer.RenderBeginTagAsync(HtmlElements.Tbody);
             await writer.ApplyFormatIncreaseIndentAsync(Settings.Minify);
-            var row = _table.ShowHeader ? _table.Address._fromRow + 1 : _table.Address._fromRow;
-            var endRow = _table.ShowTotal ? _table.Address._toRow - 1 : _table.Address._toRow;
+            int row = _table.ShowHeader ? _table.Address._fromRow + 1 : _table.Address._fromRow;
+            int endRow = _table.ShowTotal ? _table.Address._toRow - 1 : _table.Address._toRow;
             HtmlImage image = null;
             while (row <= endRow)
             {
@@ -85,11 +86,11 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
 
                 await writer.RenderBeginTagAsync(HtmlElements.TableRow);
                 await writer.ApplyFormatIncreaseIndentAsync(Settings.Minify);
-                foreach (var col in _columns)
+                foreach (int col in _columns)
                 {
-                    var colIx = col - _table.Address._fromCol;
-                    var dataType = _dataTypes[colIx];
-                    var cell = _table.WorkSheet.Cells[row, col];
+                    int colIx = col - _table.Address._fromCol;
+                    string? dataType = _dataTypes[colIx];
+                    ExcelRange? cell = _table.WorkSheet.Cells[row, col];
 
                     if (Settings.Pictures.Include == ePictureInclude.Include)
                     {
@@ -98,13 +99,13 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
 
                     if (cell.Hyperlink == null)
                     {
-                        var addRowScope = (_table.ShowFirstColumn && col == _table.Address._fromCol) || (_table.ShowLastColumn && col == _table.Address._toCol);
+                        bool addRowScope = (_table.ShowFirstColumn && col == _table.Address._fromCol) || (_table.ShowLastColumn && col == _table.Address._toCol);
                         await _cellDataWriter.WriteAsync(cell, dataType, writer, Settings, accessibilitySettings, addRowScope, image);
                     }
                     else
                     {
                         await writer.RenderBeginTagAsync(HtmlElements.TableData);
-                        var imageCellClassName = GetImageCellClassName(image, Settings);
+                        string? imageCellClassName = GetImageCellClassName(image, Settings);
                         writer.SetClassAttributeFromStyle(cell, false, Settings, imageCellClassName);
                         await RenderHyperlinkAsync(writer, cell, Settings);
                         await writer.RenderEndTagAsync();
@@ -139,8 +140,8 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
             {
                 writer.AddAttribute("role", "row");
             }
-            var adr = _table.Address;
-            var row = adr._fromRow;
+            ExcelAddressBase? adr = _table.Address;
+            int row = adr._fromRow;
             if (Settings.SetRowHeight)
             {
                 this.AddRowHeightStyle(writer, this._table.Range, row, this.Settings.StyleClassPrefix, false);
@@ -149,15 +150,15 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
             await writer.RenderBeginTagAsync(HtmlElements.TableRow);
             await writer.ApplyFormatIncreaseIndentAsync(Settings.Minify);
             HtmlImage image = null;
-            foreach (var col in _columns)
+            foreach (int col in _columns)
             {
-                var cell = _table.WorkSheet.Cells[row, col];
+                ExcelRange? cell = _table.WorkSheet.Cells[row, col];
                 if (Settings.RenderDataTypes)
                 {
                     writer.AddAttribute("data-datatype", _dataTypes[col - adr._fromCol]);
                 }
 
-                var imageCellClassName = image == null ? "" : Settings.StyleClassPrefix + "image-cell";
+                string? imageCellClassName = image == null ? "" : Settings.StyleClassPrefix + "image-cell";
                 writer.SetClassAttributeFromStyle(cell, true, Settings, imageCellClassName);
                 if (accessibilitySettings.TableSettings.AddAccessibilityAttributes && !string.IsNullOrEmpty(accessibilitySettings.TableSettings.TableHeaderCellRole))
                 {
@@ -168,11 +169,11 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
                     }
                     if (_table.SortState != null && !_table.SortState.ColumnSort && _table.SortState.SortConditions.Any())
                     {
-                        var firstCondition = _table.SortState.SortConditions.First();
+                        SortCondition? firstCondition = _table.SortState.SortConditions.First();
                         if (firstCondition != null && !string.IsNullOrEmpty(firstCondition.Ref))
                         {
-                            var addr = new ExcelAddress(firstCondition.Ref);
-                            var sortedCol = addr._fromCol;
+                            ExcelAddress? addr = new ExcelAddress(firstCondition.Ref);
+                            int sortedCol = addr._fromCol;
                             if (col == sortedCol)
                             {
                                 writer.AddAttribute("aria-sort", firstCondition.Descending ? "descending" : "ascending");
@@ -207,7 +208,7 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
         private async Task RenderTotalRowAsync(EpplusHtmlWriter writer, AccessibilitySettings accessibilitySettings)
         {
             // table header row
-            var rowIndex = _table.Address._toRow;
+            int rowIndex = _table.Address._toRow;
             if (accessibilitySettings.TableSettings.AddAccessibilityAttributes && !string.IsNullOrEmpty(accessibilitySettings.TableSettings.TfootRole))
             {
                 writer.AddAttribute("role", accessibilitySettings.TableSettings.TfootRole);
@@ -226,16 +227,16 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
 
             await writer.RenderBeginTagAsync(HtmlElements.TableRow);
             await writer.ApplyFormatIncreaseIndentAsync(Settings.Minify);
-            var address = _table.Address;
+            ExcelAddressBase? address = _table.Address;
             HtmlImage image = null;
-            foreach (var col in _columns)
+            foreach (int col in _columns)
             {
-                var cell = _table.WorkSheet.Cells[rowIndex, col];
+                ExcelRange? cell = _table.WorkSheet.Cells[rowIndex, col];
                 if (accessibilitySettings.TableSettings.AddAccessibilityAttributes)
                 {
                     writer.AddAttribute("role", "cell");
                 }
-                var imageCellClassName = GetImageCellClassName(image, Settings);
+                string? imageCellClassName = GetImageCellClassName(image, Settings);
                 writer.SetClassAttributeFromStyle(cell, false, Settings, imageCellClassName);
                 await writer.RenderBeginTagAsync(HtmlElements.TableData);
                 await AddImageAsync(writer, Settings, image, cell.Value);
@@ -256,11 +257,11 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
         /// <returns>A html table</returns>
         public async Task<string> GetHtmlStringAsync()
         {
-            using (var ms = RecyclableMemory.GetStream())
+            using (MemoryStream? ms = RecyclableMemory.GetStream())
             {
                 await RenderHtmlAsync(ms);
                 ms.Position = 0;
-                using (var sr = new StreamReader(ms))
+                using (StreamReader? sr = new StreamReader(ms))
                 {
                     return sr.ReadToEnd();
                 }
@@ -279,7 +280,7 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
             }
             GetDataTypes(_table.Address, _table);
 
-            var writer = new EpplusHtmlWriter(stream, Settings.Encoding, _styleCache);
+            EpplusHtmlWriter? writer = new EpplusHtmlWriter(stream, Settings.Encoding, _styleCache);
             HtmlExportTableUtil.AddClassesAttributes(writer, _table, _settings);
             AddTableAccessibilityAttributes(Settings.Accessibility, writer);
             await writer.RenderBeginTagAsync(HtmlElements.Table);
@@ -317,9 +318,9 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
                 htmlDocument = htmlDocument.Replace("\r\n", "");
             }
 
-            var html = await GetHtmlStringAsync();
-            var cssExporter = HtmlExporterFactory.CreateCssExporterTableAsync(_settings, _table, _styleCache);
-            var css = await cssExporter.GetCssStringAsync();
+            string? html = await GetHtmlStringAsync();
+            CssTableExporterAsync? cssExporter = HtmlExporterFactory.CreateCssExporterTableAsync(_settings, _table, _styleCache);
+            string? css = await cssExporter.GetCssStringAsync();
             return string.Format(htmlDocument, html, css);
         }
     }

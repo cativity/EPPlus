@@ -14,13 +14,13 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions.Engineering
         [TestMethod]
         public void ErfTest1()
         {
-            using(var package = new ExcelPackage())
+            using(ExcelPackage? package = new ExcelPackage())
             {
-                var sheet = package.Workbook.Worksheets.Add("test");
+                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
                 
                 sheet.Cells["A1"].Formula = "ERF(1.5)";
                 sheet.Calculate();
-                var result = sheet.Cells["A1"].Value;
+                object? result = sheet.Cells["A1"].Value;
                 Assert.AreEqual(0.966105146, System.Math.Round((double)result, 9));
 
                 sheet.Cells["A1"].Formula = "ERF(0, 1.5)";
@@ -39,13 +39,13 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions.Engineering
         [TestMethod]
         public void ErfPreciseTest1()
         {
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var sheet = package.Workbook.Worksheets.Add("test");
+                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
 
                 sheet.Cells["A1"].Formula = "ERF.PRECISE(-1)";
                 sheet.Calculate();
-                var result = sheet.Cells["A1"].Value;
+                object? result = sheet.Cells["A1"].Value;
                 Assert.AreEqual(-0.842700793, System.Math.Round((double)result, 9));
 
                 sheet.Cells["A1"].Formula = "ERF.PRECISE(0.745)";
@@ -64,13 +64,13 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions.Engineering
         [TestMethod]
         public void ErfcTest1()
         {
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var sheet = package.Workbook.Worksheets.Add("test");
+                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
 
                 sheet.Cells["A1"].Formula = "ERFC(0)";
                 sheet.Calculate();
-                var result = sheet.Cells["A1"].Value;
+                object? result = sheet.Cells["A1"].Value;
                 Assert.AreEqual(1d, System.Math.Round((double)result, 9));
 
                 sheet.Cells["A1"].Formula = "ERFC(0.5)";

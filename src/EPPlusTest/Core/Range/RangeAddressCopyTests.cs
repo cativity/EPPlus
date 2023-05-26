@@ -31,6 +31,8 @@ using OfficeOpenXml;
 using OfficeOpenXml.DataValidation;
 using OfficeOpenXml.Style;
 using System.Drawing;
+using OfficeOpenXml.ConditionalFormatting.Contracts;
+using OfficeOpenXml.DataValidation.Contracts;
 
 namespace EPPlusTest.Core.Range
 {
@@ -40,9 +42,9 @@ namespace EPPlusTest.Core.Range
         [TestMethod]
         public void ValidateCopyFormulasRow()
         {
-            using (var pck = new ExcelPackage())
+            using (ExcelPackage? pck = new ExcelPackage())
             {
-                var ws = pck.Workbook.Worksheets.Add("CopyRowWise");
+                ExcelWorksheet? ws = pck.Workbook.Worksheets.Add("CopyRowWise");
                 ws.Cells["A1:C3"].Value = 1;
                 ws.Cells["D3"].Formula = "A1";
                 ws.Cells["E3"].Formula = "B2";
@@ -82,10 +84,10 @@ namespace EPPlusTest.Core.Range
         [TestMethod]
         public void ValidateCopyFormulasMultiCellRow()
         {
-            using (var pck = new ExcelPackage())
+            using (ExcelPackage? pck = new ExcelPackage())
             {
-                var ws1 = pck.Workbook.Worksheets.Add("Sheet1");
-                var ws2 = pck.Workbook.Worksheets.Add("Sheet2");
+                ExcelWorksheet? ws1 = pck.Workbook.Worksheets.Add("Sheet1");
+                ExcelWorksheet? ws2 = pck.Workbook.Worksheets.Add("Sheet2");
 
                 //Validate that formulas are copied correctly row-wise
                 ws1.Cells["D3"].Formula = "SUM(A1:B1)";
@@ -113,10 +115,10 @@ namespace EPPlusTest.Core.Range
         [TestMethod]
         public void ValidateCopyFormulasMultiCellFullColumn()
         {
-            using (var pck = new ExcelPackage())
+            using (ExcelPackage? pck = new ExcelPackage())
             {
-                var ws1 = pck.Workbook.Worksheets.Add("Sheet1");
-                var ws2 = pck.Workbook.Worksheets.Add("Sheet2");
+                ExcelWorksheet? ws1 = pck.Workbook.Worksheets.Add("Sheet1");
+                ExcelWorksheet? ws2 = pck.Workbook.Worksheets.Add("Sheet2");
 
                 //Validate that formulas are copied correctly row-wise
                 ws1.Cells["D3"].Formula = "SUM(A:A)";
@@ -143,10 +145,10 @@ namespace EPPlusTest.Core.Range
         [TestMethod]
         public void ValidateCopyFormulasMultiCellFullColumnFixed()
         {
-            using (var pck = new ExcelPackage())
+            using (ExcelPackage? pck = new ExcelPackage())
             {
-                var ws1 = pck.Workbook.Worksheets.Add("Sheet1");
-                var ws2 = pck.Workbook.Worksheets.Add("Sheet2");
+                ExcelWorksheet? ws1 = pck.Workbook.Worksheets.Add("Sheet1");
+                ExcelWorksheet? ws2 = pck.Workbook.Worksheets.Add("Sheet2");
 
                 //Validate that formulas are copied correctly row-wise
                 ws1.Cells["D3"].Formula = "SUM($A:$A)";
@@ -173,10 +175,10 @@ namespace EPPlusTest.Core.Range
         [TestMethod]
         public void ValidateCopyFormulasMultiCellFullRow()
         {
-            using (var pck = new ExcelPackage())
+            using (ExcelPackage? pck = new ExcelPackage())
             {
-                var ws1 = pck.Workbook.Worksheets.Add("Sheet1");
-                var ws2 = pck.Workbook.Worksheets.Add("Sheet2");
+                ExcelWorksheet? ws1 = pck.Workbook.Worksheets.Add("Sheet1");
+                ExcelWorksheet? ws2 = pck.Workbook.Worksheets.Add("Sheet2");
 
                 //Validate that formulas are copied correctly row-wise
                 ws1.Cells["D3"].Formula = "SUM(1:1)";
@@ -203,10 +205,10 @@ namespace EPPlusTest.Core.Range
         [TestMethod]
         public void ValidateCopyFormulasMultiCellFullRowFixed()
         {
-            using (var pck = new ExcelPackage())
+            using (ExcelPackage? pck = new ExcelPackage())
             {
-                var ws1 = pck.Workbook.Worksheets.Add("Sheet1");
-                var ws2 = pck.Workbook.Worksheets.Add("Sheet2");
+                ExcelWorksheet? ws1 = pck.Workbook.Worksheets.Add("Sheet1");
+                ExcelWorksheet? ws2 = pck.Workbook.Worksheets.Add("Sheet2");
 
                 //Validate that formulas are copied correctly row-wise
                 ws1.Cells["D3"].Formula = "SUM($1:$1)";
@@ -233,16 +235,16 @@ namespace EPPlusTest.Core.Range
         [TestMethod]
         public void Copy_Formula_From_Other_Workbook_Issue_Test()
         {
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var workbook = package.Workbook;
-                var sourceWs = workbook.Worksheets.Add("Sheet2");
+                ExcelWorkbook? workbook = package.Workbook;
+                ExcelWorksheet? sourceWs = workbook.Worksheets.Add("Sheet2");
                 sourceWs.Cells["A1"].Value = 24;
                 sourceWs.Cells["A2"].Value = 75;
                 sourceWs.Cells["A3"].Value = 94;
                 sourceWs.Cells["A4"].Value = 34;
 
-                var ws = workbook.Worksheets.Add("Sheet1");
+                ExcelWorksheet? ws = workbook.Worksheets.Add("Sheet1");
                 ws.Cells["A1"].Formula = "VLOOKUP($B$1,Sheet2!A:B,2,FALSE)";
 
                 //Literal formula copy to cell A2 - PASSES
@@ -274,7 +276,7 @@ namespace EPPlusTest.Core.Range
         [TestMethod]
         public void CopyValuesOnly()
         {
-            using (var p = new ExcelPackage())
+            using (ExcelPackage? p = new ExcelPackage())
             {
                 ExcelWorksheet ws = SetupCopyRange(p);
                 ws.Cells["B5"].Style.Numberformat.Format = "0";
@@ -293,7 +295,7 @@ namespace EPPlusTest.Core.Range
         [TestMethod]
         public void CopyStylesOnly()
         {
-            using (var p = new ExcelPackage())
+            using (ExcelPackage? p = new ExcelPackage())
             {
                 ExcelWorksheet ws = SetupCopyRange(p);
                 ws.Cells["B5"].Value = 5;
@@ -311,10 +313,10 @@ namespace EPPlusTest.Core.Range
         [TestMethod]
         public void CopyDataValidationsSameWorksheet()
         {
-            using (var p = new ExcelPackage())
+            using (ExcelPackage? p = new ExcelPackage())
             {
                 ExcelWorksheet ws = SetupCopyRange(p);
-                var dv = ws.Cells["B2:D5"].DataValidation.AddIntegerDataValidation();
+                IExcelDataValidationInt? dv = ws.Cells["B2:D5"].DataValidation.AddIntegerDataValidation();
                 dv.Formula.Value = 1;
                 dv.Formula2.Value = 3;
                 dv.ShowErrorMessage = true;
@@ -327,19 +329,19 @@ namespace EPPlusTest.Core.Range
         [TestMethod]
         public void CopyDataValidationsNewWorksheet()
         {
-            using (var p = new ExcelPackage())
+            using (ExcelPackage? p = new ExcelPackage())
             {
                 ExcelWorksheet ws1 = SetupCopyRange(p);
-                var dv = ws1.Cells["B2:D5"].DataValidation.AddIntegerDataValidation();
+                IExcelDataValidationInt? dv = ws1.Cells["B2:D5"].DataValidation.AddIntegerDataValidation();
                 dv.Formula.Value = 1;
                 dv.Formula2.Value = 3;
                 dv.ShowErrorMessage = true;
                 dv.ErrorStyle = ExcelDataValidationWarningStyle.stop;
-                var ws2 = p.Workbook.Worksheets.Add("Sheet2");
+                ExcelWorksheet? ws2 = p.Workbook.Worksheets.Add("Sheet2");
                 ws1.Cells["A1:C4"].Copy(ws2.Cells["E5"]);
 
                 Assert.AreEqual(1, ws2.DataValidations.Count);
-                var dv2 = ws2.DataValidations[0].As.IntegerValidation;
+                IExcelDataValidationInt? dv2 = ws2.DataValidations[0].As.IntegerValidation;
                 Assert.AreEqual("F6:G8", dv2.Address.Address);
                 Assert.AreEqual(1, dv2.Formula.Value);
                 Assert.AreEqual(3, dv2.Formula2.Value);
@@ -352,21 +354,21 @@ namespace EPPlusTest.Core.Range
         [TestMethod]
         public void CopyDataValidationNewPackage()
         {
-            using (var p1 = new ExcelPackage())
+            using (ExcelPackage? p1 = new ExcelPackage())
             {
                 ExcelWorksheet ws1 = SetupCopyRange(p1);
-                var dv = ws1.Cells["B2:D5"].DataValidation.AddIntegerDataValidation();
+                IExcelDataValidationInt? dv = ws1.Cells["B2:D5"].DataValidation.AddIntegerDataValidation();
                 dv.Formula.Value = 1;
                 dv.Formula2.Value = 3;
                 dv.ShowErrorMessage = true;
                 dv.ErrorStyle = ExcelDataValidationWarningStyle.stop;
-                using (var p2 = new ExcelPackage())
+                using (ExcelPackage? p2 = new ExcelPackage())
                 {
-                    var ws2 = p2.Workbook.Worksheets.Add("Sheet Copy");
+                    ExcelWorksheet? ws2 = p2.Workbook.Worksheets.Add("Sheet Copy");
                     ws1.Cells["A1:C4"].Copy(ws2.Cells["E5"]);
 
                     Assert.AreEqual(1, ws2.DataValidations.Count);
-                    var dv2 = ws2.DataValidations[0].As.IntegerValidation;
+                    IExcelDataValidationInt? dv2 = ws2.DataValidations[0].As.IntegerValidation;
                     Assert.AreEqual("F6:G8", dv2.Address.Address);
                     Assert.AreEqual(1, dv2.Formula.Value);
                     Assert.AreEqual(3, dv2.Formula2.Value);
@@ -380,10 +382,10 @@ namespace EPPlusTest.Core.Range
         [TestMethod]
         public void CopyConditionalFormattingSameWorkbook()
         {
-            using (var p = new ExcelPackage())
+            using (ExcelPackage? p = new ExcelPackage())
             {
                 ExcelWorksheet ws = SetupCopyRange(p);
-                var cf1 = ws.Cells["B2:D5"].ConditionalFormatting.AddBetween();
+                IExcelConditionalFormattingBetween? cf1 = ws.Cells["B2:D5"].ConditionalFormatting.AddBetween();
 
                 ws.Cells["A1:C4"].Copy(ws.Cells["E5"]);
 
@@ -394,19 +396,19 @@ namespace EPPlusTest.Core.Range
         [TestMethod]
         public void CopyConditionalFormattingNewWorksheet()
         {
-            using (var p = new ExcelPackage())
+            using (ExcelPackage? p = new ExcelPackage())
             {
                 ExcelWorksheet ws1 = SetupCopyRange(p);
-                var cf1 = ws1.Cells["B2:D5"].ConditionalFormatting.AddBetween();
+                IExcelConditionalFormattingBetween? cf1 = ws1.Cells["B2:D5"].ConditionalFormatting.AddBetween();
                 cf1.Formula = "1";
                 cf1.Formula2 = "3";
                 cf1.Style.Fill.PatternType = ExcelFillStyle.Solid;
                 cf1.Style.Fill.BackgroundColor.SetColor(Color.Red);
-                var ws2 = p.Workbook.Worksheets.Add("Sheet2");
+                ExcelWorksheet? ws2 = p.Workbook.Worksheets.Add("Sheet2");
                 ws1.Cells["A1:C4"].Copy(ws2.Cells["E5"]);
 
                 Assert.AreEqual(1, ws2.ConditionalFormatting.Count);
-                var cf2 = ws2.ConditionalFormatting[0].As.Between;
+                IExcelConditionalFormattingBetween? cf2 = ws2.ConditionalFormatting[0].As.Between;
                 Assert.AreEqual("F6:G8", cf2.Address.Address);
                 Assert.AreEqual("1", cf2.Formula);
                 Assert.AreEqual("3", cf2.Formula2);
@@ -417,21 +419,21 @@ namespace EPPlusTest.Core.Range
         [TestMethod]
         public void CopyConditionalFormattingNewPackage()
         {
-            using (var p1 = new ExcelPackage())
+            using (ExcelPackage? p1 = new ExcelPackage())
             {
                 ExcelWorksheet ws1 = SetupCopyRange(p1);
-                var cf1 = ws1.Cells["B2:D5"].ConditionalFormatting.AddBetween();
+                IExcelConditionalFormattingBetween? cf1 = ws1.Cells["B2:D5"].ConditionalFormatting.AddBetween();
                 cf1.Formula = "1";
                 cf1.Formula2 = "3";
                 cf1.Style.Fill.PatternType = ExcelFillStyle.Solid;
                 cf1.Style.Fill.BackgroundColor.SetColor(Color.Red);
-                using (var p2 = new ExcelPackage())
+                using (ExcelPackage? p2 = new ExcelPackage())
                 {
-                    var ws2 = p2.Workbook.Worksheets.Add("Sheet2");
+                    ExcelWorksheet? ws2 = p2.Workbook.Worksheets.Add("Sheet2");
                     ws1.Cells["A1:C4"].Copy(ws2.Cells["E5"]);
 
                     Assert.AreEqual(1, ws2.ConditionalFormatting.Count);
-                    var cf2 = ws2.ConditionalFormatting[0].As.Between;
+                    IExcelConditionalFormattingBetween? cf2 = ws2.ConditionalFormatting[0].As.Between;
                     Assert.AreEqual("F6:G8", cf2.Address.Address);
                     Assert.AreEqual("1", cf2.Formula);
                     Assert.AreEqual("3", cf2.Formula2);
@@ -445,7 +447,7 @@ namespace EPPlusTest.Core.Range
         [TestMethod]
         public void CopyComments()
         {
-            using (var p = new ExcelPackage())
+            using (ExcelPackage? p = new ExcelPackage())
             {
                 ExcelWorksheet ws = SetupCopyRange(p);
                 ws.Cells["A1"].AddComment("Comment");
@@ -469,7 +471,7 @@ namespace EPPlusTest.Core.Range
         [TestMethod]
         public void CopyThreadedComments()
         {
-            using (var p = new ExcelPackage())
+            using (ExcelPackage? p = new ExcelPackage())
             {
                 ExcelWorksheet ws = SetupCopyRange(p);
                 ws.Cells["A2"].AddThreadedComment();
@@ -495,7 +497,7 @@ namespace EPPlusTest.Core.Range
         [TestMethod]
         public void CopyMergedCells()
         {
-            using (var p = new ExcelPackage())
+            using (ExcelPackage? p = new ExcelPackage())
             {
                 ExcelWorksheet ws = SetupCopyRange(p);
                 ws.Cells["A1"].AddComment("Comment");
@@ -522,7 +524,7 @@ namespace EPPlusTest.Core.Range
         [TestMethod]
         public void CopyHyperLinks()
         {
-            using (var p = new ExcelPackage())
+            using (ExcelPackage? p = new ExcelPackage())
             {
                 ExcelWorksheet ws = SetupCopyRange(p);
                 ws.Cells["A1"].AddComment("Comment");
@@ -549,7 +551,7 @@ namespace EPPlusTest.Core.Range
         [TestMethod]
         public void CopyStylesWithinWorkbook()
         {
-            using (var p = new ExcelPackage())
+            using (ExcelPackage? p = new ExcelPackage())
             {
                 ExcelWorksheet ws = SetupCopyRange(p);
 
@@ -582,12 +584,12 @@ namespace EPPlusTest.Core.Range
         [TestMethod]
         public void CopyStylesToNewWorkbook()
         {
-            using (var p1 = new ExcelPackage())
+            using (ExcelPackage? p1 = new ExcelPackage())
             {
                 ExcelWorksheet ws = SetupCopyRange(p1);
-                using (var p2 = new ExcelPackage())
+                using (ExcelPackage? p2 = new ExcelPackage())
                 {
-                    var ws2 = p2.Workbook.Worksheets.Add("Sheet1");
+                    ExcelWorksheet? ws2 = p2.Workbook.Worksheets.Add("Sheet1");
                     string nf = "#,##0";
                     ws.Cells["B1"].Style.Font.UnderLineType = ExcelUnderLineType.Double;
                     ws.Cells["B2"].Style.Numberformat.Format = nf;
@@ -618,7 +620,7 @@ namespace EPPlusTest.Core.Range
 
         private static ExcelWorksheet SetupCopyRange(ExcelPackage p)
         {
-            var ws = p.Workbook.Worksheets.Add("Sheet1");
+            ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Sheet1");
 
             ws.Cells["A1"].Value = 1;
             ws.Cells["A2"].Formula = "A1+1";

@@ -29,14 +29,14 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance
         public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
         {
             ValidateArguments(arguments, 2);
-            var values = ArgsToDoubleEnumerable(new List<FunctionArgument> { arguments.ElementAt(0) }, context).Select(x => (double)x);
-            var dates = ArgsToDoubleEnumerable(new List<FunctionArgument> { arguments.ElementAt(1) }, context).Select(x => System.DateTime.FromOADate(x));
-            var guess = 0.1;
+            IEnumerable<double>? values = ArgsToDoubleEnumerable(new List<FunctionArgument> { arguments.ElementAt(0) }, context).Select(x => (double)x);
+            IEnumerable<System.DateTime>? dates = ArgsToDoubleEnumerable(new List<FunctionArgument> { arguments.ElementAt(1) }, context).Select(x => System.DateTime.FromOADate(x));
+            double guess = 0.1;
             if(arguments.Count() > 2)
             {
                 guess = ArgToDecimal(arguments, 2);
             }
-            var result = XirrImpl.GetXirr(values, dates, guess);
+            FinanceCalcResult<double>? result = XirrImpl.GetXirr(values, dates, guess);
             if (result.HasError)
             {
                 return this.CreateResult(result.ExcelErrorType);

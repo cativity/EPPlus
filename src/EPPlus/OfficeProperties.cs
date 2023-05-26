@@ -217,7 +217,7 @@ namespace OfficeOpenXml
 	        }
 	        set
 	        {
-	            var dateString = value.ToUniversalTime().ToString("s", CultureInfo.InvariantCulture) + "Z";
+	            string? dateString = value.ToUniversalTime().ToString("s", CultureInfo.InvariantCulture) + "Z";
 	            _coreHelper.SetXmlNodeString(CreatedPath, dateString);
                 _coreHelper.SetXmlNodeString(CreatedPath + "/@xsi:type", "dcterms:W3CDTF");
 	        }
@@ -295,7 +295,7 @@ namespace OfficeOpenXml
             get { return _extendedHelper.GetXmlNodeString(AppVersionPath); }
             set 
             {
-                var versions = value.Split('.');
+                string[]? versions = value.Split('.');
                 if(versions.Length!=2 || versions.Any(x=>!x.IsInt()))
                 {
                     throw (new ArgumentException("AppVersion should be in the format XX.YYYY. X and Y are numeric values"));
@@ -337,7 +337,7 @@ namespace OfficeOpenXml
 	        }
 	        set
 	        {
-	            var dateString = value.ToUniversalTime().ToString("s", CultureInfo.InvariantCulture) + "Z";
+	            string? dateString = value.ToUniversalTime().ToString("s", CultureInfo.InvariantCulture) + "Z";
 	            _coreHelper.SetXmlNodeString(ModifiedPath, dateString);
                 _coreHelper.SetXmlNodeString(ModifiedPath + "/@xsi:type", "dcterms:W3CDTF");
 	        }
@@ -444,7 +444,7 @@ namespace OfficeOpenXml
         {
             if (_customProperties.ContainsKey(propertyName))
             {
-                var node = _customProperties[propertyName];
+                XmlElement? node = _customProperties[propertyName];
                 string value = node.LastChild.InnerText;
                 switch (node.LastChild.LocalName)
                 {

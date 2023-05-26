@@ -38,7 +38,7 @@ namespace OfficeOpenXml.Table.PivotTable
                 {
                     if (n.LocalName == "x")
                     {
-                        var ix = int.Parse(n.Attributes["v"].Value);
+                        int ix = int.Parse(n.Attributes["v"].Value);
                         if (ix < Field.Items.Count)
                         {
                             Items.Add(new PivotItemReference() { Index = ix, Value = Field.Items[ix].Value });
@@ -78,20 +78,20 @@ namespace OfficeOpenXml.Table.PivotTable
 
             if (FieldIndex >= 0 && FieldIndex < _pt.Fields.Count)
             {
-                var items = Field.Items;
+                ExcelPivotTableFieldItemsCollection? items = Field.Items;
                 foreach (PivotItemReference r in Items)
                 {
                     if (r.Index >= 0 && r.Index < items.Count && r.Value.Equals(items[r.Index]))
                     {
-                        var n = (XmlElement)CreateNode("d:x", false, true);
+                        XmlElement? n = (XmlElement)CreateNode("d:x", false, true);
                         n.SetAttribute("v", r.Index.ToString(CultureInfo.InvariantCulture));
                     }
                     else
                     {
-                        var ix = items._list.FindIndex(x => (x.Value != null && (x.Value.Equals(r.Value)) || (x.Text != null && x.Text.Equals(r.Value))));
+                        int ix = items._list.FindIndex(x => (x.Value != null && (x.Value.Equals(r.Value)) || (x.Text != null && x.Text.Equals(r.Value))));
                         if (ix >= 0)
                         {
-                            var n = (XmlElement)CreateNode("d:x", false, true);
+                            XmlElement? n = (XmlElement)CreateNode("d:x", false, true);
                             n.SetAttribute("v", ix.ToString(CultureInfo.InvariantCulture));
                         }
                     }

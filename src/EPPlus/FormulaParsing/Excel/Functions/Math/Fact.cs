@@ -28,14 +28,14 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
         public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
         {
             ValidateArguments(arguments, 1);
-            var number = ArgToDecimal(arguments, 0);
+            double number = ArgToDecimal(arguments, 0);
             if (number < 0)
             {
                 return this.CreateResult(eErrorType.NA);
             }
 
-            var result = 1d;
-            for (var x = 1; x < number; x++)
+            double result = 1d;
+            for (int x = 1; x < number; x++)
             {
                 result *= x;
             }

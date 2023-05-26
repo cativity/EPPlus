@@ -219,7 +219,7 @@ namespace OfficeOpenXml.Style.XmlAccess
             }
             internal ExcelFormatTranslator(string format, int numFmtID)
             {
-                var f = new FormatPart();
+                FormatPart? f = new FormatPart();
                 Formats.Add(f);
                 if (numFmtID == 14)
                 {
@@ -274,8 +274,8 @@ namespace OfficeOpenXml.Style.XmlAccess
                 StringBuilder sb = new StringBuilder();
                 Culture = null;
                 char clc;
-                var secCount = 0;
-                var f = Formats[0];
+                int secCount = 0;
+                FormatPart? f = Formats[0];
 
                 if (containsAmPm)
                 {
@@ -688,7 +688,7 @@ namespace OfficeOpenXml.Style.XmlAccess
                 {
                     if(ConvertUtil.IsNumericOrDate(value))
                     {
-                        var d=ConvertUtil.GetValueDouble(value);
+                        double d=ConvertUtil.GetValueDouble(value);
                         if(d < 0D && Formats.Count > 1)
                         {
                             return Formats[1];

@@ -44,12 +44,12 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Helpers
                 return double.NaN;
             }
 
-            var len = number.Length;
-            var numArr = number.ToCharArray();
-            var result = string.Empty;
-            for (var x = len - 1; x >= 0; x--)
+            int len = number.Length;
+            char[]? numArr = number.ToCharArray();
+            string? result = string.Empty;
+            for (int x = len - 1; x >= 0; x--)
             {
-                var part = Convert.ToInt32(numArr[x].ToString(), fromBase);
+                int part = Convert.ToInt32(numArr[x].ToString(), fromBase);
                 if(fromBase == 16)
                 {
                     result = (fromBase - 1 - part).ToString("X") + result;
@@ -59,7 +59,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Helpers
                     result = (fromBase - 1 - part).ToString() + result;
                 }
             }
-            var decResult = Convert.ToInt32(result, fromBase) + 1;
+            int decResult = Convert.ToInt32(result, fromBase) + 1;
             return decResult;
         }
     }

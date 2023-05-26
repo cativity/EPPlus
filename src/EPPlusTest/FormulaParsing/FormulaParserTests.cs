@@ -47,7 +47,7 @@ namespace EPPlusTest.FormulaParsing
         [TestInitialize]
         public void Setup()
         {
-            var provider = A.Fake<ExcelDataProvider>();
+            ExcelDataProvider? provider = A.Fake<ExcelDataProvider>();
             _parser = new FormulaParser(provider);
 
         }
@@ -61,7 +61,7 @@ namespace EPPlusTest.FormulaParsing
         [TestMethod]
         public void ParserShouldCallLexer()
         {
-            var lexer = A.Fake<ILexer>();
+            ILexer? lexer = A.Fake<ILexer>();
             A.CallTo(() => lexer.Tokenize("ABC")).Returns(Enumerable.Empty<Token>());
             _parser.Configure(x => x.SetLexer(lexer));
 
@@ -73,10 +73,10 @@ namespace EPPlusTest.FormulaParsing
         [TestMethod]
         public void ParserShouldCallGraphBuilder()
         {
-            var lexer = A.Fake<ILexer>();
-            var tokens = new List<Token>();
+            ILexer? lexer = A.Fake<ILexer>();
+            List<Token>? tokens = new List<Token>();
             A.CallTo(() => lexer.Tokenize("ABC")).Returns(tokens);
-            var graphBuilder = A.Fake<IExpressionGraphBuilder>();
+            IExpressionGraphBuilder? graphBuilder = A.Fake<IExpressionGraphBuilder>();
             A.CallTo(() => graphBuilder.Build(tokens)).Returns(new ExGraph());
 
             _parser.Configure(config =>
@@ -94,14 +94,14 @@ namespace EPPlusTest.FormulaParsing
         [TestMethod]
         public void ParserShouldCallCompiler()
         {
-            var lexer = A.Fake<ILexer>();
-            var tokens = new List<Token>();
+            ILexer? lexer = A.Fake<ILexer>();
+            List<Token>? tokens = new List<Token>();
             A.CallTo(() => lexer.Tokenize("ABC")).Returns(tokens);
-            var expectedGraph = new ExGraph();
+            ExGraph? expectedGraph = new ExGraph();
             expectedGraph.Add(new StringExpression("asdf"));
-            var graphBuilder = A.Fake<IExpressionGraphBuilder>();
+            IExpressionGraphBuilder? graphBuilder = A.Fake<IExpressionGraphBuilder>();
             A.CallTo(() => graphBuilder.Build(tokens)).Returns(expectedGraph);
-            var compiler = A.Fake<IExpressionCompiler>();
+            IExpressionCompiler? compiler = A.Fake<IExpressionCompiler>();
             A.CallTo(() => compiler.Compile(expectedGraph.Expressions)).Returns(new CompileResult(0, DataType.Integer));
 
             _parser.Configure(config =>
@@ -120,10 +120,10 @@ namespace EPPlusTest.FormulaParsing
         [TestMethod]
         public void ParseAtShouldCallExcelDataProvider()
         {
-            var excelDataProvider = A.Fake<ExcelDataProvider>();
+            ExcelDataProvider? excelDataProvider = A.Fake<ExcelDataProvider>();
             A.CallTo(() => excelDataProvider.GetRangeFormula(string.Empty, 1, 1)).Returns("Sum(1,2)");
-            var parser = new FormulaParser(excelDataProvider);
-            var result = parser.ParseAt("A1");
+            FormulaParser? parser = new FormulaParser(excelDataProvider);
+            object? result = parser.ParseAt("A1");
             Assert.AreEqual(3d, result);
         }
 

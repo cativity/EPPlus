@@ -1065,8 +1065,8 @@ namespace OfficeOpenXml.Packaging.Ionic
             // This matches fwd slashes only inside a pair of single quote delimiters,
             // eg, a filename.  This must be done as well as the case above, to handle
             // filenames specified inside quotes as well as filenames without quotes.
-            var regexPattern = @"/" +
-                                RegexAssertions.FollowedByOddNumberOfSingleQuotesAndLineEnd;
+            string? regexPattern = @"/" +
+                                   RegexAssertions.FollowedByOddNumberOfSingleQuotesAndLineEnd;
             // replace with backslash
             interim = Regex.Replace(interim, regexPattern, "\\");
 
@@ -1114,8 +1114,8 @@ namespace OfficeOpenXml.Packaging.Ionic
             LogicalConjunction pendingConjunction = LogicalConjunction.NONE;
 
             ParseState state;
-            var stateStack = new System.Collections.Generic.Stack<ParseState>();
-            var critStack = new System.Collections.Generic.Stack<SelectionCriterion>();
+            Stack<ParseState>? stateStack = new System.Collections.Generic.Stack<ParseState>();
+            Stack<SelectionCriterion>? critStack = new System.Collections.Generic.Stack<SelectionCriterion>();
             stateStack.Push(ParseState.Start);
 
             for (int i = 0; i < tokens.Length; i++)
@@ -1368,7 +1368,7 @@ namespace OfficeOpenXml.Packaging.Ionic
                     {
                         while (stateStack.Peek() == ParseState.ConjunctionPending)
                         {
-                            var cc = critStack.Pop() as CompoundCriterion;
+                            CompoundCriterion? cc = critStack.Pop() as CompoundCriterion;
                             cc.Right = current;
                             current = cc; // mark the parent as current (walk up the tree)
                             stateStack.Pop();   // the conjunction is no longer pending
@@ -1484,7 +1484,7 @@ namespace OfficeOpenXml.Packaging.Ionic
                 throw new ArgumentException("SelectionCriteria has not been set");
             }
 
-            var list = new List<String>();
+            List<string>? list = new List<String>();
             try
             {
                 if (Directory.Exists(directory))
@@ -1554,7 +1554,7 @@ namespace OfficeOpenXml.Packaging.Ionic
         internal static string GetDescription(System.Enum value)
         {
             FieldInfo fi = value.GetType().GetField(value.ToString());
-            var attributes = (DescriptionAttribute[])fi.GetCustomAttributes(typeof(DescriptionAttribute), false);
+            DescriptionAttribute[]? attributes = (DescriptionAttribute[])fi.GetCustomAttributes(typeof(DescriptionAttribute), false);
             if (attributes.Length > 0)
             {
                 return attributes[0].Description;

@@ -24,7 +24,7 @@ namespace OfficeOpenXml.Drawing.Style.Fill
         }
         internal ExcelDrawingBlipFillTile(XmlHelper xml)
         {
-            var v = xml.GetXmlNodeString("a:tile/@algn");
+            string? v = xml.GetXmlNodeString("a:tile/@algn");
             if(!string.IsNullOrEmpty(v))
             {
                 Alignment = v.TranslateRectangleAlignment();

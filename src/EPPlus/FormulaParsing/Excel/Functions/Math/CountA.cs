@@ -33,19 +33,19 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
         public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
         {
             ValidateArguments(arguments, 1);
-            var nItems = 0d;
+            double nItems = 0d;
             Calculate(arguments, context, ref nItems);
             return CreateResult(nItems, DataType.Integer);
         }
 
         private void Calculate(IEnumerable<FunctionArgument> items, ParsingContext context, ref double nItems)
         {
-            foreach (var item in items)
+            foreach (FunctionArgument? item in items)
             {
-                var cs = item.Value as IRangeInfo;
+                IRangeInfo? cs = item.Value as IRangeInfo;
                 if (cs != null)
                 {
-                    foreach (var c in cs)
+                    foreach (ICellInfo? c in cs)
                     {
                         _CheckForAndHandleExcelError(c, context);
                         if (!ShouldIgnore(c, context) && ShouldCount(c.Value))

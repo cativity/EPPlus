@@ -42,9 +42,9 @@ namespace EPPlusTest.Excel.Functions
         [TestMethod]
         public void ShouldReturnSameInstanceOfIntParserWhenCalledTwice()
         {
-            var parsers = new ArgumentParsers();
-            var parser1 = parsers.GetParser(DataType.Integer);
-            var parser2 = parsers.GetParser(DataType.Integer);
+            ArgumentParsers? parsers = new ArgumentParsers();
+            ArgumentParser? parser1 = parsers.GetParser(DataType.Integer);
+            ArgumentParser? parser2 = parsers.GetParser(DataType.Integer);
             Assert.AreEqual(parser1, parser2);
         }
     }

@@ -42,7 +42,7 @@ namespace OfficeOpenXml.FormulaParsing.ExpressionGraph.FunctionCompilers
             _specialCompilers.Add(typeof(Column), new IgnoreCircularRefLookupCompiler(repository.GetFunction("column"), context));
             _specialCompilers.Add(typeof(Columns), new IgnoreCircularRefLookupCompiler(repository.GetFunction("columns"), context));
             _specialCompilers.Add(typeof(IndexFunc), new IgnoreCircularRefLookupCompiler(repository.GetFunction("index"), context));
-            foreach (var key in repository.CustomCompilers.Keys)
+            foreach (Type? key in repository.CustomCompilers.Keys)
             {
               _specialCompilers.Add(key, repository.CustomCompilers[key]);
             }
@@ -50,7 +50,7 @@ namespace OfficeOpenXml.FormulaParsing.ExpressionGraph.FunctionCompilers
 
         private FunctionCompiler GetCompilerByType(ExcelFunction function)
         {
-            var funcType = function.GetType();
+            Type? funcType = function.GetType();
             if (_specialCompilers.ContainsKey(funcType))
             {
                 return _specialCompilers[funcType];

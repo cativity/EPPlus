@@ -41,7 +41,7 @@ namespace OfficeOpenXml.FormulaParsing.ExcelUtilities
 
         private string GetNonAlphanumericStartChars(string expr)
         {
-            var result = string.Empty;
+            string? result = string.Empty;
             if (!string.IsNullOrEmpty(expr))
             {
                 expr = expr.Trim();
@@ -67,9 +67,9 @@ namespace OfficeOpenXml.FormulaParsing.ExcelUtilities
 
         private bool EvaluateOperator(object left, object right, IOperator op)
         {
-            var leftResult = _compileResultFactory.Create(left);
-            var rightResult = _compileResultFactory.Create(right);
-            var result = op.Apply(leftResult, rightResult);
+            CompileResult? leftResult = _compileResultFactory.Create(left);
+            CompileResult? rightResult = _compileResultFactory.Create(right);
+            CompileResult? result = op.Apply(leftResult, rightResult);
             if (result.DataType != DataType.Boolean)
             {
                 throw new ArgumentException("Illegal operator in expression");
@@ -113,7 +113,7 @@ namespace OfficeOpenXml.FormulaParsing.ExcelUtilities
                 return false;
             }
 
-            foreach(var expression in expressions)
+            foreach(string? expression in expressions)
             {
                 if(Evaluate(left, expression))
                 {
@@ -151,7 +151,7 @@ namespace OfficeOpenXml.FormulaParsing.ExcelUtilities
                 return true;
             }
 
-            var operatorCandidate = GetNonAlphanumericStartChars(expression);
+            string? operatorCandidate = GetNonAlphanumericStartChars(expression);
             if(!string.IsNullOrEmpty(operatorCandidate))
             {
                 if (operatorCandidate.Length > 1 && operatorCandidate.StartsWith("="))
@@ -165,7 +165,7 @@ namespace OfficeOpenXml.FormulaParsing.ExcelUtilities
                     IOperator op;
                     if (OperatorsDict.Instance.TryGetValue(operatorCandidate, out op))
                     {
-                        var right = expression.Replace(operatorCandidate, string.Empty);
+                        string? right = expression.Replace(operatorCandidate, string.Empty);
                         if (left == null && string.IsNullOrEmpty(right))
                         {
                             return op.Operator == Operators.Equals;

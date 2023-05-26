@@ -70,10 +70,10 @@ namespace OfficeOpenXml.FormulaParsing.ExcelUtilities
         {
             Require.That(address).Named("range").IsNotNullOrEmpty();
             //var addressInfo = ExcelAddressInfo.Parse(address);
-            var adr = new ExcelAddressBase(address);  
-            var sheet = string.IsNullOrEmpty(adr.WorkSheetName) ? worksheetName : adr.WorkSheetName;
-            var dim = _excelDataProvider.GetDimensionEnd(sheet);
-            var rangeAddress = new RangeAddress()
+            ExcelAddressBase? adr = new ExcelAddressBase(address);  
+            string? sheet = string.IsNullOrEmpty(adr.WorkSheetName) ? worksheetName : adr.WorkSheetName;
+            ExcelCellAddress? dim = _excelDataProvider.GetDimensionEnd(sheet);
+            RangeAddress? rangeAddress = new RangeAddress()
             {
                 Address = adr.Address,
                 Worksheet = sheet,
@@ -98,15 +98,15 @@ namespace OfficeOpenXml.FormulaParsing.ExcelUtilities
         {
             Require.That(range).Named("range").IsNotNullOrEmpty();
             //var addressInfo = ExcelAddressInfo.Parse(range);
-            var adr = new ExcelAddressBase(range);
+            ExcelAddressBase? adr = new ExcelAddressBase(range);
             if (adr.Table != null)
             {
-                var a = _excelDataProvider.GetRange(adr.WorkSheetName, range).Address;
+                ExcelAddressBase? a = _excelDataProvider.GetRange(adr.WorkSheetName, range).Address;
                 //Convert the Table-style Address to an A1C1 address
                 adr = new ExcelAddressBase(a._fromRow, a._fromCol, a._toRow, a._toCol);
                 adr._ws = a._ws;                
             }
-            var rangeAddress = new RangeAddress()
+            RangeAddress? rangeAddress = new RangeAddress()
             {
                 Address = adr.Address,
                 Worksheet = adr.WorkSheetName ?? "",

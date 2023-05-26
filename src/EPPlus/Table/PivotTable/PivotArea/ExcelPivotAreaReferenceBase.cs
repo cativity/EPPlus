@@ -28,7 +28,7 @@ namespace OfficeOpenXml.Table.PivotTable
         { 
             get
             {
-                var v=GetXmlNodeLong("@field");
+                long v=GetXmlNodeLong("@field");
                 if(v > int.MaxValue)
                 {
                     return -2;

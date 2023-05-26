@@ -57,7 +57,7 @@ namespace EPPlusTest.Drawing.Chart.Styling
         [TestMethod]
         public void BoxWhiskerChart_Styles()
         {
-            var ws = _pck.Workbook.Worksheets.Add("BoxWhiskerChart");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("BoxWhiskerChart");
             LoadTestdata(ws);
             BoxWhiskerChartStyle(ws);
         }
@@ -119,7 +119,7 @@ namespace EPPlusTest.Drawing.Chart.Styling
         }
         private static ExcelBoxWhiskerChart AddChartEx(ExcelWorksheet ws, ePresetChartStyle style, string name, int row, int col,Action<ExcelBoxWhiskerChart> SetProperties)
         {
-            var chart = ws.Drawings.AddBoxWhiskerChart(name);
+            ExcelBoxWhiskerChart? chart = ws.Drawings.AddBoxWhiskerChart(name);
             chart.SetPosition(row, 0, col, 0);
             chart.To.Column = col+12;
             chart.To.ColumnOff = 0;

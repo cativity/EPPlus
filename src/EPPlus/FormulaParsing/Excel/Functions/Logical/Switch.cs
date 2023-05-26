@@ -41,11 +41,11 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Logical
         public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
         {
             ValidateArguments(arguments, 3);
-            var expression = arguments.ElementAt(0).ValueFirst;
-            var maxLength = 1 + 126 * 2;
-            for(var x = 1; x < (arguments.Count() - 1) || x >= maxLength; x += 2)
+            object? expression = arguments.ElementAt(0).ValueFirst;
+            int maxLength = 1 + 126 * 2;
+            for(int x = 1; x < (arguments.Count() - 1) || x >= maxLength; x += 2)
             {
-                var candidate = arguments.ElementAt(x).Value;
+                object? candidate = arguments.ElementAt(x).Value;
                 if(IsMatch(expression, candidate))
                 {
                     return _compileResultFactory.Create(arguments.ElementAt(x + 1).Value);
@@ -63,8 +63,8 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Logical
         {
             if(IsNumeric(right) || IsNumeric(left))
             {
-                var r = GetNumericValue(right);
-                var l = GetNumericValue(left);
+                double r = GetNumericValue(right);
+                double l = GetNumericValue(left);
                 return r.Equals(l);
             }
             if(right == null && left == null)

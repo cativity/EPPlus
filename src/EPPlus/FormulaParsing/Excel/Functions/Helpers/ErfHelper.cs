@@ -79,12 +79,12 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Helpers
                 return 100;
             }
 
-            var pp = (p < 1) ? p : 2 - p;
-            var t = System.Math.Sqrt(-2 * System.Math.Log(pp / 2));
-            var x = -0.70711 * ((2.30753 + t * 0.27061) /
-                            (1 + t * (0.99229 + t * 0.04481)) - t);
+            double pp = (p < 1) ? p : 2 - p;
+            double t = System.Math.Sqrt(-2 * System.Math.Log(pp / 2));
+            double x = -0.70711 * ((2.30753 + t * 0.27061) /
+                                   (1 + t * (0.99229 + t * 0.04481)) - t);
             double err;
-            for (var j = 0; j < 2; j++)
+            for (int j = 0; j < 2; j++)
             {
                 err = Erfc(x) - pp;
                 x += err / (1.12837916709551257 * System.Math.Exp(-x * x) - x * err);

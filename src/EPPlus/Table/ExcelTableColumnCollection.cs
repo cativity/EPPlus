@@ -33,10 +33,10 @@ namespace OfficeOpenXml.Table
             Table = table;
             foreach(XmlNode node in table.TableXml.SelectNodes("//d:table/d:tableColumns/d:tableColumn",table.NameSpaceManager))
             {
-                var item = new ExcelTableColumn(table.NameSpaceManager, node, table, _cols.Count);
+                ExcelTableColumn? item = new ExcelTableColumn(table.NameSpaceManager, node, table, _cols.Count);
                 _cols.Add(item);
                 _colNames.Add(_cols[_cols.Count - 1].Name, _cols.Count - 1);
-                var id = item.Id;
+                int id = item.Id;
                 if (id>=_maxId)
                 {
                     _maxId = id+1;
@@ -110,8 +110,8 @@ namespace OfficeOpenXml.Table
         {            
             if (_colNames.ContainsKey(name))
             {
-                var newName = name;
-                var i = 2;
+                string? newName = name;
+                int i = 2;
                 do
                 {
                     newName = name+(i++).ToString(CultureInfo.InvariantCulture);
@@ -140,7 +140,7 @@ namespace OfficeOpenXml.Table
         {
             lock(Table)
             {
-                var range = Table.InsertColumn(position, columns);
+                ExcelRangeBase? range = Table.InsertColumn(position, columns);
                 XmlNode refNode;
                 if (position >= _cols.Count)
                 {
@@ -153,7 +153,7 @@ namespace OfficeOpenXml.Table
                 }
                 for (int i = position; i < position + columns; i++)
                 {
-                    var node = Table.TableXml.CreateElement("tableColumn", ExcelPackage.schemaMain);
+                    XmlElement? node = Table.TableXml.CreateElement("tableColumn", ExcelPackage.schemaMain);
 
                     if (i >= _cols.Count)
                     {
@@ -163,7 +163,7 @@ namespace OfficeOpenXml.Table
                     {
                         refNode.ParentNode.InsertBefore(node, refNode);
                     }
-                    var item = new ExcelTableColumn(Table.NameSpaceManager, node, Table, i);
+                    ExcelTableColumn? item = new ExcelTableColumn(Table.NameSpaceManager, node, Table, i);
                     item.Name = GetUniqueName($"Column{i + 1}");
                     item.Id = _maxId++;
                     _cols.Insert(i, item);
@@ -202,7 +202,7 @@ namespace OfficeOpenXml.Table
 
                 for (int i = position + columns - 1; i >= position; i--)
                 {
-                    var n = Table.Columns[i].TopNode;
+                    XmlNode? n = Table.Columns[i].TopNode;
                     n.ParentNode.RemoveChild(n);
                     Table.Columns._colNames.Remove(_cols[i].Name);
                     Table.Columns._cols.RemoveAt(i);
@@ -213,7 +213,7 @@ namespace OfficeOpenXml.Table
                 }
                 _colNames = _cols.ToDictionary(x => x.Name, y => y.Position);
 
-                var range = Table.DeleteColumn(position, columns);
+                ExcelRangeBase? range = Table.DeleteColumn(position, columns);
                 return range;
             }
         }

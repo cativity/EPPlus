@@ -418,7 +418,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
             // Check if it is the same segment.  If it is, very simple.
             if (diskNumber == CurrentSegment)
             {
-                var x =_innerStream.Seek(offset, SeekOrigin.Begin);
+                long x =_innerStream.Seek(offset, SeekOrigin.Begin);
                 // workitem 10178
                 Ionic.Zip.SharedUtilities.Workaround_Ladybug318918(_innerStream);
                 return x;
@@ -476,7 +476,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
             // open it
             _innerStream = new FileStream(_currentTempName, FileMode.Open);
 
-            var r =  _innerStream.Seek(offset, SeekOrigin.Begin);
+            long r =  _innerStream.Seek(offset, SeekOrigin.Begin);
 
             // workitem 10178
             Ionic.Zip.SharedUtilities.Workaround_Ladybug318918(_innerStream);
@@ -538,7 +538,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
 
         public override long Seek(long offset, System.IO.SeekOrigin origin)
         {
-            var x = _innerStream.Seek(offset, origin);
+            long x = _innerStream.Seek(offset, origin);
             // workitem 10178
             Ionic.Zip.SharedUtilities.Workaround_Ladybug318918(_innerStream);
             return x;

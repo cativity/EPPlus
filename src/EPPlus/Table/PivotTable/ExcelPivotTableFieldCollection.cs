@@ -37,7 +37,7 @@ namespace OfficeOpenXml.Table.PivotTable
         {
             get
             {
-                foreach (var field in _list)
+                foreach (ExcelPivotTableField? field in _list)
                 {
                     if (field.Name.Equals(name,StringComparison.OrdinalIgnoreCase))
                     {
@@ -54,7 +54,7 @@ namespace OfficeOpenXml.Table.PivotTable
         /// <returns>The matching field. If none is found null is returned</returns>
         public ExcelPivotTableField GetDateGroupField(eDateGroupBy GroupBy)
         {
-            foreach (var fld in _list)
+            foreach (ExcelPivotTableField? fld in _list)
             {
                 if (fld.Grouping is ExcelPivotTableFieldDateGroup && (((ExcelPivotTableFieldDateGroup)fld.Grouping).GroupBy) == GroupBy)
                 {
@@ -69,7 +69,7 @@ namespace OfficeOpenXml.Table.PivotTable
         /// <returns>The matching field. If none is found null is returned</returns>
         public ExcelPivotTableField GetNumericGroupField()
         {
-            foreach (var fld in _list)
+            foreach (ExcelPivotTableField? fld in _list)
             {
                 if (fld.Grouping is ExcelPivotTableFieldNumericGroup)
                 {
@@ -85,7 +85,7 @@ namespace OfficeOpenXml.Table.PivotTable
             XmlElement fieldNode = CreateFieldNode(_table);
             fieldNode.InnerXml = "<items/>";
 
-            var field = new ExcelPivotTableField(_table.NameSpaceManager, fieldNode, _table, _table.Fields.Count, index);
+            ExcelPivotTableField? field = new ExcelPivotTableField(_table.NameSpaceManager, fieldNode, _table, _table.Fields.Count, index);
 
             _list.Add(field);
             return field;
@@ -96,7 +96,7 @@ namespace OfficeOpenXml.Table.PivotTable
             XmlElement fieldNode = CreateFieldNode(_table);
             fieldNode.InnerXml = "<items/>";
 
-            var field = new ExcelPivotTableField(_table.NameSpaceManager, fieldNode, _table, _table.Fields.Count, index);
+            ExcelPivotTableField? field = new ExcelPivotTableField(_table.NameSpaceManager, fieldNode, _table, _table.Fields.Count, index);
 
             _list.Add(field);
             return field;
@@ -104,8 +104,8 @@ namespace OfficeOpenXml.Table.PivotTable
 
         private XmlElement CreateFieldNode(ExcelPivotTable tbl)
         {
-            var topNode = tbl.PivotTableXml.SelectSingleNode("//d:pivotFields", _table.NameSpaceManager);
-            var fieldNode = tbl.PivotTableXml.CreateElement("pivotField", ExcelPackage.schemaMain);
+            XmlNode? topNode = tbl.PivotTableXml.SelectSingleNode("//d:pivotFields", _table.NameSpaceManager);
+            XmlElement? fieldNode = tbl.PivotTableXml.CreateElement("pivotField", ExcelPackage.schemaMain);
             fieldNode.SetAttribute("compact", "0");
             fieldNode.SetAttribute("outline", "0");
             fieldNode.SetAttribute("showAll", "0");
@@ -128,16 +128,16 @@ namespace OfficeOpenXml.Table.PivotTable
             {
                 throw (new InvalidOperationException($"Field with name {name} already exists in the collection"));
             }
-            var cache = _table.CacheDefinition._cacheReference;
-            var cacheField = cache.AddFormula(name, formula);
+            PivotTableCacheInternal? cache = _table.CacheDefinition._cacheReference;
+            ExcelPivotTableCacheField? cacheField = cache.AddFormula(name, formula);
 
-            foreach (var pt in cache._pivotTables)
+            foreach (ExcelPivotTable? pt in cache._pivotTables)
             {
                 XmlElement fieldNode = CreateFieldNode(pt);
                 fieldNode.SetAttribute("dragToPage", "0");
                 fieldNode.SetAttribute("dragToCol", "0");
                 fieldNode.SetAttribute("dragToRow", "0");
-                var field = new ExcelPivotTableField(_table.NameSpaceManager, fieldNode, pt, cacheField.Index, 0);
+                ExcelPivotTableField? field = new ExcelPivotTableField(_table.NameSpaceManager, fieldNode, pt, cacheField.Index, 0);
                 field._cacheField = cacheField;
                 pt.Fields.AddInternal(field);
             }

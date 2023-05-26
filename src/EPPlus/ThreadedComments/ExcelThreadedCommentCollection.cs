@@ -114,7 +114,7 @@ namespace OfficeOpenXml.ThreadedComments
         private void RebuildIndex()
         {
             _commentsIndex.Clear();
-            foreach(var comment in _commentList)
+            foreach(ExcelThreadedComment? comment in _commentList)
             {
                 _commentsIndex[comment.Id] = comment;
             }
@@ -132,9 +132,9 @@ namespace OfficeOpenXml.ThreadedComments
 
         internal bool Remove(ExcelThreadedComment comment)
         {
-            var index = _commentList.IndexOf(comment);
+            int index = _commentList.IndexOf(comment);
             _commentList.Remove(comment);
-            var commentNode = TopNode.SelectSingleNode("tc:threadedComment[@id='" + comment.Id + "']", NameSpaceManager);
+            XmlNode? commentNode = TopNode.SelectSingleNode("tc:threadedComment[@id='" + comment.Id + "']", NameSpaceManager);
             if (commentNode != null)
             {
                 TopNode.RemoveChild(commentNode);
@@ -162,7 +162,7 @@ namespace OfficeOpenXml.ThreadedComments
         /// </summary>
         internal void Clear()
         {
-            foreach(var node in _commentList.Select(x => x.TopNode))
+            foreach(XmlNode? node in _commentList.Select(x => x.TopNode))
             {
                 TopNode.RemoveChild(node);
             }

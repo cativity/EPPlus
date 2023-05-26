@@ -28,8 +28,8 @@ namespace EPPlusTest.Drawing
         [ClassCleanup]
 		public static void Cleanup()
 		{
-            var dirName = _pck.File.DirectoryName;
-            var fileName = _pck.File.FullName;
+            string? dirName = _pck.File.DirectoryName;
+            string? fileName = _pck.File.FullName;
             
             SaveAndCleanup(_pck);
             if (File.Exists(fileName))
@@ -40,182 +40,182 @@ namespace EPPlusTest.Drawing
         [TestMethod]
         public void AddJpgImageVia()
         {
-            var ws = _pck.Workbook.Worksheets.Add("InternalJpg");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("InternalJpg");
 
-            using (var ms = new MemoryStream(Properties.Resources.Test1JpgByteArray))
+            using (MemoryStream? ms = new MemoryStream(Properties.Resources.Test1JpgByteArray))
             {
-                var image = ws.Drawings.AddPicture("jpg", ms, OfficeOpenXml.Drawing.ePictureType.Jpg);
+                ExcelPicture? image = ws.Drawings.AddPicture("jpg", ms, OfficeOpenXml.Drawing.ePictureType.Jpg);
             }
         }
         [TestMethod]
         public void AddPngImageVia()
         {
-            var ws = _pck.Workbook.Worksheets.Add("InternalPng");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("InternalPng");
 
-            using (var ms = new MemoryStream(Properties.Resources.VmlPatternImagePngByteArray))
+            using (MemoryStream? ms = new MemoryStream(Properties.Resources.VmlPatternImagePngByteArray))
             {
-                var image = ws.Drawings.AddPicture("png1", ms, OfficeOpenXml.Drawing.ePictureType.Png);
+                ExcelPicture? image = ws.Drawings.AddPicture("png1", ms, OfficeOpenXml.Drawing.ePictureType.Png);
             }
         }
 
         [TestMethod]
         public void AddTestImagesToWorksheet()
         {
-            var ws = _pck.Workbook.Worksheets.Add("picturesIS");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("picturesIS");
 
-            using (var msGif = new MemoryStream(Properties.Resources.BitmapImageGif))
+            using (MemoryStream? msGif = new MemoryStream(Properties.Resources.BitmapImageGif))
             {
-                var imageGif = ws.Drawings.AddPicture("gif1", msGif, ePictureType.Gif);
+                ExcelPicture? imageGif = ws.Drawings.AddPicture("gif1", msGif, ePictureType.Gif);
                 imageGif.SetPosition(40, 0, 0, 0);
             }
 
-            using (var msBmp = new MemoryStream(Properties.Resources.CodeBmp))
+            using (MemoryStream? msBmp = new MemoryStream(Properties.Resources.CodeBmp))
             {
-                var imagebmp = ws.Drawings.AddPicture("bmp1", msBmp, ePictureType.Bmp);
+                ExcelPicture? imagebmp = ws.Drawings.AddPicture("bmp1", msBmp, ePictureType.Bmp);
                 imagebmp.SetPosition(40, 0, 10, 0);
             }
 
             
-            using (var ms1 = new MemoryStream(Properties.Resources.Test1JpgByteArray))
+            using (MemoryStream? ms1 = new MemoryStream(Properties.Resources.Test1JpgByteArray))
             {
-                var image1 = ws.Drawings.AddPicture("jpg1", ms1, ePictureType.Jpg);
+                ExcelPicture? image1 = ws.Drawings.AddPicture("jpg1", ms1, ePictureType.Jpg);
             }
             
-            using (var ms2 = new MemoryStream(Properties.Resources.VmlPatternImagePngByteArray))
+            using (MemoryStream? ms2 = new MemoryStream(Properties.Resources.VmlPatternImagePngByteArray))
             {
-                var image2 = ws.Drawings.AddPicture("png1", ms2, ePictureType.Png);
+                ExcelPicture? image2 = ws.Drawings.AddPicture("png1", ms2, ePictureType.Png);
                 image2.SetPosition(0, 0, 10, 0);
             }
             
-            using (var ms22 = new MemoryStream(Properties.Resources.Png2ByteArray))
+            using (MemoryStream? ms22 = new MemoryStream(Properties.Resources.Png2ByteArray))
             {
-                var image22 = ws.Drawings.AddPicture("png2", ms22, ePictureType.Png);
+                ExcelPicture? image22 = ws.Drawings.AddPicture("png2", ms22, ePictureType.Png);
                 image22.SetPosition(0, 0, 20, 0);
             }
             
-            using (var ms23 = new MemoryStream(Properties.Resources.Png3ByteArray))
+            using (MemoryStream? ms23 = new MemoryStream(Properties.Resources.Png3ByteArray))
             {
-                var image23 = ws.Drawings.AddPicture("png3", ms23, ePictureType.Png);
+                ExcelPicture? image23 = ws.Drawings.AddPicture("png3", ms23, ePictureType.Png);
                 image23.SetPosition(0, 0, 30, 0);
             }
             
-            using (var ms3 = new MemoryStream(Properties.Resources.CodeEmfByteArray))
+            using (MemoryStream? ms3 = new MemoryStream(Properties.Resources.CodeEmfByteArray))
             {
-                var image3 = ws.Drawings.AddPicture("emf1", ms3, ePictureType.Emf);
+                ExcelPicture? image3 = ws.Drawings.AddPicture("emf1", ms3, ePictureType.Emf);
                 image3.SetPosition(0, 0, 40, 0);
             }
 
-            using (var ms4 = new MemoryStream(Properties.Resources.Svg1ByteArray))
+            using (MemoryStream? ms4 = new MemoryStream(Properties.Resources.Svg1ByteArray))
             {
-                var image4 = ws.Drawings.AddPicture("svg1", ms4, ePictureType.Svg);
+                ExcelPicture? image4 = ws.Drawings.AddPicture("svg1", ms4, ePictureType.Svg);
                 image4.SetPosition(0, 0, 50, 0);
             }
 
-            using (var ms5 = new MemoryStream(Properties.Resources.Svg2ByteArray))
+            using (MemoryStream? ms5 = new MemoryStream(Properties.Resources.Svg2ByteArray))
             {
-                var image5 = ws.Drawings.AddPicture("svg2", ms5, ePictureType.Svg);
+                ExcelPicture? image5 = ws.Drawings.AddPicture("svg2", ms5, ePictureType.Svg);
                 image5.SetPosition(0, 0, 60, 0);
                 image5.SetSize(25);
             }
 
-            using (var ms6 = Properties.Resources.VectorDrawing)
+            using (MemoryStream? ms6 = Properties.Resources.VectorDrawing)
             {
-                var image6 = ws.Drawings.AddPicture("wmf", ms6, ePictureType.Wmf);
+                ExcelPicture? image6 = ws.Drawings.AddPicture("wmf", ms6, ePictureType.Wmf);
                 image6.SetPosition(0, 0, 70, 0);
             }
 
-            using (var msTif = Properties.Resources.CodeTif)
+            using (MemoryStream? msTif = Properties.Resources.CodeTif)
             {
-                var imageTif = ws.Drawings.AddPicture("tif1", msTif, ePictureType.Tif);
+                ExcelPicture? imageTif = ws.Drawings.AddPicture("tif1", msTif, ePictureType.Tif);
                 imageTif.SetPosition(0, 0, 80, 0);
             }
         }
         [TestMethod]
         public void AddTestImagesToWorksheetNoPictureType()
         {
-            var ws = _pck.Workbook.Worksheets.Add("picturesISNoPT");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("picturesISNoPT");
 
-            using (var msGif = new MemoryStream(Properties.Resources.BitmapImageGif))
+            using (MemoryStream? msGif = new MemoryStream(Properties.Resources.BitmapImageGif))
             {
-                var imageGif = ws.Drawings.AddPicture("gif1", msGif);
+                ExcelPicture? imageGif = ws.Drawings.AddPicture("gif1", msGif);
                 Assert.AreEqual("image/gif", imageGif.ContentType);
                 imageGif.SetPosition(40, 0, 0, 0);                
             }
 
-            using (var msBmp = new MemoryStream(Properties.Resources.CodeBmp))
+            using (MemoryStream? msBmp = new MemoryStream(Properties.Resources.CodeBmp))
             {
-                var imagebmp = ws.Drawings.AddPicture("bmp1", msBmp);
+                ExcelPicture? imagebmp = ws.Drawings.AddPicture("bmp1", msBmp);
                 Assert.AreEqual("image/bmp", imagebmp.ContentType);
                 imagebmp.SetPosition(40, 0, 10, 0);
             }
 
 
-            using (var ms1 = new MemoryStream(Properties.Resources.Test1JpgByteArray))
+            using (MemoryStream? ms1 = new MemoryStream(Properties.Resources.Test1JpgByteArray))
             {
-                var image1 = ws.Drawings.AddPicture("jpg1", ms1);
+                ExcelPicture? image1 = ws.Drawings.AddPicture("jpg1", ms1);
                 Assert.AreEqual("image/jpeg", image1.ContentType);
             }
 
-            using (var ms2 = new MemoryStream(Properties.Resources.VmlPatternImagePngByteArray))
+            using (MemoryStream? ms2 = new MemoryStream(Properties.Resources.VmlPatternImagePngByteArray))
             {
-                var image2 = ws.Drawings.AddPicture("png1", ms2);
+                ExcelPicture? image2 = ws.Drawings.AddPicture("png1", ms2);
                 image2.SetPosition(0, 0, 10, 0);
                 Assert.AreEqual("image/png", image2.ContentType);
             }
 
-            using (var ms22 = new MemoryStream(Properties.Resources.Png2ByteArray))
+            using (MemoryStream? ms22 = new MemoryStream(Properties.Resources.Png2ByteArray))
             {
-                var image22 = ws.Drawings.AddPicture("png2", ms22);
+                ExcelPicture? image22 = ws.Drawings.AddPicture("png2", ms22);
                 image22.SetPosition(0, 0, 20, 0);
                 Assert.AreEqual("image/png", image22.ContentType);
             }
 
-            using (var ms23 = new MemoryStream(Properties.Resources.Png3ByteArray))
+            using (MemoryStream? ms23 = new MemoryStream(Properties.Resources.Png3ByteArray))
             {
-                var image23 = ws.Drawings.AddPicture("png3", ms23);
+                ExcelPicture? image23 = ws.Drawings.AddPicture("png3", ms23);
                 image23.SetPosition(0, 0, 30, 0);
                 Assert.AreEqual("image/png", image23.ContentType);
             }
 
-            using (var ms3 = new MemoryStream(Properties.Resources.CodeEmfByteArray))
+            using (MemoryStream? ms3 = new MemoryStream(Properties.Resources.CodeEmfByteArray))
             {
-                var image3 = ws.Drawings.AddPicture("emf1", ms3);
+                ExcelPicture? image3 = ws.Drawings.AddPicture("emf1", ms3);
                 image3.SetPosition(0, 0, 40, 0);
                 Assert.AreEqual("image/x-emf", image3.ContentType);                
             }
 
-            using (var ms4 = new MemoryStream(Properties.Resources.Svg1ByteArray))
+            using (MemoryStream? ms4 = new MemoryStream(Properties.Resources.Svg1ByteArray))
             {
-                var image4 = ws.Drawings.AddPicture("svg1", ms4);
+                ExcelPicture? image4 = ws.Drawings.AddPicture("svg1", ms4);
                 image4.SetPosition(0, 0, 50, 0);
                 Assert.AreEqual("image/svg+xml", image4.ContentType);
             }
 
-            using (var ms5 = new MemoryStream(Properties.Resources.Svg2ByteArray))
+            using (MemoryStream? ms5 = new MemoryStream(Properties.Resources.Svg2ByteArray))
             {
-                var image5 = ws.Drawings.AddPicture("svg2", ms5);
+                ExcelPicture? image5 = ws.Drawings.AddPicture("svg2", ms5);
                 image5.SetPosition(0, 0, 60, 0);
                 image5.SetSize(25);
                 Assert.AreEqual("image/svg+xml", image5.ContentType);
             }
 
-            using (var ms6 = Properties.Resources.VectorDrawing)
+            using (MemoryStream? ms6 = Properties.Resources.VectorDrawing)
             {
-                var image6 = ws.Drawings.AddPicture("wmf", ms6);
+                ExcelPicture? image6 = ws.Drawings.AddPicture("wmf", ms6);
                 image6.SetPosition(0, 0, 70, 0);
                 Assert.AreEqual("image/x-wmf", image6.ContentType);
             }
 
-            using (var msTif = Properties.Resources.CodeTif)
+            using (MemoryStream? msTif = Properties.Resources.CodeTif)
             {
-                var imageTif = ws.Drawings.AddPicture("tif1", msTif);
+                ExcelPicture? imageTif = ws.Drawings.AddPicture("tif1", msTif);
                 imageTif.SetPosition(0, 0, 80, 0);
                 Assert.AreEqual("image/x-tiff", imageTif.ContentType);
             }
 
-            using (var msIco128 = GetImageMemoryStream("1_128x128.ico"))
+            using (MemoryStream? msIco128 = GetImageMemoryStream("1_128x128.ico"))
             {
-                var imageIco = ws.Drawings.AddPicture("ico2", msIco128, OfficeOpenXml.Drawing.ePictureType.Ico);
+                ExcelPicture? imageIco = ws.Drawings.AddPicture("ico2", msIco128, OfficeOpenXml.Drawing.ePictureType.Ico);
                 imageIco.SetPosition(40, 0, 10, 0);
                 Assert.AreEqual("image/x-icon", imageIco.ContentType);
             }
@@ -223,89 +223,89 @@ namespace EPPlusTest.Drawing
         [TestMethod]
         public async Task AddTestImagesToWorksheetNoPictureTypeAsync()
         {
-            var ws = _pck.Workbook.Worksheets.Add("picturesISNoPTAsync");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("picturesISNoPTAsync");
 
-            using (var msGif = new MemoryStream(Properties.Resources.BitmapImageGif))
+            using (MemoryStream? msGif = new MemoryStream(Properties.Resources.BitmapImageGif))
             {
-                var imageGif = await ws.Drawings.AddPictureAsync("gif1", msGif);
+                ExcelPicture? imageGif = await ws.Drawings.AddPictureAsync("gif1", msGif);
                 Assert.AreEqual("image/gif", imageGif.ContentType);
                 imageGif.SetPosition(40, 0, 0, 0);
             }
 
-            using (var msBmp = new MemoryStream(Properties.Resources.CodeBmp))
+            using (MemoryStream? msBmp = new MemoryStream(Properties.Resources.CodeBmp))
             {
-                var imagebmp = await ws.Drawings.AddPictureAsync("bmp1", msBmp);
+                ExcelPicture? imagebmp = await ws.Drawings.AddPictureAsync("bmp1", msBmp);
                 Assert.AreEqual("image/bmp", imagebmp.ContentType);
                 imagebmp.SetPosition(40, 0, 10, 0);
             }
 
 
-            using (var ms1 = new MemoryStream(Properties.Resources.Test1JpgByteArray))
+            using (MemoryStream? ms1 = new MemoryStream(Properties.Resources.Test1JpgByteArray))
             {
-                var image1 = await ws.Drawings.AddPictureAsync("jpg1", ms1);
+                ExcelPicture? image1 = await ws.Drawings.AddPictureAsync("jpg1", ms1);
                 Assert.AreEqual("image/jpeg", image1.ContentType);
             }
 
-            using (var ms2 = new MemoryStream(Properties.Resources.VmlPatternImagePngByteArray))
+            using (MemoryStream? ms2 = new MemoryStream(Properties.Resources.VmlPatternImagePngByteArray))
             {
-                var image2 = await ws.Drawings.AddPictureAsync("png1", ms2);
+                ExcelPicture? image2 = await ws.Drawings.AddPictureAsync("png1", ms2);
                 image2.SetPosition(0, 0, 10, 0);
                 Assert.AreEqual("image/png", image2.ContentType);
             }
 
-            using (var ms22 = new MemoryStream(Properties.Resources.Png2ByteArray))
+            using (MemoryStream? ms22 = new MemoryStream(Properties.Resources.Png2ByteArray))
             {
-                var image22 = await ws.Drawings.AddPictureAsync("png2", ms22);
+                ExcelPicture? image22 = await ws.Drawings.AddPictureAsync("png2", ms22);
                 image22.SetPosition(0, 0, 20, 0);
                 Assert.AreEqual("image/png", image22.ContentType);
             }
 
-            using (var ms23 = new MemoryStream(Properties.Resources.Png3ByteArray))
+            using (MemoryStream? ms23 = new MemoryStream(Properties.Resources.Png3ByteArray))
             {
-                var image23 = await ws.Drawings.AddPictureAsync("png3", ms23);
+                ExcelPicture? image23 = await ws.Drawings.AddPictureAsync("png3", ms23);
                 image23.SetPosition(0, 0, 30, 0);
                 Assert.AreEqual("image/png", image23.ContentType);
             }
 
-            using (var ms3 = new MemoryStream(Properties.Resources.CodeEmfByteArray))
+            using (MemoryStream? ms3 = new MemoryStream(Properties.Resources.CodeEmfByteArray))
             {
-                var image3 = await ws.Drawings.AddPictureAsync("emf1", ms3);
+                ExcelPicture? image3 = await ws.Drawings.AddPictureAsync("emf1", ms3);
                 image3.SetPosition(0, 0, 40, 0);
                 Assert.AreEqual("image/x-emf", image3.ContentType);
             }
 
-            using (var ms4 = new MemoryStream(Properties.Resources.Svg1ByteArray))
+            using (MemoryStream? ms4 = new MemoryStream(Properties.Resources.Svg1ByteArray))
             {
-                var image4 = await ws.Drawings.AddPictureAsync("svg1", ms4);
+                ExcelPicture? image4 = await ws.Drawings.AddPictureAsync("svg1", ms4);
                 image4.SetPosition(0, 0, 50, 0);
                 Assert.AreEqual("image/svg+xml", image4.ContentType);
             }
 
-            using (var ms5 = new MemoryStream(Properties.Resources.Svg2ByteArray))
+            using (MemoryStream? ms5 = new MemoryStream(Properties.Resources.Svg2ByteArray))
             {
-                var image5 = await ws.Drawings.AddPictureAsync("svg2", ms5);
+                ExcelPicture? image5 = await ws.Drawings.AddPictureAsync("svg2", ms5);
                 image5.SetPosition(0, 0, 60, 0);
                 image5.SetSize(25);
                 Assert.AreEqual("image/svg+xml", image5.ContentType);
             }
 
-            using (var ms6 = Properties.Resources.VectorDrawing)
+            using (MemoryStream? ms6 = Properties.Resources.VectorDrawing)
             {
-                var image6 = await ws.Drawings.AddPictureAsync("wmf", ms6);
+                ExcelPicture? image6 = await ws.Drawings.AddPictureAsync("wmf", ms6);
                 image6.SetPosition(0, 0, 70, 0);
                 Assert.AreEqual("image/x-wmf", image6.ContentType);
             }
 
-            using (var msTif = Properties.Resources.CodeTif)
+            using (MemoryStream? msTif = Properties.Resources.CodeTif)
             {
-                var imageTif = await ws.Drawings.AddPictureAsync("tif1", msTif);
+                ExcelPicture? imageTif = await ws.Drawings.AddPictureAsync("tif1", msTif);
                 imageTif.SetPosition(0, 0, 80, 0);
                 Assert.AreEqual("image/x-tiff", imageTif.ContentType);
             }
 
-            using (var msIco128 = GetImageMemoryStream("1_128x128.ico"))
+            using (MemoryStream? msIco128 = GetImageMemoryStream("1_128x128.ico"))
             {
-                var imageIco = await ws.Drawings.AddPictureAsync("ico2", msIco128, OfficeOpenXml.Drawing.ePictureType.Ico);
+                ExcelPicture? imageIco = await ws.Drawings.AddPictureAsync("ico2", msIco128, OfficeOpenXml.Drawing.ePictureType.Ico);
                 imageIco.SetPosition(40, 0, 10, 0);
                 Assert.AreEqual("image/x-icon", imageIco.ContentType);
             }
@@ -313,74 +313,74 @@ namespace EPPlusTest.Drawing
         [TestMethod]
         public void AddIcoImages()
         {
-            var ws = _pck.Workbook.Worksheets.Add("Icon");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("Icon");
             //32*32
-            using (var msIco1 = GetImageMemoryStream("1_32x32.ico"))
+            using (MemoryStream? msIco1 = GetImageMemoryStream("1_32x32.ico"))
             {
-                var imageWebP1 = ws.Drawings.AddPicture("ico1", msIco1, OfficeOpenXml.Drawing.ePictureType.Ico);
+                ExcelPicture? imageWebP1 = ws.Drawings.AddPicture("ico1", msIco1, OfficeOpenXml.Drawing.ePictureType.Ico);
                 imageWebP1.SetPosition(40, 0, 0, 0);
             }
             //128*128
-            using (var msIco2 = GetImageMemoryStream("1_128x128.ico"))
+            using (MemoryStream? msIco2 = GetImageMemoryStream("1_128x128.ico"))
             {
-                var imageWebP1 = ws.Drawings.AddPicture("ico2", msIco2, OfficeOpenXml.Drawing.ePictureType.Ico);
+                ExcelPicture? imageWebP1 = ws.Drawings.AddPicture("ico2", msIco2, OfficeOpenXml.Drawing.ePictureType.Ico);
                 imageWebP1.SetPosition(40, 0, 10, 0);
             }
 
-            using (var msIco3 = GetImageMemoryStream("example.ico"))
+            using (MemoryStream? msIco3 = GetImageMemoryStream("example.ico"))
             {
-                var imageWebP1 = ws.Drawings.AddPicture("ico3", msIco3, OfficeOpenXml.Drawing.ePictureType.Ico);
+                ExcelPicture? imageWebP1 = ws.Drawings.AddPicture("ico3", msIco3, OfficeOpenXml.Drawing.ePictureType.Ico);
                 imageWebP1.SetPosition(40, 0, 20, 0);
             }
 
-            using (var msIco4 = GetImageMemoryStream("example_small.ico"))
+            using (MemoryStream? msIco4 = GetImageMemoryStream("example_small.ico"))
             {
-                var imageWebP1 = ws.Drawings.AddPicture("ico4", msIco4, OfficeOpenXml.Drawing.ePictureType.Ico);
+                ExcelPicture? imageWebP1 = ws.Drawings.AddPicture("ico4", msIco4, OfficeOpenXml.Drawing.ePictureType.Ico);
                 imageWebP1.SetPosition(40, 0, 30, 0);
             }
-            using (var msIco5 = GetImageMemoryStream("Ico-file-for-testing.ico"))
+            using (MemoryStream? msIco5 = GetImageMemoryStream("Ico-file-for-testing.ico"))
             {
-                var imageWebP1 = ws.Drawings.AddPicture("ico5", msIco5, OfficeOpenXml.Drawing.ePictureType.Ico);
+                ExcelPicture? imageWebP1 = ws.Drawings.AddPicture("ico5", msIco5, OfficeOpenXml.Drawing.ePictureType.Ico);
                 imageWebP1.SetPosition(40, 0, 40, 0);
             }
         }
         [TestMethod]
         public void AddEmzImages()
         {
-            var ws = _pck.Workbook.Worksheets.Add("Emz");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("Emz");
             //32*32
-            using (var msIco1 = GetImageMemoryStream("example.emz"))
+            using (MemoryStream? msIco1 = GetImageMemoryStream("example.emz"))
             {
-                var imageWebP1 = ws.Drawings.AddPicture("Emf", msIco1, OfficeOpenXml.Drawing.ePictureType.Emz);
+                ExcelPicture? imageWebP1 = ws.Drawings.AddPicture("Emf", msIco1, OfficeOpenXml.Drawing.ePictureType.Emz);
                 imageWebP1.SetPosition(40, 0, 0, 0);
             }
         }
         [TestMethod]
         public void AddBmpImages()
         {
-            var ws = _pck.Workbook.Worksheets.Add("bmp");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("bmp");
             
-            using (var msBmp1 = GetImageMemoryStream("bmp\\MARBLES.BMP"))
+            using (MemoryStream? msBmp1 = GetImageMemoryStream("bmp\\MARBLES.BMP"))
             {
-                var imageBmp1 = ws.Drawings.AddPicture("bmp1", msBmp1, OfficeOpenXml.Drawing.ePictureType.Bmp);
+                ExcelPicture? imageBmp1 = ws.Drawings.AddPicture("bmp1", msBmp1, OfficeOpenXml.Drawing.ePictureType.Bmp);
                 imageBmp1.SetPosition(0, 0, 0, 0);
             }
 
-            using (var msBmp2 = GetImageMemoryStream("bmp\\Land.BMP"))
+            using (MemoryStream? msBmp2 = GetImageMemoryStream("bmp\\Land.BMP"))
             {
-                var imageBmp2 = ws.Drawings.AddPicture("bmp2", msBmp2, OfficeOpenXml.Drawing.ePictureType.Bmp);
+                ExcelPicture? imageBmp2 = ws.Drawings.AddPicture("bmp2", msBmp2, OfficeOpenXml.Drawing.ePictureType.Bmp);
                 imageBmp2.SetPosition(0, 0, 20, 0);
             }
 
-            using (var msBmp3 = GetImageMemoryStream("bmp\\Land2.BMP"))
+            using (MemoryStream? msBmp3 = GetImageMemoryStream("bmp\\Land2.BMP"))
             {
-                var imageBmp3 = ws.Drawings.AddPicture("bmp3", msBmp3, OfficeOpenXml.Drawing.ePictureType.Bmp);
+                ExcelPicture? imageBmp3 = ws.Drawings.AddPicture("bmp3", msBmp3, OfficeOpenXml.Drawing.ePictureType.Bmp);
                 imageBmp3.SetPosition(0, 0, 40, 0);
             }
 
-            using (var msBmp4 = GetImageMemoryStream("bmp\\Land3.BMP"))
+            using (MemoryStream? msBmp4 = GetImageMemoryStream("bmp\\Land3.BMP"))
             {
-                var imageBmp4 = ws.Drawings.AddPicture("bmp4", msBmp4, OfficeOpenXml.Drawing.ePictureType.Bmp);
+                ExcelPicture? imageBmp4 = ws.Drawings.AddPicture("bmp4", msBmp4, OfficeOpenXml.Drawing.ePictureType.Bmp);
                 imageBmp4.SetPosition(0, 0, 60, 0);
             }
         }
@@ -424,14 +424,14 @@ namespace EPPlusTest.Drawing
         [TestMethod]
         public void ReadImages()
         {
-            using (var p = OpenPackage("ImageReaderRead.xlsx"))
+            using (ExcelPackage? p = OpenPackage("ImageReaderRead.xlsx"))
             {
                 if(p.Workbook.Worksheets.Count==0)
                 {
                     Assert.Inconclusive("ImageReaderRead.xlsx does not exists. Run a full test round to create it.");
                 }
 
-                foreach(var ws in p.Workbook.Worksheets)
+                foreach(ExcelWorksheet? ws in p.Workbook.Worksheets)
                 {
                     ws.Columns[1, 20].Width = 35;
 
@@ -439,10 +439,10 @@ namespace EPPlusTest.Drawing
                     Assert.AreEqual(35, ws.Columns[20].Width);
                 }
 
-                var ws2 = p.Workbook.Worksheets.Add("Bmp2");
-                using (var msBmp1 = GetImageMemoryStream("bmp\\MARBLES.BMP"))
+                ExcelWorksheet? ws2 = p.Workbook.Worksheets.Add("Bmp2");
+                using (MemoryStream? msBmp1 = GetImageMemoryStream("bmp\\MARBLES.BMP"))
                 {
-                    var imageBmp1 = ws2.Drawings.AddPicture("bmp2", msBmp1, OfficeOpenXml.Drawing.ePictureType.Bmp);
+                    ExcelPicture? imageBmp1 = ws2.Drawings.AddPicture("bmp2", msBmp1, OfficeOpenXml.Drawing.ePictureType.Bmp);
                     imageBmp1.SetPosition(0, 0, 0, 0);
                 }
 
@@ -454,17 +454,17 @@ namespace EPPlusTest.Drawing
         [TestMethod]
         public async Task AddJpgImagesViaExcelImage()
         {
-            var ws = _pck.Workbook.Worksheets.Add("AddViaExcelImage");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("AddViaExcelImage");
 
-            var ei1 = new ExcelImage(Properties.Resources.Test1.FullName);
+            ExcelImage? ei1 = new ExcelImage(Properties.Resources.Test1.FullName);
             Assert.IsNotNull(ei1);
             ws.BackgroundImage.Image.SetImage(ei1);
 
-            var ei2 = new ExcelImage(Properties.Resources.Png2ByteArray, ePictureType.Png);
+            ExcelImage? ei2 = new ExcelImage(Properties.Resources.Png2ByteArray, ePictureType.Png);
             Assert.IsNotNull(ei2);
             ws.BackgroundImage.Image.SetImage(ei2);
 
-            var ei3 = new ExcelImage(new MemoryStream(Properties.Resources.BitmapImageGif), ePictureType.Gif);
+            ExcelImage? ei3 = new ExcelImage(new MemoryStream(Properties.Resources.BitmapImageGif), ePictureType.Gif);
             Assert.IsNotNull(ei3);
 
             ws.BackgroundImage.Image.SetImage(ei3);
@@ -474,19 +474,19 @@ namespace EPPlusTest.Drawing
 
         private static void AddFilesToWorksheet(string fileType, ePictureType? type, string worksheetName=null)
         {
-            var ws = _pck.Workbook.Worksheets.Add(worksheetName ?? fileType);
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add(worksheetName ?? fileType);
 
-            var dir = new DirectoryInfo(_imagePath + fileType);
+            DirectoryInfo? dir = new DirectoryInfo(_imagePath + fileType);
             if(dir.Exists==false)
             {
                 Assert.Inconclusive($"Directory {dir} does not exist.");
             }
-            var ix = 0;
-            foreach (var f in dir.EnumerateFiles())
+            int ix = 0;
+            foreach (FileInfo? f in dir.EnumerateFiles())
             {
-                using (var ms = new MemoryStream(File.ReadAllBytes(f.FullName)))
+                using (MemoryStream? ms = new MemoryStream(File.ReadAllBytes(f.FullName)))
                 {
-                    var picture = ws.Drawings.AddPicture($"{fileType}{ix}", ms, type);
+                    ExcelPicture? picture = ws.Drawings.AddPicture($"{fileType}{ix}", ms, type);
                     picture.SetPosition((ix / 5) * 10, 0, (ix % 5) * 10, 0);
                     ix++;
                 }

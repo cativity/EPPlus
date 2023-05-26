@@ -51,7 +51,7 @@ namespace EPPlusTest.Core
         [TestMethod]
         public void AddRandomRows()
         {
-            var cellStore = new CellStore<object>();
+            CellStore<object>? cellStore = new CellStore<object>();
             cellStore.SetValue(25000, 1,25000);
             cellStore.SetValue(1200, 1, 1200);
             cellStore.SetValue(1025000, 1, 1025000);
@@ -63,14 +63,14 @@ namespace EPPlusTest.Core
         [TestMethod]
         public void ForParallelSet()
         {
-            var lst = new List<int>();
-            var cellStore = new CellStore<object>();            
+            List<int>? lst = new List<int>();
+            CellStore<object>? cellStore = new CellStore<object>();            
             for (int i = 0; i < 100000; i++)
             {
                 lst.Add(i);
             }
 
-            var r = Parallel.ForEach(lst, l => { cellStore.SetValue(l + 1, 1, l + 1); cellStore.SetValue(l + 1, 2, $"Value {l + 1}"); });
+            ParallelLoopResult r = Parallel.ForEach(lst, l => { cellStore.SetValue(l + 1, 1, l + 1); cellStore.SetValue(l + 1, 2, $"Value {l + 1}"); });
 
             while (r.IsCompleted == false)
             {
@@ -87,16 +87,16 @@ namespace EPPlusTest.Core
         [TestMethod]
         public void ForParallelDelete()
         {
-            var lst = new List<int>();
-            var cellStore = new CellStore<object>();
-            var maxRow = 100000;
+            List<int>? lst = new List<int>();
+            CellStore<object>? cellStore = new CellStore<object>();
+            int maxRow = 100000;
             for (int i = 0; i < maxRow; i++)
             {
                 cellStore.SetValue(i,0,i+1);
                 cellStore.SetValue(i, 2, $"Value {i + 1}");
             }
 
-            var r = Parallel.For(0, maxRow, l => { cellStore.Delete(l, 0, 1, 0); });
+            ParallelLoopResult r = Parallel.For(0, maxRow, l => { cellStore.Delete(l, 0, 1, 0); });
         }
 
         #endregion
@@ -105,7 +105,7 @@ namespace EPPlusTest.Core
         [TestMethod]
         public void DeletePrevRowWhenCreatePage()
         {
-            var cellStore = new CellStore<int>();
+            CellStore<int>? cellStore = new CellStore<int>();
 
             //Insert second page first default row, when cellBits is 5.
             cellStore.SetValue(1, 1, 1);
@@ -118,12 +118,12 @@ namespace EPPlusTest.Core
         [TestMethod]
         public void DeleteFromStartPageThreeRowsEveryRow()
         {
-            var cellStore = new CellStore<int>();
+            CellStore<int>? cellStore = new CellStore<int>();
             LoadCellStore(cellStore, 100, 1500);
             for(int i=1;i<500;i++)
             {
                 cellStore.Delete(1, 1, 3, ExcelPackage.MaxColumns); //Delete three rows each time.
-                var row100 = 100 - i * 3;
+                int row100 = 100 - i * 3;
                 if(row100>0)
                 {
                     Assert.AreEqual(100, cellStore.GetValue(row100, 1));
@@ -137,19 +137,19 @@ namespace EPPlusTest.Core
         [TestMethod]
         public void DeleteFromStartPageThreeRowsEveryOtherRow()
         {
-            var cellStore = new CellStore<int>();
+            CellStore<int>? cellStore = new CellStore<int>();
             LoadCellStore(cellStore, 100, 2200, 2);
             for (int i = 1; i < 500; i+=1)
             {
                 cellStore.Delete(1, 1, 3, ExcelPackage.MaxColumns); //Delete three rows each time.
-                var row100 = 100 - i * 3;
+                int row100 = 100 - i * 3;
                 if (row100 > 0)
                 {
                     Assert.AreEqual(100, cellStore.GetValue(row100, 1));
                 }
                 else
                 {
-                    var r = 100 - row100 + 1;
+                    int r = 100 - row100 + 1;
                     if (r % 2 == 0)
                     {
                         Assert.AreEqual(r, cellStore.GetValue(1, 1));
@@ -164,19 +164,19 @@ namespace EPPlusTest.Core
         [TestMethod]
         public void DeleteFromStartPageThreeRowsEveryThirdRow()
         {
-            var cellStore = new CellStore<int>();
+            CellStore<int>? cellStore = new CellStore<int>();
             LoadCellStore(cellStore, 100, 3300, 3);
             for (int i = 1; i < 500; i += 1)
             {
                 cellStore.Delete(1, 1, 3, ExcelPackage.MaxColumns); //Delete three rows each time.
-                var row100 = 100 - i * 3;
+                int row100 = 100 - i * 3;
                 if (row100 > 0)
                 {
                     Assert.AreEqual(100, cellStore.GetValue(row100, 1));
                 }
                 else
                 {
-                    var r = 100 - row100 + 1;
+                    int r = 100 - row100 + 1;
                     if (r % 3 - 1 == 0)
                     {
                         Assert.AreEqual(r, cellStore.GetValue(1, 1));
@@ -191,13 +191,13 @@ namespace EPPlusTest.Core
         [TestMethod]
         public void DeleteFromStartPageThreeRowsEveryRowWithRowOneSet()
         {
-            var cellStore = new CellStore<int>();
+            CellStore<int>? cellStore = new CellStore<int>();
             cellStore.SetValue(1, 1, 1);
             LoadCellStore(cellStore, 100, 1500);
             for (int i = 1; i < 500; i++)
             {
                 cellStore.Delete(2, 1, 3, ExcelPackage.MaxColumns); //Delete three rows each time.
-                var row100 = 100 - i * 3;
+                int row100 = 100 - i * 3;
                 if (row100 > 1)
                 {
                     Assert.AreEqual(100, cellStore.GetValue(row100, 1));
@@ -212,13 +212,13 @@ namespace EPPlusTest.Core
         public void DeleteMerge()
         {
             //Setup
-            var cellStore = new CellStore<int>();
-            var pageSize = 1 << CellStoreSettings._pageBits;
+            CellStore<int>? cellStore = new CellStore<int>();
+            int pageSize = 1 << CellStoreSettings._pageBits;
             cellStore.SetValue(2, 1, 2); //Set Row 2;
 
-            var row1 = pageSize + 1;
+            int row1 = pageSize + 1;
             cellStore.SetValue(row1, 1, row1);
-            var row2 = pageSize * 2 + 1;
+            int row2 = pageSize * 2 + 1;
             cellStore.SetValue(row2, 1, row2);
 
             //Act
@@ -236,7 +236,7 @@ namespace EPPlusTest.Core
         public void DeleteRow2_3()
         {
             //Setup
-            var cellStore = new CellStore<int>();
+            CellStore<int>? cellStore = new CellStore<int>();
             cellStore.SetValue(3, 1, 1);
             cellStore.SetValue(4, 1, 2);
             cellStore.SetValue(5, 1, 3);
@@ -252,7 +252,7 @@ namespace EPPlusTest.Core
     public void ClearInsideAndOverPage()
     {
         //Setup
-        var cellStore = new CellStore<int>();
+        CellStore<int>? cellStore = new CellStore<int>();
         LoadCellStore(cellStore, 1, 300);
 
         cellStore.Clear(2,1,3,ExcelPackage.MaxColumns);
@@ -292,7 +292,7 @@ namespace EPPlusTest.Core
         [TestMethod]
         public void InsertAndDeleteRowsOnPage5Bits()
         {
-            var cellStore = new CellStore<int>();
+            CellStore<int>? cellStore = new CellStore<int>();
 
             LoadCellStore(cellStore, 1, 10000, 1, 3);
             Assert.AreEqual(5000, cellStore.GetValue(5000, 1));
@@ -316,13 +316,13 @@ namespace EPPlusTest.Core
         [TestMethod]
         public void InsertRowEveryOther()
         {
-            var cellStore = new CellStore<int>();
+            CellStore<int>? cellStore = new CellStore<int>();
 
             LoadCellStore(cellStore, 1, 1000, 1);
 
             for(int r=1;r<1000;r++)
             {
-                var row = (r - 1) * 2 + 1;
+                int row = (r - 1) * 2 + 1;
                 cellStore.Insert(row+1, 1, 1, 0);
                 Assert.AreEqual(r, cellStore.GetValue(row, 1));
             }
@@ -330,13 +330,13 @@ namespace EPPlusTest.Core
         [TestMethod]
         public void InsertTwoRowsEveryThird()
         {
-            var cellStore = new CellStore<int>();
+            CellStore<int>? cellStore = new CellStore<int>();
 
             LoadCellStore(cellStore, 1, 1000, 1);
 
             for (int r = 1; r < 1000; r++)
             {   
-                var row = (r - 1) * 3 + 1;
+                int row = (r - 1) * 3 + 1;
                 cellStore.Insert(row + 1, 1, 2, 0);
                 Assert.AreEqual(r, cellStore.GetValue(row, 1));
             }
@@ -344,13 +344,13 @@ namespace EPPlusTest.Core
         [TestMethod]
         public void InsertThreeRowsEveryForth()
         {
-            var cellStore = new CellStore<int>();
+            CellStore<int>? cellStore = new CellStore<int>();
 
             LoadCellStore(cellStore, 1, 5000, 1);
 
             for (int r = 1; r < 5000; r++)
             {
-                var row = (r - 1) * 4 + 1;
+                int row = (r - 1) * 4 + 1;
                 cellStore.Insert(row + 1, 1, 3, 0);
                 Assert.AreEqual(r, cellStore.GetValue(row, 1));
             }
@@ -358,13 +358,13 @@ namespace EPPlusTest.Core
         [TestMethod]
         public void InsertFourRowsEveryFifth()
         {
-            var cellStore = new CellStore<int>();
+            CellStore<int>? cellStore = new CellStore<int>();
 
             LoadCellStore(cellStore, 1, 5000, 1);
 
             for (int r = 1; r < 5000; r++)
             {
-                var row = (r - 1) * 5 + 1;
+                int row = (r - 1) * 5 + 1;
                 cellStore.Insert(row + 1, 1, 4, 0);
                 Assert.AreEqual(r, cellStore.GetValue(row, 1));
             }
@@ -372,11 +372,11 @@ namespace EPPlusTest.Core
         [TestMethod]
         public void Insert1To500RowsFromStart()
         {
-            var cellStore = new CellStore<int>();
+            CellStore<int>? cellStore = new CellStore<int>();
 
             LoadCellStore(cellStore, 1, 5000, 1);
 
-            var row = 1;
+            int row = 1;
             for (int r = 1; r < 500; r++)
             {
                 Assert.AreEqual(r, cellStore.GetValue(row, 1));
@@ -387,11 +387,11 @@ namespace EPPlusTest.Core
         [TestMethod]
         public void Delete1To500RowsFromStart()
         {
-            var cellStore = new CellStore<int>();
+            CellStore<int>? cellStore = new CellStore<int>();
 
             LoadCellStore(cellStore, 1, 50000, 1);
 
-            var v = 1;
+            int v = 1;
             for (int r = 1; r < 300; r++)
             {
                 Assert.AreEqual(v, cellStore.GetValue(v, 1));
@@ -402,11 +402,11 @@ namespace EPPlusTest.Core
         [TestMethod]
         public void Delete1To500RowsFromStartThenClear()
         {
-            var cellStore = new CellStore<int>();
+            CellStore<int>? cellStore = new CellStore<int>();
 
             LoadCellStore(cellStore, 1, 50000, 1);
 
-            var v = 1;
+            int v = 1;
             for (int r = 1; r < 300; r++)
             {
                 Assert.AreEqual(v, cellStore.GetValue(v, 1));
@@ -417,17 +417,17 @@ namespace EPPlusTest.Core
         [TestMethod]
         public void ValidatePerformance()
         {
-            var cellStore = new CellStore<int>();
-            var acceptable = new TimeSpan(0, 0, 1);
-            var dt = DateTime.Now;
+            CellStore<int>? cellStore = new CellStore<int>();
+            TimeSpan acceptable = new TimeSpan(0, 0, 1);
+            DateTime dt = DateTime.Now;
             LoadCellStore(cellStore, 1, 1000000);
-            var elapsedTime = DateTime.Now - dt;
+            TimeSpan elapsedTime = DateTime.Now - dt;
             Assert.IsTrue(elapsedTime < acceptable, "Cellstore performance is slow");
         }
         [TestMethod]
         public void Add35000RowsAtOnce()
         {
-            var cellStore = new CellStore<int>();
+            CellStore<int>? cellStore = new CellStore<int>();
             cellStore.SetValue(1, 1, 1);
             cellStore.SetValue(2, 1, 2);
             cellStore.SetValue(10000, 1, 10000);

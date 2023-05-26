@@ -15,14 +15,14 @@ namespace OfficeOpenXml.FormulaParsing.ExpressionGraph.FunctionCompilers
 
         public override CompileResult Compile(IEnumerable<Expression> children)
         {
-            var args = new List<FunctionArgument>();
+            List<FunctionArgument>? args = new List<FunctionArgument>();
             Function.BeforeInvoke(Context);
-            foreach (var child in children)
+            foreach (Expression? child in children)
             {
-                var compileResult = child.Compile();
+                CompileResult? compileResult = child.Compile();
                 if (compileResult.IsResultOfSubtotal)
                 {
-                    var arg = new FunctionArgument(compileResult.Result, compileResult.DataType);
+                    FunctionArgument? arg = new FunctionArgument(compileResult.Result, compileResult.DataType);
                     arg.SetExcelStateFlag(ExcelCellState.IsResultOfSubtotal);
                     args.Add(arg);
                 }
@@ -36,18 +36,18 @@ namespace OfficeOpenXml.FormulaParsing.ExpressionGraph.FunctionCompilers
                 return new CompileResult(eErrorType.Value);
             }
 
-            var arg2 = args.ElementAt(1);
+            FunctionArgument? arg2 = args.ElementAt(1);
             if(arg2.DataType == DataType.Enumerable && arg2.IsExcelRange)
             {
-                var arg1 = args.First();
-                var result = new List<object>();
-                var rangeValues = arg2.ValueAsRangeInfo;
-                foreach(var funcArg in rangeValues)
+                FunctionArgument? arg1 = args.First();
+                List<object>? result = new List<object>();
+                IRangeInfo? rangeValues = arg2.ValueAsRangeInfo;
+                foreach(ICellInfo? funcArg in rangeValues)
                 {
-                    var arguments = new List<FunctionArgument> { arg1 };
-                    var cr = new CompileResultFactory().Create(funcArg.Value);
+                    List<FunctionArgument>? arguments = new List<FunctionArgument> { arg1 };
+                    CompileResult? cr = new CompileResultFactory().Create(funcArg.Value);
                     BuildFunctionArguments(cr, arguments);
-                    var r = Function.Execute(arguments, Context);
+                    CompileResult? r = Function.Execute(arguments, Context);
                     result.Add(r.Result);
                 }
                 return new CompileResult(result, DataType.Enumerable);

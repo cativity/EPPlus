@@ -30,7 +30,7 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
         { 
             get
             {
-                var s = GetXmlNodeString("@type");
+                string? s = GetXmlNodeString("@type");
                 switch (s)
                 {
                     case "val":

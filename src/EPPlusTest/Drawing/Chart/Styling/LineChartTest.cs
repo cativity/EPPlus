@@ -52,11 +52,11 @@ namespace EPPlusTest.Drawing.Chart.Styling
         [TestMethod]
         public void DropLines()
         {
-            var ws = _pck.Workbook.Worksheets.Add("DropLines");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("DropLines");
             LoadTestdata(ws);
 
-            var chart = AddLine(ws, eLineChartType.Line, "line1", 0, 0);
-            var dl=chart.AddDropLines();
+            ExcelLineChart? chart = AddLine(ws, eLineChartType.Line, "line1", 0, 0);
+            ExcelChartStyleItem? dl=chart.AddDropLines();
             dl.Border.Fill.Style = eFillStyle.SolidFill;
             dl.Border.Fill.SolidFill.Color.SetSchemeColor(eSchemeColor.Accent2);
 
@@ -67,10 +67,10 @@ namespace EPPlusTest.Drawing.Chart.Styling
         [TestMethod]
         public void UpDownBars()
         {
-            var ws = _pck.Workbook.Worksheets.Add("UpDownBars");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("UpDownBars");
             LoadTestdata(ws);
 
-            var chart = AddLine(ws, eLineChartType.Line, "line1", 0, 0);
+            ExcelLineChart? chart = AddLine(ws, eLineChartType.Line, "line1", 0, 0);
             chart.Series.Add("B2:B50", "D2:D50");
             chart.Series.Add("C2:C50", "D2:D50");
             chart.AddUpDownBars();
@@ -89,10 +89,10 @@ namespace EPPlusTest.Drawing.Chart.Styling
         [TestMethod]
         public void HighLowLines()
         {
-            var ws = _pck.Workbook.Worksheets.Add("HighLowLines");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("HighLowLines");
             LoadTestdata(ws);
 
-            var chart = AddLine(ws, eLineChartType.Line, "line1", 0, 0);
+            ExcelLineChart? chart = AddLine(ws, eLineChartType.Line, "line1", 0, 0);
             chart.Series.Add("B2:B50", "D2:D50");
             chart.Series.Add("C2:C50", "D2:D50");
             chart.AddHighLowLines();
@@ -101,7 +101,7 @@ namespace EPPlusTest.Drawing.Chart.Styling
         }
         private static ExcelLineChart AddLine(ExcelWorksheet ws, eLineChartType type, string name, int row, int col)    
         {
-            var chart = ws.Drawings.AddLineChart(name, type);
+            ExcelLineChart? chart = ws.Drawings.AddLineChart(name, type);
             chart.SetPosition(row, 0, col, 0);
             chart.To.Column = col+12;
             chart.To.ColumnOff = 0;

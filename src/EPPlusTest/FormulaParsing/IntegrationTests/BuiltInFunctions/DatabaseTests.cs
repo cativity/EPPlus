@@ -39,9 +39,9 @@ namespace EPPlusTest.FormulaParsing.IntegrationTests.BuiltInFunctions
         [TestMethod]
         public void DgetShouldReturnCorrectResult()
         {
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var sheet = package.Workbook.Worksheets.Add("test");
+                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
                 // database
                 sheet.Cells["A1"].Value = "crit1";
                 sheet.Cells["B1"].Value = "crit2";
@@ -69,9 +69,9 @@ namespace EPPlusTest.FormulaParsing.IntegrationTests.BuiltInFunctions
         [TestMethod]
         public void DcountShouldReturnCorrectResult()
         {
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var sheet = package.Workbook.Worksheets.Add("test");
+                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
                 // database
                 sheet.Cells["A1"].Value = "crit1";
                 sheet.Cells["B1"].Value = "crit2";
@@ -99,9 +99,9 @@ namespace EPPlusTest.FormulaParsing.IntegrationTests.BuiltInFunctions
         [TestMethod]
         public void DcountaShouldReturnCorrectResult()
         {
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var sheet = package.Workbook.Worksheets.Add("test");
+                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
                 // database
                 sheet.Cells["A1"].Value = "crit1";
                 sheet.Cells["B1"].Value = "crit2";
@@ -129,9 +129,9 @@ namespace EPPlusTest.FormulaParsing.IntegrationTests.BuiltInFunctions
         [TestMethod]
         public void DMaxShouldReturnCorrectResult()
         {
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var sheet = package.Workbook.Worksheets.Add("test");
+                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
                 // database
                 sheet.Cells["A1"].Value = "crit1";
                 sheet.Cells["B1"].Value = "crit2";
@@ -157,9 +157,9 @@ namespace EPPlusTest.FormulaParsing.IntegrationTests.BuiltInFunctions
         [TestMethod]
         public void DMinShouldReturnCorrectResult()
         {
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var sheet = package.Workbook.Worksheets.Add("test");
+                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
                 // database
                 sheet.Cells["A1"].Value = "crit1";
                 sheet.Cells["B1"].Value = "crit2";
@@ -185,9 +185,9 @@ namespace EPPlusTest.FormulaParsing.IntegrationTests.BuiltInFunctions
         [TestMethod]
         public void DSumShouldReturnCorrectResult()
         {
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var sheet = package.Workbook.Worksheets.Add("test");
+                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
                 // database
                 sheet.Cells["A1"].Value = "crit1";
                 sheet.Cells["B1"].Value = "crit2";
@@ -213,9 +213,9 @@ namespace EPPlusTest.FormulaParsing.IntegrationTests.BuiltInFunctions
         [TestMethod]
         public void DAverageShouldReturnCorrectResult()
         {
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var sheet = package.Workbook.Worksheets.Add("test");
+                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
                 // database
                 sheet.Cells["A1"].Value = "crit1";
                 sheet.Cells["B1"].Value = "crit2";
@@ -241,9 +241,9 @@ namespace EPPlusTest.FormulaParsing.IntegrationTests.BuiltInFunctions
         [TestMethod]
         public void DVarShouldReturnCorrectResult()
         {
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var sheet = package.Workbook.Worksheets.Add("test");
+                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
                 // database
                 sheet.Cells["A1"].Value = "crit1";
                 sheet.Cells["B1"].Value = "crit2";
@@ -269,9 +269,9 @@ namespace EPPlusTest.FormulaParsing.IntegrationTests.BuiltInFunctions
         [TestMethod]
         public void DVarpShouldReturnCorrectResult()
         {
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var sheet = package.Workbook.Worksheets.Add("test");
+                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
                 // database
                 sheet.Cells["A1"].Value = "crit1";
                 sheet.Cells["B1"].Value = "crit2";
@@ -297,9 +297,9 @@ namespace EPPlusTest.FormulaParsing.IntegrationTests.BuiltInFunctions
         [TestMethod]
         public void DVarpShouldReturnByFieldIndex()
         {
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var sheet = package.Workbook.Worksheets.Add("test");
+                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
                 // database
                 sheet.Cells["A1"].Value = "crit1";
                 sheet.Cells["B1"].Value = "crit2";

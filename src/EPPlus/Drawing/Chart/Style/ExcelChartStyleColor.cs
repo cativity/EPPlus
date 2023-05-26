@@ -32,7 +32,7 @@ namespace OfficeOpenXml.Drawing.Chart.Style
         {
             get
             {
-                var v = GetXmlNodeString("@val");
+                string? v = GetXmlNodeString("@val");
                 return v == "auto";                    
             }
         }

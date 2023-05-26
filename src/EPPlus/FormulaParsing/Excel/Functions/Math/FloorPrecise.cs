@@ -34,8 +34,8 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
                 return this.CreateResult(0d, DataType.Decimal);
             }
 
-            var number = ArgToDecimal(arguments, 0, context.Configuration.PrecisionAndRoundingStrategy);
-            var significance = 1d;
+            double number = ArgToDecimal(arguments, 0, context.Configuration.PrecisionAndRoundingStrategy);
+            double significance = 1d;
             if (arguments.Count() > 1)
             {
                 significance = this.ArgToDecimal(arguments, 1);

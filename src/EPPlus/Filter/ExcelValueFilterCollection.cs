@@ -52,7 +52,7 @@ namespace OfficeOpenXml.Filter
         /// <returns>The filter value item</returns>
         public ExcelFilterValueItem Add(string value)
         {
-            var v = new ExcelFilterValueItem(value);
+            ExcelFilterValueItem? v = new ExcelFilterValueItem(value);
             _list.Add(v);
             return v;
         }

@@ -69,7 +69,7 @@ namespace EPPlusTest.FormulaParsing.IntegrationTests.BuiltInFunctions.ExcelRange
             _worksheet.Cells["A2"].Value = 1d;
             _worksheet.Cells["A4"].Formula = "EXACT(A1,A2)";
             _worksheet.Calculate();
-            var result = _worksheet.Cells["A4"].Value;
+            object? result = _worksheet.Cells["A4"].Value;
             Assert.IsTrue((bool)result);
         }
 
@@ -80,7 +80,7 @@ namespace EPPlusTest.FormulaParsing.IntegrationTests.BuiltInFunctions.ExcelRange
             _worksheet.Cells["A2"].Value = "Hej hopp";
             _worksheet.Cells["A4"].Formula = "Find(A1,A2)";
             _worksheet.Calculate();
-            var result = _worksheet.Cells["A4"].Value;
+            object? result = _worksheet.Cells["A4"].Value;
             Assert.AreEqual(5, result);
         }
 
@@ -89,7 +89,7 @@ namespace EPPlusTest.FormulaParsing.IntegrationTests.BuiltInFunctions.ExcelRange
         {
             _worksheet.Cells["A4"].Formula = "Find(\"P\",\"P2\",1)";
             _worksheet.Calculate();
-            var result = _worksheet.Cells["A4"].Value;
+            object? result = _worksheet.Cells["A4"].Value;
             Assert.AreEqual(1, result);
         }
 
@@ -100,7 +100,7 @@ namespace EPPlusTest.FormulaParsing.IntegrationTests.BuiltInFunctions.ExcelRange
             _worksheet.Cells["A2"].Value = "Hej hopp";
             _worksheet.Cells["A4"].Formula = "Search(A1,A2)";
             _worksheet.Calculate();
-            var result = _worksheet.Cells["A4"].Value;
+            object? result = _worksheet.Cells["A4"].Value;
             Assert.AreEqual(1, result);
         }
 
@@ -109,7 +109,7 @@ namespace EPPlusTest.FormulaParsing.IntegrationTests.BuiltInFunctions.ExcelRange
         {
             _worksheet.Cells["A4"].Formula = "Search(\"P\",\"P2\",1)";
             _worksheet.Calculate();
-            var result = _worksheet.Cells["A4"].Value;
+            object? result = _worksheet.Cells["A4"].Value;
             Assert.AreEqual(1, result);
         }
 
@@ -119,43 +119,43 @@ namespace EPPlusTest.FormulaParsing.IntegrationTests.BuiltInFunctions.ExcelRange
             _worksheet.Cells["A1"].Value = "12";
             _worksheet.Cells["A4"].Formula = "Value(A1)";
             _worksheet.Calculate();
-            var result = _worksheet.Cells["A4"].Value;
+            object? result = _worksheet.Cells["A4"].Value;
             Assert.AreEqual(12d, result);
         }
 
         [TestMethod]
         public void ValueShouldHandle1000delimiter()
         {
-            var delimiter = CultureInfo.CurrentCulture.NumberFormat.NumberGroupSeparator;
-            var val = $"5{delimiter}000";
+            string? delimiter = CultureInfo.CurrentCulture.NumberFormat.NumberGroupSeparator;
+            string? val = $"5{delimiter}000";
             _worksheet.Cells["A1"].Value = val;
             _worksheet.Cells["A4"].Formula = "Value(A1)";
             _worksheet.Calculate();
-            var result = _worksheet.Cells["A4"].Value;
+            object? result = _worksheet.Cells["A4"].Value;
             Assert.AreEqual(5000d, result);
         }
 
         [TestMethod]
         public void ValueShouldHandle1000DelimiterAndDecimal()
         {
-            var delimiter = CultureInfo.CurrentCulture.NumberFormat.NumberGroupSeparator;
-            var decimalSeparator = CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator;
-            var val = $"5{delimiter}000{decimalSeparator}123";
+            string? delimiter = CultureInfo.CurrentCulture.NumberFormat.NumberGroupSeparator;
+            string? decimalSeparator = CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator;
+            string? val = $"5{delimiter}000{decimalSeparator}123";
             _worksheet.Cells["A1"].Value = val;
             _worksheet.Cells["A4"].Formula = "Value(A1)";
             _worksheet.Calculate();
-            var result = _worksheet.Cells["A4"].Value;
+            object? result = _worksheet.Cells["A4"].Value;
             Assert.AreEqual(5000.123d, result);
         }
 
         [TestMethod]
         public void ValueShouldHandlePercent()
         {
-            var val = $"20%";
+            string? val = $"20%";
             _worksheet.Cells["A1"].Value = val;
             _worksheet.Cells["A4"].Formula = "Value(A1)";
             _worksheet.Calculate();
-            var result = _worksheet.Cells["A4"].Value;
+            object? result = _worksheet.Cells["A4"].Value;
             Assert.AreEqual(0.2d, result);
         }
 
@@ -166,7 +166,7 @@ namespace EPPlusTest.FormulaParsing.IntegrationTests.BuiltInFunctions.ExcelRange
             _worksheet.Cells["A1"].Value = "1.2345E-02";
             _worksheet.Cells["A4"].Formula = "Value(A1)";
             _worksheet.Calculate();
-            var result = _worksheet.Cells["A4"].Value;
+            object? result = _worksheet.Cells["A4"].Value;
             Assert.AreEqual(0.012345d, result);
         }
 
@@ -174,11 +174,11 @@ namespace EPPlusTest.FormulaParsing.IntegrationTests.BuiltInFunctions.ExcelRange
         public void ValueShouldHandleDate()
         {
             Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
-            var date = new DateTime(2015, 12, 31);
+            DateTime date = new DateTime(2015, 12, 31);
             _worksheet.Cells["A1"].Value = date.ToString(CultureInfo.CurrentCulture);
             _worksheet.Cells["A4"].Formula = "Value(A1)";
             _worksheet.Calculate();
-            var result = _worksheet.Cells["A4"].Value;
+            object? result = _worksheet.Cells["A4"].Value;
             Assert.AreEqual(date.ToOADate(), result);
         }
 
@@ -186,13 +186,13 @@ namespace EPPlusTest.FormulaParsing.IntegrationTests.BuiltInFunctions.ExcelRange
         public void ValueShouldHandleTime()
         {
             Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
-            var date = new DateTime(2015, 12, 31);
-            var date2 = new DateTime(2015, 12, 31, 12, 00, 00);
-            var ts = date2.Subtract(date);
+            DateTime date = new DateTime(2015, 12, 31);
+            DateTime date2 = new DateTime(2015, 12, 31, 12, 00, 00);
+            TimeSpan ts = date2.Subtract(date);
             _worksheet.Cells["A1"].Value = ts.ToString();
             _worksheet.Cells["A4"].Formula = "Value(A1)";
             _worksheet.Calculate();
-            var result = _worksheet.Cells["A4"].Value;
+            object? result = _worksheet.Cells["A4"].Value;
             Assert.AreEqual(0.5, result);
         }
 
@@ -203,7 +203,7 @@ namespace EPPlusTest.FormulaParsing.IntegrationTests.BuiltInFunctions.ExcelRange
             _worksheet.Cells["A1"].Value = null;
             _worksheet.Cells["A4"].Formula = "Value(A1)";
             _worksheet.Calculate();
-            var result = _worksheet.Cells["A4"].Value;
+            object? result = _worksheet.Cells["A4"].Value;
             Assert.AreEqual(0d, result);
         }
 

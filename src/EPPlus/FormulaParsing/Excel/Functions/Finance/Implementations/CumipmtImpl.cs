@@ -14,15 +14,15 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.Implementations
                 return new FinanceCalcResult<double>(eErrorType.Num);
             }
 
-            var result = InternalMethods.PMT_Internal(rate, nPer, pv, 0d, type );
+            FinanceCalcResult<double>? result = InternalMethods.PMT_Internal(rate, nPer, pv, 0d, type );
             if (result.HasError)
             {
                 return new FinanceCalcResult<double>(result.ExcelErrorType);
             }
 
-            var pmtResult = result.Result;
+            double pmtResult = result.Result;
       
-            var retVal = 0d;
+            double retVal = 0d;
       
             if(startPeriod == 1 )
             {
@@ -36,7 +36,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.Implementations
       
             for(int i = startPeriod; i <= endPeriod; i++ )
             {
-                var res = FvImpl.Fv(rate, (i - 1 - (int)type), pmtResult, pv, type);
+                FinanceCalcResult<double>? res = FvImpl.Fv(rate, (i - 1 - (int)type), pmtResult, pv, type);
                 if (res.HasError)
                 {
                     return new FinanceCalcResult<double>(res.ExcelErrorType);

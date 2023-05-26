@@ -35,8 +35,8 @@ namespace OfficeOpenXml.Utils.CompundDocument
         {
             try
             {
-                var fs = fi.OpenRead();
-                var b = new byte[8];
+                FileStream? fs = fi.OpenRead();
+                byte[]? b = new byte[8];
                 await fs.ReadAsync(b, 0, 8, cancellationToken).ConfigureAwait(false);
                 return IsCompoundDocument(b);
             }
@@ -54,9 +54,9 @@ namespace OfficeOpenXml.Utils.CompundDocument
         /// <returns></returns>
         public static async Task<bool> IsCompoundDocumentAsync(MemoryStream ms, CancellationToken cancellationToken = default)
         {
-            var pos = ms.Position;
+            long pos = ms.Position;
             ms.Position = 0;
-            var b=new byte[8];
+            byte[]? b=new byte[8];
             await ms.ReadAsync(b, 0, 8, cancellationToken).ConfigureAwait(false);
             ms.Position = pos;
             return IsCompoundDocument(b);

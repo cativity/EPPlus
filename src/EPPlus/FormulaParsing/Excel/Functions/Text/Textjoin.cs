@@ -32,17 +32,17 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Text
         public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
         {
             ValidateArguments(arguments, 3);
-            var delimiter = ArgToString(arguments, 0);
-            var ignoreEmpty = ArgToBool(arguments, 1);
-            var str = new StringBuilder();
-            for(var x = 2; x < arguments.Count() && x < 252; x++)
+            string? delimiter = ArgToString(arguments, 0);
+            bool ignoreEmpty = ArgToBool(arguments, 1);
+            StringBuilder? str = new StringBuilder();
+            for(int x = 2; x < arguments.Count() && x < 252; x++)
             {
-                var arg = arguments.ElementAt(x);
+                FunctionArgument? arg = arguments.ElementAt(x);
                 if(arg.IsExcelRange)
                 {
-                    foreach(var cell in arg.ValueAsRangeInfo)
+                    foreach(ICellInfo? cell in arg.ValueAsRangeInfo)
                     {
-                        var val = cell.Value != null ? cell.Value.ToString() : string.Empty;
+                        string? val = cell.Value != null ? cell.Value.ToString() : string.Empty;
                         if (ignoreEmpty && string.IsNullOrEmpty(val))
                         {
                             continue;
@@ -58,12 +58,12 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Text
                 }
                 else if(arg.Value is IEnumerable<FunctionArgument>)
                 {
-                    var items = arg.Value as IEnumerable<FunctionArgument>;
+                    IEnumerable<FunctionArgument>? items = arg.Value as IEnumerable<FunctionArgument>;
                     if(items != null)
                     {
-                        foreach(var item in items)
+                        foreach(FunctionArgument? item in items)
                         {
-                            var val = item.Value != null ? item.Value.ToString() : string.Empty;
+                            string? val = item.Value != null ? item.Value.ToString() : string.Empty;
                             if (ignoreEmpty && string.IsNullOrEmpty(val))
                             {
                                 continue;
@@ -80,7 +80,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Text
                 }
                 else
                 {
-                    var val = arg.Value != null ? arg.Value.ToString() : string.Empty;
+                    string? val = arg.Value != null ? arg.Value.ToString() : string.Empty;
                     if (ignoreEmpty && string.IsNullOrEmpty(val))
                     {
                         continue;
@@ -94,7 +94,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Text
                     }
                 }
             }
-            var resultString = str.ToString().TrimEnd(delimiter.ToCharArray());
+            string? resultString = str.ToString().TrimEnd(delimiter.ToCharArray());
             return CreateResult(resultString, DataType.String);
         }
     }

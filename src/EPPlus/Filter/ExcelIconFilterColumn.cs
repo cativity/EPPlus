@@ -52,11 +52,11 @@ namespace OfficeOpenXml.Filter
         {
             get
             {
-                var v=GetXmlNodeString("d:iconSet");
+                string? v=GetXmlNodeString("d:iconSet");
                 v = v.Replace("3", "Three").Replace("4", "four").Replace("5", "Five");
                 try
                 {
-                    var r = (eExcelconditionalFormattingIconsSetType)Enum.Parse(typeof(eExcelconditionalFormattingIconsSetType), v);
+                    eExcelconditionalFormattingIconsSetType r = (eExcelconditionalFormattingIconsSetType)Enum.Parse(typeof(eExcelconditionalFormattingIconsSetType), v);
                     return r;
                 }
                 catch
@@ -66,7 +66,7 @@ namespace OfficeOpenXml.Filter
             }
             set
             {
-                var v = value.ToString();
+                string? v = value.ToString();
                 v = v.Replace("Three", "3").Replace("four", "4").Replace("Five", "5");
                 SetXmlNodeString("d:dxfId", v);
             }

@@ -34,24 +34,24 @@ namespace OfficeOpenXml.FormulaParsing.LexicalAnalysis.TokenSeparatorHandlers
                 {
                     context.IsInDefinedNameAddress = false;
                     // the first name is already resolved to an address followed by a dot
-                    var tokenValue = context.CurrentToken?.ToString();
+                    string? tokenValue = context.CurrentToken?.ToString();
                     if (!string.IsNullOrEmpty(tokenValue))
                     {
-                        var parts = tokenValue.Split(':');
+                        string[]? parts = tokenValue.Split(':');
                         if (parts.Length < 2)
                         {
                             return false;
                         }
 
-                        var part1 = parts[0];
-                        var name = parts[1];
-                        var nameValue = _nameValueProvider.GetNamedValue(name, context.Worksheet);
+                        string? part1 = parts[0];
+                        string? name = parts[1];
+                        object? nameValue = _nameValueProvider.GetNamedValue(name, context.Worksheet);
                         if (nameValue != null)
                         {
                             if (nameValue is IRangeInfo rangeInfo)
                             {
-                                var address = part1 + ":" + rangeInfo.Address.Address;
-                                var addressToken = new Token(address, TokenType.ExcelAddress);
+                                string? address = part1 + ":" + rangeInfo.Address.Address;
+                                Token addressToken = new Token(address, TokenType.ExcelAddress);
                                 context.AddToken(addressToken);
                                 context.AddToken(tokenSeparator);
                                 context.NewToken();

@@ -55,7 +55,7 @@ namespace OfficeOpenXml.Utils.TypeConversion
             convertedObj = obj;
             if (_numericTypes.ContainsKey(convertToType))
             {
-                var conversionFunc = _numericTypes[convertToType];
+                Func<object, object>? conversionFunc = _numericTypes[convertToType];
                 convertedObj = conversionFunc(obj);
                 return true;
             }

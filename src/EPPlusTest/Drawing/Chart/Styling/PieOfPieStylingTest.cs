@@ -50,7 +50,7 @@ namespace EPPlusTest.Drawing.Chart.Styling
         [TestMethod]
         public void PieOfPie_Styles()
         {
-            var ws = _pck.Workbook.Worksheets.Add("PieOfPieChartStyles");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("PieOfPieChartStyles");
             LoadTestdata(ws);
 
             OfPieStyles(ws, eOfPieChartType.PieOfPie);
@@ -58,7 +58,7 @@ namespace EPPlusTest.Drawing.Chart.Styling
         [TestMethod]
         public void BarOfPie_Styles()
         {
-            var ws = _pck.Workbook.Worksheets.Add("BarOfPieChartStyles");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("BarOfPieChartStyles");
             LoadTestdata(ws);
 
             OfPieStyles(ws, eOfPieChartType.BarOfPie);
@@ -156,13 +156,13 @@ namespace EPPlusTest.Drawing.Chart.Styling
 
         private static ExcelOfPieChart AddOfPie(ExcelWorksheet ws, eOfPieChartType type, string name, int row, int col, ePresetChartStyle style, Action<ExcelOfPieChart> SetProperties)    
         {
-            var chart = ws.Drawings.AddOfPieChart(name, type);
+            ExcelOfPieChart? chart = ws.Drawings.AddOfPieChart(name, type);
             chart.SetPosition(row, 0, col, 0);
             chart.To.Column = col+12;
             chart.To.ColumnOff = 0;
             chart.To.Row = row + 18;
             chart.To.RowOff = 0;
-            var serie = chart.Series.Add("D2:D8", "A2:A8");
+            ExcelPieChartSerie? serie = chart.Series.Add("D2:D8", "A2:A8");
             serie.DataPoints.Add(0);
             serie.DataPoints.Add(1);
             serie.DataPoints.Add(2);

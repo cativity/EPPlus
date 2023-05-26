@@ -32,7 +32,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime
         public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
         {
             ValidateArguments(arguments, 1);
-            var dateString = ArgToString(arguments, 0);
+            string? dateString = ArgToString(arguments, 0);
             return Execute(dateString);
         }
 

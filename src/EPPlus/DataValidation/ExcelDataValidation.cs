@@ -357,7 +357,7 @@ namespace OfficeOpenXml.DataValidation
 
         internal void SetAddress(string address)
         {
-            var dvAddress = AddressUtility.ParseEntireColumnSelections(address);
+            string? dvAddress = AddressUtility.ParseEntireColumnSelections(address);
             _address = new ExcelDatavalidationAddress(address, this);
             _ws.DataValidations.UpdateRangeDictionary(this);
         }

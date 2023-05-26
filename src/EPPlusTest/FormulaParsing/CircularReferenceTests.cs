@@ -16,9 +16,9 @@ namespace EPPlusTest.FormulaParsing
         [TestMethod, ExpectedException(typeof(CircularReferenceException))]
         public void CircularRef_In_Sum_ShouldThow()
         {
-            using(var package = new ExcelPackage())
+            using(ExcelPackage? package = new ExcelPackage())
             {
-                var sheet = package.Workbook.Worksheets.Add("test");
+                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
                 sheet.Cells["A1"].Formula = "SUM(A1)";
                 sheet.Calculate();
             }
@@ -27,9 +27,9 @@ namespace EPPlusTest.FormulaParsing
         [TestMethod, ExpectedException(typeof(CircularReferenceException))]
         public void CircularRef_In_Sum_BetweenTwoCells_ShouldThow()
         {
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var sheet = package.Workbook.Worksheets.Add("test");
+                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
                 sheet.Cells["A1"].Value = 1;
                 sheet.Cells["A2"].Formula = "B2";
                 sheet.Cells["B2"].Formula = "A2";
@@ -41,14 +41,14 @@ namespace EPPlusTest.FormulaParsing
         [TestMethod]
         public void CircularRef_In_Sum_BetweenTwoCells_ShouldThow_WhenAllow()
         {
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var sheet = package.Workbook.Worksheets.Add("test");
+                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
                 sheet.Cells["A1"].Value = 1;
                 sheet.Cells["A2"].Formula = "B2";
                 sheet.Cells["B2"].Formula = "A2";
                 sheet.Cells["A3"].Formula = "SUM(A1:A2)";
-                var calcOptions = new ExcelCalculationOption { AllowCircularReferences = true };
+                ExcelCalculationOption? calcOptions = new ExcelCalculationOption { AllowCircularReferences = true };
                 sheet.Calculate(calcOptions);
                 Assert.AreEqual(1d, sheet.Cells["A3"].Value);
             }
@@ -57,9 +57,9 @@ namespace EPPlusTest.FormulaParsing
         [TestMethod, ExpectedException(typeof(CircularReferenceException))]
         public void CircularRef_In_Address_ShouldThow()
         {
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var sheet = package.Workbook.Worksheets.Add("test");
+                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
                 sheet.Cells["A1"].Formula = "A1";
                 sheet.Calculate();
             }
@@ -68,9 +68,9 @@ namespace EPPlusTest.FormulaParsing
         [TestMethod]
         public void CircularRef_In_Row_ShouldNotThow()
         {
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var sheet = package.Workbook.Worksheets.Add("test");
+                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
                 sheet.Cells["A1"].Formula = "ROW(A1)";
                 sheet.Calculate();
                 Assert.AreEqual(1, sheet.Cells["A1"].Value);
@@ -80,9 +80,9 @@ namespace EPPlusTest.FormulaParsing
         [TestMethod]
         public void CircularRef_In_Rows_ShouldNotThow()
         {
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var sheet = package.Workbook.Worksheets.Add("test");
+                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
                 sheet.Cells["A1"].Formula = "ROWS(A1)";
                 sheet.Calculate();
                 Assert.AreEqual(1, sheet.Cells["A1"].Value);
@@ -92,9 +92,9 @@ namespace EPPlusTest.FormulaParsing
         [TestMethod]
         public void CircularRef_In_Column_ShouldNotThow()
         {
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var sheet = package.Workbook.Worksheets.Add("test");
+                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
                 sheet.Cells["A1"].Formula = "COLUMN(A1)";
                 sheet.Calculate();
                 Assert.AreEqual(1, sheet.Cells["A1"].Value);
@@ -104,9 +104,9 @@ namespace EPPlusTest.FormulaParsing
         [TestMethod]
         public void CircularRef_In_Columns_ShouldNotThow()
         {
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var sheet = package.Workbook.Worksheets.Add("test");
+                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
                 sheet.Cells["A1"].Formula = "COLUMNS(A1)";
                 sheet.Calculate();
                 Assert.AreEqual(1, sheet.Cells["A1"].Value);
@@ -116,9 +116,9 @@ namespace EPPlusTest.FormulaParsing
         [TestMethod]
         public void VLookupShouldNotThrowWhenCircularRefsAllowed()
         {
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var sheet = package.Workbook.Worksheets.Add("test");
+                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
                 sheet.Cells["A1"].Value = 2;
                 sheet.Cells["A2"].Value = 2;
                 sheet.Cells["A3"].Value = 3;
@@ -126,7 +126,7 @@ namespace EPPlusTest.FormulaParsing
                 sheet.Cells["B2"].Formula = "B2";
                 sheet.Cells["B3"].Value = 6;
                 sheet.Cells["B4"].Formula = "VLOOKUP(3, A1:B3, 2)";
-                var calcOptions = new ExcelCalculationOption { AllowCircularReferences = true };
+                ExcelCalculationOption? calcOptions = new ExcelCalculationOption { AllowCircularReferences = true };
                 sheet.Calculate(calcOptions);
                 Assert.AreEqual(6, sheet.Cells["B4"].Value);
             }
@@ -135,9 +135,9 @@ namespace EPPlusTest.FormulaParsing
         [TestMethod, ExpectedException(typeof(CircularReferenceException))]
         public void VLookupShouldThrowWhenCircularRefsNotAllowed()
         {
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var sheet = package.Workbook.Worksheets.Add("test");
+                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
                 sheet.Cells["A1"].Value = 2;
                 sheet.Cells["A2"].Value = 2;
                 sheet.Cells["A3"].Value = 3;
@@ -152,14 +152,14 @@ namespace EPPlusTest.FormulaParsing
         [TestMethod]
         public void IfShouldIgnoreCircularRefWhenIgnoredArg()
         {
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var sheet = package.Workbook.Worksheets.Add("test");
+                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
                 sheet.Cells["A1"].Value = 2;
                 sheet.Cells["B2"].Formula = "B2";
                 sheet.Cells["B3"].Value = 6;
                 sheet.Cells["B4"].Formula = "IF(A1<>2, B2, B3)";
-                var calcOptions = new ExcelCalculationOption { AllowCircularReferences = true };
+                ExcelCalculationOption? calcOptions = new ExcelCalculationOption { AllowCircularReferences = true };
                 sheet.Calculate(calcOptions);
                 Assert.AreEqual(6, sheet.Cells["B4"].Value);
             }

@@ -40,8 +40,8 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.Implementations
 
             fPpmt = 0.0;
 
-            var nStart = startPeriod;
-            var nEnd = endPeriod;
+            int nStart = startPeriod;
+            int nEnd = endPeriod;
 
             if (nStart == 1)
             {
@@ -57,7 +57,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.Implementations
                 nStart++;
             }
 
-            for (var i = nStart; i <= nEnd; i++)
+            for (int i = nStart; i <= nEnd; i++)
             {
                 if (type == PmtDue.BeginningOfPeriod)
                 {

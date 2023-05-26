@@ -38,14 +38,14 @@ namespace EPPlusTest
         public void CopyCopiesCommentsFromSingleCellRanges()
         {
             InitBase();
-            var pck = new ExcelPackage();
-            var ws1 = pck.Workbook.Worksheets.Add("CommentCopying");
-            var sourceExcelRange = ws1.Cells[3, 3];
+            ExcelPackage? pck = new ExcelPackage();
+            ExcelWorksheet? ws1 = pck.Workbook.Worksheets.Add("CommentCopying");
+            ExcelRange? sourceExcelRange = ws1.Cells[3, 3];
             Assert.IsNull(sourceExcelRange.Comment);
             sourceExcelRange.AddComment("Testing comment 1", "test1");
             Assert.AreEqual("test1", sourceExcelRange.Comment.Author);
             Assert.AreEqual("Testing comment 1", sourceExcelRange.Comment.Text);
-            var destinationExcelRange = ws1.Cells[5, 5];
+            ExcelRange? destinationExcelRange = ws1.Cells[5, 5];
             Assert.IsNull(destinationExcelRange.Comment);
             sourceExcelRange.Copy(destinationExcelRange);
             // Assert the original comment is intact.
@@ -60,11 +60,11 @@ namespace EPPlusTest
         public void CopyCopiesCommentsFromMultiCellRanges()
         {
             InitBase();
-            var pck = new ExcelPackage();
-            var ws1 = pck.Workbook.Worksheets.Add("CommentCopying");
-            var sourceExcelRangeC3 = ws1.Cells[3, 3];
-            var sourceExcelRangeD3 = ws1.Cells[3, 4];
-            var sourceExcelRangeE3 = ws1.Cells[3, 5];
+            ExcelPackage? pck = new ExcelPackage();
+            ExcelWorksheet? ws1 = pck.Workbook.Worksheets.Add("CommentCopying");
+            ExcelRange? sourceExcelRangeC3 = ws1.Cells[3, 3];
+            ExcelRange? sourceExcelRangeD3 = ws1.Cells[3, 4];
+            ExcelRange? sourceExcelRangeE3 = ws1.Cells[3, 5];
             Assert.IsNull(sourceExcelRangeC3.Comment);
             Assert.IsNull(sourceExcelRangeD3.Comment);
             Assert.IsNull(sourceExcelRangeE3.Comment);
@@ -90,9 +90,9 @@ namespace EPPlusTest
             Assert.AreEqual("test1", sourceExcelRangeE3.Comment.Author);
             Assert.AreEqual("Testing comment 3", sourceExcelRangeE3.Comment.Text);
             // Assert the comments were copied.
-            var destinationExcelRangeC5 = ws1.Cells[5, 3];
-            var destinationExcelRangeD5 = ws1.Cells[5, 4];
-            var destinationExcelRangeE5 = ws1.Cells[5, 5];
+            ExcelRange? destinationExcelRangeC5 = ws1.Cells[5, 3];
+            ExcelRange? destinationExcelRangeD5 = ws1.Cells[5, 4];
+            ExcelRange? destinationExcelRangeE5 = ws1.Cells[5, 5];
             Assert.AreEqual("test1", destinationExcelRangeC5.Comment.Author);
             Assert.AreEqual("Testing comment 1", destinationExcelRangeC5.Comment.Text);
             Assert.AreEqual("test1", destinationExcelRangeD5.Comment.Author);
@@ -106,8 +106,8 @@ namespace EPPlusTest
         {
             using (ExcelPackage package = new ExcelPackage())
             {
-                var worksheet = package.Workbook.Worksheets.Add("Sheet1");
-                var name = package.Workbook.Names.Add("Test", worksheet.Cells[3, 3]);
+                ExcelWorksheet? worksheet = package.Workbook.Worksheets.Add("Sheet1");
+                ExcelNamedRange? name = package.Workbook.Names.Add("Test", worksheet.Cells[3, 3]);
                 name.Address = "Sheet1!C3";
                 name.Address = "Sheet1!D3";
                 Assert.IsNull(name.Addresses);
@@ -123,7 +123,7 @@ namespace EPPlusTest
         {
             using (ExcelPackage package = new ExcelPackage())
             {
-                var worksheet = package.Workbook.Worksheets.Add("Sheet1");
+                ExcelWorksheet? worksheet = package.Workbook.Worksheets.Add("Sheet1");
                 worksheet.Cells["A1"].Value = 1;
                 worksheet.Cells["A2"].Value = 2;
                 worksheet.Cells["A3"].Formula = "SUM(A1:A2)";
@@ -145,7 +145,7 @@ namespace EPPlusTest
         {
             using (ExcelPackage package = new ExcelPackage())
             {
-                var worksheet = package.Workbook.Worksheets.Add("Sheet1");
+                ExcelWorksheet? worksheet = package.Workbook.Worksheets.Add("Sheet1");
                 worksheet.Cells["A1"].Value = 1;
                 worksheet.Cells["A2"].Value = 2;
                 worksheet.Cells["A3"].Formula = "SUM(A1:A2)";

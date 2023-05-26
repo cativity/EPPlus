@@ -109,7 +109,7 @@ namespace EPPlusTest.FormulaParsing.IntegrationTests.BuiltInFunctions
 
         public void Index(double row, double column, double expectedValue)
         {
-            using (var package = CreateExcelPackage())
+            using (ExcelPackage? package = CreateExcelPackage())
             {
                 package.Workbook.Worksheets[InputWorksheet].Cells["B1"].Value = row;
                 package.Workbook.Worksheets[InputWorksheet].Cells["B2"].Value = column;
@@ -118,7 +118,7 @@ namespace EPPlusTest.FormulaParsing.IntegrationTests.BuiltInFunctions
                      {
                          PrecisionAndRoundingStrategy = PrecisionAndRoundingStrategy.Excel
                      });
-                var extractedIndexValue = package.Workbook.Worksheets[ExtractWorksheet].Cells["B1"].Value;
+                object? extractedIndexValue = package.Workbook.Worksheets[ExtractWorksheet].Cells["B1"].Value;
                 Assert.AreEqual(expectedValue, System.Math.Round((double)extractedIndexValue, 10));
             }
 
@@ -126,12 +126,12 @@ namespace EPPlusTest.FormulaParsing.IntegrationTests.BuiltInFunctions
 
         private static ExcelPackage CreateExcelPackage()
         {
-            var package = new ExcelPackage() { Compression = CompressionLevel.Level0 };
+            ExcelPackage? package = new ExcelPackage() { Compression = CompressionLevel.Level0 };
 
-            var sheet1 = package.Workbook.Worksheets.Add("LookupData");
-            var b = 100d;
-            var c = 200d;
-            for(var x = 1; x < 16; x++)
+            ExcelWorksheet? sheet1 = package.Workbook.Worksheets.Add("LookupData");
+            double b = 100d;
+            double c = 200d;
+            for(int x = 1; x < 16; x++)
             {
                 b += 0.1;
                 c += 0.1;
@@ -139,10 +139,10 @@ namespace EPPlusTest.FormulaParsing.IntegrationTests.BuiltInFunctions
                 sheet1.Cells["B" + x].Value = b;
                 sheet1.Cells["C" + x].Value = c;
             }
-            var sheet2 = package.Workbook.Worksheets.Add(ExtractWorksheet);
+            ExcelWorksheet? sheet2 = package.Workbook.Worksheets.Add(ExtractWorksheet);
             sheet2.Cells["B1:C15"].Formula = "INDEX(Sample_Index_Data;Row_Pos;Col_Pos)";
 
-            var sheet3 = package.Workbook.Worksheets.Add(InputWorksheet);
+            ExcelWorksheet? sheet3 = package.Workbook.Worksheets.Add(InputWorksheet);
 
             package.Workbook.Names.Add("Col_Pos", sheet3.Cells["B2"]);
             package.Workbook.Names.Add("Row_Pos", sheet3.Cells["B1"]);

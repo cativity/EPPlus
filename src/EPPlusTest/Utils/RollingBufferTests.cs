@@ -8,9 +8,9 @@ namespace EPPlusTest.Utils
         [TestMethod]    
         public void WriteSmallerBuffer()
         {
-            var rb = new RollingBuffer(8);
+            RollingBuffer? rb = new RollingBuffer(8);
             rb.Write(new byte[] { 1, 2, 3, 4 });
-            var b = rb.GetBuffer();
+            byte[]? b = rb.GetBuffer();
 
             Assert.AreEqual(4, b.Length);
             Assert.AreEqual(1, b[0]);
@@ -21,10 +21,10 @@ namespace EPPlusTest.Utils
         [TestMethod]
         public void WriteSmallerBufferTwoWrites()
         {
-            var rb = new RollingBuffer(8);
+            RollingBuffer? rb = new RollingBuffer(8);
             rb.Write(new byte[] { 1, 2, 3, 4 });
             rb.Write(new byte[] { 5, 6, 7 });
-            var b = rb.GetBuffer();
+            byte[]? b = rb.GetBuffer();
 
             Assert.AreEqual(7, b.Length);
             Assert.AreEqual(1, b[0]);
@@ -38,11 +38,11 @@ namespace EPPlusTest.Utils
         [TestMethod]
         public void WriteSmallerBufferOverWriteFullBuffer()
         {
-            var rb = new RollingBuffer(8);
+            RollingBuffer? rb = new RollingBuffer(8);
             rb.Write(new byte[] { 1, 2, 3, 4 });
             rb.Write(new byte[] { 5, 6, 7, 8 });
             rb.Write(new byte[] { 9, 10 });
-            var b = rb.GetBuffer();
+            byte[]? b = rb.GetBuffer();
 
             Assert.AreEqual(8, b.Length);
             Assert.AreEqual(3, b[0]);
@@ -57,11 +57,11 @@ namespace EPPlusTest.Utils
         [TestMethod]
         public void WriteSmallerBufferOverWrite()
         {
-            var rb = new RollingBuffer(8);
+            RollingBuffer? rb = new RollingBuffer(8);
             rb.Write(new byte[] { 1, 2, 3, 4 });
             rb.Write(new byte[] { 5, 6, 7, 8, 9 });
             rb.Write(new byte[] { 10,11,12 });
-            var b = rb.GetBuffer();
+            byte[]? b = rb.GetBuffer();
 
             Assert.AreEqual(8, b.Length);
             Assert.AreEqual(5, b[0]);
@@ -76,11 +76,11 @@ namespace EPPlusTest.Utils
         [TestMethod]
         public void WriteSmallerBufferOverWriteWithBufferOfSameSize()
         {
-            var rb = new RollingBuffer(8);
+            RollingBuffer? rb = new RollingBuffer(8);
             rb.Write(new byte[] { 1, 2, 3, 4 });
             rb.Write(new byte[] { 5, 6, 7, 8, 9 });
             rb.Write(new byte[] { 10, 11, 12,13,14,15,16,17 });
-            var b = rb.GetBuffer();
+            byte[]? b = rb.GetBuffer();
 
             Assert.AreEqual(8, b.Length);
             Assert.AreEqual(10, b[0]);
@@ -95,11 +95,11 @@ namespace EPPlusTest.Utils
         [TestMethod]
         public void WriteSmallerBufferOverWriteWithBufferOfLargerSize()
         {
-            var rb = new RollingBuffer(8);
+            RollingBuffer? rb = new RollingBuffer(8);
             rb.Write(new byte[] { 1, 2, 3, 4 });
             rb.Write(new byte[] { 5, 6, 7, 8, 9 });
             rb.Write(new byte[] { 10, 11, 12, 13, 14, 15, 16, 17, 18 });
-            var b = rb.GetBuffer();
+            byte[]? b = rb.GetBuffer();
 
             Assert.AreEqual(8, b.Length);
             Assert.AreEqual(11, b[0]);

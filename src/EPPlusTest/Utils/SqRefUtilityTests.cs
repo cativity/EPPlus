@@ -48,10 +48,10 @@ namespace EPPlusTest.Utils
         public void SqRefUtility_ToSqRefAddress_ShouldRemoveCommas()
         {
             // Arrange
-            var address = "A1, A2:A3";
+            string? address = "A1, A2:A3";
 
             // Act
-            var result = SqRefUtility.ToSqRefAddress(address);
+            string? result = SqRefUtility.ToSqRefAddress(address);
 
             // Assert
             Assert.AreEqual("A1 A2:A3", result);
@@ -62,10 +62,10 @@ namespace EPPlusTest.Utils
         public void SqRefUtility_ToSqRefAddress_ShouldRemoveCommasAndInsertSpaceIfNecesary()
         {
             // Arrange
-            var address = "A1,A2:A3";
+            string? address = "A1,A2:A3";
 
             // Act
-            var result = SqRefUtility.ToSqRefAddress(address);
+            string? result = SqRefUtility.ToSqRefAddress(address);
 
             // Assert
             Assert.AreEqual("A1 A2:A3", result);
@@ -75,10 +75,10 @@ namespace EPPlusTest.Utils
         public void SqRefUtility_ToSqRefAddress_ShouldRemoveMultipleSpaces()
         {
             // Arrange
-            var address = "A1,        A2:A3";
+            string? address = "A1,        A2:A3";
 
             // Act
-            var result = SqRefUtility.ToSqRefAddress(address);
+            string? result = SqRefUtility.ToSqRefAddress(address);
 
             // Assert
             Assert.AreEqual("A1 A2:A3", result);
@@ -88,10 +88,10 @@ namespace EPPlusTest.Utils
         public void SqRefUtility_FromSqRefAddress_ShouldReplaceSpaceWithComma()
         {
             // Arrange
-            var address = "A1 A2";
+            string? address = "A1 A2";
 
             // Act
-            var result = SqRefUtility.FromSqRefAddress(address);
+            string? result = SqRefUtility.FromSqRefAddress(address);
 
             // Assert
             Assert.AreEqual("A1,A2", result);

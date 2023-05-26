@@ -25,7 +25,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions
         {
             if (obj is IRangeInfo)
             {
-                var r = ((IRangeInfo)obj).FirstOrDefault();
+                ICellInfo? r = ((IRangeInfo)obj).FirstOrDefault();
                 obj = (r == null ? null : r.Value);
             }
             if (obj == null)

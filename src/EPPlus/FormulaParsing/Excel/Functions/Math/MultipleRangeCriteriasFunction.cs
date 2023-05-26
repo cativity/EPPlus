@@ -55,21 +55,21 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
 
         protected List<int> GetMatchIndexes(RangeOrValue rangeOrValue, string searched, bool convertNumericString = true)
         {
-            var result = new List<int>();
-            var internalIndex = 0;
+            List<int>? result = new List<int>();
+            int internalIndex = 0;
             if (rangeOrValue.Range != null)
             {
-                var rangeInfo = rangeOrValue.Range;
-                var toRow = rangeInfo.Address._toRow;
+                IRangeInfo? rangeInfo = rangeOrValue.Range;
+                int toRow = rangeInfo.Address._toRow;
                 if (rangeInfo.Worksheet.Dimension.End.Row < toRow)
                 {
                     toRow = rangeInfo.Worksheet.Dimension.End.Row;
                 }
-                for (var row = rangeInfo.Address._fromRow; row <= toRow; row++)
+                for (int row = rangeInfo.Address._fromRow; row <= toRow; row++)
                 {
-                    for (var col = rangeInfo.Address._fromCol; col <= rangeInfo.Address._toCol; col++)
+                    for (int col = rangeInfo.Address._fromCol; col <= rangeInfo.Address._toCol; col++)
                     {
-                        var candidate = rangeInfo.GetValue(row, col);
+                        object? candidate = rangeInfo.GetValue(row, col);
                         if (searched != null && Evaluate(candidate, searched, convertNumericString))
                         {
                             result.Add(internalIndex);

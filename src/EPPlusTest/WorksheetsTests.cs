@@ -153,7 +153,7 @@ namespace EPPlusTest
 		[TestMethod]
 		public void ShouldHandleResizeOfIndexWhenExceed8Items()
 		{
-			using (var p = new ExcelPackage())
+			using (ExcelPackage? p = new ExcelPackage())
 			{
 				ExcelWorksheet wsStart = p.Workbook.Worksheets.Add($"Copy");
 				for (int i = 0; i < 7; i++)
@@ -181,12 +181,12 @@ namespace EPPlusTest
 		}
 		private static void CompareOrderOfWorksheetsAfterSaving(ExcelPackage editedPackage)
 		{
-			var packageStream = new MemoryStream();
+			MemoryStream? packageStream = new MemoryStream();
 			editedPackage.SaveAs(packageStream);
 
-			var newPackage = new ExcelPackage(packageStream);
-            var positionId = newPackage._worksheetAdd;
-			foreach (var worksheet in editedPackage.Workbook.Worksheets)
+			ExcelPackage? newPackage = new ExcelPackage(packageStream);
+            int positionId = newPackage._worksheetAdd;
+			foreach (ExcelWorksheet? worksheet in editedPackage.Workbook.Worksheets)
 			{
 				Assert.AreEqual(worksheet.Name, newPackage.Workbook.Worksheets[positionId].Name, "Worksheets are not in the same order");
 				positionId++;

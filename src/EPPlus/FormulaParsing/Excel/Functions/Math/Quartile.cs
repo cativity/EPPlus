@@ -27,14 +27,14 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
         public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
         {
             ValidateArguments(arguments, 2);
-            var arrArg = arguments.Take(1);
-            var arr = ArgsToDoubleEnumerable(arrArg, context).Select(x => (double)x).ToList();
+            IEnumerable<FunctionArgument>? arrArg = arguments.Take(1);
+            List<double>? arr = ArgsToDoubleEnumerable(arrArg, context).Select(x => (double)x).ToList();
             if (!arr.Any())
             {
                 return this.CreateResult(eErrorType.Value);
             }
 
-            var quart = ArgToInt(arguments, 1);
+            int quart = ArgToInt(arguments, 1);
             switch (quart)
             {
                 case 0:
@@ -54,7 +54,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
 
         private IEnumerable<FunctionArgument> BuildArgs(IEnumerable<FunctionArgument> arrArg, double quart)
         {
-            var argList = new List<FunctionArgument>();
+            List<FunctionArgument>? argList = new List<FunctionArgument>();
             argList.AddRange(arrArg);
             argList.Add(new FunctionArgument(quart, DataType.Decimal));
             return argList;

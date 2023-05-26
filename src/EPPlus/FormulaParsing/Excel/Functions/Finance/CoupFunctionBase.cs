@@ -25,10 +25,10 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance
         public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
         {
             ValidateArguments(arguments, 3);
-            var settlementDate = System.DateTime.FromOADate(ArgToInt(arguments, 0));
-            var maturityDate = System.DateTime.FromOADate(ArgToInt(arguments, 1));
-            var frequency = ArgToInt(arguments, 2);
-            var basis = 0;
+            System.DateTime settlementDate = System.DateTime.FromOADate(ArgToInt(arguments, 0));
+            System.DateTime maturityDate = System.DateTime.FromOADate(ArgToInt(arguments, 1));
+            int frequency = ArgToInt(arguments, 2);
+            int basis = 0;
             if (arguments.Count() >= 4)
             {
                 basis = ArgToInt(arguments, 3);
@@ -39,7 +39,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance
                 return CreateResult(eErrorType.Num);
             }
             
-            var result = ExecuteFunction(FinancialDayFactory.Create(settlementDate, (DayCountBasis)basis), FinancialDayFactory.Create(maturityDate, (DayCountBasis)basis), frequency, (DayCountBasis)basis);
+            FinanceCalcResult<T>? result = ExecuteFunction(FinancialDayFactory.Create(settlementDate, (DayCountBasis)basis), FinancialDayFactory.Create(maturityDate, (DayCountBasis)basis), frequency, (DayCountBasis)basis);
             if (result.HasError)
             {
                 return this.CreateResult(result.ExcelErrorType);

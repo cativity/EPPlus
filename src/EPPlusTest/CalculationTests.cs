@@ -67,8 +67,8 @@ namespace EPPlusTest
         [TestMethod]
         public void CalulationTestDatatypes()
         {
-            var pck = new ExcelPackage();
-            var ws=pck.Workbook.Worksheets.Add("Calc1");
+            ExcelPackage? pck = new ExcelPackage();
+            ExcelWorksheet? ws=pck.Workbook.Worksheets.Add("Calc1");
             ws.SetValue("A1", (short)1);
             ws.SetValue("A2", (long)2);
             ws.SetValue("A3", (Single)3);
@@ -88,11 +88,11 @@ namespace EPPlusTest
         [TestMethod]
         public void CalculateTest()
         {
-            var pck = new ExcelPackage();
-            var ws = pck.Workbook.Worksheets.Add("Calc1");
+            ExcelPackage? pck = new ExcelPackage();
+            ExcelWorksheet? ws = pck.Workbook.Worksheets.Add("Calc1");
 
             ws.SetValue("A1",( short)1);
-            var v=ws.Calculate("2.5-A1+ABS(-3.0)-SIN(3)");
+            object? v=ws.Calculate("2.5-A1+ABS(-3.0)-SIN(3)");
             Assert.AreEqual(4.3589, Math.Round((double)v, 4));
                         
             ws.Row(1).Hidden = true;
@@ -105,8 +105,8 @@ namespace EPPlusTest
         [TestMethod]
         public void CalculateTestIsFunctions()
         {
-            var pck = new ExcelPackage();
-            var ws = pck.Workbook.Worksheets.Add("Calc1");
+            ExcelPackage? pck = new ExcelPackage();
+            ExcelWorksheet? ws = pck.Workbook.Worksheets.Add("Calc1");
 
             ws.SetValue(1, 1, 1.0D);
             ws.SetFormula(1, 2, "isblank(A1:A5)");
@@ -119,12 +119,12 @@ namespace EPPlusTest
         public void Calulation4()
         {
 #if Core
-            var dir = AppContext.BaseDirectory;
+            string? dir = AppContext.BaseDirectory;
             dir = Directory.GetParent(dir).Parent.Parent.Parent.FullName;
 #else
             var dir = AppDomain.CurrentDomain.BaseDirectory;
 #endif
-            var pck = new ExcelPackage(new FileInfo(Path.Combine(dir, "Workbooks", "FormulaTest.xlsx")));
+            ExcelPackage? pck = new ExcelPackage(new FileInfo(Path.Combine(dir, "Workbooks", "FormulaTest.xlsx")));
             pck.Workbook.Calculate();
             Assert.AreEqual(490D, pck.Workbook.Worksheets[1].Cells["D5"].Value);
         }
@@ -132,16 +132,16 @@ namespace EPPlusTest
         public void CalulationValidationExcel()
         {
 #if Core
-            var dir = AppContext.BaseDirectory;
+            string? dir = AppContext.BaseDirectory;
             dir = Directory.GetParent(dir).Parent.Parent.Parent.FullName;
 #else
             var dir = AppDomain.CurrentDomain.BaseDirectory;
 #endif
-            var pck = new ExcelPackage(new FileInfo(Path.Combine(dir, "Workbooks", "FormulaTest.xlsx")));
+            ExcelPackage? pck = new ExcelPackage(new FileInfo(Path.Combine(dir, "Workbooks", "FormulaTest.xlsx")));
 
-            var ws = pck.Workbook.Worksheets["ValidateFormulas"];
-            var fr = new Dictionary<string, object>();
-            foreach (var cell in ws.Cells)
+            ExcelWorksheet? ws = pck.Workbook.Worksheets["ValidateFormulas"];
+            Dictionary<string, object>? fr = new Dictionary<string, object>();
+            foreach (ExcelRangeBase? cell in ws.Cells)
             {
                 if (!string.IsNullOrEmpty(cell.Formula))
                 {
@@ -149,16 +149,16 @@ namespace EPPlusTest
                 }
             }
             pck.Workbook.Calculate();
-            var nErrors = 0;
-            var errors = new List<Tuple<string, object, object>>();
-            foreach (var adr in fr.Keys)
+            int nErrors = 0;
+            List<Tuple<string, object, object>>? errors = new List<Tuple<string, object, object>>();
+            foreach (string? adr in fr.Keys)
             {
                 try
                 {
                     if (fr[adr] is double && ws.Cells[adr].Value is double)
                     {
-                        var d1 = Convert.ToDouble(fr[adr]);
-                        var d2 = Convert.ToDouble(ws.Cells[adr].Value);
+                        double d1 = Convert.ToDouble(fr[adr]);
+                        double d2 = Convert.ToDouble(ws.Cells[adr].Value);
                         if (Math.Abs(d1 - d2) < 0.0001)
                         {
                             continue;
@@ -184,8 +184,8 @@ namespace EPPlusTest
         [TestMethod]
         public void TestOneCell()
         {
-            var pck = new ExcelPackage(new FileInfo(@"C:\temp\EPPlusTestark\Test4.xlsm"));
-            var ws = pck.Workbook.Worksheets.First(); 
+            ExcelPackage? pck = new ExcelPackage(new FileInfo(@"C:\temp\EPPlusTestark\Test4.xlsm"));
+            ExcelWorksheet? ws = pck.Workbook.Worksheets.First(); 
             pck.Workbook.Worksheets["Räntebärande formaterat utland"].Cells["M13"].Calculate();
             Assert.AreEqual(0d, pck.Workbook.Worksheets["Räntebärande formaterat utland"].Cells["M13"].Value);  
         }
@@ -193,8 +193,8 @@ namespace EPPlusTest
         [TestMethod]
         public void TestPrecedence()
         {
-            var pck = new ExcelPackage(new FileInfo(@"C:\temp\EPPlusTestark\Precedence.xlsx"));
-            var ws = pck.Workbook.Worksheets.Last();
+            ExcelPackage? pck = new ExcelPackage(new FileInfo(@"C:\temp\EPPlusTestark\Precedence.xlsx"));
+            ExcelWorksheet? ws = pck.Workbook.Worksheets.Last();
             pck.Workbook.Calculate();
             Assert.AreEqual(150d, ws.Cells["A1"].Value);
         }
@@ -202,8 +202,8 @@ namespace EPPlusTest
         [TestMethod]
         public void TestDataType()
         {
-            var pck = new ExcelPackage(new FileInfo(@"c:\temp\EPPlusTestark\calc_amount.xlsx"));
-            var ws = pck.Workbook.Worksheets.First();
+            ExcelPackage? pck = new ExcelPackage(new FileInfo(@"c:\temp\EPPlusTestark\calc_amount.xlsx"));
+            ExcelWorksheet? ws = pck.Workbook.Worksheets.First();
             //ws.Names.Add("Name1",ws.Cells["A1"]);
             //ws.Names.Add("Name2", ws.Cells["A2"]);
             ws.Names["PRICE"].Value = 30;
@@ -219,8 +219,8 @@ namespace EPPlusTest
         [TestMethod]
         public void CalcTwiceError()
         {
-            var pck = new ExcelPackage();
-            var ws = pck.Workbook.Worksheets.Add("CalcTest");
+            ExcelPackage? pck = new ExcelPackage();
+            ExcelWorksheet? ws = pck.Workbook.Worksheets.Add("CalcTest");
             ws.Names.AddValue("PRICE", 10);
             ws.Names.AddValue("QUANTITY", 11);
             ws.Cells["A1"].Formula="PRICE*QUANTITY";
@@ -242,8 +242,8 @@ namespace EPPlusTest
         [TestMethod]
         public void IfError()
         {
-            var pck = new ExcelPackage();
-            var ws = pck.Workbook.Worksheets.Add("CalcTest");
+            ExcelPackage? pck = new ExcelPackage();
+            ExcelWorksheet? ws = pck.Workbook.Worksheets.Add("CalcTest");
             ws.Cells["A1"].Value = "test1";
             ws.Cells["A5"].Value = "test2";
             ws.Cells["A2"].Value = "Sant";
@@ -260,8 +260,8 @@ namespace EPPlusTest
         [TestMethod]
         public void LeftRightFunctionTest()
         {
-            var pck = new ExcelPackage();
-            var ws = pck.Workbook.Worksheets.Add("CalcTest");
+            ExcelPackage? pck = new ExcelPackage();
+            ExcelWorksheet? ws = pck.Workbook.Worksheets.Add("CalcTest");
             ws.SetValue("A1", "asdf");
             ws.Cells["A2"].Formula = "Left(A1, 3)";
             ws.Cells["A3"].Formula = "Left(A1, 10)";
@@ -277,8 +277,8 @@ namespace EPPlusTest
         [TestMethod]
         public void IfFunctionTest()
         {
-            var pck = new ExcelPackage();
-            var ws = pck.Workbook.Worksheets.Add("CalcTest");
+            ExcelPackage? pck = new ExcelPackage();
+            ExcelWorksheet? ws = pck.Workbook.Worksheets.Add("CalcTest");
             ws.SetValue("A1", 123);
             ws.Cells["A2"].Formula = "IF(A1 = 123, 1, -1)";
             ws.Cells["A3"].Formula = "IF(A1 = 1, 1)";
@@ -294,9 +294,9 @@ namespace EPPlusTest
         [TestMethod]
         public void INTFunctionTest()
         {
-            var pck = new ExcelPackage();
-            var ws = pck.Workbook.Worksheets.Add("CalcTest");
-            var currentDate = DateTime.UtcNow.Date;
+            ExcelPackage? pck = new ExcelPackage();
+            ExcelWorksheet? ws = pck.Workbook.Worksheets.Add("CalcTest");
+            DateTime currentDate = DateTime.UtcNow.Date;
             ws.SetValue("A1", currentDate.ToString("MM/dd/yyyy"));
             ws.SetValue("A2", currentDate.Date);
             ws.SetValue("A3", "31.1");
@@ -325,7 +325,7 @@ namespace EPPlusTest
                 return;
             }
 
-            foreach (var file in Directory.GetFiles(path, "*.xls*"))
+            foreach (string? file in Directory.GetFiles(path, "*.xls*"))
             {
                 sb.Append(GetOutput(file));
             }
@@ -342,23 +342,23 @@ namespace EPPlusTest
 		{
 			using (ExcelPackage package = new ExcelPackage())
 			{
-				var worksheet = package.Workbook.Worksheets.Add("Test");
-				var dateCell = worksheet.Cells[2, 2];
-				var date = new DateTime(2013, 1, 1);
+				ExcelWorksheet? worksheet = package.Workbook.Worksheets.Add("Test");
+				ExcelRange? dateCell = worksheet.Cells[2, 2];
+				DateTime date = new DateTime(2013, 1, 1);
 				dateCell.Value = date;
-				var quotedDateCell = worksheet.Cells[2, 3];
+				ExcelRange? quotedDateCell = worksheet.Cells[2, 3];
 				quotedDateCell.Formula = $"\"{date.ToString("d")}\"";
-				var dateFormula = "B2";
-				var dateFormulaWithMath = "B2+1";
-				var quotedDateFormulaWithMath = $"\"{date.ToString("d")}\"+1";
-				var quotedDateReferenceFormulaWithMath = "C2+1";
-				var expectedDate = 41275.0; // January 1, 2013
-				var expectedDateWithMath = 41276.0; // January 2, 2013
+				string? dateFormula = "B2";
+				string? dateFormulaWithMath = "B2+1";
+				string? quotedDateFormulaWithMath = $"\"{date.ToString("d")}\"+1";
+				string? quotedDateReferenceFormulaWithMath = "C2+1";
+				double expectedDate = 41275.0; // January 1, 2013
+				double expectedDateWithMath = 41276.0; // January 2, 2013
 				Assert.AreEqual(expectedDate, worksheet.Calculate(dateFormula));
 				Assert.AreEqual(expectedDateWithMath, worksheet.Calculate(dateFormulaWithMath));
 				Assert.AreEqual(expectedDateWithMath, worksheet.Calculate(quotedDateFormulaWithMath));
 				Assert.AreEqual(expectedDateWithMath, worksheet.Calculate(quotedDateReferenceFormulaWithMath));
-				var formulaCell = worksheet.Cells[2, 4];
+				ExcelRange? formulaCell = worksheet.Cells[2, 4];
 				formulaCell.Formula = dateFormulaWithMath;
 				formulaCell.Calculate();
 				Assert.AreEqual(expectedDateWithMath, formulaCell.Value);
@@ -371,19 +371,19 @@ namespace EPPlusTest
         [TestMethod]
         public void TestValueFunction()
         {
-            var ds = CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator;
+            string? ds = CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator;
             using (ExcelPackage package = new ExcelPackage())
             {
-                var worksheet = package.Workbook.Worksheets.Add("Test");
-                var sourceCell = worksheet.Cells[2, 2];
-                var formulaCell = worksheet.Cells[2, 3];
+                ExcelWorksheet? worksheet = package.Workbook.Worksheets.Add("Test");
+                ExcelRange? sourceCell = worksheet.Cells[2, 2];
+                ExcelRange? formulaCell = worksheet.Cells[2, 3];
 
                 sourceCell.Value = $"10{ds}8";
 
                 formulaCell.Formula = $"VALUE(B2)";
                 worksheet.Calculate();
-                var expectedResult = 10.8d;
-                var result = worksheet.Cells[2, 3];
+                double expectedResult = 10.8d;
+                ExcelRange? result = worksheet.Cells[2, 3];
                 Assert.AreEqual(expectedResult, result.Value);
 
                 sourceCell.Value = $"10{ds}8%";
@@ -415,14 +415,14 @@ namespace EPPlusTest
         }
         private string GetOutput(string file)
         {
-            using (var pck = new ExcelPackage(new FileInfo(file)))
+            using (ExcelPackage? pck = new ExcelPackage(new FileInfo(file)))
             {
-                var fr = new Dictionary<string, object>();
-                foreach (var ws in pck.Workbook.Worksheets)
+                Dictionary<string, object>? fr = new Dictionary<string, object>();
+                foreach (ExcelWorksheet? ws in pck.Workbook.Worksheets)
                 {
                     if (!(ws is ExcelChartsheet))
                     {
-                        foreach (var cell in ws.Cells)
+                        foreach (ExcelRangeBase? cell in ws.Cells)
                         {
                             if (!string.IsNullOrEmpty(cell.Formula))
                             {
@@ -434,23 +434,23 @@ namespace EPPlusTest
                 }
 
                 pck.Workbook.Calculate();
-                var nErrors = 0;
-                var errors = new List<Tuple<string, object, object>>();
+                int nErrors = 0;
+                List<Tuple<string, object, object>>? errors = new List<Tuple<string, object, object>>();
                 ExcelWorksheet sheet=null;
                 string adr="";
-                var fileErr = new System.IO.StreamWriter(new FileStream("c:\\temp\\err.txt",FileMode.Append));
-                foreach (var cell in fr.Keys)
+                StreamWriter? fileErr = new System.IO.StreamWriter(new FileStream("c:\\temp\\err.txt",FileMode.Append));
+                foreach (string? cell in fr.Keys)
                 {
                     try
                     {
-                        var spl = cell.Split(',');
-                        var ix = int.Parse(spl[0]);
+                        string[]? spl = cell.Split(',');
+                        int ix = int.Parse(spl[0]);
                         sheet = pck.Workbook.Worksheets[ix];
                         adr = spl[1];
                         if (fr[cell] is double && (sheet.Cells[adr].Value is double || sheet.Cells[adr].Value is decimal  || OfficeOpenXml.Compatibility.TypeCompat.IsPrimitive(sheet.Cells[adr].Value)))
                         {
-                            var d1 = Convert.ToDouble(fr[cell]);
-                            var d2 = Convert.ToDouble(sheet.Cells[adr].Value);
+                            double d1 = Convert.ToDouble(fr[cell]);
+                            double d2 = Convert.ToDouble(sheet.Cells[adr].Value);
                             //if (Math.Abs(d1 - d2) < double.Epsilon)
                             if(double.Equals(d1,d2))
                             {

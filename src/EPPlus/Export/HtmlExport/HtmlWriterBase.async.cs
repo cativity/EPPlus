@@ -56,13 +56,13 @@ namespace OfficeOpenXml.Export.HtmlExport
         }
         protected internal static string GetStyleKey(ExcelXfs xfs)
         {
-            var fbfKey = ((ulong)(uint)xfs.FontId << 32 | (uint)xfs.BorderId << 16 | (uint)xfs.FillId);
+            ulong fbfKey = ((ulong)(uint)xfs.FontId << 32 | (uint)xfs.BorderId << 16 | (uint)xfs.FillId);
             return fbfKey.ToString() + "|" + ((int)xfs.HorizontalAlignment).ToString() + "|" + ((int)xfs.VerticalAlignment).ToString() + "|" + xfs.Indent.ToString() + "|" + xfs.TextRotation.ToString() + "|" + (xfs.WrapText ? "1" : "0");
         }
 
         protected static string GetBorderItemLine(ExcelBorderStyle style, string suffix)
         {
-            var lineStyle = $"border-{suffix}:";
+            string? lineStyle = $"border-{suffix}:";
             switch (style)
             {
                 case ExcelBorderStyle.Hair:
@@ -139,7 +139,7 @@ namespace OfficeOpenXml.Export.HtmlExport
 
         internal protected void WriteIndent()
         {
-            for (var x = 0; x < Indent; x++)
+            for (int x = 0; x < Indent; x++)
             {
                 _writer.Write(IndentWhiteSpace);
             }

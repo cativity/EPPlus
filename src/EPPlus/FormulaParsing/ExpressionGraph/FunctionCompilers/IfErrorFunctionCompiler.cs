@@ -37,13 +37,13 @@ namespace OfficeOpenXml.FormulaParsing.ExpressionGraph.FunctionCompilers
                 throw new ExcelErrorValueException(eErrorType.Value);
             }
 
-            var args = new List<FunctionArgument>();
+            List<FunctionArgument>? args = new List<FunctionArgument>();
             Function.BeforeInvoke(Context);
-            var firstChild = children.First();
-            var lastChild = children.ElementAt(1);
+            Expression? firstChild = children.First();
+            Expression? lastChild = children.ElementAt(1);
             try
             {
-                var result = firstChild.Compile();
+                CompileResult? result = firstChild.Compile();
                 if (result.DataType == DataType.ExcelError)
                 {
                     args.Add(new FunctionArgument(lastChild.Compile().Result));

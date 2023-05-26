@@ -41,9 +41,9 @@ namespace OfficeOpenXml.LoadFunctions
 
         internal List<ColumnInfo> Setup()
         {
-            var result = new List<ColumnInfo>();
-            var t = typeof(T);
-            var ut = Nullable.GetUnderlyingType(t);
+            List<ColumnInfo>? result = new List<ColumnInfo>();
+            Type? t = typeof(T);
+            Type? ut = Nullable.GetUnderlyingType(t);
             if (ut != null)
             {
                 t = ut;
@@ -64,32 +64,32 @@ namespace OfficeOpenXml.LoadFunctions
                 return null;
             }
 
-            var copy = new List<ListType>();
+            List<ListType>? copy = new List<ListType>();
             source.ForEach(x => copy.Add(x));
             return copy;
         }
 
         private bool SetupInternal(Type type, List<ColumnInfo> result, List<int> sortOrderListArg, string path = null, string headerPrefix = null)
         {
-            var sort = false;
-            var members = type.GetProperties(_bindingFlags);
+            bool sort = false;
+            PropertyInfo[]? members = type.GetProperties(_bindingFlags);
             if (type.HasMemberWithPropertyOfType<EpplusTableColumnAttribute>())
             {
                 sort = true;
-                var index = 0;
-                foreach (var member in members)
+                int index = 0;
+                foreach (PropertyInfo? member in members)
                 {
-                    var hPrefix = default(string);
-                    var sortOrderList = CopyList(sortOrderListArg);
+                    string? hPrefix = default(string);
+                    List<int>? sortOrderList = CopyList(sortOrderListArg);
                     if (member.HasPropertyOfType<EpplusIgnore>())
                     {
                         continue;
                     }
-                    var memberPath = path != null ? $"{path}.{member.Name}" : member.Name;
+                    string? memberPath = path != null ? $"{path}.{member.Name}" : member.Name;
                     if (member.HasPropertyOfType<EpplusNestedTableColumnAttribute>())
                     {
-                        var nestedTableAttr = member.GetFirstAttributeOfType<EpplusNestedTableColumnAttribute>();
-                        var attrOrder = nestedTableAttr.Order;
+                        EpplusNestedTableColumnAttribute? nestedTableAttr = member.GetFirstAttributeOfType<EpplusNestedTableColumnAttribute>();
+                        int attrOrder = nestedTableAttr.Order;
                         hPrefix = nestedTableAttr.HeaderPrefix;
                         if(!string.IsNullOrEmpty(headerPrefix) && !string.IsNullOrEmpty(hPrefix))
                         {
@@ -126,16 +126,16 @@ namespace OfficeOpenXml.LoadFunctions
                         sortOrderList.RemoveAt(sortOrderList.Count - 1);
                         continue;
                     }
-                    var header = default(string);
-                    var sortOrderColumnsIndex = _sortOrderColumns != null ? _sortOrderColumns.IndexOf(memberPath) : -1;
-                    var sortOrder = sortOrderColumnsIndex > -1 ? sortOrderColumnsIndex : SortOrderOffset;
-                    var numberFormat = string.Empty;
-                    var rowFunction = RowFunctions.None;
-                    var totalsRowNumberFormat = string.Empty;
-                    var totalsRowLabel = string.Empty;
-                    var totalsRowFormula = string.Empty;
-                    var colInfoSortOrderList = new List<int>();
-                    var epplusColumnAttr = member.GetFirstAttributeOfType<EpplusTableColumnAttribute>();
+                    string? header = default(string);
+                    int sortOrderColumnsIndex = _sortOrderColumns != null ? _sortOrderColumns.IndexOf(memberPath) : -1;
+                    int sortOrder = sortOrderColumnsIndex > -1 ? sortOrderColumnsIndex : SortOrderOffset;
+                    string? numberFormat = string.Empty;
+                    RowFunctions rowFunction = RowFunctions.None;
+                    string? totalsRowNumberFormat = string.Empty;
+                    string? totalsRowLabel = string.Empty;
+                    string? totalsRowFormula = string.Empty;
+                    List<int>? colInfoSortOrderList = new List<int>();
+                    EpplusTableColumnAttribute? epplusColumnAttr = member.GetFirstAttributeOfType<EpplusTableColumnAttribute>();
                     if (epplusColumnAttr != null)
                     {
                         if(!string.IsNullOrEmpty(epplusColumnAttr.Header) && !string.IsNullOrEmpty(headerPrefix))
@@ -190,21 +190,21 @@ namespace OfficeOpenXml.LoadFunctions
             }
             else
             {
-                var index = 0;
+                int index = 0;
                 result.AddRange(members
                     .Where(x => !x.HasPropertyOfType<EpplusIgnore>())
                     .Select(member => {
-                        var h = default(string);
-                        var mp = default(string);
+                        string? h = default(string);
+                        string? mp = default(string);
                         if (!string.IsNullOrEmpty(path))
                         {
                             mp = $"{path}.{member.Name}";
                         }
-                        var colInfoSortOrderList = new List<int>();
-                        var sortOrderColumnsIndex = _sortOrderColumns != null ? _sortOrderColumns.IndexOf(mp) : -1;
-                        var sortOrder = sortOrderColumnsIndex > -1 ? sortOrderColumnsIndex : SortOrderOffset;
-                        var sortOrderList = CopyList(sortOrderListArg);
-                        var epplusColumnAttr = member.GetFirstAttributeOfType<EpplusTableColumnAttribute>();
+                        List<int>? colInfoSortOrderList = new List<int>();
+                        int sortOrderColumnsIndex = _sortOrderColumns != null ? _sortOrderColumns.IndexOf(mp) : -1;
+                        int sortOrder = sortOrderColumnsIndex > -1 ? sortOrderColumnsIndex : SortOrderOffset;
+                        List<int>? sortOrderList = CopyList(sortOrderListArg);
+                        EpplusTableColumnAttribute? epplusColumnAttr = member.GetFirstAttributeOfType<EpplusTableColumnAttribute>();
                         if (epplusColumnAttr != null)
                         {
                             h = epplusColumnAttr.Header;
@@ -242,11 +242,11 @@ namespace OfficeOpenXml.LoadFunctions
                         };
                     }));
             }
-            var formulaColumnAttributes = type.FindAttributesOfType<EpplusFormulaTableColumnAttribute>();
+            IEnumerable<EpplusFormulaTableColumnAttribute>? formulaColumnAttributes = type.FindAttributesOfType<EpplusFormulaTableColumnAttribute>();
             if (formulaColumnAttributes != null && formulaColumnAttributes.Any())
             {
                 sort = true;
-                foreach (var attr in formulaColumnAttributes)
+                foreach (EpplusFormulaTableColumnAttribute? attr in formulaColumnAttributes)
                 {
                     result.Add(new ColumnInfo
                     {
@@ -265,12 +265,12 @@ namespace OfficeOpenXml.LoadFunctions
 
         private static void ReindexAndSortColumns(List<ColumnInfo> result)
         {
-            var index = 0;
+            int index = 0;
             //result.Sort((a, b) => a.SortOrder.CompareTo(b.SortOrder));
             result.Sort((a, b) =>
             {
-                var so1 = a.SortOrderLevels;
-                var so2 = b.SortOrderLevels;
+                List<int>? so1 = a.SortOrderLevels;
+                List<int>? so2 = b.SortOrderLevels;
                 if (so1 == null || so2 == null)
                 {
                     if(a.SortOrder == b.SortOrder)
@@ -288,11 +288,11 @@ namespace OfficeOpenXml.LoadFunctions
                 }
                 else
                 {
-                    var maxIx = so1.Count < so2.Count ? so1.Count : so2.Count;
-                    for(var ix = 0; ix < maxIx; ix++)
+                    int maxIx = so1.Count < so2.Count ? so1.Count : so2.Count;
+                    for(int ix = 0; ix < maxIx; ix++)
                     {
-                        var aVal = so1[ix];
-                        var bVal = so2[ix];
+                        int aVal = so1[ix];
+                        int bVal = so2[ix];
                         if (aVal.CompareTo(bVal) == 0)
                         {
                             continue;

@@ -11,6 +11,7 @@
   01/29/2021         EPPlus Software AB       EPPlus 5.6
  *************************************************************************************************/
 using System;
+using System.Xml;
 
 namespace OfficeOpenXml.Style.Dxf
 {
@@ -23,7 +24,7 @@ namespace OfficeOpenXml.Style.Dxf
             : base(styles, callback)
         {
             Position = position;
-            var styleClass = position==0 ? eStyleClass.FillGradientColor1 : eStyleClass.FillGradientColor2;
+            eStyleClass styleClass = position==0 ? eStyleClass.FillGradientColor1 : eStyleClass.FillGradientColor2;
             Color = new ExcelDxfColor(styles, styleClass, callback);
         }
         /// <summary>
@@ -75,8 +76,8 @@ namespace OfficeOpenXml.Style.Dxf
 
         internal override void CreateNodes(XmlHelper helper, string path)
         {
-            var node = helper.CreateNode(path + "d:stop", false, true);
-            var stopHelper = XmlHelperFactory.Create(helper.NameSpaceManager, node);
+            XmlNode? node = helper.CreateNode(path + "d:stop", false, true);
+            XmlHelper? stopHelper = XmlHelperFactory.Create(helper.NameSpaceManager, node);
             SetValue(stopHelper, "@position", Position / 100);
             SetValueColor(stopHelper, "d:color", Color);
         }

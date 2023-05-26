@@ -22,19 +22,19 @@ namespace OfficeOpenXml.Sorting.Internal
     {
         internal static List<SortItemLeftToRight<ExcelValue>> Create(ExcelRangeBase range)
         {
-            var sortItems = new List<SortItemLeftToRight<ExcelValue>>();
-            var nRows = range._toRow - range._fromRow + 1;
-            var col = range._fromCol;
+            List<SortItemLeftToRight<ExcelValue>>? sortItems = new List<SortItemLeftToRight<ExcelValue>>();
+            int nRows = range._toRow - range._fromRow + 1;
+            int col = range._fromCol;
 
             while (col <= range._toCol)
             {
-                var currentRow = 0;
-                var sortItem = new SortItemLeftToRight<ExcelValue> { Column = col, Items = new ExcelValue[nRows] };
+                int currentRow = 0;
+                SortItemLeftToRight<ExcelValue>? sortItem = new SortItemLeftToRight<ExcelValue> { Column = col, Items = new ExcelValue[nRows] };
                 while(currentRow < nRows)
                 {
-                    var row = currentRow + range._fromRow;
-                    var cell = range.Worksheet.Cells[row, col, row, col];
-                    var v = new ExcelValue();
+                    int row = currentRow + range._fromRow;
+                    ExcelRange? cell = range.Worksheet.Cells[row, col, row, col];
+                    ExcelValue v = new ExcelValue();
                     v._styleId = cell.StyleID;
                     v._value = cell.Value;
                     sortItem.Items[currentRow] = v;

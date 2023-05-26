@@ -35,35 +35,35 @@ namespace EPPlusTest.Core.Worksheet
         [DataRow("Tw Cen MT Condensed")]
         public void AutofitWithSerializedFonts(string fontFamily)
         {
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                for(var style = FontSubFamilies.Regular; style <= FontSubFamilies.BoldItalic; style++)
+                for(FontSubFamilies style = FontSubFamilies.Regular; style <= FontSubFamilies.BoldItalic; style++)
                 {
-                    var sheet = package.Workbook.Worksheets.Add(style.ToString());
-                    var range = sheet.Cells[1, 1, 5, 10];
+                    ExcelWorksheet? sheet = package.Workbook.Worksheets.Add(style.ToString());
+                    ExcelRange? range = sheet.Cells[1, 1, 5, 10];
                     range.Style.Font.Name = fontFamily;
                     range.Style.Font.Size = 9f;
                     range.Style.Font.Italic = (style == FontSubFamilies.Italic || style == FontSubFamilies.BoldItalic);
                     range.Style.Font.Bold = (style == FontSubFamilies.Bold || style == FontSubFamilies.BoldItalic);
-                    var rnd = new Random();
-                    for (var col = 1; col < 10; col++)
+                    Random? rnd = new Random();
+                    for (int col = 1; col < 10; col++)
                     {
-                        for (var row = 1; row < 5; row++)
+                        for (int row = 1; row < 5; row++)
                         {
-                            var sb = new StringBuilder();
-                            var maxLength = 40 - (col * 2);
-                            var nLetters = rnd.Next(4, maxLength);
-                            for (var x = 0; x < nLetters; x++)
+                            StringBuilder? sb = new StringBuilder();
+                            int maxLength = 40 - (col * 2);
+                            int nLetters = rnd.Next(4, maxLength);
+                            for (int x = 0; x < nLetters; x++)
                             {
-                                var n = 65;
+                                int n = 65;
                                 if (x % 2 == 0)
                                 {
                                     n = rnd.Next(65, 90);
                                 }
                                 else if(x % 5 == 0)
                                 {
-                                    var charArr = new int[] { (int)'.', (int)',', (int)'!', (int)'-' };
-                                    var cix = rnd.Next(0, charArr.Length - 1);
+                                    int[]? charArr = new int[] { (int)'.', (int)',', (int)'!', (int)'-' };
+                                    int cix = rnd.Next(0, charArr.Length - 1);
                                     n = charArr[cix];
                                 }
                                 else if(x % 7 == 0)
@@ -80,11 +80,11 @@ namespace EPPlusTest.Core.Worksheet
                             sheet.Cells[row, col].Value = sb.ToString();
                         }
                     }
-                    var sw = new Stopwatch();
+                    Stopwatch? sw = new Stopwatch();
                     sw.Start();
                     sheet.Columns[1, 9].AutoFit();
                     sw.Stop();
-                    var ms = sw.ElapsedMilliseconds;
+                    long ms = sw.ElapsedMilliseconds;
                 }
                 
                 SaveWorkbook($"Autofit_SerializedFont_{fontFamily.Replace(" ", string.Empty)}.xlsx", package);
@@ -118,41 +118,41 @@ namespace EPPlusTest.Core.Worksheet
         //[DataRow("Tw Cen MT Condensed", 24)]
         public void AutofitWithSerializedFonts2(string fontFamily, int run)
         {
-            var report = new ExcelPackage(@"c:\Temp\fontreport2.xlsx");
-            var reportSheet = !report.Workbook.Worksheets.Any() ? report.Workbook.Worksheets.Add("Report") : report.Workbook.Worksheets["Report"];
-            var reportColOffset = 3;
-            var reportRow = (run - 1) * 5 + 2;
-            var shortList = new List<string>
+            ExcelPackage? report = new ExcelPackage(@"c:\Temp\fontreport2.xlsx");
+            ExcelWorksheet? reportSheet = !report.Workbook.Worksheets.Any() ? report.Workbook.Worksheets.Add("Report") : report.Workbook.Worksheets["Report"];
+            int reportColOffset = 3;
+            int reportRow = (run - 1) * 5 + 2;
+            List<string>? shortList = new List<string>
             {
                 "One",
                 "12,3456",
                 "Hello"
             };
-            var mediumList = new List<string>
+            List<string>? mediumList = new List<string>
             {
                 "A little longer",
                 "5435.1234556",
                 "Something else"
             };
-            var longList = new List<string>
+            List<string>? longList = new List<string>
             {
                 "A little longer than the previous example",
                 "5435.1234556",
                 "Something else that is even longer 12345567 than above"
             };
-            var reallyLongList = new List<string>
+            List<string>? reallyLongList = new List<string>
             {
                 "A little longer than the previous example, 333333333333954838!!!!!!!!!!!!!!!!,,,,,",
                 "5435.1234556321 - 4.32413254353",
                 "Something else that is even longer 12345567 than above, 136542.5439587432 (really, really long)"
             };
-            var reallyReallyLongList = new List<string>
+            List<string>? reallyReallyLongList = new List<string>
             {
                 "A little longer than the previous example, 333333333333954838!!!!!!!!!!!!!!!!,,,,,",
                 "5435.1234556321 - 4.32413254353",
                 "Something else that is even longer 12345567 than above, 136542.5439587432 (really, really long),,,,,,,,,,,.............&%¤#/%¤)%(/#/%#(%/&¤#`??.3123212321"
             };
-            var lists = new List<List<string>>
+            List<List<string>>? lists = new List<List<string>>
             {
                 shortList,
                 mediumList,
@@ -160,28 +160,28 @@ namespace EPPlusTest.Core.Worksheet
                 reallyLongList,
                 reallyReallyLongList
             };
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
                 package.Settings.TextSettings.PrimaryTextMeasurer = new GenericFontMetricsTextMeasurer();
-                var newFont = true;
-                for (var style = FontSubFamilies.Regular; style <= FontSubFamilies.BoldItalic; style++)
+                bool newFont = true;
+                for (FontSubFamilies style = FontSubFamilies.Regular; style <= FontSubFamilies.BoldItalic; style++)
                 {
-                    var sheet = package.Workbook.Worksheets.Add(style.ToString());
-                    var range = sheet.Cells[1, 1, 5, 10];
+                    ExcelWorksheet? sheet = package.Workbook.Worksheets.Add(style.ToString());
+                    ExcelRange? range = sheet.Cells[1, 1, 5, 10];
                     range.Style.Font.Name = fontFamily;
                     range.Style.Font.Size = 9f;
                     range.Style.Font.Italic = (style == FontSubFamilies.Italic || style == FontSubFamilies.BoldItalic);
                     range.Style.Font.Bold = (style == FontSubFamilies.Bold || style == FontSubFamilies.BoldItalic);
-                    var rnd = new Random();
-                    for (var col = 1; col < lists.Count + 1; col++)
+                    Random? rnd = new Random();
+                    for (int col = 1; col < lists.Count + 1; col++)
                     {
-                        for (var row = 1; row < 4; row++)
+                        for (int row = 1; row < 4; row++)
                         {
-                            var s = lists[col - 1][row - 1];
+                            string? s = lists[col - 1][row - 1];
                             sheet.Cells[row, col].Value = s;
                         }
                     }
-                    var sw = new Stopwatch();
+                    Stopwatch? sw = new Stopwatch();
                     sw.Start();
                     sheet.Columns[1, 9].AutoFit();
                     if(newFont)
@@ -190,13 +190,13 @@ namespace EPPlusTest.Core.Worksheet
                         newFont = false;
                     }
                     reportSheet.Cells[reportRow, 2].Value = style.ToString();
-                    for (var col = 1; col < lists.Count + 1; col++)
+                    for (int col = 1; col < lists.Count + 1; col++)
                     {
                         reportSheet.Cells[reportRow, col + reportColOffset].Value = sheet.Columns[col].Width;
                     }
                     reportRow++;
                     sw.Stop();
-                    var ms = sw.ElapsedMilliseconds;
+                    long ms = sw.ElapsedMilliseconds;
                 }
 
                 SaveWorkbook($"Autofit_SerializedFont_{fontFamily.Replace(" ", string.Empty)}.xlsx", package);
@@ -225,41 +225,41 @@ namespace EPPlusTest.Core.Worksheet
         [DataRow("MS Gothic", 17)]
         public void AutofitWithSerializedFonts_JP(string fontFamily, int run)
         {
-            var report = new ExcelPackage(@"c:\Temp\fontreport_jp.xlsx");
-            var reportSheet = !report.Workbook.Worksheets.Any() ? report.Workbook.Worksheets.Add("Report") : report.Workbook.Worksheets["Report"];
-            var reportColOffset = 3;
-            var reportRow = (run - 1) * 5 + 2;
-            var shortList = new List<string>
+            ExcelPackage? report = new ExcelPackage(@"c:\Temp\fontreport_jp.xlsx");
+            ExcelWorksheet? reportSheet = !report.Workbook.Worksheets.Any() ? report.Workbook.Worksheets.Add("Report") : report.Workbook.Worksheets["Report"];
+            int reportColOffset = 3;
+            int reportRow = (run - 1) * 5 + 2;
+            List<string>? shortList = new List<string>
             {
                 "新しい最新スタイルです",
                 "ルの拡張サポート",
                 "ピボット テー"
             };
-            var mediumList = new List<string>
+            List<string>? mediumList = new List<string>
             {
                 "数式計算エンジンの改良点とサポートされる新しい関数",
                 "5435.1234556",
                 "Something else"
             };
-            var longList = new List<string>
+            List<string>? longList = new List<string>
             {
                 "A little longer than the previous example",
                 "5435.1234556",
                 "ェクトが完了すると、コードを管理する開発者のライセンスのみが必要"
             };
-            var reallyLongList = new List<string>
+            List<string>? reallyLongList = new List<string>
             {
                 "A little longer than the previous example, 333333333333954838!!!!!!!!!!!!!!!!,,,,,",
                 "5435.1234556321 - 4.32413254353",
                 "EPPlusは3000万回以上ダウンロードされています。世界中の何千もの企業がスプレッドシートデータを管理するために使用しています。"
             };
-            var reallyReallyLongList = new List<string>
+            List<string>? reallyReallyLongList = new List<string>
             {
                 "A little longer than the previous example, 333333333333954838!!!!!!!!!!!!!!!!,,,,,",
                 "5435.1234556321 - 4.32413254353",
                 "場合など)、会社は、ユーザーでもあるため、そのサービスの内部ユーザー (開発者) の数をカバーするサブスクリプションをサブスクライブする必要があります。"
             };
-            var lists = new List<List<string>>
+            List<List<string>>? lists = new List<List<string>>
             {
                 shortList,
                 mediumList,
@@ -267,28 +267,28 @@ namespace EPPlusTest.Core.Worksheet
                 reallyLongList,
                 reallyReallyLongList
             };
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
                 package.Settings.TextSettings.PrimaryTextMeasurer = new GenericFontMetricsTextMeasurer();
-                var newFont = true;
-                for (var style = FontSubFamilies.Regular; style <= FontSubFamilies.BoldItalic; style++)
+                bool newFont = true;
+                for (FontSubFamilies style = FontSubFamilies.Regular; style <= FontSubFamilies.BoldItalic; style++)
                 {
-                    var sheet = package.Workbook.Worksheets.Add(style.ToString());
-                    var range = sheet.Cells[1, 1, 5, 10];
+                    ExcelWorksheet? sheet = package.Workbook.Worksheets.Add(style.ToString());
+                    ExcelRange? range = sheet.Cells[1, 1, 5, 10];
                     range.Style.Font.Name = fontFamily;
                     range.Style.Font.Size = 24f;
                     range.Style.Font.Italic = (style == FontSubFamilies.Italic || style == FontSubFamilies.BoldItalic);
                     range.Style.Font.Bold = (style == FontSubFamilies.Bold || style == FontSubFamilies.BoldItalic);
-                    var rnd = new Random();
-                    for (var col = 1; col < lists.Count + 1; col++)
+                    Random? rnd = new Random();
+                    for (int col = 1; col < lists.Count + 1; col++)
                     {
-                        for (var row = 1; row < 4; row++)
+                        for (int row = 1; row < 4; row++)
                         {
-                            var s = lists[col - 1][row - 1];
+                            string? s = lists[col - 1][row - 1];
                             sheet.Cells[row, col].Value = s;
                         }
                     }
-                    var sw = new Stopwatch();
+                    Stopwatch? sw = new Stopwatch();
                     sw.Start();
                     sheet.Columns[1, 9].AutoFit();
                     if (newFont)
@@ -297,13 +297,13 @@ namespace EPPlusTest.Core.Worksheet
                         newFont = false;
                     }
                     reportSheet.Cells[reportRow, 2].Value = style.ToString();
-                    for (var col = 1; col < lists.Count + 1; col++)
+                    for (int col = 1; col < lists.Count + 1; col++)
                     {
                         reportSheet.Cells[reportRow, col + reportColOffset].Value = sheet.Columns[col].Width;
                     }
                     reportRow++;
                     sw.Stop();
-                    var ms = sw.ElapsedMilliseconds;
+                    long ms = sw.ElapsedMilliseconds;
                 }
 
                 SaveWorkbook($"JP_Autofit_SerializedFont_{fontFamily.Replace(" ", string.Empty)}.xlsx", package);
@@ -314,12 +314,12 @@ namespace EPPlusTest.Core.Worksheet
         [TestMethod]
         public void LoadFontSizeFromResource()
         {
-            using (var p = new ExcelPackage())
+            using (ExcelPackage? p = new ExcelPackage())
             {
-                var expectedLoaded = 895;
+                int expectedLoaded = 895;
                 if (FontSize._isLoaded == false)
                 {
-                    var expectedDefault = 23;
+                    int expectedDefault = 23;
                     Assert.AreEqual(expectedDefault, FontSize.FontHeights.Count);
                     Assert.AreEqual(expectedDefault, FontSize.FontWidths.Count);
                 }
@@ -335,33 +335,33 @@ namespace EPPlusTest.Core.Worksheet
         [DataRow("Times New Roman")]
         public void MeasureSpecificFont(string font)
         {
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
                 package.Settings.TextSettings.PrimaryTextMeasurer = new GenericFontMetricsTextMeasurer();
-                var sheet = package.Workbook.Worksheets.Add("text");
-                var sheet2 = package.Workbook.Worksheets.Add("measures");
-                var sheet3 = package.Workbook.Worksheets.Add("numbers");
+                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("text");
+                ExcelWorksheet? sheet2 = package.Workbook.Worksheets.Add("measures");
+                ExcelWorksheet? sheet3 = package.Workbook.Worksheets.Add("numbers");
                 sheet.Cells["A1:A50"].Style.Font.Name = font;
                 sheet.Cells["A1:A50"].Style.Font.Italic = true;
-                var chars = "aabcdeefghijklmnopqrrssttuvxyzåäö   AABCDEEFGHIJKLMNOPQRSSTTUVXYZÅÄÖ      !!,,,,,,,,, 112233445566778899.....";
-                var numbers = "11122233344455566677788899900000000........,,,,,,,       ";
-                var rnd = new Random();
-                for (var x = 0; x < 60; x++)
+                string? chars = "aabcdeefghijklmnopqrrssttuvxyzåäö   AABCDEEFGHIJKLMNOPQRSSTTUVXYZÅÄÖ      !!,,,,,,,,, 112233445566778899.....";
+                string? numbers = "11122233344455566677788899900000000........,,,,,,,       ";
+                Random? rnd = new Random();
+                for (int x = 0; x < 60; x++)
                 {
-                    var text = new StringBuilder();
-                    for (var i = 0; i < x; i++)
+                    StringBuilder? text = new StringBuilder();
+                    for (int i = 0; i < x; i++)
                     {
-                        var ix = rnd.Next(0, chars.Length);
+                        int ix = rnd.Next(0, chars.Length);
                         text.Append(chars[ix]);
                     }
                     sheet.Cells[1, x + 1].Value = text.ToString();
                     sheet.Columns[x + 1].AutoFit();
                     sheet2.Cells[1, x + 1].Value = sheet.Columns[x + 1].Width;
 
-                    var number = new StringBuilder();
-                    for (var i = 0; i < x; i++)
+                    StringBuilder? number = new StringBuilder();
+                    for (int i = 0; i < x; i++)
                     {
-                        var ix = rnd.Next(0, numbers.Length);
+                        int ix = rnd.Next(0, numbers.Length);
                         number.Append(numbers[ix]);
                     }
                     sheet3.Cells[1, x + 1].Value = number.ToString();
@@ -373,7 +373,7 @@ namespace EPPlusTest.Core.Worksheet
                     Directory.CreateDirectory(@"c:\Temp\FontTests");
                 }
 
-                var path = $"c:\\Temp\\FontTests\\{font}Measurements.xlsx";
+                string? path = $"c:\\Temp\\FontTests\\{font}Measurements.xlsx";
                 if (File.Exists(path))
                 {
                     File.Delete(path);
@@ -396,41 +396,41 @@ namespace EPPlusTest.Core.Worksheet
         [DataRow("Non existing font", 9)]
         public void MeasureOtherFonts(string fontFamily, int run)
         {
-            var report = new ExcelPackage(@"c:\Temp\fontreport_jp.xlsx");
-            var reportSheet = !report.Workbook.Worksheets.Any() ? report.Workbook.Worksheets.Add("Report") : report.Workbook.Worksheets["Report"];
-            var reportColOffset = 3;
-            var reportRow = (run - 1) * 5 + 2;
-            var shortList = new List<string>
+            ExcelPackage? report = new ExcelPackage(@"c:\Temp\fontreport_jp.xlsx");
+            ExcelWorksheet? reportSheet = !report.Workbook.Worksheets.Any() ? report.Workbook.Worksheets.Add("Report") : report.Workbook.Worksheets["Report"];
+            int reportColOffset = 3;
+            int reportRow = (run - 1) * 5 + 2;
+            List<string>? shortList = new List<string>
             {
                 "新しい最新スタイルです",
                 "ルの拡張サポート",
                 "ピボット テー"
             };
-            var mediumList = new List<string>
+            List<string>? mediumList = new List<string>
             {
                 "数式計算エンジンの改良点とサポートされる新しい関数",
                 "5435.1234556",
                 "Something else"
             };
-            var longList = new List<string>
+            List<string>? longList = new List<string>
             {
                 "A little longer than the previous example",
                 "5435.1234556",
                 "ェクトが完了すると、コードを管理する開発者のライセンスのみが必要"
             };
-            var reallyLongList = new List<string>
+            List<string>? reallyLongList = new List<string>
             {
                 "A little longer than the previous example, 333333333333954838!!!!!!!!!!!!!!!!,,,,,",
                 "5435.1234556321 - 4.32413254353",
                 "EPPlusは3000万回以上ダウンロードされています。世界中の何千もの企業がスプレッドシートデータを管理するために使用しています。"
             };
-            var reallyReallyLongList = new List<string>
+            List<string>? reallyReallyLongList = new List<string>
             {
                 "A little longer than the previous example, 333333333333954838!!!!!!!!!!!!!!!!,,,,,",
                 "5435.1234556321 - 4.32413254353",
                 "場合など)、会社は、ユーザーでもあるため、そのサービスの内部ユーザー (開発者) の数をカバーするサブスクリプションをサブスクライブする必要があります。"
             };
-            var lists = new List<List<string>>
+            List<List<string>>? lists = new List<List<string>>
             {
                 shortList,
                 mediumList,
@@ -438,28 +438,28 @@ namespace EPPlusTest.Core.Worksheet
                 reallyLongList,
                 reallyReallyLongList
             };
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
                 //package.Settings.TextSettings.PrimaryTextMeasurer = new GenericFontMetricsTextMeasurer();
-                var newFont = true;
-                for (var style = FontSubFamilies.Regular; style <= FontSubFamilies.BoldItalic; style++)
+                bool newFont = true;
+                for (FontSubFamilies style = FontSubFamilies.Regular; style <= FontSubFamilies.BoldItalic; style++)
                 {
-                    var sheet = package.Workbook.Worksheets.Add(style.ToString());
-                    var range = sheet.Cells[1, 1, 5, 10];
+                    ExcelWorksheet? sheet = package.Workbook.Worksheets.Add(style.ToString());
+                    ExcelRange? range = sheet.Cells[1, 1, 5, 10];
                     range.Style.Font.Name = fontFamily;
                     range.Style.Font.Size = 24f;
                     range.Style.Font.Italic = (style == FontSubFamilies.Italic || style == FontSubFamilies.BoldItalic);
                     range.Style.Font.Bold = (style == FontSubFamilies.Bold || style == FontSubFamilies.BoldItalic);
-                    var rnd = new Random();
-                    for (var col = 1; col < lists.Count + 1; col++)
+                    Random? rnd = new Random();
+                    for (int col = 1; col < lists.Count + 1; col++)
                     {
-                        for (var row = 1; row < 2; row++)
+                        for (int row = 1; row < 2; row++)
                         {
-                            var s = lists[col - 1][row - 1];
+                            string? s = lists[col - 1][row - 1];
                             sheet.Cells[row, col].Value = s;
                         }
                     }
-                    var sw = new Stopwatch();
+                    Stopwatch? sw = new Stopwatch();
                     sw.Start();
                     sheet.Columns[1, 9].AutoFit();
                     if (newFont)
@@ -468,13 +468,13 @@ namespace EPPlusTest.Core.Worksheet
                         newFont = false;
                     }
                     reportSheet.Cells[reportRow, 2].Value = style.ToString();
-                    for (var col = 1; col < lists.Count + 1; col++)
+                    for (int col = 1; col < lists.Count + 1; col++)
                     {
                         reportSheet.Cells[reportRow, col + reportColOffset].Value = sheet.Columns[col].Width;
                     }
                     reportRow++;
                     sw.Stop();
-                    var ms = sw.ElapsedMilliseconds;
+                    long ms = sw.ElapsedMilliseconds;
                 }
 
                 SaveWorkbook($"NonExistingFonts_Autofit_{fontFamily.Replace(" ", string.Empty)}.xlsx", package);

@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using OfficeOpenXml.FormulaParsing.Excel.Functions;
 
 namespace EPPlusTest.FormulaParsing.Excel.Functions.Math
 {
@@ -26,10 +27,10 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions.Math
         [TestMethod]
         public void ShouldReturnCorrectResult()
         {
-            var func = new IsoCeiling();
+            IsoCeiling? func = new IsoCeiling();
 
-            var args = FunctionsHelper.CreateArgs(22.25);
-            var result = func.Execute(args, _parsingContext).Result;
+            IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(22.25);
+            object? result = func.Execute(args, _parsingContext).Result;
             Assert.AreEqual(23d, result);
 
             args = FunctionsHelper.CreateArgs(22.25, 1);

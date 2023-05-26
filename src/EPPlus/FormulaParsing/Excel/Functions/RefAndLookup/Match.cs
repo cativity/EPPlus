@@ -43,18 +43,18 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.RefAndLookup
         {
             ValidateArguments(arguments, 2);
 
-            var searchedValue = arguments.ElementAt(0).Value;
-            var address =  ArgToAddress(arguments,1, context); 
-            var rangeAddressFactory = new RangeAddressFactory(context.ExcelDataProvider);
-            var rangeAddress = rangeAddressFactory.Create(address);
-            var matchType = GetMatchType(arguments);
-            var args = new LookupArguments(searchedValue, address, 0, 0, false, arguments.ElementAt(1).ValueAsRangeInfo);
-            var lookupDirection = GetLookupDirection(rangeAddress);
-            var navigator = LookupNavigatorFactory.Create(lookupDirection, args, context);
+            object? searchedValue = arguments.ElementAt(0).Value;
+            string? address =  ArgToAddress(arguments,1, context); 
+            RangeAddressFactory? rangeAddressFactory = new RangeAddressFactory(context.ExcelDataProvider);
+            RangeAddress? rangeAddress = rangeAddressFactory.Create(address);
+            MatchType matchType = GetMatchType(arguments);
+            LookupArguments? args = new LookupArguments(searchedValue, address, 0, 0, false, arguments.ElementAt(1).ValueAsRangeInfo);
+            LookupDirection lookupDirection = GetLookupDirection(rangeAddress);
+            LookupNavigator? navigator = LookupNavigatorFactory.Create(lookupDirection, args, context);
             int? lastValidIndex = null;
             do
             {
-                var matchResult = IsMatch(searchedValue, navigator.CurrentValue);
+                int matchResult = IsMatch(searchedValue, navigator.CurrentValue);
 
                 // For all match types, if the match result indicated equality, return the index (1 based)
                 if (searchedValue != null && matchResult == 0)
@@ -84,7 +84,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.RefAndLookup
 
         private MatchType GetMatchType(IEnumerable<FunctionArgument> arguments)
         {
-            var matchType = MatchType.ClosestBelow;
+            MatchType matchType = MatchType.ClosestBelow;
             if (arguments.Count() > 2)
             {
                 matchType = (MatchType)ArgToInt(arguments, 2);

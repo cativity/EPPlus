@@ -37,7 +37,7 @@ namespace OfficeOpenXml.Vba.ContentHash
             BinaryWriter bw = new BinaryWriter(ms);
             bw.Write(HashEncoding.GetBytes(Project.Name));
             bw.Write(HashEncoding.GetBytes(Project.Constants));
-            foreach (var reference in Project.References)
+            foreach (ExcelVbaReference? reference in Project.References)
             {
                 if (reference.ReferenceRecordID == 0x0D)
                 {
@@ -58,10 +58,10 @@ namespace OfficeOpenXml.Vba.ContentHash
                     }
                 }
             }
-            foreach (var module in Project.Modules)
+            foreach (ExcelVBAModule? module in Project.Modules)
             {
-                var lines = module.Code.Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
-                foreach (var line in lines)
+                string[]? lines = module.Code.Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
+                foreach (string? line in lines)
                 {
                     if (!line.StartsWith("attribute", StringComparison.OrdinalIgnoreCase))
                     {

@@ -37,19 +37,19 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
         public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
         {
             ValidateArguments(arguments, 1);
-            var nItems = 0d;
+            double nItems = 0d;
             Calculate(arguments, ref nItems, context, ItemContext.SingleArg);
             return CreateResult(nItems, DataType.Integer);
         }
 
         private void Calculate(IEnumerable<FunctionArgument> items, ref double nItems, ParsingContext context, ItemContext itemContext)
         {
-            foreach (var item in items)
+            foreach (FunctionArgument? item in items)
             {
-                var cs = item.Value as IRangeInfo;
+                IRangeInfo? cs = item.Value as IRangeInfo;
                 if (cs != null)
                 {
-                    foreach (var c in cs)
+                    foreach (ICellInfo? c in cs)
                     {
                         _CheckForAndHandleExcelError(c, context);
                         if (ShouldIgnore(c, context) == false && ShouldCount(c.Value, ItemContext.InRange))
@@ -60,7 +60,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
                 }
                 else
                 {
-                    var value = item.Value as IEnumerable<FunctionArgument>;
+                    IEnumerable<FunctionArgument>? value = item.Value as IEnumerable<FunctionArgument>;
                     if (value != null)
                     {
                         Calculate(value, ref nItems, context, ItemContext.InArray);

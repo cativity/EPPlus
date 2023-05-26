@@ -31,7 +31,9 @@ using System.Text;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using OfficeOpenXml;
 using OfficeOpenXml.DataValidation;
+using OfficeOpenXml.DataValidation.Contracts;
 
 namespace EPPlusTest.DataValidation
 {
@@ -98,7 +100,7 @@ namespace EPPlusTest.DataValidation
             _sheet.DataValidations.AddDateTimeValidation("B1");
 
             // Act
-            var result = _sheet.DataValidations[1];
+            ExcelDataValidation? result = _sheet.DataValidations[1];
 
             // Assert
             Assert.AreEqual("A2", result.Address.Address);
@@ -113,7 +115,7 @@ namespace EPPlusTest.DataValidation
             _sheet.DataValidations.AddDateTimeValidation("B1");
 
             // Act
-            var result = _sheet.DataValidations.FindAll(x => x.Address.Address.StartsWith("A"));
+            IEnumerable<ExcelDataValidation>? result = _sheet.DataValidations.FindAll(x => x.Address.Address.StartsWith("A"));
 
             // Assert
             Assert.AreEqual(2, result.Count());
@@ -128,7 +130,7 @@ namespace EPPlusTest.DataValidation
             _sheet.DataValidations.AddDateTimeValidation("A2");
 
             // Act
-            var result = _sheet.DataValidations.Find(x => x.Address.Address.StartsWith("A"));
+            ExcelDataValidation? result = _sheet.DataValidations.Find(x => x.Address.Address.StartsWith("A"));
 
             // Assert
             Assert.AreEqual("A1", result.Address.Address);
@@ -139,7 +141,7 @@ namespace EPPlusTest.DataValidation
         public void ExcelDataValidationCollection_Clear_ShouldBeEmpty()
         {
             // Arrange
-            var v = _sheet.DataValidations.AddDateTimeValidation("A1");
+            IExcelDataValidationDateTime? v = _sheet.DataValidations.AddDateTimeValidation("A1");
 
             // Act
             _sheet.DataValidations.Clear();
@@ -153,8 +155,8 @@ namespace EPPlusTest.DataValidation
         public void ExcelDataValidationCollection_ExtLst_Clear_ShouldBeEmpty()
         {
             // Arrange
-            var sheet2 = _package.Workbook.Worksheets.Add("Sheet2");
-            var v = _sheet.DataValidations.AddListValidation("A1");
+            ExcelWorksheet? sheet2 = _package.Workbook.Worksheets.Add("Sheet2");
+            IExcelDataValidationList? v = _sheet.DataValidations.AddListValidation("A1");
             v.Formula.ExcelFormula = "Sheet2!A1:A2";
 
             // Act

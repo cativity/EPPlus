@@ -16,6 +16,7 @@ using OfficeOpenXml.DataValidation.Exceptions;
 using OfficeOpenXml.FormulaParsing.LexicalAnalysis;
 using OfficeOpenXml.Utils;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using OfficeOpenXml.DataValidation.Formulas.Contracts;
 
@@ -110,7 +111,7 @@ namespace OfficeOpenXml.DataValidation.Formulas
                     {
                         if (RefersToOtherWorksheet(_formula))
                         {
-                            var e = new OnFormulaChangedEventArgs();
+                            OnFormulaChangedEventArgs? e = new OnFormulaChangedEventArgs();
                             e.isExt = true;
                             _handler.Invoke(e);
                         }
@@ -123,21 +124,21 @@ namespace OfficeOpenXml.DataValidation.Formulas
         {
             if (!string.IsNullOrEmpty(address) && ExcelCellBase.IsValidAddress(address))
             {
-                var adr = new ExcelAddress(address);
+                ExcelAddress? adr = new ExcelAddress(address);
                 return !string.IsNullOrEmpty(adr.WorkSheetName) && adr.WorkSheetName != _workSheetName;
             }
             else if (!string.IsNullOrEmpty(address))
             {
-                var tokens = SourceCodeTokenizer.Default.Tokenize(address, _workSheetName);
+                IEnumerable<Token>? tokens = SourceCodeTokenizer.Default.Tokenize(address, _workSheetName);
                 if (!tokens.Any())
                 {
                     return false;
                 }
 
-                var addressTokens = tokens.Where(x => x.TokenTypeIsSet(TokenType.ExcelAddress));
-                foreach (var token in addressTokens)
+                IEnumerable<Token>? addressTokens = tokens.Where(x => x.TokenTypeIsSet(TokenType.ExcelAddress));
+                foreach (Token token in addressTokens)
                 {
-                    var adr = new ExcelAddress(token.Value);
+                    ExcelAddress? adr = new ExcelAddress(token.Value);
                     if (!string.IsNullOrEmpty(adr.WorkSheetName) && adr.WorkSheetName != _workSheetName)
                     {
                         return true;

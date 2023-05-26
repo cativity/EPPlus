@@ -29,13 +29,13 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Engineering
         public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
         {
             ValidateArguments(arguments, 1);
-            var lowerLimit = ArgToDecimal(arguments, 0);
-            var upperLimit = default(double?);
+            double lowerLimit = ArgToDecimal(arguments, 0);
+            double? upperLimit = default(double?);
             if(arguments.Count() > 1)
             {
                 upperLimit = ArgToDecimal(arguments, 1);
             }
-            var retVal = !upperLimit.HasValue ? ErfHelper.Erf(lowerLimit) : ErfHelper.Erf(lowerLimit, upperLimit.Value); 
+            double retVal = !upperLimit.HasValue ? ErfHelper.Erf(lowerLimit) : ErfHelper.Erf(lowerLimit, upperLimit.Value); 
             return CreateResult(retVal, DataType.Decimal);
         }
 

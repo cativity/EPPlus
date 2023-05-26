@@ -22,8 +22,8 @@ namespace EPPlusTest.Drawing.Chart
         [ClassCleanup]
         public static void Cleanup()
         {
-            var dirName = _pck.File.DirectoryName;
-            var fileName = _pck.File.FullName;
+            string? dirName = _pck.File.DirectoryName;
+            string? fileName = _pck.File.FullName;
             SaveAndCleanup(_pck);
             if (File.Exists(fileName))
             {
@@ -33,11 +33,11 @@ namespace EPPlusTest.Drawing.Chart
         [TestMethod]
         public void ReadChartEx()
         {
-            using (var p = OpenTemplatePackage("Chartex.xlsx"))
+            using (ExcelPackage? p = OpenTemplatePackage("Chartex.xlsx"))
             {
-                var chart1 = (ExcelChartEx)p.Workbook.Worksheets[0].Drawings[0];
-                var chart2 = (ExcelChartEx)p.Workbook.Worksheets[0].Drawings[1];
-                var chart3 = (ExcelChartEx)p.Workbook.Worksheets[0].Drawings[2];
+                ExcelChartEx? chart1 = (ExcelChartEx)p.Workbook.Worksheets[0].Drawings[0];
+                ExcelChartEx? chart2 = (ExcelChartEx)p.Workbook.Worksheets[0].Drawings[1];
+                ExcelChartEx? chart3 = (ExcelChartEx)p.Workbook.Worksheets[0].Drawings[2];
 
                 Assert.IsNotNull(chart1.Fill);
                 Assert.IsNotNull(chart1.PlotArea);
@@ -62,16 +62,16 @@ namespace EPPlusTest.Drawing.Chart
         [TestMethod]
         public void AddSunburstChart()
         {
-            var ws = _pck.Workbook.Worksheets.Add("Sunburst");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("Sunburst");
             LoadHierarkiTestData(ws);
-            var chart = ws.Drawings.AddExtendedChart("Sunburst1", eChartExType.Sunburst);
-            var serie = chart.Series.Add("Sunburst!$D$2:$D$17", "Sunburst!$A$2:$C$17");
+            ExcelChartEx? chart = ws.Drawings.AddExtendedChart("Sunburst1", eChartExType.Sunburst);
+            ExcelChartExSerie? serie = chart.Series.Add("Sunburst!$D$2:$D$17", "Sunburst!$A$2:$C$17");
             chart.SetPosition(2, 0, 15, 0);
             chart.SetSize(1600, 900);
             serie.DataLabel.Position = eLabelPosition.Center;   
             serie.DataLabel.ShowCategory = true;
             serie.DataLabel.ShowValue=true;
-            var dp=serie.DataPoints.Add(2);
+            ExcelChartExDataPoint? dp=serie.DataPoints.Add(2);
             dp.Fill.Style = eFillStyle.PatternFill;
             dp.Fill.PatternFill.PatternType = eFillPatternStyle.DashDnDiag;
             dp.Fill.PatternFill.BackgroundColor.SetRgbColor(Color.Red);
@@ -87,13 +87,13 @@ namespace EPPlusTest.Drawing.Chart
         [TestMethod]
         public void AddSunburstChartSheet()
         {
-            var ws = _pck.Workbook.Worksheets.AddChart("SunburstSheet", eChartType.Sunburst);
-            var chart = ws.Chart.As.Chart.SunburstChart;
-            var serie = chart.Series.Add("Sunburst!$D$2:$D$17", "Sunburst!$A$2:$C$17");
+            ExcelChartsheet? ws = _pck.Workbook.Worksheets.AddChart("SunburstSheet", eChartType.Sunburst);
+            ExcelSunburstChart? chart = ws.Chart.As.Chart.SunburstChart;
+            ExcelChartExSerie? serie = chart.Series.Add("Sunburst!$D$2:$D$17", "Sunburst!$A$2:$C$17");
             serie.DataLabel.Position = eLabelPosition.Center;
             serie.DataLabel.ShowCategory = true;
             serie.DataLabel.ShowValue = true;
-            var dp = serie.DataPoints.Add(2);
+            ExcelChartExDataPoint? dp = serie.DataPoints.Add(2);
             dp.Fill.Style = eFillStyle.PatternFill;
             dp.Fill.PatternFill.PatternType = eFillPatternStyle.DashDnDiag;
             dp.Fill.PatternFill.BackgroundColor.SetRgbColor(Color.Red);
@@ -110,10 +110,10 @@ namespace EPPlusTest.Drawing.Chart
         [TestMethod]
         public void AddTreemapChart()
         {
-            var ws = _pck.Workbook.Worksheets.Add("Treemap");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("Treemap");
             LoadHierarkiTestData(ws);
-            var chart = ws.Drawings.AddExtendedChart("Treemap", eChartExType.Treemap);
-            var serie = chart.Series.Add("Treemap!$D$2:$D$17", "Treemap!$A$2:$C$17");
+            ExcelChartEx? chart = ws.Drawings.AddExtendedChart("Treemap", eChartExType.Treemap);
+            ExcelChartExSerie? serie = chart.Series.Add("Treemap!$D$2:$D$17", "Treemap!$A$2:$C$17");
             chart.SetPosition(2, 0, 15, 0);
             chart.SetSize(1600, 900);
             serie.DataLabel.Position = eLabelPosition.Center;
@@ -126,10 +126,10 @@ namespace EPPlusTest.Drawing.Chart
         [TestMethod]
         public void AddBoxWhiskerChart()
         {
-            var ws = _pck.Workbook.Worksheets.Add("BoxWhisker");    
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("BoxWhisker");    
             LoadHierarkiTestData(ws);
-            var chart = ws.Drawings.AddBoxWhiskerChart("BoxWhisker");
-            var serie = chart.Series.Add("BoxWhisker!$D$2:$D$17", "BoxWhisker!$A$2:$C$17");
+            ExcelBoxWhiskerChart? chart = ws.Drawings.AddBoxWhiskerChart("BoxWhisker");
+            ExcelBoxWhiskerChartSerie? serie = chart.Series.Add("BoxWhisker!$D$2:$D$17", "BoxWhisker!$A$2:$C$17");
             chart.SetPosition(2, 0, 15, 0);
             chart.SetSize(1600, 900);
             chart.StyleManager.SetChartStyle(ePresetChartStyle.BoxWhiskerChartStyle3);
@@ -149,10 +149,10 @@ namespace EPPlusTest.Drawing.Chart
         [TestMethod]
         public void AddHistogramChart()
         {
-            var ws = _pck.Workbook.Worksheets.Add("Histogram");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("Histogram");
             LoadHierarkiTestData(ws);
-            var chart = ws.Drawings.AddHistogramChart("Histogram");
-            var serie = chart.Series.Add("Histogram!$D$2:$D$17", "Histogram!$A$2:$C$17");
+            ExcelHistogramChart? chart = ws.Drawings.AddHistogramChart("Histogram");
+            ExcelHistogramChartSerie? serie = chart.Series.Add("Histogram!$D$2:$D$17", "Histogram!$A$2:$C$17");
             serie.Binning.Underflow = 1;
             serie.Binning.OverflowAutomatic = true;
             serie.Binning.Count = 3;
@@ -165,10 +165,10 @@ namespace EPPlusTest.Drawing.Chart
         [TestMethod]
         public void AddParetoChart()
         {
-            var ws = _pck.Workbook.Worksheets.Add("Pareto");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("Pareto");
             LoadHierarkiTestData(ws);
-            var chart = ws.Drawings.AddHistogramChart("Pareto", true);
-            var serie = chart.Series.Add("Pareto!$D$2:$D$17", "Pareto!$A$2:$C$17");
+            ExcelHistogramChart? chart = ws.Drawings.AddHistogramChart("Pareto", true);
+            ExcelHistogramChartSerie? serie = chart.Series.Add("Pareto!$D$2:$D$17", "Pareto!$A$2:$C$17");
             chart.SetPosition(2, 0, 15, 0);
             chart.SetSize(1600, 900);
 
@@ -183,13 +183,13 @@ namespace EPPlusTest.Drawing.Chart
         [TestMethod]
         public void AddWaterfallChart()
         {
-            var ws = _pck.Workbook.Worksheets.Add("Waterfall");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("Waterfall");
             LoadHierarkiTestData(ws);
-            var chart = ws.Drawings.AddWaterfallChart("Waterfall");
-            var serie = chart.Series.Add("Waterfall!$D$2:$D$17", "Waterfall!$A$2:$C$17");
+            ExcelWaterfallChart? chart = ws.Drawings.AddWaterfallChart("Waterfall");
+            ExcelWaterfallChartSerie? serie = chart.Series.Add("Waterfall!$D$2:$D$17", "Waterfall!$A$2:$C$17");
             chart.SetPosition(2, 0, 15, 0);
             chart.SetSize(1600, 900);
-            var dt = chart.Series[0].DataPoints.Add(15);
+            ExcelChartExDataPoint? dt = chart.Series[0].DataPoints.Add(15);
             dt.SubTotal = true;
             dt = serie.DataPoints.Add(0);
             dt.SubTotal = true;            
@@ -222,20 +222,20 @@ namespace EPPlusTest.Drawing.Chart
         [TestMethod]
         public void AddFunnelChart()
         {
-            var ws = _pck.Workbook.Worksheets.Add("Funnel");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("Funnel");
             LoadHierarkiTestData(ws);
-            var chart = ws.Drawings.AddFunnelChart("Funnel");
-            var serie = chart.Series.Add("Funnel!$D$2:$D$17", "Funnel!$A$2:$C$17");
+            ExcelFunnelChart? chart = ws.Drawings.AddFunnelChart("Funnel");
+            ExcelChartExSerie? serie = chart.Series.Add("Funnel!$D$2:$D$17", "Funnel!$A$2:$C$17");
             chart.SetPosition(2, 0, 15, 0);
             chart.SetSize(1600, 900);
         }
         [TestMethod]
         public void AddRegionMapChart()
         {
-            var ws = _pck.Workbook.Worksheets.Add("RegionMap");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("RegionMap");
             LoadGeoTestData(ws);
-            var chart = ws.Drawings.AddRegionMapChart("RegionMap");
-            var serie = chart.Series.Add("RegionMap!$C$2:$C$11", "RegionMap!$A$2:$B$11");
+            ExcelRegionMapChart? chart = ws.Drawings.AddRegionMapChart("RegionMap");
+            ExcelRegionMapChartSerie? serie = chart.Series.Add("RegionMap!$C$2:$C$11", "RegionMap!$A$2:$B$11");
             serie.HeaderAddress = ws.Cells["$A$1"];
             serie.DataDimensions[0].NameFormula = "$A$1:$B$1";
             serie.DataDimensions[1].NameFormula = "$C$1";
@@ -271,11 +271,11 @@ namespace EPPlusTest.Drawing.Chart
         public void CopyBoxWhisker()
         {
             ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
-            var package = new ExcelPackage();
-            var package2 = new ExcelPackage();
-            var worksheet1 = package2.Workbook.Worksheets.Add("Test_BoxWhiskers");
+            ExcelPackage? package = new ExcelPackage();
+            ExcelPackage? package2 = new ExcelPackage();
+            ExcelWorksheet? worksheet1 = package2.Workbook.Worksheets.Add("Test_BoxWhiskers");
             ExcelChart chart3 = worksheet1.Drawings.AddBoxWhiskerChart("Status");
-            var bwSerie1 = chart3.Series.Add(worksheet1.Cells[1, 1, 2, 1], null);
+            ExcelChartSerie? bwSerie1 = chart3.Series.Add(worksheet1.Cells[1, 1, 2, 1], null);
             chart3.SetPosition(10, 10);
             chart3.SetSize(750, 470);
             chart3.Title.Text = "Test BoxWhiskers";
@@ -284,8 +284,8 @@ namespace EPPlusTest.Drawing.Chart
             chart3.Legend.Position   = eLegendPosition.TopRight;
             chart3.StyleManager.SetChartStyle(ePresetChartStyleMultiSeries.BoxWhiskerChartStyle6); //BoxWhiskerChartStyle3);
             
-            var ws=package.Workbook.Worksheets.Add(worksheet1.Name, worksheet1);
-            var chart = ws.Drawings[0].As.Chart.BoxWhiskerChart;
+            ExcelWorksheet? ws=package.Workbook.Worksheets.Add(worksheet1.Name, worksheet1);
+            ExcelBoxWhiskerChart? chart = ws.Drawings[0].As.Chart.BoxWhiskerChart;
             Assert.IsTrue(string.IsNullOrEmpty(chart.Series[0].XSeries));
         }
     }

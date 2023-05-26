@@ -15,6 +15,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Metadata;
+using OfficeOpenXml.FormulaParsing.ExcelUtilities;
 using OfficeOpenXml.FormulaParsing.ExpressionGraph;
 
 namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Text
@@ -28,18 +29,18 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Text
         public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
         {
             ValidateArguments(arguments, 1);
-            var arg = arguments.First();
+            FunctionArgument? arg = arguments.First();
             if(arg.ExcelAddressReferenceId > 0)
             {
-                var addressString = ArgToAddress(arguments, 0, context);
-                var address = new ExcelAddressBase(addressString);
-                var currentCell = context.Scopes.Current.Address;
-                var range = context.ExcelDataProvider.GetRange(
-                    address.WorkSheetName ?? context.Scopes.Current.Address.Worksheet,
-                    currentCell.FromRow,
-                    currentCell.FromCol,
-                    address.Address);
-                var firstCell = range.FirstOrDefault();
+                string? addressString = ArgToAddress(arguments, 0, context);
+                ExcelAddressBase? address = new ExcelAddressBase(addressString);
+                RangeAddress? currentCell = context.Scopes.Current.Address;
+                IRangeInfo? range = context.ExcelDataProvider.GetRange(
+                                                                       address.WorkSheetName ?? context.Scopes.Current.Address.Worksheet,
+                                                                       currentCell.FromRow,
+                                                                       currentCell.FromCol,
+                                                                       address.Address);
+                ICellInfo? firstCell = range.FirstOrDefault();
                 if(firstCell != null && firstCell.Value != null)
                 {
                     return CreateResult(Convert.ToDouble(firstCell.Value.ToString().Length), DataType.Integer);
@@ -49,7 +50,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Text
                     return CreateResult(0d, DataType.Integer);
                 }
             }
-            var length = arguments.First().ValueFirst.ToString().Length;
+            int length = arguments.First().ValueFirst.ToString().Length;
             return CreateResult(Convert.ToDouble(length), DataType.Integer);
         }
     }

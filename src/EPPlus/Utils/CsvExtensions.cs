@@ -14,7 +14,7 @@ namespace OfficeOpenXml.Utils
                 return "";
             }
 
-            var items = argument.Split(',');
+            string[]? items = argument.Split(',');
             if(items.Length > position)
             {
                 return items[position];
@@ -28,10 +28,10 @@ namespace OfficeOpenXml.Utils
                 return value;
             }
 
-            var items = argument.Split(',');
+            string[]? items = argument.Split(',');
             if(items.Length < size)
             {
-                var newItems = new string[size];
+                string[]? newItems = new string[size];
                 Array.Copy(items, newItems, items.Length);
                 for(int i=items.Length;i<size;i++)
                 {

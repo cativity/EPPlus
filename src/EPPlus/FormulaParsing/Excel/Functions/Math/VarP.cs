@@ -32,7 +32,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
         public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
         {
             ValidateArguments(arguments, 1);
-            var args = ArgsToDoubleEnumerable(IgnoreHiddenValues, IgnoreErrors, arguments, context);
+            IEnumerable<ExcelDoubleCellValue>? args = ArgsToDoubleEnumerable(IgnoreHiddenValues, IgnoreErrors, arguments, context);
             return new CompileResult(VarMethods.VarP(args), DataType.Decimal);
         }
     }

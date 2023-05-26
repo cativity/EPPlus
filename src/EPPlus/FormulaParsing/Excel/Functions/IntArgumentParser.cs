@@ -33,10 +33,10 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions
             int result;
             if (obj is IRangeInfo)
             {
-                var r = ((IRangeInfo)obj).FirstOrDefault();
+                ICellInfo? r = ((IRangeInfo)obj).FirstOrDefault();
                 return r == null ? 0 : ConvertToInt(r.ValueDouble, roundingMethod);
             }
-            var objType = obj.GetType();
+            Type? objType = obj.GetType();
             if (objType == typeof(int))
             {
                 return (int)obj;
@@ -54,7 +54,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions
 
         private int ConvertToInt(object obj, RoundingMethod roundingMethod)
         {
-            var objType = obj.GetType();
+            Type? objType = obj.GetType();
             if (roundingMethod == RoundingMethod.Convert)
             {
                 return Convert.ToInt32(obj);

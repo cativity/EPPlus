@@ -52,10 +52,10 @@ namespace EPPlusTest.Table
         public void TableInsertRowTop()
         {
             //Setup
-            var ws = _pck.Workbook.Worksheets.Add("TableInsertTop");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("TableInsertTop");
             LoadTestdata(ws, 100);
 
-            var tbl = ws.Tables.Add(ws.Cells["A1:D100"], "TableInsertTop");
+            ExcelTable? tbl = ws.Tables.Add(ws.Cells["A1:D100"], "TableInsertTop");
             ws.Cells["A102"].Value = "Shift Me Down";
             tbl.InsertRow(0);
 
@@ -73,10 +73,10 @@ namespace EPPlusTest.Table
         public void TableInsertRowBottom()
         {
             //Setup
-            var ws = _pck.Workbook.Worksheets.Add("TableInsertBottom");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("TableInsertBottom");
             LoadTestdata(ws, 100);
             ws.Cells["A102"].Value = "Shift Me Down";
-            var tbl = ws.Tables.Add(ws.Cells["A1:D100"], "TableInsertBottom");
+            ExcelTable? tbl = ws.Tables.Add(ws.Cells["A1:D100"], "TableInsertBottom");
             tbl.AddRow(1);
             Assert.AreEqual("A1:D101", tbl.Address.Address);
             Assert.AreEqual("Shift Me Down", ws.Cells["A103"].Value);
@@ -88,12 +88,12 @@ namespace EPPlusTest.Table
         public void TableInsertRowBottomWithTotal()
         {
             //Setup
-            var ws = _pck.Workbook.Worksheets.Add("TableInsertBottomTotal");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("TableInsertBottomTotal");
             LoadTestdata(ws, 100, 2);
             ws.Cells["B102"].Value = "Shift Me Down";
             ws.Cells["F5"].Value = "Don't Shift Me";
 
-            var tbl = ws.Tables.Add(ws.Cells["B1:E100"], "TableInsertBottomTotal");
+            ExcelTable? tbl = ws.Tables.Add(ws.Cells["B1:E100"], "TableInsertBottomTotal");
             tbl.ShowTotal = true;
             tbl.Columns[0].TotalsRowFunction = RowFunctions.Sum;
             tbl.Columns[1].TotalsRowFunction = RowFunctions.Count;
@@ -111,10 +111,10 @@ namespace EPPlusTest.Table
         public void TableInsertRowInside()
         {
             //Setup
-            var ws = _pck.Workbook.Worksheets.Add("TableInsertRowInside");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("TableInsertRowInside");
             LoadTestdata(ws, 100);
             ws.Cells["A102"].Value = "Shift Me Down";
-            var tbl = ws.Tables.Add(ws.Cells["A1:D100"], "TableInsertRowInside");
+            ExcelTable? tbl = ws.Tables.Add(ws.Cells["A1:D100"], "TableInsertRowInside");
             tbl.InsertRow(98);
             Assert.AreEqual("A1:D101", tbl.Address.Address);
             Assert.AreEqual("Shift Me Down", ws.Cells["A103"].Value);
@@ -127,10 +127,10 @@ namespace EPPlusTest.Table
         public void TableInsertRowPositionNegative()
         {
             //Setup
-            using(var p=new ExcelPackage())
+            using(ExcelPackage? p=new ExcelPackage())
             {
-                var ws = p.Workbook.Worksheets.Add("Table1");
-                var tbl = ws.Tables.Add(ws.Cells["A1:D100"], "Table1");
+                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Table1");
+                ExcelTable? tbl = ws.Tables.Add(ws.Cells["A1:D100"], "Table1");
                 tbl.InsertRow(-1);
             }
         }
@@ -139,10 +139,10 @@ namespace EPPlusTest.Table
         public void TableInsertRowRowsNegative()
         {
             //Setup
-            using (var p = new ExcelPackage())
+            using (ExcelPackage? p = new ExcelPackage())
             {
-                var ws = p.Workbook.Worksheets.Add("Table1");
-                var tbl = ws.Tables.Add(ws.Cells["A1:D100"], "Table1");
+                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Table1");
+                ExcelTable? tbl = ws.Tables.Add(ws.Cells["A1:D100"], "Table1");
                 tbl.InsertRow(0, -1);
             }
         }
@@ -150,9 +150,9 @@ namespace EPPlusTest.Table
         public void TableAddRowToMax()
         {
             //Setup
-            var ws = _pck.Workbook.Worksheets.Add("TableMaxRow");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("TableMaxRow");
             LoadTestdata(ws, 100);
-            var tbl = ws.Tables.Add(ws.Cells["A1:D100"], "TableMaxRow");
+            ExcelTable? tbl = ws.Tables.Add(ws.Cells["A1:D100"], "TableMaxRow");
             //Act
             tbl.AddRow(ExcelPackage.MaxRows - 100);
             //Assert
@@ -162,12 +162,12 @@ namespace EPPlusTest.Table
         [ExpectedException(typeof(InvalidOperationException))]
         public void TableAddRowOverMax()
         {
-            using (var p = new ExcelPackage())
+            using (ExcelPackage? p = new ExcelPackage())
             {
                 //Setup
-                var ws = p.Workbook.Worksheets.Add("TableOverMaxRow");
+                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("TableOverMaxRow");
                 LoadTestdata(ws, 100);
-                var tbl = ws.Tables.Add(ws.Cells["A1:D100"], "TableOverMaxRow");
+                ExcelTable? tbl = ws.Tables.Add(ws.Cells["A1:D100"], "TableOverMaxRow");
                 //Act
                 tbl.AddRow(ExcelPackage.MaxRows - 99);
                 //Assert
@@ -181,10 +181,10 @@ namespace EPPlusTest.Table
         {
             //Setup
             
-            var ws = _pck.Workbook.Worksheets.Add("TableInsertColFirst");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("TableInsertColFirst");
             LoadTestdata(ws, 100);
 
-            var tbl = ws.Tables.Add(ws.Cells["A1:D100"], "TableInsertColFirst");
+            ExcelTable? tbl = ws.Tables.Add(ws.Cells["A1:D100"], "TableInsertColFirst");
             ws.Cells["E10"].Value = "Shift Me Right";
             tbl.Columns.Insert(0);
 
@@ -200,10 +200,10 @@ namespace EPPlusTest.Table
         public void TableAddColumn()
         {
             //Setup
-            var ws = _pck.Workbook.Worksheets.Add("TableAddCol");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("TableAddCol");
             LoadTestdata(ws, 100);
             ws.Cells["E99"].Value = "Shift Me Right";
-            var tbl = ws.Tables.Add(ws.Cells["A1:D100"], "TableAddColumn");
+            ExcelTable? tbl = ws.Tables.Add(ws.Cells["A1:D100"], "TableAddColumn");
             tbl.Columns.Add(1);
             Assert.AreEqual("A1:E100", tbl.Address.Address);
             Assert.AreEqual("Shift Me Right", ws.Cells["F99"].Value);
@@ -215,12 +215,12 @@ namespace EPPlusTest.Table
         public void TableAddColumnWithTotal()
         {
             //Setup
-            var ws = _pck.Workbook.Worksheets.Add("TableAddColTotal");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("TableAddColTotal");
             LoadTestdata(ws, 100, 2);
             ws.Cells["F100"].Value = "Shift Me Right";
             ws.Cells["A50,F102"].Value = "Don't Shift Me";
 
-            var tbl = ws.Tables.Add(ws.Cells["B1:E100"], "TableAddTotal");
+            ExcelTable? tbl = ws.Tables.Add(ws.Cells["B1:E100"], "TableAddTotal");
             tbl.ShowTotal = true;
             tbl.Columns[0].TotalsRowFunction = RowFunctions.Sum;
             tbl.Columns[1].TotalsRowFunction = RowFunctions.Count;
@@ -240,11 +240,11 @@ namespace EPPlusTest.Table
         public void TableInsertColumnInside()
         {
             //Setup
-            var ws = _pck.Workbook.Worksheets.Add("TableInsertColInside");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("TableInsertColInside");
             LoadTestdata(ws, 100);
             ws.Cells["E9999"].Value = "Don't Me Down";
             ws.Cells["E19999"].Value = "Don't Me Down";
-            var tbl = ws.Tables.Add(ws.Cells["A1:D100"], "TableInsertColInside");
+            ExcelTable? tbl = ws.Tables.Add(ws.Cells["A1:D100"], "TableInsertColInside");
             tbl.Columns.Insert(4,2);
             Assert.AreEqual("A1:F100", tbl.Address.Address);
             tbl.Columns.Insert(8, 8);
@@ -257,22 +257,22 @@ namespace EPPlusTest.Table
         public void TableInsertColumnPositionNegative()
         {
             //Setup
-            using (var p = new ExcelPackage())
+            using (ExcelPackage? p = new ExcelPackage())
             {
-                var ws = p.Workbook.Worksheets.Add("Table1");
-                var tbl = ws.Tables.Add(ws.Cells["A1:D100"], "Table1");
+                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Table1");
+                ExcelTable? tbl = ws.Tables.Add(ws.Cells["A1:D100"], "Table1");
                 tbl.Columns.Insert(-1);
             }
         }
         [TestMethod]
         public void TableAddColumnToMax()
         {
-            using (var p = new ExcelPackage()) // We discard this as it takes to long time to save
+            using (ExcelPackage? p = new ExcelPackage()) // We discard this as it takes to long time to save
             {
                 //Setup
-                var ws = p.Workbook.Worksheets.Add("TableMaxColumn");
+                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("TableMaxColumn");
                 LoadTestdata(ws, 100);
-                var tbl = ws.Tables.Add(ws.Cells["A1:D100"], "TableMaxColumn");
+                ExcelTable? tbl = ws.Tables.Add(ws.Cells["A1:D100"], "TableMaxColumn");
                 //Act
                 tbl.Columns.Add(ExcelPackage.MaxColumns - 4);
                 //Assert
@@ -283,12 +283,12 @@ namespace EPPlusTest.Table
         [ExpectedException(typeof(InvalidOperationException))]
         public void TableAddColumnOverMax()
         {
-            using (var p = new ExcelPackage())
+            using (ExcelPackage? p = new ExcelPackage())
             {
                 //Setup
-                var ws = p.Workbook.Worksheets.Add("TableOverMaxColumn");
+                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("TableOverMaxColumn");
                 LoadTestdata(ws, 100);
-                var tbl = ws.Tables.Add(ws.Cells["A1:D100"], "TableOverMaxRow");
+                ExcelTable? tbl = ws.Tables.Add(ws.Cells["A1:D100"], "TableOverMaxRow");
                 //Act
                 tbl.Columns.Add(ExcelPackage.MaxColumns - 3);
             }
@@ -298,12 +298,12 @@ namespace EPPlusTest.Table
         [TestMethod]
         public void AddRowsToTablesOfDifferentWidths_TopWider()
         {
-            using (var pck = OpenTemplatePackage("TestTableAddRows.xlsx"))
+            using (ExcelPackage? pck = OpenTemplatePackage("TestTableAddRows.xlsx"))
             {
                 // Get sheet 1 from the workbook, and get the tables we are going to test
-                var ws = TryGetWorksheet(pck, "Sheet1");
-                var table1 = ws.Tables["Table1"];
-                var table2 = ws.Tables["Table2"];
+                ExcelWorksheet? ws = TryGetWorksheet(pck, "Sheet1");
+                ExcelTable? table1 = ws.Tables["Table1"];
+                ExcelTable? table2 = ws.Tables["Table2"];
                 // Make sure the tables are where we expect them to be
                 if (table1.Address.ToString() != "B2:E3")
                 {
@@ -334,12 +334,12 @@ namespace EPPlusTest.Table
         [ExpectedException(typeof(InvalidOperationException))]
         public void AddRowsToTablesOfDifferentWidths_BottomWider()
         {
-            using (var pck = OpenTemplatePackage("TestTableAddRows.xlsx"))
+            using (ExcelPackage? pck = OpenTemplatePackage("TestTableAddRows.xlsx"))
             {
                 // Get sheet 2 from the workbook, and get the tables we are going to test
-                var ws = TryGetWorksheet(pck, "Sheet2");
-                var table3 = ws.Tables["Table3"];
-                var table4 = ws.Tables["Table4"];
+                ExcelWorksheet? ws = TryGetWorksheet(pck, "Sheet2");
+                ExcelTable? table3 = ws.Tables["Table3"];
+                ExcelTable? table4 = ws.Tables["Table4"];
                 // Make sure the tables are where we expect them to be
                 if (table3.Address.ToString() != "B2:C3")
                 {
@@ -369,11 +369,11 @@ namespace EPPlusTest.Table
         [TestMethod]
         public void TableAddOneColumnStartingFromA()
         {
-            using (var p = OpenPackage("TestTableAdd1Column.xlsx", true))
+            using (ExcelPackage? p = OpenPackage("TestTableAdd1Column.xlsx", true))
             {
-                var ws = p.Workbook.Worksheets.Add("Sheet1");
-                var tbl = ws.Tables.Add(ws.Cells["A1:A10"], "Table1");
-                var col = tbl.Columns.Add(1);
+                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Sheet1");
+                ExcelTable? tbl = ws.Tables.Add(ws.Cells["A1:A10"], "Table1");
+                ExcelRangeBase? col = tbl.Columns.Add(1);
                 Assert.AreEqual("A1:B10", tbl.Address.Address);
                 SaveAndCleanup(p);
             }
@@ -381,10 +381,10 @@ namespace EPPlusTest.Table
         [TestMethod]
         public void TableInsertAddRowShowHeaderFalse()
         {
-            using (var p = OpenPackage("TableAddRowWithoutHeader.xlsx", true))
+            using (ExcelPackage? p = OpenPackage("TableAddRowWithoutHeader.xlsx", true))
             {
-                var ws = p.Workbook.Worksheets.Add("Sheet1");
-                var tbl = ws.Tables.Add(ws.Cells["A1:A10"], "Table1");
+                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Sheet1");
+                ExcelTable? tbl = ws.Tables.Add(ws.Cells["A1:A10"], "Table1");
                 tbl.ShowHeader = false;
 
                 tbl.InsertRow(0, 1);
@@ -400,10 +400,10 @@ namespace EPPlusTest.Table
         [TestMethod]
         public void TableInsertAddColumnShowHeaderFalse()
         {
-            using (var p = OpenPackage("TableAddColWithoutHeader.xlsx", true))
+            using (ExcelPackage? p = OpenPackage("TableAddColWithoutHeader.xlsx", true))
             {
-                var ws = p.Workbook.Worksheets.Add("Sheet1");
-                var tbl = ws.Tables.Add(ws.Cells["A1:A10"], "Table1");
+                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Sheet1");
+                ExcelTable? tbl = ws.Tables.Add(ws.Cells["A1:A10"], "Table1");
                 tbl.ShowHeader = false;
 
                 tbl.InsertColumn(0, 1);
@@ -416,10 +416,10 @@ namespace EPPlusTest.Table
         [TestMethod]
         public void TableDeleteRowShowHeaderFalse()
         {
-            using (var p = OpenPackage("TableDeleteRowWithoutHeader.xlsx", true))
+            using (ExcelPackage? p = OpenPackage("TableDeleteRowWithoutHeader.xlsx", true))
             {
-                var ws = p.Workbook.Worksheets.Add("Sheet1");
-                var tbl = ws.Tables.Add(ws.Cells["A1:A10"], "Table1");
+                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Sheet1");
+                ExcelTable? tbl = ws.Tables.Add(ws.Cells["A1:A10"], "Table1");
                 tbl.ShowHeader = false;
 
                 tbl.DeleteRow(0, 3);
@@ -433,15 +433,15 @@ namespace EPPlusTest.Table
         [TestMethod]
         public void TableWithCalculatedFormulaInsert()
         {
-            using (var p = OpenPackage("TableCalculatedColumnInsert.xlsx", true))
+            using (ExcelPackage? p = OpenPackage("TableCalculatedColumnInsert.xlsx", true))
             {
-                var ws = p.Workbook.Worksheets.Add("Sheet1");
+                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Sheet1");
                 ws.Cells[2, 1, 10, 1].Value = 1;
                 ws.Cells[2, 2, 10, 2].Value = 2;
                 ws.Cells[2, 3, 10, 3].Value = 3;
                 ws.Cells[2, 4, 10, 4].Value = 4;
                 ws.Cells[2, 5, 10, 5].Value = 5;
-                var tbl = ws.Tables.Add(ws.Cells["A1:E10"], "Table1");
+                ExcelTable? tbl = ws.Tables.Add(ws.Cells["A1:E10"], "Table1");
                 tbl.ShowHeader = true;
                 tbl.Columns[2].CalculatedColumnFormula = "Table1[[#This Row],[Column1]]";
                 Assert.AreEqual("Table1[[#This Row],[Column1]]", ws.Cells["C2"].Formula);
@@ -458,15 +458,15 @@ namespace EPPlusTest.Table
         [TestMethod]
         public void TableWithCalculatedFormulaDelete()
         {
-            using (var p = OpenPackage("TableCalculatedColumnDelete.xlsx", true))
+            using (ExcelPackage? p = OpenPackage("TableCalculatedColumnDelete.xlsx", true))
             {
-                var ws = p.Workbook.Worksheets.Add("Sheet1");
+                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Sheet1");
                 ws.Cells[2, 1, 10, 1].Value = 1;
                 ws.Cells[2, 2, 10, 2].Value = 2;
                 ws.Cells[2, 3, 10, 3].Value = 3;
                 ws.Cells[2, 4, 10, 4].Value = 4;
                 ws.Cells[2, 5, 10, 5].Value = 5;
-                var tbl = ws.Tables.Add(ws.Cells["A1:E10"], "Table1");
+                ExcelTable? tbl = ws.Tables.Add(ws.Cells["A1:E10"], "Table1");
                 tbl.ShowHeader = true;
                 tbl.Columns[2].CalculatedColumnFormula = "Table1[[#This Row],[Column1]]";
                 Assert.AreEqual("Table1[[#This Row],[Column1]]", ws.Cells["C2"].Formula);

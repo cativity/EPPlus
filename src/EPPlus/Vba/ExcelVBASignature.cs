@@ -107,7 +107,7 @@ namespace OfficeOpenXml.VBA
             }
 
             //Agile signature
-            var p = AgileSignature.Part;
+            ZipPackagePart? p = AgileSignature.Part;
             if (AgileSignature.CreateSignatureOnSave)
             {
                 AgileSignature.SignatureHandler.Certificate = Certificate;

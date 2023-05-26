@@ -127,14 +127,14 @@ namespace OfficeOpenXml.Drawing.Slicer
 
         internal void UpdateItemsXml()
         {
-            var sb = new StringBuilder();
+            StringBuilder? sb = new StringBuilder();
             int x = 0;
             if (_cache._field == null)
             {
                 return;
             }
 
-            foreach (var item in _cache._field.Items)
+            foreach (ExcelPivotTableFieldItem? item in _cache._field.Items)
             {
                 if (item.Type == eItemType.Data)
                 {
@@ -153,7 +153,7 @@ namespace OfficeOpenXml.Drawing.Slicer
             {
                 PivotCacheId = _cache._field._pivotTable.CacheId;
             }
-            var dataNode = (XmlElement)CreateNode(_topPath+"/x14:items");
+            XmlElement? dataNode = (XmlElement)CreateNode(_topPath+"/x14:items");
             dataNode.SetAttribute("count", x.ToString());
             dataNode.InnerXml = sb.ToString();
         }

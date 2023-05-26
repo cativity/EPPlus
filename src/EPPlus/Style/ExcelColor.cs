@@ -17,6 +17,7 @@ using OfficeOpenXml.Style.XmlAccess;
 using System.Drawing;
 using OfficeOpenXml.Drawing;
 using System.Globalization;
+using OfficeOpenXml.Drawing.Style.Coloring;
 
 namespace OfficeOpenXml.Style
 {
@@ -97,11 +98,11 @@ namespace OfficeOpenXml.Style
         {
             if(index >= 0 && index < indexedColors.Length)
             {
-                var s = indexedColors[index];
-                var a = int.Parse(s.Substring(1, 2), NumberStyles.HexNumber);
-                var r = int.Parse(s.Substring(3, 2), NumberStyles.HexNumber);
-                var g = int.Parse(s.Substring(5, 2), NumberStyles.HexNumber);
-                var b = int.Parse(s.Substring(7, 2), NumberStyles.HexNumber);
+                string? s = indexedColors[index];
+                int a = int.Parse(s.Substring(1, 2), NumberStyles.HexNumber);
+                int r = int.Parse(s.Substring(3, 2), NumberStyles.HexNumber);
+                int g = int.Parse(s.Substring(5, 2), NumberStyles.HexNumber);
+                int b = int.Parse(s.Substring(7, 2), NumberStyles.HexNumber);
 
                 return Color.FromArgb(a, r, g, b);
             }
@@ -343,15 +344,15 @@ namespace OfficeOpenXml.Style
             }
             else
             {
-                var c = ((int)(Math.Round((theColor.Tint+1) * 128))).ToString("X");
+                string? c = ((int)(Math.Round((theColor.Tint+1) * 128))).ToString("X");
                 return "#FF" + c + c + c;
             }
         }
 
         private string GetThemeColor(eThemeSchemeColor theme, double tint)
         {
-            var themeColor = _styles._wb.ThemeManager.GetOrCreateTheme().ColorScheme.GetColorByEnum(theme);
-            var color = Utils.ColorConverter.GetThemeColor(themeColor);
+            ExcelDrawingThemeColorManager? themeColor = _styles._wb.ThemeManager.GetOrCreateTheme().ColorScheme.GetColorByEnum(theme);
+            Color color = Utils.ColorConverter.GetThemeColor(themeColor);
             if (tint != 0)
             {
                 color = Utils.ColorConverter.ApplyTint(color, tint);

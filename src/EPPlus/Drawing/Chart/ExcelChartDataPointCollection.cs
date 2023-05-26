@@ -32,7 +32,7 @@ namespace OfficeOpenXml.Drawing.Chart
             SchemaNodeOrder = schemaNodeOrder;
             foreach (XmlNode pointNode in TopNode.SelectNodes(ExcelChartDataPoint.topNodePath, ns))
             {
-                var item = new ExcelChartDataPoint(chart, ns, pointNode);
+                ExcelChartDataPoint? item = new ExcelChartDataPoint(chart, ns, pointNode);
                 _dic.Add(item.Index, item); 
             }
             _chart = chart;
@@ -63,10 +63,10 @@ namespace OfficeOpenXml.Drawing.Chart
             {
                 throw (new ArgumentException($"Point with index {idx} already exists"));
             }
-             var pos = GetItemBefore(idx);
+             int pos = GetItemBefore(idx);
 
             XmlElement element = CreateElement(pos, uniqueId);
-            var dp = new ExcelChartDataPoint(_chart, NameSpaceManager, element, idx);
+            ExcelChartDataPoint? dp = new ExcelChartDataPoint(_chart, NameSpaceManager, element, idx);
 
             _dic.Add(idx, dp);
 
@@ -89,7 +89,7 @@ namespace OfficeOpenXml.Drawing.Chart
                 }
                 else
                 {
-                    var first = _dic.Values.First().TopNode;
+                    XmlNode? first = _dic.Values.First().TopNode;
                     first.ParentNode.InsertBefore(pointElement,first);
                 }
             }

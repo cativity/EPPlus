@@ -37,10 +37,10 @@ namespace EPPlusTest.Core
         [TestMethod]
         public void HideTest_0Based()
         {
-            using (var pck = new ExcelPackage())
+            using (ExcelPackage? pck = new ExcelPackage())
             {
                 pck.Compatibility.IsWorksheets1Based = false;
-                var ws = pck.Workbook.Worksheets.Add("Hidden");
+                ExcelWorksheet? ws = pck.Workbook.Worksheets.Add("Hidden");
                 pck.Workbook.Worksheets.Add("Visible");
                 ws.Cells["A1"].Value = "This workbook is hidden";
                 ws.Hidden = eWorkSheetHidden.Hidden;
@@ -53,10 +53,10 @@ namespace EPPlusTest.Core
         [TestMethod]
         public void VeryHideTest_0Based()
         {
-            using (var pck = new ExcelPackage())
+            using (ExcelPackage? pck = new ExcelPackage())
             {
                 pck.Compatibility.IsWorksheets1Based = false;
-                var ws = pck.Workbook.Worksheets.Add("VeryHidden");
+                ExcelWorksheet? ws = pck.Workbook.Worksheets.Add("VeryHidden");
                 pck.Workbook.Worksheets.Add("Visible");
                 ws.Cells["A1"].Value = "This worksheet is veryhidden";
                 ws.Hidden = eWorkSheetHidden.VeryHidden;
@@ -68,10 +68,10 @@ namespace EPPlusTest.Core
         [TestMethod]
         public void HideTest_1Based()
         {
-            using (var pck = new ExcelPackage())
+            using (ExcelPackage? pck = new ExcelPackage())
             {
                 pck.Compatibility.IsWorksheets1Based = true;
-                var ws = pck.Workbook.Worksheets.Add("Hidden");
+                ExcelWorksheet? ws = pck.Workbook.Worksheets.Add("Hidden");
                 pck.Workbook.Worksheets.Add("Visible");
                 ws.Cells["A1"].Value = "This workbook is hidden";
                 ws.Hidden = eWorkSheetHidden.Hidden;
@@ -84,10 +84,10 @@ namespace EPPlusTest.Core
         [TestMethod]
         public void VeryHideTest_1Based()
         {
-            using (var pck = new ExcelPackage())
+            using (ExcelPackage? pck = new ExcelPackage())
             {
                 pck.Compatibility.IsWorksheets1Based = true;
-                var ws = pck.Workbook.Worksheets.Add("VeryHidden");
+                ExcelWorksheet? ws = pck.Workbook.Worksheets.Add("VeryHidden");
                 pck.Workbook.Worksheets.Add("Visible");
                 ws.Cells["A1"].Value = "This worksheet is veryhidden";
                 ws.Hidden = eWorkSheetHidden.VeryHidden;

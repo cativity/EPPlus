@@ -26,8 +26,8 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.Implementations
 
         internal FinanceCalcResult<System.DateTime> GetCouppcd()
         {
-            var fds = FinancialDaysFactory.Create(Basis);
-            var period = fds.GetCouponPeriod(Settlement, Maturity, Frequency);
+            IFinanicalDays? fds = FinancialDaysFactory.Create(Basis);
+            FinancialPeriod? period = fds.GetCouponPeriod(Settlement, Maturity, Frequency);
             return new FinanceCalcResult<System.DateTime>(period.Start.ToDateTime());
         }
     }

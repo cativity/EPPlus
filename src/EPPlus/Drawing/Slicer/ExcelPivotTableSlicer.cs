@@ -31,7 +31,7 @@ namespace OfficeOpenXml.Drawing.Slicer
         {
             _ws = drawings.Worksheet;
             //_field = field;
-            var name = drawings.Worksheet.Workbook.GetSlicerName(field.Cache.Name);
+            string? name = drawings.Worksheet.Workbook.GetSlicerName(field.Cache.Name);
             
             CreateDrawing(name);
 
@@ -42,7 +42,7 @@ namespace OfficeOpenXml.Drawing.Slicer
             {
                 CacheName = "Slicer_" + ExcelAddressUtil.GetValidName(name);
 
-                var cache = new ExcelPivotTableSlicerCache(NameSpaceManager);
+                ExcelPivotTableSlicerCache? cache = new ExcelPivotTableSlicerCache(NameSpaceManager);
                 if (field.Slicer == null)
                 {
                     field.Slicer = this;
@@ -66,7 +66,7 @@ namespace OfficeOpenXml.Drawing.Slicer
         internal ExcelPivotTableSlicer(ExcelDrawings drawings, XmlNode node, ExcelPivotTableSlicerCache cache, ExcelGroupShape parent = null) : base(drawings, node, parent)
         {
             _ws = drawings.Worksheet;
-            var name = drawings.Worksheet.Workbook.GetSlicerName(Cache.Name);
+            string? name = drawings.Worksheet.Workbook.GetSlicerName(Cache.Name);
             CreateDrawing(name);
 
             SlicerName = name;
@@ -84,7 +84,7 @@ namespace OfficeOpenXml.Drawing.Slicer
         internal ExcelPivotTableSlicer(ExcelDrawings drawings, XmlNode node, ExcelGroupShape parent = null) : base(drawings, node, parent)
         {
             _ws = drawings.Worksheet;
-            var slicerNode = _ws.SlicerXmlSources.GetSource(Name, eSlicerSourceType.PivotTable, out _xmlSource);
+            XmlNode? slicerNode = _ws.SlicerXmlSources.GetSource(Name, eSlicerSourceType.PivotTable, out _xmlSource);
             _slicerXmlHelper = XmlHelperFactory.Create(NameSpaceManager, slicerNode);
 
             _cache = drawings.Worksheet.Workbook.GetSlicerCaches(CacheName) as ExcelPivotTableSlicerCache;
@@ -102,19 +102,19 @@ namespace OfficeOpenXml.Drawing.Slicer
             TopNode.AppendChild(TopNode.OwnerDocument.CreateElement("clientData", ExcelPackage.schemaSheetDrawings));
 
             _xmlSource = _ws.SlicerXmlSources.GetOrCreateSource(eSlicerSourceType.Table);
-            var node = _xmlSource.XmlDocument.CreateElement("slicer", ExcelPackage.schemaMainX14);
+            XmlElement? node = _xmlSource.XmlDocument.CreateElement("slicer", ExcelPackage.schemaMainX14);
             _xmlSource.XmlDocument.DocumentElement.AppendChild(node);
             _slicerXmlHelper = XmlHelperFactory.Create(NameSpaceManager, node);
 
-            var extNode = _ws.GetOrCreateExtLstSubNode(ExtLstUris.WorksheetSlicerPivotTableUri, "x14");
+            XmlNode? extNode = _ws.GetOrCreateExtLstSubNode(ExtLstUris.WorksheetSlicerPivotTableUri, "x14");
             
             if(extNode.InnerXml=="")
             {
                 extNode.InnerXml = "<x14:slicerList/>";
-                var slNode = extNode.FirstChild;
+                XmlNode? slNode = extNode.FirstChild;
 
-                var xh = XmlHelperFactory.Create(NameSpaceManager, slNode);
-                var element = (XmlElement)xh.CreateNode("x14:slicer", false, true);
+                XmlHelper? xh = XmlHelperFactory.Create(NameSpaceManager, slNode);
+                XmlElement? element = (XmlElement)xh.CreateNode("x14:slicer", false, true);
                 element.SetAttribute("id", ExcelPackage.schemaRelationships, _xmlSource.Rel.Id);
             }
 
@@ -133,7 +133,7 @@ namespace OfficeOpenXml.Drawing.Slicer
 
         internal void CreateNewCache(ExcelPivotTableField field)
         {
-            var cache = new ExcelPivotTableSlicerCache(_slicerXmlHelper.NameSpaceManager);
+            ExcelPivotTableSlicerCache? cache = new ExcelPivotTableSlicerCache(_slicerXmlHelper.NameSpaceManager);
             cache.Init(_ws.Workbook, SlicerName, field);
             _cache = cache;
             CacheName = cache.Name;

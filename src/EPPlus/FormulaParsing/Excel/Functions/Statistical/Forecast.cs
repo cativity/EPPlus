@@ -28,11 +28,11 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Statistical
         public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
         {
             ValidateArguments(arguments, 3);
-            var x = ArgToDecimal(arguments, 0);
-            var arg1 = arguments.ElementAt(1);
-            var arg2 = arguments.ElementAt(2);
-            var arrayY = ArgsToDoubleEnumerable(false, false, new FunctionArgument[] { arg1 }, context).Select(a => a.Value).ToArray();
-            var arrayX = ArgsToDoubleEnumerable(false, false, new FunctionArgument[] { arg2 }, context).Select(b => b.Value).ToArray();
+            double x = ArgToDecimal(arguments, 0);
+            FunctionArgument? arg1 = arguments.ElementAt(1);
+            FunctionArgument? arg2 = arguments.ElementAt(2);
+            double[]? arrayY = ArgsToDoubleEnumerable(false, false, new FunctionArgument[] { arg1 }, context).Select(a => a.Value).ToArray();
+            double[]? arrayX = ArgsToDoubleEnumerable(false, false, new FunctionArgument[] { arg2 }, context).Select(b => b.Value).ToArray();
             if (arrayY.Count() != arrayX.Count())
             {
                 return this.CreateResult(eErrorType.NA);
@@ -43,24 +43,24 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Statistical
                 return this.CreateResult(eErrorType.NA);
             }
 
-            var result = ForecastImpl(x, arrayY, arrayX);
+            double result = ForecastImpl(x, arrayY, arrayX);
             return CreateResult(result, DataType.Decimal);
         }
 
         internal static double ForecastImpl(double x, double[] arrayY, double[] arrayX)
         {
-            var avgY = arrayY.Average();
-            var avgX = arrayX.Average();
-            var nItems = arrayY.Length;
-            var upperEquationPart = 0d;
-            var lowerEquationPart = 0d;
-            for (var ix = 0; ix < nItems; ix++)
+            double avgY = arrayY.Average();
+            double avgX = arrayX.Average();
+            int nItems = arrayY.Length;
+            double upperEquationPart = 0d;
+            double lowerEquationPart = 0d;
+            for (int ix = 0; ix < nItems; ix++)
             {
                 upperEquationPart += (arrayX[ix] - avgX) * (arrayY[ix] - avgY);
                 lowerEquationPart += System.Math.Pow(arrayX[ix] - avgX, 2);
             }
-            var b = upperEquationPart / lowerEquationPart;
-            var a = avgY - b * avgX;
+            double b = upperEquationPart / lowerEquationPart;
+            double a = avgY - b * avgX;
             return a + b * x;
         }
     }

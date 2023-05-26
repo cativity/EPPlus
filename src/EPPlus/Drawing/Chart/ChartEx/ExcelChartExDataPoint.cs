@@ -62,12 +62,12 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
             }
             set
             {
-                var path = GetSubTotalPath();
+                string? path = GetSubTotalPath();
                 if (value)
                 {
                     if (!ExistsNode($"{path}[@val={Index}]"))
                     {
-                        var idxElement = (XmlElement)CreateNode(path, false, true);
+                        XmlElement? idxElement = (XmlElement)CreateNode(path, false, true);
                         idxElement.SetAttribute("val", Index.ToString(CultureInfo.InvariantCulture));
                     }
                 }
@@ -160,7 +160,7 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
             if (TopNode.LocalName == "series")
             {
                 XmlElement pointElement;
-                var prepend = GetPrependItem();
+                XmlElement? prepend = GetPrependItem();
                 if (prepend == null)
                 {
                     pointElement = (XmlElement)CreateNode(dataPtPath);
@@ -177,9 +177,9 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
 
         private XmlElement GetPrependItem()
         {
-            var dic = _serie.DataPoints._dic;
-            var prevKey = -1;
-            foreach (var v in dic.Values)
+            SortedDictionary<int, ExcelChartExDataPoint>? dic = _serie.DataPoints._dic;
+            int prevKey = -1;
+            foreach (ExcelChartExDataPoint? v in dic.Values)
             {
                 if (v.TopNode.LocalName == "dataPt" && prevKey < v.Index)
                 {

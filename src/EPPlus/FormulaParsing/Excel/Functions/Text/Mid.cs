@@ -28,9 +28,9 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Text
         public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
         {
             ValidateArguments(arguments, 3);
-            var text = ArgToString(arguments, 0);
-            var startIx = ArgToInt(arguments, 1);
-            var length = ArgToInt(arguments, 2);
+            string? text = ArgToString(arguments, 0);
+            int startIx = ArgToInt(arguments, 1);
+            int length = ArgToInt(arguments, 2);
             if(startIx<=0)
             {
                 throw(new ArgumentException("Argument start can't be less than 1"));
@@ -42,7 +42,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Text
             }
             else
             {
-                var result = text.Substring(startIx - 1, startIx - 1 + length < text.Length ? length : text.Length - startIx + 1);
+                string? result = text.Substring(startIx - 1, startIx - 1 + length < text.Length ? length : text.Length - startIx + 1);
                 return CreateResult(result, DataType.String);
             }
         }

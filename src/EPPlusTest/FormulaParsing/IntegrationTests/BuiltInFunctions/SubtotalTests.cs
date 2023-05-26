@@ -64,7 +64,7 @@ namespace EPPlusTest.FormulaParsing.IntegrationTests.BuiltInFunctions
             _worksheet.Cells["A3"].Value = 2d;
             _worksheet.Cells["A5"].Value = 2d;
             _worksheet.Calculate();
-            var result = _worksheet.Cells["A1"].Value;
+            object? result = _worksheet.Cells["A1"].Value;
             Assert.AreEqual(2d, result);
         }
 
@@ -76,7 +76,7 @@ namespace EPPlusTest.FormulaParsing.IntegrationTests.BuiltInFunctions
             _worksheet.Cells["A3"].Value = 2d;
             _worksheet.Cells["A5"].Value = 2d;
             _worksheet.Calculate();
-            var result = _worksheet.Cells["A1"].Value;
+            object? result = _worksheet.Cells["A1"].Value;
             Assert.AreEqual(1d, result);
         }
 
@@ -88,7 +88,7 @@ namespace EPPlusTest.FormulaParsing.IntegrationTests.BuiltInFunctions
             _worksheet.Cells["A3"].Value = 2d;
             _worksheet.Cells["A5"].Value = 2d;
             _worksheet.Calculate();
-            var result = _worksheet.Cells["A1"].Value;
+            object? result = _worksheet.Cells["A1"].Value;
             Assert.AreEqual(1d, result);
         }
 
@@ -100,7 +100,7 @@ namespace EPPlusTest.FormulaParsing.IntegrationTests.BuiltInFunctions
             _worksheet.Cells["A3"].Value = 2d;
             _worksheet.Cells["A5"].Value = 2d;
             _worksheet.Calculate();
-            var result = _worksheet.Cells["A1"].Value;
+            object? result = _worksheet.Cells["A1"].Value;
             Assert.AreEqual(2d, result);
         }
 
@@ -112,7 +112,7 @@ namespace EPPlusTest.FormulaParsing.IntegrationTests.BuiltInFunctions
             _worksheet.Cells["A3"].Value = 2d;
             _worksheet.Cells["A5"].Value = 2d;
             _worksheet.Calculate();
-            var result = _worksheet.Cells["A1"].Value;
+            object? result = _worksheet.Cells["A1"].Value;
             Assert.AreEqual(2d, result);
         }
 
@@ -124,7 +124,7 @@ namespace EPPlusTest.FormulaParsing.IntegrationTests.BuiltInFunctions
             _worksheet.Cells["A3"].Value = 2d;
             _worksheet.Cells["A5"].Value = 2d;
             _worksheet.Calculate();
-            var result = _worksheet.Cells["A1"].Value;
+            object? result = _worksheet.Cells["A1"].Value;
             Assert.AreEqual(2d, result);
         }
 
@@ -138,7 +138,7 @@ namespace EPPlusTest.FormulaParsing.IntegrationTests.BuiltInFunctions
             _worksheet.Cells["A5"].Value = 2d;
             _worksheet.Cells["A6"].Value = 4d;
             _worksheet.Calculate();
-            var result = _worksheet.Cells["A1"].Value;
+            object? result = _worksheet.Cells["A1"].Value;
             result = Math.Round((double)result, 9);
             Assert.AreEqual(0.707106781d, result);
         }
@@ -153,7 +153,7 @@ namespace EPPlusTest.FormulaParsing.IntegrationTests.BuiltInFunctions
             _worksheet.Cells["A5"].Value = 2d;
             _worksheet.Cells["A6"].Value = 4d;
             _worksheet.Calculate();
-            var result = _worksheet.Cells["A1"].Value;
+            object? result = _worksheet.Cells["A1"].Value;
             Assert.AreEqual(0.5d, result);
         }
 
@@ -165,7 +165,7 @@ namespace EPPlusTest.FormulaParsing.IntegrationTests.BuiltInFunctions
             _worksheet.Cells["A3"].Value = 2d;
             _worksheet.Cells["A5"].Value = 2d;
             _worksheet.Calculate();
-            var result = _worksheet.Cells["A1"].Value;
+            object? result = _worksheet.Cells["A1"].Value;
             Assert.AreEqual(2d, result);
         }
 
@@ -179,7 +179,7 @@ namespace EPPlusTest.FormulaParsing.IntegrationTests.BuiltInFunctions
             _worksheet.Cells["A5"].Value = 2d;
             _worksheet.Cells["A6"].Value = 4d;
             _worksheet.Calculate();
-            var result = _worksheet.Cells["A1"].Value;
+            object? result = _worksheet.Cells["A1"].Value;
             Assert.AreEqual(9d, result);
         }
 
@@ -193,7 +193,7 @@ namespace EPPlusTest.FormulaParsing.IntegrationTests.BuiltInFunctions
             _worksheet.Cells["A5"].Value = 2d;
             _worksheet.Cells["A6"].Value = 4d;
             _worksheet.Calculate();
-            var result = _worksheet.Cells["A1"].Value;
+            object? result = _worksheet.Cells["A1"].Value;
             Assert.AreEqual(0.5d, result);
         }
     }

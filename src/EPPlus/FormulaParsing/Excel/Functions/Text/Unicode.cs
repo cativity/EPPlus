@@ -28,15 +28,15 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Text
         public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
         {
             ValidateArguments(arguments, 1);
-            var arg = ArgToString(arguments, 0);
+            string? arg = ArgToString(arguments, 0);
             if (!IsString(arg, allowNullOrEmpty: false))
             {
                 return this.CreateResult(ExcelErrorValue.Values.Value, DataType.ExcelError);
             }
 
-            var firstChar = arg.Substring(0, 1);
-            var bytes = Encoding.UTF32.GetBytes(firstChar);
-            var code = BitConverter.ToInt32(bytes, 0);
+            string? firstChar = arg.Substring(0, 1);
+            byte[]? bytes = Encoding.UTF32.GetBytes(firstChar);
+            int code = BitConverter.ToInt32(bytes, 0);
             return CreateResult(code, DataType.Integer);
         }
     }

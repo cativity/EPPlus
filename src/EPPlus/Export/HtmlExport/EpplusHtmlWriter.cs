@@ -17,6 +17,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using OfficeOpenXml.Style.XmlAccess;
 #if !NET35
 using System.Threading.Tasks;
 #endif
@@ -47,7 +48,7 @@ namespace OfficeOpenXml.Export.HtmlExport
                 WriteIndent();
             }
             _writer.Write($"<{elementName}");
-            foreach (var attribute in _attributes)
+            foreach (EpplusHtmlAttribute? attribute in _attributes)
             {
                 _writer.Write($" {attribute.AttributeName}=\"{attribute.Value}\"");
             }
@@ -72,7 +73,7 @@ namespace OfficeOpenXml.Export.HtmlExport
                 WriteIndent();
             }
 
-            var elementName = _elementStack.Pop();
+            string? elementName = _elementStack.Pop();
             _writer.Write($"</{elementName}>");
             _writer.Flush();
         }
@@ -87,8 +88,8 @@ namespace OfficeOpenXml.Export.HtmlExport
                 return;
             }
 
-            var xfs = styles.CellXfs[styleId];
-            var styleClassPrefix = settings.StyleClassPrefix;
+            ExcelXfs? xfs = styles.CellXfs[styleId];
+            string? styleClassPrefix = settings.StyleClassPrefix;
             if (settings.HorizontalAlignmentWhenGeneral == eHtmlGeneralAlignmentHandling.CellDataType &&
                xfs.HorizontalAlignment == ExcelHorizontalAlignment.General)
             {
@@ -114,12 +115,12 @@ namespace OfficeOpenXml.Export.HtmlExport
 
             string key = GetStyleKey(xfs);
 
-            var ma = cell.Worksheet.MergedCells[cell._fromRow, cell._fromCol];
+            string? ma = cell.Worksheet.MergedCells[cell._fromRow, cell._fromCol];
             if (ma != null)
             {
-                var address = new ExcelAddressBase(ma);
-                var bottomStyleId = cell.Worksheet._values.GetValue(address._toRow, address._fromCol)._styleId;
-                var rightStyleId = cell.Worksheet._values.GetValue(address._fromRow, address._toCol)._styleId;
+                ExcelAddressBase? address = new ExcelAddressBase(ma);
+                int bottomStyleId = cell.Worksheet._values.GetValue(address._toRow, address._fromCol)._styleId;
+                int rightStyleId = cell.Worksheet._values.GetValue(address._fromRow, address._toCol)._styleId;
                 key += bottomStyleId + "|" + rightStyleId;
             }
 

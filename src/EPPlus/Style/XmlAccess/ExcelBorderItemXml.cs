@@ -110,7 +110,7 @@ namespace OfficeOpenXml.Style.XmlAccess
 
         internal ExcelBorderItemXml Copy()
         {
-            var borderItem = new ExcelBorderItemXml(NameSpaceManager);
+            ExcelBorderItemXml? borderItem = new ExcelBorderItemXml(NameSpaceManager);
             borderItem.Style = _borderStyle;
             borderItem.Color = _color==null ? new ExcelColorXml(NameSpaceManager) { Auto = true } : _color.Copy();
             return borderItem;

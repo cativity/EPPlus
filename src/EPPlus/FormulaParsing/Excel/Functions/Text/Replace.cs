@@ -28,13 +28,13 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Text
         public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
         {
             ValidateArguments(arguments, 4);
-            var oldText = ArgToString(arguments, 0);
-            var startPos = ArgToInt(arguments, 1);
-            var nCharsToReplace = ArgToInt(arguments, 2);
-            var newText = ArgToString(arguments, 3);
-            var firstPart = GetFirstPart(oldText, startPos);
-            var lastPart = GetLastPart(oldText, startPos, nCharsToReplace);
-            var result = string.Concat(firstPart, newText, lastPart);
+            string? oldText = ArgToString(arguments, 0);
+            int startPos = ArgToInt(arguments, 1);
+            int nCharsToReplace = ArgToInt(arguments, 2);
+            string? newText = ArgToString(arguments, 3);
+            string? firstPart = GetFirstPart(oldText, startPos);
+            string? lastPart = GetLastPart(oldText, startPos, nCharsToReplace);
+            string? result = string.Concat(firstPart, newText, lastPart);
             return CreateResult(result, DataType.String);
         }
 

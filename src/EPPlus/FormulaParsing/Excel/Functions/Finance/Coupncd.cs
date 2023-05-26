@@ -29,7 +29,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance
     {
         protected override FinanceCalcResult<System.DateTime> ExecuteFunction(FinancialDay settlementDate, FinancialDay maturityDate, int frequency, DayCountBasis basis = DayCountBasis.US_30_360)
         {
-            var impl = new CoupncdImpl(settlementDate, maturityDate, frequency, basis);
+            CoupncdImpl? impl = new CoupncdImpl(settlementDate, maturityDate, frequency, basis);
             return impl.GetCoupncd();
         }
     }

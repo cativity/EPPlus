@@ -123,12 +123,12 @@ namespace OfficeOpenXml.Drawing
             {
                 throw new ArgumentNullException(nameof(imagePath),"Image Path cannot be empty");
             }
-            var fi=new FileInfo(imagePath); 
+            FileInfo? fi=new FileInfo(imagePath); 
             if(fi.Exists==false)
             {
                 throw new FileNotFoundException(imagePath);
             }
-            var type = PictureStore.GetPictureType(fi.Extension);
+            ePictureType type = PictureStore.GetPictureType(fi.Extension);
             SetImage(File.ReadAllBytes(imagePath), type, true);
         }
         /// <summary>
@@ -146,7 +146,7 @@ namespace OfficeOpenXml.Drawing
             {
                 throw new FileNotFoundException(imageFile.FullName);
             }
-            var type = PictureStore.GetPictureType(imageFile.Extension);
+            ePictureType type = PictureStore.GetPictureType(imageFile.Extension);
             SetImage(File.ReadAllBytes(imageFile.FullName), type, true);
         }
         /// <summary>
@@ -189,7 +189,7 @@ namespace OfficeOpenXml.Drawing
                 {
                     throw (new ArgumentException("Stream must be readable and seekble", nameof(imageStream)));
                 }
-                var byRet = new byte[imageStream.Length];
+                byte[]? byRet = new byte[imageStream.Length];
                 imageStream.Seek(0, SeekOrigin.Begin);
                 imageStream.Read(byRet, 0, (int)imageStream.Length);
 
@@ -214,7 +214,7 @@ namespace OfficeOpenXml.Drawing
                 {
                     throw (new ArgumentException("Stream must be readable and seekble", nameof(imageStream)));
                 }
-                var byRet = new byte[imageStream.Length];
+                byte[]? byRet = new byte[imageStream.Length];
                 imageStream.Seek(0, SeekOrigin.Begin);
                 await imageStream.ReadAsync(byRet, 0, (int)imageStream.Length);
 
@@ -231,7 +231,7 @@ namespace OfficeOpenXml.Drawing
             {
                 throw new ArgumentNullException(nameof(imagePath), "Image Path cannot be empty");
             }
-            var fi = new FileInfo(imagePath);
+            FileInfo? fi = new FileInfo(imagePath);
             return await SetImageAsync(fi);
         }
         /// <summary>
@@ -249,9 +249,9 @@ namespace OfficeOpenXml.Drawing
             {
                 throw new FileNotFoundException(imageFile.FullName);
             }
-            var type = PictureStore.GetPictureType(imageFile.Extension);
-            var fs = imageFile.OpenRead();
-            var b = new byte[fs.Length];
+            ePictureType type = PictureStore.GetPictureType(imageFile.Extension);
+            FileStream? fs = imageFile.OpenRead();
+            byte[]? b = new byte[fs.Length];
             await fs.ReadAsync(b, 0, b.Length);
             return SetImage(b, type, true);
         }
@@ -263,7 +263,7 @@ namespace OfficeOpenXml.Drawing
             if (pictureType == ePictureType.Wmz ||
                pictureType == ePictureType.Emz)
             {
-                var img = ImageReader.ExtractImage(image, out ePictureType? pt);
+                byte[]? img = ImageReader.ExtractImage(image, out ePictureType? pt);
                 if (pt.HasValue)
                 {
                     throw new ArgumentException($"Image is not of type {pictureType}.", nameof(image));
@@ -278,8 +278,8 @@ namespace OfficeOpenXml.Drawing
             {
                 ImageBytes = image;
             }
-            var ms = RecyclableMemory.GetStream(image);
-            var imageHandler = new GenericImageHandler();
+            MemoryStream? ms = RecyclableMemory.GetStream(image);
+            GenericImageHandler? imageHandler = new GenericImageHandler();
             if (imageHandler.GetImageBounds(ms, pictureType, out double height, out double width, out double horizontalResolution, out double verticalResolution))
             {
                 Bounds.Width = width;
@@ -314,7 +314,7 @@ namespace OfficeOpenXml.Drawing
             if (pictureType == ePictureType.Wmz ||
                pictureType == ePictureType.Emz)
             {
-                var img = ImageReader.ExtractImage(image, out ePictureType? pt);
+                byte[]? img = ImageReader.ExtractImage(image, out ePictureType? pt);
                 if (pt.HasValue)
                 {
                     throw new ArgumentException($"Image is not of type {pictureType}.", nameof(image));
@@ -338,7 +338,7 @@ namespace OfficeOpenXml.Drawing
                 ImageBytes = image;
             }
             PictureStore.SavePicture(image, _container, pictureType);
-            var ms = RecyclableMemory.GetStream(image);
+            MemoryStream? ms = RecyclableMemory.GetStream(image);
             if (_container.RelationDocument.Package.Settings.ImageSettings.GetImageBounds(ms, pictureType, out double height, out double width, out double horizontalResolution, out double verticalResolution))
             {
                 Bounds.Width = width;

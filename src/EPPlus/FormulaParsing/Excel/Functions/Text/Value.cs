@@ -48,7 +48,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Text
         public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
         {
             ValidateArguments(arguments, 1);
-            var val = ArgToString(arguments, 0);
+            string? val = ArgToString(arguments, 0);
             double result = 0d;
             if (string.IsNullOrEmpty(val))
             {
@@ -64,7 +64,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Text
             }
             if(val.StartsWith("(", StringComparison.OrdinalIgnoreCase) && val.EndsWith(")", StringComparison.OrdinalIgnoreCase))
             {
-                var numCandidate = val.Substring(1, val.Length - 2);
+                string? numCandidate = val.Substring(1, val.Length - 2);
                 if(double.TryParse(numCandidate, NumberStyles.Any, _cultureInfo, out double tmp))
                 {
                     val = "-" + numCandidate;
@@ -79,16 +79,16 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Text
             {
                 return CreateResult(isPercentage ? result/100d : result, DataType.Decimal);
             }
-            var timeSeparator = Regex.Escape(_timeSeparator);
+            string? timeSeparator = Regex.Escape(_timeSeparator);
             if (Regex.IsMatch(val, @"^[\d]{1,2}" + timeSeparator + @"[\d]{2}(" + timeSeparator + @"[\d]{2})?$", RegexOptions.Compiled))
             {
-                var timeResult = _timeValueFunc.Execute(val);
+                CompileResult? timeResult = _timeValueFunc.Execute(val);
                 if (timeResult.DataType == DataType.Date)
                 {
                     return timeResult;
                 }
             }
-            var dateResult = _dateValueFunc.Execute(val);
+            CompileResult? dateResult = _dateValueFunc.Execute(val);
             if (dateResult.DataType == DataType.Date)
             {
                 return dateResult;

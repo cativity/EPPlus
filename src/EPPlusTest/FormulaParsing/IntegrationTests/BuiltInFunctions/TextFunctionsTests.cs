@@ -42,9 +42,9 @@ namespace EPPlusTest.FormulaParsing.IntegrationTests.BuiltInFunctions
         [TestMethod]
         public void HyperlinkShouldHandleReference()
         {
-            using (var pck = new ExcelPackage(new MemoryStream()))
+            using (ExcelPackage? pck = new ExcelPackage(new MemoryStream()))
             {
-                var sheet = pck.Workbook.Worksheets.Add("test");
+                ExcelWorksheet? sheet = pck.Workbook.Worksheets.Add("test");
                 sheet.Cells["A1"].Formula = "HYPERLINK(B1)";
                 sheet.Cells["B1"].Value = "http://epplus.codeplex.com";
                 sheet.Calculate();
@@ -55,9 +55,9 @@ namespace EPPlusTest.FormulaParsing.IntegrationTests.BuiltInFunctions
         [TestMethod]
         public void HyperlinkShouldHandleReference2()
         {
-            using (var pck = new ExcelPackage(new MemoryStream()))
+            using (ExcelPackage? pck = new ExcelPackage(new MemoryStream()))
             {
-                var sheet = pck.Workbook.Worksheets.Add("test");
+                ExcelWorksheet? sheet = pck.Workbook.Worksheets.Add("test");
                 sheet.Cells["A1"].Formula = "HYPERLINK(B1, B2)";
                 sheet.Cells["B1"].Value = "http://epplus.codeplex.com";
                 sheet.Cells["B2"].Value = "Epplus";
@@ -69,9 +69,9 @@ namespace EPPlusTest.FormulaParsing.IntegrationTests.BuiltInFunctions
         [TestMethod]
         public void HyperlinkShouldHandleText()
         {
-            using (var pck = new ExcelPackage(new MemoryStream()))
+            using (ExcelPackage? pck = new ExcelPackage(new MemoryStream()))
             {
-                var sheet = pck.Workbook.Worksheets.Add("test");
+                ExcelWorksheet? sheet = pck.Workbook.Worksheets.Add("test");
                 sheet.Cells["A1"].Formula = "HYPERLINK(\"testing\")";
                 sheet.Calculate();
                 Assert.AreEqual("testing", sheet.Cells["A1"].Value);
@@ -81,9 +81,9 @@ namespace EPPlusTest.FormulaParsing.IntegrationTests.BuiltInFunctions
         [TestMethod]
         public void TrimShouldHandleStringWithSpaces()
         {
-            using (var pck = new ExcelPackage(new MemoryStream()))
+            using (ExcelPackage? pck = new ExcelPackage(new MemoryStream()))
             {
-                var sheet = pck.Workbook.Worksheets.Add("test");
+                ExcelWorksheet? sheet = pck.Workbook.Worksheets.Add("test");
                 sheet.Cells["A1"].Formula = "TRIM(B1)";
                 sheet.Cells["B1"].Value = " epplus   5 ";
                 sheet.Calculate();
@@ -94,9 +94,9 @@ namespace EPPlusTest.FormulaParsing.IntegrationTests.BuiltInFunctions
         [TestMethod]
         public void CleanShouldRemoveNonPrintableChar()
         {
-            using (var pck = new ExcelPackage(new MemoryStream()))
+            using (ExcelPackage? pck = new ExcelPackage(new MemoryStream()))
             {
-                var sheet = pck.Workbook.Worksheets.Add("test");
+                ExcelWorksheet? sheet = pck.Workbook.Worksheets.Add("test");
                 sheet.Cells["A1"].Formula = "CLEAN(B1)";
                 sheet.Cells["B1"].Value = "epplus" + (char)3;
                 sheet.Calculate();
@@ -107,9 +107,9 @@ namespace EPPlusTest.FormulaParsing.IntegrationTests.BuiltInFunctions
         [TestMethod]
         public void CharShouldReturnCharValOfNumber()
         {
-            using (var pck = new ExcelPackage(new MemoryStream()))
+            using (ExcelPackage? pck = new ExcelPackage(new MemoryStream()))
             {
-                var sheet = pck.Workbook.Worksheets.Add("test");
+                ExcelWorksheet? sheet = pck.Workbook.Worksheets.Add("test");
                 sheet.Cells["A1"].Formula = "Char(A2)";
                 sheet.Cells["A2"].Value = 55;
                 sheet.Calculate();
@@ -120,9 +120,9 @@ namespace EPPlusTest.FormulaParsing.IntegrationTests.BuiltInFunctions
         [TestMethod]
         public void FixedShouldHaveCorrectDefaultValues()
         {
-            using (var pck = new ExcelPackage(new MemoryStream()))
+            using (ExcelPackage? pck = new ExcelPackage(new MemoryStream()))
             {
-                var sheet = pck.Workbook.Worksheets.Add("test");
+                ExcelWorksheet? sheet = pck.Workbook.Worksheets.Add("test");
                 sheet.Cells["A1"].Formula = "Fixed(A2)";
                 sheet.Cells["A2"].Value = 1234.5678;
                 sheet.Calculate();
@@ -133,9 +133,9 @@ namespace EPPlusTest.FormulaParsing.IntegrationTests.BuiltInFunctions
         [TestMethod]
         public void FixedShouldSetCorrectNumberOfDecimals()
         {
-            using (var pck = new ExcelPackage(new MemoryStream()))
+            using (ExcelPackage? pck = new ExcelPackage(new MemoryStream()))
             {
-                var sheet = pck.Workbook.Worksheets.Add("test");
+                ExcelWorksheet? sheet = pck.Workbook.Worksheets.Add("test");
                 sheet.Cells["A1"].Formula = "Fixed(A2,4)";
                 sheet.Cells["A2"].Value = 1234.56789;
                 sheet.Calculate();
@@ -146,9 +146,9 @@ namespace EPPlusTest.FormulaParsing.IntegrationTests.BuiltInFunctions
         [TestMethod]
         public void FixedShouldSetNoCommas()
         {
-            using (var pck = new ExcelPackage(new MemoryStream()))
+            using (ExcelPackage? pck = new ExcelPackage(new MemoryStream()))
             {
-                var sheet = pck.Workbook.Worksheets.Add("test");
+                ExcelWorksheet? sheet = pck.Workbook.Worksheets.Add("test");
                 sheet.Cells["A1"].Formula = "Fixed(A2,4,true)";
                 sheet.Cells["A2"].Value = 1234.56789;
                 sheet.Calculate();
@@ -159,9 +159,9 @@ namespace EPPlusTest.FormulaParsing.IntegrationTests.BuiltInFunctions
         [TestMethod]
         public void UnicodeShouldReturnCorrectCodeOfFirstChar()
         {
-            using (var pck = new ExcelPackage(new MemoryStream()))
+            using (ExcelPackage? pck = new ExcelPackage(new MemoryStream()))
             {
-                var sheet = pck.Workbook.Worksheets.Add("test");
+                ExcelWorksheet? sheet = pck.Workbook.Worksheets.Add("test");
                 sheet.Cells["A1"].Formula = "UNICODE(A2)";
                 sheet.Cells["A2"].Value = "Bxxx";
                 sheet.Calculate();
@@ -172,9 +172,9 @@ namespace EPPlusTest.FormulaParsing.IntegrationTests.BuiltInFunctions
         [TestMethod]
         public void UnicharShouldReturnCorrectCharFromNumber()
         {
-            using (var pck = new ExcelPackage(new MemoryStream()))
+            using (ExcelPackage? pck = new ExcelPackage(new MemoryStream()))
             {
-                var sheet = pck.Workbook.Worksheets.Add("test");
+                ExcelWorksheet? sheet = pck.Workbook.Worksheets.Add("test");
                 sheet.Cells["A1"].Formula = "UNICHAR(66)";
                 sheet.Calculate();
                 Assert.AreEqual("B", sheet.Cells["A1"].Value);
@@ -184,9 +184,9 @@ namespace EPPlusTest.FormulaParsing.IntegrationTests.BuiltInFunctions
         [TestMethod]
         public void FixedShouldHandleNegativeDecimals()
         {
-            using (var pck = new ExcelPackage(new MemoryStream()))
+            using (ExcelPackage? pck = new ExcelPackage(new MemoryStream()))
             {
-                var sheet = pck.Workbook.Worksheets.Add("test");
+                ExcelWorksheet? sheet = pck.Workbook.Worksheets.Add("test");
                 sheet.Cells["A1"].Formula = "Fixed(A2,-1,true)";
                 sheet.Cells["A2"].Value = 1234.56789;
                 sheet.Calculate();
@@ -197,9 +197,9 @@ namespace EPPlusTest.FormulaParsing.IntegrationTests.BuiltInFunctions
         [TestMethod]
         public void ConcatenateShouldHandleRange()
         {
-            using (var pck = new ExcelPackage(new MemoryStream()))
+            using (ExcelPackage? pck = new ExcelPackage(new MemoryStream()))
             {
-                var sheet = pck.Workbook.Worksheets.Add("test");
+                ExcelWorksheet? sheet = pck.Workbook.Worksheets.Add("test");
                 sheet.Cells["A1"].Formula = "Concatenate(1,A2)";
                 sheet.Cells["A2"].Value = "hello";
                 sheet.Calculate();
@@ -210,9 +210,9 @@ namespace EPPlusTest.FormulaParsing.IntegrationTests.BuiltInFunctions
         [TestMethod]
         public void ConcatShouldHandleSingleCellAddressAndNumber()
         {
-            using (var pck = new ExcelPackage(new MemoryStream()))
+            using (ExcelPackage? pck = new ExcelPackage(new MemoryStream()))
             {
-                var sheet = pck.Workbook.Worksheets.Add("test");
+                ExcelWorksheet? sheet = pck.Workbook.Worksheets.Add("test");
                 sheet.Cells["A1"].Formula = "CONCAT(1,A2)";
                 sheet.Cells["A2"].Value = "hello";
                 sheet.Calculate();
@@ -223,9 +223,9 @@ namespace EPPlusTest.FormulaParsing.IntegrationTests.BuiltInFunctions
         [TestMethod]
         public void ConcatShouldHandleRange()
         {
-            using (var pck = new ExcelPackage(new MemoryStream()))
+            using (ExcelPackage? pck = new ExcelPackage(new MemoryStream()))
             {
-                var sheet = pck.Workbook.Worksheets.Add("test");
+                ExcelWorksheet? sheet = pck.Workbook.Worksheets.Add("test");
                 sheet.Cells["A1"].Formula = "CONCAT(A2,A3:A5)";
                 sheet.Cells["A2"].Value = "hello ";
                 sheet.Cells["A3"].Value = "ep";
@@ -240,9 +240,9 @@ namespace EPPlusTest.FormulaParsing.IntegrationTests.BuiltInFunctions
         [TestMethod]
         public void NumberValueShouldHandleRange()
         {
-            using(var pck = new ExcelPackage())
+            using(ExcelPackage? pck = new ExcelPackage())
             {
-                var sheet = pck.Workbook.Worksheets.Add("test");
+                ExcelWorksheet? sheet = pck.Workbook.Worksheets.Add("test");
                 sheet.Cells["A1"].Value = "1,000.15";
                 sheet.Cells["A2"].Formula = "NUMBERVALUE(A1,\".\",\",\")";
                 sheet.Calculate();
@@ -253,17 +253,17 @@ namespace EPPlusTest.FormulaParsing.IntegrationTests.BuiltInFunctions
         [TestMethod, Ignore]
         public void Logtest1()
         {
-            var sw = new Stopwatch();
+            Stopwatch? sw = new Stopwatch();
             sw.Start();
-            using (var pck = new ExcelPackage(new FileInfo(@"c:\temp\denis.xlsx")))
+            using (ExcelPackage? pck = new ExcelPackage(new FileInfo(@"c:\temp\denis.xlsx")))
             {
-                var logger = LoggerFactory.CreateTextFileLogger(new FileInfo(@"c:\temp\log1.txt"));
+                IFormulaParserLogger? logger = LoggerFactory.CreateTextFileLogger(new FileInfo(@"c:\temp\log1.txt"));
                 pck.Workbook.FormulaParser.Configure(x => x.AttachLogger(logger));
                 pck.Workbook.Calculate();
                 //
             }
             sw.Stop();
-            var elapsed = sw.Elapsed;
+            TimeSpan elapsed = sw.Elapsed;
             Console.WriteLine(string.Format("{0} seconds", elapsed.TotalSeconds));
         }
     }

@@ -29,26 +29,26 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance
         public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
         {
             ValidateArguments(arguments, 3);
-            var nPer = ArgToDecimal(arguments, 0);
-            var pmt = ArgToDecimal(arguments, 1);
-            var pv = ArgToDecimal(arguments, 2);
-            var fv = 0d;
+            double nPer = ArgToDecimal(arguments, 0);
+            double pmt = ArgToDecimal(arguments, 1);
+            double pv = ArgToDecimal(arguments, 2);
+            double fv = 0d;
             if (arguments.Count() >= 4)
             {
                 fv = ArgToDecimal(arguments, 3);
             }
-            var type = 0;
+            int type = 0;
             if (arguments.Count() >= 5)
             {
                 type = ArgToInt(arguments, 4);
             }
-            var guess = 0d;
+            double guess = 0d;
             if (arguments.Count() >= 6)
             {
                 guess = ArgToDecimal(arguments, 5);
             }
             
-            var retVal = RateImpl.Rate(nPer, pmt, pv, fv, (PmtDue)type, guess);
+            FinanceCalcResult<double>? retVal = RateImpl.Rate(nPer, pmt, pv, fv, (PmtDue)type, guess);
             if (retVal.HasError)
             {
                 return this.CreateResult(retVal.ExcelErrorType);

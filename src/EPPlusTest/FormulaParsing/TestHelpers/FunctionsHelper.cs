@@ -39,8 +39,8 @@ namespace EPPlusTest.FormulaParsing.TestHelpers
     {
         public static IEnumerable<FunctionArgument> CreateArgs(params object[] args)
         {
-            var list = new List<FunctionArgument>();
-            foreach (var arg in args)
+            List<FunctionArgument>? list = new List<FunctionArgument>();
+            foreach (object? arg in args)
             {
                 list.Add(new FunctionArgument(arg));
             }

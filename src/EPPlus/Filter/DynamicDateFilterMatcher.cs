@@ -62,7 +62,7 @@ namespace OfficeOpenXml.Filter
                 case eDynamicFilterType.Q4:
                     return value.Value.Month >= 10 && value.Value.Month <= 12;                
                 default:
-                    var v = value.Value.ToOADate();
+                    double v = value.Value.ToOADate();
                     return v >= column.Value && v <= column.MaxValue;
             }
         }
@@ -144,8 +144,8 @@ namespace OfficeOpenXml.Filter
 
         private static void SetFullQuarter(ExcelDynamicFilterColumn column, DateTime dt)
         {
-            var quarter = ((dt.Month - (dt.Month - 1) % 3) + 1) / 3;
-            var minDate = new DateTime(dt.Year, (quarter * 3) + 1, 1);
+            int quarter = ((dt.Month - (dt.Month - 1) % 3) + 1) / 3;
+            DateTime minDate = new DateTime(dt.Year, (quarter * 3) + 1, 1);
             column.Value = minDate.ToOADate();
             column.MaxValue = minDate.AddMonths(3).AddDays(-1).ToOADate();
         }
@@ -158,7 +158,7 @@ namespace OfficeOpenXml.Filter
 
         private static void SetFullMonth(ExcelDynamicFilterColumn column, DateTime dt)
         {
-            var minValue = new DateTime(dt.Year, dt.Month, 1);
+            DateTime minValue = new DateTime(dt.Year, dt.Month, 1);
             column.Value = minValue.ToOADate();
             column.MaxValue = minValue.AddMonths(1).AddDays(-1).ToOADate();
         }

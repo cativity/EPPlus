@@ -48,8 +48,8 @@ namespace OfficeOpenXml.Sorting.Internal
                 return -1;
             }
 
-            var ignoreCase = CompOptions == CompareOptions.IgnoreCase || CompOptions == CompareOptions.OrdinalIgnoreCase;
-            for (var x = 0; x < list.Length; x++)
+            bool ignoreCase = CompOptions == CompareOptions.IgnoreCase || CompOptions == CompareOptions.OrdinalIgnoreCase;
+            for (int x = 0; x < list.Length; x++)
             {
                 if (string.Compare(val, list[x], ignoreCase, Culture) == 0)
                 {
@@ -62,12 +62,12 @@ namespace OfficeOpenXml.Sorting.Internal
         protected int CompareObjects(object x1, object y1)
         {
             int ret;
-            var isNumX = ConvertUtil.IsNumericOrDate(x1);
-            var isNumY = ConvertUtil.IsNumericOrDate(y1);
+            bool isNumX = ConvertUtil.IsNumericOrDate(x1);
+            bool isNumY = ConvertUtil.IsNumericOrDate(y1);
             if (isNumX && isNumY)   //Numeric Compare
             {
-                var d1 = ConvertUtil.GetValueDouble(x1);
-                var d2 = ConvertUtil.GetValueDouble(y1);
+                double d1 = ConvertUtil.GetValueDouble(x1);
+                double d2 = ConvertUtil.GetValueDouble(y1);
                 if (double.IsNaN(d1))
                 {
                     d1 = double.MaxValue;
@@ -80,8 +80,8 @@ namespace OfficeOpenXml.Sorting.Internal
             }
             else if (isNumX == false && isNumY == false)   //String Compare
             {
-                var s1 = x1 == null ? "" : x1.ToString();
-                var s2 = y1 == null ? "" : y1.ToString();
+                string? s1 = x1 == null ? "" : x1.ToString();
+                string? s2 = y1 == null ? "" : y1.ToString();
                 ret = string.Compare(s1, s2, StringComparison.CurrentCulture);
             }
             else

@@ -51,7 +51,7 @@ namespace OfficeOpenXml.FormulaParsing.LexicalAnalysis.TokenSeparatorHandlers
         /// <returns>Returns true if the tokenseparator was handled.</returns>
         public bool Handle(char c, Token tokenSeparator, TokenizerContext context, ITokenIndexProvider tokenIndexProvider)
         {
-            foreach(var handler in _handlers)
+            foreach(SeparatorHandler? handler in _handlers)
             {
                 if(handler.Handle(c, tokenSeparator, context, tokenIndexProvider))
                 {

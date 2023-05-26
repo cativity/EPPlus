@@ -15,14 +15,14 @@ namespace EPPlusTest.Export.HtmlExport
         [TestMethod]
         public void ShouldWriteTable()
         {
-            using(var ms = new MemoryStream())
+            using(MemoryStream? ms = new MemoryStream())
             {
-                var writer = new EpplusHtmlWriter(ms, Encoding.UTF8, new Dictionary<string, int>());
+                EpplusHtmlWriter? writer = new EpplusHtmlWriter(ms, Encoding.UTF8, new Dictionary<string, int>());
                 writer.RenderBeginTagAsync(HtmlElements.Table).Wait();
                 writer.RenderEndTagAsync().Wait();
-                var reader = new StreamReader(ms);
+                StreamReader? reader = new StreamReader(ms);
                 ms.Position = 0;
-                var result = reader.ReadToEnd();
+                string? result = reader.ReadToEnd();
                 Assert.AreEqual("<table></table>", result);
             }
         }
@@ -30,15 +30,15 @@ namespace EPPlusTest.Export.HtmlExport
         [TestMethod]
         public void ShouldWriteTableWithClass()
         {
-            using (var ms = new MemoryStream())
+            using (MemoryStream? ms = new MemoryStream())
             {
-                var writer = new EpplusHtmlWriter(ms, Encoding.UTF8, new Dictionary<string, int>());
+                EpplusHtmlWriter? writer = new EpplusHtmlWriter(ms, Encoding.UTF8, new Dictionary<string, int>());
                 writer.AddAttribute(HtmlAttributes.Class, "myClass");
                 writer.RenderBeginTagAsync(HtmlElements.Table).Wait();
                 writer.RenderEndTagAsync().Wait();
-                var reader = new StreamReader(ms);
+                StreamReader? reader = new StreamReader(ms);
                 ms.Position = 0;
-                var result = reader.ReadToEnd();
+                string? result = reader.ReadToEnd();
                 Assert.AreEqual("<table class=\"myClass\"></table>", result);
             }
         }
@@ -46,17 +46,17 @@ namespace EPPlusTest.Export.HtmlExport
         [TestMethod]
         public void ShouldWriteLinkWithHrefAndTarget()
         {
-            using (var ms = new MemoryStream())
+            using (MemoryStream? ms = new MemoryStream())
             {
-                var writer = new EpplusHtmlWriter(ms, Encoding.UTF8, new Dictionary<string, int>());
+                EpplusHtmlWriter? writer = new EpplusHtmlWriter(ms, Encoding.UTF8, new Dictionary<string, int>());
                 writer.AddAttribute(HtmlAttributes.Href, "http://epplussoftware.com");
                 writer.AddAttribute(HtmlAttributes.Target, "_blank");
                 writer.RenderBeginTagAsync(HtmlElements.A).Wait();
                 writer.WriteAsync("EPPlus Software").Wait();
                 writer.RenderEndTagAsync().Wait();
-                var reader = new StreamReader(ms);
+                StreamReader? reader = new StreamReader(ms);
                 ms.Position = 0;
-                var result = reader.ReadToEnd();
+                string? result = reader.ReadToEnd();
                 Assert.AreEqual("<a href=\"http://epplussoftware.com\" target=\"_blank\">EPPlus Software</a>", result);
             }
         }
@@ -64,9 +64,9 @@ namespace EPPlusTest.Export.HtmlExport
         [TestMethod]
         public void ShouldWriteTableWithNestedElements()
         {
-            using (var ms = new MemoryStream())
+            using (MemoryStream? ms = new MemoryStream())
             {
-                var writer = new EpplusHtmlWriter(ms, Encoding.UTF8, new Dictionary<string, int>());
+                EpplusHtmlWriter? writer = new EpplusHtmlWriter(ms, Encoding.UTF8, new Dictionary<string, int>());
                 writer.RenderBeginTagAsync(HtmlElements.Table).Wait();
                 writer.RenderBeginTagAsync(HtmlElements.Thead).Wait();
                 writer.RenderBeginTagAsync(HtmlElements.TableRow).Wait();
@@ -79,9 +79,9 @@ namespace EPPlusTest.Export.HtmlExport
                 writer.RenderEndTagAsync().Wait();
                 writer.RenderEndTagAsync().Wait();
                 writer.RenderEndTagAsync().Wait();
-                var reader = new StreamReader(ms);
+                StreamReader? reader = new StreamReader(ms);
                 ms.Position = 0;
-                var result = reader.ReadToEnd();
+                string? result = reader.ReadToEnd();
                 Assert.AreEqual("<table><thead><tr><th>test1</th><th>test2</th></tr></thead></table>", result);
             }
         }
@@ -89,9 +89,9 @@ namespace EPPlusTest.Export.HtmlExport
         [TestMethod]
         public void ShouldWriteTableWithNestedElementsAndIndent()
         {
-            using (var ms = new MemoryStream())
+            using (MemoryStream? ms = new MemoryStream())
             {
-                var writer = new EpplusHtmlWriter(ms, Encoding.UTF8, new Dictionary<string, int>());
+                EpplusHtmlWriter? writer = new EpplusHtmlWriter(ms, Encoding.UTF8, new Dictionary<string, int>());
                 writer.RenderBeginTagAsync(HtmlElements.Table).Wait();
                 writer.Indent++;
                 writer.WriteLineAsync().Wait();
@@ -106,9 +106,9 @@ namespace EPPlusTest.Export.HtmlExport
                 writer.Indent--;
                 writer.WriteLineAsync().Wait();
                 writer.RenderEndTagAsync().Wait();
-                var reader = new StreamReader(ms);
+                StreamReader? reader = new StreamReader(ms);
                 ms.Position = 0;
-                var result = reader.ReadToEnd();
+                string? result = reader.ReadToEnd();
                 Assert.AreEqual($"<table>{Environment.NewLine}  <thead>{Environment.NewLine}    <tr></tr>{Environment.NewLine}  </thead>{Environment.NewLine}</table>", result);
             }
         }

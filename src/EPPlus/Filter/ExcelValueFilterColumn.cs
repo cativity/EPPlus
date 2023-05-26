@@ -38,7 +38,7 @@ namespace OfficeOpenXml.Filter
                         Filters.Add(new ExcelFilterValueItem(node.Attributes["val"].Value));
                         break;
                     case "dateGroupItem":
-                        var item = CreateDateGroupItem(node);
+                        ExcelFilterDateGroupItem? item = CreateDateGroupItem(node);
                         if (item != null)
                         {
                             Filters.Add(item);
@@ -52,8 +52,8 @@ namespace OfficeOpenXml.Filter
         {
             try
             {
-                var xml=XmlHelperFactory.Create(NameSpaceManager, node);
-                var grouping = (eDateTimeGrouping)Enum.Parse(typeof(eDateTimeGrouping), xml.GetXmlNodeString("@dateTimeGrouping"), true);
+                XmlHelper? xml=XmlHelperFactory.Create(NameSpaceManager, node);
+                eDateTimeGrouping grouping = (eDateTimeGrouping)Enum.Parse(typeof(eDateTimeGrouping), xml.GetXmlNodeString("@dateTimeGrouping"), true);
                 switch (grouping)
                 {
                     case eDateTimeGrouping.Year:
@@ -82,12 +82,12 @@ namespace OfficeOpenXml.Filter
         public ExcelValueFilterCollection Filters { get; set; }
         internal override bool Match(object value, string valueText)
         {
-            var match = true;
-            foreach (var filter in Filters)
+            bool match = true;
+            foreach (ExcelFilterItem? filter in Filters)
             {
                 if(filter is ExcelFilterDateGroupItem d)
                 {
-                    var valueDate = Utils.ConvertUtil.GetValueDate(value);
+                    DateTime? valueDate = Utils.ConvertUtil.GetValueDate(value);
                     match = valueDate.HasValue && d.Match(valueDate.Value);                    
                 }
                 else if (filter is ExcelFilterValueItem v)
@@ -110,7 +110,7 @@ namespace OfficeOpenXml.Filter
         }
         internal override void Save()
         {
-            var node = (XmlElement)CreateNode("d:filters");
+            XmlElement? node = (XmlElement)CreateNode("d:filters");
             node.RemoveAll();
             if (Filters.Blank)
             {
@@ -122,7 +122,7 @@ namespace OfficeOpenXml.Filter
                 (node).SetAttribute("calendarType", this.Filters.CalendarTyp.Value.ToEnumString());
             }
 
-            foreach(var f in Filters)
+            foreach(ExcelFilterItem? f in Filters)
             {
                 if(f is ExcelFilterDateGroupItem d)
                 {
@@ -130,7 +130,7 @@ namespace OfficeOpenXml.Filter
                 }
                 else
                 {
-                    var e = TopNode.OwnerDocument.CreateElement("filter", ExcelPackage.schemaMain);
+                    XmlElement? e = TopNode.OwnerDocument.CreateElement("filter", ExcelPackage.schemaMain);
                     e.SetAttribute("val", ((ExcelFilterValueItem)f).Value);
                     node.AppendChild(e);
                 }

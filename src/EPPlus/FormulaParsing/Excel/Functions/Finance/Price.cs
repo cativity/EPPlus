@@ -30,13 +30,13 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance
         public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
         {
             ValidateArguments(arguments, 6);
-            var settlementDate = System.DateTime.FromOADate(ArgToInt(arguments, 0));
-            var maturityDate = System.DateTime.FromOADate(ArgToInt(arguments, 1));
-            var rate = ArgToDecimal(arguments, 2);
-            var yield = ArgToDecimal(arguments, 3);
-            var redemption = ArgToDecimal(arguments, 4);
-            var frequency = ArgToInt(arguments, 5);
-            var basis = 0;
+            System.DateTime settlementDate = System.DateTime.FromOADate(ArgToInt(arguments, 0));
+            System.DateTime maturityDate = System.DateTime.FromOADate(ArgToInt(arguments, 1));
+            double rate = ArgToDecimal(arguments, 2);
+            double yield = ArgToDecimal(arguments, 3);
+            double redemption = ArgToDecimal(arguments, 4);
+            int frequency = ArgToInt(arguments, 5);
+            int basis = 0;
             if (arguments.Count() >= 7)
             {
                 basis = ArgToInt(arguments, 6);
@@ -47,7 +47,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance
                 return CreateResult(eErrorType.Num);
             }
 
-            var result = PriceImpl.GetPrice(FinancialDayFactory.Create(settlementDate, (DayCountBasis)basis), FinancialDayFactory.Create(maturityDate, (DayCountBasis)basis), rate, yield, redemption, frequency, (DayCountBasis)basis);
+            FinanceCalcResult<double>? result = PriceImpl.GetPrice(FinancialDayFactory.Create(settlementDate, (DayCountBasis)basis), FinancialDayFactory.Create(maturityDate, (DayCountBasis)basis), rate, yield, redemption, frequency, (DayCountBasis)basis);
             if (result.HasError)
             {
                 return this.CreateResult(result.ExcelErrorType);

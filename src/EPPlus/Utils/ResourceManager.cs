@@ -22,12 +22,12 @@ namespace OfficeOpenXml.Utils
     {
         internal static string GetItem(string name)
         {
-            var assembly = Assembly.GetExecutingAssembly();
-            var stream=assembly.GetManifestResourceStream("OfficeOpenXml.resources.DefaultChartStyles.ecs");
+            Assembly? assembly = Assembly.GetExecutingAssembly();
+            Stream? stream=assembly.GetManifestResourceStream("OfficeOpenXml.resources.DefaultChartStyles.ecs");
 
             using (stream)
             {
-                var zipStream = new ZipInputStream(stream);
+                ZipInputStream? zipStream = new ZipInputStream(stream);
                 ZipEntry entry;
                 while ((entry = zipStream.GetNextEntry()) != null)
                 {
@@ -36,13 +36,13 @@ namespace OfficeOpenXml.Utils
                         continue;
                     }
 
-                    var fileName = new FileInfo(entry.FileName).Name;
+                    string? fileName = new FileInfo(entry.FileName).Name;
 
                     if(fileName.Equals(name, StringComparison.InvariantCultureIgnoreCase))
                     {
                         //Extract and set
-                        var content = new byte[entry.UncompressedSize];
-                        var size = zipStream.Read(content, 0, (int)entry.UncompressedSize);
+                        byte[]? content = new byte[entry.UncompressedSize];
+                        int size = zipStream.Read(content, 0, (int)entry.UncompressedSize);
                         return Encoding.UTF8.GetString(content);
                     }
                 }

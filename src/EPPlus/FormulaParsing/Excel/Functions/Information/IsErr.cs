@@ -28,15 +28,15 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Information
     {
         public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
         {
-            var isError = new IsError();
-            var result = isError.Execute(arguments, context);
+            IsError? isError = new IsError();
+            CompileResult? result = isError.Execute(arguments, context);
             if ((bool) result.Result)
             {
-                var arg = GetFirstValue(arguments);
+                object? arg = GetFirstValue(arguments);
                 if (arg is IRangeInfo)
                 {
-                    var r = (IRangeInfo)arg;
-                    var e=r.GetValue(r.Address._fromRow, r.Address._fromCol) as ExcelErrorValue;
+                    IRangeInfo? r = (IRangeInfo)arg;
+                    ExcelErrorValue? e=r.GetValue(r.Address._fromRow, r.Address._fromCol) as ExcelErrorValue;
                     if (e !=null && e.Type==eErrorType.NA)
                     {
                         return CreateResult(false, DataType.Boolean);

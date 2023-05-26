@@ -64,7 +64,7 @@ namespace OfficeOpenXml.Drawing.Theme
         {
             XmlNode e=TopNode.OwnerDocument.CreateElement("a","font",ExcelPackage.schemaDrawings);
             TopNode.AppendChild(e);
-            var f = new ExcelDrawingFont(NameSpaceManager, e) { Typeface=typeface, Script=script };
+            ExcelDrawingFont? f = new ExcelDrawingFont(NameSpaceManager, e) { Typeface=typeface, Script=script };
             _lst.Add(f);
             return f;
         }
@@ -102,7 +102,7 @@ namespace OfficeOpenXml.Drawing.Theme
         {
             if (_pck.Workbook.Styles.Fonts.Count > 0 && string.IsNullOrEmpty(typeface)==false)
             {
-                var id = _pck.Workbook.Styles.Fonts[0].Id;
+                string? id = _pck.Workbook.Styles.Fonts[0].Id;
                 _pck.Workbook.Styles.Fonts[0].Name = typeface;
                 _pck.Workbook.Styles.Fonts._dic.Remove(id);
                 _pck.Workbook.Styles.Fonts._dic.Add(_pck.Workbook.Styles.Fonts[0].Id, 0);
@@ -128,7 +128,7 @@ namespace OfficeOpenXml.Drawing.Theme
 
         private void SetSpecialFont(string typeface, eFontType fontType)
         {
-            var f = _lst.Where((x => x is ExcelDrawingFontSpecial sf && sf.Type == fontType)).FirstOrDefault();
+            ExcelDrawingFontBase? f = _lst.Where((x => x is ExcelDrawingFontSpecial sf && sf.Type == fontType)).FirstOrDefault();
             if (f == null)
             {
                 f = AddSpecialFont(fontType, typeface);
@@ -165,7 +165,7 @@ namespace OfficeOpenXml.Drawing.Theme
             }
             XmlNode e = TopNode.OwnerDocument.CreateElement("a", typeName, ExcelPackage.schemaDrawings);
             TopNode.AppendChild(e);
-            var f = new ExcelDrawingFontSpecial(NameSpaceManager, e) { Typeface=typeface };
+            ExcelDrawingFontSpecial? f = new ExcelDrawingFontSpecial(NameSpaceManager, e) { Typeface=typeface };
             _lst.Add(f);
             return f;
         }

@@ -49,29 +49,29 @@ namespace EPPlusTest.ExcelUtilities
         [TestMethod]
         public void IsMatchShouldReturn0WhenSingleCharWildCardMatches()
         {
-            var string1 = "a?c?";
-            var string2 = "abcd";
-            var result = _matcher.IsMatch(string1, string2);
+            string? string1 = "a?c?";
+            string? string2 = "abcd";
+            int result = _matcher.IsMatch(string1, string2);
             Assert.AreEqual(0, result);
         }
 
         [TestMethod]
         public void IsMatchShouldReturn0WhenMultipleCharWildCardMatches()
         {
-            var string1 = "a*c.";
-            var string2 = "abcc.";
-            var result = _matcher.IsMatch(string1, string2);
+            string? string1 = "a*c.";
+            string? string2 = "abcc.";
+            int result = _matcher.IsMatch(string1, string2);
             Assert.AreEqual(0, result);
         }
 
         [TestMethod]
         public void ShouldHandleTildeAndAsterisk1()
         {
-            var string1 = "a*c";
-            var string2 = "abc";
-            var result1 = _matcher.IsMatch("a~*c", string1);
+            string? string1 = "a*c";
+            string? string2 = "abc";
+            int result1 = _matcher.IsMatch("a~*c", string1);
             Assert.AreEqual(0, result1);
-            var result2 = _matcher.IsMatch("a~*c", string2);
+            int result2 = _matcher.IsMatch("a~*c", string2);
 
             Assert.AreEqual(-1, result2);
         }
@@ -79,11 +79,11 @@ namespace EPPlusTest.ExcelUtilities
         [TestMethod]
         public void ShouldHandleTildeAndAsterisk2()
         {
-            var string1 = "a*cde";
-            var string2 = "abcd";
-            var result1 = _matcher.IsMatch("a~*c*", string1);
+            string? string1 = "a*cde";
+            string? string2 = "abcd";
+            int result1 = _matcher.IsMatch("a~*c*", string1);
             Assert.AreEqual(0, result1);
-            var result2 = _matcher.IsMatch("a~*c*", string2);
+            int result2 = _matcher.IsMatch("a~*c*", string2);
 
             Assert.AreEqual(-1, result2);
         }
@@ -91,11 +91,11 @@ namespace EPPlusTest.ExcelUtilities
         [TestMethod]
         public void ShouldHandleTildeAndQuestionMark1()
         {
-            var string1 = "a?c";
-            var string2 = "abc";
-            var result1 = _matcher.IsMatch("a~?c", string1);
+            string? string1 = "a?c";
+            string? string2 = "abc";
+            int result1 = _matcher.IsMatch("a~?c", string1);
             Assert.AreEqual(0, result1);
-            var result2 = _matcher.IsMatch("a~?c", string2);
+            int result2 = _matcher.IsMatch("a~?c", string2);
 
             Assert.AreEqual(-1, result2);
         }
@@ -103,11 +103,11 @@ namespace EPPlusTest.ExcelUtilities
         [TestMethod]
         public void ShouldHandleTildeAndQuestionMark2()
         {
-            var string1 = "a?cde";
-            var string2 = "abcde";
-            var result1 = _matcher.IsMatch("a~?c?e", string1);
+            string? string1 = "a?cde";
+            string? string2 = "abcde";
+            int result1 = _matcher.IsMatch("a~?c?e", string1);
             Assert.AreEqual(0, result1);
-            var result2 = _matcher.IsMatch("a~?c?e", string2);
+            int result2 = _matcher.IsMatch("a~?c?e", string2);
 
             Assert.AreEqual(-1, result2);
         }

@@ -36,7 +36,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.RefAndLookup
         private void Initialize()
         {
             _index = 0;
-            var factory = new RangeAddressFactory(ParsingContext.ExcelDataProvider);
+            RangeAddressFactory? factory = new RangeAddressFactory(ParsingContext.ExcelDataProvider);
             if (Arguments.RangeInfo == null)
             {
                 _rangeAddress = factory.Create(ParsingContext.Scopes.Current.Address.Worksheet, Arguments.RangeAddress);
@@ -99,8 +99,8 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.RefAndLookup
 
         public override object GetLookupValue()
         {
-            var row = _currentRow;
-            var col = _currentCol;
+            int row = _currentRow;
+            int col = _currentCol;
             if (Direction == LookupDirection.Vertical)
             {
                 col += Arguments.LookupIndex - 1;

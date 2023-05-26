@@ -44,8 +44,8 @@ namespace OfficeOpenXml.FormulaParsing.ExpressionGraph
 
         public override CompileResult Compile()
         {
-            var result = new List<object>();
-            foreach (var childExpression in Children)
+            List<object>? result = new List<object>();
+            foreach (Expression? childExpression in Children)
             {
                 result.Add(_expressionCompiler.Compile(new List<Expression>{ childExpression }).Result);
             }

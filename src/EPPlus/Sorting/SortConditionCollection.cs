@@ -26,12 +26,12 @@ namespace OfficeOpenXml.Sorting
     {
         internal SortConditionCollection(XmlNamespaceManager nameSpaceManager, XmlNode topNode) : base(nameSpaceManager, topNode)
         {
-            var conditionNodes = topNode.SelectNodes("//d:sortCondition", nameSpaceManager);
+            XmlNodeList? conditionNodes = topNode.SelectNodes("//d:sortCondition", nameSpaceManager);
             if(conditionNodes != null)
             {
-                foreach(var node in conditionNodes)
+                foreach(object? node in conditionNodes)
                 {
-                    var condition = new SortCondition(nameSpaceManager, (XmlNode)node);
+                    SortCondition? condition = new SortCondition(nameSpaceManager, (XmlNode)node);
                     _sortConditions.Add(condition);
                 }
             }
@@ -69,8 +69,8 @@ namespace OfficeOpenXml.Sorting
                 throw new ArgumentException("Too many sort conditions added, max number of conditions is 64");
             }
 
-            var node = CreateNode(TopNode, _sortConditionPath, true);
-            var condition = new SortCondition(NameSpaceManager, node);
+            XmlNode? node = CreateNode(TopNode, _sortConditionPath, true);
+            SortCondition? condition = new SortCondition(NameSpaceManager, node);
             condition.Ref = @ref;
             if(decending.HasValue)
             {
@@ -93,8 +93,8 @@ namespace OfficeOpenXml.Sorting
                 throw new ArgumentException("Too many sort conditions added, max number of conditions is 64");
             }
 
-            var node = CreateNode(TopNode, _sortConditionPath, true);
-            var condition = new SortCondition(NameSpaceManager, node);
+            XmlNode? node = CreateNode(TopNode, _sortConditionPath, true);
+            SortCondition? condition = new SortCondition(NameSpaceManager, node);
             condition.Ref = @ref;
             if (decending.HasValue)
             {

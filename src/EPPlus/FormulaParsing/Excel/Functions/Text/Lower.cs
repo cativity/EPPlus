@@ -28,7 +28,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Text
         public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
         {
             ValidateArguments(arguments, 1);
-            var arg = ArgToString(arguments, 0);
+            string? arg = ArgToString(arguments, 0);
             return CreateResult(arg.ToLower(), DataType.String);
         }
     }

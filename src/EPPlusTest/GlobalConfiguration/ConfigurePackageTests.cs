@@ -27,7 +27,7 @@ namespace EPPlusTest.GlobalConfiguration
                         x.JsonConfigFileName = "asdf";
                         x.JsonConfigBasePath = "JKLÖ";
                     });
-                    using(var package = new ExcelPackage())
+                    using(ExcelPackage? package = new ExcelPackage())
                     {
                         Assert.IsTrue(package.InitializationErrors.Count() > 0);
                         Assert.AreEqual(1, package.InitializationErrors.Count());
@@ -53,7 +53,7 @@ namespace EPPlusTest.GlobalConfiguration
                 });
                 try
                 {
-                    using(var package = new ExcelPackage())
+                    using(ExcelPackage? package = new ExcelPackage())
                     {
                         Assert.IsTrue(package.InitializationErrors.Count() > 0);
                         Assert.AreEqual(1, package.InitializationErrors.Count());

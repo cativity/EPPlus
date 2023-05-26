@@ -51,8 +51,8 @@ namespace OfficeOpenXml.Table.PivotTable
             SetCacheFieldNode();
             if (NumFmtId.HasValue)
             {
-                var styles = cache._wb.Styles;
-                var ix = styles.NumberFormats.FindIndexById(NumFmtId.Value.ToString(CultureInfo.InvariantCulture));
+                ExcelStyles? styles = cache._wb.Styles;
+                int ix = styles.NumberFormats.FindIndexById(NumFmtId.Value.ToString(CultureInfo.InvariantCulture));
                 if (ix >= 0)
                 {
                     Format = styles.NumberFormats[ix].Format;
@@ -119,17 +119,17 @@ namespace OfficeOpenXml.Table.PivotTable
         }
         internal void WriteSharedItems(XmlElement fieldNode, XmlNamespaceManager nsm)
         {
-            var shNode = (XmlElement)fieldNode.SelectSingleNode("d:sharedItems", nsm);
+            XmlElement? shNode = (XmlElement)fieldNode.SelectSingleNode("d:sharedItems", nsm);
             shNode.RemoveAll();
 
-            var flags = GetFlags();
+            DataTypeFlags flags = GetFlags();
 
             _cacheLookup = new Dictionary<object, int>(new CacheComparer());
             if (IsRowColumnOrPage || HasSlicer)
             {
                 AppendSharedItems(shNode);
             }
-            var noTypes = GetNoOfTypes(flags);
+            int noTypes = GetNoOfTypes(flags);
             if (noTypes > 1 && 
                 flags != (DataTypeFlags.Int | DataTypeFlags.Number) &&
                 flags != (DataTypeFlags.Float | DataTypeFlags.Number) &&
@@ -166,11 +166,11 @@ namespace OfficeOpenXml.Table.PivotTable
         {
             get
             {
-                foreach (var pt in _cache._pivotTables)
+                foreach (ExcelPivotTable? pt in _cache._pivotTables)
                 {
                     if (Index < pt.Fields.Count)
                     {
-                        var axis = pt.Fields[Index].Axis;
+                        ePivotFieldAxis axis = pt.Fields[Index].Axis;
                         if (axis == ePivotFieldAxis.Column ||
                             axis == ePivotFieldAxis.Row ||
                             axis == ePivotFieldAxis.Page)
@@ -227,7 +227,7 @@ namespace OfficeOpenXml.Table.PivotTable
         {
             get
             {
-                foreach (var pt in _cache._pivotTables)
+                foreach (ExcelPivotTable? pt in _cache._pivotTables)
                 {
                     if (pt.Fields.Count>Index && pt.Fields[Index].Slicer != null)
                     {
@@ -239,9 +239,9 @@ namespace OfficeOpenXml.Table.PivotTable
         }
         internal void UpdateSlicers()
         {
-            foreach (var pt in _cache._pivotTables)
+            foreach (ExcelPivotTable? pt in _cache._pivotTables)
             {
-                var s = pt.Fields[Index].Slicer;
+                ExcelPivotTableSlicer? s = pt.Fields[Index].Slicer;
                 if (s != null)
                 {
                     s.Cache.Data.Items.RefreshMe();
@@ -292,7 +292,7 @@ namespace OfficeOpenXml.Table.PivotTable
         {
             int index = 0;
             bool isLongText = false;
-            foreach (var si in SharedItems)
+            foreach (object? si in SharedItems)
             {
                 if (si == null || si.Equals(ExcelPivotTable.PivotNullValue))
                 {
@@ -302,8 +302,8 @@ namespace OfficeOpenXml.Table.PivotTable
                 else
                 {
                     _cacheLookup.Add(si, index++);
-                    var t = si.GetType();
-                    var tc = Type.GetTypeCode(t);
+                    Type? t = si.GetType();
+                    TypeCode tc = Type.GetTypeCode(t);
 
                     switch (tc)
                     {
@@ -328,7 +328,7 @@ namespace OfficeOpenXml.Table.PivotTable
                             }
                             break;
                         case TypeCode.DateTime:
-                            var d = ((DateTime)si);
+                            DateTime d = ((DateTime)si);
                             if (d.Year > 1899)
                             {
                                 AppendItem(shNode, "d", d.ToString("s"));
@@ -363,7 +363,7 @@ namespace OfficeOpenXml.Table.PivotTable
                             }
                             else
                             {
-                                var s = si.ToString();
+                                string? s = si.ToString();
                                 AppendItem(shNode, "s", s);
                                 if (s.Length > 255 && isLongText == false)
                                 {
@@ -383,7 +383,7 @@ namespace OfficeOpenXml.Table.PivotTable
         private DataTypeFlags GetFlags()
         {
             DataTypeFlags flags = 0;
-            foreach (var si in SharedItems)
+            foreach (object? si in SharedItems)
             {
                 if (si == null || si.Equals(ExcelPivotTable.PivotNullValue))
                 {
@@ -391,7 +391,7 @@ namespace OfficeOpenXml.Table.PivotTable
                 }
                 else
                 {
-                    var t = si.GetType();
+                    Type? t = si.GetType();
                     switch (Type.GetTypeCode(t))
                     {
                         case TypeCode.String:
@@ -458,7 +458,7 @@ namespace OfficeOpenXml.Table.PivotTable
         }
         private void AppendItem(XmlElement shNode, string elementName, string value)
         {
-            var e = shNode.OwnerDocument.CreateElement(elementName, ExcelPackage.schemaMain);
+            XmlElement? e = shNode.OwnerDocument.CreateElement(elementName, ExcelPackage.schemaMain);
             if (value != null)
             {
                 e.SetAttribute("v", value);
@@ -467,10 +467,10 @@ namespace OfficeOpenXml.Table.PivotTable
         }
         internal void SetCacheFieldNode()
         {
-            var groupNode = GetNode("d:fieldGroup");
+            XmlNode? groupNode = GetNode("d:fieldGroup");
             if (groupNode != null)
             {
-                var groupBy = groupNode.SelectSingleNode("d:rangePr/@groupBy", NameSpaceManager);
+                XmlNode? groupBy = groupNode.SelectSingleNode("d:rangePr/@groupBy", NameSpaceManager);
                 if (groupBy == null)
                 {
                     Grouping = new ExcelPivotTableFieldNumericGroup(NameSpaceManager, TopNode);
@@ -480,14 +480,14 @@ namespace OfficeOpenXml.Table.PivotTable
                     DateGrouping = (eDateGroupBy)Enum.Parse(typeof(eDateGroupBy), groupBy.Value, true);
                     Grouping = new ExcelPivotTableFieldDateGroup(NameSpaceManager, groupNode);
                 }
-                var groupItems = groupNode.SelectSingleNode("d:groupItems", NameSpaceManager);
+                XmlNode? groupItems = groupNode.SelectSingleNode("d:groupItems", NameSpaceManager);
                 if (groupItems != null)
                 {
                     AddItems(GroupItems, groupItems, true);
                 }
             }
 
-            var si = GetNode("d:sharedItems");
+            XmlNode? si = GetNode("d:sharedItems");
             if (si != null)
             {
                 AddItems(SharedItems, si, groupNode==null);
@@ -558,7 +558,7 @@ namespace OfficeOpenXml.Table.PivotTable
                 }
                 if(updateCacheLookup)
                 {
-                    var key = items[items.Count - 1];
+                    object? key = items[items.Count - 1];
                     if (_cacheLookup.ContainsKey(key))
                     {
                         items._list.Remove(key);
@@ -746,7 +746,7 @@ namespace OfficeOpenXml.Table.PivotTable
             _cacheLookup = new Dictionary<object, int>(new CacheComparer());
             for (int i = 0; i < items.Count; i++)
             {
-                var key = items[i];
+                object? key = items[i];
                 if (!_cacheLookup.ContainsKey(key))
                 {
                     this._cacheLookup.Add(key, i);
@@ -764,7 +764,7 @@ namespace OfficeOpenXml.Table.PivotTable
 
         private void AddGroupItem(XmlElement groupItems, string value)
         {
-            var s = groupItems.OwnerDocument.CreateElement("s", ExcelPackage.schemaMain);
+            XmlElement? s = groupItems.OwnerDocument.CreateElement("s", ExcelPackage.schemaMain);
             s.SetAttribute("v", value);
             groupItems.AppendChild(s);
             GroupItems.Add(value);
@@ -791,7 +791,7 @@ namespace OfficeOpenXml.Table.PivotTable
 
         private void UpdateGroupItems()
         {
-            foreach (var pt in _cache._pivotTables)
+            foreach (ExcelPivotTable? pt in _cache._pivotTables)
             {                
                 if ((pt.Fields[Index].IsRowField ||
                      pt.Fields[Index].IsColumnField ||
@@ -811,17 +811,17 @@ namespace OfficeOpenXml.Table.PivotTable
 
         private void UpdateSharedItems()
         {
-            var range = _cache.SourceRange;
+            ExcelRangeBase? range = _cache.SourceRange;
             if (range == null)
             {
                 return;
             }
 
-            var column = range._fromCol + Index;
-            var hs = new HashSet<object>(new InvariantObjectComparer());
-            var ws = range.Worksheet;
-            var dimensionToRow = ws.Dimension?._toRow ?? range._fromRow + 1;
-            var toRow = range._toRow < dimensionToRow ? range._toRow : dimensionToRow;
+            int column = range._fromCol + Index;
+            HashSet<object>? hs = new HashSet<object>(new InvariantObjectComparer());
+            ExcelWorksheet? ws = range.Worksheet;
+            int dimensionToRow = ws.Dimension?._toRow ?? range._fromRow + 1;
+            int toRow = range._toRow < dimensionToRow ? range._toRow : dimensionToRow;
 
             //Get unique values.
             for (int row = range._fromRow + 1; row <= toRow; row++)
@@ -829,14 +829,14 @@ namespace OfficeOpenXml.Table.PivotTable
                 AddSharedItemToHashSet(hs, ws.GetValue(row, column));
             }
             //A pivot table cache can reference multiple Pivot tables, so we need to update them all
-            foreach (var pt in _cache._pivotTables)
+            foreach (ExcelPivotTable? pt in _cache._pivotTables)
             {
-                var existingItems = new HashSet<object>();
-                var list = pt.Fields[Index].Items._list;
+                HashSet<object>? existingItems = new HashSet<object>();
+                List<ExcelPivotTableFieldItem>? list = pt.Fields[Index].Items._list;
                 
-                for (var ix = 0; ix < list.Count; ix++)
+                for (int ix = 0; ix < list.Count; ix++)
                 {
-                    var v = list[ix].Value ?? ExcelPivotTable.PivotNullValue;
+                    object? v = list[ix].Value ?? ExcelPivotTable.PivotNullValue;
                     if (!hs.Contains(v) || existingItems.Contains(v))
                     {
                         list.RemoveAt(ix);
@@ -847,8 +847,8 @@ namespace OfficeOpenXml.Table.PivotTable
                         existingItems.Add(v);
                     }
                 }
-                var hasSubTotalSubt=list.Count > 0 && list[list.Count-1].Type==eItemType.Default ? 1 : 0;
-                foreach (var c in hs)
+                int hasSubTotalSubt=list.Count > 0 && list[list.Count-1].Type==eItemType.Default ? 1 : 0;
+                foreach (object? c in hs)
                 {
                     if (!existingItems.Contains(c))
                     {
@@ -876,15 +876,15 @@ namespace OfficeOpenXml.Table.PivotTable
             }
             else
             {
-                var t = o.GetType();
+                Type? t = o.GetType();
                 if (t == typeof(TimeSpan))
                 {
-                    var ticks = ((TimeSpan)o).Ticks + (TimeSpan.TicksPerSecond) / 2;
+                    long ticks = ((TimeSpan)o).Ticks + (TimeSpan.TicksPerSecond) / 2;
                     o = new DateTime(ticks - (ticks % TimeSpan.TicksPerSecond));
                 }
                 if (t == typeof(DateTime))
                 {
-                    var ticks = ((DateTime)o).Ticks;
+                    long ticks = ((DateTime)o).Ticks;
                     if ((ticks % TimeSpan.TicksPerSecond) != 0)
                     {
                         ticks += TimeSpan.TicksPerSecond / 2;

@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using OfficeOpenXml.DataValidation;
 using OfficeOpenXml.Sparkline;
 using System.IO;
+using OfficeOpenXml.DataValidation.Contracts;
 using OfficeOpenXml.Table;
 using OfficeOpenXml.Drawing.Slicer;
 
@@ -21,7 +22,7 @@ namespace EPPlusTest.DataValidation
         public static void Init(TestContext context)
         {
             //_pck = OpenPackage("ExternalReferences.xlsx", true);
-            var outDir = _worksheetPath + "ExternalDataValidations";
+            string? outDir = _worksheetPath + "ExternalDataValidations";
             if (!Directory.Exists(outDir))
             {
                 Directory.CreateDirectory(outDir);
@@ -31,12 +32,12 @@ namespace EPPlusTest.DataValidation
         //Ensures no save or load errors
         internal void SaveAndLoadAndSave(in ExcelPackage pck)
         {
-            var file = pck.File;
+            FileInfo? file = pck.File;
 
-            var stream = new MemoryStream();
+            MemoryStream? stream = new MemoryStream();
             pck.SaveAs(stream);
 
-            var loadedPackage = new ExcelPackage(stream);
+            ExcelPackage? loadedPackage = new ExcelPackage(stream);
 
             loadedPackage.File = file;
 
@@ -47,20 +48,20 @@ namespace EPPlusTest.DataValidation
         {
             if(isExtLst)
             {
-                var intValidation = ws.DataValidations.AddIntegerValidation("A1");
+                IExcelDataValidationInt? intValidation = ws.DataValidations.AddIntegerValidation("A1");
                 intValidation.Operator = ExcelDataValidationOperator.equal;
                 intValidation.Formula.ExcelFormula = extSheetName + "!A1";
             }
             else
             {
-                var intValidation = ws.DataValidations.AddIntegerValidation("A1");
+                IExcelDataValidationInt? intValidation = ws.DataValidations.AddIntegerValidation("A1");
                 intValidation.Formula.Value = 1;
                 intValidation.Formula2.Value = 3;
             }
 
             if(many)
             {
-                var timeValidation = ws.DataValidations.AddTimeValidation("B1");
+                IExcelDataValidationTime? timeValidation = ws.DataValidations.AddTimeValidation("B1");
                 timeValidation.Operator = ExcelDataValidationOperator.between;
 
                 if (isExtLst)
@@ -81,10 +82,10 @@ namespace EPPlusTest.DataValidation
         [TestMethod]
         public void LocalDataValidationsShouldWorkWithExtLstConditionalFormattings()
         {
-            using (var pck = OpenPackage("ExternalDataValidations\\LocalDVExternalCF.xlsx", true))
+            using (ExcelPackage? pck = OpenPackage("ExternalDataValidations\\LocalDVExternalCF.xlsx", true))
             {
-                var ws = pck.Workbook.Worksheets.Add("conditionalFormattingsTest");
-                var extSheet = pck.Workbook.Worksheets.Add("extAddressSheet");
+                ExcelWorksheet? ws = pck.Workbook.Worksheets.Add("conditionalFormattingsTest");
+                ExcelWorksheet? extSheet = pck.Workbook.Worksheets.Add("extAddressSheet");
 
                 ws.ConditionalFormatting.AddDatabar(new ExcelAddress(1, 1, 2, 1), Color.Blue);
 
@@ -96,10 +97,10 @@ namespace EPPlusTest.DataValidation
         [TestMethod]
         public void LocalDataValidationsShouldWorkWithManyExtLstConditionalFormattings()
         {
-            using (var pck = OpenPackage("ExternalDataValidations\\LocalDVManyExternalCF.xlsx", true))
+            using (ExcelPackage? pck = OpenPackage("ExternalDataValidations\\LocalDVManyExternalCF.xlsx", true))
             {
-                var ws = pck.Workbook.Worksheets.Add("conditionalFormattingsTest");
-                var extSheet = pck.Workbook.Worksheets.Add("extAddressSheet");
+                ExcelWorksheet? ws = pck.Workbook.Worksheets.Add("conditionalFormattingsTest");
+                ExcelWorksheet? extSheet = pck.Workbook.Worksheets.Add("extAddressSheet");
 
                 ws.ConditionalFormatting.AddDatabar(new ExcelAddress(1, 1, 2, 1), Color.Blue);
                 ws.ConditionalFormatting.AddDatabar(new ExcelAddress(1, 2, 2, 2), Color.Red);
@@ -112,10 +113,10 @@ namespace EPPlusTest.DataValidation
         [TestMethod]
         public void ManyLocalDataValidationsShouldWorkWithExtLstConditionalFormattings()
         {
-            using (var pck = OpenPackage("ExternalDataValidations\\ManyLocalDVExternalCF.xlsx", true))
+            using (ExcelPackage? pck = OpenPackage("ExternalDataValidations\\ManyLocalDVExternalCF.xlsx", true))
             {
-                var ws = pck.Workbook.Worksheets.Add("conditionalFormattingsTest");
-                var extSheet = pck.Workbook.Worksheets.Add("extAddressSheet");
+                ExcelWorksheet? ws = pck.Workbook.Worksheets.Add("conditionalFormattingsTest");
+                ExcelWorksheet? extSheet = pck.Workbook.Worksheets.Add("extAddressSheet");
 
                 ws.ConditionalFormatting.AddDatabar(new ExcelAddress(1, 1, 2, 1), Color.Blue);
                 ws.ConditionalFormatting.AddDatabar(new ExcelAddress(1, 2, 2, 2), Color.Red);
@@ -129,10 +130,10 @@ namespace EPPlusTest.DataValidation
         [TestMethod]
         public void ManyLocalDataValidationsShouldWorkWithManyExtLstConditionalFormattings()
         {
-            using (var pck = OpenPackage("ExternalDataValidations\\ManyLocalDVManyExternalCF.xlsx", true))
+            using (ExcelPackage? pck = OpenPackage("ExternalDataValidations\\ManyLocalDVManyExternalCF.xlsx", true))
             {
-                var ws = pck.Workbook.Worksheets.Add("conditionalFormattingsTest");
-                var extSheet = pck.Workbook.Worksheets.Add("extAddressSheet");
+                ExcelWorksheet? ws = pck.Workbook.Worksheets.Add("conditionalFormattingsTest");
+                ExcelWorksheet? extSheet = pck.Workbook.Worksheets.Add("extAddressSheet");
 
                 ws.ConditionalFormatting.AddDatabar(new ExcelAddress(1, 1, 2, 1), Color.Blue);
                 ws.ConditionalFormatting.AddDatabar(new ExcelAddress(1, 1, 2, 1), Color.Blue);
@@ -146,10 +147,10 @@ namespace EPPlusTest.DataValidation
         [TestMethod]
         public void LocalDataValidationsShouldWorkWithManyExtLstSparklines()
         {
-            using (var pck = new ExcelPackage())
+            using (ExcelPackage? pck = new ExcelPackage())
             {
-                var ws = pck.Workbook.Worksheets.Add("conditionalFormattingsTest");
-                var extSheet = pck.Workbook.Worksheets.Add("extAddressSheet");
+                ExcelWorksheet? ws = pck.Workbook.Worksheets.Add("conditionalFormattingsTest");
+                ExcelWorksheet? extSheet = pck.Workbook.Worksheets.Add("extAddressSheet");
 
                 ws.SparklineGroups.Add(eSparklineType.Line, new ExcelAddress(1, 1, 5, 1), new ExcelAddress(1, 2, 5, 2));
                 ws.SparklineGroups.Add(eSparklineType.Line, new ExcelAddress(1, 3, 5, 3), new ExcelAddress(1, 4, 5, 4));
@@ -162,10 +163,10 @@ namespace EPPlusTest.DataValidation
         [TestMethod]
         public void ExtDataValidationsShouldWorkWithExtLstConditionalFormattings()
         {
-            using (var pck = OpenPackage("ExternalDataValidations\\ExtDVExternalCF.xlsx", true))
+            using (ExcelPackage? pck = OpenPackage("ExternalDataValidations\\ExtDVExternalCF.xlsx", true))
             {
-                var ws = pck.Workbook.Worksheets.Add("conditionalFormattingsTest");
-                var extSheet = pck.Workbook.Worksheets.Add("extAddressSheet");
+                ExcelWorksheet? ws = pck.Workbook.Worksheets.Add("conditionalFormattingsTest");
+                ExcelWorksheet? extSheet = pck.Workbook.Worksheets.Add("extAddressSheet");
 
                 ws.ConditionalFormatting.AddDatabar(new ExcelAddress(1, 1, 2, 1), Color.Blue);
 
@@ -177,10 +178,10 @@ namespace EPPlusTest.DataValidation
         [TestMethod]
         public void ManyExtDataValidationsShouldWorkWithExtLstConditionalFormattings()
         {
-            using (var pck = OpenPackage("ExternalDataValidations\\ManyExtDVExternalCF.xlsx", true))
+            using (ExcelPackage? pck = OpenPackage("ExternalDataValidations\\ManyExtDVExternalCF.xlsx", true))
             {
-                var ws = pck.Workbook.Worksheets.Add("conditionalFormattingsTest");
-                var extSheet = pck.Workbook.Worksheets.Add("extAddressSheet");
+                ExcelWorksheet? ws = pck.Workbook.Worksheets.Add("conditionalFormattingsTest");
+                ExcelWorksheet? extSheet = pck.Workbook.Worksheets.Add("extAddressSheet");
 
                 ws.ConditionalFormatting.AddDatabar(new ExcelAddress(1, 1, 2, 1), Color.Blue);
 
@@ -192,10 +193,10 @@ namespace EPPlusTest.DataValidation
         [TestMethod]
         public void ManyExtDataValidationsShouldWorkWithManyExtLstConditionalFormattings()
         {
-            using (var pck = OpenPackage("ExternalDataValidations\\ManyExtDVManyExternalCF.xlsx", true))
+            using (ExcelPackage? pck = OpenPackage("ExternalDataValidations\\ManyExtDVManyExternalCF.xlsx", true))
             {
-                var ws = pck.Workbook.Worksheets.Add("conditionalFormattingsTest");
-                var extSheet = pck.Workbook.Worksheets.Add("extAddressSheet");
+                ExcelWorksheet? ws = pck.Workbook.Worksheets.Add("conditionalFormattingsTest");
+                ExcelWorksheet? extSheet = pck.Workbook.Worksheets.Add("extAddressSheet");
 
                 ws.ConditionalFormatting.AddDatabar(new ExcelAddress(1, 1, 2, 1), Color.Blue);
                 ws.ConditionalFormatting.AddDatabar(new ExcelAddress(1, 2, 2, 2), Color.Red);
@@ -208,10 +209,10 @@ namespace EPPlusTest.DataValidation
         [TestMethod]
         public void ExtDataValidationsShouldWorkWithAllOtherExts()
         {
-            using (var pck = OpenPackage("ExternalDataValidations\\ExtDVAllOtherExts.xlsx", true))
+            using (ExcelPackage? pck = OpenPackage("ExternalDataValidations\\ExtDVAllOtherExts.xlsx", true))
             {
-                var ws = pck.Workbook.Worksheets.Add("conditionalFormattingsTest");
-                var extSheet = pck.Workbook.Worksheets.Add("extAddressSheet");
+                ExcelWorksheet? ws = pck.Workbook.Worksheets.Add("conditionalFormattingsTest");
+                ExcelWorksheet? extSheet = pck.Workbook.Worksheets.Add("extAddressSheet");
 
                 ws.SparklineGroups.Add(eSparklineType.Line, ws.Cells["A1:A5"], ws.Cells["B1:B5"]);
                 ws.ConditionalFormatting.AddDatabar(new ExcelAddress(1, 1, 2, 1), Color.Blue);
@@ -230,10 +231,10 @@ namespace EPPlusTest.DataValidation
         [TestMethod]
         public void LocalDataValidationsShouldWorkWithAllOtherExts()
         {
-            using (var pck = OpenPackage("ExternalDataValidations\\LocalDVAllOtherExts.xlsx", true))
+            using (ExcelPackage? pck = OpenPackage("ExternalDataValidations\\LocalDVAllOtherExts.xlsx", true))
             {
-                var ws = pck.Workbook.Worksheets.Add("conditionalFormattingsTest");
-                var extSheet = pck.Workbook.Worksheets.Add("extAddressSheet");
+                ExcelWorksheet? ws = pck.Workbook.Worksheets.Add("conditionalFormattingsTest");
+                ExcelWorksheet? extSheet = pck.Workbook.Worksheets.Add("extAddressSheet");
 
                 ws.SparklineGroups.Add(eSparklineType.Line, ws.Cells["A1:A5"], ws.Cells["B1:B5"]);
                 ws.ConditionalFormatting.AddDatabar(new ExcelAddress(1, 1, 2, 1), Color.Blue);

@@ -26,12 +26,16 @@
  *******************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *******************************************************************************/
+
+using System.Collections.Generic;
 using EPPlusTest.FormulaParsing.TestHelpers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OfficeOpenXml;
 using OfficeOpenXml.FormulaParsing;
+using OfficeOpenXml.FormulaParsing.Excel.Functions;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
 using OfficeOpenXml.FormulaParsing.ExcelUtilities;
+using OfficeOpenXml.FormulaParsing.ExpressionGraph;
 using static OfficeOpenXml.FormulaParsing.ExcelDataProvider;
 
 namespace EPPlusTest.FormulaParsing.Excel.Functions.Math
@@ -66,10 +70,10 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions.Math
             _worksheet.Cells["A1"].Value = 1d;
             _worksheet.Cells["A2"].Value = 2d;
             _worksheet.Cells["A3"].Value = 3d;
-            var func = new CountIf();
+            CountIf? func = new CountIf();
             IRangeInfo range = _provider.GetRange(_worksheet.Name, 1, 1, 3, 1);
-            var args = FunctionsHelper.CreateArgs(range, ">1");
-            var result = func.Execute(args, _parsingContext);
+            IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(range, ">1");
+            CompileResult? result = func.Execute(args, _parsingContext);
             Assert.AreEqual(2d, result.Result);
         }
 
@@ -79,10 +83,10 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions.Math
             _worksheet.Cells["A1"].Value = "Monday";
             _worksheet.Cells["A2"].Value = "Tuesday";
             _worksheet.Cells["A3"].Value = "Thursday";
-            var func = new CountIf();
+            CountIf? func = new CountIf();
             IRangeInfo range = _provider.GetRange(_worksheet.Name, 1, 1, 3, 1);
-            var args = FunctionsHelper.CreateArgs(range, "T*day");
-            var result = func.Execute(args, _parsingContext);
+            IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(range, "T*day");
+            CompileResult? result = func.Execute(args, _parsingContext);
             Assert.AreEqual(2d, result.Result);
         }
 
@@ -92,11 +96,11 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions.Math
             _worksheet.Cells["A2"].Value = 1d;
             _worksheet.Cells["A3"].Value = null;
             _worksheet.Cells["B2"].Value = null;
-            var func = new CountIf();
+            CountIf? func = new CountIf();
             IRangeInfo range1 = _provider.GetRange(_worksheet.Name, 1, 1, 3, 1);
             IRangeInfo range2 = _provider.GetRange(_worksheet.Name, 2, 2, 2, 2);
-            var args = FunctionsHelper.CreateArgs(range1, range2);
-            var result = func.Execute(args, _parsingContext);
+            IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(range1, range2);
+            CompileResult? result = func.Execute(args, _parsingContext);
             Assert.AreEqual(0d, result.Result);
         }
 
@@ -106,10 +110,10 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions.Math
             _worksheet.Cells["A1"].Value = null;
             _worksheet.Cells["A2"].Value = 1d;
             _worksheet.Cells["A3"].Value = "Not Empty";
-            var func = new CountIf();
+            CountIf? func = new CountIf();
             IRangeInfo range = _provider.GetRange(_worksheet.Name, 1, 1, 3, 1);
-            var args = FunctionsHelper.CreateArgs(range, 1d);
-            var result = func.Execute(args, _parsingContext);
+            IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(range, 1d);
+            CompileResult? result = func.Execute(args, _parsingContext);
             Assert.AreEqual(1d, result.Result);
         }
 
@@ -119,10 +123,10 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions.Math
             _worksheet.Cells["A1"].Value = null;
             _worksheet.Cells["A2"].Value = string.Empty;
             _worksheet.Cells["A3"].Value = "Not Empty";
-            var func = new CountIf();
+            CountIf? func = new CountIf();
             IRangeInfo range = _provider.GetRange(_worksheet.Name, 1, 1, 3, 1);
-            var args = FunctionsHelper.CreateArgs(range, "");
-            var result = func.Execute(args, _parsingContext);
+            IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(range, "");
+            CompileResult? result = func.Execute(args, _parsingContext);
             Assert.AreEqual(2d, result.Result);
         }
 
@@ -132,10 +136,10 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions.Math
             _worksheet.Cells["A1"].Value = null;
             _worksheet.Cells["A2"].Value = string.Empty;
             _worksheet.Cells["A3"].Value = "Not Empty";
-            var func = new CountIf();
+            CountIf? func = new CountIf();
             IRangeInfo range = _provider.GetRange(_worksheet.Name, 1, 1, 3, 1);
-            var args = FunctionsHelper.CreateArgs(range, "<>");
-            var result = func.Execute(args, _parsingContext);
+            IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(range, "<>");
+            CompileResult? result = func.Execute(args, _parsingContext);
             Assert.AreEqual(2d, result.Result);
         }
 
@@ -145,10 +149,10 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions.Math
             _worksheet.Cells["A1"].Value = null;
             _worksheet.Cells["A2"].Value = string.Empty;
             _worksheet.Cells["A3"].Value = 0d;
-            var func = new CountIf();
+            CountIf? func = new CountIf();
             IRangeInfo range = _provider.GetRange(_worksheet.Name, 1, 1, 3, 1);
-            var args = FunctionsHelper.CreateArgs(range, "0");
-            var result = func.Execute(args, _parsingContext);
+            IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(range, "0");
+            CompileResult? result = func.Execute(args, _parsingContext);
             Assert.AreEqual(1d, result.Result);
         }
 
@@ -158,10 +162,10 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions.Math
             _worksheet.Cells["A1"].Value = null;
             _worksheet.Cells["A2"].Value = string.Empty;
             _worksheet.Cells["A3"].Value = 0d;
-            var func = new CountIf();
+            CountIf? func = new CountIf();
             IRangeInfo range = _provider.GetRange(_worksheet.Name, 1, 1, 3, 1);
-            var args = FunctionsHelper.CreateArgs(range, "<>0");
-            var result = func.Execute(args, _parsingContext);
+            IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(range, "<>0");
+            CompileResult? result = func.Execute(args, _parsingContext);
             Assert.AreEqual(2d, result.Result);
         }
 
@@ -171,10 +175,10 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions.Math
             _worksheet.Cells["A1"].Value = null;
             _worksheet.Cells["A2"].Value = string.Empty;
             _worksheet.Cells["A3"].Value = 1d;
-            var func = new CountIf();
+            CountIf? func = new CountIf();
             IRangeInfo range = _provider.GetRange(_worksheet.Name, 1, 1, 3, 1);
-            var args = FunctionsHelper.CreateArgs(range, ">0");
-            var result = func.Execute(args, _parsingContext);
+            IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(range, ">0");
+            CompileResult? result = func.Execute(args, _parsingContext);
             Assert.AreEqual(1d, result.Result);
         }
 
@@ -184,10 +188,10 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions.Math
             _worksheet.Cells["A1"].Value = null;
             _worksheet.Cells["A2"].Value = string.Empty;
             _worksheet.Cells["A3"].Value = 1d;
-            var func = new CountIf();
+            CountIf? func = new CountIf();
             IRangeInfo range = _provider.GetRange(_worksheet.Name, 1, 1, 3, 1);
-            var args = FunctionsHelper.CreateArgs(range, ">=0");
-            var result = func.Execute(args, _parsingContext);
+            IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(range, ">=0");
+            CompileResult? result = func.Execute(args, _parsingContext);
             Assert.AreEqual(1d, result.Result);
         }
 
@@ -197,10 +201,10 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions.Math
             _worksheet.Cells["A1"].Value = null;
             _worksheet.Cells["A2"].Value = string.Empty;
             _worksheet.Cells["A3"].Value = -1d;
-            var func = new CountIf();
+            CountIf? func = new CountIf();
             IRangeInfo range = _provider.GetRange(_worksheet.Name, 1, 1, 3, 1);
-            var args = FunctionsHelper.CreateArgs(range, "<0");
-            var result = func.Execute(args, _parsingContext);
+            IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(range, "<0");
+            CompileResult? result = func.Execute(args, _parsingContext);
             Assert.AreEqual(1d, result.Result);
         }
 
@@ -210,10 +214,10 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions.Math
             _worksheet.Cells["A1"].Value = null;
             _worksheet.Cells["A2"].Value = string.Empty;
             _worksheet.Cells["A3"].Value = -1d;
-            var func = new CountIf();
+            CountIf? func = new CountIf();
             IRangeInfo range = _provider.GetRange(_worksheet.Name, 1, 1, 3, 1);
-            var args = FunctionsHelper.CreateArgs(range, "<=0");
-            var result = func.Execute(args, _parsingContext);
+            IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(range, "<=0");
+            CompileResult? result = func.Execute(args, _parsingContext);
             Assert.AreEqual(1d, result.Result);
         }
 
@@ -223,10 +227,10 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions.Math
             _worksheet.Cells["A1"].Value = null;
             _worksheet.Cells["A2"].Value = string.Empty;
             _worksheet.Cells["A3"].Value = "Not Empty";
-            var func = new CountIf();
+            CountIf? func = new CountIf();
             IRangeInfo range = _provider.GetRange(_worksheet.Name, 1, 1, 3, 1);
-            var args = FunctionsHelper.CreateArgs(range, "<a");
-            var result = func.Execute(args, _parsingContext);
+            IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(range, "<a");
+            CompileResult? result = func.Execute(args, _parsingContext);
             Assert.AreEqual(1d, result.Result);
         }
 
@@ -236,10 +240,10 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions.Math
             _worksheet.Cells["A1"].Value = null;
             _worksheet.Cells["A2"].Value = string.Empty;
             _worksheet.Cells["A3"].Value = "Not Empty";
-            var func = new CountIf();
+            CountIf? func = new CountIf();
             IRangeInfo range = _provider.GetRange(_worksheet.Name, 1, 1, 3, 1);
-            var args = FunctionsHelper.CreateArgs(range, "<=a");
-            var result = func.Execute(args, _parsingContext);
+            IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(range, "<=a");
+            CompileResult? result = func.Execute(args, _parsingContext);
             Assert.AreEqual(1d, result.Result);
         }
 
@@ -249,10 +253,10 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions.Math
             _worksheet.Cells["A1"].Value = null;
             _worksheet.Cells["A2"].Value = string.Empty;
             _worksheet.Cells["A3"].Value = "Not Empty";
-            var func = new CountIf();
+            CountIf? func = new CountIf();
             IRangeInfo range = _provider.GetRange(_worksheet.Name, 1, 1, 3, 1);
-            var args = FunctionsHelper.CreateArgs(range, ">a");
-            var result = func.Execute(args, _parsingContext);
+            IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(range, ">a");
+            CompileResult? result = func.Execute(args, _parsingContext);
             Assert.AreEqual(1d, result.Result);
         }
 
@@ -262,10 +266,10 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions.Math
             _worksheet.Cells["A1"].Value = null;
             _worksheet.Cells["A2"].Value = string.Empty;
             _worksheet.Cells["A3"].Value = "Not Empty";
-            var func = new CountIf();
+            CountIf? func = new CountIf();
             IRangeInfo range = _provider.GetRange(_worksheet.Name, 1, 1, 3, 1);
-            var args = FunctionsHelper.CreateArgs(range, ">=a");
-            var result = func.Execute(args, _parsingContext);
+            IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(range, ">=a");
+            CompileResult? result = func.Execute(args, _parsingContext);
             Assert.AreEqual(1d, result.Result);
         }
 
@@ -275,10 +279,10 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions.Math
             _worksheet.Cells["A1"].Value = "1";
             _worksheet.Cells["A2"].Value = 2;
             _worksheet.Cells["A3"].Value = "3";
-            var func = new CountIf();
+            CountIf? func = new CountIf();
             IRangeInfo range = _provider.GetRange(_worksheet.Name, 1, 1, 3, 1);
-            var args = FunctionsHelper.CreateArgs(range, ">0");
-            var result = func.Execute(args, _parsingContext);
+            IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(range, ">0");
+            CompileResult? result = func.Execute(args, _parsingContext);
             Assert.AreEqual(1d, result.Result);
         }
     }

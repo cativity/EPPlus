@@ -45,7 +45,7 @@ namespace OfficeOpenXml.Drawing.Slicer.Style
                 {
                     if (node is XmlElement e)
                     {
-                        var type = e.GetAttribute("type").ToEnum(eTableStyleElement.WholeTable);
+                        eTableStyleElement type = e.GetAttribute("type").ToEnum(eTableStyleElement.WholeTable);
                         _dicTable.Add(type, new ExcelSlicerTableStyleElement(nameSpaceManager, node, styles, type));
                     }
                 }
@@ -56,7 +56,7 @@ namespace OfficeOpenXml.Drawing.Slicer.Style
                 {
                     if (node is XmlElement e)
                     {
-                        var type = e.GetAttribute("type").ToEnum(eSlicerStyleElement.SelectedItemWithData);
+                        eSlicerStyleElement type = e.GetAttribute("type").ToEnum(eSlicerStyleElement.SelectedItemWithData);
                         _dicSlicer.Add(type, new ExcelSlicerStyleElement(nameSpaceManager, node, styles, type));
                     }
                 }
@@ -208,14 +208,14 @@ namespace OfficeOpenXml.Drawing.Slicer.Style
 
         internal void SetFromTemplate(ExcelSlicerNamedStyle templateStyle)
         {
-            foreach (var s in templateStyle._dicTable.Values)
+            foreach (ExcelSlicerTableStyleElement? s in templateStyle._dicTable.Values)
             {
-                var element = GetTableStyleElement(s.Type);
+                ExcelSlicerTableStyleElement? element = GetTableStyleElement(s.Type);
                 element.Style = (ExcelDxfSlicerStyle)s.Style.Clone();
             }
-            foreach (var s in templateStyle._dicSlicer.Values)
+            foreach (ExcelSlicerStyleElement? s in templateStyle._dicSlicer.Values)
             {
-                var element = GetSlicerStyleElement(s.Type);
+                ExcelSlicerStyleElement? element = GetSlicerStyleElement(s.Type);
                 element.Style = (ExcelDxfSlicerStyle)s.Style.Clone();
             }
         }
@@ -225,7 +225,7 @@ namespace OfficeOpenXml.Drawing.Slicer.Style
         }
         private void LoadTableTemplate(string folder, string styleName)
         {
-            var zipStream = ZipHelper.OpenZipResource();
+            ZipInputStream? zipStream = ZipHelper.OpenZipResource();
             ZipEntry entry;
             while ((entry = zipStream.GetNextEntry()) != null)
             {
@@ -234,32 +234,32 @@ namespace OfficeOpenXml.Drawing.Slicer.Style
                     continue;
                 }
 
-                var name = new FileInfo(entry.FileName).Name;
+                string? name = new FileInfo(entry.FileName).Name;
                 name = name.Substring(0, name.Length - 4);
                 if (name.Equals(styleName, StringComparison.OrdinalIgnoreCase))
                 {
-                    var xmlContent = ZipHelper.UncompressEntry(zipStream, entry);
-                    var xml = new XmlDocument();
+                    string? xmlContent = ZipHelper.UncompressEntry(zipStream, entry);
+                    XmlDocument? xml = new XmlDocument();
                     xml.LoadXml(xmlContent);
 
                     foreach (XmlElement elem in xml.DocumentElement.ChildNodes)
                     {
-                        var dxfXml = elem.InnerXml;
-                        var tblType = elem.GetAttribute("name").ToEnum<eTableStyleElement>();
+                        string? dxfXml = elem.InnerXml;
+                        eTableStyleElement? tblType = elem.GetAttribute("name").ToEnum<eTableStyleElement>();
                         if(tblType==null)
                         {
-                            var slicerType= elem.GetAttribute("name").ToEnum<eSlicerStyleElement>();
+                            eSlicerStyleElement? slicerType= elem.GetAttribute("name").ToEnum<eSlicerStyleElement>();
                             if(slicerType.HasValue)
                             {
-                                var se = GetSlicerStyleElement(slicerType.Value);
-                                var dxf = new ExcelDxfSlicerStyle(NameSpaceManager, elem.FirstChild, _styles, null);
+                                ExcelSlicerStyleElement? se = GetSlicerStyleElement(slicerType.Value);
+                                ExcelDxfSlicerStyle? dxf = new ExcelDxfSlicerStyle(NameSpaceManager, elem.FirstChild, _styles, null);
                                 se.Style = dxf;
                             }
                         }
                         else
                         {
-                            var te = GetTableStyleElement(tblType.Value);
-                            var dxf = new ExcelDxfSlicerStyle(NameSpaceManager, elem.FirstChild, _styles, null);
+                            ExcelSlicerTableStyleElement? te = GetTableStyleElement(tblType.Value);
+                            ExcelDxfSlicerStyle? dxf = new ExcelDxfSlicerStyle(NameSpaceManager, elem.FirstChild, _styles, null);
                             te.Style = dxf;
                         }
                     }

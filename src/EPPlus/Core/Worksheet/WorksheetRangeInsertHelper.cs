@@ -25,6 +25,8 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Text;
 using System.Xml;
+using OfficeOpenXml.ConditionalFormatting.Contracts;
+using OfficeOpenXml.Sparkline;
 
 namespace OfficeOpenXml.Core.Worksheet
 {
@@ -50,8 +52,8 @@ namespace OfficeOpenXml.Core.Worksheet
                 InsertRowTable(ws, rowFrom, rows);
                 InsertRowPivotTable(ws, rowFrom, rows);
 
-                var range = ws.Cells[rowFrom, 1, rowFrom + rows - 1, ExcelPackage.MaxColumns];
-                var affectedAddress = GetAffectedRange(range, eShiftTypeInsert.Down);
+                ExcelRange? range = ws.Cells[rowFrom, 1, rowFrom + rows - 1, ExcelPackage.MaxColumns];
+                ExcelAddressBase? affectedAddress = GetAffectedRange(range, eShiftTypeInsert.Down);
                 InsertFilterAddress(range, affectedAddress, eShiftTypeInsert.Down);
                 InsertSparkLinesAddress(range, eShiftTypeInsert.Down, affectedAddress);
                 InsertDataValidation(range, eShiftTypeInsert.Down, affectedAddress, ws, false);
@@ -65,10 +67,10 @@ namespace OfficeOpenXml.Core.Worksheet
 
         private static void InsertRowTable(ExcelWorksheet ws, int rowFrom, int rows)
         {
-            foreach (var tbl in ws.Tables)
+            foreach (ExcelTable? tbl in ws.Tables)
             {
                 tbl.Address = tbl.Address.AddRow(rowFrom, rows);
-                foreach (var col in tbl.Columns)
+                foreach (ExcelTableColumn? col in tbl.Columns)
                 {
                     if (string.IsNullOrEmpty(col.CalculatedColumnFormula) == false)
                     {
@@ -80,7 +82,7 @@ namespace OfficeOpenXml.Core.Worksheet
 
         private static void InsertRowPivotTable(ExcelWorksheet ws, int rowFrom, int rows)
         {
-            foreach (var ptbl in ws.PivotTables)
+            foreach (ExcelPivotTable? ptbl in ws.PivotTables)
             {
                 ptbl.Address = ptbl.Address.AddRow(rowFrom, rows);
                 ptbl.CacheDefinition.SourceRange.Address = ptbl.CacheDefinition.SourceRange.AddRow(rowFrom, rows).Address;
@@ -106,8 +108,8 @@ namespace OfficeOpenXml.Core.Worksheet
                 InsertColumnTable(ws, columnFrom, columns);
                 InsertColumnPivotTable(ws, columnFrom, columns);
 
-                var range = ws.Cells[1, columnFrom, ExcelPackage.MaxRows, columnFrom + columns - 1];
-                var affectedAddress = GetAffectedRange(range, eShiftTypeInsert.Right);
+                ExcelRange? range = ws.Cells[1, columnFrom, ExcelPackage.MaxRows, columnFrom + columns - 1];
+                ExcelAddressBase? affectedAddress = GetAffectedRange(range, eShiftTypeInsert.Right);
                 InsertFilterAddress(range, affectedAddress, eShiftTypeInsert.Right);
                 InsertSparkLinesAddress(range, eShiftTypeInsert.Right, affectedAddress);
                 InsertDataValidation(range, eShiftTypeInsert.Right, affectedAddress, ws, false);
@@ -122,7 +124,7 @@ namespace OfficeOpenXml.Core.Worksheet
 
         private static void InsertColumnPivotTable(ExcelWorksheet ws, int columnFrom, int columns)
         {
-            foreach (var ptbl in ws.PivotTables)
+            foreach (ExcelPivotTable? ptbl in ws.PivotTables)
             {
                 if (columnFrom <= ptbl.Address.End.Column)
                 {
@@ -141,7 +143,7 @@ namespace OfficeOpenXml.Core.Worksheet
         private static void InsertColumnTable(ExcelWorksheet ws, int columnFrom, int columns)
         {
             //Adjust tables
-            foreach (var tbl in ws.Tables)
+            foreach (ExcelTable? tbl in ws.Tables)
             {
                 if (columnFrom > tbl.Address.Start.Column && columnFrom <= tbl.Address.End.Column)
                 {
@@ -151,7 +153,7 @@ namespace OfficeOpenXml.Core.Worksheet
                 tbl.Address = tbl.Address.AddColumn(columnFrom, columns);
                 if (columnFrom <= tbl.Address._toCol)
                 {
-                    foreach (var col in tbl.Columns)
+                    foreach (ExcelTableColumn? col in tbl.Columns)
                     {
                         if (string.IsNullOrEmpty(col.CalculatedColumnFormula) == false)
                         {
@@ -166,13 +168,13 @@ namespace OfficeOpenXml.Core.Worksheet
         {
             ValidateInsert(range, shift);
 
-            var effectedAddress = GetAffectedRange(range, shift);
+            ExcelAddressBase? effectedAddress = GetAffectedRange(range, shift);
             WorksheetRangeHelper.ValidateIfInsertDeleteIsPossible(range, effectedAddress, GetAffectedRange(range, shift, 1), true);
 
-            var ws = range.Worksheet;
+            ExcelWorksheet? ws = range.Worksheet;
             lock (ws)
             {
-                var styleList = GetStylesForRange(range, shift);
+                List<int>? styleList = GetStylesForRange(range, shift);
                 WorksheetRangeHelper.ConvertEffectedSharedFormulasToCellFormulas(ws, effectedAddress);
 
                 if (shift == eShiftTypeInsert.Down)
@@ -213,18 +215,18 @@ namespace OfficeOpenXml.Core.Worksheet
 
         private static void InsertConditionalFormatting(ExcelRangeBase range, eShiftTypeInsert shift, ExcelAddressBase effectedAddress, ExcelWorksheet ws, bool isTable)
         {
-            var delCF = new List<ConditionalFormatting.Contracts.IExcelConditionalFormattingRule>();
+            List<IExcelConditionalFormattingRule>? delCF = new List<ConditionalFormatting.Contracts.IExcelConditionalFormattingRule>();
             //Update Conditional formatting references
-            foreach (var cf in ws.ConditionalFormatting)
+            foreach (IExcelConditionalFormattingRule? cf in ws.ConditionalFormatting)
             {
-                var newAddress = InsertSplitAddress(cf.Address, range, effectedAddress, shift, isTable);
+                ExcelAddressBase? newAddress = InsertSplitAddress(cf.Address, range, effectedAddress, shift, isTable);
                 if (newAddress == null)
                 {
                     delCF.Add(cf);
                 }
                 else
                 {
-                    var cfr = ((ExcelConditionalFormattingRule)cf);
+                    ExcelConditionalFormattingRule? cfr = ((ExcelConditionalFormattingRule)cf);
                     if (cfr.Address.Address != newAddress.Address)
                     {
                         if (cfr.Address.FirstCellAddressRelative != newAddress.FirstCellAddressRelative)
@@ -238,7 +240,7 @@ namespace OfficeOpenXml.Core.Worksheet
                 }
             }
 
-            foreach (var cf in delCF)
+            foreach (IExcelConditionalFormattingRule? cf in delCF)
             {
                 ws.ConditionalFormatting.Remove(cf);
             }
@@ -246,11 +248,11 @@ namespace OfficeOpenXml.Core.Worksheet
 
         private static void InsertDataValidation(ExcelRangeBase range, eShiftTypeInsert shift, ExcelAddressBase effectedAddress, ExcelWorksheet ws, bool isTable)
         {
-            var delDV = new List<ExcelDataValidation>();
+            List<ExcelDataValidation>? delDV = new List<ExcelDataValidation>();
             //Update data validation references
             foreach (ExcelDataValidation dv in ws.DataValidations)
             {
-                var newAddress = InsertSplitAddress(dv.Address, range, effectedAddress, shift, isTable);
+                ExcelAddressBase? newAddress = InsertSplitAddress(dv.Address, range, effectedAddress, shift, isTable);
                 if (newAddress == null)
                 {
                     delDV.Add(dv);
@@ -272,7 +274,7 @@ namespace OfficeOpenXml.Core.Worksheet
                 }
                 ws.DataValidations.InsertRangeDictionary(range, shift == eShiftTypeInsert.Right || shift == eShiftTypeInsert.EntireColumn);
             }
-            foreach (var dv in delDV)
+            foreach (ExcelDataValidation? dv in delDV)
             {
                 ws.DataValidations.Remove(dv);
             }
@@ -280,7 +282,7 @@ namespace OfficeOpenXml.Core.Worksheet
 
         private static void InsertFilterAddress(ExcelRangeBase range, ExcelAddressBase effectedAddress, eShiftTypeInsert shift)
         {
-            var ws = range.Worksheet;
+            ExcelWorksheet? ws = range.Worksheet;
             if (ws.AutoFilterAddress != null && effectedAddress.Collide(ws.AutoFilterAddress) != ExcelAddressBase.eAddressCollition.No)
             {
                 if (shift == eShiftTypeInsert.Down)
@@ -295,7 +297,7 @@ namespace OfficeOpenXml.Core.Worksheet
         }
         private static void InsertSparkLinesAddress(ExcelRangeBase range, eShiftTypeInsert shift, ExcelAddressBase effectedAddress)
         {
-            foreach (var slg in range.Worksheet.SparklineGroups)
+            foreach (ExcelSparklineGroup? slg in range.Worksheet.SparklineGroups)
             {
                 if (slg.DateAxisRange != null && effectedAddress.Collide(slg.DateAxisRange) >= ExcelAddressBase.eAddressCollition.Inside)
                 {
@@ -311,7 +313,7 @@ namespace OfficeOpenXml.Core.Worksheet
                     slg.DateAxisRange = range.Worksheet.Cells[address];
                 }
 
-                foreach (var sl in slg.Sparklines)
+                foreach (ExcelSparkline? sl in slg.Sparklines)
                 {
                     if (shift == eShiftTypeInsert.Down)
                     {
@@ -359,8 +361,8 @@ namespace OfficeOpenXml.Core.Worksheet
             }
             else
             {
-                var newAddress = "";
-                foreach (var a in address.Addresses)
+                string? newAddress = "";
+                foreach (ExcelAddressBase? a in address.Addresses)
                 {
                     newAddress += InsertSplitIndividualAddress(a, range, effectedAddress, shift, isTable) + ",";
                 }
@@ -381,19 +383,19 @@ namespace OfficeOpenXml.Core.Worksheet
             }
             else
             {
-                var collide = effectedAddress.Collide(address);
+                ExcelAddressBase.eAddressCollition collide = effectedAddress.Collide(address);
                 if (collide == ExcelAddressBase.eAddressCollition.Partly)
                 {
-                    var addressToShift = effectedAddress.Intersect(address);
-                    var shiftedAddress = ShiftAddress(addressToShift, range, shift);
-                    var newAddress = "";
+                    ExcelAddressBase? addressToShift = effectedAddress.Intersect(address);
+                    ExcelAddressBase? shiftedAddress = ShiftAddress(addressToShift, range, shift);
+                    string? newAddress = "";
                     if (address._fromRow < addressToShift._fromRow)
                     {
                         newAddress = ExcelCellBase.GetAddress(address._fromRow, address._fromCol, addressToShift._fromRow - 1, address._toCol) + ",";
                     }
                     if (address._fromCol < addressToShift._fromCol)
                     {
-                        var fromRow = Math.Max(address._fromRow, addressToShift._fromRow);
+                        int fromRow = Math.Max(address._fromRow, addressToShift._fromRow);
                         newAddress += ExcelCellBase.GetAddress(fromRow, address._fromCol, address._toRow, addressToShift._fromCol - 1) + ",";
                     }
 
@@ -431,7 +433,7 @@ namespace OfficeOpenXml.Core.Worksheet
 
         private static void InsertPivottableAddress(ExcelWorksheet ws, ExcelRangeBase range, eShiftTypeInsert shift, ExcelAddressBase effectedAddress)
         {
-            foreach (var ptbl in ws.PivotTables)
+            foreach (ExcelPivotTable? ptbl in ws.PivotTables)
             {
                 if (shift == eShiftTypeInsert.Down)
                 {
@@ -450,7 +452,7 @@ namespace OfficeOpenXml.Core.Worksheet
 
                 if (ptbl.CacheDefinition.SourceRange.Worksheet == ws)
                 {
-                    var address = ptbl.CacheDefinition.SourceRange;
+                    ExcelRangeBase? address = ptbl.CacheDefinition.SourceRange;
                     if (shift == eShiftTypeInsert.Down)
                     {
                         if (address._fromCol >= range._fromCol && address._toCol <= range._toCol)
@@ -471,7 +473,7 @@ namespace OfficeOpenXml.Core.Worksheet
 
         private static void InsertTableAddress(ExcelWorksheet ws, ExcelRangeBase range, eShiftTypeInsert shift, ExcelAddressBase effectedAddress)
         {
-            foreach (var tbl in ws.Tables)
+            foreach (ExcelTable? tbl in ws.Tables)
             {
                 if (shift == eShiftTypeInsert.Down)
                 {
@@ -489,18 +491,18 @@ namespace OfficeOpenXml.Core.Worksheet
                 }
 
                 //Update CalculatedColumnFormula
-                var address = tbl.Address.Intersect(range);
-                foreach (var col in tbl.Columns)
+                ExcelAddressBase? address = tbl.Address.Intersect(range);
+                foreach (ExcelTableColumn? col in tbl.Columns)
                 {
                     if (string.IsNullOrEmpty(col.CalculatedColumnFormula) == false)
                     {
-                        var cf = ExcelCellBase.UpdateFormulaReferences(col.CalculatedColumnFormula, range, effectedAddress, shift, ws.Name, ws.Name);
+                        string? cf = ExcelCellBase.UpdateFormulaReferences(col.CalculatedColumnFormula, range, effectedAddress, shift, ws.Name, ws.Name);
                         col.SetFormula(cf);
                         if (address != null && tbl.Address._fromCol+col.Position-1 >= effectedAddress._fromCol)
                         {
-                            var fromRow = tbl.ShowHeader && address._fromRow == tbl.Address._fromRow ? address._fromRow + 1 : address._fromRow;
-                            var toRow = tbl.ShowTotal ? address._toRow - 1 : address._toRow;
-                            var colNo = shift == eShiftTypeInsert.Right ? tbl.Address._fromCol + col.Position + range.Columns : tbl.Address._fromCol + col.Position;
+                            int fromRow = tbl.ShowHeader && address._fromRow == tbl.Address._fromRow ? address._fromRow + 1 : address._fromRow;
+                            int toRow = tbl.ShowTotal ? address._toRow - 1 : address._toRow;
+                            int colNo = shift == eShiftTypeInsert.Right ? tbl.Address._fromCol + col.Position + range.Columns : tbl.Address._fromCol + col.Position;
                             col.SetFormulaCells(fromRow, toRow, colNo);
                         }
                     }
@@ -510,7 +512,7 @@ namespace OfficeOpenXml.Core.Worksheet
 
         private static List<int> GetStylesForRange(ExcelRangeBase range, eShiftTypeInsert shift)
         {
-            var list = new List<int>();
+            List<int>? list = new List<int>();
             if (shift == eShiftTypeInsert.Down)
             {
                 for (int i = 0; i < range.Columns; i++)
@@ -592,8 +594,8 @@ namespace OfficeOpenXml.Core.Worksheet
                 }
 
                 //Get styles to a cached list, 
-                var l = new List<int[]>();
-                var sce = new CellStoreEnumerator<ExcelValue>(ws._values, 0, copyStylesFromColumn, ExcelPackage.MaxRows, copyStylesFromColumn);
+                List<int[]>? l = new List<int[]>();
+                CellStoreEnumerator<ExcelValue>? sce = new CellStoreEnumerator<ExcelValue>(ws._values, 0, copyStylesFromColumn, ExcelPackage.MaxRows, copyStylesFromColumn);
                 lock (sce)
                 {
                     while (sce.Next())
@@ -608,13 +610,13 @@ namespace OfficeOpenXml.Core.Worksheet
                 }
 
                 //Set the style id's from the list.
-                foreach (var sc in l)
+                foreach (int[]? sc in l)
                 {
-                    for (var c = 0; c < columns; c++)
+                    for (int c = 0; c < columns; c++)
                     {
                         if (sc[0] == 0)
                         {
-                            var col = ws.Column(columnFrom + c);   //Create the column
+                            ExcelColumn? col = ws.Column(columnFrom + c);   //Create the column
                             col.StyleID = sc[1];
                         }
                         else
@@ -623,8 +625,8 @@ namespace OfficeOpenXml.Core.Worksheet
                         }
                     }
                 }
-                var newOutlineLevel = ws.Column(copyStylesFromColumn).OutlineLevel;
-                for (var c = 0; c < columns; c++)
+                int newOutlineLevel = ws.Column(copyStylesFromColumn).OutlineLevel;
+                for (int c = 0; c < columns; c++)
                 {
                     ws.Column(columnFrom + c).OutlineLevel = newOutlineLevel;
                 }
@@ -633,11 +635,11 @@ namespace OfficeOpenXml.Core.Worksheet
 
         private static void AdjustColumns(ExcelWorksheet ws, int columnFrom, int columns)
         {
-            var csec = new CellStoreEnumerator<ExcelValue>(ws._values, 0, 1, 0, ExcelPackage.MaxColumns);
-            var lst = new List<ExcelColumn>();
-            foreach (var val in csec)
+            CellStoreEnumerator<ExcelValue>? csec = new CellStoreEnumerator<ExcelValue>(ws._values, 0, 1, 0, ExcelPackage.MaxColumns);
+            List<ExcelColumn>? lst = new List<ExcelColumn>();
+            foreach (ExcelValue val in csec)
             {
-                var col = val._value;
+                object? col = val._value;
                 if (col is ExcelColumn)
                 {
                     lst.Add((ExcelColumn)col);
@@ -646,7 +648,7 @@ namespace OfficeOpenXml.Core.Worksheet
 
             for (int i = lst.Count - 1; i >= 0; i--)
             {
-                var c = lst[i];
+                ExcelColumn? c = lst[i];
                 if (c._columnMin >= columnFrom)
                 {
                     if (c._columnMin + columns <= ExcelPackage.MaxColumns)
@@ -669,7 +671,7 @@ namespace OfficeOpenXml.Core.Worksheet
                 }
                 else if (c._columnMax >= columnFrom)
                 {
-                    var cc = c._columnMax - columnFrom;
+                    int cc = c._columnMax - columnFrom;
                     c._columnMax = columnFrom - 1;
                     ws.CopyColumn(c, columnFrom + columns, columnFrom + columns + cc);
                 }
@@ -678,18 +680,18 @@ namespace OfficeOpenXml.Core.Worksheet
         private static void AdjustFormulasInsert(ExcelRangeBase range, ExcelAddressBase effectedAddress, eShiftTypeInsert shift)
         {
             //Adjust formulas
-            foreach (var ws in range._workbook.Worksheets)
+            foreach (ExcelWorksheet? ws in range._workbook.Worksheets)
             {
-                var workSheetName = range.Worksheet.Name;
-                var rowFrom = range._fromRow;
-                var columnFrom = range._fromCol;
+                string? workSheetName = range.Worksheet.Name;
+                int rowFrom = range._fromRow;
+                int columnFrom = range._fromCol;
 
-                foreach (var f in ws._sharedFormulas.Values)
+                foreach (ExcelWorksheet.Formulas? f in ws._sharedFormulas.Values)
                 {
                     if (workSheetName == ws.Name)
                     {
-                        var a = new ExcelAddressBase(f.Address);
-                        var c = effectedAddress.Collide(a);
+                        ExcelAddressBase? a = new ExcelAddressBase(f.Address);
+                        ExcelAddressBase.eAddressCollition c = effectedAddress.Collide(a);
                         if (c == ExcelAddressBase.eAddressCollition.Partly && (effectedAddress._fromCol > a._fromCol || effectedAddress._toCol < a._toCol))
                         {
                             throw new Exception("Invalid shared formula"); //This should never happend!
@@ -698,7 +700,7 @@ namespace OfficeOpenXml.Core.Worksheet
                         {
                             if((shift == eShiftTypeInsert.Down || shift == eShiftTypeInsert.EntireRow))
                             {
-                                var rows = range.Rows;
+                                int rows = range.Rows;
                                 if (f.StartRow >= rowFrom)
                                 {
                                     f.StartRow += rows;
@@ -716,7 +718,7 @@ namespace OfficeOpenXml.Core.Worksheet
                             }
                             else
                             {
-                                var cols = range.Columns;
+                                int cols = range.Columns;
                                 if (f.StartCol >= columnFrom)
                                 {
                                     f.StartCol += cols;
@@ -749,7 +751,7 @@ namespace OfficeOpenXml.Core.Worksheet
                     }
                 }
 
-                var cse = new CellStoreEnumerator<object>(ws._formulas);
+                CellStoreEnumerator<object>? cse = new CellStoreEnumerator<object>(ws._formulas);
                 while (cse.Next())
                 {
                     if (cse.Value is string v)
@@ -769,12 +771,12 @@ namespace OfficeOpenXml.Core.Worksheet
 
         private static void FixFormulasInsertRow(ExcelWorksheet ws, int rowFrom, int rows, int columnFrom = 0, int columnTo = ExcelPackage.MaxColumns)
         {
-            var sct = new SourceCodeTokenizer(FunctionNameProvider.Empty, NameValueProvider.Empty);
+            SourceCodeTokenizer? sct = new SourceCodeTokenizer(FunctionNameProvider.Empty, NameValueProvider.Empty);
 
             //Adjust formulas
-            foreach (var wsToUpdate in ws.Workbook.Worksheets)
+            foreach (ExcelWorksheet? wsToUpdate in ws.Workbook.Worksheets)
             {
-                foreach (var f in wsToUpdate._sharedFormulas.Values)
+                foreach (ExcelWorksheet.Formulas? f in wsToUpdate._sharedFormulas.Values)
                 {
                     if (ws.Name == wsToUpdate.Name)
                     {
@@ -785,7 +787,7 @@ namespace OfficeOpenXml.Core.Worksheet
                                 f.StartRow += rows;
                             }
 
-                            var a = new ExcelAddressBase(f.Address);
+                            ExcelAddressBase? a = new ExcelAddressBase(f.Address);
                             if (a._fromRow >= rowFrom)
                             {
                                 a._fromRow += rows;
@@ -805,19 +807,19 @@ namespace OfficeOpenXml.Core.Worksheet
                     }
                 }
 
-                var cse = new CellStoreEnumerator<object>(wsToUpdate._formulas);
+                CellStoreEnumerator<object>? cse = new CellStoreEnumerator<object>(wsToUpdate._formulas);
                 while (cse.Next())
                 {
                     if (cse.Value is string v)
                     {
                         if (ws.Name == wsToUpdate.Name)
                         {
-                            var tokens = GetTokens(wsToUpdate, cse.Row, cse.Column, v);
+                            IEnumerable<Token>? tokens = GetTokens(wsToUpdate, cse.Row, cse.Column, v);
                             cse.Value = ExcelCellBase.UpdateFormulaReferences(v, rows, 0, rowFrom, 0, wsToUpdate.Name, ws.Name, false, false, tokens);
                         }
                         else if (v.Contains(ws.Name))
                         {
-                            var tokens = GetTokens(wsToUpdate, cse.Row, cse.Column, v);
+                            IEnumerable<Token>? tokens = GetTokens(wsToUpdate, cse.Row, cse.Column, v);
                             cse.Value = ExcelCellBase.UpdateFormulaReferences(v, rows, 0, rowFrom, 0, wsToUpdate.Name, ws.Name, false, false, tokens);
                         }
                         if(v!=cse.Value.ToString())
@@ -838,9 +840,9 @@ namespace OfficeOpenXml.Core.Worksheet
         }
         private static void FixFormulasInsertColumn(ExcelWorksheet ws, int columnFrom, int columns)
         {
-            foreach (var wsToUpdate in ws.Workbook.Worksheets)
+            foreach (ExcelWorksheet? wsToUpdate in ws.Workbook.Worksheets)
             {
-                foreach (var f in wsToUpdate._sharedFormulas.Values)
+                foreach (ExcelWorksheet.Formulas? f in wsToUpdate._sharedFormulas.Values)
                 {
                     if (ws.Name == wsToUpdate.Name)
                     {
@@ -849,7 +851,7 @@ namespace OfficeOpenXml.Core.Worksheet
                             f.StartCol += columns;
                         }
 
-                        var a = new ExcelAddressBase(f.Address);
+                        ExcelAddressBase? a = new ExcelAddressBase(f.Address);
                         if (a._fromCol >= columnFrom)
                         {
                             a._fromCol += columns;
@@ -869,7 +871,7 @@ namespace OfficeOpenXml.Core.Worksheet
                     }
                 }
 
-                var cse = new CellStoreEnumerator<object>(wsToUpdate._formulas);
+                CellStoreEnumerator<object>? cse = new CellStoreEnumerator<object>(wsToUpdate._formulas);
                 while (cse.Next())
                 {
                     if (cse.Value is string v)
@@ -889,7 +891,7 @@ namespace OfficeOpenXml.Core.Worksheet
         private static void ValidateInsertColumn(ExcelWorksheet ws, int columnFrom, int columns, int rowFrom = 1, int rows = ExcelPackage.MaxRows)
         {
             ws.CheckSheetTypeAndNotDisposed();
-            var d = ws.Dimension;
+            ExcelAddressBase? d = ws.Dimension;
 
             if (columnFrom < 1)
             {
@@ -902,14 +904,14 @@ namespace OfficeOpenXml.Core.Worksheet
                 throw (new ArgumentOutOfRangeException("Can't insert. Columns will be shifted outside the boundries of the worksheet."));
             }
 
-            var insertRange = new ExcelAddressBase(rowFrom, columnFrom, rowFrom + rows - 1, columnFrom + columns - 1);
+            ExcelAddressBase? insertRange = new ExcelAddressBase(rowFrom, columnFrom, rowFrom + rows - 1, columnFrom + columns - 1);
             FormulaDataTableValidation.HasPartlyFormulaDataTable(ws, insertRange, false, "Can't insert a part of a data table function");
         }
         #region private methods
         private static void ValidateInsertRow(ExcelWorksheet ws, int rowFrom, int rows, int columnFrom = 1, int columns = ExcelPackage.MaxColumns)
         {
             ws.CheckSheetTypeAndNotDisposed();
-            var d = ws.Dimension;
+            ExcelAddressBase? d = ws.Dimension;
 
             if (rowFrom < 1)
             {
@@ -922,7 +924,7 @@ namespace OfficeOpenXml.Core.Worksheet
                 throw (new ArgumentOutOfRangeException("Can't insert. Rows will be shifted outside the boundries of the worksheet."));
             }
 
-            var insertRange = new ExcelAddressBase(rowFrom, columnFrom, rowFrom + rows - 1, columnFrom + columns - 1);
+            ExcelAddressBase? insertRange = new ExcelAddressBase(rowFrom, columnFrom, rowFrom + rows - 1, columnFrom + columns - 1);
             FormulaDataTableValidation.HasPartlyFormulaDataTable(ws, insertRange, false, "Can't insert into a part of a data table function");
         }
         internal static void InsertCellStores(ExcelWorksheet ws, int rowFrom, int columnFrom, int rows, int columns, int columnTo = ExcelPackage.MaxColumns)
@@ -982,7 +984,7 @@ namespace OfficeOpenXml.Core.Worksheet
             }
 
             //Copy style from style row
-            using (var cseS = new CellStoreEnumerator<ExcelValue>(ws._values, copyStylesFromRow, 0, copyStylesFromRow, ExcelPackage.MaxColumns))
+            using (CellStoreEnumerator<ExcelValue>? cseS = new CellStoreEnumerator<ExcelValue>(ws._values, copyStylesFromRow, 0, copyStylesFromRow, ExcelPackage.MaxColumns))
             {
                 while (cseS.Next())
                 {
@@ -991,7 +993,7 @@ namespace OfficeOpenXml.Core.Worksheet
                         continue;
                     }
 
-                    for (var r = 0; r < rows; r++)
+                    for (int r = 0; r < rows; r++)
                     {
                         ws.SetStyleInner(rowFrom + r, cseS.Column, cseS.Value._styleId);
                     }
@@ -999,21 +1001,21 @@ namespace OfficeOpenXml.Core.Worksheet
             }
 
             //Copy outline
-            var styleRowOutlineLevel = ws.Row(copyStylesFromRow).OutlineLevel;
-            for (var r = rowFrom; r < rowFrom + rows; r++)
+            int styleRowOutlineLevel = ws.Row(copyStylesFromRow).OutlineLevel;
+            for (int r = rowFrom; r < rowFrom + rows; r++)
             {
                 ws.Row(r).OutlineLevel = styleRowOutlineLevel;
             }
         }
         private static void InsertTableColumns(int columnFrom, int columns, ExcelTable tbl)
         {
-            var node = tbl.Columns[0].TopNode.ParentNode;
-            var ix = columnFrom - tbl.Address.Start.Column - 1;
-            var insPos = node.ChildNodes[ix];
+            XmlNode? node = tbl.Columns[0].TopNode.ParentNode;
+            int ix = columnFrom - tbl.Address.Start.Column - 1;
+            XmlNode? insPos = node.ChildNodes[ix];
             ix += 2;
             for (int i = 0; i < columns; i++)
             {
-                var name =
+                string? name =
                     tbl.Columns.GetUniqueName(string.Format("Column{0}",
                         (ix++).ToString(CultureInfo.InvariantCulture)));
                 XmlElement tableColumn =

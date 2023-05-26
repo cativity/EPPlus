@@ -33,7 +33,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime.Workdays
 
         public HolidayWeekdays(params DayOfWeek[] holidayDays)
         {
-            foreach (var dayOfWeek in holidayDays)
+            foreach (DayOfWeek dayOfWeek in holidayDays)
             {
                 _holidayDays.Add(dayOfWeek);
             }
@@ -52,15 +52,15 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime.Workdays
                 return resultDate;
             }
 
-            var holidays = arguments.ElementAt(2).Value as IEnumerable<FunctionArgument>;
+            IEnumerable<FunctionArgument>? holidays = arguments.ElementAt(2).Value as IEnumerable<FunctionArgument>;
             if (holidays != null)
             {
-                foreach (var arg in holidays)
+                foreach (FunctionArgument? arg in holidays)
                 {
                     if (ConvertUtil.IsNumericOrDate(arg.Value))
                     {
-                        var dateSerial = ConvertUtil.GetValueDouble(arg.Value);
-                        var holidayDate = System.DateTime.FromOADate(dateSerial);
+                        double dateSerial = ConvertUtil.GetValueDouble(arg.Value);
+                        System.DateTime holidayDate = System.DateTime.FromOADate(dateSerial);
                         if (!IsHolidayWeekday(holidayDate))
                         {
                             resultDate = resultDate.AddDays(1);
@@ -70,15 +70,15 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime.Workdays
             }
             else
             {
-                var range = arguments.ElementAt(2).Value as IRangeInfo;
+                IRangeInfo? range = arguments.ElementAt(2).Value as IRangeInfo;
                 if (range != null)
                 {
-                    foreach (var cell in range)
+                    foreach (ICellInfo? cell in range)
                     {
                         if (ConvertUtil.IsNumericOrDate(cell.Value))
                         {
-                            var dateSerial = ConvertUtil.GetValueDouble(cell.Value);
-                            var holidayDate = System.DateTime.FromOADate(dateSerial);
+                            double dateSerial = ConvertUtil.GetValueDouble(cell.Value);
+                            System.DateTime holidayDate = System.DateTime.FromOADate(dateSerial);
                             if (!IsHolidayWeekday(holidayDate))
                             {
                                 resultDate = resultDate.AddDays(1);
@@ -92,8 +92,8 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime.Workdays
 
         public System.DateTime GetNextWorkday(System.DateTime date, WorkdayCalculationDirection direction = WorkdayCalculationDirection.Forward)
         {
-            var changeParam = (int)direction;
-            var tmpDate = date.AddDays(changeParam);
+            int changeParam = (int)direction;
+            System.DateTime tmpDate = date.AddDays(changeParam);
             while (IsHolidayWeekday(tmpDate))
             {
                 tmpDate = tmpDate.AddDays(changeParam);

@@ -25,7 +25,7 @@ namespace OfficeOpenXml.ThreadedComments
     {
         internal static string NewId()
         {
-            var guid = Guid.NewGuid();
+            Guid guid = Guid.NewGuid();
             return "{" + guid.ToString().ToUpper() + "}";
         }
 
@@ -71,7 +71,7 @@ namespace OfficeOpenXml.ThreadedComments
         {
             get 
             { 
-                var id = GetXmlNodeString("@providerId");
+                string? id = GetXmlNodeString("@providerId");
                 if (string.IsNullOrEmpty(UserId) && UserId == "AD")
                 {
                     throw new InvalidOperationException("Cannot get ProviderId when UserId is not set");

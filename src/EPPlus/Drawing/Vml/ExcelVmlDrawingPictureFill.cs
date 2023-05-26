@@ -130,7 +130,7 @@ namespace OfficeOpenXml.Drawing.Vml
             {
                 if (_image == null)
                 {
-                    var relId = RelId;
+                    string? relId = RelId;
                     _image = new ExcelImage(this, new ePictureType[] { ePictureType.Svg, ePictureType.Ico, ePictureType.WebP });
                     if (!string.IsNullOrEmpty(relId))
                     {
@@ -149,14 +149,14 @@ namespace OfficeOpenXml.Drawing.Vml
         ZipPackageRelationship IPictureContainer.RelPic { get; set; }
         void IPictureContainer.SetNewImage()
         {
-            var container = (IPictureContainer)this;
+            IPictureContainer? container = (IPictureContainer)this;
             //Create relationship
             SetXmlNodeString("v:fill/@o:relid", container.RelPic.Id);
         }
         void IPictureContainer.RemoveImage()
         {
-            var container = (IPictureContainer)this;
-            var pictureRelationDocument = (IPictureRelationDocument)_fill._drawings;
+            IPictureContainer? container = (IPictureContainer)this;
+            IPictureRelationDocument? pictureRelationDocument = (IPictureRelationDocument)_fill._drawings;
             pictureRelationDocument.Package.PictureStore.RemoveImage(container.ImageHash, this);
             pictureRelationDocument.RelatedPart.DeleteRelationship(container.RelPic.Id);
             pictureRelationDocument.Hashes.Remove(container.ImageHash);

@@ -29,13 +29,13 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.RefAndLookup
         public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
         {
             ValidateArguments(arguments, 3);
-            var lookupArgs = new LookupArguments(arguments, context);
+            LookupArguments? lookupArgs = new LookupArguments(arguments, context);
             if (lookupArgs.LookupIndex < 1)
             {
                 return this.CreateResult(eErrorType.Value);
             }
 
-            var navigator = LookupNavigatorFactory.Create(LookupDirection.Horizontal, lookupArgs, context);
+            LookupNavigator? navigator = LookupNavigatorFactory.Create(LookupDirection.Horizontal, lookupArgs, context);
             return Lookup(navigator, lookupArgs);
         }
     }

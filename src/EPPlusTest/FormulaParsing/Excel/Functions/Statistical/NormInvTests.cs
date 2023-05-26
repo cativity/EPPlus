@@ -15,9 +15,9 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions.Statistical
         [TestMethod]
         public void NormInvShouldReturnCorrectResult()
         {
-            using(var package = new ExcelPackage())
+            using(ExcelPackage? package = new ExcelPackage())
             {
-                var sheet = package.Workbook.Worksheets.Add("test");
+                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
                 sheet.Cells["A1"].Formula = "NORM.INV(0.25,0,1)";
                 sheet.Calculate();
                 Assert.AreEqual(-0.67449, M.Round(sheet.Cells["A1"].GetValue<double>(), 5));
@@ -39,9 +39,9 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions.Statistical
         [TestMethod]
         public void NormsInvShouldReturnCorrectResult()
         {
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var sheet = package.Workbook.Worksheets.Add("test");
+                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
                 sheet.Cells["A1"].Formula = "NORM.S.INV(0.84134)";
                 sheet.Calculate();
                 Assert.AreEqual(0.99998, M.Round(sheet.Cells["A1"].GetValue<double>(), 5));

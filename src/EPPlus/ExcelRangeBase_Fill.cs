@@ -42,7 +42,7 @@ namespace OfficeOpenXml
         /// <param name="options">The option to configure the fill.</param>
         public void FillNumber(Action<FillNumberParams> options)
         {
-            var o = new FillNumberParams();
+            FillNumberParams? o = new FillNumberParams();
             options?.Invoke(o);
 
             if (o.Direction == eFillDirection.Column)
@@ -112,7 +112,7 @@ namespace OfficeOpenXml
         /// <param name="options">Options how to perform the fill</param>
         public void FillDateTime(Action<FillDateParams> options)
         {
-            var o = new FillDateParams();
+            FillDateParams? o = new FillDateParams();
             options?.Invoke(o);
 
             if (o.Direction == eFillDirection.Column)
@@ -174,7 +174,7 @@ namespace OfficeOpenXml
         /// <param name="options"></param>
         public void FillList<T>(IEnumerable<T> list, Action<FillListParams> options)
         {
-            var o = new FillListParams();
+            FillListParams? o = new FillListParams();
             options?.Invoke(o);
 
             if (o.Direction == eFillDirection.Column)

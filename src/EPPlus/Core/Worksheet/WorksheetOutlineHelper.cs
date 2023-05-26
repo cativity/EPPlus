@@ -17,7 +17,7 @@ namespace OfficeOpenXml.Core.Worksheet
         #region Row
         internal int CollapseRow(int rowNo, int level, bool collapsed, bool collapseChildren, int addValue, bool parentIsHidden = false)
         {
-            var row = GetRow(rowNo);
+            RowInternal? row = GetRow(rowNo);
             int startLevel = 0;
             if (row != null)
             {
@@ -44,7 +44,7 @@ namespace OfficeOpenXml.Core.Worksheet
                 hidden = row.Hidden;
             }
 
-            var r = rowNo + addValue;
+            int r = rowNo + addValue;
             row = GetRow(r);
             while (row != null && (row.OutlineLevel > startLevel || (row.OutlineLevel >= level && level>=0)))
             {
@@ -103,7 +103,7 @@ namespace OfficeOpenXml.Core.Worksheet
         #region Column
         internal int CollapseColumn(int colNo, int level, bool collapsed, bool collapseChildren, int addValue)
         {
-            var col = GetColumn(colNo);
+            ExcelColumn? col = GetColumn(colNo);
             int startLevel = 0;
             if(col!=null)
             {
@@ -176,7 +176,7 @@ namespace OfficeOpenXml.Core.Worksheet
                 return null;
             }
 
-            var currentCol = _worksheet.GetValueInner(0, col) as ExcelColumn;
+            ExcelColumn? currentCol = _worksheet.GetValueInner(0, col) as ExcelColumn;
             if (currentCol == null)
             {
                 int r = 0, c = col;

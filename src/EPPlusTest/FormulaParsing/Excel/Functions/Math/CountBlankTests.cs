@@ -14,9 +14,9 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions.Math
         [TestMethod]
         public void ShouldCountEmptyCells()
         {
-            using(var package = new ExcelPackage())
+            using(ExcelPackage? package = new ExcelPackage())
             {
-                var sheet = package.Workbook.Worksheets.Add("Count_Blank");
+                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("Count_Blank");
                 sheet.Cells["A1"].Value = "Test 1";
                 sheet.Cells["A2"].Value = "Test 2";
                 sheet.Cells["A3"].Value = "Test 3";
@@ -28,10 +28,10 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions.Math
 
                 sheet.Calculate();
 
-                var b5 = sheet.Cells["B5"].Value;
-                var b6 = sheet.Cells["B6"].Value;
-                var b7 = sheet.Cells["B7"].Value;
-                var b8 = sheet.Cells["B8"].Value;
+                object? b5 = sheet.Cells["B5"].Value;
+                object? b6 = sheet.Cells["B6"].Value;
+                object? b7 = sheet.Cells["B7"].Value;
+                object? b8 = sheet.Cells["B8"].Value;
 
                 Assert.AreEqual(1, b5);
                 Assert.AreEqual(1, b6);

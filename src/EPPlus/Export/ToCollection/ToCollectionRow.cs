@@ -175,7 +175,7 @@ namespace OfficeOpenXml.Export.ToCollection
                 _members = ToCollectionAutomap.GetAutomapList<T>(Headers);
             }
 
-            foreach (var m in _members)
+            foreach (MappedProperty? m in _members)
             {
                 if (m.Index < _cellValues.Count)
                 {
@@ -187,7 +187,7 @@ namespace OfficeOpenXml.Export.ToCollection
                     {
                         if (_failureStrategy == ToCollectionConversionFailureStrategy.Exception)
                         {
-                            var dtcExeption = new EPPlusDataTypeConvertionException($"Can not convert item {_cellValues[m.Index]._value} to datatype {m.PropertyInfo.DeclaringType}", ex);
+                            EPPlusDataTypeConvertionException? dtcExeption = new EPPlusDataTypeConvertionException($"Can not convert item {_cellValues[m.Index]._value} to datatype {m.PropertyInfo.DeclaringType}", ex);
                             throw dtcExeption;
                         }
                         else

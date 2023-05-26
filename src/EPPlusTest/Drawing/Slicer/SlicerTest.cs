@@ -5,6 +5,7 @@ using OfficeOpenXml.Drawing.Slicer;
 using OfficeOpenXml.Filter;
 using OfficeOpenXml.Table.PivotTable;
 using System.IO;
+using OfficeOpenXml.Table;
 
 namespace EPPlusTest.Drawing.Slicer
 {
@@ -20,8 +21,8 @@ namespace EPPlusTest.Drawing.Slicer
         [ClassCleanup]
         public static void Cleanup()
         {
-            var dirName = _pck.File.DirectoryName;
-            var fileName = _pck.File.FullName;
+            string? dirName = _pck.File.DirectoryName;
+            string? fileName = _pck.File.FullName;
 
             SaveAndCleanup(_pck);
 
@@ -33,11 +34,11 @@ namespace EPPlusTest.Drawing.Slicer
         [TestMethod]
         public void AddTableSlicerDate()
         {
-            var ws = _pck.Workbook.Worksheets.Add("TableSlicerDate");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("TableSlicerDate");
 
             LoadTestdata(ws);
-            var tbl = ws.Tables.Add(ws.Cells["A1:D100"], "Table1");
-            var slicer = ws.Drawings.AddTableSlicer(tbl.Columns[0]);
+            ExcelTable? tbl = ws.Tables.Add(ws.Cells["A1:D100"], "Table1");
+            ExcelTableSlicer? slicer = ws.Drawings.AddTableSlicer(tbl.Columns[0]);
 
             slicer.FilterValues.Add(new ExcelFilterDateGroupItem(2019, 11, 4));
             slicer.FilterValues.Add(new ExcelFilterDateGroupItem(2019, 11, 5));
@@ -53,7 +54,7 @@ namespace EPPlusTest.Drawing.Slicer
             Assert.IsFalse(slicer.Cache.HideItemsWithNoData);
             slicer.Cache.HideItemsWithNoData = true;       //Add element again
 
-            var slicer2 = ws.Drawings.AddTableSlicer(tbl.Columns[2]);
+            ExcelTableSlicer? slicer2 = ws.Drawings.AddTableSlicer(tbl.Columns[2]);
             slicer2.Style = eSlicerStyle.Light4;
             slicer2.LockedPosition = true;
             slicer2.ColumnCount = 3;
@@ -76,11 +77,11 @@ namespace EPPlusTest.Drawing.Slicer
         [TestMethod]
         public void AddTableSlicerString()
         {
-            var ws = _pck.Workbook.Worksheets.Add("TableSlicerNumber");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("TableSlicerNumber");
 
             LoadTestdata(ws);
-            var tbl = ws.Tables.Add(ws.Cells["A1:D100"], "Table2");
-            var slicer = ws.Drawings.AddTableSlicer(tbl.Columns[1]);
+            ExcelTable? tbl = ws.Tables.Add(ws.Cells["A1:D100"], "Table2");
+            ExcelTableSlicer? slicer = ws.Drawings.AddTableSlicer(tbl.Columns[1]);
 
             slicer.Style = eSlicerStyle.Dark1;
             slicer.FilterValues.Add("52");
@@ -99,17 +100,17 @@ namespace EPPlusTest.Drawing.Slicer
         [TestMethod]
         public void AddPivotTableSlicer()
         {
-            var ws = _pck.Workbook.Worksheets.Add("PivotTableSlicer");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("PivotTableSlicer");
 
             LoadTestdata(ws);
-            var tbl = ws.PivotTables.Add(ws.Cells["F1"], ws.Cells["A1:D100"], "PivotTable1");
-            var rf = tbl.RowFields.Add(tbl.Fields[1]);
+            ExcelPivotTable? tbl = ws.PivotTables.Add(ws.Cells["F1"], ws.Cells["A1:D100"], "PivotTable1");
+            ExcelPivotTableField? rf = tbl.RowFields.Add(tbl.Fields[1]);
             rf.Items.Refresh();
             rf.Items[0].Hidden = true;
-            var df = tbl.DataFields.Add(tbl.Fields[3]);
+            ExcelPivotTableDataField? df = tbl.DataFields.Add(tbl.Fields[3]);
             df.Function = OfficeOpenXml.Table.PivotTable.DataFieldFunctions.Sum;
 
-            var slicer = ws.Drawings.AddPivotTableSlicer(tbl.Fields[1]);
+            ExcelPivotTableSlicer? slicer = ws.Drawings.AddPivotTableSlicer(tbl.Fields[1]);
             slicer.Cache.Data.Items[0].Hidden = true;
             slicer.Cache.Data.Items[2].Hidden = true;
             slicer.Cache.Data.Items[4].Hidden = true;
@@ -120,18 +121,18 @@ namespace EPPlusTest.Drawing.Slicer
         [TestMethod]
         public void AddPivotTableSlicerToTwoPivotTables()
         {
-            var ws = _pck.Workbook.Worksheets.Add("SlicerPivotSameCache");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("SlicerPivotSameCache");
             LoadTestdata(ws);
-            var p1 = ws.PivotTables.Add(ws.Cells["F1"], ws.Cells["A1:D100"], "Pivot1");
+            ExcelPivotTable? p1 = ws.PivotTables.Add(ws.Cells["F1"], ws.Cells["A1:D100"], "Pivot1");
             p1.RowFields.Add(p1.Fields[0]);
 
             p1.DataFields.Add(p1.Fields[3]);
-            var p2 = ws.PivotTables.Add(ws.Cells["K1"], p1.CacheDefinition, "Pivot2");
+            ExcelPivotTable? p2 = ws.PivotTables.Add(ws.Cells["K1"], p1.CacheDefinition, "Pivot2");
             p2.DataFields.Add(p2.Fields[1]);
             p2.RowFields.Add(p2.Fields[3]);
             //p2.Fields[4].AddDateGrouping(eDateGroupBy.Years | eDateGroupBy.Months | eDateGroupBy.Days);
 
-            var slicer = ws.Drawings.AddPivotTableSlicer(p1.Fields[0]);
+            ExcelPivotTableSlicer? slicer = ws.Drawings.AddPivotTableSlicer(p1.Fields[0]);
             slicer.Cache.PivotTables.Add(p2);
             p2.CacheDefinition.Refresh();
             slicer.Cache.Data.Items[0].Hidden = true;
@@ -157,19 +158,19 @@ namespace EPPlusTest.Drawing.Slicer
         [TestMethod]
         public void AddPivotTableSlicerToTwoPivotTablesWithDateGrouping()
         {
-            var ws = _pck.Workbook.Worksheets.Add("SlicerPivotSameCacheDateGroup");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("SlicerPivotSameCacheDateGroup");
             LoadTestdata(ws);
-            var p1 = ws.PivotTables.Add(ws.Cells["F1"], ws.Cells["A1:D100"], "Pivot1");
+            ExcelPivotTable? p1 = ws.PivotTables.Add(ws.Cells["F1"], ws.Cells["A1:D100"], "Pivot1");
             p1.RowFields.Add(p1.Fields[0]);
 
             p1.DataFields.Add(p1.Fields[3]);
-            var p2 = ws.PivotTables.Add(ws.Cells["K1"], p1.CacheDefinition, "Pivot2");
+            ExcelPivotTable? p2 = ws.PivotTables.Add(ws.Cells["K1"], p1.CacheDefinition, "Pivot2");
             p2.DataFields.Add(p2.Fields[1]);
             p2.RowFields.Add(p2.Fields[3]);
 
             p1.Fields[0].AddDateGrouping(eDateGroupBy.Years | eDateGroupBy.Months | eDateGroupBy.Days);
             p1.Fields[0].Name = "Days";
-            var slicer = ws.Drawings.AddPivotTableSlicer(p1.Fields[0]);
+            ExcelPivotTableSlicer? slicer = ws.Drawings.AddPivotTableSlicer(p1.Fields[0]);
             slicer.Cache.PivotTables.Add(p2);
             p2.CacheDefinition.Refresh();
             slicer.Cache.Data.Items[0].Hidden = true;
@@ -195,18 +196,18 @@ namespace EPPlusTest.Drawing.Slicer
         [TestMethod]
         public void AddPivotTableSlicerToTwoPivotTablesWithNumberGrouping()
         {
-            var ws = _pck.Workbook.Worksheets.Add("SlicerPivotSameCacheNumberGroup");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("SlicerPivotSameCacheNumberGroup");
             LoadTestdata(ws);
-            var p1 = ws.PivotTables.Add(ws.Cells["F1"], ws.Cells["A1:D100"], "Pivot1");
+            ExcelPivotTable? p1 = ws.PivotTables.Add(ws.Cells["F1"], ws.Cells["A1:D100"], "Pivot1");
             p1.RowFields.Add(p1.Fields[1]);
 
             p1.DataFields.Add(p1.Fields[3]);
-            var p2 = ws.PivotTables.Add(ws.Cells["K1"], p1.CacheDefinition, "Pivot2");
+            ExcelPivotTable? p2 = ws.PivotTables.Add(ws.Cells["K1"], p1.CacheDefinition, "Pivot2");
             p2.DataFields.Add(p2.Fields[1]);
             p2.RowFields.Add(p2.Fields[3]);
 
             p1.Fields[1].AddNumericGrouping(0, 100, 5);
-            var slicer = ws.Drawings.AddPivotTableSlicer(p1.Fields[1]);
+            ExcelPivotTableSlicer? slicer = ws.Drawings.AddPivotTableSlicer(p1.Fields[1]);
             slicer.Cache.PivotTables.Add(p2);
             p2.CacheDefinition.Refresh();
             slicer.Cache.Data.Items[0].Hidden = true;
@@ -220,17 +221,17 @@ namespace EPPlusTest.Drawing.Slicer
         [TestMethod]
         public void RemovePivotTableSlicerIfLast()
         {
-            var ws = _pck.Workbook.Worksheets.Add("RemovedPivotTableSlicerLast");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("RemovedPivotTableSlicerLast");
 
             LoadTestdata(ws);
-            var tbl = ws.PivotTables.Add(ws.Cells["F1"], ws.Cells["A1:D100"], "PivotTable1");
-            var rf = tbl.RowFields.Add(tbl.Fields[1]);
+            ExcelPivotTable? tbl = ws.PivotTables.Add(ws.Cells["F1"], ws.Cells["A1:D100"], "PivotTable1");
+            ExcelPivotTableField? rf = tbl.RowFields.Add(tbl.Fields[1]);
             rf.Items.Refresh();
             rf.Items[0].Hidden = true;
-            var df = tbl.DataFields.Add(tbl.Fields[3]);
+            ExcelPivotTableDataField? df = tbl.DataFields.Add(tbl.Fields[3]);
             df.Function = OfficeOpenXml.Table.PivotTable.DataFieldFunctions.Sum;
 
-            var slicer = ws.Drawings.AddPivotTableSlicer(tbl.Fields[1]);
+            ExcelPivotTableSlicer? slicer = ws.Drawings.AddPivotTableSlicer(tbl.Fields[1]);
             Assert.AreEqual(slicer, tbl.Fields[1].Slicer);
 
             ws.Drawings.Remove(slicer);
@@ -239,18 +240,18 @@ namespace EPPlusTest.Drawing.Slicer
         [TestMethod]
         public void RemoveOnePivotTableSlicerNotLast()
         {
-            var ws = _pck.Workbook.Worksheets.Add("RemovedPivotTableSlicerNotLast");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("RemovedPivotTableSlicerNotLast");
 
             LoadTestdata(ws);
-            var tbl = ws.PivotTables.Add(ws.Cells["F1"], ws.Cells["A1:D100"], "PivotTable1");
-            var rf = tbl.RowFields.Add(tbl.Fields[1]);
+            ExcelPivotTable? tbl = ws.PivotTables.Add(ws.Cells["F1"], ws.Cells["A1:D100"], "PivotTable1");
+            ExcelPivotTableField? rf = tbl.RowFields.Add(tbl.Fields[1]);
             rf.Items.Refresh();
             rf.Items[0].Hidden = true;
-            var df = tbl.DataFields.Add(tbl.Fields[3]);
+            ExcelPivotTableDataField? df = tbl.DataFields.Add(tbl.Fields[3]);
             df.Function = OfficeOpenXml.Table.PivotTable.DataFieldFunctions.Sum;
 
-            var slicer1 = ws.Drawings.AddPivotTableSlicer(tbl.Fields[1]);
-            var slicer2 = ws.Drawings.AddPivotTableSlicer(tbl.Fields[2]);
+            ExcelPivotTableSlicer? slicer1 = ws.Drawings.AddPivotTableSlicer(tbl.Fields[1]);
+            ExcelPivotTableSlicer? slicer2 = ws.Drawings.AddPivotTableSlicer(tbl.Fields[2]);
             Assert.AreEqual(slicer1, tbl.Fields[1].Slicer);
             Assert.AreEqual(slicer2, tbl.Fields[2].Slicer);
 
@@ -261,11 +262,11 @@ namespace EPPlusTest.Drawing.Slicer
         [TestMethod]
         public void RemoveTableSlicerStringIfLast()
         {
-            var ws = _pck.Workbook.Worksheets.Add("TableSlicerRemoveLast");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("TableSlicerRemoveLast");
 
             LoadTestdata(ws);
-            var tbl = ws.Tables.Add(ws.Cells["A1:D100"], "Table3");
-            var slicer = ws.Drawings.AddTableSlicer(tbl.Columns[1]);
+            ExcelTable? tbl = ws.Tables.Add(ws.Cells["A1:D100"], "Table3");
+            ExcelTableSlicer? slicer = ws.Drawings.AddTableSlicer(tbl.Columns[1]);
 
             ws.Drawings.Remove(slicer);
             Assert.IsNull(tbl.Columns[1].Slicer);
@@ -273,12 +274,12 @@ namespace EPPlusTest.Drawing.Slicer
         [TestMethod]
         public void RemoveTableSlicerStringIfNotLast()
         {
-            var ws = _pck.Workbook.Worksheets.Add("TableSlicerRemoveNotLast");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("TableSlicerRemoveNotLast");
 
             LoadTestdata(ws);
-            var tbl = ws.Tables.Add(ws.Cells["A1:D100"], "Table4");
-            var slicer1 = ws.Drawings.AddTableSlicer(tbl.Columns[1]);
-            var slicer2 = ws.Drawings.AddTableSlicer(tbl.Columns[2]);
+            ExcelTable? tbl = ws.Tables.Add(ws.Cells["A1:D100"], "Table4");
+            ExcelTableSlicer? slicer1 = ws.Drawings.AddTableSlicer(tbl.Columns[1]);
+            ExcelTableSlicer? slicer2 = ws.Drawings.AddTableSlicer(tbl.Columns[2]);
 
             ws.Drawings.Remove(slicer1);
             Assert.IsNull(tbl.Columns[1].Slicer);
@@ -287,12 +288,12 @@ namespace EPPlusTest.Drawing.Slicer
         [TestMethod]
         public void AddTwoTableSlicersToSameColumn()
         {
-            var ws = _pck.Workbook.Worksheets.Add("TableSlicerTwoOnSameColumn");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("TableSlicerTwoOnSameColumn");
 
             LoadTestdata(ws);
-            var tbl = ws.Tables.Add(ws.Cells["A1:D100"], "Table5");
-            var slicer1 = ws.Drawings.AddTableSlicer(tbl.Columns[2]);
-            var slicer2 = ws.Drawings.AddTableSlicer(tbl.Columns[2]);
+            ExcelTable? tbl = ws.Tables.Add(ws.Cells["A1:D100"], "Table5");
+            ExcelTableSlicer? slicer1 = ws.Drawings.AddTableSlicer(tbl.Columns[2]);
+            ExcelTableSlicer? slicer2 = ws.Drawings.AddTableSlicer(tbl.Columns[2]);
             slicer1.SetPosition(0, 0, 5, 0);
             slicer2.SetPosition(11, 0, 5, 0);
             slicer1.FilterValues.Add("Value 12");
@@ -306,18 +307,18 @@ namespace EPPlusTest.Drawing.Slicer
         [TestMethod]
         public void AddTwoPivotTableSlicersToSameField()
         {
-            var ws = _pck.Workbook.Worksheets.Add("PTSlicerTwoOnSameField");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("PTSlicerTwoOnSameField");
 
             LoadTestdata(ws);
-            var tbl = ws.PivotTables.Add(ws.Cells["F1"], ws.Cells["A1:D100"], "PivotTable1");
-            var rf = tbl.RowFields.Add(tbl.Fields[1]);
+            ExcelPivotTable? tbl = ws.PivotTables.Add(ws.Cells["F1"], ws.Cells["A1:D100"], "PivotTable1");
+            ExcelPivotTableField? rf = tbl.RowFields.Add(tbl.Fields[1]);
             rf.Items.Refresh();
             rf.Items[0].Hidden = true;
-            var df = tbl.DataFields.Add(tbl.Fields[3]);
+            ExcelPivotTableDataField? df = tbl.DataFields.Add(tbl.Fields[3]);
             df.Function = OfficeOpenXml.Table.PivotTable.DataFieldFunctions.Sum;
 
-            var slicer1 = ws.Drawings.AddPivotTableSlicer(tbl.Fields[2]);
-            var slicer2 = ws.Drawings.AddPivotTableSlicer(tbl.Fields[2]);
+            ExcelPivotTableSlicer? slicer1 = ws.Drawings.AddPivotTableSlicer(tbl.Fields[2]);
+            ExcelPivotTableSlicer? slicer2 = ws.Drawings.AddPivotTableSlicer(tbl.Fields[2]);
             slicer1.SetPosition(0, 0, 5, 0);
             slicer2.SetPosition(11, 0, 5, 0);
             Assert.AreEqual(slicer1, tbl.Fields[2].Slicer);

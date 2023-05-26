@@ -48,7 +48,7 @@ namespace OfficeOpenXml.FormulaParsing.ExpressionGraph
         {
             _tokenIndex = 0;
             _graph.Reset();
-            var tokensArr = tokens != null ? tokens.ToArray() : new Token[0];
+            Token[]? tokensArr = tokens != null ? tokens.ToArray() : new Token[0];
             BuildUp(tokensArr, null);
             return _graph;
         }
@@ -57,7 +57,7 @@ namespace OfficeOpenXml.FormulaParsing.ExpressionGraph
         {
             while (_tokenIndex < tokens.Length)
             {
-                var token = tokens[_tokenIndex];
+                Token token = tokens[_tokenIndex];
                 IOperator op = null;
                 if (token.TokenTypeIsSet(TokenType.Operator) && OperatorsDict.Instance.TryGetValue(token.Value, out op))
                 {
@@ -87,12 +87,12 @@ namespace OfficeOpenXml.FormulaParsing.ExpressionGraph
                 }
                 else if(token.TokenTypeIsSet(TokenType.WorksheetName))
                 {
-                    var sb = new StringBuilder();
+                    StringBuilder? sb = new StringBuilder();
                     sb.Append(tokens[_tokenIndex++].Value);
                     sb.Append(tokens[_tokenIndex++].Value);
                     sb.Append(tokens[_tokenIndex++].Value);
                     sb.Append(tokens[_tokenIndex].Value);
-                    var t = new Token(sb.ToString(), TokenType.ExcelAddress);
+                    Token t = new Token(sb.ToString(), TokenType.ExcelAddress);
                     CreateAndAppendExpression(ref parent, ref t);
                 }
                 else if (token.TokenTypeIsSet(TokenType.Negator))
@@ -128,7 +128,7 @@ namespace OfficeOpenXml.FormulaParsing.ExpressionGraph
             }
             else
             {
-                var enumerableExpression = new EnumerableExpression();
+                EnumerableExpression? enumerableExpression = new EnumerableExpression();
                 parent.AddChild(enumerableExpression);
                 BuildUp(tokens, enumerableExpression);
             }
@@ -152,7 +152,7 @@ namespace OfficeOpenXml.FormulaParsing.ExpressionGraph
                 token = token.CloneWithNegatedValue(true);
                 _negateNextExpression = false;
             }
-            var expression = _expressionFactory.Create(token);
+            Expression? expression = _expressionFactory.Create(token);
             if (parent == null)
             {
                 _graph.Add(expression);
@@ -219,7 +219,7 @@ namespace OfficeOpenXml.FormulaParsing.ExpressionGraph
             }
             else
             {
-                var func = new FunctionExpression(funcName, _parsingContext, _negateNextExpression);
+                FunctionExpression? func = new FunctionExpression(funcName, _parsingContext, _negateNextExpression);
                 _negateNextExpression = false;
                 parent.AddChild(func);
                 HandleFunctionArguments(tokens, func);
@@ -229,7 +229,7 @@ namespace OfficeOpenXml.FormulaParsing.ExpressionGraph
         private void HandleFunctionArguments(Token[] tokens, Expression function)
         {
             _tokenIndex++;
-            var token = tokens.ElementAt(_tokenIndex);
+            Token token = tokens.ElementAt(_tokenIndex);
             if (!token.TokenTypeIsSet(TokenType.OpeningParenthesis))
             {
                 throw new ExcelErrorValueException(eErrorType.Value);
@@ -250,7 +250,7 @@ namespace OfficeOpenXml.FormulaParsing.ExpressionGraph
             {
                 if (parent.IsGroupedExpression || parent is FunctionArgumentExpression)
                 {
-                    var newGroupExpression = new GroupExpression(_negateNextExpression);
+                    GroupExpression? newGroupExpression = new GroupExpression(_negateNextExpression);
                     _negateNextExpression = false;
                     parent.AddChild(newGroupExpression);
                     BuildUp(tokens, newGroupExpression);

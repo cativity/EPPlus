@@ -29,15 +29,15 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Statistical
         public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
         {
             ValidateArguments(arguments, 1);
-            var numbers = ArgsToDoubleEnumerable(arguments, context).Select(x => x.Value).ToArray();
-            var n = numbers.Length;
-            var avg = numbers.Average();
-            var s = 0d;
-            for (var ix = 0; ix < n; ix++)
+            double[]? numbers = ArgsToDoubleEnumerable(arguments, context).Select(x => x.Value).ToArray();
+            int n = numbers.Length;
+            double avg = numbers.Average();
+            double s = 0d;
+            for (int ix = 0; ix < n; ix++)
             {
                 s += System.Math.Pow(numbers[ix] - avg, 3);
             }
-            var result = n * s / ((n - 1) * (n - 2) * System.Math.Pow(new Stdev().StandardDeviation(numbers), 3));
+            double result = n * s / ((n - 1) * (n - 2) * System.Math.Pow(new Stdev().StandardDeviation(numbers), 3));
             return CreateResult(result, DataType.Decimal);
         }
     }

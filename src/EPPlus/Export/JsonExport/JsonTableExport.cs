@@ -54,7 +54,7 @@ namespace OfficeOpenXml
                 WriteItem(sw, $"\"name\":\"{_table.Columns[i].Name}\"", false, _settings.AddDataTypesOn == eDataTypeOn.OnColumn);
                 if (_settings.AddDataTypesOn == eDataTypeOn.OnColumn)
                 {
-                    var dt = HtmlRawDataProvider.GetHtmlDataTypeFromValue(_table.DataRange.GetCellValue<object>(0, i));
+                    string? dt = HtmlRawDataProvider.GetHtmlDataTypeFromValue(_table.DataRange.GetCellValue<object>(0, i));
                     WriteItem(sw, $"\"dt\":\"{dt}\"");
                 }
                 if(i == _table.Columns.Count-1)

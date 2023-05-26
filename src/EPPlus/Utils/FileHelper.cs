@@ -7,8 +7,8 @@ namespace OfficeOpenXml.Utils
     {
         internal static string GetRelativeFile(FileInfo sourceFile, FileInfo targetFile,bool addFileProtocolIfAbsolute=false)
         {
-            var sourceDir = sourceFile.DirectoryName ?? "";
-            var targetDir = targetFile.DirectoryName ?? "";
+            string? sourceDir = sourceFile.DirectoryName ?? "";
+            string? targetDir = targetFile.DirectoryName ?? "";
             string[] source = sourceDir.Split(new char[] { '\\' }, StringSplitOptions.RemoveEmptyEntries);
             string[] target = targetDir.Split(new char[]{ '\\' }, StringSplitOptions.RemoveEmptyEntries);
 

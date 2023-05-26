@@ -41,14 +41,14 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
         public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
         {
             ValidateArguments(arguments, 2);
-            var number = ArgToDecimal(arguments, 0);
-            var refArg = arguments.ElementAt(1);
-            var sortAscending = arguments.Count() > 2 ? ArgToBool(arguments, 2) : false;
-            var numbers = GetNumbersFromRange(refArg, sortAscending);
+            double number = ArgToDecimal(arguments, 0);
+            FunctionArgument? refArg = arguments.ElementAt(1);
+            bool sortAscending = arguments.Count() > 2 ? ArgToBool(arguments, 2) : false;
+            List<double>? numbers = GetNumbersFromRange(refArg, sortAscending);
             double rank = numbers.IndexOf(number) + 1;
             if(_isAvg)
             {
-                var lastRank = numbers.LastIndexOf(number) + 1;
+                int lastRank = numbers.LastIndexOf(number) + 1;
                 rank = rank + ((lastRank - rank) / 2d);
             }
             

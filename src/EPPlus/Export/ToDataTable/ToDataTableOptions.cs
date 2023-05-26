@@ -73,7 +73,7 @@ namespace OfficeOpenXml.Export.ToDataTable
         /// <returns>The configured <see cref="ToDataTableOptions"/></returns>
         public static ToDataTableOptions Create(Action<ToDataTableOptions> configHandler)
         {
-            var options = Default;
+            ToDataTableOptions? options = Default;
             configHandler.Invoke(options);
             return options;
         }

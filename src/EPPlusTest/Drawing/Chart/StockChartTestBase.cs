@@ -12,7 +12,7 @@ namespace EPPlusTest.Drawing.Chart
     {
         protected static void LoadStockChartDataPeriod(ExcelWorksheet ws, MemberInfo[] members=null)
         {
-            var l = new List<PeriodData>()
+            List<PeriodData>? l = new List<PeriodData>()
             {
                 new PeriodData{ Date=new DateTime(2019,12,31), OpeningPrice=100, HighPrice=100, LowPrice=99, ClosePrice=99.5, Volume=10 },
                 new PeriodData{ Date=new DateTime(2020,01,01), OpeningPrice=99.5,HighPrice=102, LowPrice=99, ClosePrice=101, Volume=7 },
@@ -27,7 +27,7 @@ namespace EPPlusTest.Drawing.Chart
         }
         protected void LoadStockChartDataText(ExcelWorksheet ws)
         {
-            var l = new List<EquityData>()
+            List<EquityData>? l = new List<EquityData>()
             {
                 new EquityData{ EquityName="EPPlus Software AB",  OpeningPrice=100, HighPrice=100, LowPrice=99, ClosePrice=99.5, Volume=10 },
                 new EquityData{ EquityName="Company A", OpeningPrice=99.5,HighPrice=102, LowPrice=99, ClosePrice=101, Volume=7 },

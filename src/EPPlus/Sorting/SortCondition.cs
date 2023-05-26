@@ -68,7 +68,7 @@ namespace OfficeOpenXml.Sorting
         {
             get
             {
-                var list = GetXmlNodeString(_customListPath);
+                string? list = GetXmlNodeString(_customListPath);
                 if(!string.IsNullOrEmpty(list))
                 {
                     return list.Split(',').Where(x => !string.IsNullOrEmpty(x)).Select(x => x.Trim()).ToArray();
@@ -81,8 +81,8 @@ namespace OfficeOpenXml.Sorting
                 {
                     SetXmlNodeString(_customListPath, string.Empty, true);
                 }
-                var val = new StringBuilder();
-                for(var x = 0; x < value.Length; x++)
+                StringBuilder? val = new StringBuilder();
+                for(int x = 0; x < value.Length; x++)
                 {
                     val.Append(value[x]);
                     if(x < value.Length -1)

@@ -49,7 +49,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.Implementations
                 //       WARSI Using the exponent operator for pow(..) in C code of PMT. Still got
                 //       to make sure that they (pow and ^) are same for all conditions
                 dTemp2 = System.Math.Pow(dTemp3, NPer);
-                var result = ((-FV - PV * dTemp2) / (dTemp * (dTemp2 - 1.0)) * Rate);
+                double result = ((-FV - PV * dTemp2) / (dTemp * (dTemp2 - 1.0)) * Rate);
                 return new FinanceCalcResult<double>(result);
             }
         }

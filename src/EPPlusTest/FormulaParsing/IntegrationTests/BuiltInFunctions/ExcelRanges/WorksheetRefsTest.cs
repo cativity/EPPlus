@@ -67,7 +67,7 @@ namespace EPPlusTest.FormulaParsing.IntegrationTests.BuiltInFunctions.ExcelRange
         [TestMethod]
         public void ShouldHandleReferenceToOtherSheetWithComplexName()
         {
-            var sheet = _package.Workbook.Worksheets.Add("ab#k..2");
+            ExcelWorksheet? sheet = _package.Workbook.Worksheets.Add("ab#k..2");
             sheet.Cells["A1"].Value = 1;
             sheet.Cells["A2"].Value = 2;
             _secondSheet.Cells["A1"].Formula = "SUM('ab#k..2'!A1:A2)";
@@ -78,7 +78,7 @@ namespace EPPlusTest.FormulaParsing.IntegrationTests.BuiltInFunctions.ExcelRange
         [TestMethod]
         public void ShouldHandleInvalidRef()
         {
-            var sheet = _package.Workbook.Worksheets.Add("ab#k..2");
+            ExcelWorksheet? sheet = _package.Workbook.Worksheets.Add("ab#k..2");
             sheet.Cells["A1"].Value = 1;
             sheet.Cells["A2"].Value = 2;
             _secondSheet.Cells["A1"].Formula = "SUM('ab#k..2A1:A2')";

@@ -28,8 +28,8 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
         public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
         {
             ValidateArguments(arguments, 2);
-            var array1 = ArgsToDoubleEnumerable(arguments.Take(1), context).ToArray();
-            var array2 = ArgsToDoubleEnumerable(arguments.Skip(1).Take(1), context).ToArray();
+            ExcelDoubleCellValue[]? array1 = ArgsToDoubleEnumerable(arguments.Take(1), context).ToArray();
+            ExcelDoubleCellValue[]? array2 = ArgsToDoubleEnumerable(arguments.Skip(1).Take(1), context).ToArray();
             if (array1.Length != array2.Length)
             {
                 return this.CreateResult(eErrorType.NA);
@@ -40,10 +40,10 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
                 return this.CreateResult(eErrorType.Div0);
             }
 
-            var avg1 = array1.Select(x => x.Value).Average();
-            var avg2 = array2.Select(x => x.Value).Average();
-            var result = 0d;
-            for(var x = 0; x < array1.Length; x++)
+            double avg1 = array1.Select(x => x.Value).Average();
+            double avg2 = array2.Select(x => x.Value).Average();
+            double result = 0d;
+            for(int x = 0; x < array1.Length; x++)
             {
                 result += (array1[x] - avg1) * (array2[x] - avg2);
             }

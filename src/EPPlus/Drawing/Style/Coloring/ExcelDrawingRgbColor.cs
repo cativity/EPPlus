@@ -33,7 +33,7 @@ namespace OfficeOpenXml.Drawing.Style.Coloring
         {
             get
             {
-                var s = GetXmlNodeString("@val");
+                string? s = GetXmlNodeString("@val");
                 return GetColorFromString(s);
             }
             set
@@ -79,14 +79,14 @@ namespace OfficeOpenXml.Drawing.Style.Coloring
         internal static void GetHslColor(byte red, byte green, byte blue, out double hue, out double saturation, out double luminance)
         {
             //Created using formulas here...https://www.rapidtables.com/convert/color/rgb-to-hsl.html
-            var r = red / 255D;
-            var g = green / 255D;
-            var b = blue / 255D;
+            double r = red / 255D;
+            double g = green / 255D;
+            double b = blue / 255D;
 
-            var ix = new double[]{ r, g, b };
-            var cMax = ix.Max();
-            var cMin = ix.Min();
-            var delta = cMax - cMin;
+            double[]? ix = new double[]{ r, g, b };
+            double cMax = ix.Max();
+            double cMin = ix.Min();
+            double delta = cMax - cMin;
 
 
             if (delta == 0)

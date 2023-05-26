@@ -74,9 +74,9 @@ namespace OfficeOpenXml.Drawing.Style.Coloring
 
         internal Color GetRgbColor()
         {
-            var h = Hue;
-            var s = Saturation / 100;
-            var l = Luminance / 100;
+            double h = Hue;
+            double s = Saturation / 100;
+            double l = Luminance / 100;
             return GetRgb(h, s, l);
         }
 
@@ -122,14 +122,14 @@ namespace OfficeOpenXml.Drawing.Style.Coloring
 
             if (s == 0)
             {
-                var c = (int)Math.Round(l * 255,0);
+                int c = (int)Math.Round(l * 255,0);
                 return Color.FromArgb(c, c, c);
             }
             else
             {
-                var c = (1 - Math.Abs(2 * l - 1)) * s;
-                var x = c * (1 - Math.Abs((h / 60) % 2 - 1));
-                var m = l - c / 2;
+                double c = (1 - Math.Abs(2 * l - 1)) * s;
+                double x = c * (1 - Math.Abs((h / 60) % 2 - 1));
+                double m = l - c / 2;
 
                 if (h < 60)
                 {
@@ -168,9 +168,9 @@ namespace OfficeOpenXml.Drawing.Style.Coloring
                     b = x;
                 }
                 
-                var red = (int)Math.Round(255 * (r + m), 0);
-                var green = (int)Math.Round(255 * (g + m), 0);
-                var blue = (int)Math.Round(255 * (b + m), 0);
+                int red = (int)Math.Round(255 * (r + m), 0);
+                int green = (int)Math.Round(255 * (g + m), 0);
+                int blue = (int)Math.Round(255 * (b + m), 0);
 
                 return Color.FromArgb(red, green, blue);
             }

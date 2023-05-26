@@ -36,7 +36,7 @@ namespace OfficeOpenXml.Drawing.Slicer
 
         internal override void Init(ExcelWorkbook wb)
         {
-            var tbl = wb.GetTable(TableId);                
+            ExcelTable? tbl = wb.GetTable(TableId);                
             TableColumn = tbl?.Columns.FirstOrDefault(x => x.Id == ColumnId);
             SlicerCacheXml = new XmlDocument();
             LoadXmlSafe(SlicerCacheXml, Part.GetStream());
@@ -44,7 +44,7 @@ namespace OfficeOpenXml.Drawing.Slicer
         internal void Init(ExcelTableColumn column, string cacheName)
         {
             TableColumn = column;
-            var wb = column.Table.WorkSheet.Workbook;
+            ExcelWorkbook? wb = column.Table.WorkSheet.Workbook;
             CreatePart(wb);
             SlicerCacheXml.DocumentElement.InnerXml = $"<extLst><x:ext uri=\"{ExtLstUris.TableSlicerCacheUri}\" xmlns:x15=\"http://schemas.microsoft.com/office/spreadsheetml/2010/11/main\"><x15:tableSlicerCache tableId=\"{column.Table.Id}\" column=\"{column.Id}\"/></x:ext></extLst>";
             TopNode = SlicerCacheXml.DocumentElement;
@@ -132,14 +132,14 @@ namespace OfficeOpenXml.Drawing.Slicer
             {
                 if(value)
                 {
-                    var node = CreateNode("x14:extLst/d:ext",false,true);
+                    XmlNode? node = CreateNode("x14:extLst/d:ext",false,true);
                     ((XmlElement)node).SetAttribute("uri", "{470722E0-AACD-4C17-9CDC-17EF765DBC7E}");
-                    var helper = XmlHelperFactory.Create(NameSpaceManager, node);
+                    XmlHelper? helper = XmlHelperFactory.Create(NameSpaceManager, node);
                     helper.CreateNode(_hideItemsWithNoDataPath, false, true);
                 }
                 else
                 {
-                    var hideNode = GetNode(_extPath + "/" + _hideItemsWithNoDataPath);
+                    XmlNode? hideNode = GetNode(_extPath + "/" + _hideItemsWithNoDataPath);
                     if(hideNode!=null)
                     {
                         hideNode.ParentNode.ParentNode.RemoveChild(hideNode.ParentNode);

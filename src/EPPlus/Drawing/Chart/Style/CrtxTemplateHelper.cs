@@ -36,16 +36,16 @@ namespace OfficeOpenXml.Drawing.Chart.Style
             {
                 ZipPackage p = new ZipPackage(stream);
 
-                var chartRel = p.GetRelationshipsByType("http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument").FirstOrDefault();
+                ZipPackageRelationship? chartRel = p.GetRelationshipsByType("http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument").FirstOrDefault();
                 if (chartRel != null)
                 {
-                    var chartPart = p.GetPart(chartRel.TargetUri);
+                    ZipPackagePart? chartPart = p.GetPart(chartRel.TargetUri);
                     chartXml = new XmlDocument();
                     chartXml.Load(chartPart.GetStream());
-                    var rels = chartPart.GetRelationships();
-                    foreach (var rel in rels)
+                    ZipPackageRelationshipCollection? rels = chartPart.GetRelationships();
+                    foreach (ZipPackageRelationship? rel in rels)
                     {
-                        var part = p.GetPart(UriHelper.ResolvePartUri(rel.SourceUri, rel.TargetUri));
+                        ZipPackagePart? part = p.GetPart(UriHelper.ResolvePartUri(rel.SourceUri, rel.TargetUri));
                         switch (rel.RelationshipType)
                         {
                             case ExcelPackage.schemaThemeOverrideRelationships:

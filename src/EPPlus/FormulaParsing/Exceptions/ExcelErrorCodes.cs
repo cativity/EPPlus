@@ -91,7 +91,7 @@ namespace OfficeOpenXml.FormulaParsing.Exceptions
             {
                 return false;
             }
-            var candidate = valueToTest.ToString();
+            string? candidate = valueToTest.ToString();
             if (Codes.FirstOrDefault(x => x == candidate) != null)
             {
                 return true;

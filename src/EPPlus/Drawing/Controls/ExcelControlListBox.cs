@@ -60,14 +60,14 @@ namespace OfficeOpenXml.Drawing.Controls
         {
             get
             {
-                var s = _ctrlProp.GetXmlNodeString("@multiSel");
+                string? s = _ctrlProp.GetXmlNodeString("@multiSel");
                 if (string.IsNullOrEmpty(s))
                 {
                     return null;
                 }
                 else
                 {
-                    var a = s.Split(',');
+                    string[]? a = s.Split(',');
                     try
                     {
                         return a.Select(x => int.Parse(x) - 1).ToArray();
@@ -85,7 +85,7 @@ namespace OfficeOpenXml.Drawing.Controls
                     _ctrlProp.DeleteNode("@multiSel");
                     _vmlProp.DeleteNode("x:MultiSel");
                 }
-                var v = value.Select(x => (x + 1).ToString(CultureInfo.InvariantCulture)).Aggregate((x, y) => x + "," + y);
+                string? v = value.Select(x => (x + 1).ToString(CultureInfo.InvariantCulture)).Aggregate((x, y) => x + "," + y);
                 _ctrlProp.SetXmlNodeString("selType", v);
                 _vmlProp.SetXmlNodeString("x:MultiSel", v);
             }

@@ -38,13 +38,13 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions
         [TestMethod]
         public void PmtTest_EndOfPeriod()
         {
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var sheet = package.Workbook.Worksheets.Add("test");
+                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
                 sheet.Cells["A1"].Formula = "PMT( 5%/12, 60, 50000 )";
                 sheet.Calculate();
-                var value = sheet.Cells["A1"].Value;
-                var value2 = System.Math.Round(Convert.ToDouble(value), 2);
+                object? value = sheet.Cells["A1"].Value;
+                double value2 = System.Math.Round(Convert.ToDouble(value), 2);
                 Assert.AreEqual(-943.56, value2);
             }
         }
@@ -52,13 +52,13 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions
         [TestMethod]
         public void PmtTest_BeginningOfPeriod()
         {
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var sheet = package.Workbook.Worksheets.Add("test");
+                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
                 sheet.Cells["A1"].Formula = "PMT( 5%/12, 60, 50000, 0, 1 )";
                 sheet.Calculate();
-                var value = sheet.Cells["A1"].Value;
-                var value2 = System.Math.Round(Convert.ToDouble(value), 2);
+                object? value = sheet.Cells["A1"].Value;
+                double value2 = System.Math.Round(Convert.ToDouble(value), 2);
                 Assert.AreEqual(-939.65, value2);
             }
         }

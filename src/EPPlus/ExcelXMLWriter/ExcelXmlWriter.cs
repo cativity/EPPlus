@@ -22,6 +22,7 @@ using OfficeOpenXml.Style.XmlAccess;
 using OfficeOpenXml.Utils;
 using OfficeOpenXml.Utils.Extensions;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
@@ -60,7 +61,7 @@ namespace OfficeOpenXml.ExcelXMLWriter
         /// <param name="endOfNode">End position of the current node</param>
         internal void WriteNodes(StreamWriter sw, string xml, ref int startOfNode, ref int endOfNode)
         {
-            var prefix = _ws.GetNameSpacePrefix();
+            string? prefix = _ws.GetNameSpacePrefix();
 
             FindNodePositionAndClearItInit(sw, xml, "cols", ref startOfNode, ref endOfNode);
             UpdateColumnData(sw, prefix);
@@ -131,11 +132,11 @@ namespace OfficeOpenXml.ExcelXMLWriter
         /// </summary>
         private void UpdateColumnData(StreamWriter sw, string prefix)
         {
-            var cse = new CellStoreEnumerator<ExcelValue>(_ws._values, 0, 1, 0, ExcelPackage.MaxColumns);
+            CellStoreEnumerator<ExcelValue>? cse = new CellStoreEnumerator<ExcelValue>(_ws._values, 0, 1, 0, ExcelPackage.MaxColumns);
             bool first = true;
             while (cse.Next())
             {
-                var col = cse.Value._value as ExcelColumn;
+                ExcelColumn? col = cse.Value._value as ExcelColumn;
                 if (col == null)
                 {
                     continue;
@@ -172,7 +173,7 @@ namespace OfficeOpenXml.ExcelXMLWriter
                     sw.Write(" phonetic=\"1\"");
                 }
 
-                var styleID = col.StyleID >= 0 ? cellXfs[col.StyleID].newID : col.StyleID;
+                int styleID = col.StyleID >= 0 ? cellXfs[col.StyleID].newID : col.StyleID;
                 if (styleID > 0)
                 {
                     sw.Write($" style=\"{styleID}\"");
@@ -191,20 +192,20 @@ namespace OfficeOpenXml.ExcelXMLWriter
         /// </summary>
         private void FixSharedFormulas()
         {
-            var remove = new List<int>();
-            foreach (var f in _ws._sharedFormulas.Values)
+            List<int>? remove = new List<int>();
+            foreach (Formulas? f in _ws._sharedFormulas.Values)
             {
-                var addr = new ExcelAddressBase(f.Address);
-                var shIx = _ws._formulas.GetValue(addr._fromRow, addr._fromCol);
+                ExcelAddressBase? addr = new ExcelAddressBase(f.Address);
+                object? shIx = _ws._formulas.GetValue(addr._fromRow, addr._fromCol);
                 if (!(shIx is int) || (shIx is int && (int)shIx != f.Index))
                 {
-                    for (var row = addr._fromRow; row <= addr._toRow; row++)
+                    for (int row = addr._fromRow; row <= addr._toRow; row++)
                     {
-                        for (var col = addr._fromCol; col <= addr._toCol; col++)
+                        for (int col = addr._fromCol; col <= addr._toCol; col++)
                         {
                             if (!(addr._fromRow == row && addr._fromCol == col))
                             {
-                                var fIx = _ws._formulas.GetValue(row, col);
+                                object? fIx = _ws._formulas.GetValue(row, col);
                                 if (fIx is int && (int)fIx == f.Index)
                                 {
                                     _ws._formulas.SetValue(row, col, f.GetFormula(row, col, _ws.Name));
@@ -239,8 +240,8 @@ namespace OfficeOpenXml.ExcelXMLWriter
                         int r = 0, c = col;
                         if (_ws._values.PrevCell(ref r, ref c))
                         {
-                            var val = _ws._values.GetValue(0, c);
-                            var column = (ExcelColumn)(val._value);
+                            ExcelValue val = _ws._values.GetValue(0, c);
+                            ExcelColumn? column = (ExcelColumn)(val._value);
                             if (column != null && column.ColumnMax >= col) //Fixes issue 15174
                             {
                                 columnStyles.Add(col, val._styleId);
@@ -312,7 +313,7 @@ namespace OfficeOpenXml.ExcelXMLWriter
                     cache.Append(" ph=\"1\"");
                 }
             }
-            var s = _ws.GetStyleInner(row, 0);
+            int s = _ws.GetStyleInner(row, 0);
             if (s > 0)
             {
                 cache.AppendFormat(" s=\"{0}\" customFormat=\"1\"", cellXfs[s].newID < 0 ? 0 : cellXfs[s].newID);
@@ -322,7 +323,7 @@ namespace OfficeOpenXml.ExcelXMLWriter
 
         private string GetDataTableAttributes(Formulas f)
         {
-            var attributes = " ";
+            string? attributes = " ";
             if (f.IsDataTableRow)
             {
                 attributes += "dtr=\"1\" ";
@@ -360,26 +361,26 @@ namespace OfficeOpenXml.ExcelXMLWriter
             int row = -1;
             string mdAttr = "";
             string mdAttrForFTag = "";
-            var sheetDataTag = prefix + "sheetData";
-            var cTag = prefix + "c";
-            var fTag = prefix + "f";
-            var vTag = prefix + "v";
+            string? sheetDataTag = prefix + "sheetData";
+            string? cTag = prefix + "c";
+            string? fTag = prefix + "f";
+            string? vTag = prefix + "v";
 
             StringBuilder sbXml = new StringBuilder();
-            var ss = _package.Workbook._sharedStrings;
-            var cache = new StringBuilder();
+            Dictionary<string, ExcelWorkbook.SharedStringItem>? ss = _package.Workbook._sharedStrings;
+            StringBuilder? cache = new StringBuilder();
             cache.Append($"<{sheetDataTag}>");
 
             FixSharedFormulas(); //Fixes Issue #32
 
-            var hasMd = _ws._metadataStore.HasValues;
+            bool hasMd = _ws._metadataStore.HasValues;
             columnStyles = new Dictionary<int, int>();
-            var cse = new CellStoreEnumerator<ExcelValue>(_ws._values, 1, 0, ExcelPackage.MaxRows, ExcelPackage.MaxColumns);
+            CellStoreEnumerator<ExcelValue>? cse = new CellStoreEnumerator<ExcelValue>(_ws._values, 1, 0, ExcelPackage.MaxRows, ExcelPackage.MaxColumns);
             while (cse.Next())
             {
                 if (cse.Column > 0)
                 {
-                    var val = cse.Value;
+                    ExcelValue val = cse.Value;
                     int styleID = cellXfs[(val._styleId == 0 ? GetStyleIdDefaultWithMemo(cse.Row, cse.Column) : val._styleId)].newID;
                     styleID = styleID < 0 ? 0 : styleID;
                     //Add the row element if it's a new row
@@ -412,7 +413,7 @@ namespace OfficeOpenXml.ExcelXMLWriter
                         {
                             throw (new InvalidDataException($"SharedFormulaId {sfId} not found on Worksheet {_ws.Name} cell {cse.CellAddress}, SharedFormulas Count {_ws._sharedFormulas.Count}"));
                         }
-                        var f = _ws._sharedFormulas[sfId];
+                        Formulas? f = _ws._sharedFormulas[sfId];
 
                         //Set calc attributes for array formula. We preserve them from load only at this point.
                         if (hasMd)
@@ -442,7 +443,7 @@ namespace OfficeOpenXml.ExcelXMLWriter
                                 }
                                 else if (f.FormulaType == FormulaType.DataTable)
                                 {
-                                    var dataTableAttributes = GetDataTableAttributes(f);
+                                    string? dataTableAttributes = GetDataTableAttributes(f);
                                     cache.Append($"<{cTag} r=\"{cse.CellAddress}\" s=\"{styleID}\"{ConvertUtil.GetCellType(v, true)}{mdAttr}><{fTag} ref=\"{f.Address}\" t=\"dataTable\"{dataTableAttributes} {mdAttrForFTag}>{ConvertUtil.ExcelEscapeAndEncodeString(f.Formula)}</{fTag}></{cTag}>");
                                 }
                                 else
@@ -502,7 +503,7 @@ namespace OfficeOpenXml.ExcelXMLWriter
                         {
                             if (v is System.Collections.IEnumerable enumResult && !(v is string))
                             {
-                                var e = enumResult.GetEnumerator();
+                                IEnumerator? e = enumResult.GetEnumerator();
                                 if (e.MoveNext() && e.Current != null)
                                 {
                                     v = e.Current;
@@ -520,7 +521,7 @@ namespace OfficeOpenXml.ExcelXMLWriter
                             }
                             else
                             {
-                                var s = Convert.ToString(v);
+                                string? s = Convert.ToString(v);
                                 if (s == null) //If for example a struct 
                                 {
                                     s = v.ToString();
@@ -680,36 +681,36 @@ namespace OfficeOpenXml.ExcelXMLWriter
                 {
                     case eDataValidationType.TextLength:
                     case eDataValidationType.Whole:
-                        var intType = _ws.DataValidations[i] as ExcelDataValidationWithFormula2<IExcelDataValidationFormulaInt>;
+                        ExcelDataValidationWithFormula2<IExcelDataValidationFormulaInt>? intType = _ws.DataValidations[i] as ExcelDataValidationWithFormula2<IExcelDataValidationFormulaInt>;
                         WriteDataValidationFormulas(intType.Formula, intType.Formula2, cache, 
                             prefix, extNode, endExtNode, _ws.DataValidations[i].Operator);
                         break;
 
                     case eDataValidationType.Decimal:
-                        var decimalType = _ws.DataValidations[i] as ExcelDataValidationWithFormula2<IExcelDataValidationFormulaDecimal>;
+                        ExcelDataValidationWithFormula2<IExcelDataValidationFormulaDecimal>? decimalType = _ws.DataValidations[i] as ExcelDataValidationWithFormula2<IExcelDataValidationFormulaDecimal>;
                         WriteDataValidationFormulas(decimalType.Formula, decimalType.Formula2, cache, 
                             prefix, extNode, endExtNode, _ws.DataValidations[i].Operator);
                         break;
 
                     case eDataValidationType.List:
-                        var listType = _ws.DataValidations[i] as ExcelDataValidationWithFormula<IExcelDataValidationFormulaList>;
+                        ExcelDataValidationWithFormula<IExcelDataValidationFormulaList>? listType = _ws.DataValidations[i] as ExcelDataValidationWithFormula<IExcelDataValidationFormulaList>;
                         WriteDataValidationFormulaSingle(listType.Formula, cache, prefix, extNode, endExtNode);
                         break;
 
                     case eDataValidationType.Time:
-                        var timeType = _ws.DataValidations[i] as ExcelDataValidationWithFormula2<IExcelDataValidationFormulaTime>;
+                        ExcelDataValidationWithFormula2<IExcelDataValidationFormulaTime>? timeType = _ws.DataValidations[i] as ExcelDataValidationWithFormula2<IExcelDataValidationFormulaTime>;
                         WriteDataValidationFormulas(timeType.Formula, timeType.Formula2, cache, 
                             prefix, extNode, endExtNode, _ws.DataValidations[i].Operator);
                         break;
 
                     case eDataValidationType.DateTime:
-                        var dateTimeType = _ws.DataValidations[i] as ExcelDataValidationWithFormula2<IExcelDataValidationFormulaDateTime>;
+                        ExcelDataValidationWithFormula2<IExcelDataValidationFormulaDateTime>? dateTimeType = _ws.DataValidations[i] as ExcelDataValidationWithFormula2<IExcelDataValidationFormulaDateTime>;
                         WriteDataValidationFormulas(dateTimeType.Formula, dateTimeType.Formula2, cache, 
                             prefix, extNode, endExtNode, _ws.DataValidations[i].Operator);
                         break;
 
                     case eDataValidationType.Custom:
-                        var customType = _ws.DataValidations[i] as ExcelDataValidationWithFormula<IExcelDataValidationFormula>;
+                        ExcelDataValidationWithFormula<IExcelDataValidationFormula>? customType = _ws.DataValidations[i] as ExcelDataValidationWithFormula<IExcelDataValidationFormula>;
                         WriteDataValidationFormulaSingle(customType.Formula, cache, prefix, extNode, endExtNode);
                         break;
 
@@ -756,7 +757,7 @@ namespace OfficeOpenXml.ExcelXMLWriter
 
         private StringBuilder UpdateDataValidation(string prefix, string extraAttribute = "")
         {
-            var cache = new StringBuilder();
+            StringBuilder? cache = new StringBuilder();
             InternalValidationType type;
             string extNode = "";
 
@@ -793,23 +794,23 @@ namespace OfficeOpenXml.ExcelXMLWriter
         private void UpdateHyperLinks(StreamWriter sw, string prefix)
         {
             Dictionary<string, string> hyps = new Dictionary<string, string>();
-            var cse = new CellStoreEnumerator<Uri>(_ws._hyperLinks);
+            CellStoreEnumerator<Uri>? cse = new CellStoreEnumerator<Uri>(_ws._hyperLinks);
             bool first = true;
             while (cse.Next())
             {
-                var uri = _ws._hyperLinks.GetValue(cse.Row, cse.Column);
+                Uri? uri = _ws._hyperLinks.GetValue(cse.Row, cse.Column);
                 if (first && uri != null)
                 {
                     sw.Write($"<{prefix}hyperlinks>");
                     first = false;
                 }
-                var hl = uri as ExcelHyperLink;
+                ExcelHyperLink? hl = uri as ExcelHyperLink;
                 if (hl != null && !string.IsNullOrEmpty(hl.ReferenceAddress))
                 {
-                    var address = _ws.Cells[cse.Row, cse.Column, cse.Row + hl.RowSpann, cse.Column + hl.ColSpann].Address;
-                    var location = ExcelCellBase.GetFullAddress(SecurityElement.Escape(_ws.Name), SecurityElement.Escape(hl.ReferenceAddress));
-                    var display = string.IsNullOrEmpty(hl.Display) ? "" : " display=\"" + SecurityElement.Escape(hl.Display) + "\"";
-                    var tooltip = string.IsNullOrEmpty(hl.ToolTip) ? "" : " tooltip=\"" + SecurityElement.Escape(hl.ToolTip) + "\"";
+                    string? address = _ws.Cells[cse.Row, cse.Column, cse.Row + hl.RowSpann, cse.Column + hl.ColSpann].Address;
+                    string? location = ExcelCellBase.GetFullAddress(SecurityElement.Escape(_ws.Name), SecurityElement.Escape(hl.ReferenceAddress));
+                    string? display = string.IsNullOrEmpty(hl.Display) ? "" : " display=\"" + SecurityElement.Escape(hl.Display) + "\"";
+                    string? tooltip = string.IsNullOrEmpty(hl.ToolTip) ? "" : " tooltip=\"" + SecurityElement.Escape(hl.ToolTip) + "\"";
                     sw.Write($"<{prefix}hyperlink ref=\"{address}\" location=\"{location}\"{display}{tooltip}/>");
                 }
                 else if (uri != null)
@@ -846,8 +847,8 @@ namespace OfficeOpenXml.ExcelXMLWriter
                         }
                         if (hl != null)
                         {
-                            var display = string.IsNullOrEmpty(hl.Display) ? "" : " display=\"" + SecurityElement.Escape(hl.Display) + "\"";
-                            var toolTip = string.IsNullOrEmpty(hl.ToolTip) ? "" : " tooltip=\"" + SecurityElement.Escape(hl.ToolTip) + "\"";
+                            string? display = string.IsNullOrEmpty(hl.Display) ? "" : " display=\"" + SecurityElement.Escape(hl.Display) + "\"";
+                            string? toolTip = string.IsNullOrEmpty(hl.ToolTip) ? "" : " tooltip=\"" + SecurityElement.Escape(hl.ToolTip) + "\"";
                             sw.Write($"<{prefix}hyperlink ref=\"{ExcelCellBase.GetAddress(cse.Row, cse.Column)}\"{display}{toolTip} r:id=\"{relationship.Id}\"/>");
                         }
                         else
@@ -867,10 +868,10 @@ namespace OfficeOpenXml.ExcelXMLWriter
         {
             StringBuilder breaks = new StringBuilder();
             int count = 0;
-            var cse = new CellStoreEnumerator<ExcelValue>(_ws._values, 0, 0, ExcelPackage.MaxRows, 0);
+            CellStoreEnumerator<ExcelValue>? cse = new CellStoreEnumerator<ExcelValue>(_ws._values, 0, 0, ExcelPackage.MaxRows, 0);
             while (cse.Next())
             {
-                var row = cse.Value._value as RowInternal;
+                RowInternal? row = cse.Value._value as RowInternal;
                 if (row != null && row.PageBreak)
                 {
                     breaks.AppendFormat($"<{prefix}brk id=\"{cse.Row}\" max=\"1048575\" man=\"1\"/>");
@@ -887,10 +888,10 @@ namespace OfficeOpenXml.ExcelXMLWriter
         {
             StringBuilder breaks = new StringBuilder();
             int count = 0;
-            var cse = new CellStoreEnumerator<ExcelValue>(_ws._values, 0, 0, 0, ExcelPackage.MaxColumns);
+            CellStoreEnumerator<ExcelValue>? cse = new CellStoreEnumerator<ExcelValue>(_ws._values, 0, 0, 0, ExcelPackage.MaxColumns);
             while (cse.Next())
             {
-                var col = cse.Value._value as ExcelColumn;
+                ExcelColumn? col = cse.Value._value as ExcelColumn;
                 if (col != null && col.PageBreak)
                 {
                     breaks.Append($"<{prefix}brk id=\"{cse.Column}\" max=\"16383\" man=\"1\"/>");
@@ -910,7 +911,7 @@ namespace OfficeOpenXml.ExcelXMLWriter
         /// <returns></returns>
         private string UpdateExtLstDataValidations(string prefix)
         {
-            var cache = new StringBuilder();
+            StringBuilder? cache = new StringBuilder();
 
             cache.Append($"<ext xmlns:x14=\"{ExcelPackage.schemaMainX14}\" uri=\"{ExtLstUris.DataValidationsUri}\">");
 

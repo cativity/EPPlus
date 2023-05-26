@@ -18,6 +18,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using OfficeOpenXml.Export.HtmlExport.Accessibility;
 #if !NET35 && !NET40
 using System.Threading.Tasks;
 
@@ -44,11 +45,11 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
         /// <returns>A html table</returns>
         public async Task<string> GetHtmlStringAsync()
         {
-            using (var ms = RecyclableMemory.GetStream())
+            using (MemoryStream? ms = RecyclableMemory.GetStream())
             {
                 await RenderHtmlAsync(ms, 0);
                 ms.Position = 0;
-                using (var sr = new StreamReader(ms))
+                using (StreamReader? sr = new StreamReader(ms))
                 {
                     return sr.ReadToEnd();
                 }
@@ -62,11 +63,11 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
         /// <returns>A html table</returns>
         public async Task<string> GetHtmlStringAsync(int rangeIndex, ExcelHtmlOverrideExportSettings settings = null)
         {
-            using (var ms = RecyclableMemory.GetStream())
+            using (MemoryStream? ms = RecyclableMemory.GetStream())
             {
                 await RenderHtmlAsync(ms, rangeIndex, settings);
                 ms.Position = 0;
-                using (var sr = new StreamReader(ms))
+                using (StreamReader? sr = new StreamReader(ms))
                 {
                     return sr.ReadToEnd();
                 }
@@ -81,7 +82,7 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
         /// <returns></returns>
         public async Task<string> GetHtmlStringAsync(int rangeIndex, Action<ExcelHtmlOverrideExportSettings> config)
         {
-            var settings = new ExcelHtmlOverrideExportSettings();
+            ExcelHtmlOverrideExportSettings? settings = new ExcelHtmlOverrideExportSettings();
             config.Invoke(settings);
             return await GetHtmlStringAsync(rangeIndex, settings);
         }
@@ -111,7 +112,7 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
                 throw new IOException("Parameter stream must be a writeable System.IO.Stream");
             }
             _mergedCells.Clear();
-            var range = _ranges[rangeIndex];
+            ExcelRangeBase? range = _ranges[rangeIndex];
             GetDataTypes(_ranges[rangeIndex], _settings);
 
             ExcelTable table = null;
@@ -120,12 +121,12 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
                 table = range.GetTable();
             }
 
-            var writer = new EpplusHtmlWriter(stream, Settings.Encoding, _styleCache);
-            var tableId = GetTableId(rangeIndex, overrideSettings);
-            var additionalClassNames = GetAdditionalClassNames(overrideSettings);
-            var accessibilitySettings = GetAccessibilitySettings(overrideSettings);
-            var headerRows = overrideSettings != null ? overrideSettings.HeaderRows : _settings.HeaderRows;
-            var headers = overrideSettings != null ? overrideSettings.Headers : _settings.Headers;
+            EpplusHtmlWriter? writer = new EpplusHtmlWriter(stream, Settings.Encoding, _styleCache);
+            string? tableId = GetTableId(rangeIndex, overrideSettings);
+            List<string>? additionalClassNames = GetAdditionalClassNames(overrideSettings);
+            AccessibilitySettings? accessibilitySettings = GetAccessibilitySettings(overrideSettings);
+            int headerRows = overrideSettings != null ? overrideSettings.HeaderRows : _settings.HeaderRows;
+            List<string>? headers = overrideSettings != null ? overrideSettings.Headers : _settings.Headers;
             AddClassesAttributes(writer, table, tableId, additionalClassNames);
             AddTableAccessibilityAttributes(accessibilitySettings, writer);
             await writer.RenderBeginTagAsync(HtmlElements.Table);
@@ -158,7 +159,7 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
         /// <returns></returns>
         public async Task RenderHtmlAsync(Stream stream, int rangeIndex, Action<ExcelHtmlOverrideExportSettings> config)
         {
-            var settings = new ExcelHtmlOverrideExportSettings();
+            ExcelHtmlOverrideExportSettings? settings = new ExcelHtmlOverrideExportSettings();
             config.Invoke(settings);
             await RenderHtmlAsync(stream, rangeIndex, settings);
         }
@@ -175,9 +176,9 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
                 htmlDocument = htmlDocument.Replace("\r\n", "");
             }
 
-            var html = await GetHtmlStringAsync();
-            var cssExporter = HtmlExporterFactory.CreateCssExporterAsync(_settings, _ranges, _styleCache);
-            var css = await cssExporter.GetCssStringAsync();
+            string? html = await GetHtmlStringAsync();
+            CssRangeExporterAsync? cssExporter = HtmlExporterFactory.CreateCssExporterAsync(_settings, _ranges, _styleCache);
+            string? css = await cssExporter.GetCssStringAsync();
             return string.Format(htmlDocument, html, css);
         }
     }

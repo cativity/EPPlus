@@ -29,7 +29,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Information
         public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
         {
             ValidateArguments(arguments, 1);
-            var val = arguments.ElementAt(0).Value;
+            object? val = arguments.ElementAt(0).Value;
             if (val is bool)
             {
                 return this.CreateResult(4, DataType.Integer);

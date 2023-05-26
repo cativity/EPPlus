@@ -30,7 +30,7 @@ namespace EPPlusTest.Core
         [TestMethod]
         public void RangeDictionaryTestForG() 
         {
-            var rd = new RangeDictionary<int>();
+            RangeDictionary<int>? rd = new RangeDictionary<int>();
 
             //rd.Add(1, 7, 5, 7, 10);
             rd.Add(1, 7, 2, 7, 10);
@@ -42,7 +42,7 @@ namespace EPPlusTest.Core
         [TestMethod]
         public void VerifyAddAddress1()
         {
-            var rd = new RangeDictionary<int>();
+            RangeDictionary<int>? rd = new RangeDictionary<int>();
 
             rd.Add(1,1,5,5, 1);
 
@@ -59,7 +59,7 @@ namespace EPPlusTest.Core
         [TestMethod]
         public void VerifyAddAddressFillGap()
         {
-            var rd = new RangeDictionary<int>();
+            RangeDictionary<int>? rd = new RangeDictionary<int>();
 
             rd.Add(1,1,5,5, 1);
             rd.Add(6,1,7,5, 2);
@@ -80,7 +80,7 @@ namespace EPPlusTest.Core
         [TestMethod]
         public void VerifyAddAddressWithSpan()
         {
-            var rd = new RangeDictionary<int>();
+            RangeDictionary<int>? rd = new RangeDictionary<int>();
 
             rd.Add(1,1,2,5, 1);
             //var r2 = new FormulaRangeAddress() { FromRow = 6, ToRow = 7, FromCol = 1, ToCol = 5 };
@@ -114,7 +114,7 @@ namespace EPPlusTest.Core
         [ExpectedException(typeof(InvalidOperationException))]
         public void VerifyOverlapBottomRightThrowsException()
         {
-            var rd = new RangeDictionary<int>();
+            RangeDictionary<int>? rd = new RangeDictionary<int>();
 
             rd.Add(1,1,5,5, 1);
             rd.Add(5,5,6,6, 2);
@@ -123,7 +123,7 @@ namespace EPPlusTest.Core
         [ExpectedException(typeof(InvalidOperationException))]
         public void VerifyOverlapTopLeftThrowsException()
         {
-            var rd = new RangeDictionary<int>();
+            RangeDictionary<int>? rd = new RangeDictionary<int>();
 
             rd.Add(5,5,6,6, 2);
             rd.Add(1,1,5,5, 1);
@@ -131,7 +131,7 @@ namespace EPPlusTest.Core
         [TestMethod]
         public void VerifyInsertOnRow()
         {
-            var rd = new RangeDictionary<int>();
+            RangeDictionary<int>? rd = new RangeDictionary<int>();
 
             rd.Add(1, 1, 5, 5, 1);
             rd.Add(8, 2, 10, 3, 2);
@@ -147,7 +147,7 @@ namespace EPPlusTest.Core
         [TestMethod]
         public void VerifyInsertBeforeRow()
         {
-            var rd = new RangeDictionary<int>();
+            RangeDictionary<int>? rd = new RangeDictionary<int>();
 
             rd.Add(2, 1, 5, 5, 1);
             rd.Add(8, 2, 10, 3, 2);
@@ -163,7 +163,7 @@ namespace EPPlusTest.Core
         [TestMethod]
         public void VerifyInsertRowSingleColumn()
         {
-            var rd = new RangeDictionary<int>();
+            RangeDictionary<int>? rd = new RangeDictionary<int>();
 
             rd.Add(2, 1, 5, 5, 1);
             rd.Add(8, 2, 10, 3, 2);
@@ -181,7 +181,7 @@ namespace EPPlusTest.Core
         [TestMethod]
         public void VerifyDeleteOnRowOneRow()
         {
-            var rd = new RangeDictionary<int>();
+            RangeDictionary<int>? rd = new RangeDictionary<int>();
 
             rd.Add(1, 1, 5, 5, 1);
             rd.Add(8, 2, 10, 3, 2);
@@ -197,7 +197,7 @@ namespace EPPlusTest.Core
         [TestMethod]
         public void VerifyDeleteBeforeRowWithDeleteOneRow()
         {
-            var rd = new RangeDictionary<int>();
+            RangeDictionary<int>? rd = new RangeDictionary<int>();
 
             rd.Add(1, 1, 1, 5, 1);
             rd.Add(4, 1, 6, 5, 2);
@@ -211,7 +211,7 @@ namespace EPPlusTest.Core
         [TestMethod]
         public void VerifyInsert1FullColumn()
         {
-            var rd = new RangeDictionary<int>();
+            RangeDictionary<int>? rd = new RangeDictionary<int>();
 
             rd.Add(1, 1, 5, 5, 1);
             rd.Add(1, 8, 5, 10, 2);
@@ -229,7 +229,7 @@ namespace EPPlusTest.Core
         [TestMethod]
         public void VerifyInsert3FullColumn()
         {
-            var rd = new RangeDictionary<int>();
+            RangeDictionary<int>? rd = new RangeDictionary<int>();
 
             rd.Add(1, 1, 5, 5, 1);
             rd.Add(1, 8, 5, 10, 2);
@@ -248,7 +248,7 @@ namespace EPPlusTest.Core
         [TestMethod]
         public void VerifyInsertPartialColumn()
         {
-            var rd = new RangeDictionary<int>();
+            RangeDictionary<int>? rd = new RangeDictionary<int>();
 
             rd.Add(1, 1, 5, 5, 1);
             rd.Add(1, 8, 5, 10, 2);
@@ -269,7 +269,7 @@ namespace EPPlusTest.Core
         [TestMethod]
         public void VerifyDeletePartialColumn()
         {
-            var rd = new RangeDictionary<int>();
+            RangeDictionary<int>? rd = new RangeDictionary<int>();
 
             rd.Add(1, 1, 5, 5, 1);
             rd.Add(1, 8, 10, 10, 2);
@@ -300,7 +300,7 @@ namespace EPPlusTest.Core
         [TestMethod]
         public void VerifyDeleteFullColumn()
         {
-            var rd = new RangeDictionary<int>();
+            RangeDictionary<int>? rd = new RangeDictionary<int>();
 
             rd.Add(1, 1, 5, 5, 1);
             rd.Add(1, 8, 5, 10, 2);
@@ -317,7 +317,7 @@ namespace EPPlusTest.Core
         [TestMethod]
         public void VerifyDelete3FullColumn()
         {
-            var rd = new RangeDictionary<int>();
+            RangeDictionary<int>? rd = new RangeDictionary<int>();
 
             rd.Add(1, 1, 5, 5, 1);
             rd.Add(1, 8, 5, 10, 2);
@@ -334,7 +334,7 @@ namespace EPPlusTest.Core
         [TestMethod]
         public void VerifyMerge()
         {
-            var rd = new RangeDictionary<int>();
+            RangeDictionary<int>? rd = new RangeDictionary<int>();
 
             rd.Add(3, 1, 5, 4, 1);
             rd.Merge(5, 1, 5, 5, 2); //Inside
@@ -375,7 +375,7 @@ namespace EPPlusTest.Core
         [TestMethod]
         public void VerifyMergeFirstLast()
         {
-            var rd = new RangeDictionary<int>(); 
+            RangeDictionary<int>? rd = new RangeDictionary<int>(); 
             rd.Add(1, 1, 10, 1, 1);
             rd.Add(11, 1, 15, 1, 2);
             rd.Merge(1, 1, 1, 1, 3); //Inside, Should not apply
@@ -388,13 +388,13 @@ namespace EPPlusTest.Core
         [TestMethod]
         public void VerifyGetValuesFromRange()
         {
-            var rd = new RangeDictionary<int>();
+            RangeDictionary<int>? rd = new RangeDictionary<int>();
 
             rd.Add(3, 1, 5, 4, 1); //A3:D5 = 1
             rd.Add(6, 1, 6, 2, 2); //A6:B6 = 2
             rd.Add(8, 2, 10, 5, 3); //B8:E10 = 3
 
-            var items = rd.GetValuesFromRange(2, 1, 10,1); //A2:A10
+            List<int>? items = rd.GetValuesFromRange(2, 1, 10,1); //A2:A10
             Assert.AreEqual(2, items.Count);
             Assert.IsTrue(items.Contains(1));
             Assert.IsTrue(items.Contains(2));

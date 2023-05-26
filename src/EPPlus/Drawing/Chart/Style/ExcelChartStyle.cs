@@ -176,7 +176,7 @@ namespace OfficeOpenXml.Drawing.Chart.Style
             {
                 if (_dataPointMarkerLayout == null)
                 {
-                    var node = GetNode("cs:dataPointMarkerLayout");
+                    XmlNode? node = GetNode("cs:dataPointMarkerLayout");
                     if(node == null)
                     {
                         throw new InvalidOperationException("Invalid Chartstyle xml: dataPointMarkerLayout element missing");

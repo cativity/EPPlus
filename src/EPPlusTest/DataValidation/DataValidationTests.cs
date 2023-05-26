@@ -61,7 +61,7 @@ namespace EPPlusTest.DataValidation
         [TestMethod, ExpectedException(typeof(InvalidOperationException))]
         public void DataValidations_ShouldThrowIfOperatorIsEqualAndFormula1IsEmpty()
         {
-            var validation = _sheet.DataValidations.AddIntegerValidation("A1");
+            IExcelDataValidationInt? validation = _sheet.DataValidations.AddIntegerValidation("A1");
             validation.Operator = ExcelDataValidationOperator.equal;
             validation.Validate();
         }
@@ -82,7 +82,7 @@ namespace EPPlusTest.DataValidation
         {
             ExcelPackage pck = OpenTemplatePackage("ValidationRangeTestMany.xlsx");
 
-            var validations = pck.Workbook.Worksheets[0].DataValidations;
+            ExcelDataValidationCollection? validations = pck.Workbook.Worksheets[0].DataValidations;
 
             validations.AddIntegerValidation("C8");
         }
@@ -92,7 +92,7 @@ namespace EPPlusTest.DataValidation
         {
             ExcelPackage pck = OpenTemplatePackage("ValidationRangeTestMany.xlsx");
 
-            var validations = pck.Workbook.Worksheets[0].DataValidations;
+            ExcelDataValidationCollection? validations = pck.Workbook.Worksheets[0].DataValidations;
 
             validations.AddIntegerValidation("Z8");
         }
@@ -103,7 +103,7 @@ namespace EPPlusTest.DataValidation
         {
             ExcelPackage pck = OpenTemplatePackage("ValidationRangeTestMany.xlsx");
 
-            var validations = pck.Workbook.Worksheets[0].DataValidations;
+            ExcelDataValidationCollection? validations = pck.Workbook.Worksheets[0].DataValidations;
 
             StringBuilder sb = new StringBuilder();
 
@@ -112,7 +112,7 @@ namespace EPPlusTest.DataValidation
             {
                 if (validations[i].Address.Addresses != null)
                 {
-                    var addresses = validations[i].Address.Addresses;
+                    List<ExcelAddressBase>? addresses = validations[i].Address.Addresses;
 
                     for (int j = 0; j < validations[i].Address.Addresses.Count; j++)
                     {
@@ -141,7 +141,7 @@ namespace EPPlusTest.DataValidation
 
             //pck.Workbook.Worksheets.Add("RangeTest");
 
-            var validations = pck.Workbook.Worksheets[0].DataValidations;
+            ExcelDataValidationCollection? validations = pck.Workbook.Worksheets[0].DataValidations;
 
             StringBuilder sb = new StringBuilder();
 
@@ -150,7 +150,7 @@ namespace EPPlusTest.DataValidation
             {
                 if(validations[i].Address.Addresses != null)
                 {
-                    var addresses = validations[i].Address.Addresses;
+                    List<ExcelAddressBase>? addresses = validations[i].Address.Addresses;
 
                     for (int j = 0; j < validations[i].Address.Addresses.Count; j++)
                     {
@@ -175,47 +175,47 @@ namespace EPPlusTest.DataValidation
         [TestMethod]
         public void DataValidations_ShouldWriteReadTypes()
         {
-            var P = new ExcelPackage(new MemoryStream());
-            var sheet = P.Workbook.Worksheets.Add("NewSheet");
+            ExcelPackage? P = new ExcelPackage(new MemoryStream());
+            ExcelWorksheet? sheet = P.Workbook.Worksheets.Add("NewSheet");
 
             sheet.DataValidations.AddAnyValidation("A1");
-            var intDV = sheet.DataValidations.AddIntegerValidation("A2");
+            IExcelDataValidationInt? intDV = sheet.DataValidations.AddIntegerValidation("A2");
             intDV.Formula.Value = 1;
             intDV.Formula2.Value = 1;
 
-            var decimalDV = sheet.DataValidations.AddDecimalValidation("A3");
+            IExcelDataValidationDecimal? decimalDV = sheet.DataValidations.AddDecimalValidation("A3");
 
             decimalDV.Formula.Value = 1;
             decimalDV.Formula2.Value = 1;
 
-            var listDV = sheet.DataValidations.AddListValidation("A4");
+            IExcelDataValidationList? listDV = sheet.DataValidations.AddListValidation("A4");
 
             listDV.Formula.Values.Add("5");
             listDV.Formula.Values.Add("Option");
 
 
-            var textDV = sheet.DataValidations.AddTextLengthValidation("A5");
+            IExcelDataValidationInt? textDV = sheet.DataValidations.AddTextLengthValidation("A5");
 
             textDV.Formula.Value = 1;
             textDV.Formula2.Value = 1;
 
-            var dateTimeDV = sheet.DataValidations.AddDateTimeValidation("A6");
+            IExcelDataValidationDateTime? dateTimeDV = sheet.DataValidations.AddDateTimeValidation("A6");
 
             dateTimeDV.Formula.Value = DateTime.MaxValue;
             dateTimeDV.Formula2.Value = DateTime.MinValue;
 
-            var timeDV = sheet.DataValidations.AddTimeValidation("A7");
+            IExcelDataValidationTime? timeDV = sheet.DataValidations.AddTimeValidation("A7");
 
             timeDV.Formula.Value.Hour = 1;
             timeDV.Formula2.Value.Hour = 2;
 
-            var customValidation = sheet.DataValidations.AddCustomValidation("A8");
+            IExcelDataValidationCustom? customValidation = sheet.DataValidations.AddCustomValidation("A8");
             customValidation.Formula.ExcelFormula = "A1+A2";
 
             MemoryStream xmlStream = new MemoryStream();
             P.SaveAs(xmlStream);
 
-            var P2 = new ExcelPackage(xmlStream);
+            ExcelPackage? P2 = new ExcelPackage(xmlStream);
             ExcelDataValidationCollection dataValidations = P2.Workbook.Worksheets[0].DataValidations;
 
             Assert.AreEqual(dataValidations[0].ValidationType.Type, eDataValidationType.Any);
@@ -231,10 +231,10 @@ namespace EPPlusTest.DataValidation
         [TestMethod]
         public void DataValidations_ShouldWriteReadOperator()
         {
-            var P = new ExcelPackage(new MemoryStream());
-            var sheet = P.Workbook.Worksheets.Add("NewSheet");
+            ExcelPackage? P = new ExcelPackage(new MemoryStream());
+            ExcelWorksheet? sheet = P.Workbook.Worksheets.Add("NewSheet");
 
-            var validation = sheet.DataValidations.AddIntegerValidation("A1");
+            IExcelDataValidationInt? validation = sheet.DataValidations.AddIntegerValidation("A1");
             validation.Operator = ExcelDataValidationOperator.greaterThanOrEqual;
             validation.Formula.Value = 1;
             validation.Formula2.Value = 1;
@@ -242,17 +242,17 @@ namespace EPPlusTest.DataValidation
             MemoryStream xmlStream = new MemoryStream();
             P.SaveAs(xmlStream);
 
-            var P2 = new ExcelPackage(xmlStream);
+            ExcelPackage? P2 = new ExcelPackage(xmlStream);
             Assert.AreEqual(P2.Workbook.Worksheets[0].DataValidations[0].Operator, ExcelDataValidationOperator.greaterThanOrEqual);
         }
 
         [TestMethod]
         public void DataValidations_ShouldWriteReadShowErrorMessage()
         {
-            var P = new ExcelPackage(new MemoryStream());
-            var sheet = P.Workbook.Worksheets.Add("NewSheet");
+            ExcelPackage? P = new ExcelPackage(new MemoryStream());
+            ExcelWorksheet? sheet = P.Workbook.Worksheets.Add("NewSheet");
 
-            var validation = sheet.DataValidations.AddIntegerValidation("A1");
+            IExcelDataValidationInt? validation = sheet.DataValidations.AddIntegerValidation("A1");
 
             validation.ShowErrorMessage = true;
             validation.Formula.Value = 1;
@@ -261,14 +261,14 @@ namespace EPPlusTest.DataValidation
             MemoryStream xmlStream = new MemoryStream();
             P.SaveAs(xmlStream);
 
-            var P2 = new ExcelPackage(xmlStream);
+            ExcelPackage? P2 = new ExcelPackage(xmlStream);
             Assert.IsTrue(P2.Workbook.Worksheets[0].DataValidations[0].ShowErrorMessage);
         }
 
         [TestMethod]
         public void DataValidations_ShouldWriteReadShowinputMessage()
         {
-            var package = new ExcelPackage(new MemoryStream());
+            ExcelPackage? package = new ExcelPackage(new MemoryStream());
             CreateSheetWithIntegerValidation(package).ShowInputMessage = true;
             Assert.IsTrue(ReadIntValidation(package).ShowInputMessage);
         }
@@ -276,7 +276,7 @@ namespace EPPlusTest.DataValidation
         [TestMethod]
         public void DataValidations_ShouldWriteReadPrompt()
         {
-            var package = new ExcelPackage(new MemoryStream());
+            ExcelPackage? package = new ExcelPackage(new MemoryStream());
             CreateSheetWithIntegerValidation(package).Prompt = "Prompt";
             Assert.AreEqual("Prompt", ReadIntValidation(package).Prompt);
         }
@@ -284,8 +284,8 @@ namespace EPPlusTest.DataValidation
         [TestMethod]
         public void DataValidations_ShouldWriteReadError()
         {
-            var package = new ExcelPackage(new MemoryStream());
-            var validation = CreateSheetWithIntegerValidation(package).Error = "Error";
+            ExcelPackage? package = new ExcelPackage(new MemoryStream());
+            string? validation = CreateSheetWithIntegerValidation(package).Error = "Error";
 
             Assert.AreEqual("Error", ReadIntValidation(package).Error);
         }
@@ -293,7 +293,7 @@ namespace EPPlusTest.DataValidation
         [TestMethod]
         public void DataValidations_ShouldWriteReadErrorTitle()
         {
-            var package = new ExcelPackage(new MemoryStream());
+            ExcelPackage? package = new ExcelPackage(new MemoryStream());
             CreateSheetWithIntegerValidation(package).ErrorTitle = "ErrorTitle";
             Assert.AreEqual("ErrorTitle", ReadIntValidation(package).ErrorTitle);
         }
@@ -301,7 +301,7 @@ namespace EPPlusTest.DataValidation
         [TestMethod, ExpectedException(typeof(InvalidOperationException))]
         public void DataValidations_ShouldThrowIfOperatorIsBetweenAndFormula2IsEmpty()
         {
-            var validation = _sheet.DataValidations.AddIntegerValidation("A1");
+            IExcelDataValidationInt? validation = _sheet.DataValidations.AddIntegerValidation("A1");
             validation.Formula.Value = 1;
             validation.Operator = ExcelDataValidationOperator.between;
             validation.Validate();
@@ -310,7 +310,7 @@ namespace EPPlusTest.DataValidation
         [TestMethod]
         public void DataValidations_ShouldAcceptOneItemOnly()
         {
-            var validation = _sheet.DataValidations.AddListValidation("A1");
+            IExcelDataValidationList? validation = _sheet.DataValidations.AddListValidation("A1");
             validation.Formula.Values.Add("1");
             validation.Validate();
         }
@@ -318,7 +318,7 @@ namespace EPPlusTest.DataValidation
         [TestMethod, ExpectedException(typeof(InvalidOperationException))]
         public void DataValidations_ShouldThrowIfAllowBlankIsNotSet()
         {
-            var validation = _sheet.DataValidations.AddIntegerValidation("A1");
+            IExcelDataValidationInt? validation = _sheet.DataValidations.AddIntegerValidation("A1");
             validation.Validate();
         }
 
@@ -326,7 +326,7 @@ namespace EPPlusTest.DataValidation
         public void ExcelDataValidation_ShouldReplaceLastPartInWholeColumnRangeWithMaxNumberOfRowsOneColumn()
         {
             // Act
-            var validation = _sheet.DataValidations.AddIntegerValidation("A:A");
+            IExcelDataValidationInt? validation = _sheet.DataValidations.AddIntegerValidation("A:A");
 
             // Assert
             Assert.AreEqual("A1:A" + ExcelPackage.MaxRows.ToString(), validation.Address.Address);
@@ -336,7 +336,7 @@ namespace EPPlusTest.DataValidation
         public void ExcelDataValidation_ShouldReplaceLastPartInWholeColumnRangeWithMaxNumberOfRowsDifferentColumns()
         {
             // Act
-            var validation = _sheet.DataValidations.AddIntegerValidation("A:B");
+            IExcelDataValidationInt? validation = _sheet.DataValidations.AddIntegerValidation("A:B");
 
             // Assert
             Assert.AreEqual(string.Format("A1:B{0}", ExcelPackage.MaxRows), validation.Address.Address);
@@ -344,12 +344,12 @@ namespace EPPlusTest.DataValidation
         [TestMethod]
         public void TestInsertRowsIntoVeryLongRangeWithDataValidation()
         {
-            using (var pck = new ExcelPackage())
+            using (ExcelPackage? pck = new ExcelPackage())
             {
                 // Add a sheet with data validation on the whole of column A except row 1
-                var wks = pck.Workbook.Worksheets.Add("Sheet1");
-                var dvAddress = "A2:A1048576";
-                var dv = wks.DataValidations.AddCustomValidation(dvAddress);
+                ExcelWorksheet? wks = pck.Workbook.Worksheets.Add("Sheet1");
+                string? dvAddress = "A2:A1048576";
+                IExcelDataValidationCustom? dv = wks.DataValidations.AddCustomValidation(dvAddress);
 
                 // Check that the data validation address was set correctly
                 Assert.AreEqual(dvAddress, dv.Address.Address);
@@ -364,12 +364,12 @@ namespace EPPlusTest.DataValidation
         [TestMethod]
         public void TestInsertRowsAboveVeryLongRangeWithDataValidation()
         {
-            using (var pck = new ExcelPackage())
+            using (ExcelPackage? pck = new ExcelPackage())
             {
                 // Add a sheet with data validation on the whole of column A except rows 1-10
-                var wks = pck.Workbook.Worksheets.Add("Sheet1");
-                var dvAddress = "A11:A1048576";
-                var dv = wks.DataValidations.AddAnyValidation(dvAddress);
+                ExcelWorksheet? wks = pck.Workbook.Worksheets.Add("Sheet1");
+                string? dvAddress = "A11:A1048576";
+                IExcelDataValidationAny? dv = wks.DataValidations.AddAnyValidation(dvAddress);
 
                 // Check that the data validation address was set correctly
                 Assert.AreEqual(dvAddress, dv.Address.Address);
@@ -385,12 +385,12 @@ namespace EPPlusTest.DataValidation
         [TestMethod]
         public void TestInsertRowsToPushDataValidationOffSheet()
         {
-            using (var pck = new ExcelPackage())
+            using (ExcelPackage? pck = new ExcelPackage())
             {
                 // Add a sheet with data validation on the last two rows of column A
-                var wks = pck.Workbook.Worksheets.Add("Sheet1");
-                var dvAddress = "A1048575:A1048576";
-                var dv = wks.DataValidations.AddCustomValidation(dvAddress);
+                ExcelWorksheet? wks = pck.Workbook.Worksheets.Add("Sheet1");
+                string? dvAddress = "A1048575:A1048576";
+                IExcelDataValidationCustom? dv = wks.DataValidations.AddCustomValidation(dvAddress);
 
                 // Check that the data validation address was set correctly
                 Assert.AreEqual(1, wks.DataValidations.Count);
@@ -407,9 +407,9 @@ namespace EPPlusTest.DataValidation
         [TestMethod]
         public void TestLoadingWorksheet()
         {
-            using (var p = OpenTemplatePackage("DataValidationReadTest.xlsx"))
+            using (ExcelPackage? p = OpenTemplatePackage("DataValidationReadTest.xlsx"))
             {
-                var ws = p.Workbook.Worksheets[0];
+                ExcelWorksheet? ws = p.Workbook.Worksheets[0];
                 Assert.AreEqual(4, ws.DataValidations.Count);
             }
         }
@@ -417,11 +417,11 @@ namespace EPPlusTest.DataValidation
         [TestMethod]
         public void DataValidationAny_AllowsOperatorShouldBeFalse()
         {
-            using (var pck = new ExcelPackage())
+            using (ExcelPackage? pck = new ExcelPackage())
             {
-                var wks = pck.Workbook.Worksheets.Add("Sheet1");
-                var dvAddress = "A1";
-                var dv = wks.DataValidations.AddAnyValidation(dvAddress);
+                ExcelWorksheet? wks = pck.Workbook.Worksheets.Add("Sheet1");
+                string? dvAddress = "A1";
+                IExcelDataValidationAny? dv = wks.DataValidations.AddAnyValidation(dvAddress);
 
                 Assert.IsFalse(dv.AllowsOperator);
             }
@@ -430,16 +430,16 @@ namespace EPPlusTest.DataValidation
         [TestMethod]
         public void DataValidationDefaults_AllowsOperatorShouldBeTrueOnCorrectTypes()
         {
-            using (var pck = new ExcelPackage())
+            using (ExcelPackage? pck = new ExcelPackage())
             {
-                var wks = pck.Workbook.Worksheets.Add("Sheet1");
+                ExcelWorksheet? wks = pck.Workbook.Worksheets.Add("Sheet1");
 
-                var intValidation = wks.DataValidations.AddIntegerValidation("A1");
-                var decimalValidation = wks.DataValidations.AddDecimalValidation("A2");
-                var textLengthValidation = wks.DataValidations.AddTextLengthValidation("A3");
-                var dateTimeValidation = wks.DataValidations.AddDateTimeValidation("A4");
-                var timeValidation = wks.DataValidations.AddTimeValidation("A5");
-                var customValidation = wks.DataValidations.AddCustomValidation("A6");
+                IExcelDataValidationInt? intValidation = wks.DataValidations.AddIntegerValidation("A1");
+                IExcelDataValidationDecimal? decimalValidation = wks.DataValidations.AddDecimalValidation("A2");
+                IExcelDataValidationInt? textLengthValidation = wks.DataValidations.AddTextLengthValidation("A3");
+                IExcelDataValidationDateTime? dateTimeValidation = wks.DataValidations.AddDateTimeValidation("A4");
+                IExcelDataValidationTime? timeValidation = wks.DataValidations.AddTimeValidation("A5");
+                IExcelDataValidationCustom? customValidation = wks.DataValidations.AddCustomValidation("A6");
 
                 Assert.IsTrue(intValidation.AllowsOperator);
                 Assert.IsTrue(decimalValidation.AllowsOperator);
@@ -453,11 +453,11 @@ namespace EPPlusTest.DataValidation
         [TestMethod]
         public void DataValidations_CloneShouldDeepCopy()
         {
-            using (var pck = new ExcelPackage())
+            using (ExcelPackage? pck = new ExcelPackage())
             {
-                var wks = pck.Workbook.Worksheets.Add("Sheet1");
-                var validation = wks.DataValidations.AddIntegerValidation("A1");
-                var clone = ((ExcelDataValidationInt)validation).GetClone();
+                ExcelWorksheet? wks = pck.Workbook.Worksheets.Add("Sheet1");
+                IExcelDataValidationInt? validation = wks.DataValidations.AddIntegerValidation("A1");
+                ExcelDataValidation? clone = ((ExcelDataValidationInt)validation).GetClone();
                 clone.Address = new ExcelDatavalidationAddress("A2", clone);
 
                 Assert.AreNotEqual(validation.Address, clone.Address);
@@ -467,9 +467,9 @@ namespace EPPlusTest.DataValidation
         [TestMethod]
         public void DataValidations_ShouldCopyAllProperties()
         {
-            using (var pck = new ExcelPackage())
+            using (ExcelPackage? pck = new ExcelPackage())
             {
-                var wks = pck.Workbook.Worksheets.Add("Sheet1");
+                ExcelWorksheet? wks = pck.Workbook.Worksheets.Add("Sheet1");
 
                 List<ExcelDataValidation> validations = new List<ExcelDataValidation>
                 {
@@ -483,7 +483,7 @@ namespace EPPlusTest.DataValidation
                     (ExcelDataValidation)wks.DataValidations.AddListValidation("A9")
                 };
 
-                foreach (var validation in validations)
+                foreach (ExcelDataValidation? validation in validations)
                 {
                     validation.AllowBlank = true;
                     validation.Prompt = "prompt";
@@ -494,7 +494,7 @@ namespace EPPlusTest.DataValidation
                     validation.ShowErrorMessage = true;
                     validation.ErrorStyle = ExcelDataValidationWarningStyle.information;
 
-                    var clone = validation.GetClone();
+                    ExcelDataValidation? clone = validation.GetClone();
 
                     Assert.AreEqual(validation.AllowBlank, clone.AllowBlank);
                     Assert.AreEqual(validation.Prompt, clone.Prompt);
@@ -510,11 +510,11 @@ namespace EPPlusTest.DataValidation
         [TestMethod]
         public void DataValidations_ShouldWriteReadIMEmode()
         {
-            using (var pck = OpenPackage("ImeTest.xlsx", true))
+            using (ExcelPackage? pck = OpenPackage("ImeTest.xlsx", true))
             {
-                var wks = pck.Workbook.Worksheets.Add("Sheet1");
+                ExcelWorksheet? wks = pck.Workbook.Worksheets.Add("Sheet1");
 
-                var validation = wks.DataValidations.AddCustomValidation("A1");
+                IExcelDataValidationCustom? validation = wks.DataValidations.AddCustomValidation("A1");
                 validation.ShowErrorMessage = true;
                 validation.Formula.ExcelFormula = "=ISTEXT(A1)";
                 validation.ImeMode = ExcelDataValidationImeMode.FullKatakana;
@@ -526,19 +526,19 @@ namespace EPPlusTest.DataValidation
         [TestMethod]
         public void DataValidations_ShouldWriteReadIMEmodeAndWriteAgain()
         {
-            using (var pck = OpenPackage("ImeTestOFF.xlsx", true))
+            using (ExcelPackage? pck = OpenPackage("ImeTestOFF.xlsx", true))
             {
-                var wks = pck.Workbook.Worksheets.Add("Sheet1");
+                ExcelWorksheet? wks = pck.Workbook.Worksheets.Add("Sheet1");
 
-                var validation = wks.DataValidations.AddCustomValidation("A1");
+                IExcelDataValidationCustom? validation = wks.DataValidations.AddCustomValidation("A1");
                 validation.ShowErrorMessage = true;
                 validation.Formula.ExcelFormula = "=ISTEXT(A1)";
                 validation.ImeMode = ExcelDataValidationImeMode.Off;
 
-                var stream = new MemoryStream();
+                MemoryStream? stream = new MemoryStream();
                 pck.SaveAs(stream);
 
-                var pck2 = new ExcelPackage(stream);
+                ExcelPackage? pck2 = new ExcelPackage(stream);
 
                 pck2.SaveAs(stream);
 
@@ -549,12 +549,12 @@ namespace EPPlusTest.DataValidation
         [TestMethod]
         public void DataValidations_Insert_Test()
         {
-            using (var pck = OpenPackage("InsertTest.xlsx", true))
+            using (ExcelPackage? pck = OpenPackage("InsertTest.xlsx", true))
             {
-                var ws = pck.Workbook.Worksheets.Add("InsertTest");
-                var rangeValidation = ws.DataValidations.AddIntegerValidation("A1:A3");
+                ExcelWorksheet? ws = pck.Workbook.Worksheets.Add("InsertTest");
+                IExcelDataValidationInt? rangeValidation = ws.DataValidations.AddIntegerValidation("A1:A3");
 
-                var rangeValidation2 = ws.DataValidations.AddDecimalValidation("A52");
+                IExcelDataValidationDecimal? rangeValidation2 = ws.DataValidations.AddDecimalValidation("A52");
 
                 rangeValidation.Operator = ExcelDataValidationOperator.equal;
                 rangeValidation.Formula.Value = 5;
@@ -564,7 +564,7 @@ namespace EPPlusTest.DataValidation
 
                 rangeValidation.Address.Address = "A1,A3";
 
-                var list = ws.DataValidations.AddListValidation("A2");
+                IExcelDataValidationList? list = ws.DataValidations.AddListValidation("A2");
 
                 list.Formula.Values.Add("TestValue");
 
@@ -575,11 +575,11 @@ namespace EPPlusTest.DataValidation
         [TestMethod]
         public void ClearValidation()
         {
-            using (var pck = OpenPackage("ClearDataValidationTest.xlsx", true))
+            using (ExcelPackage? pck = OpenPackage("ClearDataValidationTest.xlsx", true))
             {
-                var ws = pck.Workbook.Worksheets.Add("ClearTest");
-                var rangeValidation = ws.DataValidations.AddIntegerValidation("A1:A3");
-                var rangeValidation2 = ws.DataValidations.AddIntegerValidation("A4:A6");
+                ExcelWorksheet? ws = pck.Workbook.Worksheets.Add("ClearTest");
+                IExcelDataValidationInt? rangeValidation = ws.DataValidations.AddIntegerValidation("A1:A3");
+                IExcelDataValidationInt? rangeValidation2 = ws.DataValidations.AddIntegerValidation("A4:A6");
 
                 rangeValidation.Operator = ExcelDataValidationOperator.equal;
                 rangeValidation.Formula.Value = 5;
@@ -590,7 +590,7 @@ namespace EPPlusTest.DataValidation
 
                 ws.Cells["A2"].DataValidation.ClearDataValidation();
 
-                var list = ws.DataValidations.AddListValidation("A2");
+                IExcelDataValidationList? list = ws.DataValidations.AddListValidation("A2");
 
                 list.Formula.Values.Add("Value1");
                 list.Formula.Values.Add("Value2");
@@ -602,11 +602,11 @@ namespace EPPlusTest.DataValidation
         [TestMethod]
         public void ClearValidationAndAddressChangeWithSpacedAddresses()
         {
-            using (var pck = OpenPackage("ClearDataValidationTestAdress.xlsx", true))
+            using (ExcelPackage? pck = OpenPackage("ClearDataValidationTestAdress.xlsx", true))
             {
-                var ws = pck.Workbook.Worksheets.Add("ClearTest");
-                var rangeValidation = ws.DataValidations.AddIntegerValidation("A1:A3 B5 C3 E15:E17");
-                var rangeValidation2 = ws.DataValidations.AddIntegerValidation("A4:A6");
+                ExcelWorksheet? ws = pck.Workbook.Worksheets.Add("ClearTest");
+                IExcelDataValidationInt? rangeValidation = ws.DataValidations.AddIntegerValidation("A1:A3 B5 C3 E15:E17");
+                IExcelDataValidationInt? rangeValidation2 = ws.DataValidations.AddIntegerValidation("A4:A6");
 
                 rangeValidation.Operator = ExcelDataValidationOperator.equal;
                 rangeValidation.Formula.Value = 5;
@@ -618,7 +618,7 @@ namespace EPPlusTest.DataValidation
                 ws.Cells["A2:A3"].DataValidation.ClearDataValidation();
                 ws.Cells["E16 A5"].DataValidation.ClearDataValidation();
 
-                var list = ws.DataValidations.AddListValidation("A2");
+                IExcelDataValidationList? list = ws.DataValidations.AddListValidation("A2");
 
                 list.Formula.Values.Add("Value1");
                 list.Formula.Values.Add("Value2");
@@ -630,15 +630,15 @@ namespace EPPlusTest.DataValidation
         [TestMethod]
         public void ClearValidationAndAddressChangeWithSpacedAddressesViaCells()
         {
-            using (var pck = OpenPackage("ClearDataValidationTestAdress.xlsx", true))
+            using (ExcelPackage? pck = OpenPackage("ClearDataValidationTestAdress.xlsx", true))
             {
-                var ws = pck.Workbook.Worksheets.Add("ClearTest");
+                ExcelWorksheet? ws = pck.Workbook.Worksheets.Add("ClearTest");
 
-                var listValidation = ws.Cells["A1:A3 B5 C3 E15:E17"].DataValidation.AddListDataValidation();
+                IExcelDataValidationList? listValidation = ws.Cells["A1:A3 B5 C3 E15:E17"].DataValidation.AddListDataValidation();
 
                 listValidation.Formula.Values.Add("Value1");
 
-                var rangeValidation = ws.Cells["A4:A6"].DataValidation.AddIntegerDataValidation();
+                IExcelDataValidationInt? rangeValidation = ws.Cells["A4:A6"].DataValidation.AddIntegerDataValidation();
 
                 rangeValidation.Operator = ExcelDataValidationOperator.equal;
                 rangeValidation.Formula.Value = 5;
@@ -647,7 +647,7 @@ namespace EPPlusTest.DataValidation
                 ws.Cells["A2:A3"].DataValidation.ClearDataValidation();
                 ws.Cells["E16 A5"].DataValidation.ClearDataValidation();
 
-                var list = ws.DataValidations.AddListValidation("A2");
+                IExcelDataValidationList? list = ws.DataValidations.AddListValidation("A2");
 
                 list.Formula.Values.Add("Value1");
                 list.Formula.Values.Add("Value2");
@@ -659,11 +659,11 @@ namespace EPPlusTest.DataValidation
         [TestMethod]
         public void ClearValidationOverARangeWithMultipleValidations()
         {
-            using (var pck = OpenPackage("ClearDataValidationTestAdress.xlsx", true))
+            using (ExcelPackage? pck = OpenPackage("ClearDataValidationTestAdress.xlsx", true))
             {
-                var ws = pck.Workbook.Worksheets.Add("ClearTest");
-                var rangeValidation = ws.DataValidations.AddIntegerValidation("A1:A5");
-                var rangeValidation2 = ws.DataValidations.AddIntegerValidation("A6:A8");
+                ExcelWorksheet? ws = pck.Workbook.Worksheets.Add("ClearTest");
+                IExcelDataValidationInt? rangeValidation = ws.DataValidations.AddIntegerValidation("A1:A5");
+                IExcelDataValidationInt? rangeValidation2 = ws.DataValidations.AddIntegerValidation("A6:A8");
 
                 rangeValidation.Operator = ExcelDataValidationOperator.equal;
                 rangeValidation.Formula.Value = 5;
@@ -674,7 +674,7 @@ namespace EPPlusTest.DataValidation
 
                 ws.Cells["A4:A7"].DataValidation.ClearDataValidation();
 
-                var list = ws.DataValidations.AddListValidation("A4");
+                IExcelDataValidationList? list = ws.DataValidations.AddListValidation("A4");
 
                 list.Formula.Values.Add("Value1");
                 list.Formula.Values.Add("Value2");
@@ -690,11 +690,11 @@ namespace EPPlusTest.DataValidation
         [TestMethod]
         public void ClearValidationOverARangeWithMultipleValidations2()
         {
-            using (var pck = OpenPackage("ClearDataValidationTestAdress.xlsx", true))
+            using (ExcelPackage? pck = OpenPackage("ClearDataValidationTestAdress.xlsx", true))
             {
-                var ws = pck.Workbook.Worksheets.Add("ClearTest");
-                var rangeValidation = ws.DataValidations.AddIntegerValidation("A1:A5");
-                var rangeValidation2 = ws.DataValidations.AddIntegerValidation("A6:A8");
+                ExcelWorksheet? ws = pck.Workbook.Worksheets.Add("ClearTest");
+                IExcelDataValidationInt? rangeValidation = ws.DataValidations.AddIntegerValidation("A1:A5");
+                IExcelDataValidationInt? rangeValidation2 = ws.DataValidations.AddIntegerValidation("A6:A8");
 
                 rangeValidation.Operator = ExcelDataValidationOperator.equal;
                 rangeValidation.Formula.Value = 5;
@@ -704,7 +704,7 @@ namespace EPPlusTest.DataValidation
 
                 ws.Cells["A3:A7"].DataValidation.ClearDataValidation();
 
-                var list = ws.DataValidations.AddListValidation("A4");
+                IExcelDataValidationList? list = ws.DataValidations.AddListValidation("A4");
 
                 list.Formula.Values.Add("Value1");
                 list.Formula.Values.Add("Value2");
@@ -719,11 +719,11 @@ namespace EPPlusTest.DataValidation
         [TestMethod]
         public void ClearValidationOverBlockRanges()
         {
-            using (var pck = OpenPackage("ClearBlockRanges.xlsx", true))
+            using (ExcelPackage? pck = OpenPackage("ClearBlockRanges.xlsx", true))
             {
-                var ws = pck.Workbook.Worksheets.Add("ClearTest");
-                var rangeValidation = ws.DataValidations.AddIntegerValidation("A1:D5");
-                var rangeValidation2 = ws.DataValidations.AddIntegerValidation("C6:C8");
+                ExcelWorksheet? ws = pck.Workbook.Worksheets.Add("ClearTest");
+                IExcelDataValidationInt? rangeValidation = ws.DataValidations.AddIntegerValidation("A1:D5");
+                IExcelDataValidationInt? rangeValidation2 = ws.DataValidations.AddIntegerValidation("C6:C8");
 
                 rangeValidation.Operator = ExcelDataValidationOperator.equal;
                 rangeValidation.Formula.Value = 5;
@@ -733,8 +733,8 @@ namespace EPPlusTest.DataValidation
 
                 ws.Cells["A3:B7"].DataValidation.ClearDataValidation();
 
-                var list = ws.DataValidations.AddListValidation("A4");
-                var list2 = ws.DataValidations.AddListValidation("B3:B7");
+                IExcelDataValidationList? list = ws.DataValidations.AddListValidation("A4");
+                IExcelDataValidationList? list2 = ws.DataValidations.AddListValidation("B3:B7");
 
                 list.Formula.Values.Add("Value1");
                 list.Formula.Values.Add("Value2");
@@ -753,11 +753,11 @@ namespace EPPlusTest.DataValidation
         [TestMethod]
         public void DeleteRangeOneAddressTest()
         {
-            using (var pck = OpenPackage("ClearDataValidationTestAdress.xlsx", true))
+            using (ExcelPackage? pck = OpenPackage("ClearDataValidationTestAdress.xlsx", true))
             {
-                var ws = pck.Workbook.Worksheets.Add("ClearTest");
-                var rangeValidation = ws.DataValidations.AddIntegerValidation("A1:A5");
-                var rangeValidation2 = ws.DataValidations.AddIntegerValidation("A6:A8");
+                ExcelWorksheet? ws = pck.Workbook.Worksheets.Add("ClearTest");
+                IExcelDataValidationInt? rangeValidation = ws.DataValidations.AddIntegerValidation("A1:A5");
+                IExcelDataValidationInt? rangeValidation2 = ws.DataValidations.AddIntegerValidation("A6:A8");
 
                 rangeValidation.Operator = ExcelDataValidationOperator.equal;
                 rangeValidation.Formula.Value = 5;
@@ -773,10 +773,10 @@ namespace EPPlusTest.DataValidation
         [ExpectedException(typeof(InvalidOperationException))]
         public void ClearSingular()
         {
-            using (var pck = OpenPackage("ClearDataValidationTestAdress.xlsx", true))
+            using (ExcelPackage? pck = OpenPackage("ClearDataValidationTestAdress.xlsx", true))
             {
-                var ws = pck.Workbook.Worksheets.Add("ClearTest");
-                var rangeValidation = ws.DataValidations.AddIntegerValidation("A9");
+                ExcelWorksheet? ws = pck.Workbook.Worksheets.Add("ClearTest");
+                IExcelDataValidationInt? rangeValidation = ws.DataValidations.AddIntegerValidation("A9");
 
                 rangeValidation.Operator = ExcelDataValidationOperator.equal;
                 rangeValidation.Formula.Value = 5;
@@ -788,10 +788,10 @@ namespace EPPlusTest.DataValidation
         [TestMethod]
         public void ClearSingularSpaceSeparated()
         {
-            using (var pck = OpenPackage("ClearDataValidationTestAdress.xlsx", true))
+            using (ExcelPackage? pck = OpenPackage("ClearDataValidationTestAdress.xlsx", true))
             {
-                var ws = pck.Workbook.Worksheets.Add("ClearTest");
-                var rangeValidation = ws.DataValidations.AddIntegerValidation("A9 A6 B12 C50");
+                ExcelWorksheet? ws = pck.Workbook.Worksheets.Add("ClearTest");
+                IExcelDataValidationInt? rangeValidation = ws.DataValidations.AddIntegerValidation("A9 A6 B12 C50");
 
                 rangeValidation.Operator = ExcelDataValidationOperator.equal;
                 rangeValidation.Formula.Value = 5;
@@ -806,12 +806,12 @@ namespace EPPlusTest.DataValidation
         [TestMethod]
         public void RemovalOfCellsAfterBeingRemovedAndAdded()
         {
-            using (var pck = OpenPackage("DataValidationsUserClearTest.xlsx", true))
+            using (ExcelPackage? pck = OpenPackage("DataValidationsUserClearTest.xlsx", true))
             {
-                var myWS = pck.Workbook.Worksheets.Add("MyWorksheet");
-                var yourWS = pck.Workbook.Worksheets.Add("YourWorksheet");
+                ExcelWorksheet? myWS = pck.Workbook.Worksheets.Add("MyWorksheet");
+                ExcelWorksheet? yourWS = pck.Workbook.Worksheets.Add("YourWorksheet");
 
-                var validation = myWS.DataValidations.AddTextLengthValidation("A1:C5");
+                IExcelDataValidationInt? validation = myWS.DataValidations.AddTextLengthValidation("A1:C5");
 
                 validation.Operator = ExcelDataValidationOperator.lessThan;
 
@@ -819,7 +819,7 @@ namespace EPPlusTest.DataValidation
 
                 myWS.Cells["B3:C6"].DataValidation.ClearDataValidation();
 
-                var decimalVal = myWS.Cells["B3:D4"].DataValidation.AddDecimalDataValidation();
+                IExcelDataValidationDecimal? decimalVal = myWS.Cells["B3:D4"].DataValidation.AddDecimalDataValidation();
                 decimalVal.Operator = ExcelDataValidationOperator.greaterThan;
                 decimalVal.Formula.Value = 5;
 
@@ -833,12 +833,12 @@ namespace EPPlusTest.DataValidation
         [TestMethod]
         public void UserTestClear()
         {
-            using (var pck = OpenPackage("DataValidationsUserClearTest.xlsx", true))
+            using (ExcelPackage? pck = OpenPackage("DataValidationsUserClearTest.xlsx", true))
             {
-                var myWS = pck.Workbook.Worksheets.Add("MyWorksheet");
-                var yourWS = pck.Workbook.Worksheets.Add("YourWorksheet");
+                ExcelWorksheet? myWS = pck.Workbook.Worksheets.Add("MyWorksheet");
+                ExcelWorksheet? yourWS = pck.Workbook.Worksheets.Add("YourWorksheet");
 
-                var validation = myWS.DataValidations.AddTextLengthValidation("A1:E30");
+                IExcelDataValidationInt? validation = myWS.DataValidations.AddTextLengthValidation("A1:E30");
 
                 validation.Operator = ExcelDataValidationOperator.lessThan;
 
@@ -846,7 +846,7 @@ namespace EPPlusTest.DataValidation
 
                 myWS.Cells["C1:D10"].DataValidation.ClearDataValidation();
 
-                var listVal = myWS.Cells["C5:D10"].DataValidation.AddListDataValidation();
+                IExcelDataValidationList? listVal = myWS.Cells["C5:D10"].DataValidation.AddListDataValidation();
 
                 listVal.Formula.ExcelFormula = "$C$1:$D$4";
 

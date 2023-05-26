@@ -47,19 +47,19 @@ namespace OfficeOpenXml.Vba.ContentHash
 
         public static void GetContentNormalizedDataHashInput(ExcelVbaProject project, MemoryStream ms)
         {
-            var provider = new ContentNormalizedDataHashInputProvider(project);
+            ContentNormalizedDataHashInputProvider? provider = new ContentNormalizedDataHashInputProvider(project);
             provider.CreateHashInput(ms);
         }
 
         public static void GetFormsNormalizedDataHashInput(ExcelVbaProject project, MemoryStream ms)
         {
-            var provider = new FormsNormalizedDataHashInputProvider(project);
+            FormsNormalizedDataHashInputProvider? provider = new FormsNormalizedDataHashInputProvider(project);
             provider.CreateHashInput(ms);
         }
 
         public static void GetV3ContentNormalizedDataHashInput(ExcelVbaProject project, MemoryStream ms)
         {
-            var provider = new V3NormalizedDataHashInputProvider(project);
+            V3NormalizedDataHashInputProvider? provider = new V3NormalizedDataHashInputProvider(project);
             provider.CreateHashInput(ms);
         }
     }

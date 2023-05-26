@@ -81,7 +81,7 @@ namespace OfficeOpenXml.VBA
                 Array.Copy(PasswordKey, 0, data, data.Length - 4, 4);
 
                 //Calculate Hash
-                var provider = SHA1.Create();
+                SHA1? provider = SHA1.Create();
                 PasswordHash = provider.ComputeHash(data);
                 _project.ProjectID = "{00000000-0000-0000-0000-000000000000}";
             }

@@ -33,7 +33,7 @@ namespace OfficeOpenXml.Drawing.Slicer
         internal ExcelTableSlicer(ExcelDrawings drawings, XmlNode node, ExcelGroupShape parent = null) : base(drawings, node, parent)
         {
             _ws = drawings.Worksheet;
-            var slicerNode = _ws.SlicerXmlSources.GetSource(Name, eSlicerSourceType.Table, out _xmlSource);
+            XmlNode? slicerNode = _ws.SlicerXmlSources.GetSource(Name, eSlicerSourceType.Table, out _xmlSource);
             _slicerXmlHelper = XmlHelperFactory.Create(NameSpaceManager, slicerNode);
             
             _ws.Workbook.SlicerCaches.TryGetValue(CacheName, out ExcelSlicerCache cache);
@@ -50,7 +50,7 @@ namespace OfficeOpenXml.Drawing.Slicer
                 column.Slicer = this;
             }
 
-            var name = drawings.Worksheet.Workbook.GetSlicerName(column.Name);
+            string? name = drawings.Worksheet.Workbook.GetSlicerName(column.Name);
             CreateDrawing(name);
             SlicerName = name;
 
@@ -58,7 +58,7 @@ namespace OfficeOpenXml.Drawing.Slicer
             RowHeight = 19;
             CacheName = "Slicer_" + ExcelAddressUtil.GetValidName(name);
 
-            var cache = new ExcelTableSlicerCache(NameSpaceManager);
+            ExcelTableSlicerCache? cache = new ExcelTableSlicerCache(NameSpaceManager);
             cache.Init(column, CacheName);
             _cache = cache;            
         }
@@ -66,9 +66,9 @@ namespace OfficeOpenXml.Drawing.Slicer
 
         private ExcelTableColumn GetTableColumn()
         {
-            foreach (var ws in _drawings.Worksheet.Workbook.Worksheets)
+            foreach (ExcelWorksheet? ws in _drawings.Worksheet.Workbook.Worksheets)
             {
-                foreach (var t in ws.Tables)
+                foreach (ExcelTable? t in ws.Tables)
                 {
                     if (t.Id == Cache.TableId)
                     {
@@ -107,16 +107,16 @@ namespace OfficeOpenXml.Drawing.Slicer
             TopNode.AppendChild(TopNode.OwnerDocument.CreateElement("clientData", ExcelPackage.schemaSheetDrawings));
 
             _xmlSource = _ws.SlicerXmlSources.GetOrCreateSource(eSlicerSourceType.Table);            
-            var node = _xmlSource.XmlDocument.CreateElement("slicer", ExcelPackage.schemaMainX14);
+            XmlElement? node = _xmlSource.XmlDocument.CreateElement("slicer", ExcelPackage.schemaMainX14);
             _xmlSource.XmlDocument.DocumentElement.AppendChild(node);
             _slicerXmlHelper = XmlHelperFactory.Create(NameSpaceManager, node);
 
-            var extNode = _ws.GetOrCreateExtLstSubNode(ExtLstUris.WorksheetSlicerTableUri, "x14");
+            XmlNode? extNode = _ws.GetOrCreateExtLstSubNode(ExtLstUris.WorksheetSlicerTableUri, "x14");
             if (extNode.InnerXml=="")
             {
                 extNode.InnerXml = "<x14:slicerList/>";
-                var xh = XmlHelperFactory.Create(NameSpaceManager, extNode.FirstChild);
-                var element = (XmlElement)xh.CreateNode("x14:slicer", false, true);
+                XmlHelper? xh = XmlHelperFactory.Create(NameSpaceManager, extNode.FirstChild);
+                XmlElement? element = (XmlElement)xh.CreateNode("x14:slicer", false, true);
                 element.SetAttribute("id", ExcelPackage.schemaRelationships, _xmlSource.Rel.Id);
             }
 
@@ -138,7 +138,7 @@ namespace OfficeOpenXml.Drawing.Slicer
         {
             get
             {
-                var f=TableColumn.Table.AutoFilter.Columns[TableColumn.Position] as ExcelValueFilterColumn;
+                ExcelValueFilterColumn? f=TableColumn.Table.AutoFilter.Columns[TableColumn.Position] as ExcelValueFilterColumn;
                 if(f!=null)
                 {
                     return f.Filters;
@@ -157,8 +157,8 @@ namespace OfficeOpenXml.Drawing.Slicer
 
         internal void CreateNewCache()
         {
-            var cacheXml = Cache.SlicerCacheXml.OuterXml;
-            var cache=new ExcelTableSlicerCache(_slicerXmlHelper.NameSpaceManager);
+            string? cacheXml = Cache.SlicerCacheXml.OuterXml;
+            ExcelTableSlicerCache? cache=new ExcelTableSlicerCache(_slicerXmlHelper.NameSpaceManager);
             cache.Init(Cache.TableColumn, "Slicer_"+SlicerName);
             _cache = cache;
             CacheName = cache.Name;

@@ -16,6 +16,7 @@ using System.Linq;
 using System.Text;
 using static OfficeOpenXml.FormulaParsing.EpplusExcelDataProvider;
 using OfficeOpenXml.FormulaParsing;
+using OfficeOpenXml.Table;
 
 namespace OfficeOpenXml.FormulaParsing.ExpressionGraph
 {
@@ -31,19 +32,19 @@ namespace OfficeOpenXml.FormulaParsing.ExpressionGraph
 
         public override CompileResult Compile()
         {
-            var c = this._parsingContext.Scopes.Current;
-            var name = _parsingContext.ExcelDataProvider.GetName(c.Address.Worksheet, ExpressionString);
+            ParsingScope? c = this._parsingContext.Scopes.Current;
+            INameInfo? name = _parsingContext.ExcelDataProvider.GetName(c.Address.Worksheet, ExpressionString);
             
-            var cache = _parsingContext.AddressCache;
-            var cacheId = cache.GetNewId();
+            ExcelAddressCache? cache = _parsingContext.AddressCache;
+            int cacheId = cache.GetNewId();
             
             if (name == null)
             {
                 // check if there is a table with the name
-                var table = _parsingContext.ExcelDataProvider.GetExcelTable(ExpressionString);
+                ExcelTable? table = _parsingContext.ExcelDataProvider.GetExcelTable(ExpressionString);
                 if(table != null)
                 {
-                    var ri = new RangeInfo(table.WorkSheet, table.Address);
+                    RangeInfo? ri = new RangeInfo(table.WorkSheet, table.Address);
                     cache.Add(cacheId, ri.Address.FullAddress);
                     return new CompileResult(ri, DataType.Enumerable, cacheId);
                 }
@@ -56,7 +57,7 @@ namespace OfficeOpenXml.FormulaParsing.ExpressionGraph
             }
             if (name.Value is IRangeInfo)
             {
-                var range = (IRangeInfo)name.Value;
+                IRangeInfo? range = (IRangeInfo)name.Value;
                 cache.Add(cacheId, range.Address.FullAddress);
                 if (range.IsMulti)
                 {
@@ -68,13 +69,13 @@ namespace OfficeOpenXml.FormulaParsing.ExpressionGraph
                     {
                         return new CompileResult(null, DataType.Empty, cacheId);
                     }
-                    var factory = new CompileResultFactory();
+                    CompileResultFactory? factory = new CompileResultFactory();
                     return factory.Create(range.First().Value, cacheId);
                 }
             }
             else
             {                
-                var factory = new CompileResultFactory();
+                CompileResultFactory? factory = new CompileResultFactory();
                 return factory.Create(name.Value, cacheId);
             }
 

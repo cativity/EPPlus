@@ -21,8 +21,8 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.FinancialDayCount
 
         public double GetDaysBetweenDates(System.DateTime startDate, System.DateTime endDate)
         {
-            var start = FinancialDayFactory.Create(startDate, DayCountBasis.Actual_365);
-            var end = FinancialDayFactory.Create(endDate, DayCountBasis.Actual_365);
+            FinancialDay? start = FinancialDayFactory.Create(startDate, DayCountBasis.Actual_365);
+            FinancialDay? end = FinancialDayFactory.Create(endDate, DayCountBasis.Actual_365);
             return GetDaysBetweenDates(start, end, (int)DaysPerYear);
         }
 

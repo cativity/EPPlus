@@ -42,8 +42,8 @@ namespace OfficeOpenXml.FormulaParsing.LexicalAnalysis
         /// <param name="tokens"></param>
         public void Analyze(IEnumerable<Token> tokens)
         {
-            var context = new AnalyzingContext();
-            foreach (var token in tokens)
+            AnalyzingContext? context = new AnalyzingContext();
+            foreach (Token token in tokens)
             {
                 if (token.TokenTypeIsSet(TokenType.Unrecognized))
                 {

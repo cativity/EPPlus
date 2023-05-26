@@ -48,13 +48,13 @@ namespace EPPlusTest
         [TestMethod]
         public void ReadVBA()
         {
-            var package = new ExcelPackage(new FileInfo(@"c:\temp\report.xlsm"));
+            ExcelPackage? package = new ExcelPackage(new FileInfo(@"c:\temp\report.xlsm"));
             File.WriteAllText(@"c:\temp\vba\modules\dir.txt", package.Workbook.VbaProject.CodePage + "," + package.Workbook.VbaProject.Constants + "," + package.Workbook.VbaProject.Description + "," + package.Workbook.VbaProject.HelpContextID.ToString() + "," + package.Workbook.VbaProject.HelpFile1 + "," + package.Workbook.VbaProject.HelpFile2 + "," + package.Workbook.VbaProject.Lcid.ToString() + "," + package.Workbook.VbaProject.LcidInvoke.ToString() + "," + package.Workbook.VbaProject.LibFlags.ToString() + "," + package.Workbook.VbaProject.MajorVersion.ToString() + "," + package.Workbook.VbaProject.MinorVersion.ToString() + "," + package.Workbook.VbaProject.Name + "," + package.Workbook.VbaProject.ProjectID + "," + package.Workbook.VbaProject.SystemKind.ToString() + "," + package.Workbook.VbaProject.Protection.HostProtected.ToString() + "," + package.Workbook.VbaProject.Protection.UserProtected.ToString() + "," + package.Workbook.VbaProject.Protection.VbeProtected.ToString() + "," + package.Workbook.VbaProject.Protection.VisibilityState.ToString());
-            foreach (var module in package.Workbook.VbaProject.Modules)
+            foreach (ExcelVBAModule? module in package.Workbook.VbaProject.Modules)
             {
                 File.WriteAllText(string.Format(@"c:\temp\vba\modules\{0}.txt", module.Name), module.Code);
             }
-            foreach (var r in package.Workbook.VbaProject.References)
+            foreach (ExcelVbaReference? r in package.Workbook.VbaProject.References)
             {
                 File.WriteAllText(string.Format(@"c:\temp\vba\modules\{0}.txt", r.Name), r.Libid + " " + r.ReferenceRecordID.ToString());
             }
@@ -70,7 +70,7 @@ namespace EPPlusTest
         [TestMethod]
         public void Resign()
         {
-            var package = new ExcelPackage(new FileInfo(@"c:\temp\vbaWrite.xlsm"));
+            ExcelPackage? package = new ExcelPackage(new FileInfo(@"c:\temp\vbaWrite.xlsm"));
             //package.Workbook.VbaProject.Signature.Certificate = store.Certificates[11];
             package.SaveAs(new FileInfo(@"c:\temp\vbaWrite2.xlsm"));
         }
@@ -109,13 +109,13 @@ namespace EPPlusTest
         [TestMethod]
         public void ReadVBAUnicodeWsName()
         {
-            var package = new ExcelPackage(new FileInfo(@"c:\temp\bug\VbaUnicodeWS.xlsm"));
+            ExcelPackage? package = new ExcelPackage(new FileInfo(@"c:\temp\bug\VbaUnicodeWS.xlsm"));
             File.WriteAllText(@"c:\temp\vba\modules\dir.txt", package.Workbook.VbaProject.CodePage + "," + package.Workbook.VbaProject.Constants + "," + package.Workbook.VbaProject.Description + "," + package.Workbook.VbaProject.HelpContextID.ToString() + "," + package.Workbook.VbaProject.HelpFile1 + "," + package.Workbook.VbaProject.HelpFile2 + "," + package.Workbook.VbaProject.Lcid.ToString() + "," + package.Workbook.VbaProject.LcidInvoke.ToString() + "," + package.Workbook.VbaProject.LibFlags.ToString() + "," + package.Workbook.VbaProject.MajorVersion.ToString() + "," + package.Workbook.VbaProject.MinorVersion.ToString() + "," + package.Workbook.VbaProject.Name + "," + package.Workbook.VbaProject.ProjectID + "," + package.Workbook.VbaProject.SystemKind.ToString() + "," + package.Workbook.VbaProject.Protection.HostProtected.ToString() + "," + package.Workbook.VbaProject.Protection.UserProtected.ToString() + "," + package.Workbook.VbaProject.Protection.VbeProtected.ToString() + "," + package.Workbook.VbaProject.Protection.VisibilityState.ToString());
-            foreach (var module in package.Workbook.VbaProject.Modules)
+            foreach (ExcelVBAModule? module in package.Workbook.VbaProject.Modules)
             {
                 File.WriteAllText(string.Format(@"c:\temp\vba\modules\{0}.txt", module.Name), module.Code);
             }
-            foreach (var r in package.Workbook.VbaProject.References)
+            foreach (ExcelVbaReference? r in package.Workbook.VbaProject.References)
             {
                 File.WriteAllText(string.Format(@"c:\temp\vba\modules\{0}.txt", r.Name), r.Libid + " " + r.ReferenceRecordID.ToString());
             }
@@ -132,7 +132,7 @@ namespace EPPlusTest
         [TestMethod]
         public void VbaBug()
         {
-            using (var package = new ExcelPackage(new FileInfo(@"c:\temp\bug\outfile.xlsm")))
+            using (ExcelPackage? package = new ExcelPackage(new FileInfo(@"c:\temp\bug\outfile.xlsm")))
             {
                 Console.WriteLine(package.Workbook.CodeModule.Code.Length);
                 package.Workbook.Worksheets[1].CodeModule.Code = "Private Sub Worksheet_SelectionChange(ByVal Target As Range)\r\n\r\nEnd Sub";
@@ -145,18 +145,18 @@ namespace EPPlusTest
         {
             // This is a test for Issue 15026: VBA decompression encounters index out of range
             // on the decompression buffer.
-            var workbookDir = Path.Combine(
+            string? workbookDir = Path.Combine(
 #if Core
-                AppContext.BaseDirectory
+                                               AppContext.BaseDirectory
 #else
                 AppDomain.CurrentDomain.BaseDirectory
 #endif
-                , @"..\..\workbooks");
-            var path = Path.Combine(workbookDir, "VBADecompressBug.xlsm");
-            var f = new FileInfo(path);
+                                             , @"..\..\workbooks");
+            string? path = Path.Combine(workbookDir, "VBADecompressBug.xlsm");
+            FileInfo? f = new FileInfo(path);
             if (f.Exists)
             {
-                using (var package = new ExcelPackage(f))
+                using (ExcelPackage? package = new ExcelPackage(f))
                 {
                     // Reading the Workbook.CodeModule.Code will cause an IndexOutOfRange if the problem hasn't been fixed.
                     Assert.IsTrue(package.Workbook.CodeModule.Code.Length > 0);
@@ -166,7 +166,7 @@ namespace EPPlusTest
         [TestMethod, Ignore]
         public void ReadNewVBA()
         {
-            using (var package = new ExcelPackage(new FileInfo(@"c:\temp\bug\makro.xlsm")))
+            using (ExcelPackage? package = new ExcelPackage(new FileInfo(@"c:\temp\bug\makro.xlsm")))
             {
                 Console.WriteLine(package.Workbook.VbaProject.Modules[0].Name);
                 
@@ -176,14 +176,14 @@ namespace EPPlusTest
         [TestMethod, Ignore]
         public void VBASigning()
         {
-            using (var p = OpenPackage("vbaSign.xlsm", true))
+            using (ExcelPackage? p = OpenPackage("vbaSign.xlsm", true))
             {
                 p.Workbook.CreateVBAProject();
-                var ws = p.Workbook.Worksheets.Add("Test");
+                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Test");
                 ws.Drawings.AddShape("Drawing1", eShapeStyle.Rect);
 
                 //Now add some code to update the text of the shape...
-                var sb = new StringBuilder();
+                StringBuilder? sb = new StringBuilder();
 
                 sb.AppendLine("Private Sub Workbook_Open()");
                 sb.AppendLine("    [Test].Shapes(\"Drawing1\").TextEffect.Text = \"This text is set from VBA!\"");
@@ -201,14 +201,14 @@ namespace EPPlusTest
         [TestMethod, Ignore]
         public void VBASigningFromFile()
         {
-            using (var p = OpenPackage("vbaSignFile.xlsm", true))
+            using (ExcelPackage? p = OpenPackage("vbaSignFile.xlsm", true))
             {
                 p.Workbook.CreateVBAProject();
-                var ws = p.Workbook.Worksheets.Add("Test");
+                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Test");
                 ws.Drawings.AddShape("Drawing1", eShapeStyle.Rect);
 
                 //Now add some code to update the text of the shape...
-                var sb = new StringBuilder();
+                StringBuilder? sb = new StringBuilder();
 
                 sb.AppendLine("Private Sub Workbook_Open()");
                 sb.AppendLine("    [Test].Shapes(\"Drawing1\").TextEffect.Text = \"This text is set from VBA!\"");

@@ -50,7 +50,7 @@ namespace EPPlusTest.Core.Range
         [TestMethod]
         public void AddProtectedRange()
         {
-            var ws = _pck.Workbook.Worksheets.Add("SingleProtectedRange");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("SingleProtectedRange");
             LoadTestdata(ws);
             ws.ProtectedRanges.Add("ProtectedRange", ws.Cells["A1:B2"]);
             //Assert
@@ -61,13 +61,13 @@ namespace EPPlusTest.Core.Range
         [TestMethod]
         public void AddThreeProtectedRanges()
         {
-            var ws = _pck.Workbook.Worksheets.Add("ThreeProtectedRanges");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("ThreeProtectedRanges");
             LoadTestdata(ws);
-            var pr1 = ws.ProtectedRanges.Add("ProtectedRange1", ws.Cells["A1:B2"]);
+            ExcelProtectedRange? pr1 = ws.ProtectedRanges.Add("ProtectedRange1", ws.Cells["A1:B2"]);
             pr1.SetPassword("EPPlus");
-            var pr2 = ws.ProtectedRanges.Add("ProtectedRange2", ws.Cells["C1:D2"]);
+            ExcelProtectedRange? pr2 = ws.ProtectedRanges.Add("ProtectedRange2", ws.Cells["C1:D2"]);
             pr2.SetPassword("EPPlus2");
-            var pr3 = ws.ProtectedRanges.Add("ProtectedRange3", ws.Cells["B1:E8"]);
+            ExcelProtectedRange? pr3 = ws.ProtectedRanges.Add("ProtectedRange3", ws.Cells["B1:E8"]);
             //Assert
             pr3.SetPassword("EPPlus3");
 
@@ -82,9 +82,9 @@ namespace EPPlusTest.Core.Range
         [TestMethod]
         public void RemoveProtectedRange()
         {
-            using (var pck = new ExcelPackage())
+            using (ExcelPackage? pck = new ExcelPackage())
             {
-                var ws = pck.Workbook.Worksheets.Add("RemoveProtectedRange");
+                ExcelWorksheet? ws = pck.Workbook.Worksheets.Add("RemoveProtectedRange");
                 ws.ProtectedRanges.Add("ProtectedRange", ws.Cells["A1:B2"]);
                 Assert.AreEqual(1, ws.ProtectedRanges.Count);
                 ws.ProtectedRanges.Remove(ws.ProtectedRanges[0]);
@@ -96,9 +96,9 @@ namespace EPPlusTest.Core.Range
         [TestMethod]
         public void RemoveAtProtectedRange()
         {
-            using (var pck = new ExcelPackage())
+            using (ExcelPackage? pck = new ExcelPackage())
             {
-                var ws = pck.Workbook.Worksheets.Add("RemoveAtProtectedRange");
+                ExcelWorksheet? ws = pck.Workbook.Worksheets.Add("RemoveAtProtectedRange");
                 ws.ProtectedRanges.Add("ProtectedRange", ws.Cells["A1:B2"]);
                 Assert.AreEqual(1, ws.ProtectedRanges.Count);
                 ws.ProtectedRanges.RemoveAt(0);
@@ -110,9 +110,9 @@ namespace EPPlusTest.Core.Range
         [TestMethod]
         public void ClearProtectedRange()
         {
-            using (var pck = new ExcelPackage())
+            using (ExcelPackage? pck = new ExcelPackage())
             {
-                var ws = pck.Workbook.Worksheets.Add("ClearProtectedRange");
+                ExcelWorksheet? ws = pck.Workbook.Worksheets.Add("ClearProtectedRange");
                 ws.ProtectedRanges.Add("ProtectedRange1", ws.Cells["A1:B2"]);
                 ws.ProtectedRanges.Add("ProtectedRange2", ws.Cells["A2:B3"]);
                 ws.ProtectedRanges.Add("ProtectedRange3", ws.Cells["A3:B4"]);
@@ -128,9 +128,9 @@ namespace EPPlusTest.Core.Range
         [ExpectedException(typeof(InvalidOperationException))]
         public void DuplicateNameShouldThrowInvalidOperationException()
         {
-            using (var pck = new ExcelPackage())
+            using (ExcelPackage? pck = new ExcelPackage())
             {
-                var ws = pck.Workbook.Worksheets.Add("ThreeProtectedRanges");
+                ExcelWorksheet? ws = pck.Workbook.Worksheets.Add("ThreeProtectedRanges");
                 ws.ProtectedRanges.Add("Range", ws.Cells["A1:B2"]);
                 ws.ProtectedRanges.Add("range", ws.Cells["A4:B5"]);
             }

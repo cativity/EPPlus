@@ -113,7 +113,7 @@ namespace OfficeOpenXml.Table.PivotTable.Filter
         /// <exception cref="ArgumentNullException">If value2 is not set when type is set to between</exception>
         public ExcelPivotTableFilter AddValueFilter(ePivotTableValueFilterType type, ExcelPivotTableDataField dataField, object value1, object value2 = null)
         {
-            var dfIx = _table.DataFields._list.IndexOf(dataField);
+            int dfIx = _table.DataFields._list.IndexOf(dataField);
             if(dfIx<0)
             {
                 throw new ArgumentException("This datafield is not in the pivot tables DataFields collection", "dataField");
@@ -167,7 +167,7 @@ namespace OfficeOpenXml.Table.PivotTable.Filter
         /// <returns></returns>
         public ExcelPivotTableFilter AddTop10Filter(ePivotTableTop10FilterType type, ExcelPivotTableDataField dataField, double value, bool isTop = true)
         {
-            var dfIx = _table.DataFields._list.IndexOf(dataField);
+            int dfIx = _table.DataFields._list.IndexOf(dataField);
             if (dfIx < 0)
             {
                 throw new ArgumentException("This data field is not in the pivot tables DataFields collection", "dataField");

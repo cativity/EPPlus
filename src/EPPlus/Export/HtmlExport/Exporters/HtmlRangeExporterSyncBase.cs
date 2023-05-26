@@ -31,19 +31,19 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
 
         protected void SetColumnGroup(EpplusHtmlWriter writer, ExcelRangeBase _range, HtmlExportSettings settings, bool isMultiSheet)
         {
-            var ws = _range.Worksheet;
+            ExcelWorksheet? ws = _range.Worksheet;
             writer.RenderBeginTag("colgroup");
             writer.ApplyFormatIncreaseIndent(settings.Minify);
-            var mdw = _range.Worksheet.Workbook.MaxFontWidth;
-            var defColWidth = ExcelColumn.ColumnWidthToPixels(Convert.ToDecimal(ws.DefaultColWidth), mdw);
-            foreach (var c in _columns)
+            decimal mdw = _range.Worksheet.Workbook.MaxFontWidth;
+            int defColWidth = ExcelColumn.ColumnWidthToPixels(Convert.ToDecimal(ws.DefaultColWidth), mdw);
+            foreach (int c in _columns)
             {
                 if (settings.SetColumnWidth)
                 {
                     double width = ws.GetColumnWidthPixels(c - 1, mdw);
                     if (width == defColWidth)
                     {
-                        var clsName = HtmlExportTableUtil.GetWorksheetClassName(settings.StyleClassPrefix, "dcw", ws, isMultiSheet);
+                        string? clsName = HtmlExportTableUtil.GetWorksheetClassName(settings.StyleClassPrefix, "dcw", ws, isMultiSheet);
                         writer.AddAttribute("class", clsName);
                     }
                     else
@@ -68,7 +68,7 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
         {
             if (image != null)
             {
-                var name = GetPictureName(image);
+                string? name = GetPictureName(image);
                 string imageName = HtmlExportTableUtil.GetClassName(image.Picture.Name, ((IPictureContainer)image.Picture).ImageHash);
                 writer.AddAttribute("alt", image.Picture.Name);
                 if (settings.Pictures.AddNameAsId)

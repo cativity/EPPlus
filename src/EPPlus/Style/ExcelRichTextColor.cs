@@ -45,7 +45,7 @@ namespace OfficeOpenXml.Style
         {
             get
             {
-                var col = GetXmlNodeString(ExcelRichText.COLOR_PATH);
+                string? col = GetXmlNodeString(ExcelRichText.COLOR_PATH);
                 if (string.IsNullOrEmpty(col))
                 {
                     return Color.Empty;
@@ -81,7 +81,7 @@ namespace OfficeOpenXml.Style
             set
             {
                 _rt._collection.ConvertRichtext();
-                var v =value.ToEnumString();
+                string? v =value.ToEnumString();
                 if(v==null)
                 {
                     DeleteNode(ExcelRichText.COLOR_THEME_PATH);

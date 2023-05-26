@@ -94,7 +94,7 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
         {
             get
             {
-                var t = ValueType;
+                eColorValuePositionType t = ValueType;
                 if (t==eColorValuePositionType.Extreme)
                 {
                     return 0;
@@ -110,7 +110,7 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
             }
             set
             {
-                var t = ValueType;
+                eColorValuePositionType t = ValueType;
                 if (t==eColorValuePositionType.Extreme)
                 {
                     throw (new InvalidOperationException("Can't set PositionValue when ValueType is Extreme"));

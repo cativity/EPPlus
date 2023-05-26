@@ -139,10 +139,10 @@ namespace OfficeOpenXml.Style
         /// <param name="Color">The color of the border</param>
         public void BorderAround(ExcelBorderStyle Style, System.Drawing.Color Color)
         {
-            var addr = new ExcelAddressBase(_address);
+            ExcelAddressBase? addr = new ExcelAddressBase(_address);
             if (addr.Addresses?.Count > 1)
             {
-                foreach (var a in addr.Addresses)
+                foreach (ExcelAddressBase? a in addr.Addresses)
                 {
                     SetBorderAroundStyle(Style, a);
                     if (!Color.IsEmpty)

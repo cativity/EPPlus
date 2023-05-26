@@ -31,17 +31,17 @@ namespace OfficeOpenXml.Table.PivotTable
         internal ExcelPivotCacheDefinition(XmlNamespaceManager nsm, ExcelPivotTable pivotTable)
         {
             Relationship = pivotTable.Part.GetRelationshipsByType(ExcelPackage.schemaRelationships + "/pivotCacheDefinition").FirstOrDefault();
-            var cacheDefinitionUri = UriHelper.ResolvePartUri(Relationship.SourceUri, Relationship.TargetUri); 
+            Uri? cacheDefinitionUri = UriHelper.ResolvePartUri(Relationship.SourceUri, Relationship.TargetUri); 
             PivotTable = pivotTable;
             _wb = pivotTable.WorkSheet.Workbook;
             _nsm = nsm;
-            var c = _wb._pivotTableCaches.Values.FirstOrDefault(x => x.PivotCaches.Exists(y=>y.CacheDefinitionUri.OriginalString == cacheDefinitionUri.OriginalString));
+            ExcelWorkbook.PivotTableCacheRangeInfo? c = _wb._pivotTableCaches.Values.FirstOrDefault(x => x.PivotCaches.Exists(y=>y.CacheDefinitionUri.OriginalString == cacheDefinitionUri.OriginalString));
             if (c == null)
             {
-                var pck = pivotTable.WorkSheet._package.ZipPackage;
+                ZipPackage? pck = pivotTable.WorkSheet._package.ZipPackage;
                 if (_wb._pivotTableIds.ContainsKey(cacheDefinitionUri))
                 {
-                    var cid = _wb._pivotTableIds[cacheDefinitionUri];
+                    int cid = _wb._pivotTableIds[cacheDefinitionUri];
                     _cacheReference = new PivotTableCacheInternal(_wb, cacheDefinitionUri, cid);
                     _wb.AddPivotTableCache(_cacheReference, false);
                 }
@@ -79,7 +79,7 @@ namespace OfficeOpenXml.Table.PivotTable
             _cacheReference = cache;
             _cacheReference._pivotTables.Add(pivotTable);
 
-            var rel = pivotTable.Part.CreateRelationship(UriHelper.ResolvePartUri(pivotTable.PivotTableUri, _cacheReference.CacheDefinitionUri), Packaging.TargetMode.Internal, ExcelPackage.schemaRelationships + "/pivotCacheDefinition");
+            ZipPackageRelationship? rel = pivotTable.Part.CreateRelationship(UriHelper.ResolvePartUri(pivotTable.PivotTableUri, _cacheReference.CacheDefinitionUri), Packaging.TargetMode.Internal, ExcelPackage.schemaRelationships + "/pivotCacheDefinition");
         }
 
         internal void Refresh()
@@ -148,7 +148,7 @@ namespace OfficeOpenXml.Table.PivotTable
                     throw (new ArgumentException("Range must be in the same package as the pivottable"));
                 }
 
-                var sr = SourceRange;
+                ExcelRangeBase? sr = SourceRange;
                 if (value.End.Column - value.Start.Column != sr.End.Column - sr.Start.Column)
                 {
                     throw (new ArgumentException("Cannot change the number of columns(fields) in the SourceRange"));
@@ -184,7 +184,7 @@ namespace OfficeOpenXml.Table.PivotTable
                 else
                 {
                     _cacheReference._pivotTables.Remove(PivotTable);
-                    var xml = _cacheReference.CacheDefinitionXml;
+                    XmlDocument? xml = _cacheReference.CacheDefinitionXml;
                     _cacheReference = new PivotTableCacheInternal(_nsm, _wb);
                     _cacheReference.InitNew(PivotTable, value, xml.InnerXml);
                     PivotTable.CacheId = _cacheReference.CacheId;

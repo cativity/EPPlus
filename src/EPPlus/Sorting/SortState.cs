@@ -36,7 +36,7 @@ namespace OfficeOpenXml.Sorting
             if(TopNode == null)
             {
                 TopNode = CreateNode(worksheet.WorksheetXml.DocumentElement, _sortStatePath);
-                var attr = worksheet.WorksheetXml.CreateAttribute("xmlns:xlrd2");
+                XmlAttribute? attr = worksheet.WorksheetXml.CreateAttribute("xmlns:xlrd2");
                 attr.Value = ExcelPackage.schemaRichData2;
                 TopNode.Attributes.Append(attr);
             }
@@ -54,7 +54,7 @@ namespace OfficeOpenXml.Sorting
             if (TopNode == null)
             {
                 TopNode = CreateNode(table.TableXml.DocumentElement, _sortStatePath);
-                var attr = table.TableXml.CreateAttribute("xmlns:xlrd2");
+                XmlAttribute? attr = table.TableXml.CreateAttribute("xmlns:xlrd2");
                 attr.Value = ExcelPackage.schemaRichData2;
                 TopNode.Attributes.Append(attr);
             }

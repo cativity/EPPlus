@@ -91,11 +91,11 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions
         //public bool SkipArgumentEvaluation { get; set; }
         protected object GetFirstValue(IEnumerable<FunctionArgument> val)
         {
-            var arg = ((IEnumerable<FunctionArgument>)val).FirstOrDefault();
+            FunctionArgument? arg = ((IEnumerable<FunctionArgument>)val).FirstOrDefault();
             if(arg.Value is IRangeInfo)
             {
                 //var r=((ExcelDataProvider.IRangeInfo)arg);
-                var r = arg.ValueAsRangeInfo;
+                IRangeInfo? r = arg.ValueAsRangeInfo;
                 return r.GetValue(r.Address._fromRow, r.Address._fromCol);
             }
             else
@@ -118,10 +118,10 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions
             Require.That(arguments).Named("arguments").IsNotNull();
             ThrowExcelErrorValueExceptionIf(() =>
                 {
-                    var nArgs = 0;
+                    int nArgs = 0;
                     if (arguments.Any())
                     {
-                        foreach (var arg in arguments)
+                        foreach (FunctionArgument? arg in arguments)
                         {
                             nArgs++;
                             if (nArgs >= minLength)
@@ -157,10 +157,10 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions
             Require.That(arguments).Named("arguments").IsNotNull();
             ThrowArgumentExceptionIf(() =>
                 {
-                    var nArgs = 0;
+                    int nArgs = 0;
                     if (arguments.Any())
                     {
-                        foreach (var arg in arguments)
+                        foreach (FunctionArgument? arg in arguments)
                         {
                             nArgs++;
                             if (nArgs >= minLength)
@@ -188,7 +188,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions
 
         protected string ArgToAddress(IEnumerable<FunctionArgument> arguments, int index, ParsingContext context)
         {
-            var arg = arguments.ElementAt(index);
+            FunctionArgument? arg = arguments.ElementAt(index);
             if(arg.ExcelAddressReferenceId > 0)
             {
                 return context.AddressCache.Get(arg.ExcelAddressReferenceId);
@@ -206,12 +206,12 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions
         /// <exception cref="ExcelErrorValueException"></exception>
         protected int ArgToInt(IEnumerable<FunctionArgument> arguments, int index)
         {
-            var arg = arguments.ElementAt(index);
+            FunctionArgument? arg = arguments.ElementAt(index);
             if (arg.ValueIsExcelError)
             {
                 throw new ExcelErrorValueException(arg.ValueAsExcelErrorValue);
             }
-            var val = arg.ValueFirst;
+            object? val = arg.ValueFirst;
             return (int)_argumentParsers.GetParser(DataType.Integer).Parse(val);
         }
 
@@ -225,7 +225,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions
         /// /// <exception cref="ExcelErrorValueException"></exception>
         protected int ArgToInt(IEnumerable<FunctionArgument> arguments, int index, bool ignoreErrors)
         {
-            var arg = arguments.ElementAt(index);
+            FunctionArgument? arg = arguments.ElementAt(index);
             if(arg.ValueIsExcelError && !ignoreErrors)
             {
                 throw new ExcelErrorValueException(arg.ValueAsExcelErrorValue.Type);
@@ -244,12 +244,12 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions
         /// <exception cref="ExcelErrorValueException"></exception>
         protected int ArgToInt(IEnumerable<FunctionArgument> arguments, int index, RoundingMethod roundingMethod)
         {
-            var arg = arguments.ElementAt(index);
+            FunctionArgument? arg = arguments.ElementAt(index);
             if (arg.ValueIsExcelError)
             {
                 throw new ExcelErrorValueException(arg.ValueAsExcelErrorValue);
             }
-            var val = arg.ValueFirst;
+            object? val = arg.ValueFirst;
             return (int)_argumentParsers.GetParser(DataType.Integer).Parse(val, roundingMethod);
         }
 
@@ -262,7 +262,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions
         /// <returns>Value of the argument as a string.</returns>
         protected string ArgToString(IEnumerable<FunctionArgument> arguments, int index)
         {
-            var obj = arguments.ElementAt(index).ValueFirst;
+            object? obj = arguments.ElementAt(index).ValueFirst;
             return obj != null ? obj.ToString() : string.Empty;
         }
 
@@ -286,7 +286,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions
         /// <exception cref="ExcelErrorValueException"></exception>
         protected double ArgToDecimal(object obj, PrecisionAndRoundingStrategy precisionAndRoundingStrategy)
         {
-            var result = ArgToDecimal(obj);
+            double result = ArgToDecimal(obj);
             if (precisionAndRoundingStrategy == PrecisionAndRoundingStrategy.Excel)
             {
                 result = RoundingHelper.RoundToSignificantFig(result, NumberOfSignificantFigures);
@@ -304,7 +304,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions
         /// <exception cref="ExcelErrorValueException"></exception>
         protected double ArgToDecimal(IEnumerable<FunctionArgument> arguments, int index)
         {
-            var arg = arguments.ElementAt(index);
+            FunctionArgument? arg = arguments.ElementAt(index);
             if (arg.ValueIsExcelError)
             {
                 throw new ExcelErrorValueException(arg.ValueAsExcelErrorValue);
@@ -323,7 +323,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions
         /// <exception cref="ExcelErrorValueException"></exception>
         protected double ArgToDecimal(IEnumerable<FunctionArgument> arguments, int index, PrecisionAndRoundingStrategy precisionAndRoundingStrategy)
         {
-            var arg = arguments.ElementAt(index);
+            FunctionArgument? arg = arguments.ElementAt(index);
             if (arg.ValueIsExcelError)
             {
                 throw new ExcelErrorValueException(arg.ValueAsExcelErrorValue);
@@ -381,7 +381,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions
         /// <returns></returns>
         protected bool ArgToBool(IEnumerable<FunctionArgument> arguments, int index)
         {
-            var obj = arguments.ElementAt(index).Value ?? string.Empty;
+            object? obj = arguments.ElementAt(index).Value ?? string.Empty;
             return (bool)_argumentParsers.GetParser(DataType.Boolean).Parse(obj);
         }
 
@@ -554,19 +554,19 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions
 
         protected virtual IEnumerable<double> ArgsToDoubleEnumerableZeroPadded(bool ignoreHiddenCells, IRangeInfo rangeInfo, ParsingContext context)
         {
-            var startRow = rangeInfo.Address.Start.Row;
-            var endRow = rangeInfo.Address.End.Row > rangeInfo.Worksheet.Dimension._toRow ? rangeInfo.Worksheet.Dimension._toRow : rangeInfo.Address.End.Row;
-            var startCol = rangeInfo.Address.Start.Column;
-            var endCol = rangeInfo.Address.End.Column > rangeInfo.Worksheet.Dimension._toCol ? rangeInfo.Worksheet.Dimension._toCol : rangeInfo.Address.End.Column;
-            var horizontal = (startRow == endRow && rangeInfo.Address._fromCol < rangeInfo.Address._toCol);
-            var funcArg = new FunctionArgument(rangeInfo);
-            var result = ArgsToDoubleEnumerable(ignoreHiddenCells, new List<FunctionArgument> { funcArg }, context);
-            var dict = new Dictionary<int, double>();
+            int startRow = rangeInfo.Address.Start.Row;
+            int endRow = rangeInfo.Address.End.Row > rangeInfo.Worksheet.Dimension._toRow ? rangeInfo.Worksheet.Dimension._toRow : rangeInfo.Address.End.Row;
+            int startCol = rangeInfo.Address.Start.Column;
+            int endCol = rangeInfo.Address.End.Column > rangeInfo.Worksheet.Dimension._toCol ? rangeInfo.Worksheet.Dimension._toCol : rangeInfo.Address.End.Column;
+            bool horizontal = (startRow == endRow && rangeInfo.Address._fromCol < rangeInfo.Address._toCol);
+            FunctionArgument? funcArg = new FunctionArgument(rangeInfo);
+            IEnumerable<ExcelDoubleCellValue>? result = ArgsToDoubleEnumerable(ignoreHiddenCells, new List<FunctionArgument> { funcArg }, context);
+            Dictionary<int, double>? dict = new Dictionary<int, double>();
             result.ToList().ForEach(x => dict.Add(horizontal ? x.CellCol.Value : x.CellRow.Value, x.Value));
-            var resultList = new List<double>();
-            var from = horizontal ? startCol : startRow;
-            var to = horizontal ? endCol : endRow;
-            for (var row = from; row <= to; row++)
+            List<double>? resultList = new List<double>();
+            int from = horizontal ? startCol : startRow;
+            int to = horizontal ? endCol : endRow;
+            for (int row = from; row <= to; row++)
             {
                 if (dict.ContainsKey(row))
                 {
@@ -600,7 +600,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions
         /// <returns></returns>
         protected CompileResult CreateResult(object result, DataType dataType)
         {
-            var validator = _compileResultValidators.GetValidator(dataType);
+            CompileResultValidator? validator = _compileResultValidators.GetValidator(dataType);
             validator.Validate(result);
             return new CompileResult(result, dataType);
         }

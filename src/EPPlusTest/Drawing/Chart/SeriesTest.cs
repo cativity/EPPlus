@@ -29,6 +29,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OfficeOpenXml;
 using System;
+using OfficeOpenXml.Drawing.Chart;
 
 namespace EPPlusTest.Drawing.Chart
 {
@@ -49,40 +50,40 @@ namespace EPPlusTest.Drawing.Chart
         [TestMethod]
         public void ChartSeriesRangeAddress()
         {
-            var ws = _pck.Workbook.Worksheets.Add("SeriesAddress");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("SeriesAddress");
             LoadTestdata(ws);
-            var lineChart = ws.Drawings.AddLineChart("LineChart1", OfficeOpenXml.Drawing.Chart.eLineChartType.Line);
-            var serie = lineChart.Series.Add("A1:A12", "B1:B12");
+            ExcelLineChart? lineChart = ws.Drawings.AddLineChart("LineChart1", OfficeOpenXml.Drawing.Chart.eLineChartType.Line);
+            ExcelLineChartSerie? serie = lineChart.Series.Add("A1:A12", "B1:B12");
             Assert.AreEqual("SeriesAddress!A1:A12", serie.Series);
             Assert.AreEqual("SeriesAddress!B1:B12", serie.XSeries);
         }
         [TestMethod]
         public void ChartSeriesFullRangeAddress()
         {
-            var ws = _pck.Workbook.Worksheets.Add("SeriesFullAddress");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("SeriesFullAddress");
             LoadTestdata(ws);
-            var lineChart = ws.Drawings.AddLineChart("LineChart1", OfficeOpenXml.Drawing.Chart.eLineChartType.Line);
-            var serie = lineChart.Series.Add("SeriesFullAddress!A1:A12", "SeriesFullAddress!B1:B12");
+            ExcelLineChart? lineChart = ws.Drawings.AddLineChart("LineChart1", OfficeOpenXml.Drawing.Chart.eLineChartType.Line);
+            ExcelLineChartSerie? serie = lineChart.Series.Add("SeriesFullAddress!A1:A12", "SeriesFullAddress!B1:B12");
             Assert.AreEqual("SeriesFullAddress!A1:A12", serie.Series);
             Assert.AreEqual("SeriesFullAddress!B1:B12", serie.XSeries);
         }
         [TestMethod]
         public void ChartSeriesName()
         {
-            var ws = _pck.Workbook.Worksheets.Add("SeriesName");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("SeriesName");
             LoadTestdata(ws);
-            var lineChart = ws.Drawings.AddLineChart("LineChart1", OfficeOpenXml.Drawing.Chart.eLineChartType.Line);
-            var serie = lineChart.Series.Add("SeriesName!Name1", "Name2");
+            ExcelLineChart? lineChart = ws.Drawings.AddLineChart("LineChart1", OfficeOpenXml.Drawing.Chart.eLineChartType.Line);
+            ExcelLineChartSerie? serie = lineChart.Series.Add("SeriesName!Name1", "Name2");
             Assert.AreEqual("SeriesName!Name1", serie.Series);
             Assert.AreEqual("Name2", serie.XSeries);
         }
         [TestMethod]
         public void ChartSeriesLitStringXNumY()
         {
-            var ws = _pck.Workbook.Worksheets.Add("StrLitAndNumLit");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("StrLitAndNumLit");
             LoadTestdata(ws);
-            var lineChart = ws.Drawings.AddLineChart("LineChart1", OfficeOpenXml.Drawing.Chart.eLineChartType.Line);
-            var serie=lineChart.Series.Add("{120.3,14,5000.0005}", "{\"Label1\",\"Label 2\",\"Something else\"}");
+            ExcelLineChart? lineChart = ws.Drawings.AddLineChart("LineChart1", OfficeOpenXml.Drawing.Chart.eLineChartType.Line);
+            ExcelLineChartSerie? serie=lineChart.Series.Add("{120.3,14,5000.0005}", "{\"Label1\",\"Label 2\",\"Something else\"}");
             Assert.AreEqual(serie.StringLiteralsX.Length, 3);
             Assert.AreEqual(serie.StringLiteralsX[0], "Label1");
             Assert.AreEqual(serie.StringLiteralsX[1], "Label 2");
@@ -96,10 +97,10 @@ namespace EPPlusTest.Drawing.Chart
         [TestMethod]
         public void ChartSeriesLitNumXNumY()
         {
-            var ws = _pck.Workbook.Worksheets.Add("NumLit");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("NumLit");
             LoadTestdata(ws);
-            var lineChart = ws.Drawings.AddScatterChart("ScatterChart1", OfficeOpenXml.Drawing.Chart.eScatterChartType.XYScatter);
-            var serie = lineChart.Series.Add("{120.3,14,5000.0005}", "{1.3,5,4.333}");
+            ExcelScatterChart? lineChart = ws.Drawings.AddScatterChart("ScatterChart1", OfficeOpenXml.Drawing.Chart.eScatterChartType.XYScatter);
+            ExcelScatterChartSerie? serie = lineChart.Series.Add("{120.3,14,5000.0005}", "{1.3,5,4.333}");
             Assert.AreEqual(serie.NumberLiteralsX.Length, 3);
             Assert.AreEqual(serie.NumberLiteralsX[0], 1.3);
             Assert.AreEqual(serie.NumberLiteralsX[1], 5);
@@ -114,11 +115,11 @@ namespace EPPlusTest.Drawing.Chart
         [ExpectedException(typeof(ArgumentException))]
         public void ChartSeriesLitStringYNumX()
         {
-            using(var p=new ExcelPackage())
+            using(ExcelPackage? p=new ExcelPackage())
             {
-                var ws = p.Workbook.Worksheets.Add("InvalidStrLit");
-                var lineChart = ws.Drawings.AddLineChart("LineChart1", OfficeOpenXml.Drawing.Chart.eLineChartType.Line);
-                var serie = lineChart.Series.Add("{\"Label1\",\"Label 2\",\"Something else\"}", "{120.3,14,5000.0005}");
+                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("InvalidStrLit");
+                ExcelLineChart? lineChart = ws.Drawings.AddLineChart("LineChart1", OfficeOpenXml.Drawing.Chart.eLineChartType.Line);
+                ExcelLineChartSerie? serie = lineChart.Series.Add("{\"Label1\",\"Label 2\",\"Something else\"}", "{120.3,14,5000.0005}");
             }
         }
     }

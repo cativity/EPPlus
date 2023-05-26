@@ -57,7 +57,7 @@ namespace EPPlusTest.Drawing.Chart.Styling
         [TestMethod]
         public void TreemapChart_Styles()
         {
-            var ws = _pck.Workbook.Worksheets.Add("TreemapChart");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("TreemapChart");
             LoadHierarkiTestData(ws);
             TreemapChartStyle(ws);
         }
@@ -135,7 +135,7 @@ namespace EPPlusTest.Drawing.Chart.Styling
 
         private static ExcelTreemapChart AddChart(ExcelWorksheet ws, ePresetChartStyle style, string name, int row, int col, Action<ExcelTreemapChart> SetProperties)
         {
-            var chart = ws.Drawings.AddTreemapChart(name);
+            ExcelTreemapChart? chart = ws.Drawings.AddTreemapChart(name);
             chart.SetPosition(row, 0, col, 0);
             chart.To.Column = col+12;
             chart.To.ColumnOff = 0;

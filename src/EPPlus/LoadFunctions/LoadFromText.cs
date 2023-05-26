@@ -45,7 +45,7 @@ namespace OfficeOpenXml.LoadFunctions
         {
             if (string.IsNullOrEmpty(_text))
             {
-                var r = _worksheet.Cells[_range._fromRow, _range._fromCol];
+                ExcelRange? r = _worksheet.Cells[_range._fromRow, _range._fromCol];
                 r.Value = "";
                 return r;
             }
@@ -67,7 +67,7 @@ namespace OfficeOpenXml.LoadFunctions
             //var values = new List<object>[lines.Length];
             foreach (string line in lines)
             {
-                var items = new List<object>();
+                List<object>? items = new List<object>();
                 //values[row] = items;
 
                 if (lineNo > _format.SkipLinesBeginning && lineNo <= lines.Length - _format.SkipLinesEnd)
@@ -169,7 +169,7 @@ namespace OfficeOpenXml.LoadFunctions
 
         private string[] SplitLines(string text, string EOL)
         {
-            var lines = Regex.Split(text, EOL);
+            string[]? lines = Regex.Split(text, EOL);
             for (int i = 0; i < lines.Length; i++)
             {
                 if (EOL == "\n" && lines[i].EndsWith("\r", StringComparison.OrdinalIgnoreCase))
@@ -192,10 +192,10 @@ namespace OfficeOpenXml.LoadFunctions
                 return new string[] { text };
             }
 
-            var eol = Format.EOL;
-            var list = new List<string>();
-            var inTQ = false;
-            var prevLineStart = 0;
+            string? eol = Format.EOL;
+            List<string>? list = new List<string>();
+            bool inTQ = false;
+            int prevLineStart = 0;
             for (int i = 0; i < text.Length; i++)
             {
                 if (text[i] == Format.TextQualifier)
@@ -206,7 +206,7 @@ namespace OfficeOpenXml.LoadFunctions
                 {
                     if (IsEOL(text, i, eol))
                     {
-                        var s = text.Substring(prevLineStart, i - prevLineStart);
+                        string? s = text.Substring(prevLineStart, i - prevLineStart);
                         if (eol == "\n" && s.EndsWith("\r", StringComparison.OrdinalIgnoreCase))
                         {
                             s = s.Substring(0, s.Length - 1); //If EOL char is lf and last chart cr then we remove the trailing cr.

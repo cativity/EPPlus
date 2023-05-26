@@ -33,15 +33,15 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
         public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
         {
             ValidateArguments(arguments, 2);
-            var args = arguments.ElementAt(0);
-            var index = ArgToInt(arguments, 1, IgnoreErrors) - 1;
-            var values = ArgsToDoubleEnumerable(new List<FunctionArgument> { args }, context);
+            FunctionArgument? args = arguments.ElementAt(0);
+            int index = ArgToInt(arguments, 1, IgnoreErrors) - 1;
+            IEnumerable<ExcelDoubleCellValue>? values = ArgsToDoubleEnumerable(new List<FunctionArgument> { args }, context);
             if (index < 0 || index >= values.Count())
             {
                 return this.CreateResult(eErrorType.Num);
             }
 
-            var result = values.OrderBy(x => x).ElementAt(index);
+            ExcelDoubleCellValue result = values.OrderBy(x => x).ElementAt(index);
             return CreateResult(result, DataType.Decimal);
         }
     }

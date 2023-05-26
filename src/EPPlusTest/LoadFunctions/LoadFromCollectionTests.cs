@@ -104,7 +104,7 @@ namespace EPPlusTest.LoadFunctions
             {
                 get
                 {
-                    var url = new ExcelHyperLink("mailto:" + EMailAddress);
+                    ExcelHyperLink? url = new ExcelHyperLink("mailto:" + EMailAddress);
                     url.Display = Name;
                     return url;
                 }
@@ -120,14 +120,14 @@ namespace EPPlusTest.LoadFunctions
         [TestMethod]
         public void ShouldNotIncludeHeadersWhenPrintHeadersIsOmitted()
         {
-            var items = new List<Aclass>()
+            List<Aclass>? items = new List<Aclass>()
             {
                 new Aclass(){ Id = "123", Name = "Item 1", Number = 3},
                 new Aclass(){ Id = "456", Name = "Item 2", Number = 6}
             };
-            using (var pck = new ExcelPackage(new MemoryStream()))
+            using (ExcelPackage? pck = new ExcelPackage(new MemoryStream()))
             {
-                var sheet = pck.Workbook.Worksheets.Add("sheet");
+                ExcelWorksheet? sheet = pck.Workbook.Worksheets.Add("sheet");
                 sheet.Cells["C1"].LoadFromCollection(items);
 
                 Assert.AreEqual("123", sheet.Cells["C1"].Value);
@@ -142,14 +142,14 @@ namespace EPPlusTest.LoadFunctions
         [TestMethod]
         public void ShouldIncludeHeaders()
         {
-            var items = new List<Aclass>()
+            List<Aclass>? items = new List<Aclass>()
             {
                 new Aclass(){ Id = "123", Name = "Item 1", Number = 3},
                 new Aclass(){ Id = "456", Name = "Item 2", Number = 6}
             };
-            using (var pck = new ExcelPackage(new MemoryStream()))
+            using (ExcelPackage? pck = new ExcelPackage(new MemoryStream()))
             {
-                var sheet = pck.Workbook.Worksheets.Add("sheet");
+                ExcelWorksheet? sheet = pck.Workbook.Worksheets.Add("sheet");
                 sheet.Cells["C1"].LoadFromCollection(items, true);
                 Assert.AreEqual("Id", sheet.Cells["C1"].Value);
             }
@@ -158,14 +158,14 @@ namespace EPPlusTest.LoadFunctions
         [TestMethod]
         public void ShouldIncludeHeadersAndTableStyle()
         {
-            var items = new List<Aclass>()
+            List<Aclass>? items = new List<Aclass>()
             {
                 new Aclass(){ Id = "123", Name = "Item 1", Number = 3},
                 new Aclass(){ Id = "456", Name = "Item 2", Number = 6}
             };
-            using (var pck = new ExcelPackage(new MemoryStream()))
+            using (ExcelPackage? pck = new ExcelPackage(new MemoryStream()))
             {
-                var sheet = pck.Workbook.Worksheets.Add("sheet");
+                ExcelWorksheet? sheet = pck.Workbook.Worksheets.Add("sheet");
                 sheet.Cells["C1"].LoadFromCollection(items, true, TableStyles.Dark1);
                 Assert.AreEqual("Id", sheet.Cells["C1"].Value);
             }
@@ -174,13 +174,13 @@ namespace EPPlusTest.LoadFunctions
         [TestMethod]
         public void ShouldUseAclassProperties()
         {
-            var items = new List<Aclass>()
+            List<Aclass>? items = new List<Aclass>()
             {
                 new Aclass(){ Id = "123", Name = "Item 1", Number = 3}
             };
-            using (var pck = new ExcelPackage(new MemoryStream()))
+            using (ExcelPackage? pck = new ExcelPackage(new MemoryStream()))
             {
-                var sheet = pck.Workbook.Worksheets.Add("sheet");
+                ExcelWorksheet? sheet = pck.Workbook.Worksheets.Add("sheet");
                 sheet.Cells["C1"].LoadFromCollection(items, true, TableStyles.Dark1);
 
                 Assert.AreEqual("Id", sheet.Cells["C1"].Value);
@@ -191,13 +191,13 @@ namespace EPPlusTest.LoadFunctions
         [TestMethod]
         public void ShouldUseDisplayNameAttribute()
         {
-            var items = new List<BClass>()
+            List<BClass>? items = new List<BClass>()
             {
                 new BClass(){ Id = "123", Name = "Item 1", Number = 3}
             };
-            using (var pck = new ExcelPackage(new MemoryStream()))
+            using (ExcelPackage? pck = new ExcelPackage(new MemoryStream()))
             {
-                var sheet = pck.Workbook.Worksheets.Add("sheet");
+                ExcelWorksheet? sheet = pck.Workbook.Worksheets.Add("sheet");
                 sheet.Cells["C1"].LoadFromCollection(items, true, TableStyles.Dark1);
 
                 Assert.AreEqual("MyId", sheet.Cells["C1"].Value);
@@ -207,14 +207,14 @@ namespace EPPlusTest.LoadFunctions
         [TestMethod]
         public void ShouldFilterMembers()
         {
-            var items = new List<BaseClass>()
+            List<BaseClass>? items = new List<BaseClass>()
             {
                 new Implementation(){ Id = "123", Name = "Item 1", Number = 3}
             };
-            using (var pck = new ExcelPackage(new MemoryStream()))
+            using (ExcelPackage? pck = new ExcelPackage(new MemoryStream()))
             {
-                var sheet = pck.Workbook.Worksheets.Add("sheet");
-                var t = typeof(Implementation);
+                ExcelWorksheet? sheet = pck.Workbook.Worksheets.Add("sheet");
+                Type? t = typeof(Implementation);
                 sheet.Cells["C1"].LoadFromCollection(items, true, TableStyles.Dark1, LoadFromCollectionParams.DefaultBindingFlags,
                     new MemberInfo[]
                     {
@@ -235,14 +235,14 @@ namespace EPPlusTest.LoadFunctions
         [TestMethod]
         public void ShouldFilterOneMember()
         {
-            var items = new List<BaseClass>()
+            List<BaseClass>? items = new List<BaseClass>()
             {
                 new Implementation(){ Id = "123", Name = "Item 1", Number = 3}
             };
-            using (var pck = new ExcelPackage(new MemoryStream()))
+            using (ExcelPackage? pck = new ExcelPackage(new MemoryStream()))
             {
-                var sheet = pck.Workbook.Worksheets.Add("sheet");
-                var t = typeof(Implementation);
+                ExcelWorksheet? sheet = pck.Workbook.Worksheets.Add("sheet");
+                Type? t = typeof(Implementation);
                 sheet.Cells["C1"].LoadFromCollection(items, true, TableStyles.Dark1, LoadFromCollectionParams.DefaultBindingFlags,
                     new MemberInfo[]
                     {
@@ -256,13 +256,13 @@ namespace EPPlusTest.LoadFunctions
         [TestMethod]
         public void ShouldUseDescriptionAttribute()
         {
-            var items = new List<BClass>()
+            List<BClass>? items = new List<BClass>()
             {
                 new BClass(){ Id = "123", Name = "Item 1", Number = 3}
             };
-            using (var pck = new ExcelPackage(new MemoryStream()))
+            using (ExcelPackage? pck = new ExcelPackage(new MemoryStream()))
             {
-                var sheet = pck.Workbook.Worksheets.Add("sheet");
+                ExcelWorksheet? sheet = pck.Workbook.Worksheets.Add("sheet");
                 sheet.Cells["C1"].LoadFromCollection(items, true, TableStyles.Dark1);
 
                 Assert.AreEqual("MyName", sheet.Cells["D1"].Value);
@@ -272,13 +272,13 @@ namespace EPPlusTest.LoadFunctions
         [TestMethod]
         public void ShouldUseBaseClassProperties()
         {
-            var items = new List<BaseClass>()
+            List<BaseClass>? items = new List<BaseClass>()
             {
                 new Implementation(){ Id = "123", Name = "Item 1", Number = 3}
             };
-            using (var pck = new ExcelPackage(new MemoryStream()))
+            using (ExcelPackage? pck = new ExcelPackage(new MemoryStream()))
             {
-                var sheet = pck.Workbook.Worksheets.Add("sheet");
+                ExcelWorksheet? sheet = pck.Workbook.Worksheets.Add("sheet");
                 sheet.Cells["C1"].LoadFromCollection(items, true, TableStyles.Dark1);
 
                 Assert.AreEqual("Id", sheet.Cells["C1"].Value);
@@ -288,14 +288,14 @@ namespace EPPlusTest.LoadFunctions
         [TestMethod]
         public void ShouldUseAnonymousProperties()
         {
-            var objs = new List<BaseClass>()
+            List<BaseClass>? objs = new List<BaseClass>()
             {
                 new Implementation(){ Id = "123", Name = "Item 1", Number = 3}
             };
             var items = objs.Select(x => new { Id = x.Id, Name = x.Name }).ToList();
-            using (var pck = new ExcelPackage(new MemoryStream()))
+            using (ExcelPackage? pck = new ExcelPackage(new MemoryStream()))
             {
-                var sheet = pck.Workbook.Worksheets.Add("sheet");
+                ExcelWorksheet? sheet = pck.Workbook.Worksheets.Add("sheet");
                 sheet.Cells["C1"].LoadFromCollection(items, true, TableStyles.Dark1);
 
                 Assert.AreEqual("Id", sheet.Cells["C1"].Value);
@@ -306,14 +306,14 @@ namespace EPPlusTest.LoadFunctions
         [ExpectedException(typeof(InvalidCastException))]
         public void ShouldThrowInvalidCastExceptionIf()
         {
-            var objs = new List<BaseClass>()
+            List<BaseClass>? objs = new List<BaseClass>()
             {
                 new Implementation(){ Id = "123", Name = "Item 1", Number = 3}
             };
             var items = objs.Select(x => new { Id = x.Id, Name = x.Name }).ToList();
-            using (var pck = new ExcelPackage(new MemoryStream()))
+            using (ExcelPackage? pck = new ExcelPackage(new MemoryStream()))
             {
-                var sheet = pck.Workbook.Worksheets.Add("sheet");
+                ExcelWorksheet? sheet = pck.Workbook.Worksheets.Add("sheet");
                 sheet.Cells["C1"].LoadFromCollection(items, true, TableStyles.Dark1, BindingFlags.Public | BindingFlags.Instance, typeof(string).GetMembers());
 
                 Assert.AreEqual("Id", sheet.Cells["C1"].Value);
@@ -323,13 +323,13 @@ namespace EPPlusTest.LoadFunctions
         [TestMethod]
         public void ShouldUseLambdaConfig()
         {
-            var items = new List<Aclass>()
+            List<Aclass>? items = new List<Aclass>()
             {
                 new Aclass(){ Id = "123", Name = "Item 1", Number = 3}
             };
-            using (var pck = new ExcelPackage(new MemoryStream()))
+            using (ExcelPackage? pck = new ExcelPackage(new MemoryStream()))
             {
-                var sheet = pck.Workbook.Worksheets.Add("sheet");
+                ExcelWorksheet? sheet = pck.Workbook.Worksheets.Add("sheet");
                 sheet.Cells["C1"].LoadFromCollection(items, c =>
                 {
                     c.PrintHeaders = true;
@@ -345,13 +345,13 @@ namespace EPPlusTest.LoadFunctions
         [TestMethod]
         public void ShouldParseCamelCasedHeaders()
         {
-            var items = new List<CamelCasedClass>()
+            List<CamelCasedClass>? items = new List<CamelCasedClass>()
             {
                 new CamelCasedClass(){ IdOfThisInstance = "123" }
             };
-            using (var pck = new ExcelPackage(new MemoryStream()))
+            using (ExcelPackage? pck = new ExcelPackage(new MemoryStream()))
             {
-                var sheet = pck.Workbook.Worksheets.Add("sheet");
+                ExcelWorksheet? sheet = pck.Workbook.Worksheets.Add("sheet");
                 sheet.Cells["C1"].LoadFromCollection(items, c =>
                 {
                     c.PrintHeaders = true;
@@ -364,13 +364,13 @@ namespace EPPlusTest.LoadFunctions
         [TestMethod]
         public void ShouldParseCamelCasedAndUnderscoredHeaders()
         {
-            var items = new List<CamelCasedClass>()
+            List<CamelCasedClass>? items = new List<CamelCasedClass>()
             {
                 new CamelCasedClass(){ CamelCased_And_Underscored = "123" }
             };
-            using (var pck = new ExcelPackage(new MemoryStream()))
+            using (ExcelPackage? pck = new ExcelPackage(new MemoryStream()))
             {
-                var sheet = pck.Workbook.Worksheets.Add("sheet");
+                ExcelWorksheet? sheet = pck.Workbook.Worksheets.Add("sheet");
                 sheet.Cells["C1"].LoadFromCollection(items, c =>
                 {
                     c.PrintHeaders = true;
@@ -389,15 +389,15 @@ namespace EPPlusTest.LoadFunctions
             dynamic o2 = new ExpandoObject();
             o2.Id = 2;
             o2.Name = "TestName 2";
-            var items = new List<ExpandoObject>()
+            List<ExpandoObject>? items = new List<ExpandoObject>()
             {
                 o1,
                 o2
             };
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var sheet = package.Workbook.Worksheets.Add("test");
-                var r = sheet.Cells["A1"].LoadFromCollection(items, true, TableStyles.None);
+                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
+                ExcelRangeBase? r = sheet.Cells["A1"].LoadFromCollection(items, true, TableStyles.None);
 
                 Assert.AreEqual("Id", sheet.Cells["A1"].Value);
                 Assert.AreEqual(1, sheet.Cells["A2"].Value);
@@ -407,17 +407,17 @@ namespace EPPlusTest.LoadFunctions
         [TestMethod]
         public void ShouldSetHyperlinkForURIs()
         {
-            var items = new List<UrlClass>()
+            List<UrlClass>? items = new List<UrlClass>()
             {
                 new UrlClass{Id="1", Name="Person 1", EMailAddress="person1@somewhe.re"},
                 new UrlClass{Id="2", Name="Person 2", EMailAddress="person2@somewhe.re"},
                 new UrlClass{Id="2", Name="Person with Url", EMailAddress="person2@somewhe.re", Url=new Uri("https://epplussoftware.com")},
             };
 
-            using (var package = OpenPackage("LoadFromCollectionUrls.xlsx", true))
+            using (ExcelPackage? package = OpenPackage("LoadFromCollectionUrls.xlsx", true))
             {
-                var sheet = package.Workbook.Worksheets.Add("test");
-                var r = sheet.Cells["A1"].LoadFromCollection(items, true, TableStyles.Medium1);
+                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
+                ExcelRangeBase? r = sheet.Cells["A1"].LoadFromCollection(items, true, TableStyles.Medium1);
 
                 Assert.AreEqual("MyId", sheet.Cells["A1"].Value);
                 Assert.AreEqual("MyName", sheet.Cells["B1"].Value);
@@ -436,17 +436,17 @@ namespace EPPlusTest.LoadFunctions
         [TestMethod]
         public void LoadListOfEnumWithDescription()
         {
-            var items = new List<Aenum>()
+            List<Aenum>? items = new List<Aenum>()
             {
                 Aenum.Red,
                 Aenum.Green,
                 Aenum.Blue
             };
 
-            using (var package = OpenPackage("LoadFromCollectionEnumDescrAtt.xlsx", true))
+            using (ExcelPackage? package = OpenPackage("LoadFromCollectionEnumDescrAtt.xlsx", true))
             {
-                var sheet = package.Workbook.Worksheets.Add("EnumList");
-                var r = sheet.Cells["A1"].LoadFromCollection(items, true, TableStyles.Medium1);
+                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("EnumList");
+                ExcelRangeBase? r = sheet.Cells["A1"].LoadFromCollection(items, true, TableStyles.Medium1);
                 Assert.AreEqual("The color Red", sheet.Cells["A1"].Value);
                 Assert.AreEqual("Green", sheet.Cells["A2"].Value);
                 Assert.AreEqual("The color Blue", sheet.Cells["A3"].Value);
@@ -456,17 +456,17 @@ namespace EPPlusTest.LoadFunctions
         [TestMethod]
         public void LoadListOfNullableEnumWithDescription()
         {
-            var items = new List<Aenum?>()
+            List<Aenum?>? items = new List<Aenum?>()
             {
                 Aenum.Red,
                 Aenum.Green,
                 Aenum.Blue
             };
 
-            using (var package = OpenPackage("LoadFromCollectionNullableEnumDescrAtt.xlsx", true))
+            using (ExcelPackage? package = OpenPackage("LoadFromCollectionNullableEnumDescrAtt.xlsx", true))
             {
-                var sheet = package.Workbook.Worksheets.Add("NullableEnumList");
-                var r = sheet.Cells["A1"].LoadFromCollection(items, true, TableStyles.Medium1);
+                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("NullableEnumList");
+                ExcelRangeBase? r = sheet.Cells["A1"].LoadFromCollection(items, true, TableStyles.Medium1);
                 Assert.AreEqual("The color Red", sheet.Cells["A1"].Value);
                 Assert.AreEqual("Green", sheet.Cells["A2"].Value);
                 Assert.AreEqual("The color Blue", sheet.Cells["A3"].Value);
@@ -476,17 +476,17 @@ namespace EPPlusTest.LoadFunctions
         [TestMethod]
         public void LoadListOfClassWithEnumWithDescription()
         {
-            var items = new List<EnumClass>()
+            List<EnumClass>? items = new List<EnumClass>()
             {
                 new EnumClass(){Id=1, Enum=Aenum.Red, NullableEnum = Aenum.Blue},
                 new EnumClass(){Id=2, Enum=Aenum.Blue, NullableEnum = null},
                 new EnumClass(){Id=3, Enum=Aenum.Green, NullableEnum = Aenum.Red},
             };
 
-            using (var package = OpenPackage("LoadFromCollectionClassWithEnumDescrAtt.xlsx", true))
+            using (ExcelPackage? package = OpenPackage("LoadFromCollectionClassWithEnumDescrAtt.xlsx", true))
             {
-                var sheet = package.Workbook.Worksheets.Add("test");
-                var r = sheet.Cells["A1"].LoadFromCollection(items, true, TableStyles.Medium1);
+                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
+                ExcelRangeBase? r = sheet.Cells["A1"].LoadFromCollection(items, true, TableStyles.Medium1);
                 Assert.AreEqual("Id", sheet.Cells["A1"].Value);
                 Assert.AreEqual("Enum", sheet.Cells["B1"].Value);
                 Assert.AreEqual("Nullable Enum", sheet.Cells["C1"].Value);

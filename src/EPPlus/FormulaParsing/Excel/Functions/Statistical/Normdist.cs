@@ -28,15 +28,15 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Statistical
         public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
         {
             ValidateArguments(arguments, 4);
-            var probability = ArgToDecimal(arguments, 0);
-            var mean = ArgToDecimal(arguments, 1);
-            var stdev = ArgToDecimal(arguments, 2);
-            var cumulative = ArgToBool(arguments, 3);
+            double probability = ArgToDecimal(arguments, 0);
+            double mean = ArgToDecimal(arguments, 1);
+            double stdev = ArgToDecimal(arguments, 2);
+            bool cumulative = ArgToBool(arguments, 3);
             if (stdev <= 0)
             {
                 return CreateResult(eErrorType.Num);
             }
-            var result = cumulative ? CumulativeDistribution(probability, mean, stdev) : ProbabilityDensity(probability, mean, stdev);
+            double result = cumulative ? CumulativeDistribution(probability, mean, stdev) : ProbabilityDensity(probability, mean, stdev);
             return CreateResult(result, DataType.Decimal);
         }
     }

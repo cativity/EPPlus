@@ -16,9 +16,9 @@ namespace EPPlusTest.FormulaParsing.IntegrationTests
             {
                 package.Compatibility.IsWorksheets1Based = isWorksheets1Based;
 
-                var wb = package.Workbook;
-                var sheetA = wb.Worksheets.Add("A");
-                var sheetB = wb.Worksheets.Add("B");
+                ExcelWorkbook? wb = package.Workbook;
+                ExcelWorksheet? sheetA = wb.Worksheets.Add("A");
+                ExcelWorksheet? sheetB = wb.Worksheets.Add("B");
 
 
                 sheetA.SetValue("A1", 1);

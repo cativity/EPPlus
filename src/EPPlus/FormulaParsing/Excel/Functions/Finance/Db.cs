@@ -29,11 +29,11 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance
         public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
         {
             ValidateArguments(arguments, 4);
-            var cost = ArgToDecimal(arguments, 0);
-            var salvage = ArgToDecimal(arguments, 1);
-            var life = ArgToDecimal(arguments, 2);
-            var period = ArgToDecimal(arguments, 3);
-            var month = 12;
+            double cost = ArgToDecimal(arguments, 0);
+            double salvage = ArgToDecimal(arguments, 1);
+            double life = ArgToDecimal(arguments, 2);
+            double period = ArgToDecimal(arguments, 3);
+            int month = 12;
             if (arguments.Count() >= 5)
             {
                 month = ArgToInt(arguments, 4);
@@ -52,11 +52,11 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance
             // calculations below as described at https://support.microsoft.com/en-us/office/db-function-354e7d28-5f93-4ff1-8a52-eb4ee549d9d7?ui=en-us&rs=en-us&ad=us
 
             // rate should be rounded to three decimals
-            var rate = (1 - System.Math.Pow(salvage / cost, 1 / life));
+            double rate = (1 - System.Math.Pow(salvage / cost, 1 / life));
             rate = System.Math.Round(rate, 3);
 
             // calculate first period
-            var firstDepr = cost * rate * month / 12;
+            double firstDepr = cost * rate * month / 12;
 
             if (period == 1)
             {
@@ -64,10 +64,10 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance
             }
 
             // remaining periods
-            var total = firstDepr;
-            var currentPeriodDepr = 0d;
-            var toPeriod = (period == life) ? life - 1 : period;
-            for (var i = 2; i <= toPeriod; i++)
+            double total = firstDepr;
+            double currentPeriodDepr = 0d;
+            double toPeriod = (period == life) ? life - 1 : period;
+            for (int i = 2; i <= toPeriod; i++)
             {
                 currentPeriodDepr = (cost - total) * rate;
                 total += currentPeriodDepr;
@@ -76,7 +76,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance
             // Special case for the last period
             if (period >= life)
             {
-                var result = (cost - total) * rate;
+                double result = (cost - total) * rate;
                 if(period > life)
                 {
                     // For the last period, DB uses this formula: ((cost - total depreciation from prior periods) * rate * (12 - month)) / 12

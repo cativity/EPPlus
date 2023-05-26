@@ -48,10 +48,10 @@ namespace OfficeOpenXml.FormulaParsing.ExpressionGraph.FunctionCompilers
                 throw new ExcelErrorValueException(eErrorType.Value);
             }
 
-            var args = new List<FunctionArgument>();
+            List<FunctionArgument>? args = new List<FunctionArgument>();
             Function.BeforeInvoke(Context);
-            var firstChild = children.ElementAt(0);
-            var v = firstChild.Compile().Result;
+            Expression? firstChild = children.ElementAt(0);
+            object? v = firstChild.Compile().Result;
 
             /****  Handle names and ranges ****/
             if (v is INameInfo)
@@ -61,7 +61,7 @@ namespace OfficeOpenXml.FormulaParsing.ExpressionGraph.FunctionCompilers
 
             if (v is IRangeInfo)
             {
-                var r = ((IRangeInfo)v);
+                IRangeInfo? r = ((IRangeInfo)v);
                 if (r.GetNCells() > 1)
                 {
                     throw (new ArgumentException("Logical can't be more than one cell"));
@@ -93,14 +93,14 @@ namespace OfficeOpenXml.FormulaParsing.ExpressionGraph.FunctionCompilers
             args.Add(new FunctionArgument(boolVal));
             if (boolVal)
             {
-                var result = children.ElementAt(1).Compile();
+                CompileResult? result = children.ElementAt(1).Compile();
                 args.Add(new FunctionArgument(result == CompileResult.Empty ? 0d : result.Result));
                 args.Add(new FunctionArgument(null));
             }
             else
             {
                 object val;
-                var child = children.ElementAtOrDefault(2);
+                Expression? child = children.ElementAtOrDefault(2);
                 if (child == null)
                 {
                     // if no false expression given, Excel returns false
@@ -108,7 +108,7 @@ namespace OfficeOpenXml.FormulaParsing.ExpressionGraph.FunctionCompilers
                 }
                 else
                 {
-                    var result = child.Compile();
+                    CompileResult? result = child.Compile();
                     val = (result == CompileResult.Empty) ? 0d : result.Result;
                 }
                 args.Add(new FunctionArgument(null));

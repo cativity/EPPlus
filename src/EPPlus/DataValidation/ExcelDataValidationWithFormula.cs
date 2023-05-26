@@ -106,7 +106,7 @@ namespace OfficeOpenXml.DataValidation
         {
             base.Validate();
 
-            var formula = Formula as ExcelDataValidationFormula;
+            ExcelDataValidationFormula? formula = Formula as ExcelDataValidationFormula;
 
             if (ValidationType.Type == eDataValidationType.Any)
             {
@@ -115,7 +115,7 @@ namespace OfficeOpenXml.DataValidation
 
             if (ValidationType.Type == eDataValidationType.List)
             {
-                var formulaList = (ExcelDataValidationFormulaList)formula;
+                ExcelDataValidationFormulaList? formulaList = (ExcelDataValidationFormulaList)formula;
                 if (string.IsNullOrEmpty(formulaList.ExcelFormula) && formulaList.Values.Count <= 0)
                 {
                     throw new InvalidOperationException($"Formula in Datavalidation of type: {eDataValidationType.List} with Uid: {Uid} must have a Value or ExcelFormula");

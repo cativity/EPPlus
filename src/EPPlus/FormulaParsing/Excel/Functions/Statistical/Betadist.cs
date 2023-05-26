@@ -29,11 +29,11 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Statistical
         public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
         {
             ValidateArguments(arguments, 3);
-            var x = ArgToDecimal(arguments, 0);
-            var alpha = ArgToDecimal(arguments, 1);
-            var beta = ArgToDecimal(arguments, 2);
-            var A = 0d;
-            var B = 1d;
+            double x = ArgToDecimal(arguments, 0);
+            double alpha = ArgToDecimal(arguments, 1);
+            double beta = ArgToDecimal(arguments, 2);
+            double A = 0d;
+            double B = 1d;
             if (arguments.Count() > 3)
             {
                 A = ArgToDecimal(arguments, 3);
@@ -54,7 +54,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Statistical
             }
 
             x = (x - A) / (B - A);
-            var result = BetaHelper.BetaCdf(x, alpha, beta);
+            double result = BetaHelper.BetaCdf(x, alpha, beta);
             return CreateResult(result, DataType.Decimal);
         }
     }

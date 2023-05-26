@@ -25,7 +25,7 @@ namespace OfficeOpenXml.DataValidation.Formulas
         public ExcelDataValidationFormulaDecimal(string formula, string validationUid, string sheetName, Action<OnFormulaChangedEventArgs> extHandler)
             : base(validationUid, sheetName, extHandler)
         {
-            var value = formula;
+            string? value = formula;
             if (!string.IsNullOrEmpty(value))
             {
                 double dValue;

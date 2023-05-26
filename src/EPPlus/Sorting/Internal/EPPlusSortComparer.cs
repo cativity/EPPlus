@@ -34,8 +34,8 @@ namespace OfficeOpenXml.Sorting.Internal
         {
             for (int i = 0; i < _columns.Length; i++)
             {
-                var x1 = x.Items[_columns[i]]._value;
-                var y1 = y.Items[_columns[i]]._value;
+                object? x1 = x.Items[_columns[i]]._value;
+                object? y1 = y.Items[_columns[i]]._value;
                 if (x1 == null && y1 != null)
                 {
                     return 1;
@@ -49,8 +49,8 @@ namespace OfficeOpenXml.Sorting.Internal
                 int ret;
                 if (CustomLists != null && CustomLists.ContainsKey(_columns[i]))
                 {
-                    var weight1 = GetSortWeightByCustomList(x1.ToString(), CustomLists[_columns[i]]);
-                    var weight2 = GetSortWeightByCustomList(y1.ToString(), CustomLists[_columns[i]]);
+                    int weight1 = GetSortWeightByCustomList(x1.ToString(), CustomLists[_columns[i]]);
+                    int weight2 = GetSortWeightByCustomList(y1.ToString(), CustomLists[_columns[i]]);
                     if (weight1 != CustomListNotFound && weight2 != CustomListNotFound)
                     {
                         ret = weight1.CompareTo(weight2);

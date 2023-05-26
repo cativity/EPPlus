@@ -65,8 +65,8 @@ namespace OfficeOpenXml.FormulaParsing
         /// <param name="otherWorkbook">The workbook containing the forumulas to be copied.</param>
         public void CopyFunctionsFrom(ExcelWorkbook otherWorkbook)
         {
-            var functions = otherWorkbook.FormulaParserManager.GetImplementedFunctions();
-            foreach (var func in functions)
+            IEnumerable<KeyValuePair<string, ExcelFunction>>? functions = otherWorkbook.FormulaParserManager.GetImplementedFunctions();
+            foreach (KeyValuePair<string, ExcelFunction> func in functions)
             {
                 AddOrReplaceFunction(func.Key, func.Value);
             }
@@ -79,7 +79,7 @@ namespace OfficeOpenXml.FormulaParsing
         /// <returns>Function names in lower case</returns>
         public IEnumerable<string> GetImplementedFunctionNames()
         {
-            var fnList = _parser.FunctionNames.ToList();
+            List<string>? fnList = _parser.FunctionNames.ToList();
             fnList.Sort((x, y) => String.Compare(x, y, System.StringComparison.Ordinal));
             return fnList;
         }
@@ -90,10 +90,10 @@ namespace OfficeOpenXml.FormulaParsing
         /// <returns>An enumeration of <see cref="KeyValuePair{String,ExcelFunction}"/>, where the key is the function name</returns>
         public IEnumerable<KeyValuePair<string, ExcelFunction>> GetImplementedFunctions()
         {
-            var functions = new List<KeyValuePair<string, ExcelFunction>>();
+            List<KeyValuePair<string, ExcelFunction>>? functions = new List<KeyValuePair<string, ExcelFunction>>();
             _parser.Configure(parsingConfiguration =>
             {
-                foreach (var name in parsingConfiguration.FunctionRepository.FunctionNames)
+                foreach (string? name in parsingConfiguration.FunctionRepository.FunctionNames)
                 {
                     functions.Add(new KeyValuePair<string, ExcelFunction>(name, parsingConfiguration.FunctionRepository.GetFunction(name)));
                 }
@@ -158,16 +158,16 @@ namespace OfficeOpenXml.FormulaParsing
         {
             Require.That(range).IsNotNull();
             Init(range.Worksheet.Workbook);
-            var filterInfo = new FilterInfo(range.Worksheet.Workbook);
+            FilterInfo? filterInfo = new FilterInfo(range.Worksheet.Workbook);
             _parser.InitNewCalc(filterInfo);
-            var opt = options != null ? options : new ExcelCalculationOption();
-            var dc = DependencyChainFactory.Create(range, opt);
-            var result = new List<IFormulaCellInfo>();
-            foreach(var co in dc.CalcOrder)
+            ExcelCalculationOption? opt = options != null ? options : new ExcelCalculationOption();
+            DependencyChain? dc = DependencyChainFactory.Create(range, opt);
+            List<IFormulaCellInfo>? result = new List<IFormulaCellInfo>();
+            foreach(int co in dc.CalcOrder)
             {
-                var fc = dc.list[co];
-                var adr = new ExcelAddress(fc.Row, fc.Column, fc.Row, fc.Column);
-                var fi = new FormulaCellInfo(fc.ws.Name, adr.Address, fc.Formula);
+                FormulaCell? fc = dc.list[co];
+                ExcelAddress? adr = new ExcelAddress(fc.Row, fc.Column, fc.Row, fc.Column);
+                FormulaCellInfo? fi = new FormulaCellInfo(fc.ws.Name, adr.Address, fc.Formula);
                 result.Add(fi);
             }
             return result;
@@ -176,7 +176,7 @@ namespace OfficeOpenXml.FormulaParsing
         private static void Init(ExcelWorkbook workbook)
         {
             workbook._formulaTokens = new CellStore<List<Token>>();
-            foreach (var ws in workbook.Worksheets)
+            foreach (ExcelWorksheet? ws in workbook.Worksheets)
             {
                 if (!(ws is ExcelChartsheet))
                 {

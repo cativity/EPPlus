@@ -34,7 +34,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.Implementations
 
         protected FinancialDay GetCouponPeriodBySettlement()
         {
-            var financialDays = FinancialDaysFactory.Create(Basis);
+            IFinanicalDays? financialDays = FinancialDaysFactory.Create(Basis);
             throw new NotImplementedException();
         }
     }

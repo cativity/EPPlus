@@ -93,7 +93,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions
                 {
                     Value = ((INameInfo)Value).Value;
                 }
-                var v = Value as IRangeInfo;
+                IRangeInfo? v = Value as IRangeInfo;
                 if (v==null)
                 {
                     return Value;
@@ -109,7 +109,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions
         {
             get
             {
-                var v = ValueFirst;
+                object? v = ValueFirst;
                 if (v == null)
                 {
                     return default(string);

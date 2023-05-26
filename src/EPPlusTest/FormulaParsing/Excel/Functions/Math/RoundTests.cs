@@ -27,6 +27,7 @@
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *******************************************************************************/
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using EPPlusTest.FormulaParsing.TestHelpers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -35,6 +36,7 @@ using OfficeOpenXml.FormulaParsing;
 using OfficeOpenXml.FormulaParsing.Excel.Functions;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
 using OfficeOpenXml.FormulaParsing.Exceptions;
+using OfficeOpenXml.FormulaParsing.ExpressionGraph;
 
 namespace EPPlusTest.FormulaParsing.Excel.Functions.Math
 {
@@ -47,11 +49,11 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions.Math
 			Round round = new Round();
 			double value1 = 123.45;
 		    int digits = 0;
-			var result = round.Execute(new FunctionArgument[]
-			{
-				new FunctionArgument(value1),
-				new FunctionArgument(digits)
-			}, ParsingContext.Create());
+			CompileResult? result = round.Execute(new FunctionArgument[]
+            {
+                new FunctionArgument(value1),
+                new FunctionArgument(digits)
+            }, ParsingContext.Create());
 			Assert.AreEqual(123D, result.Result);
 		}
         [TestMethod]
@@ -60,7 +62,7 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions.Math
             Round round = new Round();
             double value1 = 123.65;
             int digits = 0;
-            var result = round.Execute(new FunctionArgument[]
+            CompileResult? result = round.Execute(new FunctionArgument[]
             {
                 new FunctionArgument(value1),
                 new FunctionArgument(digits)
@@ -74,7 +76,7 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions.Math
             Round round = new Round();
             double value1 = 123.44;
             int digits = 1;
-            var result = round.Execute(new FunctionArgument[]
+            CompileResult? result = round.Execute(new FunctionArgument[]
             {
                 new FunctionArgument(value1),
                 new FunctionArgument(digits)
@@ -87,7 +89,7 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions.Math
             Round round = new Round();
             double value1 = 123.456;
             int digits = 1;
-            var result = round.Execute(new FunctionArgument[]
+            CompileResult? result = round.Execute(new FunctionArgument[]
             {
                 new FunctionArgument(value1),
                 new FunctionArgument(digits)
@@ -100,7 +102,7 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions.Math
             Round round = new Round();
             double value1 = 124;
             int digits = -1;
-            var result = round.Execute(new FunctionArgument[]
+            CompileResult? result = round.Execute(new FunctionArgument[]
             {
                 new FunctionArgument(value1),
                 new FunctionArgument(digits)
@@ -113,7 +115,7 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions.Math
             Round round = new Round();
             double value1 = 125;
             int digits = -1;
-            var result = round.Execute(new FunctionArgument[]
+            CompileResult? result = round.Execute(new FunctionArgument[]
             {
                 new FunctionArgument(value1),
                 new FunctionArgument(digits)
@@ -127,7 +129,7 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions.Math
             Round round = new Round();
             double value1 = -124;
             int digits = -1;
-            var result = round.Execute(new FunctionArgument[]
+            CompileResult? result = round.Execute(new FunctionArgument[]
             {
                 new FunctionArgument(value1),
                 new FunctionArgument(digits)
@@ -140,7 +142,7 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions.Math
             Round round = new Round();
             double value1 = -125;
             int digits = -1;
-            var result = round.Execute(new FunctionArgument[]
+            CompileResult? result = round.Execute(new FunctionArgument[]
             {
                 new FunctionArgument(value1),
                 new FunctionArgument(digits)
@@ -153,7 +155,7 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions.Math
             Round round = new Round();
             double value1 = -123.44;
             int digits = 1;
-            var result = round.Execute(new FunctionArgument[]
+            CompileResult? result = round.Execute(new FunctionArgument[]
             {
                 new FunctionArgument(value1),
                 new FunctionArgument(digits)
@@ -166,7 +168,7 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions.Math
             Round round = new Round();
             double value1 = -123.456;
             int digits = 1;
-            var result = round.Execute(new FunctionArgument[]
+            CompileResult? result = round.Execute(new FunctionArgument[]
             {
                 new FunctionArgument(value1),
                 new FunctionArgument(digits)
@@ -179,7 +181,7 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions.Math
             Round round = new Round();
             double value1 = -123.5;
             int digits = 0;
-            var result = round.Execute(new FunctionArgument[]
+            CompileResult? result = round.Execute(new FunctionArgument[]
             {
                 new FunctionArgument(value1),
                 new FunctionArgument(digits)
@@ -192,7 +194,7 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions.Math
             Round round = new Round();
             double value1 = 123.5;
             int digits = 0;
-            var result = round.Execute(new FunctionArgument[]
+            CompileResult? result = round.Execute(new FunctionArgument[]
             {
                 new FunctionArgument(value1),
                 new FunctionArgument(digits)
@@ -203,9 +205,9 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions.Math
         [TestMethod]
         public void RoundShouldUseFifteenSignificantFigures()
         {
-            using(var package = new ExcelPackage())
+            using(ExcelPackage? package = new ExcelPackage())
             {
-                var sheet = package.Workbook.Worksheets.Add("test");
+                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
                 sheet.Cells["A1"].Value = 120253.8749999999d;
                 sheet.Cells["A2"].Formula = "ROUND(A1,2)";
                 sheet.Calculate(opt => opt.PrecisionAndRoundingStrategy = PrecisionAndRoundingStrategy.Excel);
@@ -218,9 +220,9 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions.Math
         [TestMethod]
         public void RoundShouldHandleNullValue()
         {
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var sheet = package.Workbook.Worksheets.Add("test");
+                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
                 sheet.Cells["A2"].Formula = "ROUND(A1,2)";
                 sheet.Calculate();
                 Assert.AreEqual(0d, sheet.Cells["A2"].Value);
@@ -230,9 +232,9 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions.Math
         [TestMethod]
         public void RoundUpShouldHandleNullValue()
         {
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var sheet = package.Workbook.Worksheets.Add("test");
+                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
                 sheet.Cells["A2"].Formula = "ROUNDUP(A1,2)";
                 sheet.Calculate();
                 Assert.AreEqual(0d, sheet.Cells["A2"].Value);
@@ -242,9 +244,9 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions.Math
         [TestMethod]
         public void RoundDownShouldHandleNullValue()
         {
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var sheet = package.Workbook.Worksheets.Add("test");
+                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
                 sheet.Cells["A2"].Formula = "ROUNDDOWN(A1,2)";
                 sheet.Calculate();
                 Assert.AreEqual(0d, sheet.Cells["A2"].Value);
@@ -254,9 +256,9 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions.Math
         [TestMethod]
         public void CeilingShouldHandleNullValue()
         {
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var sheet = package.Workbook.Worksheets.Add("test");
+                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
                 sheet.Cells["A2"].Formula = "CEILING(A1,2)";
                 sheet.Calculate();
                 Assert.AreEqual(0d, sheet.Cells["A2"].Value);
@@ -266,9 +268,9 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions.Math
         [TestMethod]
         public void FloorShouldHandleNullValue()
         {
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var sheet = package.Workbook.Worksheets.Add("test");
+                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
                 sheet.Cells["A2"].Formula = "FLOOR(A1,2)";
                 sheet.Calculate();
                 Assert.AreEqual(0d, sheet.Cells["A2"].Value);
@@ -280,20 +282,20 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions.Math
         [TestMethod]
         public void MroundShouldReturnCorrectResult()
         {
-            var func = new Mround();
-            var ctx = ParsingContext.Create();
+            Mround? func = new Mround();
+            ParsingContext? ctx = ParsingContext.Create();
 
-            var args = FunctionsHelper.CreateArgs(333.7, 0.5);
-            var result = func.Execute(args, ctx).Result;
+            IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(333.7, 0.5);
+            object? result = func.Execute(args, ctx).Result;
             Assert.AreEqual(333.5, result);
         }
 
         [TestMethod]
         public void MroundShouldHandleNullValue()
         {
-            using(var package = new ExcelPackage())
+            using(ExcelPackage? package = new ExcelPackage())
             {
-                var sheet = package.Workbook.Worksheets.Add("test");
+                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
                 sheet.Cells["A2"].Formula = "MROUND(A1,0.5)";
                 sheet.Calculate();
                 Assert.AreEqual(0d, sheet.Cells["A2"].Value);

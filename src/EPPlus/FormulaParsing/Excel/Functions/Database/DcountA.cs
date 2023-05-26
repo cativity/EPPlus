@@ -43,7 +43,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Database
         public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
         {
             ValidateArguments(arguments, 2);
-            var dbAddress = arguments.ElementAt(0).ValueAsRangeInfo.Address.Address;
+            string? dbAddress = arguments.ElementAt(0).ValueAsRangeInfo.Address.Address;
             string field = null;
             string criteriaRange = null;
             if (arguments.Count() == 2)
@@ -55,20 +55,20 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Database
                 field = ArgToString(arguments, 1).ToLower(CultureInfo.InvariantCulture);
                 criteriaRange = arguments.ElementAt(2).ValueAsRangeInfo.Address.Address;
             }
-            var db = new ExcelDatabase(context.ExcelDataProvider, dbAddress);
-            var criteria = new ExcelDatabaseCriteria(context.ExcelDataProvider, criteriaRange);
+            ExcelDatabase? db = new ExcelDatabase(context.ExcelDataProvider, dbAddress);
+            ExcelDatabaseCriteria? criteria = new ExcelDatabaseCriteria(context.ExcelDataProvider, criteriaRange);
 
-            var nHits = 0;
+            int nHits = 0;
             while (db.HasMoreRows)
             {
-                var dataRow = db.Read();
+                ExcelDatabaseRow? dataRow = db.Read();
                 if (RowMatcher.IsMatch(dataRow, criteria))
                 {
                     // if a fieldname is supplied, count only this row if the value
                     // of the supplied field is not blank.
                     if (!string.IsNullOrEmpty(field))
                     {
-                        var candidate = dataRow[field];
+                        object? candidate = dataRow[field];
                         if (ShouldCount(candidate))
                         {
                             nHits++;

@@ -53,7 +53,7 @@ namespace OfficeOpenXml.Drawing.Controls
         {
             get
             {
-                var v=LinkedGroup;
+                ExcelAddressBase? v=LinkedGroup;
                 if(v!=null)
                 {
                     return v;

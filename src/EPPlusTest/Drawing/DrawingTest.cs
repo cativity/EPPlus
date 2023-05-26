@@ -58,8 +58,8 @@ namespace EPPlusTest
         [ClassCleanup]
         public static void Cleanup()
         {
-            var dirName = _pck.File.DirectoryName;
-            var fileName = _pck.File.FullName;
+            string? dirName = _pck.File.DirectoryName;
+            string? fileName = _pck.File.FullName;
 
             SaveAndCleanup(_pck);
             if(File.Exists(fileName))
@@ -72,7 +72,7 @@ namespace EPPlusTest
         {
             using (ExcelPackage pck = new ExcelPackage(new FileInfo(_worksheetPath + @"DrawingRead.xlsx")))
             {
-                var ws = pck.Workbook.Worksheets["Pyramid"];
+                ExcelWorksheet? ws = pck.Workbook.Worksheets["Pyramid"];
                 if (ws == null)
                 {
                     Assert.Inconclusive("Pyramid worksheet is missing");
@@ -85,7 +85,7 @@ namespace EPPlusTest
                     Assert.Inconclusive("Scatter worksheet is missing");
                 }
 
-                var cht = ws.Drawings["ScatterChart1"] as ExcelScatterChart;
+                ExcelScatterChart? cht = ws.Drawings["ScatterChart1"] as ExcelScatterChart;
                 Assert.AreEqual(cht.Title.Text, "Header  Text");
                 cht.Title.Text = "Test";
                 Assert.AreEqual(cht.Title.Text, "Test");
@@ -94,8 +94,8 @@ namespace EPPlusTest
         [TestMethod]
         public void Picture()
          {
-            var ws = _pck.Workbook.Worksheets.Add("Picture");
-            var pic = ws.Drawings.AddPicture("Pic1", Resources.Test1);
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("Picture");
+            ExcelPicture? pic = ws.Drawings.AddPicture("Pic1", Resources.Test1);
             Assert.AreEqual(eDrawingType.Picture, pic.DrawingType);
 
             pic = ws.Drawings.AddPicture("Pic2", Resources.Test1);
@@ -124,8 +124,8 @@ namespace EPPlusTest
             pic = ws.Drawings.AddPicture("PicPixelSized", Resources.Test1);
             pic.SetPosition(800, 800);
             pic.SetSize(568*2, 66*2);
-            var ws2 = _pck.Workbook.Worksheets.Add("Picture2");
-            var fi = GetResourceFile("BitmapImage.gif");
+            ExcelWorksheet? ws2 = _pck.Workbook.Worksheets.Add("Picture2");
+            FileInfo? fi = GetResourceFile("BitmapImage.gif");
             if (fi.Exists)
             {
                 pic = ws2.Drawings.AddPicture("Pic7", fi);
@@ -136,24 +136,24 @@ namespace EPPlusTest
                 TestContext.WriteLine("AG00021_.GIF does not exists. Skipping Pic7.");
 #endif
             }
-            var wsCopy = _pck.Workbook.Worksheets.Add("Picture3", ws2);
+            ExcelWorksheet? wsCopy = _pck.Workbook.Worksheets.Add("Picture3", ws2);
          }
         [TestMethod]
         public void ShapeURL()
         {
-            var ws = _pck.Workbook.Worksheets.Add("Shape URL");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("Shape URL");
 
             ExcelHyperLink hl = new ExcelHyperLink("http://epplussoftware.com");
             hl.ToolTip = "Screen Tip";
 
-            var shape = ws.Drawings.AddShape("ShapeUrl", eShapeStyle.Rect);
+            ExcelShape? shape = ws.Drawings.AddShape("ShapeUrl", eShapeStyle.Rect);
 
             shape.Hyperlink = new ExcelHyperLink("https://epplussoftware.com", UriKind.Absolute);
         }
         [TestMethod]
         public void PictureURL()
         {
-            var ws = _pck.Workbook.Worksheets.Add("Pic URL");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("Pic URL");
 
             ExcelHyperLink hl = new ExcelHyperLink("https://epplussoftware.com");
             hl.ToolTip = "Screen Tip";
@@ -163,12 +163,12 @@ namespace EPPlusTest
         [TestMethod]
         public void ChartURL()
         {
-            var ws = _pck.Workbook.Worksheets.Add("Chart URL");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("Chart URL");
 
             ExcelHyperLink hl = new ExcelHyperLink("http://epplussoftware.com");
             hl.ToolTip = "Screen Tip";
 
-            var areaChart = ws.Drawings.AddAreaChart("ShapeUrl", eAreaChartType.Area);
+            ExcelAreaChart? areaChart = ws.Drawings.AddAreaChart("ShapeUrl", eAreaChartType.Area);
 
             areaChart.Hyperlink = new ExcelHyperLink("Q3", "");
         }
@@ -177,9 +177,9 @@ namespace EPPlusTest
         //[Ignore]
         public void DrawingSizingAndPositioning()
          {
-             var ws = _pck.Workbook.Worksheets.Add("DrawingPosSize");
+             ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("DrawingPosSize");
 
-             var pic = ws.Drawings.AddPicture("Pic1", Resources.Test1);
+             ExcelPicture? pic = ws.Drawings.AddPicture("Pic1", Resources.Test1);
              pic.SetPosition(1, 0, 1, 0);
 
              pic = ws.Drawings.AddPicture("Pic2", Resources.Test1);
@@ -198,8 +198,8 @@ namespace EPPlusTest
         [TestMethod]
          public void BarChart()
         {
-            var ws = _pck.Workbook.Worksheets.Add("BarChart");            
-            var chrt = ws.Drawings.AddChart("barChart", eChartType.BarClustered) as ExcelBarChart;
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("BarChart");            
+            ExcelBarChart? chrt = ws.Drawings.AddChart("barChart", eChartType.BarClustered) as ExcelBarChart;
             chrt.SetPosition(50, 50);
             chrt.SetSize(800, 300);
             AddTestSerie(ws, chrt);
@@ -262,9 +262,9 @@ namespace EPPlusTest
         [TestMethod]
         public void PieChart()
         {
-            var expected = Color.SteelBlue;
-            var ws = _pck.Workbook.Worksheets.Add("PieChart");
-            var chrt = ws.Drawings.AddChart("pieChart", eChartType.Pie) as ExcelPieChart;
+            Color expected = Color.SteelBlue;
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("PieChart");
+            ExcelPieChart? chrt = ws.Drawings.AddChart("pieChart", eChartType.Pie) as ExcelPieChart;
             
             AddTestSerie(ws, chrt);
 
@@ -277,7 +277,7 @@ namespace EPPlusTest
             chrt.Legend.Position = eLegendPosition.TopRight;
             Assert.IsTrue(chrt.ChartType == eChartType.Pie, "Invalid Charttype");
             Assert.IsTrue(chrt.VaryColors);            
-            var expectedArgb = expected.ToArgb() & 0xFFFFFF;    //Without alpha part
+            int expectedArgb = expected.ToArgb() & 0xFFFFFF;    //Without alpha part
             Assert.AreEqual(expectedArgb, chrt.Legend.Font.Color.ToArgb());
             Assert.AreEqual(chrt.Legend.Font.Fill.Style, eFillStyle.SolidFill);
             Assert.AreEqual(chrt.Legend.Font.Fill.SolidFill.Color.ColorType, eDrawingColorType.Rgb);
@@ -287,8 +287,8 @@ namespace EPPlusTest
         [TestMethod]
         public void PieOfChart()
         {
-            var ws = _pck.Workbook.Worksheets.Add("PieOfChart");
-            var chrt = ws.Drawings.AddChart("pieOfChart", eChartType.BarOfPie) as ExcelOfPieChart;
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("PieOfChart");
+            ExcelOfPieChart? chrt = ws.Drawings.AddChart("pieOfChart", eChartType.BarOfPie) as ExcelOfPieChart;
 
             AddTestSerie(ws, chrt);
 
@@ -305,8 +305,8 @@ namespace EPPlusTest
         [TestMethod]
         public void PieChart3D()
         {
-            var ws = _pck.Workbook.Worksheets.Add("PieChart3d");
-            var chrt = ws.Drawings.AddChart("pieChart3d", eChartType.Pie3D) as ExcelPieChart;
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("PieChart3d");
+            ExcelPieChart? chrt = ws.Drawings.AddChart("pieChart3d", eChartType.Pie3D) as ExcelPieChart;
             AddTestSerie(ws, chrt);
 
             chrt.To.Row = 25;
@@ -324,16 +324,16 @@ namespace EPPlusTest
         [TestMethod]
         public void Scatter()
         {
-            var ws = _pck.Workbook.Worksheets.Add("Scatter");
-            var chrt = ws.Drawings.AddChart("ScatterChart1", eChartType.XYScatterSmoothNoMarkers) as ExcelScatterChart;
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("Scatter");
+            ExcelScatterChart? chrt = ws.Drawings.AddChart("ScatterChart1", eChartType.XYScatterSmoothNoMarkers) as ExcelScatterChart;
             AddTestSerie(ws, chrt);
            // chrt.Series[0].Marker = eMarkerStyle.Diamond;
             chrt.To.Row = 23;
             chrt.To.Column = 12;
             //chrt.Title.Text = "Header Text";
-            var r1=chrt.Title.RichText.Add("Header");
+            ExcelParagraph? r1=chrt.Title.RichText.Add("Header");
             r1.Bold = true;
-            var r2=chrt.Title.RichText.Add("  Text");
+            ExcelParagraph? r2=chrt.Title.RichText.Add("  Text");
             r2.UnderLine = eUnderLineType.WavyHeavy;
             
             chrt.Title.Fill.Style = eFillStyle.SolidFill;
@@ -366,8 +366,8 @@ namespace EPPlusTest
        [TestMethod]
         public void Bubble()
         {
-            var ws = _pck.Workbook.Worksheets.Add("Bubble");
-            var chrt = ws.Drawings.AddChart("Bubble", eChartType.Bubble) as ExcelBubbleChart;
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("Bubble");
+            ExcelBubbleChart? chrt = ws.Drawings.AddChart("Bubble", eChartType.Bubble) as ExcelBubbleChart;
             AddTestData(ws);
 
             chrt.Series.Add("V19:V24", "U19:U24");
@@ -395,11 +395,11 @@ namespace EPPlusTest
         [TestMethod]
         public void Radar()
         {
-            var ws = _pck.Workbook.Worksheets.Add("Radar");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("Radar");
             AddTestData(ws);
 
-            var chrt = ws.Drawings.AddChart("Radar1", eChartType.Radar) as ExcelRadarChart;
-            var s=chrt.Series.Add("V19:V24", "U19:U24");
+            ExcelRadarChart? chrt = ws.Drawings.AddChart("Radar1", eChartType.Radar) as ExcelRadarChart;
+            ExcelRadarChartSerie? s=chrt.Series.Add("V19:V24", "U19:U24");
             s.Header = "serie1";
             // chrt.Series[0].Marker = eMarkerStyle.Diamond;
             chrt.From.Row = 23;
@@ -419,7 +419,7 @@ namespace EPPlusTest
             chrt.Title.Text = "Radar Chart 2";
 
             chrt = ws.Drawings.AddChart("Radar3", eChartType.RadarMarkers) as ExcelRadarChart;
-            var rs = (ExcelRadarChartSerie)chrt.Series.Add("V19:V24", "U19:U24");
+            ExcelRadarChartSerie? rs = (ExcelRadarChartSerie)chrt.Series.Add("V19:V24", "U19:U24");
             rs.Header = "serie1";
             rs.Marker.Style = eMarkerStyle.Star;
             rs.Marker.Size = 14;
@@ -434,12 +434,12 @@ namespace EPPlusTest
         [TestMethod]
         public void Surface()
         {
-            var ws = _pck.Workbook.Worksheets.Add("Surface");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("Surface");
             AddTestData(ws);
 
-            var chrt = ws.Drawings.AddChart("Surface1", eChartType.Surface) as ExcelSurfaceChart;
-            var s = chrt.Series.Add("V19:V24", "U19:U24");
-            var s2 = chrt.Series.Add("W19:W24", "U19:U24");
+            ExcelSurfaceChart? chrt = ws.Drawings.AddChart("Surface1", eChartType.Surface) as ExcelSurfaceChart;
+            ExcelSurfaceChartSerie? s = chrt.Series.Add("V19:V24", "U19:U24");
+            ExcelSurfaceChartSerie? s2 = chrt.Series.Add("W19:W24", "U19:U24");
             s.Header = "serie1";
             // chrt.Series[0].Marker = eMarkerStyle.Diamond;
             chrt.From.Row = 23;
@@ -474,8 +474,8 @@ namespace EPPlusTest
         [TestMethod]
         public void Pyramid()
         {
-            var ws = _pck.Workbook.Worksheets.Add("Pyramid");
-            var chrt = ws.Drawings.AddChart("Pyramid1", eChartType.PyramidCol) as ExcelBarChart;
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("Pyramid");
+            ExcelBarChart? chrt = ws.Drawings.AddChart("Pyramid1", eChartType.PyramidCol) as ExcelBarChart;
             AddTestSerie(ws, chrt);
             chrt.VaryColors = true;
             chrt.To.Row = 23;
@@ -515,8 +515,8 @@ namespace EPPlusTest
         [TestMethod]
         public void Cone()
         {
-            var ws = _pck.Workbook.Worksheets.Add("Cone");
-            var chrt = ws.Drawings.AddChart("Cone1", eChartType.ConeBarClustered) as ExcelBarChart;
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("Cone");
+            ExcelBarChart? chrt = ws.Drawings.AddChart("Cone1", eChartType.ConeBarClustered) as ExcelBarChart;
             AddTestSerie(ws, chrt);
             chrt.VaryColors = true;
             chrt.SetSize(200);
@@ -529,8 +529,8 @@ namespace EPPlusTest
         [TestMethod]
         public void Column()
         {
-            var ws = _pck.Workbook.Worksheets.Add("Column");
-            var chrt = ws.Drawings.AddChart("Column1", eChartType.ColumnClustered3D) as ExcelBarChart;
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("Column");
+            ExcelBarChart? chrt = ws.Drawings.AddChart("Column1", eChartType.ColumnClustered3D) as ExcelBarChart;
             AddTestSerie(ws, chrt);
             chrt.VaryColors = true;
             chrt.View3D.RightAngleAxes = true;
@@ -549,8 +549,8 @@ namespace EPPlusTest
         [TestMethod]
         public void Doughnut()
         {
-            var ws = _pck.Workbook.Worksheets.Add("Doughnut");
-            var chrt = ws.Drawings.AddChart("Doughnut1", eChartType.DoughnutExploded) as ExcelDoughnutChart;
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("Doughnut");
+            ExcelDoughnutChart? chrt = ws.Drawings.AddChart("Doughnut1", eChartType.DoughnutExploded) as ExcelDoughnutChart;
             AddTestSerie(ws, chrt);
             chrt.SetSize(200);
             chrt.Title.Text = "Doughnut Exploded";
@@ -560,8 +560,8 @@ namespace EPPlusTest
         [TestMethod]
         public void Line()
         {
-            var ws = _pck.Workbook.Worksheets.Add("Line");
-            var chrt = ws.Drawings.AddChart("Line1", eChartType.Line) as ExcelLineChart;
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("Line");
+            ExcelLineChart? chrt = ws.Drawings.AddChart("Line1", eChartType.Line) as ExcelLineChart;
             Assert.AreEqual(eDrawingType.Chart, chrt.DrawingType);
             AddTestSerie(ws, chrt);
             chrt.SetSize(150);
@@ -572,7 +572,7 @@ namespace EPPlusTest
             chrt.Axis[0].MajorGridlines.Fill.Color = Color.Black;
             chrt.Axis[0].MajorGridlines.LineStyle = eLineStyle.Dot;
 
-            var tl = chrt.Series[0].TrendLines.Add(eTrendLine.Polynomial);
+            ExcelChartTrendline? tl = chrt.Series[0].TrendLines.Add(eTrendLine.Polynomial);
             tl.Name = "Test";
             tl.DisplayRSquaredValue = true;
             tl.DisplayEquation = true;
@@ -620,31 +620,31 @@ namespace EPPlusTest
         [TestMethod]
         public void LineMarker()
         {
-            var ws = _pck.Workbook.Worksheets.Add("LineMarker1");
-            var chrt = ws.Drawings.AddChart("Line1", eChartType.LineMarkers) as ExcelLineChart;
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("LineMarker1");
+            ExcelLineChart? chrt = ws.Drawings.AddChart("Line1", eChartType.LineMarkers) as ExcelLineChart;
             AddTestSerie(ws, chrt);
             chrt.SetSize(150);
             chrt.Title.Text = "Line Markers";
             chrt.Series[0].Header = "Line serie 1";
             ((ExcelLineChartSerie)chrt.Series[0]).Marker.Style = eMarkerStyle.Plus;
 
-            var chrt2 = ws.Drawings.AddChart("Line2", eChartType.LineMarkers) as ExcelLineChart;
+            ExcelLineChart? chrt2 = ws.Drawings.AddChart("Line2", eChartType.LineMarkers) as ExcelLineChart;
             AddTestSerie(ws, chrt2);
             chrt2.SetPosition(500,0);
             chrt2.SetSize(150);
             chrt2.Title.Text = "Line Markers";
-            var serie = (ExcelLineChartSerie)chrt2.Series[0];
+            ExcelLineChartSerie? serie = (ExcelLineChartSerie)chrt2.Series[0];
             serie.Marker.Style = eMarkerStyle.X;
 
         }
         [TestMethod]
         public void Drawings()
         {
-            var ws = _pck.Workbook.Worksheets.Add("Shapes");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("Shapes");
             int y=100, i=1;
             foreach(eShapeStyle style in Enum.GetValues(typeof(eShapeStyle)))
             {
-                var shape = ws.Drawings.AddShape("shape"+i.ToString(), style);
+                ExcelShape? shape = ws.Drawings.AddShape("shape"+i.ToString(), style);
                 Assert.AreEqual(eDrawingType.Shape, shape.DrawingType);
                 shape.SetPosition(y, 100);
                 shape.SetSize(300, 300);
@@ -654,7 +654,7 @@ namespace EPPlusTest
             }
 
             (ws.Drawings["shape1"] as ExcelShape).TextAnchoring = eTextAnchoringType.Top;            
-            var rt = (ws.Drawings["shape1"] as ExcelShape).RichText.Add("Added formatted richtext");
+            ExcelParagraph? rt = (ws.Drawings["shape1"] as ExcelShape).RichText.Add("Added formatted richtext");
             (ws.Drawings["shape1"] as ExcelShape).LockText = false;
             rt.Bold = true;
             rt.Color = Color.Aquamarine;
@@ -715,15 +715,15 @@ namespace EPPlusTest
         //[Ignore]
         public void DrawingWorksheetCopy()
         {
-            using (var pck = OpenPackage("Drawingread.xlsx"))
+            using (ExcelPackage? pck = OpenPackage("Drawingread.xlsx"))
             {
-                var ws = pck.Workbook.Worksheets["Shapes"];
+                ExcelWorksheet? ws = pck.Workbook.Worksheets["Shapes"];
                 if (ws == null)
                 {
                     Assert.Inconclusive("Shapes worksheet is missing");
                 }
 
-                var wsShapes = pck.Workbook.Worksheets.Add("Copy Shapes", ws);
+                ExcelWorksheet? wsShapes = pck.Workbook.Worksheets.Add("Copy Shapes", ws);
                 Assert.AreEqual(187, wsShapes.Drawings.Count);
 
                 ws = pck.Workbook.Worksheets["Scatter"];
@@ -732,9 +732,9 @@ namespace EPPlusTest
                     Assert.Inconclusive("Scatter worksheet is missing");
                 }
 
-                var wsScatterChart = pck.Workbook.Worksheets.Add("Copy Scatter", ws);
+                ExcelWorksheet? wsScatterChart = pck.Workbook.Worksheets.Add("Copy Scatter", ws);
                 Assert.AreEqual(2, wsScatterChart.Drawings.Count);
-                var chart1 = wsScatterChart.Drawings[0].As.Chart.ScatterChart;
+                ExcelScatterChart? chart1 = wsScatterChart.Drawings[0].As.Chart.ScatterChart;
                 Assert.AreEqual(1, chart1.Series.Count);
                 Assert.AreEqual("'Copy Scatter'!V19:V24", chart1.Series[0].Series);
 
@@ -744,7 +744,7 @@ namespace EPPlusTest
                     Assert.Inconclusive("Picture worksheet is missing");
                 }
 
-                var wsPicture = pck.Workbook.Worksheets.Add("Copy Picture", ws);
+                ExcelWorksheet? wsPicture = pck.Workbook.Worksheets.Add("Copy Picture", ws);
 
                 pck.SaveAs(new FileInfo(_worksheetPath+"DrawingCopied.xlsx"));
             }
@@ -773,7 +773,7 @@ namespace EPPlusTest
            chart.Series.Add(ExcelRange.GetAddress(1, 2, worksheet.Dimension.End.Row, 2),
                             ExcelRange.GetAddress(1, 1, worksheet.Dimension.End.Row, 1));
 
-           var Series = chart.Series[0];
+           ExcelChartSerie? Series = chart.Series[0];
            chart.Axis[0].MinorGridlines.Fill.Color = Color.Red;
            chart.Axis[0].MinorGridlines.LineStyle = eLineStyle.LongDashDot;
 
@@ -804,12 +804,12 @@ namespace EPPlusTest
             worksheet.Cells["X23"].Value = 77;
             worksheet.Cells["X24"].Value = 99;
             
-            var cs2 = chart.PlotArea.ChartTypes.Add(eChartType.ColumnClustered);
-            var s = cs2.Series.Add(worksheet.Cells["W19:W24"], worksheet.Cells["U19:U24"]);
+            ExcelChart? cs2 = chart.PlotArea.ChartTypes.Add(eChartType.ColumnClustered);
+            ExcelChartSerie? s = cs2.Series.Add(worksheet.Cells["W19:W24"], worksheet.Cells["U19:U24"]);
             s.Header = "Serie4";
             cs2.YAxis.MaxValue = 300;
             cs2.YAxis.MinValue = -5.5;
-            var cs3 = chart.PlotArea.ChartTypes.Add(eChartType.Line);
+            ExcelChart? cs3 = chart.PlotArea.ChartTypes.Add(eChartType.Line);
             s=cs3.Series.Add(worksheet.Cells["X19:X24"], worksheet.Cells["U19:U24"]);
             s.Header = "Serie1";
             cs3.UseSecondaryAxis = true;
@@ -822,11 +822,11 @@ namespace EPPlusTest
             cs3.XAxis.TickLabelPosition = eTickLabelPosition.High;
             cs3.YAxis.LogBase = 10.2;
 
-            var chart2 = worksheet.Drawings.AddChart("scatter1", eChartType.XYScatterSmooth);
+            ExcelChart? chart2 = worksheet.Drawings.AddChart("scatter1", eChartType.XYScatterSmooth);
             s=chart2.Series.Add(worksheet.Cells["W19:W24"], worksheet.Cells["U19:U24"]);
             s.Header = "Serie2";
 
-            var c2ct2 = chart2.PlotArea.ChartTypes.Add(eChartType.XYScatterSmooth);
+            ExcelChart? c2ct2 = chart2.PlotArea.ChartTypes.Add(eChartType.XYScatterSmooth);
             s=c2ct2.Series.Add(worksheet.Cells["X19:X24"], worksheet.Cells["V19:V24"]);
             s.Header="Serie3";
             s=c2ct2.Series.Add(worksheet.Cells["W19:W24"], worksheet.Cells["V19:V24"]);
@@ -838,17 +838,17 @@ namespace EPPlusTest
 
             ExcelChart chart3 = worksheet.Drawings.AddChart("chart", eChartType.LineMarkers);
             chart3.SetPosition(300, 1000);
-            var s31=chart3.Series.Add(worksheet.Cells["W19:W24"], worksheet.Cells["U19:U24"]);
+            ExcelChartSerie? s31=chart3.Series.Add(worksheet.Cells["W19:W24"], worksheet.Cells["U19:U24"]);
             s31.Header = "Serie1";
 
-            var c3ct2 = chart3.PlotArea.ChartTypes.Add(eChartType.LineMarkers);
-            var c32 = c3ct2.Series.Add(worksheet.Cells["X19:X24"], worksheet.Cells["V19:V24"]);
+            ExcelChart? c3ct2 = chart3.PlotArea.ChartTypes.Add(eChartType.LineMarkers);
+            ExcelChartSerie? c32 = c3ct2.Series.Add(worksheet.Cells["X19:X24"], worksheet.Cells["V19:V24"]);
             c3ct2.UseSecondaryAxis = true;
             c32.Header = "Serie2";
             
             XmlNamespaceManager ns=new XmlNamespaceManager(new NameTable());
             ns.AddNamespace("c","http://schemas.openxmlformats.org/drawingml/2006/chart");
-            var element = chart.ChartXml.SelectSingleNode("//c:plotVisOnly", ns);
+            XmlNode? element = chart.ChartXml.SelectSingleNode("//c:plotVisOnly", ns);
             if (element!=null)
             {
                 element.ParentNode.RemoveChild(element);
@@ -857,11 +857,11 @@ namespace EPPlusTest
         [TestMethod]
         public void DeleteDrawing()
         {
-            var ws=_pck.Workbook.Worksheets.Add("DeleteDrawing1");
-            var chart1 = ws.Drawings.AddChart("Chart1", eChartType.Line);
-            var chart2 = ws.Drawings.AddChart("Chart2", eChartType.Line);
-            var shape1 = ws.Drawings.AddShape("Shape1", eShapeStyle.ActionButtonBackPrevious);
-            var pic1 = ws.Drawings.AddPicture("Pic1", Resources.Test1);
+            ExcelWorksheet? ws=_pck.Workbook.Worksheets.Add("DeleteDrawing1");
+            ExcelChart? chart1 = ws.Drawings.AddChart("Chart1", eChartType.Line);
+            ExcelChart? chart2 = ws.Drawings.AddChart("Chart2", eChartType.Line);
+            ExcelShape? shape1 = ws.Drawings.AddShape("Shape1", eShapeStyle.ActionButtonBackPrevious);
+            ExcelPicture? pic1 = ws.Drawings.AddPicture("Pic1", Resources.Test1);
             ws.Drawings.Remove(2);
             ws.Drawings.Remove(chart2);
             ws.Drawings.Remove("Pic1");
@@ -884,14 +884,14 @@ namespace EPPlusTest
         [TestMethod]
         public void ReadDocument()
         {
-            var fi=new FileInfo(_worksheetPath + "drawingread.xlsx");
+            FileInfo? fi=new FileInfo(_worksheetPath + "drawingread.xlsx");
             if (!fi.Exists)
             {
                 Assert.Inconclusive("Drawing.xlsx is not created. Skippng");
             }
-            var pck = new ExcelPackage(fi, true);
+            ExcelPackage? pck = new ExcelPackage(fi, true);
 
-            foreach(var ws in pck.Workbook.Worksheets)
+            foreach(ExcelWorksheet? ws in pck.Workbook.Worksheets)
             {
                 foreach(ExcelDrawing d in ws.Drawings)
                 {
@@ -911,32 +911,32 @@ namespace EPPlusTest
         {
             ExcelPackage pck = new ExcelPackage(new FileInfo("c:\\temp\\chartseries.xlsx"), true);
 
-            var ws = pck.Workbook.Worksheets[1];
+            ExcelWorksheet? ws = pck.Workbook.Worksheets[1];
             ExcelChart c = ws.Drawings[0] as ExcelChart;
 
 
-            var p = c.PlotArea;
+            ExcelChartPlotArea? p = c.PlotArea;
             p.ChartTypes[1].Series[0].Series = "S7:S15";
 
-            var c2=ws.Drawings.AddChart("NewChart", eChartType.ColumnClustered);
-            var serie1 = c2.Series.Add("R7:R15", "Q7:Q15");
+            ExcelChart? c2=ws.Drawings.AddChart("NewChart", eChartType.ColumnClustered);
+            ExcelChartSerie? serie1 = c2.Series.Add("R7:R15", "Q7:Q15");
             c2.SetSize(800, 800);
             serie1.Header = "Column Clustered";
 
-            var subChart = c2.PlotArea.ChartTypes.Add(eChartType.LineMarkers);
-            var serie2 = subChart.Series.Add("S7:S15", "Q7:Q15");
+            ExcelChart? subChart = c2.PlotArea.ChartTypes.Add(eChartType.LineMarkers);
+            ExcelChartSerie? serie2 = subChart.Series.Add("S7:S15", "Q7:Q15");
             serie2.Header = "Line";
 
             //var subChart2 = c2.PlotArea.ChartTypes.Add(eChartType.DoughnutExploded);
             //var serie3 = subChart2.Series.Add("S7:S15", "Q7:Q15");
             //serie3.Header = "Doughnut";
 
-            var subChart3 = c2.PlotArea.ChartTypes.Add(eChartType.Area);
-            var serie4 = subChart3.Series.Add("R7:R15", "Q7:Q15");
+            ExcelChart? subChart3 = c2.PlotArea.ChartTypes.Add(eChartType.Area);
+            ExcelChartSerie? serie4 = subChart3.Series.Add("R7:R15", "Q7:Q15");
             serie4.Header = "Area";
             subChart3.UseSecondaryAxis = true;
 
-            var serie5 = subChart.Series.Add("R7:R15","Q7:Q15");
+            ExcelChartSerie? serie5 = subChart.Series.Add("R7:R15","Q7:Q15");
             serie5.Header = "Line 2";
 
             pck.SaveAs(new FileInfo("c:\\temp\\chartseriesnew.xlsx"));
@@ -944,8 +944,8 @@ namespace EPPlusTest
         [TestMethod]
         public void ChartWorksheet()
         {
-            var wsChart = _pck.Workbook.Worksheets.AddChart("ChartWorksheet", eChartType.Bubble3DEffect);
-            var ws = _pck.Workbook.Worksheets.Add("data");
+            ExcelChartsheet? wsChart = _pck.Workbook.Worksheets.AddChart("ChartWorksheet", eChartType.Bubble3DEffect);
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("data");
             AddTestSerie(ws, wsChart.Chart);
             wsChart.Chart.Style = eChartStyle.Style23;
             wsChart.Chart.Title.Text = "Chart worksheet";
@@ -955,15 +955,15 @@ namespace EPPlusTest
         public void ReadChartWorksheet()
         {
             //Setup
-            var wsName = "ChartWorksheet";
-            var pck = OpenPackage("DrawingRead.xlsx");
-            var ws = ((ExcelChartsheet)pck.Workbook.Worksheets[wsName]);
+            string? wsName = "ChartWorksheet";
+            ExcelPackage? pck = OpenPackage("DrawingRead.xlsx");
+            ExcelChartsheet? ws = ((ExcelChartsheet)pck.Workbook.Worksheets[wsName]);
             if (ws == null)
             {
                 Assert.Inconclusive($"{wsName} worksheet is missing");
             }
 
-            var chart = ws.Chart;
+            ExcelChart? chart = ws.Chart;
 
             Assert.AreEqual(eChartStyle.Style23, chart.Style);
             Assert.AreEqual("Chart worksheet", chart.Title.Text);
@@ -972,10 +972,10 @@ namespace EPPlusTest
         [TestMethod]
         public void TestHeaderaddress()
         {
-            var pck = new ExcelPackage();
-            var ws = pck.Workbook.Worksheets.Add("Draw");
-            var chart = ws.Drawings.AddChart("NewChart1",eChartType.Area) as ExcelChart;
-            var ser1 = chart.Series.Add("A1:A2", "B1:B2");
+            ExcelPackage? pck = new ExcelPackage();
+            ExcelWorksheet? ws = pck.Workbook.Worksheets.Add("Draw");
+            ExcelChart? chart = ws.Drawings.AddChart("NewChart1",eChartType.Area) as ExcelChart;
+            ExcelChartSerie? ser1 = chart.Series.Add("A1:A2", "B1:B2");
             ser1.HeaderAddress = new ExcelAddress("A1:A2");
             ser1.HeaderAddress = new ExcelAddress("A1:B1");
             ser1.HeaderAddress = new ExcelAddress("A1");
@@ -983,19 +983,19 @@ namespace EPPlusTest
         }
         public void DrawingRowheightDynamic()
         {
-            var ws = _pck.Workbook.Worksheets.Add("PicResize");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("PicResize");
             ws.Cells["A1"].Value = "test";
             ws.Cells["A1"].Style.Font.Name = "Symbol";
             ws.Cells["A1"].Style.Font.Size = 39;
             ws.Workbook.Styles.NamedStyles[0].Style.Font.Name = "Symbol";
             ws.Workbook.Styles.NamedStyles[0].Style.Font.Size = 16;
-            var pic = ws.Drawings.AddPicture("Pic1", Resources.Test1);
+            ExcelPicture? pic = ws.Drawings.AddPicture("Pic1", Resources.Test1);
         }
         [TestMethod]
         public void ChangeToOneCellAnchor()
         {
-            var ws = _pck.Workbook.Worksheets.Add("PicOneCellAnchor");
-            var pic = ws.Drawings.AddPicture("Pic1", Resources.Test1);
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("PicOneCellAnchor");
+            ExcelPicture? pic = ws.Drawings.AddPicture("Pic1", Resources.Test1);
 
             pic.ChangeCellAnchor(eEditAs.OneCell, 600, 500, (int)pic._width, (int)pic._height);
             //AssertPic(pic, 600, 500);
@@ -1003,8 +1003,8 @@ namespace EPPlusTest
         [TestMethod]
         public void ChangeToAbsoluteAnchor()
         {
-            var ws = _pck.Workbook.Worksheets.Add("PicAbsoluteAnchor");
-            var pic = ws.Drawings.AddPicture("Pic1", Resources.Test1);
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("PicAbsoluteAnchor");
+            ExcelPicture? pic = ws.Drawings.AddPicture("Pic1", Resources.Test1);
 
             pic.ChangeCellAnchor(eEditAs.Absolute, 600, 500, (int)pic._width, (int)pic._height);
             //AssertPic(pic, 600, 500);
@@ -1012,8 +1012,8 @@ namespace EPPlusTest
         [TestMethod]
         public void ChangeToTwoCellAnchor()
         {
-            var ws = _pck.Workbook.Worksheets.Add("PicTwoCellAnchor");
-            var pic = ws.Drawings.AddPicture("Pic1", Resources.Test1);
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("PicTwoCellAnchor");
+            ExcelPicture? pic = ws.Drawings.AddPicture("Pic1", Resources.Test1);
 
             pic.ChangeCellAnchor(eEditAs.OneCell, 600, 500, (int)pic._width, (int)pic._height);
             //AssertPic(pic, 600, 500);
@@ -1023,8 +1023,8 @@ namespace EPPlusTest
         [TestMethod]
         public void ChangeToOneCellAnchorNoPositionAndSize()
         {
-            var ws = _pck.Workbook.Worksheets.Add("PicOneCellAnchorNoPosAndSize");
-            var pic = ws.Drawings.AddPicture("Pic1", Resources.Test1);
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("PicOneCellAnchorNoPosAndSize");
+            ExcelPicture? pic = ws.Drawings.AddPicture("Pic1", Resources.Test1);
 
             pic.SetPosition(600, 500);
 
@@ -1053,16 +1053,16 @@ namespace EPPlusTest
         [TestMethod]
         public void ChangeToAbsoluteAnchorNoPositionAndSize()
         {
-            var ws = _pck.Workbook.Worksheets.Add("PicAbsoluteAnchorNoPosChange");
-            var pic = ws.Drawings.AddPicture("Pic1", Resources.Test1);
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("PicAbsoluteAnchorNoPosChange");
+            ExcelPicture? pic = ws.Drawings.AddPicture("Pic1", Resources.Test1);
 
             pic.ChangeCellAnchor(eEditAs.OneCell, 500, 500, (int)pic._width, (int)pic._height);
         }
         [TestMethod]
         public void ChangeToTwoCellAnchorNoPositionAndSize()
         {
-            var ws = _pck.Workbook.Worksheets.Add("PicTwoCellAnchorNoPosChange");
-            var pic = ws.Drawings.AddPicture("Pic1", Resources.Test1);
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("PicTwoCellAnchorNoPosChange");
+            ExcelPicture? pic = ws.Drawings.AddPicture("Pic1", Resources.Test1);
 
             pic.ChangeCellAnchor(eEditAs.OneCell, 500, 500, (int)pic._width, (int)pic._height);
             pic.ChangeCellAnchor(eEditAs.TwoCell, 500, 500, (int)pic._width, (int)pic._height);
@@ -1070,8 +1070,8 @@ namespace EPPlusTest
         [TestMethod]
         public void ValidateTextBody()
         {
-            var ws = _pck.Workbook.Worksheets.Add("TextBody_RightInsert");
-            var shape = ws.Drawings.AddShape("Shape1", eShapeStyle.Rect);
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("TextBody_RightInsert");
+            ExcelShape? shape = ws.Drawings.AddShape("Shape1", eShapeStyle.Rect);
             shape.TextBody.RightInsert = 1;
             
             Assert.AreEqual(1, shape.TextBody.RightInsert);
@@ -1084,17 +1084,17 @@ namespace EPPlusTest
         public void SendToBack()
         {
             //Setup
-            var ws = _pck.Workbook.Worksheets.Add("SendToBack_Shape3");
-            var shape1 = ws.Drawings.AddShape("First",eShapeStyle.Rect);
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("SendToBack_Shape3");
+            ExcelShape? shape1 = ws.Drawings.AddShape("First",eShapeStyle.Rect);
             shape1.Text = "First";
             shape1.SetPosition(1, 0, 1, 0);
-            var shape2 = ws.Drawings.AddShape("Second", eShapeStyle.Rect);
+            ExcelShape? shape2 = ws.Drawings.AddShape("Second", eShapeStyle.Rect);
             shape2.Text = "Second";
             shape2.SetPosition(2, 0, 2, 0);
-            var shape3 = ws.Drawings.AddShape("Third", eShapeStyle.Rect);
+            ExcelShape? shape3 = ws.Drawings.AddShape("Third", eShapeStyle.Rect);
             shape3.SetPosition(3, 0, 3, 0);
             shape3.Text = "Third";
-            var shape4 = ws.Drawings.AddShape("Fourth", eShapeStyle.Rect);
+            ExcelShape? shape4 = ws.Drawings.AddShape("Fourth", eShapeStyle.Rect);
             shape4.SetPosition(4, 0, 4, 0);
             shape4.Text = "Fourth";
 
@@ -1116,16 +1116,16 @@ namespace EPPlusTest
         public void BringToFront()
         {
             //Setup
-            var ws = _pck.Workbook.Worksheets.Add("BringToFront_Shape2");
-            var shape1 = ws.Drawings.AddShape("First", eShapeStyle.Rect);
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("BringToFront_Shape2");
+            ExcelShape? shape1 = ws.Drawings.AddShape("First", eShapeStyle.Rect);
             shape1.Text = "First";
             shape1.SetPosition(1, 0, 1, 0);
-            var shape2 = ws.Drawings.AddShape("Second", eShapeStyle.Rect);
+            ExcelShape? shape2 = ws.Drawings.AddShape("Second", eShapeStyle.Rect);
             shape2.Text = "Second";
             shape2.SetPosition(2, 0, 2, 0);
-            var shape3 = ws.Drawings.AddShape("Third", eShapeStyle.Rect);
+            ExcelShape? shape3 = ws.Drawings.AddShape("Third", eShapeStyle.Rect);
             shape3.SetPosition(3, 0, 3, 0);
-            var shape4 = ws.Drawings.AddShape("Fourth", eShapeStyle.Rect);
+            ExcelShape? shape4 = ws.Drawings.AddShape("Fourth", eShapeStyle.Rect);
             shape4.SetPosition(4, 0, 4, 0);
             shape4.Text = "Fourth";
 
@@ -1146,9 +1146,9 @@ namespace EPPlusTest
         [TestMethod]
         public void ReadControls()
         {
-            using (var p = OpenTemplatePackage("Controls.xlsx"))
+            using (ExcelPackage? p = OpenTemplatePackage("Controls.xlsx"))
             {
-                var ws = p.Workbook.Worksheets[0];
+                ExcelWorksheet? ws = p.Workbook.Worksheets[0];
                 Assert.AreEqual(3, ws.Drawings.Count);
 
             }
@@ -1156,8 +1156,8 @@ namespace EPPlusTest
         [TestMethod]
         public void DrawingSetFont()
         {
-            var ws = _pck.Workbook.Worksheets.Add("DrawingChangeFont");
-            var shape = ws.Drawings.AddShape("FontChange", eShapeStyle.Rect);
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("DrawingChangeFont");
+            ExcelShape? shape = ws.Drawings.AddShape("FontChange", eShapeStyle.Rect);
             shape.Font.SetFromFont("Arial", 20);
             shape.Text = "Font";
             shape.RichText[0].SetFromFont("Calibri", 8);  //works
@@ -1174,8 +1174,8 @@ namespace EPPlusTest
         [TestMethod]
         public void PictureChangeCellAnchor()
         {
-            var ws = _pck.Workbook.Worksheets.Add("PictureChangeCellAnchore");
-            var pic = ws.Drawings.AddPicture("Pic1", Resources.Test1);
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("PictureChangeCellAnchore");
+            ExcelPicture? pic = ws.Drawings.AddPicture("Pic1", Resources.Test1);
             pic.ChangeCellAnchor(eEditAs.TwoCell);
         }
     }

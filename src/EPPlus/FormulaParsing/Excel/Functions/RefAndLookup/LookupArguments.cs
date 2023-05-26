@@ -37,8 +37,8 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.RefAndLookup
         {
             _argumentParsers = argumentParsers;
             SearchedValue = arguments.ElementAt(0).Value;
-            var arg1 = arguments.ElementAt(1).Value;
-            var dataArray = arg1 as IEnumerable<FunctionArgument>;
+            object? arg1 = arguments.ElementAt(1).Value;
+            IEnumerable<FunctionArgument>? dataArray = arg1 as IEnumerable<FunctionArgument>;
             if (dataArray != null)
             {
                 DataArray = dataArray;
@@ -47,7 +47,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.RefAndLookup
             else
             {
                 //if (arg1 is ExcelDataProvider.INameInfo) arg1 = ((ExcelDataProvider.INameInfo) arg1).Value;
-                var rangeInfo = arg1 as IRangeInfo;
+                IRangeInfo? rangeInfo = arg1 as IRangeInfo;
                 if (rangeInfo != null)
                 {
                     RangeAddress = string.IsNullOrEmpty(rangeInfo.Address.WorkSheetName) ? rangeInfo.Address.Address : "'" + rangeInfo.Address.WorkSheetName + "'!" + rangeInfo.Address.Address;
@@ -60,12 +60,12 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.RefAndLookup
                     ArgumentDataType = LookupArgumentDataType.ExcelRange;
                 }  
             }
-            var indexVal = arguments.ElementAt(2);
+            FunctionArgument? indexVal = arguments.ElementAt(2);
 
             if (indexVal.DataType == DataType.ExcelAddress)
             {
-                var address = new ExcelAddress(indexVal.Value.ToString());
-                var indexObj = context.ExcelDataProvider.GetRangeValue(address.WorkSheetName, address._fromRow, address._fromCol);
+                ExcelAddress? address = new ExcelAddress(indexVal.Value.ToString());
+                object? indexObj = context.ExcelDataProvider.GetRangeValue(address.WorkSheetName, address._fromRow, address._fromCol);
                 LookupIndex = (int) _argumentParsers.GetParser(DataType.Integer).Parse(indexObj);
             }
             else

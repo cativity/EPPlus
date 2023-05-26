@@ -53,24 +53,24 @@ namespace EPPlusTest.ExcelUtilities
         [TestMethod]
         public void ShouldReturnReferencedSingleAddress()
         {
-            var parsingContext = ParsingContext.Create();
+            ParsingContext? parsingContext = ParsingContext.Create();
             parsingContext.Scopes.NewScope(RangeAddress.Empty);
             parsingContext.Configuration.SetLexer(new Lexer(parsingContext.Configuration.FunctionRepository, parsingContext.NameValueProvider));
             parsingContext.RangeAddressFactory = new RangeAddressFactory(_provider);
-            var provider = new CellReferenceProvider();
-            var result = provider.GetReferencedAddresses("A1", parsingContext);
+            CellReferenceProvider? provider = new CellReferenceProvider();
+            IEnumerable<string>? result = provider.GetReferencedAddresses("A1", parsingContext);
             Assert.AreEqual("A1", result.First());
         }
 
         [TestMethod]
         public void ShouldReturnReferencedMultipleAddresses()
         {
-            var parsingContext = ParsingContext.Create();
+            ParsingContext? parsingContext = ParsingContext.Create();
             parsingContext.Scopes.NewScope(RangeAddress.Empty);
             parsingContext.Configuration.SetLexer(new Lexer(parsingContext.Configuration.FunctionRepository, parsingContext.NameValueProvider));
             parsingContext.RangeAddressFactory = new RangeAddressFactory(_provider);
-            var provider = new CellReferenceProvider();
-            var result = provider.GetReferencedAddresses("A1:A2", parsingContext);
+            CellReferenceProvider? provider = new CellReferenceProvider();
+            IEnumerable<string>? result = provider.GetReferencedAddresses("A1:A2", parsingContext);
             Assert.AreEqual("A1", result.First());
             Assert.AreEqual("A2", result.Last());
         }

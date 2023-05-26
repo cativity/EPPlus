@@ -34,7 +34,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
         public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
         {
             ValidateArguments(arguments, 1);
-            var values = ArgsToDoubleEnumerable(arguments, context).Select(x => (double)x);
+            IEnumerable<double>? values = ArgsToDoubleEnumerable(arguments, context).Select(x => (double)x);
             return CreateResult(StandardDeviation(values), DataType.Decimal);
         }
 
@@ -43,7 +43,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
             double ret = 0;
             if (values.Any())
             {
-                var nValues = values.Count();
+                int nValues = values.Count();
                 if(nValues == 1)
                 {
                     throw new ExcelErrorValueException(eErrorType.Div0);

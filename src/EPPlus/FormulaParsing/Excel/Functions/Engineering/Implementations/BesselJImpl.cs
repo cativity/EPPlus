@@ -46,7 +46,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Engineering.Implementatio
                     return new FinanceCalcResult<double>(eErrorType.Num);
                 }
 
-                var res = fSign * System.Math.Sqrt(f_2_DIV_PI / fX) * System.Math.Cos(fX - N * f_PI_DIV_2 - f_PI_DIV_4);
+                double res = fSign * System.Math.Sqrt(f_2_DIV_PI / fX) * System.Math.Cos(fX - N * f_PI_DIV_2 - f_PI_DIV_4);
                 return new FinanceCalcResult<double>(res);
             }
 

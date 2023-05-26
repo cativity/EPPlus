@@ -41,7 +41,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Database
         public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
         {
             ValidateArguments(arguments, 3);
-            var values = GetMatchingValues(arguments, context);
+            IEnumerable<double>? values = GetMatchingValues(arguments, context);
             if (!values.Any())
             {
                 return this.CreateResult(0d, DataType.Integer);

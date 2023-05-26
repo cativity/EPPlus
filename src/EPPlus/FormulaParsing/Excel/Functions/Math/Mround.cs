@@ -33,8 +33,8 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
                 return this.CreateResult(0d, DataType.Decimal);
             }
 
-            var number = ArgToDecimal(arguments, 0, context.Configuration.PrecisionAndRoundingStrategy);
-            var significance = ArgToDecimal(arguments, 1);
+            double number = ArgToDecimal(arguments, 0, context.Configuration.PrecisionAndRoundingStrategy);
+            double significance = ArgToDecimal(arguments, 1);
             if ((number > 0 && significance < 0) || (number < 0 && significance > 0))
             {
                 return this.CreateResult(eErrorType.Num);

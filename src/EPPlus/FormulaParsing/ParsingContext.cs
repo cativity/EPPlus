@@ -83,7 +83,7 @@ namespace OfficeOpenXml.FormulaParsing
         /// <returns></returns>
         public static ParsingContext Create()
         {
-            var context = new ParsingContext();
+            ParsingContext? context = new ParsingContext();
             context.Configuration = ParsingConfiguration.Create();
             context.Scopes = new ParsingScopes(context);
             context.AddressCache = new ExcelAddressCache();

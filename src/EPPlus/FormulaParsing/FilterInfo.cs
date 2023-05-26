@@ -12,6 +12,7 @@
  *************************************************************************************************/
 using System;
 using System.Collections.Generic;
+using OfficeOpenXml.Table;
 
 namespace OfficeOpenXml.FormulaParsing
 {
@@ -34,7 +35,7 @@ namespace OfficeOpenXml.FormulaParsing
 
         private void Initialize()
         {
-            foreach(var worksheet in _workbook.Worksheets)
+            foreach(ExcelWorksheet? worksheet in _workbook.Worksheets)
             {
                 if (worksheet.IsChartSheet)
                 {
@@ -46,7 +47,7 @@ namespace OfficeOpenXml.FormulaParsing
                     _worksheetFilters.Add(worksheet.Name);
                     continue;
                 }
-                foreach(var table in worksheet.Tables)
+                foreach(ExcelTable? table in worksheet.Tables)
                 {                    
                     if(table.AutoFilter != null && table.AutoFilter.Columns != null && table.AutoFilter.Columns.Count > 0)
                     {

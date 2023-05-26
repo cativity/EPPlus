@@ -45,7 +45,7 @@ namespace OfficeOpenXml.Drawing
                 
                 if (node.LocalName != "nvGrpSpPr" && node.LocalName != "grpSpPr")
                 {
-                    var grpDraw = ExcelDrawing.GetDrawingFromNode(_parent._drawings, node, (XmlElement)node, _parent);
+                    ExcelDrawing? grpDraw = ExcelDrawing.GetDrawingFromNode(_parent._drawings, node, (XmlElement)node, _parent);
                     _groupDrawings.Add(grpDraw);
                     _drawingNames.Add(grpDraw.Name, _groupDrawings.Count - 1);
                 }
@@ -90,21 +90,21 @@ namespace OfficeOpenXml.Drawing
         private void AdjustXmlAndMoveToGroup(ExcelDrawing d)
         {
             d._drawings.RemoveDrawing(d._drawings._drawingsList.IndexOf(d), false);
-            var height = d.GetPixelHeight();
-            var width = d.GetPixelWidth();
-            var top = d.GetPixelTop();
-            var left = d.GetPixelLeft();
-            var node = d.TopNode.GetChildAtPosition(2);
+            double height = d.GetPixelHeight();
+            double width = d.GetPixelWidth();
+            int top = d.GetPixelTop();
+            int left = d.GetPixelLeft();
+            XmlNode? node = d.TopNode.GetChildAtPosition(2);
             XmlElement xFrmNode = d.GetFrmxNode(node);
             if (xFrmNode.ChildNodes.Count == 0)
             {
                 d.CreateNode(xFrmNode, "a:off");
                 d.CreateNode(xFrmNode, "a:ext");
             }
-            var offNode = (XmlElement)xFrmNode.SelectSingleNode("a:off", _nsm);
+            XmlElement? offNode = (XmlElement)xFrmNode.SelectSingleNode("a:off", _nsm);
             offNode.SetAttribute("y", (top * ExcelDrawing.EMU_PER_PIXEL).ToString());
             offNode.SetAttribute("x", (left * ExcelDrawing.EMU_PER_PIXEL).ToString());
-            var extNode = (XmlElement)xFrmNode.SelectSingleNode("a:ext",_nsm);
+            XmlElement? extNode = (XmlElement)xFrmNode.SelectSingleNode("a:ext",_nsm);
             extNode.SetAttribute("cy", Math.Round(height * ExcelDrawing.EMU_PER_PIXEL, 0).ToString());
             extNode.SetAttribute("cx", Math.Round(width * ExcelDrawing.EMU_PER_PIXEL, 0).ToString());
             
@@ -112,7 +112,7 @@ namespace OfficeOpenXml.Drawing
             node.ParentNode.RemoveChild(node);
             if (d.TopNode.ParentNode?.ParentNode?.LocalName == "AlternateContent")
             {
-                var containerNode = d.TopNode.ParentNode?.ParentNode;
+                XmlNode? containerNode = d.TopNode.ParentNode?.ParentNode;
                 d.TopNode.ParentNode.RemoveChild(d.TopNode);
                 containerNode.ParentNode.RemoveChild(containerNode);
                 containerNode.FirstChild.AppendChild(node);
@@ -128,22 +128,22 @@ namespace OfficeOpenXml.Drawing
         }
         private void AdjustXmlAndMoveFromGroup(ExcelDrawing d)
         {
-            var height = d.GetPixelHeight();
-            var width = d.GetPixelWidth();
-            var top = d.GetPixelTop();
-            var left = d.GetPixelLeft();
-            var xmlDoc = _parent.TopNode.OwnerDocument;
+            double height = d.GetPixelHeight();
+            double width = d.GetPixelWidth();
+            int top = d.GetPixelTop();
+            int left = d.GetPixelLeft();
+            XmlDocument? xmlDoc = _parent.TopNode.OwnerDocument;
             XmlNode drawingNode;
             if (_parent.TopNode.ParentNode?.ParentNode?.LocalName == "AlternateContent") //Create alternat content above ungrouped drawing.
             {
                 //drawingNode = xmlDoc.CreateElement("mc", "AlternateContent", ExcelPackage.schemaMarkupCompatibility);
                 drawingNode = _parent.TopNode.ParentNode.ParentNode.CloneNode(false);
-                var choiceNode= _parent.TopNode.ParentNode.CloneNode(false);
+                XmlNode? choiceNode= _parent.TopNode.ParentNode.CloneNode(false);
                 drawingNode.AppendChild(choiceNode);
                 d.TopNode.ParentNode.RemoveChild(d.TopNode);
                 choiceNode.AppendChild(d.TopNode);
                 drawingNode = CreateAnchorNode(drawingNode);
-                var addBeforeNode = _parent.TopNode.ParentNode.ParentNode;
+                XmlNode? addBeforeNode = _parent.TopNode.ParentNode.ParentNode;
                 addBeforeNode.ParentNode.InsertBefore(drawingNode, addBeforeNode);
             }
             else
@@ -160,11 +160,11 @@ namespace OfficeOpenXml.Drawing
 
         private XmlNode CreateAnchorNode(XmlNode drawingNode)
         {
-            var topNode = _parent.TopNode.CloneNode(false);
+            XmlNode? topNode = _parent.TopNode.CloneNode(false);
             topNode.AppendChild(_parent.TopNode.GetChildAtPosition(0).CloneNode(true));
             topNode.AppendChild(_parent.TopNode.GetChildAtPosition(1).CloneNode(true));
             topNode.AppendChild(drawingNode);
-            var ix = 3;
+            int ix = 3;
             while(ix< _parent.TopNode.ChildNodes.Count)
             {
                 topNode.AppendChild(_parent.TopNode.ChildNodes[ix].CloneNode(true));
@@ -251,7 +251,7 @@ namespace OfficeOpenXml.Drawing
             CheckNotDisposed();
             _groupDrawings.Remove(drawing);
             AdjustXmlAndMoveFromGroup(drawing);
-            var ix = _parent._drawings._drawingsList.IndexOf(_parent);
+            int ix = _parent._drawings._drawingsList.IndexOf(_parent);
             _parent._drawings._drawingsList.Insert(ix, drawing);
 
             //Remove 
@@ -282,7 +282,7 @@ namespace OfficeOpenXml.Drawing
         internal ExcelGroupShape(ExcelDrawings drawings, XmlNode node, ExcelGroupShape parent = null) : 
             base(drawings, node, "xdr:grpSp", "xdr:nvGrpSpPr/xdr:cNvPr", parent)
         {
-            var grpNode = CreateNode(_topPath);
+            XmlNode? grpNode = CreateNode(_topPath);
             if (grpNode.InnerXml == "")
             {
                 grpNode.InnerXml = "<xdr:nvGrpSpPr><xdr:cNvPr name=\"\" id=\"3\"><a:extLst><a:ext uri=\"{FF2B5EF4-FFF2-40B4-BE49-F238E27FC236}\"><a16:creationId id=\"{F33F4CE3-706D-4DC2-82DA-B596E3C8ACD0}\" xmlns:a16=\"http://schemas.microsoft.com/office/drawing/2014/main\"/></a:ext></a:extLst></xdr:cNvPr><xdr:cNvGrpSpPr/></xdr:nvGrpSpPr><xdr:grpSpPr><a:xfrm><a:off y=\"0\" x=\"0\"/><a:ext cy=\"0\" cx=\"0\"/><a:chOff y=\"0\" x=\"0\"/><a:chExt cy=\"0\" cx=\"0\"/></a:xfrm></xdr:grpSpPr>";
@@ -328,12 +328,12 @@ namespace OfficeOpenXml.Drawing
         }
         internal void SetPositionAndSizeFromChildren()
         {
-            var pd = Drawings[0];
+            ExcelDrawing? pd = Drawings[0];
             pd.GetPositionSize();
             double t = pd._top, l = pd._left, b = pd._top + pd._height, r = pd._left + pd._width;
             for (int i = 1; i < Drawings.Count; i++)
             {
-                var d = Drawings[i];
+                ExcelDrawing? d = Drawings[i];
                 d.GetPositionSize();
                 if (t > d._top)
                 {
@@ -360,8 +360,8 @@ namespace OfficeOpenXml.Drawing
         }
         internal void AdjustChildrenForResizeRow(double prevTop)
         {
-            var top = GetPixelTop();
-            var diff = top - prevTop;
+            int top = GetPixelTop();
+            double diff = top - prevTop;
             if(diff!=0)
             {
                 for (int i = 0; i < Drawings.Count; i++)
@@ -373,8 +373,8 @@ namespace OfficeOpenXml.Drawing
         }
         internal void AdjustChildrenForResizeColumn(double prevLeft)
         {
-            var left = GetPixelLeft();
-            var diff = left - prevLeft;
+            int left = GetPixelLeft();
+            double diff = left - prevLeft;
             if (diff != 0)
             {
                 for (int i = 0; i < Drawings.Count; i++)

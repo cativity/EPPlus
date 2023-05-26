@@ -6,7 +6,7 @@ namespace OfficeOpenXml.Utils.Extensions
     {
         internal static XmlNode GetChildAtPosition(this XmlNode node, int index, XmlNodeType type = XmlNodeType.Element)
         {
-            var i = 0;
+            int i = 0;
             foreach (XmlNode c in node.ChildNodes)
             {
                 if (c.NodeType == type)

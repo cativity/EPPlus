@@ -41,21 +41,21 @@ namespace OfficeOpenXml.Export.ToDataTable
 
         public void Export()
         {
-            var row = _options.FirstRowIsColumnNames ? _range.Start.Row + 1 : _range.Start.Row;
+            int row = _options.FirstRowIsColumnNames ? _range.Start.Row + 1 : _range.Start.Row;
             Validate();
             row += _options.SkipNumberOfRowsStart;
             
             while (row <= (_range.End.Row - _options.SkipNumberOfRowsEnd))
             {
-                var dataRow = _dataTable.NewRow();
-                var ignoreRow = false;
-                var rowIsEmpty = true;
-                var rowErrorMsg = string.Empty;
-                var rowErrorExists = false;
-                foreach (var mapping in _options.Mappings)
+                DataRow? dataRow = _dataTable.NewRow();
+                bool ignoreRow = false;
+                bool rowIsEmpty = true;
+                string? rowErrorMsg = string.Empty;
+                bool rowErrorExists = false;
+                foreach (DataColumnMapping? mapping in _options.Mappings)
                 {
-                    var col = mapping.ZeroBasedColumnIndexInRange + _range.Start.Column;
-                    var val = _sheet.GetValueInner(row, col);
+                    int col = mapping.ZeroBasedColumnIndexInRange + _range.Start.Column;
+                    object? val = _sheet.GetValueInner(row, col);
                     if (val != null && rowIsEmpty)
                     {
                         rowIsEmpty = false;
@@ -84,7 +84,7 @@ namespace OfficeOpenXml.Export.ToDataTable
                     {
                         val = mapping.TransformCellValue.Invoke(val);
                     }
-                    var type = mapping.ColumnDataType;
+                    Type? type = mapping.ColumnDataType;
                     if(type == null)
                     {
                         type = _dataTable.Columns[mapping.DataColumnName].DataType;
@@ -116,7 +116,7 @@ namespace OfficeOpenXml.Export.ToDataTable
 
         private void Validate()
         {
-            var startRow = _options.FirstRowIsColumnNames ? _range.Start.Row + 1 : _range.Start.Row;
+            int startRow = _options.FirstRowIsColumnNames ? _range.Start.Row + 1 : _range.Start.Row;
             if (_options.SkipNumberOfRowsStart < 0 || _options.SkipNumberOfRowsStart > (_range.End.Row - startRow))
             {
                 throw new IndexOutOfRangeException("SkipNumberOfRowsStart was out of range: " + _options.SkipNumberOfRowsStart);
@@ -163,7 +163,7 @@ namespace OfficeOpenXml.Export.ToDataTable
                         MethodInfo methodInfo = typeof(ConvertUtility).GetMethod(nameof(ConvertUtility.GetTypedCellValue));
                         _convertMethods.Add(dataColumnType, methodInfo.MakeGenericMethod(dataColumnType));
                     }
-                    var getTypedCellValue = _convertMethods[dataColumnType];
+                    MethodInfo? getTypedCellValue = _convertMethods[dataColumnType];
                     return getTypedCellValue.Invoke(null, new object[] { val });
                 }
                 catch

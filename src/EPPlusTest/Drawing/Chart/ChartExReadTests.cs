@@ -31,11 +31,11 @@ namespace EPPlusTest.Drawing.Chart
         [TestMethod]
         public void ReadSunburstChart()
         {            
-            var ws = GetWorksheet("Sunburst");
+            ExcelWorksheet? ws = GetWorksheet("Sunburst");
             Assert.AreEqual(1,ws.Drawings.Count);
-            var chart = ws.Drawings[0].As.Chart.SunburstChart;
+            ExcelSunburstChart? chart = ws.Drawings[0].As.Chart.SunburstChart;
             Assert.AreEqual(1, chart.Series.Count);
-            var serie = chart.Series[0];
+            ExcelChartExSerie? serie = chart.Series[0];
             Assert.AreEqual("Sunburst!$D$2:$D$17", serie.Series);
             Assert.AreEqual("Sunburst!$A$2:$C$17", serie.XSeries);
             Assert.IsNotNull(serie.DataLabel);
@@ -44,7 +44,7 @@ namespace EPPlusTest.Drawing.Chart
             Assert.IsTrue(serie.DataLabel.ShowValue);
             Assert.IsFalse(serie.DataLabel.ShowSeriesName);
             Assert.AreEqual(1, serie.DataPoints.Count);
-            var dp=serie.DataPoints[2];
+            ExcelChartExDataPoint? dp=serie.DataPoints[2];
 
             Assert.AreEqual(eFillStyle.PatternFill, dp.Fill.Style);
             Assert.AreEqual(eFillPatternStyle.DashDnDiag, dp.Fill.PatternFill.PatternType);
@@ -60,11 +60,11 @@ namespace EPPlusTest.Drawing.Chart
         [TestMethod]
         public void ReadTreemapChart()
         {
-            var ws = GetWorksheet("Treemap");
+            ExcelWorksheet? ws = GetWorksheet("Treemap");
             Assert.AreEqual(1, ws.Drawings.Count);
-            var chart = ws.Drawings[0].As.Chart.TreemapChart;
+            ExcelTreemapChart? chart = ws.Drawings[0].As.Chart.TreemapChart;
             Assert.AreEqual(1, chart.Series.Count);
-            var serie = chart.Series[0];
+            ExcelTreemapChartSerie? serie = chart.Series[0];
             Assert.AreEqual("Treemap!$D$2:$D$17", serie.Series);
             Assert.AreEqual("Treemap!$A$2:$C$17", serie.XSeries);
             Assert.IsNotNull(serie.DataLabel);
@@ -79,11 +79,11 @@ namespace EPPlusTest.Drawing.Chart
         [TestMethod]
         public void ReadBoxWhiskerChart()
         {
-            var ws = GetWorksheet("BoxWhisker"); 
+            ExcelWorksheet? ws = GetWorksheet("BoxWhisker"); 
             Assert.AreEqual(1, ws.Drawings.Count);
-            var chart = ws.Drawings[0].As.Chart.BoxWhiskerChart;
+            ExcelBoxWhiskerChart? chart = ws.Drawings[0].As.Chart.BoxWhiskerChart;
             Assert.AreEqual(1, chart.Series.Count);
-            var serie = chart.Series[0];
+            ExcelBoxWhiskerChartSerie? serie = chart.Series[0];
             Assert.AreEqual("BoxWhisker!$D$2:$D$17", serie.Series);
             Assert.AreEqual("BoxWhisker!$A$2:$C$17", serie.XSeries);
 
@@ -104,11 +104,11 @@ namespace EPPlusTest.Drawing.Chart
         [TestMethod]
         public void ReadHistogramChart()
         {
-            var ws = GetWorksheet("Histogram");
+            ExcelWorksheet? ws = GetWorksheet("Histogram");
             Assert.AreEqual(1, ws.Drawings.Count);
-            var chart = ws.Drawings[0].As.Chart.HistogramChart;
+            ExcelHistogramChart? chart = ws.Drawings[0].As.Chart.HistogramChart;
             Assert.AreEqual(1, chart.Series.Count);
-            var serie = chart.Series[0];
+            ExcelHistogramChartSerie? serie = chart.Series[0];
             Assert.AreEqual("Histogram!$D$2:$D$17", serie.Series);
             Assert.AreEqual("Histogram!$A$2:$C$17", serie.XSeries);
             Assert.AreEqual(1, serie.Binning.Underflow);
@@ -121,11 +121,11 @@ namespace EPPlusTest.Drawing.Chart
         [TestMethod]
         public void ReadParetoChart()
         {
-            var ws = GetWorksheet("Pareto");
+            ExcelWorksheet? ws = GetWorksheet("Pareto");
             Assert.AreEqual(1, ws.Drawings.Count);
-            var chart = ws.Drawings[0].As.Type<ExcelHistogramChart>();
+            ExcelHistogramChart? chart = ws.Drawings[0].As.Type<ExcelHistogramChart>();
             Assert.AreEqual(1, chart.Series.Count);
-            var serie = chart.Series[0];
+            ExcelHistogramChartSerie? serie = chart.Series[0];
             Assert.AreEqual("Pareto!$D$2:$D$17", serie.Series);
             Assert.AreEqual("Pareto!$A$2:$C$17", serie.XSeries);
 
@@ -144,17 +144,17 @@ namespace EPPlusTest.Drawing.Chart
         [TestMethod]
         public void ReadWaterfallChart()
         {
-            var ws = GetWorksheet("Waterfall");
+            ExcelWorksheet? ws = GetWorksheet("Waterfall");
 
             Assert.AreEqual(1, ws.Drawings.Count);
-            var chart = ws.Drawings[0].As.Chart.WaterfallChart;
+            ExcelWaterfallChart? chart = ws.Drawings[0].As.Chart.WaterfallChart;
             Assert.AreEqual(1, chart.Series.Count);
-            var serie = chart.Series[0];
+            ExcelWaterfallChartSerie? serie = chart.Series[0];
             Assert.AreEqual("Waterfall!$D$2:$D$17", serie.Series);
             Assert.AreEqual("Waterfall!$A$2:$C$17", serie.XSeries);
 
             Assert.AreEqual(4, serie.DataPoints.Count);
-            var dt = serie.DataPoints[15];
+            ExcelChartExDataPoint? dt = serie.DataPoints[15];
             Assert.IsTrue(dt.SubTotal);
             dt = serie.DataPoints[0];
             Assert.AreEqual(eFillStyle.GradientFill, dt.Border.Fill.Style);
@@ -181,11 +181,11 @@ namespace EPPlusTest.Drawing.Chart
         [TestMethod]
         public void ReadFunnelChart()
         {
-            var ws = GetWorksheet("Funnel");
+            ExcelWorksheet? ws = GetWorksheet("Funnel");
             Assert.AreEqual(1, ws.Drawings.Count);
-            var chart = ws.Drawings[0].As.Chart.FunnelChart;
+            ExcelFunnelChart? chart = ws.Drawings[0].As.Chart.FunnelChart;
             Assert.AreEqual(1, chart.Series.Count);
-            var serie = chart.Series[0];
+            ExcelChartExSerie? serie = chart.Series[0];
             Assert.AreEqual("Funnel!$D$2:$D$17", serie.Series);
             Assert.AreEqual("Funnel!$A$2:$C$17", serie.XSeries);
             
@@ -195,11 +195,11 @@ namespace EPPlusTest.Drawing.Chart
         [TestMethod]
         public void ReadRegionMapChart()
         {
-            var ws = GetWorksheet("RegionMap");
+            ExcelWorksheet? ws = GetWorksheet("RegionMap");
             Assert.AreEqual(1, ws.Drawings.Count);
-            var chart = ws.Drawings[0].As.Chart.RegionMapChart;
+            ExcelRegionMapChart? chart = ws.Drawings[0].As.Chart.RegionMapChart;
             Assert.AreEqual(1, chart.Series.Count);
-            var serie = chart.Series[0];
+            ExcelRegionMapChartSerie? serie = chart.Series[0];
             Assert.AreEqual("RegionMap!$A$2:$B$11", serie.XSeries);
             Assert.AreEqual("RegionMap!$C$2:$C$11", serie.Series);
 
@@ -236,7 +236,7 @@ namespace EPPlusTest.Drawing.Chart
             {
                 Assert.Inconclusive("ChartExRead.xlsx does not exist");
             }
-            var ws = _pck.Workbook.Worksheets[wsName];
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets[wsName];
             if (ws == null)
             {
                 Assert.Inconclusive($"Worksheet {wsName} does not exist");

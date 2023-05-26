@@ -56,14 +56,14 @@ namespace OfficeOpenXml.Packaging
         internal override ZipPackageRelationship CreateRelationship(Uri targetUri, TargetMode targetMode, string relationshipType)
         {
 
-            var rel = base.CreateRelationship(targetUri, targetMode, relationshipType);
+            ZipPackageRelationship? rel = base.CreateRelationship(targetUri, targetMode, relationshipType);
             rel.SourceUri = Uri;
             return rel;
         }
         internal override ZipPackageRelationship CreateRelationship(string target, TargetMode targetMode, string relationshipType)
         {
 
-            var rel = base.CreateRelationship(target, targetMode, relationshipType);
+            ZipPackageRelationship? rel = base.CreateRelationship(target, targetMode, relationshipType);
             rel.SourceUri = Uri;
             return rel;
         }
@@ -143,7 +143,7 @@ namespace OfficeOpenXml.Packaging
             if (_rels.Count > 0)
             {
                 string f = Uri.OriginalString;
-                var name = Path.GetFileName(f);
+                string? name = Path.GetFileName(f);
                 _rels.WriteZip(os, (string.Format("{0}_rels/{1}.rels", f.Substring(0, f.Length - name.Length), name)));
             }
             b = null;

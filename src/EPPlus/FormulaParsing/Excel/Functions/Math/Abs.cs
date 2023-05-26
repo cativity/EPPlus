@@ -27,13 +27,13 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
     {
         public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
         {
-            var functionArguments = arguments as FunctionArgument[] ?? arguments.ToArray();
+            FunctionArgument[]? functionArguments = arguments as FunctionArgument[] ?? arguments.ToArray();
             ValidateArguments(functionArguments, 1);
             if (functionArguments.ElementAt(0).Value == null)
             {
                 return CreateResult(0d, DataType.Decimal);
             }
-            var val = ArgToDecimal(functionArguments, 0);
+            double val = ArgToDecimal(functionArguments, 0);
             if (val < 0)
             {
                 val *= -1;

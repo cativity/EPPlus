@@ -34,7 +34,7 @@ namespace OfficeOpenXml.Drawing.Vml
             }
             else
             {
-                var s = enumValue.ToString();
+                string? s = enumValue.ToString();
                 return s.Substring(0, 1).ToLower() + s.Substring(1);
             }
         }

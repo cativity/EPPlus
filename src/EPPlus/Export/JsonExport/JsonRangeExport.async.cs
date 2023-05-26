@@ -9,7 +9,7 @@ namespace OfficeOpenXml
     {
         internal async Task ExportAsync(Stream stream)
         {
-            var sw = new StreamWriter(stream);
+            StreamWriter? sw = new StreamWriter(stream);
             await WriteStartAsync(sw);
             await WriteItemAsync(sw, $"\"{_settings.RootElementName}\":");
             await WriteStartAsync(sw);
@@ -34,7 +34,7 @@ namespace OfficeOpenXml
                 }
                 if (_settings.AddDataTypesOn == eDataTypeOn.OnColumn)
                 {
-                    var dt = HtmlRawDataProvider.GetHtmlDataTypeFromValue(_range.GetCellValue<object>(1, i));
+                    string? dt = HtmlRawDataProvider.GetHtmlDataTypeFromValue(_range.GetCellValue<object>(1, i));
                     await WriteItemAsync(sw, $"\"dt\":\"{dt}\"");
                 }
                 if (i == _range.Columns - 1)

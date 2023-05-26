@@ -96,7 +96,7 @@ namespace OfficeOpenXml.FormulaParsing.ExpressionGraph
         {
             get
             {
-                var r = Result as IRangeInfo;
+                IRangeInfo? r = Result as IRangeInfo;
                 if (r == null)
                 {
                     return Result;
@@ -133,7 +133,7 @@ namespace OfficeOpenXml.FormulaParsing.ExpressionGraph
 					}
 					else if (Result is IRangeInfo)
 					{
-						var c = ((IRangeInfo)Result).FirstOrDefault();
+						ICellInfo? c = ((IRangeInfo)Result).FirstOrDefault();
 						if (c == null)
 						{
 							return 0;
@@ -187,7 +187,7 @@ namespace OfficeOpenXml.FormulaParsing.ExpressionGraph
             {
                 if (DataType == DataType.String)
                 {
-                    var s = Result as string;
+                    string? s = Result as string;
                     return ConvertUtil.IsPercentageString(s);
                 }
                 return false;

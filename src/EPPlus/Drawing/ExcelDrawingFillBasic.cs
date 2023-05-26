@@ -131,7 +131,7 @@ namespace OfficeOpenXml.Drawing
         internal void SetFromXml(ExcelDrawingFill fill)
         {
             Style = fill.Style;
-            var copyFromFillElement = (XmlElement)fill._fillTypeNode;
+            XmlElement? copyFromFillElement = (XmlElement)fill._fillTypeNode;
             foreach (XmlAttribute a in copyFromFillElement.Attributes)
             {
                 ((XmlElement)_fillTypeNode).SetAttribute(a.Name, a.NamespaceURI, a.Value);
@@ -276,7 +276,7 @@ namespace OfficeOpenXml.Drawing
                     return Color.Empty;
                 }
 
-                var col = SolidFill.Color.RgbColor.Color;
+                Color col = SolidFill.Color.RgbColor.Color;
                 if(col == Color.Empty)
                 {
                     return Color.FromArgb(79, 129, 189);
@@ -344,7 +344,7 @@ namespace OfficeOpenXml.Drawing
                     throw new InvalidOperationException("Transparency can only be set when Type is set to SolidFill.");
                 }
 
-                var alphaItem = _solidFill.Color.Transforms.Find(eColorTransformType.Alpha);
+                IColorTransformItem? alphaItem = _solidFill.Color.Transforms.Find(eColorTransformType.Alpha);
                 if(alphaItem==null)
                 {
                     _solidFill.Color.Transforms.AddAlpha(100 - value);
@@ -361,7 +361,7 @@ namespace OfficeOpenXml.Drawing
             {
                 if(_fillNode== _fillTypeNode)
                 {
-                    var node=_fillTypeNode.OwnerDocument.CreateElement("a", GetStyleText(value), ExcelPackage.schemaDrawings);
+                    XmlElement? node=_fillTypeNode.OwnerDocument.CreateElement("a", GetStyleText(value), ExcelPackage.schemaDrawings);
                     _fillTypeNode.ParentNode.InsertBefore(node, _fillTypeNode);
                     _fillTypeNode.ParentNode.RemoveChild(_fillTypeNode);
                     _fillTypeNode = node;

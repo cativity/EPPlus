@@ -48,7 +48,7 @@ namespace EPPlusTest.LoadFunctions
         [TestMethod]
         public void CreateAndFillDataTable()
         {
-            var table = new DataTable("Astronauts");
+            DataTable? table = new DataTable("Astronauts");
             table.Columns.Add("Id", typeof(int));
             table.Columns.Add("FirstName", typeof(string));
             table.Columns.Add("LastName", typeof(string));
@@ -59,9 +59,9 @@ namespace EPPlusTest.LoadFunctions
             table.Rows.Add(2, "Doug", "Hurley");
 
             //create a workbook with a spreadsheet and load the data table
-            using(var package = new ExcelPackage())
+            using(ExcelPackage? package = new ExcelPackage())
             {
-                var sheet = package.Workbook.Worksheets.Add("Astronauts");
+                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("Astronauts");
                 sheet.Cells["A1"].LoadFromDataTable(table);
             }
         }
@@ -93,24 +93,24 @@ namespace EPPlusTest.LoadFunctions
         [TestMethod]
         public void ShouldLoadXmlFromDataset()
         {
-            var dataSet = new DataSet();
-            var xml = "<?xml version=\"1.0\" encoding=\"utf-8\"?>" +
-                        "<Astronauts>" +
-                        "<Astronaut Id=\"1\">" +
-                        "<FirstName>Bob</FirstName>" +
-                        "<LastName>Behnken</LastName>" +
-                        "</Astronaut>" +
-                        "<Astronaut Id=\"2\">" +
-                        "<FirstName>Doug</FirstName>" +
-                        "<LastName>Hurley</LastName>" +
-                        "</Astronaut>" +
-                        "</Astronauts>";
-            var reader = XmlReader.Create(new StringReader(xml));
+            DataSet? dataSet = new DataSet();
+            string? xml = "<?xml version=\"1.0\" encoding=\"utf-8\"?>" +
+                          "<Astronauts>" +
+                          "<Astronaut Id=\"1\">" +
+                          "<FirstName>Bob</FirstName>" +
+                          "<LastName>Behnken</LastName>" +
+                          "</Astronaut>" +
+                          "<Astronaut Id=\"2\">" +
+                          "<FirstName>Doug</FirstName>" +
+                          "<LastName>Hurley</LastName>" +
+                          "</Astronaut>" +
+                          "</Astronauts>";
+            XmlReader? reader = XmlReader.Create(new StringReader(xml));
             dataSet.ReadXml(reader);
-            using(var package = new ExcelPackage())
+            using(ExcelPackage? package = new ExcelPackage())
             {
-                var sheet = package.Workbook.Worksheets.Add("test");
-                var table = dataSet.Tables["Astronaut"];
+                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
+                DataTable? table = dataSet.Tables["Astronaut"];
                 // default the Id ends up last in the column order. This moves it to the first position.
                 table.Columns["Id"].SetOrdinal(0);
                 // Set caption for the headers

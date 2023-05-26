@@ -33,7 +33,7 @@ namespace OfficeOpenXml
         /// <param name="cancellationToken">The cancellation token</param>
         public async Task LoadAsync(FileInfo fileInfo, CancellationToken cancellationToken = default)
         {
-            using (var stream = fileInfo.OpenRead())
+            using (FileStream? stream = fileInfo.OpenRead())
             {
                 await LoadAsync(stream, RecyclableMemory.GetStream(), null, cancellationToken).ConfigureAwait(false);
             }
@@ -56,7 +56,7 @@ namespace OfficeOpenXml
         /// <param name="cancellationToken">The cancellation token</param>
         public async Task LoadAsync(FileInfo fileInfo, string Password, CancellationToken cancellationToken = default)
         {
-            using (var stream = fileInfo.OpenRead())
+            using (FileStream? stream = fileInfo.OpenRead())
             {
                 await LoadAsync(stream, RecyclableMemory.GetStream(), Password, cancellationToken).ConfigureAwait(false);
                 stream.Close();
@@ -82,7 +82,7 @@ namespace OfficeOpenXml
         /// <param name="cancellationToken">The cancellation token</param>
         public async Task LoadAsync(FileInfo fileInfo, Stream output, string Password, CancellationToken cancellationToken = default)
         {
-            using (var stream = fileInfo.OpenRead())
+            using (FileStream? stream = fileInfo.OpenRead())
             {
                 await LoadAsync(stream, output, Password, cancellationToken).ConfigureAwait(false);
                 stream.Close();
@@ -142,10 +142,10 @@ namespace OfficeOpenXml
                 _stream = output;
                 if (Password != null)
                 {
-                    using (var encrStream = RecyclableMemory.GetStream())
+                    using (MemoryStream? encrStream = RecyclableMemory.GetStream())
                     {
                         await StreamUtil.CopyStreamAsync(input, encrStream, cancellationToken).ConfigureAwait(false);
-                        var eph = new EncryptedPackageHandler();
+                        EncryptedPackageHandler? eph = new EncryptedPackageHandler();
                         Encryption.Password = Password;
                         ms = eph.DecryptPackage(encrStream, Encryption);
                     }
@@ -202,7 +202,7 @@ namespace OfficeOpenXml
                 }
 
                 //Invoke before save delegates
-                foreach (var action in BeforeSave)
+                foreach (Action? action in BeforeSave)
                 {
                     action.Invoke();
                 }
@@ -212,12 +212,12 @@ namespace OfficeOpenXml
                 {
                     if (Encryption.IsEncrypted)
                     {
-                        using (var ms = RecyclableMemory.GetStream())
+                        using (MemoryStream? ms = RecyclableMemory.GetStream())
                         {
                             _zipPackage.Save(ms);
-                            var file = ms.ToArray();
-                            var eph = new EncryptedPackageHandler();
-                            using (var msEnc = eph.EncryptPackage(file, Encryption))
+                            byte[]? file = ms.ToArray();
+                            EncryptedPackageHandler? eph = new EncryptedPackageHandler();
+                            using (MemoryStream? msEnc = eph.EncryptPackage(file, Encryption))
                             {
                                 await StreamUtil.CopyStreamAsync(msEnc, _stream, cancellationToken).ConfigureAwait(false);
                             }
@@ -251,15 +251,15 @@ namespace OfficeOpenXml
 #if NETSTANDARD2_1
                         await using (var fi = new FileStream(File.FullName, FileMode.Create))
 #else
-                        using (var fi = new FileStream(File.FullName, FileMode.Create))
+                        using (FileStream? fi = new FileStream(File.FullName, FileMode.Create))
 #endif
                         {
                             //EncryptPackage
                             if (Encryption.IsEncrypted)
                             {
-                                var file = stream.ToArray();
-                                var eph = new EncryptedPackageHandler();
-                                using (var ms = eph.EncryptPackage(file, Encryption))
+                                byte[]? file = stream.ToArray();
+                                EncryptedPackageHandler? eph = new EncryptedPackageHandler();
+                                using (MemoryStream? ms = eph.EncryptPackage(file, Encryption))
                                 {
                                     await fi.WriteAsync(ms.ToArray(), 0, (int)ms.Length, cancellationToken).ConfigureAwait(false);
                                 }
@@ -275,10 +275,10 @@ namespace OfficeOpenXml
 #if NETSTANDARD2_1
                         await using (var fs = new FileStream(File.FullName, FileMode.Create))
 #else
-                        using (var fs = new FileStream(File.FullName, FileMode.Create))
+                        using (FileStream? fs = new FileStream(File.FullName, FileMode.Create))
 #endif
                         {
-                            var b = await GetAsByteArrayAsync(false, cancellationToken).ConfigureAwait(false);
+                            byte[]? b = await GetAsByteArrayAsync(false, cancellationToken).ConfigureAwait(false);
                             await fs.WriteAsync(b, 0, b.Length, cancellationToken).ConfigureAwait(false);
                         }
 
@@ -416,16 +416,16 @@ namespace OfficeOpenXml
                 }
                 _zipPackage.Save(_stream);
             }
-            var byRet = new byte[Stream.Length];
-            var pos = Stream.Position;
+            byte[]? byRet = new byte[Stream.Length];
+            long pos = Stream.Position;
             Stream.Seek(0, SeekOrigin.Begin);
             await Stream.ReadAsync(byRet, 0, (int)Stream.Length, cancellationToken).ConfigureAwait(false);
 
             //Encrypt Workbook?
             if (Encryption.IsEncrypted)
             {
-                var eph = new EncryptedPackageHandler();
-                using (var ms = eph.EncryptPackage(byRet, Encryption))
+                EncryptedPackageHandler? eph = new EncryptedPackageHandler();
+                using (MemoryStream? ms = eph.EncryptPackage(byRet, Encryption))
                 {
                     byRet = ms.ToArray();
                 }
@@ -488,7 +488,7 @@ namespace OfficeOpenXml
 
         private async Task ConstructNewFileAsync(string password, CancellationToken cancellationToken)
         {
-            var ms = RecyclableMemory.GetStream();
+            MemoryStream? ms = RecyclableMemory.GetStream();
             if (_stream == null)
             {
                 this._stream = RecyclableMemory.GetStream();
@@ -499,7 +499,7 @@ namespace OfficeOpenXml
             {
                 if (password != null)
                 {
-                    var encrHandler = new EncryptedPackageHandler();
+                    EncryptedPackageHandler? encrHandler = new EncryptedPackageHandler();
                     Encryption.IsEncrypted = true;
                     Encryption.Password = password;
                     ms.Dispose();
@@ -541,10 +541,10 @@ namespace OfficeOpenXml
 #if NETSTANDARD2_1
             await using (var fileStream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
 #else
-            using (var fileStream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+            using (FileStream? fileStream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
 #endif
             {
-                var buffer = new byte[4096];
+                byte[]? buffer = new byte[4096];
                 int read;
                 while ((read = await fileStream.ReadAsync(buffer, 0, buffer.Length, cancellationToken).ConfigureAwait(false)) > 0)
                 {

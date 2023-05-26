@@ -248,7 +248,7 @@ namespace OfficeOpenXml.Drawing.Style
         }
         internal static string TranslateString(this ePresetColor v)
         {
-            var s = v.ToEnumString();
+            string? s = v.ToEnumString();
             if (s.StartsWith("dark"))
             {
                 s = s.Replace("dark", "dk");

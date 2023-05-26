@@ -32,6 +32,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OfficeOpenXml;
 using OfficeOpenXml.FormulaParsing;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.RefAndLookup;
+using OfficeOpenXml.FormulaParsing.ExpressionGraph;
 
 namespace EPPlusTest.FormulaParsing.Excel.Functions.RefAndLookup
 {
@@ -59,12 +60,12 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions.RefAndLookup
         [TestMethod]
         public void Index_Should_Return_Value_By_Index()
         {
-            var func = new Index();
-            var result = func.Execute(
-                FunctionsHelper.CreateArgs(
-                    FunctionsHelper.CreateArgs(1, 2, 5),
-                    3
-                    ),_parsingContext);
+            Index? func = new Index();
+            CompileResult? result = func.Execute(
+                                                 FunctionsHelper.CreateArgs(
+                                                                            FunctionsHelper.CreateArgs(1, 2, 5),
+                                                                            3
+                                                                           ),_parsingContext);
             Assert.AreEqual(5, result.Result);
         }
 

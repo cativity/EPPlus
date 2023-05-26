@@ -18,6 +18,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Xml;
 #if !NET35 && !NET40
 using System.Threading.Tasks;
 #endif
@@ -38,10 +39,10 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
             }
 
             className = className.Trim().Replace(" ", "-");
-            var newClassName = "";
+            string? newClassName = "";
             for (int i = 0; i < className.Length; i++)
             {
-                var c = className[i];
+                char c = className[i];
                 if (i == 0)
                 {
                     if (c == '-' || (c >= '0' && c <= '9'))
@@ -86,7 +87,7 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
                 styleClass = TableStyleClassPrefix + table.TableStyle.ToString().ToLowerInvariant();
             }
 
-            var tblClasses = $"{styleClass}";
+            string? tblClasses = $"{styleClass}";
             if (table.ShowHeader)
             {
                 tblClasses += $" {styleClass}-header";
@@ -128,11 +129,11 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
             }
             else
             {
-                var tblClasses = $"{TableClass} ";
+                string? tblClasses = $"{TableClass} ";
                 tblClasses += GetTableClasses(table);
                 if (settings.AdditionalTableClassNames.Count > 0)
                 {
-                    foreach (var cls in settings.AdditionalTableClassNames)
+                    foreach (string? cls in settings.AdditionalTableClassNames)
                     {
                         tblClasses += $" {cls}";
                     }
@@ -148,7 +149,7 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
 
         internal static void RenderTableCss(StreamWriter sw, ExcelTable table, HtmlTableExportSettings settings, Dictionary<string, int> styleCache, List<string> datatypes)
         {
-            var styleWriter = new EpplusTableCssWriter(sw, table, settings, styleCache);
+            EpplusTableCssWriter? styleWriter = new EpplusTableCssWriter(sw, table, settings, styleCache);
             if (settings.Minify == false)
             {
                 styleWriter.WriteLine();
@@ -161,12 +162,12 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
             }
             else
             {
-                var tmpNode = table.WorkSheet.Workbook.StylesXml.CreateElement("c:tableStyle");
+                XmlElement? tmpNode = table.WorkSheet.Workbook.StylesXml.CreateElement("c:tableStyle");
                 tblStyle = new ExcelTableNamedStyle(table.WorkSheet.Workbook.Styles.NameSpaceManager, tmpNode, table.WorkSheet.Workbook.Styles);
                 tblStyle.SetFromTemplate(table.TableStyle);
             }
 
-            var tableClass = $"{TableClass}.{TableStyleClassPrefix}{GetClassName(tblStyle.Name, "EmptyTableStyle").ToLower()}";
+            string? tableClass = $"{TableClass}.{TableStyleClassPrefix}{GetClassName(tblStyle.Name, "EmptyTableStyle").ToLower()}";
             styleWriter.AddHyperlinkCss($"{tableClass}", tblStyle.WholeTable);
             styleWriter.AddAlignmentToCss($"{tableClass}", datatypes);
 
@@ -187,21 +188,21 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
             styleWriter.AddToCss($"{tableClass}", tblStyle.FirstTotalCell, " tfoot tr td:first-child");
 
             //Columns stripes
-            var tableClassCS = $"{tableClass}-column-stripes";
+            string? tableClassCS = $"{tableClass}-column-stripes";
             styleWriter.AddToCss($"{tableClassCS}", tblStyle.FirstColumnStripe, $" tbody tr td:nth-child(odd)");
             styleWriter.AddToCss($"{tableClassCS}", tblStyle.SecondColumnStripe, $" tbody tr td:nth-child(even)");
 
             //Row stripes
-            var tableClassRS = $"{tableClass}-row-stripes";
+            string? tableClassRS = $"{tableClass}-row-stripes";
             styleWriter.AddToCss($"{tableClassRS}", tblStyle.FirstRowStripe, " tbody tr:nth-child(odd)");
             styleWriter.AddToCss($"{tableClassRS}", tblStyle.SecondRowStripe, " tbody tr:nth-child(even)");
 
             //Last column
-            var tableClassLC = $"{tableClass}-last-column";
+            string? tableClassLC = $"{tableClass}-last-column";
             styleWriter.AddToCss($"{tableClassLC}", tblStyle.LastColumn, $" tbody tr td:last-child");
 
             //First column
-            var tableClassFC = $"{tableClass}-first-column";
+            string? tableClassFC = $"{tableClass}-first-column";
             styleWriter.AddToCss($"{tableClassFC}", tblStyle.FirstColumn, " tbody tr td:first-child");
 
             styleWriter.FlushStream();
@@ -209,7 +210,7 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
 #if !NET35 && !NET40
         internal static async Task RenderTableCssAsync(StreamWriter sw, ExcelTable table, HtmlTableExportSettings settings, Dictionary<string, int> styleCache, List<string> datatypes)
         {
-            var styleWriter = new EpplusTableCssWriter(sw, table, settings, styleCache);
+            EpplusTableCssWriter? styleWriter = new EpplusTableCssWriter(sw, table, settings, styleCache);
             if (settings.Minify == false)
             {
                 await styleWriter.WriteLineAsync();
@@ -222,12 +223,12 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
             }
             else
             {
-                var tmpNode = table.WorkSheet.Workbook.StylesXml.CreateElement("c:tableStyle");
+                XmlElement? tmpNode = table.WorkSheet.Workbook.StylesXml.CreateElement("c:tableStyle");
                 tblStyle = new ExcelTableNamedStyle(table.WorkSheet.Workbook.Styles.NameSpaceManager, tmpNode, table.WorkSheet.Workbook.Styles);
                 tblStyle.SetFromTemplate(table.TableStyle);
             }
 
-            var tableClass = $"{TableClass}.{TableStyleClassPrefix}{GetClassName(tblStyle.Name, "EmptyClassName").ToLower()}";
+            string? tableClass = $"{TableClass}.{TableStyleClassPrefix}{GetClassName(tblStyle.Name, "EmptyClassName").ToLower()}";
             await styleWriter.AddHyperlinkCssAsync($"{tableClass}", tblStyle.WholeTable);
             await styleWriter.AddAlignmentToCssAsync($"{tableClass}", datatypes);
 
@@ -248,21 +249,21 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
             await styleWriter.AddToCssAsync($"{tableClass}", tblStyle.FirstTotalCell, " tfoot tr td:first-child");
 
             //Columns stripes
-            var tableClassCS = $"{tableClass}-column-stripes";
+            string? tableClassCS = $"{tableClass}-column-stripes";
             await styleWriter.AddToCssAsync($"{tableClassCS}", tblStyle.FirstColumnStripe, $" tbody tr td:nth-child(odd)");
             await styleWriter.AddToCssAsync($"{tableClassCS}", tblStyle.SecondColumnStripe, $" tbody tr td:nth-child(even)");
 
             //Row stripes
-            var tableClassRS = $"{tableClass}-row-stripes";
+            string? tableClassRS = $"{tableClass}-row-stripes";
             await styleWriter.AddToCssAsync($"{tableClassRS}", tblStyle.FirstRowStripe, " tbody tr:nth-child(odd)");
             await styleWriter.AddToCssAsync($"{tableClassRS}", tblStyle.SecondRowStripe, " tbody tr:nth-child(even)");
 
             //Last column
-            var tableClassLC = $"{tableClass}-last-column";
+            string? tableClassLC = $"{tableClass}-last-column";
             await styleWriter.AddToCssAsync($"{tableClassLC}", tblStyle.LastColumn, $" tbody tr td:last-child");
 
             //First column
-            var tableClassFC = $"{tableClass}-first-column";
+            string? tableClassFC = $"{tableClass}-first-column";
             await styleWriter.AddToCssAsync($"{tableClassFC}", tblStyle.FirstColumn, " tbody tr td:first-child");
 
 

@@ -129,7 +129,7 @@ namespace OfficeOpenXml.Drawing.Chart
         }
         private bool IsMarkersAllowed()
         {
-            var type = _chart.ChartType;
+            eChartType type = _chart.ChartType;
             if (type == eChartType.XYScatterLinesNoMarkers || type == eChartType.XYScatterSmoothNoMarkers)
             {
                 return false;
@@ -195,7 +195,7 @@ namespace OfficeOpenXml.Drawing.Chart
             get
             {
 
-                var size = Marker.Size;
+                int size = Marker.Size;
                 if (size == 0)
                 {
                     return 5;
@@ -248,7 +248,7 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             get
             {
-                var width = Border.Width;
+                double width = Border.Width;
                 if (width == 0)
                 {
                     return 2.25;

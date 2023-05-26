@@ -53,7 +53,7 @@ namespace EPPlusTest.FormulaParsing
         [TestMethod]
         public void CreatedScopeShouldBeCurrentScope()
         {
-            using (var scope = _parsingScopes.NewScope(RangeAddress.Empty))
+            using (ParsingScope? scope = _parsingScopes.NewScope(RangeAddress.Empty))
             {
                 Assert.AreEqual(_parsingScopes.Current, scope);
             }
@@ -62,10 +62,10 @@ namespace EPPlusTest.FormulaParsing
         [TestMethod]
         public void CurrentScopeShouldHandleNestedScopes()
         {
-            using (var scope1 = _parsingScopes.NewScope(RangeAddress.Empty))
+            using (ParsingScope? scope1 = _parsingScopes.NewScope(RangeAddress.Empty))
             {
                 Assert.AreEqual(_parsingScopes.Current, scope1);
-                using (var scope2 = _parsingScopes.NewScope(RangeAddress.Empty))
+                using (ParsingScope? scope2 = _parsingScopes.NewScope(RangeAddress.Empty))
                 {
                     Assert.AreEqual(_parsingScopes.Current, scope2);
                 }
@@ -77,7 +77,7 @@ namespace EPPlusTest.FormulaParsing
         [TestMethod]
         public void CurrentScopeShouldBeNullWhenScopeHasTerminated()
         {
-            using (var scope = _parsingScopes.NewScope(RangeAddress.Empty))
+            using (ParsingScope? scope = _parsingScopes.NewScope(RangeAddress.Empty))
             { }
             Assert.IsNull(_parsingScopes.Current);
         }
@@ -85,9 +85,9 @@ namespace EPPlusTest.FormulaParsing
         [TestMethod]
         public void NewScopeShouldSetParentOnCreatedScopeIfParentScopeExisted()
         {
-            using (var scope1 = _parsingScopes.NewScope(RangeAddress.Empty))
+            using (ParsingScope? scope1 = _parsingScopes.NewScope(RangeAddress.Empty))
             {
-                using (var scope2 = _parsingScopes.NewScope(RangeAddress.Empty))
+                using (ParsingScope? scope2 = _parsingScopes.NewScope(RangeAddress.Empty))
                 {
                     Assert.AreEqual(scope1, scope2.Parent);
                 }
@@ -97,7 +97,7 @@ namespace EPPlusTest.FormulaParsing
         [TestMethod]
         public void LifetimeEventHandlerShouldBeCalled()
         {
-            using (var scope = _parsingScopes.NewScope(RangeAddress.Empty))
+            using (ParsingScope? scope = _parsingScopes.NewScope(RangeAddress.Empty))
             { }
             A.CallTo(() => _lifeTimeEventHandler.ParsingCompleted()).MustHaveHappened();
         }

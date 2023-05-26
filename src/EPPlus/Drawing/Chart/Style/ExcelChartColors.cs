@@ -26,8 +26,8 @@ namespace OfficeOpenXml.Drawing.Chart.Style
     {
         internal ExcelChartColorsManager(XmlNamespaceManager nameSpaceManager, XmlElement topNode) : base(nameSpaceManager, topNode)
         {
-            var colors = new List<ExcelDrawingColorManager>();
-            var variations = new List<ExcelColorTransformCollection>();
+            List<ExcelDrawingColorManager>? colors = new List<ExcelDrawingColorManager>();
+            List<ExcelColorTransformCollection>? variations = new List<ExcelColorTransformCollection>();
             foreach (XmlElement c in topNode.ChildNodes)
             {
                 if(c.LocalName== "variation")
@@ -75,8 +75,8 @@ namespace OfficeOpenXml.Drawing.Chart.Style
 
         internal void Transform(ExcelDrawingColorManager color, int colorIndex, int numberOfItems)
         {
-            var newColor = GetColor(colorIndex, numberOfItems);
-            var variation = GetVariation(colorIndex, numberOfItems);
+            ExcelDrawingColorManager? newColor = GetColor(colorIndex, numberOfItems);
+            ExcelColorTransformCollection? variation = GetVariation(colorIndex, numberOfItems);
             color.ApplyNewColor(newColor, variation);
         }
         private ExcelDrawingColorManager GetColor(int colorIndex, int numberOfItems)
@@ -84,7 +84,7 @@ namespace OfficeOpenXml.Drawing.Chart.Style
             switch(Method)
             {
                 case eChartColorStyleMethod.Cycle:
-                    var ix = colorIndex % Colors.Count;
+                    int ix = colorIndex % Colors.Count;
                     return Colors[ix];
                 default:
                     //TODO add support for other types.
@@ -104,14 +104,14 @@ namespace OfficeOpenXml.Drawing.Chart.Style
                     return GetLinearVariation(colorIndex, numberOfItems, true);
                 //eChartColorStyleMethod.Cycle
                 default:
-                    var div = (colorIndex - (colorIndex % Colors.Count));
+                    int div = (colorIndex - (colorIndex % Colors.Count));
                     if (div == 0)
                     {
                         return Variations[0];
                     }
                     else 
                     {
-                        var ix = div / Colors.Count;
+                        int ix = div / Colors.Count;
                         ix %= Variations.Count;
                         return Variations[ix];
                     }
@@ -120,21 +120,21 @@ namespace OfficeOpenXml.Drawing.Chart.Style
 
         private ExcelColorTransformCollection GetLinearVariation(int colorIndex, int numberOfItems, bool isReversed)
         {
-            var ret = new ExcelColorTransformCollection();
+            ExcelColorTransformCollection? ret = new ExcelColorTransformCollection();
             if (numberOfItems <= 1)
             {
                 return ret;
             }
 
-            var split = (numberOfItems - 1) / 2D;
+            double split = (numberOfItems - 1) / 2D;
             if (colorIndex == split)
             {                
                 return ret;
             }
             else
             {
-                var span = GetVariationStart(numberOfItems / 2D);
-                var diff = (double)span / split;
+                int span = GetVariationStart(numberOfItems / 2D);
+                double diff = (double)span / split;
                 bool isTint;
                 int v;
                 if (colorIndex > split)
@@ -161,8 +161,8 @@ namespace OfficeOpenXml.Drawing.Chart.Style
         }
         private int GetVariationStart(double split)
         {
-            var diff = 24;
-            var ret = 0;
+            int diff = 24;
+            int ret = 0;
             while (split > 0)
             {
                 ret += diff;

@@ -45,12 +45,12 @@ namespace OfficeOpenXml
         /// <returns>The filled range</returns>
         public ExcelRangeBase LoadFromDataReader(IDataReader Reader, bool PrintHeaders, string TableName, TableStyles TableStyle = TableStyles.None)
         {
-            var r = LoadFromDataReader(Reader, PrintHeaders);
+            ExcelRangeBase? r = LoadFromDataReader(Reader, PrintHeaders);
             
             int rows = r.Rows - 1;
             if (rows >= 0 && r.Columns > 0)
             {
-                var tbl = _worksheet.Tables.Add(new ExcelAddressBase(_fromRow, _fromCol, _fromRow + (rows <= 0 ? 1 : rows), _fromCol + r.Columns - 1), TableName);
+                ExcelTable? tbl = _worksheet.Tables.Add(new ExcelAddressBase(_fromRow, _fromCol, _fromRow + (rows <= 0 ? 1 : rows), _fromCol + r.Columns - 1), TableName);
                 tbl.ShowHeader = PrintHeaders;
                 tbl.TableStyle = TableStyle;
             }
@@ -106,7 +106,7 @@ namespace OfficeOpenXml
         public async Task<ExcelRangeBase> LoadFromDataReaderAsync(DbDataReader Reader, bool PrintHeaders, string TableName, TableStyles TableStyle = TableStyles.None,  CancellationToken? cancellationToken=null)
         {
             cancellationToken = cancellationToken ?? CancellationToken.None;
-            var r = await LoadFromDataReaderAsync(Reader, PrintHeaders, cancellationToken.Value).ConfigureAwait(false);
+            ExcelRangeBase? r = await LoadFromDataReaderAsync(Reader, PrintHeaders, cancellationToken.Value).ConfigureAwait(false);
 
             if (cancellationToken.Value.IsCancellationRequested)
             {
@@ -116,7 +116,7 @@ namespace OfficeOpenXml
             int rows = r.Rows - 1;
             if (rows >= 0 && r.Columns > 0)
             {
-                var tbl = _worksheet.Tables.Add(new ExcelAddressBase(_fromRow, _fromCol, _fromRow + (rows <= 0 ? 1 : rows), _fromCol + r.Columns - 1), TableName);
+                ExcelTable? tbl = _worksheet.Tables.Add(new ExcelAddressBase(_fromRow, _fromCol, _fromRow + (rows <= 0 ? 1 : rows), _fromCol + r.Columns - 1), TableName);
                 tbl.ShowHeader = PrintHeaders;
                 tbl.TableStyle = TableStyle;
             }
@@ -186,12 +186,12 @@ namespace OfficeOpenXml
         /// <returns>The filled range</returns>
         public ExcelRangeBase LoadFromDataTable(DataTable Table, bool PrintHeaders, TableStyles? TableStyle)
         {
-            var parameters = new LoadFromDataTableParams
+            LoadFromDataTableParams? parameters = new LoadFromDataTableParams
             {
                 PrintHeaders = PrintHeaders,
                 TableStyle = TableStyle
             };
-            var func = new LoadFromDataTable(this, Table, parameters);
+            LoadFromDataTable? func = new LoadFromDataTable(this, Table, parameters);
             return func.Load();
         }
         /// <summary>
@@ -232,7 +232,7 @@ namespace OfficeOpenXml
         /// <returns>The filled range</returns>
         public ExcelRangeBase LoadFromDataTable(DataTable table, Action<LoadFromDataTableParams> paramsConfig)
         {
-            var parameters = new LoadFromDataTableParams();
+            LoadFromDataTableParams? parameters = new LoadFromDataTableParams();
             paramsConfig.Invoke(parameters);
             return LoadFromDataTable(table, parameters.PrintHeaders, parameters.TableStyle);
         }
@@ -251,8 +251,8 @@ namespace OfficeOpenXml
                 return null;
             }
 
-            var maxColumn = 0;
-            var row = _fromRow;
+            int maxColumn = 0;
+            int row = _fromRow;
             foreach (object[] item in Data)
             {
                 _worksheet._values.SetValueRow_Value(row, _fromCol, item);
@@ -276,11 +276,11 @@ namespace OfficeOpenXml
         /// <returns>The filled range</returns>
         public ExcelRangeBase LoadFromCollection<T>(IEnumerable<T> Collection)
         {
-            var type = typeof(T);
-            var attr = type.GetFirstAttributeOfType<EpplusTableAttribute>();
+            Type? type = typeof(T);
+            EpplusTableAttribute? attr = type.GetFirstAttributeOfType<EpplusTableAttribute>();
             if(attr != null)
             {
-                var range = LoadFromCollection(Collection, attr.PrintHeaders, attr.TableStyle, BindingFlags.Public | BindingFlags.Instance, null);
+                ExcelRangeBase? range = LoadFromCollection(Collection, attr.PrintHeaders, attr.TableStyle, BindingFlags.Public | BindingFlags.Instance, null);
                 if(attr.AutofitColumns)
                 {
                     range.AutoFitColumns();
@@ -344,14 +344,14 @@ namespace OfficeOpenXml
 
                 return LoadFromDictionaries(Collection as IEnumerable<IDictionary<string, object>>, PrintHeaders, TableStyle, Members.Select(x => x.Name));
             }
-            var param = new LoadFromCollectionParams
+            LoadFromCollectionParams? param = new LoadFromCollectionParams
             {
                 PrintHeaders = PrintHeaders,
                 TableStyle = TableStyle,
                 BindingFlags = memberFlags,
                 Members = Members
             };
-            var func = new LoadFromCollection<T>(this, Collection, param);
+            LoadFromCollection<T>? func = new LoadFromCollection<T>(this, Collection, param);
             return func.Load();
         }
 
@@ -373,7 +373,7 @@ namespace OfficeOpenXml
         /// <returns>The filled range</returns>
         public ExcelRangeBase LoadFromCollection<T>(IEnumerable<T> collection, Action<LoadFromCollectionParams> paramsConfig)
         {
-            var param = new LoadFromCollectionParams();
+            LoadFromCollectionParams? param = new LoadFromCollectionParams();
             paramsConfig.Invoke(param);
             if (collection is IEnumerable<IDictionary<string, object>>)
             {
@@ -384,7 +384,7 @@ namespace OfficeOpenXml
 
                 return LoadFromDictionaries(collection as IEnumerable<IDictionary<string, object>>, param.PrintHeaders, param.TableStyle, param.Members.Select(x => x.Name));
             }
-            var func = new LoadFromCollection<T>(this, collection, param);
+            LoadFromCollection<T>? func = new LoadFromCollection<T>(this, collection, param);
             return func.Load();
         }
         #endregion
@@ -409,15 +409,15 @@ namespace OfficeOpenXml
         {
             if (string.IsNullOrEmpty(Text))
             {
-                var r = _worksheet.Cells[_fromRow, _fromCol];
+                ExcelRange? r = _worksheet.Cells[_fromRow, _fromCol];
                 r.Value = "";
                 return r;
             }
-            var parameters = new LoadFromTextParams
+            LoadFromTextParams? parameters = new LoadFromTextParams
             {
                 Format = Format
             };
-            var func = new LoadFromText(this, Text, parameters);
+            LoadFromText? func = new LoadFromText(this, Text, parameters);
             return func.Load();
         }
 
@@ -431,11 +431,11 @@ namespace OfficeOpenXml
         /// <returns></returns>
         public ExcelRangeBase LoadFromText(string Text, ExcelTextFormat Format, TableStyles? TableStyle, bool FirstRowIsHeader)
         {
-            var r = LoadFromText(Text, Format);
+            ExcelRangeBase? r = LoadFromText(Text, Format);
 
             if (r != null && TableStyle.HasValue)
             {
-                var tbl = _worksheet.Tables.Add(r, "");
+                ExcelTable? tbl = _worksheet.Tables.Add(r, "");
                 tbl.ShowHeader = FirstRowIsHeader;
                 tbl.TableStyle = TableStyle.Value;
             }
@@ -496,8 +496,8 @@ namespace OfficeOpenXml
                 throw (new ArgumentException($"File does not exist {TextFile.FullName}"));
             }
 
-            var fs = new FileStream(TextFile.FullName, FileMode.Open, FileAccess.Read);
-            var sr = new StreamReader(fs, Encoding.ASCII);            
+            FileStream? fs = new FileStream(TextFile.FullName, FileMode.Open, FileAccess.Read);
+            StreamReader? sr = new StreamReader(fs, Encoding.ASCII);            
             return LoadFromText(await sr.ReadToEndAsync().ConfigureAwait(false));
         }
         /// <summary>
@@ -513,8 +513,8 @@ namespace OfficeOpenXml
                 throw (new ArgumentException($"File does not exist {TextFile.FullName}"));
             }
 
-            var fs = new FileStream(TextFile.FullName, FileMode.Open, FileAccess.Read);
-            var sr = new StreamReader(fs, Format.Encoding);
+            FileStream? fs = new FileStream(TextFile.FullName, FileMode.Open, FileAccess.Read);
+            StreamReader? sr = new StreamReader(fs, Format.Encoding);
             return LoadFromText(await sr.ReadToEndAsync().ConfigureAwait(false), Format);
         }
         /// <summary>
@@ -532,8 +532,8 @@ namespace OfficeOpenXml
                 throw (new ArgumentException($"File does not exist {TextFile.FullName}"));
             }
 
-            var fs = new FileStream(TextFile.FullName, FileMode.Open, FileAccess.Read);
-            var sr = new StreamReader(fs, Format.Encoding);
+            FileStream? fs = new FileStream(TextFile.FullName, FileMode.Open, FileAccess.Read);
+            StreamReader? sr = new StreamReader(fs, Format.Encoding);
             return LoadFromText(await sr.ReadToEndAsync().ConfigureAwait(false), Format, TableStyle, FirstRowIsHeader);
         }
 #endif
@@ -675,7 +675,7 @@ namespace OfficeOpenXml
         /// </example>
         public ExcelRangeBase LoadFromDictionaries(IEnumerable<IDictionary<string, object>> items, bool printHeaders, TableStyles? tableStyle, IEnumerable<string> keys)
         {
-            var param = new LoadFromDictionariesParams
+            LoadFromDictionariesParams? param = new LoadFromDictionariesParams
             {
                 PrintHeaders = printHeaders,
                 TableStyle = tableStyle
@@ -684,7 +684,7 @@ namespace OfficeOpenXml
             {
                 param.SetKeys(keys.ToArray());
             }
-            var func = new LoadFromDictionaries(this, items, param);
+            LoadFromDictionaries? func = new LoadFromDictionaries(this, items, param);
             return func.Load();
         }
 #if !NET35 && !NET40
@@ -721,7 +721,7 @@ namespace OfficeOpenXml
         /// </example>
         public ExcelRangeBase LoadFromDictionaries(IEnumerable<dynamic> items, bool printHeaders, TableStyles? tableStyle, IEnumerable<string> keys)
         {
-            var param = new LoadFromDictionariesParams
+            LoadFromDictionariesParams? param = new LoadFromDictionariesParams
             {
                 PrintHeaders = printHeaders,
                 TableStyle = tableStyle
@@ -730,7 +730,7 @@ namespace OfficeOpenXml
             {
                 param.SetKeys(keys.ToArray());
             }
-            var func = new LoadFromDictionaries(this, items, param);
+            LoadFromDictionaries? func = new LoadFromDictionaries(this, items, param);
             return func.Load();
         }
 #endif
@@ -750,9 +750,9 @@ namespace OfficeOpenXml
         /// </example>
         public ExcelRangeBase LoadFromDictionaries(IEnumerable<IDictionary<string, object>> items, Action<LoadFromDictionariesParams> paramsConfig)
         {
-            var param = new LoadFromDictionariesParams();
+            LoadFromDictionariesParams? param = new LoadFromDictionariesParams();
             paramsConfig.Invoke(param);
-            var func = new LoadFromDictionaries(this, items, param);
+            LoadFromDictionaries? func = new LoadFromDictionaries(this, items, param);
             return func.Load();
         }
 
@@ -772,9 +772,9 @@ namespace OfficeOpenXml
         /// </example>
         public ExcelRangeBase LoadFromDictionaries(IEnumerable<dynamic> items, Action<LoadFromDictionariesParams> paramsConfig)
         {
-            var param = new LoadFromDictionariesParams();
+            LoadFromDictionariesParams? param = new LoadFromDictionariesParams();
             paramsConfig.Invoke(param);
-            var func = new LoadFromDictionaries(this, items, param);
+            LoadFromDictionaries? func = new LoadFromDictionaries(this, items, param);
             return func.Load();
         }
 #endif

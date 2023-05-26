@@ -29,6 +29,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Text;
 
 namespace OfficeOpenXml.Packaging.Ionic.Zip
 {
@@ -69,7 +70,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         {
             get
             {
-                var builder = new System.Text.StringBuilder();
+                StringBuilder? builder = new System.Text.StringBuilder();
                 builder
                     .Append(string.Format("          ZipEntry: {0}\n", this.FileName))
                     .Append(string.Format("   Version Made By: {0}\n", this._VersionMadeBy))

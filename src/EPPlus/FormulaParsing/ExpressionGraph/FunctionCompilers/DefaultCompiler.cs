@@ -29,14 +29,14 @@ namespace OfficeOpenXml.FormulaParsing.ExpressionGraph.FunctionCompilers
 
         public override CompileResult Compile(IEnumerable<Expression> children)
         {
-            var args = new List<FunctionArgument>();
+            List<FunctionArgument>? args = new List<FunctionArgument>();
             Function.BeforeInvoke(Context);
-            foreach (var child in children)
+            foreach (Expression? child in children)
             {
-                var compileResult = child.Compile();
+                CompileResult? compileResult = child.Compile();
                 if (compileResult.IsResultOfSubtotal)
                 {
-                    var arg = new FunctionArgument(compileResult.Result, compileResult.DataType);
+                    FunctionArgument? arg = new FunctionArgument(compileResult.Result, compileResult.DataType);
                     arg.SetExcelStateFlag(ExcelCellState.IsResultOfSubtotal);
                     args.Add(arg);
                 }

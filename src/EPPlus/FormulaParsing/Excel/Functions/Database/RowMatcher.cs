@@ -39,11 +39,11 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Database
 
         public bool IsMatch(ExcelDatabaseRow row, ExcelDatabaseCriteria criteria)
         {
-            var retVal = true;
-            foreach (var c in criteria.Items)
+            bool retVal = true;
+            foreach (KeyValuePair<ExcelDatabaseCriteriaField, object> c in criteria.Items)
             {
-                var candidate = c.Key.FieldIndex.HasValue ? row[c.Key.FieldIndex.Value] : row[c.Key.FieldName];
-                var crit = c.Value;
+                object? candidate = c.Key.FieldIndex.HasValue ? row[c.Key.FieldIndex.Value] : row[c.Key.FieldName];
+                object? crit = c.Value;
                 if (candidate.IsNumeric() && crit.IsNumeric())
                 {
                     if(System.Math.Abs(ConvertUtil.GetValueDouble(candidate) - ConvertUtil.GetValueDouble(crit)) > double.Epsilon)
@@ -53,7 +53,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Database
                 }
                 else
                 {
-                    var criteriaString = crit.ToString();
+                    string? criteriaString = crit.ToString();
                     if (!Evaluate(candidate, criteriaString))
                     {
                         return false;

@@ -62,10 +62,10 @@ namespace OfficeOpenXml
                     throw new Exception("ColumnMax out of range");
                 }
 
-                var cse = new CellStoreEnumerator<ExcelValue>(_worksheet._values, 0, 0, 0, ExcelPackage.MaxColumns);
+                CellStoreEnumerator<ExcelValue>? cse = new CellStoreEnumerator<ExcelValue>(_worksheet._values, 0, 0, 0, ExcelPackage.MaxColumns);
                 while(cse.Next())
                 {
-                    var c = cse.Value._value as ExcelColumn;
+                    ExcelColumn? c = cse.Value._value as ExcelColumn;
                     if (cse.Column > _columnMin && c.ColumnMax <= value && cse.Column!=_columnMin)
                     {
                         throw new Exception(string.Format("ColumnMax cannot span over existing column {0}.",c.ColumnMin));
@@ -102,7 +102,7 @@ namespace OfficeOpenXml
 			{
                 if (_worksheet._package.DoAdjustDrawings)
                 {
-                    var pos = _worksheet.Drawings.GetDrawingWidths();                    
+                    double[,]? pos = _worksheet.Drawings.GetDrawingWidths();                    
                     _hidden = value;
                     _worksheet.Drawings.AdjustWidth(pos);
                 }
@@ -143,7 +143,7 @@ namespace OfficeOpenXml
             {
                 if (_worksheet._package.DoAdjustDrawings)
                 {
-                    var pos = _worksheet.Drawings.GetDrawingWidths();
+                    double[,]? pos = _worksheet.Drawings.GetDrawingWidths();
                     _width = value;
                     _worksheet.Drawings.AdjustWidth(pos);
                 }

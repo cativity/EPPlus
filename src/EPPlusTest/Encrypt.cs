@@ -71,7 +71,7 @@ namespace EPPlusTest
         {
             ExcelPackage package = new ExcelPackage();
             //Load the sheet with one string column, one date column and a few random numbers.
-            var ws = package.Workbook.Worksheets.Add("First line test");
+            ExcelWorksheet? ws = package.Workbook.Worksheets.Add("First line test");
 
             ws.Cells[1, 1].Value = "1; 1";
             ws.Cells[2, 1].Value = "2; 1";
@@ -102,7 +102,7 @@ namespace EPPlusTest
 
             package.Workbook.View.Width = 17310;
             package.Workbook.View.Height = 38055;
-            var ws = package.Workbook.Worksheets.Add("First line test");
+            ExcelWorksheet? ws = package.Workbook.Worksheets.Add("First line test");
 
             ws.Cells[1, 1].Value = "1; 1";
             ws.Cells[2, 1].Value = "2; 1";
@@ -116,9 +116,9 @@ namespace EPPlusTest
         [Ignore]
         public void DecrypTest()
         {
-            var p = new ExcelPackage(new FileInfo(@"c:\temp\encr.xlsx"), "test");
+            ExcelPackage? p = new ExcelPackage(new FileInfo(@"c:\temp\encr.xlsx"), "test");
 
-            var n = p.Workbook.Worksheets[1].Name;
+            string? n = p.Workbook.Worksheets[1].Name;
             p.Encryption.Password = null;
             p.SaveAs(new FileInfo(@"c:\temp\encrNew.xlsx"));
         
@@ -126,9 +126,9 @@ namespace EPPlusTest
         [TestMethod, Ignore]
         public void DecrypTestBug()
         {
-            var p = new ExcelPackage(new FileInfo(@"c:\temp\bug\TestExcel_2040.xlsx"), "");
+            ExcelPackage? p = new ExcelPackage(new FileInfo(@"c:\temp\bug\TestExcel_2040.xlsx"), "");
 
-            var n = p.Workbook.Worksheets[1].Name;
+            string? n = p.Workbook.Worksheets[1].Name;
             p.Encryption.Password = null;
             p.SaveAs(new FileInfo(@"c:\temp\encrNew.xlsx"));
 
@@ -137,18 +137,18 @@ namespace EPPlusTest
         [Ignore]
         public void EncrypTest()
         {
-            var f = new FileInfo(@"c:\temp\encrwrite.xlsx");
+            FileInfo? f = new FileInfo(@"c:\temp\encrwrite.xlsx");
             if (f.Exists)
             {
                 f.Delete();
             }
-            var p = new ExcelPackage(f);
+            ExcelPackage? p = new ExcelPackage(f);
             
             p.Workbook.Protection.SetPassword("");
             p.Workbook.Protection.LockStructure = true;
             p.Encryption.Version = EncryptionVersion.Agile;
 
-            var ws = p.Workbook.Worksheets.Add("Sheet1");
+            ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Sheet1");
             for (int r = 1; r < 1000; r++)
             {
                 ws.Cells[r, 1].Value = r;
@@ -159,15 +159,15 @@ namespace EPPlusTest
         [TestMethod]
         public void ValidateStaticEnryptionMethods()
         {
-            using (var p = new ExcelPackage())
+            using (ExcelPackage? p = new ExcelPackage())
             {
                 p.Workbook.Worksheets.Add("Sheet1");
                 p.Save();
 
-                var ep = ExcelEncryption.EncryptPackage(p.Stream, "EPPlus");
-                var dp = ExcelEncryption.DecryptPackage(ep, "EPPlus");
+                MemoryStream? ep = ExcelEncryption.EncryptPackage(p.Stream, "EPPlus");
+                MemoryStream? dp = ExcelEncryption.DecryptPackage(ep, "EPPlus");
 
-                using(var p2=new ExcelPackage(dp))
+                using(ExcelPackage? p2=new ExcelPackage(dp))
                 {
                     Assert.AreEqual(p.Workbook.Worksheets.Count, p2.Workbook.Worksheets.Count);
                     Assert.AreEqual(p.Workbook.Worksheets[0].Name, p2.Workbook.Worksheets[0].Name);

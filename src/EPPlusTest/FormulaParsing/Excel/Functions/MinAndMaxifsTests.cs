@@ -18,7 +18,7 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions
         public void Init()
         {
             _package = new ExcelPackage();
-            var sheet = _package.Workbook.Worksheets.Add("test");
+            ExcelWorksheet? sheet = _package.Workbook.Worksheets.Add("test");
             sheet.Cells["B3"].Value = "Hannah";
             sheet.Cells["C3"].Value = "F";
             sheet.Cells["D3"].Value = 93;

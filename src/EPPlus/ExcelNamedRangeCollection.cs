@@ -114,7 +114,7 @@ namespace OfficeOpenXml
         /// <returns></returns>
         public ExcelNamedRange AddValue(string Name, object value)
         {
-            var item = new ExcelNamedRange(Name,_wb, _ws, _dic.Count);
+            ExcelNamedRange? item = new ExcelNamedRange(Name,_wb, _ws, _dic.Count);
             item.NameValue = value;
             AddName(Name, item);
             return item;
@@ -128,7 +128,7 @@ namespace OfficeOpenXml
         /// <returns></returns>
         public ExcelNamedRange AddFormula(string Name, string Formula)
         {
-            var item = new ExcelNamedRange(Name, _wb, _ws, _dic.Count);
+            ExcelNamedRange? item = new ExcelNamedRange(Name, _wb, _ws, _dic.Count);
             item.NameFormula = Formula;
             AddName(Name, item);
             return item;
@@ -141,10 +141,10 @@ namespace OfficeOpenXml
 
         internal void Insert(int rowFrom, int colFrom, int rows, int cols, Func<ExcelNamedRange, bool> filter, int lowerLimint = 0, int upperLimit=int.MaxValue)
         {
-            var namedRanges = this._list.Where(filter);
-            foreach(var namedRange in namedRanges)
+            IEnumerable<ExcelNamedRange>? namedRanges = this._list.Where(filter);
+            foreach(ExcelNamedRange? namedRange in namedRanges)
             {
-                var address = new ExcelAddressBase(namedRange.Address);
+                ExcelAddressBase? address = new ExcelAddressBase(namedRange.Address);
                 if (rows > 0 && address._toCol<=upperLimit && address._fromCol>=lowerLimint && address.Rows < ExcelPackage.MaxRows)
                 {
                     address = address.AddRow(rowFrom, rows, false);
@@ -162,10 +162,10 @@ namespace OfficeOpenXml
         }
         internal void Delete(int rowFrom, int colFrom, int rows, int cols, Func<ExcelNamedRange, bool> filter, int lowerLimint = 0, int upperLimit = int.MaxValue)
         {
-            var namedRanges = this._list.Where(filter);
-            foreach (var namedRange in namedRanges)
+            IEnumerable<ExcelNamedRange>? namedRanges = this._list.Where(filter);
+            foreach (ExcelNamedRange? namedRange in namedRanges)
             {
-                var address = new ExcelAddressBase(namedRange.Address);
+                ExcelAddressBase? address = new ExcelAddressBase(namedRange.Address);
                 if (rows > 0 && address._toCol <= upperLimit && address._fromCol >= lowerLimint)
                 {
                     address = namedRange.DeleteRow(rowFrom, rows,false,false);
@@ -195,7 +195,7 @@ namespace OfficeOpenXml
         {
             if(_dic.ContainsKey(Name))
             {
-                var ix = _dic[Name];
+                int ix = _dic[Name];
 
                 for (int i = ix+1; i < _list.Count; i++)
                 {

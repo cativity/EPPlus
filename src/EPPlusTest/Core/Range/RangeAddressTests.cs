@@ -29,6 +29,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OfficeOpenXml;
 using System;
+using System.Collections.Generic;
 
 namespace EPPlusTest.Core.Range
 {
@@ -38,7 +39,7 @@ namespace EPPlusTest.Core.Range
         [TestMethod]
         public void MultipleAddressWithWorkbook()
         {
-            var split = ExcelAddressBase.SplitFullAddress("'Sheet2'!A:A,A1,[c:\\workbook.xlsx]'Sheet1'!A1");
+            List<string[]>? split = ExcelAddressBase.SplitFullAddress("'Sheet2'!A:A,A1,[c:\\workbook.xlsx]'Sheet1'!A1");
 
             Assert.AreEqual(3, split.Count);
 
@@ -58,7 +59,7 @@ namespace EPPlusTest.Core.Range
         [TestMethod]
         public void AddressWithWorkbook()
         {
-            var split = ExcelAddressBase.SplitFullAddress("[c:\\workbook.xlsx]'Sheet1'!A1");
+            List<string[]>? split = ExcelAddressBase.SplitFullAddress("[c:\\workbook.xlsx]'Sheet1'!A1");
 
             Assert.AreEqual("c:\\workbook.xlsx", split[0][0]);
             Assert.AreEqual("Sheet1", split[0][1]);
@@ -67,7 +68,7 @@ namespace EPPlusTest.Core.Range
         [TestMethod]
         public void AddressWithWorksheetWithApostrophe()
         {
-            var split = ExcelAddressBase.SplitFullAddress("'sheet ''''1'!A1");
+            List<string[]>? split = ExcelAddressBase.SplitFullAddress("'sheet ''''1'!A1");
 
             Assert.AreEqual("sheet ''1", split[0][1]);
             Assert.AreEqual("A1", split[0][2]);
@@ -75,7 +76,7 @@ namespace EPPlusTest.Core.Range
         [TestMethod]
         public void AddressWithWorksheetWithoutApostrophe()
         {
-            var split = ExcelAddressBase.SplitFullAddress("sheet!A1");
+            List<string[]>? split = ExcelAddressBase.SplitFullAddress("sheet!A1");
 
             Assert.AreEqual("sheet", split[0][1]);
             Assert.AreEqual("A1", split[0][2]);
@@ -84,7 +85,7 @@ namespace EPPlusTest.Core.Range
         [TestMethod]
         public void InsertDeleteTest()
         {
-            var addr = new ExcelAddressBase("A1:B3");
+            ExcelAddressBase? addr = new ExcelAddressBase("A1:B3");
 
             Assert.AreEqual(addr.AddRow(2, 4).Address, "A1:B7");
             Assert.AreEqual(addr.AddColumn(2, 4).Address, "A1:F3");
@@ -97,7 +98,7 @@ namespace EPPlusTest.Core.Range
         [TestMethod]
         public void SplitAddress()
         {
-            var addr = new ExcelAddressBase("C3:F8");
+            ExcelAddressBase? addr = new ExcelAddressBase("C3:F8");
 
             addr.Insert(new ExcelAddressBase("G9"), eShiftTypeInsert.Right);
             addr.Insert(new ExcelAddressBase("G3"), eShiftTypeInsert.Right);
@@ -110,19 +111,19 @@ namespace EPPlusTest.Core.Range
         [TestMethod]
         public void Addresses()
         {
-            var a1 = new ExcelAddress("SalesData!$K$445");
-            var a2 = new ExcelAddress("SalesData!$K$445:$M$449,SalesData!$N$448:$Q$454,SalesData!$L$458:$O$464");
-            var a3 = new ExcelAddress("SalesData!$K$445:$L$448");
-            var a5 = new ExcelAddress("Table1[[#All],[Title]]");
-            var a6 = new ExcelAddress("Table1[#All]");
-            var a7 = new ExcelAddress("Table1[[#Headers],[FirstName]:[LastName]]");
-            var a8 = new ExcelAddress("Table1[#Headers]");
-            var a9 = new ExcelAddress("Table2[[#All],[SubTotal]]");
-            var a10 = new ExcelAddress("Table2[#All]");
-            var a11 = new ExcelAddress("Table1[[#All],[Freight]]");
-            var a12 = new ExcelAddress("[1]!Table1[[LastName]:[Name]]");
-            var a13 = new ExcelAddress("Table1[[#All],[Freight]]");
-            var a14 = new ExcelAddress("SalesData!$N$5+'test''1'!$J$33");
+            ExcelAddress? a1 = new ExcelAddress("SalesData!$K$445");
+            ExcelAddress? a2 = new ExcelAddress("SalesData!$K$445:$M$449,SalesData!$N$448:$Q$454,SalesData!$L$458:$O$464");
+            ExcelAddress? a3 = new ExcelAddress("SalesData!$K$445:$L$448");
+            ExcelAddress? a5 = new ExcelAddress("Table1[[#All],[Title]]");
+            ExcelAddress? a6 = new ExcelAddress("Table1[#All]");
+            ExcelAddress? a7 = new ExcelAddress("Table1[[#Headers],[FirstName]:[LastName]]");
+            ExcelAddress? a8 = new ExcelAddress("Table1[#Headers]");
+            ExcelAddress? a9 = new ExcelAddress("Table2[[#All],[SubTotal]]");
+            ExcelAddress? a10 = new ExcelAddress("Table2[#All]");
+            ExcelAddress? a11 = new ExcelAddress("Table1[[#All],[Freight]]");
+            ExcelAddress? a12 = new ExcelAddress("[1]!Table1[[LastName]:[Name]]");
+            ExcelAddress? a13 = new ExcelAddress("Table1[[#All],[Freight]]");
+            ExcelAddress? a14 = new ExcelAddress("SalesData!$N$5+'test''1'!$J$33");
         }
 
         [TestMethod]
@@ -156,8 +157,8 @@ namespace EPPlusTest.Core.Range
         [TestMethod]
         public void ShouldHandleWorksheetSpec()
         {
-            var address = "Sheet1!A1:Sheet1!A2";
-            var excelAddress = new ExcelAddress(address);
+            string? address = "Sheet1!A1:Sheet1!A2";
+            ExcelAddress? excelAddress = new ExcelAddress(address);
             Assert.AreEqual("Sheet1", excelAddress.WorkSheetName);
             Assert.AreEqual(1, excelAddress._fromRow);
             Assert.AreEqual(2, excelAddress._toRow);
@@ -166,44 +167,44 @@ namespace EPPlusTest.Core.Range
         [ExpectedException(typeof(InvalidOperationException))]
         public void AddressWithFullColumnInEndAndCellIsNotValid()
         {
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var workbook = package.Workbook;
-                var sheet1 = package.Workbook.Worksheets.Add("NEW");
-                var v = sheet1.Cells["A1:B"]; //Invalid address
+                ExcelWorkbook? workbook = package.Workbook;
+                ExcelWorksheet? sheet1 = package.Workbook.Worksheets.Add("NEW");
+                ExcelRange? v = sheet1.Cells["A1:B"]; //Invalid address
             }
         }
         [TestMethod]
         [ExpectedException(typeof(InvalidOperationException))]
         public void AddressWithFullColumnAtStartAndCellIsNotValid()
         {
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var workbook = package.Workbook;
-                var sheet1 = package.Workbook.Worksheets.Add("NEW");
-                var v = sheet1.Cells["A:B1"]; //Invalid address
+                ExcelWorkbook? workbook = package.Workbook;
+                ExcelWorksheet? sheet1 = package.Workbook.Worksheets.Add("NEW");
+                ExcelRange? v = sheet1.Cells["A:B1"]; //Invalid address
             }
         }
         [TestMethod]
         [ExpectedException(typeof(InvalidOperationException))]
         public void AddressWithFullRowInEndAndCellIsNotValid()
         {
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var workbook = package.Workbook;
-                var sheet1 = package.Workbook.Worksheets.Add("NEW");
-                var v = sheet1.Cells["A1:2"]; //Invalid address
+                ExcelWorkbook? workbook = package.Workbook;
+                ExcelWorksheet? sheet1 = package.Workbook.Worksheets.Add("NEW");
+                ExcelRange? v = sheet1.Cells["A1:2"]; //Invalid address
             }
         }
         [TestMethod]
         [ExpectedException(typeof(InvalidOperationException))]
         public void AddressWithFullRowAtStartAndCellIsNotValid()
         {
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var workbook = package.Workbook;
-                var sheet1 = package.Workbook.Worksheets.Add("NEW");
-                var v = sheet1.Cells["1:B1"]; //Invalid address
+                ExcelWorkbook? workbook = package.Workbook;
+                ExcelWorksheet? sheet1 = package.Workbook.Worksheets.Add("NEW");
+                ExcelRange? v = sheet1.Cells["1:B1"]; //Invalid address
             }
         }
         [TestMethod]
@@ -234,9 +235,9 @@ namespace EPPlusTest.Core.Range
         [TestMethod]
         public void ClearShouldNotClearSurroundingCells()
         {
-            using (var pck = new ExcelPackage())
+            using (ExcelPackage? pck = new ExcelPackage())
             {
-                var ws = pck.Workbook.Worksheets.Add("Clear");
+                ExcelWorksheet? ws = pck.Workbook.Worksheets.Add("Clear");
                 ws.Cells[2, 2].Value = "B2";
                 ws.Cells[2, 3].Value = "C2";
                 ws.Cells[2, 4].Value = "D2";
@@ -251,9 +252,9 @@ namespace EPPlusTest.Core.Range
         [TestMethod]
         public void VerifyFullAddress()
         {
-            using (var pck = new ExcelPackage())
+            using (ExcelPackage? pck = new ExcelPackage())
             {
-                var ws = pck.Workbook.Worksheets.Add("AddressVerify");
+                ExcelWorksheet? ws = pck.Workbook.Worksheets.Add("AddressVerify");
                 Assert.AreEqual("AddressVerify!B6:D8", ws.Cells["B6:D8"].FullAddress);
                 Assert.AreEqual("AddressVerify!B6:D8,AddressVerify!B10:D11", ws.Cells["B6:D8,B10:D11"].FullAddress);
             }
@@ -262,9 +263,9 @@ namespace EPPlusTest.Core.Range
         [TestMethod]
         public void VerifyFullWorksheetAddress()
         {
-            using (var pck = new ExcelPackage())
+            using (ExcelPackage? pck = new ExcelPackage())
             {
-                var ws1 = pck.Workbook.Worksheets.Add("FullSheet");
+                ExcelWorksheet? ws1 = pck.Workbook.Worksheets.Add("FullSheet");
                 ws1.SetValue("A1", "Col1");
                 ws1.SetValue("B1", "Col2");
                 ws1.SetValue("A2", 1);
@@ -274,7 +275,7 @@ namespace EPPlusTest.Core.Range
                 ws1.SetValue("A4", 3);
                 ws1.SetValue("B4", "Row 3");
 
-                var ws2 = pck.Workbook.Worksheets.Add("Formula");
+                ExcelWorksheet? ws2 = pck.Workbook.Worksheets.Add("Formula");
                 ws2.SetFormula(1, 1, "VLOOKUP(2,FullSheet,2,FALSE)");
                 ws2.SetFormula(2, 1, "VLOOKUP(3,'FullSheet',2,FALSE)");
                 ws2.Calculate();
@@ -285,12 +286,12 @@ namespace EPPlusTest.Core.Range
         [TestMethod]
         public void VerifyFullWorksheetAddressR1C1Start()
         {
-            using (var pck = new ExcelPackage())
+            using (ExcelPackage? pck = new ExcelPackage())
             {
-                var wb = pck.Workbook;
+                ExcelWorkbook? wb = pck.Workbook;
 
-                var ws = wb.Worksheets.Add("RC01");
-                var n=wb.Names.Add("Name1", ws.Cells["A1"]);
+                ExcelWorksheet? ws = wb.Worksheets.Add("RC01");
+                ExcelNamedRange? n=wb.Names.Add("Name1", ws.Cells["A1"]);
                 Assert.AreEqual("'RC01'!$A$1", n.FullAddressAbsolute);
 
                 ws = wb.Worksheets.Add("CR01");
@@ -352,7 +353,7 @@ namespace EPPlusTest.Core.Range
         [TestMethod]
         public void ValidateMultiAddress_b1_b5_c4()
         {
-            var a1 = new ExcelAddress("b1:b5:c4");
+            ExcelAddress? a1 = new ExcelAddress("b1:b5:c4");
 
             Assert.AreEqual(1, a1.Start.Row);
             Assert.AreEqual(2, a1.Start.Column);
@@ -362,7 +363,7 @@ namespace EPPlusTest.Core.Range
         [TestMethod]
         public void ValidateMultiAddress_b4_b1_c4()
         {
-            var a1 = new ExcelAddress("b4:b3:c5");
+            ExcelAddress? a1 = new ExcelAddress("b4:b3:c5");
 
             Assert.AreEqual(3, a1.Start.Row);
             Assert.AreEqual(2, a1.Start.Column);
@@ -372,7 +373,7 @@ namespace EPPlusTest.Core.Range
         [TestMethod]
         public void ValidateMultiAddress_F5_G2_F7_G8()
         {
-            var a1 = new ExcelAddress("F5:G2:F7:G8");
+            ExcelAddress? a1 = new ExcelAddress("F5:G2:F7:G8");
 
             Assert.AreEqual(2, a1.Start.Row);
             Assert.AreEqual(6, a1.Start.Column);
@@ -382,7 +383,7 @@ namespace EPPlusTest.Core.Range
         [TestMethod]
         public void ValidateMultiAddress_G8_F7_G2_F5()
         {
-            var a1 = new ExcelAddress("G8:F7:G2:F5");
+            ExcelAddress? a1 = new ExcelAddress("G8:F7:G2:F5");
 
             Assert.AreEqual(2, a1.Start.Row);
             Assert.AreEqual(6, a1.Start.Column);
@@ -394,7 +395,7 @@ namespace EPPlusTest.Core.Range
         {
             ExcelAddressBase a1 = new ExcelAddressBase("'d''étude'!A1");
 
-            var a2 = a1.AddRow(1, 1).AddColumn(1,1);
+            ExcelAddressBase? a2 = a1.AddRow(1, 1).AddColumn(1,1);
             Assert.AreEqual("'d''étude'!B2", a2.Address);
         }
         [TestMethod]
@@ -431,9 +432,9 @@ namespace EPPlusTest.Core.Range
         [TestMethod]
         public void IntersectReversedTopLeftTest()
         {
-            var address = new ExcelAddressBase("B2:D4");
+            ExcelAddressBase? address = new ExcelAddressBase("B2:D4");
 
-            var ia1 = address.IntersectReversed(new ExcelAddressBase("A1:C3"));
+            ExcelAddressBase? ia1 = address.IntersectReversed(new ExcelAddressBase("A1:C3"));
             Assert.AreEqual(2, ia1.Addresses.Count);
             Assert.AreEqual("D2:D4", ia1.Addresses[0].Address);
             Assert.AreEqual("B4:C4", ia1.Addresses[1].Address);
@@ -442,9 +443,9 @@ namespace EPPlusTest.Core.Range
         [TestMethod]
         public void IntersectReversedTopRightTest()
         {
-            var address = new ExcelAddressBase("B2:D4");
+            ExcelAddressBase? address = new ExcelAddressBase("B2:D4");
 
-            var ia1 = address.IntersectReversed(new ExcelAddressBase("C1:E3"));
+            ExcelAddressBase? ia1 = address.IntersectReversed(new ExcelAddressBase("C1:E3"));
             Assert.AreEqual(2, ia1.Addresses.Count);
             Assert.AreEqual("B2:B4", ia1.Addresses[0].Address);
             Assert.AreEqual("C4:D4", ia1.Addresses[1].Address);
@@ -454,35 +455,35 @@ namespace EPPlusTest.Core.Range
         [TestMethod]
         public void IntersectReversedTopTest()
         {
-            var address = new ExcelAddressBase("B2:D4");
+            ExcelAddressBase? address = new ExcelAddressBase("B2:D4");
 
-            var ia1 = address.IntersectReversed(new ExcelAddressBase("A2:D3"));
+            ExcelAddressBase? ia1 = address.IntersectReversed(new ExcelAddressBase("A2:D3"));
             Assert.AreEqual("B4:D4", ia1.Address);
         }
         [TestMethod]
         public void IntersectReversedLeftTest()
         {
-            var address = new ExcelAddressBase("B2:D4");
+            ExcelAddressBase? address = new ExcelAddressBase("B2:D4");
 
-            var ia1 = address.IntersectReversed(new ExcelAddressBase("A2:C4"));
+            ExcelAddressBase? ia1 = address.IntersectReversed(new ExcelAddressBase("A2:C4"));
             Assert.AreEqual("D2:D4", ia1.Address);
         }
         [TestMethod]
         public void IntersectReversedOutSideTest()
         {
-            var address = new ExcelAddressBase("B2:D4");
+            ExcelAddressBase? address = new ExcelAddressBase("B2:D4");
 
-            var ia1 = address.IntersectReversed(new ExcelAddressBase("B2:D4"));
+            ExcelAddressBase? ia1 = address.IntersectReversed(new ExcelAddressBase("B2:D4"));
             Assert.IsNull(ia1);
-            var ia2 = address.IntersectReversed(new ExcelAddressBase("A1:E5"));
+            ExcelAddressBase? ia2 = address.IntersectReversed(new ExcelAddressBase("A1:E5"));
             Assert.IsNull(ia2);
         }
         [TestMethod]
         public void IntersectReversedInsideTest()
         {
-            var address = new ExcelAddressBase("B2:D4");
+            ExcelAddressBase? address = new ExcelAddressBase("B2:D4");
 
-            var ia1 = address.IntersectReversed(new ExcelAddressBase("C3"));
+            ExcelAddressBase? ia1 = address.IntersectReversed(new ExcelAddressBase("C3"));
             Assert.AreEqual(4, ia1.Addresses.Count);
             Assert.AreEqual("B2:B4", ia1.Addresses[0].Address);
             Assert.AreEqual("C2:D2", ia1.Addresses[1].Address);
@@ -493,9 +494,9 @@ namespace EPPlusTest.Core.Range
         [TestMethod]
         public void IntersectReversedBottomLeftTest()
         {
-            var address = new ExcelAddressBase("B2:D4");
+            ExcelAddressBase? address = new ExcelAddressBase("B2:D4");
 
-            var ia1 = address.IntersectReversed(new ExcelAddressBase("A4:B5"));
+            ExcelAddressBase? ia1 = address.IntersectReversed(new ExcelAddressBase("A4:B5"));
             Assert.AreEqual(2, ia1.Addresses.Count);
             Assert.AreEqual("B2:D3", ia1.Addresses[0].Address);
             Assert.AreEqual("C4:D4", ia1.Addresses[1].Address);
@@ -504,9 +505,9 @@ namespace EPPlusTest.Core.Range
         [TestMethod]
         public void IntersectReversedBottomRightTest()
         {
-            var address = new ExcelAddressBase("B2:D4");
+            ExcelAddressBase? address = new ExcelAddressBase("B2:D4");
 
-            var ia1 = address.IntersectReversed(new ExcelAddressBase("C3:E12"));
+            ExcelAddressBase? ia1 = address.IntersectReversed(new ExcelAddressBase("C3:E12"));
             Assert.AreEqual(2, ia1.Addresses.Count);
             Assert.AreEqual("B2:B4", ia1.Addresses[0].Address);
             Assert.AreEqual("C2:D2", ia1.Addresses[1].Address);
@@ -515,23 +516,23 @@ namespace EPPlusTest.Core.Range
         [TestMethod]
         public void IntersectReversedBottomTest()
         {
-            var address = new ExcelAddressBase("B2:D4");
+            ExcelAddressBase? address = new ExcelAddressBase("B2:D4");
 
-            var ia1 = address.IntersectReversed(new ExcelAddressBase("A4:E5"));
+            ExcelAddressBase? ia1 = address.IntersectReversed(new ExcelAddressBase("A4:E5"));
             Assert.AreEqual("B2:D3", ia1.Address);
         }
         [TestMethod]
         public void IntersectReversedRightTest()
         {
-            var address = new ExcelAddressBase("B2:D4");
+            ExcelAddressBase? address = new ExcelAddressBase("B2:D4");
 
-            var ia1 = address.IntersectReversed(new ExcelAddressBase("C2:E4"));
+            ExcelAddressBase? ia1 = address.IntersectReversed(new ExcelAddressBase("C2:E4"));
             Assert.AreEqual("B2:B4", ia1.Address);
         }
         [TestMethod]
         public void GetAllAddressesSingle()
         {
-            var address = new ExcelAddressBase("B2:D4");
+            ExcelAddressBase? address = new ExcelAddressBase("B2:D4");
 
             Assert.AreEqual(address._fromRow, 2);
             Assert.AreEqual(address._fromCol, 2);
@@ -545,7 +546,7 @@ namespace EPPlusTest.Core.Range
         [TestMethod]
         public void GetAllAddressesMulti()
         {
-            var address = new ExcelAddressBase("B2:D4,C3,A1:A5");
+            ExcelAddressBase? address = new ExcelAddressBase("B2:D4,C3,A1:A5");
 
             Assert.AreEqual(address._fromRow, 2);
             Assert.AreEqual(address._fromCol, 2);

@@ -31,11 +31,11 @@ namespace OfficeOpenXml.VBA.Signatures
                 store.Open(OpenFlags.ReadOnly);
                 try
                 {
-                    var storeCert = store.Certificates.Find(
-                                    X509FindType.FindByThumbprint,
-                                    thumbPrint,
-                                    false
-                                    ).OfType<X509Certificate2>().FirstOrDefault();
+                    X509Certificate2? storeCert = store.Certificates.Find(
+                                                                          X509FindType.FindByThumbprint,
+                                                                          thumbPrint,
+                                                                          false
+                                                                         ).OfType<X509Certificate2>().FirstOrDefault();
                     return storeCert;
                 }
                 finally
@@ -55,15 +55,15 @@ namespace OfficeOpenXml.VBA.Signatures
         internal static byte[] GetSerializedCertStore(byte[] certRawData)
         {
             //MS-OSHARED 2.3.2.5.5 VBASigSerializedCertStore
-            using (var ms = RecyclableMemory.GetStream())
+            using (MemoryStream? ms = RecyclableMemory.GetStream())
             {
-                var bw = new BinaryWriter(ms);
+                BinaryWriter? bw = new BinaryWriter(ms);
 
                 bw.Write((uint)0); //Version
                 bw.Write((uint)0x54524543); //fileType
 
                 //SerializedCertificateEntry
-                var certData = certRawData;
+                byte[]? certData = certRawData;
                 bw.Write((uint)0x20);
                 bw.Write((uint)1);
                 bw.Write((uint)certData.Length);
@@ -96,13 +96,13 @@ namespace OfficeOpenXml.VBA.Signatures
             bw.Write((ushort)0);//rgchTimestampBuffer
             bw.Write((ushort)0);
             bw.Flush();
-            var b = ms.ToArray();
+            byte[]? b = ms.ToArray();
             return b;
         }
 
         internal static X509Certificate2 GetCertificate(string thumbprint)
         {
-            var storeCert = GetCertFromStore(StoreLocation.CurrentUser, thumbprint);
+            X509Certificate2? storeCert = GetCertFromStore(StoreLocation.CurrentUser, thumbprint);
             if (storeCert == null)
             {
                 storeCert = GetCertFromStore(StoreLocation.LocalMachine, thumbprint);
@@ -116,9 +116,9 @@ namespace OfficeOpenXml.VBA.Signatures
 
         internal static SignedCms SignProject(ExcelVbaProject proj, EPPlusVbaSignature signature, EPPlusSignatureContext ctx)
         {
-            var contentInfo = ProjectSignUtil.SignProject(proj, signature, ctx);
-            var verifier = new SignedCms(contentInfo);
-            var signer = new CmsSigner(signature.Certificate);
+            ContentInfo? contentInfo = ProjectSignUtil.SignProject(proj, signature, ctx);
+            SignedCms? verifier = new SignedCms(contentInfo);
+            CmsSigner? signer = new CmsSigner(signature.Certificate);
             verifier.ComputeSignature(signer, false);
             return verifier;
         }

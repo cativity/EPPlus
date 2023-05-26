@@ -46,7 +46,7 @@ namespace OfficeOpenXml.Style
 
         private void CheckNormalStyleChange()
         {
-            var nsIx = _styles.GetNormalStyleIndex();
+            int nsIx = _styles.GetNormalStyleIndex();
             if(nsIx>=0)
             {
                 if(_styles.NamedStyles[nsIx].Style.Font.Index==Index)

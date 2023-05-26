@@ -40,7 +40,7 @@ namespace EPPlusTest.Utils
             }
             else if(size + _index > _buffer.Length)
             {
-                var endSize = _buffer.Length - _index;
+                int endSize = _buffer.Length - _index;
                 _isRolling = true;
                 if(endSize > 0)
                 {

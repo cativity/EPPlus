@@ -740,7 +740,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         public override long Seek(long offset, SeekOrigin origin)
         {
             _findRequired= true;
-            var x = _inputStream.Seek(offset, origin);
+            long x = _inputStream.Seek(offset, origin);
             // workitem 10178
             SharedUtilities.Workaround_Ladybug318918(_inputStream);
             return x;

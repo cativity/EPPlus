@@ -29,8 +29,8 @@ namespace OfficeOpenXml.Encryption
 
         internal static EncryptionInfo ReadBinary(byte[] data)
         {
-            var majorVersion = BitConverter.ToInt16(data, 0);
-            var minorVersion = BitConverter.ToInt16(data, 2);
+            short majorVersion = BitConverter.ToInt16(data, 0);
+            short minorVersion = BitConverter.ToInt16(data, 2);
             EncryptionInfo ret;
             if ((minorVersion == 2 || minorVersion == 3) && majorVersion <= 4) // minorVersion==1 is RC4, not supported.
             {
@@ -144,7 +144,7 @@ namespace OfficeOpenXml.Encryption
         XmlNamespaceManager _nsm;
         public EncryptionInfoAgile()
         {
-            var nt = new NameTable();
+            NameTable? nt = new NameTable();
             _nsm = new XmlNamespaceManager(nt);
             _nsm.AddNamespace("d", "http://schemas.microsoft.com/office/2006/encryption");
             _nsm.AddNamespace("c", "http://schemas.microsoft.com/office/2006/keyEncryptor/certificate");
@@ -161,7 +161,7 @@ namespace OfficeOpenXml.Encryption
             {
                 get
                 {
-                    var s = GetXmlNodeString("@saltValue");
+                    string? s = GetXmlNodeString("@saltValue");
                     if (!string.IsNullOrEmpty(s))
                     {
                         return Convert.FromBase64String(s);
@@ -225,7 +225,7 @@ namespace OfficeOpenXml.Encryption
             {
                 get
                 {
-                    var v=GetXmlNodeString("@cipherChaining");
+                    string? v=GetXmlNodeString("@cipherChaining");
                     try
                     {
                         return (eChainingMode)Enum.Parse(typeof(eChainingMode), v);
@@ -340,7 +340,7 @@ namespace OfficeOpenXml.Encryption
             {
                 get
                 {
-                    var s = GetXmlNodeString("@encryptedHmacValue");
+                    string? s = GetXmlNodeString("@encryptedHmacValue");
                     if (!string.IsNullOrEmpty(s))
                     {
                         return Convert.FromBase64String(s);
@@ -356,7 +356,7 @@ namespace OfficeOpenXml.Encryption
             {
                 get
                 {
-                    var s = GetXmlNodeString("@encryptedHmacKey");
+                    string? s = GetXmlNodeString("@encryptedHmacKey");
                     if (!string.IsNullOrEmpty(s))
                     {
                         return Convert.FromBase64String(s);
@@ -380,7 +380,7 @@ namespace OfficeOpenXml.Encryption
             {
                 get
                 {
-                    var s = GetXmlNodeString("@encryptedKeyValue");
+                    string? s = GetXmlNodeString("@encryptedKeyValue");
                     if (!string.IsNullOrEmpty(s))
                     {
                         return Convert.FromBase64String(s);
@@ -396,7 +396,7 @@ namespace OfficeOpenXml.Encryption
             {
                 get
                 {
-                    var s = GetXmlNodeString("@encryptedVerifierHashValue");
+                    string? s = GetXmlNodeString("@encryptedVerifierHashValue");
                     if (!string.IsNullOrEmpty(s))
                     {
                         return Convert.FromBase64String(s);
@@ -413,7 +413,7 @@ namespace OfficeOpenXml.Encryption
             {
                 get
                 {
-                    var s = GetXmlNodeString("@encryptedVerifierHashInput");
+                    string? s = GetXmlNodeString("@encryptedVerifierHashInput");
                     if (!string.IsNullOrEmpty(s))
                     {
                         return Convert.FromBase64String(s);
@@ -474,22 +474,22 @@ namespace OfficeOpenXml.Encryption
         internal XmlDocument Xml {get;set;}
         internal override void Read(byte[] data)
         {
-            var byXml = new byte[data.Length - 8];
+            byte[]? byXml = new byte[data.Length - 8];
             Array.Copy(data, 8, byXml, 0, data.Length - 8);
-            var xml = Encoding.UTF8.GetString(byXml);
+            string? xml = Encoding.UTF8.GetString(byXml);
             ReadFromXml(xml);
         }
         internal void ReadFromXml(string xml)
         {
             Xml = new XmlDocument();
             XmlHelper.LoadXmlSafe(Xml, xml, Encoding.UTF8);
-            var node = Xml.SelectSingleNode("/d:encryption/d:keyData", _nsm);
+            XmlNode? node = Xml.SelectSingleNode("/d:encryption/d:keyData", _nsm);
             KeyData = new EncryptionKeyData(_nsm, node);
             node = Xml.SelectSingleNode("/d:encryption/d:dataIntegrity", _nsm);
             DataIntegrity = new EncryptionDataIntegrity(_nsm, node);
             KeyEncryptors = new List<EncryptionKeyEncryptor>();
 
-            var list = Xml.SelectNodes("/d:encryption/d:keyEncryptors/d:keyEncryptor/p:encryptedKey", _nsm);
+            XmlNodeList? list = Xml.SelectNodes("/d:encryption/d:keyEncryptors/d:keyEncryptor/p:encryptedKey", _nsm);
             if (list != null)
             {
                 foreach (XmlNode n in list)
@@ -549,7 +549,7 @@ namespace OfficeOpenXml.Encryption
         }
         internal byte[] WriteBinary()
         {
-            using (var ms = RecyclableMemory.GetStream())
+            using (MemoryStream? ms = RecyclableMemory.GetStream())
             {
                 BinaryWriter bw = new BinaryWriter(ms);
 

@@ -30,28 +30,28 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance
         public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
         {
             ValidateArguments(arguments, 5);
-            var settlementDate = System.DateTime.FromOADate(ArgToInt(arguments, 0));
-            var maturityDate = System.DateTime.FromOADate(ArgToInt(arguments, 1));
+            System.DateTime settlementDate = System.DateTime.FromOADate(ArgToInt(arguments, 0));
+            System.DateTime maturityDate = System.DateTime.FromOADate(ArgToInt(arguments, 1));
             if (settlementDate >= maturityDate)
             {
                 return this.CreateResult(eErrorType.Num);
             }
 
-            var issueDate = System.DateTime.FromOADate(ArgToInt(arguments, 2));
+            System.DateTime issueDate = System.DateTime.FromOADate(ArgToInt(arguments, 2));
             
-            var rate = ArgToDecimal(arguments, 3);
+            double rate = ArgToDecimal(arguments, 3);
             if (rate < 0)
             {
                 return this.CreateResult(eErrorType.Num);
             }
 
-            var price = ArgToDecimal(arguments, 4);
+            double price = ArgToDecimal(arguments, 4);
             if (price <= 0)
             {
                 return this.CreateResult(eErrorType.Num);
             }
 
-            var basis = 0;
+            int basis = 0;
             if(arguments.Count() > 5)
             {
                 basis = ArgToInt(arguments, 5);
@@ -61,12 +61,12 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance
                 }
             }
 
-            var yearFracProvider = new YearFracProvider(context);
-            var yf1 = yearFracProvider.GetYearFrac(issueDate, maturityDate, (DayCountBasis)basis);
-            var yf2 = yearFracProvider.GetYearFrac(issueDate, settlementDate, (DayCountBasis)basis);
-            var yf3 = yearFracProvider.GetYearFrac(settlementDate, maturityDate, (DayCountBasis)basis);
+            YearFracProvider? yearFracProvider = new YearFracProvider(context);
+            double yf1 = yearFracProvider.GetYearFrac(issueDate, maturityDate, (DayCountBasis)basis);
+            double yf2 = yearFracProvider.GetYearFrac(issueDate, settlementDate, (DayCountBasis)basis);
+            double yf3 = yearFracProvider.GetYearFrac(settlementDate, maturityDate, (DayCountBasis)basis);
 
-            var result = 1d + yf1 * rate;
+            double result = 1d + yf1 * rate;
             result /= price / 100d + yf2 * rate;
             result = --result / yf3;
             return CreateResult(result, DataType.Decimal);

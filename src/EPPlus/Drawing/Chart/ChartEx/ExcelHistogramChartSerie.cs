@@ -33,8 +33,8 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
         }
         internal void AddParetoLine()
         {
-            var ix = _chart.Series.Count * 2;
-            var serElement = ExcelChartExSerie.CreateSeriesElement((ExcelChartEx)_chart, eChartType.Pareto, ix+1, TopNode, true);
+            int ix = _chart.Series.Count * 2;
+            XmlElement? serElement = ExcelChartExSerie.CreateSeriesElement((ExcelChartEx)_chart, eChartType.Pareto, ix+1, TopNode, true);
             serElement.SetAttribute("ownerIdx", (ix).ToString());
             serElement.InnerXml = "<cx:axisId val=\"2\"/>";
             AddParetoLineFromSerie(serElement);

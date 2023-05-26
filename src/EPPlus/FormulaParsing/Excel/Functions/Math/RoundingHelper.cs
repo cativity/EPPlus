@@ -34,10 +34,10 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
                 return 0d;
             }
 
-            var isNegativeNumber = number < 0;
-            var isNegativeMultiple = multiple < 0;
-            var n = isNegativeNumber ? number * -1 : number;
-            var m = isNegativeMultiple ? multiple * -1 : multiple;
+            bool isNegativeNumber = number < 0;
+            bool isNegativeMultiple = multiple < 0;
+            double n = isNegativeNumber ? number * -1 : number;
+            double m = isNegativeMultiple ? multiple * -1 : multiple;
             if (number % multiple == 0)
             {
                 return number;
@@ -45,15 +45,15 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
             else if (multiple > -1 && multiple < 1)
             {
 
-                var floor = System.Math.Floor(n);
-                var rest = n - floor;
-                var nSign = (int)(rest / m) + 1;
+                double floor = System.Math.Floor(n);
+                double rest = n - floor;
+                int nSign = (int)(rest / m) + 1;
 
-                var upperRound = System.Math.Round(nSign * m, 14);
-                var lowerRound = System.Math.Round((nSign - 1) * m, 14);
+                double upperRound = System.Math.Round(nSign * m, 14);
+                double lowerRound = System.Math.Round((nSign - 1) * m, 14);
                 return ExecuteRounding(n, floor + lowerRound, floor + upperRound, direction, isNegativeNumber);
             }
-            var result = double.NaN;
+            double result = double.NaN;
             if (m == 1)
             {
                 if (direction == Direction.Up || direction == Direction.AlwaysUp)
@@ -134,7 +134,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
 
         public static double ExecuteRounding(double number, double lowerRound, double upperRound, Direction direction, bool isNegativeNumber)
         {
-            var result = double.NaN;
+            double result = double.NaN;
             if (direction == Direction.Nearest)
             {
                 if ((upperRound - number) > (number - lowerRound))
@@ -178,36 +178,36 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
 
         internal static double RoundToSignificantFig(double number, double nSignificantFigures, bool awayFromMidpoint)
         {
-            var isNegative = false;
+            bool isNegative = false;
             if(number < 0d)
             {
                 number *= -1;
                 isNegative = true;
             }
-            var nFiguresIntPart = GetNumberOfDigitsIntPart(number);
-            var nLeadingZeroDecimals = GetNumberOfLeadingZeroDecimals(number);
-            var nFiguresDecimalPart = nSignificantFigures - nFiguresIntPart - nLeadingZeroDecimals;
+            double nFiguresIntPart = GetNumberOfDigitsIntPart(number);
+            double nLeadingZeroDecimals = GetNumberOfLeadingZeroDecimals(number);
+            double nFiguresDecimalPart = nSignificantFigures - nFiguresIntPart - nLeadingZeroDecimals;
             if (number < 1d)
             {
                 nFiguresDecimalPart -= nLeadingZeroDecimals;
             }
-            var tmp = number * System.Math.Pow(10, nFiguresDecimalPart + nLeadingZeroDecimals);
-            var e = awayFromMidpoint? tmp + 0.5 : tmp;
+            double tmp = number * System.Math.Pow(10, nFiguresDecimalPart + nLeadingZeroDecimals);
+            double e = awayFromMidpoint? tmp + 0.5 : tmp;
             if(awayFromMidpoint)
             { 
                 if ((float)e == (float)System.Math.Ceiling(tmp))
                 {
-                    var f = System.Math.Ceiling(tmp);
-                    var h = (int)f - 2;
+                    double f = System.Math.Ceiling(tmp);
+                    int h = (int)f - 2;
                     if (h % 2 != 0)
                     {
                         e = e - 1;
                     }
                 }
             }
-            var intVersion = System.Math.Floor(e);
+            double intVersion = System.Math.Floor(e);
             double divideBy = System.Math.Pow(10, nFiguresDecimalPart + nLeadingZeroDecimals);
-            var result = intVersion / divideBy;
+            double result = intVersion / divideBy;
             return isNegative ? result * -1 : result;
         }
 
@@ -218,7 +218,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
         /// <returns></returns>
         internal static double GetNumberOfDigitsIntPart(double n)
         {
-            var tmp = n;
+            double tmp = n;
             int nFiguresIntPart;
             for (nFiguresIntPart = 0; tmp >= 1; ++nFiguresIntPart)
             {
@@ -235,8 +235,8 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
                 return 0;
             }
 
-            var tmp = n;
-            var result = 0;
+            double tmp = n;
+            int result = 0;
             while (tmp < 1d)
             {
                 tmp *= 10;

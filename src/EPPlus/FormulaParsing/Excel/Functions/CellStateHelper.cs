@@ -36,7 +36,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions
                 return true;
             }
 
-            var hasFilter = false;
+            bool hasFilter = false;
             if (context.Parser != null && context.Parser.FilterInfo != null)
             {
                 hasFilter = context.Parser.FilterInfo.WorksheetHasFilter(c.WorksheetName);
@@ -46,7 +46,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions
 
         internal static bool ShouldIgnore(bool ignoreHiddenValues, FunctionArgument arg, ParsingContext context)
         {
-            var hasFilter = false;
+            bool hasFilter = false;
             if (context.Parser != null && context.Parser.FilterInfo != null && context.Parser.FilterInfo.WorksheetHasFilter(context.Scopes.Current.Address.Worksheet))
             {
                 hasFilter = true;

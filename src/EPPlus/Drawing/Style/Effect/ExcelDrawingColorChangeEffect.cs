@@ -37,7 +37,7 @@ namespace OfficeOpenXml.Drawing.Style.Effect
             {
                 if (_colorFrom == null)
                 {
-                    var node = CreateNode("a:clrFrom");
+                    XmlNode? node = CreateNode("a:clrFrom");
                     _colorFrom = new ExcelDrawingColorManager(NameSpaceManager, node, "", SchemaNodeOrder);
                 }
                 return _colorFrom;
@@ -53,7 +53,7 @@ namespace OfficeOpenXml.Drawing.Style.Effect
             {
                 if (_colorTo == null)
                 {
-                    var node = CreateNode("a:clrTo");
+                    XmlNode? node = CreateNode("a:clrTo");
                     _colorTo = new ExcelDrawingColorManager(NameSpaceManager, node, "", SchemaNodeOrder);
                 }
                 return _colorTo;

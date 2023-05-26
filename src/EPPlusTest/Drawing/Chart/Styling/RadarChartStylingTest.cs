@@ -55,7 +55,7 @@ namespace EPPlusTest.Drawing.Chart.Styling
         [TestMethod]
         public void Radar_Styles()
         {
-            var ws = _pck.Workbook.Worksheets.Add("Radar");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("Radar");
             LoadTestdata(ws);
 
             RadarLineStyle(ws, eRadarChartType.Radar);
@@ -63,7 +63,7 @@ namespace EPPlusTest.Drawing.Chart.Styling
         [TestMethod]
         public void RadarFilled_Styles()
         {
-            var ws = _pck.Workbook.Worksheets.Add("RadarFilled");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("RadarFilled");
             LoadTestdata(ws);
 
             RadarLineStyle(ws, eRadarChartType.RadarFilled);
@@ -71,7 +71,7 @@ namespace EPPlusTest.Drawing.Chart.Styling
         [TestMethod]
         public void RadarMarkers_Styles()
         {
-            var ws = _pck.Workbook.Worksheets.Add("RadarMarkers");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("RadarMarkers");
             LoadTestdata(ws);
 
             RadarLineStyle(ws, eRadarChartType.RadarMarkers);
@@ -136,13 +136,13 @@ namespace EPPlusTest.Drawing.Chart.Styling
         }
         private static ExcelRadarChart AddRadar(ExcelWorksheet ws, eRadarChartType type, string name, int row, int col, ePresetChartStyle style, Action<ExcelRadarChart> SetProperties)    
         {
-            var chart = ws.Drawings.AddRadarChart(name, type);
+            ExcelRadarChart? chart = ws.Drawings.AddRadarChart(name, type);
             chart.SetPosition(row, 0, col, 0);
             chart.To.Column = col+12;
             chart.To.ColumnOff = 0;
             chart.To.Row = row + 18;
             chart.To.RowOff = 0;
-            var serie = chart.Series.Add("D2:D8", "A2:A8");
+            ExcelRadarChartSerie? serie = chart.Series.Add("D2:D8", "A2:A8");
 
             SetProperties(chart);
 

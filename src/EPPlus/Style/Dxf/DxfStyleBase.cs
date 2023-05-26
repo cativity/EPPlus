@@ -111,7 +111,7 @@ namespace OfficeOpenXml.Style.Dxf
             }
             else
             {
-                var s = v.ToString();
+                string? s = v.ToString();
                 s = s.Substring(0, 1).ToLower(CultureInfo.InvariantCulture) + s.Substring(1);
                 helper.SetXmlNodeString(path, s);
             }

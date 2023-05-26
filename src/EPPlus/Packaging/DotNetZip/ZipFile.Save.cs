@@ -28,6 +28,7 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using System.Text;
 using OfficeOpenXml.Utils;
 
 namespace OfficeOpenXml.Packaging.Ionic.Zip
@@ -205,7 +206,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
                     return;
                 }
 
-                var zss = WriteStream as ZipSegmentedStream;
+                ZipSegmentedStream? zss = WriteStream as ZipSegmentedStream;
 
                 _numberOfSegmentsForMostRecentSave = (zss!=null)
                     ? zss.CurrentSegment
@@ -253,9 +254,9 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
                         this._readstream.Close();
                         this._readstream = null;
                         // the archiveStream for each entry needs to be null
-                        foreach (var e in c)
+                        foreach (ZipEntry? e in c)
                         {
-                            var zss1 = e._archiveStream as ZipSegmentedStream;
+                            ZipSegmentedStream? zss1 = e._archiveStream as ZipSegmentedStream;
                             if (zss1 != null)
 #if NETCF
                                 zss1.Close();
@@ -643,7 +644,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
                                                           String comment,
                                                           ZipContainer container)
         {
-            var zss = s as ZipSegmentedStream;
+            ZipSegmentedStream? zss = s as ZipSegmentedStream;
             if (zss != null)
             {
                 zss.ContiguousWrite = true;
@@ -652,7 +653,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
             // write to a memory stream in order to keep the
             // CDR contiguous
             Int64 aLength = 0;
-            using (var ms = RecyclableMemory.GetStream())
+            using (MemoryStream? ms = RecyclableMemory.GetStream())
             {
                 foreach (ZipEntry e in entries)
                 {
@@ -662,7 +663,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
                         e.WriteCentralDirectoryEntry(ms);
                     }
                 }
-                var a = ms.ToArray();
+                byte[]? a = ms.ToArray();
                 s.Write(a, 0, a.Length);
                 aLength = a.Length;
             }
@@ -684,7 +685,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
             // that data into the directory, and finally, write the directory to the
             // output stream.
 
-            var output = s as CountingStream;
+            CountingStream? output = s as CountingStream;
             long Finish = (output != null) ? output.ComputedPosition : s.Position;  // BytesWritten
             long Start = Finish - aLength;
 
@@ -722,7 +723,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
 
                 }
 
-                var a = GenZip64EndOfCentralDirectory(Start, Finish, countOfEntries, numSegments);
+                byte[]? a = GenZip64EndOfCentralDirectory(Start, Finish, countOfEntries, numSegments);
                 a2 = GenCentralDirectoryFooter(Start, Finish, zip64, countOfEntries, comment, container);
                 if (startSegment != 0)
                 {
@@ -793,14 +794,14 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
             }
 
             // AsNecessary is in force
-            var e = container.DefaultEncoding;
+            Encoding? e = container.DefaultEncoding;
             if (t == null)
             {
                 return e;
             }
 
-            var bytes = e.GetBytes(t);
-            var t2 = e.GetString(bytes,0,bytes.Length);
+            byte[]? bytes = e.GetBytes(t);
+            string? t2 = e.GetString(bytes,0,bytes.Length);
             if (t2.Equals(t))
             {
                 return e;
@@ -1019,7 +1020,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
             // Cannot just emit _entries.Count, because some of the entries
             // may have been skipped.
             int count = 0;
-            foreach (var entry in _entries)
+            foreach (ZipEntry? entry in _entries)
             {
                 if (entry.IncludedInMostRecentSave)
                 {

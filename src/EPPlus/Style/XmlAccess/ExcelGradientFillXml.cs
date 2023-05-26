@@ -159,11 +159,11 @@ namespace OfficeOpenXml.Style.XmlAccess
             if (GradientColor1!=null)
             {
                 /*** Gradient color node 1***/
-                var node = TopNode.SelectSingleNode("d:gradientFill", NameSpaceManager);
-                var stopNode = node.OwnerDocument.CreateElement("stop", ExcelPackage.schemaMain);
+                XmlNode? node = TopNode.SelectSingleNode("d:gradientFill", NameSpaceManager);
+                XmlElement? stopNode = node.OwnerDocument.CreateElement("stop", ExcelPackage.schemaMain);
                 stopNode.SetAttribute("position", "0");
                 node.AppendChild(stopNode);
-                var colorNode = node.OwnerDocument.CreateElement("color", ExcelPackage.schemaMain);
+                XmlElement? colorNode = node.OwnerDocument.CreateElement("color", ExcelPackage.schemaMain);
                 stopNode.AppendChild(colorNode);
                 GradientColor1.CreateXmlNode(colorNode);
 

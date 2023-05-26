@@ -28,10 +28,10 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime
         public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
         {
             ValidateArguments(arguments, 3);
-            var year = ArgToInt(arguments, 0);
-            var month = ArgToInt(arguments, 1);
-            var day = ArgToInt(arguments, 2);
-            var date = new System.DateTime(year, 1, 1);
+            int year = ArgToInt(arguments, 0);
+            int month = ArgToInt(arguments, 1);
+            int day = ArgToInt(arguments, 2);
+            System.DateTime date = new System.DateTime(year, 1, 1);
             month -= 1;
             date = date.AddMonths(month);
             date = date.AddDays((double)(day - 1));

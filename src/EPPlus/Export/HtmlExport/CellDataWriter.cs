@@ -31,7 +31,7 @@ namespace OfficeOpenXml.Export.HtmlExport
         {
             if (dataType != ColumnDataTypeManager.HtmlDataTypes.String && settings.RenderDataAttributes)
             {
-                var v = HtmlRawDataProvider.GetRawValue(cell.Value, dataType);
+                string? v = HtmlRawDataProvider.GetRawValue(cell.Value, dataType);
                 if (string.IsNullOrEmpty(v) == false)
                 {
                     writer.AddAttribute($"data-{settings.DataValueAttributeName}", v);
@@ -45,7 +45,7 @@ namespace OfficeOpenXml.Export.HtmlExport
                     writer.AddAttribute("scope", "row");
                 }
             }
-            var imageCellClassName = image == null ? "" : settings.StyleClassPrefix + "image-cell";
+            string? imageCellClassName = image == null ? "" : settings.StyleClassPrefix + "image-cell";
             writer.SetClassAttributeFromStyle(cell, false, settings, imageCellClassName);
             writer.RenderBeginTag(HtmlElements.TableData);
             HtmlExportImageUtil.AddImage(writer, settings, image, cell.Value);
@@ -66,7 +66,7 @@ namespace OfficeOpenXml.Export.HtmlExport
         {
             if (dataType != ColumnDataTypeManager.HtmlDataTypes.String && settings.RenderDataAttributes)
             {
-                var v = HtmlRawDataProvider.GetRawValue(cell.Value, dataType);
+                string? v = HtmlRawDataProvider.GetRawValue(cell.Value, dataType);
                 if (string.IsNullOrEmpty(v) == false)
                 {
                     writer.AddAttribute($"data-{settings.DataValueAttributeName}", v);
@@ -80,7 +80,7 @@ namespace OfficeOpenXml.Export.HtmlExport
                     writer.AddAttribute("scope", "row");
                 }
             }
-            var imageCellClassName = image == null ? "" : settings.StyleClassPrefix + "image-cell";
+            string? imageCellClassName = image == null ? "" : settings.StyleClassPrefix + "image-cell";
             writer.SetClassAttributeFromStyle(cell, false, settings, imageCellClassName);
             await writer.RenderBeginTagAsync(HtmlElements.TableData);
             HtmlExportImageUtil.AddImage(writer, settings, image, cell.Value);

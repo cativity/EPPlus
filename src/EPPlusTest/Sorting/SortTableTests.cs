@@ -29,7 +29,7 @@ namespace EPPlusTest.Sorting
             sheet.Cells[3, 2].Value = 2;
             sheet.Cells[3, 3].Value = 3;
 
-            var table = sheet.Tables.Add(sheet.Cells["A1:C3"], "myTable");
+            ExcelTable? table = sheet.Tables.Add(sheet.Cells["A1:C3"], "myTable");
             table.TableStyle = TableStyles.Dark1;
             table.ShowTotal = addTotalsRow;
             table.Columns[0].TotalsRowFunction = RowFunctions.Sum;
@@ -41,10 +41,10 @@ namespace EPPlusTest.Sorting
         [TestMethod]
         public void TableSortByColumnIndex()
         {
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var sheet = package.Workbook.Worksheets.Add("test");
-                var table = CreateTable(sheet);
+                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
+                ExcelTable? table = CreateTable(sheet);
 
                 table.Sort(x => x.SortBy.Column(0));
 
@@ -59,10 +59,10 @@ namespace EPPlusTest.Sorting
         [TestMethod]
         public void TableSortByColumnName()
         {
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var sheet = package.Workbook.Worksheets.Add("test");
-                var table = CreateTable(sheet);
+                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
+                ExcelTable? table = CreateTable(sheet);
 
                 table.Sort(x => x.SortBy.ColumnNamed("Header1"));
                 Assert.AreEqual(5, sheet.Cells[2, 1].Value);
@@ -76,9 +76,9 @@ namespace EPPlusTest.Sorting
         [TestMethod]
         public void TableSortByCustomList()
         {
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var sheet = package.Workbook.Worksheets.Add("test");
+                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
                 // header
                 sheet.Cells[1, 1].Value = "Size";
                 sheet.Cells[1, 2].Value = "Price";
@@ -108,7 +108,7 @@ namespace EPPlusTest.Sorting
                 sheet.Cells[7, 2].Value = 10;
                 sheet.Cells[7, 3].Value = "Blue";
 
-                var table = sheet.Tables.Add(sheet.Cells["A1:C7"], "myTable");
+                ExcelTable? table = sheet.Tables.Add(sheet.Cells["A1:C7"], "myTable");
 
                 table.Sort(x => x.SortBy.ColumnNamed("Size").UsingCustomList("S", "M", "L", "XL")
                                     .ThenSortBy.ColumnNamed("Price", eSortOrder.Descending)
@@ -138,11 +138,11 @@ namespace EPPlusTest.Sorting
         [TestMethod]
         public void SortShouldRetainRelativeTableAddresses()
         {
-            using (var package = new ExcelPackage())
+            using (ExcelPackage? package = new ExcelPackage())
             {
-                var ws = package.Workbook.Worksheets.Add("Sheet1");
+                ExcelWorksheet? ws = package.Workbook.Worksheets.Add("Sheet1");
                 ws.Cells["B1"].Value = 123;
-                var tbl = ws.Tables.Add(ws.Cells["B1:P12"], "TestTable");
+                ExcelTable? tbl = ws.Tables.Add(ws.Cells["B1:P12"], "TestTable");
                 tbl.TableStyle = TableStyles.Custom;
 
                 tbl.ShowFirstColumn = true;

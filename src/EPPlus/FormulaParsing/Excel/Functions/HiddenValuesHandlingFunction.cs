@@ -58,7 +58,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions
             }
             if (IgnoreHiddenValues)
             {
-                var nonHidden = arguments.Where(x => !x.ExcelStateFlagIsSet(ExcelCellState.HiddenCell));
+                IEnumerable<FunctionArgument>? nonHidden = arguments.Where(x => !x.ExcelStateFlagIsSet(ExcelCellState.HiddenCell));
                 return base.ArgsToDoubleEnumerable(IgnoreHiddenValues, nonHidden, context);
             }
             return base.ArgsToDoubleEnumerable(IgnoreHiddenValues, ignoreErrors, arguments, context, ignoreNonNumeric);

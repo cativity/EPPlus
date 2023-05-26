@@ -27,30 +27,30 @@ namespace EPPlusTest.Table.PivotTable
         [TestMethod]
         public void AddPivotAllStyle()
         {
-            using (var p=OpenTemplatePackage("PivotStyleLarge.xlsx"))
+            using (ExcelPackage? p=OpenTemplatePackage("PivotStyleLarge.xlsx"))
             {
-                var ws = p.Workbook.Worksheets[0];
-                var pt = ws.PivotTables[0];
+                ExcelWorksheet? ws = p.Workbook.Worksheets[0];
+                ExcelPivotTable? pt = ws.PivotTables[0];
 
-                var s0 = pt.Styles.AddButtonField(ePivotTableAxis.PageAxis, 2);
+                ExcelPivotTableAreaStyle? s0 = pt.Styles.AddButtonField(ePivotTableAxis.PageAxis, 2);
                 s0.Style.Font.Color.SetColor(Color.Pink);
 
-                var s1 =pt.Styles.AddButtonField(pt.Fields["FacilityName"]);
+                ExcelPivotTableAreaStyle? s1 =pt.Styles.AddButtonField(pt.Fields["FacilityName"]);
                 s1.Style.Font.Color.SetColor(OfficeOpenXml.Drawing.eThemeSchemeColor.Accent1);
 
-                var s2 = pt.Styles.AddLabel(pt.Fields["FacilityName"]);
+                ExcelPivotTableAreaStyle? s2 = pt.Styles.AddLabel(pt.Fields["FacilityName"]);
                 s2.Style.Font.Color.SetColor(Color.Green);
 
-                var s3 = pt.Styles.AddButtonField(pt.Fields["SiteId"]);
+                ExcelPivotTableAreaStyle? s3 = pt.Styles.AddButtonField(pt.Fields["SiteId"]);
                 s3.Style.Font.Color.SetColor(Color.Blue);
 
-                var s4 = pt.Styles.AddLabel(pt.Fields["SiteId"]);
+                ExcelPivotTableAreaStyle? s4 = pt.Styles.AddLabel(pt.Fields["SiteId"]);
                 s4.Style.Font.Color.SetColor(Color.Cyan);
                 s4.Conditions.Fields[0].Items.AddByValue(5D);
                 s4.Conditions.Fields[0].Items.AddByValue(8D);
                 s4.Conditions.Fields[0].Items.AddByValue(9D);
 
-                var s5 = pt.Styles.AddData(pt.Fields["SiteId"], pt.Fields["ZipCode"], pt.Fields["Id"]);
+                ExcelPivotTableAreaStyle? s5 = pt.Styles.AddData(pt.Fields["SiteId"], pt.Fields["ZipCode"], pt.Fields["Id"]);
                 s5.Style.Fill.PatternType = ExcelFillStyle.DarkTrellis;
                 s5.Style.Fill.BackgroundColor.SetColor(Color.Red);
                 s5.Conditions.DataFields.Add(1);
@@ -60,7 +60,7 @@ namespace EPPlusTest.Table.PivotTable
                 s5.Conditions.Fields[1].Items.AddByValue("02201");
                 s5.Conditions.Fields[2].Items.AddByValue("1100");
 
-                var s6 = pt.Styles.AddLabel(pt.Fields["ZipCode"], pt.Fields["Id"]);
+                ExcelPivotTableAreaStyle? s6 = pt.Styles.AddLabel(pt.Fields["ZipCode"], pt.Fields["Id"]);
                 s6.Style.Fill.PatternType = ExcelFillStyle.LightUp;
                 s6.Style.Fill.BackgroundColor.SetColor(Color.Green);
                 //s6.Conditions.DataFields.Add(1);

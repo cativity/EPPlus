@@ -18,12 +18,12 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance
         public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
         {
             ValidateArguments(arguments, 4);
-            var settlementNum = ArgToDecimal(arguments, 0);
-            var maturityNum = ArgToDecimal(arguments, 1);
-            var settlement = System.DateTime.FromOADate(settlementNum);
-            var maturity = System.DateTime.FromOADate(maturityNum);
-            var pr = ArgToDecimal(arguments, 2);
-            var redemption = ArgToDecimal(arguments, 3);
+            double settlementNum = ArgToDecimal(arguments, 0);
+            double maturityNum = ArgToDecimal(arguments, 1);
+            System.DateTime settlement = System.DateTime.FromOADate(settlementNum);
+            System.DateTime maturity = System.DateTime.FromOADate(maturityNum);
+            double pr = ArgToDecimal(arguments, 2);
+            double redemption = ArgToDecimal(arguments, 3);
             int basis = 0;
             if(arguments.Count() > 4)
             {
@@ -33,8 +33,8 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance
             {
                 return CreateResult(eErrorType.Num);
             }
-            var yearFrac = new YearFracProvider(context);
-            var result = (1d - pr / redemption) / yearFrac.GetYearFrac(settlement, maturity, (DayCountBasis)basis);
+            YearFracProvider? yearFrac = new YearFracProvider(context);
+            double result = (1d - pr / redemption) / yearFrac.GetYearFrac(settlement, maturity, (DayCountBasis)basis);
             return CreateResult(result, DataType.Decimal);
         }
     }

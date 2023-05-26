@@ -30,7 +30,7 @@ namespace OfficeOpenXml
     {
         internal ExcelImageSettings()
         {
-            var m=new SystemDrawingImageHandler();
+            SystemDrawingImageHandler? m=new SystemDrawingImageHandler();
             if(m.ValidForEnvironment())
             {
                 PrimaryImageHandler = m;

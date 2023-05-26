@@ -14,9 +14,9 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions.TextFunctions
         [TestMethod]
         public void LenShouldReturnCorrect()
         {
-            using(var package = new ExcelPackage())
+            using(ExcelPackage? package = new ExcelPackage())
             {
-                var sheet = package.Workbook.Worksheets.Add("Sheet1");
+                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("Sheet1");
 
                 sheet.Cells["A1"].Value = "data";
                 sheet.Cells["A2"].Formula = "LEN(A1)";

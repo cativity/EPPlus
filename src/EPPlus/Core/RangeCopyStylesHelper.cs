@@ -16,14 +16,14 @@ namespace OfficeOpenXml.Core
         }
         internal void CopyStyles()
         {
-            var styleCashe = new Dictionary<int, int>();
-            var wsSource = _sourceRange.Worksheet;
-            var wsDest= _destinationRange.Worksheet;
-            var sameWorkbook = wsSource.Workbook == wsDest.Workbook; 
-            var sc = _sourceRange._fromCol;
+            Dictionary<int, int>? styleCashe = new Dictionary<int, int>();
+            ExcelWorksheet? wsSource = _sourceRange.Worksheet;
+            ExcelWorksheet? wsDest= _destinationRange.Worksheet;
+            bool sameWorkbook = wsSource.Workbook == wsDest.Workbook; 
+            int sc = _sourceRange._fromCol;
             for(int dc=_destinationRange._fromCol; dc <= _destinationRange._toCol; dc++)
             {
-                var sr = _sourceRange._fromRow;
+                int sr = _sourceRange._fromRow;
                 for (int dr = _destinationRange._fromRow; dr <= _destinationRange._toRow; dr++)
                 {
                     int styleId = GetStyleId(wsSource, sc, sr);
@@ -35,7 +35,7 @@ namespace OfficeOpenXml.Core
                         }
                         else
                         {
-                            var sourceStyleId = styleId;
+                            int sourceStyleId = styleId;
                             styleId = wsDest.Workbook.Styles.CloneStyle(wsSource.Workbook.Styles, styleId);
                             styleCashe.Add(sourceStyleId, styleId);
                         }
@@ -56,7 +56,7 @@ namespace OfficeOpenXml.Core
 
         private static int GetStyleId(ExcelWorksheet wsSource, int sc, int sr)
         {
-            var styleId = wsSource.GetStyleInner(sr, sc);
+            int styleId = wsSource.GetStyleInner(sr, sc);
             if (styleId == 0)
             {
                 styleId = wsSource.GetStyleInner(sr, 0);

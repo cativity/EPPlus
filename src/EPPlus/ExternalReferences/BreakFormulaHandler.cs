@@ -13,10 +13,10 @@ namespace OfficeOpenXml.ExternalReferences
         /// <param name="wb"></param>
         internal static void BreakAllFormulaLinks(ExcelWorkbook wb)
         {
-            foreach (var ws in wb.Worksheets)
+            foreach (ExcelWorksheet? ws in wb.Worksheets)
             {
-                var _deletedFormulas = new List<int>();
-                foreach (var sh in ws._sharedFormulas.Values)
+                List<int>? _deletedFormulas = new List<int>();
+                foreach (ExcelWorksheet.Formulas? sh in ws._sharedFormulas.Values)
                 {
                     sh.SetTokens(ws.Name);
                     if (HasFormulaExternalReference(sh.Tokens))
@@ -29,8 +29,8 @@ namespace OfficeOpenXml.ExternalReferences
                 }
                 _deletedFormulas.ForEach(x => ws._sharedFormulas.Remove(x));
 
-                var enumerator = new CellStoreEnumerator<object>(ws._formulas);
-                foreach (var f in enumerator)
+                CellStoreEnumerator<object>? enumerator = new CellStoreEnumerator<object>(ws._formulas);
+                foreach (object? f in enumerator)
                 {
                     if (f is string formula)
                     {
@@ -52,10 +52,10 @@ namespace OfficeOpenXml.ExternalReferences
         }
         internal static void BreakFormulaLinks(ExcelWorkbook wb, int ix, bool delete)
         {
-            foreach (var ws in wb.Worksheets)
+            foreach (ExcelWorksheet? ws in wb.Worksheets)
             {
-                var _deletedFormulas = new List<int>();
-                foreach (var sh in ws._sharedFormulas.Values)
+                List<int>? _deletedFormulas = new List<int>();
+                foreach (ExcelWorksheet.Formulas? sh in ws._sharedFormulas.Values)
                 {
                     sh.SetTokens(ws.Name);
                     if (HasFormulaExternalReference(wb, ix, sh.Tokens, out string newFormula, false))
@@ -75,8 +75,8 @@ namespace OfficeOpenXml.ExternalReferences
 
                 _deletedFormulas.ForEach(x => ws._sharedFormulas.Remove(x));
 
-                var enumerator = new CellStoreEnumerator<object>(ws._formulas);
-                foreach (var f in enumerator)
+                CellStoreEnumerator<object>? enumerator = new CellStoreEnumerator<object>(ws._formulas);
+                foreach (object? f in enumerator)
                 {
                     if (f is string formula)
                     {
@@ -104,21 +104,21 @@ namespace OfficeOpenXml.ExternalReferences
 
         private static void HandleNames(ExcelWorkbook wb, string wsName, ExcelNamedRangeCollection names, int ix)
         {
-            var deletedNames = new List<ExcelNamedRange>();
-            foreach (var n in names)
+            List<ExcelNamedRange>? deletedNames = new List<ExcelNamedRange>();
+            foreach (ExcelNamedRange? n in names)
             {
                 if (string.IsNullOrEmpty(n.Formula))
                 {
                     if (n.Addresses != null)
                     {
-                        foreach (var a in n.Addresses)
+                        foreach (ExcelAddressBase? a in n.Addresses)
                         {
                             if (ExcelCellBase.IsExternalAddress(a.Address))
                             {
-                                var startIx = a.Address.IndexOf('[');
-                                var endIx = a.Address.IndexOf(']');
-                                var extRef = a.Address.Substring(startIx + 1, endIx - startIx - 1);
-                                var extRefIx = wb.ExternalLinks.GetExternalLink(extRef);
+                                int startIx = a.Address.IndexOf('[');
+                                int endIx = a.Address.IndexOf(']');
+                                string? extRef = a.Address.Substring(startIx + 1, endIx - startIx - 1);
+                                int extRefIx = wb.ExternalLinks.GetExternalLink(extRef);
                                 if ((extRefIx == ix || ix==-1) && extRef!="0") //-1 means delete all external references. extRef=="0" is the current workbook
                                 {
                                     //deletedNames.Add(n);
@@ -134,7 +134,7 @@ namespace OfficeOpenXml.ExternalReferences
                 }
                 else
                 {
-                    var t = SourceCodeTokenizer.Default.Tokenize(n.Formula, wsName);
+                    IEnumerable<Token>? t = SourceCodeTokenizer.Default.Tokenize(n.Formula, wsName);
                     //if (ix == -1 && HasFormulaExternalReference(t))
                     //{
                     //    //deletedNames.Add(n);
@@ -160,13 +160,13 @@ namespace OfficeOpenXml.ExternalReferences
         }
         private static bool HasFormulaExternalReference(IEnumerable<Token> tokens)
         {
-            foreach (var t in tokens)
+            foreach (Token t in tokens)
             {
                 if (t.TokenTypeIsSet(FormulaParsing.LexicalAnalysis.TokenType.ExcelAddress) ||
                     t.TokenTypeIsSet(FormulaParsing.LexicalAnalysis.TokenType.NameValue) ||
                     t.TokenTypeIsSet(FormulaParsing.LexicalAnalysis.TokenType.InvalidReference))
                 {
-                    var address = t.Value;
+                    string? address = t.Value;
                     if (address.StartsWith("[") || address.StartsWith("'["))
                     {
                         return true;
@@ -178,25 +178,25 @@ namespace OfficeOpenXml.ExternalReferences
         private static bool HasFormulaExternalReference(ExcelWorkbook wb, int ix, IEnumerable<Token> tokens, out string newFormula, bool setRefError)
         {
             newFormula = "";
-            foreach (var t in tokens)
+            foreach (Token t in tokens)
             {
                 if (t.TokenTypeIsSet(FormulaParsing.LexicalAnalysis.TokenType.ExcelAddress) ||
                     t.TokenTypeIsSet(FormulaParsing.LexicalAnalysis.TokenType.NameValue) ||
                     t.TokenTypeIsSet(FormulaParsing.LexicalAnalysis.TokenType.InvalidReference))
                 {
-                    var address = t.Value;
+                    string? address = t.Value;
                     if (address.StartsWith("[") || address.StartsWith("'["))
                     {
-                        var startIx = address.IndexOf('[');
-                        var endIx = address.IndexOf(']');
-                        var extRef = address.Substring(startIx+1, endIx - startIx - 1);
+                        int startIx = address.IndexOf('[');
+                        int endIx = address.IndexOf(']');
+                        string? extRef = address.Substring(startIx+1, endIx - startIx - 1);
                         if (extRef == "0") //Current workbook
                         {
                             newFormula += address;
                         }
                         else
                         {
-                            var extRefIx = wb.ExternalLinks.GetExternalLink(extRef);
+                            int extRefIx = wb.ExternalLinks.GetExternalLink(extRef);
                             if (extRefIx == ix || ix==-1)
                             {
                                 if (setRefError)

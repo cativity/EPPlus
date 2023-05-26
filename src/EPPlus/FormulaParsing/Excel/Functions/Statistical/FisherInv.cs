@@ -27,9 +27,9 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Statistical
         public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
         {
             ValidateArguments(arguments, 1);
-            var y = ArgToDecimal(arguments, 0);
-            var n = MathObj.Exp(2 * y);
-            var result = (n - 1) / (n + 1);
+            double y = ArgToDecimal(arguments, 0);
+            double n = MathObj.Exp(2 * y);
+            double result = (n - 1) / (n + 1);
             return CreateResult(result, DataType.Decimal);
         }
     }

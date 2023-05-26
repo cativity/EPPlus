@@ -157,8 +157,8 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
 
         public static double Factorial(double number, double devisor)
         {
-            var result = 1d;
-            for (var x = number; x > devisor; x--)
+            double result = 1d;
+            for (double x = number; x > devisor; x--)
             {
                 result *= x;
             }

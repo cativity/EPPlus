@@ -16,16 +16,16 @@ namespace OfficeOpenXml.FormulaParsing.LexicalAnalysis.TokenSeparatorHandlers
             }
             if (c == '-')
             {
-                var currentToken = context.CurrentToken;
-                var arr = currentToken.Trim().ToArray();
+                string? currentToken = context.CurrentToken;
+                char[]? arr = currentToken.Trim().ToArray();
                 if (arr[arr.Length - 1] != 'E')
                 {
                     return false;
                 }
 
-                for (var x = 0; x < arr.Length - 1; x++)
+                for (int x = 0; x < arr.Length - 1; x++)
                 {
-                    var ch = arr[x];
+                    char ch = arr[x];
                     if (char.IsDigit(ch) || ch == '.')
                     {
                         continue;
@@ -40,16 +40,16 @@ namespace OfficeOpenXml.FormulaParsing.LexicalAnalysis.TokenSeparatorHandlers
             }
             else if (c == '+')
             {
-                var currentToken = context.CurrentToken;
-                var arr = currentToken.Trim().ToArray();
+                string? currentToken = context.CurrentToken;
+                char[]? arr = currentToken.Trim().ToArray();
                 if (arr[arr.Length - 1] != 'E')
                 {
                     return false;
                 }
 
-                for (var x = 0; x < arr.Length - 1; x++)
+                for (int x = 0; x < arr.Length - 1; x++)
                 {
-                    var ch = arr[x];
+                    char ch = arr[x];
                     if (char.IsDigit(ch) || ch == '.')
                     {
                         continue;

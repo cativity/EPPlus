@@ -16,6 +16,7 @@ using System.Xml;
 using System.Globalization;
 using System.Drawing;
 using System.IO;
+using OfficeOpenXml.Packaging;
 
 namespace OfficeOpenXml.Drawing.Vml
 {
@@ -121,10 +122,10 @@ namespace OfficeOpenXml.Drawing.Vml
                 if(_image==null)
                 {                    
                     _image = new ExcelImage(this, new ePictureType[] { ePictureType.Svg, ePictureType.Ico, ePictureType.WebP });
-                    var pck = _worksheet._package.ZipPackage;
+                    ZipPackage? pck = _worksheet._package.ZipPackage;
                     if (pck.PartExists(ImageUri))
                     {
-                        var part = pck.GetPart(ImageUri);
+                        ZipPackagePart? part = pck.GetPart(ImageUri);
                         _image.SetImage(((MemoryStream)part.GetStream()).ToArray(), PictureStore.GetPictureType(ImageUri));
                     }
                     else

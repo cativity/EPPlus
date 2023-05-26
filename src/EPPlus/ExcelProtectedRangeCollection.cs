@@ -71,7 +71,7 @@ namespace OfficeOpenXml
             {
                 throw (new InvalidOperationException($"An item with name {name} already exists"));
             }
-            var pr = new ExcelProtectedRange(_ws.NameSpaceManager, node) { Name=name, Address=address };
+            ExcelProtectedRange? pr = new ExcelProtectedRange(_ws.NameSpaceManager, node) { Name=name, Address=address };
             _list.Add(pr);
             return pr;
         }
@@ -118,7 +118,7 @@ namespace OfficeOpenXml
         public bool Remove(ExcelProtectedRange item)
         {
             item.TopNode.ParentNode.RemoveChild(item.TopNode);            
-            var ret = _list.Remove(item);
+            bool ret = _list.Remove(item);
             if (_list.Count==0)
             {
                 _collectionNode.ParentNode.RemoveChild(_collectionNode);

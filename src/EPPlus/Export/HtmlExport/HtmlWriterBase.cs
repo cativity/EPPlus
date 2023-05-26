@@ -32,7 +32,7 @@ namespace OfficeOpenXml.Export.HtmlExport
 
         internal protected async Task WriteIndentAsync()
         {
-            for (var x = 0; x < Indent; x++)
+            for (int x = 0; x < Indent; x++)
             {
                 await _writer.WriteAsync(IndentWhiteSpace);
             }

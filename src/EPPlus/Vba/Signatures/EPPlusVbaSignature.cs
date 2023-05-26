@@ -10,6 +10,8 @@
  *************************************************************************************************
   09/05/2022         EPPlus Software AB       EPPlus 6.1
  *************************************************************************************************/
+
+using System;
 using OfficeOpenXml.Constants;
 using OfficeOpenXml.Packaging;
 using OfficeOpenXml.Utils;
@@ -83,13 +85,13 @@ namespace OfficeOpenXml.VBA.Signatures
                 return true; //If no vba part exists, create the signature by default.
             }
 
-            var rel = _vbaPart.GetRelationshipsByType(SchemaRelation).FirstOrDefault();
+            ZipPackageRelationship? rel = _vbaPart.GetRelationshipsByType(SchemaRelation).FirstOrDefault();
             if(rel != null)
             {
-                var uri = UriHelper.ResolvePartUri(rel.SourceUri, rel.TargetUri);
+                Uri? uri = UriHelper.ResolvePartUri(rel.SourceUri, rel.TargetUri);
                 Part = _vbaPart.Package.GetPart(uri);
                 Context = new EPPlusSignatureContext(_signatureType);
-                var signature = SignatureReader.ReadSignature(Part, _signatureType, Context);
+                SignatureInfo? signature = SignatureReader.ReadSignature(Part, _signatureType, Context);
                 Certificate = signature.Certificate;
                 Verifier = signature.Verifier;                
                 return true;
@@ -114,7 +116,7 @@ namespace OfficeOpenXml.VBA.Signatures
 
             if (Certificate.HasPrivateKey == false)    //No signature. Remove any Signature part
             {
-                var storeCert = CertUtil.GetCertificate(Certificate.Thumbprint);
+                X509Certificate2? storeCert = CertUtil.GetCertificate(Certificate.Thumbprint);
                 if (storeCert != null)
                 {
                     Certificate = storeCert;
@@ -125,12 +127,12 @@ namespace OfficeOpenXml.VBA.Signatures
                     return;
                 }
             }
-            using (var ms = RecyclableMemory.GetStream())
+            using (MemoryStream? ms = RecyclableMemory.GetStream())
             {
-                var bw = new BinaryWriter(ms);
+                BinaryWriter? bw = new BinaryWriter(ms);
                 Verifier = CertUtil.SignProject(project, this, Context);
-                var cert = Verifier.Encode();
-                var signatureBytes = CertUtil.CreateBinarySignature(ms, bw, certStore, cert);
+                byte[]? cert = Verifier.Encode();
+                byte[]? signatureBytes = CertUtil.CreateBinarySignature(ms, bw, certStore, cert);
                 Part = SignaturePartUtil.GetPart(project, this);
                 Part.GetStream(FileMode.Create).Write(signatureBytes, 0, signatureBytes.Length);
             }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Threading;
+using Microsoft.IO;
 
 namespace OfficeOpenXml.Utils
 {
@@ -19,7 +20,7 @@ namespace OfficeOpenXml.Utils
 		{
 			get
 			{
-				var manager = default(Microsoft.IO.RecyclableMemoryStreamManager);
+				RecyclableMemoryStreamManager? manager = default(Microsoft.IO.RecyclableMemoryStreamManager);
 				if (_lazyInitializeFailed && _dataInitialized)
 				{
 					return _memoryManager;

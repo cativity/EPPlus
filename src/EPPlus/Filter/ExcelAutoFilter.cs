@@ -14,6 +14,8 @@ using OfficeOpenXml.Table;
 using OfficeOpenXml.Utils;
 using System;
 using System.Xml;
+using OfficeOpenXml.Core.CellStore;
+
 namespace OfficeOpenXml.Filter
 {
     /// <summary>
@@ -39,7 +41,7 @@ namespace OfficeOpenXml.Filter
         internal void Save()
         {
             ApplyFilter();
-            foreach (var c in Columns)
+            foreach (ExcelFilterColumn? c in Columns)
             {
                 c.Save();
             }
@@ -55,18 +57,18 @@ namespace OfficeOpenXml.Filter
                 _worksheet.Cells[_address._address].Calculate();
             }
 
-            foreach (var column in Columns)
+            foreach (ExcelFilterColumn? column in Columns)
             {
                 column.SetFilterValue(_worksheet, Address);
             }
             for (int row=Address._fromRow+1; row <= _address._toRow;row++)
             {
-                var rowInternal = ExcelRow.GetRowInternal(_worksheet, row);
+                RowInternal? rowInternal = ExcelRow.GetRowInternal(_worksheet, row);
                 rowInternal.Hidden = false;
-                foreach(var column in Columns)
+                foreach(ExcelFilterColumn? column in Columns)
                 {
-                    var value = _worksheet.GetCoreValueInner(row, Address._fromCol + column.Position);
-                    var text = ValueToTextHandler.GetFormattedText(value._value, _worksheet.Workbook, value._styleId, false);
+                    ExcelValue value = _worksheet.GetCoreValueInner(row, Address._fromCol + column.Position);
+                    string? text = ValueToTextHandler.GetFormattedText(value._value, _worksheet.Workbook, value._styleId, false);
                     if (column.Match(value._value, text) == false)
                     {
                         rowInternal.Hidden = true;

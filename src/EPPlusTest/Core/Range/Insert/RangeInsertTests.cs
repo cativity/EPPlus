@@ -8,6 +8,9 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using OfficeOpenXml.DataValidation.Contracts;
+using OfficeOpenXml.Table;
+using OfficeOpenXml.Table.PivotTable;
 
 namespace EPPlusTest.Core.Range.Insert
 {
@@ -30,8 +33,8 @@ namespace EPPlusTest.Core.Range.Insert
         public void ValidateFormulasAfterInsertRow()
         {
             //Setup
-            var ws = _pck.Workbook.Worksheets.Add("InsertRow_Sheet1");
-            var ws2 = _pck.Workbook.Worksheets.Add("InsertRow_Sheet2");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("InsertRow_Sheet1");
+            ExcelWorksheet? ws2 = _pck.Workbook.Worksheets.Add("InsertRow_Sheet2");
             ws.Cells["A1"].Formula = "Sum(C5:C10)";
             ws.Cells["B1:B2"].Formula = "Sum(C5:C10)";
             ws2.Cells["A1"].Formula = "Sum(InsertRow_Sheet1!C5:C10)";
@@ -55,8 +58,8 @@ namespace EPPlusTest.Core.Range.Insert
         public void ValidateFormulasAfterInsert2Rows()
         {
             //Setup
-            var ws = _pck.Workbook.Worksheets.Add("Insert2Rows_Sheet1");
-            var ws2 = _pck.Workbook.Worksheets.Add("Insert2Rows_Sheet2");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("Insert2Rows_Sheet1");
+            ExcelWorksheet? ws2 = _pck.Workbook.Worksheets.Add("Insert2Rows_Sheet2");
             ws.Cells["A1"].Formula = "Sum(C5:C10)";
             ws.Cells["B1:B2"].Formula = "Sum(C5:C10)";
             ws2.Cells["A1"].Formula = "Sum(Insert2Rows_Sheet1!C5:C10)";
@@ -78,8 +81,8 @@ namespace EPPlusTest.Core.Range.Insert
         public void ValidateFormulasAfterInsertColumn()
         {
             //Setup
-            var ws = _pck.Workbook.Worksheets.Add("InsertColumn_Sheet1");
-            var ws2 = _pck.Workbook.Worksheets.Add("InsertColumn_Sheet2");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("InsertColumn_Sheet1");
+            ExcelWorksheet? ws2 = _pck.Workbook.Worksheets.Add("InsertColumn_Sheet2");
             ws.Cells["A1"].Formula = "Sum(E1:J1)";
             ws.Cells["B1:C1"].Formula = "Sum(E1:J1)";
             ws2.Cells["A1"].Formula = "Sum(InsertColumn_Sheet1!E1:J1)";
@@ -101,8 +104,8 @@ namespace EPPlusTest.Core.Range.Insert
         public void ValidateFormulasAfterInsert2Columns()
         {
             //Setup
-            var ws = _pck.Workbook.Worksheets.Add("Insert2Columns_Sheet1");
-            var ws2 = _pck.Workbook.Worksheets.Add("Insert2Columns_Sheet2");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("Insert2Columns_Sheet1");
+            ExcelWorksheet? ws2 = _pck.Workbook.Worksheets.Add("Insert2Columns_Sheet2");
             ws.Cells["A1"].Formula = "Sum(E1:J1)";
             ws.Cells["B1:C1"].Formula = "Sum(E1:J1)";
             ws2.Cells["A1"].Formula = "Sum(Insert2Columns_Sheet1!E1:J1)";
@@ -123,12 +126,12 @@ namespace EPPlusTest.Core.Range.Insert
         [TestMethod]
         public void InsertingColumnIntoTable()
         {
-            using (var p = new ExcelPackage())
+            using (ExcelPackage? p = new ExcelPackage())
             {
                 //Setup
-                var ws = p.Workbook.Worksheets.Add("InsertColumnTable");
+                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("InsertColumnTable");
                 LoadTestdata(ws);
-                var tbl = ws.Tables.Add(ws.Cells[1, 1, 100, 5], "Table1");
+                ExcelTable? tbl = ws.Tables.Add(ws.Cells[1, 1, 100, 5], "Table1");
                 //Act
                 ws.InsertColumn(2, 1);
 
@@ -145,12 +148,12 @@ namespace EPPlusTest.Core.Range.Insert
         [TestMethod]
         public void InsertingRowIntoTable()
         {
-            using (var p = new ExcelPackage())
+            using (ExcelPackage? p = new ExcelPackage())
             {
                 //Setup
-                var ws = p.Workbook.Worksheets.Add("InsertRowTable");
+                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("InsertRowTable");
                 LoadTestdata(ws);
-                var tbl = ws.Tables.Add(ws.Cells[1, 1, 100, 5], "Table1");
+                ExcelTable? tbl = ws.Tables.Add(ws.Cells[1, 1, 100, 5], "Table1");
                 //Act
                 ws.InsertRow(1, 1);
                 ws.InsertRow(3, 1);
@@ -164,7 +167,7 @@ namespace EPPlusTest.Core.Range.Insert
         public void ValidateValuesAfterInsertRowInRangeShiftDown()
         {
             //Setup
-            var ws = _pck.Workbook.Worksheets.Add("InsertRangeDown");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("InsertRangeDown");
             ws.Cells["A1"].Value = "A1";
             ws.Cells["B1"].Value = "B1";
             ws.Cells["C1"].Value = "C1";
@@ -182,7 +185,7 @@ namespace EPPlusTest.Core.Range.Insert
         public void ValidateValuesAfterInsertRowInRangeShiftDownTwoRows()
         {
             //Setup
-            var ws = _pck.Workbook.Worksheets.Add("InsertRangeDownTwoRows");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("InsertRangeDownTwoRows");
             ws.Cells["A1"].Value = "A1";
             ws.Cells["B1"].Value = "B1";
             ws.Cells["C1"].Value = "C1";
@@ -210,7 +213,7 @@ namespace EPPlusTest.Core.Range.Insert
         public void ValidateValuesAfterInsertRowInRangeShiftRight()
         {
             //Setup
-            var ws = _pck.Workbook.Worksheets.Add("InsertRangeRight");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("InsertRangeRight");
             ws.Cells["A1"].Value = "A1";
             ws.Cells["B1"].Value = "B1";
             ws.Cells["C1"].Value = "C1";
@@ -228,7 +231,7 @@ namespace EPPlusTest.Core.Range.Insert
         public void ValidateValuesAfterInsertRowInRangeShiftRightTwoRows()
         {
             //Setup
-            var ws = _pck.Workbook.Worksheets.Add("InsertRangeRightTwoRows");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("InsertRangeRightTwoRows");
             ws.Cells["A1"].Value = "A1";
             ws.Cells["B1"].Value = "B1";
             ws.Cells["C1"].Value = "C1";
@@ -257,7 +260,7 @@ namespace EPPlusTest.Core.Range.Insert
         public void ValidateCommentsAfterInsertShiftDown()
         {
             //Setup
-            var ws = _pck.Workbook.Worksheets.Add("InsertRangeCommentsDown");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("InsertRangeCommentsDown");
             ws.Cells["A1"].AddComment("Comment A1", "EPPlus");
             ws.Cells["B1"].AddComment("Comment B1", "EPPlus");
             ws.Cells["C1"].AddComment("Comment C1", "EPPlus");
@@ -275,7 +278,7 @@ namespace EPPlusTest.Core.Range.Insert
         public void ValidateCommentsAfterInsertShiftRight()
         {
             //Setup
-            var ws = _pck.Workbook.Worksheets.Add("InsertRangeCommentsRight");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("InsertRangeCommentsRight");
             ws.Cells["A1"].AddComment("Comment A1", "EPPlus");  
             ws.Cells["B1"].AddComment("Comment B1", "EPPlus");
             ws.Cells["C1"].AddComment("Comment C1", "EPPlus");
@@ -294,7 +297,7 @@ namespace EPPlusTest.Core.Range.Insert
         public void ValidateNameAfterInsertShiftDown()
         {
             //Setup
-            var ws = _pck.Workbook.Worksheets.Add("InsertRangeNamesDown");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("InsertRangeNamesDown");
             ws.Names.Add("NameA1", ws.Cells["A1"]);
             ws.Names.Add("NameB1", ws.Cells["B1"]);
             ws.Names.Add("NameC1", ws.Cells["C1"]);
@@ -311,7 +314,7 @@ namespace EPPlusTest.Core.Range.Insert
         public void ValidateNameAfterInsertShiftDown_MustBeInsideRange()
         {
             //Setup
-            var ws = _pck.Workbook.Worksheets.Add("InsertRangeInsideNamesDown");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("InsertRangeInsideNamesDown");
             ws.Names.Add("NameA2B4", ws.Cells["A2:B4"]);
             ws.Names.Add("NameB2D3", ws.Cells["B2:D3"]);
             ws.Names.Add("NameC1F3", ws.Cells["C1:F3"]);
@@ -339,7 +342,7 @@ namespace EPPlusTest.Core.Range.Insert
         public void ValidateNamesAfterInsertShiftRight_MustBeInsideRange()
         {
             //Setup
-            var ws = _pck.Workbook.Worksheets.Add("InsertRangeInsideNamesRight");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("InsertRangeInsideNamesRight");
             ws.Names.Add("NameB1D2", ws.Cells["B1:D2"]);
             ws.Names.Add("NameB2C4", ws.Cells["B2:D4"]);
             ws.Names.Add("NameA3C6", ws.Cells["A3:C6"]);
@@ -362,7 +365,7 @@ namespace EPPlusTest.Core.Range.Insert
         public void ValidateSharedFormulasInsertShiftDown()
         {
             //Setup
-            var ws = _pck.Workbook.Worksheets.Add("InsertRangeFormulaDown");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("InsertRangeFormulaDown");
             ws.Cells["B1:D2"].Formula = "A1";
             ws.Cells["C3:F4"].Formula = "A1";
 
@@ -387,7 +390,7 @@ namespace EPPlusTest.Core.Range.Insert
         public void ValidateSharedFormulasInsertShiftRight()
         {
             //Setup
-            var ws = _pck.Workbook.Worksheets.Add("InsertRangeFormulaRight");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("InsertRangeFormulaRight");
             ws.Cells["B1:D2"].Formula = "A1";
             ws.Cells["C3:F4"].Formula = "A1";
 
@@ -413,9 +416,9 @@ namespace EPPlusTest.Core.Range.Insert
         [TestMethod]
         public void ValidateInsertMergedCellsDown()
         {
-            using (var p = new ExcelPackage())
+            using (ExcelPackage? p = new ExcelPackage())
             {
-                var ws = p.Workbook.Worksheets.Add("MergedCells");
+                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("MergedCells");
                 ws.Cells["C3:E4"].Merge = true;
                 ws.Cells["C2:E2"].Insert(eShiftTypeInsert.Down);
 
@@ -425,9 +428,9 @@ namespace EPPlusTest.Core.Range.Insert
         [TestMethod]
         public void ValidateInsertMergedCellsRight()
         {
-            using (var p = new ExcelPackage())
+            using (ExcelPackage? p = new ExcelPackage())
             {
-                var ws = p.Workbook.Worksheets.Add("MergedCells");
+                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("MergedCells");
                 ws.Cells["C2:E3"].Merge = true;
                 ws.Cells["B2:B3"].Insert(eShiftTypeInsert.Right);
 
@@ -438,9 +441,9 @@ namespace EPPlusTest.Core.Range.Insert
         [ExpectedException(typeof(InvalidOperationException))]
         public void ValidateInsertIntoMergedCellsPartialRightThrowsException()
         {
-            using (var p = new ExcelPackage())
+            using (ExcelPackage? p = new ExcelPackage())
             {
-                var ws = p.Workbook.Worksheets.Add("MergedCells");
+                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("MergedCells");
                 ws.Cells["B2:D3"].Merge = true;
                 ws.Cells["A2"].Insert(eShiftTypeInsert.Right);
             }
@@ -449,9 +452,9 @@ namespace EPPlusTest.Core.Range.Insert
         [ExpectedException(typeof(InvalidOperationException))]
         public void ValidateInsertIntoMergedCellsPartialDownThrowsException()
         {
-            using (var p = new ExcelPackage())
+            using (ExcelPackage? p = new ExcelPackage())
             {
-                var ws = p.Workbook.Worksheets.Add("MergedCells");
+                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("MergedCells");
                 ws.Cells["B2:D3"].Merge = true;
                 ws.Cells["C1"].Insert(eShiftTypeInsert.Down);
             }
@@ -459,9 +462,9 @@ namespace EPPlusTest.Core.Range.Insert
         [TestMethod]
         public void ValidateDeleteEntireMergeCells()
         {
-            using (var p = new ExcelPackage())
+            using (ExcelPackage? p = new ExcelPackage())
             {
-                var ws = p.Workbook.Worksheets.Add("MergedCells");
+                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("MergedCells");
                 ws.Cells["B2:D3"].Merge = true;
                 Assert.AreEqual(1, ws.MergedCells.Count);
                 Assert.AreEqual("B2:D3", ws.MergedCells[0]);
@@ -477,9 +480,9 @@ namespace EPPlusTest.Core.Range.Insert
         [TestMethod]
         public void ValidateInsertMergedCellsShouldBeShifted()
         {
-            using (var p = new ExcelPackage())
+            using (ExcelPackage? p = new ExcelPackage())
             {
-                var ws = p.Workbook.Worksheets.Add("MergedCells");
+                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("MergedCells");
                 ws.Cells["B3:D3"].Merge = true;
                 ws.Cells["B3:D3"].Insert(eShiftTypeInsert.Down);
 
@@ -499,9 +502,9 @@ namespace EPPlusTest.Core.Range.Insert
         [TestMethod]
         public void ValidateInsertIntoMergedCellsPartialRightShouldNotThrowsException()
         {
-            using (var p = new ExcelPackage())
+            using (ExcelPackage? p = new ExcelPackage())
             {
-                var ws = p.Workbook.Worksheets.Add("MergedCells");
+                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("MergedCells");
                 ws.Cells["B2:D3"].Merge = true;
                 ws.Cells["C1"].Insert(eShiftTypeInsert.Right);
             }
@@ -509,9 +512,9 @@ namespace EPPlusTest.Core.Range.Insert
         [TestMethod]
         public void ValidateInsertIntoMergedCellsPartialDownShouldNotThrowsException()
         {
-            using (var p = new ExcelPackage())
+            using (ExcelPackage? p = new ExcelPackage())
             {
-                var ws = p.Workbook.Worksheets.Add("MergedCells");
+                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("MergedCells");
                 ws.Cells["B2:D3"].Merge = true;
                 ws.Cells["A2"].Insert(eShiftTypeInsert.Down);
             }
@@ -520,9 +523,9 @@ namespace EPPlusTest.Core.Range.Insert
         [ExpectedException(typeof(InvalidOperationException))]
         public void ValidateInsertIntoTablePartialRightThrowsException()
         {
-            using (var p = new ExcelPackage())
+            using (ExcelPackage? p = new ExcelPackage())
             {
-                var ws = p.Workbook.Worksheets.Add("TableDelete");
+                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("TableDelete");
                 ws.Tables.Add(ws.Cells["B2:D3"], "table1");
                 ws.Cells["A2"].Insert(eShiftTypeInsert.Right);
             }
@@ -531,9 +534,9 @@ namespace EPPlusTest.Core.Range.Insert
         [ExpectedException(typeof(InvalidOperationException))]
         public void ValidateInsertIntoTablePartialDownThrowsException()
         {
-            using (var p = new ExcelPackage())
+            using (ExcelPackage? p = new ExcelPackage())
             {
-                var ws = p.Workbook.Worksheets.Add("TableDelete");
+                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("TableDelete");
                 ws.Tables.Add(ws.Cells["B2:D3"], "table1");
                 ws.Cells["C1"].Insert(eShiftTypeInsert.Down);
             }
@@ -541,9 +544,9 @@ namespace EPPlusTest.Core.Range.Insert
         [TestMethod]
         public void ValidateInsertIntoTablePartialRightShouldNotThrowsException()
         {
-            using (var p = new ExcelPackage())
+            using (ExcelPackage? p = new ExcelPackage())
             {
-                var ws = p.Workbook.Worksheets.Add("TableDelete");
+                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("TableDelete");
                 ws.Tables.Add(ws.Cells["B2:D3"], "table1");
                 ws.Cells["C1"].Insert(eShiftTypeInsert.Right);
             }
@@ -551,9 +554,9 @@ namespace EPPlusTest.Core.Range.Insert
         [TestMethod]
         public void ValidateInsertIntoTablePartialDownShouldNotThrowsException()
         {
-            using (var p = new ExcelPackage())
+            using (ExcelPackage? p = new ExcelPackage())
             {
-                var ws = p.Workbook.Worksheets.Add("TableDelete");
+                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("TableDelete");
                 ws.Tables.Add(ws.Cells["B2:D3"], "table1");
                 ws.Cells["A2"].Insert(eShiftTypeInsert.Down);
             }
@@ -562,9 +565,9 @@ namespace EPPlusTest.Core.Range.Insert
         [ExpectedException(typeof(InvalidOperationException))]
         public void ValidateInsertIntoPivotTablePartialRightThrowsException()
         {
-            using (var p = new ExcelPackage())
+            using (ExcelPackage? p = new ExcelPackage())
             {
-                var ws = p.Workbook.Worksheets.Add("PivotTableInsert");
+                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("PivotTableInsert");
                 ws.Cells["E5"].Value = "E5";
                 ws.Cells["F5"].Value = "F5";
                 ws.PivotTables.Add(ws.Cells["B2:D3"], ws.Cells["E5:F6"], "table1");
@@ -575,9 +578,9 @@ namespace EPPlusTest.Core.Range.Insert
         [ExpectedException(typeof(InvalidOperationException))]
         public void ValidateInsertIntoPivotTablePartialDownThrowsException()
         {
-            using (var p = new ExcelPackage())
+            using (ExcelPackage? p = new ExcelPackage())
             {
-                var ws = p.Workbook.Worksheets.Add("PivotTableInsert");
+                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("PivotTableInsert");
                 ws.Cells["E5"].Value = "E5";
                 ws.Cells["F5"].Value = "F5";
                 ws.PivotTables.Add(ws.Cells["B2:D3"], ws.Cells["E5:F6"], "table1");
@@ -587,9 +590,9 @@ namespace EPPlusTest.Core.Range.Insert
         [TestMethod]
         public void ValidateInsertIntoPivotTablePartialRightShouldNotThrowsException()
         {
-            using (var p = new ExcelPackage())
+            using (ExcelPackage? p = new ExcelPackage())
             {
-                var ws = p.Workbook.Worksheets.Add("PivotTableInsert");
+                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("PivotTableInsert");
                 ws.Cells["E5"].Value = "E5";
                 ws.Cells["F5"].Value = "F5";
                 ws.PivotTables.Add(ws.Cells["B2:D3"], ws.Cells["E5:F6"], "table1");
@@ -599,9 +602,9 @@ namespace EPPlusTest.Core.Range.Insert
         [TestMethod]
         public void ValidateInsertIntoPivotTablePartialDownShouldNotThrowsException()
         {
-            using (var p = new ExcelPackage())
+            using (ExcelPackage? p = new ExcelPackage())
             {
-                var ws = p.Workbook.Worksheets.Add("PivotTableInsert");
+                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("PivotTableInsert");
                 ws.Cells["E5"].Value = "E5";
                 ws.Cells["F5"].Value = "F5";
                 ws.PivotTables.Add(ws.Cells["B2:D3"], ws.Cells["E5:F6"], "table1");
@@ -611,10 +614,10 @@ namespace EPPlusTest.Core.Range.Insert
         [TestMethod]
         public void ValidateInsertTableShouldShiftDown()
         {
-            using (var p = new ExcelPackage())
+            using (ExcelPackage? p = new ExcelPackage())
             {
-                var ws = p.Workbook.Worksheets.Add("TableInsertShiftDown");
-                var tbl=ws.Tables.Add(ws.Cells["B2:D3"], "table1");
+                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("TableInsertShiftDown");
+                ExcelTable? tbl=ws.Tables.Add(ws.Cells["B2:D3"], "table1");
                 ws.Cells["B2:D2"].Insert(eShiftTypeInsert.Down);
                 Assert.AreEqual("B3:D4", tbl.Address.Address);
 
@@ -638,10 +641,10 @@ namespace EPPlusTest.Core.Range.Insert
         [TestMethod]
         public void ValidateInsertTableShouldShiftRight()
         {
-            using (var p = new ExcelPackage())
+            using (ExcelPackage? p = new ExcelPackage())
             {
-                var ws = p.Workbook.Worksheets.Add("TableInsertShiftRight");
-                var tbl = ws.Tables.Add(ws.Cells["B2:C4"], "table1");
+                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("TableInsertShiftRight");
+                ExcelTable? tbl = ws.Tables.Add(ws.Cells["B2:C4"], "table1");
                 ws.Cells["B2:B4"].Insert(eShiftTypeInsert.Right);
                 Assert.AreEqual("C2:D4", tbl.Address.Address);
 
@@ -655,12 +658,12 @@ namespace EPPlusTest.Core.Range.Insert
         [TestMethod]
         public void ValidateInsertPivotTableShouldShiftDown()
         {
-            using (var p = new ExcelPackage())
+            using (ExcelPackage? p = new ExcelPackage())
             {
-                var ws = p.Workbook.Worksheets.Add("PivotTableInsertShiftDown");
+                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("PivotTableInsertShiftDown");
                 ws.Cells["E5"].Value = "E5";
                 ws.Cells["F5"].Value = "F5";                
-                var pt=ws.PivotTables.Add(ws.Cells["B2:D3"], ws.Cells["E5:F6"], "pivottable1");
+                ExcelPivotTable? pt=ws.PivotTables.Add(ws.Cells["B2:D3"], ws.Cells["E5:F6"], "pivottable1");
                 ws.Cells["B2:D2"].Insert(eShiftTypeInsert.Down);
                 Assert.AreEqual("B3:D4", pt.Address.Address);
 
@@ -674,12 +677,12 @@ namespace EPPlusTest.Core.Range.Insert
         [TestMethod]
         public void ValidateInsertPivotTableShouldShiftRight()
         {
-            using (var p = new ExcelPackage())
+            using (ExcelPackage? p = new ExcelPackage())
             {
-                var ws = p.Workbook.Worksheets.Add("PivotTableInsertShiftRight");
+                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("PivotTableInsertShiftRight");
                 ws.Cells["E5"].Value = "E5";
                 ws.Cells["F5"].Value = "F5";
-                var pt = ws.PivotTables.Add(ws.Cells["B2:D3"], ws.Cells["E5:F6"], "pivottable1");
+                ExcelPivotTable? pt = ws.PivotTables.Add(ws.Cells["B2:D3"], ws.Cells["E5:F6"], "pivottable1");
                 ws.Cells["B2:B3"].Insert(eShiftTypeInsert.Right);
                 Assert.AreEqual("C2:E3", pt.Address.Address);
                 ws.Cells["B1:B4"].Insert(eShiftTypeInsert.Right);
@@ -692,9 +695,9 @@ namespace EPPlusTest.Core.Range.Insert
         [TestMethod]
         public void ValidateStyleShiftDown()
         {
-            using (var p = new ExcelPackage())
+            using (ExcelPackage? p = new ExcelPackage())
             {
-                var ws = p.Workbook.Worksheets.Add("StyleShiftDown");
+                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("StyleShiftDown");
                 ws.Cells["A1"].Style.Fill.SetBackground(OfficeOpenXml.Style.ExcelIndexedColor.Indexed2);
                 ws.Cells["B1"].Style.Fill.SetBackground(OfficeOpenXml.Style.ExcelIndexedColor.Indexed3);
                 ws.Cells["C1"].Style.Fill.SetBackground(OfficeOpenXml.Style.ExcelIndexedColor.Indexed4);
@@ -721,9 +724,9 @@ namespace EPPlusTest.Core.Range.Insert
         [TestMethod]
         public void ValidateStyleShiftRight()
         {
-            using (var p = new ExcelPackage())
+            using (ExcelPackage? p = new ExcelPackage())
             {
-                var ws = p.Workbook.Worksheets.Add("StyleShiftRight");
+                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("StyleShiftRight");
                 ws.Cells["A1"].Style.Fill.SetBackground(OfficeOpenXml.Style.ExcelIndexedColor.Indexed2);
                 ws.Cells["B1"].Style.Fill.SetBackground(OfficeOpenXml.Style.ExcelIndexedColor.Indexed3);
                 ws.Cells["C1"].Style.Fill.SetBackground(OfficeOpenXml.Style.ExcelIndexedColor.Indexed4);
@@ -751,8 +754,8 @@ namespace EPPlusTest.Core.Range.Insert
         [TestMethod]
         public void ValidateDatavalidationFullShiftDown()
         {
-            var ws = _pck.Workbook.Worksheets.Add("DataValShiftDownFull");
-            var any = ws.DataValidations.AddAnyValidation("B2:E5");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("DataValShiftDownFull");
+            IExcelDataValidationAny? any = ws.DataValidations.AddAnyValidation("B2:E5");
 
             ws.Cells["A2:E2"].Insert(eShiftTypeInsert.Down);
 
@@ -761,8 +764,8 @@ namespace EPPlusTest.Core.Range.Insert
         [TestMethod]
         public void ValidateDatavalidationPartialShiftDown_Left()
         {
-            var ws = _pck.Workbook.Worksheets.Add("DataValPartialDownFullL");
-            var any = ws.DataValidations.AddAnyValidation("B2:E5");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("DataValPartialDownFullL");
+            IExcelDataValidationAny? any = ws.DataValidations.AddAnyValidation("B2:E5");
 
             ws.Cells["A2:C2"].Insert(eShiftTypeInsert.Down);
 
@@ -771,8 +774,8 @@ namespace EPPlusTest.Core.Range.Insert
         [TestMethod]
         public void ValidateDatavalidationPartialShiftDown_Inside()
         {
-            var ws = _pck.Workbook.Worksheets.Add("DataValPartialDownFullI");
-            var any = ws.DataValidations.AddAnyValidation("B2:E5");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("DataValPartialDownFullI");
+            IExcelDataValidationAny? any = ws.DataValidations.AddAnyValidation("B2:E5");
 
             ws.Cells["C2:D2"].Insert(eShiftTypeInsert.Down);
 
@@ -783,8 +786,8 @@ namespace EPPlusTest.Core.Range.Insert
         [TestMethod]
         public void ValidateDatavalidationPartialShiftDown_Right()
         {
-            var ws = _pck.Workbook.Worksheets.Add("DataValPartialRightFullR");
-            var any = ws.DataValidations.AddAnyValidation("B2:E5");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("DataValPartialRightFullR");
+            IExcelDataValidationAny? any = ws.DataValidations.AddAnyValidation("B2:E5");
 
             ws.Cells["C2:E3"].Insert(eShiftTypeInsert.Down);
 
@@ -793,8 +796,8 @@ namespace EPPlusTest.Core.Range.Insert
         [TestMethod]
         public void ValidateDatavalidationPartialShiftRight_Top()
         {
-            var ws = _pck.Workbook.Worksheets.Add("DataValPartialRightFullTop");
-            var any = ws.DataValidations.AddAnyValidation("B2:E5");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("DataValPartialRightFullTop");
+            IExcelDataValidationAny? any = ws.DataValidations.AddAnyValidation("B2:E5");
 
             ws.Cells["A2:A4"].Insert(eShiftTypeInsert.Right);
 
@@ -803,8 +806,8 @@ namespace EPPlusTest.Core.Range.Insert
         [TestMethod]
         public void ValidateDatavalidationPartialShiftRight_Inside()
         {
-            var ws = _pck.Workbook.Worksheets.Add("DataValPartialRightFullIns");
-            var any = ws.DataValidations.AddAnyValidation("B2:E5");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("DataValPartialRightFullIns");
+            IExcelDataValidationAny? any = ws.DataValidations.AddAnyValidation("B2:E5");
 
             ws.Cells["A3:A4"].Insert(eShiftTypeInsert.Right);
 
@@ -813,8 +816,8 @@ namespace EPPlusTest.Core.Range.Insert
         [TestMethod]
         public void ValidateDatavalidationShiftRight_Inside()
         {
-            var ws = _pck.Workbook.Worksheets.Add("dvright");
-            var any = ws.DataValidations.AddAnyValidation("B2");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("dvright");
+            IExcelDataValidationAny? any = ws.DataValidations.AddAnyValidation("B2");
 
             ws.Cells["B2:C5"].Insert(eShiftTypeInsert.Right);
 
@@ -824,8 +827,8 @@ namespace EPPlusTest.Core.Range.Insert
         [TestMethod]
         public void ValidateDatavalPartialShiftRight_Bottom()
         {
-            var ws = _pck.Workbook.Worksheets.Add("DataValPartialDownFullBottom");
-            var any = ws.DataValidations.AddAnyValidation("B2:E5");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("DataValPartialDownFullBottom");
+            IExcelDataValidationAny? any = ws.DataValidations.AddAnyValidation("B2:E5");
 
             ws.Cells["A3:A6"].Insert(eShiftTypeInsert.Right);
 
@@ -835,8 +838,8 @@ namespace EPPlusTest.Core.Range.Insert
         [TestMethod]
         public void ValidateDatavalidationFullShiftRight()
         {
-            var ws = _pck.Workbook.Worksheets.Add("DataValidationShiftRightFull");
-            var any = ws.DataValidations.AddAnyValidation("B2:E5");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("DataValidationShiftRightFull");
+            IExcelDataValidationAny? any = ws.DataValidations.AddAnyValidation("B2:E5");
 
             ws.Cells["A2:A5"].Insert(eShiftTypeInsert.Right);
 
@@ -845,11 +848,11 @@ namespace EPPlusTest.Core.Range.Insert
         [TestMethod]
         public void CheckDataValidationFormulaAfterInsertingRow()
         {
-            using (var p = new ExcelPackage())
+            using (ExcelPackage? p = new ExcelPackage())
             {
                 // Create a worksheet with conditional formatting 
-                var ws = p.Workbook.Worksheets.Add("Sheet1");
-                var dv = ws.DataValidations.AddCustomValidation("B5:G5");
+                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Sheet1");
+                IExcelDataValidationCustom? dv = ws.DataValidations.AddCustomValidation("B5:G5");
                 dv.Formula.ExcelFormula = "=(B$4=0)";
 
                 // Insert a row before the column being referenced by the CF formula
@@ -863,11 +866,11 @@ namespace EPPlusTest.Core.Range.Insert
         [TestMethod]
         public void CheckDataValidationFormulaAfterInsertingColumn()
         {
-            using (var p = new ExcelPackage())
+            using (ExcelPackage? p = new ExcelPackage())
             {
                 // Create a worksheet with conditional formatting 
-                var ws = p.Workbook.Worksheets.Add("Sheet1");
-                var dv = ws.DataValidations.AddCustomValidation("E2:E7");
+                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Sheet1");
+                IExcelDataValidationCustom? dv = ws.DataValidations.AddCustomValidation("E2:E7");
                 dv.Formula.ExcelFormula = "=($D2=0)";
 
                 // Insert a column before the column being referenced by the CF formula
@@ -883,8 +886,8 @@ namespace EPPlusTest.Core.Range.Insert
         [TestMethod]
         public void ValidateConditionalFormattingFullShiftDown()
         {
-            var ws = _pck.Workbook.Worksheets.Add("CondFormShiftDownFull");
-            var cf = ws.ConditionalFormatting.AddAboveAverage(new ExcelAddress("B2:E5"));
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("CondFormShiftDownFull");
+            IExcelConditionalFormattingAverageGroup? cf = ws.ConditionalFormatting.AddAboveAverage(new ExcelAddress("B2:E5"));
             cf.Style.Fill.BackgroundColor.SetColor(eThemeSchemeColor.Accent1);
             ws.Cells["A2:E2"].Insert(eShiftTypeInsert.Down);
 
@@ -893,8 +896,8 @@ namespace EPPlusTest.Core.Range.Insert
         [TestMethod]
         public void ValidateConditionalFormattingPartialShiftDown_Left()
         {
-            var ws = _pck.Workbook.Worksheets.Add("CondFormPartialDownFullL");
-            var cf = ws.ConditionalFormatting.AddAboveAverage(new ExcelAddress("B2:E5"));
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("CondFormPartialDownFullL");
+            IExcelConditionalFormattingAverageGroup? cf = ws.ConditionalFormatting.AddAboveAverage(new ExcelAddress("B2:E5"));
             cf.Style.Fill.BackgroundColor.SetColor(eThemeSchemeColor.Accent1);
 
             ws.Cells["A2:C2"].Insert(eShiftTypeInsert.Down);
@@ -904,8 +907,8 @@ namespace EPPlusTest.Core.Range.Insert
         [TestMethod]
         public void ValidateConditionalFormattingShiftDown_Inside()
         {
-            var ws = _pck.Workbook.Worksheets.Add("CondFormPartialDownFullI");
-            var cf = ws.ConditionalFormatting.AddAboveAverage(new ExcelAddress("B2:E5"));
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("CondFormPartialDownFullI");
+            IExcelConditionalFormattingAverageGroup? cf = ws.ConditionalFormatting.AddAboveAverage(new ExcelAddress("B2:E5"));
             cf.Style.Fill.BackgroundColor.SetColor(eThemeSchemeColor.Accent1);
 
             ws.Cells["C2:D2"].Insert(eShiftTypeInsert.Down);
@@ -917,8 +920,8 @@ namespace EPPlusTest.Core.Range.Insert
         [TestMethod]
         public void ValidateConditionalFormattingShiftDown_Right()
         {
-            var ws = _pck.Workbook.Worksheets.Add("CondFormPartialRightFullR");
-            var cf = ws.ConditionalFormatting.AddAboveAverage(new ExcelAddress("B2:E5"));
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("CondFormPartialRightFullR");
+            IExcelConditionalFormattingAverageGroup? cf = ws.ConditionalFormatting.AddAboveAverage(new ExcelAddress("B2:E5"));
             cf.Style.Fill.BackgroundColor.SetColor(eThemeSchemeColor.Accent1);
 
             ws.Cells["C2:E3"].Insert(eShiftTypeInsert.Down);
@@ -928,8 +931,8 @@ namespace EPPlusTest.Core.Range.Insert
         [TestMethod]
         public void ValidateConditionalFormattingPartialShiftRight_Top()
         {
-            var ws = _pck.Workbook.Worksheets.Add("CondFormPartialRightFullTop");
-            var cf = ws.ConditionalFormatting.AddAboveAverage(new ExcelAddress("B2:E5"));
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("CondFormPartialRightFullTop");
+            IExcelConditionalFormattingAverageGroup? cf = ws.ConditionalFormatting.AddAboveAverage(new ExcelAddress("B2:E5"));
             cf.Style.Fill.BackgroundColor.SetColor(eThemeSchemeColor.Accent1);
 
             ws.Cells["A2:A4"].Insert(eShiftTypeInsert.Right);
@@ -939,8 +942,8 @@ namespace EPPlusTest.Core.Range.Insert
         [TestMethod]
         public void ValidateConditionalFormattingPartialShiftRight_Inside()
         {
-            var ws = _pck.Workbook.Worksheets.Add("CondFormPartialRightFullIns");
-            var cf = ws.ConditionalFormatting.AddAboveAverage(new ExcelAddress("B2:E5"));
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("CondFormPartialRightFullIns");
+            IExcelConditionalFormattingAverageGroup? cf = ws.ConditionalFormatting.AddAboveAverage(new ExcelAddress("B2:E5"));
             cf.Style.Fill.BackgroundColor.SetColor(eThemeSchemeColor.Accent1);
 
             ws.Cells["A3:A4"].Insert(eShiftTypeInsert.Right);
@@ -951,8 +954,8 @@ namespace EPPlusTest.Core.Range.Insert
         [TestMethod]
         public void ValidateConditionalFormattingShiftRight_Bottom()
         {
-            var ws = _pck.Workbook.Worksheets.Add("CondFormPartialDownFullBottom");
-            var cf = ws.ConditionalFormatting.AddAboveAverage(new ExcelAddress("B2:E5"));
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("CondFormPartialDownFullBottom");
+            IExcelConditionalFormattingAverageGroup? cf = ws.ConditionalFormatting.AddAboveAverage(new ExcelAddress("B2:E5"));
             cf.Style.Fill.BackgroundColor.SetColor(eThemeSchemeColor.Accent1);
 
             ws.Cells["A3:A6"].Insert(eShiftTypeInsert.Right);
@@ -963,8 +966,8 @@ namespace EPPlusTest.Core.Range.Insert
         [TestMethod]
         public void ValidateConditionalFormattingFullShiftRight()
         {
-            var ws = _pck.Workbook.Worksheets.Add("CondFormShiftRightFull");
-            var cf = ws.ConditionalFormatting.AddAboveAverage(new ExcelAddress("B2:E5"));
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("CondFormShiftRightFull");
+            IExcelConditionalFormattingAverageGroup? cf = ws.ConditionalFormatting.AddAboveAverage(new ExcelAddress("B2:E5"));
             cf.Style.Fill.BackgroundColor.SetColor(eThemeSchemeColor.Accent1);
 
             ws.Cells["A2:A5"].Insert(eShiftTypeInsert.Right);
@@ -975,7 +978,7 @@ namespace EPPlusTest.Core.Range.Insert
         [TestMethod]
         public void ValidateFilterShiftDown()
         {
-            var ws = _pck.Workbook.Worksheets.Add("AutoFilterShiftDown");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("AutoFilterShiftDown");
             LoadTestdata(ws);
             ws.AutoFilterAddress = new ExcelAddressBase("A1:D100");
             ws.Cells["A1:D1"].Insert(eShiftTypeInsert.Down);
@@ -986,7 +989,7 @@ namespace EPPlusTest.Core.Range.Insert
         [TestMethod]
         public void ValidateFilterShiftRight()
         {
-            var ws = _pck.Workbook.Worksheets.Add("AutoFilterShiftRight");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("AutoFilterShiftRight");
             LoadTestdata(ws);
             ws.AutoFilterAddress = new ExcelAddressBase("A1:D100");
             ws.Cells["A1:A100"].Insert(eShiftTypeInsert.Right);
@@ -997,7 +1000,7 @@ namespace EPPlusTest.Core.Range.Insert
         [TestMethod]
         public void ValidateFilterInsertRow()
         {
-            var ws = _pck.Workbook.Worksheets.Add("AutoFilterInsertRow");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("AutoFilterInsertRow");
             LoadTestdata(ws);
             ws.AutoFilterAddress = new ExcelAddressBase("A1:D100");
             ws.InsertRow(1,1);
@@ -1008,7 +1011,7 @@ namespace EPPlusTest.Core.Range.Insert
         [TestMethod]
         public void ValidateFilterInsertColumn()
         {
-            var ws = _pck.Workbook.Worksheets.Add("AutoFilterInsertCol");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("AutoFilterInsertCol");
             LoadTestdata(ws);
             ws.AutoFilterAddress = new ExcelAddressBase("A1:D100");
             ws.InsertColumn(1,1);
@@ -1021,7 +1024,7 @@ namespace EPPlusTest.Core.Range.Insert
         [ExpectedException(typeof(InvalidOperationException))]
         public void ValidateFilterShiftDownPartial()
         {
-            var ws = _pck.Workbook.Worksheets.Add("AutoFilterShiftDownPart");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("AutoFilterShiftDownPart");
             LoadTestdata(ws);
             ws.AutoFilterAddress = new ExcelAddressBase("A1:D100");
             ws.Cells["A1:C1"].Insert(eShiftTypeInsert.Down);
@@ -1030,7 +1033,7 @@ namespace EPPlusTest.Core.Range.Insert
         [ExpectedException(typeof(InvalidOperationException))]
         public void ValidateFilterShiftRightPartial()
         {
-            var ws = _pck.Workbook.Worksheets.Add("AutoFilterShiftRightPart");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("AutoFilterShiftRightPart");
             LoadTestdata(ws);
             ws.AutoFilterAddress = new ExcelAddressBase("A1:D100");
             ws.Cells["A1:A99"].Insert(eShiftTypeInsert.Right);
@@ -1038,7 +1041,7 @@ namespace EPPlusTest.Core.Range.Insert
         [TestMethod]
         public void ValidateSparkLineShiftRight()
         {
-            var ws = _pck.Workbook.Worksheets.Add("SparkLineShiftRight");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("SparkLineShiftRight");
             LoadTestdata(ws,10);
             ws.SparklineGroups.Add(OfficeOpenXml.Sparkline.eSparklineType.Column, ws.Cells["E2:E10"], ws.Cells["A2:D10"]);
             ws.Cells["E5"].Insert(eShiftTypeInsert.Right);
@@ -1049,7 +1052,7 @@ namespace EPPlusTest.Core.Range.Insert
         [TestMethod]
         public void ValidateSparkLineShiftDown()
         {
-            var ws = _pck.Workbook.Worksheets.Add("SparkLineShiftDown");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("SparkLineShiftDown");
             LoadTestdata(ws, 10);
             ws.SparklineGroups.Add(OfficeOpenXml.Sparkline.eSparklineType.Column, ws.Cells["E2:E10"], ws.Cells["A2:D10"]);
             ws.Cells["E5"].Insert(eShiftTypeInsert.Down);
@@ -1060,7 +1063,7 @@ namespace EPPlusTest.Core.Range.Insert
         [TestMethod]
         public void ValidateSparkLineInsertRow()
         {
-            var ws = _pck.Workbook.Worksheets.Add("SparkLineInsertRow");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("SparkLineInsertRow");
             LoadTestdata(ws, 10);
             ws.SparklineGroups.Add(OfficeOpenXml.Sparkline.eSparklineType.Column, ws.Cells["E2:E10"], ws.Cells["A2:D10"]);
             ws.InsertRow(5, 1);
@@ -1071,7 +1074,7 @@ namespace EPPlusTest.Core.Range.Insert
         [TestMethod]
         public void ValidateSparkLineInsertColumn()
         {
-            var ws = _pck.Workbook.Worksheets.Add("SparkLineInsertColumn");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("SparkLineInsertColumn");
             LoadTestdata(ws, 10);
             ws.SparklineGroups.Add(OfficeOpenXml.Sparkline.eSparklineType.Column, ws.Cells["E2:E10"], ws.Cells["A2:D10"]);
             ws.InsertColumn(2, 1);
@@ -1083,10 +1086,10 @@ namespace EPPlusTest.Core.Range.Insert
         [TestMethod]
         public void InsertIntoTemplate1()
         {
-            using (var p = OpenTemplatePackage("InsertDeleteTemplate.xlsx"))
+            using (ExcelPackage? p = OpenTemplatePackage("InsertDeleteTemplate.xlsx"))
             {
-                var ws = p.Workbook.Worksheets["C3R"];
-                var ws2 = ws.Workbook.Worksheets.Add("C3R-2", ws);
+                ExcelWorksheet? ws = p.Workbook.Worksheets["C3R"];
+                ExcelWorksheet? ws2 = ws.Workbook.Worksheets.Add("C3R-2", ws);
                 ws.Cells["G49:G52"].Insert(eShiftTypeInsert.Down);
                 ws2.Cells["G49:G52"].Insert(eShiftTypeInsert.Right);
 
@@ -1096,10 +1099,10 @@ namespace EPPlusTest.Core.Range.Insert
         [TestMethod]
         public void InsertIntoTemplate2()
         {
-            using (var p = OpenTemplatePackage("InsertDeleteTemplate.xlsx"))
+            using (ExcelPackage? p = OpenTemplatePackage("InsertDeleteTemplate.xlsx"))
             {
-                var ws = p.Workbook.Worksheets["C3R"];
-                var ws2 = ws.Workbook.Worksheets.Add("C3R-2", ws);
+                ExcelWorksheet? ws = p.Workbook.Worksheets["C3R"];
+                ExcelWorksheet? ws2 = ws.Workbook.Worksheets.Add("C3R-2", ws);
                 ws.Cells["L49:L52"].Insert(eShiftTypeInsert.Down);
                 ws2.Cells["L49:L52"].Insert(eShiftTypeInsert.Right);
 
@@ -1109,8 +1112,8 @@ namespace EPPlusTest.Core.Range.Insert
         [TestMethod]
         public void ValidateConditionalFormattingInsertColumnMultiRange()
         {
-            var ws = _pck.Workbook.Worksheets.Add("CondFormPartialUpMR");
-            var cf = ws.ConditionalFormatting.AddAboveAverage(new ExcelAddress("B2:E5,D3:E5"));
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("CondFormPartialUpMR");
+            IExcelConditionalFormattingAverageGroup? cf = ws.ConditionalFormatting.AddAboveAverage(new ExcelAddress("B2:E5,D3:E5"));
             cf.Style.Fill.BackgroundColor.SetColor(eThemeSchemeColor.Accent1);
 
             ws.InsertColumn(4,1);
@@ -1120,11 +1123,11 @@ namespace EPPlusTest.Core.Range.Insert
         [TestMethod]
         public void CheckConditionalFormattingFormulaAfterInsertingRow()
         {
-            using (var p = new ExcelPackage())
+            using (ExcelPackage? p = new ExcelPackage())
             {
                 // Create a worksheet with conditional formatting 
-                var ws = p.Workbook.Worksheets.Add("Sheet1");
-                var cf = ws.ConditionalFormatting.AddExpression(ws.Cells["B5:G5"]);
+                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Sheet1");
+                IExcelConditionalFormattingExpression? cf = ws.ConditionalFormatting.AddExpression(ws.Cells["B5:G5"]);
                 cf.Formula = "=(B$4=0)";
 
                 // Insert a row before the column being referenced by the CF formula
@@ -1138,11 +1141,11 @@ namespace EPPlusTest.Core.Range.Insert
         [TestMethod]
         public void CheckConditionalFormattingFormulaAfterInsertingColumn()
         {
-            using (var p = new ExcelPackage())
+            using (ExcelPackage? p = new ExcelPackage())
             {
                 // Create a worksheet with conditional formatting 
-                var ws = p.Workbook.Worksheets.Add("Sheet1");
-                var cf = ws.ConditionalFormatting.AddExpression(ws.Cells["E2:E7"]);
+                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Sheet1");
+                IExcelConditionalFormattingExpression? cf = ws.ConditionalFormatting.AddExpression(ws.Cells["E2:E7"]);
                 cf.Formula = "=($D2=0)";
 
                 // Insert a column before the column being referenced by the CF formula
@@ -1157,8 +1160,8 @@ namespace EPPlusTest.Core.Range.Insert
         [TestMethod]
         public void ValidateCommentsShouldShiftRightOnInsertIntoRange()
         {
-            var ws = _pck.Workbook.Worksheets.Add("InsertRightComment");
-            var commentAddress = "B2";
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("InsertRightComment");
+            string? commentAddress = "B2";
             ws.Comments.Add(ws.Cells[commentAddress], "This is a comment.", "author");
             ws.Cells[commentAddress].Value = "This cell contains a comment.";
 
@@ -1173,8 +1176,8 @@ namespace EPPlusTest.Core.Range.Insert
         [TestMethod]
         public void ValidateCommentsShouldNotShiftRightOnInsertIntoRange()
         {
-            var ws = _pck.Workbook.Worksheets.Add("InsertRightComment2");
-            var commentAddress = "B4";
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("InsertRightComment2");
+            string? commentAddress = "B4";
             ws.Comments.Add(ws.Cells[commentAddress], "This is a comment.", "author");
             ws.Cells[commentAddress].Value = "This cell contains a comment.";
 
@@ -1188,8 +1191,8 @@ namespace EPPlusTest.Core.Range.Insert
         [TestMethod]
         public void ValidateThreadedCommentsShouldShiftRightOnInsertIntoRange()
         {
-            var ws = _pck.Workbook.Worksheets.Add("InsertRightTC");
-            var commentAddress = "B2";
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("InsertRightTC");
+            string? commentAddress = "B2";
             ws.ThreadedComments.Add(commentAddress);
             ws.Cells[commentAddress].Value = "This cell contains a threaded comment.";
 
@@ -1203,8 +1206,8 @@ namespace EPPlusTest.Core.Range.Insert
         [TestMethod]
         public void ValidateThreadedCommentsShouldNotShiftRightOnInsertIntoRange()
         {
-            var ws = _pck.Workbook.Worksheets.Add("InsertRightTC2");
-            var commentAddress = "B4";
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("InsertRightTC2");
+            string? commentAddress = "B4";
             ws.ThreadedComments.Add(commentAddress);
             ws.Cells[commentAddress].Value = "This cell contains a threaded comment.";
 
@@ -1218,13 +1221,13 @@ namespace EPPlusTest.Core.Range.Insert
         public void ValidateTableCalculatedColumnFormulasAfterInsertRowAndInsertColumn()
         {
             //Test created from issue #484 - https://github.com/EPPlusSoftware/EPPlus/issues/484
-            var ws = _pck.Workbook.Worksheets.Add("InsertCalculateColumnFormula");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("InsertCalculateColumnFormula");
 
             // Create some tables with calculated column formulas
-            var tbl1 = ws.Tables.Add(ws.Cells["A11:C15"], "Table3");
+            ExcelTable? tbl1 = ws.Tables.Add(ws.Cells["A11:C15"], "Table3");
             tbl1.Columns[2].CalculatedColumnFormula = "A12+B12";
 
-            var tbl2 = ws.Tables.Add(ws.Cells["E11:G15"], "Table4");
+            ExcelTable? tbl2 = ws.Tables.Add(ws.Cells["E11:G15"], "Table4");
             tbl2.Columns[2].CalculatedColumnFormula = "A12+F12";
 
             // Check the formulas have been set correctly
@@ -1249,13 +1252,13 @@ namespace EPPlusTest.Core.Range.Insert
         public void ValidateTableCalculatedColumnFormulasAfterInsertRange()
         {
             //Test created from issue #484 - https://github.com/EPPlusSoftware/EPPlus/issues/484
-            var ws = _pck.Workbook.Worksheets.Add("InsertCalcColumnFormulaRange");
+            ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("InsertCalcColumnFormulaRange");
 
             // Create some tables with calculated column formulas
-            var tbl1 = ws.Tables.Add(ws.Cells["A11:C15"], "Table1");
+            ExcelTable? tbl1 = ws.Tables.Add(ws.Cells["A11:C15"], "Table1");
             tbl1.Columns[2].CalculatedColumnFormula = "A12+B12";
 
-            var tbl2 = ws.Tables.Add(ws.Cells["E11:G15"], "Table2");
+            ExcelTable? tbl2 = ws.Tables.Add(ws.Cells["E11:G15"], "Table2");
             tbl2.Columns[2].CalculatedColumnFormula = "A12+F12";
 
             // Check the formulas have been set correctly

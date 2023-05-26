@@ -21,10 +21,10 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.FinancialDayCount
     {
         public FinancialPeriod GetCouponPeriod(FinancialDay settlementDay, FinancialDay maturityDay, int frequency)
         {
-            var periods = new List<FinancialPeriod>();
-            var settlementDate = settlementDay.ToDateTime();
-            var tmpDay = maturityDay;
-            var lastDay = tmpDay;
+            List<FinancialPeriod>? periods = new List<FinancialPeriod>();
+            System.DateTime settlementDate = settlementDay.ToDateTime();
+            FinancialDay? tmpDay = maturityDay;
+            FinancialDay? lastDay = tmpDay;
 
             while (tmpDay.ToDateTime() > settlementDate)
             {
@@ -52,11 +52,11 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.FinancialDayCount
 
         public IEnumerable<FinancialPeriod> GetCouponPeriodsBackwards(FinancialDay settlement, FinancialDay date, int frequency)
         {
-            var periods = new List<FinancialPeriod>();
-            var tmpDay = settlement;
+            List<FinancialPeriod>? periods = new List<FinancialPeriod>();
+            FinancialDay? tmpDay = settlement;
             while(tmpDay > date)
             {
-                var periodEndDay = tmpDay;
+                FinancialDay? periodEndDay = tmpDay;
                 switch (frequency)
                 {
                     case 1:
@@ -78,8 +78,8 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.FinancialDayCount
 
         private FinancialPeriod CreateCalendarPeriod(System.DateTime startDate, int frequency, DayCountBasis basis, bool createFuturePeriod)
         {
-            var d1 = System.DateTime.MinValue;
-            var factor = createFuturePeriod ? 1 : -1;
+            System.DateTime d1 = System.DateTime.MinValue;
+            int factor = createFuturePeriod ? 1 : -1;
             switch(frequency)
             {
                 case 1:
@@ -155,19 +155,19 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.FinancialDayCount
 
         public IEnumerable<FinancialPeriod> GetCalendarYearPeriodsBackwards(FinancialDay settlement, FinancialDay date, int frequency, int additionalPeriods)
         {
-            var periods = new List<FinancialPeriod>();
-            var period = GetSettlementCalendarYearPeriod(settlement, frequency);
+            List<FinancialPeriod>? periods = new List<FinancialPeriod>();
+            FinancialPeriod? period = GetSettlementCalendarYearPeriod(settlement, frequency);
             periods.Add(period);
             while (period.Start > date)
             {
-                var dt = period.Start.ToDateTime();
+                System.DateTime dt = period.Start.ToDateTime();
                 period = CreateCalendarPeriod(dt, frequency, date.GetBasis(), false);
                 periods.Add(period);
             }
-            for(var x = 0; x < additionalPeriods; x++)
+            for(int x = 0; x < additionalPeriods; x++)
             {
-                var tmpDate = periods.Last().Start.ToDateTime();
-                var p = CreateCalendarPeriod(tmpDate, frequency, date.GetBasis(), false);
+                System.DateTime tmpDate = periods.Last().Start.ToDateTime();
+                FinancialPeriod? p = CreateCalendarPeriod(tmpDate, frequency, date.GetBasis(), false);
                 periods.Add(p);
             }
             return periods;
@@ -175,10 +175,10 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.FinancialDayCount
 
         public int GetNumberOfCouponPeriods(FinancialDay settlementDay, FinancialDay maturityDay, int frequency)
         {
-            var settlementDate = settlementDay.ToDateTime();
-            var tmpDay = maturityDay;
-            var lastDay = tmpDay;
-            var nPeriods = 0;
+            System.DateTime settlementDate = settlementDay.ToDateTime();
+            FinancialDay? tmpDay = maturityDay;
+            FinancialDay? lastDay = tmpDay;
+            int nPeriods = 0;
             while (tmpDay.ToDateTime() > settlementDate)
             {
                 switch (frequency)
@@ -207,8 +207,8 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.FinancialDayCount
 
         protected double ActualDaysInLeapYear(FinancialDay start, FinancialDay end)
         {
-            var daysInLeapYear = 0d;
-            for(var year = start.Year; year <= end.Year; year++)
+            double daysInLeapYear = 0d;
+            for(short year = start.Year; year <= end.Year; year++)
             {
                 if (System.DateTime.IsLeapYear(year))
                 {

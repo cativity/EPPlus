@@ -48,7 +48,7 @@ namespace OfficeOpenXml.FormulaParsing.ExpressionGraph.UnrecognizedFunctionsPipe
         /// <returns>An <see cref="ExcelFunction"/> that can handle the function call</returns>
         internal ExcelFunction FindFunction(string funcName)
         {
-            foreach(var handler in _handlers)
+            foreach(UnrecognizedFunctionsHandler? handler in _handlers)
             {
                 if(handler.Handle(funcName, _children, _context, out ExcelFunction function))
                 {

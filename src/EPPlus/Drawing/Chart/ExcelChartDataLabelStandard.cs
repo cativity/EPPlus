@@ -31,8 +31,8 @@ namespace OfficeOpenXml.Drawing.Chart
             }
             else
             {
-                var fullNodeName = "c:" + nodeName;
-                var topNode = GetNode(fullNodeName);
+                string? fullNodeName = "c:" + nodeName;
+                XmlNode? topNode = GetNode(fullNodeName);
                 if (topNode == null)
                 {
                     topNode = CreateNode(fullNodeName);

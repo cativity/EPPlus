@@ -549,21 +549,19 @@ namespace OfficeOpenXml.Encryption
         }
         internal byte[] WriteBinary()
         {
-            using (MemoryStream? ms = RecyclableMemory.GetStream())
-            {
-                BinaryWriter bw = new BinaryWriter(ms);
+            using MemoryStream? ms = RecyclableMemory.GetStream();
+            BinaryWriter bw = new BinaryWriter(ms);
 
-                bw.Write(MajorVersion);
-                bw.Write(MinorVersion);
-                bw.Write((int)Flags);
-                byte[] header = Header.WriteBinary();
-                bw.Write((uint)header.Length);
-                bw.Write(header);
-                bw.Write(Verifier.WriteBinary());
+            bw.Write(MajorVersion);
+            bw.Write(MinorVersion);
+            bw.Write((int)Flags);
+            byte[] header = Header.WriteBinary();
+            bw.Write((uint)header.Length);
+            bw.Write(header);
+            bw.Write(Verifier.WriteBinary());
 
-                bw.Flush();
-                return ms.ToArray();
-            }
+            bw.Flush();
+            return ms.ToArray();
         }
 
     }

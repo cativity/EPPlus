@@ -126,10 +126,8 @@ namespace OfficeOpenXml.Drawing.Chart.Style
         /// <param name="clearLibrary">If true, clear the library before load.</param>
         public static void LoadStyles(FileInfo ecsFile, bool clearLibrary = true)
         {
-            using (FileStream? fs = ecsFile.Open(FileMode.Open, FileAccess.Read, FileShare.Read))
-            {
-                LoadStyles(fs, clearLibrary, fs.Name);
-            }
+            using FileStream? fs = ecsFile.Open(FileMode.Open, FileAccess.Read, FileShare.Read);
+            LoadStyles(fs, clearLibrary, fs.Name);
         }
         /// <summary>
         /// Load a single chart style library stream into memory from the supplied directory

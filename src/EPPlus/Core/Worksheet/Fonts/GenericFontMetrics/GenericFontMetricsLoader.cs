@@ -43,11 +43,9 @@ namespace OfficeOpenXml.Core.Worksheet.Core.Worksheet.Fonts.GenericMeasurements
                     {
                         byte[]? bytes = new byte[entry.UncompressedSize];
                         int size = zipStream.Read(bytes, 0, (int)entry.UncompressedSize);
-                        using (MemoryStream? ms = RecyclableMemory.GetStream(bytes))
-                        {
-                            SerializedFontMetrics? fnt = GenericFontMetricsSerializer.Deserialize(ms);
-                            fonts.Add(fnt.GetKey(), fnt);
-                        }
+                        using MemoryStream? ms = RecyclableMemory.GetStream(bytes);
+                        SerializedFontMetrics? fnt = GenericFontMetricsSerializer.Deserialize(ms);
+                        fonts.Add(fnt.GetKey(), fnt);
 
                     }
                 }  

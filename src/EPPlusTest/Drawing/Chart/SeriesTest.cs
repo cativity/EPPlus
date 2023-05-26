@@ -115,12 +115,10 @@ namespace EPPlusTest.Drawing.Chart
         [ExpectedException(typeof(ArgumentException))]
         public void ChartSeriesLitStringYNumX()
         {
-            using(ExcelPackage? p=new ExcelPackage())
-            {
-                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("InvalidStrLit");
-                ExcelLineChart? lineChart = ws.Drawings.AddLineChart("LineChart1", OfficeOpenXml.Drawing.Chart.eLineChartType.Line);
-                ExcelLineChartSerie? serie = lineChart.Series.Add("{\"Label1\",\"Label 2\",\"Something else\"}", "{120.3,14,5000.0005}");
-            }
+            using ExcelPackage? p = new ExcelPackage();
+            ExcelWorksheet? ws = p.Workbook.Worksheets.Add("InvalidStrLit");
+            ExcelLineChart? lineChart = ws.Drawings.AddLineChart("LineChart1", OfficeOpenXml.Drawing.Chart.eLineChartType.Line);
+            ExcelLineChartSerie? serie = lineChart.Series.Add("{\"Label1\",\"Label 2\",\"Something else\"}", "{120.3,14,5000.0005}");
         }
     }
 }

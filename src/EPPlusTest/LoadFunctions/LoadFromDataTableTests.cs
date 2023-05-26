@@ -59,11 +59,9 @@ namespace EPPlusTest.LoadFunctions
             table.Rows.Add(2, "Doug", "Hurley");
 
             //create a workbook with a spreadsheet and load the data table
-            using(ExcelPackage? package = new ExcelPackage())
-            {
-                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("Astronauts");
-                sheet.Cells["A1"].LoadFromDataTable(table);
-            }
+            using ExcelPackage? package = new ExcelPackage();
+            ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("Astronauts");
+            sheet.Cells["A1"].LoadFromDataTable(table);
         }
 
         [TestMethod]
@@ -107,21 +105,20 @@ namespace EPPlusTest.LoadFunctions
                           "</Astronauts>";
             XmlReader? reader = XmlReader.Create(new StringReader(xml));
             dataSet.ReadXml(reader);
-            using(ExcelPackage? package = new ExcelPackage())
-            {
-                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
-                DataTable? table = dataSet.Tables["Astronaut"];
-                // default the Id ends up last in the column order. This moves it to the first position.
-                table.Columns["Id"].SetOrdinal(0);
-                // Set caption for the headers
-                table.Columns["FirstName"].Caption = "First name";
-                table.Columns["LastName"].Caption = "Last name";
-                // call LoadFromDataTable, print headers and use the Dark1 table style
-                sheet.Cells["A1"].LoadFromDataTable(table, true, TableStyles.Dark1);
-                // AutoFit column with for the entire range
-                sheet.Cells[1, 1, sheet.Dimension.End.Row, sheet.Dimension.End.Row].AutoFitColumns();
-                //package.SaveAs(new FileInfo(@"c:\temp\astronauts.xlsx"));
-            }
+            using ExcelPackage? package = new ExcelPackage();
+            ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
+            DataTable? table = dataSet.Tables["Astronaut"];
+            // default the Id ends up last in the column order. This moves it to the first position.
+            table.Columns["Id"].SetOrdinal(0);
+            // Set caption for the headers
+            table.Columns["FirstName"].Caption = "First name";
+            table.Columns["LastName"].Caption = "Last name";
+            // call LoadFromDataTable, print headers and use the Dark1 table style
+            sheet.Cells["A1"].LoadFromDataTable(table, true, TableStyles.Dark1);
+            // AutoFit column with for the entire range
+            sheet.Cells[1, 1, sheet.Dimension.End.Row, sheet.Dimension.End.Row].AutoFitColumns();
+
+            //package.SaveAs(new FileInfo(@"c:\temp\astronauts.xlsx"));
         }
 
         [TestMethod]

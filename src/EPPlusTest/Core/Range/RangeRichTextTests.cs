@@ -102,25 +102,21 @@ namespace EPPlusTest.Core.Range
         [TestMethod]
         public void ValidateIsRichTextValuesAndTexts()
         {
-            using (ExcelPackage? p1 = new ExcelPackage())
-            {
-                ExcelWorksheet? ws = p1.Workbook.Worksheets.Add("RichText");
-                string? v = "Player's taunt success & you attack them";
-                ws.Cells["A1"].Value = v;
-                p1.Save();
+            using ExcelPackage? p1 = new ExcelPackage();
+            ExcelWorksheet? ws = p1.Workbook.Worksheets.Add("RichText");
+            string? v = "Player's taunt success & you attack them";
+            ws.Cells["A1"].Value = v;
+            p1.Save();
 
-                using (ExcelPackage? p2 = new ExcelPackage(p1.Stream))
-                {
-                    Assert.AreEqual(v, ws.Cells["A1"].Value);
-                    ws.Cells["A1"].IsRichText = true;
-                    Assert.AreEqual(v, ws.Cells["A1"].Value);
-                    Assert.AreEqual(v, ws.Cells["A1"].RichText.Text);
-                    ws.Cells["A1"].IsRichText = false;
-                    Assert.AreEqual(v, ws.Cells["A1"].Value);
+            using ExcelPackage? p2 = new ExcelPackage(p1.Stream);
+            Assert.AreEqual(v, ws.Cells["A1"].Value);
+            ws.Cells["A1"].IsRichText = true;
+            Assert.AreEqual(v, ws.Cells["A1"].Value);
+            Assert.AreEqual(v, ws.Cells["A1"].RichText.Text);
+            ws.Cells["A1"].IsRichText = false;
+            Assert.AreEqual(v, ws.Cells["A1"].Value);
 
-                    p2.Save();
-                }
-            }
+            p2.Save();
         }
         [TestMethod]
         public void ValidateRichTextOverwriteByArray()

@@ -38,28 +38,24 @@ namespace EPPlusTest.LoadFunctions
         [TestMethod]
         public void ShouldLoadDictionaryWithoutHeaders()
         {
-            using (ExcelPackage? package = new ExcelPackage())
-            {
-                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
-                ExcelRangeBase? r = sheet.Cells["A1"].LoadFromDictionaries(_items);
+            using ExcelPackage? package = new ExcelPackage();
+            ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
+            ExcelRangeBase? r = sheet.Cells["A1"].LoadFromDictionaries(_items);
 
-                Assert.AreEqual(1, sheet.Cells["A1"].Value);
-                Assert.AreEqual("TestName 2", sheet.Cells["B2"].Value);
-            }
+            Assert.AreEqual(1, sheet.Cells["A1"].Value);
+            Assert.AreEqual("TestName 2", sheet.Cells["B2"].Value);
         }
         
         [TestMethod]
         public void ShouldLoadDictionaryWithHeaders()
         {
-            using(ExcelPackage? package = new ExcelPackage())
-            {
-                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
-                ExcelRangeBase? r = sheet.Cells["A1"].LoadFromDictionaries(_items, true, TableStyles.None, null);
+            using ExcelPackage? package = new ExcelPackage();
+            ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
+            ExcelRangeBase? r = sheet.Cells["A1"].LoadFromDictionaries(_items, true, TableStyles.None, null);
 
-                Assert.AreEqual("Id", sheet.Cells["A1"].Value);
-                Assert.AreEqual(1, sheet.Cells["A2"].Value);
-                Assert.AreEqual("TestName 2", sheet.Cells["B3"].Value);
-            }
+            Assert.AreEqual("Id", sheet.Cells["A1"].Value);
+            Assert.AreEqual(1, sheet.Cells["A2"].Value);
+            Assert.AreEqual("TestName 2", sheet.Cells["B3"].Value);
         }
 
         [TestMethod]
@@ -69,13 +65,11 @@ namespace EPPlusTest.LoadFunctions
             {
                 item["First_name"] = "test";
             }
-            using (ExcelPackage? package = new ExcelPackage())
-            {
-                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
-                ExcelRangeBase? r = sheet.Cells["A1"].LoadFromDictionaries(_items, true, TableStyles.None, null);
+            using ExcelPackage? package = new ExcelPackage();
+            ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
+            ExcelRangeBase? r = sheet.Cells["A1"].LoadFromDictionaries(_items, true, TableStyles.None, null);
 
-                Assert.AreEqual("First name", sheet.Cells["C1"].Value);
-            }
+            Assert.AreEqual("First name", sheet.Cells["C1"].Value);
         }
 
         [TestMethod]
@@ -85,42 +79,36 @@ namespace EPPlusTest.LoadFunctions
             {
                 item["FirstName"] = "test";
             }
-            using (ExcelPackage? package = new ExcelPackage())
+            using ExcelPackage? package = new ExcelPackage();
+            ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
+            ExcelRangeBase? r = sheet.Cells["A1"].LoadFromDictionaries(_items, c =>
             {
-                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
-                ExcelRangeBase? r = sheet.Cells["A1"].LoadFromDictionaries(_items, c =>
-                {
-                    c.PrintHeaders = true;
-                    c.HeaderParsingType = HeaderParsingTypes.CamelCaseToSpace;
-                });
+                c.PrintHeaders = true;
+                c.HeaderParsingType = HeaderParsingTypes.CamelCaseToSpace;
+            });
 
-                Assert.AreEqual("First Name", sheet.Cells["C1"].Value);
-            }
+            Assert.AreEqual("First Name", sheet.Cells["C1"].Value);
         }
 
         [TestMethod]
         public void ShouldLoadDictionaryWithHeadersAndTable()
         {
-            using (ExcelPackage? package = new ExcelPackage())
-            {
-                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
-                ExcelRangeBase? r = sheet.Cells["A1"].LoadFromDictionaries(_items, true, TableStyles.Dark1, null);
+            using ExcelPackage? package = new ExcelPackage();
+            ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
+            ExcelRangeBase? r = sheet.Cells["A1"].LoadFromDictionaries(_items, true, TableStyles.Dark1, null);
 
-                Assert.AreEqual(1, sheet.Tables.Count);
-                Assert.AreEqual(TableStyles.Dark1, sheet.Tables.First().TableStyle);
-            }
+            Assert.AreEqual(1, sheet.Tables.Count);
+            Assert.AreEqual(TableStyles.Dark1, sheet.Tables.First().TableStyle);
         }
 
         [TestMethod]
         public void ShouldLoadDictionaryWithKeysFilter()
         {
-            using (ExcelPackage? package = new ExcelPackage())
-            {
-                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
-                ExcelRangeBase? r = sheet.Cells["A1"].LoadFromDictionaries(_items, false, TableStyles.None, new string[] { "Name" });
+            using ExcelPackage? package = new ExcelPackage();
+            ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
+            ExcelRangeBase? r = sheet.Cells["A1"].LoadFromDictionaries(_items, false, TableStyles.None, new string[] { "Name" });
 
-                Assert.AreEqual("TestName 1", sheet.Cells["A1"].Value);
-            }
+            Assert.AreEqual("TestName 1", sheet.Cells["A1"].Value);
         }
 
         [TestMethod]
@@ -130,20 +118,18 @@ namespace EPPlusTest.LoadFunctions
             {
                 item["Number"] = 1;
             }
-            using (ExcelPackage? package = new ExcelPackage())
+            using ExcelPackage? package = new ExcelPackage();
+            ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
+            ExcelRangeBase? r = sheet.Cells["A1"].LoadFromDictionaries(_items, c =>
             {
-                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
-                ExcelRangeBase? r = sheet.Cells["A1"].LoadFromDictionaries(_items, c =>
-                {
-                    c.PrintHeaders = false;
-                    c.TableStyle = TableStyles.None;
-                    c.SetKeys("Name", "Number");
-                });
+                c.PrintHeaders = false;
+                c.TableStyle = TableStyles.None;
+                c.SetKeys("Name", "Number");
+            });
 
-                Assert.AreEqual("TestName 1", sheet.Cells["A1"].Value);
-                Assert.AreEqual(1, sheet.Cells["B1"].Value);
-                Assert.IsNull(sheet.Cells["C1"].Value);
-            }
+            Assert.AreEqual("TestName 1", sheet.Cells["A1"].Value);
+            Assert.AreEqual(1, sheet.Cells["B1"].Value);
+            Assert.IsNull(sheet.Cells["C1"].Value);
         }
 
         [TestMethod]
@@ -160,15 +146,13 @@ namespace EPPlusTest.LoadFunctions
                 o1,
                 o2
             };
-                using (ExcelPackage? package = new ExcelPackage())
-                {
-                    ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
-                    ExcelRangeBase? r = sheet.Cells["A1"].LoadFromDictionaries(items, true, TableStyles.None, null);
+            using ExcelPackage? package = new ExcelPackage();
+            ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
+            ExcelRangeBase? r = sheet.Cells["A1"].LoadFromDictionaries(items, true, TableStyles.None, null);
 
-                Assert.AreEqual("Id", sheet.Cells["A1"].Value);
-                Assert.AreEqual(1, sheet.Cells["A2"].Value);
-                Assert.AreEqual("TestName 2", sheet.Cells["B3"].Value);
-            }
+            Assert.AreEqual("Id", sheet.Cells["A1"].Value);
+            Assert.AreEqual(1, sheet.Cells["A2"].Value);
+            Assert.AreEqual("TestName 2", sheet.Cells["B3"].Value);
         }
 
         [TestMethod]
@@ -181,15 +165,13 @@ namespace EPPlusTest.LoadFunctions
                 o1,
                 o2
             };
-            using (ExcelPackage? package = new ExcelPackage())
-            {
-                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
-                ExcelRangeBase? r = sheet.Cells["A1"].LoadFromDictionaries(items, true, TableStyles.None, null);
+            using ExcelPackage? package = new ExcelPackage();
+            ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
+            ExcelRangeBase? r = sheet.Cells["A1"].LoadFromDictionaries(items, true, TableStyles.None, null);
 
-                Assert.AreEqual("Id", sheet.Cells["A1"].Value);
-                Assert.AreEqual(1, sheet.Cells["A2"].Value);
-                Assert.AreEqual("TestName 2", sheet.Cells["B3"].Value);
-            }
+            Assert.AreEqual("Id", sheet.Cells["A1"].Value);
+            Assert.AreEqual(1, sheet.Cells["A2"].Value);
+            Assert.AreEqual("TestName 2", sheet.Cells["B3"].Value);
         }
     }
 }

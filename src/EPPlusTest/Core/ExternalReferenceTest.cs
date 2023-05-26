@@ -439,15 +439,13 @@ namespace EPPlusTest.Core
         [TestMethod]
         public void RichTextClear()
         {
-            using (ExcelPackage? p = OpenPackage("RichText.xlsx", true))
-            {
-                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("SheetWithChart");
-                ws.Cells["A1:A5"].FillNumber(1, 1);
-                ws.Cells["A1:A5"].Style.Font.Bold = true;
-                ws.Cells["A1:A5"].RichText.Clear();
-                ws.Cells["A1:A5"].FillNumber(1, 1);
-                SaveAndCleanup(p);
-            }
+            using ExcelPackage? p = OpenPackage("RichText.xlsx", true);
+            ExcelWorksheet? ws = p.Workbook.Worksheets.Add("SheetWithChart");
+            ws.Cells["A1:A5"].FillNumber(1, 1);
+            ws.Cells["A1:A5"].Style.Font.Bold = true;
+            ws.Cells["A1:A5"].RichText.Clear();
+            ws.Cells["A1:A5"].FillNumber(1, 1);
+            SaveAndCleanup(p);
         }
     }
 }

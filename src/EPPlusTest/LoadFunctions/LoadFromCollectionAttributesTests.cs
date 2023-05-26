@@ -63,42 +63,37 @@ namespace EPPlusTest.LoadFunctions
         [TestMethod]
         public void ShouldUseAttributeForSorting()
         {
-            using (ExcelPackage? package = new ExcelPackage())
-            {
-                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
-                ExcelRangeBase? r = sheet.Cells["A1"].LoadFromCollection(_actors);
+            using ExcelPackage? package = new ExcelPackage();
+            ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
+            ExcelRangeBase? r = sheet.Cells["A1"].LoadFromCollection(_actors);
 
-                Assert.AreEqual("Birthdate", sheet.Cells["A1"].Value);
-                Assert.AreEqual("First name", sheet.Cells["B1"].Value);
-                Assert.AreEqual("Tax", sheet.Cells["F1"].Value);
-                Assert.AreEqual("John", sheet.Cells["B2"].Value);
-                Assert.AreEqual("Svensson", sheet.Cells["D3"].Value);
-                Assert.AreEqual(0.28, sheet.Cells["F4"].Value);
+            Assert.AreEqual("Birthdate", sheet.Cells["A1"].Value);
+            Assert.AreEqual("First name", sheet.Cells["B1"].Value);
+            Assert.AreEqual("Tax", sheet.Cells["F1"].Value);
+            Assert.AreEqual("John", sheet.Cells["B2"].Value);
+            Assert.AreEqual("Svensson", sheet.Cells["D3"].Value);
+            Assert.AreEqual(0.28, sheet.Cells["F4"].Value);
 
-                //package.SaveAs(new FileInfo(@"c:\temp\coll.xlsx"));
-            }
+
+            //package.SaveAs(new FileInfo(@"c:\temp\coll.xlsx"));
         }
 
         [TestMethod]
         public void ShouldUseAttributeForTableStyle()
         {
-            using (ExcelPackage? package = new ExcelPackage())
-            {
-                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
-                ExcelRangeBase? r = sheet.Cells["A1"].LoadFromCollection(_actors);
-                ExcelTable? table = sheet.Tables[0];
-                Assert.AreEqual(TableStyles.Dark1, table.TableStyle);
-            }
+            using ExcelPackage? package = new ExcelPackage();
+            ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
+            ExcelRangeBase? r = sheet.Cells["A1"].LoadFromCollection(_actors);
+            ExcelTable? table = sheet.Tables[0];
+            Assert.AreEqual(TableStyles.Dark1, table.TableStyle);
         }
 
         public void ShouldNotAutoCalc()
         {
-            using (ExcelPackage? package = new ExcelPackage())
-            {
-                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
-                ExcelRangeBase? r = sheet.Cells["A1"].LoadFromCollection(_actors);
-                Assert.IsNull(sheet.Cells["H3"].Value);
-            }
+            using ExcelPackage? package = new ExcelPackage();
+            ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
+            ExcelRangeBase? r = sheet.Cells["A1"].LoadFromCollection(_actors);
+            Assert.IsNull(sheet.Cells["H3"].Value);
         }
 
         [TestMethod]
@@ -110,14 +105,12 @@ namespace EPPlusTest.LoadFunctions
                 new Actor2{ Salary = 278.55, Tax = 0.23, FirstName = "Sven", MiddleName = "Bertil", LastName = "Svensson", Birthdate = new DateTime(1962, 6, 10)},
                 new Actor2{ Salary = 315.34, Tax = 0.28, FirstName = "Lisa", MiddleName = "Maria", LastName = "Gonzales", Birthdate = new DateTime(1971, 10, 2)}
             };
-            using (ExcelPackage? package = new ExcelPackage())
-            {
-                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
-                ExcelRangeBase? r = sheet.Cells["A1"].LoadFromCollection(actors);
-                ExcelTable? table = sheet.Tables[0];
-                Assert.AreEqual(TableStyles.Medium1, table.TableStyle);
-                Assert.IsNotNull(sheet.Cells["H3"].Value);
-            }
+            using ExcelPackage? package = new ExcelPackage();
+            ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
+            ExcelRangeBase? r = sheet.Cells["A1"].LoadFromCollection(actors);
+            ExcelTable? table = sheet.Tables[0];
+            Assert.AreEqual(TableStyles.Medium1, table.TableStyle);
+            Assert.IsNotNull(sheet.Cells["H3"].Value);
         }
 
         [TestMethod]
@@ -129,40 +122,34 @@ namespace EPPlusTest.LoadFunctions
                 new ActorTablestyleNone{ Salary = 278.55, Tax = 0.23, FirstName = "Sven", MiddleName = "Bertil", LastName = "Svensson", Birthdate = new DateTime(1962, 6, 10)},
                 new ActorTablestyleNone{ Salary = 315.34, Tax = 0.28, FirstName = "Lisa", MiddleName = "Maria", LastName = "Gonzales", Birthdate = new DateTime(1971, 10, 2)}
             };
-            using (ExcelPackage? package = new ExcelPackage())
-            {
-                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
-                ExcelRangeBase? r = sheet.Cells["A1"].LoadFromCollection(actors);
-                ExcelTable? table = sheet.Tables[0];
-                Assert.AreEqual(TableStyles.None, table.TableStyle);
-                Assert.IsNotNull(sheet.Cells["H3"].Value);
-            }
+            using ExcelPackage? package = new ExcelPackage();
+            ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
+            ExcelRangeBase? r = sheet.Cells["A1"].LoadFromCollection(actors);
+            ExcelTable? table = sheet.Tables[0];
+            Assert.AreEqual(TableStyles.None, table.TableStyle);
+            Assert.IsNotNull(sheet.Cells["H3"].Value);
         }
 
         [TestMethod]
         public void ShouldUseFuncArgOverAttributesForHeaders()
         {
-            using (ExcelPackage? package = new ExcelPackage())
-            {
-                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
-                ExcelRangeBase? r = sheet.Cells["A1"].LoadFromCollection(_actors, false);
+            using ExcelPackage? package = new ExcelPackage();
+            ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
+            ExcelRangeBase? r = sheet.Cells["A1"].LoadFromCollection(_actors, false);
 
-                Assert.AreEqual("John", sheet.Cells["B1"].Value);
-                Assert.AreEqual("Svensson", sheet.Cells["D2"].Value);
-                Assert.AreEqual(0.28, sheet.Cells["F3"].Value);
-            }
+            Assert.AreEqual("John", sheet.Cells["B1"].Value);
+            Assert.AreEqual("Svensson", sheet.Cells["D2"].Value);
+            Assert.AreEqual(0.28, sheet.Cells["F3"].Value);
         }
 
         [TestMethod]
         public void ShouldUseFuncArgOverAttributeForTableStyle()
         {
-            using (ExcelPackage? package = new ExcelPackage())
-            {
-                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
-                ExcelRangeBase? r = sheet.Cells["A1"].LoadFromCollection(_actors, true, TableStyles.Dark4);
-                ExcelTable? table = sheet.Tables[0];
-                Assert.AreEqual(TableStyles.Dark4, table.TableStyle);
-            }
+            using ExcelPackage? package = new ExcelPackage();
+            ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
+            ExcelRangeBase? r = sheet.Cells["A1"].LoadFromCollection(_actors, true, TableStyles.Dark4);
+            ExcelTable? table = sheet.Tables[0];
+            Assert.AreEqual(TableStyles.Dark4, table.TableStyle);
         }
 
         [TestMethod]
@@ -173,16 +160,13 @@ namespace EPPlusTest.LoadFunctions
                 new OuterWithSortOrderOnClassLevelV1{ ApprovedUtc = new DateTime(2021, 12, 14), Acknowledged = true, Organization = new Organization()},
                 new OuterWithSortOrderOnClassLevelV1{ ApprovedUtc = new DateTime(2021, 12, 15), Acknowledged = false, Organization = new Organization()}
             };
-            using (ExcelPackage? package = new ExcelPackage())
-            {
-                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
-                ExcelRangeBase? r = sheet.Cells["A1"].LoadFromCollection(objects, true, TableStyles.Dark4);
-                ExcelTable? table = sheet.Tables[0];
-                Assert.AreEqual("Acknowledged...", sheet.Cells["A1"].Value);
-                Assert.AreEqual("Org Level 4", sheet.Cells["B1"].Value);
-                Assert.AreEqual("ApprovedUtc", sheet.Cells["C1"].Value);
-
-            }
+            using ExcelPackage? package = new ExcelPackage();
+            ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
+            ExcelRangeBase? r = sheet.Cells["A1"].LoadFromCollection(objects, true, TableStyles.Dark4);
+            ExcelTable? table = sheet.Tables[0];
+            Assert.AreEqual("Acknowledged...", sheet.Cells["A1"].Value);
+            Assert.AreEqual("Org Level 4", sheet.Cells["B1"].Value);
+            Assert.AreEqual("ApprovedUtc", sheet.Cells["C1"].Value);
         }
     }
 }

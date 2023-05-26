@@ -14,24 +14,22 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions.Math
         [TestMethod]
         public void AverageIfsShouldNotCountNumericStringsAsNumbers()
         {
-            using (ExcelPackage? package = new ExcelPackage())
-            {
-                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
-                sheet.Cells[1, 1].Value = 3;
-                sheet.Cells[2, 1].Value = 4;
-                sheet.Cells[3, 1].Value = 5;
-                sheet.Cells[1, 2].Value = 1;
-                sheet.Cells[2, 2].Value = "2";
-                sheet.Cells[3, 2].Value = 3;
-                sheet.Cells[1, 3].Value = 2;
-                sheet.Cells[2, 3].Value = 1;
-                sheet.Cells[3, 3].Value = "4";
+            using ExcelPackage? package = new ExcelPackage();
+            ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
+            sheet.Cells[1, 1].Value = 3;
+            sheet.Cells[2, 1].Value = 4;
+            sheet.Cells[3, 1].Value = 5;
+            sheet.Cells[1, 2].Value = 1;
+            sheet.Cells[2, 2].Value = "2";
+            sheet.Cells[3, 2].Value = 3;
+            sheet.Cells[1, 3].Value = 2;
+            sheet.Cells[2, 3].Value = 1;
+            sheet.Cells[3, 3].Value = "4";
 
-                sheet.Cells[4, 1].Formula = "AVERAGEIFS(A1:A3,B1:B3,\">0\",C1:C3,\">1\")";
-                sheet.Calculate();
-                object? val = sheet.Cells[4, 1].Value;
-                Assert.AreEqual(3d, val);
-            }
+            sheet.Cells[4, 1].Formula = "AVERAGEIFS(A1:A3,B1:B3,\">0\",C1:C3,\">1\")";
+            sheet.Calculate();
+            object? val = sheet.Cells[4, 1].Value;
+            Assert.AreEqual(3d, val);
         }
     }
 }

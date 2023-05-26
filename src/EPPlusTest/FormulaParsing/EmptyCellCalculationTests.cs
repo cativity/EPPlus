@@ -73,37 +73,31 @@ namespace EPPlusTest.FormulaParsing
         [TestMethod]
         public void EmptyCellReferenceShouldEqualZero()
         {
-            using (ExcelPackage? pck = new ExcelPackage())
-            {
-                ExcelWorksheet? sheet = pck.Workbook.Worksheets.Add("Test");
-                sheet.Cells["A2"].Formula = "A1=0";
-                sheet.Calculate();
-                Assert.IsTrue((bool)sheet.Cells["A2"].Value);
-            }
+            using ExcelPackage? pck = new ExcelPackage();
+            ExcelWorksheet? sheet = pck.Workbook.Worksheets.Add("Test");
+            sheet.Cells["A2"].Formula = "A1=0";
+            sheet.Calculate();
+            Assert.IsTrue((bool)sheet.Cells["A2"].Value);
         }
 
         [TestMethod]
         public void EmptyCellReferenceShouldEqualEmptyString()
         {
-            using (ExcelPackage? pck = new ExcelPackage())
-            {
-                ExcelWorksheet? sheet = pck.Workbook.Worksheets.Add("Test");
-                sheet.Cells["A2"].Formula = "A1=\"\"";
-                sheet.Calculate();
-                Assert.IsTrue((bool)sheet.Cells["A2"].Value);
-            }
+            using ExcelPackage? pck = new ExcelPackage();
+            ExcelWorksheet? sheet = pck.Workbook.Worksheets.Add("Test");
+            sheet.Cells["A2"].Formula = "A1=\"\"";
+            sheet.Calculate();
+            Assert.IsTrue((bool)sheet.Cells["A2"].Value);
         }
 
         [TestMethod]
         public void EmptyCellReferenceShouldEqualFalse()
         {
-            using (ExcelPackage? pck = new ExcelPackage())
-            {
-                ExcelWorksheet? sheet = pck.Workbook.Worksheets.Add("Test");
-                sheet.Cells["A2"].Formula = "A1=FALSE";
-                sheet.Calculate();
-                Assert.IsTrue((bool)sheet.Cells["A2"].Value);
-            }
+            using ExcelPackage? pck = new ExcelPackage();
+            ExcelWorksheet? sheet = pck.Workbook.Worksheets.Add("Test");
+            sheet.Cells["A2"].Formula = "A1=FALSE";
+            sheet.Calculate();
+            Assert.IsTrue((bool)sheet.Cells["A2"].Value);
         }
 
         [TestMethod]

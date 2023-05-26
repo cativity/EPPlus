@@ -258,15 +258,11 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
         /// <returns>A html table</returns>
         public string GetHtmlString()
         {
-            using (MemoryStream? ms = RecyclableMemory.GetStream())
-            {
-                RenderHtml(ms);
-                ms.Position = 0;
-                using (StreamReader? sr = new StreamReader(ms))
-                {
-                    return sr.ReadToEnd();
-                }
-            }
+            using MemoryStream? ms = RecyclableMemory.GetStream();
+            RenderHtml(ms);
+            ms.Position = 0;
+            using StreamReader? sr = new StreamReader(ms);
+            return sr.ReadToEnd();
         }
         /// <summary>
         /// Exports the html part of an <see cref="ExcelTable"/> to a html string.

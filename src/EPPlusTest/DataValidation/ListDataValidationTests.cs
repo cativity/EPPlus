@@ -92,97 +92,89 @@ namespace EPPlusTest.DataValidation
         [TestMethod]
         public void ListDataValidation_ShowErrorMessageIsSet()
         {
-            using (ExcelPackage? package = new ExcelPackage())
-            {
-                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("list formula");
+            using ExcelPackage? package = new ExcelPackage();
+            ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("list formula");
 
-                ExcelWorksheet? sheet2 = package.Workbook.Worksheets.Add("Sheet2");
-                sheet2.Cells["A1"].Value = "A";
-                sheet2.Cells["A2"].Value = "B";
-                sheet2.Cells["A3"].Value = "C";
+            ExcelWorksheet? sheet2 = package.Workbook.Worksheets.Add("Sheet2");
+            sheet2.Cells["A1"].Value = "A";
+            sheet2.Cells["A2"].Value = "B";
+            sheet2.Cells["A3"].Value = "C";
 
-                // add a validation and set values
-                IExcelDataValidationList? validation = sheet.DataValidations.AddListValidation("A1");
-                // Alternatively:
-                // var validation = sheet.Cells["A1"].DataValidation.AddListDataValidation();
-                validation.ShowErrorMessage = true;
-                validation.ErrorStyle = ExcelDataValidationWarningStyle.warning;
-                validation.ErrorTitle = "An invalid value was entered";
-                validation.Error = "Select a value from the list";
-                validation.Formula.ExcelFormula = "Sheet2!A1:A3";
+            // add a validation and set values
+            IExcelDataValidationList? validation = sheet.DataValidations.AddListValidation("A1");
+            // Alternatively:
+            // var validation = sheet.Cells["A1"].DataValidation.AddListDataValidation();
+            validation.ShowErrorMessage = true;
+            validation.ErrorStyle = ExcelDataValidationWarningStyle.warning;
+            validation.ErrorTitle = "An invalid value was entered";
+            validation.Error = "Select a value from the list";
+            validation.Formula.ExcelFormula = "Sheet2!A1:A3";
 
-                Assert.IsTrue(validation.ShowErrorMessage.Value);
-            }
+            Assert.IsTrue(validation.ShowErrorMessage.Value);
         }
 
         [TestMethod]
         public void ListDataValidationExt_ShowDropDownIsSet()
         {
-            using (ExcelPackage? package = new ExcelPackage())
-            {
-                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("list formula");
+            using ExcelPackage? package = new ExcelPackage();
+            ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("list formula");
 
-                ExcelWorksheet? sheet2 = package.Workbook.Worksheets.Add("Sheet2");
-                sheet2.Cells["A1"].Value = "A";
-                sheet2.Cells["A2"].Value = "B";
-                sheet2.Cells["A3"].Value = "C";
+            ExcelWorksheet? sheet2 = package.Workbook.Worksheets.Add("Sheet2");
+            sheet2.Cells["A1"].Value = "A";
+            sheet2.Cells["A2"].Value = "B";
+            sheet2.Cells["A3"].Value = "C";
 
-                // add a validation and set values
-                IExcelDataValidationList? validation = sheet.DataValidations.AddListValidation("A1");
-                // Alternatively:
-                // var validation = sheet.Cells["A1"].DataValidation.AddListDataValidation();
-                validation.HideDropDown = true;
-                validation.ShowErrorMessage = true;
-                validation.ErrorStyle = ExcelDataValidationWarningStyle.warning;
-                validation.ErrorTitle = "An invalid value was entered";
-                validation.Error = "Select a value from the list";
-                validation.Formula.ExcelFormula = "Sheet2!A1:A3";
+            // add a validation and set values
+            IExcelDataValidationList? validation = sheet.DataValidations.AddListValidation("A1");
+            // Alternatively:
+            // var validation = sheet.Cells["A1"].DataValidation.AddListDataValidation();
+            validation.HideDropDown = true;
+            validation.ShowErrorMessage = true;
+            validation.ErrorStyle = ExcelDataValidationWarningStyle.warning;
+            validation.ErrorTitle = "An invalid value was entered";
+            validation.Error = "Select a value from the list";
+            validation.Formula.ExcelFormula = "Sheet2!A1:A3";
 
-                // refresh the data validation
-                validation = sheet.DataValidations.Find(x => x.Uid == validation.Uid).As.ListValidation;
+            // refresh the data validation
+            validation = sheet.DataValidations.Find(x => x.Uid == validation.Uid).As.ListValidation;
 
-                Assert.IsTrue(validation.HideDropDown.Value);
-                ExcelDataValidationList? v = validation as ExcelDataValidationList;
-                bool attributeValue = v.HideDropDown.Value;
-                Assert.IsTrue(attributeValue);
-            }
+            Assert.IsTrue(validation.HideDropDown.Value);
+            ExcelDataValidationList? v = validation as ExcelDataValidationList;
+            bool attributeValue = v.HideDropDown.Value;
+            Assert.IsTrue(attributeValue);
         }
 
         [TestMethod]
         public void ListDataValidation_ShowDropDownIsSet()
         {
-            using (ExcelPackage? package = new ExcelPackage())
-            {
-                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("list formula");
-                sheet.Cells["A1"].Value = "A";
-                sheet.Cells["A2"].Value = "B";
-                sheet.Cells["A3"].Value = "C";
+            using ExcelPackage? package = new ExcelPackage();
+            ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("list formula");
+            sheet.Cells["A1"].Value = "A";
+            sheet.Cells["A2"].Value = "B";
+            sheet.Cells["A3"].Value = "C";
 
-                // add a validation and set values
-                IExcelDataValidationList? validation = sheet.DataValidations.AddListValidation("B1");
-                validation.HideDropDown = true;
-                validation.ShowErrorMessage = true;
-                validation.Formula.ExcelFormula = "A1:A3";
+            // add a validation and set values
+            IExcelDataValidationList? validation = sheet.DataValidations.AddListValidation("B1");
+            validation.HideDropDown = true;
+            validation.ShowErrorMessage = true;
+            validation.Formula.ExcelFormula = "A1:A3";
 
-                Assert.IsTrue(validation.HideDropDown.Value);
-                ExcelDataValidationList? v = validation as ExcelDataValidationList;
-                bool attributeValue = v.HideDropDown.Value;
-                Assert.IsTrue(attributeValue);
-            }
+            Assert.IsTrue(validation.HideDropDown.Value);
+            ExcelDataValidationList? v = validation as ExcelDataValidationList;
+            bool attributeValue = v.HideDropDown.Value;
+            Assert.IsTrue(attributeValue);
         }
 
         [TestMethod]
         public void ListDataValidation_AllowsOperatorShouldBeFalse()
         {
-            using (ExcelPackage? package = new ExcelPackage())
-            {
-                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("list operator");
+            using ExcelPackage? package = new ExcelPackage();
+            ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("list operator");
 
-                // add a validation and set values
-                IExcelDataValidationList? validation = sheet.DataValidations.AddListValidation("A1");
+            // add a validation and set values
+            IExcelDataValidationList? validation = sheet.DataValidations.AddListValidation("A1");
 
-                Assert.IsFalse(validation.AllowsOperator);
-            }
+            Assert.IsFalse(validation.AllowsOperator);
         }
 
         [TestMethod, ExpectedException(typeof(InvalidOperationException))]
@@ -217,32 +209,30 @@ namespace EPPlusTest.DataValidation
         [TestMethod]
         public void ListLocalAndExt()
         {
-            using (ExcelPackage? package = OpenPackage("DataValidationExtLocalList.xlsx", true))
-            {
-                ExcelWorksheet? ws1 = package.Workbook.Worksheets.Add("Worksheet1");
-                package.Workbook.Worksheets.Add("Worksheet2");
+            using ExcelPackage? package = OpenPackage("DataValidationExtLocalList.xlsx", true);
+            ExcelWorksheet? ws1 = package.Workbook.Worksheets.Add("Worksheet1");
+            package.Workbook.Worksheets.Add("Worksheet2");
 
-                IExcelDataValidationDecimal? localVal = ws1.DataValidations.AddDecimalValidation("A1:A5");
+            IExcelDataValidationDecimal? localVal = ws1.DataValidations.AddDecimalValidation("A1:A5");
 
-                localVal.Formula.Value = 0;
-                localVal.Formula2.Value = 0.1;
+            localVal.Formula.Value = 0;
+            localVal.Formula2.Value = 0.1;
 
-                IExcelDataValidationList? extVal = ws1.DataValidations.AddListValidation("B1:B5");
+            IExcelDataValidationList? extVal = ws1.DataValidations.AddListValidation("B1:B5");
 
-                extVal.Formula.ExcelFormula = "Worksheet2!$G$12:G15";
+            extVal.Formula.ExcelFormula = "Worksheet2!$G$12:G15";
 
-                SaveAndCleanup(package);
+            SaveAndCleanup(package);
 
-                ExcelPackage? p = OpenPackage("DataValidationExtLocalList.xlsx");
+            ExcelPackage? p = OpenPackage("DataValidationExtLocalList.xlsx");
 
-                MemoryStream? stream = new MemoryStream();
-                p.SaveAs(stream);
+            MemoryStream? stream = new MemoryStream();
+            p.SaveAs(stream);
 
-                ExcelPackage pck = new ExcelPackage(stream);
+            ExcelPackage pck = new ExcelPackage(stream);
 
-                MemoryStream? stream2 = new MemoryStream();
-                pck.SaveAs(stream2);
-            }
+            MemoryStream? stream2 = new MemoryStream();
+            pck.SaveAs(stream2);
         }
     }
 }

@@ -205,76 +205,64 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions.Math
         [TestMethod]
         public void RoundShouldUseFifteenSignificantFigures()
         {
-            using(ExcelPackage? package = new ExcelPackage())
-            {
-                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
-                sheet.Cells["A1"].Value = 120253.8749999999d;
-                sheet.Cells["A2"].Formula = "ROUND(A1,2)";
-                sheet.Calculate(opt => opt.PrecisionAndRoundingStrategy = PrecisionAndRoundingStrategy.Excel);
-                Assert.AreEqual(120253.88, sheet.Cells["A2"].Value);
-                sheet.Calculate(opt => opt.PrecisionAndRoundingStrategy = PrecisionAndRoundingStrategy.DotNet);
-                Assert.AreEqual(120253.87, sheet.Cells["A2"].Value);
-            }
+            using ExcelPackage? package = new ExcelPackage();
+            ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
+            sheet.Cells["A1"].Value = 120253.8749999999d;
+            sheet.Cells["A2"].Formula = "ROUND(A1,2)";
+            sheet.Calculate(opt => opt.PrecisionAndRoundingStrategy = PrecisionAndRoundingStrategy.Excel);
+            Assert.AreEqual(120253.88, sheet.Cells["A2"].Value);
+            sheet.Calculate(opt => opt.PrecisionAndRoundingStrategy = PrecisionAndRoundingStrategy.DotNet);
+            Assert.AreEqual(120253.87, sheet.Cells["A2"].Value);
         }
 
         [TestMethod]
         public void RoundShouldHandleNullValue()
         {
-            using (ExcelPackage? package = new ExcelPackage())
-            {
-                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
-                sheet.Cells["A2"].Formula = "ROUND(A1,2)";
-                sheet.Calculate();
-                Assert.AreEqual(0d, sheet.Cells["A2"].Value);
-            }
+            using ExcelPackage? package = new ExcelPackage();
+            ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
+            sheet.Cells["A2"].Formula = "ROUND(A1,2)";
+            sheet.Calculate();
+            Assert.AreEqual(0d, sheet.Cells["A2"].Value);
         }
 
         [TestMethod]
         public void RoundUpShouldHandleNullValue()
         {
-            using (ExcelPackage? package = new ExcelPackage())
-            {
-                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
-                sheet.Cells["A2"].Formula = "ROUNDUP(A1,2)";
-                sheet.Calculate();
-                Assert.AreEqual(0d, sheet.Cells["A2"].Value);
-            }
+            using ExcelPackage? package = new ExcelPackage();
+            ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
+            sheet.Cells["A2"].Formula = "ROUNDUP(A1,2)";
+            sheet.Calculate();
+            Assert.AreEqual(0d, sheet.Cells["A2"].Value);
         }
 
         [TestMethod]
         public void RoundDownShouldHandleNullValue()
         {
-            using (ExcelPackage? package = new ExcelPackage())
-            {
-                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
-                sheet.Cells["A2"].Formula = "ROUNDDOWN(A1,2)";
-                sheet.Calculate();
-                Assert.AreEqual(0d, sheet.Cells["A2"].Value);
-            }
+            using ExcelPackage? package = new ExcelPackage();
+            ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
+            sheet.Cells["A2"].Formula = "ROUNDDOWN(A1,2)";
+            sheet.Calculate();
+            Assert.AreEqual(0d, sheet.Cells["A2"].Value);
         }
 
         [TestMethod]
         public void CeilingShouldHandleNullValue()
         {
-            using (ExcelPackage? package = new ExcelPackage())
-            {
-                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
-                sheet.Cells["A2"].Formula = "CEILING(A1,2)";
-                sheet.Calculate();
-                Assert.AreEqual(0d, sheet.Cells["A2"].Value);
-            }
+            using ExcelPackage? package = new ExcelPackage();
+            ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
+            sheet.Cells["A2"].Formula = "CEILING(A1,2)";
+            sheet.Calculate();
+            Assert.AreEqual(0d, sheet.Cells["A2"].Value);
         }
 
         [TestMethod]
         public void FloorShouldHandleNullValue()
         {
-            using (ExcelPackage? package = new ExcelPackage())
-            {
-                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
-                sheet.Cells["A2"].Formula = "FLOOR(A1,2)";
-                sheet.Calculate();
-                Assert.AreEqual(0d, sheet.Cells["A2"].Value);
-            }
+            using ExcelPackage? package = new ExcelPackage();
+            ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
+            sheet.Cells["A2"].Formula = "FLOOR(A1,2)";
+            sheet.Calculate();
+            Assert.AreEqual(0d, sheet.Cells["A2"].Value);
         }
 
         /* MROUND tests */
@@ -293,13 +281,11 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions.Math
         [TestMethod]
         public void MroundShouldHandleNullValue()
         {
-            using(ExcelPackage? package = new ExcelPackage())
-            {
-                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
-                sheet.Cells["A2"].Formula = "MROUND(A1,0.5)";
-                sheet.Calculate();
-                Assert.AreEqual(0d, sheet.Cells["A2"].Value);
-            }
+            using ExcelPackage? package = new ExcelPackage();
+            ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
+            sheet.Cells["A2"].Formula = "MROUND(A1,0.5)";
+            sheet.Calculate();
+            Assert.AreEqual(0d, sheet.Cells["A2"].Value);
         }
     }
 }

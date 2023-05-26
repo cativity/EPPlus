@@ -109,18 +109,16 @@ namespace EPPlusTest.FormulaParsing.IntegrationTests.BuiltInFunctions
 
         public static void Index(double row, double column, double expectedValue)
         {
-            using (ExcelPackage? package = CreateExcelPackage())
-            {
-                package.Workbook.Worksheets[InputWorksheet].Cells["B1"].Value = row;
-                package.Workbook.Worksheets[InputWorksheet].Cells["B2"].Value = column;
-                package.Workbook.Calculate(
-                     new ExcelCalculationOption
-                     {
-                         PrecisionAndRoundingStrategy = PrecisionAndRoundingStrategy.Excel
-                     });
-                object? extractedIndexValue = package.Workbook.Worksheets[ExtractWorksheet].Cells["B1"].Value;
-                Assert.AreEqual(expectedValue, System.Math.Round((double)extractedIndexValue, 10));
-            }
+            using ExcelPackage? package = CreateExcelPackage();
+            package.Workbook.Worksheets[InputWorksheet].Cells["B1"].Value = row;
+            package.Workbook.Worksheets[InputWorksheet].Cells["B2"].Value = column;
+            package.Workbook.Calculate(
+                 new ExcelCalculationOption
+                 {
+                     PrecisionAndRoundingStrategy = PrecisionAndRoundingStrategy.Excel
+                 });
+            object? extractedIndexValue = package.Workbook.Worksheets[ExtractWorksheet].Cells["B1"].Value;
+            Assert.AreEqual(expectedValue, System.Math.Round((double)extractedIndexValue, 10));
 
         }
 

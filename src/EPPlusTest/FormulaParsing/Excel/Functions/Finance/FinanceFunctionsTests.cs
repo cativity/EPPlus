@@ -314,16 +314,14 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions
         [TestMethod]
         public void TestWorksheet()
         {
-            using(ExcelPackage? package = new ExcelPackage())
-            {
-                package.Workbook.Worksheets.Add("$Unit");
-                ExcelWorksheet? sheet = package.Workbook.Worksheets["$Unit"];
-                Assert.IsNotNull(sheet);
+            using ExcelPackage? package = new ExcelPackage();
+            package.Workbook.Worksheets.Add("$Unit");
+            ExcelWorksheet? sheet = package.Workbook.Worksheets["$Unit"];
+            Assert.IsNotNull(sheet);
 
-                package.Workbook.Worksheets.Add("Unit1$");
-                ExcelWorksheet? sheet2 = package.Workbook.Worksheets["Unit1$"];
-                Assert.IsNotNull(sheet2);
-            }
+            package.Workbook.Worksheets.Add("Unit1$");
+            ExcelWorksheet? sheet2 = package.Workbook.Worksheets["Unit1$"];
+            Assert.IsNotNull(sheet2);
         }
 
         [TestMethod]

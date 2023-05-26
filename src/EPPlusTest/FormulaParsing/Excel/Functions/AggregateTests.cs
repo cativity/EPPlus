@@ -383,29 +383,27 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions
         [TestMethod]
         public void ShouldHandleMultipleLevelsOfAggregate()
         {
-            using (ExcelPackage? package = new ExcelPackage())
-            {
-                ExcelWorksheet? sheet3 = package.Workbook.Worksheets.Add("sheet3");
-                sheet3.Cells["A1"].Value = 26959.64;
-                sheet3.Cells["A2"].Value = 82272d;
-                sheet3.Cells["A3"].Formula = "AGGREGATE(9,0,A1:A2)";
-                sheet3.Cells["A4"].Formula = "AGGREGATE(9,0,A1:A3)";
+            using ExcelPackage? package = new ExcelPackage();
+            ExcelWorksheet? sheet3 = package.Workbook.Worksheets.Add("sheet3");
+            sheet3.Cells["A1"].Value = 26959.64;
+            sheet3.Cells["A2"].Value = 82272d;
+            sheet3.Cells["A3"].Formula = "AGGREGATE(9,0,A1:A2)";
+            sheet3.Cells["A4"].Formula = "AGGREGATE(9,0,A1:A3)";
 
-                ExcelWorksheet? sheet2 = package.Workbook.Worksheets.Add("sheet2");
-                sheet2.Cells["A1"].Formula = "sheet3!A4";
-                package.Workbook.Calculate();
-                Assert.AreEqual(109231.64d, sheet2.Cells["A1"].Value);
+            ExcelWorksheet? sheet2 = package.Workbook.Worksheets.Add("sheet2");
+            sheet2.Cells["A1"].Formula = "sheet3!A4";
+            package.Workbook.Calculate();
+            Assert.AreEqual(109231.64d, sheet2.Cells["A1"].Value);
 
-                sheet3.Cells["A3"].Formula = "AGGREGATE(8,0,A1:A2)";
-                sheet3.Cells["A4"].Formula = "AGGREGATE(8,0,A1:A3)";
-                package.Workbook.Calculate();
-                Assert.AreEqual(27656.18, sheet2.Cells["A1"].Value);
+            sheet3.Cells["A3"].Formula = "AGGREGATE(8,0,A1:A2)";
+            sheet3.Cells["A4"].Formula = "AGGREGATE(8,0,A1:A3)";
+            package.Workbook.Calculate();
+            Assert.AreEqual(27656.18, sheet2.Cells["A1"].Value);
 
-                sheet3.Cells["A3"].Formula = "AGGREGATE(7,0,A1:A2)";
-                sheet3.Cells["A4"].Formula = "AGGREGATE(7,0,A1:A3)";
-                package.Workbook.Calculate();
-                Assert.AreEqual(39111.7448d, System.Math.Round((double)sheet2.Cells["A1"].Value, 4));
-            }
+            sheet3.Cells["A3"].Formula = "AGGREGATE(7,0,A1:A2)";
+            sheet3.Cells["A4"].Formula = "AGGREGATE(7,0,A1:A3)";
+            package.Workbook.Calculate();
+            Assert.AreEqual(39111.7448d, System.Math.Round((double)sheet2.Cells["A1"].Value, 4));
         }
     }
 }

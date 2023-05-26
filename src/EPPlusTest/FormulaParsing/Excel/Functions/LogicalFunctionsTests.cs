@@ -58,11 +58,9 @@ namespace EPPlusTest.Excel.Functions
         [TestMethod, Ignore]
         public void IfShouldIgnoreCase()
         {
-            using (ExcelPackage? pck = new ExcelPackage(new FileInfo(@"c:\temp\book1.xlsx")))
-            {
-                pck.Workbook.Calculate();
-                Assert.AreEqual("Sant", pck.Workbook.Worksheets.First().Cells["C3"].Value);
-            }
+            using ExcelPackage? pck = new ExcelPackage(new FileInfo(@"c:\temp\book1.xlsx"));
+            pck.Workbook.Calculate();
+            Assert.AreEqual("Sant", pck.Workbook.Worksheets.First().Cells["C3"].Value);
         }
 
         [TestMethod]
@@ -95,53 +93,45 @@ namespace EPPlusTest.Excel.Functions
         [TestMethod]
         public void NotShouldHandleExcelReference()
         {
-            using (ExcelPackage? package = new ExcelPackage())
-            {
-                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("sheet1");
-                sheet.Cells["A1"].Value = false;
-                sheet.Cells["A2"].Formula = "NOT(A1)";
-                sheet.Calculate();
-                Assert.IsTrue((bool)sheet.Cells["A2"].Value);
-            }
+            using ExcelPackage? package = new ExcelPackage();
+            ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("sheet1");
+            sheet.Cells["A1"].Value = false;
+            sheet.Cells["A2"].Formula = "NOT(A1)";
+            sheet.Calculate();
+            Assert.IsTrue((bool)sheet.Cells["A2"].Value);
         }
 
         [TestMethod]
         public void NotShouldHandleExcelReferenceToStringFalse()
         {
-            using (ExcelPackage? package = new ExcelPackage())
-            {
-                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("sheet1");
-                sheet.Cells["A1"].Value = "false";
-                sheet.Cells["A2"].Formula = "NOT(A1)";
-                sheet.Calculate();
-                Assert.IsTrue((bool)sheet.Cells["A2"].Value);
-            }
+            using ExcelPackage? package = new ExcelPackage();
+            ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("sheet1");
+            sheet.Cells["A1"].Value = "false";
+            sheet.Cells["A2"].Formula = "NOT(A1)";
+            sheet.Calculate();
+            Assert.IsTrue((bool)sheet.Cells["A2"].Value);
         }
 
         [TestMethod]
         public void NotShouldHandleExcelReferenceToStringTrue()
         {
-            using (ExcelPackage? package = new ExcelPackage())
-            {
-                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("sheet1");
-                sheet.Cells["A1"].Value = "TRUE";
-                sheet.Cells["A2"].Formula = "NOT(A1)";
-                sheet.Calculate();
-                Assert.IsFalse((bool)sheet.Cells["A2"].Value);
-            }
+            using ExcelPackage? package = new ExcelPackage();
+            ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("sheet1");
+            sheet.Cells["A1"].Value = "TRUE";
+            sheet.Cells["A2"].Formula = "NOT(A1)";
+            sheet.Calculate();
+            Assert.IsFalse((bool)sheet.Cells["A2"].Value);
         }
 
         [TestMethod]
         public void AndShouldHandleStringLiteralTrue()
         {
-            using (ExcelPackage? package = new ExcelPackage())
-            {
-                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("sheet1");
-                sheet.Cells["A1"].Value = "tRuE";
-                sheet.Cells["A2"].Formula = "AND(\"TRUE\", A1)";
-                sheet.Calculate();
-                Assert.IsTrue((bool)sheet.Cells["A2"].Value);
-            }
+            using ExcelPackage? package = new ExcelPackage();
+            ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("sheet1");
+            sheet.Cells["A1"].Value = "tRuE";
+            sheet.Cells["A2"].Formula = "AND(\"TRUE\", A1)";
+            sheet.Calculate();
+            Assert.IsTrue((bool)sheet.Cells["A2"].Value);
         }
 
         [TestMethod]
@@ -201,106 +191,90 @@ namespace EPPlusTest.Excel.Functions
         [TestMethod]
         public void IfErrorShouldReturnSecondArgIfCriteriaEvaluatesAsAnError()
         {
-            using (ExcelPackage? package = new ExcelPackage())
-            {
-                ExcelWorksheet? s1 = package.Workbook.Worksheets.Add("test");
-                s1.Cells["A1"].Formula = "IFERROR(0/0, \"hello\")";
-                s1.Calculate();
-                Assert.AreEqual("hello", s1.Cells["A1"].Value);
-            }
+            using ExcelPackage? package = new ExcelPackage();
+            ExcelWorksheet? s1 = package.Workbook.Worksheets.Add("test");
+            s1.Cells["A1"].Formula = "IFERROR(0/0, \"hello\")";
+            s1.Calculate();
+            Assert.AreEqual("hello", s1.Cells["A1"].Value);
         }
 
         [TestMethod]
         public void IfErrorShouldReturnSecondArgIfCriteriaEvaluatesAsAnError2()
         {
-            using (ExcelPackage? package = new ExcelPackage())
-            {
-                ExcelWorksheet? s1 = package.Workbook.Worksheets.Add("test");
-                s1.Cells["A1"].Formula = "IFERROR(A2, \"hello\")";
-                s1.Cells["A2"].Formula = "23/0";
-                s1.Calculate();
-                Assert.AreEqual("hello", s1.Cells["A1"].Value);
-            }
+            using ExcelPackage? package = new ExcelPackage();
+            ExcelWorksheet? s1 = package.Workbook.Worksheets.Add("test");
+            s1.Cells["A1"].Formula = "IFERROR(A2, \"hello\")";
+            s1.Cells["A2"].Formula = "23/0";
+            s1.Calculate();
+            Assert.AreEqual("hello", s1.Cells["A1"].Value);
         }
 
         [TestMethod]
         public void IfErrorShouldReturnResultOfFormulaIfNoError()
         {
-            using (ExcelPackage? package = new ExcelPackage())
-            {
-                ExcelWorksheet? s1 = package.Workbook.Worksheets.Add("test");
-                s1.Cells["A1"].Formula = "IFERROR(A2, \"hello\")";
-                s1.Cells["A2"].Value = "hi there";
-                s1.Calculate();
-                Assert.AreEqual("hi there", s1.Cells["A1"].Value);
-            }
+            using ExcelPackage? package = new ExcelPackage();
+            ExcelWorksheet? s1 = package.Workbook.Worksheets.Add("test");
+            s1.Cells["A1"].Formula = "IFERROR(A2, \"hello\")";
+            s1.Cells["A2"].Value = "hi there";
+            s1.Calculate();
+            Assert.AreEqual("hi there", s1.Cells["A1"].Value);
         }
 
         [TestMethod]
         public void IfNaShouldReturnSecondArgIfCriteriaEvaluatesAsAnError2()
         {
-            using (ExcelPackage? package = new ExcelPackage())
-            {
-                ExcelWorksheet? s1 = package.Workbook.Worksheets.Add("test");
-                s1.Cells["A1"].Formula = "IFERROR(A2, \"hello\")";
-                s1.Cells["A2"].Value = ExcelErrorValue.Create(eErrorType.NA);
-                s1.Calculate();
-                Assert.AreEqual("hello", s1.Cells["A1"].Value);
-            }
+            using ExcelPackage? package = new ExcelPackage();
+            ExcelWorksheet? s1 = package.Workbook.Worksheets.Add("test");
+            s1.Cells["A1"].Formula = "IFERROR(A2, \"hello\")";
+            s1.Cells["A2"].Value = ExcelErrorValue.Create(eErrorType.NA);
+            s1.Calculate();
+            Assert.AreEqual("hello", s1.Cells["A1"].Value);
         }
 
         [TestMethod]
         public void IfNaShouldReturnResultOfFormulaIfNoError()
         {
-            using (ExcelPackage? package = new ExcelPackage())
-            {
-                ExcelWorksheet? s1 = package.Workbook.Worksheets.Add("test");
-                s1.Cells["A1"].Formula = "IFNA(A2, \"hello\")";
-                s1.Cells["A2"].Value = "hi there";
-                s1.Calculate();
-                Assert.AreEqual("hi there", s1.Cells["A1"].Value);
-            }
+            using ExcelPackage? package = new ExcelPackage();
+            ExcelWorksheet? s1 = package.Workbook.Worksheets.Add("test");
+            s1.Cells["A1"].Formula = "IFNA(A2, \"hello\")";
+            s1.Cells["A2"].Value = "hi there";
+            s1.Calculate();
+            Assert.AreEqual("hi there", s1.Cells["A1"].Value);
         }
 
         [TestMethod]
         public void SwitchShouldReturnFirstMatchingArg()
         {
-            using (ExcelPackage? package = new ExcelPackage())
-            {
-                ExcelWorksheet? s1 = package.Workbook.Worksheets.Add("test");
-                s1.Cells["A1"].Formula = "SWITCH(A2, 1, 2)";
-                s1.Cells["A2"].Value = 1;
-                s1.Calculate();
-                Assert.AreEqual(2d, s1.Cells["A1"].Value);
-            }
+            using ExcelPackage? package = new ExcelPackage();
+            ExcelWorksheet? s1 = package.Workbook.Worksheets.Add("test");
+            s1.Cells["A1"].Formula = "SWITCH(A2, 1, 2)";
+            s1.Cells["A2"].Value = 1;
+            s1.Calculate();
+            Assert.AreEqual(2d, s1.Cells["A1"].Value);
         }
 
         [TestMethod]
         public void SwitchShouldIgnoreNonMatchingArg()
         {
-            using (ExcelPackage? package = new ExcelPackage())
-            {
-                ExcelWorksheet? s1 = package.Workbook.Worksheets.Add("test");
-                s1.Cells["A1"].Formula = "SWITCH(A2, 1, 2, B2, 3)";
-                s1.Cells["A2"].Value = 2;
-                s1.Cells["B2"].Value = 2d;
-                s1.Calculate();
-                Assert.AreEqual(3d, s1.Cells["A1"].Value);
-            }
+            using ExcelPackage? package = new ExcelPackage();
+            ExcelWorksheet? s1 = package.Workbook.Worksheets.Add("test");
+            s1.Cells["A1"].Formula = "SWITCH(A2, 1, 2, B2, 3)";
+            s1.Cells["A2"].Value = 2;
+            s1.Cells["B2"].Value = 2d;
+            s1.Calculate();
+            Assert.AreEqual(3d, s1.Cells["A1"].Value);
         }
 
         [TestMethod]
         public void SwitchShouldReturnLastArgIfNoMatch()
         {
-            using (ExcelPackage? package = new ExcelPackage())
-            {
-                ExcelWorksheet? s1 = package.Workbook.Worksheets.Add("test");
-                s1.Cells["A1"].Formula = "SWITCH(A2, 1, 2, B2, 3, 5)";
-                s1.Cells["A2"].Value = -1;
-                s1.Cells["B2"].Value = 2d;
-                s1.Calculate();
-                Assert.AreEqual(5d, s1.Cells["A1"].Value);
-            }
+            using ExcelPackage? package = new ExcelPackage();
+            ExcelWorksheet? s1 = package.Workbook.Worksheets.Add("test");
+            s1.Cells["A1"].Formula = "SWITCH(A2, 1, 2, B2, 3, 5)";
+            s1.Cells["A2"].Value = -1;
+            s1.Cells["B2"].Value = 2d;
+            s1.Calculate();
+            Assert.AreEqual(5d, s1.Cells["A1"].Value);
         }
 
         [TestMethod]
@@ -319,15 +293,13 @@ namespace EPPlusTest.Excel.Functions
             result = func.Execute(args, ParsingContext.Create());
             Assert.IsFalse((bool)result.Result);
 
-            using (ExcelPackage? package = new ExcelPackage())
-            {
-                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
-                sheet.Cells["A1"].Value = true;
-                sheet.Cells["A2"].Value = 0;
-                sheet.Cells["A3"].Formula = "XOR(A1:A2,DATE(2020,12,10))";
-                sheet.Calculate();
-                Assert.IsFalse((bool)sheet.Cells["A3"].Value);
-            }
+            using ExcelPackage? package = new ExcelPackage();
+            ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
+            sheet.Cells["A1"].Value = true;
+            sheet.Cells["A2"].Value = 0;
+            sheet.Cells["A3"].Formula = "XOR(A1:A2,DATE(2020,12,10))";
+            sheet.Calculate();
+            Assert.IsFalse((bool)sheet.Cells["A3"].Value);
         }
     }
 }

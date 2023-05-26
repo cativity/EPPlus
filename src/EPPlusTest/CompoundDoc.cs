@@ -134,30 +134,26 @@ namespace EPPlusTest
         private static void ReadFile(byte[] b, int noSheets)
         {
             MemoryStream? ms = new MemoryStream(b);
-            using (ExcelPackage? p = new ExcelPackage(ms))
-            {
-                Assert.AreEqual(p.Workbook.VbaProject.Modules.Count,noSheets+2);
-                Assert.AreEqual(noSheets, p.Workbook.Worksheets.Count);
-            }
+            using ExcelPackage? p = new ExcelPackage(ms);
+            Assert.AreEqual(p.Workbook.VbaProject.Modules.Count, noSheets + 2);
+            Assert.AreEqual(noSheets, p.Workbook.Worksheets.Count);
         }
 
         public static byte[] CreateFile(int noSheets)
         {
-            using (ExcelPackage? package = new ExcelPackage())
+            using ExcelPackage? package = new ExcelPackage();
+            IEnumerable<string>? sheets = Enumerable.Range(1, noSheets)   //460
+                                                    .Select(x => $"Sheet{x}");
+            foreach (string? sheet in sheets)
             {
-                IEnumerable<string>? sheets = Enumerable.Range(1, noSheets)   //460
-                                                        .Select(x => $"Sheet{x}");
-                foreach (string? sheet in sheets)
-                {
-                    package.Workbook.Worksheets.Add(sheet);
-                }
-
-                package.Workbook.CreateVBAProject();
-                package.Workbook.VbaProject.Modules.AddModule("Module1").Code
-                    = "\r\nPublic Sub SayHello()\r\nMsgBox(\"Hello\")\r\nEnd Sub\r\n";
-
-                return package.GetAsByteArray();
+                package.Workbook.Worksheets.Add(sheet);
             }
+
+            package.Workbook.CreateVBAProject();
+            package.Workbook.VbaProject.Modules.AddModule("Module1").Code
+                = "\r\nPublic Sub SayHello()\r\nMsgBox(\"Hello\")\r\nEnd Sub\r\n";
+
+            return package.GetAsByteArray();
         }
 
         [TestMethod, Ignore]

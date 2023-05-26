@@ -179,51 +179,47 @@ namespace EPPlusTest.Drawing.Grouping
         [ExpectedException(typeof(InvalidOperationException))]
         public void Group_GroupIntoOthereWorksheetShouldFailText()
         {
-            using (ExcelPackage? p = new ExcelPackage())
-            {
-                ExcelWorksheet? ws1 = p.Workbook.Worksheets.Add("Sheet1");
-                ExcelWorksheet? ws2 = p.Workbook.Worksheets.Add("Sheet2");
-                ExcelControlGroupBox? ctrl1 = (ExcelControlGroupBox)ws1.Drawings.AddControl("GroupBox 1", eControlType.GroupBox);
-                ctrl1.Text = "Groupbox 1";
-                ctrl1.SetPosition(480, 80);
-                ctrl1.SetSize(200, 120);
+            using ExcelPackage? p = new ExcelPackage();
+            ExcelWorksheet? ws1 = p.Workbook.Worksheets.Add("Sheet1");
+            ExcelWorksheet? ws2 = p.Workbook.Worksheets.Add("Sheet2");
+            ExcelControlGroupBox? ctrl1 = (ExcelControlGroupBox)ws1.Drawings.AddControl("GroupBox 1", eControlType.GroupBox);
+            ctrl1.Text = "Groupbox 1";
+            ctrl1.SetPosition(480, 80);
+            ctrl1.SetSize(200, 120);
 
-                ExcelControlGroupBox? ctrl2 = (ExcelControlGroupBox)ws1.Drawings.AddControl("GroupBox 2", eControlType.GroupBox);
-                ctrl2.Text = "Groupbox 2";
-                ctrl2.SetPosition(480, 400);
-                ctrl2.SetSize(200, 120);
+            ExcelControlGroupBox? ctrl2 = (ExcelControlGroupBox)ws1.Drawings.AddControl("GroupBox 2", eControlType.GroupBox);
+            ctrl2.Text = "Groupbox 2";
+            ctrl2.SetPosition(480, 400);
+            ctrl2.SetSize(200, 120);
 
-                ExcelControlRadioButton? r1 = ws2.Drawings.AddRadioButtonControl("Option Button 1");
-                r1.SetPosition(500, 100);
-                r1.SetSize(100, 25);
-                ExcelGroupShape? g = ctrl1.Group(r1);
-            }
+            ExcelControlRadioButton? r1 = ws2.Drawings.AddRadioButtonControl("Option Button 1");
+            r1.SetPosition(500, 100);
+            r1.SetSize(100, 25);
+            ExcelGroupShape? g = ctrl1.Group(r1);
         }
 
         [TestMethod]
         [ExpectedException(typeof(InvalidOperationException))]
         public void Group_GroupIntoOtherGroupShouldFailTest()
         {
-            using (ExcelPackage? p = new ExcelPackage())
-            {
-                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("UnGroupAllDrawings");
-                ExcelControlGroupBox? ctrl1 = (ExcelControlGroupBox)ws.Drawings.AddControl("GroupBox 1", eControlType.GroupBox);
-                ctrl1.Text = "Groupbox 1";
-                ctrl1.SetPosition(480, 80);
-                ctrl1.SetSize(200, 120);
+            using ExcelPackage? p = new ExcelPackage();
+            ExcelWorksheet? ws = p.Workbook.Worksheets.Add("UnGroupAllDrawings");
+            ExcelControlGroupBox? ctrl1 = (ExcelControlGroupBox)ws.Drawings.AddControl("GroupBox 1", eControlType.GroupBox);
+            ctrl1.Text = "Groupbox 1";
+            ctrl1.SetPosition(480, 80);
+            ctrl1.SetSize(200, 120);
 
-                ExcelControlGroupBox? ctrl2 = (ExcelControlGroupBox)ws.Drawings.AddControl("GroupBox 2", eControlType.GroupBox);
-                ctrl2.Text = "Groupbox 2";
-                ctrl2.SetPosition(480, 400);
-                ctrl2.SetSize(200, 120);
+            ExcelControlGroupBox? ctrl2 = (ExcelControlGroupBox)ws.Drawings.AddControl("GroupBox 2", eControlType.GroupBox);
+            ctrl2.Text = "Groupbox 2";
+            ctrl2.SetPosition(480, 400);
+            ctrl2.SetSize(200, 120);
 
-                ExcelControlRadioButton? r1 = ws.Drawings.AddRadioButtonControl("Option Button 1");
-                r1.SetPosition(500, 100);
-                r1.SetSize(100, 25);
-                ExcelGroupShape? g = ctrl1.Group(r1);
+            ExcelControlRadioButton? r1 = ws.Drawings.AddRadioButtonControl("Option Button 1");
+            r1.SetPosition(500, 100);
+            r1.SetSize(100, 25);
+            ExcelGroupShape? g = ctrl1.Group(r1);
 
-                ctrl2.Group(r1);
-            }
+            ctrl2.Group(r1);
         }
     }
 }

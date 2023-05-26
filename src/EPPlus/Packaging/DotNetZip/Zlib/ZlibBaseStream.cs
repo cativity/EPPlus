@@ -698,40 +698,36 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
             // workitem 8460
             byte[] working = new byte[1024];
             Encoding? encoding = System.Text.Encoding.UTF8;
-            using (MemoryStream? output = RecyclableMemory.GetStream())
+            using MemoryStream? output = RecyclableMemory.GetStream();
+            using (decompressor)
             {
-                using (decompressor)
+                int n;
+                while ((n = decompressor.Read(working, 0, working.Length)) != 0)
                 {
-                    int n;
-                    while ((n = decompressor.Read(working, 0, working.Length)) != 0)
-                    {
-                        output.Write(working, 0, n);
-                    }
+                    output.Write(working, 0, n);
                 }
-
-                // reset to allow read from start
-                output.Seek(0, SeekOrigin.Begin);
-                StreamReader? sr = new StreamReader(output, encoding);
-                return sr.ReadToEnd();
             }
+
+            // reset to allow read from start
+            output.Seek(0, SeekOrigin.Begin);
+            StreamReader? sr = new StreamReader(output, encoding);
+            return sr.ReadToEnd();
         }
 
         public static byte[] UncompressBuffer(byte[] compressed, Stream decompressor)
         {
             // workitem 8460
             byte[] working = new byte[1024];
-            using (MemoryStream? output = RecyclableMemory.GetStream())
+            using MemoryStream? output = RecyclableMemory.GetStream();
+            using (decompressor)
             {
-                using (decompressor)
+                int n;
+                while ((n = decompressor.Read(working, 0, working.Length)) != 0)
                 {
-                    int n;
-                    while ((n = decompressor.Read(working, 0, working.Length)) != 0)
-                    {
-                        output.Write(working, 0, n);
-                    }
+                    output.Write(working, 0, n);
                 }
-                return output.ToArray();
             }
+            return output.ToArray();
         }
 
     }

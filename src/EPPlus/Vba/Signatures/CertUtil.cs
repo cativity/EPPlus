@@ -55,27 +55,25 @@ namespace OfficeOpenXml.VBA.Signatures
         internal static byte[] GetSerializedCertStore(byte[] certRawData)
         {
             //MS-OSHARED 2.3.2.5.5 VBASigSerializedCertStore
-            using (MemoryStream? ms = RecyclableMemory.GetStream())
-            {
-                BinaryWriter? bw = new BinaryWriter(ms);
+            using MemoryStream? ms = RecyclableMemory.GetStream();
+            BinaryWriter? bw = new BinaryWriter(ms);
 
-                bw.Write((uint)0); //Version
-                bw.Write((uint)0x54524543); //fileType
+            bw.Write((uint)0); //Version
+            bw.Write((uint)0x54524543); //fileType
 
-                //SerializedCertificateEntry
-                byte[]? certData = certRawData;
-                bw.Write((uint)0x20);
-                bw.Write((uint)1);
-                bw.Write((uint)certData.Length);
-                bw.Write(certData);
+            //SerializedCertificateEntry
+            byte[]? certData = certRawData;
+            bw.Write((uint)0x20);
+            bw.Write((uint)1);
+            bw.Write((uint)certData.Length);
+            bw.Write(certData);
 
-                //EndElementMarkerEntry
-                bw.Write((uint)0);
-                bw.Write((ulong)0);
+            //EndElementMarkerEntry
+            bw.Write((uint)0);
+            bw.Write((ulong)0);
 
-                bw.Flush();
-                return ms.ToArray();
-            }
+            bw.Flush();
+            return ms.ToArray();
         }
 
         internal static byte[] CreateBinarySignature(MemoryStream ms, BinaryWriter bw, byte[] certStore, byte[] cert)

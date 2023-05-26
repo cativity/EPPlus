@@ -254,43 +254,37 @@ namespace EPPlusTest.Excel.Functions
         [TestMethod]
         public void LookupShouldReturnResultFromMatchingSecondArrayHorizontal()
         {
-            using (ExcelPackage? package = new ExcelPackage())
-            {
-                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
-                sheet.Cells["A1"].Value = 1;
-                sheet.Cells["B1"].Value = 3;
-                sheet.Cells["C1"].Value = 5;
-                sheet.Cells["A3"].Value = "A";
-                sheet.Cells["B3"].Value = "B";
-                sheet.Cells["C3"].Value = "C";
+            using ExcelPackage? package = new ExcelPackage();
+            ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
+            sheet.Cells["A1"].Value = 1;
+            sheet.Cells["B1"].Value = 3;
+            sheet.Cells["C1"].Value = 5;
+            sheet.Cells["A3"].Value = "A";
+            sheet.Cells["B3"].Value = "B";
+            sheet.Cells["C3"].Value = "C";
 
-                sheet.Cells["D1"].Formula = "LOOKUP(4, A1:C1, A3:C3)";
-                sheet.Calculate();
-                object? result = sheet.Cells["D1"].Value;
-                Assert.AreEqual("B", result);
-
-            }
+            sheet.Cells["D1"].Formula = "LOOKUP(4, A1:C1, A3:C3)";
+            sheet.Calculate();
+            object? result = sheet.Cells["D1"].Value;
+            Assert.AreEqual("B", result);
         }
 
         [TestMethod]
         public void LookupShouldReturnResultFromMatchingSecondArrayHorizontalWithOffset()
         {
-            using (ExcelPackage? package = new ExcelPackage())
-            {
-                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
-                sheet.Cells["A1"].Value = 1;
-                sheet.Cells["B1"].Value = 3;
-                sheet.Cells["C1"].Value = 5;
-                sheet.Cells["B3"].Value = "A";
-                sheet.Cells["C3"].Value = "B";
-                sheet.Cells["D3"].Value = "C";
+            using ExcelPackage? package = new ExcelPackage();
+            ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
+            sheet.Cells["A1"].Value = 1;
+            sheet.Cells["B1"].Value = 3;
+            sheet.Cells["C1"].Value = 5;
+            sheet.Cells["B3"].Value = "A";
+            sheet.Cells["C3"].Value = "B";
+            sheet.Cells["D3"].Value = "C";
 
-                sheet.Cells["D1"].Formula = "LOOKUP(4, A1:C1, B3:D3)";
-                sheet.Calculate();
-                object? result = sheet.Cells["D1"].Value;
-                Assert.AreEqual("B", result);
-
-            }
+            sheet.Cells["D1"].Formula = "LOOKUP(4, A1:C1, B3:D3)";
+            sheet.Calculate();
+            object? result = sheet.Cells["D1"].Value;
+            Assert.AreEqual("B", result);
         }
 
         [TestMethod]
@@ -382,17 +376,15 @@ namespace EPPlusTest.Excel.Functions
         [TestMethod]
         public void MatchShouldHandleAddressOnOtherSheet()
         {
-            using (ExcelPackage? package = new ExcelPackage())
-            {
-                ExcelWorksheet? sheet1 = package.Workbook.Worksheets.Add("Sheet1");
-                ExcelWorksheet? sheet2 = package.Workbook.Worksheets.Add("Sheet2");
-                sheet1.Cells["A1"].Formula = "Match(10, Sheet2!A1:Sheet2!A3, 0)";
-                sheet2.Cells["A1"].Value = 9;
-                sheet2.Cells["A2"].Value = 10;
-                sheet2.Cells["A3"].Value = 11;
-                sheet1.Calculate();
-                Assert.AreEqual(2, sheet1.Cells["A1"].Value);
-            }    
+            using ExcelPackage? package = new ExcelPackage();
+            ExcelWorksheet? sheet1 = package.Workbook.Worksheets.Add("Sheet1");
+            ExcelWorksheet? sheet2 = package.Workbook.Worksheets.Add("Sheet2");
+            sheet1.Cells["A1"].Formula = "Match(10, Sheet2!A1:Sheet2!A3, 0)";
+            sheet2.Cells["A1"].Value = 9;
+            sheet2.Cells["A2"].Value = 10;
+            sheet2.Cells["A3"].Value = 11;
+            sheet1.Calculate();
+            Assert.AreEqual(2, sheet1.Cells["A1"].Value);
         }
 
         [TestMethod]

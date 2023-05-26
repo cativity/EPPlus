@@ -127,48 +127,40 @@ namespace EPPlusTest.Table
         public void TableDeleteRowPositionNegative()
         {
             //Setup
-            using (ExcelPackage? p = new ExcelPackage())
-            {
-                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Table1");
-                ExcelTable? tbl = ws.Tables.Add(ws.Cells["A1:D100"], "Table1");
-                tbl.DeleteRow(-1);
-            }
+            using ExcelPackage? p = new ExcelPackage();
+            ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Table1");
+            ExcelTable? tbl = ws.Tables.Add(ws.Cells["A1:D100"], "Table1");
+            tbl.DeleteRow(-1);
         }
         [TestMethod]
         [ExpectedException(typeof(ArgumentException))]
         public void TableDeleteRowRowsNegative()
         {
             //Setup
-            using (ExcelPackage? p = new ExcelPackage())
-            {
-                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Table1");
-                ExcelTable? tbl = ws.Tables.Add(ws.Cells["A1:D100"], "Table1");
-                tbl.DeleteRow(0, -1);
-            }
+            using ExcelPackage? p = new ExcelPackage();
+            ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Table1");
+            ExcelTable? tbl = ws.Tables.Add(ws.Cells["A1:D100"], "Table1");
+            tbl.DeleteRow(0, -1);
         }
         [TestMethod]
         [ExpectedException(typeof(InvalidOperationException))]
         public void TableDeleteOverTableLimit()
         {
             //Setup
-            using (ExcelPackage? p = new ExcelPackage())
-            {
-                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Table1");
-                ExcelTable? tbl = ws.Tables.Add(ws.Cells["A1:D100"], "Table1");
-                tbl.DeleteRow(99,1);
-            }
+            using ExcelPackage? p = new ExcelPackage();
+            ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Table1");
+            ExcelTable? tbl = ws.Tables.Add(ws.Cells["A1:D100"], "Table1");
+            tbl.DeleteRow(99, 1);
         }
         [TestMethod]
         [ExpectedException(typeof(InvalidOperationException))]
         public void TableDelete5OverTableLimit()
         {
             //Setup
-            using (ExcelPackage? p = new ExcelPackage())
-            {
-                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Table1");
-                ExcelTable? tbl = ws.Tables.Add(ws.Cells["A1:D100"], "Table1");
-                tbl.DeleteRow(95, 5);
-            }
+            using ExcelPackage? p = new ExcelPackage();
+            ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Table1");
+            ExcelTable? tbl = ws.Tables.Add(ws.Cells["A1:D100"], "Table1");
+            tbl.DeleteRow(95, 5);
         }
         [TestMethod]
         public void TableDeleteLeaveOneRow()
@@ -185,12 +177,10 @@ namespace EPPlusTest.Table
         public void TableDeleteAllRows()
         {
             //Setup
-            using (ExcelPackage? p = new ExcelPackage())
-            {
-                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Table1");
-                ExcelTable? tbl = ws.Tables.Add(ws.Cells["A1:D100"], "Table1");
-                tbl.DeleteRow(0, 99); 
-            }
+            using ExcelPackage? p = new ExcelPackage();
+            ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Table1");
+            ExcelTable? tbl = ws.Tables.Add(ws.Cells["A1:D100"], "Table1");
+            tbl.DeleteRow(0, 99);
         }
         #endregion
         #region Delete Column
@@ -275,24 +265,20 @@ namespace EPPlusTest.Table
         public void TableDeleteColumnPositionNegative()
         {
             //Setup
-            using (ExcelPackage? p = new ExcelPackage())
-            {
-                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Table1");
-                ExcelTable? tbl = ws.Tables.Add(ws.Cells["A1:D100"], "Table1");
-                tbl.Columns.Delete(-1);
-            }
+            using ExcelPackage? p = new ExcelPackage();
+            ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Table1");
+            ExcelTable? tbl = ws.Tables.Add(ws.Cells["A1:D100"], "Table1");
+            tbl.Columns.Delete(-1);
         }
         [TestMethod]
         [ExpectedException(typeof(ArgumentException))]
         public void TableDeleteColumnColumnsNegative()
         {
             //Setup
-            using (ExcelPackage? p = new ExcelPackage())
-            {
-                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Table1");
-                ExcelTable? tbl = ws.Tables.Add(ws.Cells["A1:D100"], "Table1");
-                tbl.Columns.Delete(0, -1);
-            }
+            using ExcelPackage? p = new ExcelPackage();
+            ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Table1");
+            ExcelTable? tbl = ws.Tables.Add(ws.Cells["A1:D100"], "Table1");
+            tbl.Columns.Delete(0, -1);
         }
         #endregion
 
@@ -316,31 +302,27 @@ namespace EPPlusTest.Table
         [TestMethod]
         public void RemoveRowFromTableWithHiddenHeader_Should_Succeed()
         {
-            using (ExcelPackage? xlsx = CreateTablePackage(false, "Sheet1", "myTable"))
-            {
-                ExcelWorksheet? ws = xlsx.Workbook.Worksheets["Sheet1"];
-                ExcelTable? table = ws.Tables["myTable"];
-                Assert.AreEqual(2, table.Range.Rows);
-                Assert.AreEqual(2, ws.Cells["A4"].Value);
-                table.DeleteRow(1, 1);
-                Assert.IsNull(ws.Cells["A4"].Value);
-                Assert.AreEqual(1, table.Range.Rows);
-            }
+            using ExcelPackage? xlsx = CreateTablePackage(false, "Sheet1", "myTable");
+            ExcelWorksheet? ws = xlsx.Workbook.Worksheets["Sheet1"];
+            ExcelTable? table = ws.Tables["myTable"];
+            Assert.AreEqual(2, table.Range.Rows);
+            Assert.AreEqual(2, ws.Cells["A4"].Value);
+            table.DeleteRow(1, 1);
+            Assert.IsNull(ws.Cells["A4"].Value);
+            Assert.AreEqual(1, table.Range.Rows);
         }
 
         [TestMethod]
         public void RemoveRowFromTableWithVisibleHeader_Should_Succeed()
         {
-            using (ExcelPackage? xlsx = CreateTablePackage(true, "Sheet1", "myTable"))
-            {
-                ExcelWorksheet? ws = xlsx.Workbook.Worksheets["Sheet1"];
-                ExcelTable? table = ws.Tables["myTable"];
-                Assert.AreEqual(3, table.Range.Rows);
-                Assert.AreEqual(2, ws.Cells["A4"].Value);
-                table.DeleteRow(1, 1);
-                Assert.IsNull(ws.Cells["A4"].Value);
-                Assert.AreEqual(2, table.Range.Rows);
-            }
+            using ExcelPackage? xlsx = CreateTablePackage(true, "Sheet1", "myTable");
+            ExcelWorksheet? ws = xlsx.Workbook.Worksheets["Sheet1"];
+            ExcelTable? table = ws.Tables["myTable"];
+            Assert.AreEqual(3, table.Range.Rows);
+            Assert.AreEqual(2, ws.Cells["A4"].Value);
+            table.DeleteRow(1, 1);
+            Assert.IsNull(ws.Cells["A4"].Value);
+            Assert.AreEqual(2, table.Range.Rows);
         }
         #endregion
     }

@@ -28,38 +28,32 @@ namespace OfficeOpenXml.VBA.ContentHash
         {
             if (ctx.SignatureType == ExcelVbaSignatureType.Legacy)
             {
-                using (MemoryStream? ms = RecyclableMemory.GetStream())
-                {
-                    ContentHashInputProvider.GetContentNormalizedDataHashInput(proj, ms);
-                    byte[]? buffer = ms.ToArray();
-                    byte[]? hash = ComputeHash(buffer, ctx);
-                    byte[]? existingHash = ctx.SourceHash;
-                    return hash;
-                }
+                using MemoryStream? ms = RecyclableMemory.GetStream();
+                ContentHashInputProvider.GetContentNormalizedDataHashInput(proj, ms);
+                byte[]? buffer = ms.ToArray();
+                byte[]? hash = ComputeHash(buffer, ctx);
+                byte[]? existingHash = ctx.SourceHash;
+                return hash;
             }
             else if (ctx.SignatureType == ExcelVbaSignatureType.Agile)
             {
-                using (MemoryStream? ms = RecyclableMemory.GetStream())
-                {
-                    ContentHashInputProvider.GetContentNormalizedDataHashInput(proj, ms);
-                    ContentHashInputProvider.GetFormsNormalizedDataHashInput(proj, ms);
-                    byte[]? buffer = ms.ToArray();
-                    byte[]? hash = ComputeHash(buffer, ctx);
-                    byte[]? existingHash = ctx.SourceHash;
-                    return hash;
-                }
+                using MemoryStream? ms = RecyclableMemory.GetStream();
+                ContentHashInputProvider.GetContentNormalizedDataHashInput(proj, ms);
+                ContentHashInputProvider.GetFormsNormalizedDataHashInput(proj, ms);
+                byte[]? buffer = ms.ToArray();
+                byte[]? hash = ComputeHash(buffer, ctx);
+                byte[]? existingHash = ctx.SourceHash;
+                return hash;
             }
             else if(ctx.SignatureType == ExcelVbaSignatureType.V3)
             {
-                using (MemoryStream? ms = RecyclableMemory.GetStream())
-                {
-                    ContentHashInputProvider.GetV3ContentNormalizedDataHashInput(proj, ms);
-                    byte[]? buffer = ms.ToArray();
-                    byte[]? hash = ComputeHash(buffer, ctx);
-                    byte[]? existingHash = ctx.SourceHash;
-                    
-                    return hash;
-                }
+                using MemoryStream? ms = RecyclableMemory.GetStream();
+                ContentHashInputProvider.GetV3ContentNormalizedDataHashInput(proj, ms);
+                byte[]? buffer = ms.ToArray();
+                byte[]? hash = ComputeHash(buffer, ctx);
+                byte[]? existingHash = ctx.SourceHash;
+
+                return hash;
             }
             return default(byte[]);
             

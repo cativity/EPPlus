@@ -38,29 +38,25 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions
         [TestMethod]
         public void PmtTest_EndOfPeriod()
         {
-            using (ExcelPackage? package = new ExcelPackage())
-            {
-                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
-                sheet.Cells["A1"].Formula = "PMT( 5%/12, 60, 50000 )";
-                sheet.Calculate();
-                object? value = sheet.Cells["A1"].Value;
-                double value2 = System.Math.Round(Convert.ToDouble(value), 2);
-                Assert.AreEqual(-943.56, value2);
-            }
+            using ExcelPackage? package = new ExcelPackage();
+            ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
+            sheet.Cells["A1"].Formula = "PMT( 5%/12, 60, 50000 )";
+            sheet.Calculate();
+            object? value = sheet.Cells["A1"].Value;
+            double value2 = System.Math.Round(Convert.ToDouble(value), 2);
+            Assert.AreEqual(-943.56, value2);
         }
 
         [TestMethod]
         public void PmtTest_BeginningOfPeriod()
         {
-            using (ExcelPackage? package = new ExcelPackage())
-            {
-                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
-                sheet.Cells["A1"].Formula = "PMT( 5%/12, 60, 50000, 0, 1 )";
-                sheet.Calculate();
-                object? value = sheet.Cells["A1"].Value;
-                double value2 = System.Math.Round(Convert.ToDouble(value), 2);
-                Assert.AreEqual(-939.65, value2);
-            }
+            using ExcelPackage? package = new ExcelPackage();
+            ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
+            sheet.Cells["A1"].Formula = "PMT( 5%/12, 60, 50000, 0, 1 )";
+            sheet.Calculate();
+            object? value = sheet.Cells["A1"].Value;
+            double value2 = System.Math.Round(Convert.ToDouble(value), 2);
+            Assert.AreEqual(-939.65, value2);
         }
     }
 }

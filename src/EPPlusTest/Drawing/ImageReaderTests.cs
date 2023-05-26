@@ -42,20 +42,16 @@ namespace EPPlusTest.Drawing
         {
             ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("InternalJpg");
 
-            using (MemoryStream? ms = new MemoryStream(Properties.Resources.Test1JpgByteArray))
-            {
-                ExcelPicture? image = ws.Drawings.AddPicture("jpg", ms, OfficeOpenXml.Drawing.ePictureType.Jpg);
-            }
+            using MemoryStream? ms = new MemoryStream(Properties.Resources.Test1JpgByteArray);
+            ExcelPicture? image = ws.Drawings.AddPicture("jpg", ms, OfficeOpenXml.Drawing.ePictureType.Jpg);
         }
         [TestMethod]
         public void AddPngImageVia()
         {
             ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("InternalPng");
 
-            using (MemoryStream? ms = new MemoryStream(Properties.Resources.VmlPatternImagePngByteArray))
-            {
-                ExcelPicture? image = ws.Drawings.AddPicture("png1", ms, OfficeOpenXml.Drawing.ePictureType.Png);
-            }
+            using MemoryStream? ms = new MemoryStream(Properties.Resources.VmlPatternImagePngByteArray);
+            ExcelPicture? image = ws.Drawings.AddPicture("png1", ms, OfficeOpenXml.Drawing.ePictureType.Png);
         }
 
         [TestMethod]
@@ -124,11 +120,9 @@ namespace EPPlusTest.Drawing
                 image6.SetPosition(0, 0, 70, 0);
             }
 
-            using (MemoryStream? msTif = Properties.Resources.CodeTif)
-            {
-                ExcelPicture? imageTif = ws.Drawings.AddPicture("tif1", msTif, ePictureType.Tif);
-                imageTif.SetPosition(0, 0, 80, 0);
-            }
+            using MemoryStream? msTif = Properties.Resources.CodeTif;
+            ExcelPicture? imageTif = ws.Drawings.AddPicture("tif1", msTif, ePictureType.Tif);
+            imageTif.SetPosition(0, 0, 80, 0);
         }
         [TestMethod]
         public void AddTestImagesToWorksheetNoPictureType()
@@ -213,12 +207,10 @@ namespace EPPlusTest.Drawing
                 Assert.AreEqual("image/x-tiff", imageTif.ContentType);
             }
 
-            using (MemoryStream? msIco128 = GetImageMemoryStream("1_128x128.ico"))
-            {
-                ExcelPicture? imageIco = ws.Drawings.AddPicture("ico2", msIco128, OfficeOpenXml.Drawing.ePictureType.Ico);
-                imageIco.SetPosition(40, 0, 10, 0);
-                Assert.AreEqual("image/x-icon", imageIco.ContentType);
-            }
+            using MemoryStream? msIco128 = GetImageMemoryStream("1_128x128.ico");
+            ExcelPicture? imageIco = ws.Drawings.AddPicture("ico2", msIco128, OfficeOpenXml.Drawing.ePictureType.Ico);
+            imageIco.SetPosition(40, 0, 10, 0);
+            Assert.AreEqual("image/x-icon", imageIco.ContentType);
         }
         [TestMethod]
         public async Task AddTestImagesToWorksheetNoPictureTypeAsync()
@@ -303,12 +295,10 @@ namespace EPPlusTest.Drawing
                 Assert.AreEqual("image/x-tiff", imageTif.ContentType);
             }
 
-            using (MemoryStream? msIco128 = GetImageMemoryStream("1_128x128.ico"))
-            {
-                ExcelPicture? imageIco = await ws.Drawings.AddPictureAsync("ico2", msIco128, OfficeOpenXml.Drawing.ePictureType.Ico);
-                imageIco.SetPosition(40, 0, 10, 0);
-                Assert.AreEqual("image/x-icon", imageIco.ContentType);
-            }
+            using MemoryStream? msIco128 = GetImageMemoryStream("1_128x128.ico");
+            ExcelPicture? imageIco = await ws.Drawings.AddPictureAsync("ico2", msIco128, OfficeOpenXml.Drawing.ePictureType.Ico);
+            imageIco.SetPosition(40, 0, 10, 0);
+            Assert.AreEqual("image/x-icon", imageIco.ContentType);
         }
         [TestMethod]
         public void AddIcoImages()
@@ -349,11 +339,9 @@ namespace EPPlusTest.Drawing
         {
             ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("Emz");
             //32*32
-            using (MemoryStream? msIco1 = GetImageMemoryStream("example.emz"))
-            {
-                ExcelPicture? imageWebP1 = ws.Drawings.AddPicture("Emf", msIco1, OfficeOpenXml.Drawing.ePictureType.Emz);
-                imageWebP1.SetPosition(40, 0, 0, 0);
-            }
+            using MemoryStream? msIco1 = GetImageMemoryStream("example.emz");
+            ExcelPicture? imageWebP1 = ws.Drawings.AddPicture("Emf", msIco1, OfficeOpenXml.Drawing.ePictureType.Emz);
+            imageWebP1.SetPosition(40, 0, 0, 0);
         }
         [TestMethod]
         public void AddBmpImages()
@@ -378,11 +366,9 @@ namespace EPPlusTest.Drawing
                 imageBmp3.SetPosition(0, 0, 40, 0);
             }
 
-            using (MemoryStream? msBmp4 = GetImageMemoryStream("bmp\\Land3.BMP"))
-            {
-                ExcelPicture? imageBmp4 = ws.Drawings.AddPicture("bmp4", msBmp4, OfficeOpenXml.Drawing.ePictureType.Bmp);
-                imageBmp4.SetPosition(0, 0, 60, 0);
-            }
+            using MemoryStream? msBmp4 = GetImageMemoryStream("bmp\\Land3.BMP");
+            ExcelPicture? imageBmp4 = ws.Drawings.AddPicture("bmp4", msBmp4, OfficeOpenXml.Drawing.ePictureType.Bmp);
+            imageBmp4.SetPosition(0, 0, 60, 0);
         }
         [TestMethod]
         public void AddWepPImages()
@@ -424,31 +410,29 @@ namespace EPPlusTest.Drawing
         [TestMethod]
         public void ReadImages()
         {
-            using (ExcelPackage? p = OpenPackage("ImageReaderRead.xlsx"))
+            using ExcelPackage? p = OpenPackage("ImageReaderRead.xlsx");
+            if (p.Workbook.Worksheets.Count == 0)
             {
-                if(p.Workbook.Worksheets.Count==0)
-                {
-                    Assert.Inconclusive("ImageReaderRead.xlsx does not exists. Run a full test round to create it.");
-                }
-
-                foreach(ExcelWorksheet? ws in p.Workbook.Worksheets)
-                {
-                    ws.Columns[1, 20].Width = 35;
-
-                    Assert.AreEqual(35, ws.Columns[1].Width);
-                    Assert.AreEqual(35, ws.Columns[20].Width);
-                }
-
-                ExcelWorksheet? ws2 = p.Workbook.Worksheets.Add("Bmp2");
-                using (MemoryStream? msBmp1 = GetImageMemoryStream("bmp\\MARBLES.BMP"))
-                {
-                    ExcelPicture? imageBmp1 = ws2.Drawings.AddPicture("bmp2", msBmp1, OfficeOpenXml.Drawing.ePictureType.Bmp);
-                    imageBmp1.SetPosition(0, 0, 0, 0);
-                }
-
-
-                SaveWorkbook("ImageReaderResized.xlsx", p);
+                Assert.Inconclusive("ImageReaderRead.xlsx does not exists. Run a full test round to create it.");
             }
+
+            foreach (ExcelWorksheet? ws in p.Workbook.Worksheets)
+            {
+                ws.Columns[1, 20].Width = 35;
+
+                Assert.AreEqual(35, ws.Columns[1].Width);
+                Assert.AreEqual(35, ws.Columns[20].Width);
+            }
+
+            ExcelWorksheet? ws2 = p.Workbook.Worksheets.Add("Bmp2");
+            using (MemoryStream? msBmp1 = GetImageMemoryStream("bmp\\MARBLES.BMP"))
+            {
+                ExcelPicture? imageBmp1 = ws2.Drawings.AddPicture("bmp2", msBmp1, OfficeOpenXml.Drawing.ePictureType.Bmp);
+                imageBmp1.SetPosition(0, 0, 0, 0);
+            }
+
+
+            SaveWorkbook("ImageReaderResized.xlsx", p);
 
         }
         [TestMethod]
@@ -484,12 +468,10 @@ namespace EPPlusTest.Drawing
             int ix = 0;
             foreach (FileInfo? f in dir.EnumerateFiles())
             {
-                using (MemoryStream? ms = new MemoryStream(File.ReadAllBytes(f.FullName)))
-                {
-                    ExcelPicture? picture = ws.Drawings.AddPicture($"{fileType}{ix}", ms, type);
-                    picture.SetPosition((ix / 5) * 10, 0, (ix % 5) * 10, 0);
-                    ix++;
-                }
+                using MemoryStream? ms = new MemoryStream(File.ReadAllBytes(f.FullName));
+                ExcelPicture? picture = ws.Drawings.AddPicture($"{fileType}{ix}", ms, type);
+                picture.SetPosition((ix / 5) * 10, 0, (ix % 5) * 10, 0);
+                ix++;
             }
          }
     }

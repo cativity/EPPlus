@@ -113,172 +113,152 @@ namespace EPPlusTest.VBA
         [TestMethod]
         public void ValidateName()
         {
-            using (ExcelPackage? p = new ExcelPackage())
-            {
-                p.Workbook.CreateVBAProject();
-                p.Workbook.Worksheets.Add("Work!Sheet");
-                p.Workbook.Worksheets.Add("Mod=ule1");
-                p.Workbook.Worksheets.Add("_module1");
-                p.Workbook.Worksheets.Add("1module1");
-                p.Workbook.Worksheets.Add("Module_1");
+            using ExcelPackage? p = new ExcelPackage();
+            p.Workbook.CreateVBAProject();
+            p.Workbook.Worksheets.Add("Work!Sheet");
+            p.Workbook.Worksheets.Add("Mod=ule1");
+            p.Workbook.Worksheets.Add("_module1");
+            p.Workbook.Worksheets.Add("1module1");
+            p.Workbook.Worksheets.Add("Module_1");
 
-                Assert.AreEqual("ThisWorkbook", p.Workbook.VbaProject.Modules[0].Name);
-                Assert.AreEqual("Sheet0", p.Workbook.VbaProject.Modules[1].Name);
-                Assert.AreEqual("Sheet1", p.Workbook.VbaProject.Modules[2].Name);
-                Assert.AreEqual("Sheet2", p.Workbook.VbaProject.Modules[3].Name);
-                Assert.AreEqual("Sheet3", p.Workbook.VbaProject.Modules[4].Name);
-                Assert.AreEqual("Module_1", p.Workbook.VbaProject.Modules[5].Name);
-            }
+            Assert.AreEqual("ThisWorkbook", p.Workbook.VbaProject.Modules[0].Name);
+            Assert.AreEqual("Sheet0", p.Workbook.VbaProject.Modules[1].Name);
+            Assert.AreEqual("Sheet1", p.Workbook.VbaProject.Modules[2].Name);
+            Assert.AreEqual("Sheet2", p.Workbook.VbaProject.Modules[3].Name);
+            Assert.AreEqual("Sheet3", p.Workbook.VbaProject.Modules[4].Name);
+            Assert.AreEqual("Module_1", p.Workbook.VbaProject.Modules[5].Name);
         }
         [TestMethod]
         [ExpectedException(typeof(InvalidOperationException))]
         public void ModuleNameContainsInvalidCharacters()
         {
-            using (ExcelPackage? p = new ExcelPackage())
-            {
-                p.Workbook.Worksheets.Add("InvalidName");
-                p.Workbook.CreateVBAProject();
-                p.Workbook.VbaProject.Modules.AddModule("Mod%ule2");
-            }
+            using ExcelPackage? p = new ExcelPackage();
+            p.Workbook.Worksheets.Add("InvalidName");
+            p.Workbook.CreateVBAProject();
+            p.Workbook.VbaProject.Modules.AddModule("Mod%ule2");
         }
         [TestMethod]
         public void ValidateModuleNameAfterCopyWorksheet()
         {
-            using (ExcelPackage? p = new ExcelPackage())
-            {
-                string? wsName = "SheetWithLooooooooooooooongName";
-                ExcelWorksheet? ws = p.Workbook.Worksheets.Add(wsName);
-                p.Workbook.CreateVBAProject();
-                ws.CodeModule.Code = "Sub VBA_Code\r\n\r\nEnd Sub";
+            using ExcelPackage? p = new ExcelPackage();
+            string? wsName = "SheetWithLooooooooooooooongName";
+            ExcelWorksheet? ws = p.Workbook.Worksheets.Add(wsName);
+            p.Workbook.CreateVBAProject();
+            ws.CodeModule.Code = "Sub VBA_Code\r\n\r\nEnd Sub";
 
-                ExcelWorksheet? newWS1 = p.Workbook.Worksheets.Add("1newworksheet", ws);
-                ExcelWorksheet? newWS2 = p.Workbook.Worksheets.Add("Sheet3", ws);
-                ExcelWorksheet? newWS3 = p.Workbook.Worksheets.Add("newworksheet+1", ws);
+            ExcelWorksheet? newWS1 = p.Workbook.Worksheets.Add("1newworksheet", ws);
+            ExcelWorksheet? newWS2 = p.Workbook.Worksheets.Add("Sheet3", ws);
+            ExcelWorksheet? newWS3 = p.Workbook.Worksheets.Add("newworksheet+1", ws);
 
-                Assert.AreEqual(5, p.Workbook.VbaProject.Modules.Count);
-                Assert.AreEqual("ThisWorkbook", p.Workbook.VbaProject.Modules[0].Name);
-                Assert.AreEqual(wsName, p.Workbook.VbaProject.Modules[1].Name);
-                Assert.AreEqual("Sheet1", p.Workbook.VbaProject.Modules[2].Name);
-                Assert.AreEqual("Sheet3", p.Workbook.VbaProject.Modules[3].Name);
-                Assert.AreEqual("Sheet4", p.Workbook.VbaProject.Modules[4].Name);
-            }
+            Assert.AreEqual(5, p.Workbook.VbaProject.Modules.Count);
+            Assert.AreEqual("ThisWorkbook", p.Workbook.VbaProject.Modules[0].Name);
+            Assert.AreEqual(wsName, p.Workbook.VbaProject.Modules[1].Name);
+            Assert.AreEqual("Sheet1", p.Workbook.VbaProject.Modules[2].Name);
+            Assert.AreEqual("Sheet3", p.Workbook.VbaProject.Modules[3].Name);
+            Assert.AreEqual("Sheet4", p.Workbook.VbaProject.Modules[4].Name);
         }
 
         [TestMethod]
         public void SignedUnsignedWorkbook()
         {
-            using(ExcelPackage? package = OpenTemplatePackage(@"SignedUnsignedWorkbook1.xlsm"))
-            {
-                ExcelVbaProject? proj = package.Workbook.VbaProject;
-                ExcelVbaSignature? s = proj.Signature;
-                s.LegacySignature.HashAlgorithm = VbaSignatureHashAlgorithm.SHA512;
-                s.AgileSignature.CreateSignatureOnSave = false;
-                s.V3Signature.CreateSignatureOnSave = false;
-                SaveWorkbook("SavedSignedUnsignedWorkbook1.xlsm", package);
-            }
+            using ExcelPackage? package = OpenTemplatePackage(@"SignedUnsignedWorkbook1.xlsm");
+            ExcelVbaProject? proj = package.Workbook.VbaProject;
+            ExcelVbaSignature? s = proj.Signature;
+            s.LegacySignature.HashAlgorithm = VbaSignatureHashAlgorithm.SHA512;
+            s.AgileSignature.CreateSignatureOnSave = false;
+            s.V3Signature.CreateSignatureOnSave = false;
+            SaveWorkbook("SavedSignedUnsignedWorkbook1.xlsm", package);
         }
         [TestMethod]
         public void Verify_SignedWorkbook1_Hash_V3()
         {
-            using(ExcelPackage? package = OpenTemplatePackage(@"SignedWorkbook1.xlsm"))
-            {
-                ExcelVbaProject? proj = package.Workbook.VbaProject;
-                ExcelVbaSignature? s = proj.Signature;
-                EPPlusSignatureContext? ctx = s.V3Signature.SignatureHandler.Context;
+            using ExcelPackage? package = OpenTemplatePackage(@"SignedWorkbook1.xlsm");
+            ExcelVbaProject? proj = package.Workbook.VbaProject;
+            ExcelVbaSignature? s = proj.Signature;
+            EPPlusSignatureContext? ctx = s.V3Signature.SignatureHandler.Context;
 
-                byte[]? hash = VbaSignHashAlgorithmUtil.GetContentHash(proj, ctx);
-                Assert.IsTrue(ctx.SourceHash.SequenceEqual(hash));
-            }
+            byte[]? hash = VbaSignHashAlgorithmUtil.GetContentHash(proj, ctx);
+            Assert.IsTrue(ctx.SourceHash.SequenceEqual(hash));
         }
         
         [TestMethod]
         public void Verify_SignedWorkbook1_Hash_Agile()
         {
-            using (ExcelPackage? package = OpenTemplatePackage(@"SignedWorkbook1.xlsm"))
-            {
-                ExcelVbaProject? proj = package.Workbook.VbaProject;
-                ExcelVbaSignature? s = proj.Signature;
-                EPPlusSignatureContext? ctx = s.AgileSignature.SignatureHandler.Context;
+            using ExcelPackage? package = OpenTemplatePackage(@"SignedWorkbook1.xlsm");
+            ExcelVbaProject? proj = package.Workbook.VbaProject;
+            ExcelVbaSignature? s = proj.Signature;
+            EPPlusSignatureContext? ctx = s.AgileSignature.SignatureHandler.Context;
 
-                byte[]? hash = VbaSignHashAlgorithmUtil.GetContentHash(proj, ctx);
-                Assert.IsTrue(ctx.SourceHash.SequenceEqual(hash));
-            }
+            byte[]? hash = VbaSignHashAlgorithmUtil.GetContentHash(proj, ctx);
+            Assert.IsTrue(ctx.SourceHash.SequenceEqual(hash));
         }
         [TestMethod]
         public void Verify_SignedWorkbook1_Hash_Legacy()
         {
-            using (ExcelPackage? package = OpenTemplatePackage(@"SignedWorkbook1.xlsm"))
-            {
-                ExcelVbaProject? proj = package.Workbook.VbaProject;
-                ExcelVbaSignature? s = proj.Signature;
-                EPPlusSignatureContext? ctx = s.LegacySignature.SignatureHandler.Context;
+            using ExcelPackage? package = OpenTemplatePackage(@"SignedWorkbook1.xlsm");
+            ExcelVbaProject? proj = package.Workbook.VbaProject;
+            ExcelVbaSignature? s = proj.Signature;
+            EPPlusSignatureContext? ctx = s.LegacySignature.SignatureHandler.Context;
 
-                byte[]? hash = VbaSignHashAlgorithmUtil.GetContentHash(proj, ctx);
-                Assert.IsTrue(ctx.SourceHash.SequenceEqual(hash));
-            }
+            byte[]? hash = VbaSignHashAlgorithmUtil.GetContentHash(proj, ctx);
+            Assert.IsTrue(ctx.SourceHash.SequenceEqual(hash));
         }
         [TestMethod]
         public void SignedWorkbook()
         {
-            using (ExcelPackage? package = OpenTemplatePackage(@"SignedWorkbook1.xlsm"))
-            {
-                ExcelVbaProject? proj = package.Workbook.VbaProject;
-                ExcelVbaSignature? s = proj.Signature;
-                package.Workbook.VbaProject.Signature.LegacySignature.CreateSignatureOnSave = false;
-                package.Workbook.VbaProject.Signature.V3Signature.CreateSignatureOnSave = false;
-                SaveAndCleanup(package);
-            }
+            using ExcelPackage? package = OpenTemplatePackage(@"SignedWorkbook1.xlsm");
+            ExcelVbaProject? proj = package.Workbook.VbaProject;
+            ExcelVbaSignature? s = proj.Signature;
+            package.Workbook.VbaProject.Signature.LegacySignature.CreateSignatureOnSave = false;
+            package.Workbook.VbaProject.Signature.V3Signature.CreateSignatureOnSave = false;
+            SaveAndCleanup(package);
         }
         [TestMethod]
         public void MyVbaTest_Sign1()
         {
             string? workbook = "VbaSignedSimple2.xlsm";
-            using (ExcelPackage? package = OpenTemplatePackage(workbook))
+            using ExcelPackage? package = OpenTemplatePackage(workbook);
+            X509Store store = new X509Store(StoreLocation.CurrentUser);
+            store.Open(OpenFlags.ReadOnly);
+            foreach (X509Certificate2? cert in store.Certificates)
             {
-                X509Store store = new X509Store(StoreLocation.CurrentUser);
-                store.Open(OpenFlags.ReadOnly);
-                foreach (X509Certificate2? cert in store.Certificates)
+                if (cert.HasPrivateKey && cert.NotBefore <= DateTime.Today && cert.NotAfter >= DateTime.Today)
                 {
-                    if (cert.HasPrivateKey && cert.NotBefore <= DateTime.Today && cert.NotAfter >= DateTime.Today)
+                    if (cert.Thumbprint == "C0201D22A64D78757EF4655988B267E6734E04B5")
                     {
-                        if (cert.Thumbprint == "C0201D22A64D78757EF4655988B267E6734E04B5")
-                        {
-                            package.Workbook.VbaProject.Signature.Certificate = cert;
-                            break;
-                        }
+                        package.Workbook.VbaProject.Signature.Certificate = cert;
+                        break;
                     }
                 }
-                ExcelVBAModule? module=package.Workbook.VbaProject.Modules.AddModule("TestCode");
-                module.Code = "Sub Main\r\nMsgbox(\"Test\")\r\nEnd Sub";
-                package.Workbook.VbaProject.Signature.LegacySignature.CreateSignatureOnSave = false;
-                package.Workbook.VbaProject.Signature.V3Signature.CreateSignatureOnSave = false;
-                package.Workbook.VbaProject.Signature.AgileSignature.HashAlgorithm = OfficeOpenXml.VBA.VbaSignatureHashAlgorithm.SHA256;
-                SaveWorkbook("SignedUnsignedWorkbook1.xlsm", package);
             }
+            ExcelVBAModule? module = package.Workbook.VbaProject.Modules.AddModule("TestCode");
+            module.Code = "Sub Main\r\nMsgbox(\"Test\")\r\nEnd Sub";
+            package.Workbook.VbaProject.Signature.LegacySignature.CreateSignatureOnSave = false;
+            package.Workbook.VbaProject.Signature.V3Signature.CreateSignatureOnSave = false;
+            package.Workbook.VbaProject.Signature.AgileSignature.HashAlgorithm = OfficeOpenXml.VBA.VbaSignatureHashAlgorithm.SHA256;
+            SaveWorkbook("SignedUnsignedWorkbook1.xlsm", package);
         }
         [TestMethod]
         public void v3ContentSigningSample()
         {
             string? workbook = "v3Signing\\V3ContentSigning_original.xlsm";
-            using (ExcelPackage? package = OpenTemplatePackage(workbook))
+            using ExcelPackage? package = OpenTemplatePackage(workbook);
+            X509Store store = new X509Store(StoreLocation.CurrentUser);
+            store.Open(OpenFlags.ReadOnly);
+            foreach (X509Certificate2? cert in store.Certificates)
             {
-                X509Store store = new X509Store(StoreLocation.CurrentUser);
-                store.Open(OpenFlags.ReadOnly);
-                foreach (X509Certificate2? cert in store.Certificates)
+                if (cert.HasPrivateKey && cert.NotBefore <= DateTime.Today && cert.NotAfter >= DateTime.Today)
                 {
-                    if (cert.HasPrivateKey && cert.NotBefore <= DateTime.Today && cert.NotAfter >= DateTime.Today)
+                    if (cert.Thumbprint == "C0201D22A64D78757EF4655988B267E6734E04B5")
                     {
-                        if (cert.Thumbprint == "C0201D22A64D78757EF4655988B267E6734E04B5")
-                        {
-                            package.Workbook.VbaProject.Signature.Certificate = cert;
-                            break;
-                        }
+                        package.Workbook.VbaProject.Signature.Certificate = cert;
+                        break;
                     }
                 }
-                package.Workbook.VbaProject.Signature.LegacySignature.CreateSignatureOnSave = false;
-                package.Workbook.VbaProject.Signature.AgileSignature.CreateSignatureOnSave = false;
-                SaveWorkbook("v3Signing\\EPPlusV3ContentSigning.xlsm", package);
             }
+            package.Workbook.VbaProject.Signature.LegacySignature.CreateSignatureOnSave = false;
+            package.Workbook.VbaProject.Signature.AgileSignature.CreateSignatureOnSave = false;
+            SaveWorkbook("v3Signing\\EPPlusV3ContentSigning.xlsm", package);
         }
     }
 }

@@ -53,10 +53,8 @@ namespace EPPlusTest.FormulaParsing
         [TestMethod]
         public void CreatedScopeShouldBeCurrentScope()
         {
-            using (ParsingScope? scope = _parsingScopes.NewScope(RangeAddress.Empty))
-            {
-                Assert.AreEqual(_parsingScopes.Current, scope);
-            }
+            using ParsingScope? scope = _parsingScopes.NewScope(RangeAddress.Empty);
+            Assert.AreEqual(_parsingScopes.Current, scope);
         }
 
         [TestMethod]
@@ -85,13 +83,9 @@ namespace EPPlusTest.FormulaParsing
         [TestMethod]
         public void NewScopeShouldSetParentOnCreatedScopeIfParentScopeExisted()
         {
-            using (ParsingScope? scope1 = _parsingScopes.NewScope(RangeAddress.Empty))
-            {
-                using (ParsingScope? scope2 = _parsingScopes.NewScope(RangeAddress.Empty))
-                {
-                    Assert.AreEqual(scope1, scope2.Parent);
-                }
-            }
+            using ParsingScope? scope1 = _parsingScopes.NewScope(RangeAddress.Empty);
+            using ParsingScope? scope2 = _parsingScopes.NewScope(RangeAddress.Empty);
+            Assert.AreEqual(scope1, scope2.Parent);
         }
 
         [TestMethod]

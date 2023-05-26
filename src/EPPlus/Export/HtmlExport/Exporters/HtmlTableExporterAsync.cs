@@ -257,15 +257,11 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
         /// <returns>A html table</returns>
         public async Task<string> GetHtmlStringAsync()
         {
-            using (MemoryStream? ms = RecyclableMemory.GetStream())
-            {
-                await RenderHtmlAsync(ms);
-                ms.Position = 0;
-                using (StreamReader? sr = new StreamReader(ms))
-                {
-                    return sr.ReadToEnd();
-                }
-            }
+            using MemoryStream? ms = RecyclableMemory.GetStream();
+            await RenderHtmlAsync(ms);
+            ms.Position = 0;
+            using StreamReader? sr = new StreamReader(ms);
+            return sr.ReadToEnd();
         }
 
         /// <summary>

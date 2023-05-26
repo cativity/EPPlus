@@ -14,16 +14,14 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions
         [TestMethod]
         public void IfError_InnerFunctionReturningError()
         {
-            using (ExcelPackage? pck = new ExcelPackage())
-            {
-                ExcelWorksheet? sheet1 = pck.Workbook.Worksheets.Add("Sheet1");
-                sheet1.Cells["C3"].Formula = "IFERROR(IF(NameDoesntExist=1,\"A\",\"B\"),\"error\")";
+            using ExcelPackage? pck = new ExcelPackage();
+            ExcelWorksheet? sheet1 = pck.Workbook.Worksheets.Add("Sheet1");
+            sheet1.Cells["C3"].Formula = "IFERROR(IF(NameDoesntExist=1,\"A\",\"B\"),\"error\")";
 
-                sheet1.Calculate();
+            sheet1.Calculate();
 
-                Assert.IsFalse(sheet1.Cells["C3"].Value is ExcelErrorValue);
-                Assert.AreEqual("error", sheet1.Cells["C3"].GetValue<string>());
-            }
+            Assert.IsFalse(sheet1.Cells["C3"].Value is ExcelErrorValue);
+            Assert.AreEqual("error", sheet1.Cells["C3"].GetValue<string>());
         }
     }
 }

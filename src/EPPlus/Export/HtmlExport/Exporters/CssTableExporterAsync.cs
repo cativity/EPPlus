@@ -43,15 +43,11 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
         /// <returns>A html table</returns>
         public async Task<string> GetCssStringAsync()
         {
-            using (MemoryStream? ms = RecyclableMemory.GetStream())
-            {
-                await RenderCssAsync(ms);
-                ms.Position = 0;
-                using (StreamReader? sr = new StreamReader(ms))
-                {
-                    return await sr.ReadToEndAsync();
-                }
-            }
+            using MemoryStream? ms = RecyclableMemory.GetStream();
+            await RenderCssAsync(ms);
+            ms.Position = 0;
+            using StreamReader? sr = new StreamReader(ms);
+            return await sr.ReadToEndAsync();
         }
         /// <summary>
         /// Exports the css part of an <see cref="ExcelTable"/> to a html string

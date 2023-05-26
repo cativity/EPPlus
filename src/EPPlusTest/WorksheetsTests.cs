@@ -153,16 +153,14 @@ namespace EPPlusTest
 		[TestMethod]
 		public void ShouldHandleResizeOfIndexWhenExceed8Items()
 		{
-			using (ExcelPackage? p = new ExcelPackage())
-			{
-				ExcelWorksheet wsStart = p.Workbook.Worksheets.Add($"Copy");
-				for (int i = 0; i < 7; i++)
-				{
-					ExcelWorksheet wsNew = p.Workbook.Worksheets.Add($"Sheet{i}");
-					p.Workbook.Worksheets.MoveBefore(wsStart.Name, wsNew.Name);
-				}
-			}
-		}
+            using ExcelPackage? p = new ExcelPackage();
+            ExcelWorksheet wsStart = p.Workbook.Worksheets.Add($"Copy");
+            for (int i = 0; i < 7; i++)
+            {
+                ExcelWorksheet wsNew = p.Workbook.Worksheets.Add($"Sheet{i}");
+                p.Workbook.Worksheets.MoveBefore(wsStart.Name, wsNew.Name);
+            }
+        }
 		[TestMethod]
 		public void MoveBeforeByName8Worksheets()
 		{

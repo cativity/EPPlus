@@ -1899,11 +1899,9 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
                 {
                     // In this case the entry header is in a different file,
                     // which has already been closed. Need to re-open it.
-                    using (Stream hseg = ZipSegmentedStream.ForUpdate(this._container.ZipFile.Name, _diskNumber))
-                    {
-                        hseg.Seek(this._RelativeOffsetOfLocalHeader, SeekOrigin.Begin);
-                        hseg.Write(_EntryHeader, 0, _EntryHeader.Length);
-                    }
+                    using Stream hseg = ZipSegmentedStream.ForUpdate(this._container.ZipFile.Name, _diskNumber);
+                    hseg.Seek(this._RelativeOffsetOfLocalHeader, SeekOrigin.Begin);
+                    hseg.Write(_EntryHeader, 0, _EntryHeader.Length);
                 }
                 else
                 {

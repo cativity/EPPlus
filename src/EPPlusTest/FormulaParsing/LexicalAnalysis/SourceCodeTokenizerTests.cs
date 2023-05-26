@@ -195,20 +195,18 @@ namespace EPPlusTest.FormulaParsing.LexicalAnalysis
         public void TestBug9_12_14()
         {
             //(( W60 -(- W63 )-( W29 + W30 + W31 ))/( W23 + W28 + W42 - W51 )* W4 )
-            using (ExcelPackage? pck = new ExcelPackage())
+            using ExcelPackage? pck = new ExcelPackage();
+            ExcelWorksheet? ws1 = pck.Workbook.Worksheets.Add("test");
+            for (int x = 1; x <= 10; x++)
             {
-                ExcelWorksheet? ws1 = pck.Workbook.Worksheets.Add("test");
-                for (int x = 1; x <= 10; x++)
-                {
-                    ws1.Cells[x, 1].Value = x;
-                }
-
-                ws1.Cells["A11"].Formula = "(( A1 -(- A2 )-( A3 + A4 + A5 ))/( A6 + A7 + A8 - A9 )* A5 )";
-                //ws1.Cells["A11"].Formula = "(-A2 + 1 )";
-                ws1.Calculate();
-                object? result = ws1.Cells["A11"].Value;
-                Assert.AreEqual(-3.75, result);
+                ws1.Cells[x, 1].Value = x;
             }
+
+            ws1.Cells["A11"].Formula = "(( A1 -(- A2 )-( A3 + A4 + A5 ))/( A6 + A7 + A8 - A9 )* A5 )";
+            //ws1.Cells["A11"].Formula = "(-A2 + 1 )";
+            ws1.Calculate();
+            object? result = ws1.Cells["A11"].Value;
+            Assert.AreEqual(-3.75, result);
         }
 
         [TestMethod]

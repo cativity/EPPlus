@@ -65,14 +65,12 @@ namespace EPPlusTest
         [TestMethod]
         public void CopyAndDeleteWorksheetWithImage()
         {
-            using (ExcelPackage? pck = new ExcelPackage(new MemoryStream()))
-            {
-                ExcelWorksheet? ws = pck.Workbook.Worksheets.Add("original");
-                ws.Drawings.AddPicture("Pic1", Properties.Resources.Test1);
-                pck.Workbook.Worksheets.Copy("original", "copy");
-                pck.Workbook.Worksheets.Delete(ws);
-                pck.Save();
-            }
+            using ExcelPackage? pck = new ExcelPackage(new MemoryStream());
+            ExcelWorksheet? ws = pck.Workbook.Worksheets.Add("original");
+            ws.Drawings.AddPicture("Pic1", Properties.Resources.Test1);
+            pck.Workbook.Worksheets.Copy("original", "copy");
+            pck.Workbook.Worksheets.Delete(ws);
+            pck.Save();
         }
     }
 }

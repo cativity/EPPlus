@@ -159,20 +159,16 @@ namespace EPPlusTest
         [TestMethod]
         public void ValidateStaticEnryptionMethods()
         {
-            using (ExcelPackage? p = new ExcelPackage())
-            {
-                p.Workbook.Worksheets.Add("Sheet1");
-                p.Save();
+            using ExcelPackage? p = new ExcelPackage();
+            p.Workbook.Worksheets.Add("Sheet1");
+            p.Save();
 
-                MemoryStream? ep = ExcelEncryption.EncryptPackage(p.Stream, "EPPlus");
-                MemoryStream? dp = ExcelEncryption.DecryptPackage(ep, "EPPlus");
+            MemoryStream? ep = ExcelEncryption.EncryptPackage(p.Stream, "EPPlus");
+            MemoryStream? dp = ExcelEncryption.DecryptPackage(ep, "EPPlus");
 
-                using(ExcelPackage? p2=new ExcelPackage(dp))
-                {
-                    Assert.AreEqual(p.Workbook.Worksheets.Count, p2.Workbook.Worksheets.Count);
-                    Assert.AreEqual(p.Workbook.Worksheets[0].Name, p2.Workbook.Worksheets[0].Name);
-                }
-            }
+            using ExcelPackage? p2 = new ExcelPackage(dp);
+            Assert.AreEqual(p.Workbook.Worksheets.Count, p2.Workbook.Worksheets.Count);
+            Assert.AreEqual(p.Workbook.Worksheets[0].Name, p2.Workbook.Worksheets[0].Name);
         }
     }
 }

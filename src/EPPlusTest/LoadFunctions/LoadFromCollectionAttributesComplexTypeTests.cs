@@ -119,25 +119,21 @@ namespace EPPlusTest.LoadFunctions
         [TestMethod]
         public void ShouldLoadFromComplexTypeMember()
         {
-            using(ExcelPackage? package = new ExcelPackage())
-            {
-                ExcelWorksheet? ws = package.Workbook.Worksheets.Add("test");
-                ws.Cells["A1"].LoadFromCollection(_collection);
-                Assert.AreEqual("ABC", ws.Cells["B1"].Value);
-            }
+            using ExcelPackage? package = new ExcelPackage();
+            ExcelWorksheet? ws = package.Workbook.Worksheets.Add("test");
+            ws.Cells["A1"].LoadFromCollection(_collection);
+            Assert.AreEqual("ABC", ws.Cells["B1"].Value);
         }
 
         [TestMethod]
         public void ShouldLoadFromComplexTypeMemberSorted()
         {
-            using (ExcelPackage? package = new ExcelPackage())
-            {
-                ExcelWorksheet? ws = package.Workbook.Worksheets.Add("test");
-                ws.Cells["A1"].LoadFromCollection(_collectionReversed);
-                Assert.IsTrue((bool)ws.Cells["A1"].Value);
-                Assert.AreEqual("GHI", ws.Cells["B1"].Value);
-                Assert.AreEqual(new DateTime(2021, 7, 1), ws.Cells["E1"].Value);
-            }
+            using ExcelPackage? package = new ExcelPackage();
+            ExcelWorksheet? ws = package.Workbook.Worksheets.Add("test");
+            ws.Cells["A1"].LoadFromCollection(_collectionReversed);
+            Assert.IsTrue((bool)ws.Cells["A1"].Value);
+            Assert.AreEqual("GHI", ws.Cells["B1"].Value);
+            Assert.AreEqual(new DateTime(2021, 7, 1), ws.Cells["E1"].Value);
         }
 
         [TestMethod]
@@ -146,12 +142,10 @@ namespace EPPlusTest.LoadFunctions
             Outer? obj = _collection.First();
             obj.Organization = null;
             _collection[0] = obj;
-            using (ExcelPackage? package = new ExcelPackage())
-            {
-                ExcelWorksheet? ws = package.Workbook.Worksheets.Add("test");
-                ws.Cells["A1"].LoadFromCollection(_collection);
-                Assert.IsNull(ws.Cells["B1"].Value);
-            }
+            using ExcelPackage? package = new ExcelPackage();
+            ExcelWorksheet? ws = package.Workbook.Worksheets.Add("test");
+            ws.Cells["A1"].LoadFromCollection(_collection);
+            Assert.IsNull(ws.Cells["B1"].Value);
         }
 
         [TestMethod]
@@ -160,66 +154,56 @@ namespace EPPlusTest.LoadFunctions
             OuterWithHeaders? obj = _collectionHeaders.First();
             obj.Organization = null;
             _collectionHeaders[0] = obj;
-            using (ExcelPackage? package = new ExcelPackage())
-            {
-                ExcelWorksheet? ws = package.Workbook.Worksheets.Add("test");
-                ws.Cells["A1"].LoadFromCollection(_collectionHeaders);
-                Assert.AreEqual("Org Level 3", ws.Cells["B1"].Value);
-                Assert.IsNull(ws.Cells["B2"].Value);
-            }
+            using ExcelPackage? package = new ExcelPackage();
+            ExcelWorksheet? ws = package.Workbook.Worksheets.Add("test");
+            ws.Cells["A1"].LoadFromCollection(_collectionHeaders);
+            Assert.AreEqual("Org Level 3", ws.Cells["B1"].Value);
+            Assert.IsNull(ws.Cells["B2"].Value);
         }
 
         [TestMethod]
         public void ShouldSetHeaderPrefixOnComplexClassProperty_WithTableColumnAttributeOnChildProperty()
         {
             IEnumerable<IntegratedPlatformExcelRow>? items = ExcelItems.GetItems1();
-            using (ExcelPackage? package = new ExcelPackage())
-            {
-                ExcelWorksheet? ws = package.Workbook.Worksheets.Add("test");
-                ws.Cells["A1"].LoadFromCollection(items);
-                object? cv = ws.Cells["F1"].Value;
-                Assert.AreEqual("Collateral Owner Email", cv);
-            }
+            using ExcelPackage? package = new ExcelPackage();
+            ExcelWorksheet? ws = package.Workbook.Worksheets.Add("test");
+            ws.Cells["A1"].LoadFromCollection(items);
+            object? cv = ws.Cells["F1"].Value;
+            Assert.AreEqual("Collateral Owner Email", cv);
         }
 
         [TestMethod]
         public void ShouldSetHeaderPrefixOnComplexClassProperty_WithoutTableColumnAttributeOnChildProperty()
         {
             IEnumerable<IntegratedPlatformExcelRow>? items = ExcelItems.GetItems1();
-            using (ExcelPackage? package = new ExcelPackage())
-            {
-                ExcelWorksheet? ws = package.Workbook.Worksheets.Add("test");
-                ws.Cells["A1"].LoadFromCollection(items);
-                object? cv = ws.Cells["G1"].Value;
-                Assert.AreEqual("Collateral Owner Name", cv);
-            }
+            using ExcelPackage? package = new ExcelPackage();
+            ExcelWorksheet? ws = package.Workbook.Worksheets.Add("test");
+            ws.Cells["A1"].LoadFromCollection(items);
+            object? cv = ws.Cells["G1"].Value;
+            Assert.AreEqual("Collateral Owner Name", cv);
         }
 
         [TestMethod]
         public void ShouldLoadFromComplexInheritence()
         {
-            using (ExcelPackage? package = new ExcelPackage())
-            {
-                ExcelWorksheet? ws = package.Workbook.Worksheets.Add("test");
-                ws.Cells["A1"].LoadFromCollection(_collectionInheritence);
-                Assert.AreEqual("ABC", ws.Cells["B1"].Value);
-            }
+            using ExcelPackage? package = new ExcelPackage();
+            ExcelWorksheet? ws = package.Workbook.Worksheets.Add("test");
+            ws.Cells["A1"].LoadFromCollection(_collectionInheritence);
+            Assert.AreEqual("ABC", ws.Cells["B1"].Value);
         }
 
         [TestMethod]
         public void LoadComplexTest2()
         {
-            using(ExcelPackage? package = new ExcelPackage())
-            {
-                IEnumerable<IntegratedPlatformExcelRow>? items = ExcelItems.GetItems1();
-                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
-                sheet.Cells["A1"].LoadFromCollection(items);
-                Assert.AreEqual("Product Family", sheet.Cells["A1"].Value);
-                Assert.AreEqual("PCH Die Name", sheet.Cells["B1"].Value);
-                Assert.AreEqual("Collateral Owner Email", sheet.Cells["F1"].Value);
-                Assert.AreEqual("Mission Control Lead Email", sheet.Cells["I1"].Value);
-                Assert.AreEqual("Created (GMT)", sheet.Cells["L1"].Value);
-            }
+            using ExcelPackage? package = new ExcelPackage();
+            IEnumerable<IntegratedPlatformExcelRow>? items = ExcelItems.GetItems1();
+            ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
+            sheet.Cells["A1"].LoadFromCollection(items);
+            Assert.AreEqual("Product Family", sheet.Cells["A1"].Value);
+            Assert.AreEqual("PCH Die Name", sheet.Cells["B1"].Value);
+            Assert.AreEqual("Collateral Owner Email", sheet.Cells["F1"].Value);
+            Assert.AreEqual("Mission Control Lead Email", sheet.Cells["I1"].Value);
+            Assert.AreEqual("Created (GMT)", sheet.Cells["L1"].Value);
         }
     }
 }

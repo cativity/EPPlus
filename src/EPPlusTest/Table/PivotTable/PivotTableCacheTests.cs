@@ -152,39 +152,33 @@ namespace EPPlusTest.Table.PivotTable
         [TestMethod]
         public void ValidatePivotTableCacheAfterDeletedWorksheet()
         {
-            using (ExcelPackage? p1 = new ExcelPackage())
-            {
-                ExcelWorksheet wsData = p1.Workbook.Worksheets.Add("DataDeleted");
-                ExcelWorksheet wsPivot = p1.Workbook.Worksheets.Add("PivotDeleted");
-                LoadTestdata(wsData);
-                ExcelRange? dataRange = wsData.Cells[wsData.Dimension.Address.ToString()];
-                ExcelPivotTable? pivotTable = wsPivot.PivotTables.Add(wsPivot.Cells["A3"], dataRange, "PivotDeleted");
-                p1.Save();
-                using(ExcelPackage? p2=new ExcelPackage(p1.Stream))
-                {
-                    p2.Workbook.Worksheets.Delete("DataDeleted");
-                    wsData = p2.Workbook.Worksheets.Add("DataDeleted");
-                    LoadTestdata(wsData);
+            using ExcelPackage? p1 = new ExcelPackage();
+            ExcelWorksheet wsData = p1.Workbook.Worksheets.Add("DataDeleted");
+            ExcelWorksheet wsPivot = p1.Workbook.Worksheets.Add("PivotDeleted");
+            LoadTestdata(wsData);
+            ExcelRange? dataRange = wsData.Cells[wsData.Dimension.Address.ToString()];
+            ExcelPivotTable? pivotTable = wsPivot.PivotTables.Add(wsPivot.Cells["A3"], dataRange, "PivotDeleted");
+            p1.Save();
+            using ExcelPackage? p2 = new ExcelPackage(p1.Stream);
+            p2.Workbook.Worksheets.Delete("DataDeleted");
+            wsData = p2.Workbook.Worksheets.Add("DataDeleted");
+            LoadTestdata(wsData);
 
-                    SaveWorkbook("pivotDeletedWorksheet.xlsx", p2);
-                }
-            }
+            SaveWorkbook("pivotDeletedWorksheet.xlsx", p2);
         }
         [TestMethod]
         public void ValidatePivotTableCacheHandlesLongTexts()
         {
-            using (ExcelPackage? p = new ExcelPackage())
-            {
-                ExcelWorksheet wsData = p.Workbook.Worksheets.Add("Data");
-                ExcelWorksheet wsPivot = p.Workbook.Worksheets.Add("PivotWithLongText");
-                LoadTestdata(wsData);
-                wsData.Cells["C101"].Value = "A really Long Text" + new string('.', 255);
-                ExcelRange? dataRange = wsData.Cells[wsData.Dimension.Address.ToString()];
-                ExcelPivotTable? pivotTable = wsPivot.PivotTables.Add(wsPivot.Cells["A3"], dataRange, "PivotWithLongText");
-                pivotTable.ColumnFields.Add(pivotTable.Fields[2]);
-                p.Save();
-                Assert.AreEqual("1", pivotTable.CacheDefinition.CacheDefinitionXml.SelectSingleNode("/d:pivotCacheDefinition/d:cacheFields/d:cacheField[@name='StrValue']/d:sharedItems", pivotTable.NameSpaceManager).Attributes["longText"].Value);
-            }
+            using ExcelPackage? p = new ExcelPackage();
+            ExcelWorksheet wsData = p.Workbook.Worksheets.Add("Data");
+            ExcelWorksheet wsPivot = p.Workbook.Worksheets.Add("PivotWithLongText");
+            LoadTestdata(wsData);
+            wsData.Cells["C101"].Value = "A really Long Text" + new string('.', 255);
+            ExcelRange? dataRange = wsData.Cells[wsData.Dimension.Address.ToString()];
+            ExcelPivotTable? pivotTable = wsPivot.PivotTables.Add(wsPivot.Cells["A3"], dataRange, "PivotWithLongText");
+            pivotTable.ColumnFields.Add(pivotTable.Fields[2]);
+            p.Save();
+            Assert.AreEqual("1", pivotTable.CacheDefinition.CacheDefinitionXml.SelectSingleNode("/d:pivotCacheDefinition/d:cacheFields/d:cacheField[@name='StrValue']/d:sharedItems", pivotTable.NameSpaceManager).Attributes["longText"].Value);
         }
 
     }

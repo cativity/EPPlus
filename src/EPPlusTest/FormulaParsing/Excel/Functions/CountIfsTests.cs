@@ -168,57 +168,53 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions
         [TestMethod]
         public void CountIfs_CountThisRowWithoutCircularReferences()
         {
-            using (ExcelPackage? pck = new ExcelPackage())
-            {
-                ExcelWorksheet? sheet1 = pck.Workbook.Worksheets.Add("Sheet1");
-                sheet1.Cells["A1"].Value = "SumResult";
-                // This shouldn't be a circular reference, because the 1:1="COUNTABLE" condition should filter out A2 before the 2:2 filter is applied
-                sheet1.Cells["A2"].Formula = "COUNTIFS(1:1,\"COUNTABLE\",2:2,\"<>\")";
+            using ExcelPackage? pck = new ExcelPackage();
+            ExcelWorksheet? sheet1 = pck.Workbook.Worksheets.Add("Sheet1");
+            sheet1.Cells["A1"].Value = "SumResult";
+            // This shouldn't be a circular reference, because the 1:1="COUNTABLE" condition should filter out A2 before the 2:2 filter is applied
+            sheet1.Cells["A2"].Formula = "COUNTIFS(1:1,\"COUNTABLE\",2:2,\"<>\")";
 
-                sheet1.Cells["B2"].Value = 1;
-                sheet1.Cells["C2"].Value = 2;
-                sheet1.Cells["D2"].Value = 3;
-                sheet1.Cells["E2"].Value = 4;
-                sheet1.Cells["F2"].Value = 5;
-                sheet1.Cells["G2"].Value = 6;
+            sheet1.Cells["B2"].Value = 1;
+            sheet1.Cells["C2"].Value = 2;
+            sheet1.Cells["D2"].Value = 3;
+            sheet1.Cells["E2"].Value = 4;
+            sheet1.Cells["F2"].Value = 5;
+            sheet1.Cells["G2"].Value = 6;
 
-                sheet1.Cells["C1"].Value = "COUNTABLE";
-                sheet1.Cells["D1"].Value = "COUNTABLE";
-                sheet1.Cells["E1"].Value = "COUNTABLE";
-                sheet1.Cells["G1"].Value = "COUNTABLE";
+            sheet1.Cells["C1"].Value = "COUNTABLE";
+            sheet1.Cells["D1"].Value = "COUNTABLE";
+            sheet1.Cells["E1"].Value = "COUNTABLE";
+            sheet1.Cells["G1"].Value = "COUNTABLE";
 
-                pck.Workbook.Calculate(x => x.AllowCircularReferences = true);
+            pck.Workbook.Calculate(x => x.AllowCircularReferences = true);
 
-                Assert.AreEqual(4, sheet1.Cells["A2"].GetValue<double>(), double.Epsilon);
-            }
+            Assert.AreEqual(4, sheet1.Cells["A2"].GetValue<double>(), double.Epsilon);
         }
 
         [TestMethod]
         public void CountIfs_CountThisColWithoutCircularReferences()
         {
-            using (ExcelPackage? pck = new ExcelPackage())
-            {
-                ExcelWorksheet? sheet1 = pck.Workbook.Worksheets.Add("Sheet1");
-                sheet1.Cells["A1"].Value = "SumResult";
-                // This shouldn't be a circular reference, because the 1:1="COUNTABLE" condition should filter out A2 before the 2:2 filter is applied
-                sheet1.Cells["B1"].Formula = "COUNTIFS(A:A,\"COUNTABLE\",B:B,\"<>\")";
+            using ExcelPackage? pck = new ExcelPackage();
+            ExcelWorksheet? sheet1 = pck.Workbook.Worksheets.Add("Sheet1");
+            sheet1.Cells["A1"].Value = "SumResult";
+            // This shouldn't be a circular reference, because the 1:1="COUNTABLE" condition should filter out A2 before the 2:2 filter is applied
+            sheet1.Cells["B1"].Formula = "COUNTIFS(A:A,\"COUNTABLE\",B:B,\"<>\")";
 
-                sheet1.Cells["B2"].Value = 1;
-                sheet1.Cells["B3"].Value = 2;
-                sheet1.Cells["B4"].Value = 3;
-                sheet1.Cells["B5"].Value = 4;
-                sheet1.Cells["B6"].Value = 5;
-                sheet1.Cells["B7"].Value = 6;
+            sheet1.Cells["B2"].Value = 1;
+            sheet1.Cells["B3"].Value = 2;
+            sheet1.Cells["B4"].Value = 3;
+            sheet1.Cells["B5"].Value = 4;
+            sheet1.Cells["B6"].Value = 5;
+            sheet1.Cells["B7"].Value = 6;
 
-                sheet1.Cells["A3"].Value = "COUNTABLE";
-                sheet1.Cells["A4"].Value = "COUNTABLE";
-                sheet1.Cells["A5"].Value = "COUNTABLE";
-                sheet1.Cells["A7"].Value = "COUNTABLE";
+            sheet1.Cells["A3"].Value = "COUNTABLE";
+            sheet1.Cells["A4"].Value = "COUNTABLE";
+            sheet1.Cells["A5"].Value = "COUNTABLE";
+            sheet1.Cells["A7"].Value = "COUNTABLE";
 
-                pck.Workbook.Calculate(x => x.AllowCircularReferences = true);
+            pck.Workbook.Calculate(x => x.AllowCircularReferences = true);
 
-                Assert.AreEqual(4, sheet1.Cells["B1"].GetValue<double>(), double.Epsilon);
-            }
+            Assert.AreEqual(4, sheet1.Cells["B1"].GetValue<double>(), double.Epsilon);
         }
     }
 }

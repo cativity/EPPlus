@@ -211,26 +211,23 @@ namespace OfficeOpenXml.Encryption
             int segment=0;
 
             //Encrypt the data
-            using (
-            MemoryStream? ms = RecyclableMemory.GetStream())
+            using MemoryStream? ms = RecyclableMemory.GetStream();
+            ms.Write(BitConverter.GetBytes((ulong)data.Length), 0, 8);
+            while (pos < data.Length)
             {
-                ms.Write(BitConverter.GetBytes((ulong)data.Length), 0, 8);
-                while (pos < data.Length)
-                {
-                    int segmentSize = (int)(data.Length - pos > 4096 ? 4096 : data.Length - pos);
+                int segmentSize = (int)(data.Length - pos > 4096 ? 4096 : data.Length - pos);
 
-                    byte[]? ivTmp = new byte[4 + encryptionInfo.KeyData.SaltSize];
-                    Array.Copy(encryptionInfo.KeyData.SaltValue, 0, ivTmp, 0, encryptionInfo.KeyData.SaltSize);
-                    Array.Copy(BitConverter.GetBytes(segment), 0, ivTmp, encryptionInfo.KeyData.SaltSize, 4);
-                    byte[]? iv = hashProvider.ComputeHash(ivTmp);
+                byte[]? ivTmp = new byte[4 + encryptionInfo.KeyData.SaltSize];
+                Array.Copy(encryptionInfo.KeyData.SaltValue, 0, ivTmp, 0, encryptionInfo.KeyData.SaltSize);
+                Array.Copy(BitConverter.GetBytes(segment), 0, ivTmp, encryptionInfo.KeyData.SaltSize, 4);
+                byte[]? iv = hashProvider.ComputeHash(ivTmp);
 
-                    EncryptAgileFromKey(ke, ke.KeyValue, data, pos, segmentSize, iv, ms);
-                    pos += segmentSize;
-                    segment++;
-                }
-                ms.Flush();
-                return ms.ToArray();
+                EncryptAgileFromKey(ke, ke.KeyValue, data, pos, segmentSize, iv, ms);
+                pos += segmentSize;
+                segment++;
             }
+            ms.Flush();
+            return ms.ToArray();
         }
         // Set the dataintegrity
         private void SetHMAC(EncryptionInfoAgile ei, HashAlgorithm hashProvider, byte[] salt, byte[] data)
@@ -348,68 +345,62 @@ namespace OfficeOpenXml.Encryption
         }
         private static byte[] CreateVersionStream()
         {
-            using (MemoryStream? ms = RecyclableMemory.GetStream())
-            {
-                BinaryWriter bw = new BinaryWriter(ms);
+            using MemoryStream? ms = RecyclableMemory.GetStream();
+            BinaryWriter bw = new BinaryWriter(ms);
 
-                bw.Write((short)0x3C);  //Major
-                bw.Write((short)0);     //Minor
-                bw.Write(UTF8Encoding.Unicode.GetBytes("Microsoft.Container.DataSpaces"));
-                bw.Write((int)1);       //ReaderVersion
-                bw.Write((int)1);       //UpdaterVersion
-                bw.Write((int)1);       //WriterVersion
+            bw.Write((short)0x3C);  //Major
+            bw.Write((short)0);     //Minor
+            bw.Write(UTF8Encoding.Unicode.GetBytes("Microsoft.Container.DataSpaces"));
+            bw.Write((int)1);       //ReaderVersion
+            bw.Write((int)1);       //UpdaterVersion
+            bw.Write((int)1);       //WriterVersion
 
-                bw.Flush();
-                return ms.ToArray();
-            }
+            bw.Flush();
+            return ms.ToArray();
         }
         private static byte[] CreateDataSpaceMap()
         {
-            using (MemoryStream? ms = RecyclableMemory.GetStream())
-            {
-                BinaryWriter bw = new BinaryWriter(ms);
+            using MemoryStream? ms = RecyclableMemory.GetStream();
+            BinaryWriter bw = new BinaryWriter(ms);
 
-                bw.Write((int)8);       //HeaderLength
-                bw.Write((int)1);       //EntryCount
-                string s1 = "EncryptedPackage";
-                string s2 = "StrongEncryptionDataSpace";
-                bw.Write((int)(s1.Length + s2.Length) * 2 + 0x16);
-                bw.Write((int)1);       //ReferenceComponentCount
-                bw.Write((int)0);       //Stream=0
-                bw.Write((int)s1.Length * 2); //Length s1
-                bw.Write(UTF8Encoding.Unicode.GetBytes(s1));
-                bw.Write((int)(s2.Length * 2));   //Length s2
-                bw.Write(UTF8Encoding.Unicode.GetBytes(s2 + "\0"));   // end \0 is for padding
+            bw.Write((int)8);       //HeaderLength
+            bw.Write((int)1);       //EntryCount
+            string s1 = "EncryptedPackage";
+            string s2 = "StrongEncryptionDataSpace";
+            bw.Write((int)(s1.Length + s2.Length) * 2 + 0x16);
+            bw.Write((int)1);       //ReferenceComponentCount
+            bw.Write((int)0);       //Stream=0
+            bw.Write((int)s1.Length * 2); //Length s1
+            bw.Write(UTF8Encoding.Unicode.GetBytes(s1));
+            bw.Write((int)(s2.Length * 2));   //Length s2
+            bw.Write(UTF8Encoding.Unicode.GetBytes(s2 + "\0"));   // end \0 is for padding
 
-                bw.Flush();
-                return ms.ToArray();
-            }
+            bw.Flush();
+            return ms.ToArray();
         }
         private static byte[] CreateTransformInfoPrimary()
         {
-            using (MemoryStream? ms = RecyclableMemory.GetStream())
-            {
-                BinaryWriter bw = new BinaryWriter(ms);
-                string TransformID = "{FF9A3F03-56EF-4613-BDD5-5A41C1D07246}";
-                string TransformName = "Microsoft.Container.EncryptionTransform";
-                bw.Write(TransformID.Length * 2 + 12);
-                bw.Write((int)1);
-                bw.Write(TransformID.Length * 2);
-                bw.Write(UTF8Encoding.Unicode.GetBytes(TransformID));
-                bw.Write(TransformName.Length * 2);
-                bw.Write(UTF8Encoding.Unicode.GetBytes(TransformName + "\0"));
-                bw.Write((int)1);   //ReaderVersion
-                bw.Write((int)1);   //UpdaterVersion
-                bw.Write((int)1);   //WriterVersion
+            using MemoryStream? ms = RecyclableMemory.GetStream();
+            BinaryWriter bw = new BinaryWriter(ms);
+            string TransformID = "{FF9A3F03-56EF-4613-BDD5-5A41C1D07246}";
+            string TransformName = "Microsoft.Container.EncryptionTransform";
+            bw.Write(TransformID.Length * 2 + 12);
+            bw.Write((int)1);
+            bw.Write(TransformID.Length * 2);
+            bw.Write(UTF8Encoding.Unicode.GetBytes(TransformID));
+            bw.Write(TransformName.Length * 2);
+            bw.Write(UTF8Encoding.Unicode.GetBytes(TransformName + "\0"));
+            bw.Write((int)1);   //ReaderVersion
+            bw.Write((int)1);   //UpdaterVersion
+            bw.Write((int)1);   //WriterVersion
 
-                bw.Write((int)0);
-                bw.Write((int)0);
-                bw.Write((int)0);       //CipherMode
-                bw.Write((int)4);       //Reserved
+            bw.Write((int)0);
+            bw.Write((int)0);
+            bw.Write((int)0);       //CipherMode
+            bw.Write((int)4);       //Reserved
 
-                bw.Flush();
-                return ms.ToArray();
-            }
+            bw.Flush();
+            return ms.ToArray();
         }
 #endregion
         /// <summary>
@@ -483,25 +474,23 @@ namespace OfficeOpenXml.Encryption
 
             //Encrypt the data
             ICryptoTransform? crypt = aes.CreateEncryptor(key, null);
-            using (MemoryStream? ms = RecyclableMemory.GetStream())
+            using MemoryStream? ms = RecyclableMemory.GetStream();
+            CryptoStream? cs = new CryptoStream(ms, crypt, CryptoStreamMode.Write);
+            cs.Write(data, 0, data.Length);
+
+            cs.FlushFinalBlock();
+
+            byte[] ret;
+            if (useDataSize)
             {
-                CryptoStream? cs = new CryptoStream(ms, crypt, CryptoStreamMode.Write);
-                cs.Write(data, 0, data.Length);
-
-                cs.FlushFinalBlock();
-
-                byte[] ret;
-                if (useDataSize)
-                {
-                    ret = new byte[data.Length];
-                    ms.Seek(0, SeekOrigin.Begin);
-                    ms.Read(ret, 0, data.Length);  //Truncate any padded Zeros
-                    return ret;
-                }
-                else
-                {
-                    return ms.ToArray();
-                }
+                ret = new byte[data.Length];
+                ms.Seek(0, SeekOrigin.Begin);
+                ms.Read(ret, 0, data.Length);  //Truncate any padded Zeros
+                return ret;
+            }
+            else
+            {
+                return ms.ToArray();
             }
         }
         private MemoryStream GetStreamFromPackage(CompoundDocument doc, ExcelEncryption encryption)
@@ -689,17 +678,15 @@ namespace OfficeOpenXml.Encryption
                                                                 key,
                                                                 null);
 
-                    using (MemoryStream? dataStream = RecyclableMemory.GetStream(encryptedData))
-                    {
-                        CryptoStream? cryptoStream = new CryptoStream(dataStream,
-                                                                      decryptor,
-                                                                      CryptoStreamMode.Read);
+                    using MemoryStream? dataStream = RecyclableMemory.GetStream(encryptedData);
+                    CryptoStream? cryptoStream = new CryptoStream(dataStream,
+                                                                  decryptor,
+                                                                  CryptoStreamMode.Read);
 
-                        byte[]? decryptedData = new byte[size];
+                    byte[]? decryptedData = new byte[size];
 
-                        cryptoStream.Read(decryptedData, 0, (int)size);
-                        doc.Write(decryptedData, 0, (int)size);
-                    }
+                    cryptoStream.Read(decryptedData, 0, (int)size);
+                    doc.Write(decryptedData, 0, (int)size);
                 }
                 else
                 {
@@ -807,18 +794,16 @@ namespace OfficeOpenXml.Encryption
                                                         FixHashSize(iv, encr.BlockSize, 0x36));
 
 
-            using (MemoryStream? dataStream = RecyclableMemory.GetStream(encryptedData))
-            {
+            using MemoryStream? dataStream = RecyclableMemory.GetStream(encryptedData);
 
-                CryptoStream cryptoStream = new CryptoStream(dataStream,
-                                                                decryptor,
-                                                                CryptoStreamMode.Read);
+            CryptoStream cryptoStream = new CryptoStream(dataStream,
+                                                            decryptor,
+                                                            CryptoStreamMode.Read);
 
-                byte[]? decryptedData = new byte[size];
+            byte[]? decryptedData = new byte[size];
 
-                cryptoStream.Read(decryptedData, 0, (int)size);
-                return decryptedData;
-            }
+            cryptoStream.Read(decryptedData, 0, (int)size);
+            return decryptedData;
         }
 
 #if (Core)

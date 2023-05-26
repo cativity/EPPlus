@@ -82,58 +82,50 @@ namespace EPPlusTest.Core.Range
         [TestMethod]
         public void RemoveProtectedRange()
         {
-            using (ExcelPackage? pck = new ExcelPackage())
-            {
-                ExcelWorksheet? ws = pck.Workbook.Worksheets.Add("RemoveProtectedRange");
-                ws.ProtectedRanges.Add("ProtectedRange", ws.Cells["A1:B2"]);
-                Assert.AreEqual(1, ws.ProtectedRanges.Count);
-                ws.ProtectedRanges.Remove(ws.ProtectedRanges[0]);
-                //Assert
-                Assert.AreEqual(0, ws.ProtectedRanges.Count);
-                Assert.IsFalse(ws.ProtectedRanges.ExistsNode("d:protectedRanges"));
-            }
+            using ExcelPackage? pck = new ExcelPackage();
+            ExcelWorksheet? ws = pck.Workbook.Worksheets.Add("RemoveProtectedRange");
+            ws.ProtectedRanges.Add("ProtectedRange", ws.Cells["A1:B2"]);
+            Assert.AreEqual(1, ws.ProtectedRanges.Count);
+            ws.ProtectedRanges.Remove(ws.ProtectedRanges[0]);
+            //Assert
+            Assert.AreEqual(0, ws.ProtectedRanges.Count);
+            Assert.IsFalse(ws.ProtectedRanges.ExistsNode("d:protectedRanges"));
         }
         [TestMethod]
         public void RemoveAtProtectedRange()
         {
-            using (ExcelPackage? pck = new ExcelPackage())
-            {
-                ExcelWorksheet? ws = pck.Workbook.Worksheets.Add("RemoveAtProtectedRange");
-                ws.ProtectedRanges.Add("ProtectedRange", ws.Cells["A1:B2"]);
-                Assert.AreEqual(1, ws.ProtectedRanges.Count);
-                ws.ProtectedRanges.RemoveAt(0);
-                //Assert
-                Assert.AreEqual(0, ws.ProtectedRanges.Count);
-                Assert.IsFalse(ws.ProtectedRanges.ExistsNode("d:protectedRanges"));
-            }
+            using ExcelPackage? pck = new ExcelPackage();
+            ExcelWorksheet? ws = pck.Workbook.Worksheets.Add("RemoveAtProtectedRange");
+            ws.ProtectedRanges.Add("ProtectedRange", ws.Cells["A1:B2"]);
+            Assert.AreEqual(1, ws.ProtectedRanges.Count);
+            ws.ProtectedRanges.RemoveAt(0);
+            //Assert
+            Assert.AreEqual(0, ws.ProtectedRanges.Count);
+            Assert.IsFalse(ws.ProtectedRanges.ExistsNode("d:protectedRanges"));
         }
         [TestMethod]
         public void ClearProtectedRange()
         {
-            using (ExcelPackage? pck = new ExcelPackage())
-            {
-                ExcelWorksheet? ws = pck.Workbook.Worksheets.Add("ClearProtectedRange");
-                ws.ProtectedRanges.Add("ProtectedRange1", ws.Cells["A1:B2"]);
-                ws.ProtectedRanges.Add("ProtectedRange2", ws.Cells["A2:B3"]);
-                ws.ProtectedRanges.Add("ProtectedRange3", ws.Cells["A3:B4"]);
-                Assert.AreEqual(3, ws.ProtectedRanges.Count);
-                ws.ProtectedRanges.Clear();
-                //Assert
-                Assert.AreEqual(0, ws.ProtectedRanges.Count);
-                Assert.IsFalse(ws.ProtectedRanges.ExistsNode("d:protectedRanges"));
-            }
+            using ExcelPackage? pck = new ExcelPackage();
+            ExcelWorksheet? ws = pck.Workbook.Worksheets.Add("ClearProtectedRange");
+            ws.ProtectedRanges.Add("ProtectedRange1", ws.Cells["A1:B2"]);
+            ws.ProtectedRanges.Add("ProtectedRange2", ws.Cells["A2:B3"]);
+            ws.ProtectedRanges.Add("ProtectedRange3", ws.Cells["A3:B4"]);
+            Assert.AreEqual(3, ws.ProtectedRanges.Count);
+            ws.ProtectedRanges.Clear();
+            //Assert
+            Assert.AreEqual(0, ws.ProtectedRanges.Count);
+            Assert.IsFalse(ws.ProtectedRanges.ExistsNode("d:protectedRanges"));
         }
 
         [TestMethod]
         [ExpectedException(typeof(InvalidOperationException))]
         public void DuplicateNameShouldThrowInvalidOperationException()
         {
-            using (ExcelPackage? pck = new ExcelPackage())
-            {
-                ExcelWorksheet? ws = pck.Workbook.Worksheets.Add("ThreeProtectedRanges");
-                ws.ProtectedRanges.Add("Range", ws.Cells["A1:B2"]);
-                ws.ProtectedRanges.Add("range", ws.Cells["A4:B5"]);
-            }
+            using ExcelPackage? pck = new ExcelPackage();
+            ExcelWorksheet? ws = pck.Workbook.Worksheets.Add("ThreeProtectedRanges");
+            ws.ProtectedRanges.Add("Range", ws.Cells["A1:B2"]);
+            ws.ProtectedRanges.Add("range", ws.Cells["A4:B5"]);
         }
 
     }

@@ -54,17 +54,14 @@ namespace EPPlusTest.FormulaParsing
             double usEoMonth = 0d, usEdate = 0d;
             Thread? thread = new Thread(delegate ()
             {
-                using (ExcelPackage? package = new ExcelPackage())
-                {
-                    ExcelWorksheet? ws = package.Workbook.Worksheets.Add("Sheet1");
-                    ws.Cells[2, 2].Value = "1/15/2014";
-                    ws.Cells[3, 3].Formula = "EOMONTH(C2, 0)";
-                    ws.Cells[2, 3].Formula = "EDATE(B2, 0)";
-                    ws.Calculate();
-                    usEoMonth = Convert.ToDouble(ws.Cells[2, 3].Value);
-                    usEdate = Convert.ToDouble(ws.Cells[3, 3].Value);
-
-                }
+                using ExcelPackage? package = new ExcelPackage();
+                ExcelWorksheet? ws = package.Workbook.Worksheets.Add("Sheet1");
+                ws.Cells[2, 2].Value = "1/15/2014";
+                ws.Cells[3, 3].Formula = "EOMONTH(C2, 0)";
+                ws.Cells[2, 3].Formula = "EDATE(B2, 0)";
+                ws.Calculate();
+                usEoMonth = Convert.ToDouble(ws.Cells[2, 3].Value);
+                usEdate = Convert.ToDouble(ws.Cells[3, 3].Value);
             });
             thread.Start();
             thread.Join();
@@ -86,22 +83,20 @@ namespace EPPlusTest.FormulaParsing
             Thread? thread = new Thread(delegate ()
             {
                 Thread.CurrentThread.CurrentCulture = CultureInfo.CreateSpecificCulture("en-GB");
-                using (ExcelPackage? package = new ExcelPackage())
+                using ExcelPackage? package = new ExcelPackage();
+                ExcelWorksheet? ws = package.Workbook.Worksheets.Add("Sheet1");
+                ws.Cells[2, 2].Value = "15/1/2014";
+                ws.Cells[3, 3].Formula = "EOMONTH(C2, 0)";
+                ws.Cells[2, 3].Formula = "EDATE(B2, 0)";
+                ws.Calculate();
+                try
                 {
-                    ExcelWorksheet? ws = package.Workbook.Worksheets.Add("Sheet1");
-                    ws.Cells[2, 2].Value = "15/1/2014";
-                    ws.Cells[3, 3].Formula = "EOMONTH(C2, 0)";
-                    ws.Cells[2, 3].Formula = "EDATE(B2, 0)";
-                    ws.Calculate();
-                    try
-                    {
-                        gbEoMonth = Convert.ToDouble(ws.Cells[2, 3].Value);
-                        gbEdate = Convert.ToDouble(ws.Cells[3, 3].Value);
-                    }
-                    catch (Exception ex)
-                    {
-                        Assert.Fail($"Fail culture {Thread.CurrentThread.CurrentCulture.Name}\r\n{ex.Message}\r\n{ex.StackTrace}");
-                    }
+                    gbEoMonth = Convert.ToDouble(ws.Cells[2, 3].Value);
+                    gbEdate = Convert.ToDouble(ws.Cells[3, 3].Value);
+                }
+                catch (Exception ex)
+                {
+                    Assert.Fail($"Fail culture {Thread.CurrentThread.CurrentCulture.Name}\r\n{ex.Message}\r\n{ex.StackTrace}");
                 }
             });
             thread.Start();

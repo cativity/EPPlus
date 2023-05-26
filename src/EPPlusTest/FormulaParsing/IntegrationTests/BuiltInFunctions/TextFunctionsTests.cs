@@ -42,212 +42,180 @@ namespace EPPlusTest.FormulaParsing.IntegrationTests.BuiltInFunctions
         [TestMethod]
         public void HyperlinkShouldHandleReference()
         {
-            using (ExcelPackage? pck = new ExcelPackage(new MemoryStream()))
-            {
-                ExcelWorksheet? sheet = pck.Workbook.Worksheets.Add("test");
-                sheet.Cells["A1"].Formula = "HYPERLINK(B1)";
-                sheet.Cells["B1"].Value = "http://epplus.codeplex.com";
-                sheet.Calculate();
-                Assert.AreEqual("http://epplus.codeplex.com", sheet.Cells["A1"].Value);
-            }
+            using ExcelPackage? pck = new ExcelPackage(new MemoryStream());
+            ExcelWorksheet? sheet = pck.Workbook.Worksheets.Add("test");
+            sheet.Cells["A1"].Formula = "HYPERLINK(B1)";
+            sheet.Cells["B1"].Value = "http://epplus.codeplex.com";
+            sheet.Calculate();
+            Assert.AreEqual("http://epplus.codeplex.com", sheet.Cells["A1"].Value);
         }
 
         [TestMethod]
         public void HyperlinkShouldHandleReference2()
         {
-            using (ExcelPackage? pck = new ExcelPackage(new MemoryStream()))
-            {
-                ExcelWorksheet? sheet = pck.Workbook.Worksheets.Add("test");
-                sheet.Cells["A1"].Formula = "HYPERLINK(B1, B2)";
-                sheet.Cells["B1"].Value = "http://epplus.codeplex.com";
-                sheet.Cells["B2"].Value = "Epplus";
-                sheet.Calculate();
-                Assert.AreEqual("Epplus", sheet.Cells["A1"].Value);
-            }
+            using ExcelPackage? pck = new ExcelPackage(new MemoryStream());
+            ExcelWorksheet? sheet = pck.Workbook.Worksheets.Add("test");
+            sheet.Cells["A1"].Formula = "HYPERLINK(B1, B2)";
+            sheet.Cells["B1"].Value = "http://epplus.codeplex.com";
+            sheet.Cells["B2"].Value = "Epplus";
+            sheet.Calculate();
+            Assert.AreEqual("Epplus", sheet.Cells["A1"].Value);
         }
 
         [TestMethod]
         public void HyperlinkShouldHandleText()
         {
-            using (ExcelPackage? pck = new ExcelPackage(new MemoryStream()))
-            {
-                ExcelWorksheet? sheet = pck.Workbook.Worksheets.Add("test");
-                sheet.Cells["A1"].Formula = "HYPERLINK(\"testing\")";
-                sheet.Calculate();
-                Assert.AreEqual("testing", sheet.Cells["A1"].Value);
-            }
+            using ExcelPackage? pck = new ExcelPackage(new MemoryStream());
+            ExcelWorksheet? sheet = pck.Workbook.Worksheets.Add("test");
+            sheet.Cells["A1"].Formula = "HYPERLINK(\"testing\")";
+            sheet.Calculate();
+            Assert.AreEqual("testing", sheet.Cells["A1"].Value);
         }
 
         [TestMethod]
         public void TrimShouldHandleStringWithSpaces()
         {
-            using (ExcelPackage? pck = new ExcelPackage(new MemoryStream()))
-            {
-                ExcelWorksheet? sheet = pck.Workbook.Worksheets.Add("test");
-                sheet.Cells["A1"].Formula = "TRIM(B1)";
-                sheet.Cells["B1"].Value = " epplus   5 ";
-                sheet.Calculate();
-                Assert.AreEqual("epplus 5", sheet.Cells["A1"].Value);
-            }
+            using ExcelPackage? pck = new ExcelPackage(new MemoryStream());
+            ExcelWorksheet? sheet = pck.Workbook.Worksheets.Add("test");
+            sheet.Cells["A1"].Formula = "TRIM(B1)";
+            sheet.Cells["B1"].Value = " epplus   5 ";
+            sheet.Calculate();
+            Assert.AreEqual("epplus 5", sheet.Cells["A1"].Value);
         }
 
         [TestMethod]
         public void CleanShouldRemoveNonPrintableChar()
         {
-            using (ExcelPackage? pck = new ExcelPackage(new MemoryStream()))
-            {
-                ExcelWorksheet? sheet = pck.Workbook.Worksheets.Add("test");
-                sheet.Cells["A1"].Formula = "CLEAN(B1)";
-                sheet.Cells["B1"].Value = "epplus" + (char)3;
-                sheet.Calculate();
-                Assert.AreEqual("epplus", sheet.Cells["A1"].Value);
-            }
+            using ExcelPackage? pck = new ExcelPackage(new MemoryStream());
+            ExcelWorksheet? sheet = pck.Workbook.Worksheets.Add("test");
+            sheet.Cells["A1"].Formula = "CLEAN(B1)";
+            sheet.Cells["B1"].Value = "epplus" + (char)3;
+            sheet.Calculate();
+            Assert.AreEqual("epplus", sheet.Cells["A1"].Value);
         }
 
         [TestMethod]
         public void CharShouldReturnCharValOfNumber()
         {
-            using (ExcelPackage? pck = new ExcelPackage(new MemoryStream()))
-            {
-                ExcelWorksheet? sheet = pck.Workbook.Worksheets.Add("test");
-                sheet.Cells["A1"].Formula = "Char(A2)";
-                sheet.Cells["A2"].Value = 55;
-                sheet.Calculate();
-                Assert.AreEqual("7", sheet.Cells["A1"].Value);
-            }
+            using ExcelPackage? pck = new ExcelPackage(new MemoryStream());
+            ExcelWorksheet? sheet = pck.Workbook.Worksheets.Add("test");
+            sheet.Cells["A1"].Formula = "Char(A2)";
+            sheet.Cells["A2"].Value = 55;
+            sheet.Calculate();
+            Assert.AreEqual("7", sheet.Cells["A1"].Value);
         }
 
         [TestMethod]
         public void FixedShouldHaveCorrectDefaultValues()
         {
-            using (ExcelPackage? pck = new ExcelPackage(new MemoryStream()))
-            {
-                ExcelWorksheet? sheet = pck.Workbook.Worksheets.Add("test");
-                sheet.Cells["A1"].Formula = "Fixed(A2)";
-                sheet.Cells["A2"].Value = 1234.5678;
-                sheet.Calculate();
-                Assert.AreEqual(1234.5678.ToString("N2"), sheet.Cells["A1"].Value);
-            }
+            using ExcelPackage? pck = new ExcelPackage(new MemoryStream());
+            ExcelWorksheet? sheet = pck.Workbook.Worksheets.Add("test");
+            sheet.Cells["A1"].Formula = "Fixed(A2)";
+            sheet.Cells["A2"].Value = 1234.5678;
+            sheet.Calculate();
+            Assert.AreEqual(1234.5678.ToString("N2"), sheet.Cells["A1"].Value);
         }
 
         [TestMethod]
         public void FixedShouldSetCorrectNumberOfDecimals()
         {
-            using (ExcelPackage? pck = new ExcelPackage(new MemoryStream()))
-            {
-                ExcelWorksheet? sheet = pck.Workbook.Worksheets.Add("test");
-                sheet.Cells["A1"].Formula = "Fixed(A2,4)";
-                sheet.Cells["A2"].Value = 1234.56789;
-                sheet.Calculate();
-                Assert.AreEqual(1234.56789.ToString("N4"), sheet.Cells["A1"].Value);
-            }
+            using ExcelPackage? pck = new ExcelPackage(new MemoryStream());
+            ExcelWorksheet? sheet = pck.Workbook.Worksheets.Add("test");
+            sheet.Cells["A1"].Formula = "Fixed(A2,4)";
+            sheet.Cells["A2"].Value = 1234.56789;
+            sheet.Calculate();
+            Assert.AreEqual(1234.56789.ToString("N4"), sheet.Cells["A1"].Value);
         }
 
         [TestMethod]
         public void FixedShouldSetNoCommas()
         {
-            using (ExcelPackage? pck = new ExcelPackage(new MemoryStream()))
-            {
-                ExcelWorksheet? sheet = pck.Workbook.Worksheets.Add("test");
-                sheet.Cells["A1"].Formula = "Fixed(A2,4,true)";
-                sheet.Cells["A2"].Value = 1234.56789;
-                sheet.Calculate();
-                Assert.AreEqual(1234.56789.ToString("F4"), sheet.Cells["A1"].Value);
-            }
+            using ExcelPackage? pck = new ExcelPackage(new MemoryStream());
+            ExcelWorksheet? sheet = pck.Workbook.Worksheets.Add("test");
+            sheet.Cells["A1"].Formula = "Fixed(A2,4,true)";
+            sheet.Cells["A2"].Value = 1234.56789;
+            sheet.Calculate();
+            Assert.AreEqual(1234.56789.ToString("F4"), sheet.Cells["A1"].Value);
         }
 
         [TestMethod]
         public void UnicodeShouldReturnCorrectCodeOfFirstChar()
         {
-            using (ExcelPackage? pck = new ExcelPackage(new MemoryStream()))
-            {
-                ExcelWorksheet? sheet = pck.Workbook.Worksheets.Add("test");
-                sheet.Cells["A1"].Formula = "UNICODE(A2)";
-                sheet.Cells["A2"].Value = "Bxxx";
-                sheet.Calculate();
-                Assert.AreEqual(66, sheet.Cells["A1"].Value);
-            }
+            using ExcelPackage? pck = new ExcelPackage(new MemoryStream());
+            ExcelWorksheet? sheet = pck.Workbook.Worksheets.Add("test");
+            sheet.Cells["A1"].Formula = "UNICODE(A2)";
+            sheet.Cells["A2"].Value = "Bxxx";
+            sheet.Calculate();
+            Assert.AreEqual(66, sheet.Cells["A1"].Value);
         }
 
         [TestMethod]
         public void UnicharShouldReturnCorrectCharFromNumber()
         {
-            using (ExcelPackage? pck = new ExcelPackage(new MemoryStream()))
-            {
-                ExcelWorksheet? sheet = pck.Workbook.Worksheets.Add("test");
-                sheet.Cells["A1"].Formula = "UNICHAR(66)";
-                sheet.Calculate();
-                Assert.AreEqual("B", sheet.Cells["A1"].Value);
-            }
+            using ExcelPackage? pck = new ExcelPackage(new MemoryStream());
+            ExcelWorksheet? sheet = pck.Workbook.Worksheets.Add("test");
+            sheet.Cells["A1"].Formula = "UNICHAR(66)";
+            sheet.Calculate();
+            Assert.AreEqual("B", sheet.Cells["A1"].Value);
         }
 
         [TestMethod]
         public void FixedShouldHandleNegativeDecimals()
         {
-            using (ExcelPackage? pck = new ExcelPackage(new MemoryStream()))
-            {
-                ExcelWorksheet? sheet = pck.Workbook.Worksheets.Add("test");
-                sheet.Cells["A1"].Formula = "Fixed(A2,-1,true)";
-                sheet.Cells["A2"].Value = 1234.56789;
-                sheet.Calculate();
-                Assert.AreEqual(1230.ToString("F0"), sheet.Cells["A1"].Value);
-            }
+            using ExcelPackage? pck = new ExcelPackage(new MemoryStream());
+            ExcelWorksheet? sheet = pck.Workbook.Worksheets.Add("test");
+            sheet.Cells["A1"].Formula = "Fixed(A2,-1,true)";
+            sheet.Cells["A2"].Value = 1234.56789;
+            sheet.Calculate();
+            Assert.AreEqual(1230.ToString("F0"), sheet.Cells["A1"].Value);
         }
 
         [TestMethod]
         public void ConcatenateShouldHandleRange()
         {
-            using (ExcelPackage? pck = new ExcelPackage(new MemoryStream()))
-            {
-                ExcelWorksheet? sheet = pck.Workbook.Worksheets.Add("test");
-                sheet.Cells["A1"].Formula = "Concatenate(1,A2)";
-                sheet.Cells["A2"].Value = "hello";
-                sheet.Calculate();
-                Assert.AreEqual("1hello", sheet.Cells["A1"].Value);
-            }
+            using ExcelPackage? pck = new ExcelPackage(new MemoryStream());
+            ExcelWorksheet? sheet = pck.Workbook.Worksheets.Add("test");
+            sheet.Cells["A1"].Formula = "Concatenate(1,A2)";
+            sheet.Cells["A2"].Value = "hello";
+            sheet.Calculate();
+            Assert.AreEqual("1hello", sheet.Cells["A1"].Value);
         }
 
         [TestMethod]
         public void ConcatShouldHandleSingleCellAddressAndNumber()
         {
-            using (ExcelPackage? pck = new ExcelPackage(new MemoryStream()))
-            {
-                ExcelWorksheet? sheet = pck.Workbook.Worksheets.Add("test");
-                sheet.Cells["A1"].Formula = "CONCAT(1,A2)";
-                sheet.Cells["A2"].Value = "hello";
-                sheet.Calculate();
-                Assert.AreEqual("1hello", sheet.Cells["A1"].Value);
-            }
+            using ExcelPackage? pck = new ExcelPackage(new MemoryStream());
+            ExcelWorksheet? sheet = pck.Workbook.Worksheets.Add("test");
+            sheet.Cells["A1"].Formula = "CONCAT(1,A2)";
+            sheet.Cells["A2"].Value = "hello";
+            sheet.Calculate();
+            Assert.AreEqual("1hello", sheet.Cells["A1"].Value);
         }
 
         [TestMethod]
         public void ConcatShouldHandleRange()
         {
-            using (ExcelPackage? pck = new ExcelPackage(new MemoryStream()))
-            {
-                ExcelWorksheet? sheet = pck.Workbook.Worksheets.Add("test");
-                sheet.Cells["A1"].Formula = "CONCAT(A2,A3:A5)";
-                sheet.Cells["A2"].Value = "hello ";
-                sheet.Cells["A3"].Value = "ep";
-                sheet.Cells["A4"].Value = "pl";
-                sheet.Cells["A5"].Value = "us";
+            using ExcelPackage? pck = new ExcelPackage(new MemoryStream());
+            ExcelWorksheet? sheet = pck.Workbook.Worksheets.Add("test");
+            sheet.Cells["A1"].Formula = "CONCAT(A2,A3:A5)";
+            sheet.Cells["A2"].Value = "hello ";
+            sheet.Cells["A3"].Value = "ep";
+            sheet.Cells["A4"].Value = "pl";
+            sheet.Cells["A5"].Value = "us";
 
-                sheet.Calculate();
-                Assert.AreEqual("hello epplus", sheet.Cells["A1"].Value);
-            }
+            sheet.Calculate();
+            Assert.AreEqual("hello epplus", sheet.Cells["A1"].Value);
         }
 
         [TestMethod]
         public void NumberValueShouldHandleRange()
         {
-            using(ExcelPackage? pck = new ExcelPackage())
-            {
-                ExcelWorksheet? sheet = pck.Workbook.Worksheets.Add("test");
-                sheet.Cells["A1"].Value = "1,000.15";
-                sheet.Cells["A2"].Formula = "NUMBERVALUE(A1,\".\",\",\")";
-                sheet.Calculate();
-                Assert.AreEqual(1000.15d, sheet.Cells["A2"].Value);
-            }
+            using ExcelPackage? pck = new ExcelPackage();
+            ExcelWorksheet? sheet = pck.Workbook.Worksheets.Add("test");
+            sheet.Cells["A1"].Value = "1,000.15";
+            sheet.Cells["A2"].Formula = "NUMBERVALUE(A1,\".\",\",\")";
+            sheet.Calculate();
+            Assert.AreEqual(1000.15d, sheet.Cells["A2"].Value);
         }
 
         [TestMethod, Ignore]

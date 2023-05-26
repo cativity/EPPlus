@@ -73,19 +73,15 @@ namespace OfficeOpenXml.Utils.CompundDocument
         }
         internal void Read(byte[] doc) 
         {
-            using (MemoryStream? ms = RecyclableMemory.GetStream(doc))
-            {
-                Read(ms);
-            }
+            using MemoryStream? ms = RecyclableMemory.GetStream(doc);
+            Read(ms);
         }
         internal void Read(MemoryStream ms)
         {
-            using (CompoundDocumentFile? doc = new CompoundDocumentFile(ms))
-            {
-                Storage = new StoragePart();
-                GetStorageAndStreams(Storage, doc.RootItem);
-                Directories = doc.Directories;
-            }
+            using CompoundDocumentFile? doc = new CompoundDocumentFile(ms);
+            Storage = new StoragePart();
+            GetStorageAndStreams(Storage, doc.RootItem);
+            Directories = doc.Directories;
         }
 
         private static void GetStorageAndStreams(StoragePart storage, CompoundDocumentItem parent)

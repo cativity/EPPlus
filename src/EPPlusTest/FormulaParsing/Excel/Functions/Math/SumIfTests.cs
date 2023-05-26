@@ -348,72 +348,66 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions.Math
         [TestMethod]
         public void SumIfShouldHandleBooleanArg()
         {
-            using (ExcelPackage? pck = new ExcelPackage())
-            {
-                ExcelWorksheet? sheet = pck.Workbook.Worksheets.Add("test");
-                sheet.Cells["A1"].Value = true;
-                sheet.Cells["B1"].Value = 1;
-                sheet.Cells["A2"].Value = false;
-                sheet.Cells["B2"].Value = 1;
-                sheet.Cells["C1"].Formula = "SUMIF(A1:A2,TRUE,B1:B2)";
-                sheet.Calculate();
-                Assert.AreEqual(1d, sheet.Cells["C1"].Value);
-            }
+            using ExcelPackage? pck = new ExcelPackage();
+            ExcelWorksheet? sheet = pck.Workbook.Worksheets.Add("test");
+            sheet.Cells["A1"].Value = true;
+            sheet.Cells["B1"].Value = 1;
+            sheet.Cells["A2"].Value = false;
+            sheet.Cells["B2"].Value = 1;
+            sheet.Cells["C1"].Formula = "SUMIF(A1:A2,TRUE,B1:B2)";
+            sheet.Calculate();
+            Assert.AreEqual(1d, sheet.Cells["C1"].Value);
         }
 
         [TestMethod]
         public void SumIfShouldHandleArrayOfCriterias()
         {
-            using (ExcelPackage? pck = new ExcelPackage())
-            {
-                ExcelWorksheet? sheet = pck.Workbook.Worksheets.Add("test");
-                sheet.Cells["A1"].Value = "A";
-                sheet.Cells["A2"].Value = "B";
-                sheet.Cells["A3"].Value = "A";
-                sheet.Cells["A4"].Value = "B";
-                sheet.Cells["A5"].Value = "C";
-                sheet.Cells["A6"].Value = "B";
+            using ExcelPackage? pck = new ExcelPackage();
+            ExcelWorksheet? sheet = pck.Workbook.Worksheets.Add("test");
+            sheet.Cells["A1"].Value = "A";
+            sheet.Cells["A2"].Value = "B";
+            sheet.Cells["A3"].Value = "A";
+            sheet.Cells["A4"].Value = "B";
+            sheet.Cells["A5"].Value = "C";
+            sheet.Cells["A6"].Value = "B";
 
-                sheet.Cells["B1"].Value = 10;
-                sheet.Cells["B2"].Value = 20;
-                sheet.Cells["B3"].Value = 10;
-                sheet.Cells["B4"].Value = 30;
-                sheet.Cells["B5"].Value = 40;
-                sheet.Cells["B6"].Value = 10;
+            sheet.Cells["B1"].Value = 10;
+            sheet.Cells["B2"].Value = 20;
+            sheet.Cells["B3"].Value = 10;
+            sheet.Cells["B4"].Value = 30;
+            sheet.Cells["B5"].Value = 40;
+            sheet.Cells["B6"].Value = 10;
 
-                sheet.Cells["A9"].Formula = "SUMIF(A1:A6,{\"A\",\"C\"}, B1:B6)";
-                sheet.Calculate();
-                Assert.AreEqual(60d, sheet.Cells["A9"].Value);
-            }
+            sheet.Cells["A9"].Formula = "SUMIF(A1:A6,{\"A\",\"C\"}, B1:B6)";
+            sheet.Calculate();
+            Assert.AreEqual(60d, sheet.Cells["A9"].Value);
         }
 
         [TestMethod]
         public void SumIfShouldHandleRangeWithCriterias()
         {
-            using (ExcelPackage? pck = new ExcelPackage())
-            {
-                ExcelWorksheet? sheet = pck.Workbook.Worksheets.Add("test");
-                sheet.Cells["A1"].Value = "A";
-                sheet.Cells["A2"].Value = "B";
-                sheet.Cells["A3"].Value = "A";
-                sheet.Cells["A4"].Value = "B";
-                sheet.Cells["A5"].Value = "C";
-                sheet.Cells["A6"].Value = "B";
+            using ExcelPackage? pck = new ExcelPackage();
+            ExcelWorksheet? sheet = pck.Workbook.Worksheets.Add("test");
+            sheet.Cells["A1"].Value = "A";
+            sheet.Cells["A2"].Value = "B";
+            sheet.Cells["A3"].Value = "A";
+            sheet.Cells["A4"].Value = "B";
+            sheet.Cells["A5"].Value = "C";
+            sheet.Cells["A6"].Value = "B";
 
-                sheet.Cells["B1"].Value = 10;
-                sheet.Cells["B2"].Value = 20;
-                sheet.Cells["B3"].Value = 10;
-                sheet.Cells["B4"].Value = 30;
-                sheet.Cells["B5"].Value = 40;
-                sheet.Cells["B6"].Value = 10;
+            sheet.Cells["B1"].Value = 10;
+            sheet.Cells["B2"].Value = 20;
+            sheet.Cells["B3"].Value = 10;
+            sheet.Cells["B4"].Value = 30;
+            sheet.Cells["B5"].Value = 40;
+            sheet.Cells["B6"].Value = 10;
 
-                sheet.Cells["D9"].Value = "A";
-                sheet.Cells["E9"].Value = "C";
+            sheet.Cells["D9"].Value = "A";
+            sheet.Cells["E9"].Value = "C";
 
-                sheet.Cells["A9"].Formula = "SUMIF(A1:A6,D9:E9, B1:B6)";
-                sheet.Calculate();
-                Assert.AreEqual(60d, sheet.Cells["A9"].Value);
-            }
+            sheet.Cells["A9"].Formula = "SUMIF(A1:A6,D9:E9, B1:B6)";
+            sheet.Calculate();
+            Assert.AreEqual(60d, sheet.Cells["A9"].Value);
         }
 
         [TestMethod]
@@ -429,41 +423,37 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions.Math
         [TestMethod]
         public void SumIfEqualToEmptyString_Parser()
         {
-            using (ExcelPackage? pck = new ExcelPackage())
-            {
-                ExcelWorksheet? sheet = pck.Workbook.Worksheets.Add("test");
-                sheet.Cells["A1"].Value = null;
-                sheet.Cells["A2"].Value = string.Empty;
-                sheet.Cells["A3"].Value = "Not Empty";
-                sheet.Cells["B1"].Value = 1d;
-                sheet.Cells["B2"].Value = 3d;
-                sheet.Cells["B3"].Value = 5d;
+            using ExcelPackage? pck = new ExcelPackage();
+            ExcelWorksheet? sheet = pck.Workbook.Worksheets.Add("test");
+            sheet.Cells["A1"].Value = null;
+            sheet.Cells["A2"].Value = string.Empty;
+            sheet.Cells["A3"].Value = "Not Empty";
+            sheet.Cells["B1"].Value = 1d;
+            sheet.Cells["B2"].Value = 3d;
+            sheet.Cells["B3"].Value = 5d;
 
-                sheet.Cells["B4"].Formula = "SUMIF(A1:A3,\"=\",B1:B3)";
-                sheet.Cells["B5"].Formula = "SUMIF(A1:A3,\"\",B1:B3)";
-                sheet.Calculate();
-                Assert.AreEqual(1d, sheet.Cells["B4"].Value);
-                Assert.AreEqual(4d, sheet.Cells["B5"].Value);
-            }
+            sheet.Cells["B4"].Formula = "SUMIF(A1:A3,\"=\",B1:B3)";
+            sheet.Cells["B5"].Formula = "SUMIF(A1:A3,\"\",B1:B3)";
+            sheet.Calculate();
+            Assert.AreEqual(1d, sheet.Cells["B4"].Value);
+            Assert.AreEqual(4d, sheet.Cells["B5"].Value);
         }
 
         [TestMethod]
         public void SumIfNotEqualToNull_Parser()
         {
-            using (ExcelPackage? pck = new ExcelPackage())
-            {
-                ExcelWorksheet? sheet = pck.Workbook.Worksheets.Add("test");
-                sheet.Cells["A1"].Value = null;
-                sheet.Cells["A2"].Value = string.Empty;
-                sheet.Cells["A3"].Value = "Not Empty";
-                sheet.Cells["B1"].Value = 1d;
-                sheet.Cells["B2"].Value = 3d;
-                sheet.Cells["B3"].Value = 5d;
+            using ExcelPackage? pck = new ExcelPackage();
+            ExcelWorksheet? sheet = pck.Workbook.Worksheets.Add("test");
+            sheet.Cells["A1"].Value = null;
+            sheet.Cells["A2"].Value = string.Empty;
+            sheet.Cells["A3"].Value = "Not Empty";
+            sheet.Cells["B1"].Value = 1d;
+            sheet.Cells["B2"].Value = 3d;
+            sheet.Cells["B3"].Value = 5d;
 
-                sheet.Cells["B4"].Formula = "SUMIF(A1:A3,\"<>\",B1:B3)";
-                sheet.Calculate();
-                Assert.AreEqual(8d, sheet.Cells["B4"].Value);
-            }
+            sheet.Cells["B4"].Formula = "SUMIF(A1:A3,\"<>\",B1:B3)";
+            sheet.Calculate();
+            Assert.AreEqual(8d, sheet.Cells["B4"].Value);
         }
     }
 }

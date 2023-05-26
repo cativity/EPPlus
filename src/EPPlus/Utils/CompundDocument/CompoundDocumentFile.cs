@@ -42,10 +42,8 @@ namespace OfficeOpenXml.Utils.CompundDocument
         }
         internal CompoundDocumentFile(byte[] file)
         {
-            using (MemoryStream? ms = RecyclableMemory.GetStream(file))
-            {
-                LoadFromMemoryStream(ms);
-			}
+            using MemoryStream? ms = RecyclableMemory.GetStream(file);
+            LoadFromMemoryStream(ms);
         }
         internal CompoundDocumentFile(MemoryStream ms)
         {
@@ -112,13 +110,11 @@ namespace OfficeOpenXml.Utils.CompundDocument
         {
             try
             {
-                using (FileStream? fs = fi.OpenRead())
-                {
-                    byte[]? b = new byte[8];
-                    fs.Read(b, 0, 8);
-                    fs.Close();
-                    return IsCompoundDocument(b);
-                }
+                using FileStream? fs = fi.OpenRead();
+                byte[]? b = new byte[8];
+                fs.Read(b, 0, 8);
+                fs.Close();
+                return IsCompoundDocument(b);
             }
             catch
             {
@@ -217,20 +213,18 @@ namespace OfficeOpenXml.Utils.CompundDocument
             int nextSector = _firstDIFATSectorLocation;
             while (nextSector > 0)
             {
-                using (MemoryStream? ms = RecyclableMemory.GetStream(_sectors[nextSector]))
+                using MemoryStream? ms = RecyclableMemory.GetStream(_sectors[nextSector]);
+                BinaryReader? brDI = new BinaryReader(ms);
+                int sect = -1;
+                while (ms.Position < _sectorSize)
                 {
-                    BinaryReader? brDI = new BinaryReader(ms);
-                    int sect = -1;
-                    while (ms.Position < _sectorSize)
+                    if (sect > 0)
                     {
-                        if (sect > 0)
-                        {
-                            dwi.DIFAT.Add(sect);
-                        }
-                        sect = brDI.ReadInt32();
+                        dwi.DIFAT.Add(sect);
                     }
-                    nextSector = sect;
+                    sect = brDI.ReadInt32();
                 }
+                nextSector = sect;
             }
         }
         private void LoadSectors(BinaryReader br)
@@ -249,43 +243,39 @@ namespace OfficeOpenXml.Utils.CompundDocument
         }
         private void GetMiniSectors(byte[] miniFATStream)
         {
-            using (MemoryStream? ms = RecyclableMemory.GetStream(miniFATStream))
+            using MemoryStream? ms = RecyclableMemory.GetStream(miniFATStream);
+            BinaryReader? br = new BinaryReader(ms);
+            _miniSectors = new List<byte[]>();
+            while (ms.Position < ms.Length)
             {
-                BinaryReader? br = new BinaryReader(ms);
-                _miniSectors = new List<byte[]>();
-                while (ms.Position < ms.Length)
-                {
-                    _miniSectors.Add(br.ReadBytes(_miniSectorSize));
-                }
+                _miniSectors.Add(br.ReadBytes(_miniSectorSize));
             }
         }
         private static byte[] GetStream(int startingSectorLocation, long streamSize, List<int> FAT, List<byte[]> sectors)
         {
-            using (MemoryStream? ms = RecyclableMemory.GetStream())
-            {
-                BinaryWriter? bw = new BinaryWriter(ms);
+            using MemoryStream? ms = RecyclableMemory.GetStream();
+            BinaryWriter? bw = new BinaryWriter(ms);
 
-                int size = 0;
-                int nextSector = startingSectorLocation;
-                while (size < streamSize)
+            int size = 0;
+            int nextSector = startingSectorLocation;
+            while (size < streamSize)
+            {
+                if (streamSize > size + sectors[nextSector].Length)
                 {
-                    if (streamSize > size + sectors[nextSector].Length)
-                    {
-                        bw.Write(sectors[nextSector]);
-                        size += sectors[nextSector].Length;
-                    }
-                    else
-                    {
-                        byte[]? part = new byte[streamSize - size];
-                        Array.Copy(sectors[nextSector], part, (int)streamSize - size);
-                        bw.Write(part);
-                        size += part.Length;
-                    }
-                    nextSector = FAT[nextSector];
+                    bw.Write(sectors[nextSector]);
+                    size += sectors[nextSector].Length;
                 }
-                bw.Flush();
-                return ms.ToArray();
+                else
+                {
+                    byte[]? part = new byte[streamSize - size];
+                    Array.Copy(sectors[nextSector], part, (int)streamSize - size);
+                    bw.Write(part);
+                    size += part.Length;
+                }
+                nextSector = FAT[nextSector];
             }
+            bw.Flush();
+            return ms.ToArray();
         }
         private List<int> ReadMiniFAT(List<byte[]> sectors, DocWriteInfo dwi)
         {
@@ -293,16 +283,14 @@ namespace OfficeOpenXml.Utils.CompundDocument
             int nextSector = _firstMiniFATSectorLocation;
             while(nextSector!=END_OF_CHAIN)
             {
-                using (MemoryStream? ms = RecyclableMemory.GetStream(sectors[nextSector]))
+                using MemoryStream? ms = RecyclableMemory.GetStream(sectors[nextSector]);
+                BinaryReader? br = new BinaryReader(ms);
+                while (ms.Position < _sectorSize)
                 {
-                    BinaryReader? br = new BinaryReader(ms);
-                    while (ms.Position < _sectorSize)
-                    {
-                        int d = br.ReadInt32();
-                        l.Add(d);
-                    }
-                    nextSector = dwi.FAT[nextSector];
+                    int d = br.ReadInt32();
+                    l.Add(d);
                 }
+                nextSector = dwi.FAT[nextSector];
             }
             return l;
         }
@@ -322,32 +310,28 @@ namespace OfficeOpenXml.Utils.CompundDocument
             List<int>? l = new List<int>();
             foreach (int i in dwi.DIFAT)
             {
-                using (MemoryStream? ms = RecyclableMemory.GetStream(sectors[i]))
+                using MemoryStream? ms = RecyclableMemory.GetStream(sectors[i]);
+                BinaryReader? br = new BinaryReader(ms);
+                while (ms.Position < _sectorSize)
                 {
-                    BinaryReader? br = new BinaryReader(ms);
-                    while (ms.Position < _sectorSize)
-                    {
-                        int d = br.ReadInt32();
-                        l.Add(d);
-                    }
+                    int d = br.ReadInt32();
+                    l.Add(d);
                 }
             }
             return l;
         }
         private static void ReadDirectory(List<byte[]> sectors, int index, List<CompoundDocumentItem> l)
         {
-            using (MemoryStream? ms = RecyclableMemory.GetStream(sectors[index]))
-            {
-                BinaryReader? br = new BinaryReader(ms);
+            using MemoryStream? ms = RecyclableMemory.GetStream(sectors[index]);
+            BinaryReader? br = new BinaryReader(ms);
 
-                while (ms.Position < ms.Length)
+            while (ms.Position < ms.Length)
+            {
+                CompoundDocumentItem? e = new CompoundDocumentItem();
+                e.Read(br);
+                if (e.ObjectType != 0)
                 {
-                    CompoundDocumentItem? e = new CompoundDocumentItem();
-                    e.Read(br);
-                    if (e.ObjectType != 0)
-                    {
-                        l.Add(e);
-                    }
+                    l.Add(e);
                 }
             }
         }
@@ -893,36 +877,32 @@ namespace OfficeOpenXml.Utils.CompundDocument
         private byte[] SetMiniStream(List<CompoundDocumentItem> dirs)
         {
             //Create the miniStream
-            using (MemoryStream? ms = RecyclableMemory.GetStream())
+            using MemoryStream? ms = RecyclableMemory.GetStream();
+            BinaryWriter? bwMiniFATStream = new BinaryWriter(ms);
+            using MemoryStream? msforBw = RecyclableMemory.GetStream();
+            BinaryWriter? bwMiniFAT = new BinaryWriter(msforBw);
+            int pos = 0;
+            foreach (CompoundDocumentItem? entity in dirs)
             {
-                BinaryWriter? bwMiniFATStream = new BinaryWriter(ms);
-                using (MemoryStream? msforBw = RecyclableMemory.GetStream())
+                if (entity.ObjectType != 5 && entity.StreamSize > 0 && entity.StreamSize <= _miniStreamCutoffSize)
                 {
-                    BinaryWriter? bwMiniFAT = new BinaryWriter(msforBw);
-                    int pos = 0;
-                    foreach (CompoundDocumentItem? entity in dirs)
+                    bwMiniFATStream.Write(entity.Stream);
+                    WriteStreamFullSector(bwMiniFATStream, miniFATSectorSize);
+                    int size = _miniSectorSize;
+                    entity.StartingSectorLocation = pos;
+                    while (entity.StreamSize > size)
                     {
-                        if (entity.ObjectType != 5 && entity.StreamSize > 0 && entity.StreamSize <= _miniStreamCutoffSize)
-                        {
-                            bwMiniFATStream.Write(entity.Stream);
-                            WriteStreamFullSector(bwMiniFATStream, miniFATSectorSize);
-                            int size = _miniSectorSize;
-                            entity.StartingSectorLocation = pos;
-                            while (entity.StreamSize > size)
-                            {
-                                bwMiniFAT.Write(++pos);
-                                size += _miniSectorSize;
-                            }
-                            bwMiniFAT.Write(END_OF_CHAIN);
-                            pos++;
-                        }
+                        bwMiniFAT.Write(++pos);
+                        size += _miniSectorSize;
                     }
-                    dirs[0].StreamSize = ms.Length;
-                    dirs[0].Stream = ms.ToArray();
-                    WriteStreamFullSector(bwMiniFAT, _sectorSize);
-                    return msforBw.ToArray();
+                    bwMiniFAT.Write(END_OF_CHAIN);
+                    pos++;
                 }
             }
+            dirs[0].StreamSize = ms.Length;
+            dirs[0].Stream = ms.ToArray();
+            WriteStreamFullSector(bwMiniFAT, _sectorSize);
+            return msforBw.ToArray();
         }
 
         private static void WriteStreamFullSector(BinaryWriter bw, int sectorSize)

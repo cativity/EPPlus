@@ -1096,35 +1096,33 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
 
                 Int64 bytesWritten = 0;
                 // As we read, we maybe decrypt, and then we maybe decompress. Then we write.
-                using (CrcCalculatorStream? s1 = new Ionic.Crc.CrcCalculatorStream(input3))
+                using CrcCalculatorStream? s1 = new Ionic.Crc.CrcCalculatorStream(input3);
+                while (LeftToRead > 0)
                 {
-                    while (LeftToRead > 0)
+                    //Console.WriteLine("ExtractOne: LeftToRead {0}", LeftToRead);
+
+                    // Casting LeftToRead down to an int is ok here in the else clause,
+                    // because that only happens when it is less than bytes.Length,
+                    // which is much less than MAX_INT.
+                    int len = (LeftToRead > bytes.Length) ? bytes.Length : (int)LeftToRead;
+                    int n = s1.Read(bytes, 0, len);
+
+                    // must check data read - essential for detecting corrupt zip files
+                    _CheckRead(n);
+
+                    output.Write(bytes, 0, n);
+                    LeftToRead -= n;
+                    bytesWritten += n;
+
+                    // fire the progress event, check for cancels
+                    OnExtractProgress(bytesWritten, UncompressedSize);
+                    if (_ioOperationCanceled)
                     {
-                        //Console.WriteLine("ExtractOne: LeftToRead {0}", LeftToRead);
-
-                        // Casting LeftToRead down to an int is ok here in the else clause,
-                        // because that only happens when it is less than bytes.Length,
-                        // which is much less than MAX_INT.
-                        int len = (LeftToRead > bytes.Length) ? bytes.Length : (int)LeftToRead;
-                        int n = s1.Read(bytes, 0, len);
-
-                        // must check data read - essential for detecting corrupt zip files
-                        _CheckRead(n);
-
-                        output.Write(bytes, 0, n);
-                        LeftToRead -= n;
-                        bytesWritten += n;
-
-                        // fire the progress event, check for cancels
-                        OnExtractProgress(bytesWritten, UncompressedSize);
-                        if (_ioOperationCanceled)
-                        {
-                            break;
-                        }
+                        break;
                     }
-
-                    CrcResult = s1.Crc;
                 }
+
+                CrcResult = s1.Crc;
             }
             finally
             {

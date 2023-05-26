@@ -66,28 +66,24 @@ namespace EPPlusTest.ThreadedComments
         [TestMethod]
         public void ShouldCopyThreadedCommentToNewPackage()
         {
-            using (ExcelPackage? p = new ExcelPackage())
-            {
-                ExcelWorksheet? sheet = p.Workbook.Worksheets.Add("test");
-                ExcelThreadedCommentPerson? person = sheet.ThreadedComments.Persons.Add("John Doe");
-                ExcelThreadedCommentPerson? person2 = sheet.ThreadedComments.Persons.Add("Jane Doe");
-                ExcelThreadedCommentThread? thread = sheet.Cells["A1"].AddThreadedComment();
-                ExcelThreadedComment? c1 = thread.AddComment(person2.Id, "Hello");
-                ExcelThreadedComment? c2 = thread.AddComment(person.Id, "Hello {0}, how are you?", person2);
-                using (ExcelPackage? pck2 = new ExcelPackage())
-                {
-                    ExcelWorksheet? sheet2 = pck2.Workbook.Worksheets.Add("test2");
-                    sheet.Cells[1, 1].Copy(sheet2.Cells["A3"]);
-                    thread = sheet2.Cells[3, 1].ThreadedComment;
+            using ExcelPackage? p = new ExcelPackage();
+            ExcelWorksheet? sheet = p.Workbook.Worksheets.Add("test");
+            ExcelThreadedCommentPerson? person = sheet.ThreadedComments.Persons.Add("John Doe");
+            ExcelThreadedCommentPerson? person2 = sheet.ThreadedComments.Persons.Add("Jane Doe");
+            ExcelThreadedCommentThread? thread = sheet.Cells["A1"].AddThreadedComment();
+            ExcelThreadedComment? c1 = thread.AddComment(person2.Id, "Hello");
+            ExcelThreadedComment? c2 = thread.AddComment(person.Id, "Hello {0}, how are you?", person2);
+            using ExcelPackage? pck2 = new ExcelPackage();
+            ExcelWorksheet? sheet2 = pck2.Workbook.Worksheets.Add("test2");
+            sheet.Cells[1, 1].Copy(sheet2.Cells["A3"]);
+            thread = sheet2.Cells[3, 1].ThreadedComment;
 
-                    Assert.AreEqual(2, thread.Comments.Count);
-                    Assert.AreEqual("A3", thread.Comments[0].Ref);
-                    Assert.AreEqual("A3", thread.Comments[1].Ref);
-                    Assert.AreEqual("Hello @Jane Doe, how are you?", c2.Text);
-                    Assert.AreEqual(1, thread.Comments[1].Mentions.Count());
-                    SaveWorkbook("ThreadedCommentCopy_NewPackage.xlsx", pck2);
-                }
-            }
+            Assert.AreEqual(2, thread.Comments.Count);
+            Assert.AreEqual("A3", thread.Comments[0].Ref);
+            Assert.AreEqual("A3", thread.Comments[1].Ref);
+            Assert.AreEqual("Hello @Jane Doe, how are you?", c2.Text);
+            Assert.AreEqual(1, thread.Comments[1].Mentions.Count());
+            SaveWorkbook("ThreadedCommentCopy_NewPackage.xlsx", pck2);
         }
         [TestMethod]
         public void ShouldCopyWorksheetWithThreadedComment()
@@ -111,29 +107,25 @@ namespace EPPlusTest.ThreadedComments
         [TestMethod]
         public void ShouldCopyWorksheetWithThreadedCommentToNewPackage()
         {
-            using (ExcelPackage? p = new ExcelPackage())
-            {
-                ExcelWorksheet? sheetToCopy = p.Workbook.Worksheets.Add("WorksheetCopy_Source");
-                ExcelThreadedCommentPerson? person = sheetToCopy.ThreadedComments.Persons.Add("John Doe");
-                ExcelThreadedCommentPerson? person2 = sheetToCopy.ThreadedComments.Persons.Add("Jane Doe");
-                ExcelThreadedCommentThread? thread = sheetToCopy.Cells["A1"].AddThreadedComment();
-                ExcelThreadedComment? c1 = thread.AddComment(person2.Id, "Hello");
-                ExcelThreadedComment? c2 = thread.AddComment(person.Id, "Hello {0}, how are you?", person2);
+            using ExcelPackage? p = new ExcelPackage();
+            ExcelWorksheet? sheetToCopy = p.Workbook.Worksheets.Add("WorksheetCopy_Source");
+            ExcelThreadedCommentPerson? person = sheetToCopy.ThreadedComments.Persons.Add("John Doe");
+            ExcelThreadedCommentPerson? person2 = sheetToCopy.ThreadedComments.Persons.Add("Jane Doe");
+            ExcelThreadedCommentThread? thread = sheetToCopy.Cells["A1"].AddThreadedComment();
+            ExcelThreadedComment? c1 = thread.AddComment(person2.Id, "Hello");
+            ExcelThreadedComment? c2 = thread.AddComment(person.Id, "Hello {0}, how are you?", person2);
 
-                using (ExcelPackage? pck2 = new ExcelPackage())
-                {
-                    ExcelWorksheet? copy = pck2.Workbook.Worksheets.Add("WorksheetCopy_Desc", sheetToCopy);
-                    thread = copy.Cells[1, 1].ThreadedComment;
+            using ExcelPackage? pck2 = new ExcelPackage();
+            ExcelWorksheet? copy = pck2.Workbook.Worksheets.Add("WorksheetCopy_Desc", sheetToCopy);
+            thread = copy.Cells[1, 1].ThreadedComment;
 
-                    Assert.AreEqual(2, thread.Comments.Count);
-                    Assert.AreEqual("A1", thread.Comments[0].Ref);
-                    Assert.AreEqual("A1", thread.Comments[1].Ref);
-                    Assert.AreEqual("Hello @Jane Doe, how are you?", c2.Text);
-                    Assert.AreEqual(1, thread.Comments[1].Mentions.Count());
+            Assert.AreEqual(2, thread.Comments.Count);
+            Assert.AreEqual("A1", thread.Comments[0].Ref);
+            Assert.AreEqual("A1", thread.Comments[1].Ref);
+            Assert.AreEqual("Hello @Jane Doe, how are you?", c2.Text);
+            Assert.AreEqual(1, thread.Comments[1].Mentions.Count());
 
-                    SaveWorkbook("ThreadedCommentWorksheetCopy_NewPackage.xlsx", pck2);
-                }
-            }
+            SaveWorkbook("ThreadedCommentWorksheetCopy_NewPackage.xlsx", pck2);
         }
     }
 }

@@ -105,77 +105,67 @@ namespace EPPlusTest.Table.PivotTable
         [TestMethod]
         public void ReadAutoSort()
         {
-            using(ExcelPackage? p1=new ExcelPackage())
-            {
-                ExcelWorksheet? ws = p1.Workbook.Worksheets.Add("PivotSameAutoClear");
-                ExcelRangeBase? r = LoadItemData(ws);
-                ws.Tables.Add(r, "Table1");
+            using ExcelPackage? p1 = new ExcelPackage();
+            ExcelWorksheet? ws = p1.Workbook.Worksheets.Add("PivotSameAutoClear");
+            ExcelRangeBase? r = LoadItemData(ws);
+            ws.Tables.Add(r, "Table1");
 
-                ExcelPivotTable? pivot1 = ws.PivotTables.Add(ws.Cells["A1"], p1.Workbook.Worksheets[0].Tables[0].Range, "Pivot2");
-                ExcelPivotTableField? rf = pivot1.RowFields.Add(pivot1.Fields[0]);
-                ExcelPivotTableField? cf = pivot1.ColumnFields.Add(pivot1.Fields[1]);
-                ExcelPivotTableDataField? df = pivot1.DataFields.Add(pivot1.Fields[3]);
-                cf.SetAutoSort(df, eSortType.Descending);
-                ExcelPivotAreaReference? reference = cf.AutoSort.Conditions.Fields.Add(rf);
-                rf.Items.Refresh();
-                reference.Items.Add(2);
+            ExcelPivotTable? pivot1 = ws.PivotTables.Add(ws.Cells["A1"], p1.Workbook.Worksheets[0].Tables[0].Range, "Pivot2");
+            ExcelPivotTableField? rf = pivot1.RowFields.Add(pivot1.Fields[0]);
+            ExcelPivotTableField? cf = pivot1.ColumnFields.Add(pivot1.Fields[1]);
+            ExcelPivotTableDataField? df = pivot1.DataFields.Add(pivot1.Fields[3]);
+            cf.SetAutoSort(df, eSortType.Descending);
+            ExcelPivotAreaReference? reference = cf.AutoSort.Conditions.Fields.Add(rf);
+            rf.Items.Refresh();
+            reference.Items.Add(2);
 
-                Assert.IsNotNull(cf.AutoSort);
+            Assert.IsNotNull(cf.AutoSort);
 
-                p1.Save();
+            p1.Save();
 
-                using(ExcelPackage? p2=new ExcelPackage(p1.Stream))
-                {
-                    ExcelWorksheet? ws1 = p1.Workbook.Worksheets[0];
-                    ExcelPivotTable? pivot2 = ws.PivotTables[0];
+            using ExcelPackage? p2 = new ExcelPackage(p1.Stream);
+            ExcelWorksheet? ws1 = p1.Workbook.Worksheets[0];
+            ExcelPivotTable? pivot2 = ws.PivotTables[0];
 
-                    Assert.AreEqual(1, pivot2.ColumnFields.Count);
-                    Assert.AreEqual(1, pivot2.RowFields.Count);
-                    Assert.AreEqual(1, pivot2.DataFields.Count);
-                    Assert.IsNotNull(pivot2.ColumnFields[0].AutoSort);
-                    Assert.AreEqual(1, pivot2.ColumnFields[0].AutoSort.Conditions.DataFields.Count);
-                    Assert.AreEqual(1, pivot2.ColumnFields[0].AutoSort.Conditions.Fields.Count);
-                }
-
-            }
+            Assert.AreEqual(1, pivot2.ColumnFields.Count);
+            Assert.AreEqual(1, pivot2.RowFields.Count);
+            Assert.AreEqual(1, pivot2.DataFields.Count);
+            Assert.IsNotNull(pivot2.ColumnFields[0].AutoSort);
+            Assert.AreEqual(1, pivot2.ColumnFields[0].AutoSort.Conditions.DataFields.Count);
+            Assert.AreEqual(1, pivot2.ColumnFields[0].AutoSort.Conditions.Fields.Count);
         }
         [TestMethod]
         public void RemoveAutoSort()
         {
-            using (ExcelPackage? p1 = new ExcelPackage())
-            {
-                ExcelWorksheet? ws = p1.Workbook.Worksheets.Add("PivotSameAutoClear");
-                ExcelRangeBase? r = LoadItemData(ws);
-                ws.Tables.Add(r, "Table1");
+            using ExcelPackage? p1 = new ExcelPackage();
+            ExcelWorksheet? ws = p1.Workbook.Worksheets.Add("PivotSameAutoClear");
+            ExcelRangeBase? r = LoadItemData(ws);
+            ws.Tables.Add(r, "Table1");
 
-                ExcelPivotTable? pivot1 = ws.PivotTables.Add(ws.Cells["A1"], p1.Workbook.Worksheets[0].Tables[0].Range, "Pivot2");
-                ExcelPivotTableField? rf = pivot1.RowFields.Add(pivot1.Fields[0]);
-                ExcelPivotTableField? cf = pivot1.ColumnFields.Add(pivot1.Fields[1]);
-                ExcelPivotTableDataField? df = pivot1.DataFields.Add(pivot1.Fields[3]);
-                cf.SetAutoSort(df, eSortType.Descending);
-                ExcelPivotAreaReference? reference = cf.AutoSort.Conditions.Fields.Add(rf);
-                rf.Items.Refresh();
-                reference.Items.Add(2);
+            ExcelPivotTable? pivot1 = ws.PivotTables.Add(ws.Cells["A1"], p1.Workbook.Worksheets[0].Tables[0].Range, "Pivot2");
+            ExcelPivotTableField? rf = pivot1.RowFields.Add(pivot1.Fields[0]);
+            ExcelPivotTableField? cf = pivot1.ColumnFields.Add(pivot1.Fields[1]);
+            ExcelPivotTableDataField? df = pivot1.DataFields.Add(pivot1.Fields[3]);
+            cf.SetAutoSort(df, eSortType.Descending);
+            ExcelPivotAreaReference? reference = cf.AutoSort.Conditions.Fields.Add(rf);
+            rf.Items.Refresh();
+            reference.Items.Add(2);
 
-                Assert.IsNotNull(cf.AutoSort);
+            Assert.IsNotNull(cf.AutoSort);
 
-                p1.Save();
+            p1.Save();
 
-                using (ExcelPackage? p2 = new ExcelPackage(p1.Stream))
-                {
-                    ExcelWorksheet? ws1 = p1.Workbook.Worksheets[0];
-                    ExcelPivotTable? pivot2 = ws.PivotTables[0];
+            using ExcelPackage? p2 = new ExcelPackage(p1.Stream);
+            ExcelWorksheet? ws1 = p1.Workbook.Worksheets[0];
+            ExcelPivotTable? pivot2 = ws.PivotTables[0];
 
-                    Assert.AreEqual(1, pivot2.ColumnFields.Count);
-                    Assert.AreEqual(1, pivot2.RowFields.Count);
-                    Assert.AreEqual(1, pivot2.DataFields.Count);
-                    Assert.IsNotNull(pivot2.ColumnFields[0].AutoSort);
+            Assert.AreEqual(1, pivot2.ColumnFields.Count);
+            Assert.AreEqual(1, pivot2.RowFields.Count);
+            Assert.AreEqual(1, pivot2.DataFields.Count);
+            Assert.IsNotNull(pivot2.ColumnFields[0].AutoSort);
 
-                    pivot2.ColumnFields[0].RemoveAutoSort();
-                    Assert.IsNull(pivot2.ColumnFields[0].AutoSort);
-                }
-
-            }
+            pivot2.ColumnFields[0].RemoveAutoSort();
+            Assert.IsNull(pivot2.ColumnFields[0].AutoSort);
         }
     }
 }

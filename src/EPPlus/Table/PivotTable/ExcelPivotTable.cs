@@ -184,10 +184,8 @@ namespace OfficeOpenXml.Table.PivotTable
             //Worksheet-Pivottable relationship
             Relationship = sheet.Part.CreateRelationship(UriHelper.ResolvePartUri(sheet.WorksheetUri, PivotTableUri), Packaging.TargetMode.Internal, ExcelPackage.schemaRelationships + "/pivotTable");
 
-            using (ExcelRange? r = sheet.Cells[address.Address])
-            {
-                r.Clear();
-            }
+            using ExcelRange? r = sheet.Cells[address.Address];
+            r.Clear();
         }
 
         private void Init()

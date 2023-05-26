@@ -130,15 +130,13 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions
         [TestMethod]
         public void SumIfsShouldHandleSingleRange()
         {
-            using (ExcelPackage? package = new ExcelPackage())
-            {
-                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
-                sheet.Cells["A1"].Formula = "SUMIFS(H5,H5,\">0\",K5,\"> 0\")";
-                sheet.Cells["H5"].Value = 1;
-                sheet.Cells["K5"].Value = 1;
-                sheet.Calculate();
-                Assert.AreEqual(1d, sheet.Cells["A1"].Value);
-            }
+            using ExcelPackage? package = new ExcelPackage();
+            ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
+            sheet.Cells["A1"].Formula = "SUMIFS(H5,H5,\">0\",K5,\"> 0\")";
+            sheet.Cells["H5"].Value = 1;
+            sheet.Cells["K5"].Value = 1;
+            sheet.Calculate();
+            Assert.AreEqual(1d, sheet.Cells["A1"].Value);
         }
     }
 }

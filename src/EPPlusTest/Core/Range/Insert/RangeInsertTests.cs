@@ -126,42 +126,38 @@ namespace EPPlusTest.Core.Range.Insert
         [TestMethod]
         public void InsertingColumnIntoTable()
         {
-            using (ExcelPackage? p = new ExcelPackage())
-            {
-                //Setup
-                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("InsertColumnTable");
-                LoadTestdata(ws);
-                ExcelTable? tbl = ws.Tables.Add(ws.Cells[1, 1, 100, 5], "Table1");
-                //Act
-                ws.InsertColumn(2, 1);
+            using ExcelPackage? p = new ExcelPackage();
+            //Setup
+            ExcelWorksheet? ws = p.Workbook.Worksheets.Add("InsertColumnTable");
+            LoadTestdata(ws);
+            ExcelTable? tbl = ws.Tables.Add(ws.Cells[1, 1, 100, 5], "Table1");
+            //Act
+            ws.InsertColumn(2, 1);
 
-                //Assert
-                Assert.AreEqual(6, tbl.Columns.Count);
-                Assert.AreEqual("Date", tbl.Columns[0].Name);
-                Assert.AreEqual("Column2", tbl.Columns[1].Name);
-                Assert.AreEqual("NumValue", tbl.Columns[2].Name);
-                Assert.AreEqual("StrValue", tbl.Columns[3].Name);
-                Assert.AreEqual("NumFormattedValue", tbl.Columns[4].Name);
-                Assert.AreEqual("Column5", tbl.Columns[5].Name);
-            }
+            //Assert
+            Assert.AreEqual(6, tbl.Columns.Count);
+            Assert.AreEqual("Date", tbl.Columns[0].Name);
+            Assert.AreEqual("Column2", tbl.Columns[1].Name);
+            Assert.AreEqual("NumValue", tbl.Columns[2].Name);
+            Assert.AreEqual("StrValue", tbl.Columns[3].Name);
+            Assert.AreEqual("NumFormattedValue", tbl.Columns[4].Name);
+            Assert.AreEqual("Column5", tbl.Columns[5].Name);
         }
         [TestMethod]
         public void InsertingRowIntoTable()
         {
-            using (ExcelPackage? p = new ExcelPackage())
-            {
-                //Setup
-                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("InsertRowTable");
-                LoadTestdata(ws);
-                ExcelTable? tbl = ws.Tables.Add(ws.Cells[1, 1, 100, 5], "Table1");
-                //Act
-                ws.InsertRow(1, 1);
-                ws.InsertRow(3, 1);
-                ws.InsertRow(103, 1);
+            using ExcelPackage? p = new ExcelPackage();
+            //Setup
+            ExcelWorksheet? ws = p.Workbook.Worksheets.Add("InsertRowTable");
+            LoadTestdata(ws);
+            ExcelTable? tbl = ws.Tables.Add(ws.Cells[1, 1, 100, 5], "Table1");
+            //Act
+            ws.InsertRow(1, 1);
+            ws.InsertRow(3, 1);
+            ws.InsertRow(103, 1);
 
-                //Assert
-                Assert.AreEqual("A2:E102", tbl.Address.Address);
-            }
+            //Assert
+            Assert.AreEqual("A2:E102", tbl.Address.Address);
         }
         [TestMethod]
         public void ValidateValuesAfterInsertRowInRangeShiftDown()
@@ -416,339 +412,295 @@ namespace EPPlusTest.Core.Range.Insert
         [TestMethod]
         public void ValidateInsertMergedCellsDown()
         {
-            using (ExcelPackage? p = new ExcelPackage())
-            {
-                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("MergedCells");
-                ws.Cells["C3:E4"].Merge = true;
-                ws.Cells["C2:E2"].Insert(eShiftTypeInsert.Down);
+            using ExcelPackage? p = new ExcelPackage();
+            ExcelWorksheet? ws = p.Workbook.Worksheets.Add("MergedCells");
+            ws.Cells["C3:E4"].Merge = true;
+            ws.Cells["C2:E2"].Insert(eShiftTypeInsert.Down);
 
-                Assert.AreEqual("C4:E5", ws.MergedCells[0]);
-            }
+            Assert.AreEqual("C4:E5", ws.MergedCells[0]);
         }
         [TestMethod]
         public void ValidateInsertMergedCellsRight()
         {
-            using (ExcelPackage? p = new ExcelPackage())
-            {
-                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("MergedCells");
-                ws.Cells["C2:E3"].Merge = true;
-                ws.Cells["B2:B3"].Insert(eShiftTypeInsert.Right);
+            using ExcelPackage? p = new ExcelPackage();
+            ExcelWorksheet? ws = p.Workbook.Worksheets.Add("MergedCells");
+            ws.Cells["C2:E3"].Merge = true;
+            ws.Cells["B2:B3"].Insert(eShiftTypeInsert.Right);
 
-                Assert.AreEqual("D2:F3", ws.MergedCells[0]);
-            }
+            Assert.AreEqual("D2:F3", ws.MergedCells[0]);
         }
         [TestMethod]
         [ExpectedException(typeof(InvalidOperationException))]
         public void ValidateInsertIntoMergedCellsPartialRightThrowsException()
         {
-            using (ExcelPackage? p = new ExcelPackage())
-            {
-                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("MergedCells");
-                ws.Cells["B2:D3"].Merge = true;
-                ws.Cells["A2"].Insert(eShiftTypeInsert.Right);
-            }
+            using ExcelPackage? p = new ExcelPackage();
+            ExcelWorksheet? ws = p.Workbook.Worksheets.Add("MergedCells");
+            ws.Cells["B2:D3"].Merge = true;
+            ws.Cells["A2"].Insert(eShiftTypeInsert.Right);
         }
         [TestMethod]
         [ExpectedException(typeof(InvalidOperationException))]
         public void ValidateInsertIntoMergedCellsPartialDownThrowsException()
         {
-            using (ExcelPackage? p = new ExcelPackage())
-            {
-                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("MergedCells");
-                ws.Cells["B2:D3"].Merge = true;
-                ws.Cells["C1"].Insert(eShiftTypeInsert.Down);
-            }
+            using ExcelPackage? p = new ExcelPackage();
+            ExcelWorksheet? ws = p.Workbook.Worksheets.Add("MergedCells");
+            ws.Cells["B2:D3"].Merge = true;
+            ws.Cells["C1"].Insert(eShiftTypeInsert.Down);
         }
         [TestMethod]
         public void ValidateDeleteEntireMergeCells()
         {
-            using (ExcelPackage? p = new ExcelPackage())
-            {
-                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("MergedCells");
-                ws.Cells["B2:D3"].Merge = true;
-                Assert.AreEqual(1, ws.MergedCells.Count);
-                Assert.AreEqual("B2:D3", ws.MergedCells[0]);
-                Assert.IsTrue(ws.Cells["B2"].Merge);
-                Assert.IsTrue(ws.Cells["D3"].Merge);
-                ws.Cells["B2:D3"].Delete(eShiftTypeDelete.Up);
-                Assert.AreEqual(1, ws.MergedCells.Count);
-                Assert.IsFalse(ws.Cells["B2"].Merge);
-                Assert.IsFalse(ws.Cells["D3"].Merge);
-                Assert.IsNull(ws.MergedCells[0]);
-            }
+            using ExcelPackage? p = new ExcelPackage();
+            ExcelWorksheet? ws = p.Workbook.Worksheets.Add("MergedCells");
+            ws.Cells["B2:D3"].Merge = true;
+            Assert.AreEqual(1, ws.MergedCells.Count);
+            Assert.AreEqual("B2:D3", ws.MergedCells[0]);
+            Assert.IsTrue(ws.Cells["B2"].Merge);
+            Assert.IsTrue(ws.Cells["D3"].Merge);
+            ws.Cells["B2:D3"].Delete(eShiftTypeDelete.Up);
+            Assert.AreEqual(1, ws.MergedCells.Count);
+            Assert.IsFalse(ws.Cells["B2"].Merge);
+            Assert.IsFalse(ws.Cells["D3"].Merge);
+            Assert.IsNull(ws.MergedCells[0]);
         }
         [TestMethod]
         public void ValidateInsertMergedCellsShouldBeShifted()
         {
-            using (ExcelPackage? p = new ExcelPackage())
-            {
-                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("MergedCells");
-                ws.Cells["B3:D3"].Merge = true;
-                ws.Cells["B3:D3"].Insert(eShiftTypeInsert.Down);
+            using ExcelPackage? p = new ExcelPackage();
+            ExcelWorksheet? ws = p.Workbook.Worksheets.Add("MergedCells");
+            ws.Cells["B3:D3"].Merge = true;
+            ws.Cells["B3:D3"].Insert(eShiftTypeInsert.Down);
 
-                Assert.AreEqual("B4:D4", ws.MergedCells[0]);
-                Assert.IsFalse(ws.Cells["B3"].Merge);
-                Assert.IsFalse(ws.Cells["C3"].Merge);
-                Assert.IsFalse(ws.Cells["D3"].Merge);
+            Assert.AreEqual("B4:D4", ws.MergedCells[0]);
+            Assert.IsFalse(ws.Cells["B3"].Merge);
+            Assert.IsFalse(ws.Cells["C3"].Merge);
+            Assert.IsFalse(ws.Cells["D3"].Merge);
 
-                Assert.IsTrue(ws.Cells["B4"].Merge);
-                Assert.IsTrue(ws.Cells["C4"].Merge);
-                Assert.IsTrue(ws.Cells["D4"].Merge);
+            Assert.IsTrue(ws.Cells["B4"].Merge);
+            Assert.IsTrue(ws.Cells["C4"].Merge);
+            Assert.IsTrue(ws.Cells["D4"].Merge);
 
-                ws.InsertRow(3, 1);
-                Assert.AreEqual("B5:D5", ws.MergedCells[0]);
-            }
+            ws.InsertRow(3, 1);
+            Assert.AreEqual("B5:D5", ws.MergedCells[0]);
         }
         [TestMethod]
         public void ValidateInsertIntoMergedCellsPartialRightShouldNotThrowsException()
         {
-            using (ExcelPackage? p = new ExcelPackage())
-            {
-                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("MergedCells");
-                ws.Cells["B2:D3"].Merge = true;
-                ws.Cells["C1"].Insert(eShiftTypeInsert.Right);
-            }
+            using ExcelPackage? p = new ExcelPackage();
+            ExcelWorksheet? ws = p.Workbook.Worksheets.Add("MergedCells");
+            ws.Cells["B2:D3"].Merge = true;
+            ws.Cells["C1"].Insert(eShiftTypeInsert.Right);
         }
         [TestMethod]
         public void ValidateInsertIntoMergedCellsPartialDownShouldNotThrowsException()
         {
-            using (ExcelPackage? p = new ExcelPackage())
-            {
-                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("MergedCells");
-                ws.Cells["B2:D3"].Merge = true;
-                ws.Cells["A2"].Insert(eShiftTypeInsert.Down);
-            }
+            using ExcelPackage? p = new ExcelPackage();
+            ExcelWorksheet? ws = p.Workbook.Worksheets.Add("MergedCells");
+            ws.Cells["B2:D3"].Merge = true;
+            ws.Cells["A2"].Insert(eShiftTypeInsert.Down);
         }
         [TestMethod]
         [ExpectedException(typeof(InvalidOperationException))]
         public void ValidateInsertIntoTablePartialRightThrowsException()
         {
-            using (ExcelPackage? p = new ExcelPackage())
-            {
-                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("TableDelete");
-                ws.Tables.Add(ws.Cells["B2:D3"], "table1");
-                ws.Cells["A2"].Insert(eShiftTypeInsert.Right);
-            }
+            using ExcelPackage? p = new ExcelPackage();
+            ExcelWorksheet? ws = p.Workbook.Worksheets.Add("TableDelete");
+            ws.Tables.Add(ws.Cells["B2:D3"], "table1");
+            ws.Cells["A2"].Insert(eShiftTypeInsert.Right);
         }
         [TestMethod]
         [ExpectedException(typeof(InvalidOperationException))]
         public void ValidateInsertIntoTablePartialDownThrowsException()
         {
-            using (ExcelPackage? p = new ExcelPackage())
-            {
-                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("TableDelete");
-                ws.Tables.Add(ws.Cells["B2:D3"], "table1");
-                ws.Cells["C1"].Insert(eShiftTypeInsert.Down);
-            }
+            using ExcelPackage? p = new ExcelPackage();
+            ExcelWorksheet? ws = p.Workbook.Worksheets.Add("TableDelete");
+            ws.Tables.Add(ws.Cells["B2:D3"], "table1");
+            ws.Cells["C1"].Insert(eShiftTypeInsert.Down);
         }
         [TestMethod]
         public void ValidateInsertIntoTablePartialRightShouldNotThrowsException()
         {
-            using (ExcelPackage? p = new ExcelPackage())
-            {
-                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("TableDelete");
-                ws.Tables.Add(ws.Cells["B2:D3"], "table1");
-                ws.Cells["C1"].Insert(eShiftTypeInsert.Right);
-            }
+            using ExcelPackage? p = new ExcelPackage();
+            ExcelWorksheet? ws = p.Workbook.Worksheets.Add("TableDelete");
+            ws.Tables.Add(ws.Cells["B2:D3"], "table1");
+            ws.Cells["C1"].Insert(eShiftTypeInsert.Right);
         }
         [TestMethod]
         public void ValidateInsertIntoTablePartialDownShouldNotThrowsException()
         {
-            using (ExcelPackage? p = new ExcelPackage())
-            {
-                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("TableDelete");
-                ws.Tables.Add(ws.Cells["B2:D3"], "table1");
-                ws.Cells["A2"].Insert(eShiftTypeInsert.Down);
-            }
+            using ExcelPackage? p = new ExcelPackage();
+            ExcelWorksheet? ws = p.Workbook.Worksheets.Add("TableDelete");
+            ws.Tables.Add(ws.Cells["B2:D3"], "table1");
+            ws.Cells["A2"].Insert(eShiftTypeInsert.Down);
         }
         [TestMethod]
         [ExpectedException(typeof(InvalidOperationException))]
         public void ValidateInsertIntoPivotTablePartialRightThrowsException()
         {
-            using (ExcelPackage? p = new ExcelPackage())
-            {
-                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("PivotTableInsert");
-                ws.Cells["E5"].Value = "E5";
-                ws.Cells["F5"].Value = "F5";
-                ws.PivotTables.Add(ws.Cells["B2:D3"], ws.Cells["E5:F6"], "table1");
-                ws.Cells["A2"].Insert(eShiftTypeInsert.Right);
-            }
+            using ExcelPackage? p = new ExcelPackage();
+            ExcelWorksheet? ws = p.Workbook.Worksheets.Add("PivotTableInsert");
+            ws.Cells["E5"].Value = "E5";
+            ws.Cells["F5"].Value = "F5";
+            ws.PivotTables.Add(ws.Cells["B2:D3"], ws.Cells["E5:F6"], "table1");
+            ws.Cells["A2"].Insert(eShiftTypeInsert.Right);
         }
         [TestMethod]
         [ExpectedException(typeof(InvalidOperationException))]
         public void ValidateInsertIntoPivotTablePartialDownThrowsException()
         {
-            using (ExcelPackage? p = new ExcelPackage())
-            {
-                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("PivotTableInsert");
-                ws.Cells["E5"].Value = "E5";
-                ws.Cells["F5"].Value = "F5";
-                ws.PivotTables.Add(ws.Cells["B2:D3"], ws.Cells["E5:F6"], "table1");
-                ws.Cells["C1"].Insert(eShiftTypeInsert.Down);
-            }
+            using ExcelPackage? p = new ExcelPackage();
+            ExcelWorksheet? ws = p.Workbook.Worksheets.Add("PivotTableInsert");
+            ws.Cells["E5"].Value = "E5";
+            ws.Cells["F5"].Value = "F5";
+            ws.PivotTables.Add(ws.Cells["B2:D3"], ws.Cells["E5:F6"], "table1");
+            ws.Cells["C1"].Insert(eShiftTypeInsert.Down);
         }
         [TestMethod]
         public void ValidateInsertIntoPivotTablePartialRightShouldNotThrowsException()
         {
-            using (ExcelPackage? p = new ExcelPackage())
-            {
-                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("PivotTableInsert");
-                ws.Cells["E5"].Value = "E5";
-                ws.Cells["F5"].Value = "F5";
-                ws.PivotTables.Add(ws.Cells["B2:D3"], ws.Cells["E5:F6"], "table1");
-                ws.Cells["C1"].Insert(eShiftTypeInsert.Right);
-            }
+            using ExcelPackage? p = new ExcelPackage();
+            ExcelWorksheet? ws = p.Workbook.Worksheets.Add("PivotTableInsert");
+            ws.Cells["E5"].Value = "E5";
+            ws.Cells["F5"].Value = "F5";
+            ws.PivotTables.Add(ws.Cells["B2:D3"], ws.Cells["E5:F6"], "table1");
+            ws.Cells["C1"].Insert(eShiftTypeInsert.Right);
         }
         [TestMethod]
         public void ValidateInsertIntoPivotTablePartialDownShouldNotThrowsException()
         {
-            using (ExcelPackage? p = new ExcelPackage())
-            {
-                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("PivotTableInsert");
-                ws.Cells["E5"].Value = "E5";
-                ws.Cells["F5"].Value = "F5";
-                ws.PivotTables.Add(ws.Cells["B2:D3"], ws.Cells["E5:F6"], "table1");
-                ws.Cells["A2"].Insert(eShiftTypeInsert.Down);
-            }
+            using ExcelPackage? p = new ExcelPackage();
+            ExcelWorksheet? ws = p.Workbook.Worksheets.Add("PivotTableInsert");
+            ws.Cells["E5"].Value = "E5";
+            ws.Cells["F5"].Value = "F5";
+            ws.PivotTables.Add(ws.Cells["B2:D3"], ws.Cells["E5:F6"], "table1");
+            ws.Cells["A2"].Insert(eShiftTypeInsert.Down);
         }
         [TestMethod]
         public void ValidateInsertTableShouldShiftDown()
         {
-            using (ExcelPackage? p = new ExcelPackage())
-            {
-                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("TableInsertShiftDown");
-                ExcelTable? tbl=ws.Tables.Add(ws.Cells["B2:D3"], "table1");
-                ws.Cells["B2:D2"].Insert(eShiftTypeInsert.Down);
-                Assert.AreEqual("B3:D4", tbl.Address.Address);
+            using ExcelPackage? p = new ExcelPackage();
+            ExcelWorksheet? ws = p.Workbook.Worksheets.Add("TableInsertShiftDown");
+            ExcelTable? tbl = ws.Tables.Add(ws.Cells["B2:D3"], "table1");
+            ws.Cells["B2:D2"].Insert(eShiftTypeInsert.Down);
+            Assert.AreEqual("B3:D4", tbl.Address.Address);
 
-                ws.Cells["A3:D3"].Insert(eShiftTypeInsert.Down);
-                Assert.AreEqual("B4:D5", tbl.Address.Address);
+            ws.Cells["A3:D3"].Insert(eShiftTypeInsert.Down);
+            Assert.AreEqual("B4:D5", tbl.Address.Address);
 
-                ws.Cells["B3:E3"].Insert(eShiftTypeInsert.Down);
-                Assert.AreEqual("B5:D6", tbl.Address.Address);
+            ws.Cells["B3:E3"].Insert(eShiftTypeInsert.Down);
+            Assert.AreEqual("B5:D6", tbl.Address.Address);
 
-                //Insert Into
-                ws.Cells["B6:E6"].Insert(eShiftTypeInsert.Down);
-                Assert.AreEqual("B5:D7", tbl.Address.Address);
+            //Insert Into
+            ws.Cells["B6:E6"].Insert(eShiftTypeInsert.Down);
+            Assert.AreEqual("B5:D7", tbl.Address.Address);
 
-                ws.Cells["A6:E6"].Insert(eShiftTypeInsert.Down);
-                Assert.AreEqual("B5:D8", tbl.Address.Address);
+            ws.Cells["A6:E6"].Insert(eShiftTypeInsert.Down);
+            Assert.AreEqual("B5:D8", tbl.Address.Address);
 
-                ws.Cells["B8:F8"].Insert(eShiftTypeInsert.Down);
-                Assert.AreEqual("B5:D9", tbl.Address.Address);
-            }
+            ws.Cells["B8:F8"].Insert(eShiftTypeInsert.Down);
+            Assert.AreEqual("B5:D9", tbl.Address.Address);
         }
         [TestMethod]
         public void ValidateInsertTableShouldShiftRight()
         {
-            using (ExcelPackage? p = new ExcelPackage())
-            {
-                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("TableInsertShiftRight");
-                ExcelTable? tbl = ws.Tables.Add(ws.Cells["B2:C4"], "table1");
-                ws.Cells["B2:B4"].Insert(eShiftTypeInsert.Right);
-                Assert.AreEqual("C2:D4", tbl.Address.Address);
+            using ExcelPackage? p = new ExcelPackage();
+            ExcelWorksheet? ws = p.Workbook.Worksheets.Add("TableInsertShiftRight");
+            ExcelTable? tbl = ws.Tables.Add(ws.Cells["B2:C4"], "table1");
+            ws.Cells["B2:B4"].Insert(eShiftTypeInsert.Right);
+            Assert.AreEqual("C2:D4", tbl.Address.Address);
 
-                ws.Cells["B1:B4"].Insert(eShiftTypeInsert.Right);
-                Assert.AreEqual("D2:E4", tbl.Address.Address);
+            ws.Cells["B1:B4"].Insert(eShiftTypeInsert.Right);
+            Assert.AreEqual("D2:E4", tbl.Address.Address);
 
-                ws.Cells["B2:B6"].Insert(eShiftTypeInsert.Right);
-                Assert.AreEqual("E2:F4", tbl.Address.Address);
-            }
+            ws.Cells["B2:B6"].Insert(eShiftTypeInsert.Right);
+            Assert.AreEqual("E2:F4", tbl.Address.Address);
         }
         [TestMethod]
         public void ValidateInsertPivotTableShouldShiftDown()
         {
-            using (ExcelPackage? p = new ExcelPackage())
-            {
-                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("PivotTableInsertShiftDown");
-                ws.Cells["E5"].Value = "E5";
-                ws.Cells["F5"].Value = "F5";                
-                ExcelPivotTable? pt=ws.PivotTables.Add(ws.Cells["B2:D3"], ws.Cells["E5:F6"], "pivottable1");
-                ws.Cells["B2:D2"].Insert(eShiftTypeInsert.Down);
-                Assert.AreEqual("B3:D4", pt.Address.Address);
+            using ExcelPackage? p = new ExcelPackage();
+            ExcelWorksheet? ws = p.Workbook.Worksheets.Add("PivotTableInsertShiftDown");
+            ws.Cells["E5"].Value = "E5";
+            ws.Cells["F5"].Value = "F5";
+            ExcelPivotTable? pt = ws.PivotTables.Add(ws.Cells["B2:D3"], ws.Cells["E5:F6"], "pivottable1");
+            ws.Cells["B2:D2"].Insert(eShiftTypeInsert.Down);
+            Assert.AreEqual("B3:D4", pt.Address.Address);
 
-                ws.Cells["A2:E2"].Insert(eShiftTypeInsert.Down);
-                Assert.AreEqual("B4:D5", pt.Address.Address);
+            ws.Cells["A2:E2"].Insert(eShiftTypeInsert.Down);
+            Assert.AreEqual("B4:D5", pt.Address.Address);
 
-                ws.Cells["B6:D7"].Insert(eShiftTypeInsert.Down);
-                Assert.AreEqual("B4:D5", pt.Address.Address);
-            }
+            ws.Cells["B6:D7"].Insert(eShiftTypeInsert.Down);
+            Assert.AreEqual("B4:D5", pt.Address.Address);
         }
         [TestMethod]
         public void ValidateInsertPivotTableShouldShiftRight()
         {
-            using (ExcelPackage? p = new ExcelPackage())
-            {
-                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("PivotTableInsertShiftRight");
-                ws.Cells["E5"].Value = "E5";
-                ws.Cells["F5"].Value = "F5";
-                ExcelPivotTable? pt = ws.PivotTables.Add(ws.Cells["B2:D3"], ws.Cells["E5:F6"], "pivottable1");
-                ws.Cells["B2:B3"].Insert(eShiftTypeInsert.Right);
-                Assert.AreEqual("C2:E3", pt.Address.Address);
-                ws.Cells["B1:B4"].Insert(eShiftTypeInsert.Right);
-                Assert.AreEqual("D2:F3", pt.Address.Address);
-                ws.Cells["G2:G3"].Insert(eShiftTypeInsert.Right);
-                Assert.AreEqual("D2:F3", pt.Address.Address);
-            }
+            using ExcelPackage? p = new ExcelPackage();
+            ExcelWorksheet? ws = p.Workbook.Worksheets.Add("PivotTableInsertShiftRight");
+            ws.Cells["E5"].Value = "E5";
+            ws.Cells["F5"].Value = "F5";
+            ExcelPivotTable? pt = ws.PivotTables.Add(ws.Cells["B2:D3"], ws.Cells["E5:F6"], "pivottable1");
+            ws.Cells["B2:B3"].Insert(eShiftTypeInsert.Right);
+            Assert.AreEqual("C2:E3", pt.Address.Address);
+            ws.Cells["B1:B4"].Insert(eShiftTypeInsert.Right);
+            Assert.AreEqual("D2:F3", pt.Address.Address);
+            ws.Cells["G2:G3"].Insert(eShiftTypeInsert.Right);
+            Assert.AreEqual("D2:F3", pt.Address.Address);
         }
 
         [TestMethod]
         public void ValidateStyleShiftDown()
         {
-            using (ExcelPackage? p = new ExcelPackage())
-            {
-                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("StyleShiftDown");
-                ws.Cells["A1"].Style.Fill.SetBackground(OfficeOpenXml.Style.ExcelIndexedColor.Indexed2);
-                ws.Cells["B1"].Style.Fill.SetBackground(OfficeOpenXml.Style.ExcelIndexedColor.Indexed3);
-                ws.Cells["C1"].Style.Fill.SetBackground(OfficeOpenXml.Style.ExcelIndexedColor.Indexed4);
+            using ExcelPackage? p = new ExcelPackage();
+            ExcelWorksheet? ws = p.Workbook.Worksheets.Add("StyleShiftDown");
+            ws.Cells["A1"].Style.Fill.SetBackground(OfficeOpenXml.Style.ExcelIndexedColor.Indexed2);
+            ws.Cells["B1"].Style.Fill.SetBackground(OfficeOpenXml.Style.ExcelIndexedColor.Indexed3);
+            ws.Cells["C1"].Style.Fill.SetBackground(OfficeOpenXml.Style.ExcelIndexedColor.Indexed4);
 
-                ws.Cells["A2"].Style.Fill.SetBackground(OfficeOpenXml.Style.ExcelIndexedColor.Indexed5);
-                ws.Cells["A3"].Style.Fill.SetBackground(OfficeOpenXml.Style.ExcelIndexedColor.Indexed6);
+            ws.Cells["A2"].Style.Fill.SetBackground(OfficeOpenXml.Style.ExcelIndexedColor.Indexed5);
+            ws.Cells["A3"].Style.Fill.SetBackground(OfficeOpenXml.Style.ExcelIndexedColor.Indexed6);
 
-                ws.Cells["A1:C1"].Insert(eShiftTypeInsert.Down);
-                Assert.AreEqual(0, ws.Cells["A1"].StyleID);
-                Assert.AreEqual(0, ws.Cells["B1"].StyleID);
-                Assert.AreEqual(0, ws.Cells["C1"].StyleID);
-                Assert.AreEqual(2, ws.Cells["A2"].StyleID);
-                Assert.AreEqual(3, ws.Cells["B2"].StyleID);
-                Assert.AreEqual(4, ws.Cells["C2"].StyleID);
-                ws.Cells["A3:C4"].Insert(eShiftTypeInsert.Down);
-                Assert.AreEqual(2, ws.Cells["A3"].StyleID);
-                Assert.AreEqual(3, ws.Cells["B3"].StyleID);
-                Assert.AreEqual(4, ws.Cells["C3"].StyleID);
-                Assert.AreEqual(2, ws.Cells["A4"].StyleID);
-                Assert.AreEqual(3, ws.Cells["B4"].StyleID);
-                Assert.AreEqual(4, ws.Cells["C4"].StyleID);
-            }
+            ws.Cells["A1:C1"].Insert(eShiftTypeInsert.Down);
+            Assert.AreEqual(0, ws.Cells["A1"].StyleID);
+            Assert.AreEqual(0, ws.Cells["B1"].StyleID);
+            Assert.AreEqual(0, ws.Cells["C1"].StyleID);
+            Assert.AreEqual(2, ws.Cells["A2"].StyleID);
+            Assert.AreEqual(3, ws.Cells["B2"].StyleID);
+            Assert.AreEqual(4, ws.Cells["C2"].StyleID);
+            ws.Cells["A3:C4"].Insert(eShiftTypeInsert.Down);
+            Assert.AreEqual(2, ws.Cells["A3"].StyleID);
+            Assert.AreEqual(3, ws.Cells["B3"].StyleID);
+            Assert.AreEqual(4, ws.Cells["C3"].StyleID);
+            Assert.AreEqual(2, ws.Cells["A4"].StyleID);
+            Assert.AreEqual(3, ws.Cells["B4"].StyleID);
+            Assert.AreEqual(4, ws.Cells["C4"].StyleID);
         }
         [TestMethod]
         public void ValidateStyleShiftRight()
         {
-            using (ExcelPackage? p = new ExcelPackage())
-            {
-                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("StyleShiftRight");
-                ws.Cells["A1"].Style.Fill.SetBackground(OfficeOpenXml.Style.ExcelIndexedColor.Indexed2);
-                ws.Cells["B1"].Style.Fill.SetBackground(OfficeOpenXml.Style.ExcelIndexedColor.Indexed3);
-                ws.Cells["C1"].Style.Fill.SetBackground(OfficeOpenXml.Style.ExcelIndexedColor.Indexed4);
+            using ExcelPackage? p = new ExcelPackage();
+            ExcelWorksheet? ws = p.Workbook.Worksheets.Add("StyleShiftRight");
+            ws.Cells["A1"].Style.Fill.SetBackground(OfficeOpenXml.Style.ExcelIndexedColor.Indexed2);
+            ws.Cells["B1"].Style.Fill.SetBackground(OfficeOpenXml.Style.ExcelIndexedColor.Indexed3);
+            ws.Cells["C1"].Style.Fill.SetBackground(OfficeOpenXml.Style.ExcelIndexedColor.Indexed4);
 
-                ws.Cells["A2"].Style.Fill.SetBackground(OfficeOpenXml.Style.ExcelIndexedColor.Indexed5);
-                ws.Cells["A3"].Style.Fill.SetBackground(OfficeOpenXml.Style.ExcelIndexedColor.Indexed6);
+            ws.Cells["A2"].Style.Fill.SetBackground(OfficeOpenXml.Style.ExcelIndexedColor.Indexed5);
+            ws.Cells["A3"].Style.Fill.SetBackground(OfficeOpenXml.Style.ExcelIndexedColor.Indexed6);
 
-                ws.Cells["A1:A3"].Insert(eShiftTypeInsert.Right);
-                Assert.AreEqual(0, ws.Cells["A1"].StyleID);
-                Assert.AreEqual(0, ws.Cells["A2"].StyleID);
-                Assert.AreEqual(0, ws.Cells["A3"].StyleID);
-                Assert.AreEqual(2, ws.Cells["B1"].StyleID);
-                Assert.AreEqual(5, ws.Cells["B2"].StyleID);
-                Assert.AreEqual(6, ws.Cells["B3"].StyleID);
-                ws.Cells["C1:D3"].Insert(eShiftTypeInsert.Right);
-                Assert.AreEqual(2, ws.Cells["C1"].StyleID);
-                Assert.AreEqual(5, ws.Cells["C2"].StyleID);
-                Assert.AreEqual(6, ws.Cells["C3"].StyleID);
-                Assert.AreEqual(2, ws.Cells["D1"].StyleID);
-                Assert.AreEqual(5, ws.Cells["D2"].StyleID);
-                Assert.AreEqual(6, ws.Cells["D3"].StyleID);
-            }
+            ws.Cells["A1:A3"].Insert(eShiftTypeInsert.Right);
+            Assert.AreEqual(0, ws.Cells["A1"].StyleID);
+            Assert.AreEqual(0, ws.Cells["A2"].StyleID);
+            Assert.AreEqual(0, ws.Cells["A3"].StyleID);
+            Assert.AreEqual(2, ws.Cells["B1"].StyleID);
+            Assert.AreEqual(5, ws.Cells["B2"].StyleID);
+            Assert.AreEqual(6, ws.Cells["B3"].StyleID);
+            ws.Cells["C1:D3"].Insert(eShiftTypeInsert.Right);
+            Assert.AreEqual(2, ws.Cells["C1"].StyleID);
+            Assert.AreEqual(5, ws.Cells["C2"].StyleID);
+            Assert.AreEqual(6, ws.Cells["C3"].StyleID);
+            Assert.AreEqual(2, ws.Cells["D1"].StyleID);
+            Assert.AreEqual(5, ws.Cells["D2"].StyleID);
+            Assert.AreEqual(6, ws.Cells["D3"].StyleID);
         }
         #region Data validation
         [TestMethod]
@@ -848,38 +800,34 @@ namespace EPPlusTest.Core.Range.Insert
         [TestMethod]
         public void CheckDataValidationFormulaAfterInsertingRow()
         {
-            using (ExcelPackage? p = new ExcelPackage())
-            {
-                // Create a worksheet with conditional formatting 
-                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Sheet1");
-                IExcelDataValidationCustom? dv = ws.DataValidations.AddCustomValidation("B5:G5");
-                dv.Formula.ExcelFormula = "=(B$4=0)";
+            using ExcelPackage? p = new ExcelPackage();
+            // Create a worksheet with conditional formatting 
+            ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Sheet1");
+            IExcelDataValidationCustom? dv = ws.DataValidations.AddCustomValidation("B5:G5");
+            dv.Formula.ExcelFormula = "=(B$4=0)";
 
-                // Insert a row before the column being referenced by the CF formula
-                ws.InsertRow(2, 1);
+            // Insert a row before the column being referenced by the CF formula
+            ws.InsertRow(2, 1);
 
-                // Check the conditional formatting formula has been updated
-                dv = ws.DataValidations[0].As.CustomValidation;
-                Assert.AreEqual("=(B$5=0)", dv.Formula.ExcelFormula);
-            }
+            // Check the conditional formatting formula has been updated
+            dv = ws.DataValidations[0].As.CustomValidation;
+            Assert.AreEqual("=(B$5=0)", dv.Formula.ExcelFormula);
         }
         [TestMethod]
         public void CheckDataValidationFormulaAfterInsertingColumn()
         {
-            using (ExcelPackage? p = new ExcelPackage())
-            {
-                // Create a worksheet with conditional formatting 
-                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Sheet1");
-                IExcelDataValidationCustom? dv = ws.DataValidations.AddCustomValidation("E2:E7");
-                dv.Formula.ExcelFormula = "=($D2=0)";
+            using ExcelPackage? p = new ExcelPackage();
+            // Create a worksheet with conditional formatting 
+            ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Sheet1");
+            IExcelDataValidationCustom? dv = ws.DataValidations.AddCustomValidation("E2:E7");
+            dv.Formula.ExcelFormula = "=($D2=0)";
 
-                // Insert a column before the column being referenced by the CF formula
-                ws.InsertColumn(2, 1);
+            // Insert a column before the column being referenced by the CF formula
+            ws.InsertColumn(2, 1);
 
-                // Check the conditional formatting formula has been updated
-                dv = ws.DataValidations[0].As.CustomValidation;
-                Assert.AreEqual("=($E2=0)", dv.Formula.ExcelFormula);
-            }
+            // Check the conditional formatting formula has been updated
+            dv = ws.DataValidations[0].As.CustomValidation;
+            Assert.AreEqual("=($E2=0)", dv.Formula.ExcelFormula);
         }
         #endregion
         #region Conditional formatting
@@ -1086,28 +1034,24 @@ namespace EPPlusTest.Core.Range.Insert
         [TestMethod]
         public void InsertIntoTemplate1()
         {
-            using (ExcelPackage? p = OpenTemplatePackage("InsertDeleteTemplate.xlsx"))
-            {
-                ExcelWorksheet? ws = p.Workbook.Worksheets["C3R"];
-                ExcelWorksheet? ws2 = ws.Workbook.Worksheets.Add("C3R-2", ws);
-                ws.Cells["G49:G52"].Insert(eShiftTypeInsert.Down);
-                ws2.Cells["G49:G52"].Insert(eShiftTypeInsert.Right);
+            using ExcelPackage? p = OpenTemplatePackage("InsertDeleteTemplate.xlsx");
+            ExcelWorksheet? ws = p.Workbook.Worksheets["C3R"];
+            ExcelWorksheet? ws2 = ws.Workbook.Worksheets.Add("C3R-2", ws);
+            ws.Cells["G49:G52"].Insert(eShiftTypeInsert.Down);
+            ws2.Cells["G49:G52"].Insert(eShiftTypeInsert.Right);
 
-                SaveWorkbook("InsertTest1.xlsx", p);
-            }
+            SaveWorkbook("InsertTest1.xlsx", p);
         }
         [TestMethod]
         public void InsertIntoTemplate2()
         {
-            using (ExcelPackage? p = OpenTemplatePackage("InsertDeleteTemplate.xlsx"))
-            {
-                ExcelWorksheet? ws = p.Workbook.Worksheets["C3R"];
-                ExcelWorksheet? ws2 = ws.Workbook.Worksheets.Add("C3R-2", ws);
-                ws.Cells["L49:L52"].Insert(eShiftTypeInsert.Down);
-                ws2.Cells["L49:L52"].Insert(eShiftTypeInsert.Right);
+            using ExcelPackage? p = OpenTemplatePackage("InsertDeleteTemplate.xlsx");
+            ExcelWorksheet? ws = p.Workbook.Worksheets["C3R"];
+            ExcelWorksheet? ws2 = ws.Workbook.Worksheets.Add("C3R-2", ws);
+            ws.Cells["L49:L52"].Insert(eShiftTypeInsert.Down);
+            ws2.Cells["L49:L52"].Insert(eShiftTypeInsert.Right);
 
-                SaveWorkbook("InsertTest2.xlsx", p);
-            }
+            SaveWorkbook("InsertTest2.xlsx", p);
         }
         [TestMethod]
         public void ValidateConditionalFormattingInsertColumnMultiRange()
@@ -1123,38 +1067,34 @@ namespace EPPlusTest.Core.Range.Insert
         [TestMethod]
         public void CheckConditionalFormattingFormulaAfterInsertingRow()
         {
-            using (ExcelPackage? p = new ExcelPackage())
-            {
-                // Create a worksheet with conditional formatting 
-                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Sheet1");
-                IExcelConditionalFormattingExpression? cf = ws.ConditionalFormatting.AddExpression(ws.Cells["B5:G5"]);
-                cf.Formula = "=(B$4=0)";
+            using ExcelPackage? p = new ExcelPackage();
+            // Create a worksheet with conditional formatting 
+            ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Sheet1");
+            IExcelConditionalFormattingExpression? cf = ws.ConditionalFormatting.AddExpression(ws.Cells["B5:G5"]);
+            cf.Formula = "=(B$4=0)";
 
-                // Insert a row before the column being referenced by the CF formula
-                ws.InsertRow(2, 1);
+            // Insert a row before the column being referenced by the CF formula
+            ws.InsertRow(2, 1);
 
-                // Check the conditional formatting formula has been updated
-                cf = ws.ConditionalFormatting[0].As.Expression;
-                Assert.AreEqual("=(B$5=0)", cf.Formula);
-            }
+            // Check the conditional formatting formula has been updated
+            cf = ws.ConditionalFormatting[0].As.Expression;
+            Assert.AreEqual("=(B$5=0)", cf.Formula);
         }
         [TestMethod]
         public void CheckConditionalFormattingFormulaAfterInsertingColumn()
         {
-            using (ExcelPackage? p = new ExcelPackage())
-            {
-                // Create a worksheet with conditional formatting 
-                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Sheet1");
-                IExcelConditionalFormattingExpression? cf = ws.ConditionalFormatting.AddExpression(ws.Cells["E2:E7"]);
-                cf.Formula = "=($D2=0)";
+            using ExcelPackage? p = new ExcelPackage();
+            // Create a worksheet with conditional formatting 
+            ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Sheet1");
+            IExcelConditionalFormattingExpression? cf = ws.ConditionalFormatting.AddExpression(ws.Cells["E2:E7"]);
+            cf.Formula = "=($D2=0)";
 
-                // Insert a column before the column being referenced by the CF formula
-                ws.InsertColumn(2, 1);
+            // Insert a column before the column being referenced by the CF formula
+            ws.InsertColumn(2, 1);
 
-                // Check the conditional formatting formula has been updated
-                cf = ws.ConditionalFormatting[0].As.Expression;
-                Assert.AreEqual("=($E2=0)", cf.Formula);
-            }
+            // Check the conditional formatting formula has been updated
+            cf = ws.ConditionalFormatting[0].As.Expression;
+            Assert.AreEqual("=($E2=0)", cf.Formula);
         }
 
         [TestMethod]

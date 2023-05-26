@@ -122,13 +122,11 @@ namespace OfficeOpenXml
         /// <returns>A string containing the text</returns>
         public string ToText(ExcelOutputTextFormat Format)
         {
-            using (MemoryStream? ms = RecyclableMemory.GetStream())
-            {
-                SaveToText(ms, Format);
-                ms.Position = 0;
-                StreamReader? sr = new StreamReader(ms);
-                return sr.ReadToEnd();
-            }
+            using MemoryStream? ms = RecyclableMemory.GetStream();
+            SaveToText(ms, Format);
+            ms.Position = 0;
+            StreamReader? sr = new StreamReader(ms);
+            return sr.ReadToEnd();
         }
         /// <summary>
         /// Converts a range to text in CSV format.
@@ -230,13 +228,11 @@ namespace OfficeOpenXml
         /// <returns>A string containing the text</returns>
         public async Task<string> ToTextAsync(ExcelOutputTextFormat Format)
         {
-            using (MemoryStream? ms = RecyclableMemory.GetStream())
-            {
-                await SaveToTextAsync(ms, Format).ConfigureAwait(false);
-                ms.Position = 0;
-                StreamReader? sr = new StreamReader(ms);
-                return await sr.ReadToEndAsync().ConfigureAwait(false);
-            }
+            using MemoryStream? ms = RecyclableMemory.GetStream();
+            await SaveToTextAsync(ms, Format).ConfigureAwait(false);
+            ms.Position = 0;
+            StreamReader? sr = new StreamReader(ms);
+            return await sr.ReadToEndAsync().ConfigureAwait(false);
         }
         /// <summary>
         /// Converts a range to text in CSV format.

@@ -357,38 +357,36 @@ namespace EPPlusTest.Drawing.Control
         [TestMethod]
         public void VerifySize2()
         {
-            using (ExcelPackage? p = OpenPackage("i729-1.xlsx", true))
-            {
-                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Diagramme & Tabellen erzeugen");                
-                ExcelControlButton? button1 = ws.Drawings.AddButtonControl("Button 1");
-                button1.SetPosition(1, 0, 1, 0);
-                button1.SetSize(135, 70);
+            using ExcelPackage? p = OpenPackage("i729-1.xlsx", true);
+            ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Diagramme & Tabellen erzeugen");
+            ExcelControlButton? button1 = ws.Drawings.AddButtonControl("Button 1");
+            button1.SetPosition(1, 0, 1, 0);
+            button1.SetSize(135, 70);
 
-                Assert.AreEqual(4, button1.To.Row);
-                Assert.AreEqual(95250, button1.To.RowOff); 
+            Assert.AreEqual(4, button1.To.Row);
+            Assert.AreEqual(95250, button1.To.RowOff);
 
-                p.Workbook.Styles.NamedStyles[0].Style.Font.Name = "Arial";
-                p.Workbook.Styles.NamedStyles[0].Style.Font.Size = 15F;
+            p.Workbook.Styles.NamedStyles[0].Style.Font.Name = "Arial";
+            p.Workbook.Styles.NamedStyles[0].Style.Font.Size = 15F;
 
-                ExcelControlButton? button2 = ws.Drawings.AddButtonControl("Button 2");
-                button2.SetPosition(1, 0, 5, 0);
-                button2.SetSize(135, 70);
+            ExcelControlButton? button2 = ws.Drawings.AddButtonControl("Button 2");
+            button2.SetPosition(1, 0, 5, 0);
+            button2.SetSize(135, 70);
 
-                Assert.AreEqual(3, button2.To.Row);
-                Assert.AreEqual(190500, button2.To.RowOff);
+            Assert.AreEqual(3, button2.To.Row);
+            Assert.AreEqual(190500, button2.To.RowOff);
 
-                p.Workbook.Styles.NamedStyles[0].Style.Font.Name = "Arial";
-                p.Workbook.Styles.NamedStyles[0].Style.Font.Size = 25F;
+            p.Workbook.Styles.NamedStyles[0].Style.Font.Name = "Arial";
+            p.Workbook.Styles.NamedStyles[0].Style.Font.Size = 25F;
 
-                ExcelControlButton? button3 = ws.Drawings.AddButtonControl("Button 3");
-                button3.SetPosition(1, 0, 10, 0);
-                button3.SetSize(135, 70);
+            ExcelControlButton? button3 = ws.Drawings.AddButtonControl("Button 3");
+            button3.SetPosition(1, 0, 10, 0);
+            button3.SetSize(135, 70);
 
-                Assert.AreEqual(2, button3.To.Row);
-                Assert.AreEqual(276225, button3.To.RowOff);
+            Assert.AreEqual(2, button3.To.Row);
+            Assert.AreEqual(276225, button3.To.RowOff);
 
-                SaveAndCleanup(p);
-            }
+            SaveAndCleanup(p);
         }
 
     }

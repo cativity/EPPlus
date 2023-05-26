@@ -255,12 +255,10 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         /// <seealso cref="CheckZip(string,bool,System.IO.TextWriter)"/>
         public static void FixZipDirectory(string zipFileName)
         {
-            using (ZipFile? zip = new ZipFile())
-            {
-                zip.FullScan = true;
-                zip.Initialize(zipFileName);
-                zip.Save(zipFileName);
-            }
+            using ZipFile? zip = new ZipFile();
+            zip.FullScan = true;
+            zip.Initialize(zipFileName);
+            zip.Save(zipFileName);
         }
 
 

@@ -54,121 +54,111 @@ namespace EPPlusTest
         [TestMethod]
         public void VisibilityComments()
         {
-            using (ExcelPackage? pkg = new ExcelPackage())
+            using ExcelPackage? pkg = new ExcelPackage();
+            ExcelWorksheet? ws = pkg.Workbook.Worksheets.Add("Comment");
+            ExcelRange? a1 = ws.Cells["A1"];
+            a1.Value = "Justin Dearing";
+            a1.AddComment("I am A1s comment", "JD");
+            Assert.IsFalse(a1.Comment.Visible); // Comments are by default invisible 
+            a1.Comment.Visible = true;
+            a1.Comment.Visible = false;
+            a1.Comment.Fill.Style = OfficeOpenXml.Drawing.Vml.eVmlFillType.Gradient;
+            a1.Comment.Fill.GradientSettings.SetGradientColors(
+                new OfficeOpenXml.Drawing.Vml.VmlGradiantColor(0, Color.Red),
+                new OfficeOpenXml.Drawing.Vml.VmlGradiantColor(100, Color.Orange));
+            Assert.IsNotNull(a1.Comment);
+            //check style attribute
+            Dictionary<string, string>? stylesDict = new System.Collections.Generic.Dictionary<string, string>();
+            string[] styles = a1.Comment.Style
+                .Split(new[] { ";" }, StringSplitOptions.RemoveEmptyEntries);
+            foreach (string? s in styles)
             {
-                ExcelWorksheet? ws = pkg.Workbook.Worksheets.Add("Comment");
-                ExcelRange? a1 = ws.Cells["A1"];
-                a1.Value = "Justin Dearing";
-                a1.AddComment("I am A1s comment", "JD");
-                Assert.IsFalse(a1.Comment.Visible); // Comments are by default invisible 
-                a1.Comment.Visible = true;
-                a1.Comment.Visible = false;
-                a1.Comment.Fill.Style = OfficeOpenXml.Drawing.Vml.eVmlFillType.Gradient;
-                a1.Comment.Fill.GradientSettings.SetGradientColors(
-                    new OfficeOpenXml.Drawing.Vml.VmlGradiantColor(0, Color.Red), 
-                    new OfficeOpenXml.Drawing.Vml.VmlGradiantColor(100, Color.Orange));
-                Assert.IsNotNull(a1.Comment);
-                //check style attribute
-                Dictionary<string, string>? stylesDict = new System.Collections.Generic.Dictionary<string, string>();
-                string[] styles = a1.Comment.Style
-                    .Split(new[] { ";" }, StringSplitOptions.RemoveEmptyEntries);
-                foreach(string? s in styles)
+                string[] split = s.Split(':');
+                if (split.Length == 2)
                 {
-                    string[] split = s.Split(':');
-                    if (split.Length == 2)
-                    {
-                        string? k = (split[0] ?? "").Trim().ToLower();
-                        string? v = (split[1] ?? "").Trim().ToLower();
-                        stylesDict[k] = v;
-                    }
+                    string? k = (split[0] ?? "").Trim().ToLower();
+                    string? v = (split[1] ?? "").Trim().ToLower();
+                    stylesDict[k] = v;
                 }
-                Assert.IsTrue(stylesDict.ContainsKey("visibility"));
-                Assert.AreEqual("hidden", stylesDict["visibility"]);
-                Assert.IsFalse(a1.Comment.Visible);
-                    
-                pkg.Save();
             }
+            Assert.IsTrue(stylesDict.ContainsKey("visibility"));
+            Assert.AreEqual("hidden", stylesDict["visibility"]);
+            Assert.IsFalse(a1.Comment.Visible);
+
+            pkg.Save();
         }
         [TestMethod]
         public void CommentInsertColumn()
         {
-            using (ExcelPackage? pkg = new ExcelPackage())
-            {
-                ExcelWorksheet? ws = pkg.Workbook.Worksheets.Add("CommentInsert");
-                ws.Cells["A1"].AddComment("na", "test");
-                Assert.AreEqual(1, ws.Comments.Count);
+            using ExcelPackage? pkg = new ExcelPackage();
+            ExcelWorksheet? ws = pkg.Workbook.Worksheets.Add("CommentInsert");
+            ws.Cells["A1"].AddComment("na", "test");
+            Assert.AreEqual(1, ws.Comments.Count);
 
-                ws.InsertColumn(1, 1);
+            ws.InsertColumn(1, 1);
 
-                Assert.AreEqual("B1", ws.Cells["B1"].Comment.Address);
-                //Throws a null reference exception
-                ws.Comments.Remove(ws.Cells["B1"].Comment);
+            Assert.AreEqual("B1", ws.Cells["B1"].Comment.Address);
+            //Throws a null reference exception
+            ws.Comments.Remove(ws.Cells["B1"].Comment);
 
-                //Throws an exception "Comment does not exist"
-                ws.DeleteColumn(2);
-                Assert.AreEqual(0, ws.Comments.Count);
-            }
+            //Throws an exception "Comment does not exist"
+            ws.DeleteColumn(2);
+            Assert.AreEqual(0, ws.Comments.Count);
         }
         [TestMethod]
         public void CommentDeleteColumn()
         {
-            using (ExcelPackage? pkg = new ExcelPackage())
-            {
-                ExcelWorksheet? ws = pkg.Workbook.Worksheets.Add("CommentInsert");
-                ws.Cells["B1"].AddComment("na", "test");
-                Assert.AreEqual(1, ws.Comments.Count);
+            using ExcelPackage? pkg = new ExcelPackage();
+            ExcelWorksheet? ws = pkg.Workbook.Worksheets.Add("CommentInsert");
+            ws.Cells["B1"].AddComment("na", "test");
+            Assert.AreEqual(1, ws.Comments.Count);
 
-                ws.DeleteColumn(1, 1);
+            ws.DeleteColumn(1, 1);
 
-                Assert.AreEqual("A1", ws.Cells["A1"].Comment.Address);
-                //Throws a null reference exception
-                ws.Comments.Remove(ws.Cells["A1"].Comment);
+            Assert.AreEqual("A1", ws.Cells["A1"].Comment.Address);
+            //Throws a null reference exception
+            ws.Comments.Remove(ws.Cells["A1"].Comment);
 
-                //Throws an exception "Comment does not exist"
-                ws.DeleteColumn(1);
-                Assert.AreEqual(0, ws.Comments.Count);
-            }
+            //Throws an exception "Comment does not exist"
+            ws.DeleteColumn(1);
+            Assert.AreEqual(0, ws.Comments.Count);
         }
         [TestMethod]
         public void CommentInsertRow()
         {
-            using (ExcelPackage? pkg = new ExcelPackage())
-            {
-                ExcelWorksheet? ws = pkg.Workbook.Worksheets.Add("CommentInsert");
-                ws.Cells["A1"].AddComment("na", "test");
-                Assert.AreEqual(1, ws.Comments.Count);
+            using ExcelPackage? pkg = new ExcelPackage();
+            ExcelWorksheet? ws = pkg.Workbook.Worksheets.Add("CommentInsert");
+            ws.Cells["A1"].AddComment("na", "test");
+            Assert.AreEqual(1, ws.Comments.Count);
 
-                ws.InsertRow(1, 1);
+            ws.InsertRow(1, 1);
 
-                Assert.AreEqual("A2", ws.Cells["A2"].Comment.Address);                
-                Assert.IsNull(ws.Cells["A1"].Comment);
-                //Throws a null reference exception
-                ws.Comments.Remove(ws.Cells["A2"].Comment);
+            Assert.AreEqual("A2", ws.Cells["A2"].Comment.Address);
+            Assert.IsNull(ws.Cells["A1"].Comment);
+            //Throws a null reference exception
+            ws.Comments.Remove(ws.Cells["A2"].Comment);
 
-                //Throws an exception "Comment does not exist"
-                ws.DeleteRow(2);
-                Assert.AreEqual(0, ws.Comments.Count);
-            }
+            //Throws an exception "Comment does not exist"
+            ws.DeleteRow(2);
+            Assert.AreEqual(0, ws.Comments.Count);
         }
         [TestMethod]
         public void CommentDeleteRow()
         {
-            using (ExcelPackage? pkg = new ExcelPackage())
-            {
-                ExcelWorksheet? ws = pkg.Workbook.Worksheets.Add("CommentInsert");
-                ws.Cells["A2"].AddComment("na", "test");
-                Assert.AreEqual(1, ws.Comments.Count);
+            using ExcelPackage? pkg = new ExcelPackage();
+            ExcelWorksheet? ws = pkg.Workbook.Worksheets.Add("CommentInsert");
+            ws.Cells["A2"].AddComment("na", "test");
+            Assert.AreEqual(1, ws.Comments.Count);
 
-                ws.DeleteRow(1, 1);
+            ws.DeleteRow(1, 1);
 
-                Assert.AreEqual("A1", ws.Cells["A1"].Comment.Address);
-                //Throws a null reference exception
-                ws.Comments.Remove(ws.Cells["A1"].Comment);
+            Assert.AreEqual("A1", ws.Cells["A1"].Comment.Address);
+            //Throws a null reference exception
+            ws.Comments.Remove(ws.Cells["A1"].Comment);
 
-                //Throws an exception "Comment does not exist"
-                ws.DeleteRow(1);
-                Assert.AreEqual(0, ws.Comments.Count);
-            }
+            //Throws an exception "Comment does not exist"
+            ws.DeleteRow(1);
+            Assert.AreEqual(0, ws.Comments.Count);
         }
         [TestMethod]
         public void RangeShouldClearComment()
@@ -197,75 +187,70 @@ namespace EPPlusTest
         [TestMethod]
         public void SettingRichTextShouldNotEffectComment()
         {
-            using (ExcelPackage? p = new ExcelPackage())
-            {
-                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Sheet1");
-                ExcelComment comment = ws.Cells[1, 1].AddComment("My Comment", "Me");
-                Assert.IsNotNull(ws.Cells[1, 1].Comment);
-                ws.Cells[1, 1].IsRichText = true;
-                Assert.IsNotNull(ws.Cells[1, 1].Comment);
-            }
+            using ExcelPackage? p = new ExcelPackage();
+            ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Sheet1");
+            ExcelComment comment = ws.Cells[1, 1].AddComment("My Comment", "Me");
+            Assert.IsNotNull(ws.Cells[1, 1].Comment);
+            ws.Cells[1, 1].IsRichText = true;
+            Assert.IsNotNull(ws.Cells[1, 1].Comment);
         }
         [TestMethod]
         public void CopyCommentInRange()
         {
-            using (ExcelPackage? p = new ExcelPackage())
-            {
-                // Get the comment object from the worksheet
-                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Sheet1");
-                ExcelComment? comment1 = ws.Comments.Add(ws.Cells["B2"], "Test Comment");
-                comment1.BackgroundColor = Color.FromArgb(0xdcf0ff);
-                comment1.AutoFit = true;
-                comment1.Font.FontName = "Tahoma";
-                comment1.Font.Size = 9;
-                comment1.Font.Bold = true; ;
-                comment1.Font.Italic=true;
-                comment1.Font.UnderLine = true;
-                comment1.Font.Color = Color.FromArgb(0); 
+            using ExcelPackage? p = new ExcelPackage();
+            // Get the comment object from the worksheet
+            ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Sheet1");
+            ExcelComment? comment1 = ws.Comments.Add(ws.Cells["B2"], "Test Comment");
+            comment1.BackgroundColor = Color.FromArgb(0xdcf0ff);
+            comment1.AutoFit = true;
+            comment1.Font.FontName = "Tahoma";
+            comment1.Font.Size = 9;
+            comment1.Font.Bold = true;
+            ;
+            comment1.Font.Italic = true;
+            comment1.Font.UnderLine = true;
+            comment1.Font.Color = Color.FromArgb(0);
 
-                // Check that the comment in B2 has a custom style
-                Assert.AreEqual("B2", comment1.Address);
-                Assert.AreEqual("dcf0ff", comment1.BackgroundColor.Name);
-                Assert.AreEqual(true, comment1.AutoFit);
-                Assert.AreEqual("Tahoma", comment1.Font.FontName);
-                Assert.AreEqual(9, comment1.Font.Size);
-                Assert.AreEqual(true, comment1.Font.Bold);
-                Assert.AreEqual(true, comment1.Font.Italic);
-                Assert.AreEqual(true, comment1.Font.UnderLine);
-                Assert.AreEqual("0", comment1.Font.Color.Name);
+            // Check that the comment in B2 has a custom style
+            Assert.AreEqual("B2", comment1.Address);
+            Assert.AreEqual("dcf0ff", comment1.BackgroundColor.Name);
+            Assert.AreEqual(true, comment1.AutoFit);
+            Assert.AreEqual("Tahoma", comment1.Font.FontName);
+            Assert.AreEqual(9, comment1.Font.Size);
+            Assert.AreEqual(true, comment1.Font.Bold);
+            Assert.AreEqual(true, comment1.Font.Italic);
+            Assert.AreEqual(true, comment1.Font.UnderLine);
+            Assert.AreEqual("0", comment1.Font.Color.Name);
 
-                // Copy the comment from B2 to A2 (also checking that this works when copying a range)
-                ws.Cells["B1:B3"].Copy(ws.Cells["A1:A3"]);
+            // Copy the comment from B2 to A2 (also checking that this works when copying a range)
+            ws.Cells["B1:B3"].Copy(ws.Cells["A1:A3"]);
 
-                // Check the comment is copied with all properties intact
-                ExcelComment? comment2 = ws.Comments[1];
-                Assert.AreEqual("A2", comment2.Address);
-                Assert.AreEqual(comment1.BackgroundColor.Name, comment2.BackgroundColor.Name);
-                Assert.AreEqual(comment1.AutoFit, comment2.AutoFit);
-                Assert.AreEqual(comment1.Font.FontName, comment2.Font.FontName);
-                Assert.AreEqual(comment1.Font.Size, comment2.Font.Size);
-                Assert.AreEqual(comment1.Font.Bold, comment2.Font.Bold);
-                Assert.AreEqual(comment1.Font.Italic, comment2.Font.Italic);
-                Assert.AreEqual(comment1.Font.UnderLine, comment2.Font.UnderLine);
-                Assert.AreEqual(comment1.Font.Color.Name, comment2.Font.Color.Name);
-            }
+            // Check the comment is copied with all properties intact
+            ExcelComment? comment2 = ws.Comments[1];
+            Assert.AreEqual("A2", comment2.Address);
+            Assert.AreEqual(comment1.BackgroundColor.Name, comment2.BackgroundColor.Name);
+            Assert.AreEqual(comment1.AutoFit, comment2.AutoFit);
+            Assert.AreEqual(comment1.Font.FontName, comment2.Font.FontName);
+            Assert.AreEqual(comment1.Font.Size, comment2.Font.Size);
+            Assert.AreEqual(comment1.Font.Bold, comment2.Font.Bold);
+            Assert.AreEqual(comment1.Font.Italic, comment2.Font.Italic);
+            Assert.AreEqual(comment1.Font.UnderLine, comment2.Font.UnderLine);
+            Assert.AreEqual(comment1.Font.Color.Name, comment2.Font.Color.Name);
         }
         [TestMethod]
         public void TestDeleteCellsWithComment()
         {
-            using (ExcelPackage? p = new ExcelPackage())
-            {
-                // Add a sheet with comments
-                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Sheet1");
-                ws.Comments.Add(ws.Cells["B2"], "This is a comment.", "author");
-                Assert.AreEqual(1, ws.Comments.Count);
+            using ExcelPackage? p = new ExcelPackage();
+            // Add a sheet with comments
+            ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Sheet1");
+            ws.Comments.Add(ws.Cells["B2"], "This is a comment.", "author");
+            Assert.AreEqual(1, ws.Comments.Count);
 
-                // Delete cells B1:B3 (including the comment in B2)
-                ws.Cells["B1:B3"].Delete(eShiftTypeDelete.Left);
+            // Delete cells B1:B3 (including the comment in B2)
+            ws.Cells["B1:B3"].Delete(eShiftTypeDelete.Left);
 
-                // Check the comment is deleted
-                Assert.AreEqual(0, ws.Comments.Count);
-            }
+            // Check the comment is deleted
+            Assert.AreEqual(0, ws.Comments.Count);
         }
     }
 }

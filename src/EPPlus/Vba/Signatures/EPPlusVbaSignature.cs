@@ -127,16 +127,14 @@ namespace OfficeOpenXml.VBA.Signatures
                     return;
                 }
             }
-            using (MemoryStream? ms = RecyclableMemory.GetStream())
-            {
-                BinaryWriter? bw = new BinaryWriter(ms);
-                Verifier = CertUtil.SignProject(project, this, Context);
-                byte[]? cert = Verifier.Encode();
-                byte[]? signatureBytes = CertUtil.CreateBinarySignature(ms, bw, certStore, cert);
-                Part = SignaturePartUtil.GetPart(project, this);
-                Part.GetStream(FileMode.Create).Write(signatureBytes, 0, signatureBytes.Length);
-            }
-            
+            using MemoryStream? ms = RecyclableMemory.GetStream();
+            BinaryWriter? bw = new BinaryWriter(ms);
+            Verifier = CertUtil.SignProject(project, this, Context);
+            byte[]? cert = Verifier.Encode();
+            byte[]? signatureBytes = CertUtil.CreateBinarySignature(ms, bw, certStore, cert);
+            Part = SignaturePartUtil.GetPart(project, this);
+            Part.GetStream(FileMode.Create).Write(signatureBytes, 0, signatureBytes.Length);
+
         }
     }
 }

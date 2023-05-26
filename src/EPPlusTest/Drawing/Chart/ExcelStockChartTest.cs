@@ -59,11 +59,9 @@ namespace EPPlusTest.Drawing.Chart
         [TestMethod]
         public void ReadStockVHLC()
         {
-            using(ExcelPackage? p=OpenTemplatePackage("StockVHLC.xlsx"))
-            {
-                ExcelDrawing? c = p.Workbook.Worksheets[0].Drawings[0];
-                SaveWorkbook("StockVHLCSaved.xlsx", p);
-            }
+            using ExcelPackage? p = OpenTemplatePackage("StockVHLC.xlsx");
+            ExcelDrawing? c = p.Workbook.Worksheets[0].Drawings[0];
+            SaveWorkbook("StockVHLCSaved.xlsx", p);
         }
         [TestMethod]
         public void AddStockHLCText()
@@ -271,11 +269,9 @@ namespace EPPlusTest.Drawing.Chart
         [ExpectedException(typeof(InvalidOperationException))] 
         public void AddStockChartFromAddChart()
         {
-            using (ExcelPackage? p = new ExcelPackage())
-            {
-                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("stock");
-                ExcelChart? chart = ws.Drawings.AddChart("StockTextHLCDatalabels", eChartType.StockHLC);
-            }
+            using ExcelPackage? p = new ExcelPackage();
+            ExcelWorksheet? ws = p.Workbook.Worksheets.Add("stock");
+            ExcelChart? chart = ws.Drawings.AddChart("StockTextHLCDatalabels", eChartType.StockHLC);
         }
     }
 }

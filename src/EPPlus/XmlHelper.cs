@@ -1341,10 +1341,8 @@ namespace OfficeOpenXml
         }
         internal static void LoadXmlSafe(XmlDocument xmlDoc, string xml, Encoding encoding)
         {
-            using (MemoryStream? stream = RecyclableMemory.GetStream(encoding.GetBytes(xml)))
-            {
-                LoadXmlSafe(xmlDoc, stream);
-            }
+            using MemoryStream? stream = RecyclableMemory.GetStream(encoding.GetBytes(xml));
+            LoadXmlSafe(xmlDoc, stream);
         }
         internal void CreatespPrNode(string nodePath = "c:spPr", bool withLine = true)
         {

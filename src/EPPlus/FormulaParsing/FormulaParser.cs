@@ -105,83 +105,77 @@ namespace OfficeOpenXml.FormulaParsing
 
         internal virtual object Parse(string formula, RangeAddress rangeAddress)
         {
-            using (ParsingScope? scope = _parsingContext.Scopes.NewScope(rangeAddress))
+            using ParsingScope? scope = _parsingContext.Scopes.NewScope(rangeAddress);
+            IEnumerable<Token>? tokens = _lexer.Tokenize(formula);
+            ExpressionGraph.ExpressionGraph? graph = _graphBuilder.Build(tokens);
+            if (graph.Expressions.Count() == 0)
             {
-                IEnumerable<Token>? tokens = _lexer.Tokenize(formula);
-                ExpressionGraph.ExpressionGraph? graph = _graphBuilder.Build(tokens);
-                if (graph.Expressions.Count() == 0)
-                {
-                    return null;
-                }
-                return _compiler.Compile(graph.Expressions).Result;
+                return null;
             }
+            return _compiler.Compile(graph.Expressions).Result;
         }
 
         internal virtual object Parse(IEnumerable<Token> tokens, string worksheet, string address)
         {
             RangeAddress? rangeAddress = _parsingContext.RangeAddressFactory.Create(address);
-            using (ParsingScope? scope = _parsingContext.Scopes.NewScope(rangeAddress))
+            using ParsingScope? scope = _parsingContext.Scopes.NewScope(rangeAddress);
+            ExpressionGraph.ExpressionGraph? graph = _graphBuilder.Build(tokens);
+            if (graph.Expressions.Count() == 0)
             {
-                ExpressionGraph.ExpressionGraph? graph = _graphBuilder.Build(tokens);
-                if (graph.Expressions.Count() == 0)
-                {
-                    return null;
-                }
-                return _compiler.Compile(graph.Expressions).Result;
+                return null;
             }
+            return _compiler.Compile(graph.Expressions).Result;
         }
         internal virtual object ParseCell(IEnumerable<Token> tokens, string worksheet, int row, int column)
         {
             RangeAddress? rangeAddress = _parsingContext.RangeAddressFactory.Create(worksheet, column, row);
-            using (ParsingScope? scope = _parsingContext.Scopes.NewScope(rangeAddress))
+            using ParsingScope? scope = _parsingContext.Scopes.NewScope(rangeAddress);
+            //    _parsingContext.Dependencies.AddFormulaScope(scope);
+            ExpressionGraph.ExpressionGraph? graph = _graphBuilder.Build(tokens);
+            if (graph.Expressions.Count() == 0)
             {
-                //    _parsingContext.Dependencies.AddFormulaScope(scope);
-                ExpressionGraph.ExpressionGraph? graph = _graphBuilder.Build(tokens);
-                if (graph.Expressions.Count() == 0)
+                return 0d;
+            }
+            try
+            {
+                CompileResult? compileResult = _compiler.Compile(graph.Expressions);
+                // quick solution for the fact that an excelrange can be returned.
+                IRangeInfo? rangeInfo = compileResult.Result as IRangeInfo;
+                if (rangeInfo == null)
                 {
-                    return 0d;
+                    return compileResult.Result ?? 0d;
                 }
-                try
+                else
                 {
-                    CompileResult? compileResult = _compiler.Compile(graph.Expressions);
-                    // quick solution for the fact that an excelrange can be returned.
-                    IRangeInfo? rangeInfo = compileResult.Result as IRangeInfo;
-                    if (rangeInfo == null)
+                    if (rangeInfo.IsEmpty)
                     {
-                        return compileResult.Result ?? 0d;
+                        return 0d;
                     }
-                    else
+                    if (!rangeInfo.IsMulti)
                     {
-                        if (rangeInfo.IsEmpty)
-                        {
-                            return 0d;
-                        }
-                        if (!rangeInfo.IsMulti)
-                        {
-                            return rangeInfo.First().Value ?? 0d;
-                        }
-                        // ok to return multicell if it is a workbook scoped name.
-                        if (string.IsNullOrEmpty(worksheet))
-                        {
-                            return rangeInfo;
-                        }
-                        if (_parsingContext.Debug)
-                        {
-                            string? msg = string.Format("A range with multiple cell was returned at row {0}, column {1}",
-                                                        row, column);
-                            _parsingContext.Configuration.Logger.Log(_parsingContext, msg);
-                        }
-                        return ExcelErrorValue.Create(eErrorType.Value);
+                        return rangeInfo.First().Value ?? 0d;
                     }
-                }
-                catch(ExcelErrorValueException ex)
-                {
+                    // ok to return multicell if it is a workbook scoped name.
+                    if (string.IsNullOrEmpty(worksheet))
+                    {
+                        return rangeInfo;
+                    }
                     if (_parsingContext.Debug)
                     {
-                        _parsingContext.Configuration.Logger.Log(_parsingContext, ex);
+                        string? msg = string.Format("A range with multiple cell was returned at row {0}, column {1}",
+                                                    row, column);
+                        _parsingContext.Configuration.Logger.Log(_parsingContext, msg);
                     }
-                    return ex.ErrorValue;
+                    return ExcelErrorValue.Create(eErrorType.Value);
                 }
+            }
+            catch (ExcelErrorValueException ex)
+            {
+                if (_parsingContext.Debug)
+                {
+                    _parsingContext.Configuration.Logger.Log(_parsingContext, ex);
+                }
+                return ex.ErrorValue;
             }
         }
 

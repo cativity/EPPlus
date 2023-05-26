@@ -104,59 +104,53 @@ namespace EPPlusTest
         [TestMethod]
         public void SettingAddressHandlesMultiAddresses()
         {
-            using (ExcelPackage package = new ExcelPackage())
-            {
-                ExcelWorksheet? worksheet = package.Workbook.Worksheets.Add("Sheet1");
-                ExcelNamedRange? name = package.Workbook.Names.Add("Test", worksheet.Cells[3, 3]);
-                name.Address = "Sheet1!C3";
-                name.Address = "Sheet1!D3";
-                Assert.IsNull(name.Addresses);
-                name.Address = "C3:D3,E3:F3";
-                Assert.IsNotNull(name.Addresses);
-                name.Address = "Sheet1!C3";
-                Assert.IsNull(name.Addresses);
-            }
+            using ExcelPackage package = new ExcelPackage();
+            ExcelWorksheet? worksheet = package.Workbook.Worksheets.Add("Sheet1");
+            ExcelNamedRange? name = package.Workbook.Names.Add("Test", worksheet.Cells[3, 3]);
+            name.Address = "Sheet1!C3";
+            name.Address = "Sheet1!D3";
+            Assert.IsNull(name.Addresses);
+            name.Address = "C3:D3,E3:F3";
+            Assert.IsNotNull(name.Addresses);
+            name.Address = "Sheet1!C3";
+            Assert.IsNull(name.Addresses);
         }
 
         [TestMethod]
         public void ClearFormulasTest()
         {
-            using (ExcelPackage package = new ExcelPackage())
-            {
-                ExcelWorksheet? worksheet = package.Workbook.Worksheets.Add("Sheet1");
-                worksheet.Cells["A1"].Value = 1;
-                worksheet.Cells["A2"].Value = 2;
-                worksheet.Cells["A3"].Formula = "SUM(A1:A2)";
-                worksheet.Cells["A4"].Formula = "SUM(A1:A2)";
-                worksheet.Calculate();
-                Assert.AreEqual(3d, worksheet.Cells["A3"].Value);
-                Assert.AreEqual(3d, worksheet.Cells["A4"].Value);
-                Assert.AreEqual("SUM(A1:A2)", worksheet.Cells["A3"].Formula);
-                Assert.AreEqual("SUM(A1:A2)", worksheet.Cells["A4"].Formula);
-                worksheet.Cells["A3"].ClearFormulas();
-                Assert.AreEqual(3d, worksheet.Cells["A3"].Value);
-                Assert.AreEqual(string.Empty, worksheet.Cells["A3"].Formula);
-                Assert.AreEqual("SUM(A1:A2)", worksheet.Cells["A4"].Formula);
-            }
+            using ExcelPackage package = new ExcelPackage();
+            ExcelWorksheet? worksheet = package.Workbook.Worksheets.Add("Sheet1");
+            worksheet.Cells["A1"].Value = 1;
+            worksheet.Cells["A2"].Value = 2;
+            worksheet.Cells["A3"].Formula = "SUM(A1:A2)";
+            worksheet.Cells["A4"].Formula = "SUM(A1:A2)";
+            worksheet.Calculate();
+            Assert.AreEqual(3d, worksheet.Cells["A3"].Value);
+            Assert.AreEqual(3d, worksheet.Cells["A4"].Value);
+            Assert.AreEqual("SUM(A1:A2)", worksheet.Cells["A3"].Formula);
+            Assert.AreEqual("SUM(A1:A2)", worksheet.Cells["A4"].Formula);
+            worksheet.Cells["A3"].ClearFormulas();
+            Assert.AreEqual(3d, worksheet.Cells["A3"].Value);
+            Assert.AreEqual(string.Empty, worksheet.Cells["A3"].Formula);
+            Assert.AreEqual("SUM(A1:A2)", worksheet.Cells["A4"].Formula);
         }
 
         [TestMethod]
         public void ClearFormulaValuesTest()
         {
-            using (ExcelPackage package = new ExcelPackage())
-            {
-                ExcelWorksheet? worksheet = package.Workbook.Worksheets.Add("Sheet1");
-                worksheet.Cells["A1"].Value = 1;
-                worksheet.Cells["A2"].Value = 2;
-                worksheet.Cells["A3"].Formula = "SUM(A1:A2)";
-                worksheet.Cells["A4"].Formula = "SUM(A1:A2)";
-                worksheet.Calculate();
-                Assert.AreEqual(3d, worksheet.Cells["A3"].Value);
-                Assert.AreEqual(3d, worksheet.Cells["A4"].Value);
-                worksheet.Cells["A3"].ClearFormulaValues();
-                Assert.IsNull(worksheet.Cells["A3"].Value);
-                Assert.AreEqual(3d, worksheet.Cells["A4"].Value);
-            }
+            using ExcelPackage package = new ExcelPackage();
+            ExcelWorksheet? worksheet = package.Workbook.Worksheets.Add("Sheet1");
+            worksheet.Cells["A1"].Value = 1;
+            worksheet.Cells["A2"].Value = 2;
+            worksheet.Cells["A3"].Formula = "SUM(A1:A2)";
+            worksheet.Cells["A4"].Formula = "SUM(A1:A2)";
+            worksheet.Calculate();
+            Assert.AreEqual(3d, worksheet.Cells["A3"].Value);
+            Assert.AreEqual(3d, worksheet.Cells["A4"].Value);
+            worksheet.Cells["A3"].ClearFormulaValues();
+            Assert.IsNull(worksheet.Cells["A3"].Value);
+            Assert.AreEqual(3d, worksheet.Cells["A4"].Value);
         }
     }
 }

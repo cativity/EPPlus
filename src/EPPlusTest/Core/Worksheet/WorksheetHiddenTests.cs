@@ -37,64 +37,56 @@ namespace EPPlusTest.Core
         [TestMethod]
         public void HideTest_0Based()
         {
-            using (ExcelPackage? pck = new ExcelPackage())
-            {
-                pck.Compatibility.IsWorksheets1Based = false;
-                ExcelWorksheet? ws = pck.Workbook.Worksheets.Add("Hidden");
-                pck.Workbook.Worksheets.Add("Visible");
-                ws.Cells["A1"].Value = "This workbook is hidden";
-                ws.Hidden = eWorkSheetHidden.Hidden;
-                Assert.AreEqual(eWorkSheetHidden.Hidden, ws.Hidden);
-                Assert.AreEqual(1, pck.Workbook.View.ActiveTab);
-                SaveWorkbook("HiddenSecondWorbook.xlsx", pck);
-            }
+            using ExcelPackage? pck = new ExcelPackage();
+            pck.Compatibility.IsWorksheets1Based = false;
+            ExcelWorksheet? ws = pck.Workbook.Worksheets.Add("Hidden");
+            pck.Workbook.Worksheets.Add("Visible");
+            ws.Cells["A1"].Value = "This workbook is hidden";
+            ws.Hidden = eWorkSheetHidden.Hidden;
+            Assert.AreEqual(eWorkSheetHidden.Hidden, ws.Hidden);
+            Assert.AreEqual(1, pck.Workbook.View.ActiveTab);
+            SaveWorkbook("HiddenSecondWorbook.xlsx", pck);
         }
 
         [TestMethod]
         public void VeryHideTest_0Based()
         {
-            using (ExcelPackage? pck = new ExcelPackage())
-            {
-                pck.Compatibility.IsWorksheets1Based = false;
-                ExcelWorksheet? ws = pck.Workbook.Worksheets.Add("VeryHidden");
-                pck.Workbook.Worksheets.Add("Visible");
-                ws.Cells["A1"].Value = "This worksheet is veryhidden";
-                ws.Hidden = eWorkSheetHidden.VeryHidden;
-                Assert.AreEqual(eWorkSheetHidden.VeryHidden, ws.Hidden);
-                Assert.AreEqual(1, pck.Workbook.View.ActiveTab);
-                SaveWorkbook("VeryHiddenSecondWorbook.xlsx", pck);
-            }
+            using ExcelPackage? pck = new ExcelPackage();
+            pck.Compatibility.IsWorksheets1Based = false;
+            ExcelWorksheet? ws = pck.Workbook.Worksheets.Add("VeryHidden");
+            pck.Workbook.Worksheets.Add("Visible");
+            ws.Cells["A1"].Value = "This worksheet is veryhidden";
+            ws.Hidden = eWorkSheetHidden.VeryHidden;
+            Assert.AreEqual(eWorkSheetHidden.VeryHidden, ws.Hidden);
+            Assert.AreEqual(1, pck.Workbook.View.ActiveTab);
+            SaveWorkbook("VeryHiddenSecondWorbook.xlsx", pck);
         }
         [TestMethod]
         public void HideTest_1Based()
         {
-            using (ExcelPackage? pck = new ExcelPackage())
-            {
-                pck.Compatibility.IsWorksheets1Based = true;
-                ExcelWorksheet? ws = pck.Workbook.Worksheets.Add("Hidden");
-                pck.Workbook.Worksheets.Add("Visible");
-                ws.Cells["A1"].Value = "This workbook is hidden";
-                ws.Hidden = eWorkSheetHidden.Hidden;
-                Assert.AreEqual(eWorkSheetHidden.Hidden, ws.Hidden);
-                Assert.AreEqual(1, pck.Workbook.View.ActiveTab);
-                SaveWorkbook("HiddenSecondWorbook.xlsx", pck);
-            }
+            using ExcelPackage? pck = new ExcelPackage();
+            pck.Compatibility.IsWorksheets1Based = true;
+            ExcelWorksheet? ws = pck.Workbook.Worksheets.Add("Hidden");
+            pck.Workbook.Worksheets.Add("Visible");
+            ws.Cells["A1"].Value = "This workbook is hidden";
+            ws.Hidden = eWorkSheetHidden.Hidden;
+            Assert.AreEqual(eWorkSheetHidden.Hidden, ws.Hidden);
+            Assert.AreEqual(1, pck.Workbook.View.ActiveTab);
+            SaveWorkbook("HiddenSecondWorbook.xlsx", pck);
         }
 
         [TestMethod]
         public void VeryHideTest_1Based()
         {
-            using (ExcelPackage? pck = new ExcelPackage())
-            {
-                pck.Compatibility.IsWorksheets1Based = true;
-                ExcelWorksheet? ws = pck.Workbook.Worksheets.Add("VeryHidden");
-                pck.Workbook.Worksheets.Add("Visible");
-                ws.Cells["A1"].Value = "This worksheet is veryhidden";
-                ws.Hidden = eWorkSheetHidden.VeryHidden;
-                Assert.AreEqual(eWorkSheetHidden.VeryHidden, ws.Hidden);
-                Assert.AreEqual(1, pck.Workbook.View.ActiveTab);
-                SaveWorkbook("VeryHiddenSecondWorbook.xlsx", pck);
-            }
+            using ExcelPackage? pck = new ExcelPackage();
+            pck.Compatibility.IsWorksheets1Based = true;
+            ExcelWorksheet? ws = pck.Workbook.Worksheets.Add("VeryHidden");
+            pck.Workbook.Worksheets.Add("Visible");
+            ws.Cells["A1"].Value = "This worksheet is veryhidden";
+            ws.Hidden = eWorkSheetHidden.VeryHidden;
+            Assert.AreEqual(eWorkSheetHidden.VeryHidden, ws.Hidden);
+            Assert.AreEqual(1, pck.Workbook.View.ActiveTab);
+            SaveWorkbook("VeryHiddenSecondWorbook.xlsx", pck);
         }
     }
 }

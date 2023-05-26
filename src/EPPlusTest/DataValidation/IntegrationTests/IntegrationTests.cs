@@ -220,24 +220,20 @@ namespace EPPlusTest.DataValidation.IntegrationTests
         [TestMethod]
         public void RemoveDataValidation()
         {
-            using (ExcelPackage? p1 = new ExcelPackage())
-            {
-                ExcelWorksheet? sheet = p1.Workbook.Worksheets.Add("test");
-                IExcelDataValidationInt? validation = sheet.DataValidations.AddIntegerValidation("A1");
-                validation.Formula.Value = 1;
-                validation.Formula2.Value = 2;
-                validation.ShowErrorMessage = true;
-                validation.Error = "Error!";
+            using ExcelPackage? p1 = new ExcelPackage();
+            ExcelWorksheet? sheet = p1.Workbook.Worksheets.Add("test");
+            IExcelDataValidationInt? validation = sheet.DataValidations.AddIntegerValidation("A1");
+            validation.Formula.Value = 1;
+            validation.Formula2.Value = 2;
+            validation.ShowErrorMessage = true;
+            validation.Error = "Error!";
 
-                p1.Save();
-                using (ExcelPackage? p2 = new ExcelPackage(p1.Stream))
-                {
-                    sheet = p2.Workbook.Worksheets.First();
-                    IExcelDataValidation? dv = sheet.DataValidations.First();
-                    sheet.DataValidations.Remove(dv);
-                    SaveWorkbook("RemoveDataValidation.xlsx", p2);
-                }
-            }
+            p1.Save();
+            using ExcelPackage? p2 = new ExcelPackage(p1.Stream);
+            sheet = p2.Workbook.Worksheets.First();
+            IExcelDataValidation? dv = sheet.DataValidations.First();
+            sheet.DataValidations.Remove(dv);
+            SaveWorkbook("RemoveDataValidation.xlsx", p2);
         }
     }
 }

@@ -105,10 +105,8 @@ namespace OfficeOpenXml.Drawing.Theme
                 throw (new FileNotFoundException($"{thmxFile.FullName} does not exist"));
             }
 
-            using (MemoryStream? ms = RecyclableMemory.GetStream(File.ReadAllBytes(thmxFile.FullName)))
-            {
-                Load(ms);
-            }
+            using MemoryStream? ms = RecyclableMemory.GetStream(File.ReadAllBytes(thmxFile.FullName));
+            Load(ms);
         }
         /// <summary>
         /// Loads a theme XmlDocument. 

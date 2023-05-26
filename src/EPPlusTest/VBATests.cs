@@ -132,13 +132,11 @@ namespace EPPlusTest
         [TestMethod]
         public void VbaBug()
         {
-            using (ExcelPackage? package = new ExcelPackage(new FileInfo(@"c:\temp\bug\outfile.xlsm")))
-            {
-                Console.WriteLine(package.Workbook.CodeModule.Code.Length);
-                package.Workbook.Worksheets[1].CodeModule.Code = "Private Sub Worksheet_SelectionChange(ByVal Target As Range)\r\n\r\nEnd Sub";
-                package.Workbook.Worksheets.Add("TestCopy", package.Workbook.Worksheets[1]);
-                package.SaveAs(new FileInfo(@"c:\temp\bug\outfile2.xlsm"));
-            }
+            using ExcelPackage? package = new ExcelPackage(new FileInfo(@"c:\temp\bug\outfile.xlsm"));
+            Console.WriteLine(package.Workbook.CodeModule.Code.Length);
+            package.Workbook.Worksheets[1].CodeModule.Code = "Private Sub Worksheet_SelectionChange(ByVal Target As Range)\r\n\r\nEnd Sub";
+            package.Workbook.Worksheets.Add("TestCopy", package.Workbook.Worksheets[1]);
+            package.SaveAs(new FileInfo(@"c:\temp\bug\outfile2.xlsm"));
         }
         [TestMethod]
         public void DecompressionChunkGreaterThan4k()
@@ -156,75 +154,67 @@ namespace EPPlusTest
             FileInfo? f = new FileInfo(path);
             if (f.Exists)
             {
-                using (ExcelPackage? package = new ExcelPackage(f))
-                {
-                    // Reading the Workbook.CodeModule.Code will cause an IndexOutOfRange if the problem hasn't been fixed.
-                    Assert.IsTrue(package.Workbook.CodeModule.Code.Length > 0);
-                }
+                using ExcelPackage? package = new ExcelPackage(f);
+                // Reading the Workbook.CodeModule.Code will cause an IndexOutOfRange if the problem hasn't been fixed.
+                Assert.IsTrue(package.Workbook.CodeModule.Code.Length > 0);
             }
         }
         [TestMethod, Ignore]
         public void ReadNewVBA()
         {
-            using (ExcelPackage? package = new ExcelPackage(new FileInfo(@"c:\temp\bug\makro.xlsm")))
-            {
-                Console.WriteLine(package.Workbook.VbaProject.Modules[0].Name);
-                
-                package.SaveAs(new FileInfo(@"c:\temp\bug\makroepp.xlsm"));
-            }
+            using ExcelPackage? package = new ExcelPackage(new FileInfo(@"c:\temp\bug\makro.xlsm"));
+            Console.WriteLine(package.Workbook.VbaProject.Modules[0].Name);
+
+            package.SaveAs(new FileInfo(@"c:\temp\bug\makroepp.xlsm"));
         }
         [TestMethod, Ignore]
         public void VBASigning()
         {
-            using (ExcelPackage? p = OpenPackage("vbaSign.xlsm", true))
-            {
-                p.Workbook.CreateVBAProject();
-                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Test");
-                ws.Drawings.AddShape("Drawing1", eShapeStyle.Rect);
+            using ExcelPackage? p = OpenPackage("vbaSign.xlsm", true);
+            p.Workbook.CreateVBAProject();
+            ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Test");
+            ws.Drawings.AddShape("Drawing1", eShapeStyle.Rect);
 
-                //Now add some code to update the text of the shape...
-                StringBuilder? sb = new StringBuilder();
+            //Now add some code to update the text of the shape...
+            StringBuilder? sb = new StringBuilder();
 
-                sb.AppendLine("Private Sub Workbook_Open()");
-                sb.AppendLine("    [Test].Shapes(\"Drawing1\").TextEffect.Text = \"This text is set from VBA!\"");
-                sb.AppendLine("End Sub");
-                p.Workbook.CodeModule.Code = sb.ToString();
+            sb.AppendLine("Private Sub Workbook_Open()");
+            sb.AppendLine("    [Test].Shapes(\"Drawing1\").TextEffect.Text = \"This text is set from VBA!\"");
+            sb.AppendLine("End Sub");
+            p.Workbook.CodeModule.Code = sb.ToString();
 
-                //Optionally, Sign the code with your company certificate.
-                X509Store store = new X509Store(StoreName.My, StoreLocation.CurrentUser);
-                store.Open(OpenFlags.ReadOnly);
-                p.Workbook.VbaProject.Signature.Certificate = store.Certificates[4];
+            //Optionally, Sign the code with your company certificate.
+            X509Store store = new X509Store(StoreName.My, StoreLocation.CurrentUser);
+            store.Open(OpenFlags.ReadOnly);
+            p.Workbook.VbaProject.Signature.Certificate = store.Certificates[4];
 
-                SaveAndCleanup(p);
-            }
+            SaveAndCleanup(p);
         }
         [TestMethod, Ignore]
         public void VBASigningFromFile()
         {
-            using (ExcelPackage? p = OpenPackage("vbaSignFile.xlsm", true))
-            {
-                p.Workbook.CreateVBAProject();
-                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Test");
-                ws.Drawings.AddShape("Drawing1", eShapeStyle.Rect);
+            using ExcelPackage? p = OpenPackage("vbaSignFile.xlsm", true);
+            p.Workbook.CreateVBAProject();
+            ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Test");
+            ws.Drawings.AddShape("Drawing1", eShapeStyle.Rect);
 
-                //Now add some code to update the text of the shape...
-                StringBuilder? sb = new StringBuilder();
+            //Now add some code to update the text of the shape...
+            StringBuilder? sb = new StringBuilder();
 
-                sb.AppendLine("Private Sub Workbook_Open()");
-                sb.AppendLine("    [Test].Shapes(\"Drawing1\").TextEffect.Text = \"This text is set from VBA!\"");
-                sb.AppendLine("End Sub");
-                p.Workbook.CodeModule.Code = sb.ToString();
+            sb.AppendLine("Private Sub Workbook_Open()");
+            sb.AppendLine("    [Test].Shapes(\"Drawing1\").TextEffect.Text = \"This text is set from VBA!\"");
+            sb.AppendLine("End Sub");
+            p.Workbook.CodeModule.Code = sb.ToString();
 
-                //Optionally, Sign the code with your company certificate.
+            //Optionally, Sign the code with your company certificate.
 
-                // Create a collection object and populate it using the PFX file
-                X509Certificate2Collection collection = new X509Certificate2Collection();
-                collection.Import("c:\\temp\\codecert.pfx", "EPPlus", X509KeyStorageFlags.PersistKeySet);
+            // Create a collection object and populate it using the PFX file
+            X509Certificate2Collection collection = new X509Certificate2Collection();
+            collection.Import("c:\\temp\\codecert.pfx", "EPPlus", X509KeyStorageFlags.PersistKeySet);
 
-                p.Workbook.VbaProject.Signature.Certificate = collection[0];
-                
-                SaveAndCleanup(p);
-            }
+            p.Workbook.VbaProject.Signature.Certificate = collection[0];
+
+            SaveAndCleanup(p);
         }
     }
 }

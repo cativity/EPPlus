@@ -35,60 +35,58 @@ namespace EPPlusTest.Core.Worksheet
         [DataRow("Tw Cen MT Condensed")]
         public void AutofitWithSerializedFonts(string fontFamily)
         {
-            using (ExcelPackage? package = new ExcelPackage())
+            using ExcelPackage? package = new ExcelPackage();
+            for (FontSubFamilies style = FontSubFamilies.Regular; style <= FontSubFamilies.BoldItalic; style++)
             {
-                for(FontSubFamilies style = FontSubFamilies.Regular; style <= FontSubFamilies.BoldItalic; style++)
+                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add(style.ToString());
+                ExcelRange? range = sheet.Cells[1, 1, 5, 10];
+                range.Style.Font.Name = fontFamily;
+                range.Style.Font.Size = 9f;
+                range.Style.Font.Italic = (style == FontSubFamilies.Italic || style == FontSubFamilies.BoldItalic);
+                range.Style.Font.Bold = (style == FontSubFamilies.Bold || style == FontSubFamilies.BoldItalic);
+                Random? rnd = new Random();
+                for (int col = 1; col < 10; col++)
                 {
-                    ExcelWorksheet? sheet = package.Workbook.Worksheets.Add(style.ToString());
-                    ExcelRange? range = sheet.Cells[1, 1, 5, 10];
-                    range.Style.Font.Name = fontFamily;
-                    range.Style.Font.Size = 9f;
-                    range.Style.Font.Italic = (style == FontSubFamilies.Italic || style == FontSubFamilies.BoldItalic);
-                    range.Style.Font.Bold = (style == FontSubFamilies.Bold || style == FontSubFamilies.BoldItalic);
-                    Random? rnd = new Random();
-                    for (int col = 1; col < 10; col++)
+                    for (int row = 1; row < 5; row++)
                     {
-                        for (int row = 1; row < 5; row++)
+                        StringBuilder? sb = new StringBuilder();
+                        int maxLength = 40 - (col * 2);
+                        int nLetters = rnd.Next(4, maxLength);
+                        for (int x = 0; x < nLetters; x++)
                         {
-                            StringBuilder? sb = new StringBuilder();
-                            int maxLength = 40 - (col * 2);
-                            int nLetters = rnd.Next(4, maxLength);
-                            for (int x = 0; x < nLetters; x++)
+                            int n = 65;
+                            if (x % 2 == 0)
                             {
-                                int n = 65;
-                                if (x % 2 == 0)
-                                {
-                                    n = rnd.Next(65, 90);
-                                }
-                                else if(x % 5 == 0)
-                                {
-                                    int[]? charArr = new int[] { (int)'.', (int)',', (int)'!', (int)'-' };
-                                    int cix = rnd.Next(0, charArr.Length - 1);
-                                    n = charArr[cix];
-                                }
-                                else if(x % 7 == 0)
-                                {
-                                    n = (int)' ';
-                                }
-                                else
-                                {
-                                    n = rnd.Next(97, 122);
-                                }
-
-                                sb.Append((char)n);
+                                n = rnd.Next(65, 90);
                             }
-                            sheet.Cells[row, col].Value = sb.ToString();
-                        }
-                    }
-                    Stopwatch? sw = new Stopwatch();
-                    sw.Start();
-                    sheet.Columns[1, 9].AutoFit();
-                    sw.Stop();
-                    long ms = sw.ElapsedMilliseconds;
-                }
+                            else if (x % 5 == 0)
+                            {
+                                int[]? charArr = new int[] { (int)'.', (int)',', (int)'!', (int)'-' };
+                                int cix = rnd.Next(0, charArr.Length - 1);
+                                n = charArr[cix];
+                            }
+                            else if (x % 7 == 0)
+                            {
+                                n = (int)' ';
+                            }
+                            else
+                            {
+                                n = rnd.Next(97, 122);
+                            }
 
-                SaveWorkbook($"Autofit_SerializedFont_{fontFamily.Replace(" ", string.Empty)}.xlsx", package);
+                            sb.Append((char)n);
+                        }
+                        sheet.Cells[row, col].Value = sb.ToString();
+                    }
+                }
+                Stopwatch? sw = new Stopwatch();
+                sw.Start();
+                sheet.Columns[1, 9].AutoFit();
+                sw.Stop();
+                long ms = sw.ElapsedMilliseconds;
             }
+
+            SaveWorkbook($"Autofit_SerializedFont_{fontFamily.Replace(" ", string.Empty)}.xlsx", package);
         }
 
         [DataTestMethod, Ignore]
@@ -160,49 +158,47 @@ namespace EPPlusTest.Core.Worksheet
                 reallyLongList,
                 reallyReallyLongList
             };
-            using (ExcelPackage? package = new ExcelPackage())
+            using ExcelPackage? package = new ExcelPackage();
+            package.Settings.TextSettings.PrimaryTextMeasurer = new GenericFontMetricsTextMeasurer();
+            bool newFont = true;
+            for (FontSubFamilies style = FontSubFamilies.Regular; style <= FontSubFamilies.BoldItalic; style++)
             {
-                package.Settings.TextSettings.PrimaryTextMeasurer = new GenericFontMetricsTextMeasurer();
-                bool newFont = true;
-                for (FontSubFamilies style = FontSubFamilies.Regular; style <= FontSubFamilies.BoldItalic; style++)
+                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add(style.ToString());
+                ExcelRange? range = sheet.Cells[1, 1, 5, 10];
+                range.Style.Font.Name = fontFamily;
+                range.Style.Font.Size = 9f;
+                range.Style.Font.Italic = (style == FontSubFamilies.Italic || style == FontSubFamilies.BoldItalic);
+                range.Style.Font.Bold = (style == FontSubFamilies.Bold || style == FontSubFamilies.BoldItalic);
+                Random? rnd = new Random();
+                for (int col = 1; col < lists.Count + 1; col++)
                 {
-                    ExcelWorksheet? sheet = package.Workbook.Worksheets.Add(style.ToString());
-                    ExcelRange? range = sheet.Cells[1, 1, 5, 10];
-                    range.Style.Font.Name = fontFamily;
-                    range.Style.Font.Size = 9f;
-                    range.Style.Font.Italic = (style == FontSubFamilies.Italic || style == FontSubFamilies.BoldItalic);
-                    range.Style.Font.Bold = (style == FontSubFamilies.Bold || style == FontSubFamilies.BoldItalic);
-                    Random? rnd = new Random();
-                    for (int col = 1; col < lists.Count + 1; col++)
+                    for (int row = 1; row < 4; row++)
                     {
-                        for (int row = 1; row < 4; row++)
-                        {
-                            string? s = lists[col - 1][row - 1];
-                            sheet.Cells[row, col].Value = s;
-                        }
+                        string? s = lists[col - 1][row - 1];
+                        sheet.Cells[row, col].Value = s;
                     }
-                    Stopwatch? sw = new Stopwatch();
-                    sw.Start();
-                    sheet.Columns[1, 9].AutoFit();
-                    if(newFont)
-                    {
-                        reportSheet.Cells[reportRow, 1].Value = range.Style.Font.Name;
-                        newFont = false;
-                    }
-                    reportSheet.Cells[reportRow, 2].Value = style.ToString();
-                    for (int col = 1; col < lists.Count + 1; col++)
-                    {
-                        reportSheet.Cells[reportRow, col + reportColOffset].Value = sheet.Columns[col].Width;
-                    }
-                    reportRow++;
-                    sw.Stop();
-                    long ms = sw.ElapsedMilliseconds;
                 }
-
-                SaveWorkbook($"Autofit_SerializedFont_{fontFamily.Replace(" ", string.Empty)}.xlsx", package);
-                report.Save();
-                report.Dispose();
+                Stopwatch? sw = new Stopwatch();
+                sw.Start();
+                sheet.Columns[1, 9].AutoFit();
+                if (newFont)
+                {
+                    reportSheet.Cells[reportRow, 1].Value = range.Style.Font.Name;
+                    newFont = false;
+                }
+                reportSheet.Cells[reportRow, 2].Value = style.ToString();
+                for (int col = 1; col < lists.Count + 1; col++)
+                {
+                    reportSheet.Cells[reportRow, col + reportColOffset].Value = sheet.Columns[col].Width;
+                }
+                reportRow++;
+                sw.Stop();
+                long ms = sw.ElapsedMilliseconds;
             }
+
+            SaveWorkbook($"Autofit_SerializedFont_{fontFamily.Replace(" ", string.Empty)}.xlsx", package);
+            report.Save();
+            report.Dispose();
         }
 
         [DataTestMethod, Ignore]
@@ -267,66 +263,62 @@ namespace EPPlusTest.Core.Worksheet
                 reallyLongList,
                 reallyReallyLongList
             };
-            using (ExcelPackage? package = new ExcelPackage())
+            using ExcelPackage? package = new ExcelPackage();
+            package.Settings.TextSettings.PrimaryTextMeasurer = new GenericFontMetricsTextMeasurer();
+            bool newFont = true;
+            for (FontSubFamilies style = FontSubFamilies.Regular; style <= FontSubFamilies.BoldItalic; style++)
             {
-                package.Settings.TextSettings.PrimaryTextMeasurer = new GenericFontMetricsTextMeasurer();
-                bool newFont = true;
-                for (FontSubFamilies style = FontSubFamilies.Regular; style <= FontSubFamilies.BoldItalic; style++)
+                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add(style.ToString());
+                ExcelRange? range = sheet.Cells[1, 1, 5, 10];
+                range.Style.Font.Name = fontFamily;
+                range.Style.Font.Size = 24f;
+                range.Style.Font.Italic = (style == FontSubFamilies.Italic || style == FontSubFamilies.BoldItalic);
+                range.Style.Font.Bold = (style == FontSubFamilies.Bold || style == FontSubFamilies.BoldItalic);
+                Random? rnd = new Random();
+                for (int col = 1; col < lists.Count + 1; col++)
                 {
-                    ExcelWorksheet? sheet = package.Workbook.Worksheets.Add(style.ToString());
-                    ExcelRange? range = sheet.Cells[1, 1, 5, 10];
-                    range.Style.Font.Name = fontFamily;
-                    range.Style.Font.Size = 24f;
-                    range.Style.Font.Italic = (style == FontSubFamilies.Italic || style == FontSubFamilies.BoldItalic);
-                    range.Style.Font.Bold = (style == FontSubFamilies.Bold || style == FontSubFamilies.BoldItalic);
-                    Random? rnd = new Random();
-                    for (int col = 1; col < lists.Count + 1; col++)
+                    for (int row = 1; row < 4; row++)
                     {
-                        for (int row = 1; row < 4; row++)
-                        {
-                            string? s = lists[col - 1][row - 1];
-                            sheet.Cells[row, col].Value = s;
-                        }
+                        string? s = lists[col - 1][row - 1];
+                        sheet.Cells[row, col].Value = s;
                     }
-                    Stopwatch? sw = new Stopwatch();
-                    sw.Start();
-                    sheet.Columns[1, 9].AutoFit();
-                    if (newFont)
-                    {
-                        reportSheet.Cells[reportRow, 1].Value = range.Style.Font.Name;
-                        newFont = false;
-                    }
-                    reportSheet.Cells[reportRow, 2].Value = style.ToString();
-                    for (int col = 1; col < lists.Count + 1; col++)
-                    {
-                        reportSheet.Cells[reportRow, col + reportColOffset].Value = sheet.Columns[col].Width;
-                    }
-                    reportRow++;
-                    sw.Stop();
-                    long ms = sw.ElapsedMilliseconds;
                 }
-
-                SaveWorkbook($"JP_Autofit_SerializedFont_{fontFamily.Replace(" ", string.Empty)}.xlsx", package);
-                report.Save();
-                report.Dispose();
+                Stopwatch? sw = new Stopwatch();
+                sw.Start();
+                sheet.Columns[1, 9].AutoFit();
+                if (newFont)
+                {
+                    reportSheet.Cells[reportRow, 1].Value = range.Style.Font.Name;
+                    newFont = false;
+                }
+                reportSheet.Cells[reportRow, 2].Value = style.ToString();
+                for (int col = 1; col < lists.Count + 1; col++)
+                {
+                    reportSheet.Cells[reportRow, col + reportColOffset].Value = sheet.Columns[col].Width;
+                }
+                reportRow++;
+                sw.Stop();
+                long ms = sw.ElapsedMilliseconds;
             }
+
+            SaveWorkbook($"JP_Autofit_SerializedFont_{fontFamily.Replace(" ", string.Empty)}.xlsx", package);
+            report.Save();
+            report.Dispose();
         }
         [TestMethod]
         public void LoadFontSizeFromResource()
         {
-            using (ExcelPackage? p = new ExcelPackage())
+            using ExcelPackage? p = new ExcelPackage();
+            int expectedLoaded = 895;
+            if (FontSize._isLoaded == false)
             {
-                int expectedLoaded = 895;
-                if (FontSize._isLoaded == false)
-                {
-                    int expectedDefault = 23;
-                    Assert.AreEqual(expectedDefault, FontSize.FontHeights.Count);
-                    Assert.AreEqual(expectedDefault, FontSize.FontWidths.Count);
-                }
-                FontSize.LoadAllFontsFromResource();
-                Assert.AreEqual(expectedLoaded, FontSize.FontHeights.Count);
-                Assert.AreEqual(expectedLoaded, FontSize.FontWidths.Count);
+                int expectedDefault = 23;
+                Assert.AreEqual(expectedDefault, FontSize.FontHeights.Count);
+                Assert.AreEqual(expectedDefault, FontSize.FontWidths.Count);
             }
+            FontSize.LoadAllFontsFromResource();
+            Assert.AreEqual(expectedLoaded, FontSize.FontHeights.Count);
+            Assert.AreEqual(expectedLoaded, FontSize.FontWidths.Count);
         }
 
         [DataTestMethod, Ignore]
@@ -335,52 +327,50 @@ namespace EPPlusTest.Core.Worksheet
         [DataRow("Times New Roman")]
         public void MeasureSpecificFont(string font)
         {
-            using (ExcelPackage? package = new ExcelPackage())
+            using ExcelPackage? package = new ExcelPackage();
+            package.Settings.TextSettings.PrimaryTextMeasurer = new GenericFontMetricsTextMeasurer();
+            ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("text");
+            ExcelWorksheet? sheet2 = package.Workbook.Worksheets.Add("measures");
+            ExcelWorksheet? sheet3 = package.Workbook.Worksheets.Add("numbers");
+            sheet.Cells["A1:A50"].Style.Font.Name = font;
+            sheet.Cells["A1:A50"].Style.Font.Italic = true;
+            string? chars = "aabcdeefghijklmnopqrrssttuvxyzåäö   AABCDEEFGHIJKLMNOPQRSSTTUVXYZÅÄÖ      !!,,,,,,,,, 112233445566778899.....";
+            string? numbers = "11122233344455566677788899900000000........,,,,,,,       ";
+            Random? rnd = new Random();
+            for (int x = 0; x < 60; x++)
             {
-                package.Settings.TextSettings.PrimaryTextMeasurer = new GenericFontMetricsTextMeasurer();
-                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("text");
-                ExcelWorksheet? sheet2 = package.Workbook.Worksheets.Add("measures");
-                ExcelWorksheet? sheet3 = package.Workbook.Worksheets.Add("numbers");
-                sheet.Cells["A1:A50"].Style.Font.Name = font;
-                sheet.Cells["A1:A50"].Style.Font.Italic = true;
-                string? chars = "aabcdeefghijklmnopqrrssttuvxyzåäö   AABCDEEFGHIJKLMNOPQRSSTTUVXYZÅÄÖ      !!,,,,,,,,, 112233445566778899.....";
-                string? numbers = "11122233344455566677788899900000000........,,,,,,,       ";
-                Random? rnd = new Random();
-                for (int x = 0; x < 60; x++)
+                StringBuilder? text = new StringBuilder();
+                for (int i = 0; i < x; i++)
                 {
-                    StringBuilder? text = new StringBuilder();
-                    for (int i = 0; i < x; i++)
-                    {
-                        int ix = rnd.Next(0, chars.Length);
-                        text.Append(chars[ix]);
-                    }
-                    sheet.Cells[1, x + 1].Value = text.ToString();
-                    sheet.Columns[x + 1].AutoFit();
-                    sheet2.Cells[1, x + 1].Value = sheet.Columns[x + 1].Width;
-
-                    StringBuilder? number = new StringBuilder();
-                    for (int i = 0; i < x; i++)
-                    {
-                        int ix = rnd.Next(0, numbers.Length);
-                        number.Append(numbers[ix]);
-                    }
-                    sheet3.Cells[1, x + 1].Value = number.ToString();
-                    sheet3.Columns[x + 1].AutoFit();
-                    sheet2.Cells[2, x + 2].Value = sheet3.Columns[x + 1].Width;
+                    int ix = rnd.Next(0, chars.Length);
+                    text.Append(chars[ix]);
                 }
-                if (!Directory.Exists(@"c:\Temp\FontTests"))
+                sheet.Cells[1, x + 1].Value = text.ToString();
+                sheet.Columns[x + 1].AutoFit();
+                sheet2.Cells[1, x + 1].Value = sheet.Columns[x + 1].Width;
+
+                StringBuilder? number = new StringBuilder();
+                for (int i = 0; i < x; i++)
                 {
-                    Directory.CreateDirectory(@"c:\Temp\FontTests");
+                    int ix = rnd.Next(0, numbers.Length);
+                    number.Append(numbers[ix]);
                 }
-
-                string? path = $"c:\\Temp\\FontTests\\{font}Measurements.xlsx";
-                if (File.Exists(path))
-                {
-                    File.Delete(path);
-                }
-
-                package.SaveAs(path);
+                sheet3.Cells[1, x + 1].Value = number.ToString();
+                sheet3.Columns[x + 1].AutoFit();
+                sheet2.Cells[2, x + 2].Value = sheet3.Columns[x + 1].Width;
             }
+            if (!Directory.Exists(@"c:\Temp\FontTests"))
+            {
+                Directory.CreateDirectory(@"c:\Temp\FontTests");
+            }
+
+            string? path = $"c:\\Temp\\FontTests\\{font}Measurements.xlsx";
+            if (File.Exists(path))
+            {
+                File.Delete(path);
+            }
+
+            package.SaveAs(path);
         }
 
 
@@ -438,49 +428,47 @@ namespace EPPlusTest.Core.Worksheet
                 reallyLongList,
                 reallyReallyLongList
             };
-            using (ExcelPackage? package = new ExcelPackage())
+            using ExcelPackage? package = new ExcelPackage();
+            //package.Settings.TextSettings.PrimaryTextMeasurer = new GenericFontMetricsTextMeasurer();
+            bool newFont = true;
+            for (FontSubFamilies style = FontSubFamilies.Regular; style <= FontSubFamilies.BoldItalic; style++)
             {
-                //package.Settings.TextSettings.PrimaryTextMeasurer = new GenericFontMetricsTextMeasurer();
-                bool newFont = true;
-                for (FontSubFamilies style = FontSubFamilies.Regular; style <= FontSubFamilies.BoldItalic; style++)
+                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add(style.ToString());
+                ExcelRange? range = sheet.Cells[1, 1, 5, 10];
+                range.Style.Font.Name = fontFamily;
+                range.Style.Font.Size = 24f;
+                range.Style.Font.Italic = (style == FontSubFamilies.Italic || style == FontSubFamilies.BoldItalic);
+                range.Style.Font.Bold = (style == FontSubFamilies.Bold || style == FontSubFamilies.BoldItalic);
+                Random? rnd = new Random();
+                for (int col = 1; col < lists.Count + 1; col++)
                 {
-                    ExcelWorksheet? sheet = package.Workbook.Worksheets.Add(style.ToString());
-                    ExcelRange? range = sheet.Cells[1, 1, 5, 10];
-                    range.Style.Font.Name = fontFamily;
-                    range.Style.Font.Size = 24f;
-                    range.Style.Font.Italic = (style == FontSubFamilies.Italic || style == FontSubFamilies.BoldItalic);
-                    range.Style.Font.Bold = (style == FontSubFamilies.Bold || style == FontSubFamilies.BoldItalic);
-                    Random? rnd = new Random();
-                    for (int col = 1; col < lists.Count + 1; col++)
+                    for (int row = 1; row < 2; row++)
                     {
-                        for (int row = 1; row < 2; row++)
-                        {
-                            string? s = lists[col - 1][row - 1];
-                            sheet.Cells[row, col].Value = s;
-                        }
+                        string? s = lists[col - 1][row - 1];
+                        sheet.Cells[row, col].Value = s;
                     }
-                    Stopwatch? sw = new Stopwatch();
-                    sw.Start();
-                    sheet.Columns[1, 9].AutoFit();
-                    if (newFont)
-                    {
-                        reportSheet.Cells[reportRow, 1].Value = range.Style.Font.Name;
-                        newFont = false;
-                    }
-                    reportSheet.Cells[reportRow, 2].Value = style.ToString();
-                    for (int col = 1; col < lists.Count + 1; col++)
-                    {
-                        reportSheet.Cells[reportRow, col + reportColOffset].Value = sheet.Columns[col].Width;
-                    }
-                    reportRow++;
-                    sw.Stop();
-                    long ms = sw.ElapsedMilliseconds;
                 }
-
-                SaveWorkbook($"NonExistingFonts_Autofit_{fontFamily.Replace(" ", string.Empty)}.xlsx", package);
-                report.Save();
-                report.Dispose();
+                Stopwatch? sw = new Stopwatch();
+                sw.Start();
+                sheet.Columns[1, 9].AutoFit();
+                if (newFont)
+                {
+                    reportSheet.Cells[reportRow, 1].Value = range.Style.Font.Name;
+                    newFont = false;
+                }
+                reportSheet.Cells[reportRow, 2].Value = style.ToString();
+                for (int col = 1; col < lists.Count + 1; col++)
+                {
+                    reportSheet.Cells[reportRow, col + reportColOffset].Value = sheet.Columns[col].Width;
+                }
+                reportRow++;
+                sw.Stop();
+                long ms = sw.ElapsedMilliseconds;
             }
+
+            SaveWorkbook($"NonExistingFonts_Autofit_{fontFamily.Replace(" ", string.Empty)}.xlsx", package);
+            report.Save();
+            report.Dispose();
         }
 
 #if NETFULL

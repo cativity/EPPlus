@@ -14,82 +14,74 @@ namespace EPPlusTest.DataValidation
         [TestMethod, Ignore]
         public void AddValidationWithFormulaOnOtherWorksheetShouldReturnExt()
         {
-            using (ExcelPackage? package = new ExcelPackage())
-            {
-                ExcelWorksheet? sheet1 = package.Workbook.Worksheets.Add("test");
-                ExcelWorksheet? sheet2 = package.Workbook.Worksheets.Add("test2");
-                IExcelDataValidationList? val = sheet1.DataValidations.AddListValidation("A1");
-                val.Formula.ExcelFormula = "test2!A1:A2";
-                Assert.IsInstanceOfType(val, typeof(ExcelDataValidationList));
-            }
+            using ExcelPackage? package = new ExcelPackage();
+            ExcelWorksheet? sheet1 = package.Workbook.Worksheets.Add("test");
+            ExcelWorksheet? sheet2 = package.Workbook.Worksheets.Add("test2");
+            IExcelDataValidationList? val = sheet1.DataValidations.AddListValidation("A1");
+            val.Formula.ExcelFormula = "test2!A1:A2";
+            Assert.IsInstanceOfType(val, typeof(ExcelDataValidationList));
         }
 
         [TestMethod]
         public void CanReadWriteSimpleExtLst()
         {
-            using (ExcelPackage package = new ExcelPackage(new MemoryStream()))
-            {
-                ExcelWorksheet? ws1 = package.Workbook.Worksheets.Add("ExtTest");
-                ExcelWorksheet? ws2 = package.Workbook.Worksheets.Add("ExternalAdresses");
+            using ExcelPackage package = new ExcelPackage(new MemoryStream());
+            ExcelWorksheet? ws1 = package.Workbook.Worksheets.Add("ExtTest");
+            ExcelWorksheet? ws2 = package.Workbook.Worksheets.Add("ExternalAdresses");
 
-                IExcelDataValidationInt? validation = ws1.DataValidations.AddIntegerValidation("A1");
-                validation.Operator = ExcelDataValidationOperator.equal;
-                ws2.Cells["A1"].Value = 5;
+            IExcelDataValidationInt? validation = ws1.DataValidations.AddIntegerValidation("A1");
+            validation.Operator = ExcelDataValidationOperator.equal;
+            ws2.Cells["A1"].Value = 5;
 
-                validation.Formula.ExcelFormula = "sheet2!A1";
+            validation.Formula.ExcelFormula = "sheet2!A1";
 
-                Assert.AreEqual(((ExcelDataValidationInt)validation).InternalValidationType, InternalValidationType.ExtLst);
+            Assert.AreEqual(((ExcelDataValidationInt)validation).InternalValidationType, InternalValidationType.ExtLst);
 
-                MemoryStream? stream = new MemoryStream();
-                package.SaveAs(stream);
+            MemoryStream? stream = new MemoryStream();
+            package.SaveAs(stream);
 
-                ExcelPackage package2 = new ExcelPackage(stream);
+            ExcelPackage package2 = new ExcelPackage(stream);
 
-                ExcelDataValidation? readingValidation = package2.Workbook.Worksheets[0].DataValidations[0];
+            ExcelDataValidation? readingValidation = package2.Workbook.Worksheets[0].DataValidations[0];
 
-                Assert.AreEqual("sheet2!A1", readingValidation.As.IntegerValidation.Formula.ExcelFormula);
-                Assert.AreEqual(((ExcelDataValidationInt)readingValidation).InternalValidationType, InternalValidationType.ExtLst);
-            }
+            Assert.AreEqual("sheet2!A1", readingValidation.As.IntegerValidation.Formula.ExcelFormula);
+            Assert.AreEqual(((ExcelDataValidationInt)readingValidation).InternalValidationType, InternalValidationType.ExtLst);
         }
 
         [TestMethod]
         public void EnsureIsNotExtLstWhenRegularReadWrite()
         {
-            using (ExcelPackage package = new ExcelPackage(new MemoryStream()))
-            {
-                ExcelWorksheet? ws1 = package.Workbook.Worksheets.Add("ExtTest");
-                ExcelWorksheet? ws2 = package.Workbook.Worksheets.Add("ExternalAdresses");
+            using ExcelPackage package = new ExcelPackage(new MemoryStream());
+            ExcelWorksheet? ws1 = package.Workbook.Worksheets.Add("ExtTest");
+            ExcelWorksheet? ws2 = package.Workbook.Worksheets.Add("ExternalAdresses");
 
-                IExcelDataValidationInt? validation = ws1.DataValidations.AddIntegerValidation("A1");
-                validation.Operator = ExcelDataValidationOperator.equal;
+            IExcelDataValidationInt? validation = ws1.DataValidations.AddIntegerValidation("A1");
+            validation.Operator = ExcelDataValidationOperator.equal;
 
-                validation.Formula.ExcelFormula = "IF(A2=\"red\"";
+            validation.Formula.ExcelFormula = "IF(A2=\"red\"";
 
-                Assert.AreNotEqual(((ExcelDataValidationInt)validation).InternalValidationType, InternalValidationType.ExtLst);
+            Assert.AreNotEqual(((ExcelDataValidationInt)validation).InternalValidationType, InternalValidationType.ExtLst);
 
-                MemoryStream? stream = new MemoryStream();
-                package.SaveAs(stream);
+            MemoryStream? stream = new MemoryStream();
+            package.SaveAs(stream);
 
-                ExcelPackage package2 = new ExcelPackage(stream);
+            ExcelPackage package2 = new ExcelPackage(stream);
 
-                ExcelDataValidation? readingValidation = package2.Workbook.Worksheets[0].DataValidations[0];
+            ExcelDataValidation? readingValidation = package2.Workbook.Worksheets[0].DataValidations[0];
 
-                Assert.AreEqual("IF(A2=\"red\"", readingValidation.As.IntegerValidation.Formula.ExcelFormula);
-                Assert.AreNotEqual(((ExcelDataValidationInt)readingValidation).InternalValidationType, InternalValidationType.ExtLst);
-            }
+            Assert.AreEqual("IF(A2=\"red\"", readingValidation.As.IntegerValidation.Formula.ExcelFormula);
+            Assert.AreNotEqual(((ExcelDataValidationInt)readingValidation).InternalValidationType, InternalValidationType.ExtLst);
         }
 
         [TestMethod]
         public void ReadAndSaveExtLstPackage_ShouldNotThrow()
         {
-            using (ExcelPackage package = OpenTemplatePackage("ExtLstDataValidationValidation.xlsx"))
-            {
-                MemoryStream? memoryStream = new MemoryStream();
-                package.SaveAs(memoryStream);
-                ExcelPackage p = new ExcelPackage(memoryStream);
+            using ExcelPackage package = OpenTemplatePackage("ExtLstDataValidationValidation.xlsx");
+            MemoryStream? memoryStream = new MemoryStream();
+            package.SaveAs(memoryStream);
+            ExcelPackage p = new ExcelPackage(memoryStream);
 
-                Assert.IsTrue(p.Workbook.Worksheets[0].DataValidations.Count > 0);
-            }
+            Assert.IsTrue(p.Workbook.Worksheets[0].DataValidations.Count > 0);
         }
 
         static ExcelPackage MakePackageWithExtLstIntValidation()
@@ -234,119 +226,105 @@ namespace EPPlusTest.DataValidation
         [TestMethod]
         public void LocalDataValidationsShouldWorkWithExtLstValidation()
         {
-            using (ExcelPackage? pck = OpenPackage("DataValidationLocalExtLst.xlsx", true))
-            {
-                ExcelWorksheet? ws = pck.Workbook.Worksheets.Add("extLstTest");
-                ExcelWorksheet? extSheet = pck.Workbook.Worksheets.Add("extAddressSheet");
+            using ExcelPackage? pck = OpenPackage("DataValidationLocalExtLst.xlsx", true);
+            ExcelWorksheet? ws = pck.Workbook.Worksheets.Add("extLstTest");
+            ExcelWorksheet? extSheet = pck.Workbook.Worksheets.Add("extAddressSheet");
 
-                AddDataValidations(ref ws, false);
-                AddDataValidations(ref ws, true, "extAddressSheet");
+            AddDataValidations(ref ws, false);
+            AddDataValidations(ref ws, true, "extAddressSheet");
 
-                SaveAndLoadAndSave(pck);
-            }
+            SaveAndLoadAndSave(pck);
         }
 
         [TestMethod]
         public void LocalDataValidationsShouldWorkWithManyExtLstValidations()
         {
-            using (ExcelPackage? pck = OpenPackage("DataValidationLocalExtLstMany.xlsx", true))
-            {
-                ExcelWorksheet? ws = pck.Workbook.Worksheets.Add("extLstTest");
-                ExcelWorksheet? extSheet = pck.Workbook.Worksheets.Add("extAddressSheet");
+            using ExcelPackage? pck = OpenPackage("DataValidationLocalExtLstMany.xlsx", true);
+            ExcelWorksheet? ws = pck.Workbook.Worksheets.Add("extLstTest");
+            ExcelWorksheet? extSheet = pck.Workbook.Worksheets.Add("extAddressSheet");
 
-                AddDataValidations(ref ws, false);
-                AddDataValidations(ref ws, true, "extAddressSheet", true);
+            AddDataValidations(ref ws, false);
+            AddDataValidations(ref ws, true, "extAddressSheet", true);
 
-                SaveAndLoadAndSave(pck);
-            }
+            SaveAndLoadAndSave(pck);
         }
 
         [TestMethod]
         public void ManyLocalDataValidationsShouldWorkWithSingularExtLstValidations()
         {
-            using (ExcelPackage? pck = OpenPackage("DataValidationLocalManyExtLst.xlsx", true))
-            {
-                ExcelWorksheet? ws = pck.Workbook.Worksheets.Add("extLstTest");
-                ExcelWorksheet? extSheet = pck.Workbook.Worksheets.Add("extAddressSheet");
+            using ExcelPackage? pck = OpenPackage("DataValidationLocalManyExtLst.xlsx", true);
+            ExcelWorksheet? ws = pck.Workbook.Worksheets.Add("extLstTest");
+            ExcelWorksheet? extSheet = pck.Workbook.Worksheets.Add("extAddressSheet");
 
-                AddDataValidations(ref ws, false, "", true);
-                AddDataValidations(ref ws, true, "extAddressSheet");
+            AddDataValidations(ref ws, false, "", true);
+            AddDataValidations(ref ws, true, "extAddressSheet");
 
-                SaveAndLoadAndSave(pck);
-            }
+            SaveAndLoadAndSave(pck);
 
         }
 
         [TestMethod]
         public void ManyLocalDataValidationsShouldWorkWithManyExtLstConditionalFormattings()
         {
-            using (ExcelPackage? pck = OpenPackage("DataValidationLocalManyExtLstMany.xlsx", true))
-            {
-                ExcelWorksheet? ws = pck.Workbook.Worksheets.Add("extLstTest");
-                ExcelWorksheet? extSheet = pck.Workbook.Worksheets.Add("extAddressSheet");
+            using ExcelPackage? pck = OpenPackage("DataValidationLocalManyExtLstMany.xlsx", true);
+            ExcelWorksheet? ws = pck.Workbook.Worksheets.Add("extLstTest");
+            ExcelWorksheet? extSheet = pck.Workbook.Worksheets.Add("extAddressSheet");
 
-                AddDataValidations(ref ws, false, "", true);
-                AddDataValidations(ref ws, true, "extAddressSheet", true);
+            AddDataValidations(ref ws, false, "", true);
+            AddDataValidations(ref ws, true, "extAddressSheet", true);
 
-                SaveAndLoadAndSave(pck);
-            }
+            SaveAndLoadAndSave(pck);
         }
 
         [TestMethod]
         public void LocalMultipleAddress()
         {
-            using (ExcelPackage? pck = OpenPackage("DataValidationLocalSeperatedAddress.xlsx", true))
-            {
-                ExcelWorksheet? ws = pck.Workbook.Worksheets.Add("localAddressTest");
+            using ExcelPackage? pck = OpenPackage("DataValidationLocalSeperatedAddress.xlsx", true);
+            ExcelWorksheet? ws = pck.Workbook.Worksheets.Add("localAddressTest");
 
-                IExcelDataValidationDecimal? validation = ws.DataValidations.AddDecimalValidation("A1:A5 C5:C15 D13");
+            IExcelDataValidationDecimal? validation = ws.DataValidations.AddDecimalValidation("A1:A5 C5:C15 D13");
 
-                validation.Formula.Value = 5;
-                validation.Formula2.Value = 10.5;
+            validation.Formula.Value = 5;
+            validation.Formula2.Value = 10.5;
 
-                SaveAndLoadAndSave(pck);
-            }
+            SaveAndLoadAndSave(pck);
         }
 
         [TestMethod]
         public void ExtLstMultipleAddress()
         {
-            using (ExcelPackage? pck = OpenPackage("DataValidationExtLstSeperatedAddress.xlsx", true))
-            {
-                ExcelWorksheet? ws = pck.Workbook.Worksheets.Add("extLstAddressTest");
-                ExcelWorksheet? ws2 = pck.Workbook.Worksheets.Add("external");
+            using ExcelPackage? pck = OpenPackage("DataValidationExtLstSeperatedAddress.xlsx", true);
+            ExcelWorksheet? ws = pck.Workbook.Worksheets.Add("extLstAddressTest");
+            ExcelWorksheet? ws2 = pck.Workbook.Worksheets.Add("external");
 
 
-                IExcelDataValidationDecimal? validation = ws.DataValidations.AddDecimalValidation("A1:A5 C5:C15 D13");
+            IExcelDataValidationDecimal? validation = ws.DataValidations.AddDecimalValidation("A1:A5 C5:C15 D13");
 
-                validation.Formula.ExcelFormula = "external!A1";
-                validation.Formula2.Value = 10.5;
+            validation.Formula.ExcelFormula = "external!A1";
+            validation.Formula2.Value = 10.5;
 
-                SaveAndLoadAndSave(pck);
-            }
+            SaveAndLoadAndSave(pck);
         }
 
         [TestMethod]
         public void ExtLstAndLocalMultipleAddressShouldWork()
         {
-            using (ExcelPackage? pck = OpenPackage("DataValidationLocalExtSeperatedAddress.xlsx", true))
-            {
-                ExcelWorksheet? ws = pck.Workbook.Worksheets.Add("extLstAddressTest");
-                ExcelWorksheet? ws2 = pck.Workbook.Worksheets.Add("external");
+            using ExcelPackage? pck = OpenPackage("DataValidationLocalExtSeperatedAddress.xlsx", true);
+            ExcelWorksheet? ws = pck.Workbook.Worksheets.Add("extLstAddressTest");
+            ExcelWorksheet? ws2 = pck.Workbook.Worksheets.Add("external");
 
 
-                IExcelDataValidationDecimal? extValidation = ws.DataValidations.AddDecimalValidation("A1:A5 C5:C15 D13");
+            IExcelDataValidationDecimal? extValidation = ws.DataValidations.AddDecimalValidation("A1:A5 C5:C15 D13");
 
-                extValidation.Formula.ExcelFormula = "external!A1";
-                extValidation.Formula2.Value = 10.5;
+            extValidation.Formula.ExcelFormula = "external!A1";
+            extValidation.Formula2.Value = 10.5;
 
-                IExcelDataValidationDecimal? localValidation = ws.DataValidations.AddDecimalValidation("E1:E5 F5:F15 G13");
+            IExcelDataValidationDecimal? localValidation = ws.DataValidations.AddDecimalValidation("E1:E5 F5:F15 G13");
 
-                localValidation.Formula.Value = 5.5;
-                localValidation.Formula2.Value = 25.75;
+            localValidation.Formula.Value = 5.5;
+            localValidation.Formula2.Value = 25.75;
 
-                SaveAndLoadAndSave(pck);
-            }
+            SaveAndLoadAndSave(pck);
         }
 
         [TestMethod]

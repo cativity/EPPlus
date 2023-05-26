@@ -127,24 +127,20 @@ namespace EPPlusTest.Table
         public void TableInsertRowPositionNegative()
         {
             //Setup
-            using(ExcelPackage? p=new ExcelPackage())
-            {
-                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Table1");
-                ExcelTable? tbl = ws.Tables.Add(ws.Cells["A1:D100"], "Table1");
-                tbl.InsertRow(-1);
-            }
+            using ExcelPackage? p = new ExcelPackage();
+            ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Table1");
+            ExcelTable? tbl = ws.Tables.Add(ws.Cells["A1:D100"], "Table1");
+            tbl.InsertRow(-1);
         }
         [TestMethod]
         [ExpectedException(typeof(ArgumentException))]
         public void TableInsertRowRowsNegative()
         {
             //Setup
-            using (ExcelPackage? p = new ExcelPackage())
-            {
-                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Table1");
-                ExcelTable? tbl = ws.Tables.Add(ws.Cells["A1:D100"], "Table1");
-                tbl.InsertRow(0, -1);
-            }
+            using ExcelPackage? p = new ExcelPackage();
+            ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Table1");
+            ExcelTable? tbl = ws.Tables.Add(ws.Cells["A1:D100"], "Table1");
+            tbl.InsertRow(0, -1);
         }
         [TestMethod]
         public void TableAddRowToMax()
@@ -162,17 +158,15 @@ namespace EPPlusTest.Table
         [ExpectedException(typeof(InvalidOperationException))]
         public void TableAddRowOverMax()
         {
-            using (ExcelPackage? p = new ExcelPackage())
-            {
-                //Setup
-                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("TableOverMaxRow");
-                LoadTestdata(ws, 100);
-                ExcelTable? tbl = ws.Tables.Add(ws.Cells["A1:D100"], "TableOverMaxRow");
-                //Act
-                tbl.AddRow(ExcelPackage.MaxRows - 99);
-                //Assert
-                Assert.AreEqual(ExcelPackage.MaxRows, tbl.Address._toRow);
-            }
+            using ExcelPackage? p = new ExcelPackage();
+            //Setup
+            ExcelWorksheet? ws = p.Workbook.Worksheets.Add("TableOverMaxRow");
+            LoadTestdata(ws, 100);
+            ExcelTable? tbl = ws.Tables.Add(ws.Cells["A1:D100"], "TableOverMaxRow");
+            //Act
+            tbl.AddRow(ExcelPackage.MaxRows - 99);
+            //Assert
+            Assert.AreEqual(ExcelPackage.MaxRows, tbl.Address._toRow);
         }
         #endregion
         #region Insert Column
@@ -257,226 +251,204 @@ namespace EPPlusTest.Table
         public void TableInsertColumnPositionNegative()
         {
             //Setup
-            using (ExcelPackage? p = new ExcelPackage())
-            {
-                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Table1");
-                ExcelTable? tbl = ws.Tables.Add(ws.Cells["A1:D100"], "Table1");
-                tbl.Columns.Insert(-1);
-            }
+            using ExcelPackage? p = new ExcelPackage();
+            ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Table1");
+            ExcelTable? tbl = ws.Tables.Add(ws.Cells["A1:D100"], "Table1");
+            tbl.Columns.Insert(-1);
         }
         [TestMethod]
         public void TableAddColumnToMax()
         {
-            using (ExcelPackage? p = new ExcelPackage()) // We discard this as it takes to long time to save
-            {
-                //Setup
-                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("TableMaxColumn");
-                LoadTestdata(ws, 100);
-                ExcelTable? tbl = ws.Tables.Add(ws.Cells["A1:D100"], "TableMaxColumn");
-                //Act
-                tbl.Columns.Add(ExcelPackage.MaxColumns - 4);
-                //Assert
-                Assert.AreEqual(ExcelPackage.MaxColumns, tbl.Address._toCol);
-            }
+            using ExcelPackage? p = new ExcelPackage(); // We discard this as it takes to long time to save
+                                                        //Setup
+            ExcelWorksheet? ws = p.Workbook.Worksheets.Add("TableMaxColumn");
+            LoadTestdata(ws, 100);
+            ExcelTable? tbl = ws.Tables.Add(ws.Cells["A1:D100"], "TableMaxColumn");
+            //Act
+            tbl.Columns.Add(ExcelPackage.MaxColumns - 4);
+            //Assert
+            Assert.AreEqual(ExcelPackage.MaxColumns, tbl.Address._toCol);
         }
         [TestMethod]
         [ExpectedException(typeof(InvalidOperationException))]
         public void TableAddColumnOverMax()
         {
-            using (ExcelPackage? p = new ExcelPackage())
-            {
-                //Setup
-                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("TableOverMaxColumn");
-                LoadTestdata(ws, 100);
-                ExcelTable? tbl = ws.Tables.Add(ws.Cells["A1:D100"], "TableOverMaxRow");
-                //Act
-                tbl.Columns.Add(ExcelPackage.MaxColumns - 3);
-            }
+            using ExcelPackage? p = new ExcelPackage();
+            //Setup
+            ExcelWorksheet? ws = p.Workbook.Worksheets.Add("TableOverMaxColumn");
+            LoadTestdata(ws, 100);
+            ExcelTable? tbl = ws.Tables.Add(ws.Cells["A1:D100"], "TableOverMaxRow");
+            //Act
+            tbl.Columns.Add(ExcelPackage.MaxColumns - 3);
         }
         #endregion
 
         [TestMethod]
         public void AddRowsToTablesOfDifferentWidths_TopWider()
         {
-            using (ExcelPackage? pck = OpenTemplatePackage("TestTableAddRows.xlsx"))
+            using ExcelPackage? pck = OpenTemplatePackage("TestTableAddRows.xlsx");
+            // Get sheet 1 from the workbook, and get the tables we are going to test
+            ExcelWorksheet? ws = TryGetWorksheet(pck, "Sheet1");
+            ExcelTable? table1 = ws.Tables["Table1"];
+            ExcelTable? table2 = ws.Tables["Table2"];
+            // Make sure the tables are where we expect them to be
+            if (table1.Address.ToString() != "B2:E3")
             {
-                // Get sheet 1 from the workbook, and get the tables we are going to test
-                ExcelWorksheet? ws = TryGetWorksheet(pck, "Sheet1");
-                ExcelTable? table1 = ws.Tables["Table1"];
-                ExcelTable? table2 = ws.Tables["Table2"];
-                // Make sure the tables are where we expect them to be
-                if (table1.Address.ToString() != "B2:E3")
-                {
-                    Assert.Inconclusive();
-                }
-
-                if (table2.Address.ToString() != "B6:C7")
-                {
-                    Assert.Inconclusive();
-                }
-
-                // Add 10 rows to Table1
-                table1.AddRow(10);
-                // Make sure Table1's address has been correctly updated
-                Assert.AreEqual("B2:E13", table1.Address.ToString());
-                // Make sure Table2 below has been correctly moved
-                Assert.AreEqual("B16:C17", table2.Address.ToString());
-
-                // Add 10 rows to Table2
-                table2.AddRow(10);
-                // Make sure Table2 has been correctly updated
-                Assert.AreEqual("B16:C27", table2.Address.ToString());
-                // Make sure Table1 hasn't moved
-                Assert.AreEqual("B2:E13", table1.Address.ToString());
+                Assert.Inconclusive();
             }
+
+            if (table2.Address.ToString() != "B6:C7")
+            {
+                Assert.Inconclusive();
+            }
+
+            // Add 10 rows to Table1
+            table1.AddRow(10);
+            // Make sure Table1's address has been correctly updated
+            Assert.AreEqual("B2:E13", table1.Address.ToString());
+            // Make sure Table2 below has been correctly moved
+            Assert.AreEqual("B16:C17", table2.Address.ToString());
+
+            // Add 10 rows to Table2
+            table2.AddRow(10);
+            // Make sure Table2 has been correctly updated
+            Assert.AreEqual("B16:C27", table2.Address.ToString());
+            // Make sure Table1 hasn't moved
+            Assert.AreEqual("B2:E13", table1.Address.ToString());
         }
         [TestMethod]
         [ExpectedException(typeof(InvalidOperationException))]
         public void AddRowsToTablesOfDifferentWidths_BottomWider()
         {
-            using (ExcelPackage? pck = OpenTemplatePackage("TestTableAddRows.xlsx"))
+            using ExcelPackage? pck = OpenTemplatePackage("TestTableAddRows.xlsx");
+            // Get sheet 2 from the workbook, and get the tables we are going to test
+            ExcelWorksheet? ws = TryGetWorksheet(pck, "Sheet2");
+            ExcelTable? table3 = ws.Tables["Table3"];
+            ExcelTable? table4 = ws.Tables["Table4"];
+            // Make sure the tables are where we expect them to be
+            if (table3.Address.ToString() != "B2:C3")
             {
-                // Get sheet 2 from the workbook, and get the tables we are going to test
-                ExcelWorksheet? ws = TryGetWorksheet(pck, "Sheet2");
-                ExcelTable? table3 = ws.Tables["Table3"];
-                ExcelTable? table4 = ws.Tables["Table4"];
-                // Make sure the tables are where we expect them to be
-                if (table3.Address.ToString() != "B2:C3")
-                {
-                    Assert.Inconclusive();
-                }
-
-                if (table4.Address.ToString() != "B6:E7")
-                {
-                    Assert.Inconclusive();
-                }
-
-                // Add 10 rows to Table3
-                table3.AddRow(10);
-                // Make sure Table3's address has been correctly updated
-                Assert.AreEqual("B2:C13", table3.Address.ToString());
-                // Make sure Table4 below has been correctly moved
-                Assert.AreEqual("B16:E17", table4.Address.ToString());
-
-                // Add 10 rows to Table4
-                table4.AddRow(10);
-                // Make sure Table4 has been correctly updated
-                Assert.AreEqual("B16:E27", table4.Address.ToString());
-                // Make sure Table3 hasn't moved
-                Assert.AreEqual("B2:C13", table3.Address.ToString());
+                Assert.Inconclusive();
             }
+
+            if (table4.Address.ToString() != "B6:E7")
+            {
+                Assert.Inconclusive();
+            }
+
+            // Add 10 rows to Table3
+            table3.AddRow(10);
+            // Make sure Table3's address has been correctly updated
+            Assert.AreEqual("B2:C13", table3.Address.ToString());
+            // Make sure Table4 below has been correctly moved
+            Assert.AreEqual("B16:E17", table4.Address.ToString());
+
+            // Add 10 rows to Table4
+            table4.AddRow(10);
+            // Make sure Table4 has been correctly updated
+            Assert.AreEqual("B16:E27", table4.Address.ToString());
+            // Make sure Table3 hasn't moved
+            Assert.AreEqual("B2:C13", table3.Address.ToString());
         }
         [TestMethod]
         public void TableAddOneColumnStartingFromA()
         {
-            using (ExcelPackage? p = OpenPackage("TestTableAdd1Column.xlsx", true))
-            {
-                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Sheet1");
-                ExcelTable? tbl = ws.Tables.Add(ws.Cells["A1:A10"], "Table1");
-                ExcelRangeBase? col = tbl.Columns.Add(1);
-                Assert.AreEqual("A1:B10", tbl.Address.Address);
-                SaveAndCleanup(p);
-            }
+            using ExcelPackage? p = OpenPackage("TestTableAdd1Column.xlsx", true);
+            ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Sheet1");
+            ExcelTable? tbl = ws.Tables.Add(ws.Cells["A1:A10"], "Table1");
+            ExcelRangeBase? col = tbl.Columns.Add(1);
+            Assert.AreEqual("A1:B10", tbl.Address.Address);
+            SaveAndCleanup(p);
         }
         [TestMethod]
         public void TableInsertAddRowShowHeaderFalse()
         {
-            using (ExcelPackage? p = OpenPackage("TableAddRowWithoutHeader.xlsx", true))
-            {
-                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Sheet1");
-                ExcelTable? tbl = ws.Tables.Add(ws.Cells["A1:A10"], "Table1");
-                tbl.ShowHeader = false;
+            using ExcelPackage? p = OpenPackage("TableAddRowWithoutHeader.xlsx", true);
+            ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Sheet1");
+            ExcelTable? tbl = ws.Tables.Add(ws.Cells["A1:A10"], "Table1");
+            tbl.ShowHeader = false;
 
-                tbl.InsertRow(0, 1);
-                Assert.AreEqual("A1:A11", tbl.Address.Address);
+            tbl.InsertRow(0, 1);
+            Assert.AreEqual("A1:A11", tbl.Address.Address);
 
-                tbl.InsertRow(1, 1);
-                Assert.AreEqual("A1:A12", tbl.Address.Address);
+            tbl.InsertRow(1, 1);
+            Assert.AreEqual("A1:A12", tbl.Address.Address);
 
-                tbl.AddRow(1);
-                Assert.AreEqual("A1:A13", tbl.Address.Address);
-            }
+            tbl.AddRow(1);
+            Assert.AreEqual("A1:A13", tbl.Address.Address);
         }
         [TestMethod]
         public void TableInsertAddColumnShowHeaderFalse()
         {
-            using (ExcelPackage? p = OpenPackage("TableAddColWithoutHeader.xlsx", true))
-            {
-                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Sheet1");
-                ExcelTable? tbl = ws.Tables.Add(ws.Cells["A1:A10"], "Table1");
-                tbl.ShowHeader = false;
+            using ExcelPackage? p = OpenPackage("TableAddColWithoutHeader.xlsx", true);
+            ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Sheet1");
+            ExcelTable? tbl = ws.Tables.Add(ws.Cells["A1:A10"], "Table1");
+            tbl.ShowHeader = false;
 
-                tbl.InsertColumn(0, 1);
-                Assert.AreEqual("A1:B10", tbl.Address.Address);
+            tbl.InsertColumn(0, 1);
+            Assert.AreEqual("A1:B10", tbl.Address.Address);
 
-                tbl.InsertColumn(1, 1);
-                Assert.AreEqual("A1:C10", tbl.Address.Address);
-            }
+            tbl.InsertColumn(1, 1);
+            Assert.AreEqual("A1:C10", tbl.Address.Address);
         }
         [TestMethod]
         public void TableDeleteRowShowHeaderFalse()
         {
-            using (ExcelPackage? p = OpenPackage("TableDeleteRowWithoutHeader.xlsx", true))
-            {
-                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Sheet1");
-                ExcelTable? tbl = ws.Tables.Add(ws.Cells["A1:A10"], "Table1");
-                tbl.ShowHeader = false;
+            using ExcelPackage? p = OpenPackage("TableDeleteRowWithoutHeader.xlsx", true);
+            ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Sheet1");
+            ExcelTable? tbl = ws.Tables.Add(ws.Cells["A1:A10"], "Table1");
+            tbl.ShowHeader = false;
 
-                tbl.DeleteRow(0, 3);
-                Assert.AreEqual("A1:A7", tbl.Address.Address);
+            tbl.DeleteRow(0, 3);
+            Assert.AreEqual("A1:A7", tbl.Address.Address);
 
-                tbl.DeleteRow(1, 2);
-                Assert.AreEqual("A1:A5", tbl.Address.Address);
-            }
+            tbl.DeleteRow(1, 2);
+            Assert.AreEqual("A1:A5", tbl.Address.Address);
         }
 
         [TestMethod]
         public void TableWithCalculatedFormulaInsert()
         {
-            using (ExcelPackage? p = OpenPackage("TableCalculatedColumnInsert.xlsx", true))
-            {
-                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Sheet1");
-                ws.Cells[2, 1, 10, 1].Value = 1;
-                ws.Cells[2, 2, 10, 2].Value = 2;
-                ws.Cells[2, 3, 10, 3].Value = 3;
-                ws.Cells[2, 4, 10, 4].Value = 4;
-                ws.Cells[2, 5, 10, 5].Value = 5;
-                ExcelTable? tbl = ws.Tables.Add(ws.Cells["A1:E10"], "Table1");
-                tbl.ShowHeader = true;
-                tbl.Columns[2].CalculatedColumnFormula = "Table1[[#This Row],[Column1]]";
-                Assert.AreEqual("Table1[[#This Row],[Column1]]", ws.Cells["C2"].Formula);
-                Assert.AreEqual("", ws.Cells["D11"].Formula);
-                tbl.Columns.Insert(1, 1);
-                tbl.InsertRow(0, 2);
-                tbl.Columns.Add(3);
-                tbl.AddRow(5);
-                Assert.AreEqual("Table1[[#This Row],[Column1]]", ws.Cells["D2"].Formula);
-                Assert.AreEqual("Table1[[#This Row],[Column1]]", ws.Cells["D12"].Formula);
-                SaveAndCleanup(p);
-            }
+            using ExcelPackage? p = OpenPackage("TableCalculatedColumnInsert.xlsx", true);
+            ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Sheet1");
+            ws.Cells[2, 1, 10, 1].Value = 1;
+            ws.Cells[2, 2, 10, 2].Value = 2;
+            ws.Cells[2, 3, 10, 3].Value = 3;
+            ws.Cells[2, 4, 10, 4].Value = 4;
+            ws.Cells[2, 5, 10, 5].Value = 5;
+            ExcelTable? tbl = ws.Tables.Add(ws.Cells["A1:E10"], "Table1");
+            tbl.ShowHeader = true;
+            tbl.Columns[2].CalculatedColumnFormula = "Table1[[#This Row],[Column1]]";
+            Assert.AreEqual("Table1[[#This Row],[Column1]]", ws.Cells["C2"].Formula);
+            Assert.AreEqual("", ws.Cells["D11"].Formula);
+            tbl.Columns.Insert(1, 1);
+            tbl.InsertRow(0, 2);
+            tbl.Columns.Add(3);
+            tbl.AddRow(5);
+            Assert.AreEqual("Table1[[#This Row],[Column1]]", ws.Cells["D2"].Formula);
+            Assert.AreEqual("Table1[[#This Row],[Column1]]", ws.Cells["D12"].Formula);
+            SaveAndCleanup(p);
         }
         [TestMethod]
         public void TableWithCalculatedFormulaDelete()
         {
-            using (ExcelPackage? p = OpenPackage("TableCalculatedColumnDelete.xlsx", true))
-            {
-                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Sheet1");
-                ws.Cells[2, 1, 10, 1].Value = 1;
-                ws.Cells[2, 2, 10, 2].Value = 2;
-                ws.Cells[2, 3, 10, 3].Value = 3;
-                ws.Cells[2, 4, 10, 4].Value = 4;
-                ws.Cells[2, 5, 10, 5].Value = 5;
-                ExcelTable? tbl = ws.Tables.Add(ws.Cells["A1:E10"], "Table1");
-                tbl.ShowHeader = true;
-                tbl.Columns[2].CalculatedColumnFormula = "Table1[[#This Row],[Column1]]";
-                Assert.AreEqual("Table1[[#This Row],[Column1]]", ws.Cells["C2"].Formula);
-                Assert.AreEqual("", ws.Cells["D11"].Formula);
-                tbl.Columns.Delete(1, 1);
-                tbl.DeleteRow(1, 2);
-                Assert.AreEqual("Table1[[#This Row],[Column1]]", ws.Cells["B2"].Formula);
-                Assert.AreEqual("", ws.Cells["B9"].Formula);
-                SaveAndCleanup(p);
-            }
+            using ExcelPackage? p = OpenPackage("TableCalculatedColumnDelete.xlsx", true);
+            ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Sheet1");
+            ws.Cells[2, 1, 10, 1].Value = 1;
+            ws.Cells[2, 2, 10, 2].Value = 2;
+            ws.Cells[2, 3, 10, 3].Value = 3;
+            ws.Cells[2, 4, 10, 4].Value = 4;
+            ws.Cells[2, 5, 10, 5].Value = 5;
+            ExcelTable? tbl = ws.Tables.Add(ws.Cells["A1:E10"], "Table1");
+            tbl.ShowHeader = true;
+            tbl.Columns[2].CalculatedColumnFormula = "Table1[[#This Row],[Column1]]";
+            Assert.AreEqual("Table1[[#This Row],[Column1]]", ws.Cells["C2"].Formula);
+            Assert.AreEqual("", ws.Cells["D11"].Formula);
+            tbl.Columns.Delete(1, 1);
+            tbl.DeleteRow(1, 2);
+            Assert.AreEqual("Table1[[#This Row],[Column1]]", ws.Cells["B2"].Formula);
+            Assert.AreEqual("", ws.Cells["B9"].Formula);
+            SaveAndCleanup(p);
         }
     }
 }

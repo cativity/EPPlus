@@ -37,32 +37,28 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions.Math
         [DataRow("", "", "", 3)]
         public void CountA_WithGivenCellValues_ShouldReturnExpectedCount(string value1, string value2, string value3, double expectedValue)
         {
-            using(ExcelPackage? package = new ExcelPackage())
-            {
-                ExcelWorksheet? worksheet = package.Workbook.Worksheets.Add("CountA");
-                SetValues(worksheet);
+            using ExcelPackage? package = new ExcelPackage();
+            ExcelWorksheet? worksheet = package.Workbook.Worksheets.Add("CountA");
+            SetValues(worksheet);
 
-                worksheet.Cells["B1"].Value = value1;
-                worksheet.Cells["B2"].Value = value2;
-                worksheet.Cells["B3"].Value = value3;
-                package.Workbook.Calculate();
-                Assert.AreEqual(expectedValue, worksheet.Cells["B4"].Value);
-            }
+            worksheet.Cells["B1"].Value = value1;
+            worksheet.Cells["B2"].Value = value2;
+            worksheet.Cells["B3"].Value = value3;
+            package.Workbook.Calculate();
+            Assert.AreEqual(expectedValue, worksheet.Cells["B4"].Value);
         }
 
         [TestMethod]
         public void CountA_WithFormulaError_ExpectErrorIncludedInCount()
         {
-            using (ExcelPackage? package = new ExcelPackage())
-            {
-                ExcelWorksheet? worksheet = package.Workbook.Worksheets.Add("CountA");
-                SetValues(worksheet);
-                worksheet.Cells["B7"].Value = "test";
-                worksheet.Cells["B8"].Value = false;
-                worksheet.Cells["B9"].Value = false;
-                package.Workbook.Calculate();
-                Assert.AreEqual(3d, worksheet.Cells["B10"].Value);
-            }
+            using ExcelPackage? package = new ExcelPackage();
+            ExcelWorksheet? worksheet = package.Workbook.Worksheets.Add("CountA");
+            SetValues(worksheet);
+            worksheet.Cells["B7"].Value = "test";
+            worksheet.Cells["B8"].Value = false;
+            worksheet.Cells["B9"].Value = false;
+            package.Workbook.Calculate();
+            Assert.AreEqual(3d, worksheet.Cells["B10"].Value);
         }
     }
 }

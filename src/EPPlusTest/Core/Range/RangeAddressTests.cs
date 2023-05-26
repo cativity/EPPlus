@@ -167,45 +167,37 @@ namespace EPPlusTest.Core.Range
         [ExpectedException(typeof(InvalidOperationException))]
         public void AddressWithFullColumnInEndAndCellIsNotValid()
         {
-            using (ExcelPackage? package = new ExcelPackage())
-            {
-                ExcelWorkbook? workbook = package.Workbook;
-                ExcelWorksheet? sheet1 = package.Workbook.Worksheets.Add("NEW");
-                ExcelRange? v = sheet1.Cells["A1:B"]; //Invalid address
-            }
+            using ExcelPackage? package = new ExcelPackage();
+            ExcelWorkbook? workbook = package.Workbook;
+            ExcelWorksheet? sheet1 = package.Workbook.Worksheets.Add("NEW");
+            ExcelRange? v = sheet1.Cells["A1:B"]; //Invalid address
         }
         [TestMethod]
         [ExpectedException(typeof(InvalidOperationException))]
         public void AddressWithFullColumnAtStartAndCellIsNotValid()
         {
-            using (ExcelPackage? package = new ExcelPackage())
-            {
-                ExcelWorkbook? workbook = package.Workbook;
-                ExcelWorksheet? sheet1 = package.Workbook.Worksheets.Add("NEW");
-                ExcelRange? v = sheet1.Cells["A:B1"]; //Invalid address
-            }
+            using ExcelPackage? package = new ExcelPackage();
+            ExcelWorkbook? workbook = package.Workbook;
+            ExcelWorksheet? sheet1 = package.Workbook.Worksheets.Add("NEW");
+            ExcelRange? v = sheet1.Cells["A:B1"]; //Invalid address
         }
         [TestMethod]
         [ExpectedException(typeof(InvalidOperationException))]
         public void AddressWithFullRowInEndAndCellIsNotValid()
         {
-            using (ExcelPackage? package = new ExcelPackage())
-            {
-                ExcelWorkbook? workbook = package.Workbook;
-                ExcelWorksheet? sheet1 = package.Workbook.Worksheets.Add("NEW");
-                ExcelRange? v = sheet1.Cells["A1:2"]; //Invalid address
-            }
+            using ExcelPackage? package = new ExcelPackage();
+            ExcelWorkbook? workbook = package.Workbook;
+            ExcelWorksheet? sheet1 = package.Workbook.Worksheets.Add("NEW");
+            ExcelRange? v = sheet1.Cells["A1:2"]; //Invalid address
         }
         [TestMethod]
         [ExpectedException(typeof(InvalidOperationException))]
         public void AddressWithFullRowAtStartAndCellIsNotValid()
         {
-            using (ExcelPackage? package = new ExcelPackage())
-            {
-                ExcelWorkbook? workbook = package.Workbook;
-                ExcelWorksheet? sheet1 = package.Workbook.Worksheets.Add("NEW");
-                ExcelRange? v = sheet1.Cells["1:B1"]; //Invalid address
-            }
+            using ExcelPackage? package = new ExcelPackage();
+            ExcelWorkbook? workbook = package.Workbook;
+            ExcelWorksheet? sheet1 = package.Workbook.Worksheets.Add("NEW");
+            ExcelRange? v = sheet1.Cells["1:B1"]; //Invalid address
         }
         [TestMethod]
         public void IsValidAddress()
@@ -235,120 +227,108 @@ namespace EPPlusTest.Core.Range
         [TestMethod]
         public void ClearShouldNotClearSurroundingCells()
         {
-            using (ExcelPackage? pck = new ExcelPackage())
-            {
-                ExcelWorksheet? ws = pck.Workbook.Worksheets.Add("Clear");
-                ws.Cells[2, 2].Value = "B2";
-                ws.Cells[2, 3].Value = "C2";
-                ws.Cells[2, 4].Value = "D2";
-                ws.Cells[2, 3].Clear();
+            using ExcelPackage? pck = new ExcelPackage();
+            ExcelWorksheet? ws = pck.Workbook.Worksheets.Add("Clear");
+            ws.Cells[2, 2].Value = "B2";
+            ws.Cells[2, 3].Value = "C2";
+            ws.Cells[2, 4].Value = "D2";
+            ws.Cells[2, 3].Clear();
 
-                Assert.IsNotNull(ws.Cells[2, 2].Value);
-                Assert.AreEqual("B2", ws.Cells[2, 2].Value);
-                Assert.IsNull(ws.Cells[2, 3].Value);
-                Assert.AreEqual("D2", ws.Cells[2, 4].Value);
-            }
+            Assert.IsNotNull(ws.Cells[2, 2].Value);
+            Assert.AreEqual("B2", ws.Cells[2, 2].Value);
+            Assert.IsNull(ws.Cells[2, 3].Value);
+            Assert.AreEqual("D2", ws.Cells[2, 4].Value);
         }
         [TestMethod]
         public void VerifyFullAddress()
         {
-            using (ExcelPackage? pck = new ExcelPackage())
-            {
-                ExcelWorksheet? ws = pck.Workbook.Worksheets.Add("AddressVerify");
-                Assert.AreEqual("AddressVerify!B6:D8", ws.Cells["B6:D8"].FullAddress);
-                Assert.AreEqual("AddressVerify!B6:D8,AddressVerify!B10:D11", ws.Cells["B6:D8,B10:D11"].FullAddress);
-            }
+            using ExcelPackage? pck = new ExcelPackage();
+            ExcelWorksheet? ws = pck.Workbook.Worksheets.Add("AddressVerify");
+            Assert.AreEqual("AddressVerify!B6:D8", ws.Cells["B6:D8"].FullAddress);
+            Assert.AreEqual("AddressVerify!B6:D8,AddressVerify!B10:D11", ws.Cells["B6:D8,B10:D11"].FullAddress);
 
         }
         [TestMethod]
         public void VerifyFullWorksheetAddress()
         {
-            using (ExcelPackage? pck = new ExcelPackage())
-            {
-                ExcelWorksheet? ws1 = pck.Workbook.Worksheets.Add("FullSheet");
-                ws1.SetValue("A1", "Col1");
-                ws1.SetValue("B1", "Col2");
-                ws1.SetValue("A2", 1);
-                ws1.SetValue("B2", "Row 1");
-                ws1.SetValue("A3", 2);
-                ws1.SetValue("B3", "Row 2");
-                ws1.SetValue("A4", 3);
-                ws1.SetValue("B4", "Row 3");
+            using ExcelPackage? pck = new ExcelPackage();
+            ExcelWorksheet? ws1 = pck.Workbook.Worksheets.Add("FullSheet");
+            ws1.SetValue("A1", "Col1");
+            ws1.SetValue("B1", "Col2");
+            ws1.SetValue("A2", 1);
+            ws1.SetValue("B2", "Row 1");
+            ws1.SetValue("A3", 2);
+            ws1.SetValue("B3", "Row 2");
+            ws1.SetValue("A4", 3);
+            ws1.SetValue("B4", "Row 3");
 
-                ExcelWorksheet? ws2 = pck.Workbook.Worksheets.Add("Formula");
-                ws2.SetFormula(1, 1, "VLOOKUP(2,FullSheet,2,FALSE)");
-                ws2.SetFormula(2, 1, "VLOOKUP(3,'FullSheet',2,FALSE)");
-                ws2.Calculate();
-                Assert.AreEqual("Row 2", ws2.Cells["A1"].Value);
-                Assert.AreEqual("Row 3", ws2.Cells["A2"].Value);
-            }
+            ExcelWorksheet? ws2 = pck.Workbook.Worksheets.Add("Formula");
+            ws2.SetFormula(1, 1, "VLOOKUP(2,FullSheet,2,FALSE)");
+            ws2.SetFormula(2, 1, "VLOOKUP(3,'FullSheet',2,FALSE)");
+            ws2.Calculate();
+            Assert.AreEqual("Row 2", ws2.Cells["A1"].Value);
+            Assert.AreEqual("Row 3", ws2.Cells["A2"].Value);
         }
         [TestMethod]
         public void VerifyFullWorksheetAddressR1C1Start()
         {
-            using (ExcelPackage? pck = new ExcelPackage())
-            {
-                ExcelWorkbook? wb = pck.Workbook;
+            using ExcelPackage? pck = new ExcelPackage();
+            ExcelWorkbook? wb = pck.Workbook;
 
-                ExcelWorksheet? ws = wb.Worksheets.Add("RC01");
-                ExcelNamedRange? n=wb.Names.Add("Name1", ws.Cells["A1"]);
-                Assert.AreEqual("'RC01'!$A$1", n.FullAddressAbsolute);
+            ExcelWorksheet? ws = wb.Worksheets.Add("RC01");
+            ExcelNamedRange? n = wb.Names.Add("Name1", ws.Cells["A1"]);
+            Assert.AreEqual("'RC01'!$A$1", n.FullAddressAbsolute);
 
-                ws = wb.Worksheets.Add("CR01");
-                n = wb.Names.Add("Name2", ws.Cells["A1"]);
-                Assert.AreEqual("CR01!$A$1", n.FullAddressAbsolute);
+            ws = wb.Worksheets.Add("CR01");
+            n = wb.Names.Add("Name2", ws.Cells["A1"]);
+            Assert.AreEqual("CR01!$A$1", n.FullAddressAbsolute);
 
-                ws = wb.Worksheets.Add("C1");
-                n = wb.Names.Add("Name3", ws.Cells["A1"]);
-                Assert.AreEqual("'C1'!$A$1", n.FullAddressAbsolute);
+            ws = wb.Worksheets.Add("C1");
+            n = wb.Names.Add("Name3", ws.Cells["A1"]);
+            Assert.AreEqual("'C1'!$A$1", n.FullAddressAbsolute);
 
-                ws = wb.Worksheets.Add("C0001");
-                n = wb.Names.Add("Name3", ws.Cells["A1"]);
-                Assert.AreEqual("'C0001'!$A$1", n.FullAddressAbsolute);
+            ws = wb.Worksheets.Add("C0001");
+            n = wb.Names.Add("Name3", ws.Cells["A1"]);
+            Assert.AreEqual("'C0001'!$A$1", n.FullAddressAbsolute);
 
-                ws = wb.Worksheets.Add("r9");
-                n = wb.Names.Add("Name4", ws.Cells["A1"]);
-                Assert.AreEqual("'r9'!$A$1", n.FullAddressAbsolute);
+            ws = wb.Worksheets.Add("r9");
+            n = wb.Names.Add("Name4", ws.Cells["A1"]);
+            Assert.AreEqual("'r9'!$A$1", n.FullAddressAbsolute);
 
-                ws = wb.Worksheets.Add("R009_cc");
-                n = wb.Names.Add("Name4", ws.Cells["A1"]);
-                Assert.AreEqual("'R009_cc'!$A$1", n.FullAddressAbsolute);
-            }
+            ws = wb.Worksheets.Add("R009_cc");
+            n = wb.Names.Add("Name4", ws.Cells["A1"]);
+            Assert.AreEqual("'R009_cc'!$A$1", n.FullAddressAbsolute);
         }
         [TestMethod]
         public void R1C1OffSheetReferenceShouldNotBeASharedFormula()
         {
-            using (ExcelPackage package = new ExcelPackage())
-            {
-                ExcelWorksheet ws = package.Workbook.Worksheets.Add("Sheet1");
-                ExcelWorksheet ws2 = package.Workbook.Worksheets.Add("Sheet2");
-                ws2.Cells[1, 3, 4, 3].Value = 2;
-                ws2.Cells[2, 3].Value = 1;
-                ws2.Cells[4, 3].Value = 4;
-                ws.Cells[1, 2].Value = 1;
-                ws.Cells[2, 2].Value = 2;
-                ws.Cells[3, 2].Value = 3;
-                ws.Cells[4, 2].Value = 4;
-                ws.Cells[1, 1, 4, 1].FormulaR1C1 = "COUNTIF(Sheet2!R1C3:R4C3, RC2)";
-                Assert.AreEqual(0, ws._sharedFormulas.Count);
-            }
+            using ExcelPackage package = new ExcelPackage();
+            ExcelWorksheet ws = package.Workbook.Worksheets.Add("Sheet1");
+            ExcelWorksheet ws2 = package.Workbook.Worksheets.Add("Sheet2");
+            ws2.Cells[1, 3, 4, 3].Value = 2;
+            ws2.Cells[2, 3].Value = 1;
+            ws2.Cells[4, 3].Value = 4;
+            ws.Cells[1, 2].Value = 1;
+            ws.Cells[2, 2].Value = 2;
+            ws.Cells[3, 2].Value = 3;
+            ws.Cells[4, 2].Value = 4;
+            ws.Cells[1, 1, 4, 1].FormulaR1C1 = "COUNTIF(Sheet2!R1C3:R4C3, RC2)";
+            Assert.AreEqual(0, ws._sharedFormulas.Count);
         }
         [TestMethod]
         public void R1C1ReferenceShouldBeASharedFormula()
         {
-            using (ExcelPackage package = new ExcelPackage())
-            {
-                ExcelWorksheet ws = package.Workbook.Worksheets.Add("Sheet1");
-                ws.Cells[1, 3, 4, 3].Value = 2;
-                ws.Cells[2, 3].Value = 1;
-                ws.Cells[4, 3].Value = 4;
-                ws.Cells[1, 2].Value = 1;
-                ws.Cells[2, 2].Value = 2;
-                ws.Cells[3, 2].Value = 3;
-                ws.Cells[4, 2].Value = 4;
-                ws.Cells["A10:A14"].FormulaR1C1 = "COUNTIF(R1C3:R4C3, RC2)";
-                Assert.AreEqual(1, ws._sharedFormulas.Count);
-            }
+            using ExcelPackage package = new ExcelPackage();
+            ExcelWorksheet ws = package.Workbook.Worksheets.Add("Sheet1");
+            ws.Cells[1, 3, 4, 3].Value = 2;
+            ws.Cells[2, 3].Value = 1;
+            ws.Cells[4, 3].Value = 4;
+            ws.Cells[1, 2].Value = 1;
+            ws.Cells[2, 2].Value = 2;
+            ws.Cells[3, 2].Value = 3;
+            ws.Cells[4, 2].Value = 4;
+            ws.Cells["A10:A14"].FormulaR1C1 = "COUNTIF(R1C3:R4C3, RC2)";
+            Assert.AreEqual(1, ws._sharedFormulas.Count);
         }
         [TestMethod]
         public void ValidateMultiAddress_b1_b5_c4()

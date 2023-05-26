@@ -213,20 +213,18 @@ namespace EPPlusTest.FormulaParsing.IntegrationTests
         [TestMethod]
         public void ShouldHandlePercentStrings()
         {
-            using(ExcelPackage? pck = new ExcelPackage())
-            {
-                ExcelWorksheet? sheet = pck.Workbook.Worksheets.Add("test");
+            using ExcelPackage? pck = new ExcelPackage();
+            ExcelWorksheet? sheet = pck.Workbook.Worksheets.Add("test");
 
-                sheet.Cells["A1"].Value = "1%";
-                sheet.Cells["B1"].Formula = "A1 * 5";
-                sheet.Calculate();
-                Assert.AreEqual(0.05d, sheet.Cells["B1"].Value);
+            sheet.Cells["A1"].Value = "1%";
+            sheet.Cells["B1"].Formula = "A1 * 5";
+            sheet.Calculate();
+            Assert.AreEqual(0.05d, sheet.Cells["B1"].Value);
 
-                sheet.Cells["A1"].Value = "1%%";
-                sheet.Cells["B1"].Formula = "A1 * 5";
-                sheet.Calculate();
-                Assert.AreEqual(ExcelErrorValue.Create(eErrorType.Value), sheet.Cells["B1"].Value);
-            }
+            sheet.Cells["A1"].Value = "1%%";
+            sheet.Cells["B1"].Formula = "A1 * 5";
+            sheet.Calculate();
+            Assert.AreEqual(ExcelErrorValue.Create(eErrorType.Value), sheet.Cells["B1"].Value);
         }
     }
 }

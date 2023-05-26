@@ -576,14 +576,12 @@ namespace OfficeOpenXml
         /// <param name="stream">Stream</param>
         private static void WriteFileToStream(string path, Stream stream)
         {
-            using (FileStream? fileStream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+            using FileStream? fileStream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+            byte[]? buffer = new byte[4096];
+            int read;
+            while ((read = fileStream.Read(buffer, 0, buffer.Length)) > 0)
             {
-                byte[]? buffer = new byte[4096];
-                int read;
-                while ((read = fileStream.Read(buffer, 0, buffer.Length)) > 0)
-                {
-                    stream.Write(buffer, 0, read);
-                }
+                stream.Write(buffer, 0, read);
             }
         }
         private void CreateBlankWb()
@@ -926,10 +924,8 @@ namespace OfficeOpenXml
                             file = ms.ToArray();
                         }
                         EncryptedPackageHandler eph = new EncryptedPackageHandler();
-                        using (MemoryStream? msEnc = eph.EncryptPackage(file, Encryption))
-                        {
-                            StreamUtil.CopyStream(msEnc, ref _stream);
-                        }
+                        using MemoryStream? msEnc = eph.EncryptPackage(file, Encryption);
+                        StreamUtil.CopyStream(msEnc, ref _stream);
                     }   
                     else
                     {
@@ -956,25 +952,21 @@ namespace OfficeOpenXml
                     ZipPackage.Close();
                     if (Stream is MemoryStream)
                     {
-                        using (FileStream? fi = new FileStream(File.FullName, FileMode.Create))
+                        using FileStream? fi = new FileStream(File.FullName, FileMode.Create);
+                        //EncryptPackage
+                        if (Encryption.IsEncrypted)
                         {
-                            //EncryptPackage
-                            if (Encryption.IsEncrypted)
-                            {
-                                byte[] file = ((MemoryStream)Stream).ToArray();
-                                EncryptedPackageHandler eph = new EncryptedPackageHandler();
+                            byte[] file = ((MemoryStream)Stream).ToArray();
+                            EncryptedPackageHandler eph = new EncryptedPackageHandler();
 
-                                using (MemoryStream? ms = eph.EncryptPackage(file, Encryption))
-                                {
-                                    fi.Write(ms.ToArray(), 0, (int)ms.Length);
-                                }
-                            }
-                            else
-                            {
-                                fi.Write(((MemoryStream)Stream).ToArray(), 0, (int)Stream.Length);
-                            }
-                            fi.Close();
+                            using MemoryStream? ms = eph.EncryptPackage(file, Encryption);
+                            fi.Write(ms.ToArray(), 0, (int)ms.Length);
                         }
+                        else
+                        {
+                            fi.Write(((MemoryStream)Stream).ToArray(), 0, (int)Stream.Length);
+                        }
+                        fi.Close();
                     }
                     else
                     {
@@ -1227,10 +1219,8 @@ namespace OfficeOpenXml
             if (Encryption.IsEncrypted)
             {
                 EncryptedPackageHandler eph=new EncryptedPackageHandler();
-                using (MemoryStream? ms = eph.EncryptPackage(byRet, Encryption))
-                {
-                    byRet = ms.ToArray();
-                }
+                using MemoryStream? ms = eph.EncryptPackage(byRet, Encryption);
+                byRet = ms.ToArray();
             }
 
             Stream.Seek(pos, SeekOrigin.Begin);

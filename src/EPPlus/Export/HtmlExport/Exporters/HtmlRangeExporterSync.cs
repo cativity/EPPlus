@@ -44,15 +44,11 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
         /// <returns>A html table</returns>
         public string GetHtmlString()
         {
-            using (MemoryStream? ms = RecyclableMemory.GetStream())
-            {
-                RenderHtml(ms, 0);
-                ms.Position = 0;
-                using (StreamReader? sr = new StreamReader(ms))
-                {
-                    return sr.ReadToEnd();
-                }
-            }
+            using MemoryStream? ms = RecyclableMemory.GetStream();
+            RenderHtml(ms, 0);
+            ms.Position = 0;
+            using StreamReader? sr = new StreamReader(ms);
+            return sr.ReadToEnd();
         }
         /// <summary>
         /// Exports an <see cref="ExcelTable"/> to a html string
@@ -61,15 +57,11 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
         public string GetHtmlString(int rangeIndex)
         {
             ValidateRangeIndex(rangeIndex);
-            using (MemoryStream? ms = RecyclableMemory.GetStream())
-            {
-                RenderHtml(ms, rangeIndex);
-                ms.Position = 0;
-                using (StreamReader? sr = new StreamReader(ms))
-                {
-                    return sr.ReadToEnd();
-                }
-            }
+            using MemoryStream? ms = RecyclableMemory.GetStream();
+            RenderHtml(ms, rangeIndex);
+            ms.Position = 0;
+            using StreamReader? sr = new StreamReader(ms);
+            return sr.ReadToEnd();
         }
 
         /// <summary>
@@ -81,15 +73,11 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
         public string GetHtmlString(int rangeIndex, ExcelHtmlOverrideExportSettings settings)
         {
             ValidateRangeIndex(rangeIndex);
-            using (MemoryStream? ms = RecyclableMemory.GetStream())
-            {
-                RenderHtml(ms, rangeIndex, settings);
-                ms.Position = 0;
-                using (StreamReader? sr = new StreamReader(ms))
-                {
-                    return sr.ReadToEnd();
-                }
-            }
+            using MemoryStream? ms = RecyclableMemory.GetStream();
+            RenderHtml(ms, rangeIndex, settings);
+            ms.Position = 0;
+            using StreamReader? sr = new StreamReader(ms);
+            return sr.ReadToEnd();
         }
 
         /// <summary>

@@ -55,83 +55,75 @@ namespace EPPlusTest.Table.PivotTable
         [TestMethod]
         public void ValidateLoadSaveTableSource()
         {
-            using (ExcelPackage p1 = new ExcelPackage())
-            {
-                string? tblName = "Table1";
-                string? tblAddress = "A1:D4";
-                ExcelWorksheet? wsData = p1.Workbook.Worksheets.Add("TableData");
-                wsData.Cells["A1"].Value = "Column1";
-                wsData.Cells["B1"].Value = "Column2";
-                wsData.Cells["C1"].Value = "Column3";
-                wsData.Cells["D1"].Value = "Column4";
-                ExcelWorksheet? wsPivot = p1.Workbook.Worksheets.Add("PivotSimple");
-                ExcelTable? Table1 = wsData.Tables.Add(wsData.Cells[tblAddress], tblName);
-                ExcelPivotTable? pivotTable1 = wsPivot.PivotTables.Add(wsPivot.Cells["A1"], wsData.Cells[Table1.Address.Address], "PivotTable1");
+            using ExcelPackage p1 = new ExcelPackage();
+            string? tblName = "Table1";
+            string? tblAddress = "A1:D4";
+            ExcelWorksheet? wsData = p1.Workbook.Worksheets.Add("TableData");
+            wsData.Cells["A1"].Value = "Column1";
+            wsData.Cells["B1"].Value = "Column2";
+            wsData.Cells["C1"].Value = "Column3";
+            wsData.Cells["D1"].Value = "Column4";
+            ExcelWorksheet? wsPivot = p1.Workbook.Worksheets.Add("PivotSimple");
+            ExcelTable? Table1 = wsData.Tables.Add(wsData.Cells[tblAddress], tblName);
+            ExcelPivotTable? pivotTable1 = wsPivot.PivotTables.Add(wsPivot.Cells["A1"], wsData.Cells[Table1.Address.Address], "PivotTable1");
 
-                pivotTable1.RowFields.Add(pivotTable1.Fields[0]);
-                pivotTable1.DataFields.Add(pivotTable1.Fields[1]);
-                pivotTable1.ColumnFields.Add(pivotTable1.Fields[2]);
+            pivotTable1.RowFields.Add(pivotTable1.Fields[0]);
+            pivotTable1.DataFields.Add(pivotTable1.Fields[1]);
+            pivotTable1.ColumnFields.Add(pivotTable1.Fields[2]);
 
-                Assert.AreEqual(tblAddress, wsPivot.PivotTables[0].CacheDefinition.SourceRange.Address);
-                Assert.AreEqual(Table1.Columns.Count, pivotTable1.Fields.Count);
-                Assert.AreEqual(1, pivotTable1.RowFields.Count);
-                Assert.AreEqual(1, pivotTable1.DataFields.Count);
-                Assert.AreEqual(1, pivotTable1.ColumnFields.Count);
+            Assert.AreEqual(tblAddress, wsPivot.PivotTables[0].CacheDefinition.SourceRange.Address);
+            Assert.AreEqual(Table1.Columns.Count, pivotTable1.Fields.Count);
+            Assert.AreEqual(1, pivotTable1.RowFields.Count);
+            Assert.AreEqual(1, pivotTable1.DataFields.Count);
+            Assert.AreEqual(1, pivotTable1.ColumnFields.Count);
 
-                p1.Save();
+            p1.Save();
 
-                using (ExcelPackage? p2 = new ExcelPackage(p1.Stream))
-                {
-                    wsData = p2.Workbook.Worksheets[0];
-                    wsPivot = p2.Workbook.Worksheets[1];
+            using ExcelPackage? p2 = new ExcelPackage(p1.Stream);
+            wsData = p2.Workbook.Worksheets[0];
+            wsPivot = p2.Workbook.Worksheets[1];
 
-                    pivotTable1 = wsPivot.PivotTables[0];
-                    Assert.AreEqual(tblAddress, pivotTable1.CacheDefinition.SourceRange.Address);
-                    Assert.AreEqual(Table1.Columns.Count, pivotTable1.Fields.Count);
-                    Assert.AreEqual(1, pivotTable1.RowFields.Count);
-                    Assert.AreEqual(1, pivotTable1.DataFields.Count);
-                    Assert.AreEqual(1, pivotTable1.ColumnFields.Count);
-                }
-            }
+            pivotTable1 = wsPivot.PivotTables[0];
+            Assert.AreEqual(tblAddress, pivotTable1.CacheDefinition.SourceRange.Address);
+            Assert.AreEqual(Table1.Columns.Count, pivotTable1.Fields.Count);
+            Assert.AreEqual(1, pivotTable1.RowFields.Count);
+            Assert.AreEqual(1, pivotTable1.DataFields.Count);
+            Assert.AreEqual(1, pivotTable1.ColumnFields.Count);
         }
         [TestMethod]
         public void ValidateLoadSaveAddressSource()
         {
-            using (ExcelPackage p1 = new ExcelPackage())
-            {
-                string? address = "A1:D4";
-                ExcelWorksheet? wsData = p1.Workbook.Worksheets.Add("TableData");
-                wsData.Cells["A1"].Value = "Column1";
-                wsData.Cells["B1"].Value = "Column2";
-                wsData.Cells["C1"].Value = "Column3";
-                wsData.Cells["D1"].Value = "Column4";
-                ExcelWorksheet? wsPivot = p1.Workbook.Worksheets.Add("PivotSimple");
-                ExcelPivotTable? pivotTable1 = wsPivot.PivotTables.Add(wsPivot.Cells["A1"], wsData.Cells[address], "PivotTable1");
-                pivotTable1.RowFields.Add(pivotTable1.Fields[0]);
-                pivotTable1.DataFields.Add(pivotTable1.Fields[1]);
-                pivotTable1.ColumnFields.Add(pivotTable1.Fields[2]);
+            using ExcelPackage p1 = new ExcelPackage();
+            string? address = "A1:D4";
+            ExcelWorksheet? wsData = p1.Workbook.Worksheets.Add("TableData");
+            wsData.Cells["A1"].Value = "Column1";
+            wsData.Cells["B1"].Value = "Column2";
+            wsData.Cells["C1"].Value = "Column3";
+            wsData.Cells["D1"].Value = "Column4";
+            ExcelWorksheet? wsPivot = p1.Workbook.Worksheets.Add("PivotSimple");
+            ExcelPivotTable? pivotTable1 = wsPivot.PivotTables.Add(wsPivot.Cells["A1"], wsData.Cells[address], "PivotTable1");
+            pivotTable1.RowFields.Add(pivotTable1.Fields[0]);
+            pivotTable1.DataFields.Add(pivotTable1.Fields[1]);
+            pivotTable1.ColumnFields.Add(pivotTable1.Fields[2]);
 
-                Assert.AreEqual(address, wsPivot.PivotTables[0].CacheDefinition.SourceRange.Address);
-                Assert.AreEqual(4, pivotTable1.Fields.Count);
-                Assert.AreEqual(1, pivotTable1.RowFields.Count);
-                Assert.AreEqual(1, pivotTable1.DataFields.Count);
-                Assert.AreEqual(1, pivotTable1.ColumnFields.Count);
+            Assert.AreEqual(address, wsPivot.PivotTables[0].CacheDefinition.SourceRange.Address);
+            Assert.AreEqual(4, pivotTable1.Fields.Count);
+            Assert.AreEqual(1, pivotTable1.RowFields.Count);
+            Assert.AreEqual(1, pivotTable1.DataFields.Count);
+            Assert.AreEqual(1, pivotTable1.ColumnFields.Count);
 
-                p1.Save();
+            p1.Save();
 
-                using (ExcelPackage? p2 = new ExcelPackage(p1.Stream))
-                {
-                    wsData = p2.Workbook.Worksheets[0];
-                    wsPivot = p2.Workbook.Worksheets[1];
+            using ExcelPackage? p2 = new ExcelPackage(p1.Stream);
+            wsData = p2.Workbook.Worksheets[0];
+            wsPivot = p2.Workbook.Worksheets[1];
 
-                    pivotTable1 = wsPivot.PivotTables[0];
-                    Assert.AreEqual(address, pivotTable1.CacheDefinition.SourceRange.Address);
-                    Assert.AreEqual(4, pivotTable1.Fields.Count);
-                    Assert.AreEqual(1, pivotTable1.RowFields.Count);
-                    Assert.AreEqual(1, pivotTable1.DataFields.Count);
-                    Assert.AreEqual(1, pivotTable1.ColumnFields.Count);
-                }
-            }
+            pivotTable1 = wsPivot.PivotTables[0];
+            Assert.AreEqual(address, pivotTable1.CacheDefinition.SourceRange.Address);
+            Assert.AreEqual(4, pivotTable1.Fields.Count);
+            Assert.AreEqual(1, pivotTable1.RowFields.Count);
+            Assert.AreEqual(1, pivotTable1.DataFields.Count);
+            Assert.AreEqual(1, pivotTable1.ColumnFields.Count);
         }
 
         [TestMethod]
@@ -493,55 +485,47 @@ namespace EPPlusTest.Table.PivotTable
         [ExpectedException(typeof(ArgumentException))]
         public void ShouldThrowExceptionOnAddingCalculatedFieldToColumns()
         {
-            using(ExcelPackage? p=new ExcelPackage())
-            {
-                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("RowArgExcep");
-                LoadTestdata(ws);
-                string? formula = "NumValue*2";
-                ExcelPivotTable? tbl = ws.PivotTables.Add(ws.Cells["F1"], ws.Cells["A1:D100"], "PivotTable1");
-                tbl.Fields.AddCalculatedField("NumValueX2", formula);
-                ExcelPivotTableField? rf = tbl.ColumnFields.Add(tbl.Fields[4]);
-            }
+            using ExcelPackage? p = new ExcelPackage();
+            ExcelWorksheet? ws = p.Workbook.Worksheets.Add("RowArgExcep");
+            LoadTestdata(ws);
+            string? formula = "NumValue*2";
+            ExcelPivotTable? tbl = ws.PivotTables.Add(ws.Cells["F1"], ws.Cells["A1:D100"], "PivotTable1");
+            tbl.Fields.AddCalculatedField("NumValueX2", formula);
+            ExcelPivotTableField? rf = tbl.ColumnFields.Add(tbl.Fields[4]);
         }
         [TestMethod]
         [ExpectedException(typeof(ArgumentException))]
         public void ShouldThrowExceptionOnAddingCalculatedFieldToRow()
         {
-            using (ExcelPackage? p = new ExcelPackage())
-            {
-                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("RowArgExcep");
-                LoadTestdata(ws);
-                string? formula = "NumValue*2";
-                ExcelPivotTable? tbl = ws.PivotTables.Add(ws.Cells["F1"], ws.Cells["A1:D100"], "PivotTable1");
-                tbl.Fields.AddCalculatedField("NumValueX2", formula);
-                ExcelPivotTableField? rf = tbl.RowFields.Add(tbl.Fields[4]);
-            }
+            using ExcelPackage? p = new ExcelPackage();
+            ExcelWorksheet? ws = p.Workbook.Worksheets.Add("RowArgExcep");
+            LoadTestdata(ws);
+            string? formula = "NumValue*2";
+            ExcelPivotTable? tbl = ws.PivotTables.Add(ws.Cells["F1"], ws.Cells["A1:D100"], "PivotTable1");
+            tbl.Fields.AddCalculatedField("NumValueX2", formula);
+            ExcelPivotTableField? rf = tbl.RowFields.Add(tbl.Fields[4]);
         }
         [TestMethod]
         [ExpectedException(typeof(ArgumentException))]
         public void ShouldThrowExceptionOnAddingCalculatedFieldToPage()
         {
-            using (ExcelPackage? p = new ExcelPackage())
-            {
-                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("RowArgExcep");
-                LoadTestdata(ws);
-                string? formula = "NumValue*2";
-                ExcelPivotTable? tbl = ws.PivotTables.Add(ws.Cells["F1"], ws.Cells["A1:D100"], "PivotTable1");
-                tbl.Fields.AddCalculatedField("NumValueX2", formula);
-                ExcelPivotTableField? rf = tbl.PageFields.Add(tbl.Fields[4]);
-            }
+            using ExcelPackage? p = new ExcelPackage();
+            ExcelWorksheet? ws = p.Workbook.Worksheets.Add("RowArgExcep");
+            LoadTestdata(ws);
+            string? formula = "NumValue*2";
+            ExcelPivotTable? tbl = ws.PivotTables.Add(ws.Cells["F1"], ws.Cells["A1:D100"], "PivotTable1");
+            tbl.Fields.AddCalculatedField("NumValueX2", formula);
+            ExcelPivotTableField? rf = tbl.PageFields.Add(tbl.Fields[4]);
         }
         [TestMethod]
         [ExpectedException(typeof(ArgumentException))]
         public void ShouldThrowExceptionOnAddingCalculatedFieldWithBlankFormula()
         {
-            using (ExcelPackage? p = new ExcelPackage())
-            {
-                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("RowArgExcep");
-                LoadTestdata(ws);
-                ExcelPivotTable? tbl = ws.PivotTables.Add(ws.Cells["F1"], ws.Cells["A1:D100"], "PivotTable1");
-                tbl.Fields.AddCalculatedField("NumValueX2", "");
-            }
+            using ExcelPackage? p = new ExcelPackage();
+            ExcelWorksheet? ws = p.Workbook.Worksheets.Add("RowArgExcep");
+            LoadTestdata(ws);
+            ExcelPivotTable? tbl = ws.PivotTables.Add(ws.Cells["F1"], ws.Cells["A1:D100"], "PivotTable1");
+            tbl.Fields.AddCalculatedField("NumValueX2", "");
         }
         [TestMethod]
         public void PivotTableStyleTests()
@@ -615,75 +599,73 @@ namespace EPPlusTest.Table.PivotTable
         [TestMethod]
         public void ValidateAttributesWhenNumbericAndMissing()
         {
-            using (ExcelPackage? p = new ExcelPackage())
-            {
-                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("NumericAndNull");
-                ws.Cells["A1"].Value = "Int";
-                ws.Cells["A2"].Value = 1;
-                ws.Cells["A3"].Value = 2;
-                ws.Cells["A4"].Value = 2;
+            using ExcelPackage? p = new ExcelPackage();
+            ExcelWorksheet? ws = p.Workbook.Worksheets.Add("NumericAndNull");
+            ws.Cells["A1"].Value = "Int";
+            ws.Cells["A2"].Value = 1;
+            ws.Cells["A3"].Value = 2;
+            ws.Cells["A4"].Value = 2;
 
-                ws.Cells["B1"].Value = "Float";
-                ws.Cells["B2"].Value = 1.3;
-                ws.Cells["B3"].Value = 2.4;
-                ws.Cells["B4"].Value = 5.6;
+            ws.Cells["B1"].Value = "Float";
+            ws.Cells["B2"].Value = 1.3;
+            ws.Cells["B3"].Value = 2.4;
+            ws.Cells["B4"].Value = 5.6;
 
-                ws.Cells["C1"].Value = "IntFloat";
-                ws.Cells["C2"].Value = 3;
-                ws.Cells["C3"].Value = 2.4;
-                ws.Cells["C4"].Value = 2;
+            ws.Cells["C1"].Value = "IntFloat";
+            ws.Cells["C2"].Value = 3;
+            ws.Cells["C3"].Value = 2.4;
+            ws.Cells["C4"].Value = 2;
 
-                ws.Cells["D1"].Value = "IntNull";
-                ws.Cells["D2"].Value = 3;
-                ws.Cells["D4"].Value = 3;
+            ws.Cells["D1"].Value = "IntNull";
+            ws.Cells["D2"].Value = 3;
+            ws.Cells["D4"].Value = 3;
 
-                ws.Cells["E1"].Value = "FloatNull";
-                ws.Cells["E3"].Value = 4.2;
-                ws.Cells["E4"].Value = 5.7;
+            ws.Cells["E1"].Value = "FloatNull";
+            ws.Cells["E3"].Value = 4.2;
+            ws.Cells["E4"].Value = 5.7;
 
-                ws.Cells["F1"].Value = "IntFloatNull";
-                ws.Cells["F2"].Value = 5;
-                ws.Cells["F4"].Value = 6.2;
+            ws.Cells["F1"].Value = "IntFloatNull";
+            ws.Cells["F2"].Value = 5;
+            ws.Cells["F4"].Value = 6.2;
 
-                ws.Cells["G1"].Value = "StringNull";
-                ws.Cells["G2"].Value = "Value 1";
-                ws.Cells["G4"].Value = "Value 3";
+            ws.Cells["G1"].Value = "StringNull";
+            ws.Cells["G2"].Value = "Value 1";
+            ws.Cells["G4"].Value = "Value 3";
 
-                ws.Cells["H1"].Value = "MixedIntBool";
-                ws.Cells["H2"].Value = 1;
-                ws.Cells["H4"].Value = true;
+            ws.Cells["H1"].Value = "MixedIntBool";
+            ws.Cells["H2"].Value = 1;
+            ws.Cells["H4"].Value = true;
 
-                ws.Cells["I1"].Value = "Mixed float";
-                ws.Cells["I3"].Value = 3.3;
-                ws.Cells["I4"].Value = "Value 3";
+            ws.Cells["I1"].Value = "Mixed float";
+            ws.Cells["I3"].Value = 3.3;
+            ws.Cells["I4"].Value = "Value 3";
 
 
-                ExcelPivotTable? tbl = ws.PivotTables.Add(ws.Cells["K3"], ws.Cells["A1:I4"], "ptNumberMissing");
-                ExcelPivotTableField? pf1 = tbl.PageFields.Add(tbl.Fields[0]);
-                ExcelPivotTableField? pf2 = tbl.PageFields.Add(tbl.Fields[1]);
-                ExcelPivotTableField? pf3 = tbl.PageFields.Add(tbl.Fields[2]);
-                ExcelPivotTableField? pf4 = tbl.PageFields.Add(tbl.Fields[3]);
-                ExcelPivotTableField? pf5 = tbl.PageFields.Add(tbl.Fields[4]);
-                ExcelPivotTableField? pf6 = tbl.PageFields.Add(tbl.Fields[5]);
-                ExcelPivotTableField? pf7 = tbl.PageFields.Add(tbl.Fields[6]);
-                ExcelPivotTableField? pf8 = tbl.PageFields.Add(tbl.Fields[7]);
-                ExcelPivotTableField? pf9 = tbl.PageFields.Add(tbl.Fields[8]);
+            ExcelPivotTable? tbl = ws.PivotTables.Add(ws.Cells["K3"], ws.Cells["A1:I4"], "ptNumberMissing");
+            ExcelPivotTableField? pf1 = tbl.PageFields.Add(tbl.Fields[0]);
+            ExcelPivotTableField? pf2 = tbl.PageFields.Add(tbl.Fields[1]);
+            ExcelPivotTableField? pf3 = tbl.PageFields.Add(tbl.Fields[2]);
+            ExcelPivotTableField? pf4 = tbl.PageFields.Add(tbl.Fields[3]);
+            ExcelPivotTableField? pf5 = tbl.PageFields.Add(tbl.Fields[4]);
+            ExcelPivotTableField? pf6 = tbl.PageFields.Add(tbl.Fields[5]);
+            ExcelPivotTableField? pf7 = tbl.PageFields.Add(tbl.Fields[6]);
+            ExcelPivotTableField? pf8 = tbl.PageFields.Add(tbl.Fields[7]);
+            ExcelPivotTableField? pf9 = tbl.PageFields.Add(tbl.Fields[8]);
 
-                tbl.CacheDefinition.Refresh();
+            tbl.CacheDefinition.Refresh();
 
-                p.Save();
+            p.Save();
 
-                AssertShartedItemsAttributes(pf1.Cache.TopNode.FirstChild, 4, true, true,false, false, false);
-                AssertShartedItemsAttributes(pf2.Cache.TopNode.FirstChild, 3, true, false, false, false, false);
-                AssertShartedItemsAttributes(pf3.Cache.TopNode.FirstChild, 3, true, false, false, false, false);
-                AssertShartedItemsAttributes(pf4.Cache.TopNode.FirstChild, 4, true, true, true, false, false);
-                AssertShartedItemsAttributes(pf5.Cache.TopNode.FirstChild, 3, true, false, true, false, false);
-                AssertShartedItemsAttributes(pf6.Cache.TopNode.FirstChild, 3, true, false, true, false, false);
-                AssertShartedItemsAttributes(pf7.Cache.TopNode.FirstChild, 1, false, false,true, false, false);
+            AssertShartedItemsAttributes(pf1.Cache.TopNode.FirstChild, 4, true, true, false, false, false);
+            AssertShartedItemsAttributes(pf2.Cache.TopNode.FirstChild, 3, true, false, false, false, false);
+            AssertShartedItemsAttributes(pf3.Cache.TopNode.FirstChild, 3, true, false, false, false, false);
+            AssertShartedItemsAttributes(pf4.Cache.TopNode.FirstChild, 4, true, true, true, false, false);
+            AssertShartedItemsAttributes(pf5.Cache.TopNode.FirstChild, 3, true, false, true, false, false);
+            AssertShartedItemsAttributes(pf6.Cache.TopNode.FirstChild, 3, true, false, true, false, false);
+            AssertShartedItemsAttributes(pf7.Cache.TopNode.FirstChild, 1, false, false, true, false, false);
 
-                AssertShartedItemsAttributes(pf8.Cache.TopNode.FirstChild, 4, true, true, true, false, true);
-                AssertShartedItemsAttributes(pf9.Cache.TopNode.FirstChild, 3, true, false, true, false, true);
-            }
+            AssertShartedItemsAttributes(pf8.Cache.TopNode.FirstChild, 4, true, true, true, false, true);
+            AssertShartedItemsAttributes(pf9.Cache.TopNode.FirstChild, 3, true, false, true, false, true);
         }
 
         private static void AssertShartedItemsAttributes(XmlNode node, int count,bool numberValues, bool intValues, bool containsBlanks, bool semiMixedValues, bool mixedValues)
@@ -722,24 +704,22 @@ namespace EPPlusTest.Table.PivotTable
         [TestMethod]
         public void CopyPivotTableToExternalPackageSameWorksheetAsData()
         {
-            using (ExcelPackage? p = new ExcelPackage())
+            using ExcelPackage? p = new ExcelPackage();
+            ExcelWorksheet? ws = p.Workbook.Worksheets.Add("data");
+            LoadTestdata(ws);
+
+            ExcelPivotTable? pivotTable1 = ws.PivotTables.Add(ws.Cells["G1"], ws.Cells["A1:D100"], "PivotTable1");
+            pivotTable1.RowFields.Add(pivotTable1.Fields[0]);
+            pivotTable1.RowFields.Add(pivotTable1.Fields[2]);
+            pivotTable1.DataFields.Add(pivotTable1.Fields[1]);
+            pivotTable1.DataFields.Add(pivotTable1.Fields[3]);
+
+            using (ExcelPackage? p2 = new ExcelPackage())
             {
-                ExcelWorksheet? ws=p.Workbook.Worksheets.Add("data");
-                LoadTestdata(ws);
-
-                ExcelPivotTable? pivotTable1 = ws.PivotTables.Add(ws.Cells["G1"], ws.Cells["A1:D100"], "PivotTable1");
-                pivotTable1.RowFields.Add(pivotTable1.Fields[0]);
-                pivotTable1.RowFields.Add(pivotTable1.Fields[2]);
-                pivotTable1.DataFields.Add(pivotTable1.Fields[1]);
-                pivotTable1.DataFields.Add(pivotTable1.Fields[3]);
-
-                using(ExcelPackage? p2 = new ExcelPackage())
-                {
-                    ExcelWorksheet? wsNew = p2.Workbook.Worksheets.Add("PivotCopy", ws);
-                    SaveWorkbook("copiedPivot.xlsx", p2);
-                }
-                SaveWorkbook("Pivot.xlsx", p);
+                ExcelWorksheet? wsNew = p2.Workbook.Worksheets.Add("PivotCopy", ws);
+                SaveWorkbook("copiedPivot.xlsx", p2);
             }
+            SaveWorkbook("Pivot.xlsx", p);
         }
     }
 }

@@ -147,171 +147,155 @@ namespace EPPlusTest.Core.Range.Delete
         [TestMethod]
         public void SharedFormulaShouldBeDeletedIfEntireRowIsDeleted()
         {
-            using (ExcelPackage? p = new ExcelPackage())
-            {
-                //Setup
-                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Sheet1");
-                ws.Cells["A2:B2"].Formula = "C2";
-                //Act
-                Assert.AreEqual(1, ws._sharedFormulas.Count);
-                ws.DeleteRow(2);
+            using ExcelPackage? p = new ExcelPackage();
+            //Setup
+            ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Sheet1");
+            ws.Cells["A2:B2"].Formula = "C2";
+            //Act
+            Assert.AreEqual(1, ws._sharedFormulas.Count);
+            ws.DeleteRow(2);
 
-                //Assert
-                Assert.AreEqual(0, ws._sharedFormulas.Count);
-                Assert.AreEqual("", ws.Cells["A2"].Formula);
-                Assert.AreEqual("", ws.Cells["B2"].Formula);
-            }
+            //Assert
+            Assert.AreEqual(0, ws._sharedFormulas.Count);
+            Assert.AreEqual("", ws.Cells["A2"].Formula);
+            Assert.AreEqual("", ws.Cells["B2"].Formula);
         }
         [TestMethod]
         public void SharedFormulaShouldBeDeletedIfEntireColumnIsDeleted()
         {
-            using (ExcelPackage? p = new ExcelPackage())
-            {
-                //Setup
-                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Sheet1");
-                ws.Cells["B1:B2"].Formula = "C2";
-                //Act
-                Assert.AreEqual(1, ws._sharedFormulas.Count);
-                ws.DeleteColumn(2);
+            using ExcelPackage? p = new ExcelPackage();
+            //Setup
+            ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Sheet1");
+            ws.Cells["B1:B2"].Formula = "C2";
+            //Act
+            Assert.AreEqual(1, ws._sharedFormulas.Count);
+            ws.DeleteColumn(2);
 
-                //Assert
-                Assert.AreEqual(0, ws._sharedFormulas.Count);
-                Assert.AreEqual("", ws.Cells["B1"].Formula);
-                Assert.AreEqual("", ws.Cells["B2"].Formula);
-            }
+            //Assert
+            Assert.AreEqual(0, ws._sharedFormulas.Count);
+            Assert.AreEqual("", ws.Cells["B1"].Formula);
+            Assert.AreEqual("", ws.Cells["B2"].Formula);
         }
         [TestMethod]
         public void SharedFormulaShouldBePartialDeletedRow()
         {
-            using (ExcelPackage? p = new ExcelPackage())
-            {
-                //Setup
-                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Sheet1");
-                ws.Cells["A2:B3"].Formula = "C2";
-                //Act
-                Assert.AreEqual(1, ws._sharedFormulas.Count);
-                ws.DeleteRow(2);
+            using ExcelPackage? p = new ExcelPackage();
+            //Setup
+            ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Sheet1");
+            ws.Cells["A2:B3"].Formula = "C2";
+            //Act
+            Assert.AreEqual(1, ws._sharedFormulas.Count);
+            ws.DeleteRow(2);
 
-                //Assert
-                Assert.AreEqual(0, ws._sharedFormulas.Count);
-                Assert.AreEqual("C2", ws.Cells["A2"].Formula);
-                Assert.AreEqual("D2", ws.Cells["B2"].Formula);
-                Assert.AreEqual("", ws.Cells["A3"].Formula);
-                Assert.AreEqual("", ws.Cells["B3"].Formula);
-            }
+            //Assert
+            Assert.AreEqual(0, ws._sharedFormulas.Count);
+            Assert.AreEqual("C2", ws.Cells["A2"].Formula);
+            Assert.AreEqual("D2", ws.Cells["B2"].Formula);
+            Assert.AreEqual("", ws.Cells["A3"].Formula);
+            Assert.AreEqual("", ws.Cells["B3"].Formula);
         }
         [TestMethod]
         public void SharedFormulaShouldBePartialDeletedColumn()
         {
-            using (ExcelPackage? p = new ExcelPackage())
-            {
-                //Setup
-                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Sheet1");
-                ws.Cells["B1:C2"].Formula = "B3";
-                //Act
-                Assert.AreEqual(1, ws._sharedFormulas.Count);
-                ws.DeleteColumn(2);
+            using ExcelPackage? p = new ExcelPackage();
+            //Setup
+            ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Sheet1");
+            ws.Cells["B1:C2"].Formula = "B3";
+            //Act
+            Assert.AreEqual(1, ws._sharedFormulas.Count);
+            ws.DeleteColumn(2);
 
-                //Assert
-                Assert.AreEqual(0, ws._sharedFormulas.Count);
-                Assert.AreEqual("B3", ws.Cells["B1"].Formula);
-                Assert.AreEqual("B4", ws.Cells["B2"].Formula);
-                Assert.AreEqual("", ws.Cells["C1"].Formula);
-                Assert.AreEqual("", ws.Cells["C2"].Formula);
-            }
+            //Assert
+            Assert.AreEqual(0, ws._sharedFormulas.Count);
+            Assert.AreEqual("B3", ws.Cells["B1"].Formula);
+            Assert.AreEqual("B4", ws.Cells["B2"].Formula);
+            Assert.AreEqual("", ws.Cells["C1"].Formula);
+            Assert.AreEqual("", ws.Cells["C2"].Formula);
         }
         [TestMethod]
         public void SharedFormulaShouldBePartialDeletedRowShareFormulaRetained()
         {
-            using (ExcelPackage? p = new ExcelPackage())
-            {
-                //Setup
-                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Sheet1");
-                ws.Cells["A2:B3"].Formula = "E12";
-                //Act
-                Assert.AreEqual(1, ws._sharedFormulas.Count);
-                ws.DeleteRow(2);
+            using ExcelPackage? p = new ExcelPackage();
+            //Setup
+            ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Sheet1");
+            ws.Cells["A2:B3"].Formula = "E12";
+            //Act
+            Assert.AreEqual(1, ws._sharedFormulas.Count);
+            ws.DeleteRow(2);
 
-                //Assert
-                Assert.AreEqual(1, ws._sharedFormulas.Count);
-                Assert.AreEqual("E11", ws.Cells["A2"].Formula);
-                Assert.AreEqual("F11", ws.Cells["B2"].Formula);
-                Assert.AreEqual("", ws.Cells["A3"].Formula);
-                Assert.AreEqual("", ws.Cells["B3"].Formula);
-            }
+            //Assert
+            Assert.AreEqual(1, ws._sharedFormulas.Count);
+            Assert.AreEqual("E11", ws.Cells["A2"].Formula);
+            Assert.AreEqual("F11", ws.Cells["B2"].Formula);
+            Assert.AreEqual("", ws.Cells["A3"].Formula);
+            Assert.AreEqual("", ws.Cells["B3"].Formula);
         }
         [TestMethod]
         public void SharedFormulaShouldBePartialDeletedColumnShareFormulaRetained()
         {
-            using (ExcelPackage? p = new ExcelPackage())
-            {
-                //Setup
-                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Sheet1");
-                ws.Cells["B1:C2"].Formula = "E12";
-                //Act
-                Assert.AreEqual(1, ws._sharedFormulas.Count);
-                ws.DeleteColumn(2);
+            using ExcelPackage? p = new ExcelPackage();
+            //Setup
+            ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Sheet1");
+            ws.Cells["B1:C2"].Formula = "E12";
+            //Act
+            Assert.AreEqual(1, ws._sharedFormulas.Count);
+            ws.DeleteColumn(2);
 
-                //Assert
-                Assert.AreEqual(1, ws._sharedFormulas.Count);
-                Assert.AreEqual("D12", ws.Cells["B1"].Formula);
-                Assert.AreEqual("D13", ws.Cells["B2"].Formula);
-                Assert.AreEqual("", ws.Cells["C1"].Formula);
-                Assert.AreEqual("", ws.Cells["C2"].Formula);
-            }
+            //Assert
+            Assert.AreEqual(1, ws._sharedFormulas.Count);
+            Assert.AreEqual("D12", ws.Cells["B1"].Formula);
+            Assert.AreEqual("D13", ws.Cells["B2"].Formula);
+            Assert.AreEqual("", ws.Cells["C1"].Formula);
+            Assert.AreEqual("", ws.Cells["C2"].Formula);
         }
         [TestMethod]
         public void FixedAddressesShouldBeDeletedRow()
         {
-            using (ExcelPackage? p = new ExcelPackage())
-            {
-                //Setup
-                ExcelWorksheet? ws1 = p.Workbook.Worksheets.Add("Sheet1");
-                ExcelWorksheet? ws2 = p.Workbook.Worksheets.Add("Sheet2");
-                ws1.Cells["A1"].Formula = "SUM($A$5:$A$8)";
-                ws2.Cells["A1"].Formula = "SUM(sheet1!$A$5:$A$8)";
-                //Act
-                ws1.DeleteRow(4);
-                Assert.AreEqual("SUM($A$4:$A$7)", ws1.Cells["A1"].Formula);
-                Assert.AreEqual("SUM(sheet1!$A$4:$A$7)", ws2.Cells["A1"].Formula);
-                ws1.DeleteRow(4);
-                Assert.AreEqual("SUM($A$4:$A$6)", ws1.Cells["A1"].Formula);
-                Assert.AreEqual("SUM(sheet1!$A$4:$A$6)", ws2.Cells["A1"].Formula);
-                ws1.DeleteRow(6);
-                Assert.AreEqual("SUM($A$4:$A$5)", ws1.Cells["A1"].Formula);
-                Assert.AreEqual("SUM(sheet1!$A$4:$A$5)", ws2.Cells["A1"].Formula);
-                ws1.DeleteRow(6);
-                Assert.AreEqual("SUM($A$4:$A$5)", ws1.Cells["A1"].Formula);
-                Assert.AreEqual("SUM(sheet1!$A$4:$A$5)", ws2.Cells["A1"].Formula);
-            }
+            using ExcelPackage? p = new ExcelPackage();
+            //Setup
+            ExcelWorksheet? ws1 = p.Workbook.Worksheets.Add("Sheet1");
+            ExcelWorksheet? ws2 = p.Workbook.Worksheets.Add("Sheet2");
+            ws1.Cells["A1"].Formula = "SUM($A$5:$A$8)";
+            ws2.Cells["A1"].Formula = "SUM(sheet1!$A$5:$A$8)";
+            //Act
+            ws1.DeleteRow(4);
+            Assert.AreEqual("SUM($A$4:$A$7)", ws1.Cells["A1"].Formula);
+            Assert.AreEqual("SUM(sheet1!$A$4:$A$7)", ws2.Cells["A1"].Formula);
+            ws1.DeleteRow(4);
+            Assert.AreEqual("SUM($A$4:$A$6)", ws1.Cells["A1"].Formula);
+            Assert.AreEqual("SUM(sheet1!$A$4:$A$6)", ws2.Cells["A1"].Formula);
+            ws1.DeleteRow(6);
+            Assert.AreEqual("SUM($A$4:$A$5)", ws1.Cells["A1"].Formula);
+            Assert.AreEqual("SUM(sheet1!$A$4:$A$5)", ws2.Cells["A1"].Formula);
+            ws1.DeleteRow(6);
+            Assert.AreEqual("SUM($A$4:$A$5)", ws1.Cells["A1"].Formula);
+            Assert.AreEqual("SUM(sheet1!$A$4:$A$5)", ws2.Cells["A1"].Formula);
         }
         [TestMethod]
         public void FixedAddressesShouldBeDeletedColumn()
         {
-            using (ExcelPackage? p = new ExcelPackage())
-            {
-                //Setup
-                ExcelWorksheet? ws1 = p.Workbook.Worksheets.Add("Sheet1");
-                ExcelWorksheet? ws2 = p.Workbook.Worksheets.Add("Sheet2");
-                ws1.Cells["A1"].Formula = "SUM($E$1:$H$1)";
-                ws2.Cells["A1"].Formula = "SUM(sheet1!$E$1:$H$1)";
-                //Act
-                ws1.DeleteColumn(4);
-                Assert.AreEqual("SUM($D$1:$G$1)", ws1.Cells["A1"].Formula);
-                Assert.AreEqual("SUM(sheet1!$D$1:$G$1)", ws2.Cells["A1"].Formula);
+            using ExcelPackage? p = new ExcelPackage();
+            //Setup
+            ExcelWorksheet? ws1 = p.Workbook.Worksheets.Add("Sheet1");
+            ExcelWorksheet? ws2 = p.Workbook.Worksheets.Add("Sheet2");
+            ws1.Cells["A1"].Formula = "SUM($E$1:$H$1)";
+            ws2.Cells["A1"].Formula = "SUM(sheet1!$E$1:$H$1)";
+            //Act
+            ws1.DeleteColumn(4);
+            Assert.AreEqual("SUM($D$1:$G$1)", ws1.Cells["A1"].Formula);
+            Assert.AreEqual("SUM(sheet1!$D$1:$G$1)", ws2.Cells["A1"].Formula);
 
-                ws1.DeleteColumn(4);
-                Assert.AreEqual("SUM($D$1:$F$1)", ws1.Cells["A1"].Formula);
-                Assert.AreEqual("SUM(sheet1!$D$1:$F$1)", ws2.Cells["A1"].Formula);
+            ws1.DeleteColumn(4);
+            Assert.AreEqual("SUM($D$1:$F$1)", ws1.Cells["A1"].Formula);
+            Assert.AreEqual("SUM(sheet1!$D$1:$F$1)", ws2.Cells["A1"].Formula);
 
-                ws1.DeleteColumn(6);
-                Assert.AreEqual("SUM($D$1:$E$1)", ws1.Cells["A1"].Formula);
-                Assert.AreEqual("SUM(sheet1!$D$1:$E$1)", ws2.Cells["A1"].Formula);
+            ws1.DeleteColumn(6);
+            Assert.AreEqual("SUM($D$1:$E$1)", ws1.Cells["A1"].Formula);
+            Assert.AreEqual("SUM(sheet1!$D$1:$E$1)", ws2.Cells["A1"].Formula);
 
-                ws1.DeleteColumn(6);
-                Assert.AreEqual("SUM($D$1:$E$1)", ws1.Cells["A1"].Formula);
-                Assert.AreEqual("SUM(sheet1!$D$1:$E$1)", ws2.Cells["A1"].Formula);
-            }
+            ws1.DeleteColumn(6);
+            Assert.AreEqual("SUM($D$1:$E$1)", ws1.Cells["A1"].Formula);
+            Assert.AreEqual("SUM(sheet1!$D$1:$E$1)", ws2.Cells["A1"].Formula);
         }
         [TestMethod]
         public void ValidateValuesAfterDeleteRowInRangeShiftUp()
@@ -564,313 +548,269 @@ namespace EPPlusTest.Core.Range.Delete
         [TestMethod]
         public void ValidateDeleteMergedCellsUp()
         {
-            using (ExcelPackage? p = new ExcelPackage())
-            {
-                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("MergedCells");
-                ws.Cells["C3:E4"].Merge = true;
-                ws.Cells["C2:E2"].Delete(eShiftTypeDelete.Up);
+            using ExcelPackage? p = new ExcelPackage();
+            ExcelWorksheet? ws = p.Workbook.Worksheets.Add("MergedCells");
+            ws.Cells["C3:E4"].Merge = true;
+            ws.Cells["C2:E2"].Delete(eShiftTypeDelete.Up);
 
-                Assert.AreEqual("C2:E3", ws.MergedCells[0]);
-            }
+            Assert.AreEqual("C2:E3", ws.MergedCells[0]);
         }
         [TestMethod]
         public void ValidateDeleteMergedCellsLeft()
         {
-            using (ExcelPackage? p = new ExcelPackage())
-            {
-                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("MergedCells");
-                ws.Cells["C2:E3"].Merge = true;
-                ws.Cells["B2:B3"].Delete(eShiftTypeDelete.Left);
+            using ExcelPackage? p = new ExcelPackage();
+            ExcelWorksheet? ws = p.Workbook.Worksheets.Add("MergedCells");
+            ws.Cells["C2:E3"].Merge = true;
+            ws.Cells["B2:B3"].Delete(eShiftTypeDelete.Left);
 
-                Assert.AreEqual("B2:D3", ws.MergedCells[0]);
-            }
+            Assert.AreEqual("B2:D3", ws.MergedCells[0]);
         }
         [TestMethod]
         [ExpectedException(typeof(InvalidOperationException))]
         public void ValidateDeleteIntoMergedCellsPartialLeftThrowsException()
         {
-            using (ExcelPackage? p = new ExcelPackage())
-            {
-                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("MergedCells");
-                ws.Cells["B2:D3"].Merge = true;
-                ws.Cells["A2"].Delete(eShiftTypeDelete.Left);
-            }
+            using ExcelPackage? p = new ExcelPackage();
+            ExcelWorksheet? ws = p.Workbook.Worksheets.Add("MergedCells");
+            ws.Cells["B2:D3"].Merge = true;
+            ws.Cells["A2"].Delete(eShiftTypeDelete.Left);
         }
         [TestMethod]
         [ExpectedException(typeof(InvalidOperationException))]
         public void ValidateDeleteIntoMergedCellsPartialUpThrowsException()
         {
-            using (ExcelPackage? p = new ExcelPackage())
-            {
-                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("MergedCells");
-                ws.Cells["B2:D3"].Merge = true;
-                ws.Cells["C1"].Delete(eShiftTypeDelete.Up);
-            }
+            using ExcelPackage? p = new ExcelPackage();
+            ExcelWorksheet? ws = p.Workbook.Worksheets.Add("MergedCells");
+            ws.Cells["B2:D3"].Merge = true;
+            ws.Cells["C1"].Delete(eShiftTypeDelete.Up);
         }
         [TestMethod]
         public void ValidateDeleteIntoMergedCellsPartialLeftShouldNotThrowsException()
         {
-            using (ExcelPackage? p = new ExcelPackage())
-            {
-                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("MergedCells");
-                ws.Cells["B2:D3"].Merge = true;
-                ws.Cells["C1"].Delete(eShiftTypeDelete.Left);
-            }
+            using ExcelPackage? p = new ExcelPackage();
+            ExcelWorksheet? ws = p.Workbook.Worksheets.Add("MergedCells");
+            ws.Cells["B2:D3"].Merge = true;
+            ws.Cells["C1"].Delete(eShiftTypeDelete.Left);
         }
         [TestMethod]
         public void ValidateDeleteIntoMergedCellsPartialUpShouldNotThrowsException()
         {
-            using (ExcelPackage? p = new ExcelPackage())
-            {
-                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("MergedCells");
-                ws.Cells["B2:D3"].Merge = true;
-                ws.Cells["A2"].Delete(eShiftTypeDelete.Up);
-            }
+            using ExcelPackage? p = new ExcelPackage();
+            ExcelWorksheet? ws = p.Workbook.Worksheets.Add("MergedCells");
+            ws.Cells["B2:D3"].Merge = true;
+            ws.Cells["A2"].Delete(eShiftTypeDelete.Up);
         }
 
         [TestMethod]
         public void ValidateDeleteMergedCellsShouldShiftUp()
         {
-            using (ExcelPackage? p = new ExcelPackage())
-            {
-                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("MergedCells");
-                ws.Cells["B3:D4"].Merge = true;
-                ws.Cells["A1:D1"].Delete(eShiftTypeDelete.Up);
+            using ExcelPackage? p = new ExcelPackage();
+            ExcelWorksheet? ws = p.Workbook.Worksheets.Add("MergedCells");
+            ws.Cells["B3:D4"].Merge = true;
+            ws.Cells["A1:D1"].Delete(eShiftTypeDelete.Up);
 
-                Assert.AreEqual("B2:D3", ws.MergedCells[0]);
-                Assert.IsFalse(ws.Cells["B4"].Merge);
-                Assert.IsFalse(ws.Cells["C4"].Merge);
-                Assert.IsFalse(ws.Cells["D4"].Merge);
+            Assert.AreEqual("B2:D3", ws.MergedCells[0]);
+            Assert.IsFalse(ws.Cells["B4"].Merge);
+            Assert.IsFalse(ws.Cells["C4"].Merge);
+            Assert.IsFalse(ws.Cells["D4"].Merge);
 
-                Assert.IsTrue(ws.Cells["B2"].Merge);
-                Assert.IsTrue(ws.Cells["C2"].Merge);
-                Assert.IsTrue(ws.Cells["D2"].Merge);
-                Assert.IsTrue(ws.Cells["B3"].Merge);
-                Assert.IsTrue(ws.Cells["C3"].Merge);
-                Assert.IsTrue(ws.Cells["D3"].Merge);
+            Assert.IsTrue(ws.Cells["B2"].Merge);
+            Assert.IsTrue(ws.Cells["C2"].Merge);
+            Assert.IsTrue(ws.Cells["D2"].Merge);
+            Assert.IsTrue(ws.Cells["B3"].Merge);
+            Assert.IsTrue(ws.Cells["C3"].Merge);
+            Assert.IsTrue(ws.Cells["D3"].Merge);
 
-                ws.DeleteRow(1);
-                Assert.AreEqual("B1:D2", ws.MergedCells[0]);
-            }
+            ws.DeleteRow(1);
+            Assert.AreEqual("B1:D2", ws.MergedCells[0]);
         }
         [TestMethod]
         public void ValidateDeleteMergedCellsShouldBeNull()
         {
-            using (ExcelPackage? p = new ExcelPackage())
-            {
-                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("MergedCells");
-                ws.Cells["B3:D3"].Merge = true;
-                ws.Cells["B3:D3"].Delete(eShiftTypeDelete.Up);
+            using ExcelPackage? p = new ExcelPackage();
+            ExcelWorksheet? ws = p.Workbook.Worksheets.Add("MergedCells");
+            ws.Cells["B3:D3"].Merge = true;
+            ws.Cells["B3:D3"].Delete(eShiftTypeDelete.Up);
 
-                Assert.IsFalse(ws.Cells["B3"].Merge);
-                Assert.IsFalse(ws.Cells["C3"].Merge);
-                Assert.IsFalse(ws.Cells["D3"].Merge);
-                Assert.IsNull(ws.MergedCells[0]);
+            Assert.IsFalse(ws.Cells["B3"].Merge);
+            Assert.IsFalse(ws.Cells["C3"].Merge);
+            Assert.IsFalse(ws.Cells["D3"].Merge);
+            Assert.IsNull(ws.MergedCells[0]);
 
-                ws.Cells["B3:D3"].Merge = true;
+            ws.Cells["B3:D3"].Merge = true;
 
-                ws.DeleteRow(3);
-                Assert.IsFalse(ws.Cells["B3"].Merge);
-                Assert.IsFalse(ws.Cells["C3"].Merge);
-                Assert.IsFalse(ws.Cells["D3"].Merge);
-                Assert.IsNull(ws.MergedCells[1]);
-            }
+            ws.DeleteRow(3);
+            Assert.IsFalse(ws.Cells["B3"].Merge);
+            Assert.IsFalse(ws.Cells["C3"].Merge);
+            Assert.IsFalse(ws.Cells["D3"].Merge);
+            Assert.IsNull(ws.MergedCells[1]);
         }
         [TestMethod]
         [ExpectedException(typeof(InvalidOperationException))]
         public void ValidateDeleteFromTablePartialLeftThrowsException()
         {
-            using (ExcelPackage? p = new ExcelPackage())
-            {
-                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("TableDelete");
-                ws.Tables.Add(ws.Cells["B2:D3"], "table1");
-                ws.Cells["A2"].Delete(eShiftTypeDelete.Left);
-            }
+            using ExcelPackage? p = new ExcelPackage();
+            ExcelWorksheet? ws = p.Workbook.Worksheets.Add("TableDelete");
+            ws.Tables.Add(ws.Cells["B2:D3"], "table1");
+            ws.Cells["A2"].Delete(eShiftTypeDelete.Left);
         }
         [TestMethod]
         [ExpectedException(typeof(InvalidOperationException))]
         public void ValidateDeleteFromTablePartialUpThrowsException()
         {
-            using (ExcelPackage? p = new ExcelPackage())
-            {
-                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("TableDelete");
-                ws.Tables.Add(ws.Cells["B2:D3"], "table1");
-                ws.Cells["C1"].Delete(eShiftTypeDelete.Up);
-            }
+            using ExcelPackage? p = new ExcelPackage();
+            ExcelWorksheet? ws = p.Workbook.Worksheets.Add("TableDelete");
+            ws.Tables.Add(ws.Cells["B2:D3"], "table1");
+            ws.Cells["C1"].Delete(eShiftTypeDelete.Up);
         }
         [TestMethod]
         public void ValidateDeletFromTablePartialLeftShouldNotThrowsException()
         {
-            using (ExcelPackage? p = new ExcelPackage())
-            {
-                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("TableDelete");
-                ws.Tables.Add(ws.Cells["B2:D3"], "table1");
-                ws.Cells["C1"].Delete(eShiftTypeDelete.Left);
-            }
+            using ExcelPackage? p = new ExcelPackage();
+            ExcelWorksheet? ws = p.Workbook.Worksheets.Add("TableDelete");
+            ws.Tables.Add(ws.Cells["B2:D3"], "table1");
+            ws.Cells["C1"].Delete(eShiftTypeDelete.Left);
         }
         [TestMethod]
         public void ValidateDeleteFromTablePartialUpShouldNotThrowsException()
         {
-            using (ExcelPackage? p = new ExcelPackage())
-            {
-                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("TableDelete");
-                ws.Tables.Add(ws.Cells["B2:D3"], "table1");
-                ws.Cells["A2"].Delete(eShiftTypeDelete.Up);
-            }
+            using ExcelPackage? p = new ExcelPackage();
+            ExcelWorksheet? ws = p.Workbook.Worksheets.Add("TableDelete");
+            ws.Tables.Add(ws.Cells["B2:D3"], "table1");
+            ws.Cells["A2"].Delete(eShiftTypeDelete.Up);
         }
         [TestMethod]
         [ExpectedException(typeof(InvalidOperationException))]
         public void ValidateDeleteFromPivotTablePartialLeftThrowsException()
         {
-            using (ExcelPackage? p = new ExcelPackage())
-            {
-                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("PivotTableDelete");
-                ws.Cells["E5"].Value = "E5";
-                ws.Cells["F5"].Value = "F5";
-                ws.PivotTables.Add(ws.Cells["B2:D3"], ws.Cells["E5:F6"], "table1");
-                ws.Cells["A2"].Delete(eShiftTypeDelete.Left);
-            }
+            using ExcelPackage? p = new ExcelPackage();
+            ExcelWorksheet? ws = p.Workbook.Worksheets.Add("PivotTableDelete");
+            ws.Cells["E5"].Value = "E5";
+            ws.Cells["F5"].Value = "F5";
+            ws.PivotTables.Add(ws.Cells["B2:D3"], ws.Cells["E5:F6"], "table1");
+            ws.Cells["A2"].Delete(eShiftTypeDelete.Left);
         }
         [TestMethod]
         [ExpectedException(typeof(InvalidOperationException))]
         public void ValidateDeleteFromPivotTablePartialUpThrowsException()
         {
-            using (ExcelPackage? p = new ExcelPackage())
-            {
-                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("PivotTableDelete");
-                ws.Cells["E5"].Value = "E5";
-                ws.Cells["F5"].Value = "F5";
-                ws.PivotTables.Add(ws.Cells["B2:D3"], ws.Cells["E5:F6"], "table1");
-                ws.Cells["C1"].Delete(eShiftTypeDelete.Up);
-            }
+            using ExcelPackage? p = new ExcelPackage();
+            ExcelWorksheet? ws = p.Workbook.Worksheets.Add("PivotTableDelete");
+            ws.Cells["E5"].Value = "E5";
+            ws.Cells["F5"].Value = "F5";
+            ws.PivotTables.Add(ws.Cells["B2:D3"], ws.Cells["E5:F6"], "table1");
+            ws.Cells["C1"].Delete(eShiftTypeDelete.Up);
         }
         [TestMethod]
         public void ValidateDeleteFromPivotTablePartialLeftShouldNotThrowsException()
         {
-            using (ExcelPackage? p = new ExcelPackage())
-            {
-                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("PivotTableDelte");
-                ws.Cells["E5"].Value = "E5";
-                ws.Cells["F5"].Value = "F5";
-                ws.PivotTables.Add(ws.Cells["B2:D3"], ws.Cells["E5:F6"], "table1");
-                ws.Cells["C1"].Delete(eShiftTypeDelete.Left);
-            }
+            using ExcelPackage? p = new ExcelPackage();
+            ExcelWorksheet? ws = p.Workbook.Worksheets.Add("PivotTableDelte");
+            ws.Cells["E5"].Value = "E5";
+            ws.Cells["F5"].Value = "F5";
+            ws.PivotTables.Add(ws.Cells["B2:D3"], ws.Cells["E5:F6"], "table1");
+            ws.Cells["C1"].Delete(eShiftTypeDelete.Left);
         }
         [TestMethod]
         public void ValidateDeleteFromPivotTablePartialUpShouldNotThrowsException()
         {
-            using (ExcelPackage? p = new ExcelPackage())
-            {
-                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("PivotTableDelete");
-                ws.Cells["E5"].Value = "E5";
-                ws.Cells["F5"].Value = "F5";
-                ws.PivotTables.Add(ws.Cells["B2:D3"], ws.Cells["E5:F6"], "table1");
-                ws.Cells["A2"].Delete(eShiftTypeDelete.Up);
-            }
+            using ExcelPackage? p = new ExcelPackage();
+            ExcelWorksheet? ws = p.Workbook.Worksheets.Add("PivotTableDelete");
+            ws.Cells["E5"].Value = "E5";
+            ws.Cells["F5"].Value = "F5";
+            ws.PivotTables.Add(ws.Cells["B2:D3"], ws.Cells["E5:F6"], "table1");
+            ws.Cells["A2"].Delete(eShiftTypeDelete.Up);
         }
         [TestMethod]
         public void ValidateDeleteFromTableShouldShiftUp()
         {
-            using (ExcelPackage? p = new ExcelPackage())
-            {
-                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("TableDeleteShiftUp");
-                ExcelTable? tbl = ws.Tables.Add(ws.Cells["B9:D10"], "table1");
-                ws.Cells["B2:D2"].Delete(eShiftTypeDelete.Up);
-                Assert.AreEqual("B8:D9", tbl.Address.Address);
+            using ExcelPackage? p = new ExcelPackage();
+            ExcelWorksheet? ws = p.Workbook.Worksheets.Add("TableDeleteShiftUp");
+            ExcelTable? tbl = ws.Tables.Add(ws.Cells["B9:D10"], "table1");
+            ws.Cells["B2:D2"].Delete(eShiftTypeDelete.Up);
+            Assert.AreEqual("B8:D9", tbl.Address.Address);
 
-                ws.Cells["A3:D3"].Delete(eShiftTypeDelete.Up);
-                Assert.AreEqual("B7:D8", tbl.Address.Address);
+            ws.Cells["A3:D3"].Delete(eShiftTypeDelete.Up);
+            Assert.AreEqual("B7:D8", tbl.Address.Address);
 
-                ws.Cells["B3:E3"].Delete(eShiftTypeDelete.Up);
-                Assert.AreEqual("B6:D7", tbl.Address.Address);
-            }
+            ws.Cells["B3:E3"].Delete(eShiftTypeDelete.Up);
+            Assert.AreEqual("B6:D7", tbl.Address.Address);
         }
         [TestMethod]
         public void ValidateDeleteTableShouldShiftLeft()
         {
-            using (ExcelPackage? p = new ExcelPackage())
-            {
-                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("TableDeleteShiftLeft");
-                ExcelTable? tbl = ws.Tables.Add(ws.Cells["E2:F4"], "table1");
-                ws.Cells["B2:B4"].Delete(eShiftTypeDelete.Left);
-                Assert.AreEqual("D2:E4", tbl.Address.Address);
+            using ExcelPackage? p = new ExcelPackage();
+            ExcelWorksheet? ws = p.Workbook.Worksheets.Add("TableDeleteShiftLeft");
+            ExcelTable? tbl = ws.Tables.Add(ws.Cells["E2:F4"], "table1");
+            ws.Cells["B2:B4"].Delete(eShiftTypeDelete.Left);
+            Assert.AreEqual("D2:E4", tbl.Address.Address);
 
-                ws.Cells["B1:B4"].Delete(eShiftTypeDelete.Left);
-                Assert.AreEqual("C2:D4", tbl.Address.Address);
+            ws.Cells["B1:B4"].Delete(eShiftTypeDelete.Left);
+            Assert.AreEqual("C2:D4", tbl.Address.Address);
 
-                ws.Cells["B2:B6"].Delete(eShiftTypeDelete.Left);
-                Assert.AreEqual("B2:C4", tbl.Address.Address);
-            }
+            ws.Cells["B2:B6"].Delete(eShiftTypeDelete.Left);
+            Assert.AreEqual("B2:C4", tbl.Address.Address);
         }
         [TestMethod]
         public void DeleteEntireTableRangeShouldDeleteTable()
         {
-            using (ExcelPackage? p = new ExcelPackage())
-            {
-                //Setup
-                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("TableDeleteFull");
-                ExcelTable? tbl = ws.Tables.Add(ws.Cells["E2:F4"], "table1");
-                //Act
-                ws.Cells["E2:F4"].Delete(eShiftTypeDelete.Left);
-                //Assert
-                Assert.AreEqual(0, ws.Tables.Count);
-                Assert.IsNull(tbl.Address);
-            }
+            using ExcelPackage? p = new ExcelPackage();
+            //Setup
+            ExcelWorksheet? ws = p.Workbook.Worksheets.Add("TableDeleteFull");
+            ExcelTable? tbl = ws.Tables.Add(ws.Cells["E2:F4"], "table1");
+            //Act
+            ws.Cells["E2:F4"].Delete(eShiftTypeDelete.Left);
+            //Assert
+            Assert.AreEqual(0, ws.Tables.Count);
+            Assert.IsNull(tbl.Address);
         }
         [TestMethod]
         public void DeleteEntirePivotTableRangeShouldDeletePivotTable()
         {
-            using (ExcelPackage? p = new ExcelPackage())
-            {
-                //Setup
-                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("PivotTableDeleteFull");
-                ws.Cells["E5"].Value = "E5";
-                ws.Cells["F5"].Value = "F5";
-                ExcelPivotTable? pt = ws.PivotTables.Add(ws.Cells["B2:D3"], ws.Cells["E5:F6"], "pivottable1");
-                //Act
-                ws.Cells["B2:D3"].Delete
-                    (eShiftTypeDelete.Left);
-                //Assert
-                Assert.AreEqual(0, ws.PivotTables.Count);
-                Assert.IsNull(pt.Address);
-            }
+            using ExcelPackage? p = new ExcelPackage();
+            //Setup
+            ExcelWorksheet? ws = p.Workbook.Worksheets.Add("PivotTableDeleteFull");
+            ws.Cells["E5"].Value = "E5";
+            ws.Cells["F5"].Value = "F5";
+            ExcelPivotTable? pt = ws.PivotTables.Add(ws.Cells["B2:D3"], ws.Cells["E5:F6"], "pivottable1");
+            //Act
+            ws.Cells["B2:D3"].Delete
+                (eShiftTypeDelete.Left);
+            //Assert
+            Assert.AreEqual(0, ws.PivotTables.Count);
+            Assert.IsNull(pt.Address);
         }
 
         [TestMethod]
         public void ValidateDeletePivotTableShouldShiftUp()
         {
-            using (ExcelPackage? p = new ExcelPackage())
-            {
-                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("PivotTableDeleteShiftUp");
-                ws.Cells["E5"].Value = "E5";
-                ws.Cells["F5"].Value = "F5";
-                ExcelPivotTable? pt = ws.PivotTables.Add(ws.Cells["B5:D6"], ws.Cells["E5:F6"], "pivottable1");
-                ws.Cells["B2:D2"].Delete(eShiftTypeDelete.Up);
-                Assert.AreEqual("B4:D5", pt.Address.Address);
+            using ExcelPackage? p = new ExcelPackage();
+            ExcelWorksheet? ws = p.Workbook.Worksheets.Add("PivotTableDeleteShiftUp");
+            ws.Cells["E5"].Value = "E5";
+            ws.Cells["F5"].Value = "F5";
+            ExcelPivotTable? pt = ws.PivotTables.Add(ws.Cells["B5:D6"], ws.Cells["E5:F6"], "pivottable1");
+            ws.Cells["B2:D2"].Delete(eShiftTypeDelete.Up);
+            Assert.AreEqual("B4:D5", pt.Address.Address);
 
-                ws.Cells["A2:E2"].Delete(eShiftTypeDelete.Up);
-                Assert.AreEqual("B3:D4", pt.Address.Address);
+            ws.Cells["A2:E2"].Delete(eShiftTypeDelete.Up);
+            Assert.AreEqual("B3:D4", pt.Address.Address);
 
-                ws.Cells["B5:D5"].Delete(eShiftTypeDelete.Up);
-                Assert.AreEqual("B3:D4", pt.Address.Address);
-            }
+            ws.Cells["B5:D5"].Delete(eShiftTypeDelete.Up);
+            Assert.AreEqual("B3:D4", pt.Address.Address);
         }
         [TestMethod]
         public void ValidateDeletePivotTableShouldShiftLeft()
         {
-            using (ExcelPackage? p = new ExcelPackage())
-            {
-                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("PivotTableDeleteShiftLeft");
-                ws.Cells["E5"].Value = "E5";
-                ws.Cells["F5"].Value = "F5";
-                ExcelPivotTable? pt = ws.PivotTables.Add(ws.Cells["F2:G3"], ws.Cells["E5:F6"], "pivottable1");
-                ws.Cells["B2:B3"].Delete(eShiftTypeDelete.Left);
-                Assert.AreEqual("E2:F3", pt.Address.Address);
-                ws.Cells["B1:B4"].Delete(eShiftTypeDelete.Left);
-                Assert.AreEqual("D2:E3", pt.Address.Address);
-                ws.Cells["F2:F3"].Delete(eShiftTypeDelete.Left);
-                Assert.AreEqual("D2:E3", pt.Address.Address);
-            }
+            using ExcelPackage? p = new ExcelPackage();
+            ExcelWorksheet? ws = p.Workbook.Worksheets.Add("PivotTableDeleteShiftLeft");
+            ws.Cells["E5"].Value = "E5";
+            ws.Cells["F5"].Value = "F5";
+            ExcelPivotTable? pt = ws.PivotTables.Add(ws.Cells["F2:G3"], ws.Cells["E5:F6"], "pivottable1");
+            ws.Cells["B2:B3"].Delete(eShiftTypeDelete.Left);
+            Assert.AreEqual("E2:F3", pt.Address.Address);
+            ws.Cells["B1:B4"].Delete(eShiftTypeDelete.Left);
+            Assert.AreEqual("D2:E3", pt.Address.Address);
+            ws.Cells["F2:F3"].Delete(eShiftTypeDelete.Left);
+            Assert.AreEqual("D2:E3", pt.Address.Address);
         }
 
         #region Data validation
@@ -961,38 +901,34 @@ namespace EPPlusTest.Core.Range.Delete
         [TestMethod]
         public void CheckDatavalidationFormulaAfterDeletingRow()
         {
-            using (ExcelPackage? p = new ExcelPackage())
-            {
-                // Create a worksheet with conditional formatting 
-                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Sheet1");
-                IExcelDataValidationCustom? dv = ws.DataValidations.AddCustomValidation("B5:G5");
-                dv.Formula.ExcelFormula = "=(B$4=0)";
+            using ExcelPackage? p = new ExcelPackage();
+            // Create a worksheet with conditional formatting 
+            ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Sheet1");
+            IExcelDataValidationCustom? dv = ws.DataValidations.AddCustomValidation("B5:G5");
+            dv.Formula.ExcelFormula = "=(B$4=0)";
 
-                // Delete a row before the column being referenced by the CF formula
-                ws.DeleteRow(2);
+            // Delete a row before the column being referenced by the CF formula
+            ws.DeleteRow(2);
 
-                // Check the conditional formatting formula has been updated
-                dv = ws.DataValidations[0].As.CustomValidation;
-                Assert.AreEqual("=(B$3=0)", dv.Formula.ExcelFormula);
-            }
+            // Check the conditional formatting formula has been updated
+            dv = ws.DataValidations[0].As.CustomValidation;
+            Assert.AreEqual("=(B$3=0)", dv.Formula.ExcelFormula);
         }
         [TestMethod]
         public void CheckDatavalidationFormulaAfterDeletingColumn()
         {
-            using (ExcelPackage? p = new ExcelPackage())
-            {
-                // Create a worksheet with conditional formatting 
-                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Sheet1");
-                IExcelDataValidationCustom? dv = ws.DataValidations.AddCustomValidation("E2:E7");
-                dv.Formula.ExcelFormula = "=($D2=0)";
+            using ExcelPackage? p = new ExcelPackage();
+            // Create a worksheet with conditional formatting 
+            ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Sheet1");
+            IExcelDataValidationCustom? dv = ws.DataValidations.AddCustomValidation("E2:E7");
+            dv.Formula.ExcelFormula = "=($D2=0)";
 
-                // Delete a column before the column being referenced by the CF formula
-                ws.DeleteColumn(2);
+            // Delete a column before the column being referenced by the CF formula
+            ws.DeleteColumn(2);
 
-                // Check the conditional formatting formula has been updated
-                dv = ws.DataValidations[0].As.CustomValidation;
-                Assert.AreEqual("=($C2=0)", dv.Formula.ExcelFormula);
-            }
+            // Check the conditional formatting formula has been updated
+            dv = ws.DataValidations[0].As.CustomValidation;
+            Assert.AreEqual("=($C2=0)", dv.Formula.ExcelFormula);
         }
 
         #endregion
@@ -1091,38 +1027,34 @@ namespace EPPlusTest.Core.Range.Delete
         [TestMethod]
         public void CheckConditionalFormattingFormulaAfterDeletingRow()
         {
-            using (ExcelPackage? p = new ExcelPackage())
-            {
-                // Create a worksheet with conditional formatting 
-                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Sheet1");
-                IExcelConditionalFormattingExpression? cf = ws.ConditionalFormatting.AddExpression(ws.Cells["B5:G5"]);
-                cf.Formula = "=(B$4=0)";
+            using ExcelPackage? p = new ExcelPackage();
+            // Create a worksheet with conditional formatting 
+            ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Sheet1");
+            IExcelConditionalFormattingExpression? cf = ws.ConditionalFormatting.AddExpression(ws.Cells["B5:G5"]);
+            cf.Formula = "=(B$4=0)";
 
-                // Delete a row before the column being referenced by the CF formula
-                ws.DeleteRow(2);
+            // Delete a row before the column being referenced by the CF formula
+            ws.DeleteRow(2);
 
-                // Check the conditional formatting formula has been updated
-                cf = (IExcelConditionalFormattingExpression)ws.ConditionalFormatting[0];
-                Assert.AreEqual("=(B$3=0)", cf.Formula);
-            }
+            // Check the conditional formatting formula has been updated
+            cf = (IExcelConditionalFormattingExpression)ws.ConditionalFormatting[0];
+            Assert.AreEqual("=(B$3=0)", cf.Formula);
         }
         [TestMethod]
         public void CheckConditionalFormattingFormulaAfterDeletingColumn()
         {
-            using (ExcelPackage? p = new ExcelPackage())
-            {
-                // Create a worksheet with conditional formatting 
-                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Sheet1");
-                IExcelConditionalFormattingExpression? cf = ws.ConditionalFormatting.AddExpression(ws.Cells["E2:E7"]);
-                cf.Formula = "=($D2=0)";
+            using ExcelPackage? p = new ExcelPackage();
+            // Create a worksheet with conditional formatting 
+            ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Sheet1");
+            IExcelConditionalFormattingExpression? cf = ws.ConditionalFormatting.AddExpression(ws.Cells["E2:E7"]);
+            cf.Formula = "=($D2=0)";
 
-                // Delete a column before the column being referenced by the CF formula
-                ws.DeleteColumn(2);
+            // Delete a column before the column being referenced by the CF formula
+            ws.DeleteColumn(2);
 
-                // Check the conditional formatting formula has been updated
-                cf = (IExcelConditionalFormattingExpression)ws.ConditionalFormatting[0];
-                Assert.AreEqual("=($C2=0)", cf.Formula);
-            }
+            // Check the conditional formatting formula has been updated
+            cf = (IExcelConditionalFormattingExpression)ws.ConditionalFormatting[0];
+            Assert.AreEqual("=($C2=0)", cf.Formula);
         }
         #endregion
 
@@ -1193,25 +1125,21 @@ namespace EPPlusTest.Core.Range.Delete
         [ExpectedException(typeof(InvalidOperationException))]
         public void ValidateFilterShiftUpPartial()
         {
-            using (ExcelPackage? p = new ExcelPackage())
-            {
-                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("AutoFilterShiftUpPart");
-                LoadTestdata(ws);
-                ws.AutoFilterAddress = new ExcelAddressBase("A1:D100");
-                ws.Cells["A1:C1"].Delete(eShiftTypeDelete.Up);
-            }
+            using ExcelPackage? p = new ExcelPackage();
+            ExcelWorksheet? ws = p.Workbook.Worksheets.Add("AutoFilterShiftUpPart");
+            LoadTestdata(ws);
+            ws.AutoFilterAddress = new ExcelAddressBase("A1:D100");
+            ws.Cells["A1:C1"].Delete(eShiftTypeDelete.Up);
         }
         [TestMethod]
         [ExpectedException(typeof(InvalidOperationException))]
         public void ValidateFilterShiftLeftPartial()
         {
-            using (ExcelPackage? p = new ExcelPackage())
-            {
-                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("AutoFilterShiftLeftPart");
-                LoadTestdata(ws);
-                ws.AutoFilterAddress = new ExcelAddressBase("A1:D100");
-                ws.Cells["A1:A99"].Delete(eShiftTypeDelete.Left);
-            }
+            using ExcelPackage? p = new ExcelPackage();
+            ExcelWorksheet? ws = p.Workbook.Worksheets.Add("AutoFilterShiftLeftPart");
+            LoadTestdata(ws);
+            ws.AutoFilterAddress = new ExcelAddressBase("A1:D100");
+            ws.Cells["A1:A99"].Delete(eShiftTypeDelete.Left);
         }
         [TestMethod]
         public void ValidateSparkLineShiftLeft()
@@ -1266,28 +1194,24 @@ namespace EPPlusTest.Core.Range.Delete
         [TestMethod]
         public void DeleteFromTemplate1()
         {
-            using (ExcelPackage? p = OpenTemplatePackage("InsertDeleteTemplate.xlsx"))
-            {
-                ExcelWorksheet? ws = p.Workbook.Worksheets["C3R"];
-                ExcelWorksheet? ws2 = ws.Workbook.Worksheets.Add("C3R-2", ws);
-                ws.Cells["G49:G52"].Delete(eShiftTypeDelete.Up);
-                ws2.Cells["G49:G52"].Delete(eShiftTypeDelete.Left);
+            using ExcelPackage? p = OpenTemplatePackage("InsertDeleteTemplate.xlsx");
+            ExcelWorksheet? ws = p.Workbook.Worksheets["C3R"];
+            ExcelWorksheet? ws2 = ws.Workbook.Worksheets.Add("C3R-2", ws);
+            ws.Cells["G49:G52"].Delete(eShiftTypeDelete.Up);
+            ws2.Cells["G49:G52"].Delete(eShiftTypeDelete.Left);
 
-                SaveWorkbook("DeleteTest1.xlsx", p);
-            }
+            SaveWorkbook("DeleteTest1.xlsx", p);
         }
         [TestMethod]
         public void DeleteFromTemplate2()
         {
-            using (ExcelPackage? p = OpenTemplatePackage("InsertDeleteTemplate.xlsx"))
-            {
-                ExcelWorksheet? ws = p.Workbook.Worksheets["C3R"];
-                ExcelWorksheet? ws2 = ws.Workbook.Worksheets.Add("C3R-2", ws);
-                ws.Cells["L49:L52"].Delete(eShiftTypeDelete.Up);
-                ws2.Cells["L49:L52"].Delete(eShiftTypeDelete.Left);
+            using ExcelPackage? p = OpenTemplatePackage("InsertDeleteTemplate.xlsx");
+            ExcelWorksheet? ws = p.Workbook.Worksheets["C3R"];
+            ExcelWorksheet? ws2 = ws.Workbook.Worksheets.Add("C3R-2", ws);
+            ws.Cells["L49:L52"].Delete(eShiftTypeDelete.Up);
+            ws2.Cells["L49:L52"].Delete(eShiftTypeDelete.Left);
 
-                SaveWorkbook("DeleteTest2.xlsx", p);
-            }
+            SaveWorkbook("DeleteTest2.xlsx", p);
         }
         [TestMethod]
         public void ValidateConditionalFormattingDeleteColumnMultiRange()
@@ -1332,100 +1256,92 @@ namespace EPPlusTest.Core.Range.Delete
         [TestMethod]
         public void TestDeleteColumnsWithConditionalFormatting()
         {
-            using (ExcelPackage? pck = new ExcelPackage())
-            {
-                // Add a sheet with conditional formatting over multiple ranges
-                ExcelWorksheet? wks = pck.Workbook.Worksheets.Add("Sheet1");
-                IExcelConditionalFormattingExpression? cf = wks.ConditionalFormatting.AddExpression(new ExcelAddress("B:C,E:F,H:I,K:L"));
-                cf.Formula = "=($A$1=TRUE)";
+            using ExcelPackage? pck = new ExcelPackage();
+            // Add a sheet with conditional formatting over multiple ranges
+            ExcelWorksheet? wks = pck.Workbook.Worksheets.Add("Sheet1");
+            IExcelConditionalFormattingExpression? cf = wks.ConditionalFormatting.AddExpression(new ExcelAddress("B:C,E:F,H:I,K:L"));
+            cf.Formula = "=($A$1=TRUE)";
 
-                // Delete columns K:L
-                wks.DeleteColumn(11, 2);
-                Assert.AreEqual("B:C,E:F,H:I", cf.Address.Address);
-                // Delete columns E:I
-                wks.DeleteColumn(5, 5);
+            // Delete columns K:L
+            wks.DeleteColumn(11, 2);
+            Assert.AreEqual("B:C,E:F,H:I", cf.Address.Address);
+            // Delete columns E:I
+            wks.DeleteColumn(5, 5);
 
-                Assert.AreEqual("B:C", cf.Address.Address);
-            }
+            Assert.AreEqual("B:C", cf.Address.Address);
         }
         [TestMethod]
         public void ValidateDeleteColumnFixedAddresses()
         {
-            using(ExcelPackage? p=new ExcelPackage())
-            {
-                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Sheet1");
-                ws.Names.Add("TestName1", ws.Cells["$A$1"]);
-                ws.Names.Add("TestName2", ws.Cells["$B$1"]); 
-                ws.Names.Add("TestName3", ws.Cells["$C$1"]); 
-                ws.Names.Add("TestName4", ws.Cells["$B$3:$D$3"]);
-                ws.Names.Add("TestName5", ws.Cells["$A$5:$C$5"]);
-                ws.Names.Add("TestName6", ws.Cells["$B$7:$C$7"]);
+            using ExcelPackage? p = new ExcelPackage();
+            ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Sheet1");
+            ws.Names.Add("TestName1", ws.Cells["$A$1"]);
+            ws.Names.Add("TestName2", ws.Cells["$B$1"]);
+            ws.Names.Add("TestName3", ws.Cells["$C$1"]);
+            ws.Names.Add("TestName4", ws.Cells["$B$3:$D$3"]);
+            ws.Names.Add("TestName5", ws.Cells["$A$5:$C$5"]);
+            ws.Names.Add("TestName6", ws.Cells["$B$7:$C$7"]);
 
-                //Assert
-                ws.DeleteColumn(2, 2);
+            //Assert
+            ws.DeleteColumn(2, 2);
 
-                //Check that the named ranges have been deleted/modified as appropriate
-                Assert.AreEqual("$A$1", ws.Names["TestName1"].LocalAddress);
-                Assert.AreEqual("#REF!", ws.Names["TestName2"].LocalAddress);
-                Assert.AreEqual("#REF!", ws.Names["TestName3"].LocalAddress);
-                Assert.AreEqual("$B$3", ws.Names["TestName4"].LocalAddress);
-                Assert.AreEqual("$A$5", ws.Names["TestName5"].LocalAddress);
-                Assert.AreEqual("#REF!", ws.Names["TestName6"].LocalAddress);
-            }
+            //Check that the named ranges have been deleted/modified as appropriate
+            Assert.AreEqual("$A$1", ws.Names["TestName1"].LocalAddress);
+            Assert.AreEqual("#REF!", ws.Names["TestName2"].LocalAddress);
+            Assert.AreEqual("#REF!", ws.Names["TestName3"].LocalAddress);
+            Assert.AreEqual("$B$3", ws.Names["TestName4"].LocalAddress);
+            Assert.AreEqual("$A$5", ws.Names["TestName5"].LocalAddress);
+            Assert.AreEqual("#REF!", ws.Names["TestName6"].LocalAddress);
         }
         [TestMethod]
         public void ValidateDeleteRowFixedAddresses()
         {
-            using (ExcelPackage? p = new ExcelPackage())
-            {
-                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Sheet1");
-                ws.Names.Add("TestName1", ws.Cells["$A$1"]);
-                ws.Names.Add("TestName2", ws.Cells["$A$2"]);
-                ws.Names.Add("TestName3", ws.Cells["$A$3"]);
-                ws.Names.Add("TestName4", ws.Cells["$C$2:$C$4"]);
-                ws.Names.Add("TestName5", ws.Cells["$E$1:$E$3"]);
-                ws.Names.Add("TestName6", ws.Cells["$G$2:$G$3"]);
+            using ExcelPackage? p = new ExcelPackage();
+            ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Sheet1");
+            ws.Names.Add("TestName1", ws.Cells["$A$1"]);
+            ws.Names.Add("TestName2", ws.Cells["$A$2"]);
+            ws.Names.Add("TestName3", ws.Cells["$A$3"]);
+            ws.Names.Add("TestName4", ws.Cells["$C$2:$C$4"]);
+            ws.Names.Add("TestName5", ws.Cells["$E$1:$E$3"]);
+            ws.Names.Add("TestName6", ws.Cells["$G$2:$G$3"]);
 
-                //Assert
-                ws.DeleteRow(2, 2);
+            //Assert
+            ws.DeleteRow(2, 2);
 
-                //Check that the named ranges have been deleted/modified as appropriate
-                Assert.AreEqual("$A$1", ws.Names["TestName1"].LocalAddress);
-                Assert.AreEqual("#REF!", ws.Names["TestName2"].LocalAddress);
-                Assert.AreEqual("#REF!", ws.Names["TestName3"].LocalAddress);
-                Assert.AreEqual("$C$2", ws.Names["TestName4"].LocalAddress);
-                Assert.AreEqual("$E$1", ws.Names["TestName5"].LocalAddress);
-                Assert.AreEqual("#REF!", ws.Names["TestName6"].LocalAddress);
-            }
+            //Check that the named ranges have been deleted/modified as appropriate
+            Assert.AreEqual("$A$1", ws.Names["TestName1"].LocalAddress);
+            Assert.AreEqual("#REF!", ws.Names["TestName2"].LocalAddress);
+            Assert.AreEqual("#REF!", ws.Names["TestName3"].LocalAddress);
+            Assert.AreEqual("$C$2", ws.Names["TestName4"].LocalAddress);
+            Assert.AreEqual("$E$1", ws.Names["TestName5"].LocalAddress);
+            Assert.AreEqual("#REF!", ws.Names["TestName6"].LocalAddress);
         }
         [TestMethod]
         public void TestColumnWidthsAfterDeletingColumn()
         {
-            using (ExcelPackage? p = new ExcelPackage())
-            {
-                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Sheet1");
+            using ExcelPackage? p = new ExcelPackage();
+            ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Sheet1");
 
-                ExcelColumn? col = ws.Column(3);
-                col.ColumnMax = 5;
-                col.Width = 18;
+            ExcelColumn? col = ws.Column(3);
+            col.ColumnMax = 5;
+            col.Width = 18;
 
-                col = ws.Column(7);
-                col.ColumnMax = 9;
-                col.Width = 19;
+            col = ws.Column(7);
+            col.ColumnMax = 9;
+            col.Width = 19;
 
 
-                // Delete column 4 & 7-8
-                ws.DeleteColumn(4, 1);
-                ws.DeleteColumn(7, 2);
+            // Delete column 4 & 7-8
+            ws.DeleteColumn(4, 1);
+            ws.DeleteColumn(7, 2);
 
-                //Assert
-                Assert.AreEqual(18, ws.Column(3).Width);
-                Assert.AreEqual(18, ws.Column(4).Width);
-                Assert.AreEqual(ws.DefaultColWidth, ws.Column(5).Width);
+            //Assert
+            Assert.AreEqual(18, ws.Column(3).Width);
+            Assert.AreEqual(18, ws.Column(4).Width);
+            Assert.AreEqual(ws.DefaultColWidth, ws.Column(5).Width);
 
-                Assert.AreEqual(19, ws.Column(6).Width);
-                Assert.AreEqual(ws.DefaultColWidth, ws.Column(7).Width);
-            }
+            Assert.AreEqual(19, ws.Column(6).Width);
+            Assert.AreEqual(ws.DefaultColWidth, ws.Column(7).Width);
         }
         [TestMethod]
         public void ValidateTableCalculatedColumnFormulasAfterDeleteRowAndDeleteColumn()

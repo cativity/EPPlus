@@ -340,148 +340,141 @@ namespace EPPlusTest
 		[TestMethod]
 		public void CalculateDateMath()
 		{
-			using (ExcelPackage package = new ExcelPackage())
-			{
-				ExcelWorksheet? worksheet = package.Workbook.Worksheets.Add("Test");
-				ExcelRange? dateCell = worksheet.Cells[2, 2];
-				DateTime date = new DateTime(2013, 1, 1);
-				dateCell.Value = date;
-				ExcelRange? quotedDateCell = worksheet.Cells[2, 3];
-				quotedDateCell.Formula = $"\"{date.ToString("d")}\"";
-				string? dateFormula = "B2";
-				string? dateFormulaWithMath = "B2+1";
-				string? quotedDateFormulaWithMath = $"\"{date.ToString("d")}\"+1";
-				string? quotedDateReferenceFormulaWithMath = "C2+1";
-				double expectedDate = 41275.0; // January 1, 2013
-				double expectedDateWithMath = 41276.0; // January 2, 2013
-				Assert.AreEqual(expectedDate, worksheet.Calculate(dateFormula));
-				Assert.AreEqual(expectedDateWithMath, worksheet.Calculate(dateFormulaWithMath));
-				Assert.AreEqual(expectedDateWithMath, worksheet.Calculate(quotedDateFormulaWithMath));
-				Assert.AreEqual(expectedDateWithMath, worksheet.Calculate(quotedDateReferenceFormulaWithMath));
-				ExcelRange? formulaCell = worksheet.Cells[2, 4];
-				formulaCell.Formula = dateFormulaWithMath;
-				formulaCell.Calculate();
-				Assert.AreEqual(expectedDateWithMath, formulaCell.Value);
-				formulaCell.Formula = quotedDateReferenceFormulaWithMath;
-				formulaCell.Calculate();
-				Assert.AreEqual(expectedDateWithMath, formulaCell.Value);
-			}
-		}
+            using ExcelPackage package = new ExcelPackage();
+            ExcelWorksheet? worksheet = package.Workbook.Worksheets.Add("Test");
+            ExcelRange? dateCell = worksheet.Cells[2, 2];
+            DateTime date = new DateTime(2013, 1, 1);
+            dateCell.Value = date;
+            ExcelRange? quotedDateCell = worksheet.Cells[2, 3];
+            quotedDateCell.Formula = $"\"{date.ToString("d")}\"";
+            string? dateFormula = "B2";
+            string? dateFormulaWithMath = "B2+1";
+            string? quotedDateFormulaWithMath = $"\"{date.ToString("d")}\"+1";
+            string? quotedDateReferenceFormulaWithMath = "C2+1";
+            double expectedDate = 41275.0; // January 1, 2013
+            double expectedDateWithMath = 41276.0; // January 2, 2013
+            Assert.AreEqual(expectedDate, worksheet.Calculate(dateFormula));
+            Assert.AreEqual(expectedDateWithMath, worksheet.Calculate(dateFormulaWithMath));
+            Assert.AreEqual(expectedDateWithMath, worksheet.Calculate(quotedDateFormulaWithMath));
+            Assert.AreEqual(expectedDateWithMath, worksheet.Calculate(quotedDateReferenceFormulaWithMath));
+            ExcelRange? formulaCell = worksheet.Cells[2, 4];
+            formulaCell.Formula = dateFormulaWithMath;
+            formulaCell.Calculate();
+            Assert.AreEqual(expectedDateWithMath, formulaCell.Value);
+            formulaCell.Formula = quotedDateReferenceFormulaWithMath;
+            formulaCell.Calculate();
+            Assert.AreEqual(expectedDateWithMath, formulaCell.Value);
+        }
 
         [TestMethod]
         public void TestValueFunction()
         {
             string? ds = CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator;
-            using (ExcelPackage package = new ExcelPackage())
-            {
-                ExcelWorksheet? worksheet = package.Workbook.Worksheets.Add("Test");
-                ExcelRange? sourceCell = worksheet.Cells[2, 2];
-                ExcelRange? formulaCell = worksheet.Cells[2, 3];
+            using ExcelPackage package = new ExcelPackage();
+            ExcelWorksheet? worksheet = package.Workbook.Worksheets.Add("Test");
+            ExcelRange? sourceCell = worksheet.Cells[2, 2];
+            ExcelRange? formulaCell = worksheet.Cells[2, 3];
 
-                sourceCell.Value = $"10{ds}8";
+            sourceCell.Value = $"10{ds}8";
 
-                formulaCell.Formula = $"VALUE(B2)";
-                worksheet.Calculate();
-                double expectedResult = 10.8d;
-                ExcelRange? result = worksheet.Cells[2, 3];
-                Assert.AreEqual(expectedResult, result.Value);
+            formulaCell.Formula = $"VALUE(B2)";
+            worksheet.Calculate();
+            double expectedResult = 10.8d;
+            ExcelRange? result = worksheet.Cells[2, 3];
+            Assert.AreEqual(expectedResult, result.Value);
 
-                sourceCell.Value = $"10{ds}8%";
-                formulaCell = worksheet.Cells[2, 3];
-                formulaCell.Formula = $"VALUE(B2)";
-                worksheet.Calculate();
-                expectedResult = 0.108d;
-                result = worksheet.Cells[2, 3];
-                Assert.AreEqual(expectedResult, Math.Round((double)result.Value, 3));
+            sourceCell.Value = $"10{ds}8%";
+            formulaCell = worksheet.Cells[2, 3];
+            formulaCell.Formula = $"VALUE(B2)";
+            worksheet.Calculate();
+            expectedResult = 0.108d;
+            result = worksheet.Cells[2, 3];
+            Assert.AreEqual(expectedResult, Math.Round((double)result.Value, 3));
 
-                sourceCell.Value = $"(10{ds}8)";
-                formulaCell = worksheet.Cells[2, 3];
-                formulaCell.Formula = $"VALUE(B2)";
-                worksheet.Calculate();
-                expectedResult = -10.8;
-                result = worksheet.Cells[2, 3];
-                Assert.AreEqual(expectedResult, result.Value);
+            sourceCell.Value = $"(10{ds}8)";
+            formulaCell = worksheet.Cells[2, 3];
+            formulaCell.Formula = $"VALUE(B2)";
+            worksheet.Calculate();
+            expectedResult = -10.8;
+            result = worksheet.Cells[2, 3];
+            Assert.AreEqual(expectedResult, result.Value);
 
 
-                sourceCell.Value = $"(10{ds}8)%";
-                formulaCell = worksheet.Cells[2, 3];
-                formulaCell.Formula = $"VALUE(B2)";
-                worksheet.Calculate();
-                expectedResult = -0.108;
-                result = worksheet.Cells[2, 3];
-                Assert.AreEqual(expectedResult, Math.Round((double)result.Value, 3));
-
-            }
+            sourceCell.Value = $"(10{ds}8)%";
+            formulaCell = worksheet.Cells[2, 3];
+            formulaCell.Formula = $"VALUE(B2)";
+            worksheet.Calculate();
+            expectedResult = -0.108;
+            result = worksheet.Cells[2, 3];
+            Assert.AreEqual(expectedResult, Math.Round((double)result.Value, 3));
         }
         private static string GetOutput(string file)
         {
-            using (ExcelPackage? pck = new ExcelPackage(new FileInfo(file)))
+            using ExcelPackage? pck = new ExcelPackage(new FileInfo(file));
+            Dictionary<string, object>? fr = new Dictionary<string, object>();
+            foreach (ExcelWorksheet? ws in pck.Workbook.Worksheets)
             {
-                Dictionary<string, object>? fr = new Dictionary<string, object>();
-                foreach (ExcelWorksheet? ws in pck.Workbook.Worksheets)
+                if (!(ws is ExcelChartsheet))
                 {
-                    if (!(ws is ExcelChartsheet))
+                    foreach (ExcelRangeBase? cell in ws.Cells)
                     {
-                        foreach (ExcelRangeBase? cell in ws.Cells)
+                        if (!string.IsNullOrEmpty(cell.Formula))
                         {
-                            if (!string.IsNullOrEmpty(cell.Formula))
-                            {
-                                fr.Add(ws.PositionId.ToString() + "," + cell.Address, cell.Value);
-                                ws.SetValueInner(cell.Start.Row, cell.Start.Column, null);
-                            }
+                            fr.Add(ws.PositionId.ToString() + "," + cell.Address, cell.Value);
+                            ws.SetValueInner(cell.Start.Row, cell.Start.Column, null);
                         }
                     }
                 }
+            }
 
-                pck.Workbook.Calculate();
-                int nErrors = 0;
-                List<Tuple<string, object, object>>? errors = new List<Tuple<string, object, object>>();
-                ExcelWorksheet sheet=null;
-                string adr="";
-                StreamWriter? fileErr = new System.IO.StreamWriter(new FileStream("c:\\temp\\err.txt",FileMode.Append));
-                foreach (string? cell in fr.Keys)
+            pck.Workbook.Calculate();
+            int nErrors = 0;
+            List<Tuple<string, object, object>>? errors = new List<Tuple<string, object, object>>();
+            ExcelWorksheet sheet = null;
+            string adr = "";
+            StreamWriter? fileErr = new System.IO.StreamWriter(new FileStream("c:\\temp\\err.txt", FileMode.Append));
+            foreach (string? cell in fr.Keys)
+            {
+                try
                 {
-                    try
+                    string[]? spl = cell.Split(',');
+                    int ix = int.Parse(spl[0]);
+                    sheet = pck.Workbook.Worksheets[ix];
+                    adr = spl[1];
+                    if (fr[cell] is double && (sheet.Cells[adr].Value is double || sheet.Cells[adr].Value is decimal || OfficeOpenXml.Compatibility.TypeCompat.IsPrimitive(sheet.Cells[adr].Value)))
                     {
-                        string[]? spl = cell.Split(',');
-                        int ix = int.Parse(spl[0]);
-                        sheet = pck.Workbook.Worksheets[ix];
-                        adr = spl[1];
-                        if (fr[cell] is double && (sheet.Cells[adr].Value is double || sheet.Cells[adr].Value is decimal  || OfficeOpenXml.Compatibility.TypeCompat.IsPrimitive(sheet.Cells[adr].Value)))
+                        double d1 = Convert.ToDouble(fr[cell]);
+                        double d2 = Convert.ToDouble(sheet.Cells[adr].Value);
+                        //if (Math.Abs(d1 - d2) < double.Epsilon)
+                        if (double.Equals(d1, d2))
                         {
-                            double d1 = Convert.ToDouble(fr[cell]);
-                            double d2 = Convert.ToDouble(sheet.Cells[adr].Value);
-                            //if (Math.Abs(d1 - d2) < double.Epsilon)
-                            if(double.Equals(d1,d2))
-                            {
-                                continue;
-                            }
-                            else
-                            {
-                                //errors.Add(new Tuple<string, object, object>(adr, fr[cell], sheet.Cells[adr].Value));
-                                fileErr.WriteLine("Diff cell " + sheet.Name + "!" + adr +"\t" + d1.ToString("R15") + "\t" + d2.ToString("R15"));
-                            }
+                            continue;
                         }
                         else
                         {
-                            if ((fr[cell]??"").ToString() != (sheet.Cells[adr].Value??"").ToString())
-                            {
-                                fileErr.WriteLine("String?  cell " + sheet.Name + "!" + adr + "\t" + (fr[cell] ?? "").ToString() + "\t" + (sheet.Cells[adr].Value??"").ToString());
-                            }
                             //errors.Add(new Tuple<string, object, object>(adr, fr[cell], sheet.Cells[adr].Value));
+                            fileErr.WriteLine("Diff cell " + sheet.Name + "!" + adr + "\t" + d1.ToString("R15") + "\t" + d2.ToString("R15"));
                         }
                     }
-                    catch (Exception e)
-                    {                        
-                        fileErr.WriteLine("Exception cell " + sheet.Name + "!" + adr + "\t" + fr[cell].ToString() + "\t" + sheet.Cells[adr].Value +  "\t" + e.Message);
-                        fileErr.WriteLine("***************************");
-                        fileErr.WriteLine(e.ToString());
-                        nErrors++;
+                    else
+                    {
+                        if ((fr[cell] ?? "").ToString() != (sheet.Cells[adr].Value ?? "").ToString())
+                        {
+                            fileErr.WriteLine("String?  cell " + sheet.Name + "!" + adr + "\t" + (fr[cell] ?? "").ToString() + "\t" + (sheet.Cells[adr].Value ?? "").ToString());
+                        }
+                        //errors.Add(new Tuple<string, object, object>(adr, fr[cell], sheet.Cells[adr].Value));
                     }
                 }
-                fileErr.Close();
-                return nErrors.ToString();
+                catch (Exception e)
+                {
+                    fileErr.WriteLine("Exception cell " + sheet.Name + "!" + adr + "\t" + fr[cell].ToString() + "\t" + sheet.Cells[adr].Value + "\t" + e.Message);
+                    fileErr.WriteLine("***************************");
+                    fileErr.WriteLine(e.ToString());
+                    nErrors++;
+                }
             }
+            fileErr.Close();
+            return nErrors.ToString();
         }
     }
 }

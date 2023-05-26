@@ -32,19 +32,17 @@ namespace OfficeOpenXml.Encryption
         internal byte[] EncryptedVerifierHash; //(variable): An array of bytes that contains the encrypted form of the hash of the randomly generated Verifier value. The length of the array MUST be the size of the encryption block size multiplied by the number of blocks needed to encrypt the hash of the Verifier. If the encryption algorithm is RC4, the length MUST be 20 bytes. If the encryption algorithm is AES, the length MUST be 32 bytes.
         internal byte[] WriteBinary()
         {
-            using (MemoryStream? ms = RecyclableMemory.GetStream())
-            {
-                BinaryWriter bw = new BinaryWriter(ms);
+            using MemoryStream? ms = RecyclableMemory.GetStream();
+            BinaryWriter bw = new BinaryWriter(ms);
 
-                bw.Write(SaltSize);
-                bw.Write(Salt);
-                bw.Write(EncryptedVerifier);
-                bw.Write(0x14);                 //Sha1 is 20 bytes  (Encrypted is 32)
-                bw.Write(EncryptedVerifierHash);
+            bw.Write(SaltSize);
+            bw.Write(Salt);
+            bw.Write(EncryptedVerifier);
+            bw.Write(0x14);                 //Sha1 is 20 bytes  (Encrypted is 32)
+            bw.Write(EncryptedVerifierHash);
 
-                bw.Flush();
-                return ms.ToArray();
-            }
+            bw.Flush();
+            return ms.ToArray();
         }
     }
 }

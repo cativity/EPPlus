@@ -112,21 +112,15 @@ namespace EPPlusTest.FormulaParsing.ExpressionGraph
         {
             ParsingContext? parsingContext = ParsingContext.Create();
             FileInfo? file = new FileInfo("filename.xlsx");
-            using (ExcelPackage? package = new ExcelPackage(file))
+            using ExcelPackage? package = new ExcelPackage(file);
+            using ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("NewSheet");
+            using EpplusExcelDataProvider? excelDataProvider = new EpplusExcelDataProvider(package);
+            RangeAddressFactory? rangeAddressFactory = new RangeAddressFactory(excelDataProvider);
+            using (parsingContext.Scopes.NewScope(rangeAddressFactory.Create("NewSheet", 3, 3)))
             {
-                using (ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("NewSheet"))
-                {
-                    using (EpplusExcelDataProvider? excelDataProvider = new EpplusExcelDataProvider(package))
-                    {
-                        RangeAddressFactory? rangeAddressFactory = new RangeAddressFactory(excelDataProvider);
-                        using (parsingContext.Scopes.NewScope(rangeAddressFactory.Create("NewSheet", 3, 3)))
-                        {
-                            ExcelAddressExpression? expression = new ExcelAddressExpression("A1", excelDataProvider, parsingContext);
-                            CompileResult? result = expression.Compile();
-                            Assert.IsNull(result.Result);
-                        }
-                    }
-                }
+                ExcelAddressExpression? expression = new ExcelAddressExpression("A1", excelDataProvider, parsingContext);
+                CompileResult? result = expression.Compile();
+                Assert.IsNull(result.Result);
             }
         }
 
@@ -135,22 +129,16 @@ namespace EPPlusTest.FormulaParsing.ExpressionGraph
         {
             ParsingContext? parsingContext = ParsingContext.Create();
             FileInfo? file = new FileInfo("filename.xlsx");
-            using (ExcelPackage? package = new ExcelPackage(file))
+            using ExcelPackage? package = new ExcelPackage(file);
+            using ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("NewSheet");
+            using EpplusExcelDataProvider? excelDataProvider = new EpplusExcelDataProvider(package);
+            sheet.Cells[1, 1].Value = "Value";
+            RangeAddressFactory? rangeAddressFactory = new RangeAddressFactory(excelDataProvider);
+            using (parsingContext.Scopes.NewScope(rangeAddressFactory.Create("NewSheet", 3, 3)))
             {
-                using (ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("NewSheet"))
-                {
-                    using (EpplusExcelDataProvider? excelDataProvider = new EpplusExcelDataProvider(package))
-                    {
-                        sheet.Cells[1, 1].Value = "Value";
-                        RangeAddressFactory? rangeAddressFactory = new RangeAddressFactory(excelDataProvider);
-                        using (parsingContext.Scopes.NewScope(rangeAddressFactory.Create("NewSheet", 3, 3)))
-                        {
-                            ExcelAddressExpression? expression = new ExcelAddressExpression("A1", excelDataProvider, parsingContext);
-                            CompileResult? result = expression.Compile();
-                            Assert.AreEqual("Value", result.Result);
-                        }
-                    }
-                }
+                ExcelAddressExpression? expression = new ExcelAddressExpression("A1", excelDataProvider, parsingContext);
+                CompileResult? result = expression.Compile();
+                Assert.AreEqual("Value", result.Result);
             }
         }
 
@@ -159,22 +147,16 @@ namespace EPPlusTest.FormulaParsing.ExpressionGraph
         {
             ParsingContext? parsingContext = ParsingContext.Create();
             FileInfo? file = new FileInfo("filename.xlsx");
-            using (ExcelPackage? package = new ExcelPackage(file))
+            using ExcelPackage? package = new ExcelPackage(file);
+            using ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("NewSheet");
+            using EpplusExcelDataProvider? excelDataProvider = new EpplusExcelDataProvider(package);
+            sheet.Cells[1, 1].RichText.Text = "Value";
+            RangeAddressFactory? rangeAddressFactory = new RangeAddressFactory(excelDataProvider);
+            using (parsingContext.Scopes.NewScope(rangeAddressFactory.Create("NewSheet", 3, 3)))
             {
-                using (ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("NewSheet"))
-                {
-                    using (EpplusExcelDataProvider? excelDataProvider = new EpplusExcelDataProvider(package))
-                    {
-                        sheet.Cells[1, 1].RichText.Text = "Value";
-                        RangeAddressFactory? rangeAddressFactory = new RangeAddressFactory(excelDataProvider);
-                        using (parsingContext.Scopes.NewScope(rangeAddressFactory.Create("NewSheet", 3, 3)))
-                        {
-                            ExcelAddressExpression? expression = new ExcelAddressExpression("A1", excelDataProvider, parsingContext);
-                            CompileResult? result = expression.Compile();
-                            Assert.AreEqual("Value", result.Result);
-                        }
-                    }
-                }
+                ExcelAddressExpression? expression = new ExcelAddressExpression("A1", excelDataProvider, parsingContext);
+                CompileResult? result = expression.Compile();
+                Assert.AreEqual("Value", result.Result);
             }
         }
 
@@ -183,24 +165,18 @@ namespace EPPlusTest.FormulaParsing.ExpressionGraph
         {
             ParsingContext? parsingContext = ParsingContext.Create();
             FileInfo? file = new FileInfo("filename.xlsx");
-            using (ExcelPackage? package = new ExcelPackage(file))
+            using ExcelPackage? package = new ExcelPackage(file);
+            using ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("NewSheet");
+            using EpplusExcelDataProvider? excelDataProvider = new EpplusExcelDataProvider(package);
+            RangeAddressFactory? rangeAddressFactory = new RangeAddressFactory(excelDataProvider);
+            using (parsingContext.Scopes.NewScope(rangeAddressFactory.Create("NewSheet", 3, 3)))
             {
-                using (ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("NewSheet"))
-                {
-                    using (EpplusExcelDataProvider? excelDataProvider = new EpplusExcelDataProvider(package))
-                    {
-                        RangeAddressFactory? rangeAddressFactory = new RangeAddressFactory(excelDataProvider);
-                        using (parsingContext.Scopes.NewScope(rangeAddressFactory.Create("NewSheet", 3, 3)))
-                        {
-                            ExcelAddressExpression? expression = new ExcelAddressExpression("A1", excelDataProvider, parsingContext);
-                            expression.ResolveAsRange = true;
-                            CompileResult? result = expression.Compile();
-                            IRangeInfo? rangeInfo = result.Result as IRangeInfo;
-                            Assert.IsNotNull(rangeInfo);
-                            Assert.AreEqual("A1", rangeInfo.Address.Address);
-                        }
-                    }
-                }
+                ExcelAddressExpression? expression = new ExcelAddressExpression("A1", excelDataProvider, parsingContext);
+                expression.ResolveAsRange = true;
+                CompileResult? result = expression.Compile();
+                IRangeInfo? rangeInfo = result.Result as IRangeInfo;
+                Assert.IsNotNull(rangeInfo);
+                Assert.AreEqual("A1", rangeInfo.Address.Address);
             }
         }
 
@@ -209,24 +185,18 @@ namespace EPPlusTest.FormulaParsing.ExpressionGraph
         {
             ParsingContext? parsingContext = ParsingContext.Create();
             FileInfo? file = new FileInfo("filename.xlsx");
-            using (ExcelPackage? package = new ExcelPackage(file))
+            using ExcelPackage? package = new ExcelPackage(file);
+            using ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("NewSheet");
+            using EpplusExcelDataProvider? excelDataProvider = new EpplusExcelDataProvider(package);
+            RangeAddressFactory? rangeAddressFactory = new RangeAddressFactory(excelDataProvider);
+            using (parsingContext.Scopes.NewScope(rangeAddressFactory.Create("NewSheet", 3, 3)))
             {
-                using (ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("NewSheet"))
-                {
-                    using (EpplusExcelDataProvider? excelDataProvider = new EpplusExcelDataProvider(package))
-                    {
-                        RangeAddressFactory? rangeAddressFactory = new RangeAddressFactory(excelDataProvider);
-                        using (parsingContext.Scopes.NewScope(rangeAddressFactory.Create("NewSheet", 3, 3)))
-                        {
-                            ExcelAddressExpression? expression = new ExcelAddressExpression("$A1", excelDataProvider, parsingContext);
-                            expression.ResolveAsRange = true;
-                            CompileResult? result = expression.Compile();
-                            IRangeInfo? rangeInfo = result.Result as IRangeInfo;
-                            Assert.IsNotNull(rangeInfo);
-                            Assert.AreEqual("$A1", rangeInfo.Address.Address);
-                        }
-                    }
-                }
+                ExcelAddressExpression? expression = new ExcelAddressExpression("$A1", excelDataProvider, parsingContext);
+                expression.ResolveAsRange = true;
+                CompileResult? result = expression.Compile();
+                IRangeInfo? rangeInfo = result.Result as IRangeInfo;
+                Assert.IsNotNull(rangeInfo);
+                Assert.AreEqual("$A1", rangeInfo.Address.Address);
             }
         }
 
@@ -235,24 +205,18 @@ namespace EPPlusTest.FormulaParsing.ExpressionGraph
         {
             ParsingContext? parsingContext = ParsingContext.Create();
             FileInfo? file = new FileInfo("filename.xlsx");
-            using (ExcelPackage? package = new ExcelPackage(file))
+            using ExcelPackage? package = new ExcelPackage(file);
+            using ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("NewSheet");
+            using EpplusExcelDataProvider? excelDataProvider = new EpplusExcelDataProvider(package);
+            RangeAddressFactory? rangeAddressFactory = new RangeAddressFactory(excelDataProvider);
+            using (parsingContext.Scopes.NewScope(rangeAddressFactory.Create("NewSheet", 3, 3)))
             {
-                using (ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("NewSheet"))
-                {
-                    using (EpplusExcelDataProvider? excelDataProvider = new EpplusExcelDataProvider(package))
-                    {
-                        RangeAddressFactory? rangeAddressFactory = new RangeAddressFactory(excelDataProvider);
-                        using (parsingContext.Scopes.NewScope(rangeAddressFactory.Create("NewSheet", 3, 3)))
-                        {
-                            ExcelAddressExpression? expression = new ExcelAddressExpression("$A1", excelDataProvider, parsingContext);
-                            expression.ResolveAsRange = true;
-                            CompileResult? result = expression.Compile();
-                            IRangeInfo? rangeInfo = result.Result as IRangeInfo;
-                            Assert.IsNotNull(rangeInfo);
-                            Assert.AreEqual("$A1", rangeInfo.Address.Address);
-                        }
-                    }
-                }
+                ExcelAddressExpression? expression = new ExcelAddressExpression("$A1", excelDataProvider, parsingContext);
+                expression.ResolveAsRange = true;
+                CompileResult? result = expression.Compile();
+                IRangeInfo? rangeInfo = result.Result as IRangeInfo;
+                Assert.IsNotNull(rangeInfo);
+                Assert.AreEqual("$A1", rangeInfo.Address.Address);
             }
         }
 
@@ -261,24 +225,18 @@ namespace EPPlusTest.FormulaParsing.ExpressionGraph
         {
             ParsingContext? parsingContext = ParsingContext.Create();
             FileInfo? file = new FileInfo("filename.xlsx");
-            using (ExcelPackage? package = new ExcelPackage(file))
+            using ExcelPackage? package = new ExcelPackage(file);
+            using ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("NewSheet");
+            using EpplusExcelDataProvider? excelDataProvider = new EpplusExcelDataProvider(package);
+            RangeAddressFactory? rangeAddressFactory = new RangeAddressFactory(excelDataProvider);
+            using (parsingContext.Scopes.NewScope(rangeAddressFactory.Create("NewSheet", 3, 3)))
             {
-                using (ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("NewSheet"))
-                {
-                    using (EpplusExcelDataProvider? excelDataProvider = new EpplusExcelDataProvider(package))
-                    {
-                        RangeAddressFactory? rangeAddressFactory = new RangeAddressFactory(excelDataProvider);
-                        using (parsingContext.Scopes.NewScope(rangeAddressFactory.Create("NewSheet", 3, 3)))
-                        {
-                            ExcelAddressExpression? expression = new ExcelAddressExpression("$A$1", excelDataProvider, parsingContext);
-                            expression.ResolveAsRange = true;
-                            CompileResult? result = expression.Compile();
-                            IRangeInfo? rangeInfo = result.Result as IRangeInfo;
-                            Assert.IsNotNull(rangeInfo);
-                            Assert.AreEqual("$A$1", rangeInfo.Address.Address);
-                        }
-                    }
-                }
+                ExcelAddressExpression? expression = new ExcelAddressExpression("$A$1", excelDataProvider, parsingContext);
+                expression.ResolveAsRange = true;
+                CompileResult? result = expression.Compile();
+                IRangeInfo? rangeInfo = result.Result as IRangeInfo;
+                Assert.IsNotNull(rangeInfo);
+                Assert.AreEqual("$A$1", rangeInfo.Address.Address);
             }
         }
 
@@ -287,25 +245,19 @@ namespace EPPlusTest.FormulaParsing.ExpressionGraph
         {
             ParsingContext? parsingContext = ParsingContext.Create();
             FileInfo? file = new FileInfo("filename.xlsx");
-            using (ExcelPackage? package = new ExcelPackage(file))
+            using ExcelPackage? package = new ExcelPackage(file);
+            using ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("NewSheet");
+            using EpplusExcelDataProvider? excelDataProvider = new EpplusExcelDataProvider(package);
+            RangeAddressFactory? rangeAddressFactory = new RangeAddressFactory(excelDataProvider);
+            using (parsingContext.Scopes.NewScope(rangeAddressFactory.Create("NewSheet", 3, 3)))
             {
-                using (ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("NewSheet"))
-                {
-                    using (EpplusExcelDataProvider? excelDataProvider = new EpplusExcelDataProvider(package))
-                    {
-                        RangeAddressFactory? rangeAddressFactory = new RangeAddressFactory(excelDataProvider);
-                        using (parsingContext.Scopes.NewScope(rangeAddressFactory.Create("NewSheet", 3, 3)))
-                        {
-                            ExcelAddressExpression? expression = new ExcelAddressExpression("A1:A5", excelDataProvider, parsingContext);
-                            CompileResult? result = expression.Compile();
-                            IRangeInfo? rangeInfo = result.Result as IRangeInfo;
-                            Assert.IsNotNull(rangeInfo);
-                            Assert.AreEqual("A1:A5", rangeInfo.Address.Address);
-                            // Enumerating the range still yields no results.
-                            Assert.AreEqual(0, rangeInfo.Count());
-                        }
-                    }
-                }
+                ExcelAddressExpression? expression = new ExcelAddressExpression("A1:A5", excelDataProvider, parsingContext);
+                CompileResult? result = expression.Compile();
+                IRangeInfo? rangeInfo = result.Result as IRangeInfo;
+                Assert.IsNotNull(rangeInfo);
+                Assert.AreEqual("A1:A5", rangeInfo.Address.Address);
+                // Enumerating the range still yields no results.
+                Assert.AreEqual(0, rangeInfo.Count());
             }
         }
 
@@ -314,33 +266,27 @@ namespace EPPlusTest.FormulaParsing.ExpressionGraph
         {
             ParsingContext? parsingContext = ParsingContext.Create();
             FileInfo? file = new FileInfo("filename.xlsx");
-            using (ExcelPackage? package = new ExcelPackage(file))
+            using ExcelPackage? package = new ExcelPackage(file);
+            using ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("NewSheet");
+            using EpplusExcelDataProvider? excelDataProvider = new EpplusExcelDataProvider(package);
+            sheet.Cells[1, 1].Value = "Value1";
+            sheet.Cells[2, 1].Value = "Value2";
+            sheet.Cells[3, 1].Value = "Value3";
+            sheet.Cells[4, 1].Value = "Value4";
+            sheet.Cells[5, 1].Value = "Value5";
+            RangeAddressFactory? rangeAddressFactory = new RangeAddressFactory(excelDataProvider);
+            using (parsingContext.Scopes.NewScope(rangeAddressFactory.Create("NewSheet", 3, 3)))
             {
-                using (ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("NewSheet"))
+                ExcelAddressExpression? expression = new ExcelAddressExpression("A1:A5", excelDataProvider, parsingContext);
+                CompileResult? result = expression.Compile();
+                IRangeInfo? rangeInfo = result.Result as IRangeInfo;
+                Assert.IsNotNull(rangeInfo);
+                Assert.AreEqual("A1:A5", rangeInfo.Address.Address);
+                Assert.AreEqual(5, rangeInfo.Count());
+                for (int i = 1; i <= 5; i++)
                 {
-                    using (EpplusExcelDataProvider? excelDataProvider = new EpplusExcelDataProvider(package))
-                    {
-                        sheet.Cells[1, 1].Value = "Value1";
-                        sheet.Cells[2, 1].Value = "Value2";
-                        sheet.Cells[3, 1].Value = "Value3";
-                        sheet.Cells[4, 1].Value = "Value4";
-                        sheet.Cells[5, 1].Value = "Value5";
-                        RangeAddressFactory? rangeAddressFactory = new RangeAddressFactory(excelDataProvider);
-                        using (parsingContext.Scopes.NewScope(rangeAddressFactory.Create("NewSheet", 3, 3)))
-                        {
-                            ExcelAddressExpression? expression = new ExcelAddressExpression("A1:A5", excelDataProvider, parsingContext);
-                            CompileResult? result = expression.Compile();
-                            IRangeInfo? rangeInfo = result.Result as IRangeInfo;
-                            Assert.IsNotNull(rangeInfo);
-                            Assert.AreEqual("A1:A5", rangeInfo.Address.Address);
-                            Assert.AreEqual(5, rangeInfo.Count());
-                            for (int i = 1; i <= 5; i++)
-                            {
-                                ICellInfo? rangeItem = rangeInfo.ElementAt(i - 1);
-                                Assert.AreEqual("Value" + i, rangeItem.Value);
-                            }
-                        }
-                    }
+                    ICellInfo? rangeItem = rangeInfo.ElementAt(i - 1);
+                    Assert.AreEqual("Value" + i, rangeItem.Value);
                 }
             }
         }
@@ -350,25 +296,19 @@ namespace EPPlusTest.FormulaParsing.ExpressionGraph
         {
             ParsingContext? parsingContext = ParsingContext.Create();
             FileInfo? file = new FileInfo("filename.xlsx");
-            using (ExcelPackage? package = new ExcelPackage(file))
+            using ExcelPackage? package = new ExcelPackage(file);
+            using ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("NewSheet");
+            using EpplusExcelDataProvider? excelDataProvider = new EpplusExcelDataProvider(package);
+            RangeAddressFactory? rangeAddressFactory = new RangeAddressFactory(excelDataProvider);
+            using (parsingContext.Scopes.NewScope(rangeAddressFactory.Create("NewSheet", 3, 3)))
             {
-                using (ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("NewSheet"))
-                {
-                    using (EpplusExcelDataProvider? excelDataProvider = new EpplusExcelDataProvider(package))
-                    {
-                        RangeAddressFactory? rangeAddressFactory = new RangeAddressFactory(excelDataProvider);
-                        using (parsingContext.Scopes.NewScope(rangeAddressFactory.Create("NewSheet", 3, 3)))
-                        {
-                            ExcelAddressExpression? expression = new ExcelAddressExpression("$A1:$A5", excelDataProvider, parsingContext);
-                            CompileResult? result = expression.Compile();
-                            IRangeInfo? rangeInfo = result.Result as IRangeInfo;
-                            Assert.IsNotNull(rangeInfo);
-                            Assert.AreEqual("$A1:$A5", rangeInfo.Address.Address);
-                            // Enumerating the range still yields no results.
-                            Assert.AreEqual(0, rangeInfo.Count());
-                        }
-                    }
-                }
+                ExcelAddressExpression? expression = new ExcelAddressExpression("$A1:$A5", excelDataProvider, parsingContext);
+                CompileResult? result = expression.Compile();
+                IRangeInfo? rangeInfo = result.Result as IRangeInfo;
+                Assert.IsNotNull(rangeInfo);
+                Assert.AreEqual("$A1:$A5", rangeInfo.Address.Address);
+                // Enumerating the range still yields no results.
+                Assert.AreEqual(0, rangeInfo.Count());
             }
         }
 
@@ -377,25 +317,19 @@ namespace EPPlusTest.FormulaParsing.ExpressionGraph
         {
             ParsingContext? parsingContext = ParsingContext.Create();
             FileInfo? file = new FileInfo("filename.xlsx");
-            using (ExcelPackage? package = new ExcelPackage(file))
+            using ExcelPackage? package = new ExcelPackage(file);
+            using ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("NewSheet");
+            using EpplusExcelDataProvider? excelDataProvider = new EpplusExcelDataProvider(package);
+            RangeAddressFactory? rangeAddressFactory = new RangeAddressFactory(excelDataProvider);
+            using (parsingContext.Scopes.NewScope(rangeAddressFactory.Create("NewSheet", 3, 3)))
             {
-                using (ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("NewSheet"))
-                {
-                    using (EpplusExcelDataProvider? excelDataProvider = new EpplusExcelDataProvider(package))
-                    {
-                        RangeAddressFactory? rangeAddressFactory = new RangeAddressFactory(excelDataProvider);
-                        using (parsingContext.Scopes.NewScope(rangeAddressFactory.Create("NewSheet", 3, 3)))
-                        {
-                            ExcelAddressExpression? expression = new ExcelAddressExpression("A$1:A$5", excelDataProvider, parsingContext);
-                            CompileResult? result = expression.Compile();
-                            IRangeInfo? rangeInfo = result.Result as IRangeInfo;
-                            Assert.IsNotNull(rangeInfo);
-                            Assert.AreEqual("A$1:A$5", rangeInfo.Address.Address);
-                            // Enumerating the range still yields no results.
-                            Assert.AreEqual(0, rangeInfo.Count());
-                        }
-                    }
-                }
+                ExcelAddressExpression? expression = new ExcelAddressExpression("A$1:A$5", excelDataProvider, parsingContext);
+                CompileResult? result = expression.Compile();
+                IRangeInfo? rangeInfo = result.Result as IRangeInfo;
+                Assert.IsNotNull(rangeInfo);
+                Assert.AreEqual("A$1:A$5", rangeInfo.Address.Address);
+                // Enumerating the range still yields no results.
+                Assert.AreEqual(0, rangeInfo.Count());
             }
         }
 
@@ -404,25 +338,19 @@ namespace EPPlusTest.FormulaParsing.ExpressionGraph
         {
             ParsingContext? parsingContext = ParsingContext.Create();
             FileInfo? file = new FileInfo("filename.xlsx");
-            using (ExcelPackage? package = new ExcelPackage(file))
+            using ExcelPackage? package = new ExcelPackage(file);
+            using ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("NewSheet");
+            using EpplusExcelDataProvider? excelDataProvider = new EpplusExcelDataProvider(package);
+            RangeAddressFactory? rangeAddressFactory = new RangeAddressFactory(excelDataProvider);
+            using (parsingContext.Scopes.NewScope(rangeAddressFactory.Create("NewSheet", 3, 3)))
             {
-                using (ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("NewSheet"))
-                {
-                    using (EpplusExcelDataProvider? excelDataProvider = new EpplusExcelDataProvider(package))
-                    {
-                        RangeAddressFactory? rangeAddressFactory = new RangeAddressFactory(excelDataProvider);
-                        using (parsingContext.Scopes.NewScope(rangeAddressFactory.Create("NewSheet", 3, 3)))
-                        {
-                            ExcelAddressExpression? expression = new ExcelAddressExpression("$A$1:$A$5", excelDataProvider, parsingContext);
-                            CompileResult? result = expression.Compile();
-                            IRangeInfo? rangeInfo = result.Result as IRangeInfo;
-                            Assert.IsNotNull(rangeInfo);
-                            Assert.AreEqual("$A$1:$A$5", rangeInfo.Address.Address);
-                            // Enumerating the range still yields no results.
-                            Assert.AreEqual(0, rangeInfo.Count());
-                        }
-                    }
-                }
+                ExcelAddressExpression? expression = new ExcelAddressExpression("$A$1:$A$5", excelDataProvider, parsingContext);
+                CompileResult? result = expression.Compile();
+                IRangeInfo? rangeInfo = result.Result as IRangeInfo;
+                Assert.IsNotNull(rangeInfo);
+                Assert.AreEqual("$A$1:$A$5", rangeInfo.Address.Address);
+                // Enumerating the range still yields no results.
+                Assert.AreEqual(0, rangeInfo.Count());
             }
         }
         #endregion

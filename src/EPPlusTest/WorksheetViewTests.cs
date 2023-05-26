@@ -75,46 +75,43 @@ namespace EPPlusTest.Core.Worksheet
         [TestMethod]
         public void ReadFrozenPanes()
         {
-            using (ExcelPackage? p = OpenTemplatePackage("FrozenRead.xlsx"))
-            {
-                //Worksheet 1
-                ExcelWorksheet? ws = p.Workbook.Worksheets[0];
-                Assert.IsNotNull(ws.View);
-                Assert.IsNotNull(ws.View.PaneSettings);
-                Assert.AreEqual(ePaneState.Frozen, ws.View.PaneSettings.State);
-                Assert.AreEqual(4, ws.View.Panes.Length);
-                Assert.AreEqual("H56" ,ws.View.PaneSettings.TopLeftCell);
-                Assert.AreEqual(7D, ws.View.PaneSettings.YSplit);
-                Assert.AreEqual(7D, ws.View.PaneSettings.XSplit);
+            using ExcelPackage? p = OpenTemplatePackage("FrozenRead.xlsx");
+            //Worksheet 1
+            ExcelWorksheet? ws = p.Workbook.Worksheets[0];
+            Assert.IsNotNull(ws.View);
+            Assert.IsNotNull(ws.View.PaneSettings);
+            Assert.AreEqual(ePaneState.Frozen, ws.View.PaneSettings.State);
+            Assert.AreEqual(4, ws.View.Panes.Length);
+            Assert.AreEqual("H56", ws.View.PaneSettings.TopLeftCell);
+            Assert.AreEqual(7D, ws.View.PaneSettings.YSplit);
+            Assert.AreEqual(7D, ws.View.PaneSettings.XSplit);
 
-                //Worksheet 2
-                ws = p.Workbook.Worksheets[1];
-                Assert.IsNotNull(ws.View);
-                Assert.IsNotNull(ws.View.PaneSettings);
-                Assert.AreEqual(ePaneState.Frozen, ws.View.PaneSettings.State);
-                Assert.AreEqual(ePanePosition.BottomRight, ws.View.PaneSettings.ActivePanePosition);
-                Assert.AreEqual(3, ws.View.Panes.Length);
-                Assert.AreEqual("D8", ws.View.PaneSettings.TopLeftCell);
-                Assert.AreEqual(7D, ws.View.PaneSettings.YSplit);
-                Assert.AreEqual(3D, ws.View.PaneSettings.XSplit);
-            }
+            //Worksheet 2
+            ws = p.Workbook.Worksheets[1];
+            Assert.IsNotNull(ws.View);
+            Assert.IsNotNull(ws.View.PaneSettings);
+            Assert.AreEqual(ePaneState.Frozen, ws.View.PaneSettings.State);
+            Assert.AreEqual(ePanePosition.BottomRight, ws.View.PaneSettings.ActivePanePosition);
+            Assert.AreEqual(3, ws.View.Panes.Length);
+            Assert.AreEqual("D8", ws.View.PaneSettings.TopLeftCell);
+            Assert.AreEqual(7D, ws.View.PaneSettings.YSplit);
+            Assert.AreEqual(3D, ws.View.PaneSettings.XSplit);
         }
         [TestMethod]
         public void ReadSplitPanes()
         {
-            using (ExcelPackage? p = OpenTemplatePackage("SplitPanes.xlsx"))
-            {
-                //Worksheet 1
-                ExcelWorksheet? ws = p.Workbook.Worksheets[0];
-                Assert.IsNotNull(ws.View);
-                Assert.IsNotNull(ws.View.PaneSettings);
-                Assert.AreEqual(ePaneState.Split, ws.View.PaneSettings.State);
-                Assert.AreEqual(3, ws.View.Panes.Length);
+            using ExcelPackage? p = OpenTemplatePackage("SplitPanes.xlsx");
+            //Worksheet 1
+            ExcelWorksheet? ws = p.Workbook.Worksheets[0];
+            Assert.IsNotNull(ws.View);
+            Assert.IsNotNull(ws.View.PaneSettings);
+            Assert.AreEqual(ePaneState.Split, ws.View.PaneSettings.State);
+            Assert.AreEqual(3, ws.View.Panes.Length);
 
-                //Assert.AreEqual(4230, ws.View.PaneSettings.XSplit);
-                //Assert.AreEqual(3300, ws.View.PaneSettings.YSplit);
-                //Assert.AreEqual(3300, ws.Column(1).Width);
-            }
+
+            //Assert.AreEqual(4230, ws.View.PaneSettings.XSplit);
+            //Assert.AreEqual(3300, ws.View.PaneSettings.YSplit);
+            //Assert.AreEqual(3300, ws.Column(1).Width);
         }
         [TestMethod]
         public void SplitPanesBoth()
@@ -212,18 +209,16 @@ namespace EPPlusTest.Core.Worksheet
         [TestMethod]
         public void SplitPanesNormal18BellMT()
         {
-            using (ExcelPackage? p = new ExcelPackage())
-            {
-                ExcelWorksheet? ws = p.Workbook.Worksheets.Add("SplitPanesNormal18BellMT");
-                p.Workbook.Styles.NamedStyles[0].Style.Font.Name = "Bell MT";
-                p.Workbook.Styles.NamedStyles[0].Style.Font.Size = 18;
-                ws.View.TopLeftCell = "G20000";
-                ws.View.SplitPanes(3, 3);
-                ws.View.ActiveCell = "B2";
+            using ExcelPackage? p = new ExcelPackage();
+            ExcelWorksheet? ws = p.Workbook.Worksheets.Add("SplitPanesNormal18BellMT");
+            p.Workbook.Styles.NamedStyles[0].Style.Font.Name = "Bell MT";
+            p.Workbook.Styles.NamedStyles[0].Style.Font.Size = 18;
+            ws.View.TopLeftCell = "G20000";
+            ws.View.SplitPanes(3, 3);
+            ws.View.ActiveCell = "B2";
 
-                Assert.AreEqual(1860, ws.View.PaneSettings.YSplit);
-                Assert.AreEqual(5655, ws.View.PaneSettings.XSplit);
-            }
+            Assert.AreEqual(1860, ws.View.PaneSettings.YSplit);
+            Assert.AreEqual(5655, ws.View.PaneSettings.XSplit);
         }
     }
 }

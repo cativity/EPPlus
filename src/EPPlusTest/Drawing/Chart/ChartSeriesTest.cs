@@ -150,67 +150,63 @@ namespace EPPlusTest.Drawing.Chart
         [TestMethod]
         public void ReadChartWithLegendEntries()
         {
-            using (ExcelPackage? p1 = new ExcelPackage())
-            {
-                ExcelWorksheet? ws = p1.Workbook.Worksheets.Add("LegendEntries");
-                LoadHierarkiTestData(ws);
-                ExcelBarChart? chart = ws.Drawings.AddBarChart("Bar1", eBarChartType.Column3D);
-                ExcelBarChartSerie? serie1 = chart.Series.Add(ws.Cells["D2:D17"]);
-                ExcelBarChartSerie? serie2 = chart.Series.Add(ws.Cells["D2:D17"], ws.Cells["C2:C17"]);
-                ExcelBarChartSerie? serie3 = chart.Series.Add(ws.Cells["D2:D17"], ws.Cells["B2:B17"]);
+            using ExcelPackage? p1 = new ExcelPackage();
+            ExcelWorksheet? ws = p1.Workbook.Worksheets.Add("LegendEntries");
+            LoadHierarkiTestData(ws);
+            ExcelBarChart? chart = ws.Drawings.AddBarChart("Bar1", eBarChartType.Column3D);
+            ExcelBarChartSerie? serie1 = chart.Series.Add(ws.Cells["D2:D17"]);
+            ExcelBarChartSerie? serie2 = chart.Series.Add(ws.Cells["D2:D17"], ws.Cells["C2:C17"]);
+            ExcelBarChartSerie? serie3 = chart.Series.Add(ws.Cells["D2:D17"], ws.Cells["B2:B17"]);
 
-                serie1.Header = "Serie 1";
-                serie2.Header = "Serie 2-Deleted";
-                serie3.Header = "Serie 3-Font Changed";
+            serie1.Header = "Serie 1";
+            serie2.Header = "Serie 2-Deleted";
+            serie3.Header = "Serie 3-Font Changed";
 
-                chart.Legend.Entries[2].Font.Fill.Style = eFillStyle.SolidFill;
-                chart.Legend.Entries[2].Font.Fill.SolidFill.Color.SetRgbColor(Color.Red);
+            chart.Legend.Entries[2].Font.Fill.Style = eFillStyle.SolidFill;
+            chart.Legend.Entries[2].Font.Fill.SolidFill.Color.SetRgbColor(Color.Red);
 
-                chart.Legend.Entries[1].Deleted = true;
+            chart.Legend.Entries[1].Deleted = true;
 
-                chart.SetPosition(2, 0, 15, 0);
-                chart.SetSize(1600, 900);
+            chart.SetPosition(2, 0, 15, 0);
+            chart.SetSize(1600, 900);
 
-                //Assert p1
-                Assert.AreEqual(ws.Cells["D2:D17"].FullAddressAbsolute, serie1.Series);
-                Assert.AreEqual("", serie1.XSeries);
-                Assert.AreEqual(ws.Cells["D2:D17"].FullAddressAbsolute, serie2.Series);
-                Assert.AreEqual(ws.Cells["C2:C17"].FullAddressAbsolute, serie2.XSeries);
+            //Assert p1
+            Assert.AreEqual(ws.Cells["D2:D17"].FullAddressAbsolute, serie1.Series);
+            Assert.AreEqual("", serie1.XSeries);
+            Assert.AreEqual(ws.Cells["D2:D17"].FullAddressAbsolute, serie2.Series);
+            Assert.AreEqual(ws.Cells["C2:C17"].FullAddressAbsolute, serie2.XSeries);
 
-                Assert.AreEqual("Serie 1", serie1.Header);
-                Assert.AreEqual("Serie 2-Deleted", serie2.Header);
-                Assert.IsTrue(chart.Legend.Entries[1].Deleted);
-                Assert.AreEqual("Serie 3-Font Changed", serie3.Header);
+            Assert.AreEqual("Serie 1", serie1.Header);
+            Assert.AreEqual("Serie 2-Deleted", serie2.Header);
+            Assert.IsTrue(chart.Legend.Entries[1].Deleted);
+            Assert.AreEqual("Serie 3-Font Changed", serie3.Header);
 
-                Assert.AreEqual(eFillStyle.SolidFill, chart.Legend.Entries[2].Font.Fill.Style);
-                Assert.AreEqual(Color.Red.ToArgb(), chart.Legend.Entries[2].Font.Fill.SolidFill.Color.RgbColor.Color.ToArgb());
+            Assert.AreEqual(eFillStyle.SolidFill, chart.Legend.Entries[2].Font.Fill.Style);
+            Assert.AreEqual(Color.Red.ToArgb(), chart.Legend.Entries[2].Font.Fill.SolidFill.Color.RgbColor.Color.ToArgb());
 
-                p1.Save();
+            p1.Save();
 
-                using (ExcelPackage? p2 = new ExcelPackage(p1.Stream))
-                {
-                    ws = p2.Workbook.Worksheets[0];
-                    chart = ws.Drawings[0].As.Chart.BarChart;
-                    serie1 = chart.Series[0];
-                    serie2 = chart.Series[1];
-                    serie3 = chart.Series[2];
+            using ExcelPackage? p2 = new ExcelPackage(p1.Stream);
+            ws = p2.Workbook.Worksheets[0];
+            chart = ws.Drawings[0].As.Chart.BarChart;
+            serie1 = chart.Series[0];
+            serie2 = chart.Series[1];
+            serie3 = chart.Series[2];
 
-                    //Assert p2 
-                    Assert.AreEqual(ws.Cells["D2:D17"].FullAddressAbsolute, serie1.Series);
-                    Assert.AreEqual("", serie1.XSeries);
-                    Assert.AreEqual(ws.Cells["D2:D17"].FullAddressAbsolute, serie2.Series);
-                    Assert.AreEqual(ws.Cells["C2:C17"].FullAddressAbsolute, serie2.XSeries);
+            //Assert p2 
+            Assert.AreEqual(ws.Cells["D2:D17"].FullAddressAbsolute, serie1.Series);
+            Assert.AreEqual("", serie1.XSeries);
+            Assert.AreEqual(ws.Cells["D2:D17"].FullAddressAbsolute, serie2.Series);
+            Assert.AreEqual(ws.Cells["C2:C17"].FullAddressAbsolute, serie2.XSeries);
 
-                    Assert.AreEqual("Serie 1", serie1.Header);
-                    Assert.AreEqual("Serie 2-Deleted", serie2.Header);
-                    Assert.IsTrue(chart.Legend.Entries[1].Deleted);
-                    Assert.AreEqual("Serie 3-Font Changed", serie3.Header);
+            Assert.AreEqual("Serie 1", serie1.Header);
+            Assert.AreEqual("Serie 2-Deleted", serie2.Header);
+            Assert.IsTrue(chart.Legend.Entries[1].Deleted);
+            Assert.AreEqual("Serie 3-Font Changed", serie3.Header);
 
-                    Assert.IsFalse(chart.Legend.Entries[0].Deleted);
-                    Assert.AreEqual(eFillStyle.SolidFill, chart.Legend.Entries[2].Font.Fill.Style);
-                    Assert.AreEqual(Color.Red.ToArgb(), chart.Legend.Entries[2].Font.Fill.SolidFill.Color.RgbColor.Color.ToArgb());
-                }
-            }
+            Assert.IsFalse(chart.Legend.Entries[0].Deleted);
+            Assert.AreEqual(eFillStyle.SolidFill, chart.Legend.Entries[2].Font.Fill.Style);
+            Assert.AreEqual(Color.Red.ToArgb(), chart.Legend.Entries[2].Font.Fill.SolidFill.Color.RgbColor.Color.ToArgb());
         }
         #endregion
     }

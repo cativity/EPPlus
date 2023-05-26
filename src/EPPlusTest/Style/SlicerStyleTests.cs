@@ -153,48 +153,44 @@ namespace EPPlusTest.Style
 
             s.WholeTable.Style.Font.Name = "Arial";
 
-            using (ExcelPackage? p = new ExcelPackage())
-            {
-                ExcelSlicerNamedStyle? sc = p.Workbook.Styles.CreateSlicerStyle("CustomSlicerStyleCopyPck", s);
-                ws=p.Workbook.Worksheets.Add("CopiedSlicerStyle");
-                LoadTestdata(ws);
-                ExcelTable? tbl = ws.Tables.Add(ws.Cells["A1:D100"], "Table3");
-                ExcelTableSlicer? slicer = tbl.Columns[0].AddSlicer();
-                slicer.SetPosition(100, 100);
-                slicer.StyleName = "CustomSlicerStyleCopyPck";
+            using ExcelPackage? p = new ExcelPackage();
+            ExcelSlicerNamedStyle? sc = p.Workbook.Styles.CreateSlicerStyle("CustomSlicerStyleCopyPck", s);
+            ws = p.Workbook.Worksheets.Add("CopiedSlicerStyle");
+            LoadTestdata(ws);
+            ExcelTable? tbl = ws.Tables.Add(ws.Cells["A1:D100"], "Table3");
+            ExcelTableSlicer? slicer = tbl.Columns[0].AddSlicer();
+            slicer.SetPosition(100, 100);
+            slicer.StyleName = "CustomSlicerStyleCopyPck";
 
-                //  Assert.AreEqual(fmt, sc.HoveredUnselectedItemWithNoData.Style.NumberFormat.Format);
+            //  Assert.AreEqual(fmt, sc.HoveredUnselectedItemWithNoData.Style.NumberFormat.Format);
 
-                SaveWorkbook("SlicerStyleNewPackage.Xlsx", p);
-            }
+            SaveWorkbook("SlicerStyleNewPackage.Xlsx", p);
         }
 
 
         [TestMethod]
         public void ReadSlicerStyle()
         {
-            using (ExcelPackage? p = OpenTemplatePackage("SlicerStyleRead.xlsx"))
+            using ExcelPackage? p = OpenTemplatePackage("SlicerStyleRead.xlsx");
+            ExcelSlicerNamedStyle? s = p.Workbook.Styles.SlicerStyles["CustomSlicerStyle1"];
+            if (s == null)
             {
-                ExcelSlicerNamedStyle? s = p.Workbook.Styles.SlicerStyles["CustomSlicerStyle1"];
-                if (s == null)
-                {
-                    Assert.Inconclusive("Custom style does not exists");
-                }
-
-                Assert.AreEqual("CustomSlicerStyle1", s.Name);
-
-                //Assert
-                Assert.AreEqual(Color.LightGray.ToArgb(), s.WholeTable.Style.Font.Color.Color.Value.ToArgb());
-                Assert.AreEqual(Color.DarkGray.ToArgb(), s.HeaderRow.Style.Fill.BackgroundColor.Color.Value.ToArgb());
-
-                Assert.IsTrue(s.SelectedItemWithData.Style.Font.Bold.Value);
-                Assert.AreEqual(ExcelBorderStyle.Dotted, s.SelectedItemWithData.Style.Border.Top.Style);
-                Assert.AreEqual(ExcelBorderStyle.Hair, s.SelectedItemWithData.Style.Border.Bottom.Style);
-                Assert.AreEqual(ExcelBorderStyle.DashDotDot, s.SelectedItemWithData.Style.Border.Left.Style);
-                Assert.AreEqual(ExcelBorderStyle.None, s.SelectedItemWithData.Style.Border.Right.Style);
-                Assert.AreEqual(eThemeSchemeColor.Accent4, s.HoveredSelectedItemWithData.Style.Fill.BackgroundColor.Theme);
-                Assert.AreEqual(Color.LightGoldenrodYellow.ToArgb(), s.HoveredUnselectedItemWithData.Style.Fill.BackgroundColor.Color.Value.ToArgb());
+                Assert.Inconclusive("Custom style does not exists");
             }
+
+            Assert.AreEqual("CustomSlicerStyle1", s.Name);
+
+            //Assert
+            Assert.AreEqual(Color.LightGray.ToArgb(), s.WholeTable.Style.Font.Color.Color.Value.ToArgb());
+            Assert.AreEqual(Color.DarkGray.ToArgb(), s.HeaderRow.Style.Fill.BackgroundColor.Color.Value.ToArgb());
+
+            Assert.IsTrue(s.SelectedItemWithData.Style.Font.Bold.Value);
+            Assert.AreEqual(ExcelBorderStyle.Dotted, s.SelectedItemWithData.Style.Border.Top.Style);
+            Assert.AreEqual(ExcelBorderStyle.Hair, s.SelectedItemWithData.Style.Border.Bottom.Style);
+            Assert.AreEqual(ExcelBorderStyle.DashDotDot, s.SelectedItemWithData.Style.Border.Left.Style);
+            Assert.AreEqual(ExcelBorderStyle.None, s.SelectedItemWithData.Style.Border.Right.Style);
+            Assert.AreEqual(eThemeSchemeColor.Accent4, s.HoveredSelectedItemWithData.Style.Fill.BackgroundColor.Theme);
+            Assert.AreEqual(Color.LightGoldenrodYellow.ToArgb(), s.HoveredUnselectedItemWithData.Style.Fill.BackgroundColor.Color.Value.ToArgb());
         }
     }
 }

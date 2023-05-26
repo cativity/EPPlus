@@ -70,26 +70,24 @@ namespace EPPlusTest
         [TestMethod]
         public void ReadDrawing()
         {
-            using (ExcelPackage pck = new ExcelPackage(new FileInfo(_worksheetPath + @"DrawingRead.xlsx")))
+            using ExcelPackage pck = new ExcelPackage(new FileInfo(_worksheetPath + @"DrawingRead.xlsx"));
+            ExcelWorksheet? ws = pck.Workbook.Worksheets["Pyramid"];
+            if (ws == null)
             {
-                ExcelWorksheet? ws = pck.Workbook.Worksheets["Pyramid"];
-                if (ws == null)
-                {
-                    Assert.Inconclusive("Pyramid worksheet is missing");
-                }
-
-                Assert.AreEqual(ws.Cells["V24"].Value, 104D);
-                ws = pck.Workbook.Worksheets["Scatter"];
-                if (ws == null)
-                {
-                    Assert.Inconclusive("Scatter worksheet is missing");
-                }
-
-                ExcelScatterChart? cht = ws.Drawings["ScatterChart1"] as ExcelScatterChart;
-                Assert.AreEqual(cht.Title.Text, "Header  Text");
-                cht.Title.Text = "Test";
-                Assert.AreEqual(cht.Title.Text, "Test");
+                Assert.Inconclusive("Pyramid worksheet is missing");
             }
+
+            Assert.AreEqual(ws.Cells["V24"].Value, 104D);
+            ws = pck.Workbook.Worksheets["Scatter"];
+            if (ws == null)
+            {
+                Assert.Inconclusive("Scatter worksheet is missing");
+            }
+
+            ExcelScatterChart? cht = ws.Drawings["ScatterChart1"] as ExcelScatterChart;
+            Assert.AreEqual(cht.Title.Text, "Header  Text");
+            cht.Title.Text = "Test";
+            Assert.AreEqual(cht.Title.Text, "Test");
         }
         [TestMethod]
         public void Picture()
@@ -715,39 +713,37 @@ namespace EPPlusTest
         //[Ignore]
         public void DrawingWorksheetCopy()
         {
-            using (ExcelPackage? pck = OpenPackage("Drawingread.xlsx"))
+            using ExcelPackage? pck = OpenPackage("Drawingread.xlsx");
+            ExcelWorksheet? ws = pck.Workbook.Worksheets["Shapes"];
+            if (ws == null)
             {
-                ExcelWorksheet? ws = pck.Workbook.Worksheets["Shapes"];
-                if (ws == null)
-                {
-                    Assert.Inconclusive("Shapes worksheet is missing");
-                }
-
-                ExcelWorksheet? wsShapes = pck.Workbook.Worksheets.Add("Copy Shapes", ws);
-                Assert.AreEqual(187, wsShapes.Drawings.Count);
-
-                ws = pck.Workbook.Worksheets["Scatter"];
-                if (ws == null)
-                {
-                    Assert.Inconclusive("Scatter worksheet is missing");
-                }
-
-                ExcelWorksheet? wsScatterChart = pck.Workbook.Worksheets.Add("Copy Scatter", ws);
-                Assert.AreEqual(2, wsScatterChart.Drawings.Count);
-                ExcelScatterChart? chart1 = wsScatterChart.Drawings[0].As.Chart.ScatterChart;
-                Assert.AreEqual(1, chart1.Series.Count);
-                Assert.AreEqual("'Copy Scatter'!V19:V24", chart1.Series[0].Series);
-
-                ws = pck.Workbook.Worksheets["Picture"];
-                if (ws == null)
-                {
-                    Assert.Inconclusive("Picture worksheet is missing");
-                }
-
-                ExcelWorksheet? wsPicture = pck.Workbook.Worksheets.Add("Copy Picture", ws);
-
-                pck.SaveAs(new FileInfo(_worksheetPath+"DrawingCopied.xlsx"));
+                Assert.Inconclusive("Shapes worksheet is missing");
             }
+
+            ExcelWorksheet? wsShapes = pck.Workbook.Worksheets.Add("Copy Shapes", ws);
+            Assert.AreEqual(187, wsShapes.Drawings.Count);
+
+            ws = pck.Workbook.Worksheets["Scatter"];
+            if (ws == null)
+            {
+                Assert.Inconclusive("Scatter worksheet is missing");
+            }
+
+            ExcelWorksheet? wsScatterChart = pck.Workbook.Worksheets.Add("Copy Scatter", ws);
+            Assert.AreEqual(2, wsScatterChart.Drawings.Count);
+            ExcelScatterChart? chart1 = wsScatterChart.Drawings[0].As.Chart.ScatterChart;
+            Assert.AreEqual(1, chart1.Series.Count);
+            Assert.AreEqual("'Copy Scatter'!V19:V24", chart1.Series[0].Series);
+
+            ws = pck.Workbook.Worksheets["Picture"];
+            if (ws == null)
+            {
+                Assert.Inconclusive("Picture worksheet is missing");
+            }
+
+            ExcelWorksheet? wsPicture = pck.Workbook.Worksheets.Add("Copy Picture", ws);
+
+            pck.SaveAs(new FileInfo(_worksheetPath + "DrawingCopied.xlsx"));
         }
         [TestMethod]
         public void Line2Test()
@@ -1146,12 +1142,9 @@ namespace EPPlusTest
         [TestMethod]
         public void ReadControls()
         {
-            using (ExcelPackage? p = OpenTemplatePackage("Controls.xlsx"))
-            {
-                ExcelWorksheet? ws = p.Workbook.Worksheets[0];
-                Assert.AreEqual(3, ws.Drawings.Count);
-
-            }
+            using ExcelPackage? p = OpenTemplatePackage("Controls.xlsx");
+            ExcelWorksheet? ws = p.Workbook.Worksheets[0];
+            Assert.AreEqual(3, ws.Drawings.Count);
         }
         [TestMethod]
         public void DrawingSetFont()

@@ -456,28 +456,26 @@ namespace EPPlusTest.Excel.Functions
         public void Roman_should_work_correctly_with_all_possible_arguments_issue_770()
         {
             // This unit test was supplied via Github issue 
-            using (ExcelPackage? p = new ExcelPackage())
-            {
-                p.Workbook.Worksheets.Add("first");
+            using ExcelPackage? p = new ExcelPackage();
+            p.Workbook.Worksheets.Add("first");
 
-                ExcelWorksheet? sheet = p.Workbook.Worksheets.First();
+            ExcelWorksheet? sheet = p.Workbook.Worksheets.First();
 
-                sheet.Cells["A1"].Formula = "=Roman(9.99)";
-                sheet.Cells["A2"].Formula = "=Roman(999;1)";
-                sheet.Cells["A3"].Formula = "=Roman(45;true)";
-                sheet.Cells["A4"].Formula = "=Roman(499;false)";
+            sheet.Cells["A1"].Formula = "=Roman(9.99)";
+            sheet.Cells["A2"].Formula = "=Roman(999;1)";
+            sheet.Cells["A3"].Formula = "=Roman(45;true)";
+            sheet.Cells["A4"].Formula = "=Roman(499;false)";
 
-                sheet.Calculate();
+            sheet.Calculate();
 
-                // incorrect rounding method - have to be floor
-                Assert.AreEqual("IX", sheet.Cells["A1"].Value.ToString());
-                // incorrect cornversion by 1 scenario
-                Assert.AreEqual("LMVLIV", sheet.Cells["A2"].Value.ToString());
-                // incorrect interpretation of true - should be "0" instead of "1"
-                Assert.AreEqual("XLV", sheet.Cells["A3"].Value.ToString());
-                // incorrect interpretation of false - should be "4" instead of "0"
-                Assert.AreEqual("ID", sheet.Cells["A4"].Value.ToString());
-            }
+            // incorrect rounding method - have to be floor
+            Assert.AreEqual("IX", sheet.Cells["A1"].Value.ToString());
+            // incorrect cornversion by 1 scenario
+            Assert.AreEqual("LMVLIV", sheet.Cells["A2"].Value.ToString());
+            // incorrect interpretation of true - should be "0" instead of "1"
+            Assert.AreEqual("XLV", sheet.Cells["A3"].Value.ToString());
+            // incorrect interpretation of false - should be "4" instead of "0"
+            Assert.AreEqual("ID", sheet.Cells["A4"].Value.ToString());
         }
 
         [TestMethod]
@@ -662,14 +660,12 @@ namespace EPPlusTest.Excel.Functions
         [TestMethod]
         public void MaxShouldHandleEmptyRange()
         {
-            using (ExcelPackage? package = new ExcelPackage())
-            {
-                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
-                sheet.Cells["A5"].Formula = "MAX(A1:A4)";
-                sheet.Calculate();
-                object? value = sheet.Cells["A5"].Value;
-                Assert.AreEqual(0d, value);
-            }
+            using ExcelPackage? package = new ExcelPackage();
+            ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
+            sheet.Cells["A5"].Formula = "MAX(A1:A4)";
+            sheet.Calculate();
+            object? value = sheet.Cells["A5"].Value;
+            Assert.AreEqual(0d, value);
         }
 
         [TestMethod]
@@ -722,14 +718,12 @@ namespace EPPlusTest.Excel.Functions
         [TestMethod]
         public void MinShouldHandleEmptyRange()
         {
-            using(ExcelPackage? package = new ExcelPackage())
-            {
-                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
-                sheet.Cells["A5"].Formula = "MIN(A1:A4)";
-                sheet.Calculate();
-                object? value = sheet.Cells["A5"].Value;
-                Assert.AreEqual(0d, value);
-            }
+            using ExcelPackage? package = new ExcelPackage();
+            ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
+            sheet.Cells["A5"].Formula = "MIN(A1:A4)";
+            sheet.Calculate();
+            object? value = sheet.Cells["A5"].Value;
+            Assert.AreEqual(0d, value);
         }
 
         [TestMethod]
@@ -1480,561 +1474,515 @@ namespace EPPlusTest.Excel.Functions
         [TestMethod]
         public void CountIfShouldHandleNegativeCriteria()
         {
-            using (ExcelPackage? package = new ExcelPackage())
-            {
-                ExcelWorksheet? sheet1 = package.Workbook.Worksheets.Add("test");
-                sheet1.Cells["A1"].Value = -1;
-                sheet1.Cells["A2"].Value = -2;
-                sheet1.Cells["A3"].Formula = "CountIf(A1:A2,\"-1\")";
-                sheet1.Calculate();
-                Assert.AreEqual(1d, sheet1.Cells["A3"].Value);
-            }
+            using ExcelPackage? package = new ExcelPackage();
+            ExcelWorksheet? sheet1 = package.Workbook.Worksheets.Add("test");
+            sheet1.Cells["A1"].Value = -1;
+            sheet1.Cells["A2"].Value = -2;
+            sheet1.Cells["A3"].Formula = "CountIf(A1:A2,\"-1\")";
+            sheet1.Calculate();
+            Assert.AreEqual(1d, sheet1.Cells["A3"].Value);
         }
 
         [TestMethod]
         public void OddShouldRound0To1()
         {
-            using (ExcelPackage? package = new ExcelPackage())
-            {
-                ExcelWorksheet? sheet1 = package.Workbook.Worksheets.Add("test");
-                sheet1.Cells["A1"].Value = 0;
-                sheet1.Cells["A3"].Formula = "ODD(A1)";
-                sheet1.Calculate();
-                Assert.AreEqual(1, sheet1.Cells["A3"].Value);
-            }
+            using ExcelPackage? package = new ExcelPackage();
+            ExcelWorksheet? sheet1 = package.Workbook.Worksheets.Add("test");
+            sheet1.Cells["A1"].Value = 0;
+            sheet1.Cells["A3"].Formula = "ODD(A1)";
+            sheet1.Calculate();
+            Assert.AreEqual(1, sheet1.Cells["A3"].Value);
         }
 
         [TestMethod]
         public void OddShouldRound1To1()
         {
-            using (ExcelPackage? package = new ExcelPackage())
-            {
-                ExcelWorksheet? sheet1 = package.Workbook.Worksheets.Add("test");
-                sheet1.Cells["A1"].Value = 1;
-                sheet1.Cells["A3"].Formula = "ODD(A1)";
-                sheet1.Calculate();
-                Assert.AreEqual(1, sheet1.Cells["A3"].Value);
-            }
+            using ExcelPackage? package = new ExcelPackage();
+            ExcelWorksheet? sheet1 = package.Workbook.Worksheets.Add("test");
+            sheet1.Cells["A1"].Value = 1;
+            sheet1.Cells["A3"].Formula = "ODD(A1)";
+            sheet1.Calculate();
+            Assert.AreEqual(1, sheet1.Cells["A3"].Value);
         }
 
         [TestMethod]
         public void OddShouldRound2To3()
         {
-            using (ExcelPackage? package = new ExcelPackage())
-            {
-                ExcelWorksheet? sheet1 = package.Workbook.Worksheets.Add("test");
-                sheet1.Cells["A1"].Value = 2;
-                sheet1.Cells["A3"].Formula = "ODD(A1)";
-                sheet1.Calculate();
-                Assert.AreEqual(3, sheet1.Cells["A3"].Value);
-            }
+            using ExcelPackage? package = new ExcelPackage();
+            ExcelWorksheet? sheet1 = package.Workbook.Worksheets.Add("test");
+            sheet1.Cells["A1"].Value = 2;
+            sheet1.Cells["A3"].Formula = "ODD(A1)";
+            sheet1.Calculate();
+            Assert.AreEqual(3, sheet1.Cells["A3"].Value);
         }
 
         [TestMethod]
         public void OddShouldRoundMinus1point3ToMinus3()
         {
-            using (ExcelPackage? package = new ExcelPackage())
-            {
-                ExcelWorksheet? sheet1 = package.Workbook.Worksheets.Add("test");
-                sheet1.Cells["A1"].Value = -1.3;
-                sheet1.Cells["A3"].Formula = "ODD(A1)";
-                sheet1.Calculate();
-                Assert.AreEqual(-3, sheet1.Cells["A3"].Value);
-            }
+            using ExcelPackage? package = new ExcelPackage();
+            ExcelWorksheet? sheet1 = package.Workbook.Worksheets.Add("test");
+            sheet1.Cells["A1"].Value = -1.3;
+            sheet1.Cells["A3"].Formula = "ODD(A1)";
+            sheet1.Calculate();
+            Assert.AreEqual(-3, sheet1.Cells["A3"].Value);
         }
 
         [TestMethod]
         public void EvenShouldRound0To0()
         {
-            using (ExcelPackage? package = new ExcelPackage())
-            {
-                ExcelWorksheet? sheet1 = package.Workbook.Worksheets.Add("test");
-                sheet1.Cells["A1"].Value = 0;
-                sheet1.Cells["A3"].Formula = "EVEN(A1)";
-                sheet1.Calculate();
-                Assert.AreEqual(0, sheet1.Cells["A3"].Value);
-            }
+            using ExcelPackage? package = new ExcelPackage();
+            ExcelWorksheet? sheet1 = package.Workbook.Worksheets.Add("test");
+            sheet1.Cells["A1"].Value = 0;
+            sheet1.Cells["A3"].Formula = "EVEN(A1)";
+            sheet1.Calculate();
+            Assert.AreEqual(0, sheet1.Cells["A3"].Value);
         }
 
         [TestMethod]
         public void EvenShouldRound1To2()
         {
-            using (ExcelPackage? package = new ExcelPackage())
-            {
-                ExcelWorksheet? sheet1 = package.Workbook.Worksheets.Add("test");
-                sheet1.Cells["A1"].Value = 1;
-                sheet1.Cells["A3"].Formula = "EVEN(A1)";
-                sheet1.Calculate();
-                Assert.AreEqual(2, sheet1.Cells["A3"].Value);
-            }
+            using ExcelPackage? package = new ExcelPackage();
+            ExcelWorksheet? sheet1 = package.Workbook.Worksheets.Add("test");
+            sheet1.Cells["A1"].Value = 1;
+            sheet1.Cells["A3"].Formula = "EVEN(A1)";
+            sheet1.Calculate();
+            Assert.AreEqual(2, sheet1.Cells["A3"].Value);
         }
 
         [TestMethod]
         public void EvenShouldRound2To2()
         {
-            using (ExcelPackage? package = new ExcelPackage())
-            {
-                ExcelWorksheet? sheet1 = package.Workbook.Worksheets.Add("test");
-                sheet1.Cells["A1"].Value = 2;
-                sheet1.Cells["A3"].Formula = "EVEN(A1)";
-                sheet1.Calculate();
-                Assert.AreEqual(2, sheet1.Cells["A3"].Value);
-            }
+            using ExcelPackage? package = new ExcelPackage();
+            ExcelWorksheet? sheet1 = package.Workbook.Worksheets.Add("test");
+            sheet1.Cells["A1"].Value = 2;
+            sheet1.Cells["A3"].Formula = "EVEN(A1)";
+            sheet1.Calculate();
+            Assert.AreEqual(2, sheet1.Cells["A3"].Value);
         }
 
         [TestMethod]
         public void EvenShouldRoundMinus1point3ToMinus2()
         {
-            using (ExcelPackage? package = new ExcelPackage())
-            {
-                ExcelWorksheet? sheet1 = package.Workbook.Worksheets.Add("test");
-                sheet1.Cells["A1"].Value = -1.3;
-                sheet1.Cells["A3"].Formula = "EVEN(A1)";
-                sheet1.Calculate();
-                Assert.AreEqual(-2, sheet1.Cells["A3"].Value);
-            }
+            using ExcelPackage? package = new ExcelPackage();
+            ExcelWorksheet? sheet1 = package.Workbook.Worksheets.Add("test");
+            sheet1.Cells["A1"].Value = -1.3;
+            sheet1.Cells["A3"].Formula = "EVEN(A1)";
+            sheet1.Calculate();
+            Assert.AreEqual(-2, sheet1.Cells["A3"].Value);
         }
 
         [TestMethod]
         public void Rank()
         {
-            using (ExcelPackage? p = new ExcelPackage())
-            {
-                ExcelWorksheet? w = p.Workbook.Worksheets.Add("testsheet");
-                w.SetValue(1, 1, 1);
-                w.SetValue(2, 1, 1);
-                w.SetValue(3, 1, 2);
-                w.SetValue(4, 1, 2);
-                w.SetValue(5, 1, 4);
-                w.SetValue(6, 1, 4);
+            using ExcelPackage? p = new ExcelPackage();
+            ExcelWorksheet? w = p.Workbook.Worksheets.Add("testsheet");
+            w.SetValue(1, 1, 1);
+            w.SetValue(2, 1, 1);
+            w.SetValue(3, 1, 2);
+            w.SetValue(4, 1, 2);
+            w.SetValue(5, 1, 4);
+            w.SetValue(6, 1, 4);
 
-                w.SetFormula(1, 2, "RANK(1,A1:A5)");
-                w.SetFormula(1, 3, "RANK(1,A1:A5,1)");
-                w.SetFormula(1, 4, "RANK.AVG(1,A1:A5)");
-                w.SetFormula(1, 5, "RANK.AVG(1,A1:A5,1)");
+            w.SetFormula(1, 2, "RANK(1,A1:A5)");
+            w.SetFormula(1, 3, "RANK(1,A1:A5,1)");
+            w.SetFormula(1, 4, "RANK.AVG(1,A1:A5)");
+            w.SetFormula(1, 5, "RANK.AVG(1,A1:A5,1)");
 
-                w.SetFormula(2, 2, "RANK.EQ(2,A1:A5)");
-                w.SetFormula(2, 3, "RANK.EQ(2,A1:A5,1)");
-                w.SetFormula(2, 4, "RANK.AVG(2,A1:A5,1)");
-                w.SetFormula(2, 5, "RANK.AVG(2,A1:A5,0)");
+            w.SetFormula(2, 2, "RANK.EQ(2,A1:A5)");
+            w.SetFormula(2, 3, "RANK.EQ(2,A1:A5,1)");
+            w.SetFormula(2, 4, "RANK.AVG(2,A1:A5,1)");
+            w.SetFormula(2, 5, "RANK.AVG(2,A1:A5,0)");
 
-                w.SetFormula(3, 2, "RANK(3,A1:A5)");
-                w.SetFormula(3, 3, "RANK(3,A1:A5,1)");
-                w.SetFormula(3, 4, "RANK.AVG(3,A1:A5,1)");
-                w.SetFormula(3, 5, "RANK.AVG(3,A1:A5,0)");
+            w.SetFormula(3, 2, "RANK(3,A1:A5)");
+            w.SetFormula(3, 3, "RANK(3,A1:A5,1)");
+            w.SetFormula(3, 4, "RANK.AVG(3,A1:A5,1)");
+            w.SetFormula(3, 5, "RANK.AVG(3,A1:A5,0)");
 
-                w.SetFormula(4, 2, "RANK.EQ(4,A1:A5)");
-                w.SetFormula(4, 3, "RANK.EQ(4,A1:A5,1)");
-                w.SetFormula(4, 4, "RANK.AVG(4,A1:A5,1)");
-                w.SetFormula(4, 5, "RANK.AVG(4,A1:A5)");
+            w.SetFormula(4, 2, "RANK.EQ(4,A1:A5)");
+            w.SetFormula(4, 3, "RANK.EQ(4,A1:A5,1)");
+            w.SetFormula(4, 4, "RANK.AVG(4,A1:A5,1)");
+            w.SetFormula(4, 5, "RANK.AVG(4,A1:A5)");
 
 
-                w.SetFormula(5, 4, "RANK.AVG(4,A1:A6,1)");
-                w.SetFormula(5, 5, "RANK.AVG(4,A1:A6)");
+            w.SetFormula(5, 4, "RANK.AVG(4,A1:A6,1)");
+            w.SetFormula(5, 5, "RANK.AVG(4,A1:A6)");
 
-                w.Calculate();
+            w.Calculate();
 
-                Assert.AreEqual(w.GetValue(1, 2), 4D);
-                Assert.AreEqual(w.GetValue(1, 3), 1D);
-                Assert.AreEqual(w.GetValue(1, 4), 4.5D);
-                Assert.AreEqual(w.GetValue(1, 5), 1.5D);
+            Assert.AreEqual(w.GetValue(1, 2), 4D);
+            Assert.AreEqual(w.GetValue(1, 3), 1D);
+            Assert.AreEqual(w.GetValue(1, 4), 4.5D);
+            Assert.AreEqual(w.GetValue(1, 5), 1.5D);
 
-                Assert.AreEqual(w.GetValue(2, 2), 2D);
-                Assert.AreEqual(w.GetValue(2, 3), 3D);
-                Assert.AreEqual(w.GetValue(2, 4), 3.5D);
-                Assert.AreEqual(w.GetValue(2, 5), 2.5D);
+            Assert.AreEqual(w.GetValue(2, 2), 2D);
+            Assert.AreEqual(w.GetValue(2, 3), 3D);
+            Assert.AreEqual(w.GetValue(2, 4), 3.5D);
+            Assert.AreEqual(w.GetValue(2, 5), 2.5D);
 
-                Assert.IsInstanceOfType(w.GetValue(3, 2), typeof(ExcelErrorValue));
-                Assert.IsInstanceOfType(w.GetValue(3, 3), typeof(ExcelErrorValue));
-                Assert.IsInstanceOfType(w.GetValue(3, 4), typeof(ExcelErrorValue));
-                Assert.IsInstanceOfType(w.GetValue(3, 5), typeof(ExcelErrorValue));
+            Assert.IsInstanceOfType(w.GetValue(3, 2), typeof(ExcelErrorValue));
+            Assert.IsInstanceOfType(w.GetValue(3, 3), typeof(ExcelErrorValue));
+            Assert.IsInstanceOfType(w.GetValue(3, 4), typeof(ExcelErrorValue));
+            Assert.IsInstanceOfType(w.GetValue(3, 5), typeof(ExcelErrorValue));
 
-                Assert.AreEqual(w.GetValue(4, 2), 1D);
-                Assert.AreEqual(w.GetValue(4, 3), 5D);
-                Assert.AreEqual(w.GetValue(4, 4), 5D);
-                Assert.AreEqual(w.GetValue(4, 5), 1D);
+            Assert.AreEqual(w.GetValue(4, 2), 1D);
+            Assert.AreEqual(w.GetValue(4, 3), 5D);
+            Assert.AreEqual(w.GetValue(4, 4), 5D);
+            Assert.AreEqual(w.GetValue(4, 5), 1D);
 
-                Assert.AreEqual(w.GetValue(5, 4), 5.5D);
-                Assert.AreEqual(w.GetValue(5, 5), 1.5D);
-            }
+            Assert.AreEqual(w.GetValue(5, 4), 5.5D);
+            Assert.AreEqual(w.GetValue(5, 5), 1.5D);
         }
 
         [TestMethod]
         public void PercentrankInc_Test1()
         {
-            using (ExcelPackage? package = new ExcelPackage())
-            {
-                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
-                sheet.Cells["A1"].Value = 1;
-                sheet.Cells["A2"].Value = 2;
-                sheet.Cells["A3"].Value = 3;
-                sheet.Cells["A5"].Formula = "PERCENTRANK.INC(A1:A3,2)";
-                sheet.Calculate();
-                object? result = sheet.Cells["A5"].Value;
-                Assert.AreEqual(0.5, result);
+            using ExcelPackage? package = new ExcelPackage();
+            ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
+            sheet.Cells["A1"].Value = 1;
+            sheet.Cells["A2"].Value = 2;
+            sheet.Cells["A3"].Value = 3;
+            sheet.Cells["A5"].Formula = "PERCENTRANK.INC(A1:A3,2)";
+            sheet.Calculate();
+            object? result = sheet.Cells["A5"].Value;
+            Assert.AreEqual(0.5, result);
 
-                sheet.Cells["A1"].Value = 1;
-                sheet.Cells["A2"].Value = 2;
-                sheet.Cells["A3"].Value = 6;
-                sheet.Cells["A5"].Formula = "PERCENTRANK.INC(A1:A3,3)";
-                sheet.Calculate();
-                result = sheet.Cells["A5"].Value;
-                Assert.AreEqual(0.625, result);
-            }
+            sheet.Cells["A1"].Value = 1;
+            sheet.Cells["A2"].Value = 2;
+            sheet.Cells["A3"].Value = 6;
+            sheet.Cells["A5"].Formula = "PERCENTRANK.INC(A1:A3,3)";
+            sheet.Calculate();
+            result = sheet.Cells["A5"].Value;
+            Assert.AreEqual(0.625, result);
         }
 
         [TestMethod]
         public void PercentrankInc_Test2()
         {
-            using (ExcelPackage? package = new ExcelPackage())
-            {
-                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
+            using ExcelPackage? package = new ExcelPackage();
+            ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
 
-                sheet.Cells["A1"].Value = 1;
-                sheet.Cells["A2"].Value = 2;
-                sheet.Cells["A3"].Value = 4;
-                sheet.Cells["A4"].Value = 6.5;
-                sheet.Cells["A5"].Value = 8;
-                sheet.Cells["A6"].Value = 9;
-                sheet.Cells["A7"].Value = 10;
-                sheet.Cells["A8"].Value = 12;
-                sheet.Cells["A9"].Value = 14;
+            sheet.Cells["A1"].Value = 1;
+            sheet.Cells["A2"].Value = 2;
+            sheet.Cells["A3"].Value = 4;
+            sheet.Cells["A4"].Value = 6.5;
+            sheet.Cells["A5"].Value = 8;
+            sheet.Cells["A6"].Value = 9;
+            sheet.Cells["A7"].Value = 10;
+            sheet.Cells["A8"].Value = 12;
+            sheet.Cells["A9"].Value = 14;
 
-                sheet.Cells["A10"].Formula = "PERCENTRANK.INC(A1:A9,6.5)";
-                sheet.Calculate();
-                object? result = sheet.Cells["A10"].Value;
-                Assert.AreEqual(0.375, result);
+            sheet.Cells["A10"].Formula = "PERCENTRANK.INC(A1:A9,6.5)";
+            sheet.Calculate();
+            object? result = sheet.Cells["A10"].Value;
+            Assert.AreEqual(0.375, result);
 
-                sheet.Cells["A10"].Formula = "PERCENTRANK.INC(A1:A9,7,5)";
-                sheet.Calculate();
-                result = sheet.Cells["A10"].Value;
-                Assert.AreEqual(0.41666, result);
-            }
+            sheet.Cells["A10"].Formula = "PERCENTRANK.INC(A1:A9,7,5)";
+            sheet.Calculate();
+            result = sheet.Cells["A10"].Value;
+            Assert.AreEqual(0.41666, result);
         }
 
         [TestMethod] 
         public void PercentrankExc_Test1()
         {
-            using (ExcelPackage? package = new ExcelPackage())
-            {
-                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
-                sheet.Cells["A1"].Value = 1;
-                sheet.Cells["A2"].Value = 2;
-                sheet.Cells["A3"].Value = 4;
-                sheet.Cells["A4"].Value = 6.5;
-                sheet.Cells["A5"].Value = 8;
-                sheet.Cells["A6"].Value = 9;
-                sheet.Cells["A7"].Value = 10;
-                sheet.Cells["A8"].Value = 12;
-                sheet.Cells["A9"].Value = 14;
-                sheet.Cells["B1"].Formula = "PERCENTRANK.EXC(A1:A9,6.5)";
-                sheet.Calculate();
-                object? result = sheet.Cells["B1"].Value;
-                Assert.AreEqual(0.4, result);
+            using ExcelPackage? package = new ExcelPackage();
+            ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
+            sheet.Cells["A1"].Value = 1;
+            sheet.Cells["A2"].Value = 2;
+            sheet.Cells["A3"].Value = 4;
+            sheet.Cells["A4"].Value = 6.5;
+            sheet.Cells["A5"].Value = 8;
+            sheet.Cells["A6"].Value = 9;
+            sheet.Cells["A7"].Value = 10;
+            sheet.Cells["A8"].Value = 12;
+            sheet.Cells["A9"].Value = 14;
+            sheet.Cells["B1"].Formula = "PERCENTRANK.EXC(A1:A9,6.5)";
+            sheet.Calculate();
+            object? result = sheet.Cells["B1"].Value;
+            Assert.AreEqual(0.4, result);
 
-                sheet.Cells["B1"].Formula = "PERCENTRANK.EXC(A1:A9,7,5)";
-                sheet.Calculate();
-                result = sheet.Cells["B1"].Value;
-                Assert.AreEqual(0.43333, result);
+            sheet.Cells["B1"].Formula = "PERCENTRANK.EXC(A1:A9,7,5)";
+            sheet.Calculate();
+            result = sheet.Cells["B1"].Value;
+            Assert.AreEqual(0.43333, result);
 
-                sheet.Cells["B1"].Formula = "PERCENTRANK.EXC(A1:A9,18)";
-                sheet.Calculate();
-                result = sheet.Cells["B1"].Value;
-                Assert.AreEqual(ExcelErrorValue.Create(eErrorType.NA), result);
-            }
+            sheet.Cells["B1"].Formula = "PERCENTRANK.EXC(A1:A9,18)";
+            sheet.Calculate();
+            result = sheet.Cells["B1"].Value;
+            Assert.AreEqual(ExcelErrorValue.Create(eErrorType.NA), result);
         }
 
         [TestMethod]
         public void Percentile_Test1()
         {
-            using (ExcelPackage? package = new ExcelPackage())
-            {
-                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
+            using ExcelPackage? package = new ExcelPackage();
+            ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
 
-                sheet.Cells["A1"].Value = 2;
-                sheet.Cells["A2"].Value = 1;
-                sheet.Cells["A3"].Value = 6;
-                sheet.Cells["A4"].Value = 4;
-                sheet.Cells["A5"].Value = 3;
-                sheet.Cells["A6"].Value = 5;
+            sheet.Cells["A1"].Value = 2;
+            sheet.Cells["A2"].Value = 1;
+            sheet.Cells["A3"].Value = 6;
+            sheet.Cells["A4"].Value = 4;
+            sheet.Cells["A5"].Value = 3;
+            sheet.Cells["A6"].Value = 5;
 
-                sheet.Cells["A10"].Formula = "PERCENTILE(A1:A6,0.2)";
-                sheet.Calculate();
-                object? result = sheet.Cells["A10"].Value;
-                Assert.AreEqual(2d, result);
+            sheet.Cells["A10"].Formula = "PERCENTILE(A1:A6,0.2)";
+            sheet.Calculate();
+            object? result = sheet.Cells["A10"].Value;
+            Assert.AreEqual(2d, result);
 
-                sheet.Cells["A10"].Formula = "PERCENTILE(A1:A6,60%)";
-                sheet.Calculate();
-                result = sheet.Cells["A10"].Value;
-                Assert.AreEqual(4d, result);
+            sheet.Cells["A10"].Formula = "PERCENTILE(A1:A6,60%)";
+            sheet.Calculate();
+            result = sheet.Cells["A10"].Value;
+            Assert.AreEqual(4d, result);
 
-                sheet.Cells["A10"].Formula = "PERCENTILE(A1:A6,50%)";
-                sheet.Calculate();
-                result = sheet.Cells["A10"].Value;
-                Assert.AreEqual(3.5d, result);
+            sheet.Cells["A10"].Formula = "PERCENTILE(A1:A6,50%)";
+            sheet.Calculate();
+            result = sheet.Cells["A10"].Value;
+            Assert.AreEqual(3.5d, result);
 
-                sheet.Cells["A10"].Formula = "PERCENTILE(A1:A6,95%)";
-                sheet.Calculate();
-                result = sheet.Cells["A10"].Value;
-                Assert.AreEqual(5.75d, result);
-            }
+            sheet.Cells["A10"].Formula = "PERCENTILE(A1:A6,95%)";
+            sheet.Calculate();
+            result = sheet.Cells["A10"].Value;
+            Assert.AreEqual(5.75d, result);
         }
 
         [TestMethod]
         public void PercentileInc_Test1()
         {
-            using (ExcelPackage? package = new ExcelPackage())
-            {
-                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
+            using ExcelPackage? package = new ExcelPackage();
+            ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
 
-                sheet.Cells["A1"].Value = 0;
-                sheet.Cells["A2"].Value = 1;
-                sheet.Cells["A3"].Value = 2;
-                sheet.Cells["A4"].Value = 3;
-                sheet.Cells["A5"].Value = 4;
-                sheet.Cells["A6"].Value = 5;
+            sheet.Cells["A1"].Value = 0;
+            sheet.Cells["A2"].Value = 1;
+            sheet.Cells["A3"].Value = 2;
+            sheet.Cells["A4"].Value = 3;
+            sheet.Cells["A5"].Value = 4;
+            sheet.Cells["A6"].Value = 5;
 
-                sheet.Cells["A10"].Formula = "PERCENTILE.INC(A1:A6,0.2)";
-                sheet.Calculate();
-                object? result = sheet.Cells["A10"].Value;
-                Assert.AreEqual(1d, result);
+            sheet.Cells["A10"].Formula = "PERCENTILE.INC(A1:A6,0.2)";
+            sheet.Calculate();
+            object? result = sheet.Cells["A10"].Value;
+            Assert.AreEqual(1d, result);
 
-                sheet.Cells["A10"].Formula = "PERCENTILE.INC(A1:A6,60%)";
-                sheet.Calculate();
-                result = sheet.Cells["A10"].Value;
-                Assert.AreEqual(3d, result);
+            sheet.Cells["A10"].Formula = "PERCENTILE.INC(A1:A6,60%)";
+            sheet.Calculate();
+            result = sheet.Cells["A10"].Value;
+            Assert.AreEqual(3d, result);
 
-                sheet.Cells["A10"].Formula = "PERCENTILE.INC(A1:A6,50%)";
-                sheet.Calculate();
-                result = sheet.Cells["A10"].Value;
-                Assert.AreEqual(2.5d, result);
+            sheet.Cells["A10"].Formula = "PERCENTILE.INC(A1:A6,50%)";
+            sheet.Calculate();
+            result = sheet.Cells["A10"].Value;
+            Assert.AreEqual(2.5d, result);
 
-                sheet.Cells["A10"].Formula = "PERCENTILE.INC(A1:A6,95%)";
-                sheet.Calculate();
-                result = sheet.Cells["A10"].Value;
-                Assert.AreEqual(4.75d, result);
-            }
+            sheet.Cells["A10"].Formula = "PERCENTILE.INC(A1:A6,95%)";
+            sheet.Calculate();
+            result = sheet.Cells["A10"].Value;
+            Assert.AreEqual(4.75d, result);
         }
 
         [TestMethod]
         public void PercentileExc_Test1()
         {
-            using (ExcelPackage? package = new ExcelPackage())
-            {
-                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
+            using ExcelPackage? package = new ExcelPackage();
+            ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
 
-                sheet.Cells["A1"].Value = 1;
-                sheet.Cells["A2"].Value = 2;
-                sheet.Cells["A3"].Value = 3;
-                sheet.Cells["A4"].Value = 4;
+            sheet.Cells["A1"].Value = 1;
+            sheet.Cells["A2"].Value = 2;
+            sheet.Cells["A3"].Value = 3;
+            sheet.Cells["A4"].Value = 4;
 
-                sheet.Cells["A10"].Formula = "PERCENTILE.EXC(A1:A4,0.2)";
-                sheet.Calculate();
-                object? result = sheet.Cells["A10"].Value;
-                Assert.AreEqual(1d, result);
+            sheet.Cells["A10"].Formula = "PERCENTILE.EXC(A1:A4,0.2)";
+            sheet.Calculate();
+            object? result = sheet.Cells["A10"].Value;
+            Assert.AreEqual(1d, result);
 
-                sheet.Cells["A10"].Formula = "PERCENTILE.EXC(A1:A4,60%)";
-                sheet.Calculate();
-                result = sheet.Cells["A10"].Value;
-                Assert.AreEqual(3d, result);
+            sheet.Cells["A10"].Formula = "PERCENTILE.EXC(A1:A4,60%)";
+            sheet.Calculate();
+            result = sheet.Cells["A10"].Value;
+            Assert.AreEqual(3d, result);
 
-                sheet.Cells["A10"].Formula = "PERCENTILE.EXC(A1:A4,50%)";
-                sheet.Calculate();
-                result = sheet.Cells["A10"].Value;
-                Assert.AreEqual(2.5d, result);
+            sheet.Cells["A10"].Formula = "PERCENTILE.EXC(A1:A4,50%)";
+            sheet.Calculate();
+            result = sheet.Cells["A10"].Value;
+            Assert.AreEqual(2.5d, result);
 
-                sheet.Cells["A10"].Formula = "PERCENTILE.EXC(A1:A4,95%)";
-                sheet.Calculate();
-                result = sheet.Cells["A10"].Value;
-                Assert.AreEqual(ExcelErrorValue.Create(eErrorType.Num), result);
-            }
+            sheet.Cells["A10"].Formula = "PERCENTILE.EXC(A1:A4,95%)";
+            sheet.Calculate();
+            result = sheet.Cells["A10"].Value;
+            Assert.AreEqual(ExcelErrorValue.Create(eErrorType.Num), result);
         }
 
         [TestMethod]
         public void Quartile_Test1()
         {
-            using (ExcelPackage? package = new ExcelPackage())
-            {
-                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
+            using ExcelPackage? package = new ExcelPackage();
+            ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
 
-                sheet.Cells["A1"].Value = 2;
-                sheet.Cells["A2"].Value = 1;
-                sheet.Cells["A3"].Value = 6;
-                sheet.Cells["A4"].Value = 4;
-                sheet.Cells["A5"].Value = 3;
-                sheet.Cells["A6"].Value = 5;
-                sheet.Cells["A7"].Value = 0;
+            sheet.Cells["A1"].Value = 2;
+            sheet.Cells["A2"].Value = 1;
+            sheet.Cells["A3"].Value = 6;
+            sheet.Cells["A4"].Value = 4;
+            sheet.Cells["A5"].Value = 3;
+            sheet.Cells["A6"].Value = 5;
+            sheet.Cells["A7"].Value = 0;
 
-                sheet.Cells["A10"].Formula = "QUARTILE(A1:A7,0)";
-                sheet.Calculate();
-                object? result = sheet.Cells["A10"].Value;
-                Assert.AreEqual(0d, result);
+            sheet.Cells["A10"].Formula = "QUARTILE(A1:A7,0)";
+            sheet.Calculate();
+            object? result = sheet.Cells["A10"].Value;
+            Assert.AreEqual(0d, result);
 
-                sheet.Cells["A10"].Formula = "QUARTILE(A1:A7,1)";
-                sheet.Calculate();
-                result = sheet.Cells["A10"].Value;
-                Assert.AreEqual(1.5d, result);
+            sheet.Cells["A10"].Formula = "QUARTILE(A1:A7,1)";
+            sheet.Calculate();
+            result = sheet.Cells["A10"].Value;
+            Assert.AreEqual(1.5d, result);
 
-                sheet.Cells["A10"].Formula = "QUARTILE(A1:A7, 2)";
-                sheet.Calculate();
-                result = sheet.Cells["A10"].Value;
-                Assert.AreEqual(3d, result);
+            sheet.Cells["A10"].Formula = "QUARTILE(A1:A7, 2)";
+            sheet.Calculate();
+            result = sheet.Cells["A10"].Value;
+            Assert.AreEqual(3d, result);
 
-                sheet.Cells["A10"].Formula = "QUARTILE(A1:A7,3)";
-                sheet.Calculate();
-                result = sheet.Cells["A10"].Value;
-                Assert.AreEqual(4.5d, result);
+            sheet.Cells["A10"].Formula = "QUARTILE(A1:A7,3)";
+            sheet.Calculate();
+            result = sheet.Cells["A10"].Value;
+            Assert.AreEqual(4.5d, result);
 
-                sheet.Cells["A10"].Formula = "QUARTILE(A1:A7,4)";
-                sheet.Calculate();
-                result = sheet.Cells["A10"].Value;
-                Assert.AreEqual(6d, result);
-            }
+            sheet.Cells["A10"].Formula = "QUARTILE(A1:A7,4)";
+            sheet.Calculate();
+            result = sheet.Cells["A10"].Value;
+            Assert.AreEqual(6d, result);
         }
 
         [TestMethod]
         public void QuartileInc_Test1()
         {
-            using (ExcelPackage? package = new ExcelPackage())
-            {
-                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
+            using ExcelPackage? package = new ExcelPackage();
+            ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
 
-                sheet.Cells["A1"].Value = 2;
-                sheet.Cells["A2"].Value = 1;
-                sheet.Cells["A3"].Value = 6;
-                sheet.Cells["A4"].Value = 4;
-                sheet.Cells["A5"].Value = 3;
-                sheet.Cells["A6"].Value = 5;
-                sheet.Cells["A7"].Value = 0;
+            sheet.Cells["A1"].Value = 2;
+            sheet.Cells["A2"].Value = 1;
+            sheet.Cells["A3"].Value = 6;
+            sheet.Cells["A4"].Value = 4;
+            sheet.Cells["A5"].Value = 3;
+            sheet.Cells["A6"].Value = 5;
+            sheet.Cells["A7"].Value = 0;
 
-                sheet.Cells["A10"].Formula = "QUARTILE.INC(A1:A7,0)";
-                sheet.Calculate();
-                object? result = sheet.Cells["A10"].Value;
-                Assert.AreEqual(0d, result);
+            sheet.Cells["A10"].Formula = "QUARTILE.INC(A1:A7,0)";
+            sheet.Calculate();
+            object? result = sheet.Cells["A10"].Value;
+            Assert.AreEqual(0d, result);
 
-                sheet.Cells["A10"].Formula = "QUARTILE.INC(A1:A7,1)";
-                sheet.Calculate();
-                result = sheet.Cells["A10"].Value;
-                Assert.AreEqual(1.5d, result);
+            sheet.Cells["A10"].Formula = "QUARTILE.INC(A1:A7,1)";
+            sheet.Calculate();
+            result = sheet.Cells["A10"].Value;
+            Assert.AreEqual(1.5d, result);
 
-                sheet.Cells["A10"].Formula = "QUARTILE.INC(A1:A7, 2)";
-                sheet.Calculate();
-                result = sheet.Cells["A10"].Value;
-                Assert.AreEqual(3d, result);
+            sheet.Cells["A10"].Formula = "QUARTILE.INC(A1:A7, 2)";
+            sheet.Calculate();
+            result = sheet.Cells["A10"].Value;
+            Assert.AreEqual(3d, result);
 
-                sheet.Cells["A10"].Formula = "QUARTILE.INC(A1:A7,3)";
-                sheet.Calculate();
-                result = sheet.Cells["A10"].Value;
-                Assert.AreEqual(4.5d, result);
+            sheet.Cells["A10"].Formula = "QUARTILE.INC(A1:A7,3)";
+            sheet.Calculate();
+            result = sheet.Cells["A10"].Value;
+            Assert.AreEqual(4.5d, result);
 
-                sheet.Cells["A10"].Formula = "QUARTILE.INC(A1:A7,4)";
-                sheet.Calculate();
-                result = sheet.Cells["A10"].Value;
-                Assert.AreEqual(6d, result);
-            }
+            sheet.Cells["A10"].Formula = "QUARTILE.INC(A1:A7,4)";
+            sheet.Calculate();
+            result = sheet.Cells["A10"].Value;
+            Assert.AreEqual(6d, result);
         }
 
         [TestMethod]
         public void ModeShouldReturnCorrectResult()
         {
-            using (ExcelPackage? package = new ExcelPackage())
-            {
-                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
+            using ExcelPackage? package = new ExcelPackage();
+            ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
 
-                sheet.Cells["A1"].Value = 1;
-                sheet.Cells["A2"].Value = 1;
-                sheet.Cells["A3"].Value = 2;
-                sheet.Cells["A4"].Value = 2;
-                sheet.Cells["A5"].Value = 2;
-                sheet.Cells["A6"].Value = 3;
-                sheet.Cells["B1"].Formula = "MODE(A1:A6)";
-                sheet.Calculate();
-                Assert.AreEqual(2d, sheet.Cells["B1"].Value);
-            }
+            sheet.Cells["A1"].Value = 1;
+            sheet.Cells["A2"].Value = 1;
+            sheet.Cells["A3"].Value = 2;
+            sheet.Cells["A4"].Value = 2;
+            sheet.Cells["A5"].Value = 2;
+            sheet.Cells["A6"].Value = 3;
+            sheet.Cells["B1"].Formula = "MODE(A1:A6)";
+            sheet.Calculate();
+            Assert.AreEqual(2d, sheet.Cells["B1"].Value);
         }
 
         [TestMethod]
         public void ModeShouldReturnLowestIfMultipleResults()
         {
-            using (ExcelPackage? package = new ExcelPackage())
-            {
-                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
+            using ExcelPackage? package = new ExcelPackage();
+            ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
 
-                sheet.Cells["A1"].Value = 2;
-                sheet.Cells["A2"].Value = 1;
-                sheet.Cells["A3"].Value = 2;
-                sheet.Cells["A4"].Value = 1;
-                sheet.Cells["A5"].Value = 3;
-                sheet.Cells["A6"].Value = 3;
-                sheet.Cells["B1"].Formula = "MODE.SNGL(A1:A6)";
-                sheet.Calculate();
-                Assert.AreEqual(1d, sheet.Cells["B1"].Value);
-            }
+            sheet.Cells["A1"].Value = 2;
+            sheet.Cells["A2"].Value = 1;
+            sheet.Cells["A3"].Value = 2;
+            sheet.Cells["A4"].Value = 1;
+            sheet.Cells["A5"].Value = 3;
+            sheet.Cells["A6"].Value = 3;
+            sheet.Cells["B1"].Formula = "MODE.SNGL(A1:A6)";
+            sheet.Calculate();
+            Assert.AreEqual(1d, sheet.Cells["B1"].Value);
         }
 
         [TestMethod]
         public void MultinomialShouldReturnCorrectResult()
         {
-            using (ExcelPackage? package = new ExcelPackage())
-            {
-                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
+            using ExcelPackage? package = new ExcelPackage();
+            ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
 
-                sheet.Cells["A1"].Value = 3;
-                sheet.Cells["A2"].Value = 1;
-                sheet.Cells["A3"].Value = 2;
-                sheet.Cells["A4"].Value = 5;
-                sheet.Cells["B1"].Formula = "MULTINOMIAL(A1:A4)";
-                sheet.Calculate();
-                Assert.AreEqual(27720d, sheet.Cells["B1"].Value);
-            }
+            sheet.Cells["A1"].Value = 3;
+            sheet.Cells["A2"].Value = 1;
+            sheet.Cells["A3"].Value = 2;
+            sheet.Cells["A4"].Value = 5;
+            sheet.Cells["B1"].Formula = "MULTINOMIAL(A1:A4)";
+            sheet.Calculate();
+            Assert.AreEqual(27720d, sheet.Cells["B1"].Value);
         }
 
         [TestMethod]
         public void CovarShouldReturnCorrectResult()
         {
-            using (ExcelPackage? package = new ExcelPackage())
-            {
-                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
+            using ExcelPackage? package = new ExcelPackage();
+            ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
 
-                sheet.Cells["A1"].Value = 3;
-                sheet.Cells["A2"].Value = 1;
-                sheet.Cells["A3"].Value = 2;
-                sheet.Cells["A4"].Value = 5;
-                sheet.Cells["B1"].Value = 2;
-                sheet.Cells["B2"].Value = 6;
-                sheet.Cells["B3"].Value = 2;
-                sheet.Cells["B4"].Value = 8;
+            sheet.Cells["A1"].Value = 3;
+            sheet.Cells["A2"].Value = 1;
+            sheet.Cells["A3"].Value = 2;
+            sheet.Cells["A4"].Value = 5;
+            sheet.Cells["B1"].Value = 2;
+            sheet.Cells["B2"].Value = 6;
+            sheet.Cells["B3"].Value = 2;
+            sheet.Cells["B4"].Value = 8;
 
-                sheet.Cells["C1"].Formula = "COVAR(A1:A4, B1:B4)";
-                sheet.Calculate();
-                Assert.AreEqual(1.625d, sheet.Cells["C1"].Value);
+            sheet.Cells["C1"].Formula = "COVAR(A1:A4, B1:B4)";
+            sheet.Calculate();
+            Assert.AreEqual(1.625d, sheet.Cells["C1"].Value);
 
-                sheet.Cells["C1"].Formula = "COVARIANCE.P(A1:A4, B1:B4)";
-                sheet.Calculate();
-                Assert.AreEqual(1.625d, sheet.Cells["C1"].Value);
-            }
+            sheet.Cells["C1"].Formula = "COVARIANCE.P(A1:A4, B1:B4)";
+            sheet.Calculate();
+            Assert.AreEqual(1.625d, sheet.Cells["C1"].Value);
         }
 
         [TestMethod]
         public void CovarianceSshouldReturnCorrectResult()
         {
-            using (ExcelPackage? package = new ExcelPackage())
-            {
-                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
+            using ExcelPackage? package = new ExcelPackage();
+            ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
 
-                sheet.Cells["A1"].Value = 3;
-                sheet.Cells["A2"].Value = 1;
-                sheet.Cells["A3"].Value = 2;
-                sheet.Cells["A4"].Value = 5;
-                sheet.Cells["B1"].Value = 2;
-                sheet.Cells["B2"].Value = 6;
-                sheet.Cells["B3"].Value = 2;
-                sheet.Cells["B4"].Value = 8;
+            sheet.Cells["A1"].Value = 3;
+            sheet.Cells["A2"].Value = 1;
+            sheet.Cells["A3"].Value = 2;
+            sheet.Cells["A4"].Value = 5;
+            sheet.Cells["B1"].Value = 2;
+            sheet.Cells["B2"].Value = 6;
+            sheet.Cells["B3"].Value = 2;
+            sheet.Cells["B4"].Value = 8;
 
-                sheet.Cells["C1"].Formula = "COVARIANCE.S(A1:A4, B1:B4)";
-                sheet.Calculate();
-                Assert.AreEqual(2.16667d, System.Math.Round((double)sheet.Cells["C1"].Value, 5));
-            }
+            sheet.Cells["C1"].Formula = "COVARIANCE.S(A1:A4, B1:B4)";
+            sheet.Calculate();
+            Assert.AreEqual(2.16667d, System.Math.Round((double)sheet.Cells["C1"].Value, 5));
         }
     }
 }

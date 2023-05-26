@@ -2539,14 +2539,12 @@ namespace OfficeOpenXml
                 {
                     f.Formula = ExcelCellBase.UpdateFormulaReferences(f.Formula, rows, columns, rowFrom, columnFrom, Name, newName);
                 }
-                using (CellStoreEnumerator<object>? cse = new CellStoreEnumerator<object>(_formulas))
+                using CellStoreEnumerator<object>? cse = new CellStoreEnumerator<object>(_formulas);
+                while (cse.Next())
                 {
-                    while (cse.Next())
+                    if (cse.Value is string)
                     {
-                        if (cse.Value is string)
-                        {
-                            cse.Value = ExcelCellBase.UpdateFormulaReferences(cse.Value.ToString(), rows, columns, rowFrom, columnFrom, Name, newName);
-                        }
+                        cse.Value = ExcelCellBase.UpdateFormulaReferences(cse.Value.ToString(), rows, columns, rowFrom, columnFrom, Name, newName);
                     }
                 }
             }
@@ -2565,14 +2563,12 @@ namespace OfficeOpenXml
                 {
                     sf.Formula = ExcelCellBase.UpdateSheetNameInFormula(sf.Formula, oldName, newName);
                 }
-                using (CellStoreEnumerator<object>? cse = new CellStoreEnumerator<object>(_formulas))
+                using CellStoreEnumerator<object>? cse = new CellStoreEnumerator<object>(_formulas);
+                while (cse.Next())
                 {
-                    while (cse.Next())
+                    if (cse.Value is string v) //Non shared Formulas 
                     {
-                        if (cse.Value is string v) //Non shared Formulas 
-                        {
-                            cse.Value = ExcelCellBase.UpdateSheetNameInFormula(v, oldName, newName);
-                        }
+                        cse.Value = ExcelCellBase.UpdateSheetNameInFormula(v, oldName, newName);
                     }
                 }
             }

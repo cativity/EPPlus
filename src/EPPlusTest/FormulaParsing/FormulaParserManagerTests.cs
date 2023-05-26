@@ -70,108 +70,93 @@ namespace EPPlusTest.FormulaParsing
         [TestMethod]
         public void FunctionsShouldBeCopied()
         {
-            using (ExcelPackage? package1 = new ExcelPackage())
-            {
-                package1.Workbook.FormulaParserManager.LoadFunctionModule(new MyModule());
-                using (ExcelPackage? package2 = new ExcelPackage())
-                {
-                    int origNumberOfFuncs = package2.Workbook.FormulaParserManager.GetImplementedFunctionNames().Count();
+            using ExcelPackage? package1 = new ExcelPackage();
+            package1.Workbook.FormulaParserManager.LoadFunctionModule(new MyModule());
+            using ExcelPackage? package2 = new ExcelPackage();
+            int origNumberOfFuncs = package2.Workbook.FormulaParserManager.GetImplementedFunctionNames().Count();
 
-                    // replace functions including the custom functions from package 1
-                    package2.Workbook.FormulaParserManager.CopyFunctionsFrom(package1.Workbook);
+            // replace functions including the custom functions from package 1
+            package2.Workbook.FormulaParserManager.CopyFunctionsFrom(package1.Workbook);
 
-                    // Assertions: number of functions are increased with 1, and the list of function names contains the custom function.
-                    Assert.AreEqual(origNumberOfFuncs + 1, package2.Workbook.FormulaParserManager.GetImplementedFunctionNames().Count());
-                    Assert.IsTrue(package2.Workbook.FormulaParserManager.GetImplementedFunctionNames().Contains("myfunction"));
-                }
-            }
+            // Assertions: number of functions are increased with 1, and the list of function names contains the custom function.
+            Assert.AreEqual(origNumberOfFuncs + 1, package2.Workbook.FormulaParserManager.GetImplementedFunctionNames().Count());
+            Assert.IsTrue(package2.Workbook.FormulaParserManager.GetImplementedFunctionNames().Contains("myfunction"));
         }
 
         [TestMethod]
         public void ShouldParse()
         {
-            using(ExcelPackage? package = new ExcelPackage())
-            {
-                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
-                sheet.Cells["A3"].Value = 2;
-                object? res = package.Workbook.FormulaParser.Parse("1+A3", "test!A3");
-                Assert.AreEqual(3d, res);
-                Assert.AreEqual(2, sheet.Cells["A3"].Value);
-
-            }
+            using ExcelPackage? package = new ExcelPackage();
+            ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
+            sheet.Cells["A3"].Value = 2;
+            object? res = package.Workbook.FormulaParser.Parse("1+A3", "test!A3");
+            Assert.AreEqual(3d, res);
+            Assert.AreEqual(2, sheet.Cells["A3"].Value);
         }
 
         [TestMethod]
         public void ShouldReturnCalcChain()
         {
-            using(ExcelPackage? package = new ExcelPackage())
-            {
-                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
-                sheet.Cells["A1"].Formula = "SUM(A2:A3)";
-                sheet.Cells["A2"].Formula = "1+2";
-                sheet.Cells["A3"].Formula = "MIN(1,2)";
-                IEnumerable<IFormulaCellInfo>? dc = package.Workbook.FormulaParserManager.GetCalculationChain(sheet.Cells["A1"]);
-                Assert.AreEqual(3, dc.Count());
-                Assert.AreEqual("A1", dc.Last().Address);
-
-            }
+            using ExcelPackage? package = new ExcelPackage();
+            ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
+            sheet.Cells["A1"].Formula = "SUM(A2:A3)";
+            sheet.Cells["A2"].Formula = "1+2";
+            sheet.Cells["A3"].Formula = "MIN(1,2)";
+            IEnumerable<IFormulaCellInfo>? dc = package.Workbook.FormulaParserManager.GetCalculationChain(sheet.Cells["A1"]);
+            Assert.AreEqual(3, dc.Count());
+            Assert.AreEqual("A1", dc.Last().Address);
         }
         [TestMethod]
         public void ValidateCalcChainCrossWorkSheet()
         {
-            using (ExcelPackage? package = new ExcelPackage())
-            {
-                ExcelWorksheet? ws1 = package.Workbook.Worksheets.Add("sheet1");
-                ExcelWorksheet? ws2 = package.Workbook.Worksheets.Add("sheet2");
-                ws1.Cells["A1"].Formula = "sheet2!A1+A2";
-                ws1.Cells["A2"].Formula = "1+2";
-                ws2.Cells["A1"].Formula = "1+1";
-                IEnumerable<IFormulaCellInfo>? dc=package.Workbook.FormulaParserManager.GetCalculationChain(ws1.Cells["A1"]);
-                Assert.AreEqual(3, dc.Count());
+            using ExcelPackage? package = new ExcelPackage();
+            ExcelWorksheet? ws1 = package.Workbook.Worksheets.Add("sheet1");
+            ExcelWorksheet? ws2 = package.Workbook.Worksheets.Add("sheet2");
+            ws1.Cells["A1"].Formula = "sheet2!A1+A2";
+            ws1.Cells["A2"].Formula = "1+2";
+            ws2.Cells["A1"].Formula = "1+1";
+            IEnumerable<IFormulaCellInfo>? dc = package.Workbook.FormulaParserManager.GetCalculationChain(ws1.Cells["A1"]);
+            Assert.AreEqual(3, dc.Count());
 
-                Assert.AreEqual("sheet2", dc.ElementAt(0).Worksheet);
-                Assert.AreEqual("A1", dc.ElementAt(0).Address);
+            Assert.AreEqual("sheet2", dc.ElementAt(0).Worksheet);
+            Assert.AreEqual("A1", dc.ElementAt(0).Address);
 
-                Assert.AreEqual("sheet1", dc.ElementAt(1).Worksheet);
-                Assert.AreEqual("A2", dc.ElementAt(1).Address);
+            Assert.AreEqual("sheet1", dc.ElementAt(1).Worksheet);
+            Assert.AreEqual("A2", dc.ElementAt(1).Address);
 
-                Assert.AreEqual("sheet1", dc.ElementAt(2).Worksheet);
-                Assert.AreEqual("A1", dc.ElementAt(2).Address);
-
-            }
+            Assert.AreEqual("sheet1", dc.ElementAt(2).Worksheet);
+            Assert.AreEqual("A1", dc.ElementAt(2).Address);
         }
         [TestMethod]
         public void ValidateCalcChainCrossWorkSheet2()
         {
-            using (ExcelPackage? package = new ExcelPackage())
-            {
-                ExcelWorksheet? ws1 = package.Workbook.Worksheets.Add("sheet1");
-                ExcelWorksheet? ws2 = package.Workbook.Worksheets.Add("sheet2");
-                ExcelWorksheet? ws3 = package.Workbook.Worksheets.Add("sheet3");
-                ws1.Cells["A1"].Formula = "1+C3";
-                ws1.SetFormula(3,3, "1+1");
-                ws2.Cells["A2"].Formula = "1+2";
-                ws2.Cells["A1"].Formula = "1+A2";
-                ws3.Cells["A1"].Formula = "sheet1!A1-A2+sheet2!A1";
-                ws3.SetValue("A2", 1);
-                IEnumerable<IFormulaCellInfo>? dc = package.Workbook.FormulaParserManager.GetCalculationChain(ws3.Cells["A1"]);
-                Assert.AreEqual(5, dc.Count());
+            using ExcelPackage? package = new ExcelPackage();
+            ExcelWorksheet? ws1 = package.Workbook.Worksheets.Add("sheet1");
+            ExcelWorksheet? ws2 = package.Workbook.Worksheets.Add("sheet2");
+            ExcelWorksheet? ws3 = package.Workbook.Worksheets.Add("sheet3");
+            ws1.Cells["A1"].Formula = "1+C3";
+            ws1.SetFormula(3, 3, "1+1");
+            ws2.Cells["A2"].Formula = "1+2";
+            ws2.Cells["A1"].Formula = "1+A2";
+            ws3.Cells["A1"].Formula = "sheet1!A1-A2+sheet2!A1";
+            ws3.SetValue("A2", 1);
+            IEnumerable<IFormulaCellInfo>? dc = package.Workbook.FormulaParserManager.GetCalculationChain(ws3.Cells["A1"]);
+            Assert.AreEqual(5, dc.Count());
 
-                Assert.AreEqual("sheet1", dc.ElementAt(0).Worksheet);
-                Assert.AreEqual("C3", dc.ElementAt(0).Address);
+            Assert.AreEqual("sheet1", dc.ElementAt(0).Worksheet);
+            Assert.AreEqual("C3", dc.ElementAt(0).Address);
 
-                Assert.AreEqual("sheet1", dc.ElementAt(1).Worksheet);
-                Assert.AreEqual("A1", dc.ElementAt(1).Address);
+            Assert.AreEqual("sheet1", dc.ElementAt(1).Worksheet);
+            Assert.AreEqual("A1", dc.ElementAt(1).Address);
 
-                Assert.AreEqual("sheet2", dc.ElementAt(2).Worksheet);
-                Assert.AreEqual("A2", dc.ElementAt(2).Address);
+            Assert.AreEqual("sheet2", dc.ElementAt(2).Worksheet);
+            Assert.AreEqual("A2", dc.ElementAt(2).Address);
 
-                Assert.AreEqual("sheet2", dc.ElementAt(3).Worksheet);
-                Assert.AreEqual("A1", dc.ElementAt(3).Address);
+            Assert.AreEqual("sheet2", dc.ElementAt(3).Worksheet);
+            Assert.AreEqual("A1", dc.ElementAt(3).Address);
 
-                Assert.AreEqual("sheet3", dc.ElementAt(4).Worksheet);
-                Assert.AreEqual("A1", dc.ElementAt(4).Address);
-            }
+            Assert.AreEqual("sheet3", dc.ElementAt(4).Worksheet);
+            Assert.AreEqual("A1", dc.ElementAt(4).Address);
         }
         //[TestMethod]
         //public void ShouldFindAndParseCondFormat()

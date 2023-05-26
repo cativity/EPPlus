@@ -537,85 +537,75 @@ namespace EPPlusTest.Excel.Functions
         [TestMethod]
         public void WorkdayWithNegativeArgShouldReturnCorrectWhenRangeWithHolidayDatesIsSupplied()
         {
-            using (ExcelPackage? package = new ExcelPackage())
-            {
-                ExcelWorksheet? ws = package.Workbook.Worksheets.Add("test");
-                ws.Cells["A1"].Value = new DateTime(2016, 7, 27).ToOADate();
-                ws.Cells["B1"].Value = new DateTime(2016, 7, 11).ToOADate();
-                ws.Cells["B2"].Value = new DateTime(2016, 7, 8).ToOADate();
-                ws.Cells["B3"].Formula = "WORKDAY(A1,-30, B1:B2)";
-                ws.Calculate();
+            using ExcelPackage? package = new ExcelPackage();
+            ExcelWorksheet? ws = package.Workbook.Worksheets.Add("test");
+            ws.Cells["A1"].Value = new DateTime(2016, 7, 27).ToOADate();
+            ws.Cells["B1"].Value = new DateTime(2016, 7, 11).ToOADate();
+            ws.Cells["B2"].Value = new DateTime(2016, 7, 8).ToOADate();
+            ws.Cells["B3"].Formula = "WORKDAY(A1,-30, B1:B2)";
+            ws.Calculate();
 
-                double expectedDate = new DateTime(2016, 6, 13).ToOADate();
-                object? actualDate = ws.Cells["B3"].Value;
-                Assert.AreEqual(expectedDate, actualDate);
-            } 
+            double expectedDate = new DateTime(2016, 6, 13).ToOADate();
+            object? actualDate = ws.Cells["B3"].Value;
+            Assert.AreEqual(expectedDate, actualDate);
         }
 
         [TestMethod]
         public void WorkdayIntlShouldCalculateWeekendOnly()
         {
-            using (ExcelPackage? package = new ExcelPackage())
-            {
-                ExcelWorksheet? ws = package.Workbook.Worksheets.Add("test");
-                ws.Cells["B1"].Value = new DateTime(2015, 12, 1).ToOADate();
-                ws.Cells["B3"].Formula = "WORKDAY.INTL(B1,25)";
-                ws.Calculate();
+            using ExcelPackage? package = new ExcelPackage();
+            ExcelWorksheet? ws = package.Workbook.Worksheets.Add("test");
+            ws.Cells["B1"].Value = new DateTime(2015, 12, 1).ToOADate();
+            ws.Cells["B3"].Formula = "WORKDAY.INTL(B1,25)";
+            ws.Calculate();
 
-                double expectedDate = new DateTime(2016, 1, 5).ToOADate();
-                object? actualDate = ws.Cells["B3"].Value;
-                Assert.AreEqual(expectedDate, actualDate);
-            }
+            double expectedDate = new DateTime(2016, 1, 5).ToOADate();
+            object? actualDate = ws.Cells["B3"].Value;
+            Assert.AreEqual(expectedDate, actualDate);
         }
 
         [TestMethod]
         public void WorkdayIntlShouldCalculateHolidaysStringArg()
         {
-            using (ExcelPackage? package = new ExcelPackage())
-            {
-                ExcelWorksheet? ws = package.Workbook.Worksheets.Add("test");
-                ws.Cells["B1"].Value = new DateTime(2015, 12, 1).ToOADate();
-                ws.Cells["B2"].Value = new DateTime(2015, 12, 25).ToOADate();
-                ws.Cells["B3"].Value = new DateTime(2015, 12, 28).ToOADate();
-                ws.Cells["B4"].Value = new DateTime(2016, 1, 1).ToOADate();
-                ws.Cells["B7"].Formula = "WORKDAY.INTL(B1,25,\"0000111\")";
-                ws.Calculate();
+            using ExcelPackage? package = new ExcelPackage();
+            ExcelWorksheet? ws = package.Workbook.Worksheets.Add("test");
+            ws.Cells["B1"].Value = new DateTime(2015, 12, 1).ToOADate();
+            ws.Cells["B2"].Value = new DateTime(2015, 12, 25).ToOADate();
+            ws.Cells["B3"].Value = new DateTime(2015, 12, 28).ToOADate();
+            ws.Cells["B4"].Value = new DateTime(2016, 1, 1).ToOADate();
+            ws.Cells["B7"].Formula = "WORKDAY.INTL(B1,25,\"0000111\")";
+            ws.Calculate();
 
-                double expectedDate = new DateTime(2016, 1, 13).ToOADate();
-                object? actualDate = ws.Cells["B7"].Value;
-                Assert.AreEqual(expectedDate, actualDate);
-            }
+            double expectedDate = new DateTime(2016, 1, 13).ToOADate();
+            object? actualDate = ws.Cells["B7"].Value;
+            Assert.AreEqual(expectedDate, actualDate);
         }
 
         [TestMethod]
         public void WorkdayIntlShouldCalculateHolidays()
         {
-            using (ExcelPackage? package = new ExcelPackage())
-            {
-                ExcelWorksheet? ws = package.Workbook.Worksheets.Add("test");
-                ws.Cells["B1"].Value = new DateTime(2015, 12, 1).ToOADate();
-                ws.Cells["B2"].Value = new DateTime(2015, 12, 25).ToOADate();
-                ws.Cells["B3"].Value = new DateTime(2015, 12, 28).ToOADate();
-                ws.Cells["B4"].Value = new DateTime(2016, 1, 1).ToOADate();
-                ws.Cells["B7"].Formula = "WORKDAY.INTL(B1,25,1,B2:B4)";
-                ws.Calculate();
+            using ExcelPackage? package = new ExcelPackage();
+            ExcelWorksheet? ws = package.Workbook.Worksheets.Add("test");
+            ws.Cells["B1"].Value = new DateTime(2015, 12, 1).ToOADate();
+            ws.Cells["B2"].Value = new DateTime(2015, 12, 25).ToOADate();
+            ws.Cells["B3"].Value = new DateTime(2015, 12, 28).ToOADate();
+            ws.Cells["B4"].Value = new DateTime(2016, 1, 1).ToOADate();
+            ws.Cells["B7"].Formula = "WORKDAY.INTL(B1,25,1,B2:B4)";
+            ws.Calculate();
 
-                double expectedDate = new DateTime(2016, 1, 8).ToOADate();
-                object? actualDate = ws.Cells["B7"].Value;
-                Assert.AreEqual(expectedDate, actualDate);
-            }
+            double expectedDate = new DateTime(2016, 1, 8).ToOADate();
+            object? actualDate = ws.Cells["B7"].Value;
+            Assert.AreEqual(expectedDate, actualDate);
         }
 
         [TestMethod]
         public void NetworkdaysShouldReturnNumberOfDays()
         {
-            using (ExcelPackage? package = new ExcelPackage())
-            {
-                ExcelWorksheet? ws = package.Workbook.Worksheets.Add("test");
-                ws.Cells["A1"].Formula = "NETWORKDAYS(DATE(2016,1,1), DATE(2016,1,20))";
-                ws.Calculate();
-                Assert.AreEqual(14, ws.Cells["A1"].Value);
-            }
+            using ExcelPackage? package = new ExcelPackage();
+            ExcelWorksheet? ws = package.Workbook.Worksheets.Add("test");
+            ws.Cells["A1"].Formula = "NETWORKDAYS(DATE(2016,1,1), DATE(2016,1,20))";
+            ws.Calculate();
+            Assert.AreEqual(14, ws.Cells["A1"].Value);
         }
 
         [TestMethod]
@@ -624,10 +614,8 @@ namespace EPPlusTest.Excel.Functions
             using (MemoryStream ms = new MemoryStream())
             {
                 // do something...
-                using (ExcelPackage? package = new ExcelPackage())
-                {
-                    package.Load(ms);
-                }
+                using ExcelPackage? package = new ExcelPackage();
+                package.Load(ms);
             }
             using (ExcelPackage? package = new ExcelPackage())
             {
@@ -642,63 +630,53 @@ namespace EPPlusTest.Excel.Functions
         [TestMethod]
         public void NetworkdaysNegativeShouldReturnNumberOfDays()
         {
-            using (ExcelPackage? package = new ExcelPackage())
-            {
-                ExcelWorksheet? ws = package.Workbook.Worksheets.Add("test");
-                ws.Cells["A1"].Formula = "NETWORKDAYS(DATE(2016,1,1), DATE(2015,12,20))";
-                ws.Calculate();
-                Assert.AreEqual(10, ws.Cells["A1"].Value);
-            }
+            using ExcelPackage? package = new ExcelPackage();
+            ExcelWorksheet? ws = package.Workbook.Worksheets.Add("test");
+            ws.Cells["A1"].Formula = "NETWORKDAYS(DATE(2016,1,1), DATE(2015,12,20))";
+            ws.Calculate();
+            Assert.AreEqual(10, ws.Cells["A1"].Value);
         }
 
         [TestMethod]
         public void NetworkdayIntlShouldUseWeekendArg()
         {
-            using (ExcelPackage? package = new ExcelPackage())
-            {
-                ExcelWorksheet? ws = package.Workbook.Worksheets.Add("test");
-                ws.Cells["A1"].Formula = "NETWORKDAYS.INTL(DATE(2016,1,1), DATE(2016,1,20), 11)";
-                ws.Calculate();
-                Assert.AreEqual(17, ws.Cells["A1"].Value);
-            }
+            using ExcelPackage? package = new ExcelPackage();
+            ExcelWorksheet? ws = package.Workbook.Worksheets.Add("test");
+            ws.Cells["A1"].Formula = "NETWORKDAYS.INTL(DATE(2016,1,1), DATE(2016,1,20), 11)";
+            ws.Calculate();
+            Assert.AreEqual(17, ws.Cells["A1"].Value);
         }
 
         [TestMethod]
         public void NetworkdayIntlShouldUseWeekendStringArg()
         {
-            using (ExcelPackage? package = new ExcelPackage())
-            {
-                ExcelWorksheet? ws = package.Workbook.Worksheets.Add("test");
-                ws.Cells["A1"].Formula = "NETWORKDAYS.INTL(DATE(2016,1,1), DATE(2016,1,20), \"0000011\")";
-                ws.Calculate();
-                Assert.AreEqual(14, ws.Cells["A1"].Value);
-            }
+            using ExcelPackage? package = new ExcelPackage();
+            ExcelWorksheet? ws = package.Workbook.Worksheets.Add("test");
+            ws.Cells["A1"].Formula = "NETWORKDAYS.INTL(DATE(2016,1,1), DATE(2016,1,20), \"0000011\")";
+            ws.Calculate();
+            Assert.AreEqual(14, ws.Cells["A1"].Value);
         }
 
         [TestMethod]
         public void NetworkdayIntlShouldReduceHoliday()
         {
-            using (ExcelPackage? package = new ExcelPackage())
-            {
-                ExcelWorksheet? ws = package.Workbook.Worksheets.Add("test");
-                ws.Cells["A1"].Formula = "NETWORKDAYS.INTL(DATE(2016,1,1), DATE(2016,1,20), \"0000011\", DATE(2016,1,4))";
-                ws.Calculate();
-                Assert.AreEqual(13, ws.Cells["A1"].Value);
-            }
+            using ExcelPackage? package = new ExcelPackage();
+            ExcelWorksheet? ws = package.Workbook.Worksheets.Add("test");
+            ws.Cells["A1"].Formula = "NETWORKDAYS.INTL(DATE(2016,1,1), DATE(2016,1,20), \"0000011\", DATE(2016,1,4))";
+            ws.Calculate();
+            Assert.AreEqual(13, ws.Cells["A1"].Value);
         }
 
         [TestMethod]
         public void TimeAddition()
         {
-            using (ExcelPackage? package = new ExcelPackage())
-            {
-                ExcelWorksheet? ws = package.Workbook.Worksheets.Add("test");
-                ws.Cells["A1"].Formula = "1 + Time(10,0,0)";
-                ws.Calculate();
-                double result = Convert.ToDouble(ws.Cells["A1"].Value);
-                result = Math.Round(result, 2);
-                Assert.AreEqual(1.42d, result);
-            }
+            using ExcelPackage? package = new ExcelPackage();
+            ExcelWorksheet? ws = package.Workbook.Worksheets.Add("test");
+            ws.Cells["A1"].Formula = "1 + Time(10,0,0)";
+            ws.Calculate();
+            double result = Convert.ToDouble(ws.Cells["A1"].Value);
+            result = Math.Round(result, 2);
+            Assert.AreEqual(1.42d, result);
         }
     }
 }

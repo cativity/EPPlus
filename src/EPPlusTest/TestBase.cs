@@ -87,13 +87,9 @@ namespace EPPlusTest
                     if (name.EndsWith(ext, StringComparison.OrdinalIgnoreCase))
                     {
                         string fileName = name.Replace("EPPlusTest.Resources.", "");
-                        using (Stream? stream = asm.GetManifestResourceStream(name))
-                        {
-                            using (FileStream? file = File.Create(Path.Combine(_clipartPath, fileName)))
-                            {
-                                stream.CopyTo(file);
-                            }
-                        }
+                        using Stream? stream = asm.GetManifestResourceStream(name);
+                        using FileStream? file = File.Create(Path.Combine(_clipartPath, fileName));
+                        stream.CopyTo(file);
 
                         break;
                     }

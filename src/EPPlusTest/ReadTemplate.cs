@@ -58,11 +58,9 @@ namespace EPPlusTest
         [TestMethod]
         public void OpenXlts()
         {
-            using (ExcelPackage? pck = OpenTemplatePackage("Template.xltx"))
-            {
-                ExcelWorksheet? ws=pck.Workbook.Worksheets[0];
-                SaveWorkbook("Template.xlsx", pck);
-            }
+            using ExcelPackage? pck = OpenTemplatePackage("Template.xltx");
+            ExcelWorksheet? ws = pck.Workbook.Worksheets[0];
+            SaveWorkbook("Template.xlsx", pck);
         }
     }
 }

@@ -41,52 +41,44 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions.Database
         [TestMethod]
         public void DatabaseShouldReadFields()
         {
-            using (ExcelPackage? package = new ExcelPackage())
-            {
-                ExcelDatabase? database = GetDatabase(package);
+            using ExcelPackage? package = new ExcelPackage();
+            ExcelDatabase? database = GetDatabase(package);
 
-                Assert.AreEqual(2, database.Fields.Count(), "count was not 2");
-                Assert.AreEqual("col1", database.Fields.First().FieldName, "first fieldname was not 'col1'");
-                Assert.AreEqual("col2", database.Fields.Last().FieldName, "last fieldname was not 'col12'");
-            }
+            Assert.AreEqual(2, database.Fields.Count(), "count was not 2");
+            Assert.AreEqual("col1", database.Fields.First().FieldName, "first fieldname was not 'col1'");
+            Assert.AreEqual("col2", database.Fields.Last().FieldName, "last fieldname was not 'col12'");
         }
 
         [TestMethod]
         public void HasMoreRowsShouldBeTrueWhenInitialized()
         {
-            using (ExcelPackage? package = new ExcelPackage())
-            {
-                ExcelDatabase? database = GetDatabase(package);
+            using ExcelPackage? package = new ExcelPackage();
+            ExcelDatabase? database = GetDatabase(package);
 
-                Assert.IsTrue(database.HasMoreRows);
-            }
-            
+            Assert.IsTrue(database.HasMoreRows);
+
         }
 
         [TestMethod]
         public void HasMoreRowsShouldBeFalseWhenLastRowIsRead()
         {
-            using (ExcelPackage? package = new ExcelPackage())
-            {
-                ExcelDatabase? database = GetDatabase(package);
-                database.Read();
+            using ExcelPackage? package = new ExcelPackage();
+            ExcelDatabase? database = GetDatabase(package);
+            database.Read();
 
-                Assert.IsFalse(database.HasMoreRows);
-            }
+            Assert.IsFalse(database.HasMoreRows);
 
         }
 
         [TestMethod]
         public void DatabaseShouldReadFieldsInRow()
         {
-            using (ExcelPackage? package = new ExcelPackage())
-            {
-                ExcelDatabase? database = GetDatabase(package);
-                ExcelDatabaseRow? row = database.Read();
+            using ExcelPackage? package = new ExcelPackage();
+            ExcelDatabase? database = GetDatabase(package);
+            ExcelDatabaseRow? row = database.Read();
 
-                Assert.AreEqual(1, row["col1"]);
-                Assert.AreEqual(2, row["col2"]);
-            }
+            Assert.AreEqual(1, row["col1"]);
+            Assert.AreEqual(2, row["col2"]);
 
         }
 

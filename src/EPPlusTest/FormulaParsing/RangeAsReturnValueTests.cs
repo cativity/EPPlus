@@ -15,16 +15,14 @@ namespace EPPlusTest.FormulaParsing
         [TestMethod]
         public void IndirectShouldHandleRangeInGroupExpression()
         {
-            using(ExcelPackage? package = new ExcelPackage())
-            {
-                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
-                sheet.Cells["A1"].Value = 1;
-                sheet.Cells["A2"].Value = 2;
-                sheet.Cells["A3"].Formula = "MATCH(1;(OFFSET(INDIRECT(\"A1:A2\"),0,0)))";
-                sheet.Calculate();
-                object? v = sheet.Cells["A3"].Value;
-                Assert.AreEqual(1, v);
-            }
+            using ExcelPackage? package = new ExcelPackage();
+            ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
+            sheet.Cells["A1"].Value = 1;
+            sheet.Cells["A2"].Value = 2;
+            sheet.Cells["A3"].Formula = "MATCH(1;(OFFSET(INDIRECT(\"A1:A2\"),0,0)))";
+            sheet.Calculate();
+            object? v = sheet.Cells["A3"].Value;
+            Assert.AreEqual(1, v);
         }
     }
 }

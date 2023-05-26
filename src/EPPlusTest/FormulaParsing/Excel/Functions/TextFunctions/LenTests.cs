@@ -14,24 +14,21 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions.TextFunctions
         [TestMethod]
         public void LenShouldReturnCorrect()
         {
-            using(ExcelPackage? package = new ExcelPackage())
-            {
-                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("Sheet1");
+            using ExcelPackage? package = new ExcelPackage();
+            ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("Sheet1");
 
-                sheet.Cells["A1"].Value = "data";
-                sheet.Cells["A2"].Formula = "LEN(A1)";
-                sheet.Cells["A2"].Calculate();
-                Assert.AreEqual(4d, sheet.Cells["A2"].Value, "LEN returned incorrect result when reading data from cell");
+            sheet.Cells["A1"].Value = "data";
+            sheet.Cells["A2"].Formula = "LEN(A1)";
+            sheet.Cells["A2"].Calculate();
+            Assert.AreEqual(4d, sheet.Cells["A2"].Value, "LEN returned incorrect result when reading data from cell");
 
-                sheet.Cells["A2"].Formula = "LEN(B1)";
-                sheet.Cells["A2"].Calculate();
-                Assert.AreEqual(0d, sheet.Cells["A2"].Value, "LEN returned incorrect result when reading null value from cell");
+            sheet.Cells["A2"].Formula = "LEN(B1)";
+            sheet.Cells["A2"].Calculate();
+            Assert.AreEqual(0d, sheet.Cells["A2"].Value, "LEN returned incorrect result when reading null value from cell");
 
-                sheet.Cells["A2"].Formula = "LEN(\"data\")";
-                sheet.Cells["A2"].Calculate();
-                Assert.AreEqual(4d, sheet.Cells["A2"].Value, "LEN returned incorrect result when reading hardcoded string");
-
-            }
+            sheet.Cells["A2"].Formula = "LEN(\"data\")";
+            sheet.Cells["A2"].Calculate();
+            Assert.AreEqual(4d, sheet.Cells["A2"].Value, "LEN returned incorrect result when reading hardcoded string");
         }
     }
 }

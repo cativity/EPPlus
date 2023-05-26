@@ -162,303 +162,261 @@ namespace EPPlusTest.ConditionalFormatting
         [TestMethod]
         public void WriteReadEqual()
         {
-            using (ExcelPackage p = new ExcelPackage())
-            {
-                ExcelWorksheet ws = p.Workbook.Worksheets.Add("Equal");
-                IExcelConditionalFormattingEqual cf = ws.Cells["A1"].ConditionalFormatting.AddEqual();
-                cf.Formula = "1";
-                p.Save();
-                using (ExcelPackage p2 = new ExcelPackage(p.Stream))
-                {
-                    ws = p2.Workbook.Worksheets[0];
-                    cf = ws.ConditionalFormatting[0].As.Equal;
-                    Assert.AreEqual("1", cf.Formula);
-                }
-            }
+            using ExcelPackage p = new ExcelPackage();
+            ExcelWorksheet ws = p.Workbook.Worksheets.Add("Equal");
+            IExcelConditionalFormattingEqual cf = ws.Cells["A1"].ConditionalFormatting.AddEqual();
+            cf.Formula = "1";
+            p.Save();
+            using ExcelPackage p2 = new ExcelPackage(p.Stream);
+            ws = p2.Workbook.Worksheets[0];
+            cf = ws.ConditionalFormatting[0].As.Equal;
+            Assert.AreEqual("1", cf.Formula);
         }
 
         [TestMethod]
         public void WriteReadThreeIcon()
         {
-            using (ExcelPackage p = new ExcelPackage())
-            {
-                ExcelWorksheet ws = p.Workbook.Worksheets.Add("FiveIcon");
-                IExcelConditionalFormattingThreeIconSet<eExcelconditionalFormatting3IconsSetType> cf = ws.Cells["A1"].ConditionalFormatting.AddThreeIconSet(eExcelconditionalFormatting3IconsSetType.TrafficLights2);
+            using ExcelPackage p = new ExcelPackage();
+            ExcelWorksheet ws = p.Workbook.Worksheets.Add("FiveIcon");
+            IExcelConditionalFormattingThreeIconSet<eExcelconditionalFormatting3IconsSetType> cf = ws.Cells["A1"].ConditionalFormatting.AddThreeIconSet(eExcelconditionalFormatting3IconsSetType.TrafficLights2);
 
-                p.Save();
-                using (ExcelPackage p2 = new ExcelPackage(p.Stream))
-                {
-                    ws = p2.Workbook.Worksheets[0];
-                    cf = ws.ConditionalFormatting[0].As.ThreeIconSet;
-                    Assert.AreEqual(eExcelconditionalFormatting3IconsSetType.TrafficLights2, cf.IconSet);
-                }
-            }
+            p.Save();
+            using ExcelPackage p2 = new ExcelPackage(p.Stream);
+            ws = p2.Workbook.Worksheets[0];
+            cf = ws.ConditionalFormatting[0].As.ThreeIconSet;
+            Assert.AreEqual(eExcelconditionalFormatting3IconsSetType.TrafficLights2, cf.IconSet);
         }
         [TestMethod]
         public void WriteReadFourIcon()
         {
-            using (ExcelPackage p = new ExcelPackage())
-            {
-                ExcelWorksheet ws = p.Workbook.Worksheets.Add("FourIcon");
-                IExcelConditionalFormattingFourIconSet<eExcelconditionalFormatting4IconsSetType> cf = ws.Cells["A1"].ConditionalFormatting.AddFourIconSet(eExcelconditionalFormatting4IconsSetType.ArrowsGray);
+            using ExcelPackage p = new ExcelPackage();
+            ExcelWorksheet ws = p.Workbook.Worksheets.Add("FourIcon");
+            IExcelConditionalFormattingFourIconSet<eExcelconditionalFormatting4IconsSetType> cf = ws.Cells["A1"].ConditionalFormatting.AddFourIconSet(eExcelconditionalFormatting4IconsSetType.ArrowsGray);
 
-                p.Save();
-                using (ExcelPackage p2 = new ExcelPackage(p.Stream))
-                {
-                    ws = p2.Workbook.Worksheets[0];
-                    cf = ws.ConditionalFormatting[0].As.FourIconSet;
-                    Assert.AreEqual(eExcelconditionalFormatting4IconsSetType.ArrowsGray, cf.IconSet);
-                }
-            }
+            p.Save();
+            using ExcelPackage p2 = new ExcelPackage(p.Stream);
+            ws = p2.Workbook.Worksheets[0];
+            cf = ws.ConditionalFormatting[0].As.FourIconSet;
+            Assert.AreEqual(eExcelconditionalFormatting4IconsSetType.ArrowsGray, cf.IconSet);
         }
         [TestMethod]
         public void WriteReadFiveIcon()
         {
-            using (ExcelPackage p = new ExcelPackage())
-            {
-                ExcelWorksheet ws = p.Workbook.Worksheets.Add("FiveIcon");
-                IExcelConditionalFormattingFiveIconSet cf = ws.Cells["A1"].ConditionalFormatting.AddFiveIconSet(eExcelconditionalFormatting5IconsSetType.Arrows);
+            using ExcelPackage p = new ExcelPackage();
+            ExcelWorksheet ws = p.Workbook.Worksheets.Add("FiveIcon");
+            IExcelConditionalFormattingFiveIconSet cf = ws.Cells["A1"].ConditionalFormatting.AddFiveIconSet(eExcelconditionalFormatting5IconsSetType.Arrows);
 
-                p.Save();
-                using (ExcelPackage p2 = new ExcelPackage(p.Stream))
-                {
-                    ws = p2.Workbook.Worksheets[0];
-                    cf = ws.ConditionalFormatting[0].As.FiveIconSet;
-                    Assert.AreEqual(eExcelconditionalFormatting5IconsSetType.Arrows, cf.IconSet);
-                }
-            }
+            p.Save();
+            using ExcelPackage p2 = new ExcelPackage(p.Stream);
+            ws = p2.Workbook.Worksheets[0];
+            cf = ws.ConditionalFormatting[0].As.FiveIconSet;
+            Assert.AreEqual(eExcelconditionalFormatting5IconsSetType.Arrows, cf.IconSet);
         }
 
 
         [TestMethod]
         public void WriteReadDataBar()
         {
-            using (ExcelPackage p = new ExcelPackage())
-            {
-                ExcelWorksheet ws = p.Workbook.Worksheets.Add("DataBar");
-                IExcelConditionalFormattingDataBarGroup cf = ws.Cells["A1"].ConditionalFormatting.AddDatabar(Color.Red);
+            using ExcelPackage p = new ExcelPackage();
+            ExcelWorksheet ws = p.Workbook.Worksheets.Add("DataBar");
+            IExcelConditionalFormattingDataBarGroup cf = ws.Cells["A1"].ConditionalFormatting.AddDatabar(Color.Red);
 
-                p.Save();
-                using (ExcelPackage p2 = new ExcelPackage(p.Stream))
-                {
-                    ws = p2.Workbook.Worksheets[0];
-                    cf = ws.ConditionalFormatting[0].As.DataBar;
-                    Assert.AreEqual(Color.Red.ToArgb(), cf.Color.ToArgb());
-                }
-            }
+            p.Save();
+            using ExcelPackage p2 = new ExcelPackage(p.Stream);
+            ws = p2.Workbook.Worksheets[0];
+            cf = ws.ConditionalFormatting[0].As.DataBar;
+            Assert.AreEqual(Color.Red.ToArgb(), cf.Color.ToArgb());
         }
 
         [TestMethod]
         public void WriteReadTwoColorScale()
         {
-            using (ExcelPackage p = new ExcelPackage())
-            {
-                ExcelWorksheet ws = p.Workbook.Worksheets.Add("TwoColorScale");
-                IExcelConditionalFormattingTwoColorScale cf = ws.Cells["A1"].ConditionalFormatting.AddTwoColorScale();
-                cf.LowValue.Type = eExcelConditionalFormattingValueObjectType.Num;
-                cf.LowValue.Value = 2;
-                cf.HighValue.Type = eExcelConditionalFormattingValueObjectType.Percentile;
-                cf.HighValue.Value = 50;
-                cf.PivotTable = true;
+            using ExcelPackage p = new ExcelPackage();
+            ExcelWorksheet ws = p.Workbook.Worksheets.Add("TwoColorScale");
+            IExcelConditionalFormattingTwoColorScale cf = ws.Cells["A1"].ConditionalFormatting.AddTwoColorScale();
+            cf.LowValue.Type = eExcelConditionalFormattingValueObjectType.Num;
+            cf.LowValue.Value = 2;
+            cf.HighValue.Type = eExcelConditionalFormattingValueObjectType.Percentile;
+            cf.HighValue.Value = 50;
+            cf.PivotTable = true;
 
+            Assert.AreEqual(2, cf.LowValue.Value);
+            Assert.AreEqual(50, cf.HighValue.Value);
+
+            p.Save();
+            using (ExcelPackage p2 = new ExcelPackage(p.Stream))
+            {
+                ws = p2.Workbook.Worksheets[0];
+                cf = ws.ConditionalFormatting[0].As.TwoColorScale;
                 Assert.AreEqual(2, cf.LowValue.Value);
                 Assert.AreEqual(50, cf.HighValue.Value);
-
-                p.Save();
-                using (ExcelPackage p2 = new ExcelPackage(p.Stream))
-                {
-                    ws = p2.Workbook.Worksheets[0];
-                    cf = ws.ConditionalFormatting[0].As.TwoColorScale;
-                    Assert.AreEqual(2, cf.LowValue.Value);
-                    Assert.AreEqual(50, cf.HighValue.Value);
-                }
-
-                SaveAndCleanup(p);
             }
+
+            SaveAndCleanup(p);
         }
         [TestMethod]
         public void WriteReadThreeColorScale()
         {
-            using (ExcelPackage p = new ExcelPackage())
-            {
-                ExcelWorksheet ws = p.Workbook.Worksheets.Add("ThreeColorScale");
-                IExcelConditionalFormattingThreeColorScale cf = ws.Cells["A1"].ConditionalFormatting.AddThreeColorScale();
-                cf.LowValue.Type = eExcelConditionalFormattingValueObjectType.Num;
-                cf.LowValue.Value = 2;
-                cf.MiddleValue.Type = eExcelConditionalFormattingValueObjectType.Percent;
-                cf.MiddleValue.Value = 25;
-                cf.HighValue.Type = eExcelConditionalFormattingValueObjectType.Percentile;
-                cf.HighValue.Value = 50;
-                cf.PivotTable = true;
+            using ExcelPackage p = new ExcelPackage();
+            ExcelWorksheet ws = p.Workbook.Worksheets.Add("ThreeColorScale");
+            IExcelConditionalFormattingThreeColorScale cf = ws.Cells["A1"].ConditionalFormatting.AddThreeColorScale();
+            cf.LowValue.Type = eExcelConditionalFormattingValueObjectType.Num;
+            cf.LowValue.Value = 2;
+            cf.MiddleValue.Type = eExcelConditionalFormattingValueObjectType.Percent;
+            cf.MiddleValue.Value = 25;
+            cf.HighValue.Type = eExcelConditionalFormattingValueObjectType.Percentile;
+            cf.HighValue.Value = 50;
+            cf.PivotTable = true;
 
+            Assert.AreEqual(2, cf.LowValue.Value);
+            Assert.AreEqual(50, cf.HighValue.Value);
+
+            p.Save();
+            using (ExcelPackage p2 = new ExcelPackage(p.Stream))
+            {
+                ws = p2.Workbook.Worksheets[0];
+                cf = ws.ConditionalFormatting[0].As.ThreeColorScale;
                 Assert.AreEqual(2, cf.LowValue.Value);
                 Assert.AreEqual(50, cf.HighValue.Value);
-
-                p.Save();
-                using (ExcelPackage p2 = new ExcelPackage(p.Stream))
-                {
-                    ws = p2.Workbook.Worksheets[0];
-                    cf = ws.ConditionalFormatting[0].As.ThreeColorScale;
-                    Assert.AreEqual(2, cf.LowValue.Value);
-                    Assert.AreEqual(50, cf.HighValue.Value);
-                }
-
-                SaveAndCleanup(p);
             }
+
+            SaveAndCleanup(p);
         }
         [TestMethod]
         public void VerifyReadStyling()
         {
-            using (ExcelPackage p = new ExcelPackage())
-            {
-                ExcelWorksheet ws = p.Workbook.Worksheets.Add("Sheet1");
-                IExcelConditionalFormattingBetween cf = ws.ConditionalFormatting.AddBetween(ws.Cells["A1:A3"]);
-                cf.Formula = "1";
-                cf.Formula2 = "2";
+            using ExcelPackage p = new ExcelPackage();
+            ExcelWorksheet ws = p.Workbook.Worksheets.Add("Sheet1");
+            IExcelConditionalFormattingBetween cf = ws.ConditionalFormatting.AddBetween(ws.Cells["A1:A3"]);
+            cf.Formula = "1";
+            cf.Formula2 = "2";
 
-                string expectedFormat = "#,##0";
-                cf.Style.Font.Bold = true;
-                cf.Style.Font.Italic = true;
-                cf.Style.Font.Color.SetColor(Color.Red);
-                cf.Style.NumberFormat.Format = expectedFormat;
+            string expectedFormat = "#,##0";
+            cf.Style.Font.Bold = true;
+            cf.Style.Font.Italic = true;
+            cf.Style.Font.Color.SetColor(Color.Red);
+            cf.Style.NumberFormat.Format = expectedFormat;
 
-                p.Save();
+            p.Save();
 
-                using (ExcelPackage p2 = new ExcelPackage(p.Stream))
-                {
-                    ws = p.Workbook.Worksheets[0];
-                    cf = ws.ConditionalFormatting[0].As.Between;
-                    Assert.IsTrue(cf.Style.Font.Bold.Value);
-                    Assert.IsTrue(cf.Style.Font.Italic.Value);
-                    Assert.AreEqual(Color.Red.ToArgb(), cf.Style.Font.Color.Color.Value.ToArgb());
-                    Assert.AreEqual(expectedFormat, cf.Style.NumberFormat.Format);
-                }
-            }
+            using ExcelPackage p2 = new ExcelPackage(p.Stream);
+            ws = p.Workbook.Worksheets[0];
+            cf = ws.ConditionalFormatting[0].As.Between;
+            Assert.IsTrue(cf.Style.Font.Bold.Value);
+            Assert.IsTrue(cf.Style.Font.Italic.Value);
+            Assert.AreEqual(Color.Red.ToArgb(), cf.Style.Font.Color.Color.Value.ToArgb());
+            Assert.AreEqual(expectedFormat, cf.Style.NumberFormat.Format);
         }
         [TestMethod]
         public void VerifyExpression()
         {
-            using (ExcelPackage p = OpenPackage("cf.xlsx", true))
-            {
-                ExcelWorksheet ws = p.Workbook.Worksheets.Add("Sheet1");
-                IExcelConditionalFormattingExpression cf = ws.ConditionalFormatting.AddExpression(new ExcelAddress("$1:$1048576"));
-                cf.Formula = "IsError(A1)";
-                cf.Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
-                cf.Style.Fill.BackgroundColor.SetColor(Color.Red);
-                SaveAndCleanup(p);
-            }
+            using ExcelPackage p = OpenPackage("cf.xlsx", true);
+            ExcelWorksheet ws = p.Workbook.Worksheets.Add("Sheet1");
+            IExcelConditionalFormattingExpression cf = ws.ConditionalFormatting.AddExpression(new ExcelAddress("$1:$1048576"));
+            cf.Formula = "IsError(A1)";
+            cf.Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
+            cf.Style.Fill.BackgroundColor.SetColor(Color.Red);
+            SaveAndCleanup(p);
         }
         [TestMethod]
         public void TestInsertRowsIntoVeryLongRangeWithConditionalFormatting()
         {
-            using (ExcelPackage pck = new ExcelPackage())
-            {
-                // Add a sheet with conditional formatting on the whole of column A except row 1
-                ExcelWorksheet wks = pck.Workbook.Worksheets.Add("Sheet1");
-                string cfAddress = "A2:A1048576";
-                IExcelConditionalFormattingExpression cf = wks.ConditionalFormatting.AddExpression(new ExcelAddress(cfAddress));
-                cf.Formula = "=($A$1=TRUE)";
+            using ExcelPackage pck = new ExcelPackage();
+            // Add a sheet with conditional formatting on the whole of column A except row 1
+            ExcelWorksheet wks = pck.Workbook.Worksheets.Add("Sheet1");
+            string cfAddress = "A2:A1048576";
+            IExcelConditionalFormattingExpression cf = wks.ConditionalFormatting.AddExpression(new ExcelAddress(cfAddress));
+            cf.Formula = "=($A$1=TRUE)";
 
-                // Check that the conditional formatting address was set correctly
-                Assert.AreEqual(cfAddress, cf.Address.Address);
+            // Check that the conditional formatting address was set correctly
+            Assert.AreEqual(cfAddress, cf.Address.Address);
 
-                // Insert some rows into the worksheet
-                wks.InsertRow(5, 3);
+            // Insert some rows into the worksheet
+            wks.InsertRow(5, 3);
 
-                // Check that the conditional formatting rule still applies to the same range (since there's nowhere to extend it to)
-                Assert.AreEqual(cfAddress, cf.Address.Address);
-            }
+            // Check that the conditional formatting rule still applies to the same range (since there's nowhere to extend it to)
+            Assert.AreEqual(cfAddress, cf.Address.Address);
         }
         [TestMethod]
         public void TestInsertRowsAboveVeryLongRangeWithConditionalFormatting()
         {
-            using (ExcelPackage pck = new ExcelPackage())
-            {
-                // Add a sheet with conditional formatting on the whole of column A except rows 1-10
-                ExcelWorksheet wks = pck.Workbook.Worksheets.Add("Sheet1");
-                string cfAddress = "A11:A1048576";
-                IExcelConditionalFormattingExpression cf = wks.ConditionalFormatting.AddExpression(new ExcelAddress(cfAddress));
-                cf.Formula = "=($A$1=TRUE)";
+            using ExcelPackage pck = new ExcelPackage();
+            // Add a sheet with conditional formatting on the whole of column A except rows 1-10
+            ExcelWorksheet wks = pck.Workbook.Worksheets.Add("Sheet1");
+            string cfAddress = "A11:A1048576";
+            IExcelConditionalFormattingExpression cf = wks.ConditionalFormatting.AddExpression(new ExcelAddress(cfAddress));
+            cf.Formula = "=($A$1=TRUE)";
 
-                // Check that the conditional formatting address was set correctly
-                Assert.AreEqual(cfAddress, cf.Address.Address);
+            // Check that the conditional formatting address was set correctly
+            Assert.AreEqual(cfAddress, cf.Address.Address);
 
-                // Insert 3 rows into the worksheet above the conditional formatting
-                wks.InsertRow(5, 3);
+            // Insert 3 rows into the worksheet above the conditional formatting
+            wks.InsertRow(5, 3);
 
-                // Check that the conditional formatting rule starts lower down, but ends in the same place
-                Assert.AreEqual("A14:A1048576", cf.Address.Address);
-            }
+            // Check that the conditional formatting rule starts lower down, but ends in the same place
+            Assert.AreEqual("A14:A1048576", cf.Address.Address);
         }
 
         [TestMethod]
         public void TestInsertRowsToPushConditionalFormattingOffSheet()
         {
-            using (ExcelPackage pck = new ExcelPackage())
-            {
-                // Add a sheet with conditional formatting on the last two rows of column A
-                ExcelWorksheet wks = pck.Workbook.Worksheets.Add("Sheet1");
-                string cfAddress = "A1048575:A1048576";
-                IExcelConditionalFormattingExpression cf = wks.ConditionalFormatting.AddExpression(new ExcelAddress(cfAddress));
-                cf.Formula = "=($A$1=TRUE)";
+            using ExcelPackage pck = new ExcelPackage();
+            // Add a sheet with conditional formatting on the last two rows of column A
+            ExcelWorksheet wks = pck.Workbook.Worksheets.Add("Sheet1");
+            string cfAddress = "A1048575:A1048576";
+            IExcelConditionalFormattingExpression cf = wks.ConditionalFormatting.AddExpression(new ExcelAddress(cfAddress));
+            cf.Formula = "=($A$1=TRUE)";
 
-                // Check that the conditional formatting address was set correctly
-                Assert.AreEqual(1, wks.ConditionalFormatting.Count);
-                Assert.AreEqual(cfAddress, cf.Address.Address);
+            // Check that the conditional formatting address was set correctly
+            Assert.AreEqual(1, wks.ConditionalFormatting.Count);
+            Assert.AreEqual(cfAddress, cf.Address.Address);
 
-                // Insert enough rows into the worksheet above the conditional formatting rule to push it off the sheet 
-                wks.InsertRow(5, 10);
+            // Insert enough rows into the worksheet above the conditional formatting rule to push it off the sheet 
+            wks.InsertRow(5, 10);
 
-                // Check that the conditional formatting rule no longer exists
-                Assert.AreEqual(0, wks.ConditionalFormatting.Count);
-            }
+            // Check that the conditional formatting rule no longer exists
+            Assert.AreEqual(0, wks.ConditionalFormatting.Count);
         }
         [TestMethod]
         public void CFWholeSheetRangeDeleteRowShouldNotRemoveCF()
         {
-            using (ExcelPackage pck = new ExcelPackage())
-            {
-                ExcelWorksheet sheet = pck.Workbook.Worksheets.Add("Test");
-                IExcelConditionalFormattingEqual cf = sheet.ConditionalFormatting.AddEqual(new ExcelAddress("$1:$1048576"));
-                cf.Formula = "Pizza";
-                cf.Style.Font.Color.SetColor(Color.Red);
+            using ExcelPackage pck = new ExcelPackage();
+            ExcelWorksheet sheet = pck.Workbook.Worksheets.Add("Test");
+            IExcelConditionalFormattingEqual cf = sheet.ConditionalFormatting.AddEqual(new ExcelAddress("$1:$1048576"));
+            cf.Formula = "Pizza";
+            cf.Style.Font.Color.SetColor(Color.Red);
 
-                Assert.AreEqual(1, sheet.ConditionalFormatting.Count);
-                sheet.DeleteRow(3);
-                Assert.AreEqual(1, sheet.ConditionalFormatting.Count);
-            }
+            Assert.AreEqual(1, sheet.ConditionalFormatting.Count);
+            sheet.DeleteRow(3);
+            Assert.AreEqual(1, sheet.ConditionalFormatting.Count);
         }
 
 
         [TestMethod]
         public void CFColumnsRangeDeleteRowShouldNotRemoveCF()
         {
-            using (ExcelPackage pck = new ExcelPackage())
-            {
-                ExcelWorksheet sheet = pck.Workbook.Worksheets.Add("Test");
-                IExcelConditionalFormattingEqual cf = sheet.ConditionalFormatting.AddEqual(new ExcelAddress("$A:$P"));
-                cf.Formula = "Pizza";
-                cf.Style.Font.Color.SetColor(Color.Red);
+            using ExcelPackage pck = new ExcelPackage();
+            ExcelWorksheet sheet = pck.Workbook.Worksheets.Add("Test");
+            IExcelConditionalFormattingEqual cf = sheet.ConditionalFormatting.AddEqual(new ExcelAddress("$A:$P"));
+            cf.Formula = "Pizza";
+            cf.Style.Font.Color.SetColor(Color.Red);
 
-                Assert.AreEqual(1, sheet.ConditionalFormatting.Count);
-                sheet.DeleteRow(3);
-                Assert.AreEqual(1, sheet.ConditionalFormatting.Count);
-            }
+            Assert.AreEqual(1, sheet.ConditionalFormatting.Count);
+            sheet.DeleteRow(3);
+            Assert.AreEqual(1, sheet.ConditionalFormatting.Count);
         }
         [TestMethod]
         public void CFWholeSheetRange2DeleteRowShouldNotRemoveCF()
         {
-            using (ExcelPackage pck = new ExcelPackage())
-            {
-                ExcelWorksheet sheet = pck.Workbook.Worksheets.Add("Test");
-                IExcelConditionalFormattingEqual cf = sheet.ConditionalFormatting.AddEqual(new ExcelAddress("A1:XFD1048576"));
-                cf.Formula = "Pizza";
-                cf.Style.Font.Color.SetColor(Color.Red);
+            using ExcelPackage pck = new ExcelPackage();
+            ExcelWorksheet sheet = pck.Workbook.Worksheets.Add("Test");
+            IExcelConditionalFormattingEqual cf = sheet.ConditionalFormatting.AddEqual(new ExcelAddress("A1:XFD1048576"));
+            cf.Formula = "Pizza";
+            cf.Style.Font.Color.SetColor(Color.Red);
 
-                Assert.AreEqual(1, sheet.ConditionalFormatting.Count);
-                sheet.DeleteRow(3);
-                Assert.AreEqual(1, sheet.ConditionalFormatting.Count);
-            }
+            Assert.AreEqual(1, sheet.ConditionalFormatting.Count);
+            sheet.DeleteRow(3);
+            Assert.AreEqual(1, sheet.ConditionalFormatting.Count);
         }
 
     }

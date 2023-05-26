@@ -125,18 +125,16 @@ namespace EPPlusTest.LoadFunctions
                 new Aclass(){ Id = "123", Name = "Item 1", Number = 3},
                 new Aclass(){ Id = "456", Name = "Item 2", Number = 6}
             };
-            using (ExcelPackage? pck = new ExcelPackage(new MemoryStream()))
-            {
-                ExcelWorksheet? sheet = pck.Workbook.Worksheets.Add("sheet");
-                sheet.Cells["C1"].LoadFromCollection(items);
+            using ExcelPackage? pck = new ExcelPackage(new MemoryStream());
+            ExcelWorksheet? sheet = pck.Workbook.Worksheets.Add("sheet");
+            sheet.Cells["C1"].LoadFromCollection(items);
 
-                Assert.AreEqual("123", sheet.Cells["C1"].Value);
-                Assert.AreEqual(6, sheet.Cells["E2"].Value);
-                Assert.AreEqual(3, sheet.Dimension._fromCol);
-                Assert.AreEqual(5, sheet.Dimension._toCol);
-                Assert.AreEqual(1, sheet.Dimension._fromRow);
-                Assert.AreEqual(2, sheet.Dimension._toRow);
-            }
+            Assert.AreEqual("123", sheet.Cells["C1"].Value);
+            Assert.AreEqual(6, sheet.Cells["E2"].Value);
+            Assert.AreEqual(3, sheet.Dimension._fromCol);
+            Assert.AreEqual(5, sheet.Dimension._toCol);
+            Assert.AreEqual(1, sheet.Dimension._fromRow);
+            Assert.AreEqual(2, sheet.Dimension._toRow);
         }
 
         [TestMethod]
@@ -147,12 +145,10 @@ namespace EPPlusTest.LoadFunctions
                 new Aclass(){ Id = "123", Name = "Item 1", Number = 3},
                 new Aclass(){ Id = "456", Name = "Item 2", Number = 6}
             };
-            using (ExcelPackage? pck = new ExcelPackage(new MemoryStream()))
-            {
-                ExcelWorksheet? sheet = pck.Workbook.Worksheets.Add("sheet");
-                sheet.Cells["C1"].LoadFromCollection(items, true);
-                Assert.AreEqual("Id", sheet.Cells["C1"].Value);
-            }
+            using ExcelPackage? pck = new ExcelPackage(new MemoryStream());
+            ExcelWorksheet? sheet = pck.Workbook.Worksheets.Add("sheet");
+            sheet.Cells["C1"].LoadFromCollection(items, true);
+            Assert.AreEqual("Id", sheet.Cells["C1"].Value);
         }
 
         [TestMethod]
@@ -163,12 +159,10 @@ namespace EPPlusTest.LoadFunctions
                 new Aclass(){ Id = "123", Name = "Item 1", Number = 3},
                 new Aclass(){ Id = "456", Name = "Item 2", Number = 6}
             };
-            using (ExcelPackage? pck = new ExcelPackage(new MemoryStream()))
-            {
-                ExcelWorksheet? sheet = pck.Workbook.Worksheets.Add("sheet");
-                sheet.Cells["C1"].LoadFromCollection(items, true, TableStyles.Dark1);
-                Assert.AreEqual("Id", sheet.Cells["C1"].Value);
-            }
+            using ExcelPackage? pck = new ExcelPackage(new MemoryStream());
+            ExcelWorksheet? sheet = pck.Workbook.Worksheets.Add("sheet");
+            sheet.Cells["C1"].LoadFromCollection(items, true, TableStyles.Dark1);
+            Assert.AreEqual("Id", sheet.Cells["C1"].Value);
         }
 
         [TestMethod]
@@ -178,14 +172,12 @@ namespace EPPlusTest.LoadFunctions
             {
                 new Aclass(){ Id = "123", Name = "Item 1", Number = 3}
             };
-            using (ExcelPackage? pck = new ExcelPackage(new MemoryStream()))
-            {
-                ExcelWorksheet? sheet = pck.Workbook.Worksheets.Add("sheet");
-                sheet.Cells["C1"].LoadFromCollection(items, true, TableStyles.Dark1);
+            using ExcelPackage? pck = new ExcelPackage(new MemoryStream());
+            ExcelWorksheet? sheet = pck.Workbook.Worksheets.Add("sheet");
+            sheet.Cells["C1"].LoadFromCollection(items, true, TableStyles.Dark1);
 
-                Assert.AreEqual("Id", sheet.Cells["C1"].Value);
-                Assert.AreEqual("123", sheet.Cells["C2"].Value);
-            }
+            Assert.AreEqual("Id", sheet.Cells["C1"].Value);
+            Assert.AreEqual("123", sheet.Cells["C2"].Value);
         }
 
         [TestMethod]
@@ -195,13 +187,11 @@ namespace EPPlusTest.LoadFunctions
             {
                 new BClass(){ Id = "123", Name = "Item 1", Number = 3}
             };
-            using (ExcelPackage? pck = new ExcelPackage(new MemoryStream()))
-            {
-                ExcelWorksheet? sheet = pck.Workbook.Worksheets.Add("sheet");
-                sheet.Cells["C1"].LoadFromCollection(items, true, TableStyles.Dark1);
+            using ExcelPackage? pck = new ExcelPackage(new MemoryStream());
+            ExcelWorksheet? sheet = pck.Workbook.Worksheets.Add("sheet");
+            sheet.Cells["C1"].LoadFromCollection(items, true, TableStyles.Dark1);
 
-                Assert.AreEqual("MyId", sheet.Cells["C1"].Value);
-            }
+            Assert.AreEqual("MyId", sheet.Cells["C1"].Value);
         }
 
         [TestMethod]
@@ -211,25 +201,23 @@ namespace EPPlusTest.LoadFunctions
             {
                 new Implementation(){ Id = "123", Name = "Item 1", Number = 3}
             };
-            using (ExcelPackage? pck = new ExcelPackage(new MemoryStream()))
-            {
-                ExcelWorksheet? sheet = pck.Workbook.Worksheets.Add("sheet");
-                Type? t = typeof(Implementation);
-                sheet.Cells["C1"].LoadFromCollection(items, true, TableStyles.Dark1, LoadFromCollectionParams.DefaultBindingFlags,
-                    new MemberInfo[]
-                    {
+            using ExcelPackage? pck = new ExcelPackage(new MemoryStream());
+            ExcelWorksheet? sheet = pck.Workbook.Worksheets.Add("sheet");
+            Type? t = typeof(Implementation);
+            sheet.Cells["C1"].LoadFromCollection(items, true, TableStyles.Dark1, LoadFromCollectionParams.DefaultBindingFlags,
+                new MemberInfo[]
+                {
                         t.GetProperty("Id"),
                         t.GetProperty("Name")
-                    });
+                });
 
-                Assert.AreEqual(1, sheet.Dimension._toCol - sheet.Dimension._fromCol);
-                Assert.AreEqual("Id", sheet.Cells["C1"].Value);
-                Assert.AreEqual("Name", sheet.Cells["D1"].Value);
-                Assert.IsNull(sheet.Cells["E1"].Value);
-                Assert.AreEqual("123", sheet.Cells["C2"].Value);
-                Assert.AreEqual("Item 1", sheet.Cells["D2"].Value);
-                Assert.IsNull(sheet.Cells["E2"].Value);
-            }
+            Assert.AreEqual(1, sheet.Dimension._toCol - sheet.Dimension._fromCol);
+            Assert.AreEqual("Id", sheet.Cells["C1"].Value);
+            Assert.AreEqual("Name", sheet.Cells["D1"].Value);
+            Assert.IsNull(sheet.Cells["E1"].Value);
+            Assert.AreEqual("123", sheet.Cells["C2"].Value);
+            Assert.AreEqual("Item 1", sheet.Cells["D2"].Value);
+            Assert.IsNull(sheet.Cells["E2"].Value);
         }
 
         [TestMethod]
@@ -239,18 +227,16 @@ namespace EPPlusTest.LoadFunctions
             {
                 new Implementation(){ Id = "123", Name = "Item 1", Number = 3}
             };
-            using (ExcelPackage? pck = new ExcelPackage(new MemoryStream()))
-            {
-                ExcelWorksheet? sheet = pck.Workbook.Worksheets.Add("sheet");
-                Type? t = typeof(Implementation);
-                sheet.Cells["C1"].LoadFromCollection(items, true, TableStyles.Dark1, LoadFromCollectionParams.DefaultBindingFlags,
-                    new MemberInfo[]
-                    {
+            using ExcelPackage? pck = new ExcelPackage(new MemoryStream());
+            ExcelWorksheet? sheet = pck.Workbook.Worksheets.Add("sheet");
+            Type? t = typeof(Implementation);
+            sheet.Cells["C1"].LoadFromCollection(items, true, TableStyles.Dark1, LoadFromCollectionParams.DefaultBindingFlags,
+                new MemberInfo[]
+                {
                         t.GetProperty("Id"),
-                    });
-                Assert.AreEqual("Id", sheet.Cells["C1"].Value);
-                Assert.AreEqual("123", sheet.Cells["C2"].Value);
-            }
+                });
+            Assert.AreEqual("Id", sheet.Cells["C1"].Value);
+            Assert.AreEqual("123", sheet.Cells["C2"].Value);
         }
 
         [TestMethod]
@@ -260,13 +246,11 @@ namespace EPPlusTest.LoadFunctions
             {
                 new BClass(){ Id = "123", Name = "Item 1", Number = 3}
             };
-            using (ExcelPackage? pck = new ExcelPackage(new MemoryStream()))
-            {
-                ExcelWorksheet? sheet = pck.Workbook.Worksheets.Add("sheet");
-                sheet.Cells["C1"].LoadFromCollection(items, true, TableStyles.Dark1);
+            using ExcelPackage? pck = new ExcelPackage(new MemoryStream());
+            ExcelWorksheet? sheet = pck.Workbook.Worksheets.Add("sheet");
+            sheet.Cells["C1"].LoadFromCollection(items, true, TableStyles.Dark1);
 
-                Assert.AreEqual("MyName", sheet.Cells["D1"].Value);
-            }
+            Assert.AreEqual("MyName", sheet.Cells["D1"].Value);
         }
 
         [TestMethod]
@@ -276,13 +260,11 @@ namespace EPPlusTest.LoadFunctions
             {
                 new Implementation(){ Id = "123", Name = "Item 1", Number = 3}
             };
-            using (ExcelPackage? pck = new ExcelPackage(new MemoryStream()))
-            {
-                ExcelWorksheet? sheet = pck.Workbook.Worksheets.Add("sheet");
-                sheet.Cells["C1"].LoadFromCollection(items, true, TableStyles.Dark1);
+            using ExcelPackage? pck = new ExcelPackage(new MemoryStream());
+            ExcelWorksheet? sheet = pck.Workbook.Worksheets.Add("sheet");
+            sheet.Cells["C1"].LoadFromCollection(items, true, TableStyles.Dark1);
 
-                Assert.AreEqual("Id", sheet.Cells["C1"].Value);
-            }
+            Assert.AreEqual("Id", sheet.Cells["C1"].Value);
         }
 
         [TestMethod]
@@ -293,13 +275,11 @@ namespace EPPlusTest.LoadFunctions
                 new Implementation(){ Id = "123", Name = "Item 1", Number = 3}
             };
             var items = objs.Select(x => new { Id = x.Id, Name = x.Name }).ToList();
-            using (ExcelPackage? pck = new ExcelPackage(new MemoryStream()))
-            {
-                ExcelWorksheet? sheet = pck.Workbook.Worksheets.Add("sheet");
-                sheet.Cells["C1"].LoadFromCollection(items, true, TableStyles.Dark1);
+            using ExcelPackage? pck = new ExcelPackage(new MemoryStream());
+            ExcelWorksheet? sheet = pck.Workbook.Worksheets.Add("sheet");
+            sheet.Cells["C1"].LoadFromCollection(items, true, TableStyles.Dark1);
 
-                Assert.AreEqual("Id", sheet.Cells["C1"].Value);
-            }
+            Assert.AreEqual("Id", sheet.Cells["C1"].Value);
         }
 
         [TestMethod]
@@ -311,13 +291,11 @@ namespace EPPlusTest.LoadFunctions
                 new Implementation(){ Id = "123", Name = "Item 1", Number = 3}
             };
             var items = objs.Select(x => new { Id = x.Id, Name = x.Name }).ToList();
-            using (ExcelPackage? pck = new ExcelPackage(new MemoryStream()))
-            {
-                ExcelWorksheet? sheet = pck.Workbook.Worksheets.Add("sheet");
-                sheet.Cells["C1"].LoadFromCollection(items, true, TableStyles.Dark1, BindingFlags.Public | BindingFlags.Instance, typeof(string).GetMembers());
+            using ExcelPackage? pck = new ExcelPackage(new MemoryStream());
+            ExcelWorksheet? sheet = pck.Workbook.Worksheets.Add("sheet");
+            sheet.Cells["C1"].LoadFromCollection(items, true, TableStyles.Dark1, BindingFlags.Public | BindingFlags.Instance, typeof(string).GetMembers());
 
-                Assert.AreEqual("Id", sheet.Cells["C1"].Value);
-            }
+            Assert.AreEqual("Id", sheet.Cells["C1"].Value);
         }
 
         [TestMethod]
@@ -327,19 +305,17 @@ namespace EPPlusTest.LoadFunctions
             {
                 new Aclass(){ Id = "123", Name = "Item 1", Number = 3}
             };
-            using (ExcelPackage? pck = new ExcelPackage(new MemoryStream()))
+            using ExcelPackage? pck = new ExcelPackage(new MemoryStream());
+            ExcelWorksheet? sheet = pck.Workbook.Worksheets.Add("sheet");
+            sheet.Cells["C1"].LoadFromCollection(items, c =>
             {
-                ExcelWorksheet? sheet = pck.Workbook.Worksheets.Add("sheet");
-                sheet.Cells["C1"].LoadFromCollection(items, c =>
-                {
-                    c.PrintHeaders = true;
-                    c.TableStyle = TableStyles.Dark1;
-                });
-                Assert.AreEqual("Id", sheet.Cells["C1"].Value);
-                Assert.AreEqual("123", sheet.Cells["C2"].Value);
-                Assert.AreEqual(3, sheet.Cells["E2"].Value);
-                Assert.AreEqual(1, sheet.Tables.Count());
-            }
+                c.PrintHeaders = true;
+                c.TableStyle = TableStyles.Dark1;
+            });
+            Assert.AreEqual("Id", sheet.Cells["C1"].Value);
+            Assert.AreEqual("123", sheet.Cells["C2"].Value);
+            Assert.AreEqual(3, sheet.Cells["E2"].Value);
+            Assert.AreEqual(1, sheet.Tables.Count());
         }
 
         [TestMethod]
@@ -349,16 +325,14 @@ namespace EPPlusTest.LoadFunctions
             {
                 new CamelCasedClass(){ IdOfThisInstance = "123" }
             };
-            using (ExcelPackage? pck = new ExcelPackage(new MemoryStream()))
+            using ExcelPackage? pck = new ExcelPackage(new MemoryStream());
+            ExcelWorksheet? sheet = pck.Workbook.Worksheets.Add("sheet");
+            sheet.Cells["C1"].LoadFromCollection(items, c =>
             {
-                ExcelWorksheet? sheet = pck.Workbook.Worksheets.Add("sheet");
-                sheet.Cells["C1"].LoadFromCollection(items, c =>
-                {
-                    c.PrintHeaders = true;
-                    c.HeaderParsingType = HeaderParsingTypes.CamelCaseToSpace;
-                });
-                Assert.AreEqual("Id Of This Instance", sheet.Cells["C1"].Value);
-            }
+                c.PrintHeaders = true;
+                c.HeaderParsingType = HeaderParsingTypes.CamelCaseToSpace;
+            });
+            Assert.AreEqual("Id Of This Instance", sheet.Cells["C1"].Value);
         }
 
         [TestMethod]
@@ -368,16 +342,14 @@ namespace EPPlusTest.LoadFunctions
             {
                 new CamelCasedClass(){ CamelCased_And_Underscored = "123" }
             };
-            using (ExcelPackage? pck = new ExcelPackage(new MemoryStream()))
+            using ExcelPackage? pck = new ExcelPackage(new MemoryStream());
+            ExcelWorksheet? sheet = pck.Workbook.Worksheets.Add("sheet");
+            sheet.Cells["C1"].LoadFromCollection(items, c =>
             {
-                ExcelWorksheet? sheet = pck.Workbook.Worksheets.Add("sheet");
-                sheet.Cells["C1"].LoadFromCollection(items, c =>
-                {
-                    c.PrintHeaders = true;
-                    c.HeaderParsingType = HeaderParsingTypes.UnderscoreAndCamelCaseToSpace;
-                });
-                Assert.AreEqual("Camel Cased And Underscored", sheet.Cells["D1"].Value);
-            }
+                c.PrintHeaders = true;
+                c.HeaderParsingType = HeaderParsingTypes.UnderscoreAndCamelCaseToSpace;
+            });
+            Assert.AreEqual("Camel Cased And Underscored", sheet.Cells["D1"].Value);
         }
 
         [TestMethod]
@@ -394,15 +366,13 @@ namespace EPPlusTest.LoadFunctions
                 o1,
                 o2
             };
-            using (ExcelPackage? package = new ExcelPackage())
-            {
-                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
-                ExcelRangeBase? r = sheet.Cells["A1"].LoadFromCollection(items, true, TableStyles.None);
+            using ExcelPackage? package = new ExcelPackage();
+            ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
+            ExcelRangeBase? r = sheet.Cells["A1"].LoadFromCollection(items, true, TableStyles.None);
 
-                Assert.AreEqual("Id", sheet.Cells["A1"].Value);
-                Assert.AreEqual(1, sheet.Cells["A2"].Value);
-                Assert.AreEqual("TestName 2", sheet.Cells["B3"].Value);
-            }
+            Assert.AreEqual("Id", sheet.Cells["A1"].Value);
+            Assert.AreEqual(1, sheet.Cells["A2"].Value);
+            Assert.AreEqual("TestName 2", sheet.Cells["B3"].Value);
         }
         [TestMethod]
         public void ShouldSetHyperlinkForURIs()
@@ -414,24 +384,22 @@ namespace EPPlusTest.LoadFunctions
                 new UrlClass{Id="2", Name="Person with Url", EMailAddress="person2@somewhe.re", Url=new Uri("https://epplussoftware.com")},
             };
 
-            using (ExcelPackage? package = OpenPackage("LoadFromCollectionUrls.xlsx", true))
-            {
-                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
-                ExcelRangeBase? r = sheet.Cells["A1"].LoadFromCollection(items, true, TableStyles.Medium1);
+            using ExcelPackage? package = OpenPackage("LoadFromCollectionUrls.xlsx", true);
+            ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
+            ExcelRangeBase? r = sheet.Cells["A1"].LoadFromCollection(items, true, TableStyles.Medium1);
 
-                Assert.AreEqual("MyId", sheet.Cells["A1"].Value);
-                Assert.AreEqual("MyName", sheet.Cells["B1"].Value);
-                Assert.AreEqual("Number", sheet.Cells["C1"].Value);
-                Assert.AreEqual("Url", sheet.Cells["D1"].Value);
-                Assert.AreEqual("My Mail To", sheet.Cells["E1"].Value);
+            Assert.AreEqual("MyId", sheet.Cells["A1"].Value);
+            Assert.AreEqual("MyName", sheet.Cells["B1"].Value);
+            Assert.AreEqual("Number", sheet.Cells["C1"].Value);
+            Assert.AreEqual("Url", sheet.Cells["D1"].Value);
+            Assert.AreEqual("My Mail To", sheet.Cells["E1"].Value);
 
-                Assert.AreEqual("1", sheet.Cells["A2"].Value);
-                Assert.AreEqual("Person 2", sheet.Cells["B3"].Value);
-                Assert.IsInstanceOfType(sheet.Cells["E3"].Hyperlink, typeof(ExcelHyperLink));
-                Assert.AreEqual("Person 2", sheet.Cells["E3"].Value);
+            Assert.AreEqual("1", sheet.Cells["A2"].Value);
+            Assert.AreEqual("Person 2", sheet.Cells["B3"].Value);
+            Assert.IsInstanceOfType(sheet.Cells["E3"].Hyperlink, typeof(ExcelHyperLink));
+            Assert.AreEqual("Person 2", sheet.Cells["E3"].Value);
 
-                SaveAndCleanup(package);
-            }
+            SaveAndCleanup(package);
         }
         [TestMethod]
         public void LoadListOfEnumWithDescription()
@@ -443,15 +411,13 @@ namespace EPPlusTest.LoadFunctions
                 Aenum.Blue
             };
 
-            using (ExcelPackage? package = OpenPackage("LoadFromCollectionEnumDescrAtt.xlsx", true))
-            {
-                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("EnumList");
-                ExcelRangeBase? r = sheet.Cells["A1"].LoadFromCollection(items, true, TableStyles.Medium1);
-                Assert.AreEqual("The color Red", sheet.Cells["A1"].Value);
-                Assert.AreEqual("Green", sheet.Cells["A2"].Value);
-                Assert.AreEqual("The color Blue", sheet.Cells["A3"].Value);
-                SaveAndCleanup(package);
-            }
+            using ExcelPackage? package = OpenPackage("LoadFromCollectionEnumDescrAtt.xlsx", true);
+            ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("EnumList");
+            ExcelRangeBase? r = sheet.Cells["A1"].LoadFromCollection(items, true, TableStyles.Medium1);
+            Assert.AreEqual("The color Red", sheet.Cells["A1"].Value);
+            Assert.AreEqual("Green", sheet.Cells["A2"].Value);
+            Assert.AreEqual("The color Blue", sheet.Cells["A3"].Value);
+            SaveAndCleanup(package);
         }
         [TestMethod]
         public void LoadListOfNullableEnumWithDescription()
@@ -463,15 +429,13 @@ namespace EPPlusTest.LoadFunctions
                 Aenum.Blue
             };
 
-            using (ExcelPackage? package = OpenPackage("LoadFromCollectionNullableEnumDescrAtt.xlsx", true))
-            {
-                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("NullableEnumList");
-                ExcelRangeBase? r = sheet.Cells["A1"].LoadFromCollection(items, true, TableStyles.Medium1);
-                Assert.AreEqual("The color Red", sheet.Cells["A1"].Value);
-                Assert.AreEqual("Green", sheet.Cells["A2"].Value);
-                Assert.AreEqual("The color Blue", sheet.Cells["A3"].Value);
-                SaveAndCleanup(package);
-            }
+            using ExcelPackage? package = OpenPackage("LoadFromCollectionNullableEnumDescrAtt.xlsx", true);
+            ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("NullableEnumList");
+            ExcelRangeBase? r = sheet.Cells["A1"].LoadFromCollection(items, true, TableStyles.Medium1);
+            Assert.AreEqual("The color Red", sheet.Cells["A1"].Value);
+            Assert.AreEqual("Green", sheet.Cells["A2"].Value);
+            Assert.AreEqual("The color Blue", sheet.Cells["A3"].Value);
+            SaveAndCleanup(package);
         }
         [TestMethod]
         public void LoadListOfClassWithEnumWithDescription()
@@ -483,25 +447,23 @@ namespace EPPlusTest.LoadFunctions
                 new EnumClass(){Id=3, Enum=Aenum.Green, NullableEnum = Aenum.Red},
             };
 
-            using (ExcelPackage? package = OpenPackage("LoadFromCollectionClassWithEnumDescrAtt.xlsx", true))
-            {
-                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
-                ExcelRangeBase? r = sheet.Cells["A1"].LoadFromCollection(items, true, TableStyles.Medium1);
-                Assert.AreEqual("Id", sheet.Cells["A1"].Value);
-                Assert.AreEqual("Enum", sheet.Cells["B1"].Value);
-                Assert.AreEqual("Nullable Enum", sheet.Cells["C1"].Value);
-                Assert.AreEqual(1, sheet.Cells["A2"].Value);
-                Assert.AreEqual("The color Red", sheet.Cells["B2"].Value);
-                Assert.AreEqual("The color Blue", sheet.Cells["C2"].Value);
-                Assert.AreEqual(2, sheet.Cells["A3"].Value);
-                Assert.AreEqual("The color Blue", sheet.Cells["B3"].Value);
-                Assert.IsNull(sheet.Cells["C3"].Value);
-                Assert.AreEqual(3, sheet.Cells["A4"].Value);
-                Assert.AreEqual("Green", sheet.Cells["B4"].Value);
-                Assert.AreEqual("The color Red", sheet.Cells["C4"].Value);
+            using ExcelPackage? package = OpenPackage("LoadFromCollectionClassWithEnumDescrAtt.xlsx", true);
+            ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
+            ExcelRangeBase? r = sheet.Cells["A1"].LoadFromCollection(items, true, TableStyles.Medium1);
+            Assert.AreEqual("Id", sheet.Cells["A1"].Value);
+            Assert.AreEqual("Enum", sheet.Cells["B1"].Value);
+            Assert.AreEqual("Nullable Enum", sheet.Cells["C1"].Value);
+            Assert.AreEqual(1, sheet.Cells["A2"].Value);
+            Assert.AreEqual("The color Red", sheet.Cells["B2"].Value);
+            Assert.AreEqual("The color Blue", sheet.Cells["C2"].Value);
+            Assert.AreEqual(2, sheet.Cells["A3"].Value);
+            Assert.AreEqual("The color Blue", sheet.Cells["B3"].Value);
+            Assert.IsNull(sheet.Cells["C3"].Value);
+            Assert.AreEqual(3, sheet.Cells["A4"].Value);
+            Assert.AreEqual("Green", sheet.Cells["B4"].Value);
+            Assert.AreEqual("The color Red", sheet.Cells["C4"].Value);
 
-                SaveAndCleanup(package);
-            }
+            SaveAndCleanup(package);
         }
 
     }

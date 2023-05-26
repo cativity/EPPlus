@@ -78,39 +78,36 @@ namespace EPPlusTest.LoadFunctions
         [TestMethod]
         public void ShouldUseIndexWhenMoreThan17Properties()
         {
-			using (ExcelPackage? excel = new ExcelPackage())
-			{
-				Columns17[]? tableData1 = Enumerable.Range(1, 10)
-                                                    .Select(_ => new Columns17
-                                                    {
-                                                        C01 = 1,
-                                                        C02 = 2,
-                                                        C03 = 3,
-                                                        C04 = 4,
-                                                        C05 = 5,
-                                                        C06 = 6,
-                                                        C07 = 7,
-                                                        C08 = 8,
-                                                        C09 = 9,
-                                                        C10 = 10,
-                                                        C11 = 11,
-                                                        C12 = 12,
-                                                        C13 = 13,
-                                                        C14 = 14,
-                                                        C15 = 15,
-                                                        C16 = 16,
-                                                        C17 = 17
-                                                    }).ToArray();
-				ExcelWorksheet? sheet = excel.Workbook.Worksheets.Add("16Columns");
-				sheet.Cells["A1"].LoadFromCollection(tableData1);
+            using ExcelPackage? excel = new ExcelPackage();
+            Columns17[]? tableData1 = Enumerable.Range(1, 10)
+                                                .Select(_ => new Columns17
+                                                {
+                                                    C01 = 1,
+                                                    C02 = 2,
+                                                    C03 = 3,
+                                                    C04 = 4,
+                                                    C05 = 5,
+                                                    C06 = 6,
+                                                    C07 = 7,
+                                                    C08 = 8,
+                                                    C09 = 9,
+                                                    C10 = 10,
+                                                    C11 = 11,
+                                                    C12 = 12,
+                                                    C13 = 13,
+                                                    C14 = 14,
+                                                    C15 = 15,
+                                                    C16 = 16,
+                                                    C17 = 17
+                                                }).ToArray();
+            ExcelWorksheet? sheet = excel.Workbook.Worksheets.Add("16Columns");
+            sheet.Cells["A1"].LoadFromCollection(tableData1);
 
-				for(int i = 1; i < 18; i++)
-                {
-					string? expected = i < 10 ? "C0" + i : "C" + i;
-					Assert.AreEqual(expected, sheet.Cells[1, i].Value, $"Value of cell [[1, {i}] vas not {expected}");
-                }
-				
-			}
-		}
+            for (int i = 1; i < 18; i++)
+            {
+                string? expected = i < 10 ? "C0" + i : "C" + i;
+                Assert.AreEqual(expected, sheet.Cells[1, i].Value, $"Value of cell [[1, {i}] vas not {expected}");
+            }
+        }
 	}
 }

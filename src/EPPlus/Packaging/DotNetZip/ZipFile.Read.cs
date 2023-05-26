@@ -1092,10 +1092,8 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
                     return false;
                 }
 
-                using (FileStream? s = File.Open(fileName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
-                {
-                    result = IsZipFile(s, testExtract);
-                }
+                using FileStream? s = File.Open(fileName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+                result = IsZipFile(s, testExtract);
             }
             catch (IOException) { }
             catch (ZipException) { }

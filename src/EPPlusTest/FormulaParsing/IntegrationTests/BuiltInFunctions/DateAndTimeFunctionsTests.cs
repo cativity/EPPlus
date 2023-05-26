@@ -67,15 +67,13 @@ namespace EPPlusTest.FormulaParsing.IntegrationTests.BuiltInFunctions
         [TestMethod]
         public void DateShouldHandleCellReference()
         {
-            using (ExcelPackage? pck = new ExcelPackage())
-            {
-                ExcelWorksheet? sheet = pck.Workbook.Worksheets.Add("test");
-                sheet.Cells["A1"].Value = 2012d;
-                sheet.Cells["A2"].Formula = "Date(A1, 2, 2)";
-                sheet.Calculate();
-                object? result = sheet.Cells["A2"].Value;
-                Assert.AreEqual(new DateTime(2012, 2, 2).ToOADate(), result);
-            }
+            using ExcelPackage? pck = new ExcelPackage();
+            ExcelWorksheet? sheet = pck.Workbook.Worksheets.Add("test");
+            sheet.Cells["A1"].Value = 2012d;
+            sheet.Cells["A2"].Formula = "Date(A1, 2, 2)";
+            sheet.Calculate();
+            object? result = sheet.Cells["A2"].Value;
+            Assert.AreEqual(new DateTime(2012, 2, 2).ToOADate(), result);
 
         }
 

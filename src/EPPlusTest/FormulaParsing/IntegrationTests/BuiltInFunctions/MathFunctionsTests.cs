@@ -335,15 +335,13 @@ namespace EPPlusTest.FormulaParsing.IntegrationTests.BuiltInFunctions
         [TestMethod]
         public void MinaShouldCalculateStringAs0()
         {
-            using (ExcelPackage? pck = new ExcelPackage())
-            {
-                ExcelWorksheet? sheet = pck.Workbook.Worksheets.Add("test");
-                sheet.Cells["A1"].Value = 1;
-                sheet.Cells["B2"].Value = "a";
-                sheet.Cells["A5"].Formula = "MINA(A1:B4)";
-                sheet.Calculate();
-                Assert.AreEqual(0d, sheet.Cells["A5"].Value);
-            }
+            using ExcelPackage? pck = new ExcelPackage();
+            ExcelWorksheet? sheet = pck.Workbook.Worksheets.Add("test");
+            sheet.Cells["A1"].Value = 1;
+            sheet.Cells["B2"].Value = "a";
+            sheet.Cells["A5"].Formula = "MINA(A1:B4)";
+            sheet.Calculate();
+            Assert.AreEqual(0d, sheet.Cells["A5"].Value);
         }
 
         [TestMethod]
@@ -356,13 +354,11 @@ namespace EPPlusTest.FormulaParsing.IntegrationTests.BuiltInFunctions
         [TestMethod]
         public void AverageShouldReturnDiv0IfEmptyCell()
         {
-            using(ExcelPackage? pck = new ExcelPackage())
-            {
-                ExcelWorksheet? ws = pck.Workbook.Worksheets.Add("test");
-                ws.Cells["A2"].Formula = "AVERAGE(A1)";
-                ws.Calculate();
-                Assert.AreEqual("#DIV/0!", ws.Cells["A2"].Value.ToString());
-            }
+            using ExcelPackage? pck = new ExcelPackage();
+            ExcelWorksheet? ws = pck.Workbook.Worksheets.Add("test");
+            ws.Cells["A2"].Formula = "AVERAGE(A1)";
+            ws.Calculate();
+            Assert.AreEqual("#DIV/0!", ws.Cells["A2"].Value.ToString());
         }
 
         [TestMethod]
@@ -585,29 +581,25 @@ namespace EPPlusTest.FormulaParsing.IntegrationTests.BuiltInFunctions
         [TestMethod]
         public void CountBlankShouldCalculateEmptyCells()
         {
-            using (ExcelPackage? pck = new ExcelPackage())
-            {
-                ExcelWorksheet? sheet = pck.Workbook.Worksheets.Add("test");
-                sheet.Cells["A1"].Value = 1;
-                sheet.Cells["B2"].Value = string.Empty;
-                sheet.Cells["A5"].Formula = "COUNTBLANK(A1:B4)";
-                sheet.Calculate();
-                Assert.AreEqual(7, sheet.Cells["A5"].Value);
-            }
+            using ExcelPackage? pck = new ExcelPackage();
+            ExcelWorksheet? sheet = pck.Workbook.Worksheets.Add("test");
+            sheet.Cells["A1"].Value = 1;
+            sheet.Cells["B2"].Value = string.Empty;
+            sheet.Cells["A5"].Formula = "COUNTBLANK(A1:B4)";
+            sheet.Calculate();
+            Assert.AreEqual(7, sheet.Cells["A5"].Value);
         }
 
         [TestMethod]
         public void CountBlankShouldCalculateResultOfOffset()
         {
-            using (ExcelPackage? pck = new ExcelPackage())
-            {
-                ExcelWorksheet? sheet = pck.Workbook.Worksheets.Add("test");
-                sheet.Cells["A1"].Value = 1;
-                sheet.Cells["B2"].Value = string.Empty;
-                sheet.Cells["A5"].Formula = "COUNTBLANK(OFFSET(A1, 0, 1))";
-                sheet.Calculate();
-                Assert.AreEqual(1, sheet.Cells["A5"].Value);
-            }
+            using ExcelPackage? pck = new ExcelPackage();
+            ExcelWorksheet? sheet = pck.Workbook.Worksheets.Add("test");
+            sheet.Cells["A1"].Value = 1;
+            sheet.Cells["B2"].Value = string.Empty;
+            sheet.Cells["A5"].Formula = "COUNTBLANK(OFFSET(A1, 0, 1))";
+            sheet.Calculate();
+            Assert.AreEqual(1, sheet.Cells["A5"].Value);
         }
 
         [TestMethod]
@@ -621,66 +613,60 @@ namespace EPPlusTest.FormulaParsing.IntegrationTests.BuiltInFunctions
         [TestMethod]
         public void AverateIfsShouldCaluclateResult()
         {
-            using (ExcelPackage? pck = new ExcelPackage())
-            {
-                ExcelWorksheet? sheet = pck.Workbook.Worksheets.Add("test");
-                sheet.Cells["F4"].Value = 1;
-                sheet.Cells["F5"].Value = 2;
-                sheet.Cells["F6"].Formula = "2 + 2";
-                sheet.Cells["F7"].Value = 4;
-                sheet.Cells["F8"].Value = 5;
+            using ExcelPackage? pck = new ExcelPackage();
+            ExcelWorksheet? sheet = pck.Workbook.Worksheets.Add("test");
+            sheet.Cells["F4"].Value = 1;
+            sheet.Cells["F5"].Value = 2;
+            sheet.Cells["F6"].Formula = "2 + 2";
+            sheet.Cells["F7"].Value = 4;
+            sheet.Cells["F8"].Value = 5;
 
-                sheet.Cells["H4"].Value = 3;
-                sheet.Cells["H5"].Value = 3;
-                sheet.Cells["H6"].Formula = "2 + 2";
-                sheet.Cells["H7"].Value = 4;
-                sheet.Cells["H8"].Value = 5;
+            sheet.Cells["H4"].Value = 3;
+            sheet.Cells["H5"].Value = 3;
+            sheet.Cells["H6"].Formula = "2 + 2";
+            sheet.Cells["H7"].Value = 4;
+            sheet.Cells["H8"].Value = 5;
 
-                sheet.Cells["I4"].Value = 2;
-                sheet.Cells["I5"].Value = 3;
-                sheet.Cells["I6"].Formula = "2 + 2";
-                sheet.Cells["I7"].Value = 5;
-                sheet.Cells["I8"].Value = 1;
+            sheet.Cells["I4"].Value = 2;
+            sheet.Cells["I5"].Value = 3;
+            sheet.Cells["I6"].Formula = "2 + 2";
+            sheet.Cells["I7"].Value = 5;
+            sheet.Cells["I8"].Value = 1;
 
-                sheet.Cells["H9"].Formula = "AVERAGEIFS(F4:F8;H4:H8;\">3\";I4:I8;\"<5\")";
-                sheet.Calculate();
-                Assert.AreEqual(4.5d, sheet.Cells["H9"].Value);
-            }
+            sheet.Cells["H9"].Formula = "AVERAGEIFS(F4:F8;H4:H8;\">3\";I4:I8;\"<5\")";
+            sheet.Calculate();
+            Assert.AreEqual(4.5d, sheet.Cells["H9"].Value);
         }
 
         [TestMethod]
         public void AbsShouldHandleEmptyCell()
         {
-            using (ExcelPackage? package = new ExcelPackage())
-            {
-                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
-                sheet.Cells["A1"].Formula = "ABS(B1)";
-                sheet.Calculate();
+            using ExcelPackage? package = new ExcelPackage();
+            ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
+            sheet.Cells["A1"].Formula = "ABS(B1)";
+            sheet.Calculate();
 
-                Assert.AreEqual(0d, sheet.Cells["A1"].Value);
-            }
+            Assert.AreEqual(0d, sheet.Cells["A1"].Value);
         }
 
         [TestMethod]
         public void SumIfsTest()
         {
-            using(ExcelPackage? package = new ExcelPackage())
-            {
-                ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
-                sheet.Cells["C6"].Value = 4;
-                sheet.Cells["C7"].Value = 2;
-                sheet.Cells["C8"].Value = 28;
-                sheet.Cells["D6"].Value = 3;
-                sheet.Cells["D7"].Value = 2;
-                sheet.Cells["D8"].Value = 4;
-                sheet.Cells["E6"].Value = 10;
-                sheet.Cells["E7"].Value = 20;
-                sheet.Cells["E8"].Value = 30;
+            using ExcelPackage? package = new ExcelPackage();
+            ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
+            sheet.Cells["C6"].Value = 4;
+            sheet.Cells["C7"].Value = 2;
+            sheet.Cells["C8"].Value = 28;
+            sheet.Cells["D6"].Value = 3;
+            sheet.Cells["D7"].Value = 2;
+            sheet.Cells["D8"].Value = 4;
+            sheet.Cells["E6"].Value = 10;
+            sheet.Cells["E7"].Value = 20;
+            sheet.Cells["E8"].Value = 30;
 
-                sheet.Cells["E9"].Formula = "SUMIFS(E6:E8;D6:D8;\" > 2\";C6:C8;28)";
-                sheet.Calculate();
-                Assert.AreEqual(30d, sheet.Cells["E9"].Value);
-            }
+            sheet.Cells["E9"].Formula = "SUMIFS(E6:E8;D6:D8;\" > 2\";C6:C8;28)";
+            sheet.Calculate();
+            Assert.AreEqual(30d, sheet.Cells["E9"].Value);
         }
     }
 }

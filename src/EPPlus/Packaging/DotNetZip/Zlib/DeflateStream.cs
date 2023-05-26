@@ -692,13 +692,11 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
         /// <returns>The string in compressed form</returns>
         public static byte[] CompressString(String s)
         {
-            using (MemoryStream? ms = RecyclableMemory.GetStream())
-            {
-                System.IO.Stream compressor =
-                    new DeflateStream(ms, CompressionMode.Compress, CompressionLevel.BestCompression);
-                ZlibBaseStream.CompressString(s, compressor);
-                return ms.ToArray();
-            }
+            using MemoryStream? ms = RecyclableMemory.GetStream();
+            System.IO.Stream compressor =
+                new DeflateStream(ms, CompressionMode.Compress, CompressionLevel.BestCompression);
+            ZlibBaseStream.CompressString(s, compressor);
+            return ms.ToArray();
         }
 
 
@@ -722,14 +720,12 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
         /// <returns>The data in compressed form</returns>
         public static byte[] CompressBuffer(byte[] b)
         {
-            using (MemoryStream? ms = RecyclableMemory.GetStream())
-            {
-                System.IO.Stream compressor =
-                    new DeflateStream( ms, CompressionMode.Compress, CompressionLevel.BestCompression );
+            using MemoryStream? ms = RecyclableMemory.GetStream();
+            System.IO.Stream compressor =
+                new DeflateStream(ms, CompressionMode.Compress, CompressionLevel.BestCompression);
 
-                ZlibBaseStream.CompressBuffer(b, compressor);
-                return ms.ToArray();
-            }
+            ZlibBaseStream.CompressBuffer(b, compressor);
+            return ms.ToArray();
         }
 
 
@@ -749,13 +745,11 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
         /// <returns>The uncompressed string</returns>
         public static String UncompressString(byte[] compressed)
         {
-            using (MemoryStream? input = RecyclableMemory.GetStream(compressed))
-            {
-                System.IO.Stream decompressor =
-                    new DeflateStream(input, CompressionMode.Decompress);
+            using MemoryStream? input = RecyclableMemory.GetStream(compressed);
+            System.IO.Stream decompressor =
+                new DeflateStream(input, CompressionMode.Decompress);
 
-                return ZlibBaseStream.UncompressString(compressed, decompressor);
-            }
+            return ZlibBaseStream.UncompressString(compressed, decompressor);
         }
 
 
@@ -775,13 +769,11 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
         /// <returns>The data in uncompressed form</returns>
         public static byte[] UncompressBuffer(byte[] compressed)
         {
-            using (MemoryStream? input = RecyclableMemory.GetStream(compressed))
-            {
-                System.IO.Stream decompressor =
-                    new DeflateStream( input, CompressionMode.Decompress );
+            using MemoryStream? input = RecyclableMemory.GetStream(compressed);
+            System.IO.Stream decompressor =
+                new DeflateStream(input, CompressionMode.Decompress);
 
-                return ZlibBaseStream.UncompressBuffer(compressed, decompressor);
-            }
+            return ZlibBaseStream.UncompressBuffer(compressed, decompressor);
         }
 
     }
